@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { CbseProgramService } from '../../services';
 import * as _ from 'lodash-es';
 import {UserService} from '@sunbird/core';
-import {PlayerConfig} from './player.config'
+import {PlayerConfig} from './player.config';
 
 
 @Component({
@@ -18,50 +18,49 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
   public playerConfig: any;
   public theme: any;
 
-  constructor(private toEcml:CbseProgramService,private userService:UserService ) {
-    
+  constructor(private toEcml: CbseProgramService, private userService: UserService ) {
+
   }
 
   ngOnInit() {
-    console.log(this.questionMetaData,"this is the q");
-    if(this.selectedAttributes.currentRole !== 'CONTRIBUTOR'){
+    if (this.selectedAttributes.currentRole !== 'CONTRIBUTOR') {
     this.toEcml
     .getECMLJSON(this.selectedAttributes.questionList)
-    .subscribe( (theme) => {      
+    .subscribe( (theme) => {
       /**
-       * @param theme this contains the theme[Ecml] 
+       * @param theme this contains the theme[Ecml]
        * @type {Object}
        */
       this.theme = theme;
       const context = this.getContext();
       this.playerConfig =  this.setPlayerConfig(context, theme);
-    })
-    }else{
+    });
+    } else {
     this.toEcml
     .getECMLJSON(this.selectedAttributes.questionList, this.selectedAttributes.currentRole, this.selectedAttributes.previewQuestionData)
-    .subscribe( (theme) => {      
+    .subscribe( (theme) => {
       /**
-       * @param theme this contains the theme[Ecml] 
+       * @param theme this contains the theme[Ecml]
        * @type {Object}
        */
       this.theme = theme;
       const context = this.getContext();
       this.playerConfig =  this.setPlayerConfig(context, theme);
-    })
+    });
     }
   }
-  
-  ngOnChanges(){
+
+  ngOnChanges() {
 
   }
-  
-  setPlayerConfig(context, theme){
+
+  setPlayerConfig(context, theme) {
     const finalPlayerConfiguration  = {
       data: theme,
       metadata: PlayerConfig.metadata,
-      context: context,      
-      config: PlayerConfig.config,  
-    }  
+      context: context,
+      config: PlayerConfig.config,
+    }
     return finalPlayerConfiguration;
   }
 
@@ -76,25 +75,25 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       }
     });
     const context = {
-      "mode": "play",
-      "partner": [],
-      "pdata": {
-        "id": this.userService.appId,
-        "ver": version,
-        "pid": "cbse-program-portal"
+      'mode': 'play',
+      'partner': [],
+      'pdata': {
+        'id': this.userService.appId,
+        'ver': version,
+        'pid': 'cbse-program-portal'
       },
-      "contentId": "",
-      "sid": this.userService.sessionId,
-      "uid": this.userService.userid,
-      "timeDiff": this.userService.getServerTimeDiff,
-      "contextRollup": {},
-      "channel": this.userService.channel,
-      "did": "",
-      "dims": this.userService.dims,
-      "tags": tags,
-      "app": [this.userService.channel]
+      'contentId': '',
+      'sid': this.userService.sessionId,
+      'uid': this.userService.userid,
+      'timeDiff': this.userService.getServerTimeDiff,
+      'contextRollup': {},
+      'channel': this.userService.channel,
+      'did': '',
+      'dims': this.userService.dims,
+      'tags': tags,
+      'app': [this.userService.channel]
     };
     return context;
 
-  }  
+  }
 }

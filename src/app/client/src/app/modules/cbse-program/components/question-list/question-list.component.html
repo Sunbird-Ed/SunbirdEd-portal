@@ -1,10 +1,21 @@
-<div class="ui twelve column grid p-0 m-0">
+<div *ngIf="!showPreviewModal" class="ui twelve column grid p-0 m-0">
   <div class="three wide column p-0 pr-16">
     <div class="ui questionsMenu">
       <button *ngIf="role.currentRole === 'CONTRIBUTOR'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"
         (click)="createNewQuestion()" appTelemetryInteract
         [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
         class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
+
+        <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
+          <div class="sb-checkbox sb-checkbox-primary">
+            <input type="checkbox" [(ngModel)]="selectedAll" appTelemetryInteract [telemetryInteractEdata]="{id:'select_all_questions',type:'click',pageid:'questionlist'}"
+            (change)="selectAll();">
+            <label for="check1">Select All</label>
+          </div>
+          <!-- <button class="sb-btn sb-btn-primary sb-btn-normal ml-auto" [disabled]="publishInProgress"
+          appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:'questionlist'}"
+          (click)="publishQuestions()">Publish Questions</button> -->
+        </div>
       <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
         <div class="questionTab ui center tertiary header aligned segment p-8"
           [class.tertiary]="selectedQuestionId === question.identifier"
@@ -14,8 +25,8 @@
           <div class="item d-flex flex-ai-center">
             <ng-container *ngIf="role.currentRole === 'PUBLISHER' else nonPublisher">
               <div class="sb-checkbox sb-checkbox-primary">
-                <input [(ngModel)]="question.isSelected" (change)="checkIfAllSelected();" type="checkbox">
-                <label for="check1" class="mb-0"> Question {{i + 1}}</label>
+                <input class="checking" [(ngModel)]="question.isSelected" (change)="checkIfAllSelected($event);" (click)="$event.stopPropagation()" type="checkbox">
+                <label for="check1" class="mb-0"> Questioner {{i + 1}}</label>
               </div>
             </ng-container>
             <ng-template #nonPublisher>
@@ -33,21 +44,10 @@
           </div>
         </div>
       </div>
-      <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
-        <div class="sb-checkbox sb-checkbox-primary">
-          <input type="checkbox" [(ngModel)]="selectedAll" appTelemetryInteract [telemetryInteractEdata]="{id:'select_all_questions',type:'click',pageid:'questionlist'}"
-          (change)="selectAll();">
-          <label for="check1">Select All</label>
-        </div>
-        <button class="sb-btn sb-btn-primary sb-btn-normal ml-auto" [disabled]="publishInProgress"
-        appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:'questionlist'}"
-        (click)="publishQuestions()">Publish Questions</button>
-      </div>
-
     </div>
   </div>
 
-  <div class="nine wide column bg-white p-0">
+  <div *ngIf="!showPreviewModal" class="nine wide column bg-white p-0">
     <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create' && role.currentRole === 'CONTRIBUTOR'"
       class="ui segment">No Question - Click
       Create</div>
@@ -62,11 +62,78 @@
         <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
           [role]="role" (questionStatus)="questionStatusHandler($event)">
         </app-question-creation>
+        <div class="sb-pageSection-header" class="ui grid m-0 flex-ai-center d-flex">
+            <!-- <div class="eight wide column">
+                <input class="sb-form-control mr-20" type="text" name="" id="">
+
+                <div class="sb-field-group">
+                    <label> Name </label>
+                    <div class="sb-field">
+                        <input autofocus="" class="sb-form-control" type="text" placeholder="Name">
+                    </div>
+                </div>
+            </div> -->
+            <div class="four wide column">
+                <div class="sb-checkbox sb-checkbox-primary">
+                    <input type="checkbox" id="check1" name="example">
+                    <label for="check1">Select for publishing</label>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
     <app-loader *ngIf='showLoader'></app-loader>
   </div>
 </div>
+
+<div *ngIf="showPreviewModal">
+    <div class="sb-pageSection-header" class="ui grid m-0 flex-ai-center d-flex">
+        <div class="eight wide column">
+            <!-- <input class="sb-form-control mr-20" type="text" name="" id=""> -->
+
+            <div class="sb-field-group">
+                <!-- <label> Name </label> -->
+                <div class="sb-field">
+                    <input autofocus="" class="sb-form-control" type="text" placeholder="Name">
+                </div>
+            </div>
+        </div>
+        <!-- <div class="four wide column">
+            <div class="sb-checkbox sb-checkbox-primary">
+                <input type="checkbox" id="check1" name="example">
+                <label for="check1">Select for publishing</label>
+            </div>
+        </div> -->
+    </div>
+  <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="previewAttributes"> </app-question-preview>
+</div>
+
+
+
+<!-- <sui-modal
+  *ngIf="showPreviewModal"
+  [mustScroll]="true"
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'large'"
+  class="sb-modal"
+  appBodyScroll
+  (dismissed)="showPreviewModal = !showPreviewModal"
+  #modal>
+  <div class="sb-modal-header">
+    Practice Set Successfully Published
+  </div>
+  <div class="sb-modal-content">
+    <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes"> </app-question-preview>
+
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showPreviewModal = !showPreviewModal">
+      Close
+    </button>
+  </div>
+  </sui-modal> -->
+
 
 <sui-modal
   *ngIf="showSuccessModal"

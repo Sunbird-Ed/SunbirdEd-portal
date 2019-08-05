@@ -15,17 +15,22 @@ import { CbseProgramService } from '../../services';
 export class QuestionListComponent implements OnInit, OnChanges {
   @Input() selectedAttributes: any;
   @Input() role: any;
+  @Output() previewStatus = new EventEmitter < any > ();
+  @Output() publishStatus = new EventEmitter <any> ();
 
   public questionList = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
   public questionMetaData: any;
+  public previewAttributes: any;
   public refresh = true;
   public showLoader = true;
   public enableRoleChange = false;
   public showSuccessModal =  false;
+  public showPreviewModal =  false;
   public publishInProgress = false;
   public publishedResourceId: any;
+  public publishQueue = [];
   selectedAll: any;
   private questionTypeName = {
     vsa: 'Very Short Answer',
@@ -114,6 +119,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       });
   }
   handleQuestionTabChange(questionId) {
+    if (_.includes(this.selectedAttributes.questionList, questionId)) { return; }
     this.selectedAttributes.questionList = [];
     this.selectedAttributes.questionList.push(questionId);
     this.selectedQuestionId = questionId;
@@ -201,16 +207,41 @@ export class QuestionListComponent implements OnInit, OnChanges {
   selectAll() {
     _.forEach(this.questionList, (question) => {
       question.isSelected = this.selectedAll;
-    })
-  }
-
-  checkIfAllSelected() {
-    this.selectedAll = this.questionList.every(function (question: any) {
-      return question.selected === true;
     });
   }
 
-  publishQuestions() {
+  checkIfAllSelected() {
+    this.selectedAll = this.questionList.every((question: any) => {
+      return question.isSelected === true;
+    });
+  }
+
+  previewHandler(value) {
+    this.previewStatus.emit({'previewStatus': value});
+    this.showPreviewModal = value;
+  }
+  public showPreview() {
+    this.previewAttributes = _.cloneDeep(this.selectedAttributes);
+    const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
+    this.publishInProgress = true;
+    const selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
+      final.ids.push(_.get(question, 'identifier'));
+      final.author.push(_.get(question, 'author'));
+      final.attributions = _.union(final.attributions, _.get(question, 'organisation'));
+      return final;
+    }, { ids: [], author: [], attributions: [] });
+
+    if (selectedQuestionsData.ids.length > 0) {
+      this.showPreviewModal = true;
+      this.previewHandler(this.showPreviewModal);
+      const questions = [];
+      this.previewAttributes.questionList = selectedQuestionsData.ids;
+    } else {
+      this.publishInProgress = false;
+      this.toasterService.error('Please select some questions to Publish');
+    }
+  }
+ public publishQuestions() {
     let selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
     this.publishInProgress = true;
     let selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
@@ -266,6 +297,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
           console.log('res ', res);
           if (res.responseCode === 'OK' && res.result.content_id !== undefined) {
             this.publishResource(res.result.content_id);
+            this.showPreviewModal = false;
+            this.previewHandler(this.showPreviewModal);
+            this.publishStatus.emit('prev');
           }
         }, error => {
           this.publishInProgress = false;

@@ -3,7 +3,7 @@ import { FrameworkService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { first } from 'rxjs/operators';
 import {Subject} from 'rxjs';
- 
+
 interface ISelectedAttributes {
     textBookUnitIdentifier?: any;
     framework?: string;
@@ -39,6 +39,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
   public currentStage = 0;
   public role: any = {};
+  public isPreviewShown: boolean;
   constructor(public frameworkService: FrameworkService) { }
 
   ngOnInit() {
@@ -49,7 +50,7 @@ export class CbseComponent implements OnInit, OnDestroy {
       board: _.get(this.programDetails, 'config.scope.board[0]'),
       medium: _.get(this.programDetails, 'config.scope.medium[0]'),
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
-      programId: _.get(this.programDetails, 'programId'),
+      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1' || _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
@@ -75,6 +76,12 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.selectedAttributes.textBookUnitIdentifier =  event.textBookUnitIdentifier;
     this.navigate('next');
   }
+
+  public previewStatusHandler(event) {
+    this.isPreviewShown = event.previewStatus;
+    return this.isPreviewShown;
+  }
+
   handleRoleChange() {
     this.role = Object.assign({},{currentRole :this.selectedAttributes.currentRole});
   }

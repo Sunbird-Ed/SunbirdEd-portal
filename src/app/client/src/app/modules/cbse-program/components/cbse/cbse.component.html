@@ -32,16 +32,16 @@
                 <div *ngIf="field.inputType ==='select' && field.code === 'school'" class="field d-flex flex-jc-center flex-ai-center">
                   <label class="mr-8 mb-0">Select {{field.label}}</label>
                   <div class="field">
-                    <sui-select [isSearchable]="true" id={{field.code}} name={{field.code}} class="selection" 
+                    <sui-select [isSearchable]="true" id={{field.code}} name={{field.code}} class="selection"
                       [(ngModel)]="selectedSchoolForReview" labelField="name" valueField="name"
                       [options]="field.range" #select>
                       <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option"></sui-select-option>
                     </sui-select>
                   </div>
                 </div>
-              </div> 
-          </div>      
-          <button (click)="navigate('prev')" 
+              </div>
+          </div>
+          <button (click)="navigate('prev')"
           appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
           class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
         </div>
@@ -64,14 +64,26 @@
                 <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for</span>
                 <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
               </div>
-              <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole === 'REVIEWER' && selectedSchoolForReview !== undefined" 
+              <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole === 'REVIEWER' && selectedSchoolForReview !== undefined"
               class="field d-flex flex-jc-center flex-ai-center">
                 <span><b>Selected School:</b> <span style="font-style: italic">{{selectedSchoolForReview}}</span></span>
               </div>
-              <button (click)="navigate('prev')" 
-              appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
-              class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+
+              <div class="d-flex" *ngIf="role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR'">
+                <button *ngIf="!isPreviewShown" class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
+                appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:'questionlist'}"
+                (click)="questionList.showPreview()"> See Preview and Publish Questions</button>
+                <button *ngIf="!isPreviewShown" (click)="navigate('prev')"
+                appTelemetryInteract  [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+                <button *ngIf="role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR' && isPreviewShown === true"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
+                appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:'questionlist'}"
+                (click)="questionList.publishQuestions()">Publish Questions</button>
+                <button *ngIf="role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR' && isPreviewShown === true" (click)="questionList.previewHandler(false)"
+                appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+              </div>
             </div>
         </div>
-      <app-question-list (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role"></app-question-list>
+      <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role" (previewStatus)="previewStatusHandler($event)" (publishStatus)="navigate($event)"></app-question-list>
     </div>

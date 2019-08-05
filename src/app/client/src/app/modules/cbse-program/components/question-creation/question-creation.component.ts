@@ -214,7 +214,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
   }
   /**
-   * @param forPreview  {boolean} 
+   * @param forPreview  {boolean}
    * - set param forPreview to true for local question preview
    */
   createQuestion(forPreview?:boolean) {
@@ -277,7 +277,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
        * - If it is a local preview don't create question.
        * - for local preview only question body required with all other parameter to create Ecml.
        */
-      if(!forPreview){
+      if(!forPreview) {
         this.actionService.post(req).subscribe((res) => {
           this.questionStatus.emit({'status': 'success', 'type': 'create', 'identifier': res.result.node_id});
         }, error => {
@@ -294,12 +294,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           };
           this.telemetryService.error(telemetryErrorData);
         });
-      }else{
+      } else {
         this.selectedAttributes.previewQuestionData = {
           result: {
             assessment_item : req.data.request.assessment_item.metadata
-          } 
-        }        
+          }
+        };
       }
     });
   }
