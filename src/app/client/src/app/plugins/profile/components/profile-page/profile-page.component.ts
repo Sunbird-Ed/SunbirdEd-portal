@@ -119,6 +119,14 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  downloadCert(certificates) {
+    _.forEach(certificates, (value, key) => {
+      if ( value && value.name === '100PercentCompletionCertificate') {
+        window.open(value.url, '_blank');
+      }
+    });
+  }
+
   toggle(showMore) {
     if (showMore === true) {
       this.showMoreRolesLimit = this.roles.length;
