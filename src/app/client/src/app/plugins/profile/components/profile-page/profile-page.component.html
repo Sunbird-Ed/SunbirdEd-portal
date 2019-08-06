@@ -258,29 +258,6 @@
       </div>
       <!-- tarainings attended computer view ends-->
   </div>
-  <!-- tarainings attended mobile view strats-->
-  <div class="fs-1-7 font-w-bold mt-30 pl-20 mobile only" *ngIf="attendedTraining && attendedTraining.length > 0">
-    {{resourceService.frmelmnts.lbl.trainingAttended}} ({{attendedTraining.length}})&#x200E;</div>
-  <div class="ui divider my-5 mobile only"></div>
-  <div class="profile-bg-c-1 mobile only" *ngIf="attendedTraining && attendedTraining.length > 0">
-    <ul class="px-20">
-      <li class="d-flex flex-dc mb-20" *ngFor="let data of attendedTraining | slice:0:courseLimit">
-        <span class="fs-1-16 sb-text-gray">{{data.courseName}}</span>
-        <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy'}}</span>
-      </li>
-      <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
-        <button class="ui semi-circular dodger-blue button center-aligned" *ngIf="showMoreTrainings"
-          (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}
-          <i class="chevron down icon pl-10"></i>
-        </button>
-        <button class="ui semi-circular dodger-blue button center-aligned" (click)="toggleCourse(false)"
-          *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}
-          <i class="chevron up icon pl-10"></i>
-        </button>
-      </div>
-    </ul>
-  </div>
-  <!-- tarainings attended mobile view ends-->
 </div>
 <app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"
   [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
