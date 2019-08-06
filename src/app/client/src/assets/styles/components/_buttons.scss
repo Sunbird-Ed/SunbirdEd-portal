@@ -113,6 +113,7 @@ a.sb-btn {
 .sb-btn-outline-primary,
 .sb-btn-outline-info {
   @include btn-theme-bgwhite($primary-color);
+  border-color: $primary-color;
   &:hover,
   &:active {
     background: $primary-100;
