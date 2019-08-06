@@ -105,7 +105,11 @@
         }
     }
 }
-
+.sb-batch-modal.sb-modal{
+    .ui.modal{
+        margin-top: 100px !important
+    }
+}
 [dir="rtl"] .sb-modal {
     .ui.modal {
         &>.close {

@@ -99,7 +99,12 @@
         }
       }
     }
-  
+    .sb-certificatePage-field{
+      .sb-form-control{
+        font-weight: bold;
+        letter-spacing: 4px;  
+      }
+    }
     .sb-certificatePage-holder-details {
       padding: $sb-certificatePage-holder-details-padding;
       .sb-certificatePage-holder-desc {
@@ -119,6 +124,10 @@
         color: $sb-certificatePage-holder-name-color;
         text-align: center;
         margin: $sb-certificatePage-holder-name-margin;
+      }
+      .sb-btn-arrow {
+        border-top:1px solid var(--gray-200);
+        border-bottom:1px solid var(--gray-200);
       }
     }
     .sb-certificatePage-overlay {
