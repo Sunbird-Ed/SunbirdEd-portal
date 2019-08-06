@@ -3,6 +3,8 @@ jobs:
   build:
     machine:
       image: circleci/classic:latest
+    environment:
+      CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID_PORTAL
     steps:
       - checkout
       - run:
@@ -34,8 +36,17 @@ jobs:
           name: Executing test cases
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
       - run:
-          name: Publishing report to Codacy
-          command: 'npm install -g codacy-coverage && cat ./coverage/lcov.info | codacy-coverage '
+          name: Setup Code Climate test-reporter
+          command: |
+          # download test reporter as a static binary
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            mv cc-test-reporter /usr/local/bin
+      - run:
+          name: Run tests
+          command: |
+            cc-test-reporter before-build
+            cd ~/portal/src/app/client && cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
           when: always
       - store_artifacts:
           path: /tmp/logs
