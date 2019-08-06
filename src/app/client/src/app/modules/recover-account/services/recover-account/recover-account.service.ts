@@ -28,12 +28,13 @@ export class RecoverAccountService {
   fuzzyUserSearch(data: any) {
     const options = {
       url: this.configService.urlConFig.URLS.ACCOUNT_RECOVERY.FUZZY_SEARCH,
+      // url: 'user/v1/search',
       data: {
         request: {
           filters: {
-          },
-          fuzzy: {
-            firstName: data.name
+            fuzzy: {
+              firstName: data.name
+            }
           }
         }
       }
