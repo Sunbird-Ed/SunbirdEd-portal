@@ -61,7 +61,8 @@
       "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
       "ENROLL_USER_COURSE": "course/v1/enrol",
       "RECOMMENDED_COURSE": "recommended/courses",
-      "UNENROLL_USER_COURSE":"course/v1/unenrol"
+      "UNENROLL_USER_COURSE":"course/v1/unenrol",
+      "GET_ENROLLED_COURSE_DETAILS":"course/v1/user/enrollment/read"
     },
     "CONTENT": {
       "SEARCH": "content/v1/search",

@@ -1,11 +1,11 @@
 
-import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
+import {combineLatest as observableCombineLatest, forkJoin, Subject} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import {CoursesService, PermissionService, CopyContentService, UserService} from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
@@ -53,7 +53,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
+    public userService: UserService) {
 
   }
 
@@ -85,22 +86,25 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       });
   }
   ngAfterViewInit() {
-    this.courseProgressService.courseProgressData.pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe((courseProgressData) => {
-        this.enrolledCourse = true;
-        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
-        this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
-        if (!this.flaggedCourse && this.onPageLoadResume &&
-          !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-          this.resumeCourse();
-        } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-        } else {
-          this.onPageLoadResume = false;
+    observableCombineLatest(this.courseProgressService.courseProgressData,
+      this.courseProgressService.getCourseCompletionPercentage(this.batchId, this.userService.userid))
+      .subscribe((results) => {
+        if (results && results.length > 0) {
+          const courseProgressData: any = results[0];
+          this.enrolledCourse = true;
+          this.progress = results[1] || 0;
+          this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
+          if (!this.flaggedCourse && this.onPageLoadResume &&
+            !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+            this.resumeCourse();
+          } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+          } else {
+            this.onPageLoadResume = false;
+          }
         }
       });
   }
