@@ -38,10 +38,9 @@ jobs:
       - run:
           name: Setup Code Climate test-reporter
           command: |
-          # download test reporter as a static binary
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-            mv cc-test-reporter /usr/local/bin
+            wget https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+            chmod +x test-reporter-latest-linux-amd64
+            cp test-reporter-latest-linux-amd64 /usr/local/bin/cc-test-reporter
       - run:
           name: Run tests
           command: |
