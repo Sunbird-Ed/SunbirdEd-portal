@@ -189,7 +189,7 @@ export const mockData: any = {
             'message': 'api to load inbox'
         }
     },
-    exdataEventData:{
+    exdataEventData: {
         'context': {
             'env': 'app'
         },
