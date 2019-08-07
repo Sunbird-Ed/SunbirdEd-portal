@@ -44,7 +44,7 @@ jobs:
 		    export SONAR_SCANNER_OPTS="-server"'
       - run:
           name: sonarcloud
-          command: 'sonar-scanner \
+          command: './root/.sonar/sonar-scanner-3.3.0.1492/bin/sonar-scanner \
             -Dsonar.projectKey=harshavardhanc_SunbirdEd-portal \
               -Dsonar.organization=harshavardhanc \
                 -Dsonar.sources=. \
