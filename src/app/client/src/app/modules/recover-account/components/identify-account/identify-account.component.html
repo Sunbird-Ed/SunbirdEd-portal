@@ -43,7 +43,7 @@
       </div>
     </div>
     <button class="sb-btn sb-btn-normal width-100 sb-btn-secondary" [disabled]="disableFormSubmit" tabindex="0"
-      appTelemetryInteract
+      appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
       [telemetryInteractEdata]="{id: 'submit', type: 'click', pageid: 'identify-account', extra: {form: form.value} }"
       (click)="handleNext()">
       {{resourceService?.frmelmnts?.lbl?.next}}</button>

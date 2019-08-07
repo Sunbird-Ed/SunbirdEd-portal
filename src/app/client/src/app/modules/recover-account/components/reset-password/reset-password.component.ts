@@ -16,6 +16,13 @@ export class ResetPasswordComponent implements OnInit {
   form: FormGroup;
   errorCount = 0;
   telemetryImpression: IImpressionEventInput;
+  telemetryCdata = [{
+    id: 'user:account:recovery',
+    type: 'Feature'
+  }, {
+    id: 'SB-13755',
+    type: 'Task'
+  }];
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService) { }
 
@@ -95,7 +102,8 @@ export class ResetPasswordComponent implements OnInit {
   private setTelemetryImpression() {
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
       },
       object: {
         id: this.recoverAccountService.selectedAccountIdentifier.id,
