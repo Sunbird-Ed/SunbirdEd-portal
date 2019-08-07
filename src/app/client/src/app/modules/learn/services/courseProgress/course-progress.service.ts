@@ -77,19 +77,19 @@ export class CourseProgressService {
     };
     const resContentIds = [];
     if (res.result.contentList.length > 0) {
-      _.forEach(res.result.contentList, (content) => {
-        if (content.batchId === req.batchId && content.courseId === req.courseId) {
+      _.forEach(req.contentIds, (contentId) => {
+        const content = _.find(res.result.contentList, {'contentId': contentId});
+        if (content) {
           this.courseProgress[courseId_batchId].content.push(content);
           resContentIds.push(content.contentId);
+        } else {
+          this.courseProgress[courseId_batchId].content.push({
+            'contentId': contentId,
+            'status': 0,
+            'courseId': req.courseId,
+            'batchId': req.batchId,
+          });
         }
-      });
-      _.forEach(_.difference(req.contentIds, resContentIds), (value, key) => {
-        this.courseProgress[courseId_batchId].content.push({
-          'contentId': value,
-          'status': 0,
-          'courseId': req.courseId,
-          'batchId': req.batchId,
-        });
       });
       this.calculateProgress(courseId_batchId);
     } else {
