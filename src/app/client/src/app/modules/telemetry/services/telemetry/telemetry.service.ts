@@ -2,7 +2,7 @@ import { Injectable, Inject, InjectionToken } from '@angular/core';
 import * as _ from 'lodash-es';
 import {
   ITelemetryEvent, ITelemetryContextData, TelemetryObject,
-  IStartEventInput, IImpressionEventInput,
+  IStartEventInput, IImpressionEventInput, IExDataEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
 
@@ -168,6 +168,18 @@ export class TelemetryService {
     }
   }
 
+  /**
+   * Logs 'exdata' telemetry event
+   *
+   * @param {IExDataEventInput} exDataEventInput
+   * @memberof TelemetryService
+   */
+  public exData(exDataEventInput: IExDataEventInput) {
+    if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(exDataEventInput);
+      this.telemetryProvider.exdata(eventData.edata, eventData.options);
+    }
+  }
 
   /**
    * Feedback 'feedback' telemetry event
