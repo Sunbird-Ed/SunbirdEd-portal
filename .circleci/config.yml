@@ -32,7 +32,7 @@ jobs:
           command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
-          command: 'local SONAR_SCANNER_VERSION=3.3.0.1492
+          command: 'SONAR_SCANNER_VERSION=3.3.0.1492
 		    export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION
 		    rm -rf $SONAR_SCANNER_HOME
 		    mkdir -p $SONAR_SCANNER_HOME
