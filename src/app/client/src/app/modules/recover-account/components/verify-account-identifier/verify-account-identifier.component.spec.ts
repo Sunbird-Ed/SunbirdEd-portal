@@ -60,10 +60,15 @@ describe('VerifyAccountIdentifierComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(VerifyAccountIdentifierComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    const recoverAccountService = TestBed.get(RecoverAccountService);
+    recoverAccountService.fuzzySearchResults = [{}];
+    recoverAccountService.selectedAccountIdentifier = {
+      id: '123'
+    };
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });
