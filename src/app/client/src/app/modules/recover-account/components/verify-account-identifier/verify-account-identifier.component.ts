@@ -49,17 +49,37 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     };
     this.recoverAccountService.verifyOTP(request)
     .subscribe(response => {
-        this.navigateToNextStep();
+        this.resetPassword();
       }, error => {
+        this.disableFormSubmit = false;
         this.handleError(error);
       }
     );
   }
-  navigateToNextStep() {
-    this.recoverAccountService.otpVerified = true;
-    this.router.navigate(['/recover/reset/password'], {
-      queryParams: this.activatedRoute.snapshot.queryParams
+  resetPassword() {
+    const request = {
+      request: {
+        type: this.recoverAccountService.selectedAccountIdentifier.type,
+        key: this.recoverAccountService.selectedAccountIdentifier.value,
+        userId: this.recoverAccountService.selectedAccountIdentifier.id
+      }
+    };
+    this.recoverAccountService.resetPassword(request)
+    .subscribe(response => {
+      this.navigateToNextStep();
+    }, error => {
+      this.disableFormSubmit = false;
+      this.handleError(error);
     });
+  }
+  navigateToNextStep() {
+    const reqQuery = this.activatedRoute.snapshot.queryParams;
+    let resQuery: any = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
+    resQuery.success_message = 'Password has been reset, please login with new password';
+    resQuery = Object.keys(resQuery).map(key =>
+      encodeURIComponent(key) + '=' + encodeURIComponent(resQuery[key])).join('&');
+    const redirect_uri = reqQuery.error_callback + '?' + resQuery;
+    window.location.href = redirect_uri;
   }
   handleError(error) {
     this.errorCount += 1;

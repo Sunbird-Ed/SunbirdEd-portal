@@ -19,12 +19,13 @@ const routes: Routes = [
       path: 'verify/account/identifier', component: VerifyAccountIdentifierComponent, data: {
         telemetry: { env: telemetryEnv, pageid: 'VerifyIdentifier', type: 'view', subtype: 'paginate' },
       }
-    }, {
-      path: 'reset/password', component: ResetPasswordComponent, data: {
-        telemetry: { env: telemetryEnv, pageid: 'ResetPassword', type: 'view', subtype: 'paginate' },
-      }
-    }]
-  }
+    }
+    // , {
+    //   path: 'reset/password', component: ResetPasswordComponent, data: {
+    //     telemetry: { env: telemetryEnv, pageid: 'ResetPassword', type: 'view', subtype: 'paginate' },
+    //   }
+    // }
+  ]}
 ];
 
 @NgModule({

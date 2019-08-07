@@ -48,11 +48,16 @@ export class IdentifyAccountComponent implements OnInit {
         if (_.get(response, 'result.response.count') > 0) { // both match
           this.navigateToNextStep(response);
         } else { // both dint match
-          this.nameNotExist = true;
           this.identiferNotExist = true;
+          this.nameNotExist = true;
         }
       }, error => {
-        this.handleError(error);
+        if (error.responseCode === 'PARTIAL_SUCCESS_RESPONSE') {
+          this.handleError(error);
+        } else {
+          this.identiferNotExist = true;
+          this.nameNotExist = true;
+        }
       });
   }
   navigateToNextStep(response) {
@@ -64,7 +69,6 @@ export class IdentifyAccountComponent implements OnInit {
   handleError(error) {
     this.errorCount += 1;
     this.nameNotExist = true;
-    this.identiferNotExist = true;
     if (this.errorCount >= 2) {
       const reqQuery = this.activatedRoute.snapshot.queryParams;
       let resQuery: any = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
