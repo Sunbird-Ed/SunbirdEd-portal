@@ -32,14 +32,23 @@ jobs:
           command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
-          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
+          command: 'local SONAR_SCANNER_VERSION=3.3.0.1492
+		    export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION
+		    rm -rf $SONAR_SCANNER_HOME
+		    mkdir -p $SONAR_SCANNER_HOME
+                    curl -sSLo $HOME/.sonar/sonar-scanner.zip http://repo1.maven.org/maven2/org/sonarsource/scanner/cli/sonar-scanner-cli/$SONAR_SCANNER_VERSION/sonar-scanner-cli-$SONAR_SCANNER_VERSION.zip
+	       	    unzip $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+		    rm $HOME/.sonar/sonar-scanner.zip
+		    export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+		    export SONAR_SCANNER_OPTS="-server"'
       - run:
-          name: Publishing report to Codacy
-          command: 'npm install -g codacy-coverage && cat ./coverage/lcov.info | codacy-coverage '
-          when: always
-      - store_artifacts:
-          path: /tmp/logs
-          destination: logs
+          name: sonarcloud
+          command: 'sonar-scanner \
+            -Dsonar.projectKey=harshavardhanc_SunbirdEd-portal \
+              -Dsonar.organization=harshavardhanc \
+                -Dsonar.sources=. \
+                  -Dsonar.host.url=https://sonarcloud.io \
+                    -Dsonar.login=cab8b10574f4b303dcb490bf148c33df0379c904'
           
 workflows:
   version: 2
