@@ -70,6 +70,7 @@ export class CourseProgressService {
 
   private processContent(req, res, courseId_batchId) {
     this.courseProgress[courseId_batchId] = {
+      progress: 0,
       completedCount: 0,
       totalCount: req.contentIds.length,
       content: []
@@ -104,23 +105,6 @@ export class CourseProgressService {
     }
   }
 
-  public getCourseCompletionPercentage(batchId, userId) {
-    const courseCompletionRequest = {
-      url: this.configService.urlConFig.URLS.COURSE.GET_ENROLLED_COURSE_DETAILS,
-      data: {
-        request: {
-          userId: userId,
-          batchId: batchId
-        }
-      }
-    };
-    return this.contentService.post(courseCompletionRequest).pipe(map((res: ServerResponse) => {
-      return _.get(res, 'result.course.completionPercentage') || 0;
-    }), catchError((err) => {
-      return err;
-    }));
-  }
-
   private calculateProgress(courseId_batchId) {
     const lastAccessTimeOfContentId = [];
     let completedCount = 0;
@@ -134,6 +118,8 @@ export class CourseProgressService {
       }
     });
     this.courseProgress[courseId_batchId].completedCount = completedCount;
+    const progress = ((this.courseProgress[courseId_batchId].completedCount / this.courseProgress[courseId_batchId].totalCount) * 100);
+    this.courseProgress[courseId_batchId].progress = progress > 100 ? 100 : progress;
     const index = _.findIndex(contentList, { lastAccessTime: lastAccessTimeOfContentId.sort().reverse()[0] });
     const lastPlayedContent = contentList[index] ? contentList[index] : contentList[0];
     this.courseProgress[courseId_batchId].lastPlayedContentId = lastPlayedContent && lastPlayedContent.contentId;
