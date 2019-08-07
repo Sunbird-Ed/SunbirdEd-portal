@@ -78,13 +78,11 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.enrolledBatchInfo = {status: 1};
     component.ngOnInit();
     component.ngAfterViewInit();
-    spyOn(courseProgressService, 'getCourseCompletionPercentage').and.returnValue(observableOf(0));
     courseProgressService.courseProgressData.emit({lastPlayedContentId: 'do_123'});
     expect(component.courseHierarchy).toBeDefined();
-    expect(component.progress).toBe(0);
     expect(component.flaggedCourse).toBeFalsy();
     expect(component.enrolledCourse).toBeTruthy();
-    expect(component.showResumeCourse).toBeTruthy();
+    expect(component.showResumeCourse).toBeFalsy();
   });
 
    it('should not enable resume button if course is flagged and courseProgressData obtained from courseProgressService', () => {
