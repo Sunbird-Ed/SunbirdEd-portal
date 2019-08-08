@@ -42,7 +42,6 @@ node() {
                     else {
                         println cdnUrl
                         sh "./experiments.sh ${cdnUrl} ${commitHash}"
-                        }
                         ansibleExtraArgs = "--extra-vars assets=$currentWs/sunbird-portal/src/app/dist --extra-vars folder_name=$jobName --vault-password-file /var/lib/jenkins/secrets/vault-pass"
                         values.put('ansibleExtraArgs', ansibleExtraArgs)
                         ansible_playbook_run(values)
@@ -52,7 +51,7 @@ node() {
                 }
 //            }
             
-        //}
+        }
     }
 }
     catch (err) {
