@@ -130,7 +130,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
           mode: editorMode,
           data: assessment_item
         };
-        this.refreshEditor();
+        if(this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view')){
+          this.refreshEditor();
+          }
       }, err => {
         this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question failed');
         const telemetryErrorData = {

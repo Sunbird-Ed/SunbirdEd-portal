@@ -85,6 +85,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
     this.userName = this.setUserName();
   }
   ngOnChanges() {
+    this.previewData = this.questionMetaData;
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
     } else {
