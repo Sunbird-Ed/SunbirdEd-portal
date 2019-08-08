@@ -128,6 +128,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
    if(this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
   }
   ngOnChanges() {
+    this.previewData = this.questionMetaData.data.body;
     if (this.initialized) {
       if (this.questionMetaData.mode === 'edit') {
         // this.isEditorReadOnly(false);

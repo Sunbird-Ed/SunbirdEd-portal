@@ -53,15 +53,19 @@
       Create</div>
     <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review
     </div>
-    <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh && !showLoader">
+    <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
       <div *ngIf="selectedAttributes.questionType === 'mcq'">
+          <div [hidden]="showLoader">
         <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [role]="role"
           (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
+          </div>
       </div>
       <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
+        <div [hidden]="showLoader">
         <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
           [role]="role" (questionStatus)="questionStatusHandler($event)">
         </app-question-creation>
+        </div>
       </div>
     </div>
     <app-loader *ngIf='showLoader'></app-loader>
