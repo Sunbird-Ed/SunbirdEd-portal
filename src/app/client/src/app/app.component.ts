@@ -134,6 +134,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 }
 
 setFingerPrintTelemetry() {
+  const printFingerprintDetails  = (<HTMLInputElement>document.getElementById('logFingerprintDetails'))
+  ? (<HTMLInputElement>document.getElementById('logFingerprintDetails')).value : 'false';
+    if (printFingerprintDetails !== 'true') {
+      return;
+    }
+
     if (this.fingerprintInfo) {
       const event = {
         context: {
