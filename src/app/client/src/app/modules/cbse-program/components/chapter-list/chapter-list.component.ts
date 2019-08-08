@@ -3,7 +3,7 @@ import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService }
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -20,27 +20,47 @@ export class ChapterListComponent implements OnInit, OnChanges {
   @Input() selectedSchool: any;
 
   public textBookChapters: Array<any> = [];
-  private questionType = ['vsa', 'sa', 'la', 'mcq'];
+  private questionType : Array<any> = [];
   private textBookMeta: any;
   private questionTypeName = {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
     la: 'Long Answer',
-    mcq: 'Multiple Choice Question'
+    mcq: 'Multiple Choice Question',
+    curiosity: 'Curiosity Question'
   };
   telemetryImpression = {};
   private labels: Array<string>;
   public collectionData;
   showLoader = true;
   showError = false;
+  public question_categories: any;
+  public question_type: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService,
-    public toasterService: ToasterService, public router: Router) {
+    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
   }
   private labelsHandler() {
     this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted'] : ['Total', 'Created by me', 'Needs attention'];
   }
   ngOnInit() {
+    /**
+     * @description : this will fetch question Category configuration based on currently active route
+     */
+    this.activeRoute.data
+    .subscribe( (routerData) => {
+      this.question_categories = routerData.config.question_categories;
+      this.questionType = this.question_categories;
+
+      routerData.config.question_categories.map( category => {
+        if(category !== 'mcq'){
+          this.question_type.push('reference');
+        }else{
+          this.question_type.push('mcq');
+        }
+      })
+    })
+    
     this.labelsHandler();
     this.telemetryImpression = {
       context: {
@@ -166,7 +186,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
             'medium': this.selectedAttributes.medium,
             'programId': this.selectedAttributes.programId,
             'type': questionType === 'mcq' ? 'mcq' : 'reference',
-            'category': questionType.toUpperCase(),
+            'category': questionType === 'curiosity'? 'CuriosityQuestion' : questionType.toUpperCase(),
             'version': 3,
             'status': []
           },

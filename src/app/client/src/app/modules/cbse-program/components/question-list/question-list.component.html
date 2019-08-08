@@ -53,32 +53,18 @@
       Create</div>
     <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review
     </div>
-    <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh && !showLoader">
+    <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
       <div *ngIf="selectedAttributes.questionType === 'mcq'">
+          <div [hidden]="showLoader">
         <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [role]="role"
           (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
+          </div>
       </div>
       <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
+        <div [hidden]="showLoader">
         <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
           [role]="role" (questionStatus)="questionStatusHandler($event)">
         </app-question-creation>
-        <div class="sb-pageSection-header" class="ui grid m-0 flex-ai-center d-flex">
-            <!-- <div class="eight wide column">
-                <input class="sb-form-control mr-20" type="text" name="" id="">
-
-                <div class="sb-field-group">
-                    <label> Name </label>
-                    <div class="sb-field">
-                        <input autofocus="" class="sb-form-control" type="text" placeholder="Name">
-                    </div>
-                </div>
-            </div> -->
-            <div class="four wide column">
-                <div class="sb-checkbox sb-checkbox-primary">
-                    <input type="checkbox" id="check1" name="example">
-                    <label for="check1">Select for publishing</label>
-                </div>
-            </div>
         </div>
       </div>
     </div>

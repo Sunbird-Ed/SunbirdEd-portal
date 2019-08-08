@@ -122,12 +122,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   ngAfterViewInit() {
-    // this.initializeEditors();
-    this.initializeDropdown();     
-   if(this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
-   if(this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
+   this.initializeDropdown();     
+   if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
+   if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;  
   }
   ngOnChanges() {
+    this.previewData = this.questionMetaData.data.body;
     if (this.initialized) {
       if (this.questionMetaData.mode === 'edit') {
         // this.isEditorReadOnly(false);
@@ -255,7 +255,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
                 'code': UUID.UUID(),
                 'type': 'reference',
-                'category': this.selectedAttributes.questionType.toUpperCase(),
+                'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion': this.selectedAttributes.questionType.toUpperCase(),
                 'itemType': 'UNIT',
                 'version': 3,
                 'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
@@ -330,7 +330,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       .subscribe((res) => {
         this.body = res[0];
         this.solution = res[1];
-        const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
         const option = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
           data: {
@@ -339,7 +338,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'objectType': 'AssessmentItem',
                 'metadata': {
                   'body': this.body,
-                  'category': this.selectedAttributes.questionType.toUpperCase(),
+                  'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion': this.selectedAttributes.questionType.toUpperCase(),
                   'solutions': [this.solution],
                   'editorState': {
                     solutions: [this.editorState.solutions]
@@ -354,13 +353,18 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'type': 'reference',
                   'code': UUID.UUID(),
                   'template_id': 'NA',
-                  'media': this.mediaArr,
-                  'authorNames': authorName        
+                  'media': this.mediaArr
                 }
               }
             }
           }
         };
+
+        if(this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+          const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
+          option.data.request.assessment_item.metadata['authorNames'] = authorName;
+        }
+
         if (optionalParams) {
           _.forEach(optionalParams, (param) => {
             option.data.request.assessment_item.metadata[param.key] = param.value;

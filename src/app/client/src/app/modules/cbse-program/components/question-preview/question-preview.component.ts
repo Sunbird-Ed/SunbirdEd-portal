@@ -17,12 +17,14 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
   @Input() selectedAttributes: any;
   public playerConfig: any;
   public theme: any;
+  previewInitialized: boolean;
 
   constructor(private toEcml: CbseProgramService, private userService: UserService ) {
 
   }
 
   ngOnInit() {
+    this.previewInitialized = true;
     if (this.selectedAttributes.currentRole !== 'CONTRIBUTOR') {
     this.toEcml
     .getECMLJSON(this.selectedAttributes.questionList)
@@ -51,7 +53,33 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-
+    if (this.previewInitialized) {
+    if (this.selectedAttributes.currentRole !== 'CONTRIBUTOR'){
+      this.toEcml
+      .getECMLJSON(this.selectedAttributes.questionList)
+      .subscribe( (theme) => {
+        /**
+         * @param theme this contains the theme[Ecml]
+         * @type {Object}
+         */
+        this.theme = theme;
+        const context = this.getContext();
+        this.playerConfig =  this.setPlayerConfig(context, theme);
+      });
+      } else {
+      this.toEcml
+      .getECMLJSON(this.selectedAttributes.questionList, this.selectedAttributes.currentRole, this.selectedAttributes.previewQuestionData)
+      .subscribe( (theme) => {
+        /**
+         * @param theme this contains the theme[Ecml]
+         * @type {Object}
+         */
+        this.theme = theme;
+        const context = this.getContext();
+        this.playerConfig =  this.setPlayerConfig(context, theme);
+      })
+      }
+    }
   }
 
   setPlayerConfig(context, theme) {
@@ -64,7 +92,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     return finalPlayerConfiguration;
   }
 
-  getContext(){
+  getContext() {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const version = buildNumber && buildNumber.value ?
     buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
