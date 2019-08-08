@@ -125,6 +125,13 @@ export class CourseProgressService {
     this.courseProgress[courseId_batchId].lastPlayedContentId = lastPlayedContent && lastPlayedContent.contentId;
   }
 
+  private findIndex(data, contentId, fromIndex) {
+    fromIndex = fromIndex || 0;
+    return _.findIndex(data, {'contentId': contentId}, fromIndex);
+  }
+
+
+
   public updateContentsState(req) {
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
@@ -135,8 +142,16 @@ export class CourseProgressService {
         courseProgress.content[index].status = req.status;
         return this.updateContentStateToServer(courseProgress.content[index]).pipe(
           map((res: any) => {
-            this.courseProgress[courseId_batchId].content[index].status = req.status;
-            this.courseProgress[courseId_batchId].content[index].lastAccessTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ');
+            const indexes = [];
+            _.forEach(courseProgress.content, (content, iterator) => {
+              if (content.contentId === req.contentId) {
+                indexes.push(iterator);
+              }
+            });
+            _.forEach(indexes, (i) => {
+              this.courseProgress[courseId_batchId].content[i].status = req.status;
+              this.courseProgress[courseId_batchId].content[i].lastAccessTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ');
+            });
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
             this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount);
