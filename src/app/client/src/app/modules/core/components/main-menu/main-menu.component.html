@@ -4,6 +4,7 @@
 	<!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
 		<a *ngIf="programId" class="item" [routerLink]= "'/workspace/program/' + programId">{{'Contribute'}}</a>
+		<a *ngIf="programId" class="item" [routerLink]= "'/workspace/program/curiosity/' + programId">{{'Curiosity Question'}}</a>
 		<!-- <a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
 			{{resourceService?.frmelmnts?.tab?.resources}}

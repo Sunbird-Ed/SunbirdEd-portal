@@ -7,7 +7,15 @@ const routes: Routes = [
   {
     path: ':programId', component: ProgramComponent,
     data: {
-      telemetry: { env: 'cbse_program', pageid: 'program', type: 'view', subtype: 'paginate' }
+      telemetry: { env: 'cbse_program', pageid: 'program', type: 'view', subtype: 'paginate' },
+      config: { question_categories: ['vsa','sa','la','mcq']}
+    }
+  },
+  {
+    path: 'curiosity/:programId', component: ProgramComponent,
+    data: {
+      telemetry: { env: 'cbse_program', pageid: 'program', type: 'view', subtype: 'paginate' },
+      config: { question_categories: ['curiosity'] }
     }
   }
 ];
