@@ -1,6 +1,6 @@
-import { VerifyAccountIdentifierComponent } from './verify-account-identifier.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RecoverAccountService } from './../../services';
+import { RecoverAccountComponent } from './recover-account.component';
 import { CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -10,9 +10,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-describe('VerifyAccountIdentifierComponent', () => {
-  let component: VerifyAccountIdentifierComponent;
-  let fixture: ComponentFixture<VerifyAccountIdentifierComponent>;
+describe('RecoverAccountComponent', () => {
+  let component: RecoverAccountComponent;
+  let fixture: ComponentFixture<RecoverAccountComponent>;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -46,7 +46,7 @@ describe('VerifyAccountIdentifierComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [VerifyAccountIdentifierComponent],
+      declarations: [RecoverAccountComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule, CoreModule, SharedModule.forRoot()],
       providers: [RecoverAccountService,
@@ -58,17 +58,12 @@ describe('VerifyAccountIdentifierComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VerifyAccountIdentifierComponent);
+    fixture = TestBed.createComponent(RecoverAccountComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
-    const recoverAccountService = TestBed.get(RecoverAccountService);
-    recoverAccountService.fuzzySearchResults = [{}];
-    recoverAccountService.selectedAccountIdentifier = {
-      id: '123'
-    };
-    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });

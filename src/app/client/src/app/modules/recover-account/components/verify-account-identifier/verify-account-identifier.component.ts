@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
-  selector: 'app-verify-account-identifier',
   templateUrl: './verify-account-identifier.component.html',
   styleUrls: ['./verify-account-identifier.component.scss']
 })
@@ -15,12 +15,22 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   disableResendOtp = false;
   form: FormGroup;
   errorCount = 0;
+  telemetryImpression: IImpressionEventInput;
+  telemetryCdata = [{
+    id: 'user:account:recovery',
+    type: 'Feature'
+  }, {
+    id: 'SB-13755',
+    type: 'Task'
+  }];
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService) { }
 
   ngOnInit() {
-    this.verifyState();
-    this.initializeForm();
+    if (this.verifyState()) {
+      this.initializeForm();
+    }
+    this.setTelemetryImpression();
   }
   initializeForm() {
     this.form = this.formBuilder.group({
@@ -38,25 +48,45 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     this.disableFormSubmit = true;
     const request = {
       request: {
-        type: this.recoverAccountService.selectedAccountDetails.type,
-        key: this.recoverAccountService.selectedAccountDetails.value,
+        type: this.recoverAccountService.selectedAccountIdentifier.type,
+        key: this.recoverAccountService.selectedAccountIdentifier.value,
         otp: this.form.controls.otp.value,
-        id: this.recoverAccountService.selectedAccountDetails.id
+        userId: this.recoverAccountService.selectedAccountIdentifier.id
       }
     };
     this.recoverAccountService.verifyOTP(request)
     .subscribe(response => {
-        this.navigateToNextStep();
+        this.resetPassword();
       }, error => {
+        this.disableFormSubmit = false;
         this.handleError(error);
       }
     );
   }
-  navigateToNextStep() {
-    this.recoverAccountService.otpVerified = true;
-    this.router.navigate(['/recover/reset/password'], {
-      queryParams: this.activatedRoute.snapshot.queryParams
+  resetPassword() {
+    const request = {
+      request: {
+        type: this.recoverAccountService.selectedAccountIdentifier.type,
+        key: this.recoverAccountService.selectedAccountIdentifier.value,
+        userId: this.recoverAccountService.selectedAccountIdentifier.id
+      }
+    };
+    this.recoverAccountService.resetPassword(request)
+    .subscribe(response => {
+      this.navigateToNextStep();
+    }, error => {
+      this.disableFormSubmit = false;
+      this.handleError(error);
     });
+  }
+  navigateToNextStep() {
+    const reqQuery = this.activatedRoute.snapshot.queryParams;
+    let resQuery: any = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
+    resQuery.success_message = 'Password has been reset, please login with new password';
+    resQuery = Object.keys(resQuery).map(key =>
+      encodeURIComponent(key) + '=' + encodeURIComponent(resQuery[key])).join('&');
+    const redirect_uri = reqQuery.error_callback + '?' + resQuery;
+    window.location.href = redirect_uri;
   }
   handleError(error) {
     this.errorCount += 1;
@@ -75,9 +105,9 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   handleResendOtp() {
     const request = {
       request: {
-        type: this.recoverAccountService.selectedAccountDetails.type,
-        key: this.recoverAccountService.selectedAccountDetails.value,
-        id: this.recoverAccountService.selectedAccountDetails.id
+        type: this.recoverAccountService.selectedAccountIdentifier.type,
+        key: this.recoverAccountService.selectedAccountIdentifier.value,
+        userId: this.recoverAccountService.selectedAccountIdentifier.id
       }
     };
     this.recoverAccountService.generateOTP(request).subscribe(response => {
@@ -88,13 +118,33 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   }
   verifyState() {
     if (!_.get(this.recoverAccountService, 'fuzzySearchResults.length')
-      || _.isEmpty(this.recoverAccountService.selectedAccountDetails)) {
+      || _.isEmpty(this.recoverAccountService.selectedAccountIdentifier)) {
       this.navigateToIdentifyAccount();
+      return false;
     }
+    return true;
   }
   navigateToIdentifyAccount() {
     this.router.navigate(['/recover/identify/account'], {
       queryParams: this.activatedRoute.snapshot.queryParams
     });
+  }
+  private setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
+      },
+      object: {
+        id: this.recoverAccountService.selectedAccountIdentifier.id,
+        type: 'user',
+        ver: 'v1',
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+      }
+    };
   }
 }

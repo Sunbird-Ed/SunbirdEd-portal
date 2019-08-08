@@ -51,147 +51,67 @@
   --red-0: #FBCCD1; // toast bg
   --red-100: #FF6979; // buttong bg, toast
   --red-400: var(--red); // icon color, lable, notification
-} 
+}
 
 // Variables
-$font-stack-en: 'Noto Sans',
-'Noto Sans Devanagari',
-'Noto Sans Tamil',
-'Noto Sans Bengali',
-'Noto Sans Malayalam',
-'Noto Sans Gurmukhi',
-'Noto Sans Gujarati',
-'Noto Sans Telugu',
-'Noto Sans Kannada',
-'Noto Sans Oriya',
-'Noto Nastaliq Urdu',
--apple-system,
-BlinkMacSystemFont,
-'Segoe UI',
-Roboto,
-Oxygen-Sans,
-Ubuntu,
-Cantarell,
-'Helvetica Neue',
-sans-serif;
-$font-stack-hi: 'Noto Sans Devanagari',
-'Noto Sans',
-'Noto Sans Tamil',
-'Noto Sans Bengali',
-'Noto Sans Malayalam',
-'Noto Sans Gurmukhi',
-'Noto Sans Gujarati',
-'Noto Sans Telugu',
-'Noto Sans Kannada',
-'Noto Sans Oriya',
-'Noto Nastaliq Urdu',
--apple-system,
-BlinkMacSystemFont,
-'Segoe UI',
-Roboto,
-Oxygen-Sans,
-Ubuntu,
-Cantarell,
-'Helvetica Neue',
-sans-serif;
-$font-stack-ur: 'Noto Sans',
-'Noto Nastaliq Urdu',
-'Noto Sans Devanagari',
-'Noto Sans Tamil',
-'Noto Sans Bengali',
-'Noto Sans Malayalam',
-'Noto Sans Gurmukhi',
-'Noto Sans Gujarati',
-'Noto Sans Telugu',
-'Noto Sans Kannada',
-'Noto Sans Oriya',
--apple-system,
-BlinkMacSystemFont,
-'Segoe UI',
-Roboto,
-Oxygen-Sans,
-Ubuntu,
-Cantarell,
-'Helvetica Neue',
-sans-serif;
+$font-stack-en: var(--font-stack-en);
+$font-stack-hi: var(--font-stack-hi);
+$font-stack-ur: var(--font-stack-ur);
+
 // Base Colors
-$blue: #024f9d;
-$black: #000000;
-$green: #008840;
-$orange: #e55a28;
-$red: #ff4558;
-$white: #ffffff;
-$indigo: #6610f2;
-$purple: #6f42c1;
-$pink: #e83e8c;
-$yellow: #ffc107;
-$teal: #20c997;
-$cyan: #17a2b8;
-$gray: #333333;
+$blue: var(--blue);
+$black: var(--black);
+$green: var(--green);
+$orange: var(--orange);
+$red: var(--red);
+$white: var(--white);
+$indigo: var(--indigo);
+$purple: var(--purple);
+$pink: var(--pink);
+$yellow: var(--yellow);
+$teal: var(--teal);
+$cyan: var(--cyan);
+$gray: var(--gray);
+
 // brand Colors
-$primary-color: $blue;
-$secondary-color: $green;
-$tertiary-color: $orange;
-// Nuetral Colors
-$white-color: $white;
+$primary-color: var(--primary-color);
+$secondary-color: var(--secondary-color);
+$tertiary-color: var(--tertiary-color);
+// Neutral Colors
+$white-color: var(--white);
 // gray colors shades 
-$gray-0: lighten($gray, 75%); // place holder active bg #F2F2F2
-$gray-100: lighten($gray, 60%); // disable btn bg, icon color #CCCCCC
-$gray-200: lighten($gray, 40%); // disable text, place holder text #999999
-$gray-300: lighten($gray, 39%); // sub heading 2 #969696
-$gray-400: lighten($gray, 20%); // sub heading #666666
-$gray-800: $gray; // text color #333333
-/*
+$gray-0: var(--gray-0); // place holder active bg #F2F2F2
+$gray-100: var(--gray-100); // disable btn bg, icon color #CCCCCC
+$gray-200: var(--gray-200); // disable text, place holder text #999999
+$gray-300: var(--gray-300); // sub heading 2 #969696
+$gray-400: var(--gray-400); // sub heading #666666
+$gray-800: var(--gray-800); // text color #333333
+
 // primary colors shades 
-$primary-0:   lighten($primary-color,65%); // bg
-$primary-100: lighten($primary-color,15%); // default button bg
-$primary-200: lighten($primary-color,10%); // divider
-$primary-300: lighten($primary-color,5%);  // outline, focus fields
-$primary-400: $primary-color; // button bg, heading, table titles, links, toggles 
-$primary-600: darken($primary-color,15%);  // on press
-$primary-800: darken($primary-color,30%);  // hover
-*/
+$primary-0: var(--primary-0); // bg
+$primary-100: var(--primary-100); // default button bg
+$primary-200: var(--primary-200); // divider
+$primary-250: var(--primary-250); //pagination bg color
+$primary-300: var(--primary-300); // outline, focus fields
+$primary-400: var(--primary-400); // button bg, heading, table titles, links, toggles 
+$primary-600: var(--primary-600); // on press
+$primary-800: var(--primary-800); // hover
 
-$primary-0: #F3F7FA; // bg
-$primary-100: #EDF4F9; // default button bg
-$primary-200: #80A7CE; // divider
-$primary-250:#D3E7F4; //pagination bg color
-$primary-300: #7AB4EE; // outline, focus fields
-$primary-400: $primary-color; // button bg, heading, table titles, links, toggles 
-$primary-600: #005391; // on press
-$primary-800: #002E50; // hover
-/*
 // secondary colors shades
-$secondary-0:   lighten($secondary-color,50%);  // toast bg
-$secondary-100: lighten($secondary-color,15%);   // buttong bg, toast
-$secondary-200: lighten($secondary-color,10%);   // button hover
-$secondary-400: $secondary-color;               // icon
-*/
+$secondary-0: var(--secondary-0); // toast bg, label
+$secondary-100: var(--secondary-100); // buttong bg, toast
+$secondary-200: var(--secondary-200); // button bg
+$secondary-400: var(--secondary-400); // hover
 
-$secondary-0: #E1FFDF; // toast bg, label
-$secondary-100: #00C786; // buttong bg, toast
-$secondary-200: #07bc81; // button bg
-$secondary-400: $secondary-color; // hover
-/*
 // tertiary colors shades
-$tertiary-0:   lighten($tertiary-color,50%); // toast bg
-$tertiary-100: lighten($tertiary-color,15%); // buttong bg, toast
-$tertiary-400: $tertiary-color; // icon, label, notification bg
-*/
+$tertiary-0: var(--tertiary-0); // toast bg, label
+$tertiary-100: var(--tertiary-100); // buttong bg, toast
+$tertiary-400: var(--tertiary-400); // icon, label, notification bg
 
-$tertiary-0: #FEEDD7; // toast bg, label
-$tertiary-100: #FFA11D; // buttong bg, toast
-$tertiary-400: $tertiary-color; // icon, label, notification bg
-/*
 // red colors shades
-$red-0:   lighten($red,50%); // toast bg
-$red-100: lighten($red,15%); // buttong bg, toast
-$red-400: $red; // icon color, lable, notification bg
-*/
-
-$red-0: #FBCCD1; // toast bg
-$red-100: #FF6979; // buttong bg, toast
-$red-400: $red; // icon color, lable, notification 
+$red-0: var(--red-0); // toast bg
+$red-100: var(--red-100); // buttong bg, toast
+$red-400: var(--red-400); // icon color, lable, notification 
 
 // input border width
 $input-border-width: 1px; 
@@ -727,7 +647,7 @@ $sb-certificatePage-input-width: 215px;
 $sb-certificatePage-input-background: linear-gradient(to left, #333333 70%, rgba(255, 255, 255, 0) 0%);
 $sb-certificatePage-input-background-size: 35px 1px;
 $sb-certificatePage-input-font-size: 16px;
-$sb-certificatePage-input-letter-spacing: 26px;
+$sb-certificatePage-input-letter-spacing: 24px;
 $sb-certificatePage-input-color: #333333;
 $sb-certificatePage-input-placeholder-color: $gray-0;
 $sb-certificatePage-input-padding: 0 0 0 15px;

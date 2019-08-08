@@ -1,37 +1,52 @@
-<app-full-page-modal>
-    <div class="d-flex flex-jc-center mb-30">
-        <img *ngIf="recoverAccountService.tenantInfo" class="image centered"
-            alt={{recoverAccountService.tenantInfo.tenantName}} height="45"
-            src="{{recoverAccountService.tenantInfo.logo}}">
+<div class="sb-account-recover-page-section" [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-account-recover-page-info-msg mt-32">
+    {{resourceService?.frmelmnts?.lbl?.enterEmailPhoneAsRegisteredInAccount | interpolate:'{instance}': resourceService.instance}},
+    {{resourceService?.frmelmnts?.lbl?.enternameAsRegisteredInAccount | interpolate:'{instance}': resourceService.instance}}
+  </div>
+  <form [formGroup]="form" class="sb-form mt-48" autocomplete="off">
+    <div class="sb-field-group mb-16 text-left">
+      <div class="sb-field">
+        <label
+          class="sb-account-recoverpage-label required">{{resourceService?.frmelmnts?.lbl?.enterEmailID}}/{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</label>
+        <input class="sb-form-control"
+          [ngClass]="{'is-invalid': form.controls.identifier.touched && form.controls.identifier.errors }"
+          formControlName="identifier" name="identifier"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterEmailID}}/{{resourceService?.frmelmnts?.lbl?.phone}}">
+        <span *ngIf="disableFormSubmit && identiferNotExist" class="sb-field-verified"><i
+            class="check circle icon"></i></span>
+        <span class="sb-color-warning fxsmall mt-8"
+          *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.required">
+          {{resourceService?.frmelmnts?.lbl?.email}}/{{resourceService?.frmelmnts?.lbl?.phoneRequired}}
+        </span>
+        <span class="sb-color-error fxsmall mt-8"
+          *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.pattern">
+          {{resourceService?.frmelmnts?.lbl?.validEmail}}/{{resourceService?.frmelmnts?.lbl?.phone}}
+        </span>
+        <span class="sb-color-error fxsmall mt-8" *ngIf="identiferNotExist">
+          {{resourceService?.frmelmnts?.lbl?.emailPhonenotRegistered | interpolate:'{instance}': resourceService.instance}}
+        </span>
+      </div>
     </div>
-    <h5 class="text-center mb-24"><b>Recover Account</b></h5>
-    <div class="width-300 mx-auto">
-        <form [formGroup]="form" class="ui form borderd">
-            <div class="required field mb-10">
-                <label class="mb-10">{{'Enter Email ID/ Phone Number'}}</label>
-                <input [ngClass]="{'orange-border': false }" formControlName="identifier" name="identifier"
-                    placeholder="{{'Enter Email/Phone registered with {instance}' |  interpolate:'{instance}': resourceService.instance}}">
-            </div>
-            <label
-                *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.required"
-                class="ui basic blue error label pt-0">{{'Email ID / Phone is required'}}</label>
-            <label
-                *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.pattern"
-                class="ui basic blue error label pt-0">{{'Please enter valid Email ID / Phone'}}</label>
-            <label *ngIf="identiferNotExist"
-                class="ui basic blue error label pt-0">{{'Email ID / Phone is not registered with {instance}' |  interpolate:'{instance}': resourceService.instance}}</label>
-            <div class="required field mb-10">
-                <label class="mb-10">{{'Enter Name'}}</label>
-                <input [ngClass]="{'orange-border': false }" formControlName="name" name="name"
-                    placeholder="{{'Enter Name registered {instance}' |  interpolate:'{instance}': resourceService.instance}}">
-            </div>
-            <label *ngIf="form.controls.name.touched && form.controls.name.errors && form.controls.name.errors.required"
-                class="ui basic blue error label pt-0">{{'Name is required'}}</label>
-            <label *ngIf="nameNotExist"
-                class="ui basic blue error label pt-0">{{'Entered Name dose not match the name registered in {instance}' |  interpolate:'{instance}': resourceService.instance}}</label>
-            <button class="ui button width-300 mt-10" tabindex="0"
-                [ngClass]="{ 'grey': disableFormSubmit, 'light-sea-green': !disableFormSubmit }"
-                (click)="handleNext()">{{'Next'}}</button>
-        </form>
+    <div class="sb-field-group mb-16 text-left">
+      <div class="sb-field">
+        <label class="sb-account-recoverpage-label required">{{resourceService?.frmelmnts?.lbl?.enterName}}</label>
+        <input class="sb-form-control" formControlName="name" name="name"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterName}}"
+          [ngClass]="{ 'is-invalid': form.controls.name.touched && form.controls.name.errors }">
+        <span class=" sb-color-warning fxsmall mt-8"
+          *ngIf="form.controls.name.touched && form.controls.name.errors && form.controls.name.errors.required">
+          {{resourceService?.frmelmnts?.lbl?.nameRequired}}
+        </span>
+        <span class="sb-color-error fxsmall mt-8" *ngIf="nameNotExist">
+          {{resourceService?.frmelmnts?.lbl?.enterNameNotMatch | interpolate:'{instance}': resourceService.instance}}
+        </span>
+      </div>
     </div>
-</app-full-page-modal>
+    <button class="sb-btn sb-btn-normal width-100 sb-btn-secondary" [disabled]="disableFormSubmit" tabindex="0"
+      appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+      [telemetryInteractEdata]="{id: 'submit', type: 'click', pageid: 'identify-account', extra: {form: form.value} }"
+      (click)="handleNext()">
+      {{resourceService?.frmelmnts?.lbl?.next}}</button>
+  </form>
+</div>
+
