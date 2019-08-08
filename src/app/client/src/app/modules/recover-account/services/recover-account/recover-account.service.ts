@@ -10,7 +10,7 @@ export class RecoverAccountService {
 
   tenantInfo: any;
   fuzzySearchResults: Array<any> = [];
-  selectedAccountDetails: any = {};
+  selectedAccountIdentifier: any = {};
   otpVerified = true;
   constructor(private tenantService: TenantService, public learnerService: LearnerService, public configService: ConfigService) {
     this.setTenantInfo();
@@ -28,9 +28,39 @@ export class RecoverAccountService {
   fuzzyUserSearch(data: any) {
     const options = {
       url: this.configService.urlConFig.URLS.ACCOUNT_RECOVERY.FUZZY_SEARCH,
-      data: data
+      // url: 'user/v1/search',
+      data: {
+        request: {
+          filters: {
+            fuzzy: {
+              firstName: data.name
+            }
+          }
+        }
+      }
     };
+    if (this.getIdentifierType(data.identifier) === 'phone') {
+      options.data.request.filters['$or'] = {
+        phone: data.identifier,
+        prevUsedPhone: data.identifier
+      };
+    } else {
+      options.data.request.filters['$or'] = {
+        email: data.identifier,
+        prevUsedEmail: data.identifier
+      };
+    }
+    console.log('fuzzyUserSearch', options);
     return this.learnerService.post(options);
+  }
+  getIdentifierType(value) {
+    value = Number(value);
+    const phoneRegX = new RegExp(/^[6-9]\d{9}$/);
+    if (phoneRegX.test(value)) {
+      return 'phone';
+    } else {
+      return 'email';
+    }
   }
   resetPassword(data: any) {
     const options = {
@@ -54,4 +84,3 @@ export class RecoverAccountService {
     return this.learnerService.post(options);
   }
 }
-
