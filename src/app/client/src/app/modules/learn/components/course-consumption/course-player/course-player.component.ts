@@ -1,5 +1,5 @@
 import { combineLatest, Subject } from 'rxjs';
-import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
+import {takeUntil, first, mergeMap, map, tap, delay} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { UserService, PermissionService, CoursesService } from '@sunbird/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
@@ -318,9 +318,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       batchId: this.batchId,
       status: eid === 'END' ? 2 : 1
     };
-    this.courseConsumptionService.updateContentsState(request).pipe(first())
-    .subscribe(updatedRes => this.contentStatus = updatedRes.content,
-      err => console.log('updating content status failed', err));
+    this.courseConsumptionService.updateContentsState(request).pipe(first(),
+      tap(updatedRes => this.contentStatus = updatedRes.content),
+      delay(1000))
+      .subscribe(updatedRes => {
+          this.coursesService.initialize();
+        },
+        err => console.log('updating content status failed', err));
   }
   private validEndEvent(event) {
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
