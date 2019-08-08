@@ -50,7 +50,7 @@ node() {
                         //currentBuild.description = "Image tag: " + values.image_tag + ", CDN Hash: " + commitHash
                     }
                 }
-            }
+//            }
             
         //}
     }
