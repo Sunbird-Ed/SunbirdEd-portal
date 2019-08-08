@@ -30,30 +30,40 @@ jobs:
       - run:
           name: ng lint and building
           command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log'
-      - run:
-          name: Executing test cases
-          command: 'SONAR_SCANNER_VERSION=3.3.0.1492 &&
-                    apt update&& apt install curl -y && apt install unzip -y &&
-		    export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION &&
-		    rm -rf $SONAR_SCANNER_HOME &&
-		    mkdir -p $SONAR_SCANNER_HOME &&
-                    curl -sSLo $HOME/.sonar/sonar-scanner.zip http://repo1.maven.org/maven2/org/sonarsource/scanner/cli/sonar-scanner-cli/$SONAR_SCANNER_VERSION/sonar-scanner-cli-$SONAR_SCANNER_VERSION.zip &&
-	       	    unzip $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/ &&
-		    rm $HOME/.sonar/sonar-scanner.zip &&
-		    export PATH=$SONAR_SCANNER_HOME/bin:$PATH &&
-		    export SONAR_SCANNER_OPTS="-server"'
-      - run:
-          name: sonarcloud
-          command: '/root/.sonar/sonar-scanner-3.3.0.1492/bin/sonar-scanner \
-            -Dsonar.projectKey=harshavardhanc_SunbirdEd-portal \
-              -Dsonar.organization=harshavardhanc \
-                -Dsonar.sources=. \
-                  -Dsonar.host.url=https://sonarcloud.io \
-                    -Dsonar.login=cab8b10574f4b303dcb490bf148c33df0379c904'
-          
+          #      - run:
+          #          name: Executing test cases
+          #          command: 'SONAR_SCANNER_VERSION=3.3.0.1492 &&
+          #                    apt update && apt install curl -y && apt install unzip -y &&
+          #		    export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION &&
+          #		    rm -rf $SONAR_SCANNER_HOME &&
+          #		    mkdir -p $SONAR_SCANNER_HOME &&
+          #                    curl -sSLo $HOME/.sonar/sonar-scanner.zip http://repo1.maven.org/maven2/org/sonarsource/scanner/cli/sonar-scanner-cli/$SONAR_SCANNER_VERSION/sonar-scanner-cli-$SONAR_SCANNER_VERSION.zip &&
+          #	       	    unzip $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/ &&
+          #		    rm $HOME/.sonar/sonar-scanner.zip &&
+          #		    export PATH=$SONAR_SCANNER_HOME/bin:$PATH &&
+          #		    export SONAR_SCANNER_OPTS="-server"'
+          #      - run:
+          #          name: sonarcloud
+          #          command: '/root/.sonar/sonar-scanner-3.3.0.1492/bin/sonar-scanner \
+          #            -Dsonar.projectKey=harshavardhanc_SunbirdEd-portal \
+          #              -Dsonar.organization=harshavardhanc \
+          #                -Dsonar.sources=. \
+          #                  -Dsonar.host.url=https://sonarcloud.io \
+          #                    -Dsonar.login=cab8b10574f4b303dcb490bf148c33df0379c904'
+      
+       - run:
+           name: install sonar scanner
+           command: npm install -g sonarqube-scanner
+
+       - run:
+           name: sonar-scanner \
+                 -Dsonar.projectKey=harshavardhanc_SunbirdEd-portal \
+                 -Dsonar.organization=harshavardhanc \
+                 -Dsonar.sources=. \
+                 -Dsonar.host.url=https://sonarcloud.io \
+                 -Dsonar.login=7b03531fb2327d0ac0eba00e14e5734b65cb2dfe
 workflows:
   version: 2
   build_and_test:
     jobs:
-      #- build
       - test-cases
