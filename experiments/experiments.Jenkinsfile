@@ -1,4 +1,4 @@
-brary('deploy-conf') _
+@Library('deploy-conf') _
 node() {
     try {
      timestamps {
