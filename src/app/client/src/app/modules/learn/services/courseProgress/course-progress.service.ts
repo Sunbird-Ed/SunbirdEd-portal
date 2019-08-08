@@ -125,13 +125,6 @@ export class CourseProgressService {
     this.courseProgress[courseId_batchId].lastPlayedContentId = lastPlayedContent && lastPlayedContent.contentId;
   }
 
-  private findIndex(data, contentId, fromIndex) {
-    fromIndex = fromIndex || 0;
-    return _.findIndex(data, {'contentId': contentId}, fromIndex);
-  }
-
-
-
   public updateContentsState(req) {
     const courseId_batchId = req.courseId + '_' + req.batchId;
     const courseProgress = this.courseProgress[courseId_batchId];
