@@ -66,7 +66,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'type': this.selectedAttributes.questionType === 'mcq' ? 'mcq' : 'reference',
-            'category': this.selectedAttributes.questionType.toUpperCase(),
+            'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' : this.selectedAttributes.questionType.toUpperCase(),
             'topic': this.selectedAttributes.topic,
             'createdBy': this.userService.userid,
             'programId': this.selectedAttributes.programId,
@@ -84,7 +84,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       }
       req.data.request.filters.status = ['Review'];
     }
-    if (this.role.currentRole === "PUBLISHER") {
+    if (this.role.currentRole === "PUBLISHER") {  
       delete req.data.request.filters.createdBy;
       req.data.request.filters.status = ['Live'];
     }
