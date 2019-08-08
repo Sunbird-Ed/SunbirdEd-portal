@@ -30,6 +30,12 @@ jobs:
       - run:
           name: ng lint and building
           command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log' 
+       run:
+          name: Executing test cases
+          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
+      - run:
+          name: Publishing report to Codacy
+          command: 'npm install -g codacy-coverage'
       - run:
           name: install sonar scanner
           command: npm install -g sonarqube-scanner
