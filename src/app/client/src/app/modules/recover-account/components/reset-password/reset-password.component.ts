@@ -4,8 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl, ValidatorFn } from '@angular/forms';
+import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+
 @Component({
-  selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })
@@ -14,12 +15,21 @@ export class ResetPasswordComponent implements OnInit {
   disableFormSubmit = true;
   form: FormGroup;
   errorCount = 0;
+  telemetryImpression: IImpressionEventInput;
+  telemetryCdata = [{
+    id: 'user:account:recovery',
+    type: 'Feature'
+  }, {
+    id: 'SB-13755',
+    type: 'Task'
+  }];
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService) { }
 
   ngOnInit() {
     this.verifyState();
     this.initializeForm();
+    this.setTelemetryImpression();
   }
   initializeForm() {
     this.form = this.formBuilder.group({
@@ -35,15 +45,15 @@ export class ResetPasswordComponent implements OnInit {
     });
   }
   checkPasswords(group: FormGroup) {
-    const pass = group.controls.password.value;
-    const confirmPass = group.controls.confirmPassword.value;
-    return pass === confirmPass ? null : { passwordMismatch: true };
+    const password = group.controls.password.value;
+    const confirmPassword = group.controls.confirmPassword.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
   }
   handleSubmit() {
     this.disableFormSubmit = true;
     const request = {
       request: {
-        id: this.recoverAccountService.selectedAccountDetails.id,
+        userId: this.recoverAccountService.selectedAccountIdentifier.id,
         password: this.form.value.password
       }
     };
@@ -79,7 +89,7 @@ export class ResetPasswordComponent implements OnInit {
     }
   }
   verifyState() {
-    if (!_.get(this.recoverAccountService, 'fuzzySearchResults.length') || _.isEmpty(this.recoverAccountService.selectedAccountDetails)
+    if (!_.get(this.recoverAccountService, 'fuzzySearchResults.length') || _.isEmpty(this.recoverAccountService.selectedAccountIdentifier)
     || !this.recoverAccountService.otpVerified) {
       this.navigateToIdentifyAccount();
     }
@@ -88,5 +98,23 @@ export class ResetPasswordComponent implements OnInit {
     this.router.navigate(['/recover/identify/account'], {
       queryParams: this.activatedRoute.snapshot.queryParams
     });
+  }
+  private setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.telemetryCdata
+      },
+      object: {
+        id: this.recoverAccountService.selectedAccountIdentifier.id,
+        type: 'user',
+        ver: 'v1',
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+      }
+    };
   }
 }
