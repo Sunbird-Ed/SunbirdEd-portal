@@ -9,13 +9,10 @@ node() {
             String ANSI_RED = "\u001B[31m"
 	
 
- //           if (params.cdn_enable == "true") {
                 stage('Initialize repos') {
 //                    cleanWs()
-                 //   dir('sunbird-portal') {
                     checkout scm
                     commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                 //   }
                     sh " mv Experiments/* ."
                     values = [:]
                     envDir = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-3].trim()
@@ -47,11 +44,9 @@ node() {
                         ansibleExtraArgs = "--extra-vars assets=$currentWs/src/app/dist --extra-vars folder_name=$jobName --vault-password-file /var/lib/jenkins/secrets/vault-pass"
                         values.put('ansibleExtraArgs', ansibleExtraArgs)
                         ansible_playbook_run(values)
-                        archiveArtifacts 'metadata.json, /src/app/dist/index_cdn.ejs'
-                        //currentBuild.description = "Image tag: " + values.image_tag + ", CDN Hash: " + commitHash
+                        archiveArtifacts 'metadata.json, $currentWs/src/app/dist/index_cdn.ejs'
                     }
                 }
-//            }
             
         }
     }
