@@ -13,7 +13,7 @@ node() {
 //                    cleanWs()
                     checkout scm
                     commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    sh " mv Experiments/* ."
+                    sh " cp -r Experiments/* ."
                     values = [:]
                     envDir = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-3].trim()
                     module = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-2].trim()
@@ -44,7 +44,7 @@ node() {
                         ansibleExtraArgs = "--extra-vars assets=$currentWs/src/app/dist --extra-vars folder_name=$jobName --vault-password-file /var/lib/jenkins/secrets/vault-pass"
                         values.put('ansibleExtraArgs', ansibleExtraArgs)
                         ansible_playbook_run(values)
-                        archiveArtifacts 'metadata.json, $currentWs/src/app/dist/index_cdn.ejs'
+                        archiveArtifacts 'src/app/dist/index_cdn.ejs'
                     }
                 }
             
