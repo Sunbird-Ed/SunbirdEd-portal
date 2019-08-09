@@ -16,9 +16,7 @@ node() {
                     checkout scm
                     commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                  //   }
-                    sh """
-                       mv Experiments/* .
-                    """
+                    sh " mv Experiments/* ."
                     values = [:]
                     envDir = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-3].trim()
                     module = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-2].trim()
@@ -44,6 +42,7 @@ node() {
                     }
                     else {
                         println cdnUrl
+                        sh "chmod 755 experiments.sh"
                         sh "./experiments.sh ${cdnUrl} ${commitHash}"
                         ansibleExtraArgs = "--extra-vars assets=$currentWs/src/app/dist --extra-vars folder_name=$jobName --vault-password-file /var/lib/jenkins/secrets/vault-pass"
                         values.put('ansibleExtraArgs', ansibleExtraArgs)
