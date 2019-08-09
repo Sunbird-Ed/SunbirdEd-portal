@@ -72,12 +72,12 @@ export class CourseProgressService {
     this.courseProgress[courseId_batchId] = {
       progress: 0,
       completedCount: 0,
-      totalCount: req.contentIds.length,
+      totalCount: _.uniq(req.contentIds).length,
       content: []
     };
     const resContentIds = [];
     if (res.result.contentList.length > 0) {
-      _.forEach(req.contentIds, (contentId) => {
+      _.forEach(_.uniq(req.contentIds), (contentId) => {
         const content = _.find(res.result.contentList, {'contentId': contentId});
         if (content) {
           this.courseProgress[courseId_batchId].content.push(content);
@@ -135,16 +135,8 @@ export class CourseProgressService {
         courseProgress.content[index].status = req.status;
         return this.updateContentStateToServer(courseProgress.content[index]).pipe(
           map((res: any) => {
-            const indexes = [];
-            _.forEach(courseProgress.content, (content, iterator) => {
-              if (content.contentId === req.contentId) {
-                indexes.push(iterator);
-              }
-            });
-            _.forEach(indexes, (i) => {
-              this.courseProgress[courseId_batchId].content[i].status = req.status;
-              this.courseProgress[courseId_batchId].content[i].lastAccessTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ');
-            });
+            this.courseProgress[courseId_batchId].content[index].status = req.status;
+            this.courseProgress[courseId_batchId].content[index].lastAccessTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ');
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
             this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount);
