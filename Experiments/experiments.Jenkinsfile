@@ -24,7 +24,7 @@ node() {
                     module = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-2].trim()
                     jobName = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-1].trim()
                     currentWs = sh(returnStdout: true, script: 'pwd').trim()
-                    ansiblePlaybook = "$currentWs/experiments/ansible/portal-experiments.yml"
+                    ansiblePlaybook = "$currentWs/ansible/portal-experiments.yml"
                     ansibleExtraArgs = "--syntax-check"
                     values.put('currentWs', currentWs)
                     values.put('env', envDir)
@@ -36,7 +36,7 @@ node() {
                 }
 
                 stage('Deploy CDN') {
-                    def filePath = "$WORKSPACE/experiments/ansible/inventory/env/common.yml"
+                    def filePath = "$WORKSPACE/ansible/inventory/env/common.yml"
                     cdnUrl = sh(script: """grep sunbird_portal_cdn_url $filePath | grep -v '^#' | grep --only-matching --perl-regexp 'http(s?):\\/\\/[^ \"\\(\\)\\<\\>]*' || true""", returnStdout: true).trim()
                     if (cdnUrl == '') {
                         println(ANSI_BOLD + ANSI_RED + "Uh oh! cdn_enable variable is true, But no sunbird_portal_cdn_url in $filePath" + ANSI_NORMAL)
