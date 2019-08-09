@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('CertificateDetailsComponent', () => {
   let component: CertificateDetailsComponent;
@@ -28,7 +29,7 @@ describe('CertificateDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, FormsModule, SharedModule, SuiModule],
+      imports: [HttpClientTestingModule, FormsModule, SharedModule.forRoot(), SuiModule, TelemetryModule.forRoot()],
       declarations: [ CertificateDetailsComponent ],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, DeviceDetectorService,
         { provide: Router, useClass: RouterStub },

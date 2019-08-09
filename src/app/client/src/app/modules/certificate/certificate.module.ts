@@ -5,6 +5,7 @@ import { CertificateDetailsComponent } from './components/certificate-details/ce
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { SharedModule } from '@sunbird/shared';
     SuiModalModule,
     CertificateRoutingModule,
     FormsModule,
-    SharedModule
+    SharedModule,
+    TelemetryModule
   ]
 })
 export class CertificateModule { }
