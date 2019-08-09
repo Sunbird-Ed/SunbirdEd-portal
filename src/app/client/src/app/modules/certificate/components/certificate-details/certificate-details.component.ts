@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-certificate-details',
@@ -19,9 +20,15 @@ export class CertificateDetailsComponent implements OnInit {
   certificateCode: string;
   wrongCertificateCode = false;
   instance: string;
-  watchVideoLink: SafeResourceUrl;
-  certificateDetails: any;
+  telemetryImpressionData: IImpressionEventInput;
+  telemetryCdata: Array<{}> = [];
+  pageId: string;
 
+/** To store the certificate details data */
+  recipient: string;
+  courseName: string;
+  issuedOn: string;
+  watchVideoLink: SafeResourceUrl;
   @ViewChild('codeInputField') codeInputField: ElementRef;
 
   constructor(
@@ -34,7 +41,8 @@ export class CertificateDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
-    this.watchVideoLink = this.sanitizer.bypassSecurityTrustResourceUrl('https://www.youtube.com/embed/2Xgff-gsf0A?rel=0&autoplay=1');
+    this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
+    this.setTelemetryData();
   }
 
   certificateVerify() {
@@ -49,10 +57,12 @@ export class CertificateDetailsComponent implements OnInit {
     this.certificateService.validateCertificate(request).subscribe(
       (data: ServerResponse) => {
         this.loader = false;
-        this.certificateDetails = data;
-       /**  manipulate response data here
-            watch video link needs to be secured by bypassSecurityTrustResourceUrl()
-        */
+        this.viewCertificate = true;
+        this.recipient = data.result.response.json.recipient.name;
+        this.courseName = data.result.response.json.badge.name;
+        this.issuedOn = moment(new Date(data.result.response.json.issuedOn)).format('DD MMM YYYY');
+        this.watchVideoLink = data.result.response.othersUrl ?
+        this.sanitizer.bypassSecurityTrustResourceUrl(data.result.response.othersUrl) : '';
       },
       (err) => {
         this.wrongCertificateCode = true;
@@ -80,4 +90,26 @@ export class CertificateDetailsComponent implements OnInit {
     this.router.navigate(['/explore-course']);
   }
 
+  setTelemetryData() {
+    this.telemetryImpressionData = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.pageId,
+        uri: this.router.url
+      }
+    };
+    this.telemetryCdata = [
+      {
+        id: 'course:qrcode:scan:cert',
+        type: 'Feature'
+      },
+      {
+        id: 'SB-13854',
+        type: 'Task'
+      }
+    ];
+  }
 }
