@@ -16,6 +16,7 @@ node() {
                     checkout scm
                     commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                  //   }
+                    mv Experiments/* .
                     values = [:]
                     envDir = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-3].trim()
                     module = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-2].trim()
