@@ -12,10 +12,10 @@ node() {
  //           if (params.cdn_enable == "true") {
                 stage('Initialize repos') {
 //                    cleanWs()
-                    dir('sunbird-portal') {
+                 //   dir('sunbird-portal') {
                     checkout scm
                     commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    }
+                 //   }
                     values = [:]
                     envDir = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-3].trim()
                     module = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-2].trim()
@@ -42,10 +42,10 @@ node() {
                     else {
                         println cdnUrl
                         sh "./experiments.sh ${cdnUrl} ${commitHash}"
-                        ansibleExtraArgs = "--extra-vars assets=$currentWs/sunbird-portal/src/app/dist --extra-vars folder_name=$jobName --vault-password-file /var/lib/jenkins/secrets/vault-pass"
+                        ansibleExtraArgs = "--extra-vars assets=$currentWs/src/app/dist --extra-vars folder_name=$jobName --vault-password-file /var/lib/jenkins/secrets/vault-pass"
                         values.put('ansibleExtraArgs', ansibleExtraArgs)
                         ansible_playbook_run(values)
-                        archiveArtifacts 'metadata.json, sunbird-portal/src/app/dist/index_cdn.ejs'
+                        archiveArtifacts 'metadata.json, /src/app/dist/index_cdn.ejs'
                         //currentBuild.description = "Image tag: " + values.image_tag + ", CDN Hash: " + commitHash
                     }
                 }
