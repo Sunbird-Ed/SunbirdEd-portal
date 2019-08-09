@@ -58,11 +58,11 @@ export class CertificateDetailsComponent implements OnInit {
       (data: ServerResponse) => {
         this.loader = false;
         this.viewCertificate = true;
-        this.recipient = data.result.response.json.recipient.name;
-        this.courseName = data.result.response.json.badge.name;
-        this.issuedOn = moment(new Date(data.result.response.json.issuedOn)).format('DD MMM YYYY');
-        this.watchVideoLink = data.result.response.othersUrl ?
-        this.sanitizer.bypassSecurityTrustResourceUrl(data.result.response.othersUrl) : '';
+        this.recipient = data.result.response.jsonData.recipient.name;
+        this.courseName = data.result.response.jsonData.badge.name;
+        this.issuedOn = moment(new Date(data.result.response.jsonData.issuedOn)).format('DD MMM YYYY');
+        this.watchVideoLink = data.result.response.otherLink ?
+        this.sanitizer.bypassSecurityTrustResourceUrl(data.result.response.otherLink) : '';
       },
       (err) => {
         this.wrongCertificateCode = true;
