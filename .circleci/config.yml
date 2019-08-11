@@ -39,6 +39,9 @@ jobs:
       - run:
           name: install sonar scanner
           command: npm install -g sonarqube-scanner
+      - run:
+         name: run sonar scanner
+         command: 'sonar-scanner -X -Dsonar.projectKey=harshavardhanc_SunbirdEd-portal -Dsonar.organization=harshavardhanc -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=7b03531fb2327d0ac0eba00e14e5734b65cb2dfe -Dsonar.javascript.lcov.reportPaths=/root/portal/src/app/client/coverage/lcov.info'
 
 workflows:
   version: 2
