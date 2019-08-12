@@ -2,7 +2,7 @@
     <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); initializeDropdown()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
     <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Preview</button>
 </div> -->
-<app-question-creation-header (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"  (questionStatus)="handleReviewrStatus($event)" [questionMetaData]="questionMetaData" [role]="role">
+<app-question-creation-header *ngIf="questionMetaData" (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"  (questionStatus)="handleReviewrStatus($event)" [questionMetaData]="questionMetaData" [role]="role">
 </app-question-creation-header>
 
 <form *ngIf="!showPreview" class="ui form mt-8" [formGroup]="questionMetaForm">
@@ -49,7 +49,7 @@
       <div class="column">
           <label>Authors</label> <br/>
           <div class="ui small icon input">
-              <input #author_names type="text" >          
+              <input #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.authorNames : userName">          
             </div>
         </div>
       </div>

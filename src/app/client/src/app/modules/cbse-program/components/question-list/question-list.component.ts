@@ -27,6 +27,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public publishInProgress = false;
   public publishedResourceId: any;
   selectedAll: any;
+  initialized: boolean;
   private questionTypeName = {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
@@ -49,6 +50,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.fetchQuestionWithRole();
     this.enableRoleChange = true;
     this.selectedAll = false;
+    this.initialized = true;
   }
   private fetchQuestionWithRole() {
     (this.role.currentRole === 'REVIEWER') ? this.fetchQuestionList(true) : this.fetchQuestionList();
@@ -130,7 +132,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
           mode: editorMode,
           data: assessment_item
         };
-        if(this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view')){
+        if(this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view') && this.initialized){
           this.refreshEditor();
           }
       }, err => {
