@@ -41,7 +41,7 @@ jobs:
           command: npm install -g sonarqube-scanner
       - run:
          name: run sonar scanner
-         command: 'sonar-scanner'
+         command: 'cd ~/portal && sonar-scanner'
 
 workflows:
   version: 2
