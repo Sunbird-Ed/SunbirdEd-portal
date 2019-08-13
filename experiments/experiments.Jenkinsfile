@@ -13,7 +13,7 @@ node() {
 //                    cleanWs()
                     checkout scm
                     commitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    sh " cp -r Experiments/* ."
+                    sh " cp -r experiments/* ."
                     values = [:]
                     envDir = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-3].trim()
                     module = sh(returnStdout: true, script: "echo $JOB_NAME").split('/')[-2].trim()
@@ -30,17 +30,17 @@ node() {
                     ansible_playbook_run(values)
                 }
 
-                stage('Deploy CDN') {
+                stage('Deploy to blob') {
                     def filePath = "$WORKSPACE/ansible/inventory/env/common.yml"
-                    cdnUrl = sh(script: """grep sunbird_portal_cdn_url $filePath | grep -v '^#' | grep --only-matching --perl-regexp 'http(s?):\\/\\/[^ \"\\(\\)\\<\\>]*' || true""", returnStdout: true).trim()
+                    experimentsUrl = sh(script: """grep sunbird_portal_experiments_url $filePath | grep -v '^#' | grep --only-matching --perl-regexp 'http(s?):\\/\\/[^ \"\\(\\)\\<\\>]*' || true""", returnStdout: true).trim()
                     if (cdnUrl == '') {
-                        println(ANSI_BOLD + ANSI_RED + "Uh oh! cdn_enable variable is true, But no sunbird_portal_cdn_url in $filePath" + ANSI_NORMAL)
-                        error 'Error: sunbird_portal_cdn_url is not set'
+                        println(ANSI_BOLD + ANSI_RED + "Uh oh! experiments blob url not found, please update sunbird_portal_experiments_url in $filePath" + ANSI_NORMAL)
+                        error 'Error: sunbird_portal_experiments_url is not set'
                     }
                     else {
                         println cdnUrl
                         sh "chmod 755 experiments.sh"
-                        sh "./experiments.sh ${cdnUrl} ${commitHash}"
+                        sh "./experiments.sh ${experimentsUrl} ${commitHash}"
                         ansibleExtraArgs = "--extra-vars assets=$currentWs/src/app/dist --extra-vars folder_name=$jobName --vault-password-file /var/lib/jenkins/secrets/vault-pass"
                         values.put('ansibleExtraArgs', ansibleExtraArgs)
                         ansible_playbook_run(values)
