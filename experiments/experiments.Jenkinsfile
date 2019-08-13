@@ -33,12 +33,12 @@ node() {
                 stage('Deploy to blob') {
                     def filePath = "$WORKSPACE/ansible/inventory/env/common.yml"
                     experimentsUrl = sh(script: """grep sunbird_portal_experiments_url $filePath | grep -v '^#' | grep --only-matching --perl-regexp 'http(s?):\\/\\/[^ \"\\(\\)\\<\\>]*' || true""", returnStdout: true).trim()
-                    if (cdnUrl == '') {
+                    if (experimentsUrl == '') {
                         println(ANSI_BOLD + ANSI_RED + "Uh oh! experiments blob url not found, please update sunbird_portal_experiments_url in $filePath" + ANSI_NORMAL)
                         error 'Error: sunbird_portal_experiments_url is not set'
                     }
                     else {
-                        println cdnUrl
+                        println experimentsUrl
                         sh "chmod 755 experiments.sh"
                         sh "./experiments.sh ${experimentsUrl} ${commitHash}"
                         ansibleExtraArgs = "--extra-vars assets=$currentWs/src/app/dist --extra-vars folder_name=$jobName --vault-password-file /var/lib/jenkins/secrets/vault-pass"
