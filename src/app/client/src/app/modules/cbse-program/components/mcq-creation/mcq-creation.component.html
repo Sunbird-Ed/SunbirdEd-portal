@@ -1,7 +1,8 @@
 <app-question-creation-header *ngIf="questionMetaData" (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"
     [questionMetaData]="questionMetaData" [disableSubmission]="isEditorThrowingError"
-    (questionStatus)="handleReviewrStatus($event)" [role]="role"></app-question-creation-header>
-<div *ngIf='showForm' class="p-24">
+    (questionStatus)="handleReviewrStatus($event)" (questionQueueStatus)="handleQuestionSelectionStatus($event)" [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
+
+  <div *ngIf='showForm'>
   <form #mcqFormControl="ngForm" class="ui form mcq-vertical mt-8" *ngIf="!showPreview">
     <div class="field mcq-title">
       <label class="mb-16 fs-1-286">Question</label>
@@ -67,13 +68,13 @@
         </div>
         <label class="ui basic red error label pt-1 mt-5 width-100"
           *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
-      </div> 
-      
+      </div>
+
       <div class="one column row" >
           <div class="column">
               <label>Authors</label> <br/>
               <div class="ui small icon input">
-                  <input #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.authorNames : userName" >          
+                  <input #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.authorNames : userName" >
               </div>
           </div>
       </div>

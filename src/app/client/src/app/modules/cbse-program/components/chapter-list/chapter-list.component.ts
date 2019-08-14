@@ -20,8 +20,10 @@ export class ChapterListComponent implements OnInit, OnChanges {
   @Input() selectedSchool: any;
 
   public textBookChapters: Array<any> = [];
-  private questionType : Array<any> = [];
+  private questionType: Array<any> = [];
   private textBookMeta: any;
+  public hierarchyObj = {};
+
   private questionTypeName = {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
@@ -41,7 +43,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
   }
   private labelsHandler() {
-    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted'] : ['Total', 'Created by me', 'Needs attention'];
+    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted', 'Published'] : ['Total', 'Created by me', 'Needs attention'];
   }
   ngOnInit() {
     /**
@@ -53,14 +55,13 @@ export class ChapterListComponent implements OnInit, OnChanges {
       this.questionType = this.question_categories;
 
       routerData.config.question_categories.map( category => {
-        if(category !== 'mcq'){
+        if (category !== 'mcq') {
           this.question_type.push('reference');
-        }else{
+        } else {
           this.question_type.push('mcq');
         }
-      })
-    })
-    
+      });
+    });
     this.labelsHandler();
     this.telemetryImpression = {
       context: {
@@ -88,12 +89,15 @@ export class ChapterListComponent implements OnInit, OnChanges {
   }
 
   public getCollectionHierarchy(identifier: string) {
+    let hierarchy;
     const req = {
       url: 'content/v3/hierarchy/' + identifier, // `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
       param: { 'mode': 'edit' }
     };
     this.actionService.get(req).subscribe((response) => {
       this.collectionData = response.result.content;
+      hierarchy = this.getHierarchyObj(this.collectionData);
+      this.selectedAttributes.hierarchyObj  = { hierarchy };
       const textBookMetaData = [];
       _.forEach(this.collectionData.children, data => {
 
@@ -105,7 +109,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
             textBookMetaData.push({
               name : data.name,
               topic: data.topic[0],
-              identifier: questionBankUnit.identifier
+              identifier: questionBankUnit ?  questionBankUnit.identifier : data.identifier
             });
           } else {
             textBookMetaData.push({
@@ -125,18 +129,40 @@ export class ChapterListComponent implements OnInit, OnChanges {
     });
   }
 
+  public getHierarchyObj(data) {
+    const instance  = this;
+    if (data.identifier) {
+            this.hierarchyObj[data.identifier] = {
+                'name': data.name,
+                'contentType': data.contentType,
+                'children': _.map(data.children, (child) => {
+                    return child.identifier;
+                }),
+                'root': data.contentType === 'TextBook' ? true : false
+            };
+
+            _.forEach(data.children, (collection) => {
+                instance.getHierarchyObj(collection);
+            });
+        }
+
+        return  this.hierarchyObj;
+    }
+
   public showChapterList(textBookMetaData) {
     let apiRequest;
     if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
       ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid)),
-      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid,'Reject'))];
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, this.userService.userid, 'Reject'))];
     } else if (this.selectedAttributes.currentRole === 'REVIEWER') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Review')),
       ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live'))];
     } else if (this.selectedAttributes.currentRole === 'PUBLISHER') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
-      ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live'))];
+      ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live')),
+      ...this.questionType.map(type => this.searchResources(type.toUpperCase()))
+    ];
     }
 
     if (!apiRequest) {
@@ -147,13 +173,15 @@ export class ChapterListComponent implements OnInit, OnChanges {
     forkJoin(apiRequest).subscribe(data => {
       this.showLoader = true;
       this.textBookChapters = _.map(textBookMetaData, topicData => {
-        const results = { name: topicData.name, topic:  topicData.topic, identifier:topicData.identifier  };
+        const results = { name: topicData.name, topic:  topicData.topic, identifier: topicData.identifier  };
         _.forEach(this.questionType, (type: string, index) => {
           results[type] = {
             name: type,
             total: this.getResultCount(data[index], topicData.topic),
             me: this.getResultCount(data[index + this.questionType.length], topicData.topic),
-            attention: this.getResultCount(data[index + (2 * this.questionType.length)], topicData.topic)
+            attention: this.getResultCount(data[index + (2 * this.questionType.length)], topicData.topic),
+            buttonStatus: this.getButtonStatus(data[index +  (2 * this.questionType.length)], topicData.topic),
+            resourceName: this.getResourceName(data[index + (2 * this.questionType.length)], topicData.topic)
           };
         });
         this.showLoader = false;
@@ -172,6 +200,54 @@ export class ChapterListComponent implements OnInit, OnChanges {
     return topicData ? topicData.count : 0;
   }
 
+  public getResourceName(data, topic: string) {
+    const topicData = _.find(data, {name: topic.toLowerCase() });
+    // tslint:disable-next-line:max-line-length
+    return topicData ?  topicData.resourceName : false;
+  }
+  public getButtonStatus(data, topic: string) {
+    const topicData = _.find(data, { name: topic.toLowerCase() });
+    return topicData ? topicData.resourceId : 0;
+  }
+
+  public searchResources(qtype) {
+    const request = {
+      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
+      data: {
+        'request': {
+          'filters': {
+            'objectType': 'content',
+            'contentType': 'PracticeQuestionSet',
+            'mimeType': 'application/vnd.ekstep.ecml-archive',
+            'board': this.selectedAttributes.board,
+            'framework': this.selectedAttributes.framework,
+            'gradeLevel': this.selectedAttributes.gradeLevel,
+            'subject': this.selectedAttributes.subject,
+            'medium': this.selectedAttributes.medium,
+            'status': ['Live'],
+            'questionCategories': qtype
+          },
+          'sort_by' : {'createdOn': 'desc'},
+          'fields': ['identifier', 'status', 'createdOn', 'topic', 'name', 'questions'],
+          'facets': ['topic']
+        }
+      }
+    };
+    return this.publicDataService.post(request).pipe(
+      map(res => {
+        const content  = _.get(res, 'result.content');
+        const publishCount = [];
+        _.forIn(_.groupBy(content, 'topic'), (value, key) => {
+          // publishCount.push({name: key.toLowerCase(), count: _.uniq([].concat(..._.map(value, 'questions'))).length });
+          // tslint:disable-next-line:max-line-length
+          publishCount.push({name: key.toLowerCase(), count: _.uniq(value[0].questions).length, resourceId: _.get(value[0], 'identifier'), resourceName: _.get(value[0], 'name') });
+
+      });
+       return publishCount;
+      }, err => {
+        console.log(err);
+      }));
+  }
   public searchQuestionsByType(questionType: string, createdBy?: string , status?: any) {
     const req = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
@@ -186,7 +262,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
             'medium': this.selectedAttributes.medium,
             'programId': this.selectedAttributes.programId,
             'type': questionType === 'mcq' ? 'mcq' : 'reference',
-            'category': questionType === 'curiosity'? 'CuriosityQuestion' : questionType.toUpperCase(),
+            'category': questionType === 'curiosity' ? 'CuriosityQuestion' : questionType.toUpperCase(),
             'version': 3,
             'status': []
           },
@@ -206,11 +282,13 @@ export class ChapterListComponent implements OnInit, OnChanges {
       map(res => _.get(res, 'result.facets[0].values')));
   }
 
-  emitQuestionTypeTopic(type, topic, topicIdentifier) {
+  emitQuestionTypeTopic(type, topic, topicIdentifier, resourceIdentifier, resourceName ) {
     this.selectedQuestionTypeTopic.emit({
       'questionType': type,
       'topic': topic,
       'textBookUnitIdentifier': topicIdentifier,
+      'resourceIdentifier': resourceIdentifier || false,
+      'resourceName': resourceName
     });
   }
 

@@ -38,11 +38,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public userName: any;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
+  @Input() questionSelectionStatus: any;
   @Output() questionStatus = new EventEmitter < any > ();
   @Input() selectedAttributes: any;
   @Input() role: any;
-  @ViewChild('author_names') authorName; 
+  @ViewChild('author_names') authorName;
   @Output() statusEmitter = new EventEmitter < string > ();
+  @Output() questionQueueStatus = new EventEmitter < any > ();
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -110,21 +112,23 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.userName = this.setUserName();
   }
 
-  setUserName(){
-    var userName ="";
-    if(this.userService.userProfile.firstName){
+  setUserName() {
+    let userName = '';
+    if (this.userService.userProfile.firstName) {
       userName = this.userService.userProfile.firstName;
     }
-    if(this.userService.userProfile.lastName){
-      userName += (" " + this.userService.userProfile.lastName)
+    if (this.userService.userProfile.lastName) {
+      userName += (' ' + this.userService.userProfile.lastName)
     }
     return userName;
   }
 
   ngAfterViewInit() {
-   this.initializeDropdown();     
-  //  if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
-  //  if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;  
+   this.initializeDropdown();
+  // tslint:disable-next-line:max-line-length
+  // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
+  // tslint:disable-next-line:max-line-length
+  // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
   }
   ngOnChanges() {
     if (this.initialized) {
@@ -153,10 +157,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
       // this.buttonTypeHandler('preview')
-    } else if((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')){
+    } else if ((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')) {
       this.showPreview = false;
     }
-    if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status=== 'Reject' &&
+  if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status=== 'Reject' &&
     this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
@@ -182,6 +186,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       });
     }
   }
+  handleQuestionSelectionStatus(event) {
+    this.questionQueueStatus.emit(event);
+  }
   enableSubmitButton() {
     this.questionMetaForm.valueChanges.subscribe(val => {
       this.enableSubmitBtn = (this.questionMetaForm.status === 'VALID');
@@ -205,8 +212,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   buttonTypeHandler(event) {
     if (event === 'preview') {
       this.selectedAttributes.showMode = 'previewPlayer';
-      //call createQuestion with param true to get the local question data
-      if(this.selectedAttributes.currentRole === "CONTRIBUTOR"){
+      // call createQuestion with param true to get the local question data
+      if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
         this.createQuestion(true)
       }
     } else if (event === 'edit') {
@@ -233,7 +240,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
   }
   /**
-   * @param forPreview  {boolean} 
+   * @param forPreview  {boolean}
    * - set param forPreview to true for local question preview
    */
   createQuestion(forPreview?:boolean) {
@@ -261,7 +268,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
                 'code': UUID.UUID(),
                 'type': 'reference',
-                'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion': this.selectedAttributes.questionType.toUpperCase(),
+                // tslint:disable-next-line:max-line-length
+                'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' : this.selectedAttributes.questionType.toUpperCase(),
                 'itemType': 'UNIT',
                 'version': 3,
                 'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
@@ -301,7 +309,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
        * - If it is a local preview don't create question.
        * - for local preview only question body required with all other parameter to create Ecml.
        */
-      if(!forPreview){
+      if(!forPreview) {
         this.actionService.post(req).subscribe((res) => {
           this.questionStatus.emit({'status': 'success', 'type': 'create', 'identifier': res.result.node_id});
         }, error => {
@@ -318,15 +326,15 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           };
           this.telemetryService.error(telemetryErrorData);
         });
-      }else{
+      } else {
         this.selectedAttributes.previewQuestionData = {
           result: {
             assessment_item : req.data.request.assessment_item.metadata
-          } 
-        }  
+          }
+        };
         this.previewData = this.questionMetaData;
-        //Initialize preview player, Once all the data is attacthed
-        this.showPreview = true;       
+        // Initialize preview player, Once all the data is attached
+        this.showPreview = true;
       }
     });
   }
@@ -334,7 +342,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
    * @param optionalParams  {Array of Objects }  -Key and Value to add in metadata
    */
 
-  updateQuestion(optionalParams?: Array<Object>) {
+  updateQuestion(optionalParams?: Array<{}>) {
     forkJoin([this.getConvertedLatex(this.question), this.getConvertedLatex(this.editorState.solutions)])
       .subscribe((res) => {
         this.body = res[0];
@@ -368,12 +376,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             }
           }
         };
-
-        if(this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
-          const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
+        if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+          const authorName = (this.authorName.nativeElement.value === '' ) ? this.userName :  this.authorName.nativeElement.value;
           option.data.request.assessment_item.metadata['authorNames'] = authorName;
         }
-
         if (optionalParams) {
           _.forEach(optionalParams, (param) => {
             option.data.request.assessment_item.metadata[param.key] = param.value;

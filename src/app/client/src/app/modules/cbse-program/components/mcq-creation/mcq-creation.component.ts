@@ -19,9 +19,11 @@ export class McqCreationComponent implements OnInit, OnChanges{
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
+  @Output() questionQueueStatus = new EventEmitter < any > ();
+  @Input() questionSelectionStatus: any;
   @Input() role: any;
   @ViewChild('mcqFormControl') private mcqFormControl;
-  @ViewChild('author_names') authorName; 
+  @ViewChild('author_names') authorName;
   public userProfile: IUserProfile;
   showTemplatePopup = false;
   showForm = false;
@@ -95,9 +97,9 @@ export class McqCreationComponent implements OnInit, OnChanges{
       this.initForm();
     }
   }
-  
+
   handleTemplateSelection(event) {
-    
+
     this.showTemplatePopup = false;
     if (event.type === 'submit') {
       this.templateDetails = event.template;
@@ -106,13 +108,16 @@ export class McqCreationComponent implements OnInit, OnChanges{
       this.questionStatus.emit({ type: 'close' });
     }
   }
-  setUserName(){
-    var userName ="";
-    if(this.userService.userProfile.firstName){
+  handleQuestionSelectionStatus(event) {
+    this.questionQueueStatus.emit(event);
+  }
+  setUserName() {
+    let userName = '';
+    if (this.userService.userProfile.firstName){
       userName = this.userService.userProfile.firstName;
     }
-    if(this.userService.userProfile.lastName){
-      userName += (" " + this.userService.userProfile.lastName)
+    if (this.userService.userProfile.lastName){
+      userName += (' ' + this.userService.userProfile.lastName)
     }
     return userName;
   }
@@ -381,8 +386,8 @@ export class McqCreationComponent implements OnInit, OnChanges{
             }
           }
         };
-        //Don't make any api call for a local preview.
-        if(!forPreview){
+        // Don't make any api call for a local preview.
+        if (!forPreview) {
           this.actionService.post(req).subscribe((res) => {
             this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': res.result.node_id });
           }, error => {
@@ -399,14 +404,14 @@ export class McqCreationComponent implements OnInit, OnChanges{
             };
             this.telemetryService.error(telemetryErrorData);
           });
-        }else{
+        } else {
           this.selectedAttributes.previewQuestionData = {
             result: {
               assessment_item : req.data.request.assessment_item.metadata
-            } 
-          } 
-          //Initialize preview player, Once all the data is attacthed
-          this.showPreview = true; 
+            }
+          };
+          // Initialize preview player, Once all the data is attacthed
+          this.showPreview = true;
         }
       });
   }
@@ -436,6 +441,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
       body: questionBody,
       responseDeclaration: responseDeclaration,
       correct_response: parseInt(this.mcqForm.answer) + 1,
+      // tslint:disable-next-line:max-line-length
       learningOutcome: (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : '',
       learningLevel: this.mcqForm.bloomsLevel || ''
     };

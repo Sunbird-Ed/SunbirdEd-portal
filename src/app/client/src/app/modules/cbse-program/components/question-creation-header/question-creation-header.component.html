@@ -1,7 +1,7 @@
 <div class="d-flex flex-ai-center flex-jc-space-between">
   <div class="d-flex flex-ai-center" *ngIf="!showPreview">
     <span class="ml-auto" *ngIf="questionMetaData.data && (questionMetaData.data.status === 'Review' || questionMetaData.data.status === 'Draft')"><i class="sb-status-label sb-bg-warning sb-shape-circle"></i> In Review</span>
-    <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><i class="sb-status-label sb-bg-success sb-shape-circle"></i> Published</span>
+    <!-- <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Live'"><i class="sb-status-label sb-bg-success sb-shape-circle"></i> Published</span> -->
     <span class="ml-auto" *ngIf="questionMetaData.data && questionMetaData.data.status === 'Reject'"><i class="sb-status-label sb-bg-error sb-shape-circle"></i> Rejected
       <div class="ui icon button"  (click)="openReviewerCommentModal()">
         <i class="comment icon"></i>
@@ -36,6 +36,17 @@
         (click)="reviewerBtnclick($event, 'Live'); " >Accept</button>
 </div>
 </div>
+
+<div *ngIf="role.currentRole === 'PUBLISHER'">
+    <div class="sb-pageSection-header" class="flex-jc-flex-end mb-10 d-flex">
+        <div class="sb-checkbox sb-checkbox-primary">
+            <button type="button" (click)="setQuestionSelection()"
+            appTelemetryInteract  [telemetryInteractEdata]="{id:'b  ack_btn',type:'click',pageid:'resourcecreate'}"
+            [ngClass]="questionSelectionStatus ? 'sb-btn-outline-error' : 'sb-btn-primary'" class="sb-btn sb-btn-normal"><i [ngClass]="questionSelectionStatus ? 'close' : 'check'" class=" icon"></i>{{questionSelectionStatus ? 'Remove Question' : 'Select Question'}}</button>
+        </div>
+    </div>
+</div>
+
 <sui-modal [isClosable]="false" class="sb-modal" [isInverted]="true" (dismissed)="dismissCommentPopup()" *ngIf="showrejectCommentPopup" [size]="'normal'"
   [isFullScreen]="false" [mustScroll]="true" #modal>
   <div class="sb-modal-header">
