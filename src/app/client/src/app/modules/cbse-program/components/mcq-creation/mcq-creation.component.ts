@@ -83,7 +83,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
     this.previewData = this.questionMetaData;
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
-    } else {
+    } else if((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')){
       this.showPreview = false;
     }
     if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' && this.questionMetaData.data.rejectComment) {
@@ -139,12 +139,14 @@ export class McqCreationComponent implements OnInit, OnChanges{
   buttonTypeHandler(event) {
     let optionSvgBody;
     if (event === 'preview') {
+      this.selectedAttributes.showMode = 'previewPlayer';
       //this.showPreview = true;
       //call createQuestion with param true to get the local question data
       if(this.selectedAttributes.currentRole === "CONTRIBUTOR"){
         this.createQuestion(true)
       }
     } else if (event === 'edit') {
+      this.selectedAttributes.showMode = 'editorForm';
       this.refreshEditor();
       this.showPreview = false;
     } else {
