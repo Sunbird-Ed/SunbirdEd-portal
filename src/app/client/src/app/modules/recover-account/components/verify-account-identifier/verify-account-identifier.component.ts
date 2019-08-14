@@ -73,7 +73,13 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     };
     this.recoverAccountService.resetPassword(request)
     .subscribe(response => {
-      this.navigateToNextStep();
+      console.log(response);
+      if (response.result.link) {
+        window.location.href = response.result.link;
+      } else {
+        this.handleError(response);
+      }
+      // this.navigateToNextStep();
     }, error => {
       this.disableFormSubmit = false;
       this.handleError(error);
