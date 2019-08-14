@@ -93,7 +93,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.learningOutcomeOptions = topicTerm.associations;
     }
     this.initializeFormFields();
-    if (this.questionMetaData.data) {
+    if (this.questionMetaData && this.questionMetaData.data) {
         this.question = this.questionMetaData.data.question;
         this.editorState.solutions = this.questionMetaData.data.editorState.solutions
                && this.questionMetaData.data.editorState.solutions[0];
@@ -107,7 +107,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
-      this.buttonTypeHandler('preview');
+      //this.buttonTypeHandler('preview');
     }
     this.userName = this.setUserName();
   }
@@ -125,12 +125,14 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
   ngAfterViewInit() {
    this.initializeDropdown();
-   if (this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
-   if (this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
+  // tslint:disable-next-line:max-line-length
+  // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
+  // tslint:disable-next-line:max-line-length
+  // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
   }
   ngOnChanges() {
-    this.previewData = this.questionMetaData.data.body;
     if (this.initialized) {
+      this.previewData = this.questionMetaData;
       if (this.questionMetaData.mode === 'edit') {
         // this.isEditorReadOnly(false);
       } else {
@@ -155,10 +157,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
       // this.buttonTypeHandler('preview')
-    } else {
+    } else if ((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')) {
       this.showPreview = false;
     }
-    if (this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' &&
+  if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status=== 'Reject' &&
     this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
@@ -209,10 +211,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {
-      this.showPreview = true;
+      this.selectedAttributes.showMode = 'previewPlayer';
       // call createQuestion with param true to get the local question data
-      this.createQuestion(true);
+      if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+        this.createQuestion(true)
+      }
     } else if (event === 'edit') {
+      this.selectedAttributes.showMode = 'editorForm';
       this.refreshEditor();
       this.showPreview = false;
     }  else {
@@ -244,10 +249,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.body = res[0];
       this.solution = res[1];
       let creator = this.userService.userProfile.firstName;
+      let authorName;
       if (!_.isEmpty(this.userService.userProfile.lastName)) {
         creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
       }
-      const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
+      if(this.role.currentRole === 'CONTRIBUTOR'){
+       authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
+      }
       const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
         data: {
@@ -260,7 +268,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
                 'code': UUID.UUID(),
                 'type': 'reference',
-                'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion': this.selectedAttributes.questionType.toUpperCase(),
+                // tslint:disable-next-line:max-line-length
+                'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' : this.selectedAttributes.questionType.toUpperCase(),
                 'itemType': 'UNIT',
                 'version': 3,
                 'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
@@ -323,6 +332,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             assessment_item : req.data.request.assessment_item.metadata
           }
         };
+        this.previewData = this.questionMetaData;
+        // Initialize preview player, Once all the data is attached
+        this.showPreview = true;
       }
     });
   }

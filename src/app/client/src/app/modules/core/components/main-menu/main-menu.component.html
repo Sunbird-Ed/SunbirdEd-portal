@@ -2,9 +2,9 @@
 <div class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
 
 	<!--Logged in user-->
-	<ng-container *ngIf="userService.loggedIn">
-		<a *ngIf="programId" class="item" [routerLink]= "'/workspace/program/' + programId">{{'Contribute'}}</a>
-		<a *ngIf="programId" class="item" [routerLink]= "'/workspace/program/curiosity/' + programId">{{'Curiosity Question'}}</a>
+	<ng-container *ngIf="userService.loggedIn" class='btn-group'>
+		<a *ngIf="programId" class="item active" (click)="activeRoute('workspace')" id="workspace" [routerLink]= "'/workspace/program/' + programId">{{'Question Set'}}</a>
+		<a *ngIf="programId" class="item" (click)="activeRoute('curiosity')" id="curiosity" [routerLink]= "'/workspace/program/curiosity/' + programId">{{'Curiosity Question'}}</a>
 		<!-- <a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
 			{{resourceService?.frmelmnts?.tab?.resources}}

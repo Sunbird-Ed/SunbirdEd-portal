@@ -24,8 +24,8 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.previewInitialized = true;
-    if (this.selectedAttributes.currentRole !== 'CONTRIBUTOR') {
+  this.previewInitialized = true;
+  if (this.questionMetaData && this.questionMetaData.mode !== 'create') {
     this.toEcml
     .getECMLJSON(this.selectedAttributes.questionList)
     .subscribe( (theme) => {
@@ -51,10 +51,17 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     });
     }
   }
+<<<<<<< HEAD
 
   ngOnChanges() {
     if (this.previewInitialized) {
     if (this.selectedAttributes.currentRole !== 'CONTRIBUTOR'){
+=======
+
+  ngOnChanges(){
+    if(this.previewInitialized){
+    if(this.questionMetaData && this.questionMetaData.mode !== 'create'){
+>>>>>>> 4182ac554b965b6d8363aba298193ba05b5562fc
       this.toEcml
       .getECMLJSON(this.selectedAttributes.questionList)
       .subscribe( (theme) => {

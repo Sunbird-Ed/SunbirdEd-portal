@@ -1,6 +1,8 @@
-<app-question-creation-header (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"
-  [questionMetaData]="questionMetaData" [disableSubmission]="isEditorThrowingError"
-  (questionStatus)="handleReviewrStatus($event)" (questionQueueStatus)="handleQuestionSelectionStatus($event)" [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
+<app-question-creation-header *ngIf="questionMetaData" (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"
+    [questionMetaData]="questionMetaData" [disableSubmission]="isEditorThrowingError"
+    (questionStatus)="handleReviewrStatus($event)" (questionQueueStatus)="handleQuestionSelectionStatus($event)" [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
+
+  <div *ngIf='showForm'>
   <form #mcqFormControl="ngForm" class="ui form mcq-vertical mt-8" *ngIf="!showPreview">
     <div class="field mcq-title">
       <label class="mb-16 fs-1-286">Question</label>
@@ -72,15 +74,16 @@
           <div class="column">
               <label>Authors</label> <br/>
               <div class="ui small icon input">
-                  <input #author_names type="text" [value]="(questionMetaData.mode === 'edit') ? questionMetaData.data.authorNames : userName" >
+                  <input #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.authorNames : userName" >
               </div>
           </div>
       </div>
 
     </div>
   </form>
+</div>
 
-  <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes"></app-question-preview>
+<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes"></app-question-preview>
 
 <app-mcq-template-selection *ngIf='showTemplatePopup' style="z-index: 1000" (templateSelection)="handleTemplateSelection($event)">
 </app-mcq-template-selection>

@@ -51,7 +51,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
     public telemetryService: TelemetryService) {
   }
   initForm() {
-    if (this.questionMetaData.data) {
+    if (this.questionMetaData && this.questionMetaData.data) {
       const { question, responseDeclaration, templateId, learningOutcome, bloomsLevel } = this.questionMetaData.data;
       const options = _.map(this.questionMetaData.data.options, option => ({ body: option.value.body }));
       this.mcqForm = new McqForm({
@@ -75,14 +75,9 @@ export class McqCreationComponent implements OnInit, OnChanges{
     if (topicTerm.associations) {
       this.learningOutcomeOptions = topicTerm.associations;
     }
-    if (this.questionMetaData.mode === 'create') {
-      this.showTemplatePopup = true;
-    } else {
-      this.initForm();
-    }
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
-      this.buttonTypeHandler('preview');
+      //this.buttonTypeHandler('preview');
     }
     this.userName = this.setUserName();
   }
@@ -90,11 +85,16 @@ export class McqCreationComponent implements OnInit, OnChanges{
     this.previewData = this.questionMetaData;
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
-    } else {
+    } else if((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')){
       this.showPreview = false;
     }
-    if (this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' && this.questionMetaData.data.rejectComment) {
+    if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' && this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
+    }
+    if (this.questionMetaData && this.questionMetaData.mode === 'create') {
+      this.showTemplatePopup = true;
+    } else {
+      this.initForm();
     }
   }
 
@@ -144,10 +144,14 @@ export class McqCreationComponent implements OnInit, OnChanges{
   buttonTypeHandler(event) {
     let optionSvgBody;
     if (event === 'preview') {
-      this.showPreview = true;
+      this.selectedAttributes.showMode = 'previewPlayer';
+      //this.showPreview = true;
       //call createQuestion with param true to get the local question data
-      this.createQuestion(true);
+      if(this.selectedAttributes.currentRole === "CONTRIBUTOR"){
+        this.createQuestion(true)
+      }
     } else if (event === 'edit') {
+      this.selectedAttributes.showMode = 'editorForm';
       this.refreshEditor();
       this.showPreview = false;
     } else {
@@ -219,7 +223,6 @@ export class McqCreationComponent implements OnInit, OnChanges{
           return { body: res[i + 1] };
         });
 
-        const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
 
         const questionData = this.getHtml(this.body, this.optionBody);
         const correct_answer = this.mcqForm.answer;
@@ -245,7 +248,11 @@ export class McqCreationComponent implements OnInit, OnChanges{
             'status': 'Review',
             'media': this.mediaArr,
             'type': 'mcq',
-            'authorNames': authorName
+          }
+
+          if(this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+            const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
+            metadata['authorNames'] = authorName;
           }
 
         if (this.mcqForm.learningOutcome) {
@@ -321,10 +328,13 @@ export class McqCreationComponent implements OnInit, OnChanges{
           }
         });
         let creator = this.userService.userProfile.firstName;
+        let authorName;
         if (!_.isEmpty(this.userService.userProfile.lastName)) {
           creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
         }
-        const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
+        if(this.role.currentRole === 'CONTRIBUTOR' && !this.showPreview){
+          authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
+         }
         let metadata = {
             'createdBy': this.userService.userid,
             'creator': creator,
@@ -376,8 +386,8 @@ export class McqCreationComponent implements OnInit, OnChanges{
             }
           }
         };
-        //Don't make any api call for a local preview.
-        if(!forPreview){
+        // Don't make any api call for a local preview.
+        if (!forPreview) {
           this.actionService.post(req).subscribe((res) => {
             this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': res.result.node_id });
           }, error => {
@@ -394,12 +404,14 @@ export class McqCreationComponent implements OnInit, OnChanges{
             };
             this.telemetryService.error(telemetryErrorData);
           });
-        }else{
+        } else {
           this.selectedAttributes.previewQuestionData = {
             result: {
               assessment_item : req.data.request.assessment_item.metadata
             }
-          }
+          };
+          // Initialize preview player, Once all the data is attacthed
+          this.showPreview = true;
         }
       });
   }
@@ -429,6 +441,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
       body: questionBody,
       responseDeclaration: responseDeclaration,
       correct_response: parseInt(this.mcqForm.answer) + 1,
+      // tslint:disable-next-line:max-line-length
       learningOutcome: (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : '',
       learningLevel: this.mcqForm.bloomsLevel || ''
     };

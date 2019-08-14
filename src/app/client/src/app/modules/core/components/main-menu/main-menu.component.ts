@@ -182,6 +182,15 @@ export class MainMenuComponent implements OnInit {
       this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
     });
   }
+  activeRoute(route){
+    if(route === 'workspace') {
+      document.getElementById(route).classList.add('active');
+      document.getElementById('curiosity').classList.remove('active');
+    }else{
+      document.getElementById(route).classList.add('active');
+      document.getElementById('workspace').classList.remove('active');
+    }
+  }
 
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();

@@ -33,6 +33,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public questionSelectionStatus: any;
   public existingContentVersionKey = '';
   selectedAll: any;
+  initialized: boolean;
   private questionTypeName = {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
@@ -48,7 +49,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changedProps: any) {
     if (this.enableRoleChange) {
+      this.initialized = false; // it should be false before fetch
       this.fetchQuestionWithRole();
+    }
+    if((this.selectedAttributes.currentRole=== 'REVIEWER') || (this.selectedAttributes.currentRole === 'PUBLISHER')){
+      this.selectedAttributes['showMode'] = 'previewPlayer';
+    }else{
+      this.selectedAttributes['showMode'] = 'editorForm';
     }
   }
   ngOnInit() {
@@ -174,9 +181,18 @@ export class QuestionListComponent implements OnInit, OnChanges {
           mode: editorMode,
           data: assessment_item
         };
-        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view')) {
+        // min of 1sec timeOut is set, so that it should go to bottom of call stack and execute whennever the player data is available
+        if (this.selectedAttributes.showMode === 'previewPlayer' && this.initialized) {
+          this.showLoader = true;
+          setTimeout(() => {
+            this.showLoader = false;
+          }, 1000);
+        }
+        // tslint:disable-next-line:max-line-length
+        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view')  && (this.selectedAttributes.showMode === 'editorForm')) {
           this.refreshEditor();
-          }
+           }
+           this.initialized = true;
       }, err => {
         this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question failed');
         const telemetryErrorData = {
@@ -411,6 +427,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
         return _.get(res, 'result');
       }, err => {
         console.log(err);
+        this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content update failed');
       })
     );
 }
@@ -473,6 +490,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       this.toasterService.success('content created & published successfully');
     }, err => {
       console.log(err);
+      this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content update failed');
     });
   }
 
