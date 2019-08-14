@@ -8,7 +8,7 @@ import { DownloadManagerService } from './../../services';
 import { ConnectionService } from './../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-import * as TreeModel from 'tree-model';
+
 @Component({
   selector: 'app-download-manager',
   templateUrl: './download-manager.component.html',
@@ -21,8 +21,8 @@ export class DownloadManagerComponent implements OnInit {
   isOpen = false;
   count = 0;
   localCount: 0;
-  panelOpened = false;
-  telemetryCdata: IInteractEventEdata;
+  telemetryInteractEdata: IInteractEventEdata;
+  telemetryDMIEdata: IInteractEventEdata;
   pageId;
 
   constructor(public downloadManagerService: DownloadManagerService,
@@ -82,7 +82,6 @@ export class DownloadManagerComponent implements OnInit {
   }
 
   openContent(contentId, mimeType) {
-    this.getPageId();
       if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         this.router.navigate(['play/collection', contentId]);
       } else {
@@ -91,26 +90,16 @@ export class DownloadManagerComponent implements OnInit {
   }
 
   setTelemetryInteractData() {
-    this.telemetryCdata =  {
-      id: 'download-manager',
+    this.telemetryInteractEdata =  {
+      id: 'content-click',
       type: 'click',
-      pageid: this.pageId || 'library'
+      pageid: 'download-manager'
     };
-  }
-
-  getPageId() {
-    const model = new TreeModel();
-    let treeModel;
-    treeModel = model.parse(this.activatedRoute.snapshot.firstChild);
-    treeModel.walk((node) => {
-      if (_.isEmpty(node.model.firstChild)) {
-        const page = node.model.data.telemetry.pageid;
-        node.model.data.telemetry.env = 'offline';
-        this.pageId = _.includes(this.router.url, 'browse/play') || _.includes(this.router.url, 'browse/view-all') ?
-                        'browse-' + page : _.isEqual(page, 'explore') ? 'library' : page;
-        this.setTelemetryInteractData();
-      }
-    });
+    this.telemetryDMIEdata = {
+      id: this.isOpen ? 'download-manager-open' : 'download-manager-close',
+      type: 'click',
+      pageid: 'download-manager'
+    };
   }
 
 }
