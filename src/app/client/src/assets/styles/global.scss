@@ -86,7 +86,7 @@ body {
   //   }
   // }
   img {
-    max-width: 100%;
+    max-width: 80px;
     width: inherit;
     height: inherit;
   }
@@ -106,7 +106,7 @@ body {
     float: right;
   }
   .image-style-align-right img, .image-style-align-left img {
-    max-width: 75px !important;
+    max-width: 80px !important;
   }
 }
 .no-bg {

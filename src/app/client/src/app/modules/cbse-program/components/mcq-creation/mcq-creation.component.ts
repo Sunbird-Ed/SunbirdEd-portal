@@ -19,9 +19,11 @@ export class McqCreationComponent implements OnInit, OnChanges{
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
+  @Output() questionQueueStatus = new EventEmitter < any > ();
+  @Input() questionSelectionStatus: any;
   @Input() role: any;
   @ViewChild('mcqFormControl') private mcqFormControl;
-  @ViewChild('author_names') authorName; 
+  @ViewChild('author_names') authorName;
   public userProfile: IUserProfile;
   showTemplatePopup = false;
   showForm = false;
@@ -95,9 +97,9 @@ export class McqCreationComponent implements OnInit, OnChanges{
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
   }
-  
+
   handleTemplateSelection(event) {
-    
+
     this.showTemplatePopup = false;
     if (event.type === 'submit') {
       this.templateDetails = event.template;
@@ -106,13 +108,16 @@ export class McqCreationComponent implements OnInit, OnChanges{
       this.questionStatus.emit({ type: 'close' });
     }
   }
-  setUserName(){
-    var userName ="";
-    if(this.userService.userProfile.firstName){
+  handleQuestionSelectionStatus(event) {
+    this.questionQueueStatus.emit(event);
+  }
+  setUserName() {
+    let userName = '';
+    if (this.userService.userProfile.firstName){
       userName = this.userService.userProfile.firstName;
     }
-    if(this.userService.userProfile.lastName){
-      userName += (" " + this.userService.userProfile.lastName)
+    if (this.userService.userProfile.lastName){
+      userName += (' ' + this.userService.userProfile.lastName)
     }
     return userName;
   }
@@ -393,8 +398,8 @@ export class McqCreationComponent implements OnInit, OnChanges{
           this.selectedAttributes.previewQuestionData = {
             result: {
               assessment_item : req.data.request.assessment_item.metadata
-            } 
-          }  
+            }
+          }
         }
       });
   }

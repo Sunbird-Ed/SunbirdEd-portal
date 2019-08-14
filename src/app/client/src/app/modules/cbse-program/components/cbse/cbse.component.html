@@ -43,7 +43,7 @@
           </div>
           <button (click)="navigate('prev')"
           appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
-          class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+          class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
         </div>
       </div>
       <div *ngIf="stages[currentStage] === 'chooseTextbook'">
@@ -59,31 +59,43 @@
 
     <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
         <div class="sb-pageSection">
-            <div class="sb-pageSection-header d-flex flex-jc-space-between">
-              <div>
-                <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for</span>
-                <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
-              </div>
-              <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole === 'REVIEWER' && selectedSchoolForReview !== undefined"
-              class="field d-flex flex-jc-center flex-ai-center">
-                <span><b>Selected School:</b> <span style="font-style: italic">{{selectedSchoolForReview}}</span></span>
-              </div>
+            <div class="sb-pageSection-header ui grid">
 
-              <div class="d-flex" *ngIf="role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR'">
-                <button *ngIf="!isPreviewShown" class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
-                appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:'questionlist'}"
-                (click)="questionList.showPreview()"> See Preview and Publish Questions</button>
-                <button *ngIf="!isPreviewShown" (click)="navigate('prev')"
-                appTelemetryInteract  [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
-                class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
-                <button *ngIf="role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR' && isPreviewShown === true"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
-                appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:'questionlist'}"
-                (click)="questionList.publishQuestions()">Publish Questions</button>
-                <button *ngIf="role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR' && isPreviewShown === true" (click)="questionList.previewHandler(false)"
-                appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
-                class="sb-btn sb-btn-xs sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+              <div class="three wide column">
+                  <div>
+                      <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for</span>
+                      <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
+                    </div>
+              </div>
+              <div class="nine wide column p-0">
+                <div class="d-flex flex-ai-end">
+                    <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole === 'REVIEWER' && selectedSchoolForReview !== undefined"
+                    class="field d-flex flex-jc-center flex-ai-center">
+                      <span><b>Selected School:</b> <span style="font-style: italic">{{selectedSchoolForReview}}</span></span>
+                    </div>
+                    <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR'"
+                    class="field d-flex flex-ai-center flex-basis-1">
+                    <div class="sb-field-group w-50">
+                        <label>Practice Set Name</label>
+                        <div class="sb-field m-0">
+                            <input autofocus="" [(ngModel)]='resourceName' (keyup)="onResourceNameChange($event)" class="sb-form-control" type="text" placeholder="Name">
+                        </div>
+                    </div>
+                    </div>
+                    <div class="d-flex ml-auto">
+                        <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
+                        appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                        (click)="sendResourceName();questionList.updateQuestions() ">Update</button>
+                        <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && !selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
+                        appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                        (click)="sendResourceName(); questionList.publishQuestions()">Publish</button>
+                        <button *ngIf="!isPreviewShown" (click)="navigate('prev')"
+                        appTelemetryInteract  [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                        class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+                      </div>
+                </div>
               </div>
             </div>
         </div>
-      <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role" (previewStatus)="previewStatusHandler($event)" (publishStatus)="navigate($event)"></app-question-list>
+      <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role" [resourceName]="resourceNameInput" (changeStage)="navigate($event)" (publishButtonStatus)="publishButtonStatusHandler($event)"></app-question-list>
     </div>

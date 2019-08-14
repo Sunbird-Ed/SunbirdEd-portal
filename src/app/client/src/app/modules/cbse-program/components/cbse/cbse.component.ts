@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { FrameworkService } from '@sunbird/core';
+import { ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { first } from 'rxjs/operators';
 import {Subject} from 'rxjs';
@@ -23,6 +24,8 @@ interface ISelectedAttributes {
     topicList?: Array<any>;
     onBoardSchool?: string;
     selectedSchoolForReview?: string;
+    resourceIdentifier?: string;
+    hierarchyObj?: any;
 }
 
 @Component({
@@ -36,13 +39,22 @@ export class CbseComponent implements OnInit, OnDestroy {
   @Input() programDetails: any;
   @Input() userProfile: any;
   formFieldOptions: Array<any>;
+  public showLoader: boolean;
+  public publishInProgress = false;
   public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
   public currentStage = 0;
   public role: any = {};
-  public isPreviewShown: boolean;
-  constructor(public frameworkService: FrameworkService) { }
-
+  public resourceName: string;
+  public resourceNameInput: string;
+  constructor(public frameworkService: FrameworkService, public toasterService: ToasterService) { }
+  private questionTypeName = {
+    vsa: 'Very Short Answer',
+    sa: 'Short Answer',
+    la: 'Long Answer',
+    mcq: 'Multiple Choice Question',
+    curiosity: 'Curiosity Question'
+  };
   ngOnInit() {
     this.selectedAttributes = {
       currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
@@ -71,22 +83,23 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.selectedAttributes.textbook =  event;
     this.navigate('next');
   }
+  public publishButtonStatusHandler(event) {
+    this.publishInProgress = event;
+  }
 
   public selectedQuestionTypeTopic(event) {
     this.selectedAttributes.topic =  event.topic;
     this.selectedAttributes.questionType =  event.questionType;
     this.selectedAttributes.textBookUnitIdentifier =  event.textBookUnitIdentifier;
+    this.selectedAttributes.resourceIdentifier =  event.resourceIdentifier;
     this.selectedAttributes.lastOpenedUnit = event.textBookUnitIdentifier;
+    // tslint:disable-next-line:max-line-length
+    this.resourceName = event.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`;
     this.navigate('next');
   }
 
-  public previewStatusHandler(event) {
-    this.isPreviewShown = event.previewStatus;
-    return this.isPreviewShown;
-  }
-
   handleRoleChange() {
-    this.role = Object.assign({},{currentRole :this.selectedAttributes.currentRole});
+    this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
   }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);
@@ -98,14 +111,41 @@ export class CbseComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  public onResourceNameChange(event) {
+    this.resourceName = this.removeSpecialChars(event.target.value);
+  }
+  private removeSpecialChars(text) {
+    if (text) {
+      const iChars = "!`~@#$^*+=[]\\\'{}|\"<>%"
+      for (let i = 0; i < text.length; i++) {
+        if (iChars.indexOf(text.charAt(i)) !== -1) {
+          this.toasterService.error(`Special character ${text.charAt(i)} is not allowed`);
+        }
+      }
+      // tslint:disable-next-line:max-line-length
+      text = text.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, '');
+      return text;
+    }
+  }
+
+
+
+  public sendResourceName(event) {
+    this.showLoader = true;
+    this.resourceNameInput = this.resourceName;
+  }
+
+
+
   /**
-   * @description - sets textBookUnitIdentifier to 0 while coming backwards from any stage >2 
+   * @description - sets textBookUnitIdentifier to 0 while coming backwards from any stage >2
    * @input  step {String} : if it is a backward stage
    * @input  currentStage {Integer} : any
    */
-  
-  setLastOpenedTopic(step, currentStage){
-    if(currentStage === 2 && step === 'prev'){
+
+  setLastOpenedTopic(step, currentStage) {
+    if (currentStage === 2 && step === 'prev') {
       this.selectedAttributes.lastOpenedUnit = 0;
     }
   }

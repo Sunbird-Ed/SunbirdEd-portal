@@ -1,4 +1,5 @@
-<div *ngIf="!showPreviewModal" class="ui twelve column grid p-0 m-0">
+
+<div class="ui twelve column grid p-0 m-0">
   <div class="three wide column p-0 pr-16">
     <div class="ui questionsMenu">
       <button *ngIf="role.currentRole === 'CONTRIBUTOR'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"
@@ -12,9 +13,6 @@
             (change)="selectAll();">
             <label for="check1">Select All</label>
           </div>
-          <!-- <button class="sb-btn sb-btn-primary sb-btn-normal ml-auto" [disabled]="publishInProgress"
-          appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:'questionlist'}"
-          (click)="publishQuestions()">Publish Questions</button> -->
         </div>
       <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
         <div class="questionTab ui center tertiary header aligned segment p-8"
@@ -25,8 +23,8 @@
           <div class="item d-flex flex-ai-center">
             <ng-container *ngIf="role.currentRole === 'PUBLISHER' else nonPublisher">
               <div class="sb-checkbox sb-checkbox-primary">
-                <input class="checking" [(ngModel)]="question.isSelected" (change)="checkIfAllSelected($event);" (click)="$event.stopPropagation()" type="checkbox">
-                <label for="check1" class="mb-0"> Questioner {{i + 1}}</label>
+                <input class="checking" [(ngModel)]="question.isSelected" (change)="checkIfAllSelected(question);" (click)="$event.stopPropagation()" type="checkbox">
+                <label for="check1" class="mb-0"> Question {{i + 1}}</label>
               </div>
             </ng-container>
             <ng-template #nonPublisher>
@@ -37,8 +35,8 @@
             <!-- <i class="trash alternate outline icon ml-auto d-flex flex-ai-center"></i> -->
             <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto"
               *ngIf="question.status === 'Draft' || question.status === 'Review'"></span>
-            <span class="sb-status-label sb-bg-success sb-shape-circle ml-auto"
-              *ngIf="question.status === 'Live'"></span>
+            <!-- <span class="sb-status-label sb-bg-success sb-shape-circle ml-auto"
+              *ngIf="question.status === 'Live'"></span> -->
             <span class="sb-status-label sb-bg-error sb-shape-circle ml-auto"
               *ngIf="question.status === 'Reject'"></span>
           </div>
@@ -47,23 +45,23 @@
     </div>
   </div>
 
-  <div *ngIf="!showPreviewModal" class="nine wide column bg-white p-0">
+  <div class="nine wide column bg-white p-0">
     <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create' && role.currentRole === 'CONTRIBUTOR'"
       class="ui segment">No Question - Click
       Create</div>
     <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review
     </div>
     <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
-      <div *ngIf="selectedAttributes.questionType === 'mcq'">
+      <div *ngIf="selectedAttributes.questionType === 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
-        <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [role]="role"
-          (questionStatus)="questionStatusHandler($event)"></app-mcq-creation>
+        <app-mcq-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [questionSelectionStatus]="questionSelectionStatus"
+        [role]="role" (questionStatus)="questionStatusHandler($event)" (questionQueueStatus)="questionQueueStatusHandler($event)"></app-mcq-creation>
           </div>
       </div>
       <div *ngIf="selectedAttributes.questionType !== 'mcq'" class="ui segment">
         <div [hidden]="showLoader">
-        <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData"
-          [role]="role" (questionStatus)="questionStatusHandler($event)">
+        <app-question-creation [selectedAttributes]="selectedAttributes" [questionMetaData]="questionMetaData" [questionSelectionStatus]="questionSelectionStatus"
+          [role]="role" (questionStatus)="questionStatusHandler($event)" (questionQueueStatus)="questionQueueStatusHandler($event)">
         </app-question-creation>
         </div>
       </div>
@@ -71,55 +69,6 @@
     <app-loader *ngIf='showLoader'></app-loader>
   </div>
 </div>
-
-<div *ngIf="showPreviewModal">
-    <div class="sb-pageSection-header" class="ui grid m-0 flex-ai-center d-flex">
-        <div class="eight wide column">
-            <!-- <input class="sb-form-control mr-20" type="text" name="" id=""> -->
-
-            <div class="sb-field-group">
-                <!-- <label> Name </label> -->
-                <div class="sb-field">
-                    <input autofocus="" class="sb-form-control" type="text" placeholder="Name">
-                </div>
-            </div>
-        </div>
-        <!-- <div class="four wide column">
-            <div class="sb-checkbox sb-checkbox-primary">
-                <input type="checkbox" id="check1" name="example">
-                <label for="check1">Select for publishing</label>
-            </div>
-        </div> -->
-    </div>
-  <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="previewAttributes"> </app-question-preview>
-</div>
-
-
-
-<!-- <sui-modal
-  *ngIf="showPreviewModal"
-  [mustScroll]="true"
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'large'"
-  class="sb-modal"
-  appBodyScroll
-  (dismissed)="showPreviewModal = !showPreviewModal"
-  #modal>
-  <div class="sb-modal-header">
-    Practice Set Successfully Published
-  </div>
-  <div class="sb-modal-content">
-    <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes"> </app-question-preview>
-
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showPreviewModal = !showPreviewModal">
-      Close
-    </button>
-  </div>
-  </sui-modal> -->
-
 
 <sui-modal
   *ngIf="showSuccessModal"
@@ -129,13 +78,13 @@
   [size]="'small'"
   class="sb-modal"
   appBodyScroll
-  (dismissed)="showSuccessModal = !showSuccessModal"
+  (dismissed)="showSuccessModal = !showSuccessModal; dismissPublishModal();"
   #modal>
   <div class="sb-modal-header">
     Practice Set Successfully Published
   </div>
   <div class="sb-modal-content">
-    <p>Name : {{questionTypeName[selectedAttributes.questionType]}} - {{selectedAttributes.topic}} </p>
+    <p>Name : {{resourceName}} </p>
     <p>Board : {{selectedAttributes.board}} </p>
     <p>Medium : {{selectedAttributes.medium}} </p>
     <p>Class : {{selectedAttributes.gradeLevel}} </p>
@@ -143,8 +92,9 @@
     <p>ResourceID : {{publishedResourceId}} </p>
     Preview Link : <a target="_blank" href="https://diksha.gov.in/play/content/{{publishedResourceId}}">Click here</a>
   </div>
+
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showSuccessModal = !showSuccessModal">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showSuccessModal = !showSuccessModal; dismissPublishModal();">
       Close
     </button>
   </div>

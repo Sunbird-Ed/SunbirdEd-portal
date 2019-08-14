@@ -5,17 +5,20 @@ import { Component, OnInit, Output, Input, EventEmitter, OnChanges, ViewChild } 
   templateUrl: './question-creation-header.component.html',
   styleUrls: ['./question-creation-header.component.css']
 })
-export class QuestionCreationHeaderComponent implements OnInit {
+export class QuestionCreationHeaderComponent implements OnInit, OnChanges {
   public enableBtn;
   public showPreview;
   showrejectCommentPopup = false;
   showFormError = false;
   public reviewerCommentModal = false;
+  public dummySelectionStatus: any;
   @Input() role: any;
   @Input() questionMetaData: any;
+  @Input() questionSelectionStatus: any;
   @Input() rejectComment: any;
   @Output() buttonType = new EventEmitter < any > ();
   @Output() questionStatus = new EventEmitter < any > ();
+  @Output() questionQueueStatus = new EventEmitter < any > ();
   @Input() disableSubmission: boolean;
   @ViewChild('FormControl') private FormControl;
   constructor() { }
@@ -23,6 +26,11 @@ export class QuestionCreationHeaderComponent implements OnInit {
   ngOnInit() {
     this.enableBtn = 'edit';
     this.showPreview = false;
+  }
+  ngOnChanges() {
+    this.showPreview = false;
+    console.log(this.questionSelectionStatus);
+    this.dummySelectionStatus = this.questionSelectionStatus;
   }
 
   reviewerBtnclick(event, buttonType) {
@@ -55,7 +63,10 @@ export class QuestionCreationHeaderComponent implements OnInit {
       this.showFormError = true;
     }
   }
-
+  setQuestionSelection() {
+    this.questionSelectionStatus = !this.questionSelectionStatus;
+    this.questionQueueStatus.emit({questionId: this.questionMetaData.data.identifier, status: this.questionSelectionStatus });
+  }
   openReviewerCommentModal() {
     this.reviewerCommentModal = true;
    }
