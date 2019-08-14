@@ -73,7 +73,6 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     };
     this.recoverAccountService.resetPassword(request)
     .subscribe(response => {
-      console.log(response);
       if (response.result.link) {
         window.location.href = response.result.link;
       } else {
