@@ -154,8 +154,14 @@ export class MainHeaderComponent implements OnInit {
     if (this.isOffline) {
       this.routeToOffline();
     } else {
-      const url = this.router.url.split('?')[0].replace(/\/\d+$/, '');
-      this.router.navigate([url, 1], { queryParams: this.queryParam });
+      const url = this.router.url.split('?')[0];
+      let redirectUrl;
+      if (url.indexOf('/explore-course') !== -1) {
+        redirectUrl = url.substring(0, url.indexOf('explore-course')) + 'explore-course';
+      } else {
+        redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
+      }
+      this.router.navigate([redirectUrl, 1], { queryParams: this.queryParam });
     }
   }
 

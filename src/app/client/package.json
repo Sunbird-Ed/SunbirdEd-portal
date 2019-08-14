@@ -37,7 +37,7 @@
     "@angular/platform-browser": "^7.2.10",
     "@angular/platform-browser-dynamic": "^7.2.10",
     "@angular/router": "^7.2.10",
-    "@project-sunbird/telemetry-sdk": "^0.0.19",
+    "@project-sunbird/telemetry-sdk": "^0.0.20",
     "@project-sunbird/web-extensions": "^0.0.2",
     "@types/lodash": "^4.14.104",
     "angular-inport": "^2.0.0",

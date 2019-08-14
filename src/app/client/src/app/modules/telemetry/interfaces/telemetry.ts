@@ -18,11 +18,11 @@ export interface IImpressionEventData {
   'visits'?: Array<IImpressionEventVisits>;
 }
 export interface IImpressionEventVisits {
-    objid: string;
-    objtype: string;
-    objver?: string;
-    section?: string;
-    index: string | number;
+  objid: string;
+  objtype: string;
+  objver?: string;
+  section?: string;
+  index: string | number;
 }
 export interface IInteractEventEdata {
   'id': string;
@@ -57,6 +57,11 @@ export interface ILogEventData {
   'pageid'?: string;
   'params'?: Array<{}>;
 }
+export interface IExDataEventData {
+  'type': string;
+  'data': string;
+}
+
 export interface IFeedBackEventData {
   'rating'?: number;
   'comments'?: string;
@@ -156,6 +161,19 @@ export interface ILogEventInput {
     'rollup'?: {};
   };
   'edata': ILogEventData;
+}
+
+export interface IExDataEventInput {
+  'context': {
+    'env': string;
+  };
+  'object'?: {
+    'id': string;
+    'type': string;
+    'ver'?: string;
+    'rollup'?: {};
+  };
+  'edata': IExDataEventData;
 }
 export interface IFeedBackEventInput {
   'context': {

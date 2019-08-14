@@ -189,6 +189,20 @@ export const mockData: any = {
             'message': 'api to load inbox'
         }
     },
+    exdataEventData: {
+        'context': {
+            'env': 'app'
+        },
+        'object': {
+            'id': '',
+            'type': 'announcement',
+            'ver': '1.0'
+        },
+        'edata': {
+            'type': 'fingerprint',
+            'data': '1'
+        }
+    },
     userSessionData: {
         'userId': '99733cb8-588a-42af-8161-57e783351a0e'
     }
