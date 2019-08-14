@@ -16,7 +16,7 @@ import {CoreModule} from '@sunbird/core';
 import { By } from '@angular/platform-browser';
 import { TelemetryService } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {getUserList, updateBatchDetails, getUserDetails} from './update-batch.component.spec.data';
+import {getUserList, updateBatchDetails, getUserDetails, participantList} from './update-batch.component.spec.data';
 import { BatchService } from '../../services';
 import { UpdateBatchComponent } from './update-batch.component';
 
@@ -88,6 +88,9 @@ describe('UpdateBatchComponent', () => {
         return observableOf(getUserList);
       }
     });
+    spyOn(batchService, 'getParticipantList').and.callFake((request) => {
+      return observableOf(participantList);
+    });
     spyOn(batchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     fixture.detectChanges();
     expect(component.participantList.length).toBe(1);
@@ -130,6 +133,9 @@ describe('UpdateBatchComponent', () => {
         return observableOf(getUserList);
       }
     });
+    spyOn(batchService, 'getParticipantList').and.callFake((request) => {
+      return observableOf(participantList);
+    });
     spyOn(batchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     spyOn(toasterService, 'error');
     fixture.detectChanges();
@@ -154,6 +160,9 @@ describe('UpdateBatchComponent', () => {
         return observableOf(getUserList);
       }
     });
+    spyOn(batchService, 'getParticipantList').and.callFake((request) => {
+      return observableOf(participantList);
+    });
     spyOn(batchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     spyOn(batchService, 'updateBatch').and.returnValue(observableOf(updateBatchDetails));
     spyOn(toasterService, 'success');
@@ -175,6 +184,9 @@ describe('UpdateBatchComponent', () => {
       } else {
         return observableOf(getUserList);
       }
+    });
+    spyOn(batchService, 'getParticipantList').and.callFake((request) => {
+      return observableOf(participantList);
     });
     spyOn(batchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
     spyOn(batchService, 'updateBatch').and.returnValue(observableThrowError(updateBatchDetails));
