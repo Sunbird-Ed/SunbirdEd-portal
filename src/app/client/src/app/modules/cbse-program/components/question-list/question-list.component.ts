@@ -42,7 +42,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changedProps: any) {
     if (this.enableRoleChange) {
+      this.initialized = false; // it should be false before fetch 
       this.fetchQuestionWithRole();
+    }
+    if((this.selectedAttributes.currentRole=== 'REVIEWER') || (this.selectedAttributes.currentRole === 'PUBLISHER')){
+      this.selectedAttributes['showMode'] = 'previewPlayer';
+    }else{
+      this.selectedAttributes['showMode'] = 'editorForm';
     }
   }
   ngOnInit() {
@@ -50,7 +56,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.fetchQuestionWithRole();
     this.enableRoleChange = true;
     this.selectedAll = false;
-    this.initialized = true;
   }
   private fetchQuestionWithRole() {
     (this.role.currentRole === 'REVIEWER') ? this.fetchQuestionList(true) : this.fetchQuestionList();
@@ -132,9 +137,17 @@ export class QuestionListComponent implements OnInit, OnChanges {
           mode: editorMode,
           data: assessment_item
         };
-        if(this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view') && this.initialized){
+        //min of 1sec timeOut is set, so that it should go to bottom of call stack and execute whennever the player data is available
+        if (this.selectedAttributes.showMode === 'previewPlayer' && this.initialized){
+          this.showLoader = true;
+          setTimeout(() => {
+            this.showLoader = false;
+          }, 1000);
+        }
+        if(this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view')  && (this.selectedAttributes.showMode === 'editorForm')){
           this.refreshEditor();
-          }
+           }
+           this.initialized = true;
       }, err => {
         this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question failed');
         const telemetryErrorData = {
@@ -149,6 +162,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
         };
         this.telemetryService.error(telemetryErrorData);
       });
+      
   }
   public getQuestionDetails(questionId) {
     if (this.questionReadApiDetails[questionId]) {

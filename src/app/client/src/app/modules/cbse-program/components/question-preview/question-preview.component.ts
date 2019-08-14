@@ -25,7 +25,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.previewInitialized = true;
-    if(this.selectedAttributes.currentRole !== 'CONTRIBUTOR'){
+    if(this.questionMetaData && this.questionMetaData.mode !== 'create'){
     this.toEcml
     .getECMLJSON(this.selectedAttributes.questionList)
     .subscribe( (theme) => {      
@@ -54,7 +54,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
   
   ngOnChanges(){
     if(this.previewInitialized){
-    if(this.selectedAttributes.currentRole !== 'CONTRIBUTOR'){
+    if(this.questionMetaData && this.questionMetaData.mode !== 'create'){
       this.toEcml
       .getECMLJSON(this.selectedAttributes.questionList)
       .subscribe( (theme) => {      

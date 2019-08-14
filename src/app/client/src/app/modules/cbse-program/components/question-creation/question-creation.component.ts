@@ -153,7 +153,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
       // this.buttonTypeHandler('preview')
-    } else {
+    } else if((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')){
       this.showPreview = false;
     }
     if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status=== 'Reject' &&
@@ -204,12 +204,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {
-      //this.showPreview = true;
+      this.selectedAttributes.showMode = 'previewPlayer';
       //call createQuestion with param true to get the local question data
       if(this.selectedAttributes.currentRole === "CONTRIBUTOR"){
         this.createQuestion(true)
       }
     } else if (event === 'edit') {
+      this.selectedAttributes.showMode = 'editorForm';
       this.refreshEditor();
       this.showPreview = false;
     }  else {
@@ -323,6 +324,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             assessment_item : req.data.request.assessment_item.metadata
           } 
         }  
+        this.previewData = this.questionMetaData;
         //Initialize preview player, Once all the data is attacthed
         this.showPreview = true;       
       }
