@@ -2,8 +2,8 @@
   [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true}">
   <sui-accordion-panel [(isOpen)]="isOpen">
     <div title class="p-0">
-      <div class="sb-single-pannel-accordion-heading" (click)="setTelemetryInteractData()" appTelemetryInteract
-        [telemetryInteractEdata]="telemetryDMIEdata">
+      <div class="sb-single-pannel-accordion-heading" appTelemetryInteract
+        [telemetryInteractEdata]="getTelemetryInteractData()">
         <span>{{resourceService?.frmelmnts?.btn?.downloadManager}}</span>
         <i class="chevron up icon d-flex flex-ai-center"></i>
       </div>

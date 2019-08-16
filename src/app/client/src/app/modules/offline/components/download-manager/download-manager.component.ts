@@ -21,7 +21,11 @@ export class DownloadManagerComponent implements OnInit {
   isOpen = false;
   count = 0;
   localCount: 0;
-  telemetryInteractEdata: IInteractEventEdata;
+  telemetryInteractEdata: IInteractEventEdata = {
+    id: 'content-click',
+    type: 'click',
+    pageid: 'download-manager'
+  };
   telemetryDMIEdata: IInteractEventEdata;
   pageId;
 
@@ -47,7 +51,7 @@ export class DownloadManagerComponent implements OnInit {
       this.isOpen = true;
       this.getDownloadList();
     });
-    this.setTelemetryInteractData();
+    this.getTelemetryInteractData();
   }
 
   getDownloadList() {
@@ -89,14 +93,9 @@ export class DownloadManagerComponent implements OnInit {
       }
   }
 
-  setTelemetryInteractData() {
-    this.telemetryInteractEdata =  {
-      id: 'content-click',
-      type: 'click',
-      pageid: 'download-manager'
-    };
-    this.telemetryDMIEdata = {
-      id: this.isOpen ? 'download-manager-open' : 'download-manager-close',
+  getTelemetryInteractData() {
+    return  {
+      id: this.isOpen ? 'download-manager-close' : 'download-manager-open',
       type: 'click',
       pageid: 'download-manager'
     };

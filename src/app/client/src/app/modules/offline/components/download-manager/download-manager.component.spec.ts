@@ -97,9 +97,9 @@ describe('DownloadManagerComponent', () => {
   });
 
   it('should call setTelemetryInteractData method', () => {
-    spyOn(component, 'setTelemetryInteractData');
+    spyOn(component, 'getTelemetryInteractData');
     component.ngOnInit();
-    expect(component.setTelemetryInteractData).toHaveBeenCalled();
+    expect(component.getTelemetryInteractData).toHaveBeenCalled();
     expect(component.telemetryDMIEdata).not.toBeUndefined();
   });
 
