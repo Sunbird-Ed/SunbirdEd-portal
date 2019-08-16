@@ -6,7 +6,7 @@ const telemetryEnv = 'AccountRecovery';
 
 const routes: Routes = [
   {
-    path: '', component: RecoverAccountComponent, data: { hideHeader : true },
+    path: '', component: RecoverAccountComponent, data: { hideHeaderNFooter : true },
     children: [{
       path: 'identify/account', component: IdentifyAccountComponent, data: {
         telemetry: { env: telemetryEnv, pageid: 'IdentifyAccount', type: 'view', subtype: 'paginate' },
