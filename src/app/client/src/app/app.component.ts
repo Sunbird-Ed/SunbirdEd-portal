@@ -103,7 +103,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   handleHandleFooter() {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(data => {
-      this.hideHeader = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.data.hideHeader');
+      this.hideHeader = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.data.hideHeader') ||
+        _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data');
     });
   }
   ngOnInit() {
