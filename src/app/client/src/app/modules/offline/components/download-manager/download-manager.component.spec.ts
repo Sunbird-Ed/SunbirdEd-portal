@@ -9,6 +9,8 @@ import {FileSizeModule} from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { RouterTestingModule } from '@angular/router/testing';
 import { response } from '../../services/download-manager/download-manager.service.spec.data';
+import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER, IInteractEventEdata  } from '@sunbird/telemetry';
+
 
 describe('DownloadManagerComponent', () => {
   let component: DownloadManagerComponent;
@@ -18,9 +20,10 @@ describe('DownloadManagerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule,
-        RouterTestingModule, FileSizeModule, OrderModule ],
+        RouterTestingModule, FileSizeModule, OrderModule, TelemetryModule ],
       declarations: [DownloadManagerComponent],
-      providers: [ DownloadManagerService, ConnectionService ]
+      providers: [ DownloadManagerService, ConnectionService, TelemetryService,
+        { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry } ]
     })
       .compileComponents();
   }));
@@ -92,6 +95,5 @@ describe('DownloadManagerComponent', () => {
         expect(privateMethod).not.toHaveBeenCalled();
     });
   });
-
 });
 

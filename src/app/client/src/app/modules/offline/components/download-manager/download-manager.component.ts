@@ -6,7 +6,8 @@ import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { DownloadManagerService } from './../../services';
 import { ConnectionService } from './../../services';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-download-manager',
@@ -20,12 +21,18 @@ export class DownloadManagerComponent implements OnInit {
   isOpen = false;
   count = 0;
   localCount: 0;
-  panelOpened = false;
+  telemetryInteractEdata: IInteractEventEdata = {
+    id: 'content-click',
+    type: 'click',
+    pageid: 'download-manager'
+  };
+  pageId;
 
   constructor(public downloadManagerService: DownloadManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public connectionService: ConnectionService,
     public configService: ConfigService,
+    public activatedRoute: ActivatedRoute,
     public router: Router) { }
 
   ngOnInit() {
@@ -77,10 +84,19 @@ export class DownloadManagerComponent implements OnInit {
   }
 
   openContent(contentId, mimeType) {
-    if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', contentId]);
-    } else {
-      this.router.navigate(['play/content', contentId]);
-    }
+      if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        this.router.navigate(['play/collection', contentId]);
+      } else {
+        this.router.navigate(['play/content', contentId]);
+      }
   }
+
+  getTelemetryInteractData() {
+    return  {
+      id: this.isOpen ? 'download-manager-close' : 'download-manager-open',
+      type: 'click',
+      pageid: 'download-manager'
+    };
+  }
+
 }
