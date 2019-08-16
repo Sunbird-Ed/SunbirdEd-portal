@@ -4,7 +4,7 @@
 </div> -->
 <app-question-creation-header *ngIf="questionMetaData"  (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"
 (questionStatus)="handleReviewrStatus($event)" [questionMetaData]="questionMetaData"
- (questionQueueStatus)="handleQuestionSelectionStatus($event)" [questionSelectionStatus]="questionSelectionStatus" [role]="role">
+ (questionQueueStatus)="handleQuestionSelectionStatus($event)" [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
 
 
 <form *ngIf="!showPreview" class="ui form mt-8" [formGroup]="questionMetaForm">
