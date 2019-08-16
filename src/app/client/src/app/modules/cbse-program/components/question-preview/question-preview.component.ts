@@ -51,40 +51,33 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     });
     }
   }
-<<<<<<< HEAD
-
-  ngOnChanges() {
-    if (this.previewInitialized) {
-    if (this.selectedAttributes.currentRole !== 'CONTRIBUTOR'){
-=======
-
+  
   ngOnChanges(){
     if(this.previewInitialized){
-    if(this.questionMetaData && this.questionMetaData.mode !== 'create'){
->>>>>>> 4182ac554b965b6d8363aba298193ba05b5562fc
-      this.toEcml
-      .getECMLJSON(this.selectedAttributes.questionList)
-      .subscribe( (theme) => {
-        /**
-         * @param theme this contains the theme[Ecml]
-         * @type {Object}
-         */
-        this.theme = theme;
-        const context = this.getContext();
-        this.playerConfig =  this.setPlayerConfig(context, theme);
-      });
+      if(this.questionMetaData && this.questionMetaData.mode !== 'create'){
+        this.toEcml
+        .getECMLJSON(this.selectedAttributes.questionList)
+        .subscribe( (theme) => {
+          /**
+           * @param theme this contains the theme[Ecml]
+           * @type {Object}
+           */
+          this.theme = theme;
+          const context = this.getContext();
+          this.playerConfig =  this.setPlayerConfig(context, theme);
+        });
       } else {
-      this.toEcml
-      .getECMLJSON(this.selectedAttributes.questionList, this.selectedAttributes.currentRole, this.selectedAttributes.previewQuestionData)
-      .subscribe( (theme) => {
-        /**
-         * @param theme this contains the theme[Ecml]
-         * @type {Object}
-         */
-        this.theme = theme;
-        const context = this.getContext();
-        this.playerConfig =  this.setPlayerConfig(context, theme);
-      })
+        this.toEcml
+        .getECMLJSON(this.selectedAttributes.questionList, this.selectedAttributes.currentRole, this.selectedAttributes.previewQuestionData)
+        .subscribe( (theme) => {
+          /**
+           * @param theme this contains the theme[Ecml]
+           * @type {Object}
+           */
+          this.theme = theme;
+          const context = this.getContext();
+          this.playerConfig =  this.setPlayerConfig(context, theme);
+        })
       }
     }
   }
