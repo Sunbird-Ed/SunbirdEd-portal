@@ -122,7 +122,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.playerConfig = this.playerService.getConfig(contentDetails, options);
       this.playerConfig.context.objectRollup = this.objectRollup;
       this.contentData = response.result.content;
-      this.updateContent(this.contentData);
+      if (this.isOffline) {this.updateContent(this.contentData); }
       if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
         setTimeout(() => {
           this.showExtContentMsg = true;

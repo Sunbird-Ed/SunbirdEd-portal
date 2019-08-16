@@ -19,6 +19,7 @@ import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-public-collection-player',
+
   templateUrl: './public-collection-player.component.html'
 })
 export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -322,7 +323,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
       map((response) => {
         this.collectionData = response.result.content;
-        this.updateContent(this.collectionData);
+        if (this.isOffline) {this.updateContent(this.collectionData); }
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
