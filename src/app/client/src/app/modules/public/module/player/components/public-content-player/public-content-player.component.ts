@@ -12,6 +12,8 @@ import {
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
+import { DownloadManagerService } from './../../../../../offline/services';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-public-content-player',
@@ -55,11 +57,14 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
   public objectRollup = {};
+  checkOfflineRoutes: string;
+  isOffline: boolean = environment.isOffline;
+
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
-    private configService: ConfigService
+    private configService: ConfigService, public downloadManagerService: DownloadManagerService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -83,6 +88,13 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.getContent();
       this.deviceDetector();
     });
+
+
+      if ( this.isOffline && _.includes(this.router.url, 'browse')) {
+        this.checkOfflineRoutes = 'browse';
+      } else if (this.isOffline && !_.includes(this.router.url, 'browse')) {
+        this.checkOfflineRoutes = 'library';
+      }
   }
   setTelemetryData() {
     this.telemetryInteractObject = {
@@ -110,6 +122,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.playerConfig = this.playerService.getConfig(contentDetails, options);
       this.playerConfig.context.objectRollup = this.objectRollup;
       this.contentData = response.result.content;
+      this.updateContent(this.contentData);
       if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
         setTimeout(() => {
           this.showExtContentMsg = true;
@@ -183,7 +196,40 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
         };
     });
   }
+  downloadContent(content) {
+    console.log(content);
+      this.downloadManagerService.downloadContentId = content.identifier;
+      this.downloadManagerService.startDownload({}).subscribe(data => {
+        this.downloadManagerService.downloadContentId = '';
+         content['showAddingToLibraryButton'] = true;
+        this.updateContent(content);
+      }, error => {
+        this.downloadManagerService.downloadContentId = '';
+            content['addToLibrary'] = false;
+            content['showAddingToLibraryButton'] = false;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+      });
+  }
 
+  updateContent(content) {
+    this.downloadManagerService.downloadListEvent.subscribe((downloadListdata) => {
+              // If download is completed card should show added to library
+              _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+                if (completed.contentId === content.identifier) {
+                  content['addedToLibrary'] = true;
+                  content['showAddingToLibraryButton'] = false;
+                }
+              });
+              // If download failed, card should show again add to library
+              _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+                if (failed.contentId === content.identifier) {
+                  content['addedToLibrary'] = false;
+                  content['showAddingToLibraryButton'] = false;
+                }
+              });
+    });
+
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

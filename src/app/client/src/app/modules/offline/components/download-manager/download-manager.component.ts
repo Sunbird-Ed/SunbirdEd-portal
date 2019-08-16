@@ -26,7 +26,6 @@ export class DownloadManagerComponent implements OnInit {
     type: 'click',
     pageid: 'download-manager'
   };
-  pageId;
 
   constructor(public downloadManagerService: DownloadManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,

@@ -14,6 +14,8 @@ import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
+import { DownloadManagerService } from './../../../../../offline/services';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-public-collection-player',
@@ -75,6 +77,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerTelemetryInteractObject: IInteractEventObject;
   public telemetryCourseEndEvent: IEndEventInput;
   public telemetryCourseStart: IStartEventInput;
+  public playerContent;
+  isOffline: boolean = environment.isOffline;
   /**
    * Page Load Time, used this data in impression telemetry
    */
@@ -91,11 +95,13 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 	*/
   public dialCode: string;
   playerOption: any;
+  checkOfflineRoutes: string;
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
-    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService) {
+    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
+    public downloadManagerService: DownloadManagerService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -113,6 +119,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.getContent();
     this.deviceDetector();
     this.setTelemetryData();
+
+      if (this.isOffline &&  _.includes(this.router.url, 'browse')) {
+        this.checkOfflineRoutes = 'browse';
+      } else if (this.isOffline && !_.includes(this.router.url, 'browse')) {
+        this.checkOfflineRoutes = 'library';
+      }
   }
   setTelemetryData() {
     if (this.dialCode) {
@@ -239,6 +251,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.treeModel.walk((node) => {
         if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
           this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
+          if (this.isOffline && collection.data.addedToLibrary) {
+            this.updateContent(node.model, true);
+          }
         }
         this.setContentNavigators();
       });
@@ -285,6 +300,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
+            this.playerContent = _.get(content, 'model');
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
@@ -306,6 +322,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
       map((response) => {
         this.collectionData = response.result.content;
+        this.updateContent(this.collectionData);
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
@@ -385,5 +402,43 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         mode: 'play'
       }
     };
+  }
+
+  downloadContent(content) {
+      this.downloadManagerService.downloadContentId = content.identifier;
+      this.downloadManagerService.startDownload({}).subscribe(data => {
+        this.downloadManagerService.downloadContentId = '';
+        content['showAddingToLibraryButton'] = true;
+        this.updateContent(content);
+      }, error => {
+        this.downloadManagerService.downloadContentId = '';
+            content['addToLibrary'] = false;
+            content['showAddingToLibraryButton'] = false;
+
+        this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+      });
+  }
+
+  updateContent(content, collection?) {
+    if (collection) {
+      content['addedToLibrary'] = true;
+    }
+    this.downloadManagerService.downloadListEvent.subscribe((downloadListdata) => {
+              // If download is completed card should show added to library
+              _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+                if (completed.contentId === content.identifier) {
+                  content['showAddingToLibraryButton'] = false;
+                  content['addedToLibrary'] = true;
+                }
+              });
+              // If download failed, card should show again add to library
+              _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+                if (failed.contentId === content.identifier) {
+                  content['showAddingToLibraryButton'] = false;
+                  content['addedToLibrary'] = false;
+                }
+              });
+    });
+
   }
 }
