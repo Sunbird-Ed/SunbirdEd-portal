@@ -100,13 +100,7 @@ describe('DownloadManagerComponent', () => {
     spyOn(component, 'setTelemetryInteractData');
     component.ngOnInit();
     expect(component.setTelemetryInteractData).toHaveBeenCalled();
-    expect(component.telemetryCdata).not.toBeUndefined();
-  });
-
-  it('should call getPageId method', () => {
-    spyOn(component, 'getPageId');
-    component.openContent('do_31251478593057587225608', 'video/mp4');
-    expect(component.getPageId).toHaveBeenCalled();
+    expect(component.telemetryDMIEdata).not.toBeUndefined();
   });
 
 });
