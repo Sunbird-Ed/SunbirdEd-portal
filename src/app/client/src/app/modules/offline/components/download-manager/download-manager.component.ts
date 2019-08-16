@@ -51,7 +51,6 @@ export class DownloadManagerComponent implements OnInit {
       this.isOpen = true;
       this.getDownloadList();
     });
-    this.getTelemetryInteractData();
   }
 
   getDownloadList() {
