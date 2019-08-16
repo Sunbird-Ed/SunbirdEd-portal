@@ -1,0 +1,121 @@
+<sui-modal
+  [isClosable]="false" class="fullpage" [size]="'fullscreen'"
+  #modal
+  [mustScroll]="true">
+
+  <div class="sb-certificatePage">
+    <div class="sb-certificatePage-header mb-auto">
+      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo" />
+    </div>
+    <div class="sb-certificatePage-form mb-auto">
+      <div class="sb-merged-account-content text-center mb-32">
+        <h3 class="sb-merged-account-body-header my-24 font-weight-bold">Merged Account</h3>
+        <p class="sb-merged-account-body-para">Enter the email ID or phone number of the account from which
+          you want to merge your usage details</p>
+        <!-- <p class="sb-merged-account-body-para sb-color-warning">Enter the email ID or phone number of the account from which
+          you want to merge your usage details</p> -->
+        <!-- <p class="sb-merged-account-body-para sb-color-error font-weight-bold">Enter the email ID or phone number of the account from which
+          you want to merge your usage details</p> -->
+        <!-- <p class="sb-merged-account-body-para sb-color-success font-weight-bold">Enter the email ID or phone number of the account from which
+          you want to merge your usage details</p> -->
+      </div>
+
+      <div class="sb-merged-account-form text-left">
+        <div class="sb-field-group">
+          <form [formGroup]="form">
+            <label>Email Id/Phone number</label>
+            <div class="sb-field">
+              <input formControlName="identifier" class="sb-form-control" type="text" placeholder="Enter Mobile Number"
+                     required>
+            </div>
+            <label
+              *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.required"
+              class="sb-color-error">{{'Email ID / Phone is required'}}</label>
+            <label
+              *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.pattern"
+              class="sb-color-error">{{'Please enter valid Email ID / Phone'}}</label>
+
+            <div class="sb-field">
+              <label>Password</label>
+              <input formControlName="password" name="password" type="password" class="sb-form-control"
+                     placeholder="Enter Password" required>
+            </div>
+            <label
+              *ngIf="form.controls.password.touched && form.controls.password.errors && form.controls.password.errors.required"
+              class="sb-color-error">{{'Password is required'}}
+            </label>
+
+          </form>
+        </div>
+      </div>
+
+      <button class="sb-btn sb-btn-secondary sb-btn-normal width-100 my-8"
+              (click)="validateUserCredentials()"
+              [disabled]="form.invalid">Next
+      </button>
+
+      <p class="sb-or-divider mb-0 ">OR</p>
+      <button
+        class="sb-btn sb-btn-outline-primary sb-btn-normal ripple width-100 my-16 d-flex flex-ai-center flex-jc-center">
+        <img class="googleSignAccountMerge" src="../../assets/images/google.png">
+        Sign In with Google
+      </button>
+
+    </div>
+  </div>
+
+  <!--<div>
+    <div class="ui raised shadow container segment">
+      <div class="ui three column grid stackable">
+        <div class="ui column tablet only computer only"></div>
+        <div class="ui column height-fix">
+          <div class="ui header centered">
+            <img onerror="" alt="null" class="logo-image"
+                 src="https://staging.ntp.net.in/assets/imgs/logos.svg">
+            <div class="signInHead mt-27">Merge Account</div>
+          </div>
+          <form [formGroup]="form" class="ui form borderd">
+            <div class="required field mb-10">
+              <label class="mb-10">{{'Enter Email ID/ Phone Number'}}</label>
+              <input formControlName="identifier" name="identifier"
+                     placeholder="{{'Enter Email/Phone Number'}}">
+            </div>
+            <label
+              *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.required"
+              class="ui basic red error label pt-0">{{'Email ID / Phone is required'}}</label>
+            <label
+              *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.pattern"
+              class="ui basic red error label pt-0">{{'Please enter valid Email ID / Phone'}}</label>
+
+            <div class="required field mb-10">
+              <label class="mb-10">{{'Password'}} </label>
+              <input formControlName="password" name="password" type="password" placeholder="{{'Password'}}">
+            </div>
+            <label
+              *ngIf="form.controls.password.touched && form.controls.password.errors && form.controls.password.errors.required"
+              class="ui basic red error label pt-0">{{'Password is required'}}
+            </label>
+
+            <button class="ui button width-300 mt-10" (click)="validateUserCredentials()"
+                    [disabled]="form.invalid">{{'Merge'}}
+            </button>
+
+          </form>
+
+          <div id="selfSingUp" class="">
+            <p class="or mb-30 mt-30 textCenter">OR</p>
+
+            <div class="field">
+              <button type="button" class="ui fluid blue basic button googleButton">
+                <img class="signInWithGoogle" src="/auth/resources/3.2.0.final/login/ntp/img/google.png">
+                Sign In with Google
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>-->
+</sui-modal>
