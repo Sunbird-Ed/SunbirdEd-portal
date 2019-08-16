@@ -26,7 +26,6 @@ export class DownloadManagerComponent implements OnInit {
     type: 'click',
     pageid: 'download-manager'
   };
-  telemetryDMIEdata: IInteractEventEdata;
   pageId;
 
   constructor(public downloadManagerService: DownloadManagerService,
