@@ -47,8 +47,13 @@
   "engines": {
     "node": ">=0.10.0"
   },
+  "nodemonConfig": {
+    "ignore": ["client"],
+    "exec": "npm run server",
+    "ext": "png,jpeg,js,ts,html,json,css,scss"
+  },
   "scripts": {
-    "server": "gulp update:index:file && node server",
+    "server": "gulp update:index:file && node server --inspect",
     "test-announcements": "mocha 'test/announcements/server/**/*.js' --reporter mochawesome",
     "preinstall": "npm install ./libs/sb_api_interceptor && npm install ./libs/sb_cache_manager  && npm install ./libs/sb_telemetry_util && npm install ./libs/sb_logger_util_v2",
     "validate": "npm ls",
