@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { IdentifyAccountComponent, SelectAccountIdentifierComponent, VerifyAccountIdentifierComponent,
-  ResetPasswordComponent, RecoverAccountComponent } from './components';
+  RecoverAccountComponent } from './components';
 const telemetryEnv = 'AccountRecovery';
 
 const routes: Routes = [
