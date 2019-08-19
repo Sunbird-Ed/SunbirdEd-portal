@@ -164,7 +164,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
     const inputParams = { params: '' };
       this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
-       if (data.result.content.length > 0) { 
+       if (data.result.content.length > 0) {
          this.showCourseQRCodeBtn = true;
        }
       });
@@ -175,7 +175,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         window.open (data.result.fileUrl, '_blank');
       }
     });
-  } 
+  }
   /**
     * This method sets the make an api call to get all Published content with page No and offset
     */
