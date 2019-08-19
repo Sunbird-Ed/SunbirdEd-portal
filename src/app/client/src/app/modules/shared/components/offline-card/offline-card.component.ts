@@ -51,6 +51,9 @@ export class OfflineCardComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    if (_.includes(['video/youtube', 'video/x-youtube'], this.data.metaData.mimeType)) {
+      this.data['youtubeContent'] = true;
+    }
     this.connectionService.monitor().subscribe(isConnected => {
       this.isConnected = isConnected;
       if (this.isConnected) {
