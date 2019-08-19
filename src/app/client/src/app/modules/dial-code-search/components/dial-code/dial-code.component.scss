@@ -123,10 +123,10 @@
         top: 10px;
         display: flex;
         align-items: center;
-        margin: 0 40px;
+        margin: 0 20px;
        }
        .mobile-circles .border-round {
-        background: #464646;
+        background: #666666;
         border: none;
        }
        
@@ -149,7 +149,6 @@
        .mobile-circles .small-box {
         height: 8px;
         width: 8px;
-        margin-left: 10px; 
        }
      }
    }
@@ -212,6 +211,9 @@
         left: 0;
         box-shadow: 0 0 20px 10px rgba(0,0,0,.2);
         height: 175px;
+        p {
+          display: block !important;
+        }
         .close-mobile-div {
           display: flex;
         }
