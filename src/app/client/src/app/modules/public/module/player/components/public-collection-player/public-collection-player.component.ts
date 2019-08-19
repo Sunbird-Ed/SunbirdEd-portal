@@ -413,15 +413,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.updateContent(content);
       }, error => {
         this.downloadManagerService.downloadContentId = '';
-            content['addToLibrary'] = false;
+            content['addedToLibrary'] = false;
             content['showAddingToLibraryButton'] = false;
 
         this.toasterService.error(this.resourceService.messages.fmsg.m0090);
       });
   }
 
-  updateContent(content, collection?) {
-    if (collection) {
+  updateContent(content, isCollectionDownloaded?) {
+    if (isCollectionDownloaded) {
       content['addedToLibrary'] = true;
     }
     this.downloadManagerService.downloadListEvent.subscribe((downloadListdata) => {

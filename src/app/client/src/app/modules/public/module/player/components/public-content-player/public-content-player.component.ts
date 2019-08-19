@@ -197,7 +197,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     });
   }
   downloadContent(content) {
-    console.log(content);
+
       this.downloadManagerService.downloadContentId = content.identifier;
       this.downloadManagerService.startDownload({}).subscribe(data => {
         this.downloadManagerService.downloadContentId = '';
@@ -205,7 +205,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
         this.updateContent(content);
       }, error => {
         this.downloadManagerService.downloadContentId = '';
-            content['addToLibrary'] = false;
+            content['addedToLibrary'] = false;
             content['showAddingToLibraryButton'] = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0090);
       });
@@ -213,6 +213,11 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
   updateContent(content) {
     this.downloadManagerService.downloadListEvent.subscribe((downloadListdata) => {
+              _.find(downloadListdata.result.response.downloads.inprogress, (inprogress) => {
+                if (content.identifier === inprogress.contentId) {
+                  content['showAddingToLibraryButton'] = true;
+                }
+              });
               // If download is completed card should show added to library
               _.find(downloadListdata.result.response.downloads.completed, (completed) => {
                 if (completed.contentId === content.identifier) {
