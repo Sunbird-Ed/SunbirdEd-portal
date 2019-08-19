@@ -1,4 +1,4 @@
-import {throwError, of, Observable, BehaviorSubject, of as observableOf} from 'rxjs';
+import {throwError, of, Observable, BehaviorSubject} from 'rxjs';
 import { mergeMap, map, catchError, skipWhile } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';

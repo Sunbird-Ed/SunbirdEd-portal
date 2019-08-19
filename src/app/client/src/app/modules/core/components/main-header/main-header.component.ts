@@ -25,7 +25,7 @@ export class MainHeaderComponent implements OnInit {
   showExploreHeader = false;
   showQrmodal = false;
   showAccountMergemodal = false;
-  isValidCustodianOrgUser = false;
+  isValidCustodianOrgUser = true;
   tenantInfo: any = {};
   userProfile: IUserProfile;
   adminDashboard: Array<string>;

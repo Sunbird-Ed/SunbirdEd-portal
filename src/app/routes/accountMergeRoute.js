@@ -11,7 +11,7 @@ module.exports = (app) => {
   /**
    * User initiated merge process is redirected to following url
    */
-  app.get('/merge/account/u1/initiate', (req, res) => {
+  app.get('/merge/account/initiate', (req, res) => {
     if (!_.get(req, 'kauth.grant.access_token.token')) {
       res.status(401).send({
         responseCode: 'UNAUTHORIZED'

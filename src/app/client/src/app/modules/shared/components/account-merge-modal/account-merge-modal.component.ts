@@ -22,6 +22,6 @@ export class AccountMergeModalComponent implements OnInit {
 
   redirect() {
     this.closeModal();
-    window.location.href = 'merge/account/u1/initiate?redirectUri=' + this.router.url;
+    window.location.href = 'merge/account/initiate?redirectUri=' + this.router.url;
   }
 }
