@@ -3,7 +3,7 @@
 <div class="ui container">
     <div class="content-grid mt-24">
        <div class="sb-pageSection">
-            <div  class="sb-pageSection-header" *ngIf="!showLoader && contentList.length && this.queryParams.key">
+            <div  class="sb-pageSection-header" *ngIf="!showLoader && this.queryParams.key">
                 <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML] = "resourceService.frmelmnts?.lbl?.showingResultsFor |
                     interpolate:'{searchString}':this.queryParams.key"></h4>
                         <!-- <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning ml-8">25</span> -->

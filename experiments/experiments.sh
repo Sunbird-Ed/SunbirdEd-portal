@@ -1,6 +1,4 @@
 #!/bin/bash
-# Build script
-# set -o errexit
 set -euo pipefail
 
 export NVM_DIR="$HOME/.nvm"

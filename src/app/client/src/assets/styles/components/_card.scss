@@ -34,6 +34,7 @@
     border-radius: $sb-card-image-border-radius;
     box-sizing: border-box;
     overflow: hidden;
+    margin: 0 ($base-block-space * 2) 0 0;
 
     img {
       width: $sb-card-image-width;
@@ -64,6 +65,7 @@
     height: $sb-card-badge-height;
     width: $sb-card-badge-width;
     object-fit: contain;
+    margin: 0 0 0 auto;
   }
 
   .sb-card-meta-item {
@@ -163,6 +165,12 @@ app-card[lang="ur"] {
     }
     .sb-card-org {
       font-size: $sb-card-meta-org-font-size-ur;
+    }
+    .sb-card-badge {
+      margin: 0 auto 0 0;
+    }
+    .sb-card-image {
+      margin: 0 0 0 ($base-block-space * 2);
     }
   }
 }

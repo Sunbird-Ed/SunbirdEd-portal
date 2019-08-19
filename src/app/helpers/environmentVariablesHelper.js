@@ -91,7 +91,8 @@ let envVariables = {
   },
   KEYCLOAK_ANDROID_CLIENT: {
     clientId: env.sunbird_android_keycloak_client_id || 'android',
-  }
+  },
+  LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

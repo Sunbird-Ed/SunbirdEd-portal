@@ -1599,3 +1599,32 @@ export const getUserDetails = {
       }
     }
   };
+
+export const participantList = {
+  'id': 'api.batch.participants.list',
+  'ver': 'v1',
+  'ts': '2019-07-18 05:47:00:520+0000',
+  'params': {
+    'resmsgid': null,
+    'msgid': '5c8290e4-f7c5-33d2-453d-b848814e92e9',
+    'err': null,
+    'status': 'success',
+    'errmsg': null
+  },
+  'responseCode': 'OK',
+  'result': {
+    'batch': {
+      'count': 8,
+      'participants': [
+        '2bab341b-839a-4380-bdb3-8fc3ead013c3',
+        '5972af87-252f-4104-9312-1772025bea1c',
+        '72fa8560-1be3-43b2-b7de-3fb849153084',
+        '88a8da1c-7b16-475d-bb2e-035be49ca016',
+        'ae111180-a025-46f2-9aa4-f82186e9a8ac',
+        'b1c1feff-1917-4bbf-85ee-f81a81fbc01b',
+        'b4990c1b-8e52-4fea-9340-77e02f70d8fa',
+        'd122e99e-fbf1-43d3-8976-7ddcaab02176'
+      ]
+    }
+  }
+};

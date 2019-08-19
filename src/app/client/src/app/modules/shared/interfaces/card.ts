@@ -35,4 +35,5 @@ export interface ICard {
             eventName: string
         };
     };
+  completionPercentage?: number;
 }

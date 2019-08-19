@@ -166,7 +166,7 @@
         border-radius: $base-block-space;
         width: 100%;
         border: 1px solid $white-color;
-        background: $secondary-0;
+        background: $gray-200;
     }
     .sb-single-pannel-accordion-list-item  .ui.progress {
         &.error {
@@ -176,7 +176,7 @@
             }
         }
         .bar {
-            height: ($base-block-space - 1) !important;
+            height: $base-block-space !important;
             border-radius: $base-block-space/2;
             background: $green;
         }

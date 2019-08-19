@@ -7,7 +7,7 @@
     <!--Metas-->
     <div class="sb-card-metas">
       <!--Image-->
-      <div class="sb-card-image mr-15" *ngIf="data.showImage? false : true">
+      <div class="sb-card-image" *ngIf="data.showImage? false : true">
         <img src="{{data.image || 'assets/images/book.png' | cdnprefixurl}}" alt="{{data.name}}">
       </div>
       <!--/Image-->
@@ -30,7 +30,7 @@
         <div class="d-flex mb-auto">
           <div class="sb-card-label" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">
             {{data.ribbon.right.name}}</div>
-          <img src="{{data.ribbon.left.image}}" class="sb-card-badge ml-auto"
+          <img src="{{data.ribbon.left.image}}" class="sb-card-badge"
             *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image" alt="{{data.ribbon.left.name}}">
         </div>
         <div class="sb-card-meta-item ellipsis" *ngIf="data.subject" title="{{data.subject}}">
@@ -65,8 +65,8 @@
 
   <!--Progress Bar-->
   <div class="sb-card-progressbar">
-    <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount"
-      *ngIf="data.maxCount && data.progress > 0"></sui-progress>
+    <sui-progress class="ui progress" [value]="data.completionPercentage" [maximum]="100"
+      *ngIf="data.completionPercentage > 0"></sui-progress>
   </div>
   <!--/Progress Bar-->
 </div>
