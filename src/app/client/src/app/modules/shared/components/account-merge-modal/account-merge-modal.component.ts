@@ -9,8 +9,11 @@ import {Router} from '@angular/router';
 export class AccountMergeModalComponent implements OnInit {
   @Output() closeAccountMergeModal = new EventEmitter<any>();
   @ViewChild('modal') modal;
+  instance: string;
 
   constructor(public resourceService: ResourceService, public router: Router) {
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
 
   ngOnInit() {
