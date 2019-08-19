@@ -170,9 +170,10 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       });
   }
   getCourseQRCsv() {
-    this.coursesService.getQRCodeFile().subscribe(data => {
-      if (_.get(data, 'result.fileUrl')) {
-        window.open (data.result.fileUrl, '_blank');
+    this.coursesService.getQRCodeFile().subscribe((data: any) => {
+      const FileURL = _.get(data, 'result.fileUrl');
+      if (FileURL) {
+        window.open (FileURL, '_blank');
       }
     });
   }
