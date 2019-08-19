@@ -89,15 +89,15 @@ export class CoursesService {
    *  api call for getting course QR code CSV file.
    */
   public getQRCodeFile() {
-    const userId = [this.userService.userid]
+    const userId = [this.userService.userid] ;
     const option = {
       url: this.config.urlConFig.URLS.COURSE.GET_QR_CODE_FILE,
-      data: { 
+      data: {
         'request': {
-          'filter':{
+          'filter': {
             'userIds': userId
           }
-        }  
+        } 
       }
     };
     return this.learnerService.post(option).pipe(
