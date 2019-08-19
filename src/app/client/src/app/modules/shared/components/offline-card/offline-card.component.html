@@ -82,7 +82,7 @@
         </div>
         <div *ngIf="status==='OFFLINE' && data.metaData.mimeType==='video/x-youtube'" class="d-flex flex-w-wrap flex-jc-center">
           <i class="exclamation circle icon sb-exclamation-icon fs-2-5"></i>
-          <p class="m-16 text-center">Please connect to the internet to play the content</p>
+          <p class="m-16 text-center">{{resourceService.frmelmnts?.btn?.connectToInternet}}</p>
           <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'"
             class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
               class="copy icon"></i></button>
