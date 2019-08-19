@@ -9,7 +9,8 @@
                     <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
                       {{resourceService.frmelmnts?.lbl?.inAll}}
                 </h4>
-            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  [routerLink]="['/profile']">Close <i class="close icon"></i></button>
+            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  [routerLink]="['/profile']">
+              {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
         </div>
     </div>
     <div class="twelve wide column">
