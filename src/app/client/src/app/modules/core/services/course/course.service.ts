@@ -85,6 +85,31 @@ export class CoursesService {
     });
   }
 
+   /**
+   *  api call for getting course QR code CSV file.
+   */
+  public getQRCodeFile() {
+    const userId = [this.userService.userid]
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.GET_QR_CODE_FILE,
+      data: { 
+        'request': {
+          'filter':{
+            'userIds': userId
+          }
+        }  
+      }
+    };
+    return this.learnerService.post(option).pipe(
+      map((apiResponse: ServerResponse) => {
+        return apiResponse;
+      }),
+      catchError((err) => {
+        this._enrolledCourseData$.next({ err: err, enrolledCourses: undefined });
+        return err;
+      }));
+  }
+
   public updateCourseProgress(courseId, batchId, Progress) {
     const index = _.findIndex(this.enrolledCourses, {courseId: courseId, batchId: batchId });
     if (this.enrolledCourses[index]) {
