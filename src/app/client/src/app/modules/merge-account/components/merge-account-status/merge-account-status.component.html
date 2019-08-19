@@ -7,16 +7,14 @@
     <div class="sb-certificatePage-header mb-auto">
       <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
     </div>
-    <div class="sb-certificatePage-form mb-auto">
-      <div class="sb-merged-account-content text-center mb-32">
+      <div class="sb-merged-account-content text-center mb-auto">
         <h3 class="sb-merged-account-body-header my-24 font-weight-bold">Merged Account</h3>
         <p *ngIf="isMergeSuccess" class="sb-merged-account-body-para sb-color-success font-weight-bold">
           Your usage details are successfully merged. The email Id account is deleted</p>
         <p *ngIf="!isMergeSuccess" class="sb-merged-account-body-para sb-color-error font-weight-bold">
           Your usage details are not merged. Please try again</p>
-      </div>
-      <button class="sb-btn sb-btn-secondary sb-btn-normal width-100 my-8" (click)="closeModal()">Ok
+        </div>
+      <button class="sb-btn sb-btn-secondary sb-btn-normal width-100 my-8 mb-auto" (click)="closeModal()">Ok
       </button>
-    </div>
   </div>
 </sui-modal>
