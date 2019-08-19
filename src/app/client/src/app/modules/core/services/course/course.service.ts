@@ -97,7 +97,7 @@ export class CoursesService {
           'filter': {
             'userIds': userId
           }
-        } 
+        }
       }
     };
     return this.learnerService.post(option).pipe(
