@@ -47,6 +47,11 @@
   "engines": {
     "node": ">=0.10.0"
   },
+  "nodemonConfig": {
+    "ignore": ["client"],
+    "exec": "npm run server",
+    "ext": "png,jpeg,js,ts,html,json,css,scss"
+  },
   "scripts": {
     "server": "gulp update:index:file && node server",
     "test-announcements": "mocha 'test/announcements/server/**/*.js' --reporter mochawesome",

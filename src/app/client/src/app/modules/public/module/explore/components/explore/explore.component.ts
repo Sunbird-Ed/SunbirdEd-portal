@@ -217,9 +217,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       board: [this.dataDrivenFilters.board],
       channel: this.hashTagId,
     };
-    searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
-    searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
-    searchQuery.request.filters.exists = searchQuery.request.exists;
+    if (_.includes(this.router.url, 'browse') || !this.isOffline) {
+      searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+      searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
+      searchQuery.request.filters.exists = searchQuery.request.exists;
+    }
     this.cacheService.set('viewAllQuery', searchQuery.request.filters);
     this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQuery.request.filters, ...this.queryParams };

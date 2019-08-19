@@ -77,6 +77,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   resourceDataSubscription: any;
   shepherdData: Array<any>;
   private fingerprintInfo: any;
+  hideHeaderNFooter = true;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -100,7 +101,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   handleLogin() {
     window.location.reload();
   }
+  handleHeaderNFooter() {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(data => {
+      this.hideHeaderNFooter = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.data.hideHeaderNFooter') ||
+        _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
+    });
+  }
   ngOnInit() {
+    this.handleHeaderNFooter();
     this.resourceService.initialize();
     combineLatest(this.setSlug(), this.setDeviceId()).pipe(
       mergeMap(data => {
@@ -130,7 +138,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.changeLanguageAttribute();
     if (this.isOffline) {
       document.body.classList.add('sb-offline');
-     }
+    }
 }
 
 setFingerPrintTelemetry() {
