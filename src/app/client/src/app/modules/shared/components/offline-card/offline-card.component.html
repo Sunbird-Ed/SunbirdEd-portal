@@ -67,24 +67,38 @@
     <sui-progress class="ui progress" [value]="data.progress" [maximum]="data.maxCount" *ngIf="data.maxCount && data.progress > 0"></sui-progress>
   </div>
   <!--/Progress Bar-->
-  <div class="sb-card-hover" *ngIf="hover">
+  <div class="sb-card-hover" [ngClass]="{'sb-card-hover-grey':status==='OFFLINE' && onlineContent === true }" *ngIf="hover">
     <div class="sb-card-hover-content">
       <div>
-        <div (click)="onAction(data,data.action.onImage)" class="d-flex flex-jc-center">
-          <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.play}} <i class="play icon"></i>
-            </button>
-          </div>
-          <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
+
+        <div class="d-flex flex-jc-center" *ngIf="status!=='OFFLINE' || onlineContent !== true">
+          <button (click)="onAction(data,data.action.onImage)"
+            class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.play}} <i class="play icon"></i></button>
+        </div>
+        <div *ngIf="status!=='OFFLINE' || onlineContent !== true">
+          <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'"
+            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
               class="copy icon"></i></button>
-          <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')" *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true && data?.showAddingToLibraryButton !== true"
-            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
-            {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="download icon"></i></button>
-          <button *ngIf="checkOfflineRoutes === 'browse' && contentId === data.metaData.identifier && data?.showAddingToLibraryButton === true"
-            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
-            {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
-          <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' " class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
-            {{resourceService.frmelmnts?.btn?.addedToLibrary}}
-          </button>
+        </div>
+        <div *ngIf="status==='OFFLINE' && onlineContent === true" class="d-flex flex-w-wrap flex-jc-center">
+          <i class="exclamation circle icon sb-exclamation-icon fs-2-5"></i>
+          <p class="m-16 text-center">{{resourceService.frmelmnts?.btn?.connectToInternet}}</p>
+          <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'"
+            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
+              class="copy icon"></i></button>
+        </div>
+        <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')"
+          *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true && data?.showAddingToLibraryButton !== true"
+          class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
+          {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="download icon"></i></button>
+        <button
+          *ngIf="checkOfflineRoutes === 'browse' && contentId === data.metaData.identifier && data?.showAddingToLibraryButton === true"
+          class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
+          {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
+        <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' "
+          class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
+          {{resourceService.frmelmnts?.btn?.addedToLibrary}}
+        </button>
       </div>
     </div>
   </div>
