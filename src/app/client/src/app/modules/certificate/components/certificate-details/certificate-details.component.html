@@ -21,17 +21,18 @@
       </label>
       <div class="sb-certificatePage-field sb-field" id="certificate">
         <input #codeInputField (keyup)="getCodeLength($event)" (keydown.space)="$event.preventDefault();" [(ngModel)]="certificateCode" type="text" maxlength="6" pattern="^[-a-zA-Z0-9@\.+_]+$" required autofocus name="certificate" class="sb-form-control text-center"/>
-        <button [disabled]="!enableVerifyButton" type="button" class="sb-btn sb-btn-primary sb-btn-normal ripple width-100 mt-32" (click)="certificateVerify()"
-        appTelemetryInteract [telemetryInteractEdata]="{id:'verify-certificate-button' , type:'click' , pageid:pageId }"
-        [telemetryInteractCdata]="telemetryCdata">
-          {{resourceService?.frmelmnts?.btn?.verify}}
-        </button>
       </div>
     </div>
+      <button [disabled]="!enableVerifyButton" type="button" class="sb-btn sb-btn-primary sb-btn-normal ripple width-100" (click)="certificateVerify()"
+      appTelemetryInteract [telemetryInteractEdata]="{id:'verify-certificate-button' , type:'click' , pageid:pageId }"
+      [telemetryInteractCdata]="telemetryCdata">
+        {{resourceService?.frmelmnts?.btn?.verify}}
+      </button>
   </div>
 </div>
-<div *ngIf="viewCertificate">
-<div  class="sb-certificatePage sb-certificate-view sb-certificatePage-flexHeight">
+
+<div *ngIf="viewCertificate" class="sb-certificatePage sb-certificate-view">
+  <div class="sb-certificatePage sb-certificate-view">
     <div class="sb-certificatePage-header">
       <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
     </div>
@@ -48,27 +49,24 @@
         <strong class="d-block">“{{courseName}}”</strong>
         <span class="d-block">{{resourceService?.frmelmnts?.lbl?.onDiksha | interpolate:'{instance}':instance}}<strong>{{issuedOn}}</strong></span>
       </p>
-      
-    </div>
-
-  </div>
-
-  <div class="sb-mobileDevice text-center">
-    <div class="sb-mobileDevice-screen">
-      <div class="sb-mobileDevice-sensors">
-        <div class="sb-mobileDevice-sensor"></div>
-        <div class="sb-mobileDevice-speaker"></div>
-        <div class="sb-mobileDevice-sensor"></div>
-      </div>
-      <iframe class="sb-mobileDevice-videoScreen" [src]="watchVideoLink" frameborder="0" allowfullscreen></iframe>
-    </div>
-  </div>
-  
-  <div  class="sb-certificatePage sb-certificate-view">
-    <div class="sb-certificatePage-holder-details">
-      <a appTelemetryInteract [telemetryInteractEdata]="{id:'return-to-courses-button' , type:'click' , pageid:pageId }" (click)="navigateToCoursesPage()" class="mt-32 width-100 d-flex flex-jc-space-between p-8 cursor-pointer sb-btn-arrow" title="Return to Courses">
+      <button *ngIf="watchVideoLink" type="button" class="sb-btn sb-btn-normal sb-btn-secondary mb-32" (click)="navigateToWatchVideoModal()"
+      appTelemetryInteract [telemetryInteractEdata]="{id:'watch-video-button' , type:'click' , pageid:pageId }">
+        <i class="play circle icon"></i>{{resourceService?.frmelmnts?.lbl?.watchCourseVideo}}
+      </button>
+      <a appTelemetryInteract [telemetryInteractEdata]="{id:'return-to-courses-button' , type:'click' , pageid:pageId }" (click)="navigateToCoursesPage()" class="width-100 d-flex flex-jc-space-between p-8 cursor-pointer sb-btn-arrow" title="Return to Courses">
         {{resourceService?.frmelmnts?.lbl?.returnToCourses}} <i class="angle right icon"></i>
       </a>
+      <sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'" class="sb-modal" appBodyScroll (dismissed)="showSuccessModal = false" #modal>
+        <div class="sb-modal-header">
+          {{resourceService?.frmelmnts?.lbl?.watchCourseVideo}}
+        </div>
+        <div class="sb-modal-content p-0 sb-bg-color-black height-100">
+          <div class="responsive-media">
+            <iframe width="560" height="315" [src]="watchVideoLink" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </sui-modal>
     </div>
   </div>
+
 </div>

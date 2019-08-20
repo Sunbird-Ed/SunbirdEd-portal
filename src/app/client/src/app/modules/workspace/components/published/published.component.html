@@ -4,11 +4,6 @@
 </div>
 
 <div class="ui grid" *ngIf="!showLoader">
-  <div *ngIf="showCourseQRCodeBtn" class="ml-auto">
-    <button class="sb-btn sb-btn-normal sb-btn-secondary" (click)=getCourseQRCsv();>
-      {{resourceService?.frmelmnts?.lbl?.downloadCourseQRCode}}
-    </button>
-  </div> 
   <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
     <div class="ui stackable three column grid" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="publishedContent">
       <div in-view-item *ngFor="let content of publishedContent;let i = index;" [id]="i" [data]="content" class="column py-5 pl-10">

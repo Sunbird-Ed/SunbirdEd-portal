@@ -16,10 +16,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    &.sb-certificatePage-flexHeight {
-      min-height: auto;
-      margin-bottom: 0;
-    }
 
     @include respond-above(xs) {
       max-width: $sb-certificatePage-max-width;
@@ -60,7 +56,7 @@
   
     .sb-certificatePage-field {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       width: $sb-certificatePage-field-width;
       margin: $sb-certificatePage-field-margin;
   
@@ -129,8 +125,11 @@
         text-align: center;
         margin: $sb-certificatePage-holder-name-margin;
       }
+      .sb-btn-arrow {
+        border-top:1px solid var(--gray-200);
+        border-bottom:1px solid var(--gray-200);
+      }
     }
-    
     .sb-certificatePage-overlay {
       position: absolute;
       top: 0;
@@ -172,9 +171,4 @@
       }
     }
   }
-}
-
-.sb-btn-arrow {
-  border-top:1px solid var(--gray-200);
-  border-bottom:1px solid var(--gray-200);
 }
