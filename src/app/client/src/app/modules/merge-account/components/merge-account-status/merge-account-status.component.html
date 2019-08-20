@@ -1,0 +1,24 @@
+<sui-modal
+  [isClosable]="false" class="fullpage" [size]="'fullscreen'"
+  #modal
+  [mustScroll]="true">
+
+  <div class="sb-certificatePage">
+    <div class="sb-certificatePage-header mb-auto">
+      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
+    </div>
+    <div class="sb-certificatePage-form mb-auto">
+      <div class="sb-merged-account-content text-center mb-32">
+        <h3 class="sb-merged-account-body-header my-24 font-weight-bold">
+          {{resourceService.frmelmnts?.lbl?.mergeAccount}}</h3>
+        <p *ngIf="isMergeSuccess" class="sb-merged-account-body-para sb-color-success font-weight-bold">
+          {{resourceService.messages?.imsg?.m0065}} <br>{{resourceService.messages?.imsg?.m0066}}</p>
+        <p *ngIf="!isMergeSuccess" class="sb-merged-account-body-para sb-color-error font-weight-bold">
+          {{resourceService.messages?.imsg?.m0067}} </p>
+      </div>
+      <button class="sb-btn sb-btn-secondary sb-btn-normal width-100 my-8"
+              (click)="closeModal()">{{resourceService.frmelmnts?.btn?.ok}}
+      </button>
+    </div>
+  </div>
+</sui-modal>
