@@ -1,10 +1,12 @@
 import { ResourceService } from '../../services/index';
-import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { ICard } from '../../interfaces';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { ConnectionService } from './../../../offline/services/connection-service/connection.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-offline-card',
@@ -12,7 +14,7 @@ import { ConnectionService } from './../../../offline/services/connection-servic
   styleUrls: ['./offline-card.component.scss']
 })
 
-export class OfflineCardComponent implements OnInit, OnChanges {
+export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   /**
   * content is used to render IContents value on the view
   */
@@ -28,6 +30,8 @@ export class OfflineCardComponent implements OnInit, OnChanges {
   showAddingToLibraryButton: boolean;
   isConnected = navigator.onLine;
   status = this.isConnected ? 'ONLINE' : 'OFFLINE';
+  onlineContent = false;
+  public unsubscribe = new Subject<void>();
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
@@ -52,16 +56,14 @@ export class OfflineCardComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     if (_.includes(['video/youtube', 'video/x-youtube'], this.data.metaData.mimeType)) {
-      this.data['youtubeContent'] = true;
+      this.onlineContent = true;
     }
-    this.connectionService.monitor().subscribe(isConnected => {
-      this.isConnected = isConnected;
-      if (this.isConnected) {
-        this.status = 'ONLINE';
-      } else {
-        this.status = 'OFFLINE';
-      }
-    });
+    this.connectionService.monitor().pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe(isConnected => {
+        this.isConnected = isConnected;
+        this.status = isConnected ? 'ONLINE' : 'OFFLINE';
+      });
   }
 
   public onAction(data, action) {
@@ -74,6 +76,11 @@ export class OfflineCardComponent implements OnInit, OnChanges {
 
   ngOnChanges () {
     this.cdr.detectChanges();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }
 
