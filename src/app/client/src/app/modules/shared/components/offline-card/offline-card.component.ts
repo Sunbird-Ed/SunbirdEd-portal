@@ -34,8 +34,6 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   public unsubscribe = new Subject<void>();
   showModal = false;
 
-  
-
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
   }
