@@ -59,7 +59,7 @@ export class CertificateDetailsComponent implements OnInit {
     this.certificateService.validateCertificate(request).subscribe(
       (data: ServerResponse) => {
         this.getCourseVideoUrl(_.get(data, 'result.response.courseId'));
-        const certData = data.result.response.json;
+        const certData = _.get(data, 'result.response.json');
         this.loader = false;
         this.viewCertificate = true;
         this.recipient = certData.recipient.name;
