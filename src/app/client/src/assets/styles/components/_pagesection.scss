@@ -24,8 +24,11 @@
   }
   .sb-cls-btn{
     padding: $base-block-space;
-    height: auto;
-    cursor: pointer;
+    // height: auto;
+    // cursor: pointer;
+    i.icon{
+      margin-right: 0 !important;
+    }
   }
 }
 .last .sb-pageSection-footer {
