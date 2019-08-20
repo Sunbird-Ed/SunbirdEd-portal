@@ -32,6 +32,9 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   status = this.isConnected ? 'ONLINE' : 'OFFLINE';
   onlineContent = false;
   public unsubscribe = new Subject<void>();
+  showModal = false;
+
+  
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
@@ -70,7 +73,25 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
       data.showAddingToLibraryButton = true;
+      this.checkYoutubeContent(data, action);
+    } else {
+      this.clickEvent.emit({ 'action': action, 'data': data });
     }
+  }
+
+  checkYoutubeContent(data, action) {
+    this.showModal = false;
+    let isYoutube;
+    try { isYoutube = JSON.parse(data.mimeTypesCount); } catch (error) { isYoutube = undefined; }
+    if (_.includes(['video/youtube', 'video/x-youtube'], data.metaData.mimeType)
+      || _.has(isYoutube, 'video/youtube') || _.has(isYoutube, 'video/x-youtube')) {
+      this.showModal = true;
+    } else {
+      this.clickEvent.emit({ 'action': action, 'data': data });
+    }
+  }
+
+  download(data, action) {
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
