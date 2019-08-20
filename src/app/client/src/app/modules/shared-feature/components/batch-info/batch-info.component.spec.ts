@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RouterModule } from '@angular/router';
-import { batchInfoMockResponse } from './batch-info.component.spec.data'
+import { batchInfoMockResponse } from './batch-info.component.spec.data';
 
 describe('BatchInfoComponent', () => {
   let component: BatchInfoComponent;
