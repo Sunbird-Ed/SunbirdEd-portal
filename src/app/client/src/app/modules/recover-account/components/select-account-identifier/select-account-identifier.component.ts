@@ -86,11 +86,13 @@ export class SelectAccountIdentifierComponent implements OnInit {
     _.forEach(this.recoverAccountService.fuzzySearchResults, element => {
       _.forIn(element, (value, key) => {
         if (['phone', 'email', 'prevUsedEmail', 'prevUsedPhone'].includes(key)) {
-          this.validIdentifiers.push({
-            id: element.id,
-            type: key,
-            value: value
-          });
+          if (value) {
+            this.validIdentifiers.push({
+              id: element.id,
+              type: key,
+              value: value
+            });
+          }
         }
       });
     });
