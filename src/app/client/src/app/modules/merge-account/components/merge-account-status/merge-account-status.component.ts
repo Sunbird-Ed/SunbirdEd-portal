@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {ResourceService} from '@sunbird/shared';
 
 @Component({
   selector: 'app-merge-account-status',
@@ -11,7 +12,7 @@ export class MergeAccountStatusComponent implements OnInit {
   isMergeSuccess: any = {};
   redirectUri: string;
 
-  constructor(public activatedRoute: ActivatedRoute) {
+  constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService) {
   }
 
   ngOnInit() {
