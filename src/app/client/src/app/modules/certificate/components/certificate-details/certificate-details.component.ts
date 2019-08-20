@@ -1,4 +1,4 @@
-import { CertificateService } from '@sunbird/core';
+import { CertificateService, PlayerService } from '@sunbird/core';
 import { ServerResponse, ResourceService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -37,7 +37,8 @@ export class CertificateDetailsComponent implements OnInit {
     public certificateService: CertificateService,
     public resourceService: ResourceService,
     public router: Router,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public playerService: PlayerService
   ) { }
 
   ngOnInit() {
@@ -57,13 +58,13 @@ export class CertificateDetailsComponent implements OnInit {
     };
     this.certificateService.validateCertificate(request).subscribe(
       (data: ServerResponse) => {
+        this.getCourseVideoUrl(_.get(data, 'result.response.courseId'));
+        const certData = data.result.response.json;
         this.loader = false;
         this.viewCertificate = true;
-        this.recipient = data.result.response.jsonData.recipient.name;
-        this.courseName = data.result.response.jsonData.badge.name;
-        this.issuedOn = moment(new Date(data.result.response.jsonData.issuedOn)).format('DD MMM YYYY');
-        this.watchVideoLink = data.result.response.otherLink ?
-        this.sanitizer.bypassSecurityTrustResourceUrl(data.result.response.otherLink) : '';
+        this.recipient = certData.recipient.name;
+        this.courseName = certData.badge.name;
+        this.issuedOn = moment(new Date(certData.issuedOn)).format('DD MMM YYYY');
       },
       (err) => {
         this.wrongCertificateCode = true;
@@ -88,11 +89,7 @@ export class CertificateDetailsComponent implements OnInit {
   }
 
   navigateToCoursesPage() {
-    if (window.frameElement) {
-      window.postMessage('event:returnToCourses', '*');
-    } else {
-      this.router.navigate(['/explore-course']);
-    }
+    this.router.navigate(['/explore-course']);
   }
 
   setTelemetryData() {
@@ -116,5 +113,14 @@ export class CertificateDetailsComponent implements OnInit {
         type: 'Task'
       }
     ];
+  }
+
+  getCourseVideoUrl(courseId) {
+    this.playerService.getCollectionHierarchy(courseId).subscribe(
+      (response: ServerResponse) => {
+        this.watchVideoLink = _.get(response, 'result.content.certVideoUrl') ?
+        this.sanitizer.bypassSecurityTrustResourceUrl(_.get(response, 'result.content.certVideoUrl')) : '';
+    }, (error) => {
+    });
   }
 }
