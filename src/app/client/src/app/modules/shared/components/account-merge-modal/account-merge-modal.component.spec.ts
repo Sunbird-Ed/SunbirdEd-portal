@@ -5,6 +5,7 @@ import {ResourceService} from '@sunbird/shared';
 import {AccountMergeModalComponent} from './account-merge-modal.component';
 import {Router} from '@angular/router';
 import {of as observableOf} from 'rxjs';
+import { InterpolatePipe } from './../../pipes';
 
 describe('AccountMergeModalComponent', () => {
   let component: AccountMergeModalComponent;
@@ -21,7 +22,7 @@ describe('AccountMergeModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule],
-      declarations: [AccountMergeModalComponent],
+      declarations: [AccountMergeModalComponent, InterpolatePipe],
       providers: [
         {provide: ResourceService, useValue: resourceBundle},
         {provide: Router, useClass: RouterStub}]
