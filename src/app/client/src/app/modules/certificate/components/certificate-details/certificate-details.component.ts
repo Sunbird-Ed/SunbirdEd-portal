@@ -13,7 +13,6 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
   styleUrls: ['./certificate-details.component.scss']
 })
 export class CertificateDetailsComponent implements OnInit {
-  showSuccessModal: boolean;
   loader: boolean;
   viewCertificate: boolean;
   error = false;
@@ -25,7 +24,7 @@ export class CertificateDetailsComponent implements OnInit {
   telemetryCdata: Array<{}> = [];
   pageId: string;
 
-/** To store the certificate details data */
+  /** To store the certificate details data */
   recipient: string;
   courseName: string;
   issuedOn: string;
@@ -62,9 +61,9 @@ export class CertificateDetailsComponent implements OnInit {
         const certData = _.get(data, 'result.response.json');
         this.loader = false;
         this.viewCertificate = true;
-        this.recipient = certData.recipient.name;
-        this.courseName = certData.badge.name;
-        this.issuedOn = moment(new Date(certData.issuedOn)).format('DD MMM YYYY');
+        this.recipient = _.get(certData, 'recipient.name');
+        this.courseName = _.get(certData, 'badge.name');
+        this.issuedOn = moment(new Date(_.get(certData, 'issuedOn'))).format('DD MMM YYYY');
       },
       (err) => {
         this.wrongCertificateCode = true;
@@ -82,10 +81,6 @@ export class CertificateDetailsComponent implements OnInit {
     } else {
       this.enableVerifyButton = false;
     }
-  }
-
-  navigateToWatchVideoModal() {
-    this.showSuccessModal = true;
   }
 
   navigateToCoursesPage() {
@@ -119,8 +114,8 @@ export class CertificateDetailsComponent implements OnInit {
     this.playerService.getCollectionHierarchy(courseId).subscribe(
       (response: ServerResponse) => {
         this.watchVideoLink = _.get(response, 'result.content.certVideoUrl') ?
-        this.sanitizer.bypassSecurityTrustResourceUrl(_.get(response, 'result.content.certVideoUrl')) : '';
-    }, (error) => {
-    });
+          this.sanitizer.bypassSecurityTrustResourceUrl(_.get(response, 'result.content.certVideoUrl')) : '';
+      }, (error) => {
+      });
   }
 }
