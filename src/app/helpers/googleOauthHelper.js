@@ -19,18 +19,6 @@ const keycloakGoogle = getKeyCloakClient({
   }
 })
 
-// keycloack client for account merge poiting to subdomain
-const keycloakMergeGoogle = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
-  bearerOnly: true,
-  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
-  credentials: {
-    secret: envHelper.KEYCLOAK_GOOGLE_CLIENT.secret
-  }
-})
-
-
 const keycloakGoogleAndroid = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
   bearerOnly: true,
@@ -76,7 +64,7 @@ class GoogleOauth {
       throw error.message
     } else {
       throw 'unhandled exception while getting tokens'
-    }
+    } 
   }
 }
 const googleOauth = new GoogleOauth()
@@ -88,29 +76,15 @@ const createSession = async (emailId, reqQuery, req, res) => {
     keycloakClient = keycloakGoogleAndroid;
     scope = 'offline_access';
   }
-
-  // merge account in progress
-  if (_.get(req, 'session.mergeAccountInfo.initiatorAccountDetails')) {
-    grant = await keycloakMergeGoogle.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
-    req.session.mergeAccountInfo.mergeFromAccountDetails = {
-      sessionToken: grant.access_token.token
-    };
-    return {
-      access_token: grant.access_token.token,
-      refresh_token: grant.refresh_token.token
-    };
-  } else {
-    grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
-    keycloakClient.storeGrant(grant, req, res);
-    req.kauth.grant = grant;
-    keycloakClient.authenticated(req)
-    return {
-      access_token: grant.access_token.token,
-      refresh_token: grant.refresh_token.token
-    };
-  }
+  grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
+  keycloakClient.storeGrant(grant, req, res)
+  req.kauth.grant = grant
+  keycloakClient.authenticated(req)
+  return {
+    access_token: grant.access_token.token,
+    refresh_token: grant.refresh_token.token
+  };
 }
-
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
     method: 'GET',

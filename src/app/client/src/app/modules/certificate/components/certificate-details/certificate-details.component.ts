@@ -9,8 +9,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-certificate-details',
-  templateUrl: './certificate-details.component.html',
-  styleUrls: ['./certificate-details.component.scss']
+  templateUrl: './certificate-details.component.html'
 })
 export class CertificateDetailsComponent implements OnInit {
   showSuccessModal: boolean;
@@ -88,11 +87,7 @@ export class CertificateDetailsComponent implements OnInit {
   }
 
   navigateToCoursesPage() {
-    if (window.frameElement) {
-      window.postMessage('event:returnToCourses', '*');
-    } else {
-      this.router.navigate(['/explore-course']);
-    }
+    this.router.navigate(['/explore-course']);
   }
 
   setTelemetryData() {
