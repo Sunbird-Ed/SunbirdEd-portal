@@ -148,7 +148,7 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.playContent).toHaveBeenCalledWith(content);
   });
 
-  fit('download content', () => {
+  it('download content', () => {
   const downloadManagerService = TestBed.get(DownloadManagerService);
     const mockData = download_success;
     const mockObservableData = observableOf(mockData);

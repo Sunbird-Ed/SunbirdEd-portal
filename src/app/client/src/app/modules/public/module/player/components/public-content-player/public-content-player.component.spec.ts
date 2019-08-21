@@ -112,7 +112,7 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
 
-  fit('download content', () => {
+  it('download content', () => {
     const downloadManagerService = TestBed.get(DownloadManagerService);
       const mockData = serverRes.download_success;
       const mockObservableData = observableOf(mockData);
