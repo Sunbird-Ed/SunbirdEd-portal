@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
-import { ConnectionService } from './../../../offline/services/connection-service/connection.service';
+import { ConnectionService } from '@sunbird/offline';
 
 @Component({
   selector: 'app-collection-tree',
