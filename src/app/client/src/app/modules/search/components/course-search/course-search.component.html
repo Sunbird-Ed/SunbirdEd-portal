@@ -2,10 +2,11 @@
 <div class="ui container">
     <div class="content-grid mt-24">
         <div class="sb-pageSection">
-            <div  class="sb-pageSection-header" *ngIf="!showLoader && contentList.length && this.queryParams.key">
+            <div  class="sb-pageSection-header" *ngIf="!showLoader && this.queryParams.key">
                 <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML] ="resourceService.frmelmnts?.lbl?.showingResultsFor |
                 interpolate:'{searchString}':this.queryParams.key "> </h4>
-                <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="['/learn']">Close <i class="close icon"></i></button>
+                <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="['/learn']">
+                    {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
             </div>      
         </div>
 

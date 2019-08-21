@@ -16,7 +16,8 @@
             ({{searchResults.length}})</span>
           <button *ngIf="!isOffline" appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
             [telemetryInteractCdata]="telemetryCdata"
-            class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn computer only" type="button" routerLink="/get">Close
+            class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn computer only" type="button" routerLink="/get">
+            {{resourceService?.frmelmnts?.btn?.close}}
             <i class="close icon"></i></button>
         </div>
       </div>

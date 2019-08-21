@@ -43,7 +43,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   contentName: string;
   public slug: string;
   organisationId: string;
- 
+
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
       && this.pageSections.length < this.carouselMasterData.length) {
