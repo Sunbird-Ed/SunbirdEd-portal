@@ -148,18 +148,17 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.playContent).toHaveBeenCalledWith(content);
   });
 
-  it('download content', () => {
+  fit('download content', () => {
   const downloadManagerService = TestBed.get(DownloadManagerService);
     const mockData = download_success;
     const mockObservableData = observableOf(mockData);
     spyOn(downloadManagerService, 'startDownload').and.returnValue(mockObservableData);
-    spyOn(component, 'updateContent').and.callThrough();
     component.collectionTreeNodes = collectionTree;
     expect(component.collectionTreeNodes.downloadStatus).toBeFalsy();
+    component.ngOnInit();
     component.downloadContent(component.collectionTreeNodes.children[0].children[0]);
     component.collectionTreeNodes = downloaded_collectionTree;
     expect(component.collectionTreeNodes.downloadStatus).toBeTruthy();
-    expect(component.updateContent).toHaveBeenCalled();
     expect(downloadManagerService.startDownload).toHaveBeenCalled();
   });
 });

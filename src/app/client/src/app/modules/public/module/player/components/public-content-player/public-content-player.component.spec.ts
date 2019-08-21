@@ -112,14 +112,12 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
 
-  it('download content', () => {
+  fit('download content', () => {
     const downloadManagerService = TestBed.get(DownloadManagerService);
       const mockData = serverRes.download_success;
       const mockObservableData = observableOf(mockData);
       spyOn(downloadManagerService, 'startDownload').and.returnValue(mockObservableData);
-      spyOn(component, 'updateContent').and.callThrough();
       component.downloadContent(serverRes.result.result.content);
-      expect(component.updateContent).toHaveBeenCalled();
       expect(downloadManagerService.startDownload).toHaveBeenCalled();
     });
 });
