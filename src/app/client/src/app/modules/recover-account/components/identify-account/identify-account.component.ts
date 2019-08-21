@@ -79,7 +79,7 @@ export class IdentifyAccountComponent implements OnInit {
     if (this.errorCount >= 2) {
       const reqQuery = this.activatedRoute.snapshot.queryParams;
       let resQuery: any = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
-      resQuery.error_message = 'You have exceeded maximum retry';
+      resQuery.error_message = 'You have exceeded maximum retry. Please try after some time';
       resQuery = Object.keys(resQuery).map(key =>
         encodeURIComponent(key) + '=' + encodeURIComponent(resQuery[key])).join('&');
       const redirect_uri = reqQuery.error_callback + '?' + resQuery;

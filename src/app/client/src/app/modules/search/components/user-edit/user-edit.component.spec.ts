@@ -1,6 +1,6 @@
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { UserSearchService } from './../../services';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {
   SharedModule, ServerResponse, PaginationService, ResourceService,
@@ -53,7 +53,7 @@ describe('UserEditComponent', () => {
                 userId: '6d4da241-a31b-4041-bbdb-dd3a898b3f85',
               }),
             },
-            queryParams: observableOf({ key: 'h' }),
+            queryParams: observableOf({ key: 'admin' }),
             snapshot: {
               data: {
                 telemetry: {
@@ -85,6 +85,67 @@ describe('UserEditComponent', () => {
     fixture = TestBed.createComponent(UserEditComponent);
     component = fixture.componentInstance;
   });
+
+  it('should act upon query params change', () => {
+    component.ngOnInit();
+    expect(component.queryParams).toEqual({ 'key': 'admin' });
+  });
+
+  it('should fetch logged in user details on component init', () => {
+    const userService = TestBed.get(UserService);
+    (userService as any)._userData$.next({ err: null, userProfile: Response.userData.result.response });
+    const getLoggedInUserDetailsSpy = spyOn(component, 'getLoggedInUserDetails').and.callThrough();
+    const getAllRolesSpy = spyOn(component, 'getAllRoles');
+    component.ngOnInit();
+    expect(getLoggedInUserDetailsSpy).toHaveBeenCalled();
+    expect(getLoggedInUserDetailsSpy).toHaveBeenCalledTimes(1);
+    expect(component.userProfile).toEqual(Response.userData.result.response);
+    expect(component.stateId).toBe('969dd3c1-4e98-4c17-a994-559f2dc70e18');
+    expect(getAllRolesSpy).toHaveBeenCalled();
+    expect(getAllRolesSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should redirect when fetching logged in user details fails', () => {
+    const userService = TestBed.get(UserService);
+    const toasterService = TestBed.get(ToasterService);
+    (userService as any)._userData$.next({ err: 'ok', userProfile: null });
+    const getLoggedInUserDetailsSpy = spyOn(component, 'getLoggedInUserDetails').and.callThrough();
+    const getAllRolesSpy = spyOn(component, 'getAllRoles');
+    const toasterSpy = spyOn(toasterService, 'error').and.callThrough();
+    const redirectSpy = spyOn(component, 'redirect');
+    component.ngOnInit();
+    expect(getLoggedInUserDetailsSpy).toHaveBeenCalled();
+    expect(getLoggedInUserDetailsSpy).toHaveBeenCalledTimes(1);
+    expect(component.userProfile).toBeFalsy();
+    expect(component.stateId).toBeFalsy();
+    expect(getAllRolesSpy).not.toHaveBeenCalled();
+    expect(toasterSpy).toHaveBeenCalled();
+    expect(toasterSpy).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+    expect(redirectSpy).toHaveBeenCalled();
+  });
+
+  it('should call ngOnInit method to get all roles', () => {
+    const userService = TestBed.get(UserService);
+    const searchService = TestBed.get(UserSearchService);
+    const searchServiceSpy = spyOn(searchService, 'getUserById').and.returnValue(observableOf(Response.successData));
+    (userService as any)._userData$.next({ err: null, userProfile: Response.userData.result.response });
+    component.ngOnInit();
+    expect(component.userId).toEqual('6d4da241-a31b-4041-bbdb-dd3a898b3f85');
+    expect(searchServiceSpy).toHaveBeenCalled();
+    expect(searchServiceSpy).toHaveBeenCalledTimes(1);
+    expect(component.userDetails).toBeDefined();
+    expect(component.userDetails).toEqual(Response.successData.result.response);
+    expect(component.rootOrgRoles).toBeTruthy();
+    expect(component.rootOrgRoles).toEqual([
+      'ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'BOOK_CREATOR'
+    ]);
+    expect(component.selectedOrgUserRoles).toEqual([
+      'ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'BOOK_CREATOR'
+    ]);
+    expect(component.selectedSchoolId).toBeTruthy();
+    expect(component.selectedSchoolId).toBe('0124226794392862720');
+  });
+
   xit('should call search api for populateOrgName', () => {
     const searchService = TestBed.get(SearchService);
     const options = {
@@ -178,12 +239,6 @@ describe('UserEditComponent', () => {
     expect(component.redirect).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });
-  xit('should call ngOnInit method to get all roles', () => {
-    const permissionService = TestBed.get(PermissionService);
-    permissionService.permissionAvailable$.next('success');
-    component.ngOnInit();
-    expect(component.allRoles['role']).not.toContain('PUBLIC');
-  });
   it('should not  show user name in modal header', () => {
     const searchService = TestBed.get(UserSearchService);
     const userService = TestBed.get(UserService);
@@ -193,7 +248,7 @@ describe('UserEditComponent', () => {
     component.selectedOrgUserRoles = Response.successData.result.response.organisations[0].roles;
     userService._userData$.next({ err: null, userProfile: Response.userdata });
     component.userDetailsForm.controls['role'].setValue('PUBLIC');
-    const modalHeader  = fixture.debugElement.query(By.css('.sb-modal-header'));
+    const modalHeader = fixture.debugElement.query(By.css('.sb-modal-header'));
     expect(modalHeader).toBeNull();
   });
 

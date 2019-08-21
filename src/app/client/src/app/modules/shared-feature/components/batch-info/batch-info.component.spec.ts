@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RouterModule } from '@angular/router';
-
+import { batchInfoMockResponse } from './batch-info.component.spec.data';
 
 describe('BatchInfoComponent', () => {
   let component: BatchInfoComponent;
@@ -44,5 +44,17 @@ describe('BatchInfoComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('ongoing batch will be true if enrolledBatchInfo has onGoingBatchCount', () => {
+    component.enrolledBatchInfo = batchInfoMockResponse.enrolledBatchInfoSuccessResponse;
+    component.ngOnInit();
+    expect(component.hasOngoingBatches).toBeTruthy();
+  });
+
+  it('ongoing batch will be false if enrolledBatchInfo not having onGoingBatchCount', () => {
+    component.enrolledBatchInfo = batchInfoMockResponse.enrolledBatchInfoErrorResponse;
+    component.ngOnInit();
+    expect(component.hasOngoingBatches).toBeFalsy();
   });
 });
