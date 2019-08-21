@@ -15,7 +15,7 @@
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
               <button id="download_{{contentData.identifier}}" (click)="downloadContent(contentData)"
-                *ngIf="checkOfflineRoutes === 'browse' && !contentData.hasOwnProperty('downloadStatus')"
+                *ngIf="checkOfflineRoutes === 'browse' && !contentData?.downloadStatus || contentData?.downloadStatus === 'FAILED'"
                 class="sb-btn sb-btn-outline-primary sb-btn-normal">
                 <i class="download icon"></i>{{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
               <button

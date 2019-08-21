@@ -14,7 +14,7 @@
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
               <button (click)="downloadContent(playerContent)"
-                *ngIf="checkOfflineRoutes === 'browse' && !playerContent.hasOwnProperty('downloadStatus')"
+                *ngIf="checkOfflineRoutes === 'browse' && !playerContent?.downloadStatus || playerContent?.downloadStatus === 'FAILED'"
                 class="sb-btn sb-btn-outline-primary sb-btn-normal ">
                 <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
               <button
@@ -88,7 +88,7 @@
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
               <button (click)="downloadContent(collectionData)"
-                *ngIf="checkOfflineRoutes === 'browse' && !collectionData.hasOwnProperty('downloadStatus')"
+                *ngIf="checkOfflineRoutes === 'browse' && !collectionData?.downloadStatus || collectionData?.downloadStatus === 'FAILED'"
                 class="sb-btn sb-btn-outline-primary sb-btn-normal">
                 <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
               <button

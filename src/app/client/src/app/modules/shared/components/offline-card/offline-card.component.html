@@ -88,7 +88,7 @@
               class="copy icon"></i></button>
         </div>
         <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')"
-          *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true && data?.downloadStatus === 'DOWNLOAD'"
+          *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true && !data?.downloadStatus || data?.downloadStatus === 'FAILED'"
           class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
           {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="download icon"></i></button>
         <button
