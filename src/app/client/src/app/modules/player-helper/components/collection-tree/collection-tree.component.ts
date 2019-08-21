@@ -147,8 +147,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
         node.title = node.model.name + '<span> (' + this.commingSoonMessage + ')</span>';
         node.extraClasses = 'disabled';
       } else {
-        if (this.isOffline && node.fileType === 'youtube' && this.status === 'OFFLINE' &&
-        !_.includes(this.router.url, 'browse')) {
+        if (this.isOffline && node.fileType === 'youtube' && this.status === 'OFFLINE') {
           node.title = `${node.model.name} <div class='sb-label sb-label-table sb-label-warning-0'>
           ${this.resourceService.frmelmnts.lbl.onlineOnly}</div>` ||
           `Untitled File <div class='sb-label sb-label-table sb-label-warning-0'>${this.resourceService.frmelmnts.lbl.onlineOnly}</div>`;
