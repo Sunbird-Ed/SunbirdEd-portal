@@ -10,6 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { DownloadManagerService } from './../../../../../offline/services';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -50,7 +51,7 @@ describe('PublicContentPlayerComponent', () => {
       TelemetryModule.forRoot()],
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PublicPlayerService,
+      providers: [PublicPlayerService, DownloadManagerService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
@@ -110,4 +111,15 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showPlayer).toBeTruthy();
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
+
+  it('download content', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+      const mockData = serverRes.download_success;
+      const mockObservableData = observableOf(mockData);
+      spyOn(downloadManagerService, 'startDownload').and.returnValue(mockObservableData);
+      spyOn(component, 'updateContent').and.callThrough();
+      component.downloadContent(serverRes.result.result.content);
+      expect(component.updateContent).toHaveBeenCalled();
+      expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    });
 });

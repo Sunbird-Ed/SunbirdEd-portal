@@ -10,8 +10,11 @@ import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule, ResourceService } from '@sunbird/shared';
-import { CollectionHierarchyGetMockResponse, collectionTree } from './public-collection-player.component.spec.data';
+import { CollectionHierarchyGetMockResponse, collectionTree, download_success,
+downloaded_collectionTree,
+} from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { DownloadManagerService } from './../../../../../offline/services';
 
 describe('PublicCollectionPlayerComponent', () => {
   let component: PublicCollectionPlayerComponent;
@@ -48,7 +51,7 @@ describe('PublicCollectionPlayerComponent', () => {
       declarations: [PublicCollectionPlayerComponent],
       imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
       TelemetryModule.forRoot(), SharedModule.forRoot()],
-      providers: [ContentService, PublicPlayerService, ResourceService,
+      providers: [ContentService, PublicPlayerService, ResourceService, DownloadManagerService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -143,5 +146,20 @@ describe('PublicCollectionPlayerComponent', () => {
     component.OnPlayContent(content, true);
     expect(component.OnPlayContent).toHaveBeenCalledWith(content, true);
     expect(component.playContent).toHaveBeenCalledWith(content);
+  });
+
+  it('download content', () => {
+  const downloadManagerService = TestBed.get(DownloadManagerService);
+    const mockData = download_success;
+    const mockObservableData = observableOf(mockData);
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(mockObservableData);
+    spyOn(component, 'updateContent').and.callThrough();
+    component.collectionTreeNodes = collectionTree;
+    expect(component.collectionTreeNodes.downloadStatus).toBeFalsy();
+    component.downloadContent(component.collectionTreeNodes.children[0].children[0]);
+    component.collectionTreeNodes = downloaded_collectionTree;
+    expect(component.collectionTreeNodes.downloadStatus).toBeTruthy();
+    expect(component.updateContent).toHaveBeenCalled();
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
   });
 });

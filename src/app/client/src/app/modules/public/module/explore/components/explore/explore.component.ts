@@ -43,7 +43,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   contentName: string;
   public slug: string;
   organisationId: string;
-
+ 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
       && this.pageSections.length < this.carouselMasterData.length) {
@@ -308,16 +308,14 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         // If download is completed card should show added to library
         _.find(downloadListdata.result.response.downloads.completed, (completed) => {
           if (pageData.metaData.identifier === completed.contentId) {
-            pageData['addedToLibrary'] = true;
-            pageData['showAddingToLibraryButton'] = false;
+            pageData['downloadStatus'] = 'DOWNLOADED';
           }
         });
 
         // If download failed, card should show again add to library
         _.find(downloadListdata.result.response.downloads.failed, (failed) => {
           if (pageData.metaData.identifier === failed.contentId) {
-            pageData['addedToLibrary'] = false;
-            pageData['showAddingToLibraryButton'] = false;
+            pageData['downloadStatus'] = 'FAILED';
           }
         });
       });

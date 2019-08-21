@@ -11,21 +11,21 @@
           <h1 class="sb-pageSection-title m-0 mr-8">
             {{playerContent.name}}
           </h1>
-          <div class="ml-auto">
-            <span *ngIf="isOffline" class="mr-16">
+          <div class="ml-auto d-flex flex-ai-center">
+            <div *ngIf="isOffline" class="mr-16">
               <button (click)="downloadContent(playerContent)"
-                *ngIf="checkOfflineRoutes === 'browse' && playerContent?.addedToLibrary !== true && playerContent?.showAddingToLibraryButton !== true"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ">
+                *ngIf="checkOfflineRoutes === 'browse' && !playerContent.hasOwnProperty('downloadStatus')"
+                class="sb-btn sb-btn-outline-primary sb-btn-normal ">
                 <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
               <button
-                *ngIf="checkOfflineRoutes === 'browse' && contentId === playerContent.identifier && playerContent?.showAddingToLibraryButton === true"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn disable">
+                *ngIf="checkOfflineRoutes === 'browse' && contentId === playerContent.identifier && playerContent.downloadStatus === 'DOWNLOADING'"
+                class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
                 {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
-              <button *ngIf="playerContent?.addedToLibrary === true && checkOfflineRoutes === 'browse' "
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn disable">
+              <button *ngIf="playerContent.downloadStatus === 'DOWNLOADED' && checkOfflineRoutes === 'browse'"
+                class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
                 {{resourceService.frmelmnts?.btn?.addedToLibrary}}
-              </button>
-            </span>
+            </button>
+            </div>
             <button class="sb-btn sb-btn-xs sb-btn-error" type="button" (click)="closeContentPlayer()"
               appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata"
               [telemetryInteractObject]="playerTelemetryInteractObject"
@@ -85,21 +85,20 @@
           <h1 class="sb-pageSection-title m-0 mr-5">
             {{collectionTitle}}
           </h1>
-          <div class="ml-auto">
-            <span *ngIf="isOffline" class="mr-16">
+          <div class="ml-auto d-flex flex-ai-center">
+            <div *ngIf="isOffline" class="mr-16">
               <button (click)="downloadContent(collectionData)"
-                *ngIf="checkOfflineRoutes === 'browse' && collectionData?.addedToLibrary !== true && collectionData?.showAddingToLibraryButton !== true"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ">
+                *ngIf="checkOfflineRoutes === 'browse' && !collectionData.hasOwnProperty('downloadStatus')"
+                class="sb-btn sb-btn-outline-primary sb-btn-normal">
                 <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
               <button
-                *ngIf="checkOfflineRoutes === 'browse' && contentId === collectionData.identifier && collectionData?.showAddingToLibraryButton === true"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn disable">
+                *ngIf="checkOfflineRoutes === 'browse' && collectionId === collectionData.identifier && collectionData.downloadStatus === 'DOWNLOADING'"
+                class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
                 {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
-              <button *ngIf="collectionData?.addedToLibrary === true && checkOfflineRoutes === 'browse' "
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn disable">
-                {{resourceService.frmelmnts?.btn?.addedToLibrary}}
-              </button>
-            </span>
+              <button *ngIf="collectionData.downloadStatus === 'DOWNLOADED' && checkOfflineRoutes === 'browse'"
+                class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
+                {{resourceService.frmelmnts?.btn?.addedToLibrary}}</button>
+                </div>
             <button class="sb-btn sb-btn-xs sb-btn-error " type="button" (click)="closeCollectionPlayer()"
               appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
               [telemetryInteractObject]="playerTelemetryInteractObject"

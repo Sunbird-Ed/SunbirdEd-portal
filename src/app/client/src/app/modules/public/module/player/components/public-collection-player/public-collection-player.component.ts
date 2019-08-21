@@ -97,6 +97,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public dialCode: string;
   playerOption: any;
   checkOfflineRoutes: string;
+
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
@@ -121,11 +122,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.deviceDetector();
     this.setTelemetryData();
 
-      if (this.isOffline &&  _.includes(this.router.url, 'browse')) {
+    if (this.isOffline ) {
+      if (_.includes(this.router.url, 'browse')) {
         this.checkOfflineRoutes = 'browse';
-      } else if (this.isOffline && !_.includes(this.router.url, 'browse')) {
+      } else if (!_.includes(this.router.url, 'browse')) {
         this.checkOfflineRoutes = 'library';
       }
+      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+        this.updateContent(data);
+      });
+    }
   }
   setTelemetryData() {
     if (this.dialCode) {
@@ -252,9 +258,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.treeModel.walk((node) => {
         if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
           this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
-          if (this.isOffline && collection.data.addedToLibrary) {
-            this.updateContent(node.model, true);
-          }
         }
         this.setContentNavigators();
       });
@@ -302,6 +305,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             this.playerContent = _.get(content, 'model');
+            if (this.isOffline && _.isEqual(_.get(this.collectionData, 'downloadStatus'), 'DOWNLOADED')) {
+              this.playerContent['downloadStatus'] = 'DOWNLOADED';
+            }
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
@@ -323,7 +329,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
       map((response) => {
         this.collectionData = response.result.content;
-        if (this.isOffline) {this.updateContent(this.collectionData); }
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
         return { data: response.result.content };
@@ -409,37 +414,34 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.downloadManagerService.downloadContentId = content.identifier;
       this.downloadManagerService.startDownload({}).subscribe(data => {
         this.downloadManagerService.downloadContentId = '';
-        content['showAddingToLibraryButton'] = true;
-        this.updateContent(content);
+        content['downloadStatus'] = 'DOWNLOADING';
       }, error => {
         this.downloadManagerService.downloadContentId = '';
-            content['addedToLibrary'] = false;
-            content['showAddingToLibraryButton'] = false;
-
+            content['downloadStatus'] = 'FAILED';
         this.toasterService.error(this.resourceService.messages.fmsg.m0090);
       });
   }
 
-  updateContent(content, isCollectionDownloaded?) {
-    if (isCollectionDownloaded) {
-      content['addedToLibrary'] = true;
-    }
-    this.downloadManagerService.downloadListEvent.subscribe((downloadListdata) => {
-              // If download is completed card should show added to library
-              _.find(downloadListdata.result.response.downloads.completed, (completed) => {
-                if (completed.contentId === content.identifier) {
-                  content['showAddingToLibraryButton'] = false;
-                  content['addedToLibrary'] = true;
-                }
-              });
-              // If download failed, card should show again add to library
-              _.find(downloadListdata.result.response.downloads.failed, (failed) => {
-                if (failed.contentId === content.identifier) {
-                  content['showAddingToLibraryButton'] = false;
-                  content['addedToLibrary'] = false;
-                }
-              });
-    });
+updateContent(downloadListdata) {
+  const content = _.isEmpty(this.playerContent) ? this.collectionData : this.playerContent;
+  this.updateDownloadStatus(downloadListdata, content);
+}
+updateDownloadStatus(downloadListdata, content) {
 
-  }
+  _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+    if (completed.contentId === content.identifier) {
+      content['downloadStatus'] = 'DOWNLOADED';
+
+    }
+  });
+  // If download failed, card should show again add to library
+  _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+    if (failed.contentId === content.identifier) {
+      content['downloadStatus'] = 'FAILED';
+
+    }
+  });
+
+
+ }
 }

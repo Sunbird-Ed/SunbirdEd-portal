@@ -90,11 +90,16 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     });
 
 
-      if ( this.isOffline && _.includes(this.router.url, 'browse')) {
+    if (this.isOffline ) {
+      if (_.includes(this.router.url, 'browse')) {
         this.checkOfflineRoutes = 'browse';
-      } else if (this.isOffline && !_.includes(this.router.url, 'browse')) {
+      } else if (!_.includes(this.router.url, 'browse')) {
         this.checkOfflineRoutes = 'library';
       }
+      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+          this.updateContent(data);
+      });
+    }
   }
   setTelemetryData() {
     this.telemetryInteractObject = {
@@ -122,7 +127,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.playerConfig = this.playerService.getConfig(contentDetails, options);
       this.playerConfig.context.objectRollup = this.objectRollup;
       this.contentData = response.result.content;
-      if (this.isOffline) {this.updateContent(this.contentData); }
       if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
         setTimeout(() => {
           this.showExtContentMsg = true;
@@ -197,44 +201,32 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     });
   }
   downloadContent(content) {
-
       this.downloadManagerService.downloadContentId = content.identifier;
       this.downloadManagerService.startDownload({}).subscribe(data => {
         this.downloadManagerService.downloadContentId = '';
-         content['showAddingToLibraryButton'] = true;
-        this.updateContent(content);
+        content['downloadStatus'] = 'DOWNLOADING';
       }, error => {
         this.downloadManagerService.downloadContentId = '';
-            content['addedToLibrary'] = false;
-            content['showAddingToLibraryButton'] = false;
+            content['downloadStatus'] = 'FAILED';
         this.toasterService.error(this.resourceService.messages.fmsg.m0090);
       });
   }
 
-  updateContent(content) {
-    this.downloadManagerService.downloadListEvent.subscribe((downloadListdata) => {
-              _.find(downloadListdata.result.response.downloads.inprogress, (inprogress) => {
-                if (content.identifier === inprogress.contentId) {
-                  content['showAddingToLibraryButton'] = true;
-                }
-              });
+  updateContent(downloadListdata) {
               // If download is completed card should show added to library
               _.find(downloadListdata.result.response.downloads.completed, (completed) => {
-                if (completed.contentId === content.identifier) {
-                  content['addedToLibrary'] = true;
-                  content['showAddingToLibraryButton'] = false;
+                if (completed.contentId === this.contentData.identifier) {
+                  this.contentData['downloadStatus'] = 'DOWNLOADED';
                 }
               });
               // If download failed, card should show again add to library
               _.find(downloadListdata.result.response.downloads.failed, (failed) => {
-                if (failed.contentId === content.identifier) {
-                  content['addedToLibrary'] = false;
-                  content['showAddingToLibraryButton'] = false;
+                if (failed.contentId === this.contentData.identifier) {
+                  this.contentData['downloadStatus'] = 'FAILED';
                 }
-              });
     });
-
   }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
