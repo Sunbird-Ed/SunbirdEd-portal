@@ -59,18 +59,30 @@ describe('CardComponent', () => {
     expect(component.showAddingToLibraryButton).toBeUndefined();
   });
 
-   it('should emit change addingto librarybutton to true if the action is download in onAction ', () => {
+  it('should emit change addingto librarybutton to true if the action is download in onAction ', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.cardData;
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'download');
-    expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
     expect(Response.emitData.data.showAddingToLibraryButton).toBeTruthy();
   });
 
-   it('initially offlineRoute should be library', () => {
-      expect(component.checkOfflineRoutes).toBe('library');
-    });
+  it('initially offlineRoute should be library', () => {
+    expect(component.checkOfflineRoutes).toBe('library');
+  });
 
+  it('when textbook or resources has youtube content should show modal', () => {
+    component.data = Response.cardData;
+    component.checkYoutubeContent(component.data, 'download');
+    expect(component.showModal).toBe(true);
+  });
+
+  it('when textbook or resources dont have youtube content', () => {
+    component.data = Response.cardDataWithoutYoutubeContent;
+    spyOn(component.clickEvent, 'emit');
+    component.checkYoutubeContent(component.data, 'download');
+    expect(component.showModal).toBe(false);
+    expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
+  });
 });
 
