@@ -3,6 +3,7 @@ import { ResourceService, ICard } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
+import { OfflineCardService } from '@sunbird/offline';
 
 @Component({
   selector: 'app-offline-dial-code-card',
@@ -24,6 +25,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   checkOfflineRoutes: string;
   contentId: string;
   showAddingToLibraryButton: boolean;
+  showModal = false;
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
@@ -33,7 +35,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef, public offlineCardService: OfflineCardService) {
     this.resourceService = resourceService;
   }
 
@@ -53,7 +55,14 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
       data.showAddingToLibraryButton = true;
+      this.showModal = this.offlineCardService.checkYoutubeContent(data);
+      if (this.showModal === false)  { this.clickEvent.emit({ 'action': action, 'data': data }); }
+    } else {
+      this.clickEvent.emit({ 'action': action, 'data': data });
     }
+  }
+
+  download(data, action) {
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
