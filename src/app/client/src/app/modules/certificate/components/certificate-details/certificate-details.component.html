@@ -60,7 +60,10 @@
         <div class="sb-mobileDevice-speaker"></div>
         <div class="sb-mobileDevice-sensor"></div>
       </div>
-      <iframe class="sb-mobileDevice-videoScreen" [src]="watchVideoLink" frameborder="0" allowfullscreen></iframe>
+      <div class="player-thumbnail" (click)="playContent(contentId)" *ngIf="showVideoThumbnail"></div>
+      <div class="h-100 certificate-area-player" *ngIf="!showVideoThumbnail">
+      <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+    </div>
     </div>
   </div>
   
