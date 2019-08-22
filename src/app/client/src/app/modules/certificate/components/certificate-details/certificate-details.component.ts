@@ -90,7 +90,7 @@ export class CertificateDetailsComponent implements OnInit {
   }
   /** To redirect to courses tab (for mobile device, they will handle 'href' change) */
   navigateToCoursesPage() {
-    if (this.activatedRoute.snapshot.params.clientId === 'android') {
+    if (this.activatedRoute.snapshot.queryParams.clientId === 'android') {
       window.location.href = '/explore-course';
     } else {
       this.router.navigate(['/explore-course']);
