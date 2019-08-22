@@ -1,4 +1,3 @@
-#Dockerfile for the player setup
 FROM node:8.11.0
 MAINTAINER "Rajesh Rajendran <rajesh.r@optit.co>"
 RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
