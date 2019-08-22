@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf,  Observable, throwError as observableThrowError } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,8 +10,12 @@ import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule, ResourceService } from '@sunbird/shared';
-import { CollectionHierarchyGetMockResponse, collectionTree, download_success,
-downloaded_collectionTree,
+import {
+  CollectionHierarchyGetMockResponse,
+  collectionTree,
+  download_success,
+  download_list,
+  download_error,
 } from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { DownloadManagerService } from './../../../../../offline/services';
@@ -43,6 +47,9 @@ describe('PublicCollectionPlayerComponent', () => {
     'messages': {
       'stmsg': {
         'm0118': 'No content to play'
+      },
+      'fmsg': {
+        'm0090': 'Could not download. Try again later'
       }
     }
   };
@@ -149,16 +156,43 @@ describe('PublicCollectionPlayerComponent', () => {
   });
 
   it('download content', () => {
-  const downloadManagerService = TestBed.get(DownloadManagerService);
+   const downloadManagerService = TestBed.get(DownloadManagerService);
     const mockData = download_success;
     const mockObservableData = observableOf(mockData);
     spyOn(downloadManagerService, 'startDownload').and.returnValue(mockObservableData);
     component.collectionTreeNodes = collectionTree;
     expect(component.collectionTreeNodes.downloadStatus).toBeFalsy();
-    component.ngOnInit();
     component.downloadContent(component.collectionTreeNodes.children[0].children[0]);
-    component.collectionTreeNodes = downloaded_collectionTree;
-    expect(component.collectionTreeNodes.downloadStatus).toBeTruthy();
+    expect(component.collectionTreeNodes.children[0].children[0].downloadStatus).toEqual('DOWNLOADING');
+    expect(component.collectionTreeNodes.downloadStatus).toBeFalsy();
     expect(downloadManagerService.startDownload).toHaveBeenCalled();
   });
+
+  it('Test Download content ', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceBundle.messages;
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
+    component.collectionTreeNodes = collectionTree;
+    expect(component.collectionTreeNodes.downloadStatus).toBeFalsy();
+    component.downloadContent(component.collectionTreeNodes.children[0].children[0]);
+    expect(component.collectionTreeNodes.children[0].children[0].downloadStatus).toEqual('FAILED');
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(resourceService.messages.fmsg.m0090).toEqual('Could not download. Try again later');
+  });
+
+  it('Test DownloadStatus is updating or not ', () => {
+    spyOn(component, 'updateDownloadStatus');
+    component.updateContent(download_list);
+    expect(component.updateDownloadStatus).toHaveBeenCalled();
+    });
+
+  it('Test event emit', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
+    component.updateDownloadStatus(download_list, CollectionHierarchyGetMockResponse.result.content);
+    expect(CollectionHierarchyGetMockResponse.result.content['downloadStatus']).
+    toBe('FAILED');
+  });
+
 });

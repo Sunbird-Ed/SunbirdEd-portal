@@ -14,6 +14,7 @@ export const CollectionHierarchyGetMockResponse = {
     'responseCode': 'OK',
     'result': {
         'content': {
+            'downloadStatus': 'DOWNLOAD',
             'code': 'org.ekstep.textbook.1498025274',
             'notes': '',
             'keywords': [
@@ -727,209 +728,6 @@ export const collectionTree = {
         'c_Sunbird_Dev_private_batch_count': 2,
         'board': 'CBSE'
     };
-
-export const downloaded_collectionTree = {
-
-        'data': {
-        'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
-
-            },
-            'downloadStatus': 'DOWNLOADED',
-            'mimeType': 'application/vnd.ekstep.content-collection',
-            // tslint:disable-next-line:max-line-length
-            'appIcon': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110672521134081296/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.thumb.jpg',
-            'gradeLevel': [
-                'Class 4'
-            ],
-            'children': [
-                {
-                    'code': 'do_1125110676518584321298',
-                    // tslint:disable-next-line:max-line-length
-                    'downloadUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110676518584321298/untitled-course-unit_1527230368465_do_1125110676518584321298_1.0_spine.ecar',
-                    'language': [
-                        'English'
-                    ],
-                    'variants': {
-                        'spine': {
-                            // tslint:disable-next-line:max-line-length
-                            'ecarUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110676518584321298/untitled-course-unit_1527230368465_do_1125110676518584321298_1.0_spine.ecar',
-                            'size': 68729
-                        }
-                    },
-                    'mimeType': 'application/vnd.ekstep.content-collection',
-                    'idealScreenSize': 'normal',
-                    'createdOn': '2018-05-25T06:32:17.971+0000',
-                    'children': [
-                        {
-                            'downloadStatus': 'DOWNLOADED',
-                            'previewUrl': 'http://www.dailymotion.com/video/x175su1',
-                            'subject': 'English',
-                            // tslint:disable-next-line:max-line-length
-                            'downloadUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110622654464001294/a5-ext-link_1527765793788_do_1125110622654464001294_2.0.ecar',
-                            'channel': '505c7c48ac6dc1edc9b08f21db5a571d',
-                            'showNotification': true,
-                            'language': [
-                                'English'
-                            ],
-                            'variants': {
-                                'spine': {
-                                    // tslint:disable-next-line:max-line-length
-                                    'ecarUrl': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/ecar_files/do_1125110622654464001294/a5-ext-link_1527765793872_do_1125110622654464001294_2.0_spine.ecar',
-                                    'size': 68484
-                                }
-                            },
-                            'mimeType': 'text/x-url',
-                            'gradeLevel': [
-                                'Class 1'
-                            ],
-                            // tslint:disable-next-line:max-line-length
-                            'appIcon': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110622654464001294/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.thumb.jpg',
-                            'appId': 'dev.sunbird.portal',
-                            'artifactUrl': 'http://www.dailymotion.com/video/x175su1',
-                            'contentEncoding': 'identity',
-                            'sYS_INTERNAL_LAST_UPDATED_ON': '2018-05-31T11:23:14.033+0000',
-                            'contentType': 'Resource',
-                            'lastUpdatedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
-                            'identifier': 'do_1125110622654464001294',
-                            'audience': [
-                                'Learner'
-                            ],
-                            'visibility': 'Default',
-                            'consumerId': '72e54829-6402-4cf0-888e-9b30733c1b88',
-                            'index': 1,
-                            'mediaType': 'content',
-                            'osId': 'org.ekstep.quiz.app',
-                            'lastPublishedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
-                            'prevState': 'Live',
-                            'lastPublishedOn': '2018-05-31T11:23:13.788+0000',
-                            'size': 68484,
-                            'concepts': [
-                                {
-                                    'identifier': 'SC7',
-                                    'name': 'Earth',
-                                    'objectType': 'Concept',
-                                    'relation': 'associatedTo',
-                                    'description': 'Earth',
-                                    'index': null,
-                                    'status': null,
-                                    'depth': null,
-                                    'mimeType': null,
-                                    'visibility': null,
-                                    'compatibilityLevel': null
-                                }
-                            ],
-                            'name': 'A5 ext link',
-                            'status': 'Live',
-                            'code': 'a5392316-994b-456c-b14b-2d11316c843a',
-                            'medium': 'Hindi',
-                            // tslint:disable-next-line:max-line-length
-                            'posterImage': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110569107128321291/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.jpg',
-                            'idealScreenSize': 'normal',
-                            'createdOn': '2018-05-25T06:21:20.450+0000',
-                            'contentDisposition': 'online',
-                            'lastUpdatedOn': '2018-05-31T11:23:13.620+0000',
-                            'creator': 'sunbird Test',
-                            'createdFor': [
-                                'ORG_001'
-                            ],
-                            'os': [
-                                'All'
-                            ],
-                            'pkgVersion': 2,
-                            'versionKey': '1527765793620',
-                            'idealScreenDensity': 'hdpi',
-                            's3Key': 'ecar_files/do_1125110622654464001294/a5-ext-link_1527765793788_do_1125110622654464001294_2.0.ecar',
-                            'framework': 'NCF',
-                            'lastSubmittedOn': '2018-05-25T06:22:18.386+0000',
-                            'createdBy': '63b0870c-f370-4f96-842d-f6a7fa2db1df',
-                            'compatibilityLevel': 4,
-                            'board': 'CBSE',
-                            'resourceType': 'Practice'
-                        }
-                    ],
-                    'contentDisposition': 'inline',
-                    'contentEncoding': 'gzip',
-                    'lastUpdatedOn': '2018-05-25T06:37:47.881+0000',
-                    'sYS_INTERNAL_LAST_UPDATED_ON': '2018-05-25T06:39:28.728+0000',
-                    'contentType': 'CourseUnit',
-                    'identifier': 'do_1125110676518584321298',
-                    'audience': [
-                        'Learner'
-                    ],
-                    'visibility': 'Parent',
-                    'os': [
-                        'All'
-                    ],
-                    'index': 1,
-                    'mediaType': 'content',
-                    'osId': 'org.ekstep.launcher',
-                    'pkgVersion': 1,
-                    'versionKey': '1527229937971',
-                    'idealScreenDensity': 'hdpi',
-                    // tslint:disable-next-line:max-line-length
-                    's3Key': 'ecar_files/do_1125110676518584321298/untitled-course-unit_1527230368465_do_1125110676518584321298_1.0_spine.ecar',
-                    'size': 68729,
-                    'lastPublishedOn': '2018-05-25T06:39:28.461+0000',
-                    'compatibilityLevel': 4,
-                    'name': 'Untitled Course Unit',
-                    'status': 'Live'
-                }
-            ],
-            'appId': 'ekstep_portal',
-            'contentEncoding': 'gzip',
-            'mimeTypesCount': '{"text/x-url":1,"application/vnd.ekstep.content-collection":1}',
-            'contentType': 'Course',
-            'sYS_INTERNAL_LAST_UPDATED_ON': '2018-06-27T08:00:03.690+0000',
-            'lastUpdatedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
-            'identifier': 'do_1125110672521134081296',
-            'audience': [
-                'Learner'
-            ],
-            // tslint:disable-next-line:max-line-length
-            'toc_url': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110672521134081296/artifact/do_1125110672521134081296toc.json',
-            'visibility': 'Default',
-            'contentTypesCount': '{"CourseUnit":1,"Resource":1}',
-            'childNodes': [
-                'do_1125110622654464001294',
-                'do_1125110676518584321298'
-            ],
-            'consumerId': '72e54829-6402-4cf0-888e-9b30733c1b88',
-            'mediaType': 'content',
-            'osId': 'org.ekstep.quiz.app',
-            'lastPublishedBy': '3b34c469-460b-4c20-8756-c5fce2de9e69',
-            'prevState': 'Review',
-            'size': 136330,
-            'lastPublishedOn': '2018-05-25T06:39:28.869+0000',
-            'name': 'A5 ext course',
-            'status': 'Live',
-            'code': 'org.sunbird.jWP6eG',
-            'medium': 'Hindi',
-            // tslint:disable-next-line:max-line-length
-            'posterImage': 'https://ekstep-public-dev.s3-ap-south-1.amazonaws.com/content/do_1125110569107128321291/artifact/62f05664348aeff61aa195d0dc3caba5_1527228627157.jpg',
-            'idealScreenSize': 'normal',
-            'createdOn': '2018-05-25T06:31:29.174+0000',
-            'contentDisposition': 'inline',
-            'lastUpdatedOn': '2018-05-25T06:39:28.401+0000',
-            'c_Sunbird_Dev_open_batch_count': 1,
-            'creator': 'sunbird Test',
-            'createdFor': [
-                'ORG_001'
-            ],
-            'os': [
-                'All'
-            ],
-            'pkgVersion': 1,
-            'versionKey': '1527230368401',
-            'idealScreenDensity': 'hdpi',
-            's3Key': 'ecar_files/do_1125110672521134081296/a5-ext-course_1527230368908_do_1125110672521134081296_1.0_spine.ecar',
-            'framework': 'NCF',
-            'lastSubmittedOn': '2018-05-25T06:37:48.439+0000',
-            'createdBy': '63b0870c-f370-4f96-842d-f6a7fa2db1df',
-            'leafNodesCount': 1,
-            'compatibilityLevel': 4,
-            'c_Sunbird_Dev_private_batch_count': 2,
-            'board': 'CBSE'
-        };
 export const download_success = {
          id: 'api.content.download',
          ver: '1.0',
@@ -957,5 +755,48 @@ export const download_error = {
          },
          responseCode: 'INTERNAL_SERVER_ERROR',
          result: {},
+       };
+export const download_list = {
+         id: 'api.content.download.list',
+         ver: '1.0',
+         ts: '2019-08-22T05:07:39.363Z',
+         params: {
+           resmsgid: 'f2da2305-75c9-4b54-a454-72cfe6433ebe',
+           msgid: '2025a654-e573-4546-b87d-0a293f2f6564',
+           status: 'successful',
+           err: null,
+           errmsg: null,
+         },
+         responseCode: 'OK',
+         result: {
+           response: {
+             downloads: {
+               submitted: [],
+               inprogress: [],
+               failed: [
+                {
+                    id: '9922bfb2-d94a-4724-8613-e8172cf3937f',
+                    contentId: 'do_112271823894691840181',
+                    mimeType: 'application/vnd.ekstep.content-collection',
+                    name: 'Math for dummies',
+                    status: 'FAILED',
+                    createdOn: 1566450435237,
+                    pkgVersion: 1,
+                    contentType: 'TextBook',
+                  },
+                  {   id: '9922bfb2-d94a-4724-8613-e8172cf3789g',
+                      contentId: 'domain_66675',
+                      mimeType: 'application/vnd.ekstep.ecml-archive',
+                      name: 'ffgh',
+                      status: 'FAILED',
+                      createdOn: 1566450435237,
+                      pkgVersion: 1,
+                      contentType: '',
+                  },
+               ],
+               completed: [],
+             },
+           },
+         },
        };
 
