@@ -7,14 +7,17 @@ describe('OfflineCardService', () => {
 
   it('should be created', () => {
     const service: OfflineCardService = TestBed.get(OfflineCardService);
-    const response = service.checkYoutubeContent(Response.cardData);
-    expect(response).toBe(true);
     expect(service).toBeTruthy();
   });
-  it('should be created', () => {
+
+  it('If data has youtube content', () => {
+    const service: OfflineCardService = TestBed.get(OfflineCardService);
+    const response = service.checkYoutubeContent(Response.cardData);
+    expect(response).toBe(true);
+  });
+  it('If data does not have youtube content', () => {
     const service: OfflineCardService = TestBed.get(OfflineCardService);
     const response = service.checkYoutubeContent(Response.cardDataWithoutYoutubeContent);
     expect(response).toBe(false);
-    expect(service).toBeTruthy();
   });
 });
