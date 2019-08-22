@@ -1,4 +1,3 @@
-# Dockerfile
 FROM node:8.11-slim
 RUN useradd -u 1001 -md /home/sunbird sunbird
 WORKDIR /home/sunbird
