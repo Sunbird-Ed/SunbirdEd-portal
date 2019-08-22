@@ -104,10 +104,17 @@ export class ChapterListComponent implements OnInit, OnChanges {
       _.forEach(this.collectionData.children, data => {
 
         if (data.topic && data.topic[0]) {
-          if (data.children) {
-            const questionBankUnit = _.find(data.children, (val) => {
-              return val.name === 'Question Bank' || val.name === 'Practice Questions';
-            });
+          if (data.children ) {
+            let questionBankUnit: any;
+            if (_.includes(this.questionType, 'curiosity')) {
+              questionBankUnit = _.find(data.children, (val) => {
+                return val.name === 'Curiosity Questions';
+              });
+            } else {
+              questionBankUnit = _.find(data.children, (val) => {
+                return val.name === 'Question Bank' || val.name === 'Practice Questions';
+              });
+            }
             textBookMetaData.push({
               name : data.name,
               topic: data.topic[0],
@@ -163,7 +170,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     } else if (this.selectedAttributes.currentRole === 'PUBLISHER') {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
       ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live')),
-      ...this.questionType.map(type => this.searchResources(type.toUpperCase()))
+      ...this.questionType.map(type => this.searchResources(type))
     ];
     }
 
@@ -219,7 +226,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
         'request': {
           'filters': {
             'objectType': 'content',
-            'contentType': 'PracticeQuestionSet',
+            'contentType': qtype === 'curiosity' ? 'CuriosityQuestionSet' :  'PracticeQuestionSet',
             'mimeType': 'application/vnd.ekstep.ecml-archive',
             'board': this.selectedAttributes.board,
             'framework': this.selectedAttributes.framework,
@@ -227,7 +234,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'status': ['Live'],
-            'questionCategories': qtype
+            'questionCategories': (qtype === 'curiosity') ? 'CuriosityQuestion' :  qtype.toUpperCase()
           },
           'sort_by' : {'createdOn': 'desc'},
           'fields': ['identifier', 'status', 'createdOn', 'topic', 'name', 'questions'],
