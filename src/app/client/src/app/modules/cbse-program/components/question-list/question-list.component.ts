@@ -319,7 +319,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
               'content': {
                 // tslint:disable-next-line:max-line-length
                 'name': this.resourceName  || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
-                'contentType': 'PracticeQuestionSet',
+                'contentType': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
                 'mimeType': 'application/vnd.ekstep.ecml-archive',
                 'programId': this.selectedAttributes.programId,
                 'program': this.selectedAttributes.program,
@@ -330,15 +330,15 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'subject': [this.selectedAttributes.subject],
                 'topic': [this.selectedAttributes.topic],
                 'createdBy': this.userService.userid, // '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8'  || 'edce4f4f-6c82-458a-8b23-e3521859992f',
-                'creator': 'Content Creator',
+                'creator': creator,
                 'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
                 'editorVersion': 3,
                 'code': UUID.UUID(),
                 'body': JSON.stringify(theme),
-                'resourceType': 'Practice',
+                'resourceType': this.selectedAttributes.questionType === 'curiosity' ? 'Teach' : 'Practice',
                 'description': `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
                 'questions': questions,
-                'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ", "),
+                'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
                 'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'organisation'))),
                 'unitIdentifiers': [this.selectedAttributes.textBookUnitIdentifier],
                 // tslint:disable-next-line: max-line-length
@@ -464,7 +464,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       if (!_.has(this.selectedAttributes.hierarchyObj.hierarchy, contentId)) {
         this.selectedAttributes.hierarchyObj.hierarchy[contentId] = {
           'name': name,
-          'contentType': 'PracticeQuestionSet',
+          'contentType': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
           'children': [],
           'root': false
         };
