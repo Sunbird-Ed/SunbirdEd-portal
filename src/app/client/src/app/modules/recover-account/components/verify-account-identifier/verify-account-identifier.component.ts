@@ -78,20 +78,10 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       } else {
         this.handleError(response);
       }
-      // this.navigateToNextStep();
     }, error => {
       this.disableFormSubmit = false;
       this.handleError(error);
     });
-  }
-  navigateToNextStep() {
-    const reqQuery = this.activatedRoute.snapshot.queryParams;
-    let resQuery: any = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
-    resQuery.success_message = 'Password has been reset, please login with new password';
-    resQuery = Object.keys(resQuery).map(key =>
-      encodeURIComponent(key) + '=' + encodeURIComponent(resQuery[key])).join('&');
-    const redirect_uri = reqQuery.error_callback + '?' + resQuery;
-    window.location.href = redirect_uri;
   }
   handleError(error) {
     this.errorCount += 1;
