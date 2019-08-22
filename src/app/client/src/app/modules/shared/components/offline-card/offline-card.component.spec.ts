@@ -77,21 +77,5 @@ describe('CardComponent', () => {
   it('initially offlineRoute should be library', () => {
     expect(component.checkOfflineRoutes).toBe('library');
   });
-
-  // it('when textbook or resources has youtube content should show modal', () => {
-  //   component.data = Response.cardData;
-  //   const offlineCardService = TestBed.get(OfflineCardService);
-  //   spyOn(offlineCardService, 'checkYoutubeContent').and.returnValue(true);
-  //   // component.checkYoutubeContent(component.data, 'download');
-  //   expect(component.showModal).toBe(true);
-  // });
-
-  // it('when textbook or resources dont have youtube content', () => {
-  //   component.data = Response.cardDataWithoutYoutubeContent;
-  //   spyOn(component.clickEvent, 'emit');
-  //   component.checkYoutubeContent(component.data, 'download');
-  //   expect(component.showModal).toBe(false);
-  //   expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
-  // });
 });
 
