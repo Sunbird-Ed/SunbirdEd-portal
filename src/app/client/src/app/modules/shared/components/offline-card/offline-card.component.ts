@@ -5,6 +5,7 @@ import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry'
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { ConnectionService } from './../../../offline/services/connection-service/connection.service';
+import { OfflineCardService } from './../../../offline/services/offline-card-service/offline-card.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -42,7 +43,8 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
-    private cdr: ChangeDetectorRef, private connectionService: ConnectionService) {
+    private cdr: ChangeDetectorRef, private connectionService: ConnectionService,
+    public offlineCardService: OfflineCardService) {
     this.resourceService = resourceService;
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
@@ -71,19 +73,8 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
       data.showAddingToLibraryButton = true;
-      this.checkYoutubeContent(data, action);
-    } else {
-      this.clickEvent.emit({ 'action': action, 'data': data });
-    }
-  }
-
-  checkYoutubeContent(data, action) {
-    this.showModal = false;
-    let isYoutube;
-    try { isYoutube = JSON.parse(data.mimeTypesCount); } catch (error) { isYoutube = undefined; }
-    if (_.includes(['video/youtube', 'video/x-youtube'], data.metaData.mimeType)
-      || _.has(isYoutube, 'video/youtube') || _.has(isYoutube, 'video/x-youtube')) {
-      this.showModal = true;
+      this.showModal = this.offlineCardService.checkYoutubeContent(data);
+      if (this.showModal === false)  { this.clickEvent.emit({ 'action': action, 'data': data }); }
     } else {
       this.clickEvent.emit({ 'action': action, 'data': data });
     }
