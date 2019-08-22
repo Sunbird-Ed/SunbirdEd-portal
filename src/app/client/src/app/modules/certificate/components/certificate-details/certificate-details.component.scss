@@ -8,6 +8,7 @@
       border-radius: $sb-mobileDevice-border-radius;
       margin: 0 auto;
       position: relative;
+      overflow: hidden;
       .sb-mobileDevice-sensors {
         position: absolute;
         z-index: 9;
@@ -50,3 +51,25 @@
       }
     }
   }
+
+  .player-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: url(../../../../../assets/images/featured-content.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  ::ng-deep {
+    .certificate-area-player {
+      .contentViewerIframeShadow {
+        height:100% !important;
+      }
+    }
+  }
+ 
