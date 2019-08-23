@@ -132,7 +132,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
           if (signedPdfUrl) { window.open(signedPdfUrl, '_blank'); }
         }, (err) => {
-          this.toasterService.error('download certificate failed');
+          this.toasterService.error(this.resourceService.messages.fmsg.m0094);
         });
       }
     });
