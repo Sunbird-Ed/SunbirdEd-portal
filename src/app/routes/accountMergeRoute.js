@@ -27,7 +27,9 @@ module.exports = (app) => {
     };
     console.log('storing merge account initiator account details', req.session.mergeAccountInfo);
     const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
-    const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=http://${req.get('host')}/merge/account/u2/login/callback&scope=openid&response_type=code&version=2&success_message=Login with account to which you want merge`;
+    const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=${req.protocol}://${req.get('host')}/merge/account/u2/login/callback&scope=openid&response_type=code&mergeaccountprocess=1&version=2&success_message=Login with account to which you want merge`;
+    // TODO: remove all console logs once feature is fully tested.
+    console.log('url to redirect', url + query);
     res.redirect(url + query)
   });
 
@@ -41,7 +43,7 @@ module.exports = (app) => {
       });
       return false;
     }
-    const redirectUrl = `http://${req.get('host')}/merge/account/u2/login/callback`;
+    const redirectUrl = `${req.protocol}://${req.get('host')}/merge/account/u2/login/callback`;
     let u2Token = _.get(req, 'session.mergeAccountInfo.mergeFromAccountDetails.sessionToken');
     // merge from google sign in progress
     if (!u2Token) {
