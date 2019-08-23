@@ -20,6 +20,7 @@ export class AccountMergeModalComponent implements OnInit {
   }
 
   closeModal() {
+    this.closeAccountMergeModal.emit();
     this.modal.deny();
   }
 
