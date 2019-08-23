@@ -91,15 +91,18 @@ const createSession = async (emailId, reqQuery, req, res) => {
 
   // merge account in progress
   if (_.get(req, 'session.mergeAccountInfo.initiatorAccountDetails')) {
+    console.log('merge in progress');
     grant = await keycloakMergeGoogle.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
     req.session.mergeAccountInfo.mergeFromAccountDetails = {
       sessionToken: grant.access_token.token
     };
+    console.log('grant received', JSON.stringify(grant.access_token.token));
     return {
       access_token: grant.access_token.token,
       refresh_token: grant.refresh_token.token
     };
   } else {
+    console.log('login in progress');
     grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
     keycloakClient.storeGrant(grant, req, res);
     req.kauth.grant = grant;
@@ -118,6 +121,7 @@ const fetchUserByEmailId = async (emailId, req) => {
     headers: getHeaders(req),
     json: true
   }
+  console.log('fetch user request', JSON.stringify(options));
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
