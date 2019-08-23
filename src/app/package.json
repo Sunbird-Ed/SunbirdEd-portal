@@ -36,7 +36,7 @@
     "phantomjs-prebuilt": "2.1.15",
     "require-dir": "0.3.2",
     "require-dot-file": "^0.4.0",
-    "rev-del": "^1.0.5"∏,
+    "rev-del": "^1.0.5",
     "rimraf": "^2.4.0",
     "rmdir": "^1.2.0",
     "run-sequence": "2.2.1",
