@@ -19,7 +19,7 @@ const generateAuthToken = async (code, redirectUri) => {
       redirect_uri: redirectUri
     }
   };
-  console.log('generateAuthToken', options);
+  console.log('generateAuthToken', JSON.stringify(options));
   return request(options);
 };
 
