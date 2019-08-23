@@ -102,5 +102,24 @@
       </div>
     </div>
   </div>
-  
 </div>
+
+<sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal; data.showAddingToLibraryButton = false" #modal>
+  <div class="sb-modal-header">
+      {{resourceService.frmelmnts?.btn?.download}}
+  </div>
+  <div class="sb-modal-content">
+      {{resourceService.messages?.stmsg?.m0137}}
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary"
+      (click)="download(data,'download'); showModal = !showModal;">
+      {{resourceService.frmelmnts?.btn?.download}}
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="showModal = !showModal; data.showAddingToLibraryButton = false">
+      {{resourceService.frmelmnts?.btn?.cancel}}
+    </button>
+  </div>
+</sui-modal>

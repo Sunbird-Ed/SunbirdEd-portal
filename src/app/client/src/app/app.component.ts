@@ -10,8 +10,8 @@ import { UserService, PermissionService, CoursesService, TenantService, OrgDetai
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { Observable, of, throwError, combineLatest } from 'rxjs';
-import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
+import { Observable, of, throwError, combineLatest, BehaviorSubject } from 'rxjs';
+import { first, filter, mergeMap, tap, map, skipWhile } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
@@ -63,6 +63,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
    * 2. user profile rootOrg hashtag for logged in
    */
   private channel: string;
+  private _routeData$ = new BehaviorSubject(undefined);
+  public readonly routeData$ = this._routeData$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
+
   /**
    * constructor
    */
@@ -102,7 +106,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     window.location.reload();
   }
   handleHeaderNFooter() {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(data => {
+    this.router.events
+    .pipe(
+      filter(event => event instanceof NavigationEnd),
+      tap((event: NavigationEnd) => this._routeData$.next(event))
+      ).subscribe(data => {
       this.hideHeaderNFooter = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.data.hideHeaderNFooter') ||
         _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
     });
