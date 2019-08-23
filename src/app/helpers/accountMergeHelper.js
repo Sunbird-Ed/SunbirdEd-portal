@@ -19,7 +19,7 @@ const initiateAccountMerge = async (initiatorAccountDetails, fromAccountUserToke
     },
     json: true
   };
-  console.log('verifyAuthToken sending request for merge', options);
+  console.log('verifyAuthToken sending request for merge', JSON.stringify(options));
   return await request(options)
 };
 
