@@ -70,6 +70,7 @@ module.exports = (app) => {
     if (_.get(mergeResponse, 'result.result.status') === 'SUCCESS' && mergeResponse.responseCode === 'OK') {
       console.log('mergeResponse coming from backend', JSON.stringify(mergeResponse));
       const query = '?status=success&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
+      console.log('after final success', query);
       req.session.mergeAccountInfo = null;
       res.redirect('/accountMerge' + query);
     }
