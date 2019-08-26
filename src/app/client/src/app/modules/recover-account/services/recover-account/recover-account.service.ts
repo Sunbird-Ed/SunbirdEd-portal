@@ -28,7 +28,6 @@ export class RecoverAccountService {
   fuzzyUserSearch(data: any) {
     const options = {
       url: this.configService.urlConFig.URLS.ACCOUNT_RECOVERY.FUZZY_SEARCH,
-      // url: 'user/v1/search',
       data: {
         request: {
           filters: {
@@ -50,7 +49,6 @@ export class RecoverAccountService {
         prevUsedEmail: data.identifier
       };
     }
-    console.log('fuzzyUserSearch', options);
     return this.learnerService.post(options);
   }
   getIdentifierType(value) {

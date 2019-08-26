@@ -12,7 +12,7 @@
           [ngClass]="{'is-invalid': form.controls.identifier.touched && form.controls.identifier.errors }"
           formControlName="identifier" name="identifier"
           placeholder="{{resourceService?.frmelmnts?.lbl?.enterEmailID}}/{{resourceService?.frmelmnts?.lbl?.phone}}">
-        <span *ngIf="disableFormSubmit && identiferNotExist" class="sb-field-verified"><i
+        <span *ngIf="identiferStatus === 'MATCHED'" class="sb-field-verified"><i
             class="check circle icon"></i></span>
         <span class="sb-color-warning fxsmall mt-8"
           *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.required">
@@ -22,7 +22,7 @@
           *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.pattern">
           {{resourceService?.frmelmnts?.lbl?.validEmail}}/{{resourceService?.frmelmnts?.lbl?.phone}}
         </span>
-        <span class="sb-color-error fxsmall mt-8" *ngIf="identiferNotExist">
+        <span class="sb-color-error fxsmall mt-8" *ngIf="identiferStatus === 'NOT_MATCHED'">
           {{resourceService?.frmelmnts?.lbl?.emailPhonenotRegistered | interpolate:'{instance}': resourceService.instance}}
         </span>
       </div>
