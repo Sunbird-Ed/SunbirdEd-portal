@@ -98,10 +98,14 @@ export class CertificateDetailsComponent implements OnInit {
   }
   /** To set the telemetry*/
   setTelemetryData() {
+    const context = { env: this.activatedRoute.snapshot.data.telemetry.env };
+    if (_.get(this.activatedRoute, 'snapshot.queryParams.clientId') === 'android' &&
+    _.get(this.activatedRoute, 'snapshot.queryParams.context')) {
+      const telemetryData = JSON.parse(decodeURIComponent(_.get(this.activatedRoute, 'snapshot.queryParams.context')));
+      context['env'] = telemetryData.env;
+    }
     this.telemetryImpressionData = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
+      context: context,
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.pageId,
