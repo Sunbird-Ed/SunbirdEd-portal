@@ -14,7 +14,7 @@ export class IdentifyAccountComponent implements OnInit {
 
   disableFormSubmit = true;
   nameNotExist = false;
-  identiferNotExist = false;
+  identiferStatus = '';
   form: FormGroup;
   errorCount = 0;
   telemetryImpression: IImpressionEventInput;
@@ -35,18 +35,19 @@ export class IdentifyAccountComponent implements OnInit {
   }
   initializeForm() {
     this.form = this.formBuilder.group({
-      identifier: new FormControl(null, [Validators.required, Validators.pattern(/^([6-9]\d{9}|\w+@\w+\.\w{2,3})$/)]),
-      name: new FormControl(null, [Validators.required])
+      identifier: new FormControl(null, [Validators.required,
+        Validators.pattern(/^([6-9]\d{9}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4})$/)]),
+        name: new FormControl(null, [Validators.required])
     });
     this.form.valueChanges.subscribe(val => {
       this.nameNotExist = false;
-      this.identiferNotExist = false;
       if (this.form.status === 'VALID') {
         this.disableFormSubmit = false;
       } else {
         this.disableFormSubmit = true;
       }
     });
+    this.form.controls.identifier.valueChanges.subscribe(val => this.identiferStatus = '');
   }
   handleNext() {
     this.disableFormSubmit = true;
@@ -55,14 +56,15 @@ export class IdentifyAccountComponent implements OnInit {
         if (_.get(response, 'result.response.count') > 0) { // both match
           this.navigateToNextStep(response);
         } else { // both dint match
-          this.identiferNotExist = true;
+          this.identiferStatus = 'NOT_MATCHED';
           this.nameNotExist = true;
         }
       }, error => {
         if (error.responseCode === 'PARTIAL_SUCCESS_RESPONSE') {
+          this.identiferStatus = 'MATCHED';
           this.handleError(error);
         } else {
-          this.identiferNotExist = true;
+          this.identiferStatus = 'NOT_MATCHED';
           this.nameNotExist = true;
         }
       });
