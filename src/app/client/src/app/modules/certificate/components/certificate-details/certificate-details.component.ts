@@ -1,10 +1,10 @@
-import { CertificateService, PlayerService } from '@sunbird/core';
-import { ServerResponse, ResourceService } from '@sunbird/shared';
+import { PublicPlayerService } from '@sunbird/public';
+import { CertificateService, UserService } from '@sunbird/core';
+import { ServerResponse, ResourceService, ConfigService, PlayerConfig, IUserData } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
@@ -23,21 +23,25 @@ export class CertificateDetailsComponent implements OnInit {
   telemetryImpressionData: IImpressionEventInput;
   telemetryCdata: Array<{}> = [];
   pageId: string;
+  playerConfig: PlayerConfig;
+  contentId: string;
+  showVideoThumbnail = true;
 
   /** To store the certificate details data */
   recipient: string;
   courseName: string;
   issuedOn: string;
-  watchVideoLink: SafeResourceUrl;
+  watchVideoLink: string;
   @ViewChild('codeInputField') codeInputField: ElementRef;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public certificateService: CertificateService,
     public resourceService: ResourceService,
+    public configService: ConfigService,
+    public userService: UserService,
+    public playerService: PublicPlayerService,
     public router: Router,
-    private sanitizer: DomSanitizer,
-    public playerService: PlayerService
   ) { }
 
   ngOnInit() {
@@ -46,6 +50,7 @@ export class CertificateDetailsComponent implements OnInit {
     this.setTelemetryData();
   }
 
+  /** It will call the validate cert. api and course_details api (after taking courseId) */
   certificateVerify() {
     this.loader = true;
     const request = {
@@ -74,6 +79,7 @@ export class CertificateDetailsComponent implements OnInit {
       }
     );
   }
+  /** To handle verify button enable/disable fucntionality */
   getCodeLength(event: any) {
     this.wrongCertificateCode = false;
     if (event.target.value.length === 6) {
@@ -82,16 +88,24 @@ export class CertificateDetailsComponent implements OnInit {
       this.enableVerifyButton = false;
     }
   }
-
+  /** To redirect to courses tab (for mobile device, they will handle 'href' change) */
   navigateToCoursesPage() {
-    this.router.navigate(['/explore-course']);
+    if (this.activatedRoute.snapshot.queryParams.clientId === 'android') {
+      window.location.href = '/explore-course';
+    } else {
+      this.router.navigate(['/explore-course']);
+    }
   }
-
+  /** To set the telemetry*/
   setTelemetryData() {
+    const context = { env: this.activatedRoute.snapshot.data.telemetry.env };
+    if (_.get(this.activatedRoute, 'snapshot.queryParams.clientId') === 'android' &&
+    _.get(this.activatedRoute, 'snapshot.queryParams.context')) {
+      const telemetryData = JSON.parse(decodeURIComponent(_.get(this.activatedRoute, 'snapshot.queryParams.context')));
+      context['env'] = telemetryData.env;
+    }
     this.telemetryImpressionData = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
+      context: context,
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.pageId,
@@ -110,12 +124,36 @@ export class CertificateDetailsComponent implements OnInit {
     ];
   }
 
-  getCourseVideoUrl(courseId) {
+  /** to get the certtificate video url and courseId from that url */
+  getCourseVideoUrl(courseId: string) {
     this.playerService.getCollectionHierarchy(courseId).subscribe(
       (response: ServerResponse) => {
-        this.watchVideoLink = _.get(response, 'result.content.certVideoUrl') ?
-          this.sanitizer.bypassSecurityTrustResourceUrl(_.get(response, 'result.content.certVideoUrl')) : '';
+        this.watchVideoLink = _.get(response, 'result.content.certVideoUrl');
+        if (this.watchVideoLink) {
+          const splitedData = this.watchVideoLink.split('/');
+          splitedData.forEach((value) => {
+            if (value.includes('do_')) {
+              this.contentId = value;
+            }
+          });
+        }
       }, (error) => {
+      });
+  }
+
+  /** to play content on the certificate details page */
+  playContent(contentId: string) {
+    this.showVideoThumbnail = false;
+    const option = { params: this.configService.appConfig.ContentPlayer.contentApiQueryParams };
+    this.playerService.getContent(contentId, option).subscribe(
+      (response) => {
+        const contentDetails = {
+          contentId: contentId,
+          contentData: response.result.content
+        };
+        this.playerConfig = this.playerService.getConfig(contentDetails);
+      },
+      (err) => {
       });
   }
 }

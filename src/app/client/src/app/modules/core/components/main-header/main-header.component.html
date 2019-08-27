@@ -55,13 +55,13 @@
                                 [permission]='orgSetupRole' routerLink="org/orgType">
                                 {{resourceService.frmelmnts?.lbl?.orgtypes}}
                             </a>
-                            <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
-                                (click)="logout()">
-                                {{resourceService.frmelmnts?.lnk?.logout}}
-                            </a>
                           <a class="item" *ngIf='!isValidCustodianOrgUser' (click)="showAccountMergemodal = true;">
                             {{resourceService.frmelmnts?.lbl?.mergeAccount}}
                           </a>
+                          <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+                                (click)="logout()">
+                                {{resourceService.frmelmnts?.lnk?.logout}}
+                            </a>
                         </div>
                     </div>
                 </a>

@@ -2,7 +2,6 @@
   border: 0.5px solid $gray-100;
   border-radius: 4px;
   background-color: $white-color;
-  max-width: 1080px;
   margin: 0 auto;
   // box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 
@@ -36,10 +35,11 @@
     // &:last-child {
     //   border-bottom: none;
     // }
-
+.sb-certificate-trained-flex-space{
+  flex: 0 0 165px;
+}
     .sb-certificate-trained-line {
       min-width: 80px;
-
       .bar {
         height: 2px;
         width: 16px;
@@ -54,13 +54,9 @@
 @include respond-below(sm) {
 
   .sb-certificate-trained {
-    border: none;
-    margin-left: -($base-block-space*3);
-    margin-right: -($base-block-space*3);
-
     .list-item {
       label {
-        margin-bottom: $base-block-space*2 !important;
+        margin-bottom: ($base-block-space*2) + 4 !important;
         flex-basis: 50%;
         font-size: $font-size-base;
       }
@@ -68,7 +64,7 @@
 
     .sb-ct-list {
       position: relative;
-      padding: $base-block-space*2 0 $base-block-space*2 $base-block-space*2;
+      padding-right: 0;
 
       &.list-heading {
         justify-content: center;
@@ -77,7 +73,7 @@
 
       .list-date {
         position: absolute;
-        bottom: $base-block-space;
+        bottom: $base-block-space * 2;
       }
     }
   }
