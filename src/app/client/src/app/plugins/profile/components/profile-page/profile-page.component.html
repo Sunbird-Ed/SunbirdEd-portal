@@ -128,6 +128,7 @@
         [telemetryInteractEdata]="editEmailInteractEdata">
         <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
       </div>
+      <button (click)="showRecoveryId=true"> Add recovery id </button>
     </div>
   </section>
 
@@ -269,4 +270,5 @@
   [contactType]="contactType"></app-update-contact-details>
 <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup" *ngIf="showEditUserDetailsPopup"
   [userProfile]="userProfile"></app-update-user-details>
+  <app-account-recovery-info *ngIf="showRecoveryId"></app-account-recovery-info>
 <router-outlet></router-outlet>
