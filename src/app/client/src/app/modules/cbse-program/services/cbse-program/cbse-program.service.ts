@@ -19,7 +19,7 @@ export class CbseProgramService {
     return this.actionService.get(req);
   }
 
-  getQuestionPluginConfig(res, questionSetConfigCdata, collections) {
+  getQuestionPluginConfig(res, questionSetConfigCdata, collections, role) {
     const question = _.cloneDeep(questionObject);
     const questionConfigCdata: any = {};
     question.id = UUID.UUID();
@@ -37,7 +37,9 @@ export class CbseProgramService {
       questionSetConfigCdata.shuffle_questions = false;
       questionConfigCdata.responseDeclaration = _.get(res, 'result.assessment_item.responseDeclaration');
     }
-    questionSetConfigCdata.total_items = collections.length;
+    if ( role !== 'CONTRIBUTOR') {
+      questionSetConfigCdata.total_items = collections.length;
+    }
     questionConfigCdata.options = res.result.assessment_item.options || [];
     question.config.__cdata.metadata = {};
     const blacklist = ['media', 'options', 'body', 'question', 'editorState', 'solutions'];
@@ -48,47 +50,51 @@ export class CbseProgramService {
     question.config.__cdata = JSON.stringify(question.config.__cdata);
     return question;
   }
-  
-  getECMLJSON(collections: Array<string>, role?: any, previewQuestionData?: any) {
+
+  getECMLJSON(collections: Array < string > , role ?: any, previewQuestionData ?: any) {
     const theme = _.cloneDeep(themeObject);
     const stage = _.cloneDeep(stageObject);
     const questionSet = _.cloneDeep(questionSetObject);
     stage.id = UUID.UUID();
     theme.startStage = stage.id;
     questionSet.id = UUID.UUID();
-    questionSet.data.__cdata.push({ identifier: questionSet.id });
+    questionSet.data.__cdata.push({
+      identifier: questionSet.id
+    });
     const questionSetConfigCdata = questionSetConfigCdataObject;
 
     return of(collections)
-      .pipe(mergeMap((collectionIds: Array<string>) => {
-        if (collectionIds.length > 0) {
-          return forkJoin(_.map(collectionIds, (collectionId: string) => {
-            const req = {
-              url: `${this.configService.urlConFig.URLS.ASSESSMENT.READ}/${collectionId}`
-            };
-            /**
-             * - If role is CONTRIBUTOR don't make read API call
-             * - For the above user role only do local preview
-             */
-            if (role !== "CONTRIBUTOR") {
+      .pipe(mergeMap((collectionIds: Array < string > ) => {
+        if ((collectionIds && collectionIds.length > 0) || (role === 'CONTRIBUTOR')) {
+          if (role !== 'CONTRIBUTOR') {
+            return forkJoin(_.map(collectionIds, (collectionId: string) => {
+              const req = {
+                url: `${this.configService.urlConFig.URLS.ASSESSMENT.READ}/${collectionId}`
+              };
+              /**
+               * - If role is CONTRIBUTOR don't make read API call
+               * - For the above user role only do local preview
+               */
+
               return this.actionService.get(req).pipe(
                 map(res => {
-                  return this.getQuestionPluginConfig(res, questionSetConfigCdata, collections)
+                  return this.getQuestionPluginConfig(res, questionSetConfigCdata, collections, role)
                 }),
-                catchError(err => of(err))
+                catchError(err => of (err))
               );
-            } else {
-              return of(this.getQuestionPluginConfig(previewQuestionData, questionSetConfigCdata, collections))
-            }              
-          }));
-        } else {
-          console.log('Telemetry error has to log - collection length is 0');
+            }));
+          } else {
+            return of(this.getQuestionPluginConfig(previewQuestionData, questionSetConfigCdata, collections, role));
+          }
         }
+        // else {
+        //   console.log('Telemetry error has to log - collection length is 0');
+        // }
       }))
       .pipe(
         map(questions => {
           const questionMedia = _.flattenDeep(_.map(questions, question => {
-            return JSON.parse(question.data.__cdata).media ? JSON.parse(question.data.__cdata).media : [];
+            return (question.data && JSON.parse(question.data.__cdata).media) ? JSON.parse(question.data.__cdata).media : [];
           }));
           theme.manifest.media = _.uniqBy(_.concat(theme.manifest.media, questionMedia), 'id');
           questionSet.config.__cdata = JSON.stringify(questionSetConfigCdata);
@@ -96,7 +102,9 @@ export class CbseProgramService {
           questionSet['org.ekstep.question'] = questions;
           stage['org.ekstep.questionset'].push(questionSet);
           theme.stage.push(stage);
-          return { 'theme': theme };
+          return {
+            'theme': theme
+          };
         })
       );
   }
