@@ -6,12 +6,14 @@ const logger = require('sb_logger_util_v2')
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
+    console.log('google auth called');
     if (!req.query.client_id || !req.query.redirect_uri || !req.query.error_callback) {
       res.redirect('/library')
       return
     }
     const state = JSON.stringify(req.query);
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
+    console.log('redirect google to', JSON.stringify(googleAuthUrl));
     res.redirect(googleAuthUrl)
     logImpressionEvent(req);
   });
@@ -28,6 +30,7 @@ module.exports = (app) => {
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
+    console.log('google auth callback called');
     const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version']);
     let googleProfile, sunbirdProfile, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
@@ -37,19 +40,24 @@ module.exports = (app) => {
       }
       errType = 'GOOGLE_PROFILE_API';
       googleProfile = await googleOauth.getProfile(req);
+      console.log('googleProfile fetched', JSON.stringify(googleProfile));
       errType = 'USER_FETCH_API';
       sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
+      console.log('sunbird profile fetched', JSON.stringify(sunbirdProfile));
       if (!_.get(sunbirdProfile, 'result.response.userName') || !_.get(sunbirdProfile, 'result.response.firstName')) {
+        console.log('creating new google user');
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res);
+      console.log('keyCloakToken fetched', JSON.stringify(keyCloakToken));
       errType = 'UNHANDLED_ERROR';
       redirectUrl = reqQuery.redirect_uri.split('?')[0];
       if (reqQuery.client_id === 'android') {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
+      console.log('redirect url ', redirectUrl);
       logger.info({msg:'google sign in success',additionalInfo: {googleProfile, sunbirdProfile, newUserDetails, redirectUrl}});
     } catch (error) {
       if (reqQuery.error_callback) {
@@ -60,6 +68,7 @@ module.exports = (app) => {
       logger.error({msg:'google sign in failed', error, additionalInfo: {errType, googleProfile, sunbirdProfile, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
+      console.log('redirecting to ', redirectUrl);
       res.redirect(redirectUrl || '/resources');
     }
   });

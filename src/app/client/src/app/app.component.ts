@@ -78,6 +78,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   shepherdData: Array<any>;
   private fingerprintInfo: any;
   hideHeaderNFooter = true;
+  queryParams: any;
+  telemetryContextData: any ;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -108,9 +110,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   ngOnInit() {
+    const queryParams$ = this.activatedRoute.queryParams.pipe(
+      tap( queryParams => {
+        this.queryParams = queryParams;
+        if (this.queryParams && this.queryParams.clientId === 'android' && this.queryParams.context) {
+          this.telemetryContextData = JSON.parse(decodeURIComponent(this.queryParams.context));
+        }
+      })
+    );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
-    combineLatest(this.setSlug(), this.setDeviceId()).pipe(
+    combineLatest(queryParams$, this.setSlug(), this.setDeviceId())
+    .pipe(
       mergeMap(data => {
         this.navigationHelperService.initialize();
         this.userService.initialize(this.userService.loggedIn);
@@ -219,13 +230,13 @@ setFingerPrintTelemetry() {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-    return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
-        this.fingerprintInfo = {deviceId, components, version};
-        (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-        this.deviceRegisterService.initialize();
-        observer.next(deviceId);
-        observer.complete();
-      }));
+      return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+          this.fingerprintInfo = {deviceId, components, version};
+          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.deviceRegisterService.initialize();
+          observer.next(deviceId);
+          observer.complete();
+        }));
   }
   /**
    * set slug from url only for Anonymous user.
@@ -296,29 +307,36 @@ setFingerPrintTelemetry() {
         }
       };
     } else {
-      return {
+      const anonymousTelemetryContextData = {
         userOrgDetails: {
-          userId: 'anonymous',
-          rootOrgId: this.orgDetails.rootOrgId,
-          organisationIds: [this.orgDetails.hashTagId]
+        userId: 'anonymous',
+        rootOrgId: this.orgDetails.rootOrgId,
+        organisationIds: [this.orgDetails.hashTagId]
+      },
+      config: {
+        pdata: {
+          id: this.userService.appId,
+          ver: version,
+          pid: this.configService.appConfig.TELEMETRY.PID
         },
-        config: {
-          pdata: {
-            id: this.userService.appId,
-            ver: version,
-            pid: this.configService.appConfig.TELEMETRY.PID
-          },
-          batchsize: 10,
-          endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
-          apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
-          host: '',
-          sid: this.userService.anonymousSid,
-          channel: this.orgDetails.hashTagId,
-          env: 'home',
-          enableValidation: environment.enableTelemetryValidation,
-          timeDiff: this.orgDetailsService.getServerTimeDiff
-        }
-      };
+        batchsize: 10,
+        endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
+        apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
+        host: '',
+        sid: this.userService.anonymousSid,
+        channel: this.orgDetails.hashTagId,
+        env: 'home',
+        enableValidation: environment.enableTelemetryValidation,
+        timeDiff: this.orgDetailsService.getServerTimeDiff
+      }
+    };
+    if (this.telemetryContextData) {
+      anonymousTelemetryContextData['config']['did'] = _.get(this.telemetryContextData, 'did');
+      anonymousTelemetryContextData['config']['pdata'] = _.get(this.telemetryContextData, 'pdata');
+      anonymousTelemetryContextData['config']['channel'] = _.get(this.telemetryContextData, 'channel');
+      anonymousTelemetryContextData['config']['sid'] = _.get(this.telemetryContextData, 'sid');
+    }
+      return anonymousTelemetryContextData;
     }
   }
   /**

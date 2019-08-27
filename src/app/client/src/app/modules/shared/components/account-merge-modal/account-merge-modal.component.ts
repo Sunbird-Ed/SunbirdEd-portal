@@ -13,13 +13,14 @@ export class AccountMergeModalComponent implements OnInit {
 
   constructor(public resourceService: ResourceService, public router: Router) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
-      ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
 
   ngOnInit() {
   }
 
   closeModal() {
+    this.closeAccountMergeModal.emit();
     this.modal.deny();
   }
 

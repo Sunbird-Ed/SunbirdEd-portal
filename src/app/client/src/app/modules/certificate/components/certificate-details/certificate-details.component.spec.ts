@@ -24,6 +24,9 @@ describe('CertificateDetailsComponent', () => {
         telemetry: {
           env: 'course', pageid: 'validate-certificate', type: 'view'
         }
+      },
+      queryParams: {
+        clientId: 'android'
       }
     }
   };
