@@ -1,5 +1,5 @@
 @import "variables"; 
-
+@import "../../../../../assets/styles/mixins/mixins";
 /* fonts */
   .font-w-bold {
     font-weight: bold !important;
@@ -190,3 +190,26 @@ display: inline-block;
   height: 16px !important;
   width: 16px !important;
 }
+.avatar-container {
+  width: 98px;
+  height: 98px;
+  margin: 0 auto;
+
+  .avatar-tickmark {
+    width: $base-block-space*4;
+    height: $base-block-space*4;
+    position: absolute;
+    left: 67%;
+   }
+}
+
+.my-avatar.verified /deep/ .avatar-content {
+  border: 1px solid #008840 !important;
+}
+ 
+ @include respond-below(sm) {
+  .avatar-tickmark {
+    left: 67%;
+  }
+ }
+

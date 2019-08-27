@@ -1,26 +1,28 @@
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
-      <div class="mb-15 d-flex flex-jc-center relative">
-        <ngx-avatar class="my-avatar" [style]="{
-          backgroundColor: '#ffffff',
-          border: '1px solid #fff',
-          boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
-          borderRadius: '50%',
-          color: '#9017FF',
-          fontWeight: 'bold',
-          fontFamily: 'inherit'}" [size]="90" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
-        </ngx-avatar>
+      <div class="mb-15 d-flex flex-jc-center relative avatar-container" >
+       <img *ngIf="!isCustodianOrgUser" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
+       suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
+       <ngx-avatar [ngClass]="{verified: !isCustodianOrgUser}"class="my-avatar" [style]="{
+         backgroundColor: '#ffffff',
+         border: '1px solid #fff',
+         boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
+         borderRadius: '50%',
+         color: '#9017FF',
+         fontWeight: '700',
+         fontFamily: 'inherit'}" [size]="98" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
+       </ngx-avatar>
       </div>
     </div>
     <div class="fs-2-5 font-w-bold d-flex mb-15 text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
       <div class="computer only">
-          <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
-      </div>
-      <div class="mobile only name-info-mobile">
-          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
-      </div>
+        <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
+    </div>
+    <div class="mobile only name-info-mobile">
+        <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
+    </div>  
     </div>
     <div class="mb-10 d-flex mb-5 flex-jc-center">
       <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
