@@ -299,7 +299,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'media': this.mediaArr,
                 'qumlVersion': 0.5,
                 'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier,
-                'authorNames': authorName
+                'author': authorName
               }
             }
           }
@@ -378,7 +378,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         };
         if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
           const authorName = (this.authorName.nativeElement.value === '' ) ? this.userName :  this.authorName.nativeElement.value;
-          option.data.request.assessment_item.metadata['authorNames'] = authorName;
+          option.data.request.assessment_item.metadata['author'] = authorName;
         }
         if (optionalParams) {
           _.forEach(optionalParams, (param) => {

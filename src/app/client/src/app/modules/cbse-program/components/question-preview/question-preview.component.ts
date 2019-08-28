@@ -25,7 +25,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
 
   ngOnInit() {
   this.previewInitialized = true;
-  if (this.questionMetaData && this.questionMetaData.mode !== 'create') {
+  if (!this.selectedAttributes.previewQuestionData) {
     this.toEcml
     .getECMLJSON(this.selectedAttributes.questionList)
     .subscribe( (theme) => {
