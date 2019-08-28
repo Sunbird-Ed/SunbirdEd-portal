@@ -1,5 +1,5 @@
-<sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-[size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showUploadUserModal = !showUploadUserModal" #modal>
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
+class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal>
 <div class="sb-modal-header">
   Upload Users
 </div>
@@ -34,8 +34,10 @@
   </div>
 </div>
 <div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showViewDeatilsModal = !showViewDeatilsModal">
-    Upload Users CSV
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+    [telemetryInteractEdata]="orgUploadInteractEdata" [disabled]="processId"
+    class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
+    {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
   </button>
 </div>
 </sui-modal>
