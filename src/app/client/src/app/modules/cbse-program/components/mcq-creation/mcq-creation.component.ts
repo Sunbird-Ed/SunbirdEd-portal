@@ -252,7 +252,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
 
           if(this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
             const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
-            metadata['authorNames'] = authorName;
+            metadata['author'] = authorName;
           }
 
         if (this.mcqForm.learningOutcome) {
@@ -365,7 +365,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
             'media': this.mediaArr,
             'qumlVersion': 0.5,
             'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier,
-            'authorNames': authorName
+            'author': authorName
           }
 
         if (this.mcqForm.learningOutcome) {
