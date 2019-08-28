@@ -234,7 +234,7 @@
             <div class="d-flex flex-ai-center sb-ct-list list-item" *ngIf="data.courseName">
               <label class="mr-auto mb-0">{{data.courseName}}</label>
               <span class="list-date mr-24" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
-              <button appTelemetryInteract
+              <!-- <button appTelemetryInteract
               [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadCertificateEData" 
               [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]" 
               class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" *ngIf="data.certificates && data.certificates.length > 0" (click)="downloadCert(data.certificates)">
@@ -242,7 +242,7 @@
               <div class="sb-certificate-trained-line d-flex flex-ai-center flex-jc-center" *ngIf="!data.certificates || (data.certificates && data.certificates.length === 0)">
                   <span class="bar"></span>
                   <span class="bar"></span>
-                </div>
+                </div> -->
             </div>
           </div>
           <div class="d-flex flex-ai-center flex-jc-center sb-ct-list list-item" *ngIf="attendedTraining.length > 3">
