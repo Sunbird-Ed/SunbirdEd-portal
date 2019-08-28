@@ -28,7 +28,7 @@ export class FancyTreeComponent implements AfterViewInit {
       click: (event, data): boolean => {
         this.telemetryInteractDirective.telemetryInteractObject = this.getTelemetryInteractObject(_.get(data, 'node.data'));
         this.telemetryInteractDirective.telemetryInteractEdata = this.getTelemetryInteractEdata();
-        this.telemetryInteractDirective.onClick(true);
+        this.tree.nativeElement.click();
         const node = data.node;
         this.itemSelect.emit(node);
         return true;
