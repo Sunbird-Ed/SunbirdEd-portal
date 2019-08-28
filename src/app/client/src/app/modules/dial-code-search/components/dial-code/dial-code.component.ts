@@ -55,6 +55,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   instance: string;
   redirectCollectionUrl: string;
   redirectContentUrl: string;
+  public singleContentRedirect = '';
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
@@ -115,6 +116,9 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
       this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
       this.appendItems(0, this.itemsToLoad);
+      if (this.searchResults.length === 1) {
+        this.singleContentRedirect = this.searchResults[0]['name'];
+      }
       this.showLoader = false;
     }, error => {
       this.showLoader = false;

@@ -16,6 +16,7 @@ export class DialCodeCardComponent implements OnInit {
   @Input() customClass: string;
   @Output() clickEvent = new EventEmitter<any>();
   telemetryCdata: Array<{}> = [];
+  @Input() singleContentRedirect: string;
 
   constructor(public resourceService: ResourceService) {
     this.resourceService = resourceService;
@@ -24,6 +25,9 @@ export class DialCodeCardComponent implements OnInit {
   ngOnInit() {
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
+    }
+    if (this.singleContentRedirect === this.data.name) {
+      this.onAction(this.data, this.data.action.onImage);
     }
   }
   public onAction(data, action) {
