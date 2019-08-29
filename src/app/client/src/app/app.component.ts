@@ -11,7 +11,7 @@ import { UserService, PermissionService, CoursesService, TenantService, OrgDetai
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest } from 'rxjs';
-import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
+import { first, filter, mergeMap, tap, map, startWith } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
@@ -78,7 +78,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   shepherdData: Array<any>;
   private fingerprintInfo: any;
   hideHeaderNFooter = true;
-  queryParams: any;
   telemetryContextData: any ;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -111,12 +110,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit() {
     const queryParams$ = this.activatedRoute.queryParams.pipe(
-      tap( queryParams => {
-        this.queryParams = queryParams;
-        if (this.queryParams && this.queryParams.clientId === 'android' && this.queryParams.context) {
-          this.telemetryContextData = JSON.parse(decodeURIComponent(this.queryParams.context));
-        }
-      })
+      filter( queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
+      tap(queryParams => {
+        this.telemetryContextData = JSON.parse(decodeURIComponent(queryParams.context));
+      }),
+      first(),
+      startWith(null)
     );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
