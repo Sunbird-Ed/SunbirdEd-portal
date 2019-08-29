@@ -54,7 +54,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }
     if((this.selectedAttributes.currentRole=== 'REVIEWER') || (this.selectedAttributes.currentRole === 'PUBLISHER')){
       this.selectedAttributes['showMode'] = 'previewPlayer';
-    }else{
+    } else {
       this.selectedAttributes['showMode'] = 'editorForm';
     }
   }
@@ -339,7 +339,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'description': `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
                 'questions': questions,
                 'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
-                'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'organisation'))),
+                'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
                 'unitIdentifiers': [this.selectedAttributes.textBookUnitIdentifier],
                 // tslint:disable-next-line: max-line-length
                 'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11279144369168384014/artifact/qa_1561455529937.png'
@@ -395,6 +395,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
               questions: questions,
               body: JSON.stringify(response[0]),
               versionKey: existingContentVersionKey,
+              'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
+              'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
               // tslint:disable-next-line:max-line-length
               name: this.resourceName  || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`
             }
