@@ -114,7 +114,6 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
         this.offlineFileUploaderService.uploader.cancelAll();
         return false;
       }
-      this.offlineFileUploaderService.uploader.cancelAll();
       return false;
     }
     this.modal.deny();
