@@ -71,6 +71,12 @@
               </span>
               &nbsp;{{dashboarData.completedCount}}
             </span>
+            <span *ngIf="dashboarData.certificateCount!==null"
+              class="course-participants course-participants-label black-divider px-16">
+              <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}&nbsp;:
+              </span>
+              &nbsp;{{dashboarData.certificateCount}}
+            </span>
 
             <span class="course-completed course-participants-label ml-auto"
               *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
