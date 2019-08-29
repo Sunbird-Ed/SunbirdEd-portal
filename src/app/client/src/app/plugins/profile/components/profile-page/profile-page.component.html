@@ -137,7 +137,7 @@
       </div>
       <div *ngIf="!userProfile.recoveryId" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex">
         <div class="recovery-img mr-5"></div>
-       <span>Add recovery id</span>
+       <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
      </div>
 
     </div>
