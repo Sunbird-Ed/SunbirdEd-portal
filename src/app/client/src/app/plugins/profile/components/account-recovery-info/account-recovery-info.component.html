@@ -3,39 +3,46 @@
 
   <!--Header-->
   <div class="sb-modal-header">
-    Update Recovery ID
+    <span *ngIf="mode === 'edit'">Update Recovery ID</span>
+    <span *ngIf="mode === 'add'">Add Recovery ID</span>
   </div>
   <!--/Header-->
 
   <!--Content-->
   <div class="sb-modal-content o-y-visible">
-    <form class="sb-form">
       <p>
         A recovery account helps you to regain access to your account if you are locked out or forget your password.
         Choose the recovery acount type and enter details
       </p>
       <div class="d-flex flex-w-wrap">
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-          <input type="radio" id="email" name="options" checked>
+          <input type="radio" id="email" (change)="onItemChange()" [(ngModel)]="contactType" name="contactType" value="emailId" checked>
           <label for="email">Email Address</label>
         </div>
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-          <input type="radio" id="phone" name="options">
+          <input type="radio" id="phone" (change)="onItemChange()" [(ngModel)]="contactType" name="contactType" value="phoneNo">
           <label for="phone">Phone Number</label>
         </div>
       </div>
-      <div class="sb-field">
-        <input class="sb-form-control is-invalid" formcontrolname="email" placeholder="Enter Email Address"
-          type="email">
-        <span class="sb-color-error fxsmall mt-8">
-          This email address is the same as what is linked with your profile
+      <form [formGroup]="accountRecoveryForm" class="sb-form">
+      <div class="sb-field" *ngIf="contactType === 'emailId'">
+        <input class="sb-form-control" formControlName="email" name="email" id="email" placeholder="Enter Email Address" type="email">
+        <span class="sb-color-error fxsmall mt-8" *ngIf="accountRecoveryForm.controls.email.dirty && accountRecoveryForm.controls['email'].errors">
+          Enter a valid email id
         </span>
+        <!-- <span class="sb-color-error fxsmall mt-8">
+          This email address is the same as what is linked with your profile
+        </span> -->
       </div>
-      <div class="sb-field">
-        <input class="sb-form-control" formcontrolname="phone" placeholder="Enter Phone Number" type="tel">
-        <span class="sb-color-error fxsmall mt-8 hide">
+
+      <div class="sb-field" *ngIf="contactType === 'phoneNo'">
+        <input maxlength="10" class="sb-form-control" formControlName="phone" placeholder="Enter Phone Number" type="tel">
+        <span class="sb-color-error fxsmall mt-8"  *ngIf="accountRecoveryForm.controls.phone.dirty && accountRecoveryForm.controls['phone'].errors">
           Please enter 10 digit phone number
         </span>
+        <!-- <span class="sb-color-error fxsmall mt-8">
+          This phone number is the same as what is linked with your profile
+        </span> -->
       </div>
     </form>
   </div>
@@ -43,7 +50,7 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary disabled">
+    <button [ngClass]="{disabled: !enableSubmitButton}" class="sb-btn sb-btn-normal sb-btn-primary" (click)="updateRecoveryId()">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
   </div>

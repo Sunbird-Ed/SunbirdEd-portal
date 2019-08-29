@@ -131,15 +131,14 @@
         <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
       </div>
 
-      <!-- <div (click)="showRecoveryId=true"
-      class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal">
-        <img class="recovery-img mr-5" src="/assets/images/Recovery.svg" alt="">  Add recovery id
-      </div> -->
-
-      <div (click)="showRecoveryId=true"
-      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15">
-        <img class="recovery-img mr-5" src="/assets/images/Recovery.svg" alt="">  Add recovery id
-    </div>
+      <div *ngIf="userProfile.recoveryId" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex">
+        <div class="recovery-img mr-5"></div>
+        <span>{{userProfile.recoveryId}}</span>
+      </div>
+      <div *ngIf="!userProfile.recoveryId" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex">
+        <div class="recovery-img mr-5"></div>
+       <span>Add recovery id</span>
+     </div>
 
     </div>
   </section>
@@ -282,5 +281,5 @@
   [contactType]="contactType"></app-update-contact-details>
 <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup" *ngIf="showEditUserDetailsPopup"
   [userProfile]="userProfile"></app-update-user-details>
-  <app-account-recovery-info *ngIf="showRecoveryId" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
+  <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
 <router-outlet></router-outlet>
