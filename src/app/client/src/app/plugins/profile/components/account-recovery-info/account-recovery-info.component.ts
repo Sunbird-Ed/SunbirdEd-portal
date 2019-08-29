@@ -1,3 +1,5 @@
+import { UserService } from '@sunbird/core';
+import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
@@ -15,8 +17,13 @@ export class AccountRecoveryInfoComponent implements OnInit {
   enableSubmitButton = false;
   contactType: string;
   request: {};
-  constructor(public resourceService: ResourceService, public profileService: ProfileService) { }
+  telemetryInteractObject: IInteractEventObject;
+  submitInteractEdata: IInteractEventEdata;
 
+  constructor(
+    public resourceService: ResourceService,
+    public profileService: ProfileService,
+    public userService: UserService) { }
   ngOnInit() {
     this.contactType = 'emailId';
     this.initializeFormFields();
@@ -27,13 +34,13 @@ export class AccountRecoveryInfoComponent implements OnInit {
       this.accountRecoveryForm = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]),
       });
-      this.handleSubmitButton();
     } else if (this.contactType === 'phoneNo') {
       this.accountRecoveryForm = new FormGroup({
         phone: new FormControl('', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
       });
-      this.handleSubmitButton();
     }
+    this.handleSubmitButton();
+    this.setTelemetryData();
   }
 
   updateRecoveryId() {
@@ -54,7 +61,7 @@ export class AccountRecoveryInfoComponent implements OnInit {
     this.profileService.updateProfile(this.request).subscribe((data) => {
       this.closeModal();
     }, (error) => {
-     this.accountRecoveryForm.reset();
+      this.accountRecoveryForm.reset();
     });
 
 
@@ -80,4 +87,19 @@ export class AccountRecoveryInfoComponent implements OnInit {
     this.close.emit();
   }
 
+  setTelemetryData() {
+    const id = this.contactType === 'phoneNo' ?
+      'submit-phone-recovery' : 'submit-emailId-recovery';
+    this.submitInteractEdata = {
+      id: id,
+      type: 'click',
+      pageid: 'profile-read'
+    };
+
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'User',
+      ver: '1.0'
+    };
+  }
 }
