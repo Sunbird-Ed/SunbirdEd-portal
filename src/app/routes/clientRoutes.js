@@ -112,6 +112,7 @@ function getLocals(req) {
     locals.userId = null
     locals.sessionId = null
   }
+  locals.deviceId = '';
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = envHelper.sunbird_theme
   locals.defaultPortalLanguage = envHelper.sunbird_default_language
