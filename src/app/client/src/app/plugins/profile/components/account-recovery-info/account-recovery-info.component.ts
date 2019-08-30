@@ -12,11 +12,19 @@ import { ProfileService } from './../../services';
 export class AccountRecoveryInfoComponent implements OnInit {
   @Output() close = new EventEmitter<any>();
   @ViewChild('accountRecoveryModal') accountRecoveryModal;
+
+  /** to take the mode of operaion (edit or add of recovery id) from profile page */
   @Input() mode: string;
   accountRecoveryForm: FormGroup;
   enableSubmitButton = false;
+
+  /** to store the type of contact (email or phone) */
   contactType: string;
+
+  /** to store the request */
   request: {};
+
+  /** telemetry */
   telemetryInteractObject: IInteractEventObject;
   submitInteractEdata: IInteractEventEdata;
 
@@ -24,11 +32,13 @@ export class AccountRecoveryInfoComponent implements OnInit {
     public resourceService: ResourceService,
     public profileService: ProfileService,
     public userService: UserService) { }
+
   ngOnInit() {
     this.contactType = 'emailId';
     this.initializeFormFields();
   }
 
+  /** to initialize form fields */
   initializeFormFields() {
     if (this.contactType === 'emailId') {
       this.accountRecoveryForm = new FormGroup({
@@ -43,6 +53,7 @@ export class AccountRecoveryInfoComponent implements OnInit {
     this.setTelemetryData();
   }
 
+  /** to add/update the recovery id */
   updateRecoveryId() {
     this.enableSubmitButton = false;
     if (this.contactType === 'emailId') {
@@ -63,10 +74,9 @@ export class AccountRecoveryInfoComponent implements OnInit {
     }, (error) => {
       this.accountRecoveryForm.reset();
     });
-
-
   }
 
+  /** to handle enable/disable functionality of submit button */
   handleSubmitButton() {
     this.enableSubmitButton = false;
     this.accountRecoveryForm.valueChanges.subscribe(val => {
@@ -78,6 +88,7 @@ export class AccountRecoveryInfoComponent implements OnInit {
     this.accountRecoveryModal.deny();
   }
 
+  /** to initialize form fields each time when radio button will be selected/changed */
   onItemChange() {
     this.initializeFormFields();
   }
@@ -87,6 +98,7 @@ export class AccountRecoveryInfoComponent implements OnInit {
     this.close.emit();
   }
 
+  /** To prepare telemetry data */
   setTelemetryData() {
     const id = this.contactType === 'phoneNo' ?
       'submit-phone-recovery' : 'submit-emailId-recovery';
