@@ -341,6 +341,10 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
                 'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
                 'unitIdentifiers': [this.selectedAttributes.textBookUnitIdentifier],
+                'plugins': [{
+                  identifier: 'org.sunbird.questionunit.quml',
+                  semanticVersion: '1.0'
+                }],
                 // tslint:disable-next-line: max-line-length
                 'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11279144369168384014/artifact/qa_1561455529937.png'
               }
