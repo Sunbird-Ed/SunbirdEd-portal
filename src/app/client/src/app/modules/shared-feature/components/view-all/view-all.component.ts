@@ -138,6 +138,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public unsubscribe = new Subject<void>();
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
+  showDownloadLoader = false;
   contentName: string;
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
@@ -203,6 +204,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     if (this.isOffline) {
+      this.downloadManagerService.downloadEvent.subscribe(() => {
+        this.showDownloadLoader = false;
+      });
       this.downloadManagerService.downloadListEvent.subscribe((data) => {
         this.updateCardData(data);
       });
@@ -329,6 +333,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // For offline environment content will only play when event.action is open
     if (event.action === 'download' && this.isOffline) {
+      this.showDownloadLoader = true;
+      this.contentName = event.data.name;
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {

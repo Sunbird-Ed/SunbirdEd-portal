@@ -40,6 +40,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public pageSections: Array<ICaraouselData> = [];
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
+  showDownloadLoader = false;
   contentName: string;
   public slug: string;
   organisationId: string;
@@ -84,6 +85,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       const self = this;
       this.offlineFileUploaderService.isUpload.subscribe(() => {
         self.fetchPageData();
+      });
+      this.downloadManagerService.downloadEvent.subscribe(() => {
+        this.showDownloadLoader = false;
       });
 
       this.downloadManagerService.downloadListEvent.subscribe((data) => {
@@ -191,6 +195,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // For offline environment content will only play when event.action is open
     if (event.action === 'download' && this.isOffline) {
+      this.showDownloadLoader = true;
+      this.contentName = event.data.name;
       this.startDownload(event.data.metaData.identifier);
       return false;
     } else if (event.action === 'export' && this.isOffline) {
