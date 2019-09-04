@@ -1,0 +1,191 @@
+.text-orange{
+	color: #f7a047;
+}
+.text-white{
+	color: #fff;
+}
+.text-blue {
+    color: #012b54;
+}
+.text-gray {
+    color: #777;
+}
+.bg-orange{
+	background-color: #f7a047;
+}
+.p-15{
+	padding:15px;
+}
+.p-20{
+	padding:20px;
+}
+.px-10{
+	padding-left:10px;
+	padding-right:10px;
+}
+.px-20{
+	padding-left:20px;
+	padding-right:20px;
+}
+.py-10{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+.py-20{
+	padding-top:20px;
+	padding-bottom:20px;
+}
+.m-5{
+	margin:5px;
+}
+.m-10{
+	margin:10px;
+}
+.mb-10{
+	margin-bottom:10px;
+}
+.mb-20{
+	margin-bottom:20px;
+}
+.mb-60{
+	margin-bottom:60px;
+}
+.mt-90{
+	margin-top:90px;
+}
+.section-space{
+	margin-top:40px;
+}
+.no-underline,
+.no-underline:hover,
+.no-underline:active,
+.no-underline:focus{
+	text-decoration:none;
+}
+.logos{
+	max-height:55px;
+}
+.navbar-brand {
+    padding: 10px 35px;
+}
+.top-banner {
+	background-image: url('../images/banner.png');
+	background-repeat: no-repeat;
+}
+.top-banner .carousel{
+	transform: translateY(50px);
+}
+.top-banner .carousel .carousel-inner {
+	border-radius: 5px;
+}
+.top-banner .carousel-item {
+	padding-top:56.25%;
+    background: no-repeat center center scroll;
+    background-size: cover;
+}
+.carousel-control-next-icon {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23333' viewBox='0 0 8 8'%3E%3Cpath d='M1.5 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+.carousel-control-prev-icon {
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23333' viewBox='0 0 8 8'%3E%3Cpath d='M4 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+.navbar{
+    box-shadow: 0 1px 1px #333;
+}
+.quote{
+	max-width:70%;
+	margin:0 auto;
+}
+.quote-personImg img{
+	border-radius:50%;
+	margin-bottom:20px;
+}
+.quote-personName{
+	margin-top:20px;
+	margin-bottom:0px;
+}
+.quote-personPosition{
+	font-weight:600;
+	font-size:14px;
+}
+
+#quotes .carousel-indicators{
+	bottom: -45px
+}
+#quotes .carousel-indicators li{
+	background-color:#999;
+}
+#quotes .carousel-indicators li.active{
+	background-color:#666;
+}
+.quote-text i{
+	font-size:30px;
+}
+.quote-text i.fa-quote-left{
+	margin-right:10px;
+}
+.quote-text i.fa-quote-right{
+	margin-left:10px;
+}
+.vision-content h2 {
+	font-size: 36px;
+	font-weight:bold;
+}
+.vision-content p {
+	font-size:18px;
+}
+.objective-img{
+	max-height:175px;
+}
+#scrollTop {
+	position: fixed;
+    right: 30px;
+    bottom: 20px;
+    font-size: 50px;
+    color: #777777;
+    z-index: 100;
+	display: none;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.sahaj-logo {
+	display: inline-block;
+    color: #3f4996;
+    text-transform: uppercase;
+    position: relative;
+    top: 5px;
+}
+
+/*Above 460px*/
+@media only screen and (min-width: 460px){
+	.logos{
+		max-height:65px;
+	}
+}
+/*Above 768px*/
+@media only screen and (min-width: 768px){
+	.logos{
+		max-height:75px;
+	}
+	.objective-img{
+		max-height:none;
+	}
+}
+/*Above 992px*/
+@media only screen and (min-width: 992px){
+	.vision-content h2 {
+		font-size: 64px;
+	}
+	.navbar ul {
+		font-size: 20px;
+	}
+	.navbar ul li{
+		padding-right: 50px;
+	}
+}
+
+
+#loginBtn, #exploreUPBtn {
+	cursor : pointer;
+}
