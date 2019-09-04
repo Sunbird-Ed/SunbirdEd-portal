@@ -14,7 +14,8 @@ import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
-
+import { DownloadManagerService } from './../../../../../offline/services';
+import { environment } from '@sunbird/environment';
 @Component({
   selector: 'app-public-collection-player',
   templateUrl: './public-collection-player.component.html'
@@ -91,11 +92,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 	*/
   public dialCode: string;
   playerOption: any;
+  public playerContent;
+  isOffline: boolean = environment.isOffline;
+  checkOfflineRoutes: string;
+
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
-    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService) {
+    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
+    public downloadManagerService: DownloadManagerService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -113,6 +119,17 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.getContent();
     this.deviceDetector();
     this.setTelemetryData();
+
+    if (this.isOffline ) {
+      if (_.includes(this.router.url, 'browse')) {
+        this.checkOfflineRoutes = 'browse';
+      } else if (!_.includes(this.router.url, 'browse')) {
+        this.checkOfflineRoutes = 'library';
+      }
+      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+        this.updateContent(data);
+      });
+    }
   }
   setTelemetryData() {
     if (this.dialCode) {
@@ -285,6 +302,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
+            this.playerContent = _.get(content, 'model');
+            if (this.isOffline && _.isEqual(_.get(this.collectionData, 'downloadStatus'), 'DOWNLOADED')) {
+              this.playerContent['downloadStatus'] = 'DOWNLOADED';
+            }
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
@@ -386,4 +407,39 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }
     };
   }
+
+  downloadContent(content) {
+    this.downloadManagerService.downloadContentId = content.identifier;
+    this.downloadManagerService.startDownload({}).subscribe(data => {
+      this.downloadManagerService.downloadContentId = '';
+      content['downloadStatus'] = 'DOWNLOADING';
+    }, error => {
+      this.downloadManagerService.downloadContentId = '';
+          content['downloadStatus'] = 'FAILED';
+      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+    });
+}
+
+updateContent(downloadListdata) {
+const content = _.isEmpty(this.playerContent) ? this.collectionData : this.playerContent;
+this.updateDownloadStatus(downloadListdata, content);
+}
+updateDownloadStatus(downloadListdata, content) {
+
+_.find(downloadListdata.result.response.downloads.completed, (completed) => {
+  if (completed.contentId === content.identifier) {
+    content['downloadStatus'] = 'DOWNLOADED';
+
+  }
+});
+
+_.find(downloadListdata.result.response.downloads.failed, (failed) => {
+  if (failed.contentId === content.identifier) {
+    content['downloadStatus'] = 'FAILED';
+
+  }
+});
+
+
+}
 }

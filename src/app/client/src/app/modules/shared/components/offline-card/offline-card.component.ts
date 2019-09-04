@@ -69,7 +69,7 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
-      data.showAddingToLibraryButton = true;
+      data['downloadStatus'] = 'DOWNLOADING';
     }
     this.clickEvent.emit({ 'action': action, 'data': data });
   }

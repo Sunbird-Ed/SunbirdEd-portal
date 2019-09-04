@@ -88,14 +88,14 @@
               class="copy icon"></i></button>
         </div>
         <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')"
-          *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true && data?.showAddingToLibraryButton !== true"
+          *ngIf="checkOfflineRoutes === 'browse' && !data?.downloadStatus || data?.downloadStatus === 'FAILED'"
           class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
           {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="download icon"></i></button>
         <button
-          *ngIf="checkOfflineRoutes === 'browse' && contentId === data.metaData.identifier && data?.showAddingToLibraryButton === true"
+          *ngIf="checkOfflineRoutes === 'browse' && contentId === data.metaData.identifier && data?.downloadStatus === 'DOWNLOADING'"
           class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
           {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
-        <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' "
+        <button *ngIf="data?.downloadStatus === 'DOWNLOADED' && checkOfflineRoutes === 'browse' "
           class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
           {{resourceService.frmelmnts?.btn?.addedToLibrary}}
         </button>

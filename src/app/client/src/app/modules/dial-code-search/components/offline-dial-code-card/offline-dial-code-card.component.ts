@@ -52,7 +52,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
-      data.showAddingToLibraryButton = true;
+      data['downloadStatus'] = 'DOWNLOADING';
     }
     this.clickEvent.emit({ 'action': action, 'data': data });
   }

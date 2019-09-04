@@ -10,7 +10,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
-
+import { DownloadManagerService } from './../../../../../offline/services';
+import { download_list, download_error, download_success } from '../public-collection-player/public-collection-player.component.spec.data';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
   events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
@@ -29,7 +30,8 @@ const fakeActivatedRoute = {
 const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
-    stmsg: { m0009: 'error' }
+    stmsg: { m0009: 'error' },
+    fmsg: { m0090: 'Could not download. Try again later'}
   },
   frmelmnts: {
     btn: {
@@ -50,7 +52,7 @@ describe('PublicContentPlayerComponent', () => {
       TelemetryModule.forRoot()],
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PublicPlayerService,
+      providers: [PublicPlayerService, DownloadManagerService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
@@ -110,4 +112,33 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showPlayer).toBeTruthy();
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
+
+  it('download content', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const mockData = download_success;
+    const mockObservableData = observableOf(mockData);
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(mockObservableData);
+    component.downloadContent(serverRes.result.result.content);
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+  });
+  it('Test Download content for failure', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceServiceMockData.messages;
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
+    component.downloadContent(serverRes.result.result.content);
+    expect(serverRes.result.result.content.downloadStatus).toEqual('FAILED');
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(resourceService.messages.fmsg.m0090).toEqual('Could not download. Try again later');
+  });
+
+  it('Test Event emit', () => {
+    component.contentData = serverRes.result.result.content;
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
+    component.downloadContent(serverRes.result.result.content);
+    component.updateContent(download_list);
+    expect(component.contentData['downloadStatus']).toBe('FAILED');
+  });
+
 });

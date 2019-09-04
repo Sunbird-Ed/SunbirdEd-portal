@@ -278,8 +278,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadContentId = '';
       _.each(this.pageSections, (pageSection) => {
         _.each(pageSection.contents, (pageData) => {
-          pageData['addedToLibrary'] = false;
-          pageData['showAddingToLibraryButton'] = false;
+          pageData['downloadStatus'] = 'FAILED';
         });
       });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
@@ -308,16 +307,14 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         // If download is completed card should show added to library
         _.find(downloadListdata.result.response.downloads.completed, (completed) => {
           if (pageData.metaData.identifier === completed.contentId) {
-            pageData['addedToLibrary'] = true;
-            pageData['showAddingToLibraryButton'] = false;
+            pageData['downloadStatus'] = 'DOWNLOADED';
           }
         });
 
         // If download failed, card should show again add to library
         _.find(downloadListdata.result.response.downloads.failed, (failed) => {
           if (pageData.metaData.identifier === failed.contentId) {
-            pageData['addedToLibrary'] = false;
-            pageData['showAddingToLibraryButton'] = false;
+            pageData['downloadStatus'] = 'FAILED';
           }
         });
       });

@@ -12,20 +12,31 @@
               {{contentData.name}}
             </h1>
             <!--/Title-->
-
-            <!--Close Button-->
-            <button 
-              appTelemetryInteract 
-              [telemetryInteractCdata]="this.telemetryCdata" 
-              [telemetryInteractObject]="telemetryInteractObject" 
-              [telemetryInteractEdata]="closePlayerInteractEdata"
-              (click)="close()"
-              class="sb-btn sb-btn-normal sb-btn-error ml-auto">
+            <div class="ml-auto d-flex flex-ai-center">
+              <div *ngIf="isOffline" class="mr-16">
+                <button id="download_{{contentData.identifier}}" (click)="downloadContent(contentData)"
+                  *ngIf="checkOfflineRoutes === 'browse' && !contentData?.downloadStatus || contentData?.downloadStatus === 'FAILED'"
+                  class="sb-btn sb-btn-outline-primary sb-btn-normal">
+                  <i class="download icon"></i>{{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
+                <button
+                  *ngIf="checkOfflineRoutes === 'browse' && contentId === contentData.identifier && contentData?.downloadStatus === 'DOWNLOADING'"
+                  class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
+                  {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
+                <button *ngIf="checkOfflineRoutes === 'browse' && contentData?.downloadStatus === 'DOWNLOADED'"
+                  class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
+                  {{resourceService.frmelmnts?.btn?.addedToLibrary}}
+              </button>
+            </div>
+              <!--Close Button-->
+              <button appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata"
+                [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata"
+                (click)="close()" class="sb-btn sb-btn-normal sb-btn-error">
                 {{resourceService.frmelmnts.btn.close}}
                 <i class="ui remove icon"></i>
-            </button>
-            <!--/Close Button-->
-
+              </button>
+                <!--/Close Button-->
+            </div>
+        
           </div>
         </div>
         <!--/Content Title-->

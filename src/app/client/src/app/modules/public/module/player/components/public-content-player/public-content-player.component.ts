@@ -12,7 +12,8 @@ import {
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-
+import { DownloadManagerService } from './../../../../../offline/services';
+import { environment } from '@sunbird/environment';
 @Component({
   selector: 'app-public-content-player',
   templateUrl: './public-content-player.component.html'
@@ -55,11 +56,14 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
   public objectRollup = {};
+  checkOfflineRoutes: string;
+  isOffline: boolean = environment.isOffline;
+
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
-    private configService: ConfigService
+    private configService: ConfigService, public downloadManagerService: DownloadManagerService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -83,6 +87,18 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.getContent();
       this.deviceDetector();
     });
+
+    if (this.isOffline ) {
+      if (_.includes(this.router.url, 'browse')) {
+        this.checkOfflineRoutes = 'browse';
+      } else if (!_.includes(this.router.url, 'browse')) {
+        this.checkOfflineRoutes = 'library';
+      }
+      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+          this.updateContent(data);
+      });
+    }
+
   }
   setTelemetryData() {
     this.telemetryInteractObject = {
@@ -188,4 +204,31 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  downloadContent(content) {
+    this.downloadManagerService.downloadContentId = content.identifier;
+    this.downloadManagerService.startDownload({}).subscribe(data => {
+      this.downloadManagerService.downloadContentId = '';
+      content['downloadStatus'] = 'DOWNLOADING';
+    }, error => {
+      this.downloadManagerService.downloadContentId = '';
+          content['downloadStatus'] = 'FAILED';
+      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+    });
+}
+
+ updateContent(downloadListdata) {
+            // If download is completed card should show added to library
+            _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+              if (completed.contentId === this.contentData.identifier) {
+                this.contentData['downloadStatus'] = 'DOWNLOADED';
+              }
+            });
+            // If download failed, card should show again add to library
+            _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+              if (failed.contentId === this.contentData.identifier) {
+                this.contentData['downloadStatus'] = 'FAILED';
+              }
+  });
+}
 }

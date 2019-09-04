@@ -320,8 +320,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     }, error => {
       this.downloadManagerService.downloadContentId = '';
       _.each(this.itemsToDisplay, (contents) => {
-        contents['addedToLibrary'] = false;
-        contents['showAddingToLibraryButton'] = false;
+        contents['downloadStatus'] = 'FAILED';
       });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
@@ -348,16 +347,14 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       // If download is completed card should show added to library
       _.find(downloadListdata.result.response.downloads.completed, (completed) => {
         if (contents.metaData.identifier === completed.contentId) {
-          contents['addedToLibrary'] = true;
-          contents['showAddingToLibraryButton'] = false;
+          contents['downloadStatus'] = 'DOWNLOADED';
         }
       });
 
       // If download failed, card should show again add to library
       _.find(downloadListdata.result.response.downloads.failed, (failed) => {
         if (contents.metaData.identifier === failed.contentId) {
-          contents['addedToLibrary'] = false;
-          contents['showAddingToLibraryButton'] = false;
+          contents['downloadStatus'] = 'FAILED';
         }
       });
     });
