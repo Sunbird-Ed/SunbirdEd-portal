@@ -1,6 +1,6 @@
 import {filter, first, map} from 'rxjs/operators';
 import { UserService, PermissionService, TenantService, OrgDetailsService, FormService } from './../../services';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -8,13 +8,14 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 declare var jQuery: any;
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './main-header.component.html'
 })
 export class MainHeaderComponent implements OnInit {
-
+  @Input() routerEvents;
   languageFormQuery = {
     formType: 'content',
     formAction: 'search',
@@ -202,7 +203,7 @@ export class MainHeaderComponent implements OnInit {
   }
 
   getUrl() {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
+    this.routerEvents.subscribe((urlAfterRedirects: NavigationEnd) => {
       let currentRoute = this.activatedRoute.root;
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
