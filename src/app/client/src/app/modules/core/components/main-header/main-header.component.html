@@ -58,6 +58,10 @@
                           <a class="item" *ngIf='!isValidCustodianOrgUser' (click)="showAccountMergemodal = true;">
                             {{resourceService.frmelmnts?.lbl?.mergeAccount}}
                           </a>
+                          <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()" 
+                          routerLink="/org/userUpload">
+                          Manage User
+                      </a>
                           <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
                                 (click)="logout()">
                                 {{resourceService.frmelmnts?.lnk?.logout}}
