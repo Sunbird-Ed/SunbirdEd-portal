@@ -1,12 +1,12 @@
-<sui-modal
-  [mustScroll]="true"
-  [isClosable]="false"
-  [transitionDuration]="0"
-  [size]="'normal'"
-  class="sb-modal"
-  appBodyScroll
-  *ngIf='showUpdateModal'
-  (dismissed)="redirect()"
+<sui-modal 
+  [mustScroll]="true" 
+  [isClosable]="false" 
+  [transitionDuration]="0" 
+  [size]="'normal'" 
+  class="sb-modal sb-batch-modal"
+  appBodyScroll 
+  *ngIf='showUpdateModal' 
+  (dismissed)="redirect()" 
   #updateBatchModal>
 
   <!--Header-->

@@ -6,7 +6,7 @@
     "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators,streamingUrl,originData,copyright",
     "enrolledCourses": {
       "fields": "contentType,topic,name,channel",
-      "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy"
+      "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
     }
   },
   "URLS": {
@@ -41,7 +41,9 @@
       "GET_USER_BY_KEY": "user/v1/get",
       "CREATE_V2": "user/v2/create",
       "LOCATION_SEARCH": "data/v1/location/search",
-      "TYPE": "user/v1/type/list"
+      "TYPE": "user/v1/type/list",
+      "VALIDATE_CERTIFICATE": "user/v1/certs/validate",
+      "DOWNLOAD_CERTIFICATE": "user/v1/certs/download"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
@@ -167,6 +169,10 @@
       "DOWNLOAD": "content/v1/download",
       "DOWNLOAD_LIST": "content/v1/download/list",
       "EXPORT": "content/v1/export"
+    },
+    "ACCOUNT_RECOVERY": {
+      "FUZZY_SEARCH": "user/v1/fuzzy/search",
+      "RESET_PASSWORD": "user/v1/password/reset"
     }
   }
 }

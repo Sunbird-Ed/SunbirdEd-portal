@@ -121,3 +121,10 @@ body {
   }
 }
 
+// calender styles
+.ui.calendar .ui.celled.table tr td, .ui.calendar .ui.celled.table tr th {
+  cursor:pointer;
+  }
+  .ui.calendar .ui.table tr td.disabled, .ui.calendar .ui.table tr.disabled td, .ui.calendar .ui.table tr.disabled:hover, .ui.calendar .ui.table tr:hover td.disabled {
+  cursor:default
+  }

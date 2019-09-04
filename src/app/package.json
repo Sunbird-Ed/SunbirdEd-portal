@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "buildNumber": "1",
   "private": true,
   "devDependencies": {
@@ -46,6 +46,11 @@
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "nodemonConfig": {
+    "ignore": ["client"],
+    "exec": "npm run server",
+    "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
   "scripts": {
     "server": "gulp update:index:file && node server",

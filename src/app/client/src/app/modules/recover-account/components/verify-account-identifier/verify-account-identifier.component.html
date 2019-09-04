@@ -1,0 +1,35 @@
+<div class="sb-account-recover-page-section" [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-account-recover-page-otp mt-32">
+    <div class="sb-account-recover-page-otp-text text-center">
+      {{resourceService?.frmelmnts?.lbl?.otpSentTo}}
+      <span>{{recoverAccountService.selectedAccountIdentifier.value}}.</span>
+    </div>
+    <div class="sb-account-recover-page-otp-text text-center">
+      {{resourceService?.frmelmnts?.lbl?.itis}}
+      <span>{{resourceService?.frmelmnts?.lbl?.validFor}}.</span>
+    </div>
+  </div>
+  <form [formGroup]="form" class="sb-form mt-48" autocomplete="off">
+    <div class="sb-field-group mb-16 text-left">
+      <div class="sb-field">
+        <label class="sb-account-recoverpage-label required">{{resourceService?.frmelmnts?.lbl?.enterOTP}} </label>
+        <input class="sb-form-control" [ngClass]="{'is-invalid': false }" formControlName="otp" name="otp"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterOTP}}">
+        <span class="sb-color-warning fxsmall mt-8"
+          *ngIf="form.controls.otp.touched && form.controls.otp.errors && form.controls.otp.errors.required">
+          {{resourceService?.frmelmnts?.lbl?.otpMandatory}}
+        </span>
+      </div>
+    </div>
+    <div class="d-flex flex-jc-space-between mt-32">
+      <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-secondary" tabindex="0" [disabled]="disableResendOtp"
+        appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+        [telemetryInteractEdata]="{id: 'resend-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
+        (click)="handleResendOtp()"> {{resourceService?.frmelmnts?.lbl?.resendOTP}}</button>
+      <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-secondary" tabindex="0" [disabled]="disableFormSubmit"
+        appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+        [telemetryInteractEdata]="{id: 'verify-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
+        (click)="handleVerifyOtp()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
+    </div>
+  </form>
+</div>

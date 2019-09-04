@@ -42,7 +42,7 @@
   </dl>
   <dl class="sb-meta-data">
       <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
-      <dd *ngIf="metaData.license">{{metaData.license}}</dd>
+      <dd *ngIf="metaData.license">{{metaData.license}}&#x200E;</dd>
   </dl>
   <dl class="sb-meta-data" *ngIf="metaData.orgDetails && metaData.orgDetails.orgName">
       <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
@@ -73,7 +73,7 @@
   </dl>
   <dl class="sb-meta-data" *ngIf="metaData.originData.license">
       <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
-      <dd *ngIf="metaData.creator">{{metaData.originData.license}}</dd>
+      <dd *ngIf="metaData.creator">{{metaData.originData.license}}&#x200E;</dd>
   </dl>
   <dl class="sb-meta-data" *ngIf="metaData.originData.organisation">
       <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>

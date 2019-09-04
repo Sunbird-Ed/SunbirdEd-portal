@@ -1,5 +1,5 @@
 import { ExploreModule } from './../public/module/explore/explore.module';
-import { OfflineFileUploaderService, DownloadManagerService } from './services';
+import { OfflineFileUploaderService, DownloadManagerService, OfflineCardService } from './services';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule, SuiTabsModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,7 @@ import {
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import {FileSizeModule} from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
+import { SlickModule } from 'ngx-slick';
 
 @NgModule({
   imports: [
@@ -30,9 +31,10 @@ import { OrderModule } from 'ngx-order-pipe';
     FileSizeModule,
     SuiAccordionModule,
     SuiTabsModule,
-    OrderModule
+    OrderModule,
+    SlickModule
   ],
-  providers: [DeviceDetectorService, OfflineFileUploaderService, DownloadManagerService],
+  providers: [DeviceDetectorService, OfflineFileUploaderService, DownloadManagerService, OfflineCardService],
   declarations: [
     ContentImportComponent, ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
     BrowseComponent, WatchVideoComponent,

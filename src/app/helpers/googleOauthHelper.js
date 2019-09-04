@@ -121,7 +121,6 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
     },
     json: true
   }
-  console.log('goggle user create request', options);
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;

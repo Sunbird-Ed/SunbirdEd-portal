@@ -281,12 +281,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       filters: _.get(this.queryParams, 'appliedFilters') ? this.filters : { ..._.get(manipulatedData, 'filters'), ...this.filters },
       limit: this.pageLimit,
       pageNumber: Number(request.params.pageNumber),
-      exists: request.queryParams.exists,
-      sort_by: request.queryParams.sortType ?
-        { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
       mode: _.get(manipulatedData, 'mode'),
       params: this.configService.appConfig.ViewAll.contentApiQueryParams
     };
+    if (!this.isOffline || _.includes(this.router.url, 'browse')) {
+      requestParams['exists'] = request.queryParams.exists,
+      requestParams['sort_by'] = request.queryParams.sortType ?
+      { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy);
+    }
     if (_.get(manipulatedData, 'filters')) {
       requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }

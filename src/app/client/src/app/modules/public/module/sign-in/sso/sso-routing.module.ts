@@ -8,6 +8,7 @@ const routes: Routes = [
   {
     path: 'select-org', component: SelectOrgComponent,
     data: {
+      hideHeaderNFooter : true,
       telemetry: {
         env: telemetryEnv, pageid: 'select-org', uri: '/select-org', type: 'view', mode: 'self', uuid: uuid
       }
@@ -16,6 +17,7 @@ const routes: Routes = [
   {
     path: 'update/contact', component: UpdateContactComponent,
     data: {
+      hideHeaderNFooter : true,
       telemetry: {
         env: telemetryEnv, pageid: 'update-contact', uri: '/update-contact', type: 'view', mode: 'self', uuid: uuid
       }

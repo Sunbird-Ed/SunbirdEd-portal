@@ -8,6 +8,8 @@ import { CacheService } from 'ng2-cache-service';
 import { OfflineDialCodeCardComponent } from './offline-dial-code-card.component';
 import { CdnprefixPipe } from './../../../shared/pipes/cdnprefix.pipe';
 import { RouterTestingModule } from '@angular/router/testing';
+import { OfflineCardService } from '@sunbird/offline';
+
 
 describe('OfflineDialCodeCardComponent', () => {
   let component: OfflineDialCodeCardComponent;
@@ -17,7 +19,7 @@ describe('OfflineDialCodeCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [ OfflineDialCodeCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, OfflineCardService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -59,7 +61,10 @@ describe('OfflineDialCodeCardComponent', () => {
     component.data = Response.cardData;
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'download');
-    expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
+    const offlineCardService = TestBed.get(OfflineCardService);
+    spyOn(offlineCardService, 'checkYoutubeContent').and.returnValue(true);
+    component.onAction(component.data, 'download');
+    expect(component.showModal).toBe(true);
     expect(Response.emitData.data.showAddingToLibraryButton).toBeTruthy();
   });
 
