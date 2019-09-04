@@ -232,6 +232,10 @@ setFingerPrintTelemetry() {
   public setDeviceId(): Observable<string> {
       return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
           this.fingerprintInfo = {deviceId, components, version};
+          if (this.isOffline) {
+            deviceId = <HTMLInputElement>document.getElementById('deviceId') ?
+                        (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
+          }
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.deviceRegisterService.initialize();
           observer.next(deviceId);
