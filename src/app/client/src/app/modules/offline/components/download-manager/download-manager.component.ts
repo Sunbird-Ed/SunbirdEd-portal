@@ -85,7 +85,10 @@ export class DownloadManagerComponent implements OnInit {
 
   openContent(contentId, mimeType) {
       if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        this.router.navigate(['play/collection', contentId]);
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigateByUrl('/').then(() => {
+          this.router.navigate(['play/collection', contentId]);
+      });
       } else {
         this.router.navigate(['play/content', contentId]);
       }
