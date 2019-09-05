@@ -112,6 +112,69 @@
                 "childrenTypes": [],
                 "addType": "Browser",
                 "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "FocusSpot",
+                "label": "FocusSpot",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "LearningOutcomeDefinition",
+                "label": "LearningOutcomeDefinition",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PracticeQuestionSet",
+                "label": "PracticeQuestionSet",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "CuriosityQuestions",
+                "label": "CuriosityQuestions",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "MarkingSchemeRubric",
+                "label": "MarkingSchemeRubric",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExplanationResource",
+                "label": "ExplanationResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExperientialResource",
+                "label": "ExperientialResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             }
         ],
         "COLLECTION_ARRAY": [
@@ -139,6 +202,69 @@
             {
                 "type": "Resource",
                 "label": "Resource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "FocusSpot",
+                "label": "FocusSpot",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "LearningOutcomeDefinition",
+                "label": "LearningOutcomeDefinition",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PracticeQuestionSet",
+                "label": "PracticeQuestionSet",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "CuriosityQuestions",
+                "label": "CuriosityQuestions",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "MarkingSchemeRubric",
+                "label": "MarkingSchemeRubric",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExplanationResource",
+                "label": "ExplanationResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExperientialResource",
+                "label": "ExperientialResource",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
@@ -185,6 +311,69 @@
             {
                 "type": "Resource",
                 "label": "Resource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "FocusSpot",
+                "label": "FocusSpot",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "LearningOutcomeDefinition",
+                "label": "LearningOutcomeDefinition",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PracticeQuestionSet",
+                "label": "PracticeQuestionSet",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "CuriosityQuestions",
+                "label": "CuriosityQuestions",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "MarkingSchemeRubric",
+                "label": "MarkingSchemeRubric",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExplanationResource",
+                "label": "ExplanationResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExperientialResource",
+                "label": "ExperientialResource",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
