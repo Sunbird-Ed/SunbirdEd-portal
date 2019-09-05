@@ -204,9 +204,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     if (this.isOffline) {
-      this.downloadManagerService.downloadEvent.subscribe(() => {
+      this.downloadManagerService.downloadEvent.pipe(tap(() => {
         this.showDownloadLoader = false;
-      });
+      })).subscribe();
       this.downloadManagerService.downloadListEvent.subscribe((data) => {
         this.updateCardData(data);
       });

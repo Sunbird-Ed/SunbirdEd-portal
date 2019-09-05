@@ -10,7 +10,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, tap, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { DownloadManagerService } from './../../../../../offline/services';
@@ -86,10 +86,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.offlineFileUploaderService.isUpload.subscribe(() => {
         self.fetchPageData();
       });
-      this.downloadManagerService.downloadEvent.subscribe(() => {
+      this.downloadManagerService.downloadEvent.pipe(tap(() => {
         this.showDownloadLoader = false;
-      });
-
+      })).subscribe();
       this.downloadManagerService.downloadListEvent.subscribe((data) => {
         this.updateCardData(data);
       });
