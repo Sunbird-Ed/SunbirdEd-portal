@@ -49,7 +49,7 @@ body {
   }
 }
 .sb-offline {
-  padding-bottom: 145px;
+  padding-bottom: 170px;
   .footer-fix {
     min-height: calc(100vh - 180px);
    }
@@ -128,3 +128,17 @@ body {
   .ui.calendar .ui.table tr td.disabled, .ui.calendar .ui.table tr.disabled td, .ui.calendar .ui.table tr.disabled:hover, .ui.calendar .ui.table tr:hover td.disabled {
   cursor:default
   }
+
+
+.ui.info.message{
+    background-color: var(--primary-0) !important;
+}
+.ui.info.message .header {
+  color: var(--primary-color) !important;
+}
+.ui.ordered.list .list, ol.ui.list ol {
+  margin-left: 2em !important;
+}
+.ui.info.message {
+  color: black !important;
+}
