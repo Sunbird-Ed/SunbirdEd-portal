@@ -88,7 +88,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       });
       this.downloadManagerService.downloadEvent.pipe(tap(() => {
         this.showDownloadLoader = false;
-      })).subscribe();
+      })).subscribe(() => {});
       this.downloadManagerService.downloadListEvent.subscribe((data) => {
         this.updateCardData(data);
       });
