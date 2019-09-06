@@ -107,6 +107,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     };
     this.recoverAccountService.generateOTP(request).subscribe(response => {
       this.disableResendOtp = true;
+      this.toasterService.success('OTP sent successfully.');
     }, error => {
       this.toasterService.error('Resend OTP failed. Please try again');
     });
