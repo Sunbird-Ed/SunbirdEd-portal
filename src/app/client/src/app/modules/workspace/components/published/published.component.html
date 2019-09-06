@@ -11,7 +11,7 @@
       [telemetryInteractCdata]="[{id: 'course:download:QRCode', type: 'Feature'},{id: 'SB-13798', type: 'Task'}]" (click)=getCourseQRCsv();
       suiPopup popupText="{{resourceService.frmelmnts?.lbl?.downloadQRCode?.tooltip}}" [popupPlacement]="'top'">
       {{resourceService?.frmelmnts?.lbl?.downloadCourseQRCode}}
-    </button>
+  </button>
   </div> 
   <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
     <div class="ui stackable three column grid" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="publishedContent">
