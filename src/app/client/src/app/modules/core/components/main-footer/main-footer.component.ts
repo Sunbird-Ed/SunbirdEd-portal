@@ -26,11 +26,9 @@ export class MainFooterComponent implements OnInit {
 
   isOffline: boolean = environment.isOffline;
   instance: string;
-  deviceId;
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService) {
     this.resourceService = resourceService;
-    if (this.isOffline) {this.deviceId =  (<HTMLInputElement>document.getElementById('deviceId')).value; }
   }
 
   ngOnInit() {

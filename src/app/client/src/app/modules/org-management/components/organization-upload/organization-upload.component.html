@@ -1,43 +1,55 @@
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
-class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal>
-<div class="sb-modal-header">
-  Upload Users
-</div>
-<div class="sb-modal-content">
-  <div class="m-0">
-    <span class="m-0 mr-16">Please upload the CSV file</span>
-    <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Download Sample
-      CSV</button>
-  </div>
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal>
 
-  <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
-    Upload CSV file
-    <input type="file" class="sb-btn-upload" name="file" />
+  <!--Header-->
+  <div class="sb-modal-header" [appTelemetryImpression]="telemetryImpression">
+    {{resourceService?.frmelmnts?.instn?.t0015}}
   </div>
-  <div class="ui info message">
-    <div class="header">
-      Instructions:
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content">
+    <div *ngIf="showLoader">
+      <app-loader></app-loader>
     </div>
-    <ol class="ui list">
-      <li>Download the CSV file. Users belonging to a single organization can be uploaded at a time in one CSV
-        file. </li>
-      <li>Enter the following mandatory details of user accounts:
-        <ol>
-          <li>FirstName: User’s first name, alphabetic value.</li>
-          <li>Phone or Email: User’s phone number (ten digit mobile number) or email ID. One of the two have to be
-            provided, however, it is advisable to provide both if available.</li>
-          <li>Username: Unique name assigned to the user by the organization, alphanumeric.</li>
-        </ol>
-      </li>
-    </ol>
-    <p>Note: All other columns in the CSV file are optional, for details on filling these, refer to</p>
+    <h5 *ngIf="fileName">
+      <i class="file outline icon"></i>{{resourceService?.frmelmnts?.lbl?.upldfile}}: {{fileName}}
+    </h5>
+    <div *ngIf="processId">
+      <p class="py-0">{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</p>
+      <p>{{resourceService?.frmelmnts?.instn?.t0012}}</p>
+    </div>
+    <div *ngIf="!processId && !showLoader" class="ui info message">
+      <div class="header">
+        {{resourceService?.frmelmnts?.scttl?.instructions}}
+      </div>
+      <ol class="ui list">
+        <li *ngFor="let instn of orgUploadInstructions">{{instn?.instructions}}
+          <ol *ngIf="instn.subinstructions">
+            <li *ngFor="let subinstn of instn.subinstructions">{{subinstn?.instructions}}</li>
+          </ol>
+        </li>
+      </ol>
+    </div>
   </div>
-</div>
-<div class="sb-modal-actions">
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-    [telemetryInteractEdata]="orgUploadInteractEdata" [disabled]="processId"
-    class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
-    {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
-  </button>
-</div>
+      [telemetryInteractEdata]="orgUploadInteractEdata" [disabled]="processId"
+      class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
+      {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
+    </button>
+    <!-- <angular2csv class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto" [data]="config.appConfig.ADMIN_UPLOAD.SAMPLE_ORGANIZATION_CSV" 
+      filename="Sample_Organizations" [options]="csvOptions"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="downloadSampleOrgCSVInteractEdata">
+      {{resourceService?.frmelmnts?.btn?.smplcsv}} TODO: use Blob object to generate csv file
+    </angular2csv> -->
+    <input #inputbtn type="file" class="d-none" accept=".csv" id="uploadorgscsv" onclick="this.value = null"
+      (change)="uploadOrg($event.target.files)" autofocus required="" />
+  </div>
+  <!--/Actions-->
+
 </sui-modal>

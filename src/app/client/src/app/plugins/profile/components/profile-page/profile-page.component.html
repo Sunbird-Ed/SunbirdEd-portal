@@ -1,28 +1,26 @@
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
-      <div class="mb-15 d-flex flex-jc-center relative avatar-container" >
-       <img *ngIf="!isCustodianOrgUser" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
-       suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
-       <ngx-avatar [ngClass]="{verified: !isCustodianOrgUser}"class="my-avatar" [style]="{
-         backgroundColor: '#ffffff',
-         border: '1px solid #fff',
-         boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
-         borderRadius: '50%',
-         color: '#9017FF',
-         fontWeight: '700',
-         fontFamily: 'inherit'}" [size]="98" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
-       </ngx-avatar>
+      <div class="mb-15 d-flex flex-jc-center relative">
+        <ngx-avatar class="my-avatar" [style]="{
+          backgroundColor: '#ffffff',
+          border: '1px solid #fff',
+          boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
+          borderRadius: '50%',
+          color: '#9017FF',
+          fontWeight: 'bold',
+          fontFamily: 'inherit'}" [size]="90" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
+        </ngx-avatar>
       </div>
     </div>
     <div class="fs-2-5 font-w-bold d-flex mb-15 text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
       <div class="computer only">
-        <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
-    </div>
-    <div class="mobile only name-info-mobile">
-        <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
-    </div>  
+          <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
+      </div>
+      <div class="mobile only name-info-mobile">
+          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
+      </div>
     </div>
     <div class="mb-10 d-flex mb-5 flex-jc-center">
       <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
@@ -120,7 +118,7 @@
         </div>
       </div>
       <div (click)="showContactPopup=true;contactType='email'"
-        class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
+        class="ui semi-circular dodger-blue basic label cursor-pointer" *ngIf="userProfile.email" appTelemetryInteract
         [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
         <i class="mail blue icon mr-5"></i> {{userProfile.email}}
       </div>
@@ -130,17 +128,6 @@
         [telemetryInteractEdata]="editEmailInteractEdata">
         <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
       </div>
-
-      <!-- <div (click)="showRecoveryId=true"
-      class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal">
-        <img class="recovery-img mr-5" src="/assets/images/Recovery.svg" alt="">  Add recovery id
-      </div> -->
-
-      <div (click)="showRecoveryId=true"
-      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15">
-        <img class="recovery-img mr-5" src="/assets/images/Recovery.svg" alt="">  Add recovery id
-    </div>
-
     </div>
   </section>
 
@@ -282,5 +269,4 @@
   [contactType]="contactType"></app-update-contact-details>
 <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup" *ngIf="showEditUserDetailsPopup"
   [userProfile]="userProfile"></app-update-user-details>
-  <app-account-recovery-info *ngIf="showRecoveryId" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
 <router-outlet></router-outlet>
