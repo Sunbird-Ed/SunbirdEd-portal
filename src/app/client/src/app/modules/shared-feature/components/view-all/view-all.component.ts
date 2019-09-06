@@ -13,7 +13,7 @@ import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from './../../../offline/services';
+import { DownloadManagerService } from '@sunbird/offline';
 
 @Component({
   selector: 'app-view-all',
@@ -443,6 +443,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadContentId = '';
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      this.showDownloadLoader = false;
       _.each(this.searchList, (contents) => {
         contents['addedToLibrary'] = false;
         contents['showAddingToLibraryButton'] = false;

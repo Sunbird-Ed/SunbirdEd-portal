@@ -1,4 +1,3 @@
-import { OfflineFileUploaderService } from '../../../../../offline/services';
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
@@ -13,7 +12,7 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, tap, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from './../../../../../offline/services';
+import { OfflineFileUploaderService, DownloadManagerService } from '@sunbird/offline';
 
 @Component({
   selector: 'app-explore-component',
@@ -281,6 +280,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadContentId = '';
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      this.showDownloadLoader = false;
       _.each(this.pageSections, (pageSection) => {
         _.each(pageSection.contents, (pageData) => {
           pageData['addedToLibrary'] = false;

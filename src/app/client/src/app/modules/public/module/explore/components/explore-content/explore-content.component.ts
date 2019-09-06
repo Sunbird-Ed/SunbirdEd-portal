@@ -13,7 +13,7 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from './../../../../../offline/services';
+import { DownloadManagerService } from '@sunbird/offline';
 
 @Component({
     templateUrl: './explore-content.component.html'
@@ -264,6 +264,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             this.downloadManagerService.downloadContentId = '';
         }, error => {
             this.downloadManagerService.downloadContentId = '';
+            this.showDownloadLoader = false;
             _.each(this.contentList, (contents) => {
                 contents['addedToLibrary'] = false;
                 contents['showAddingToLibraryButton'] = false;
