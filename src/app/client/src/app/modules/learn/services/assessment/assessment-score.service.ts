@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { UserService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -30,6 +30,7 @@ export class AssessmentScoreService {
         this._assessEvents = [];
       } else if (eventData && eid === 'END') {
         this._endEvent = event;
+        this.processAssessEvents(); 
       } else if (eventData && eid === 'ASSESS') {
         this._assessEvents.push(eventData);
       }
@@ -46,10 +47,24 @@ export class AssessmentScoreService {
     }
   }
 
+  processAssessEvents() {
+    // this.generateAttemptId();
+    // this.prepareRequestObject();
+    this.updateAssessmentScore();
+  }
+
   updateAssessmentScore() {
     if (this.initialized && this._endEvent) {
-
+      // make api call 
     }
+  }
+
+  generateAttemptId(){
+    const hash = this.hashFunction();
+  }
+
+  private hashFunction(){
+    // return hash(contentId , batchId , courseId , userId)
   }
 
   prepareRequestObject() {
