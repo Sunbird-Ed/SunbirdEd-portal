@@ -81,13 +81,9 @@ describe('ViewAllComponent', () => {
      spyOn(component, 'setTelemetryImpressionData').and.callThrough();
      spyOn(component, 'setInteractEventData').and.callThrough();
     spyOn(document, 'getElementById').and.returnValue('true');
-    component.showDownloadLoader = true;
-    component.isOffline = true;
     component.ngOnInit();
     component.setTelemetryImpressionData();
     component.setInteractEventData();
-    component.downloadManagerService.downloadEvent.emit('Download started');
-    expect(component.showDownloadLoader).toBeFalsy();
     expect(component).toBeTruthy();
     expect(component.setTelemetryImpressionData).toHaveBeenCalled();
     expect(component.setInteractEventData).toHaveBeenCalled();
@@ -189,13 +185,5 @@ describe('ViewAllComponent', () => {
     expect(component.showDownloadLoader).toBeTruthy();
   });
 
-  it('showDownloadLoader to be false when download fails ', () => {
-    const downloadManagerService = TestBed.get(DownloadManagerService);
-    component.showDownloadLoader = true;
-    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(Response.download_error));
-    component.startDownload(Response.download_event.data.metaData.identifier);
-    expect(downloadManagerService.startDownload).toHaveBeenCalled();
-    expect(component.showDownloadLoader).toBeFalsy();
-  });
 
 });
