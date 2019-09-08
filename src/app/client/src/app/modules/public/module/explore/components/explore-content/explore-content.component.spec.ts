@@ -174,7 +174,7 @@ describe('ExploreContentComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  
+
   it('showDownloadLoader to be true' , () => {
     spyOn(component, 'startDownload');
     component.isOffline = true;

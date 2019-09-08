@@ -48,7 +48,7 @@ describe('ExploreComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreComponent],
-      providers: [PublicPlayerService,DownloadManagerService, { provide: ResourceService, useValue: resourceBundle },
+      providers: [PublicPlayerService, DownloadManagerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
