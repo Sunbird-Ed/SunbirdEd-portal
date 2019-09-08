@@ -13,7 +13,7 @@ import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from '@sunbird/offline';
+import { DownloadManagerService } from '../../../offline/services';
 
 @Component({
   selector: 'app-view-all',

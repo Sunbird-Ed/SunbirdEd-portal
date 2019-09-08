@@ -12,7 +12,7 @@ import { Response } from './explore.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ExploreComponent } from './explore.component';
-import { DownloadManagerService } from '@sunbird/offline';
+import { DownloadManagerService } from '../../../../../offline/services';
 
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
@@ -168,6 +168,7 @@ describe('ExploreComponent', () => {
     component.showDownloadLoader = true;
     component.isOffline = true;
     component.ngOnInit();
+    // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     component.downloadManagerService.downloadEvent.emit('Download started');
     tick(100);
     expect(component.showDownloadLoader).toBeFalsy();

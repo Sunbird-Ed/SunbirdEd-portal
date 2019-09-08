@@ -11,7 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { DownloadManagerService } from '@sunbird/offline';
+import { DownloadManagerService } from '../../../../../offline/services';
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
   let fixture: ComponentFixture<ExploreContentComponent>;
@@ -183,14 +183,13 @@ describe('ExploreContentComponent', () => {
     expect(component.showDownloadLoader).toBeTruthy();
   });
 
-  it('showDownloadLoader to be false' , fakeAsync(() => {
+  it('showDownloadLoader to be false' , () => {
     component.showDownloadLoader = true;
     component.isOffline = true;
     component.ngOnInit();
     component.downloadManagerService.downloadEvent.emit('Download started');
-    tick(100);
     expect(component.showDownloadLoader).toBeFalsy();
-  }));
+  });
 
   it('showDownloadLoader to be false when download fails ', () => {
     const downloadManagerService = TestBed.get(DownloadManagerService);
