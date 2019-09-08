@@ -12,7 +12,7 @@ import { Response } from './explore.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ExploreComponent } from './explore.component';
-import { DownloadManagerService } from '../../../../../offline/services';
+import { DownloadManagerService } from './../../../../../offline/services';
 
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
