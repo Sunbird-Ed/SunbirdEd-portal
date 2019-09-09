@@ -71,6 +71,12 @@
               </span>
               &nbsp;{{dashboarData.completedCount}}
             </span>
+            <span *ngIf="dashboarData.certificateCount!==null"
+              class="course-participants course-participants-label black-divider px-16">
+              <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}&nbsp;:
+              </span>
+              &nbsp;{{dashboarData.certificateCount}}
+            </span>
 
             <span class="course-completed course-participants-label ml-auto"
               *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
@@ -197,7 +203,7 @@
                     </div>
                   </th>
                   <!-- Certificate Status pending need to be done -->
-                  <!-- <th>
+                  <th>
                       <div  class="cursor-pointer" (click)="setOrder('enrolledOn')"
                         appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
                         Certificate Status
@@ -208,7 +214,7 @@
                           <i class="sort up icon fs-1" ></i>
                         </span>
                       </div>
-                    </th> -->
+                    </th>
                 </tr>
               </thead>
               <tbody class="sb-table-body">
@@ -226,6 +232,12 @@
                   <td *ngIf="student.progress >= 100">{{resourceService?.frmelmnts?.lbl?.completed}}</td>
                   <td *ngIf="(student.progress < 100 && student.progress >= 0)">{{student.progress}}%</td>
                   <td *ngIf="student.progress ===null">-</td>
+                  <span *ngFor="let certificate of student.certificates">
+                  <td *ngIf="certificate.name === '100PercentCompletionCertificate'"> <span class="sb-label sb-label-table sb-label-success-0">Issued</span></td>
+                  </span>                
+                  <span *ngIf="!student.certificates">
+                    <td> N/A</td>
+                  </span>
                   <!-- certificate status needs to be done -->
                   <!-- <td data-label="Job"><span class="sb-label sb-label-table sb-label-success-0">Issued</span></td> -->
                 </tr>

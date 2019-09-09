@@ -1,5 +1,5 @@
 
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -34,6 +34,7 @@ describe('MainHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainHeaderComponent);
     component = fixture.componentInstance;
+    component.routerEvents  = observableOf({id: 1, url: '/explore', urlAfterRedirects: '/explore'});
   });
 
   it('should subscribe to user service', () => {

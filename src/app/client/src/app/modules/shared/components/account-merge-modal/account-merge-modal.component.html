@@ -33,7 +33,8 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="redirect()">
+    <button appTelemetryInteract [telemetryInteractEdata]="mergeIntractEdata"
+            [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-primary" (click)="redirect()">
       {{resourceService.frmelmnts?.btn?.merge}}
     </button>
     <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
