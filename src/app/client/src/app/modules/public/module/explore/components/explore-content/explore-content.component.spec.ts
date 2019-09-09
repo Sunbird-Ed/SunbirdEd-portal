@@ -11,7 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { DownloadManagerService } from './../../../../../offline/services';
+import { DownloadManagerService } from '@sunbird/offline';
 
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;

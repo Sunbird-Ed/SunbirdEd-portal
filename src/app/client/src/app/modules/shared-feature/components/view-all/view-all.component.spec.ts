@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui';
-import { DownloadManagerService } from './../../../offline/services';
+import { DownloadManagerService } from '@sunbird/offline';
 
 describe('ViewAllComponent', () => {
   let component: ViewAllComponent;
