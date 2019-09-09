@@ -10,7 +10,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, tap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { DownloadManagerService } from './../../../../../offline/services';
@@ -43,6 +43,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   contentName: string;
   public slug: string;
   organisationId: string;
+  showDownloadLoader = false;
+
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -89,6 +91,10 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadListEvent.subscribe((data) => {
         this.updateCardData(data);
       });
+
+      this.downloadManagerService.downloadEvent.pipe(tap(() => {
+        this.showDownloadLoader = false;
+      }), takeUntil(this.unsubscribe$)).subscribe(() => {});
     }
   }
 
@@ -192,6 +198,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     // For offline environment content will only play when event.action is open
     if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
+      this.showDownloadLoader = true;
+      this.contentName = event.data.name;
       return false;
     } else if (event.action === 'export' && this.isOffline) {
       this.showExportLoader = true;
@@ -276,6 +284,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadContentId = '';
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      this.showDownloadLoader = false;
       _.each(this.pageSections, (pageSection) => {
         _.each(pageSection.contents, (pageData) => {
           pageData['addedToLibrary'] = false;
