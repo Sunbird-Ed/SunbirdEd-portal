@@ -12,14 +12,30 @@ import * as moment from 'moment';
 @Injectable()
 export class AssessmentScoreService {
 
+  /***
+   * course details
+   */
   private _courseId: string;
   private _batchId: string;
   private _contentId: string;
+
+  /**
+   * timestamp of the first START event
+   */
   private _assessmentTs;
+  /**
+   * start and end event objects
+   */
   private _startEvent;
   private _endEvent;
+  /**
+   * batch of ASSESS events in b/w START and END event
+   */
   private _assessEvents = [];
   private initialized: Boolean = false;
+  /**
+   * md5 class to generate hash from courseId , contentId , batchId and userId
+   */
   private _md5;
 
   constructor(private userService: UserService, private courseProgressService: CourseProgressService,
