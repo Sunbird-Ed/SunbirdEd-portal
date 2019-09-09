@@ -180,7 +180,7 @@ telemetry.init({
 
 process.on('unhandledRejection', (reason, p) => console.log('Unhandled Rejection', p, reason));
 process.on('uncaughtException', (err) => {
-  console.log('Uncaught Exception', error)
+  console.log('Uncaught Exception', err)
   process.exit(1);
 });
 exports.close = () => portal.server.close()
