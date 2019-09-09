@@ -1,4 +1,4 @@
-import { BehaviorSubject, throwError, of, throwError as observableThrowError} from 'rxjs';
+import { BehaviorSubject, throwError, of} from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';

@@ -120,20 +120,6 @@ export const Response = {
         'totalItems': 1173, 'currentPage': 3, 'pageSize': 25, 'totalPages': 47,
         'startPage': 30, 'endPage': 34, 'startIndex': 725, 'endIndex': 749, 'pages': [30, 31, 32, 33, 34]
       },
-      download_error: {
-        id: 'api.content.download',
-        ver: '1.0',
-        ts: '2019-08-16T12:28:15.856Z',
-        params: {
-          resmsgid: 'dbbf8bd4-4da8-492b-bc5b-6c73351f1161',
-          msgid: '845ee75b-72e9-4d33-a0a2-1b38bf132b83',
-          status: 'failed',
-          err: 'ERR_INTERNAL_SERVER_ERROR',
-          errmsg: 'Error while processing the request',
-        },
-        responseCode: 'INTERNAL_SERVER_ERROR',
-        result: {},
-      },
       download_event:
       {
         'action': 'download',

@@ -1,5 +1,5 @@
 import { ExploreContentComponent } from './explore-content.component';
-import { BehaviorSubject, throwError, of, throwError as observableThrowError} from 'rxjs';
+import { BehaviorSubject, throwError, of} from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
