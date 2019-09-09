@@ -1,5 +1,5 @@
 import { ExploreContentComponent } from './explore-content.component';
-import { BehaviorSubject, throwError, of } from 'rxjs';
+import { BehaviorSubject, throwError, of} from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
@@ -11,6 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { DownloadManagerService } from '@sunbird/offline';
 
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
@@ -48,7 +49,7 @@ describe('ExploreContentComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
-      providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
+      providers: [PublicPlayerService, DownloadManagerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -173,4 +174,13 @@ describe('ExploreContentComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+
+  it('showDownloadLoader to be true' , () => {
+    spyOn(component, 'startDownload');
+    component.isOffline = true;
+    expect(component.showDownloadLoader).toBeFalsy();
+    component.playContent(Response.download_event);
+    expect(component.showDownloadLoader).toBeTruthy();
+  });
+
 });
