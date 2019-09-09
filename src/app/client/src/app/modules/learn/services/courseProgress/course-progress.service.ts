@@ -1,4 +1,4 @@
-import { of as observableOf } from 'rxjs';
+import { of as observableOf , Observable} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
@@ -172,5 +172,13 @@ export class CourseProgressService {
     };
     return this.contentService.patch(channelOptions)
       .pipe(map((updateCourseStatesData: ServerResponse) => ({ updateCourseStatesData })));
+  }
+
+  updateAssessmentScore(data): Observable<any> {
+    const channelOptions = {
+      url: _.get(data, 'URL'),
+      data: _.get(data, 'requestBody')
+    };
+    return _.get(data, 'methodType') === 'PATCH' && this.contentService.patch(channelOptions)
   }
 }
