@@ -58,15 +58,13 @@ export class AccountRecoveryInfoComponent implements OnInit {
     this.enableSubmitButton = false;
     if (this.contactType === 'emailId') {
       this.request = {
-        request: {
-          'recoveryEmail': this.accountRecoveryForm.get('email').value
-        }
+        'recoveryEmail': this.accountRecoveryForm.get('email').value,
+        'recoveryPhone': ''
       };
     } else if (this.contactType === 'phoneNo') {
       this.request = {
-        request: {
-          'recoveryPhone': this.accountRecoveryForm.get('phone').value
-        }
+        'recoveryPhone': this.accountRecoveryForm.get('phone').value,
+        'recoveryEmail': ''
       };
     }
     this.profileService.updateProfile(this.request).subscribe((data) => {
