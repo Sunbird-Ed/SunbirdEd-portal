@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import { of } from 'rxjs';
@@ -22,7 +23,8 @@ export class AssessmentScoreService {
   private _md5;
 
   constructor(private userService: UserService, private courseProgressService: CourseProgressService,
-    private configService: ConfigService, private resourceService: ResourceService, private toasterService: ToasterService) {
+    private configService: ConfigService, private resourceService: ResourceService, private toasterService: ToasterService,
+    private activatedRoute: ActivatedRoute) {
     this._md5 = new Md5();
   }
 
@@ -36,13 +38,14 @@ export class AssessmentScoreService {
       this._startEvent = event;
       this._assessmentTs = _.get(eventData, 'ets');
       this._assessEvents = [];
+      this.setCourseDetails();
     } else if (eventData && eid === 'ASSESS') {
       if (this.initialized) {
         this._assessEvents.push(eventData);
       }
     } else if (eventData && eid === 'END') {
-      this._endEvent = event;
       if (this.initialized) {
+        this._endEvent = event;
         this.processAssessEvents();
       }
     }
@@ -51,11 +54,12 @@ export class AssessmentScoreService {
   /**
    * initializes the service with course details on START event
    */
-  set courseDetails({ courseId, batchId, contentId }) {
-    if (courseId && batchId && contentId) {
-      this._courseId = courseId;
-      this._batchId = batchId;
-      this._contentId = contentId;
+  private setCourseDetails() {
+    const routeParams = _.get(this.activatedRoute, 'snapshot.params');
+    const routeQueryParams = _.get(this.activatedRoute, 'snapshot.queryParams');
+    ({ courseId: this._courseId, batchId: this._batchId } = routeParams);
+    this._contentId = _.get(routeQueryParams, 'contentId');
+    if (this._startEvent && this._batchId && this._courseId && this._contentId) {
       this.initialized = true;
       this._assessEvents = [];
     }
@@ -64,7 +68,7 @@ export class AssessmentScoreService {
   /**
    * processes the collected ASSESS events when END event is triggered
    */
-  processAssessEvents() {
+  private processAssessEvents() {
     if (this.initialized && this._startEvent && this._endEvent) {
       const attpemtId$ = this.generateHash();
       attpemtId$.pipe(
@@ -81,7 +85,7 @@ export class AssessmentScoreService {
   /**
    * to make api call to server
    */
-  updateAssessmentScore(request) {
+  private updateAssessmentScore(request) {
     const URL = this.configService.urlConFig.URLS.COURSE.USER_CONTENT_STATE_UPDATE;
     const requestBody = request;
     const methodType = 'PATCH';
@@ -103,7 +107,7 @@ export class AssessmentScoreService {
   /**
    * prepares the request body to call the assessment score api
    */
-  prepareRequestObject(attemptId: string) {
+  private prepareRequestObject(attemptId: string) {
     const request = {
       request: {
         contents: [{
