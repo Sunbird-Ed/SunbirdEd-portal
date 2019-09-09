@@ -1,4 +1,4 @@
-import { BehaviorSubject, throwError, of } from 'rxjs';
+import { BehaviorSubject, throwError, of} from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
@@ -12,6 +12,7 @@ import { Response } from './explore.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ExploreComponent } from './explore.component';
+import { DownloadManagerService } from '@sunbird/offline';
 
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
@@ -47,7 +48,7 @@ describe('ExploreComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreComponent],
-      providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
+      providers: [PublicPlayerService, DownloadManagerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -154,4 +155,13 @@ describe('ExploreComponent', () => {
     expect(playerService.playContent).toHaveBeenCalled();
     expect(component.showLoginModal).toBeFalsy();
   });
+  it('showDownloadLoader to be true' , () => {
+    spyOn(component, 'startDownload');
+    component.isOffline = true;
+    expect(component.showDownloadLoader).toBeFalsy();
+    component.playContent(Response.download_event);
+    expect(component.showDownloadLoader).toBeTruthy();
+  });
+
+
 });

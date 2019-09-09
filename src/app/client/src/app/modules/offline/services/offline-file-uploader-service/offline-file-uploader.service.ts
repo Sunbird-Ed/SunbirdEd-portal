@@ -63,6 +63,7 @@ export class OfflineFileUploaderService {
       autoUpload: true,
       request: options.request,
       warnBeforeUnload: true,
+      maxConnections: 1,
       validation: {
         acceptFiles: ['.ecar'],
       },

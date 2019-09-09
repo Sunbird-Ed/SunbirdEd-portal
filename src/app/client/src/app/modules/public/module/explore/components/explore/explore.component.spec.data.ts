@@ -343,4 +343,42 @@ export const Response = {
     mode: 'soft',
     exists: []
   },
+  download_event:
+  {
+    'action': 'download',
+    'data': {
+      'action':
+      {
+        'onImage': {'eventName': 'onImage'}
+      },
+    'addedToLibrary': true,
+    'completionPercentage': 0,
+    'contentType': 'Resource',
+    'description': 'Math-Magic_7_Jugs and Mugs_Bunny and Banno celebrate their Wedding Anniversary_Introduction to volume',
+    'gradeLevel': 'Class 4',
+    // tslint:disable-next-line:max-line-length
+    'image': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/do_312579855868370944110877/artifact/1n4jfaogvexvuuff6knjagpzmavlvdxk2.thumb.png',
+    'medium': 'English',
+    // tslint:disable-next-line:max-line-length
+    'metaData': {'identifier': 'do_312579855868370944110877', 'mimeType': 'video/x-youtube', 'framework': 'ekstep_ncert_k-12', 'contentType': 'Resource'},
+    'name': 'Jugs and Mugs_Bunny and Banno celebrate their Wedding Anniversary_2',
+    'orgDetails': {},
+    'rating': 3,
+    'ribbon': {
+      'left': {
+        'class': 'ui circular label  card-badges-image',
+        'image': 'https://ntpproduction.blob.core.windows.net/badgr/uploads/badges/739851bf8ecd6203aa5dd2d9de155f31.png'
+      },
+      'right': {
+        'class': 'ui black right ribbon label',
+        'name': 'Learn'
+      },
+    },
+    'showAddingToLibraryButton': false,
+    'subTopic': '',
+    'subject': 'Mathematics',
+    'topic': 'Volumes and Capacity'
+  },
+    'section': 'Featured Content'
+    }
 };
