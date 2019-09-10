@@ -179,6 +179,6 @@ export class CourseProgressService {
       url: _.get(data, 'URL'),
       data: _.get(data, 'requestBody')
     };
-    return _.get(data, 'methodType') === 'PATCH' && this.contentService.patch(channelOptions)
+    return _.get(data, 'methodType') === 'PATCH' && this.contentService.patch(channelOptions);
   }
 }

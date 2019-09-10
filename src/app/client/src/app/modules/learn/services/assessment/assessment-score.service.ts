@@ -94,7 +94,7 @@ export class AssessmentScoreService {
           this._assessEvents = [];
         }, (err) => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-        })
+        });
     }
   }
 
@@ -146,8 +146,8 @@ export class AssessmentScoreService {
           }
         ]
       }
-    }
-    return this.updateAssessmentScore(request)
+    };
+    return this.updateAssessmentScore(request);
   }
 
 }
