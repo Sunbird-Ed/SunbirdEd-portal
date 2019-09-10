@@ -204,15 +204,9 @@
                   </th>
                   <!-- Certificate Status pending need to be done -->
                   <th>
-                      <div  class="cursor-pointer" (click)="setOrder('enrolledOn')"
+                      <div  class="cursor-pointer"
                         appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
-                        Certificate Status
-                        <span class="sb-color-primary" [hidden]="reverse" style="float:right">
-                          <i class="sort down icon fs-1" ></i>
-                        </span>
-                        <span class="sb-color-primary" [hidden]="!reverse" style="float:right">
-                          <i class="sort up icon fs-1" ></i>
-                        </span>
+                        {{resourceService?.frmelmnts?.lbl?.dashboardcertificateStatus}}
                       </div>
                     </th>
                 </tr>
