@@ -176,7 +176,7 @@ export class CourseProgressService {
 
   updateAssessmentScore(data): Observable<any> {
     const channelOptions = {
-      url: _.get(data, 'URL'),
+      url: this.configService.urlConFig.URLS.COURSE.USER_CONTENT_STATE_UPDATE,
       data: _.get(data, 'requestBody')
     };
     return _.get(data, 'methodType') === 'PATCH' && this.contentService.patch(channelOptions);

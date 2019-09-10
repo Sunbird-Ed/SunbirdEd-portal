@@ -223,6 +223,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(({ contentId }) => {
         if (contentId) {
           const content = this.findContentById(contentId);
+          this.assessmentScoreService.init({
+            batchDetails: this.enrolledBatchInfo,
+            courseDetails: this.courseHierarchy,
+            contentDetails: _.get(content, 'model')
+          });
           this.objectRollUp = this.contentUtilsService.getContentRollup(content);
           const isExtContentMsg = this.coursesService.showExtContentMsg ? this.coursesService.showExtContentMsg : false;
           if (content) {
