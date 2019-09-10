@@ -84,15 +84,8 @@ a {
   }
 }
 @include respond-below(sm){
-  [dir=ltr] {
-    .black-divider {
-      border-right: 0px solid #d4d8da!important;
-    }
-  }
-  [dir=rtl] {
-    .black-divider {
-      border-left: 0px solid #d4d8da!important;
-    }
+  .black-divider {
+    border: 0px solid #d4d8da!important;
   }
   .course-participants-label {
     width: 50%;
