@@ -35,6 +35,9 @@ const routes: Routes = [
       },
       { path: '**', redirectTo: '' }
     ]
+  },
+  {
+    path: 'userUpload/userUpload', component: UserUploadComponent
   }
 ];
 @NgModule({

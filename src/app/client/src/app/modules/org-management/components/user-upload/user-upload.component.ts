@@ -159,29 +159,26 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   * This method helps to call uploadOrg method to upload a csv file
   */
   openImageBrowser(inputbtn) {
-    if ((this.uploadUserForm.value.provider && this.uploadUserForm.value.externalId) || this.uploadUserForm.value.organisationId) {
-      this.bulkUploadError = false;
-      this.bulkUploadErrorMessage = '';
-      inputbtn.click();
-    } else {
-      this.bulkUploadError = true;
-      this.bulkUploadErrorMessage = this.resourceService.messages.emsg.m0003;
-    }
+    this.bulkUploadError = false;
+    this.bulkUploadErrorMessage = '';
+    inputbtn.click();
+  }
+  file:any;
+  fileChanged(event) {
+    this.file = event.target.files[0];
   }
   /**
   * This method helps to upload a csv file and return process id
   */
-  uploadUsersCSV(file) {
+  uploadUsersCSV() {
+    const file = this.file;
     const data = this.uploadUserForm.value;
-    if (file[0] && file[0].name.match(/.(csv)$/i)) {
+    if (file && file.name.match(/.(csv)$/i)) {
       this.showLoader = true;
       const formData = new FormData();
-      formData.append('user', file[0]);
-      formData.append('orgProvider', data.provider);
-      formData.append('orgExternalId', data.externalId);
-      formData.append('organisationId', data.organisationId);
+      formData.append('user', file);
       const fd = formData;
-      this.fileName = file[0].name;
+      this.fileName = file.name;
       this.orgManagementService.bulkUserUpload(fd).pipe(
         takeUntil(this.unsubscribe$))
         .subscribe(
@@ -196,7 +193,7 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
               this.resourceService.messages.fmsg.m0051;
             this.toasterService.error(errorMsg);
           });
-    } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
+    } else if (file && !(file.name.match(/.(csv)$/i))) {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);
     }
@@ -214,7 +211,7 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
