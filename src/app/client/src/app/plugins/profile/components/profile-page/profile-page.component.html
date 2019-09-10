@@ -130,14 +130,15 @@
         [telemetryInteractEdata]="editEmailInteractEdata">
         <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
       </div>
-
-      <div *ngIf="userProfile.recoveryId" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex" 
+      <!-- Add/edit recovery email/phone-->
+      <div *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex" 
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="editRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
-        <span>{{userProfile.recoveryId}}</span>
+        <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
+        <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
       </div>
-      <div *ngIf="!userProfile.recoveryId" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex" 
+      <div *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex" 
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="addRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
