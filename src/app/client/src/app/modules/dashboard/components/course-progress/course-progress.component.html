@@ -231,13 +231,20 @@
 
                   <td *ngIf="student.progress >= 100">{{resourceService?.frmelmnts?.lbl?.completed}}</td>
                   <td *ngIf="(student.progress < 100 && student.progress >= 0)">{{student.progress}}%</td>
+                 
                   <td *ngIf="student.progress ===null">-</td>
-                  <span *ngFor="let certificate of student.certificates">
-                  <td *ngIf="certificate.name === '100PercentCompletionCertificate'"> <span class="sb-label sb-label-table sb-label-success-0">Issued</span></td>
-                  </span>                
-                  <span *ngIf="!student.certificates">
-                    <td> N/A</td>
-                  </span>
+
+                  <!-- <span *ngFor="let certificate of student.certificates">
+                    <td *ngIf="certificate.name === '100PercentCompletionCertificate'">
+                       <span class="sb-label sb-label-table sb-label-success-0">Issued</span>
+                    </td>
+                  </span>     -->
+                  
+                  <td *ngFor="let certificate of student.certificates">
+                    <span *ngIf="certificate.name === '100PercentCompletionCertificate'" class="sb-label sb-label-table sb-label-success-0">Issued</span>
+                  </td>
+                  
+                    <td *ngIf="!student.certificates"> N/A</td>
                   <!-- certificate status needs to be done -->
                   <!-- <td data-label="Job"><span class="sb-label sb-label-table sb-label-success-0">Issued</span></td> -->
                 </tr>
