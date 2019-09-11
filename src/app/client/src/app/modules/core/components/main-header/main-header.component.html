@@ -55,10 +55,10 @@
                                 [permission]='orgSetupRole' routerLink="org/orgType">
                                 {{resourceService.frmelmnts?.lbl?.orgtypes}}
                             </a>
-                          <!-- <a class="item" *ngIf='!isValidCustodianOrgUser' (click)="showAccountMergemodal = true;">
+                          <a class="item" *ngIf='!isValidCustodianOrgUser' (click)="showAccountMergemodal = true;">
                             {{resourceService.frmelmnts?.lbl?.mergeAccount}}
-                          </a> -->
-                          <a class="item" routerLink="/userUpload/userUpload">
+                          </a>
+                          <a class="item" routerLink="/org/userUpload">
                           Manage User
                           </a>
                           <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"

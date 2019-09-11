@@ -37,7 +37,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'userUpload/userUpload', component: UserUploadComponent
+    path: 'org/userUpload', component: UserUploadComponent
   }
 ];
 @NgModule({

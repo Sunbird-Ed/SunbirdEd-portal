@@ -112,7 +112,7 @@
       "USER_SEARCH": "user/v1/search",
       "ORG_SEARCH": "org/v1/search",
       "BULK": {
-        "USERS_UPLOAD": "user/v1/upload",
+        "USERS_UPLOAD": "user/v2/upload",
         "ORGANIZATIONS_UPLOAD": "org/v1/upload",
         "STATUS": "data/v1/upload/status"
       },

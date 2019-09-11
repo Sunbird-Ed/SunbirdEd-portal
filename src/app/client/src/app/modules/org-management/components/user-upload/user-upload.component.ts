@@ -207,25 +207,12 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnDestroy() {
     document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll
+    this.router.navigate(['/resources']);
     this.modal.deny();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.telemetryImpression = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: 'profile-bulk-upload-user-upload',
-          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-          uri: this.router.url,
-          duration: this.navigationhelperService.getPageLoadTime()
-        }
-      };
-    });
   }
   setInteractEventData() {
     this.userUploadInteractEdata = {
