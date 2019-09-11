@@ -70,7 +70,7 @@ describe('UserFilterComponent', () => {
   }));
 
   it('should call subscribeToQueryParams method ', inject([ConfigService, Router], () => {
-      component.subscribeToQueryParams();
+      spyOn<any>(component, 'subscribeToQueryParams').and.callThrough();
       fixture.detectChanges();
   }));
 
@@ -100,7 +100,7 @@ describe('UserFilterComponent', () => {
   }));
 
   it('should call getFormatedFilterDetails method ', inject([ConfigService, Router], () => {
-      component.getFormatedFilterDetails();
+      spyOn<any>(component, 'getFormatedFilterDetails').and.callThrough();
       fixture.detectChanges();
   }));
 
@@ -125,7 +125,7 @@ describe('UserFilterComponent', () => {
   }));
 
   it('should call hardRefreshFilter method ', inject([ConfigService, Router], () => {
-      component.hardRefreshFilter();
+      spyOn<any>(component, 'hardRefreshFilter').and.callThrough();
       fixture.detectChanges();
       expect(component.refresh).toBeTruthy();
   }));
