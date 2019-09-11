@@ -103,7 +103,7 @@ export class AssessmentScoreService {
             this._endEvent = undefined;
           })
         )
-        .subscribe()
+        .subscribe();
     }
   }
 
