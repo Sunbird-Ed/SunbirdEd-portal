@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-account-recovery-info',
   templateUrl: './account-recovery-info.component.html',
@@ -27,6 +28,8 @@ export class AccountRecoveryInfoComponent implements OnInit {
   /** telemetry */
   telemetryInteractObject: IInteractEventObject;
   submitInteractEdata: IInteractEventEdata;
+  telemetryCdata: Array<{}> = [];
+  duplicateRecoveryId: boolean;
 
   constructor(
     public resourceService: ResourceService,
@@ -70,7 +73,10 @@ export class AccountRecoveryInfoComponent implements OnInit {
     this.profileService.updateProfile(this.request).subscribe((data) => {
       this.closeModal();
     }, (error) => {
-      this.accountRecoveryForm.reset();
+      if (_.get(error, 'error.params.err') === 'RECOVERY_PARAM_MATCH_EXCEPTION') {
+        this.duplicateRecoveryId = true;
+        this.accountRecoveryForm.reset();
+      }
     });
   }
 
@@ -88,6 +94,7 @@ export class AccountRecoveryInfoComponent implements OnInit {
 
   /** to initialize form fields each time when radio button will be selected/changed */
   onItemChange() {
+    this.duplicateRecoveryId = false;
     this.initializeFormFields();
   }
 
@@ -105,6 +112,17 @@ export class AccountRecoveryInfoComponent implements OnInit {
       type: 'click',
       pageid: 'profile-read'
     };
+
+    this.telemetryCdata = [
+      {
+        id: 'user:account:recovery',
+        type: 'Feature'
+      },
+      {
+        id: 'SC-1288',
+        type: 'Task'
+      }
+    ];
 
     this.telemetryInteractObject = {
       id: this.userService.userid,
