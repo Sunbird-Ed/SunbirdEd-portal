@@ -66,7 +66,7 @@ export class UserFilterComponent implements OnInit {
       });
   }
 
-  private subscribeToQueryParams() {
+  public subscribeToQueryParams() {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
       this.inputData = {};
@@ -99,7 +99,7 @@ export class UserFilterComponent implements OnInit {
     }), catchError(e => of('User type API error')));
   }
 
-  private getFormatedFilterDetails() {
+  public getFormatedFilterDetails() {
     this.frameworkService.initialize();
     return this.frameworkService.frameworkData$.pipe(map((res) => {
       const categoryMasterList = _.cloneDeep(res.frameworkdata['defaultFramework'].categories);
@@ -210,7 +210,7 @@ export class UserFilterComponent implements OnInit {
     this.hardRefreshFilter();
   }
 
-  private hardRefreshFilter() {
+  public hardRefreshFilter() {
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
