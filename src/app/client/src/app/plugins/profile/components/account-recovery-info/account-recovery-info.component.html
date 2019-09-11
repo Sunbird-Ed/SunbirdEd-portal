@@ -3,38 +3,42 @@
 
   <!--Header-->
   <div class="sb-modal-header">
-    Update Recovery ID
+    <span *ngIf="mode === 'edit'">{{resourceService?.frmelmnts?.lbl?.updateRecoveryId}}</span>
+    <span *ngIf="mode === 'add'">{{resourceService?.frmelmnts?.lbl?.addRecoveryId}}</span>
   </div>
   <!--/Header-->
 
   <!--Content-->
   <div class="sb-modal-content o-y-visible">
-    <form class="sb-form">
-      <p>
-        A recovery account helps you to regain access to your account if you are locked out or forget your password.
-        Choose the recovery acount type and enter details
-      </p>
+      <p>{{resourceService?.frmelmnts?.lbl?.accountRecoveryDescription}}</p>
       <div class="d-flex flex-w-wrap">
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-          <input type="radio" id="email" name="options" checked>
-          <label for="email">Email Address</label>
+          <input type="radio" id="email" (change)="onItemChange()" [(ngModel)]="contactType" name="contactType" value="emailId" checked>
+          <label for="email">{{resourceService?.frmelmnts?.lbl?.emailAddress}}</label>
         </div>
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-          <input type="radio" id="phone" name="options">
-          <label for="phone">Phone Number</label>
+          <input type="radio" id="phone" (change)="onItemChange()" [(ngModel)]="contactType" name="contactType" value="phoneNo">
+          <label for="phone">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</label>
         </div>
       </div>
-      <div class="sb-field">
-        <input class="sb-form-control is-invalid" formcontrolname="email" placeholder="Enter Email Address"
-          type="email">
-        <span class="sb-color-error fxsmall mt-8">
-          This email address is the same as what is linked with your profile
+      <form [formGroup]="accountRecoveryForm" class="sb-form">
+      <div class="sb-field" *ngIf="contactType === 'emailId'">
+        <input class="sb-form-control" formControlName="email" name="email" id="email" placeholder="Enter Email Address" type="email">
+        <span class="sb-color-error fxsmall mt-8" *ngIf="accountRecoveryForm.controls.email.dirty && accountRecoveryForm.controls['email'].errors">
+         {{resourceService?.frmelmnts?.lbl?.validEmail}}
+        </span>
+        <span *ngIf="duplicateRecoveryId" class="sb-color-error fxsmall mt-8">
+          {{resourceService?.frmelmnts?.lbl?.duplicateEmailAddress}}
         </span>
       </div>
-      <div class="sb-field">
-        <input class="sb-form-control" formcontrolname="phone" placeholder="Enter Phone Number" type="tel">
-        <span class="sb-color-error fxsmall mt-8 hide">
-          Please enter 10 digit phone number
+
+      <div class="sb-field" *ngIf="contactType === 'phoneNo'">
+        <input maxlength="10" class="sb-form-control" formControlName="phone" placeholder="Enter Phone Number" type="tel">
+        <span class="sb-color-error fxsmall mt-8"  *ngIf="accountRecoveryForm.controls.phone.dirty && accountRecoveryForm.controls['phone'].errors">
+         {{resourceService?.frmelmnts?.prmpt?.enterphoneno}}
+        </span>
+        <span *ngIf="duplicateRecoveryId" class="sb-color-error fxsmall mt-8">
+          {{resourceService?.frmelmnts?.lbl?.duplicatePhoneNumber}}
         </span>
       </div>
     </form>
@@ -43,7 +47,9 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary disabled">
+    <button [ngClass]="{disabled: !enableSubmitButton}" class="sb-btn sb-btn-normal sb-btn-primary" (click)="updateRecoveryId()"
+    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
   </div>
