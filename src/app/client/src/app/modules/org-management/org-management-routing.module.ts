@@ -37,7 +37,10 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'org/userUpload', component: UserUploadComponent
+    path: 'userUpload', component: UserUploadComponent, canActivate: [AuthGuard],
+    data: {
+      roles: 'rootOrgAdmin'
+    }
   }
 ];
 @NgModule({

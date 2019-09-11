@@ -58,7 +58,7 @@
                           <a class="item" *ngIf='!isValidCustodianOrgUser' (click)="showAccountMergemodal = true;">
                             {{resourceService.frmelmnts?.lbl?.mergeAccount}}
                           </a>
-                          <a class="item" routerLink="/org/userUpload">
+                          <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgAdminRole' routerLink="/org/userUpload">
                           Manage User
                           </a>
                           <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
