@@ -31,7 +31,7 @@
       <div class="sb-field">
         <label class="sb-account-recoverpage-label required">{{resourceService?.frmelmnts?.lbl?.anncmnttblname}}</label>
         <input class="sb-form-control" formControlName="name" name="name"
-          placeholder="{{resourceService?.frmelmnts?.lbl?.enterName}}"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterName | interpolate:'{instance}': resourceService.instance}}"
           [ngClass]="{ 'is-invalid': form.controls.name.touched && form.controls.name.errors }">
         <span class=" sb-color-warning fxsmall mt-8"
           *ngIf="form.controls.name.touched && form.controls.name.errors && form.controls.name.errors.required">
