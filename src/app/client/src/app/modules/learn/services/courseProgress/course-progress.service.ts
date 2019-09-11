@@ -1,7 +1,7 @@
-import { of as observableOf , Observable} from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { of as observableOf, Observable, of } from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ToasterService } from '@sunbird/shared';
 import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
@@ -29,7 +29,7 @@ export class CourseProgressService {
 
 
   constructor(contentService: ContentService, configService: ConfigService,
-    userService: UserService, public coursesService: CoursesService) {
+    userService: UserService, public coursesService: CoursesService, private toasterService: ToasterService) {
     this.contentService = contentService;
     this.configService = configService;
     this.userService = userService;
@@ -63,7 +63,7 @@ export class CourseProgressService {
       }), catchError((err) => {
         this.courseProgressData.emit({ lastPlayedContentId: req.contentIds[0] });
         return err;
-      }), );
+      }));
 
     }
   }
@@ -78,7 +78,7 @@ export class CourseProgressService {
     const resContentIds = [];
     if (res.result.contentList.length > 0) {
       _.forEach(_.uniq(req.contentIds), (contentId) => {
-        const content = _.find(res.result.contentList, {'contentId': contentId});
+        const content = _.find(res.result.contentList, { 'contentId': contentId });
         if (content) {
           this.courseProgress[courseId_batchId].content.push(content);
           resContentIds.push(content.contentId);
@@ -174,11 +174,17 @@ export class CourseProgressService {
       .pipe(map((updateCourseStatesData: ServerResponse) => ({ updateCourseStatesData })));
   }
 
-  updateAssessmentScore(data): Observable<any> {
+  sendAssessment(data): Observable<any> {
     const channelOptions = {
       url: this.configService.urlConFig.URLS.COURSE.USER_CONTENT_STATE_UPDATE,
       data: _.get(data, 'requestBody')
     };
-    return _.get(data, 'methodType') === 'PATCH' && this.contentService.patch(channelOptions);
+    return _.get(data, 'methodType') === 'PATCH' && this.contentService.patch(channelOptions).pipe(
+      retry(1),
+      catchError(err => {
+        this.toasterService.error('Unable to update assessment Score , Please try again later')
+        return of(err);
+      })
+    );
   }
 }

@@ -1,19 +1,19 @@
 import { CourseProgressService } from '../courseProgress/course-progress.service';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
-import { Md5 } from 'ts-md5/dist/md5';
+import * as Md5 from 'md5';
 import * as moment from 'moment';
+import { finalize } from 'rxjs/operators';
 
 @Injectable()
 export class AssessmentScoreService {
   /***
    * course details
    */
-  private _courseId: string;
-  private _batchId: string;
-  private _contentId: string;
-  private _userId: string;
-  
+  private _batchDetails: any;
+  private _courseDetails: any;
+  private _contentDetails: any;
+
   /**
    * timestamp of the first START event
    */
@@ -28,17 +28,12 @@ export class AssessmentScoreService {
    */
   private _assessEvents = [];
   private initialized: Boolean = false;
-  private _batchDetails: any;
-  private _courseDetails: any;
-  private _contentDetails: any;
-  private playerId;
   /**
    * md5 class to generate hash from courseId , contentId , batchId and userId
    */
-  private _md5;
+  private _userId: string;
 
   constructor(private courseProgressService: CourseProgressService) {
-    this._md5 = new Md5();
   }
 
   /**
@@ -48,29 +43,35 @@ export class AssessmentScoreService {
     this._batchDetails = batchDetails;
     this._courseDetails = courseDetails;
     this._contentDetails = contentDetails;
-    ({ courseId: this._courseId, batchId: this._batchId } = this._batchDetails);
-    this._contentId = _.get(this._contentDetails, 'identifier');
     this.checkContentForAssessment();
+  }
+
+  /**
+   * public method which will receive telemetry events
+   */
+  receiveTelemetryEvents(event) {
+    if (!this.initialized) {
+      return;
+    }
+    this.processTelemetryEvents(event);
   }
 
   /**
    * process the telemetry Events
    */
-  telemetryEvents(event) {
+  private processTelemetryEvents(event) {
     const eventData = _.get(event, 'detail.telemetryData');
     const eid = _.get(eventData, 'eid');
-    if (this.initialized) {
-      if (eventData && eid === 'START') {
-        this._startEvent = eventData;
-        this._assessmentTs = _.get(eventData, 'ets');
-        this._userId = _.get(eventData, 'actor.id');
-        this._assessEvents = [];
-      } else if (eventData && eid === 'ASSESS') {
-        this._assessEvents.push(eventData);
-      } else if (eventData && eid === 'END') {
-        this._endEvent = eventData;
-        this.processAssessEvents();
-      }
+    if (eventData && eid === 'START') {
+      this._startEvent = eventData;
+      this._assessmentTs = _.get(eventData, 'ets');
+      this._userId = _.get(eventData, 'actor.id');
+      this._assessEvents = [];
+    } else if (eventData && eid === 'ASSESS') {
+      this._assessEvents.push(eventData);
+    } else if (eventData && eid === 'END') {
+      this._endEvent = eventData;
+      this.processAssessEvents();
     }
   }
 
@@ -78,9 +79,11 @@ export class AssessmentScoreService {
    * checks if the course has assessment or not
    */
   private checkContentForAssessment() {
-    if (this._courseId && this._contentId && this._batchId) {
+    if (_.get(this._batchDetails, 'batchId') && _.get(this._contentDetails, 'identifier') && _.get(this._batchDetails, 'courseId')) {
       if (this._contentDetails && _.get(this._contentDetails, 'totalQuestions') > 0) {
         this.initialized = true;
+      } else {
+        this.initialized = false;
       }
     }
   }
@@ -89,10 +92,18 @@ export class AssessmentScoreService {
    * processes the collected ASSESS events when END event is triggered
    */
   private processAssessEvents() {
-    if (this._startEvent && this._endEvent && this.initialized) {
+    if (this.initialized) {
       const attpemtId = this.generateHash();
       const request = this.prepareRequestObject(attpemtId);
-      this.updateAssessmentScore(request);
+      this.updateAssessmentScore(request)
+        .pipe(
+          finalize(() => {
+            this._assessEvents = [];
+            this._startEvent = undefined;
+            this._endEvent = undefined;
+          })
+        )
+        .subscribe()
     }
   }
 
@@ -102,18 +113,16 @@ export class AssessmentScoreService {
   private updateAssessmentScore(request) {
     const requestBody = request;
     const methodType = 'PATCH';
-    return this.courseProgressService.updateAssessmentScore({ requestBody, methodType });
+    return this.courseProgressService.sendAssessment({ requestBody, methodType });
   }
 
   /**
    * generates md5 hash from four strings (courseId , batchId , contentId and userId)
    */
   private generateHash() {
-    const hash = this._md5.appendStr(this._courseId)
-      .appendStr(this._contentId)
-      .appendStr(this._batchId)
-      .appendStr(this._userId)
-      .end();
+    const string = _.join([_.get(this._batchDetails, 'courseId'), _.get(this._batchDetails, 'batchId'), _.get(this._contentDetails, 'identifier'),
+    this._userId], '-');
+    const hash = Md5(string);
     return hash;
   }
 
@@ -124,21 +133,21 @@ export class AssessmentScoreService {
     const request = {
       request: {
         contents: [{
-          contentId: this._contentId,
-          batchId: this._batchId,
+          contentId: (_.get(this._contentDetails, 'identifier')),
+          batchId: _.get(this._batchDetails, 'batchId'),
           status: 2, // because eid is END
-          courseId: this._courseId,
+          courseId: _.get(this._batchDetails, 'courseId'),
           lastAccessTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ')
 
         }],
         assessments: [
           {
             assessmentTs: this._assessmentTs,
-            batchId: this._batchId,
-            courseId: this._courseId,
+            batchId: _.get(this._batchDetails, 'batchId'),
+            courseId: _.get(this._batchDetails, 'courseId'),
             userId: this._userId,
             attemptId: attemptId,
-            contentId: this._contentId,
+            contentId: (_.get(this._contentDetails, 'identifier')),
             events: this._assessEvents
           }
         ]
@@ -147,4 +156,12 @@ export class AssessmentScoreService {
     return request;
   }
 
+  /**
+   * handles browser change or route change in b/w courseplay.
+   */
+  handleInterruptEvent(interrupt: Boolean) {
+    if (interrupt && this._startEvent && this.initialized) {
+      this.processAssessEvents();
+    }
+  }
 }
