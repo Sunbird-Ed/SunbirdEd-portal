@@ -27,9 +27,9 @@
         <span class="sb-color-error fxsmall mt-8" *ngIf="accountRecoveryForm.controls.email.dirty && accountRecoveryForm.controls['email'].errors">
          {{resourceService?.frmelmnts?.lbl?.validEmail}}
         </span>
-        <!-- <span class="sb-color-error fxsmall mt-8">
+        <span *ngIf="duplicateRecoveryId" class="sb-color-error fxsmall mt-8">
           {{resourceService?.frmelmnts?.lbl?.duplicateEmailAddress}}
-        </span> -->
+        </span>
       </div>
 
       <div class="sb-field" *ngIf="contactType === 'phoneNo'">
@@ -37,9 +37,9 @@
         <span class="sb-color-error fxsmall mt-8"  *ngIf="accountRecoveryForm.controls.phone.dirty && accountRecoveryForm.controls['phone'].errors">
          {{resourceService?.frmelmnts?.prmpt?.enterphoneno}}
         </span>
-        <!-- <span class="sb-color-error fxsmall mt-8">
+        <span *ngIf="duplicateRecoveryId" class="sb-color-error fxsmall mt-8">
           {{resourceService?.frmelmnts?.lbl?.duplicatePhoneNumber}}
-        </span> -->
+        </span>
       </div>
     </form>
   </div>
@@ -49,7 +49,7 @@
   <div class="sb-modal-actions">
     <button [ngClass]="{disabled: !enableSubmitButton}" class="sb-btn sb-btn-normal sb-btn-primary" (click)="updateRecoveryId()"
     appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="submitInteractEdata">
+      [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
   </div>
