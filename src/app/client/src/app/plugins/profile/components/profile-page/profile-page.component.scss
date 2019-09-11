@@ -187,8 +187,14 @@ display: inline-block;
 }
 
 .ui.label > .recovery-img{
-  height: 16px !important;
-  width: 16px !important;
+  background-color: #9b9b9b;
+ -webkit-mask-image: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
+ -webkit-mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
+ mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
+ -webkit-mask-size: cover;
+ mask-size: cover;
+ height: 16px;
+ width: 16px;
 }
 .avatar-container {
   width: 98px;
@@ -213,3 +219,6 @@ display: inline-block;
   }
  }
 
+.ui.label.dodger-blue > .recovery-img{
+  background-color: var(--primary-color);
+}
