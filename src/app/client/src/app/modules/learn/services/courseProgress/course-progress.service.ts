@@ -1,7 +1,7 @@
 import { of as observableOf, Observable, of } from 'rxjs';
 import { catchError, map, retry } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
-import { ConfigService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
@@ -29,7 +29,7 @@ export class CourseProgressService {
 
 
   constructor(contentService: ContentService, configService: ConfigService,
-    userService: UserService, public coursesService: CoursesService, private toasterService: ToasterService) {
+    userService: UserService, public coursesService: CoursesService, private toasterService: ToasterService, private resourceService: ResourceService) {
     this.contentService = contentService;
     this.configService = configService;
     this.userService = userService;
@@ -182,7 +182,7 @@ export class CourseProgressService {
     return _.get(data, 'methodType') === 'PATCH' && this.contentService.patch(channelOptions).pipe(
       retry(1),
       catchError(err => {
-        this.toasterService.error('Unable to update assessment Score , Please try again later')
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
         return of(err);
       })
     );
