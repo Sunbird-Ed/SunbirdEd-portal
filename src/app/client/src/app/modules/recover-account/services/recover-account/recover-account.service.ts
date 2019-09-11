@@ -32,6 +32,7 @@ export class RecoverAccountService {
       data: {
         request: {
           filters: {
+            'isDeleted' : 'false',
             fuzzy: {
               firstName: data.name
             }
