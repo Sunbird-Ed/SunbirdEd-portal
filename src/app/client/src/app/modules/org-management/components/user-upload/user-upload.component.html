@@ -77,7 +77,9 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     <div class="header">
       {{resourceService?.frmelmnts?.scttl?.error}}
     </div>
-    <div id="dataContainer"></div>
+    <div *ngFor = "let er of error">
+      <span> {{er}}</span>
+    </div>
   </div>
 </div>
 <div class="sb-modal-actions">

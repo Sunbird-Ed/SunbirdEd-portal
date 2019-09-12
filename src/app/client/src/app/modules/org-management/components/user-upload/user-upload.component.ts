@@ -201,6 +201,7 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
             this.showLoader = false;
            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
            this.resourceService.messages.fmsg.m0051;
+           this.error = errorMsg.replace('[','').replace(']','').split(',');
             // //this.toasterService.error(errorMsg);
             
             this.modalName = 'error';
