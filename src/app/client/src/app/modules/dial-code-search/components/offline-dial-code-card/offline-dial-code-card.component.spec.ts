@@ -60,7 +60,7 @@ describe('OfflineDialCodeCardComponent', () => {
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'download');
     expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
-    expect(Response.emitData.data.downloadStatus).toBeTruthy();
+    expect(Response.emitData.data.downloadStatus).toBe('DOWNLOADING');
   });
 
 });
