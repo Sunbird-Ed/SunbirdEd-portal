@@ -42,7 +42,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   editMobileInteractEdata: IInteractEventEdata;
   editEmailInteractEdata: IInteractEventEdata;
   downloadCertificateEData: IInteractEventEdata;
+  editRecoveryIdInteractEdata: IInteractEventEdata;
+  addRecoveryIdInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  showRecoveryId = false;
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
@@ -132,7 +135,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
           if (signedPdfUrl) { window.open(signedPdfUrl, '_blank'); }
         }, (err) => {
-          this.toasterService.error('download certificate failed');
+          this.toasterService.error(this.resourceService.messages.fmsg.m0094);
         });
       }
     });
@@ -224,6 +227,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.downloadCertificateEData = {
       id: 'profile-download-certificate',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.editRecoveryIdInteractEdata = {
+      id: 'profile-edit-recoveryId',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.addRecoveryIdInteractEdata = {
+      id: 'profile-add-recoveryId',
       type: 'click',
       pageid: 'profile-read'
     };
