@@ -1,5 +1,6 @@
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal>
+class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal
+*ngIf="modalName === 'upload'">
 <div class="sb-modal-header">
   Upload Users
 </div>
@@ -59,3 +60,33 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
 </button>
 </div>
 </sui-modal>
+
+
+
+
+
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #errormodal
+*ngIf="modalName === 'error'" >
+<div class="sb-modal-header">
+  Error Upload Users
+</div>
+<div class="sb-modal-content">
+  <div class="ui error message">
+    <div class="header">
+      {{resourceService?.frmelmnts?.scttl?.error}}
+    </div>
+    <div id="dataContainer"></div>
+  </div>
+</div>
+<div class="sb-modal-actions">
+  <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+  [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="processId"
+  class="sb-btn sb-btn-normal sb-btn-primary" (click)="uploadUsersCSV()">
+  {{resourceService?.frmelmnts?.btn?.copytoclipboard}}
+  </button>
+</div>
+</sui-modal>
+
+

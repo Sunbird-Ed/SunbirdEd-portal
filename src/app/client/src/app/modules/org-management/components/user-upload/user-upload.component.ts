@@ -20,6 +20,7 @@ import * as _ from 'lodash-es';
 export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
+  @ViewChild('dataContainer') dataContainer : ElementRef;
   /**
 * reference for ActivatedRoute
 */
@@ -56,6 +57,10 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
 * To show/hide loader
 */
   showLoader: boolean;
+   /**
+   * To show / hide modal
+   */
+  modalName = 'upload';
   /**
    * Upload org form name
    */
@@ -64,6 +69,11 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
  * Contains reference of FormBuilder
  */
   sbFormBuilder: FormBuilder;
+   /**
+ * error object
+ */
+  error: [];
+  
   /**
    * To call resource service which helps to use language constant
    */
@@ -189,9 +199,11 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
           },
           err => {
             this.showLoader = false;
-            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
-              this.resourceService.messages.fmsg.m0051;
-            this.toasterService.error(errorMsg);
+           const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+           this.resourceService.messages.fmsg.m0051;
+            // //this.toasterService.error(errorMsg);
+            
+            this.modalName = 'error';
           });
     } else if (file && !(file.name.match(/.(csv)$/i))) {
       this.showLoader = false;
