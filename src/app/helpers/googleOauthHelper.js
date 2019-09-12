@@ -40,6 +40,15 @@ const keycloakGoogleAndroid = getKeyCloakClient({
     secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
   }
 })
+const keycloakMergeGoogleAndroid = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
+  }
+})
 
 class GoogleOauth {
   createConnection(req) {
@@ -83,16 +92,18 @@ const googleOauth = new GoogleOauth()
 const createSession = async (emailId, reqQuery, req, res) => {
   let grant;
   let keycloakClient = keycloakGoogle;
+  let keycloakMergeClient = keycloakMergeGoogle;
   let scope = 'openid';
   if (reqQuery.client_id === 'android') {
     keycloakClient = keycloakGoogleAndroid;
+    keycloakMergeClient = keycloakMergeGoogleAndroid;
     scope = 'offline_access';
   }
 
   // merge account in progress
-  if (_.get(req, 'session.mergeAccountInfo.initiatorAccountDetails')) {
+  if (_.get(req, 'session.mergeAccountInfo.initiatorAccountDetails') || reqQuery.merge_account_process === '1') {
     console.log('merge in progress');
-    grant = await keycloakMergeGoogle.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
+    grant = await keycloakMergeClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
     req.session.mergeAccountInfo.mergeFromAccountDetails = {
       sessionToken: grant.access_token.token
     };
