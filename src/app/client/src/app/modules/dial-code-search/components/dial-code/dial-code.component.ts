@@ -345,18 +345,14 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     _.each(this.itemsToDisplay, (contents) => {
 
       // If download is completed card should show added to library
-      _.find(downloadListdata.result.response.downloads.completed, (completed) => {
-        if (contents.metaData.identifier === completed.contentId) {
-          contents['downloadStatus'] = 'DOWNLOADED';
-        }
-      });
+      if (_.find(downloadListdata.result.response.downloads.completed, { contentId: contents.metaData.identifier })) {
+        contents['downloadStatus'] = 'DOWNLOADED';
+      }
 
       // If download failed, card should show again add to library
-      _.find(downloadListdata.result.response.downloads.failed, (failed) => {
-        if (contents.metaData.identifier === failed.contentId) {
-          contents['downloadStatus'] = 'FAILED';
-        }
-      });
+      if (_.find(downloadListdata.result.response.downloads.failed, { contentId: contents.metaData.identifier })) {
+        contents['downloadStatus'] = 'FAILED';
+      }
     });
   }
 }

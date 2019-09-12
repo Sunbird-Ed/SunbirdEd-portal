@@ -205,7 +205,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     if (this.isOffline) {
-      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+      this.downloadManagerService.downloadListEvent.pipe(
+        takeUntil(this.unsubscribe)).subscribe((data) => {
         this.updateCardData(data);
       });
 
@@ -471,20 +472,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateCardData(downloadListdata) {
     _.each(this.searchList, (contents) => {
-
       // If download is completed card should show added to library
-      _.find(downloadListdata.result.response.downloads.completed, (completed) => {
-        if (contents.metaData.identifier === completed.contentId) {
-          contents['downloadStatus'] = 'DOWNLOADED';
-        }
-      });
-
+      if (_.find(downloadListdata.result.response.downloads.completed, { contentId: contents.metaData.identifier })) {
+        contents['downloadStatus'] = 'DOWNLOADED';
+      }
       // If download failed, card should show again add to library
-      _.find(downloadListdata.result.response.downloads.failed, (failed) => {
-        if (contents.metaData.identifier === failed.contentId) {
-          contents['downloadStatus'] = 'FAILED';
-        }
-      });
+      if (_.find(downloadListdata.result.response.downloads.failed, { contentId: contents.metaData.identifier })) {
+        contents['downloadStatus'] = 'FAILED';
+      }
     });
   }
 }

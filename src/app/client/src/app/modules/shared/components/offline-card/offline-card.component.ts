@@ -27,7 +27,6 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   route: string;
   checkOfflineRoutes: string;
   contentId: string;
-  showAddingToLibraryButton: boolean;
   isConnected = navigator.onLine;
   status = this.isConnected ? 'ONLINE' : 'OFFLINE';
   onlineContent = false;

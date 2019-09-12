@@ -92,7 +92,7 @@
           class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
           {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="download icon"></i></button>
         <button
-          *ngIf="checkOfflineRoutes === 'browse' && contentId === data.metaData.identifier && data?.downloadStatus === 'DOWNLOADING'"
+          *ngIf="checkOfflineRoutes === 'browse' && data?.downloadStatus === 'DOWNLOADING'"
           class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
           {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
         <button *ngIf="data?.downloadStatus === 'DOWNLOADED' && checkOfflineRoutes === 'browse' "

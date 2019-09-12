@@ -88,7 +88,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         self.fetchPageData();
       });
 
-      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+      this.downloadManagerService.downloadListEvent.pipe(
+        takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
       });
 
@@ -314,18 +315,13 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       _.each(pageSection.contents, (pageData) => {
 
         // If download is completed card should show added to library
-        _.find(downloadListdata.result.response.downloads.completed, (completed) => {
-          if (pageData.metaData.identifier === completed.contentId) {
-            pageData['downloadStatus'] = 'DOWNLOADED';
-          }
-        });
-
+        if (_.find(downloadListdata.result.response.downloads.completed, { contentId: pageData.metaData.identifier })) {
+          pageData['downloadStatus'] = 'DOWNLOADED';
+        }
         // If download failed, card should show again add to library
-        _.find(downloadListdata.result.response.downloads.failed, (failed) => {
-          if (pageData.metaData.identifier === failed.contentId) {
-            pageData['downloadStatus'] = 'FAILED';
-          }
-        });
+        if (_.find(downloadListdata.result.response.downloads.failed, { contentId: pageData.metaData.identifier })) {
+          pageData['downloadStatus'] = 'FAILED';
+        }
       });
     });
   }

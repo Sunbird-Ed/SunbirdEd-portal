@@ -14,7 +14,7 @@ import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
-import { DownloadManagerService } from './../../../../../offline/services';
+import { DownloadManagerService } from '@sunbird/offline';
 import { environment } from '@sunbird/environment';
 @Component({
   selector: 'app-public-collection-player',
@@ -127,7 +127,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.checkOfflineRoutes = 'library';
       }
       this.downloadManagerService.downloadListEvent.subscribe((data) => {
-        this.updateContent(data);
+        this.updateContentStatus(data);
       });
     }
   }
@@ -408,7 +408,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
   }
 
-  downloadContent(content) {
+  startDownload(content) {
     this.downloadManagerService.downloadContentId = content.identifier;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
@@ -420,26 +420,22 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     });
 }
 
-updateContent(downloadListdata) {
-const content = _.isEmpty(this.playerContent) ? this.collectionData : this.playerContent;
-this.updateDownloadStatus(downloadListdata, content);
-}
-updateDownloadStatus(downloadListdata, content) {
+  updateContentStatus(downloadListdata) {
+    const content = _.isEmpty(this.playerContent) ? this.collectionData : this.playerContent;
+    this.updateDownloadStatus(downloadListdata, content);
+  }
 
-_.find(downloadListdata.result.response.downloads.completed, (completed) => {
-  if (completed.contentId === content.identifier) {
-    content['downloadStatus'] = 'DOWNLOADED';
+  updateDownloadStatus(downloadListdata, content) {
+
+    // If download is completed card should show added to library
+    if (_.find(downloadListdata.result.response.downloads.completed, { contentId: _.get(content, 'identifier')})) {
+      content['downloadStatus'] = 'DOWNLOADED';
+    }
+    // If download is failed card should show added to library
+    if (_.find(downloadListdata.result.response.downloads.failed, { contentId: _.get(content, 'identifier') })) {
+      content['downloadStatus'] = 'FAILED';
+    }
+
 
   }
-});
-
-_.find(downloadListdata.result.response.downloads.failed, (failed) => {
-  if (failed.contentId === content.identifier) {
-    content['downloadStatus'] = 'FAILED';
-
-  }
-});
-
-
-}
 }

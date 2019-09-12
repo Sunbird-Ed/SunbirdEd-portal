@@ -56,7 +56,7 @@ describe('CardComponent', () => {
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'export');
     expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
-    expect(component.showAddingToLibraryButton).toBeUndefined();
+    expect(component.data.downloadStatus).toBeUndefined();
   });
 
    it('should emit change addingto librarybutton to true if the action is download in onAction ', () => {
@@ -65,7 +65,7 @@ describe('CardComponent', () => {
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'download');
     expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
-    expect(Response.emitData.data.showAddingToLibraryButton).toBeTruthy();
+    expect(Response.emitData.data.downloadStatus).toBe('DOWNLOADING');
   });
 
    it('initially offlineRoute should be library', () => {

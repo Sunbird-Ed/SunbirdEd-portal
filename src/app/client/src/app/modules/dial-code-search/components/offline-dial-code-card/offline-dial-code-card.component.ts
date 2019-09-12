@@ -23,7 +23,6 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   route: string;
   checkOfflineRoutes: string;
   contentId: string;
-  showAddingToLibraryButton: boolean;
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;

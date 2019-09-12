@@ -11,12 +11,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule, ResourceService } from '@sunbird/shared';
 import { CollectionHierarchyGetMockResponse, collectionTree,
-  download_success,
   download_list,
   download_error, } from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { DownloadManagerService } from '@sunbird/offline';
 
-import { DownloadManagerService } from './../../../../../offline/services';
 describe('PublicCollectionPlayerComponent', () => {
   let component: PublicCollectionPlayerComponent;
   let fixture: ComponentFixture<PublicCollectionPlayerComponent>;
@@ -161,7 +160,7 @@ describe('PublicCollectionPlayerComponent', () => {
      spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
      component.collectionTreeNodes = collectionTree;
      expect(component.collectionTreeNodes.downloadStatus).toBeFalsy();
-     component.downloadContent(component.collectionTreeNodes.children[0].children[0]);
+     component.startDownload(component.collectionTreeNodes.children[0].children[0]);
      expect(component.collectionTreeNodes.children[0].children[0].downloadStatus).toEqual('FAILED');
      expect(downloadManagerService.startDownload).toHaveBeenCalled();
      expect(resourceService.messages.fmsg.m0090).toEqual('Could not download. Try again later');
@@ -169,7 +168,7 @@ describe('PublicCollectionPlayerComponent', () => {
 
    it('Test DownloadStatus is updating or not ', () => {
      spyOn(component, 'updateDownloadStatus');
-     component.updateContent(download_list);
+     component.updateContentStatus(download_list);
      expect(component.updateDownloadStatus).toHaveBeenCalled();
      });
 

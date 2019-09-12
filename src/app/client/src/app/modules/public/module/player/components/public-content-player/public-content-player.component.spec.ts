@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { DownloadManagerService } from './../../../../../offline/services';
+import { DownloadManagerService } from '@sunbird/offline';
 import { download_list, download_error, download_success } from '../public-collection-player/public-collection-player.component.spec.data';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -113,20 +113,21 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
 
-  it('download content', () => {
+  it('should download content', () => {
     const downloadManagerService = TestBed.get(DownloadManagerService);
     const mockData = download_success;
     const mockObservableData = observableOf(mockData);
     spyOn(downloadManagerService, 'startDownload').and.returnValue(mockObservableData);
-    component.downloadContent(serverRes.result.result.content);
+    component.startDownload(serverRes.result.result.content);
     expect(downloadManagerService.startDownload).toHaveBeenCalled();
   });
-  it('Test Download content for failure', () => {
+
+  it('Download content for failure', () => {
     const downloadManagerService = TestBed.get(DownloadManagerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
     spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
-    component.downloadContent(serverRes.result.result.content);
+    component.startDownload(serverRes.result.result.content);
     expect(serverRes.result.result.content.downloadStatus).toEqual('FAILED');
     expect(downloadManagerService.startDownload).toHaveBeenCalled();
     expect(resourceService.messages.fmsg.m0090).toEqual('Could not download. Try again later');
@@ -136,8 +137,8 @@ describe('PublicContentPlayerComponent', () => {
     component.contentData = serverRes.result.result.content;
     const downloadManagerService = TestBed.get(DownloadManagerService);
     spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
-    component.downloadContent(serverRes.result.result.content);
-    component.updateContent(download_list);
+    component.startDownload(serverRes.result.result.content);
+    component.updateContentStatus(download_list);
     expect(component.contentData['downloadStatus']).toBe('FAILED');
   });
 
