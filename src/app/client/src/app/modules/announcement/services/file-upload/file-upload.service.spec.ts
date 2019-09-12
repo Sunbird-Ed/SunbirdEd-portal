@@ -2,7 +2,8 @@ import { TestBed, inject } from '@angular/core/testing';
 import { FileUploadService } from './file-upload.service';
 import { ConfigService, ToasterService } from '@sunbird/shared';
 
-var self, units;
+var self;
+var units;
 
 describe('FileUploadService', () => {
   beforeEach(() => {
