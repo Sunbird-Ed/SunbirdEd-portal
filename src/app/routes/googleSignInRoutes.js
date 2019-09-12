@@ -31,7 +31,7 @@ module.exports = (app) => {
    */
   app.get('/google/auth/callback', async (req, res) => {
     console.log('google auth callback called');
-    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version']);
+    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
     let googleProfile, sunbirdProfile, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
