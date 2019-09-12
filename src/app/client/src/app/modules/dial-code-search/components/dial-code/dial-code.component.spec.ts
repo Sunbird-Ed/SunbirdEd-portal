@@ -137,4 +137,11 @@ describe('DialCodeComponent', () => {
     expect(component.itemsToDisplay).toEqual(['one']);
   });
 
+  it('showDownloadLoader to be true' , () => {
+    spyOn(component, 'startDownload');
+    component.isOffline = true;
+    expect(component.showDownloadLoader).toBeFalsy();
+    component.getEvent(Response.download_event);
+    expect(component.showDownloadLoader).toBeTruthy();
+  });
 });
