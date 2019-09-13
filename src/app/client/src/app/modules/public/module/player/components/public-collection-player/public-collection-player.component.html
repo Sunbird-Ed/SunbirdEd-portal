@@ -13,14 +13,14 @@
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
               <button (click)="startDownload(playerContent)"
-                *ngIf="checkOfflineRoutes === 'browse' && !playerContent?.downloadStatus || playerContent?.downloadStatus === 'FAILED'"
+                *ngIf="checkStatus(playerContent,'DOWNLOAD') "
                 class="sb-btn sb-btn-outline-primary sb-btn-normal ">
                 <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
               <button
-                *ngIf="checkOfflineRoutes === 'browse' && playerContent.downloadStatus === 'DOWNLOADING'"
+                *ngIf="checkStatus(playerContent, 'DOWNLOADING') "
                 class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
                 {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
-              <button *ngIf="playerContent.downloadStatus === 'DOWNLOADED' && checkOfflineRoutes === 'browse'"
+              <button *ngIf="checkStatus(playerContent, 'DOWNLOADED')"
                 class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
                 {{resourceService.frmelmnts?.btn?.addedToLibrary}}
             </button>
@@ -89,14 +89,14 @@
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
               <button (click)="startDownload(collectionData)"
-                *ngIf="checkOfflineRoutes === 'browse' && !collectionData?.downloadStatus || collectionData?.downloadStatus === 'FAILED'"
+                *ngIf="checkStatus(collectionData, 'DOWNLOAD')"
                 class="sb-btn sb-btn-outline-primary sb-btn-normal">
                 <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
               <button
-                *ngIf="checkOfflineRoutes === 'browse' && collectionData.downloadStatus === 'DOWNLOADING'"
+                *ngIf="checkStatus(collectionData, 'DOWNLOADING') "
                 class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
                 {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
-              <button *ngIf="collectionData.downloadStatus === 'DOWNLOADED' && checkOfflineRoutes === 'browse'"
+              <button *ngIf="checkStatus(collectionData, 'DOWNLOADED')"
                 class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
                 {{resourceService.frmelmnts?.btn?.addedToLibrary}}</button>
                 </div>

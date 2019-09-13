@@ -168,7 +168,7 @@ describe('PublicCollectionPlayerComponent', () => {
 
    it('Test DownloadStatus is updating or not ', () => {
      spyOn(component, 'updateDownloadStatus');
-     component.updateContentStatus(download_list);
+     component.checkDownloadStatus(download_list);
      expect(component.updateDownloadStatus).toHaveBeenCalled();
      });
 

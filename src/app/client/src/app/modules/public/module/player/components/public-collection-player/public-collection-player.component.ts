@@ -1,8 +1,8 @@
 
-import { map, catchError, first, mergeMap } from 'rxjs/operators';
+import { map, catchError, first, mergeMap, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
@@ -94,7 +94,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   playerOption: any;
   public playerContent;
   isOffline: boolean = environment.isOffline;
-  checkOfflineRoutes: string;
+  currentRoute: string;
+  public unsubscribe$ = new Subject<void>();
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -122,12 +123,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
     if (this.isOffline ) {
       if (_.includes(this.router.url, 'browse')) {
-        this.checkOfflineRoutes = 'browse';
+        this.currentRoute = 'browse';
       } else if (!_.includes(this.router.url, 'browse')) {
-        this.checkOfflineRoutes = 'library';
+        this.currentRoute = 'library';
       }
-      this.downloadManagerService.downloadListEvent.subscribe((data) => {
-        this.updateContentStatus(data);
+      this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+        this.checkDownloadStatus(data);
       });
     }
   }
@@ -181,6 +182,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     if (this.subsrciption) {
       this.subsrciption.unsubscribe();
     }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   private initPlayer(id: string) {
@@ -420,7 +423,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     });
 }
 
-  updateContentStatus(downloadListdata) {
+  checkDownloadStatus(downloadListdata) {
     const content = _.isEmpty(this.playerContent) ? this.collectionData : this.playerContent;
     this.updateDownloadStatus(downloadListdata, content);
   }
@@ -435,7 +438,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     if (_.find(downloadListdata.result.response.downloads.failed, { contentId: _.get(content, 'identifier') })) {
       content['downloadStatus'] = 'FAILED';
     }
+  }
 
-
+  checkStatus(content, status) {
+    if (status === 'DOWNLOAD') {
+      return content.mimeType === 'application/vnd.ekstep.content-collection' ?
+        (this.currentRoute === 'browse' && (!this.collectionData['downloadStatus'] || this.collectionData['downloadStatus'] === 'FAILED')) :
+        (this.currentRoute === 'browse' && (!this.playerContent['downloadStatus'] || this.playerContent['downloadStatus'] === 'FAILED'));
+    }
+    return content.mimeType === 'application/vnd.ekstep.content-collection' ?
+           (this.currentRoute === 'browse' && this.collectionData['downloadStatus'] === status) :
+          (this.currentRoute === 'browse' && this.playerContent['downloadStatus'] === status);
   }
 }

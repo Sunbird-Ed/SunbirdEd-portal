@@ -25,7 +25,7 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   telemetryCdata: Array<{}> = [];
   hover: Boolean;
   route: string;
-  checkOfflineRoutes: string;
+  currentRoute: string;
   contentId: string;
   isConnected = navigator.onLine;
   status = this.isConnected ? 'ONLINE' : 'OFFLINE';
@@ -47,9 +47,9 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.route = this.router.url;
     if (_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'browse';
+      this.currentRoute = 'browse';
     } else if (!_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'library';
+      this.currentRoute = 'library';
     }
   }
 
@@ -80,6 +80,13 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  checkStatus(status) {
+    if (status === 'DOWNLOAD') {
+      return (this.currentRoute === 'browse' && (!this.data['downloadStatus'] || this.data['downloadStatus'] === 'FAILED'));
+    }
+    return (this.currentRoute === 'browse' && this.data['downloadStatus'] === status);
   }
 }
 

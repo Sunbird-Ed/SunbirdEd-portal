@@ -53,6 +53,7 @@ describe('PublicContentPlayerComponent', () => {
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [PublicPlayerService, DownloadManagerService,
+        ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
@@ -125,12 +126,14 @@ describe('PublicContentPlayerComponent', () => {
   it('Download content for failure', () => {
     const downloadManagerService = TestBed.get(DownloadManagerService);
     const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
     resourceService.messages = resourceServiceMockData.messages;
     spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
+    spyOn(toasterService, 'error').and.callThrough();
     component.startDownload(serverRes.result.result.content);
     expect(serverRes.result.result.content.downloadStatus).toEqual('FAILED');
     expect(downloadManagerService.startDownload).toHaveBeenCalled();
-    expect(resourceService.messages.fmsg.m0090).toEqual('Could not download. Try again later');
+    expect(component.toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0090);
   });
 
   it('Test Event emit', () => {

@@ -21,7 +21,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   hover: Boolean;
   isConnected: Boolean = navigator.onLine;
   route: string;
-  checkOfflineRoutes: string;
+  currentRoute: string;
   contentId: string;
 
   @HostListener('mouseenter') onMouseEnter() {
@@ -42,9 +42,9 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     }
     this.route = this.router.url;
     if (_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'browse';
+      this.currentRoute = 'browse';
     } else if (!_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'library';
+      this.currentRoute = 'library';
     }
   }
 
@@ -58,6 +58,13 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
 
   ngOnChanges () {
     this.cdr.detectChanges();
+  }
+
+  checkStatus(status) {
+    if (status === 'DOWNLOAD') {
+      return (this.currentRoute === 'browse' && (!this.data['downloadStatus'] || this.data['downloadStatus'] === 'FAILED'));
+    }
+    return (this.currentRoute === 'browse' && this.data['downloadStatus'] === status);
   }
 }
 

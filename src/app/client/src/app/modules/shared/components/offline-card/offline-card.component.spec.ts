@@ -69,7 +69,7 @@ describe('CardComponent', () => {
   });
 
    it('initially offlineRoute should be library', () => {
-      expect(component.checkOfflineRoutes).toBe('library');
+      expect(component.currentRoute).toBe('library');
     });
 
 });

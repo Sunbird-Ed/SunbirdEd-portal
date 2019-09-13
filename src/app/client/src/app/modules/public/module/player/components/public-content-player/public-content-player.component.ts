@@ -56,7 +56,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
   public objectRollup = {};
-  checkOfflineRoutes: string;
+  currentRoute: string;
   isOffline: boolean = environment.isOffline;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
@@ -90,11 +90,11 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
     if (this.isOffline ) {
       if (_.includes(this.router.url, 'browse')) {
-        this.checkOfflineRoutes = 'browse';
+        this.currentRoute = 'browse';
       } else if (!_.includes(this.router.url, 'browse')) {
-        this.checkOfflineRoutes = 'library';
+        this.currentRoute = 'library';
       }
-      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+      this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
           this.updateContentStatus(data);
       });
     }
@@ -227,6 +227,12 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     if (_.find(downloadListdata.result.response.downloads.failed, { contentId: _.get(this.contentData, 'identifier') })) {
       this.contentData['downloadStatus'] = 'FAILED';
     }
+  }
 
+  checkStatus(status) {
+    if (status === 'DOWNLOAD') {
+      return (this.currentRoute === 'browse' && (!this.contentData['downloadStatus'] || this.contentData['downloadStatus'] === 'FAILED'));
+    }
+    return (this.currentRoute === 'browse' && this.contentData['downloadStatus'] === status) ;
   }
 }
