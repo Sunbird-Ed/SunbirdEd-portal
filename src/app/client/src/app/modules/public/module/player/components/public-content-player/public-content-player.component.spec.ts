@@ -91,7 +91,7 @@ describe('PublicContentPlayerComponent', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(component, 'tryAgain').and.callThrough();
-    spyOn(component, 'getContent').and.callThrough();
+    spyOn(component, 'getContent');
     component.tryAgain();
     expect(component.showError).toBeFalsy();
     expect(component.getContent).toHaveBeenCalled();
