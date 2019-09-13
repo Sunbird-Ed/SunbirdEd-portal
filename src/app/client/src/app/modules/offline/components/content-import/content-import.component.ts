@@ -111,6 +111,7 @@ export class ContentImportComponent implements OnInit, AfterViewInit {
       if (isProgress) {
         this.modal.deny();
         this.router.navigateByUrl('/');
+        // this.offlineFileUploaderService.uploader.cancelAll();
         return false;
       }
       return false;
