@@ -12,11 +12,12 @@ import { QuestionCreationHeaderComponent } from './components/question-creation-
 import { TextbookListComponent } from './components/textbook-list/textbook-list.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 @NgModule({
   declarations: [QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
     McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
-    QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent, TextbookListComponent],
+    QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent, TextbookListComponent, DashboardComponent],
   imports: [
     CommonModule,
     SuiTabsModule,

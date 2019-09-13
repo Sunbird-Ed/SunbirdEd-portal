@@ -4,6 +4,7 @@ import { ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { first } from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import { Router } from '@angular/router';
 
 interface ISelectedAttributes {
     textBookUnitIdentifier?: any;
@@ -26,6 +27,7 @@ interface ISelectedAttributes {
     selectedSchoolForReview?: string;
     resourceIdentifier?: string;
     hierarchyObj?: any;
+    textbookName?: any;
 }
 
 @Component({
@@ -39,7 +41,8 @@ export class CbseComponent implements OnInit, OnDestroy {
   @Input() programDetails: any;
   @Input() userProfile: any;
   formFieldOptions: Array<any>;
-  public showLoader: boolean;
+  public showLoader: boolean = false;
+  public showDashboard: boolean = false;
   public publishInProgress = false;
   public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
@@ -47,7 +50,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   public role: any = {};
   public resourceName: string;
   public resourceNameInput: string;
-  constructor(public frameworkService: FrameworkService, public toasterService: ToasterService) { }
+  constructor(public frameworkService: FrameworkService, public toasterService: ToasterService, public router: Router) { }
   private questionTypeName = {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
@@ -63,7 +66,7 @@ export class CbseComponent implements OnInit, OnDestroy {
       board: _.get(this.programDetails, 'config.scope.board[0]'),
       medium: _.get(this.programDetails, 'config.scope.medium[0]'),
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
-      programId: _.get(this.programDetails, 'programId'),
+      programId: "31ab2990-7892-11e9-8a02-93c5c62c03f1" || _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
@@ -71,6 +74,7 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
     this.fetchFrameWorkDetails();
     this.selectedAttributes.lastOpenedUnit = 0;
+    
   }
 
   public selectedClassSubjectHandler(event) {
@@ -80,7 +84,8 @@ export class CbseComponent implements OnInit, OnDestroy {
   }
 
   public selectedTextbookHandler(event) {
-    this.selectedAttributes.textbook =  event;
+    this.selectedAttributes.textbook =  event.metaData.identifier;
+    this.selectedAttributes.textbookName = event.name;
     this.navigate('next');
   }
   public publishButtonStatusHandler(event) {
@@ -98,8 +103,9 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.navigate('next');
   }
 
-  handleRoleChange() {
+  handleRoleChange(component?:string) {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
+    component === 'Dashboard' ? this.showDashboard = true : this.showDashboard = false;
   }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);
