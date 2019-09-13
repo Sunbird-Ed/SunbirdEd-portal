@@ -4,7 +4,7 @@ import { PublicPlayerService } from './../../../../services';
 import { PublicContentPlayerComponent } from './public-content-player.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, ResourceService, ToasterService, WindowScrollService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, WindowScrollService, UtilService } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -53,7 +53,7 @@ describe('PublicContentPlayerComponent', () => {
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [PublicPlayerService, DownloadManagerService,
-        ToasterService,
+        ToasterService, UtilService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })

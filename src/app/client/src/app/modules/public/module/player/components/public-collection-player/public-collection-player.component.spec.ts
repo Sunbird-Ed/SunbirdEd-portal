@@ -9,7 +9,7 @@ import { PublicCollectionPlayerComponent } from './public-collection-player.comp
 import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { WindowScrollService, SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
+import { WindowScrollService, SharedModule, ResourceService, ToasterService, UtilService } from '@sunbird/shared';
 import { CollectionHierarchyGetMockResponse, collectionTree,
   download_list,
   download_error, } from './public-collection-player.component.spec.data';
@@ -55,7 +55,7 @@ describe('PublicCollectionPlayerComponent', () => {
       imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
       TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [ContentService, PublicPlayerService, ResourceService,
-        DownloadManagerService, ToasterService,
+        DownloadManagerService, ToasterService, UtilService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
