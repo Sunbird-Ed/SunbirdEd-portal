@@ -29,7 +29,8 @@ export class CourseProgressService {
 
 
   constructor(contentService: ContentService, configService: ConfigService,
-    userService: UserService, public coursesService: CoursesService, private toasterService: ToasterService, private resourceService: ResourceService) {
+    userService: UserService, public coursesService: CoursesService, private toasterService: ToasterService,
+    private resourceService: ResourceService) {
     this.contentService = contentService;
     this.configService = configService;
     this.userService = userService;

@@ -120,7 +120,8 @@ export class AssessmentScoreService {
    * generates md5 hash from four strings (courseId , batchId , contentId and userId)
    */
   private generateHash() {
-    const string = _.join([_.get(this._batchDetails, 'courseId'), _.get(this._batchDetails, 'batchId'), _.get(this._contentDetails, 'identifier'),
+    const string = _.join([_.get(this._batchDetails, 'courseId'), _.get(this._batchDetails, 'batchId'),
+    _.get(this._contentDetails, 'identifier'),
     this._userId], '-');
     const hash = Md5(string);
     return hash;
@@ -132,6 +133,7 @@ export class AssessmentScoreService {
   private prepareRequestObject(attemptId: string) {
     const request = {
       request: {
+        userId: this._userId,
         contents: [{
           contentId: (_.get(this._contentDetails, 'identifier')),
           batchId: _.get(this._batchDetails, 'batchId'),
