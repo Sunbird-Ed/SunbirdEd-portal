@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Response } from './offline-dial-code-card.component.spec.data';
@@ -17,7 +17,7 @@ describe('OfflineDialCodeCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [ OfflineDialCodeCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
+import { ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -22,7 +22,8 @@ describe('CardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [ OfflineCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, { provide: Router, useClass: RouterStub },
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService,
+        { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
