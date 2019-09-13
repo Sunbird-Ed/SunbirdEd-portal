@@ -62,9 +62,9 @@ describe('PublicContentPlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
-  afterEach(()=>{
+  afterEach(() => {
     fixture.destroy();
-  })
+  });
 
   it('should config content player if content status is "Live"', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
