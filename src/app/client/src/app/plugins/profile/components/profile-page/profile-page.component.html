@@ -2,9 +2,9 @@
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
       <div class="mb-15 d-flex flex-jc-center relative avatar-container" >
-       <img *ngIf="!isCustodianOrgUser" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
+       <img *ngIf="userProfile.isStateValidated" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
        suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
-       <ngx-avatar [ngClass]="{verified: !isCustodianOrgUser}"class="my-avatar" [style]="{
+       <ngx-avatar [ngClass]="{verified: userProfile.isStateValidated}" class="my-avatar" [style]="{
          backgroundColor: '#ffffff',
          border: '1px solid #fff',
          boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
@@ -119,28 +119,36 @@
           <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
         </div>
       </div>
+     <div class="d-flex flex-jc-center">
       <div (click)="showContactPopup=true;contactType='email'"
-        class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
-        [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
-        <i class="mail blue icon mr-5"></i> {{userProfile.email}}
-      </div>
-      <div (click)="showContactPopup=true;contactType='email'"
-        class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
-        appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="editEmailInteractEdata">
-        <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
-      </div>
-
-      <!-- <div (click)="showRecoveryId=true"
-      class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal">
-        <img class="recovery-img mr-5" src="/assets/images/Recovery.svg" alt="">  Add recovery id
-      </div> -->
-
-      <div (click)="showRecoveryId=true"
-      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15">
-        <img class="recovery-img mr-5" src="/assets/images/Recovery.svg" alt="">  Add recovery id
+      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
+      [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
+      <i class="mail blue icon mr-5"></i> {{userProfile.email}}
     </div>
+    <div (click)="showContactPopup=true;contactType='email'"
+      class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="editEmailInteractEdata">
+      <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
+    </div>
+     </div>
 
+      <!-- Add/edit recovery email/phone-->
+    <div class="d-flex flex-jc-center">
+      <div *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex" 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="editRecoveryIdInteractEdata">
+        <div class="recovery-img mr-5"></div>
+        <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
+        <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
+       </div>
+       <div *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex" 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="addRecoveryIdInteractEdata">
+        <div class="recovery-img mr-5"></div>
+       <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
+       </div>
+     </div>
     </div>
   </section>
 
@@ -282,5 +290,5 @@
   [contactType]="contactType"></app-update-contact-details>
 <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup" *ngIf="showEditUserDetailsPopup"
   [userProfile]="userProfile"></app-update-user-details>
-  <app-account-recovery-info *ngIf="showRecoveryId" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
+  <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
 <router-outlet></router-outlet>
