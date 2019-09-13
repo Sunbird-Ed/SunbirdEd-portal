@@ -8,7 +8,7 @@ import { Response } from './offline-card.component.spec.data';
 import { OfflineCardComponent } from './offline-card.component';
 import { CacheService } from 'ng2-cache-service';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
-import { OfflineCardService } from '@sunbird/offline';
+import { OfflineCardService } from '@sunbird/shared';
 
 describe('CardComponent', () => {
   let component: OfflineCardComponent;

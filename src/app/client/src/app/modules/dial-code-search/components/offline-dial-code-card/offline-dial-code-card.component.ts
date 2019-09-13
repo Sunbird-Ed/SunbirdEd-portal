@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { ResourceService, ICard } from '@sunbird/shared';
+import { ResourceService, ICard, OfflineCardService } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { OfflineCardService } from '@sunbird/offline';
 
 @Component({
   selector: 'app-offline-dial-code-card',

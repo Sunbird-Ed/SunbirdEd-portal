@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, OfflineCardService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Response } from './offline-dial-code-card.component.spec.data';
@@ -8,7 +8,6 @@ import { CacheService } from 'ng2-cache-service';
 import { OfflineDialCodeCardComponent } from './offline-dial-code-card.component';
 import { CdnprefixPipe } from './../../../shared/pipes/cdnprefix.pipe';
 import { RouterTestingModule } from '@angular/router/testing';
-import { OfflineCardService } from '@sunbird/offline';
 
 describe('OfflineDialCodeCardComponent', () => {
   let component: OfflineDialCodeCardComponent;

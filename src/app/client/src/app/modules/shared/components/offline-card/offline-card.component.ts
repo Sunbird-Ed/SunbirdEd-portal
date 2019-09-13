@@ -1,11 +1,10 @@
-import { ResourceService } from '../../services/index';
+import { ResourceService, OfflineCardService } from '../../services/index';
 import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { ICard } from '../../interfaces';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { ConnectionService } from './../../../offline/services/connection-service/connection.service';
-import { OfflineCardService } from './../../../offline/services/offline-card-service/offline-card.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { OfflineCardService } from './offline-card.service';
+import { OfflineCardService } from '@sunbird/offline';
 import { Response } from './offline-card.service.spec.data';
 
 describe('OfflineCardService', () => {
