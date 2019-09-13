@@ -168,18 +168,5 @@ describe('PublicCollectionPlayerComponent', () => {
      expect(component.toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0090);
    });
 
-   it('Test DownloadStatus is updating or not ', () => {
-     spyOn(component, 'updateDownloadStatus');
-     component.checkDownloadStatus(download_list);
-     expect(component.updateDownloadStatus).toHaveBeenCalled();
-     });
-
-   it('Test event emit', () => {
-     const downloadManagerService = TestBed.get(DownloadManagerService);
-     spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
-     component.updateDownloadStatus(download_list, CollectionHierarchyGetMockResponse.result.content);
-     expect(CollectionHierarchyGetMockResponse.result.content['downloadStatus']).
-     toBe('FAILED');
-   });
 
 });

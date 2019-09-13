@@ -6,7 +6,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash-es';
 import { Subject  } from 'rxjs';
 import {
-  ConfigService, ResourceService, ToasterService,
+  ConfigService, ResourceService, ToasterService, UtilService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from '../../../../services';
@@ -63,7 +63,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
-    private configService: ConfigService, public downloadManagerService: DownloadManagerService
+    private configService: ConfigService, public downloadManagerService: DownloadManagerService,
+    public utilService: UtilService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -89,11 +90,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     });
 
     if (this.isOffline ) {
-      if (_.includes(this.router.url, 'browse')) {
-        this.currentRoute = 'browse';
-      } else if (!_.includes(this.router.url, 'browse')) {
-        this.currentRoute = 'library';
-      }
+      this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'library';
       this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
           this.updateContentStatus(data);
       });
@@ -218,21 +215,10 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   }
 
   updateContentStatus(downloadListdata) {
-
-    // If download is completed card should show added to library
-    if (_.find(downloadListdata.result.response.downloads.completed, { contentId: _.get(this.contentData, 'identifier') })) {
-      this.contentData['downloadStatus'] = 'DOWNLOADED';
-    }
-    // // If download failed, card should show again add to library
-    if (_.find(downloadListdata.result.response.downloads.failed, { contentId: _.get(this.contentData, 'identifier') })) {
-      this.contentData['downloadStatus'] = 'FAILED';
-    }
+    this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
   }
 
   checkStatus(status) {
-    if (status === 'DOWNLOAD') {
-      return (this.currentRoute === 'browse' && (!this.contentData['downloadStatus'] || this.contentData['downloadStatus'] === 'FAILED'));
-    }
-    return (this.currentRoute === 'browse' && this.contentData['downloadStatus'] === status) ;
+  return this.utilService.getPlayerDownloadStatus(status, this.contentData, this.currentRoute);
   }
 }

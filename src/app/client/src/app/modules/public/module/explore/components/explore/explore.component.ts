@@ -313,15 +313,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   updateCardData(downloadListdata) {
     _.each(this.pageSections, (pageSection) => {
       _.each(pageSection.contents, (pageData) => {
-
-        // If download is completed card should show added to library
-        if (_.find(downloadListdata.result.response.downloads.completed, { contentId: pageData.metaData.identifier })) {
-          pageData['downloadStatus'] = 'DOWNLOADED';
-        }
-        // If download failed, card should show again add to library
-        if (_.find(downloadListdata.result.response.downloads.failed, { contentId: pageData.metaData.identifier })) {
-          pageData['downloadStatus'] = 'FAILED';
-        }
+        this.publicPlayerService.updateDownloadStatus(downloadListdata, pageData);
       });
     });
   }

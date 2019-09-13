@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { ResourceService, ICard } from '@sunbird/shared';
+import { ResourceService, ICard, UtilService } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -32,6 +32,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
+    public utilService: UtilService,
     private cdr: ChangeDetectorRef) {
     this.resourceService = resourceService;
   }
@@ -41,11 +42,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
     this.route = this.router.url;
-    if (_.includes(this.route, 'browse')) {
-      this.currentRoute = 'browse';
-    } else if (!_.includes(this.route, 'browse')) {
-      this.currentRoute = 'library';
-    }
+    this.currentRoute = _.includes(this.route, 'browse') ? 'browse' : 'library';
   }
 
   public onAction(data, action) {
@@ -61,11 +58,6 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   }
 
   checkStatus(status) {
-    if (status === 'DOWNLOAD') {
-      return (this.currentRoute === 'browse' && (!this.data['downloadStatus'] || this.data['downloadStatus'] === 'FAILED'));
-    }
-    return (this.currentRoute === 'browse' && this.data['downloadStatus'] === status);
+    return this.utilService.getPlayerDownloadStatus(status, this.data, this.currentRoute);
   }
 }
-
-

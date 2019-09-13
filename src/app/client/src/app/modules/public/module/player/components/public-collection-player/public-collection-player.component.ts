@@ -8,7 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
-  ContentUtilsServiceService
+  ContentUtilsServiceService, UtilService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -102,7 +102,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
-    public downloadManagerService: DownloadManagerService) {
+    public downloadManagerService: DownloadManagerService,
+    public utilService: UtilService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -122,11 +123,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.setTelemetryData();
 
     if (this.isOffline ) {
-      if (_.includes(this.router.url, 'browse')) {
-        this.currentRoute = 'browse';
-      } else if (!_.includes(this.router.url, 'browse')) {
-        this.currentRoute = 'library';
-      }
+      this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'library';
       this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.checkDownloadStatus(data);
       });
@@ -425,29 +422,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   checkDownloadStatus(downloadListdata) {
     const content = _.isEmpty(this.playerContent) ? this.collectionData : this.playerContent;
-    this.updateDownloadStatus(downloadListdata, content);
-  }
-
-  updateDownloadStatus(downloadListdata, content) {
-
-    // If download is completed card should show added to library
-    if (_.find(downloadListdata.result.response.downloads.completed, { contentId: _.get(content, 'identifier')})) {
-      content['downloadStatus'] = 'DOWNLOADED';
-    }
-    // If download is failed card should show added to library
-    if (_.find(downloadListdata.result.response.downloads.failed, { contentId: _.get(content, 'identifier') })) {
-      content['downloadStatus'] = 'FAILED';
-    }
+    this.playerService.updateDownloadStatus(downloadListdata, content);
   }
 
   checkStatus(content, status) {
-    if (status === 'DOWNLOAD') {
-      return content.mimeType === 'application/vnd.ekstep.content-collection' ?
-        (this.currentRoute === 'browse' && (!this.collectionData['downloadStatus'] || this.collectionData['downloadStatus'] === 'FAILED')) :
-        (this.currentRoute === 'browse' && (!this.playerContent['downloadStatus'] || this.playerContent['downloadStatus'] === 'FAILED'));
-    }
-    return content.mimeType === 'application/vnd.ekstep.content-collection' ?
-           (this.currentRoute === 'browse' && this.collectionData['downloadStatus'] === status) :
-          (this.currentRoute === 'browse' && this.playerContent['downloadStatus'] === status);
+  const contentData = content.mimeType === 'application/vnd.ekstep.content-collection' ? this.collectionData : this.playerContent;
+   return this.utilService.getPlayerDownloadStatus(status, contentData, this.currentRoute);
   }
 }

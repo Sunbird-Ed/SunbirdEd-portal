@@ -1,3 +1,4 @@
+import { UtilService } from '../../services';
 import { ResourceService } from '../../services/index';
 import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { ICard } from '../../interfaces';
@@ -40,17 +41,14 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
-    private cdr: ChangeDetectorRef, private connectionService: ConnectionService) {
+    private cdr: ChangeDetectorRef, private connectionService: ConnectionService,
+    public utilService: UtilService) {
     this.resourceService = resourceService;
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
     this.route = this.router.url;
-    if (_.includes(this.route, 'browse')) {
-      this.currentRoute = 'browse';
-    } else if (!_.includes(this.route, 'browse')) {
-      this.currentRoute = 'library';
-    }
+    this.currentRoute = _.includes(this.route, 'browse') ? 'browse' : 'library';
   }
 
   ngOnInit() {
@@ -83,10 +81,7 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   checkStatus(status) {
-    if (status === 'DOWNLOAD') {
-      return (this.currentRoute === 'browse' && (!this.data['downloadStatus'] || this.data['downloadStatus'] === 'FAILED'));
-    }
-    return (this.currentRoute === 'browse' && this.data['downloadStatus'] === status);
+    return this.utilService.getPlayerDownloadStatus(status, this.data, this.currentRoute);
   }
 }
 

@@ -162,4 +162,13 @@ export class UtilService {
     });
     return formInputData;
   }
+  getPlayerDownloadStatus(status, content, currentRoute) {
+    if (currentRoute === 'browse') {
+      if (status === 'DOWNLOAD') {
+        return (!content['downloadStatus'] || content['downloadStatus'] === 'FAILED');
+      }
+      return (content['downloadStatus'] === status);
+    }
+    return false;
+  }
 }
