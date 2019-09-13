@@ -85,6 +85,10 @@ describe('CoursePlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
+  afterEach(()=>{
+    fixture.destroy();
+  })
+
   it('should fetch courseHierarchy from courseConsumptionService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);

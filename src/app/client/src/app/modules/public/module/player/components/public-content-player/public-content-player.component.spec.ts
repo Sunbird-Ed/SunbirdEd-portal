@@ -62,6 +62,10 @@ describe('PublicContentPlayerComponent', () => {
     component = fixture.componentInstance;
   });
 
+  afterEach(()=>{
+    fixture.destroy();
+  })
+
   it('should config content player if content status is "Live"', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
@@ -91,7 +95,7 @@ describe('PublicContentPlayerComponent', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(component, 'tryAgain').and.callThrough();
-    spyOn(component, 'getContent');
+    spyOn(component, 'getContent').and.callThrough();
     component.tryAgain();
     expect(component.showError).toBeFalsy();
     expect(component.getContent).toHaveBeenCalled();
