@@ -97,7 +97,7 @@ export class TextbookListComponent implements OnInit {
   showTopics(event) {
     console.log(event);
 
-    this.selectedTextbookEvent.emit(event.data.metaData.identifier);
+    this.selectedTextbookEvent.emit(event.data);
   }
   private setTelemetryImpression() {
     this.telemetryImpression = {
