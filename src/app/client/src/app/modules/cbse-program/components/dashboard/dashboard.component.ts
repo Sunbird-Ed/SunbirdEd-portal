@@ -35,10 +35,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     mcq: 'Multiple Choice Question',
     curiosityquestion: 'Curiosity Question'
   };
-  @ViewChild('topicSection') tableHeader: ElementRef;
-  datatable: any;
-
-
 
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService,
@@ -59,7 +55,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-      this.tableHeader.nativeElement
+
   }
 
   changeQuestionCategory(type) {
@@ -167,7 +163,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         }
       }
     };
-    
+
     return this.publicDataService.post(req).pipe(
       map(res => { return _.get(res, 'result.aggregations[0].values') },
         err => {
@@ -218,10 +214,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     let apiRequest;
     apiRequest = [this.searchQuestionsByType(), ...this.questionType.map(type => this.searchResources(type))]
     if (!apiRequest) {
-      console.log("something error")
+      this.toasterService.error('Please try again by refresh');
     }
     forkJoin(apiRequest).subscribe(data => {
-      console.log("seqP---->", data)
 
       this.textBookChapters = _.map(textBookMetaData, topicData => {
         const results = { name: topicData.name, topic: topicData.topic, identifier: topicData.identifier };
@@ -245,7 +240,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         return results;
       });
 
-     //Below code to make api call to get published question and to include in the variable 'textBookChapters'
+      //Below code to make api call to get published question and to include in the variable 'textBookChapters'
       _.forEach(this.textBookChapters, (chap) => {
         _.forEach(this.questionType, (type, index) => {
           let filter_by_category = _.filter(data[index + 1], { name: chap.topic.toLowerCase() })
@@ -278,14 +273,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
     };
     const csvExporter = new ExportToCsv(options);
- csvExporter.generateCsv(this.tableData);
+    csvExporter.generateCsv(this.tableData);
   }
 
   generateTableData(report) {
     let Tdata
     if (report === this.reports[0].name) {
-      
-        Tdata = _.map(this.textBookChapters, (item) => {
+
+      Tdata = _.map(this.textBookChapters, (item) => {
         let result = {};
         result['Topic Name'] = item.name + "(" + item.topic + ")";
         result[this.statusLabel[0].name] = (item[this.selectedCategory] && item[this.selectedCategory].review) ? item[this.selectedCategory].review : 0;
@@ -295,7 +290,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         return result;
       });
       this.tableData = Tdata;
-      
+
 
     } else if (report === this.reports[1].name) {
       Tdata = _.map(this.textBookChapters, (item) => {
@@ -308,8 +303,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         result[this.questionTypeName[this.questionType[4]]] = (item[this.questionType[4]] && item[this.questionType[4]].published) ? item[this.questionType[4]].published : 0;
         return result;
       });
-     
-     this.tableData = Tdata;
+
+      this.tableData = Tdata;
     }
   }
 
@@ -321,21 +316,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   initializeDataTable(report) {
-    console.log("initialized")
+    this.showLoader = false;
     if (report === this.reports[0].name) {
       setTimeout(() => {
-       this.datatable =  $('#questionBank').DataTable(
+        $('#questionBank').DataTable(
           {
             paging: false,
             searching: false,
             info: false,
             destroy: true,
-            lengthChange: false,
-            dom: 'itp',
           }
         );
-
-        this.showLoader = false;
       }, 0);
     } else if (report === this.reports[1].name) {
       setTimeout(() => {
@@ -345,11 +336,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             searching: false,
             info: false,
             destroy: true,
-            lengthChange: false,
-            dom: 'itp',
           }
         );
-        this.showLoader = false;
       }, 0);
     }
 
