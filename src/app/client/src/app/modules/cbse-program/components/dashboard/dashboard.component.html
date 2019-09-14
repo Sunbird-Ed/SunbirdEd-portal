@@ -1,81 +1,78 @@
+<div class="selectionField d-flex flex-jc-center flex-ai-center">
+  <label class="mr-8 mb-0">Select Report: </label>
+  <div class="field">
+    <sui-select [isSearchable]="true" id=reportSelection name=reportSelection class="selection"
+      [(ngModel)]="selectedReport" labelField="name" valueField="name" [options]="reports" #select>
+      <sui-select-option *ngFor="let report of reports" [value]="report" (click)="onReportChange(report.name)">
+      </sui-select-option>
+    </sui-select>
+  </div>
+  <button class="download-btn sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-right-icon-btn"
+    (click)="refreshReport()"><i class="refresh icon"></i>Refresh</button>
+  <button class="download-btn sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-right-icon-btn"
+    (click)="downloadReport()"><i class="download icon"></i>Download Report</button>
 
-    <div class="selectionField d-flex flex-jc-center flex-ai-center">
-      <label class="mr-8 mb-0">Select Report: </label>
-      <div class="field">
-        <sui-select [isSearchable]="true" id=reportSelection name=reportSelection class="selection"
-          [(ngModel)]="selectedReport" labelField="name" valueField="name"
-          [options]="reports" #select >
-          <sui-select-option *ngFor="let report of reports" [value]="report" (click)="initializeDataTable(report.name)"></sui-select-option>
-        </sui-select>
-      </div>
-      <button class="download-btn sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-right-icon-btn" (click)="refreshReport()"><i class="refresh icon" ></i>Refresh</button>
-      <button class="download-btn sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-right-icon-btn"><i class="download icon"></i>Download Report</button>
-
-    </div> 
-    <button (click)="sample()">sample</button>
-    
-<div *ngIf="selectedReport === 'Question Bank Status'" >
-<table class="sb-table sb-table sb-table-hover " id='questionBank'>
-  <thead class="sb-table-header heading-large">
-    <tr>
-      <th rowspan="2" class="topicSection"> Topic Name </th>
-
-      <th colspan="5">
-        <span class="ui dropdown sb-table-dropdown d-inline-flex" suiDropdown>
-          <div class="text">{{showCategory}}</div>
-          <i class="dropdown icon"></i>
-          <div class="menu" suiDropdownMenu>
-            <div class="item" *ngFor="let type of questionType" (click)="changeQuestionCategory(type)"> {{questionTypeName[type]}}</div>
-          </div>
-        </span>
-      </th>
-    </tr>
-
-    <tr>
-      <th *ngFor="let label of statusLabel" attr.data-tooltip="{{label.tip}}" >{{label.name}}</th>
-      
-    </tr>
-
-  </thead>
-  <tbody class="sb-table-body body-large">
-    <tr *ngFor="let chapter of textBookChapters">
-      <td>{{chapter.name}} <div>({{chapter.topic}})</div></td>
-      <td>{{(chapter[category] && chapter[category].review) ? chapter[category].review : 0 }}</td><td>{{(chapter[category] && chapter[category].live) ? chapter[category].live : 0}}</td><td>{{(chapter[category] && chapter[category].reject) ? chapter[category].reject : 0}}</td><td>{{(chapter[category] && chapter[category].published) ? chapter[category].published : 0}}</td>
-    </tr>
-  </tbody>
-</table>
 </div>
 
 
+<div *ngIf="selectedReport === 'Question Bank Status' && !showLoader">
+  <table class="sb-table sb-table sb-table-hover " id='questionBank'>
+    <thead class="sb-table-header heading-large">
+      <tr>
+        <th rowspan="2" class="topicSection"> Topic Name </th>
 
+        <th colspan="5">
+          <span class="ui dropdown sb-table-dropdown d-inline-flex" suiDropdown>
+            <div class="text">{{questionTypeName[selectedCategory]}}</div>
+            <i class="dropdown icon"></i>
+            <div class="menu" suiDropdownMenu>
+              <div class="item" *ngFor="let type of questionType" (click)="changeQuestionCategory(type)">
+                {{questionTypeName[type]}}</div>
+            </div>
+          </span>
+        </th>
+      </tr>
+
+      <tr>
+        <th *ngFor="let label of statusLabel" attr.data-tooltip="{{label.tip}}">{{label.name}}</th>
+      </tr>
+
+    </thead>
+    <tbody class="sb-table-body body-large" >
+      <tr *ngFor="let chapter of tableData">
+        <td>{{chapter['Topic Name']}}</td>
+        <td>{{chapter['Up For Review']}}</td>
+        <td>{{chapter.Rejected}}</td>
+        <td>{{chapter.Accepted}}</td>
+        <td>{{chapter.Published}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div *ngIf="selectedReport === 'Textbook Status' && !showLoader">
+  <table class="sb-table sb-table sb-table-hover sb-table-sortable" id='TextbookStatus'>
+    <thead class="sb-table-header heading-large">
+      <tr>
+        <th> Topic Name </th>
+        <th attr.data-tooltip="{{headersTooltip[0].tip}}" *ngFor="let type of questionType"> {{questionTypeName[type]}}
+        </th>
+
+      </tr>
+    </thead>
+    <tbody class="sb-table-body body-large" >
+      <tr *ngFor="let chapter of tableData">
+        <td>{{chapter['Topic Name']}}</td>
+        <td>{{chapter[questionTypeName[questionType[0]]] ? 1 : 0}}({{chapter[questionTypeName[questionType[0]]]}})</td>
+        <td>{{chapter[questionTypeName[questionType[1]]] ? 1 : 0}}({{chapter[questionTypeName[questionType[1]]]}})</td>
+        <td>{{chapter[questionTypeName[questionType[2]]] ? 1 : 0}}({{chapter[questionTypeName[questionType[2]]]}})</td>
+        <td>{{chapter[questionTypeName[questionType[3]]] ? 1 : 0}}({{chapter[questionTypeName[questionType[3]]]}})</td>
+        <td>{{chapter[questionTypeName[questionType[4]]] ? 1 : 0}}({{chapter[questionTypeName[questionType[4]]]}})</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <br>
-
-<div *ngIf="selectedReport === 'Textbook Status'" >
-    <table class="sb-table sb-table sb-table-hover sb-table-sortable" id='TextbookStatus'>
-      <thead class="sb-table-header heading-large">
-      <tr>
-          <th> Topic Name </th>
-
-          
-          <th attr.data-tooltip="{{headersTooltip[0].tip}}" *ngFor = "let type of questionType"> {{questionTypeName[type]}}</th>
-        
-        </tr>
-      </thead>
-      <tbody class="sb-table-body body-large">
-        <tr *ngFor="let chapter of textBookChapters">
-            <td>{{chapter.name}} <div>({{chapter.topic}})</div></td>
-          <td>{{(chapter[questionType[0]] && chapter[questionType[0]].published) ? 1 : 0}}({{(chapter[questionType[0]] && chapter[questionType[0]].published) ? chapter[questionType[0]].published : 0}})</td>
-          <td>{{(chapter[questionType[1]] && chapter[questionType[1]].published) ? 1 : 0}}({{(chapter[questionType[1]] && chapter[questionType[1]].published) ? chapter[questionType[1]].published : 0}})</td>
-          <td>{{(chapter[questionType[2]] && chapter[questionType[2]].published) ? 1 : 0}}({{(chapter[questionType[2]] && chapter[questionType[2]].published) ? chapter[questionType[2]].published : 0}})</td>
-          <td>{{(chapter[questionType[3]] && chapter[questionType[3]].published) ? 1 : 0}}({{(chapter[questionType[3]] && chapter[questionType[3]].published) ? chapter[questionType[3]].published : 0}})</td>
-          <td>{{(chapter[questionType[4]] && chapter[questionType[4]].published) ? 1 : 0}}({{(chapter[questionType[4]] && chapter[questionType[4]].published) ? chapter[questionType[4]].published : 0}})</td>
-        
-    
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    <app-loader *ngIf='showLoader && !showError'></app-loader>
-
-    
+<app-loader *ngIf='showLoader && !showError'></app-loader>
