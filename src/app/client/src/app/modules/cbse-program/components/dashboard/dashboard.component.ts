@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
-import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
+import { Component, OnInit, Input } from '@angular/core';
+import { PublicDataService, UserService, ActionService } from '@sunbird/core';
+import { ConfigService, ToasterService } from '@sunbird/shared';
 import { map } from 'rxjs/operators';
 import * as $ from 'jquery';
 import 'datatables.net';
@@ -13,7 +13,7 @@ import { forkJoin } from 'rxjs';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit {
   @Input() selectedAttributes: any;
   private textBookMeta: any;
   private questionType: Array<any> = [];
@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   showLoader: boolean = false;
   selectedCategory;
   tableData;
+  firstcolumnHeader;
   questionTypeName = {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
@@ -37,14 +38,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   };
 
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    private userService: UserService, public actionService: ActionService,
-    public toasterService: ToasterService) { }
+    public actionService: ActionService, public toasterService: ToasterService) { }
 
   ngOnInit() {
 
     this.reports = [{ name: 'Question Bank Status' }, { name: 'Textbook Status' }];
     this.selectedReport = this.reports[0].name;
-
+    this.firstcolumnHeader = 'Topic Name'
     //should not change the order of below array
     this.questionType = ['vsa', 'sa', 'la', 'mcq', 'curiosityquestion'];
     //default selected category
@@ -52,10 +52,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.headersTooltip = [{ tip: "No. of resource (no. of published questions)" }];
     this.statusLabel = [{ name: 'Up For Review', tip: "No. of questions pending for review" }, { name: "Rejected", tip: 'No. of questions rejected by reviewer' }, { name: 'Accepted', tip: 'No. of questions approved by reviewer' }, { name: 'Published', tip: 'No. of questions published by publisher' }];
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
-  }
-
-  ngAfterViewInit() {
-
   }
 
   changeQuestionCategory(type) {
@@ -112,7 +108,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.textBookMeta = textBookMetaData;
       this.dashboardApi(this.textBookMeta);
     }, error => {
-
       this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed');
     });
   }
@@ -126,18 +121,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         'children': _.map(data.children, (child) => {
           return child.identifier;
         }),
-        'root': data.contentType === 'TextBook' ? true : false
+        'root': (data.contentType === 'TextBook')
       };
 
       _.forEach(data.children, (collection) => {
         instance.getHierarchyObj(collection);
       });
     }
-
     return this.hierarchyObj;
   }
 
-  public searchQuestionsByType() {
+  public searchQuestionsByType(questionType?: string) {
     const req = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
       data: {
@@ -150,7 +144,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'programId': this.selectedAttributes.programId,
-            "status": []
+            "status": [],
+            'type': questionType === 'mcq' ? 'mcq' : 'reference',
           },
           "limit": 0,
           "aggregations": [
@@ -165,7 +160,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     };
 
     return this.publicDataService.post(req).pipe(
-      map(res => { return _.get(res, 'result.aggregations[0].values') },
+      map(res => {
+        let result = []
+        return result = _.get(res, 'result.aggregations[0].values')
+      },
         err => {
           this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching aggregations of TextBook failed');
         }));
@@ -196,7 +194,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     };
     return this.publicDataService.post(request).pipe(
       map(res => {
-        // return _.get(res, 'result');
         const content = _.get(res, 'result.content');
         const publishCount = [];
         _.forIn(_.groupBy(content, 'topic'), (value, key) => {
@@ -210,17 +207,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   dashboardApi(textBookMetaData) {
-
     let apiRequest;
-    apiRequest = [this.searchQuestionsByType(), ...this.questionType.map(type => this.searchResources(type))]
+    apiRequest = [this.searchQuestionsByType(), this.searchQuestionsByType('mcq'), ...this.questionType.map(type => this.searchResources(type))]
     if (!apiRequest) {
       this.toasterService.error('Please try again by refresh');
     }
     forkJoin(apiRequest).subscribe(data => {
-
+      let aggregatedData = _.concat(data[0], data[1])
+      console.log("result", aggregatedData);
       this.textBookChapters = _.map(textBookMetaData, topicData => {
         const results = { name: topicData.name, topic: topicData.topic, identifier: topicData.identifier };
-        _.forEach(data[0], (Tobj) => {
+        _.forEach(aggregatedData, (Tobj) => {
           if (Tobj.name === topicData.topic.toLowerCase()) {
             _.forEach(Tobj.aggregations[0].values, (Cobj) => {
               let modify = _.map(Cobj.aggregations[0].values, (a) => {
@@ -243,7 +240,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       //Below code to make api call to get published question and to include in the variable 'textBookChapters'
       _.forEach(this.textBookChapters, (chap) => {
         _.forEach(this.questionType, (type, index) => {
-          let filter_by_category = _.filter(data[index + 1], { name: chap.topic.toLowerCase() })
+          let filter_by_category = _.filter(data[index + 2], { name: chap.topic.toLowerCase() })
           if (filter_by_category.length > 0) Object.assign(chap[type], { 'published': filter_by_category[0].count })
         });
       });
@@ -258,7 +255,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   downloadReport() {
-
+    var optional;
+    if (this.selectedReport === this.reports[0].name) {
+      optional = `Selected Category: ${this.questionTypeName[this.selectedCategory]}`
+    }
     const options = {
       filename: `${this.selectedReport}`,
       fieldSeparator: ',',
@@ -266,12 +266,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       decimalSeparator: '.',
       showLabels: true,
       showTitle: true,
-      title: this.selectedAttributes.textbookName,
+      title: `Texbook Name: ${this.selectedAttributes.textbookName}, ${optional ? optional : ""}`,
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
       // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
     };
+
     const csvExporter = new ExportToCsv(options);
     csvExporter.generateCsv(this.tableData);
   }
@@ -279,10 +280,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   generateTableData(report) {
     let Tdata
     if (report === this.reports[0].name) {
-
       Tdata = _.map(this.textBookChapters, (item) => {
         let result = {};
-        result['Topic Name'] = item.name + "(" + item.topic + ")";
+        result[this.firstcolumnHeader] = item.name + "(" + item.topic + ")";
         result[this.statusLabel[0].name] = (item[this.selectedCategory] && item[this.selectedCategory].review) ? item[this.selectedCategory].review : 0;
         result[this.statusLabel[1].name] = (item[this.selectedCategory] && item[this.selectedCategory].reject) ? item[this.selectedCategory].reject : 0;
         result[this.statusLabel[2].name] = (item[this.selectedCategory] && item[this.selectedCategory].live) ? item[this.selectedCategory].live : 0;
@@ -291,11 +291,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       });
       this.tableData = Tdata;
 
-
     } else if (report === this.reports[1].name) {
       Tdata = _.map(this.textBookChapters, (item) => {
         let result = {};
-        result['Topic Name'] = item.name + "(" + item.topic + ")";
+        result[this.firstcolumnHeader] = item.name + "(" + item.topic + ")";
         result[this.questionTypeName[this.questionType[0]]] = (item[this.questionType[0]] && item[this.questionType[0]].published) ? item[this.questionType[0]].published : 0;
         result[this.questionTypeName[this.questionType[1]]] = (item[this.questionType[1]] && item[this.questionType[1]].published) ? item[this.questionType[1]].published : 0;
         result[this.questionTypeName[this.questionType[2]]] = (item[this.questionType[2]] && item[this.questionType[2]].published) ? item[this.questionType[2]].published : 0;
@@ -303,7 +302,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         result[this.questionTypeName[this.questionType[4]]] = (item[this.questionType[4]] && item[this.questionType[4]].published) ? item[this.questionType[4]].published : 0;
         return result;
       });
-
       this.tableData = Tdata;
     }
   }
@@ -316,28 +314,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   initializeDataTable(report) {
+    let dtOptions = {
+      paging: false,
+      searching: false,
+      info: false,
+      destroy: true,
+    }
     this.showLoader = false;
     if (report === this.reports[0].name) {
       setTimeout(() => {
-        $('#questionBank').DataTable(
-          {
-            paging: false,
-            searching: false,
-            info: false,
-            destroy: true,
-          }
-        );
+        $('#questionBank').DataTable(dtOptions);
       }, 0);
     } else if (report === this.reports[1].name) {
       setTimeout(() => {
-        $('#TextbookStatus').DataTable(
-          {
-            paging: false,
-            searching: false,
-            info: false,
-            destroy: true,
-          }
-        );
+        $('#TextbookStatus').DataTable(dtOptions);
       }, 0);
     }
 

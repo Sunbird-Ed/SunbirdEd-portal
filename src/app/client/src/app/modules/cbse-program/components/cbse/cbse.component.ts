@@ -104,7 +104,7 @@ export class CbseComponent implements OnInit, OnDestroy {
 
   handleRoleChange(component?:string) {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
-    component === 'Dashboard' ? this.showDashboard = true : this.showDashboard = false;
+    this.showDashboard = (component === 'Dashboard');
   }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);
