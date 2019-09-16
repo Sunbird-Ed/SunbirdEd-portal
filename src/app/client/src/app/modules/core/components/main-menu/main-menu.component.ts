@@ -61,7 +61,7 @@ export class MainMenuComponent implements OnInit, AfterViewInit {
   signInIntractEdata: IInteractEventEdata;
   slug: string;
   programId = (<HTMLInputElement>document.getElementById('cbse_programId'))
-  ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : undefined;
+    ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : undefined;
   /*
   * constructor
   */
@@ -90,19 +90,15 @@ export class MainMenuComponent implements OnInit, AfterViewInit {
           this.userProfile = user.userProfile;
         }
       });
-      setTimeout(() => {
-        let activeRoute = this.router.url.split('/')[3];
-    this.activeRoute(activeRoute);
-      }, 1000);
-      
+    setTimeout(() => {
+      let activeRoute = this.router.url.split('/')[3];
+      this.activeRoute(activeRoute);
+    }, 1000);
   }
 
-  ngAfterViewInit(){
-    
-  }
   getProgramUrl() {
     const programId = (<HTMLInputElement>document.getElementById('cbse_programId'))
-        ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : '';
+      ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : '';
     return '/workspace/program/' + programId;
   }
   setInteractData() {
@@ -191,8 +187,8 @@ export class MainMenuComponent implements OnInit, AfterViewInit {
       this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
     });
   }
-  activeRoute(route){
-    if(route === 'curiosity') {
+  activeRoute(route) {
+    if (route === 'curiosity') {
       document.getElementById(route).classList.add('active');
       document.getElementById('workspace').classList.remove('active');
     }

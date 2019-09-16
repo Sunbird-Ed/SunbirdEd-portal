@@ -330,16 +330,5 @@ export class DashboardComponent implements OnInit {
         $('#TextbookStatus').DataTable(dtOptions);
       }, 0);
     }
-
   }
-
-
-
-
-
-
-
-
-
-
 }
