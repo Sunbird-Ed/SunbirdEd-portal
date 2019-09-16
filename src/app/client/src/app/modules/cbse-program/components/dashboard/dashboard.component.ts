@@ -214,7 +214,7 @@ export class DashboardComponent implements OnInit {
     }
     forkJoin(apiRequest).subscribe(data => {
       let aggregatedData = _.concat(data[0], data[1])
-      console.log("result", aggregatedData);
+      
       this.textBookChapters = _.map(textBookMetaData, topicData => {
         const results = { name: topicData.name, topic: topicData.topic, identifier: topicData.identifier };
         _.forEach(aggregatedData, (Tobj) => {
