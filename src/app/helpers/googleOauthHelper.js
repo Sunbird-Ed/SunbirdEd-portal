@@ -95,14 +95,15 @@ const createSession = async (emailId, reqQuery, req, res) => {
   let keycloakMergeClient = keycloakMergeGoogle;
   let scope = 'openid';
   if (reqQuery.client_id === 'android') {
+    console.log('reqQuery.client_id', reqQuery.client_id);
     keycloakClient = keycloakGoogleAndroid;
-    keycloakMergeClient = keycloakMergeGoogleAndroid;
+    // keycloakMergeClient = keycloakMergeGoogleAndroid;
     scope = 'offline_access';
   }
 
   // merge account in progress
   if (_.get(req, 'session.mergeAccountInfo.initiatorAccountDetails') || reqQuery.merge_account_process === '1') {
-    console.log('merge in progress');
+    console.log('merge in progress', emailId);
     grant = await keycloakMergeClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
     req.session.mergeAccountInfo.mergeFromAccountDetails = {
       sessionToken: grant.access_token.token
