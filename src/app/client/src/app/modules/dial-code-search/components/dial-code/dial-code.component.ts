@@ -6,7 +6,7 @@ import { SearchService, SearchParam, PlayerService, CoursesService, UserService 
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { takeUntil, map, catchError, mergeMap, tap } from 'rxjs/operators';
+import { takeUntil, map, catchError, mergeMap, first } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
@@ -84,9 +84,10 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
       });
-      this.downloadManagerService.downloadEvent.pipe(tap(() => {
+      this.downloadManagerService.downloadEvent.pipe(first(),
+      takeUntil(this.unsubscribe$)).subscribe(() => {
         this.showDownloadLoader = false;
-      }), takeUntil(this.unsubscribe$)).subscribe(() => {});
+      });
 
     }
     this.instance = _.upperCase(this.resourceService.instance);
@@ -351,7 +352,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateCardData(downloadListdata) {
     _.each(this.itemsToDisplay, (contents) => {
-      this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
+    this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
   }
 }
