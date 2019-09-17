@@ -1,0 +1,33 @@
+<sui-modal [isClosable]="false" [size]="'fullscreen'" #modal [mustScroll]="true"
+           [transitionDuration]="0"
+           class="fullpage"
+           (dismissed)="modal.deny();closeModal()">
+
+  <div class="sb-certificatePage">
+    <div class="sb-certificatePage-header mb-auto">
+      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
+    </div>
+    <div class="sb-merged-account-content text-center mb-auto">
+      <h3 class="sb-merged-account-body-header my-24 font-weight-bold">
+        {{resourceService.frmelmnts?.lbl?.mergeAccount}}</h3>
+      <p class="sb-merged-account-body-para font-weight-bold">
+        {{resourceService.messages?.imsg?.m0065}} <br>{{resourceService.messages?.imsg?.m0066}}</p>
+      <ul class="m-0">
+        <li class="mb-8">
+          {{resourceService.messages?.imsg?.m0063}}
+        </li>
+        <li class="mb-8">
+          {{resourceService.messages?.imsg?.m0064}}
+        </li>
+      </ul>
+      <p>{{resourceService.messages?.imsg?.m0062}} <b>{{resourceService.frmelmnts?.btn?.cancel}}</b></p>
+    </div>
+    <button class="sb-btn sb-btn-secondary sb-btn-normal width-100 mt-8 mb-auto"
+            (click)="createNewUser()">{{resourceService.frmelmnts?.btn?.cancel}}
+    </button>
+    <button class="sb-btn sb-btn-secondary sb-btn-normal width-100 mt-8 mb-auto"
+            (click)="migrateUser()">{{resourceService.frmelmnts?.btn?.merge}}
+    </button>
+  </div>
+
+</sui-modal>
