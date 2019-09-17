@@ -234,10 +234,8 @@ error: '';
     }, 100);
   }
   ngOnDestroy() {
-    console.log("Testing")
     document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll
     this.router.navigate(['/resources']);
-    //this.modal.deny();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
