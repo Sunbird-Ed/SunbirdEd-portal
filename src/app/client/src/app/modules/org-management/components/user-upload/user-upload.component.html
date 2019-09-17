@@ -26,30 +26,11 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     </div>
     <ol class="ui list">
       <li *ngFor="let instn of userUploadInstructions">{{instn.instructions}}
-        <ol *ngIf="instn.subinstructions">
-          <li *ngFor="let subinstn of instn.subinstructions">{{subinstn.instructions}}</li>
-        </ol>
       </li>
     </ol>
     <!-- <div>{{resourceService?.frmelmnts?.instn?.t0076}} <a href={{uploadUserRefLink}}
         target="_blank">{{resourceService?.frmelmnts?.instn?.t0077}}</a></div> -->
   </div>
-   
-  <div *ngIf="resourceService.frmelmnts && !processId && !showLoader" class="ui error message hide">
-    <div class="header">
-      {{resourceService?.frmelmnts?.scttl?.error}}
-    </div>
-    <ol class="ui list">
-      <li *ngFor="let instn of userUploadInstructions">{{instn.instructions}}
-        <ol *ngIf="instn.subinstructions">
-          <li *ngFor="let subinstn of instn.subinstructions">{{subinstn.instructions}}</li>
-        </ol>
-      </li>
-    </ol>
-    <!-- <div>{{resourceService?.frmelmnts?.instn?.t0076}} <a href={{uploadUserRefLink}}
-        target="_blank">{{resourceService?.frmelmnts?.instn?.t0077}}</a></div> -->
-  </div>
-
 </div>
 
 <div class="sb-modal-actions">
@@ -77,15 +58,16 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     <div class="header">
       {{resourceService?.frmelmnts?.scttl?.error}}
     </div>
-    <div *ngFor = "let er of error">
+    <div *ngFor = "let er of errors">
       <span> {{er}}</span>
     </div>
+    <textarea class="hide" *ngIf= "error" id="copyErrorData">{{error}}</textarea>
   </div>
 </div>
 <div class="sb-modal-actions">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
   [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="processId"
-  class="sb-btn sb-btn-normal sb-btn-primary" (click)="uploadUsersCSV()">
+  class="sb-btn sb-btn-normal sb-btn-primary" (click)="copyToClipboard()">
   {{resourceService?.frmelmnts?.btn?.copytoclipboard}}
   </button>
 </div>

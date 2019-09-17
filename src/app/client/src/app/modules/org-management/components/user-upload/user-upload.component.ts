@@ -20,7 +20,10 @@ import * as _ from 'lodash-es';
 export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
-  @ViewChild('dataContainer') dataContainer : ElementRef;
+  /**
+  *Element Ref  for copyLinkButton;
+  */
+ @ViewChild('copyErrorData') copyErrorButton: ElementRef;
   /**
 * reference for ActivatedRoute
 */
@@ -72,7 +75,11 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
    /**
  * error object
  */
-  error: [];
+  errors: [];
+  /**
+ * error object
+ */
+error: '';
   
   /**
    * To call resource service which helps to use language constant
@@ -144,15 +151,14 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
       organisationId: ['', null]
     });
     this.userUploadInstructions = [
-      { instructions: this.resourceService.frmelmnts.instn.t0070 },
-      {
-        instructions: this.resourceService.frmelmnts.instn.t0071,
-        subinstructions: [
-          { instructions: this.resourceService.frmelmnts.instn.t0072 },
-          { instructions: this.resourceService.frmelmnts.instn.t0073 },
-          { instructions: this.resourceService.frmelmnts.instn.t0074 }
-        ]
-      }];
+      { instructions: this.resourceService.frmelmnts.instn.t0099 },
+      { instructions: this.resourceService.frmelmnts.instn.t0100 },
+      { instructions: this.resourceService.frmelmnts.instn.t0101 },
+      { instructions: this.resourceService.frmelmnts.instn.t0102 },
+      { instructions: this.resourceService.frmelmnts.instn.t0103 },
+      { instructions: this.resourceService.frmelmnts.instn.t0104 },
+      { instructions: this.resourceService.frmelmnts.instn.t0105 }
+      ];
     this.showLoader = false;
     this.setInteractEventData();
   }
@@ -201,7 +207,8 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
             this.showLoader = false;
            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
            this.resourceService.messages.fmsg.m0051;
-           this.error = errorMsg.replace('[','').replace(']','').split(',');
+           this.error = errorMsg.replace('[','').replace(']','');
+           this.errors = errorMsg.replace('[','').replace(']','').split(',');
             // //this.toasterService.error(errorMsg);
             
             this.modalName = 'error';
@@ -218,10 +225,15 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
     this.bulkUploadError = false;
     this.bulkUploadErrorMessage = '';
   }
+  copyToClipboard() {
+   (<HTMLInputElement>document.getElementById('copyErrorData')).select();
+    document.execCommand('copy');
+  }
   ngOnDestroy() {
+    console.log("Testing")
     document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll
     this.router.navigate(['/resources']);
-    this.modal.deny();
+    //this.modal.deny();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
