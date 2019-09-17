@@ -80,7 +80,8 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
  * error object
  */
 error: '';
-  
+file: any;
+
   /**
    * To call resource service which helps to use language constant
    */
@@ -179,7 +180,6 @@ error: '';
     this.bulkUploadErrorMessage = '';
     inputbtn.click();
   }
-  file:any;
   fileChanged(event) {
     this.file = event.target.files[0];
   }
@@ -207,8 +207,8 @@ error: '';
             this.showLoader = false;
             const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
             this.resourceService.messages.fmsg.m0051;
-            this.error = errorMsg.replace('[','').replace(']','').replace(/\,/g,',\n');
-            this.errors = errorMsg.replace('[','').replace(']','').split(',');
+            this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
+            this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
             this.modalName = 'error';
           });
     } else if (file && !(file.name.match(/.(csv)$/i))) {
@@ -224,9 +224,9 @@ error: '';
     this.bulkUploadErrorMessage = '';
   }
   copyToClipboard() {
-    let element = document.createElement('textarea');
+    const element = document.createElement('textarea');
     document.body.appendChild(element);
-    element.value =this.error;
+    element.value = this.error;
     element.select();
     document.execCommand('copy');
     setTimeout(() => {
