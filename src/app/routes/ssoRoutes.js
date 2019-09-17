@@ -329,7 +329,7 @@ module.exports = (app) => {
       });
       logErrorEvent(req, errType, error);
     } finally {
-      res.redirect(url + query)
+      res.redirect(url + query || errorUrl)
     }
   });
 
