@@ -26,6 +26,7 @@ interface ISelectedAttributes {
     selectedSchoolForReview?: string;
     resourceIdentifier?: string;
     hierarchyObj?: any;
+    textbookName?: any;
 }
 
 @Component({
@@ -39,7 +40,8 @@ export class CbseComponent implements OnInit, OnDestroy {
   @Input() programDetails: any;
   @Input() userProfile: any;
   formFieldOptions: Array<any>;
-  public showLoader: boolean;
+  public showLoader: boolean = false;
+  public showDashboard: boolean = false;
   public publishInProgress = false;
   public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
@@ -71,6 +73,7 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
     this.fetchFrameWorkDetails();
     this.selectedAttributes.lastOpenedUnit = 0;
+    
   }
 
   public selectedClassSubjectHandler(event) {
@@ -80,7 +83,8 @@ export class CbseComponent implements OnInit, OnDestroy {
   }
 
   public selectedTextbookHandler(event) {
-    this.selectedAttributes.textbook =  event;
+    this.selectedAttributes.textbook =  event.metaData.identifier;
+    this.selectedAttributes.textbookName = event.name;
     this.navigate('next');
   }
   public publishButtonStatusHandler(event) {
@@ -98,8 +102,9 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.navigate('next');
   }
 
-  handleRoleChange() {
+  handleRoleChange(component?:string) {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
+    this.showDashboard = (component === 'Dashboard');
   }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);

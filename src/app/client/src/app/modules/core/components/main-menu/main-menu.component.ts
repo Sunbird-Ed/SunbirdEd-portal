@@ -1,5 +1,5 @@
 import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { UserService, PermissionService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -17,7 +17,7 @@ declare var jQuery: any;
   templateUrl: './main-menu.component.html',
   styleUrls: ['./main-menu.component.scss']
 })
-export class MainMenuComponent implements OnInit {
+export class MainMenuComponent implements OnInit, AfterViewInit {
   /**
    * Workspace access roles
    */
@@ -61,7 +61,7 @@ export class MainMenuComponent implements OnInit {
   signInIntractEdata: IInteractEventEdata;
   slug: string;
   programId = (<HTMLInputElement>document.getElementById('cbse_programId'))
-  ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : undefined;
+    ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : undefined;
   /*
   * constructor
   */
@@ -90,10 +90,15 @@ export class MainMenuComponent implements OnInit {
           this.userProfile = user.userProfile;
         }
       });
+    setTimeout(() => {
+      let activeRoute = this.router.url.split('/')[3];
+      this.activeRoute(activeRoute);
+    }, 1000);
   }
+
   getProgramUrl() {
     const programId = (<HTMLInputElement>document.getElementById('cbse_programId'))
-        ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : '';
+      ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : '';
     return '/workspace/program/' + programId;
   }
   setInteractData() {
@@ -182,13 +187,14 @@ export class MainMenuComponent implements OnInit {
       this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
     });
   }
-  activeRoute(route){
-    if(route === 'workspace') {
-      document.getElementById(route).classList.add('active');
-      document.getElementById('curiosity').classList.remove('active');
-    }else{
+  activeRoute(route) {
+    if (route === 'curiosity') {
       document.getElementById(route).classList.add('active');
       document.getElementById('workspace').classList.remove('active');
+    }
+    else {
+      document.getElementById('workspace').classList.add('active');
+      document.getElementById('curiosity').classList.remove('active');
     }
   }
 
