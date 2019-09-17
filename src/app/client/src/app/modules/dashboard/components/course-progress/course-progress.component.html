@@ -204,15 +204,9 @@
                   </th>
                   <!-- Certificate Status pending need to be done -->
                   <th>
-                      <div  class="cursor-pointer" (click)="setOrder('enrolledOn')"
+                      <div  class="cursor-pointer"
                         appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'sortByEnrolledOn',type:'click',pageid:'course-progress-dashboard'}"  [telemetryInteractCdata]="telemetryCdata">
-                        Certificate Status
-                        <span class="sb-color-primary" [hidden]="reverse" style="float:right">
-                          <i class="sort down icon fs-1" ></i>
-                        </span>
-                        <span class="sb-color-primary" [hidden]="!reverse" style="float:right">
-                          <i class="sort up icon fs-1" ></i>
-                        </span>
+                        {{resourceService?.frmelmnts?.lbl?.dashboardcertificateStatus}}
                       </div>
                     </th>
                 </tr>
@@ -231,13 +225,20 @@
 
                   <td *ngIf="student.progress >= 100">{{resourceService?.frmelmnts?.lbl?.completed}}</td>
                   <td *ngIf="(student.progress < 100 && student.progress >= 0)">{{student.progress}}%</td>
+                 
                   <td *ngIf="student.progress ===null">-</td>
-                  <span *ngFor="let certificate of student.certificates">
-                  <td *ngIf="certificate.name === '100PercentCompletionCertificate'"> <span class="sb-label sb-label-table sb-label-success-0">Issued</span></td>
-                  </span>                
-                  <span *ngIf="!student.certificates">
-                    <td> N/A</td>
-                  </span>
+
+                  <!-- <span *ngFor="let certificate of student.certificates">
+                    <td *ngIf="certificate.name === '100PercentCompletionCertificate'">
+                       <span class="sb-label sb-label-table sb-label-success-0">Issued</span>
+                    </td>
+                  </span>     -->
+                  
+                  <td *ngFor="let certificate of student.certificates">
+                    <span *ngIf="certificate.name === '100PercentCompletionCertificate'" class="sb-label sb-label-table sb-label-success-0">Issued</span>
+                  </td>
+                  
+                    <td *ngIf="!student.certificates"> - </td>
                   <!-- certificate status needs to be done -->
                   <!-- <td data-label="Job"><span class="sb-label sb-label-table sb-label-success-0">Issued</span></td> -->
                 </tr>

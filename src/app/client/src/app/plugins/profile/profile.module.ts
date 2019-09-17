@@ -7,7 +7,6 @@ import { SlickModule } from 'ngx-slick';
 import { ProfileRoutingModule } from './profile-routing.module';
 import {
   ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent,
-  AccountRecoveryInfoComponent
 } from './components';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
@@ -32,8 +31,7 @@ import { AvatarModule } from 'ngx-avatar';
     AvatarModule,
     SharedFeatureModule
   ],
-  declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent,
-    AccountRecoveryInfoComponent],
+  declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent],
   providers: []
 })
 export class ProfileModule { }

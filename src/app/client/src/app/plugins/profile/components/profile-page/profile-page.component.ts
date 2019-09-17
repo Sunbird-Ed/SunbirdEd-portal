@@ -45,7 +45,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   editRecoveryIdInteractEdata: IInteractEventEdata;
   addRecoveryIdInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  showRecoveryId = false;
+
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,

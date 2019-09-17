@@ -8,7 +8,7 @@
   <label *ngIf="errorMessage" class="ui basic label text-center error d-inline-block line-height-1-3">{{errorMessage}}</label>
   <label *ngIf="infoMessage" class="text-center mb-10 d-inline-block line-height-1-3">{{infoMessage}}</label>
   <div class="field">
-    <input [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp" onkeypress="return (event.charCode !== 32)">
+    <input [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp">
   </div>
 </form>
 <div appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata" *ngIf="!disableResendButton" [ngClass]="{'grey': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" class="fs-1 text-center blue text mb-50 cursor-pointer"

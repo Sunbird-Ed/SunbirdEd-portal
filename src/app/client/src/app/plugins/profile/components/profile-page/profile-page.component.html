@@ -18,11 +18,11 @@
     <div class="fs-2-5 font-w-bold d-flex mb-15 text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
       <div class="computer only">
-        <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
-    </div>
-    <div class="mobile only name-info-mobile">
-        <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
-    </div>  
+          <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
+      </div>
+      <div class="mobile only name-info-mobile">
+          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
+      </div>
     </div>
     <div class="mb-10 d-flex mb-5 flex-jc-center">
       <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
@@ -290,5 +290,8 @@
   [contactType]="contactType"></app-update-contact-details>
 <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup" *ngIf="showEditUserDetailsPopup"
   [userProfile]="userProfile"></app-update-user-details>
+<<<<<<< HEAD
   <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
+=======
+>>>>>>> upstream/release-2.3.1
 <router-outlet></router-outlet>
