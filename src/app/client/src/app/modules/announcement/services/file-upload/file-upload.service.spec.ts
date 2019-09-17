@@ -2,8 +2,6 @@ import { TestBed, inject } from '@angular/core/testing';
 import { FileUploadService } from './file-upload.service';
 import { ConfigService, ToasterService } from '@sunbird/shared';
 
-var self;
-var units;
 
 describe('FileUploadService', () => {
   beforeEach(() => {
@@ -34,7 +32,6 @@ describe('FileUploadService', () => {
   it('should call initilizeFileUploader method ', inject([FileUploadService], (service: FileUploadService) => {
     spyOn(service, 'initilizeFileUploader').and.callThrough();
     expect(service.attachedFiles).toEqual([]);
-    expect(typeof self).toBeTruthy();
     expect(service.uiOptions).toBeUndefined();
     expect(service.getWindowObject.cancelUploadFile).toBeUndefined();
     expect(service.uploader).toBeUndefined();
@@ -43,7 +40,6 @@ describe('FileUploadService', () => {
   it('should call formatFileSize method ', inject([FileUploadService], (service: FileUploadService) => {
     spyOn(service, 'formatFileSize').and.callThrough();
     expect(service).toBeTruthy();
-    expect(typeof units).toBe('undefined');
   }));
 
   it('should call showErrorMessage method ', inject([FileUploadService], (service: FileUploadService, toaster: ToasterService) => {
