@@ -142,7 +142,7 @@ error: '';
       if (data.redirectUrl) {
         this.redirectUrl = data.redirectUrl;
       } else {
-        this.redirectUrl = '/home';
+        this.redirectUrl = '/resources';
       }
     });
     this.uploadUserForm = this.sbFormBuilder.group({
@@ -205,12 +205,10 @@ error: '';
           },
           err => {
             this.showLoader = false;
-           const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
-           this.resourceService.messages.fmsg.m0051;
-           this.error = errorMsg.replace('[','').replace(']','');
-           this.errors = errorMsg.replace('[','').replace(']','').split(',');
-            // //this.toasterService.error(errorMsg);
-            
+            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+            this.resourceService.messages.fmsg.m0051;
+            this.error = errorMsg.replace('[','').replace(']','').replace(/\,/g,',\n');
+            this.errors = errorMsg.replace('[','').replace(']','').split(',');
             this.modalName = 'error';
           });
     } else if (file && !(file.name.match(/.(csv)$/i))) {
@@ -226,8 +224,14 @@ error: '';
     this.bulkUploadErrorMessage = '';
   }
   copyToClipboard() {
-   (<HTMLInputElement>document.getElementById('copyErrorData')).select();
+    let element = document.createElement('textarea');
+    document.body.appendChild(element);
+    element.value =this.error;
+    element.select();
     document.execCommand('copy');
+    setTimeout(() => {
+      document.body.removeChild(element);
+    }, 100);
   }
   ngOnDestroy() {
     console.log("Testing")

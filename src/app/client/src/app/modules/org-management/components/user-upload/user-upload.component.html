@@ -2,22 +2,22 @@
 class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal
 *ngIf="modalName === 'upload'">
 <div class="sb-modal-header">
-  Upload Users
+  {{resourceService?.frmelmnts?.instn?.t0016}}
 </div>
 <div class="sb-modal-content">
   <div class="m-0">
-    <span class="m-0 mr-16">Please upload the CSV file in the required format</span>
+    <span class="m-0 mr-16">{{resourceService?.frmelmnts?.lbl?.uploadmsg}}</span>
     <!-- <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Download Sample
       CSV</button> -->
-      <a href="/assets/SampleUserCsv.csv">Sample upload csv file</a>
+      <a href="/assets/SampleUserCsv.csv">{{resourceService?.frmelmnts?.btn?.smplcsv}}</a>
   </div>
 
   <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
-    Upload CSV file
+    {{resourceService?.frmelmnts?.lbl?.uploadcsvfile}}
     <input type="file" #inputbtn class="sb-btn-upload" name="file" accept=".csv" (change)="fileChanged($event)"/>
   </div>
   <div *ngIf="file">
-    <span> Uploaded File : </span>
+    <span> {{resourceService?.frmelmnts?.lbl?.upldfile }} :</span>
     <label>{{file.name}}</label>
   </div>
   <div *ngIf="resourceService.frmelmnts && !processId && !showLoader" class="ui info message">
@@ -45,13 +45,10 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
 
 
 
-
-
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #errormodal
-*ngIf="modalName === 'error'" >
+<sui-modal *ngIf="modalName === 'error'" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+     [size]="'normal'" class="sb-modal sb-error" appBodyScroll  (dismissed)="redirect();modal.deny();" #errormodal>
 <div class="sb-modal-header">
-  Error Upload Users
+  {{resourceService?.frmelmnts?.lbl?.errorinupload}}
 </div>
 <div class="sb-modal-content">
   <div class="ui error message">
@@ -61,7 +58,9 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     <div *ngFor = "let er of errors">
       <span> {{er}}</span>
     </div>
-    <textarea class="hide" *ngIf= "error" id="copyErrorData">{{error}}</textarea>
+  </div>
+  <div>
+    <span> {{resourceService?.frmelmnts?.lbl?.errorMsg }}</span>
   </div>
 </div>
 <div class="sb-modal-actions">
