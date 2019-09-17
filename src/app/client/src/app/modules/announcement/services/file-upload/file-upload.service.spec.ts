@@ -22,7 +22,7 @@ describe('FileUploadService', () => {
 
   it('should call getDefaultOption method ', inject([FileUploadService], (service: FileUploadService) => {
     spyOn(service, 'getDefaultOption').and.callThrough();
-    let result = service.getDefaultOption();
+    const result = service.getDefaultOption();
     expect(result.request).toBeTruthy();
     expect(result.failedUploadTextDisplay).toBeTruthy();
     expect(result.fileValidation).toBeTruthy();
