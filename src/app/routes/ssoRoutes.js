@@ -23,7 +23,7 @@ module.exports = (app) => {
     let jwtPayload, userDetails, redirectUrl, errType;
     try {
       errType = 'VERIFY_SIGNATURE';
-      //await verifySignature(req.query.token);
+      await verifySignature(req.query.token);
       jwtPayload = jwt.decode(req.query.token);
       if (!jwtPayload.state_id || !jwtPayload.school_id || !jwtPayload.name || !jwtPayload.sub) {
         errType = 'PAYLOAD_DATA_MISSING';
@@ -315,7 +315,7 @@ module.exports = (app) => {
       req.session.migrateAccountInfo.encryptedData = encrypt(JSON.stringify(dataToEncrypt));
       const payload = JSON.stringify(req.session.migrateAccountInfo.encryptedData);
       url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
-      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&identifierValue=${req.query.identifierValue}&redirect_uri=http://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
+      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&identifierValue=${req.query.identifierValue}&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
       console.log('url for migration', url + query);
     } catch (error) {
       response = {error: getErrorMessage(error, errType)};
@@ -351,7 +351,7 @@ module.exports = (app) => {
         nonStateUserToken = _.get(req, 'kauth.grant.access_token.token');
         req.session.nonStateUserToken = nonStateUserToken;
       } else {
-        nonStateUserToken = await generateAuthToken(req.query.code, 'http://localhost:3000/migrate/account/login/callback').catch(err => {
+        nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
           console.log('error in verifyAuthToken', err.error);
           console.log('error details', err.statusCode, err.message)
         });
@@ -377,7 +377,7 @@ module.exports = (app) => {
       stateUserData = parseJson(decryptedData);
       errType = 'VERIFY_SIGNATURE';
       console.log('validating state token', decryptedData);
-      //await verifySignature(stateUserData.stateToken);
+      await verifySignature(stateUserData.stateToken);
       stateJwtPayload = jwt.decode(stateUserData.stateToken);
       verifyToken(stateJwtPayload);
       const nonStateUserData = jwt.decode(req.session.nonStateUserToken);
