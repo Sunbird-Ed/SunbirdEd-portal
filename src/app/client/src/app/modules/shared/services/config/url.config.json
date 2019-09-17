@@ -112,9 +112,10 @@
       "USER_SEARCH": "user/v1/search",
       "ORG_SEARCH": "org/v1/search",
       "BULK": {
-        "USERS_UPLOAD": "user/v1/upload",
+        "USERS_UPLOAD": "user/v2/upload",
         "ORGANIZATIONS_UPLOAD": "org/v1/upload",
-        "STATUS": "data/v1/upload/status"
+        "STATUS": "data/v1/upload/status",
+        "USER_UPLOAD_SHADOW": "user/v2/bulk/upload"
       },
       "DELETE_USER": "user/v1/block",
       "UPDATE_USER_ORG_ROLES": "user/v1/role/assign"
