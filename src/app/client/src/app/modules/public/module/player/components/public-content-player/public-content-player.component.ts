@@ -55,6 +55,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   telemetryCdata: Array<{}>;
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
+  public downloadButtonInteractEdata: IInteractEventEdata;
   public objectRollup = {};
   currentRoute: string;
   isOffline: boolean = environment.isOffline;
@@ -107,6 +108,11 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       id: 'close-player',
       type: 'click',
       pageid: 'public'
+    };
+    this.downloadButtonInteractEdata = {
+      id: 'download-content',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
   /**

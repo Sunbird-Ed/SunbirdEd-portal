@@ -76,6 +76,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerTelemetryInteractObject: IInteractEventObject;
   public telemetryCourseEndEvent: IEndEventInput;
   public telemetryCourseStart: IStartEventInput;
+  public downloadPlayerInteractEdata: IInteractEventEdata;
+  public downloadCollectionInteractEdata: IInteractEventEdata;
   /**
    * Page Load Time, used this data in impression telemetry
    */
@@ -149,6 +151,17 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       ver: '1.0'
     };
     this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
+
+    this.downloadPlayerInteractEdata = {
+      id: 'download-content',
+      type: 'click',
+      pageid: this.route.snapshot.data.telemetry.pageid
+    };
+    this.downloadCollectionInteractEdata = {
+      id: 'download-collection',
+      type: 'click',
+      pageid: this.route.snapshot.data.telemetry.pageid
+    };
   }
 
   ngAfterViewInit () {

@@ -13,6 +13,10 @@
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
               <button (click)="startDownload(playerContent)"
+              appTelemetryInteract
+              [telemetryInteractCdata]="telemetryCdata"
+              [telemetryInteractObject]="playerTelemetryInteractObject"
+              [telemetryInteractEdata]="downloadPlayerInteractEdata"
                 *ngIf="checkStatus(playerContent,'DOWNLOAD') "
                 class="sb-btn sb-btn-outline-primary sb-btn-normal ">
                 <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
@@ -89,6 +93,10 @@
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
               <button (click)="startDownload(collectionData)"
+                appTelemetryInteract
+                [telemetryInteractCdata]="telemetryCdata"
+                [telemetryInteractObject]="playerTelemetryInteractObject"
+                [telemetryInteractEdata]="downloadCollectionInteractEdata"
                 *ngIf="checkStatus(collectionData, 'DOWNLOAD')"
                 class="sb-btn sb-btn-outline-primary sb-btn-normal">
                 <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>

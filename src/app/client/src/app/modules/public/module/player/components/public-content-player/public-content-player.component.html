@@ -14,10 +14,16 @@
             <!--/Title-->
             <div class="ml-auto d-flex flex-ai-center">
               <div *ngIf="isOffline" class="mr-16">
-                <button id="download_{{contentData.identifier}}" (click)="startDownload(contentData)"
+                <button id="download_{{contentData.identifier}}" 
+                  (click)="startDownload(contentData)" 
+                  appTelemetryInteract
+                  [telemetryInteractObject]="telemetryInteractObject" 
+                  [telemetryInteractEdata]="downloadButtonInteractEdata"
                   *ngIf="checkStatus('DOWNLOAD')"
                   class="sb-btn sb-btn-outline-primary sb-btn-normal">
-                  <i class="download icon"></i>{{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
+                  <i class="download icon"></i>
+                  {{resourceService.frmelmnts?.btn?.addToLibrary}}
+                </button>
                 <button
                   *ngIf="checkStatus('DOWNLOADING')"
                   class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
