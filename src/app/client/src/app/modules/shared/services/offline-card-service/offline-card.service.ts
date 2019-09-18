@@ -8,11 +8,11 @@ export class OfflineCardService {
 
   constructor() { }
 
-  checkYoutubeContent(data) {
-    let isYoutube;
-    try { isYoutube = JSON.parse(data.mimeTypesCount); } catch (error) { isYoutube = undefined; }
-    if (_.includes(['video/youtube', 'video/x-youtube'], data.metaData.mimeType)
-      || _.has(isYoutube, 'video/youtube') || _.has(isYoutube, 'video/x-youtube')) {
+  isYoutubeContent(content) {
+    let mimeTypesCountObj;
+    try { mimeTypesCountObj = JSON.parse(content.mimeTypesCount); } catch (error) { mimeTypesCountObj = undefined; }
+    if (_.includes(['video/youtube', 'video/x-youtube'], content.metaData.mimeType)
+      || _.has(mimeTypesCountObj, 'video/youtube') || _.has(mimeTypesCountObj, 'video/x-youtube')) {
       return true;
     } else {
       return false;

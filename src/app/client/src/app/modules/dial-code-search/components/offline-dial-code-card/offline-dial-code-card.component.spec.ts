@@ -60,7 +60,7 @@ describe('OfflineDialCodeCardComponent', () => {
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'download');
     const offlineCardService = TestBed.get(OfflineCardService);
-    spyOn(offlineCardService, 'checkYoutubeContent').and.returnValue(true);
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(true);
     component.onAction(component.data, 'download');
     expect(component.showModal).toBe(true);
     expect(Response.emitData.data.downloadStatus).toBe('DOWNLOADING');

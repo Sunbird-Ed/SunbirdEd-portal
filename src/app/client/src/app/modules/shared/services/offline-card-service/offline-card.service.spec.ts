@@ -12,12 +12,12 @@ describe('OfflineCardService', () => {
 
   it('If data has youtube content', () => {
     const service: OfflineCardService = TestBed.get(OfflineCardService);
-    const response = service.checkYoutubeContent(Response.cardData);
+    const response = service.isYoutubeContent(Response.cardData);
     expect(response).toBe(true);
   });
   it('If data does not have youtube content', () => {
     const service: OfflineCardService = TestBed.get(OfflineCardService);
-    const response = service.checkYoutubeContent(Response.cardDataWithoutYoutubeContent);
+    const response = service.isYoutubeContent(Response.cardDataWithoutYoutubeContent);
     expect(response).toBe(false);
   });
 });
