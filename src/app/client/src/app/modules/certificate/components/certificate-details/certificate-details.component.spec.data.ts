@@ -311,7 +311,7 @@ export const validateCertMockResponse = {
                 'pkgVersion': 1,
                 'versionKey': '1566452422424',
                 'idealScreenDensity': 'hdpi',
-                's3Key': 'ecar_files/do_112832377710125056110/test-certificate-course-showcase_1566452422841_do_112832377710125056110_1.0_spine.ecar',
+                's3Key': 'ecar_files/do_112832377710125056110/do_112832377710125056110_1.0_spine.ecar',
                 'depth': 0,
                 'framework': 'tpd',
                 'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
@@ -325,7 +325,7 @@ export const validateCertMockResponse = {
                     'W1F6Z2': 0
                 },
                 'c_sunbird_dev_open_batch_count': 0,
-                'certVideoUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/assets/do_112831862871203840114/small.mp4',
+                'certVideoUrl': 'https://sunbirddev.blob.core.windows.net/do_112831862871203840114/small.mp4',
                 'certTemplate': [
                     {
                         'name': '100PercentCompletionCertificate',

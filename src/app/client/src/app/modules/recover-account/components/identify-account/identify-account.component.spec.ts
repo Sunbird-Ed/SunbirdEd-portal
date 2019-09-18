@@ -9,7 +9,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { identifyAcountMockResponse } from './identify-account.component.spec.data'
+import { identifyAcountMockResponse } from './identify-account.component.spec.data';
 describe('IdentifyAccountComponent', () => {
   let component: IdentifyAccountComponent;
   let fixture: ComponentFixture<IdentifyAccountComponent>;
