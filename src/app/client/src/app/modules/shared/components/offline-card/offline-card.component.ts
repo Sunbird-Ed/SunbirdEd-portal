@@ -1,5 +1,4 @@
-import { UtilService } from '../../services';
-import { ResourceService, OfflineCardService } from '../../services/index';
+import { ResourceService, UtilService, OfflineCardService } from '../../services';
 import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { ICard } from '../../interfaces';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
