@@ -11,8 +11,11 @@ export class SsoMergeConfirmationComponent implements OnInit {
   @Input() userDetails: any;
   @Input() identifierType: any;
   @Input() identifierValue: any;
+  instance: string;
 
   constructor(public resourceService: ResourceService) {
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
 
   ngOnInit() {
