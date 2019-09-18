@@ -7,9 +7,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-
+import { identifyAcountMockResponse } from './identify-account.component.spec.data';
 describe('IdentifyAccountComponent', () => {
   let component: IdentifyAccountComponent;
   let fixture: ComponentFixture<IdentifyAccountComponent>;
@@ -36,6 +36,15 @@ describe('IdentifyAccountComponent', () => {
     snapshot = {
       data: {
         telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
+      },
+      queryParams: {
+        client_id: 'test_123',
+        error_callback: 'https://dev.sunbirded.org/profile',
+        redirect_uri: '',
+        scope: '',
+        state: '',
+        response_type: '',
+        version: ''
       }
     };
     queryParamsMock = { contentId: 'do_112270494168555520130' };
@@ -66,4 +75,40 @@ describe('IdentifyAccountComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should move forward to the next step', () => {
+    const recoverAccountService = TestBed.get(RecoverAccountService);
+    spyOn(recoverAccountService, 'fuzzyUserSearch').and.returnValue(of(identifyAcountMockResponse.fuzzySuccessResponseWithCount));
+    spyOn(component, 'navigateToNextStep').and.callThrough();
+    component.handleNext();
+    expect(component.navigateToNextStep).toHaveBeenCalledWith(identifyAcountMockResponse.fuzzySuccessResponseWithCount);
+  });
+
+  it('should not move forward to the next step', () => {
+    const recoverAccountService = TestBed.get(RecoverAccountService);
+    spyOn(recoverAccountService, 'fuzzyUserSearch').and.returnValue(of(identifyAcountMockResponse.fuzzySuccessResponseWithoutCount));
+    component.handleNext();
+    expect(component.identiferStatus).toBe('NOT_MATCHED');
+    expect(component.nameNotExist).toBe(true);
+  });
+
+  it('should throw error if form fields are partially matched', () => {
+    const recoverAccountService = TestBed.get(RecoverAccountService);
+    spyOn(recoverAccountService, 'fuzzyUserSearch').and.callFake(() =>
+      throwError(identifyAcountMockResponse.fuzzySearchErrorResponsePartial));
+    spyOn(component, 'handleError').and.callThrough();
+    component.handleNext();
+    expect(component.identiferStatus).toBe('MATCHED');
+    expect(component.handleError).toHaveBeenCalledWith(identifyAcountMockResponse.fuzzySearchErrorResponsePartial);
+  });
+
+  it('should throw error if form fields are not matched', () => {
+    const recoverAccountService = TestBed.get(RecoverAccountService);
+    spyOn(recoverAccountService, 'fuzzyUserSearch').and.callFake(() =>
+      throwError(identifyAcountMockResponse.fuzzySearchErrorResponse));
+    component.handleNext();
+    expect(component.identiferStatus).toBe('NOT_MATCHED');
+    expect(component.nameNotExist).toBe(true);
+  });
+
 });
