@@ -6,7 +6,7 @@ import { SearchService, SearchParam, PlayerService, CoursesService, UserService 
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
+import { takeUntil, map, catchError, mergeMap, first } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
@@ -55,6 +55,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   instance: string;
   redirectCollectionUrl: string;
   redirectContentUrl: string;
+  showDownloadLoader = false;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
@@ -80,9 +81,14 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.handleMobilePopupBanner();
 
     if (this.isOffline) {
-      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+      this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
       });
+      this.downloadManagerService.downloadEvent.pipe(first(),
+      takeUntil(this.unsubscribe$)).subscribe(() => {
+        this.showDownloadLoader = false;
+      });
+
     }
     this.instance = _.upperCase(this.resourceService.instance);
 
@@ -183,6 +189,8 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     // For offline environment content will only play when event.action is open
     if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
+      this.showDownloadLoader = true;
+      this.contentName = event.data.name;
       return false;
     } else if (event.action === 'export' && this.isOffline) {
       this.showExportLoader = true;
@@ -318,10 +326,10 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
     }, error => {
+      this.showDownloadLoader = false;
       this.downloadManagerService.downloadContentId = '';
       _.each(this.itemsToDisplay, (contents) => {
-        contents['addedToLibrary'] = false;
-        contents['showAddingToLibraryButton'] = false;
+        contents['downloadStatus'] = 'FAILED';
       });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
@@ -344,22 +352,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateCardData(downloadListdata) {
     _.each(this.itemsToDisplay, (contents) => {
-
-      // If download is completed card should show added to library
-      _.find(downloadListdata.result.response.downloads.completed, (completed) => {
-        if (contents.metaData.identifier === completed.contentId) {
-          contents['addedToLibrary'] = true;
-          contents['showAddingToLibraryButton'] = false;
-        }
-      });
-
-      // If download failed, card should show again add to library
-      _.find(downloadListdata.result.response.downloads.failed, (failed) => {
-        if (contents.metaData.identifier === failed.contentId) {
-          contents['addedToLibrary'] = false;
-          contents['showAddingToLibraryButton'] = false;
-        }
-      });
+    this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
   }
 }

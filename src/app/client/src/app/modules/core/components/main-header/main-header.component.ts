@@ -32,6 +32,7 @@ export class MainHeaderComponent implements OnInit {
   adminDashboard: Array<string>;
   announcementRole: Array<string>;
   myActivityRole: Array<string>;
+  orgAdminRole: Array<string>;
   orgSetupRole: Array<string>;
   avtarMobileStyle = {
     backgroundColor: 'transparent',
@@ -83,6 +84,7 @@ export class MainHeaderComponent implements OnInit {
       this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
       this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
       this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
+      this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
   }
   ngOnInit() {
     if (this.userService.loggedIn) {

@@ -1,3 +1,4 @@
+import { UtilService } from '../../services';
 import { ResourceService, OfflineCardService } from '../../services/index';
 import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { ICard } from '../../interfaces';
@@ -25,9 +26,8 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   telemetryCdata: Array<{}> = [];
   hover: Boolean;
   route: string;
-  checkOfflineRoutes: string;
+  currentRoute: string;
   contentId: string;
-  showAddingToLibraryButton: boolean;
   isConnected = navigator.onLine;
   status = this.isConnected ? 'ONLINE' : 'OFFLINE';
   onlineContent = false;
@@ -43,17 +43,13 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   }
   constructor(public resourceService: ResourceService, private router: Router,
     private cdr: ChangeDetectorRef, private connectionService: ConnectionService,
-    public offlineCardService: OfflineCardService) {
+    public offlineCardService: OfflineCardService, public utilService: UtilService) {
     this.resourceService = resourceService;
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
     this.route = this.router.url;
-    if (_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'browse';
-    } else if (!_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'library';
-    }
+    this.currentRoute = _.includes(this.route, 'browse') ? 'browse' : 'library';
   }
 
   ngOnInit() {
@@ -71,15 +67,18 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
-      data.showAddingToLibraryButton = true;
       this.showModal = this.offlineCardService.checkYoutubeContent(data);
-      if (this.showModal === false)  { this.clickEvent.emit({ 'action': action, 'data': data }); }
+      if (this.showModal === false)  {
+        data['downloadStatus'] = 'DOWNLOADING';
+        this.clickEvent.emit({ 'action': action, 'data': data });
+      }
     } else {
       this.clickEvent.emit({ 'action': action, 'data': data });
     }
   }
 
   download(data, action) {
+    data['downloadStatus'] = 'DOWNLOADING';
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
@@ -90,6 +89,10 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  checkStatus(status) {
+    return this.utilService.getPlayerDownloadStatus(status, this.data, this.currentRoute);
   }
 }
 

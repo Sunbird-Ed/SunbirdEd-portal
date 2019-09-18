@@ -3,7 +3,7 @@
     "userReadParam": {
       "fields": "organisations,roles,locations"
     },
-    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators,streamingUrl,originData,copyright",
+    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators,streamingUrl,originData,copyright,questions,totalQuestions,totalScore",
     "enrolledCourses": {
       "fields": "contentType,topic,name,channel",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
@@ -112,9 +112,10 @@
       "USER_SEARCH": "user/v1/search",
       "ORG_SEARCH": "org/v1/search",
       "BULK": {
-        "USERS_UPLOAD": "user/v1/upload",
+        "USERS_UPLOAD": "user/v2/upload",
         "ORGANIZATIONS_UPLOAD": "org/v1/upload",
-        "STATUS": "data/v1/upload/status"
+        "STATUS": "data/v1/upload/status",
+        "USER_UPLOAD_SHADOW": "user/v2/bulk/upload"
       },
       "DELETE_USER": "user/v1/block",
       "UPDATE_USER_ORG_ROLES": "user/v1/role/assign"

@@ -2,9 +2,9 @@
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
       <div class="mb-15 d-flex flex-jc-center relative avatar-container" >
-       <img *ngIf="userProfile.isStateValidated" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
+       <img *ngIf="userProfile.stateValidated" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
        suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
-       <ngx-avatar [ngClass]="{verified: userProfile.isStateValidated}" class="my-avatar" [style]="{
+       <ngx-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar" [style]="{
          backgroundColor: '#ffffff',
          border: '1px solid #fff',
          boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',

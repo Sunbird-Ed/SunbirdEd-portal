@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { ResourceService, ICard, OfflineCardService } from '@sunbird/shared';
+import { ResourceService, ICard, UtilService, OfflineCardService } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -21,9 +21,8 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   hover: Boolean;
   isConnected: Boolean = navigator.onLine;
   route: string;
-  checkOfflineRoutes: string;
+  currentRoute: string;
   contentId: string;
-  showAddingToLibraryButton: boolean;
   showModal = false;
 
   @HostListener('mouseenter') onMouseEnter() {
@@ -34,7 +33,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
-    private cdr: ChangeDetectorRef, public offlineCardService: OfflineCardService) {
+    private cdr: ChangeDetectorRef, public utilService: UtilService, public offlineCardService: OfflineCardService) {
     this.resourceService = resourceService;
   }
 
@@ -43,31 +42,32 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
     this.route = this.router.url;
-    if (_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'browse';
-    } else if (!_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'library';
-    }
+    this.currentRoute = _.includes(this.route, 'browse') ? 'browse' : 'library';
   }
 
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
-      data.showAddingToLibraryButton = true;
       this.showModal = this.offlineCardService.checkYoutubeContent(data);
-      if (this.showModal === false)  { this.clickEvent.emit({ 'action': action, 'data': data }); }
+      if (this.showModal === false)  {
+        data['downloadStatus'] = 'DOWNLOADING';
+        this.clickEvent.emit({ 'action': action, 'data': data });
+      }
     } else {
       this.clickEvent.emit({ 'action': action, 'data': data });
     }
   }
 
   download(data, action) {
+    data['downloadStatus'] = 'DOWNLOADING';
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
   ngOnChanges () {
     this.cdr.detectChanges();
   }
+
+  checkStatus(status) {
+    return this.utilService.getPlayerDownloadStatus(status, this.data, this.currentRoute);
+  }
 }
-
-

@@ -21,6 +21,10 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
   /**
+  *Element Ref  for copyLinkButton;
+  */
+ @ViewChild('copyErrorData') copyErrorButton: ElementRef;
+  /**
 * reference for ActivatedRoute
 */
   public activatedRoute: ActivatedRoute;
@@ -56,6 +60,10 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
 * To show/hide loader
 */
   showLoader: boolean;
+   /**
+   * To show / hide modal
+   */
+  modalName = 'upload';
   /**
    * Upload org form name
    */
@@ -64,6 +72,16 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
  * Contains reference of FormBuilder
  */
   sbFormBuilder: FormBuilder;
+   /**
+ * error object
+ */
+  errors: [];
+  /**
+ * error object
+ */
+error: '';
+file: any;
+
   /**
    * To call resource service which helps to use language constant
    */
@@ -125,7 +143,7 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
       if (data.redirectUrl) {
         this.redirectUrl = data.redirectUrl;
       } else {
-        this.redirectUrl = '/home';
+        this.redirectUrl = '/resources';
       }
     });
     this.uploadUserForm = this.sbFormBuilder.group({
@@ -134,15 +152,14 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
       organisationId: ['', null]
     });
     this.userUploadInstructions = [
-      { instructions: this.resourceService.frmelmnts.instn.t0070 },
-      {
-        instructions: this.resourceService.frmelmnts.instn.t0071,
-        subinstructions: [
-          { instructions: this.resourceService.frmelmnts.instn.t0072 },
-          { instructions: this.resourceService.frmelmnts.instn.t0073 },
-          { instructions: this.resourceService.frmelmnts.instn.t0074 }
-        ]
-      }];
+      { instructions: this.resourceService.frmelmnts.instn.t0099 },
+      { instructions: this.resourceService.frmelmnts.instn.t0100 },
+      { instructions: this.resourceService.frmelmnts.instn.t0101 },
+      { instructions: this.resourceService.frmelmnts.instn.t0102 },
+      { instructions: this.resourceService.frmelmnts.instn.t0103 },
+      { instructions: this.resourceService.frmelmnts.instn.t0104 },
+      { instructions: this.resourceService.frmelmnts.instn.t0105 }
+      ];
     this.showLoader = false;
     this.setInteractEventData();
   }
@@ -159,29 +176,25 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
   * This method helps to call uploadOrg method to upload a csv file
   */
   openImageBrowser(inputbtn) {
-    if ((this.uploadUserForm.value.provider && this.uploadUserForm.value.externalId) || this.uploadUserForm.value.organisationId) {
-      this.bulkUploadError = false;
-      this.bulkUploadErrorMessage = '';
-      inputbtn.click();
-    } else {
-      this.bulkUploadError = true;
-      this.bulkUploadErrorMessage = this.resourceService.messages.emsg.m0003;
-    }
+    this.bulkUploadError = false;
+    this.bulkUploadErrorMessage = '';
+    inputbtn.click();
+  }
+  fileChanged(event) {
+    this.file = event.target.files[0];
   }
   /**
   * This method helps to upload a csv file and return process id
   */
-  uploadUsersCSV(file) {
+  uploadUsersCSV() {
+    const file = this.file;
     const data = this.uploadUserForm.value;
-    if (file[0] && file[0].name.match(/.(csv)$/i)) {
+    if (file && file.name.match(/.(csv)$/i)) {
       this.showLoader = true;
       const formData = new FormData();
-      formData.append('user', file[0]);
-      formData.append('orgProvider', data.provider);
-      formData.append('orgExternalId', data.externalId);
-      formData.append('organisationId', data.organisationId);
+      formData.append('user', file);
       const fd = formData;
-      this.fileName = file[0].name;
+      this.fileName = file.name;
       this.orgManagementService.bulkUserUpload(fd).pipe(
         takeUntil(this.unsubscribe$))
         .subscribe(
@@ -193,10 +206,12 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
           err => {
             this.showLoader = false;
             const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
-              this.resourceService.messages.fmsg.m0051;
-            this.toasterService.error(errorMsg);
+            this.resourceService.messages.fmsg.m0051;
+            this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
+            this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
+            this.modalName = 'error';
           });
-    } else if (file[0] && !(file[0].name.match(/.(csv)$/i))) {
+    } else if (file && !(file.name.match(/.(csv)$/i))) {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);
     }
@@ -208,27 +223,23 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
     this.bulkUploadError = false;
     this.bulkUploadErrorMessage = '';
   }
+  copyToClipboard() {
+    const element = document.createElement('textarea');
+    document.body.appendChild(element);
+    element.value = this.error;
+    element.select();
+    document.execCommand('copy');
+    setTimeout(() => {
+      document.body.removeChild(element);
+    }, 100);
+  }
   ngOnDestroy() {
     document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll
-    this.modal.deny();
+    this.router.navigate(['/resources']);
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  ngAfterViewInit () {
-    setTimeout(() => {
-      this.telemetryImpression = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: 'profile-bulk-upload-user-upload',
-          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-          uri: this.router.url,
-          duration: this.navigationhelperService.getPageLoadTime()
-        }
-      };
-    });
+  ngAfterViewInit() {
   }
   setInteractEventData() {
     this.userUploadInteractEdata = {

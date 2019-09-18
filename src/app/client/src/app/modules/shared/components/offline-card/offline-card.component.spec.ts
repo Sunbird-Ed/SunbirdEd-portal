@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
+import { ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -23,13 +23,13 @@ describe('CardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [ OfflineCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, OfflineCardService,
+      declarations: [OfflineCardComponent, CdnprefixPipe],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService, OfflineCardService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -59,7 +59,7 @@ describe('CardComponent', () => {
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'export');
     expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
-    expect(component.showAddingToLibraryButton).toBeUndefined();
+    expect(component.data.downloadStatus).toBeUndefined();
   });
 
   it('should emit change addingto librarybutton to true if the action is download in onAction ', () => {
@@ -71,12 +71,11 @@ describe('CardComponent', () => {
     spyOn(offlineCardService, 'checkYoutubeContent').and.returnValue(true);
     component.onAction(component.data, 'download');
     expect(component.showModal).toBe(true);
-    expect(Response.emitData.data.showAddingToLibraryButton).toBeTruthy();
+    expect(Response.emitData.data.downloadStatus).toBe('DOWNLOADING');
   });
 
   it('initially offlineRoute should be library', () => {
-    expect(component.checkOfflineRoutes).toBe('library');
+    expect(component.currentRoute).toBe('library');
   });
 
 });
-

@@ -17,6 +17,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   public submitPhoneInteractEdata;
   public tenantInfo: any = {};
   public showOtpComp = false;
+  public showMergeConfirmation = false;
   public userBlocked = false;
   public userExist = false;
   public disableSubmitBtn = true;
@@ -149,17 +150,19 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       .join('&');
   }
   public handleOtpValidationSuccess() {
-    let query: any = {
+    const query: any = {
       type: this.contactForm.type,
       value: this.contactForm.value
     };
     if (!_.isEmpty(this.userDetails)) {
-      query = {
-        userId: this.userDetails.id
-      };
+      if (this.userDetails.id) {
+        this.showOtpComp = false;
+        this.showMergeConfirmation = true;
+      }
+    } else {
+      window.location.href = `/v1/sso/contact/verified` +
+        this.getQueryParams({...this.activatedRoute.snapshot.queryParams, ...query});
     }
-    window.location.href = `/v1/sso/contact/verified` +
-    this.getQueryParams({ ...this.activatedRoute.snapshot.queryParams, ...query});
   }
   private setTelemetryData() {
     this.submitPhoneInteractEdata = {

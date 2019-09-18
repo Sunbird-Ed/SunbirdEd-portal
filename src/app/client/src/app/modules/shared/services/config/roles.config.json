@@ -4,7 +4,8 @@
         "adminDashboard" : ["ORG_ADMIN","SYSTEM_ADMINISTRATION","REPORT_VIEWER"],
         "announcementRole" : ["ANNOUNCEMENT_SENDER"],
         "myActivityRole" : ["CONTENT_CREATOR"],
-        "orgSetupRole" : ["SYSTEM_ADMINISTRATION"]
+        "orgSetupRole" : ["SYSTEM_ADMINISTRATION"],
+        "orgAdminRole" : ["ORG_ADMIN","SYSTEM_ADMINISTRATION"]
     },
 
     "workSpaceRole":{
