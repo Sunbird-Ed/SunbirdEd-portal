@@ -88,7 +88,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         self.fetchPageData();
       });
 
-      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+      this.downloadManagerService.downloadListEvent.pipe(
+        takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
       });
 
@@ -287,8 +288,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showDownloadLoader = false;
       _.each(this.pageSections, (pageSection) => {
         _.each(pageSection.contents, (pageData) => {
-          pageData['addedToLibrary'] = false;
-          pageData['showAddingToLibraryButton'] = false;
+          pageData['downloadStatus'] = 'FAILED';
         });
       });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
@@ -313,22 +313,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   updateCardData(downloadListdata) {
     _.each(this.pageSections, (pageSection) => {
       _.each(pageSection.contents, (pageData) => {
-
-        // If download is completed card should show added to library
-        _.find(downloadListdata.result.response.downloads.completed, (completed) => {
-          if (pageData.metaData.identifier === completed.contentId) {
-            pageData['addedToLibrary'] = true;
-            pageData['showAddingToLibraryButton'] = false;
-          }
-        });
-
-        // If download failed, card should show again add to library
-        _.find(downloadListdata.result.response.downloads.failed, (failed) => {
-          if (pageData.metaData.identifier === failed.contentId) {
-            pageData['addedToLibrary'] = false;
-            pageData['showAddingToLibraryButton'] = false;
-          }
-        });
+        this.publicPlayerService.updateDownloadStatus(downloadListdata, pageData);
       });
     });
   }

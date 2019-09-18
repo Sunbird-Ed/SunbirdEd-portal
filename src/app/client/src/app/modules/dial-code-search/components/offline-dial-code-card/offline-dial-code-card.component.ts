@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { ResourceService, ICard } from '@sunbird/shared';
+import { ResourceService, ICard, UtilService } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -21,9 +21,8 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   hover: Boolean;
   isConnected: Boolean = navigator.onLine;
   route: string;
-  checkOfflineRoutes: string;
+  currentRoute: string;
   contentId: string;
-  showAddingToLibraryButton: boolean;
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
@@ -33,6 +32,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
+    public utilService: UtilService,
     private cdr: ChangeDetectorRef) {
     this.resourceService = resourceService;
   }
@@ -42,17 +42,13 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
     this.route = this.router.url;
-    if (_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'browse';
-    } else if (!_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'library';
-    }
+    this.currentRoute = _.includes(this.route, 'browse') ? 'browse' : 'library';
   }
 
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
-      data.showAddingToLibraryButton = true;
+      data['downloadStatus'] = 'DOWNLOADING';
     }
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
@@ -60,6 +56,8 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   ngOnChanges () {
     this.cdr.detectChanges();
   }
+
+  checkStatus(status) {
+    return this.utilService.getPlayerDownloadStatus(status, this.data, this.currentRoute);
+  }
 }
-
-

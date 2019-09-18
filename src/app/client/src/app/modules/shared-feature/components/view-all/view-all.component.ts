@@ -205,7 +205,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     if (this.isOffline) {
-      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+      this.downloadManagerService.downloadListEvent.pipe(
+        takeUntil(this.unsubscribe)).subscribe((data) => {
         this.updateCardData(data);
       });
 
@@ -448,8 +449,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showDownloadLoader = false;
 
       _.each(this.searchList, (contents) => {
-        contents['addedToLibrary'] = false;
-        contents['showAddingToLibraryButton'] = false;
+        contents['downloadStatus'] = 'FAILED';
       });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
@@ -472,22 +472,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateCardData(downloadListdata) {
     _.each(this.searchList, (contents) => {
-
-      // If download is completed card should show added to library
-      _.find(downloadListdata.result.response.downloads.completed, (completed) => {
-        if (contents.metaData.identifier === completed.contentId) {
-          contents['addedToLibrary'] = true;
-          contents['showAddingToLibraryButton'] = false;
-        }
-      });
-
-      // If download failed, card should show again add to library
-      _.find(downloadListdata.result.response.downloads.failed, (failed) => {
-        if (contents.metaData.identifier === failed.contentId) {
-          contents['addedToLibrary'] = false;
-          contents['showAddingToLibraryButton'] = false;
-        }
-      });
+      this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
   }
 }
