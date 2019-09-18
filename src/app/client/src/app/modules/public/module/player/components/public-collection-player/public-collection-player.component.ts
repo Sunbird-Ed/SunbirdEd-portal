@@ -76,8 +76,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerTelemetryInteractObject: IInteractEventObject;
   public telemetryCourseEndEvent: IEndEventInput;
   public telemetryCourseStart: IStartEventInput;
-  public downloadPlayerInteractEdata: IInteractEventEdata;
-  public downloadCollectionInteractEdata: IInteractEventEdata;
   /**
    * Page Load Time, used this data in impression telemetry
    */
@@ -96,7 +94,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   playerOption: any;
   public playerContent;
   isOffline: boolean = environment.isOffline;
-  currentRoute: string;
   public unsubscribe$ = new Subject<void>();
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
@@ -124,12 +121,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.deviceDetector();
     this.setTelemetryData();
 
-    if (this.isOffline ) {
-      this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'library';
-      this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
-        this.checkDownloadStatus(data);
-      });
-    }
   }
   setTelemetryData() {
     if (this.dialCode) {
@@ -152,16 +143,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
     this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
 
-    this.downloadPlayerInteractEdata = {
-      id: 'download-content',
-      type: 'click',
-      pageid: this.route.snapshot.data.telemetry.pageid
-    };
-    this.downloadCollectionInteractEdata = {
-      id: 'download-collection',
-      type: 'click',
-      pageid: this.route.snapshot.data.telemetry.pageid
-    };
   }
 
   ngAfterViewInit () {
@@ -421,25 +402,4 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
   }
 
-  startDownload(content) {
-    this.downloadManagerService.downloadContentId = content.identifier;
-    this.downloadManagerService.startDownload({}).subscribe(data => {
-      this.downloadManagerService.downloadContentId = '';
-      content['downloadStatus'] = 'DOWNLOADING';
-    }, error => {
-      this.downloadManagerService.downloadContentId = '';
-          content['downloadStatus'] = 'FAILED';
-      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
-    });
-}
-
-  checkDownloadStatus(downloadListdata) {
-    const content = _.isEmpty(this.playerContent) ? this.collectionData : this.playerContent;
-    this.playerService.updateDownloadStatus(downloadListdata, content);
-  }
-
-  checkStatus(content, status) {
-  const contentData = content.mimeType === 'application/vnd.ekstep.content-collection' ? this.collectionData : this.playerContent;
-   return this.utilService.getPlayerDownloadStatus(status, contentData, this.currentRoute);
-  }
 }

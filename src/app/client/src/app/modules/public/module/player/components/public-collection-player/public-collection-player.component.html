@@ -12,22 +12,6 @@
           </h1>
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
-              <button (click)="startDownload(playerContent)"
-              appTelemetryInteract
-              [telemetryInteractCdata]="telemetryCdata"
-              [telemetryInteractObject]="playerTelemetryInteractObject"
-              [telemetryInteractEdata]="downloadPlayerInteractEdata"
-                *ngIf="checkStatus(playerContent,'DOWNLOAD') "
-                class="sb-btn sb-btn-outline-primary sb-btn-normal ">
-                <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
-              <button
-                *ngIf="checkStatus(playerContent, 'DOWNLOADING') "
-                class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
-                {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
-              <button *ngIf="checkStatus(playerContent, 'DOWNLOADED')"
-                class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
-                {{resourceService.frmelmnts?.btn?.addedToLibrary}}
-            </button>
             </div>
             <button class="sb-btn sb-btn-xs sb-btn-error" type="button" (click)="closeContentPlayer()"
               appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata"
@@ -92,21 +76,6 @@
           </h1>
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
-              <button (click)="startDownload(collectionData)"
-                appTelemetryInteract
-                [telemetryInteractCdata]="telemetryCdata"
-                [telemetryInteractObject]="playerTelemetryInteractObject"
-                [telemetryInteractEdata]="downloadCollectionInteractEdata"
-                *ngIf="checkStatus(collectionData, 'DOWNLOAD')"
-                class="sb-btn sb-btn-outline-primary sb-btn-normal">
-                <i class="download icon"></i> {{resourceService.frmelmnts?.btn?.addToLibrary}}</button>
-              <button
-                *ngIf="checkStatus(collectionData, 'DOWNLOADING') "
-                class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
-                {{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
-              <button *ngIf="checkStatus(collectionData, 'DOWNLOADED')"
-                class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
-                {{resourceService.frmelmnts?.btn?.addedToLibrary}}</button>
                 </div>
             <button class="sb-btn sb-btn-xs sb-btn-error " type="button" (click)="closeCollectionPlayer()"
               appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"

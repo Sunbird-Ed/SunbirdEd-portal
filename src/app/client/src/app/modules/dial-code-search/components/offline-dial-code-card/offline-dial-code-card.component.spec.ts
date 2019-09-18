@@ -13,11 +13,18 @@ describe('OfflineDialCodeCardComponent', () => {
   let component: OfflineDialCodeCardComponent;
   let fixture: ComponentFixture<OfflineDialCodeCardComponent>;
 
+  const resourceServiceMockData = {
+    messages: {
+      stmsg: { m0135: 'DOWNLOADING' },
+    }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [ OfflineDialCodeCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService, OfflineCardService],
+      providers: [ConfigService, CacheService, BrowserCacheTtlService, UtilService, OfflineCardService,
+        {provide: ResourceService, useValue: resourceServiceMockData}],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -60,10 +67,12 @@ describe('OfflineDialCodeCardComponent', () => {
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'download');
     const offlineCardService = TestBed.get(OfflineCardService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceServiceMockData.messages;
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(true);
     component.onAction(component.data, 'download');
     expect(component.showModal).toBe(true);
-    expect(Response.emitData.data.downloadStatus).toBe('DOWNLOADING');
+    expect(Response.emitData.data.downloadStatus).toBe(resourceService.messages.stmsg.m0135);
   });
 
 });
