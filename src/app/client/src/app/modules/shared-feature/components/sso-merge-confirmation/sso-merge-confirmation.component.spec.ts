@@ -4,7 +4,8 @@ import {SuiModule} from 'ng2-semantic-ui';
 import {SsoMergeConfirmationComponent} from './sso-merge-confirmation.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of as observableOf} from 'rxjs';
-import {ResourceService} from '@sunbird/shared';
+import {InterpolatePipe, ResourceService} from '@sunbird/shared';
+
 
 describe('SsoMergeConfirmationComponent', () => {
   let component: SsoMergeConfirmationComponent;
@@ -16,7 +17,7 @@ describe('SsoMergeConfirmationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule],
-      declarations: [SsoMergeConfirmationComponent],
+      declarations: [SsoMergeConfirmationComponent, InterpolatePipe],
       providers: [
         {provide: ResourceService, useValue: resourceBundle},
       ]
