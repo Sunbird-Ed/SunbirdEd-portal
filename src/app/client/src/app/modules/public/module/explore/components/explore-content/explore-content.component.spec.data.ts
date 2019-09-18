@@ -504,7 +504,6 @@ export const Response = {
           'name': 'Learn'
         },
       },
-      'showAddingToLibraryButton': false,
       'subTopic': '',
       'subject': 'Mathematics',
       'topic': 'Volumes and Capacity'

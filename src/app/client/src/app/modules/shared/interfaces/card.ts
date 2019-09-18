@@ -12,6 +12,7 @@ export interface ICard {
     resourceType?: string;
     maxCount?: number;
     progress?: number;
+    contentType?: string;
     ribbon?: {
         right?: { class: string, name: string }
         left?: { class: string, name: string , image: string }

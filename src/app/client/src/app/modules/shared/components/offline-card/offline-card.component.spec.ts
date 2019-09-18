@@ -8,6 +8,8 @@ import { Response } from './offline-card.component.spec.data';
 import { OfflineCardComponent } from './offline-card.component';
 import { CacheService } from 'ng2-cache-service';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
+import { OfflineCardService } from '@sunbird/shared';
+
 describe('CardComponent', () => {
   let component: OfflineCardComponent;
   let fixture: ComponentFixture<OfflineCardComponent>;
@@ -21,13 +23,13 @@ describe('CardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [ OfflineCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService,
+      declarations: [OfflineCardComponent, CdnprefixPipe],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService, OfflineCardService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -60,18 +62,20 @@ describe('CardComponent', () => {
     expect(component.data.downloadStatus).toBeUndefined();
   });
 
-   it('should emit change addingto librarybutton to true if the action is download in onAction ', () => {
+  it('should emit change addingto librarybutton to true if the action is download in onAction ', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.cardData;
     spyOn(component.clickEvent, 'emit');
+    component.data = Response.cardData;
+    const offlineCardService = TestBed.get(OfflineCardService);
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(true);
     component.onAction(component.data, 'download');
-    expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
+    expect(component.showModal).toBe(true);
     expect(Response.emitData.data.downloadStatus).toBe('DOWNLOADING');
   });
 
-   it('initially offlineRoute should be library', () => {
-      expect(component.currentRoute).toBe('library');
-    });
+  it('initially offlineRoute should be library', () => {
+    expect(component.currentRoute).toBe('library');
+  });
 
 });
-

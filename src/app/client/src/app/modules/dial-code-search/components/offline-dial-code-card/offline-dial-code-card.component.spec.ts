@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, UtilService, OfflineCardService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Response } from './offline-dial-code-card.component.spec.data';
@@ -17,7 +17,7 @@ describe('OfflineDialCodeCardComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [ OfflineDialCodeCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService, OfflineCardService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -59,7 +59,10 @@ describe('OfflineDialCodeCardComponent', () => {
     component.data = Response.cardData;
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'download');
-    expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
+    const offlineCardService = TestBed.get(OfflineCardService);
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(true);
+    component.onAction(component.data, 'download');
+    expect(component.showModal).toBe(true);
     expect(Response.emitData.data.downloadStatus).toBe('DOWNLOADING');
   });
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { ResourceService, ICard, UtilService } from '@sunbird/shared';
-import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
+import { ResourceService, ICard, UtilService, OfflineCardService } from '@sunbird/shared';
+import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 
@@ -23,6 +23,10 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   route: string;
   currentRoute: string;
   contentId: string;
+  showModal = false;
+  public telemetryInteractObject: IInteractEventObject;
+  public downloadYoutubeContentEdata: IInteractEventEdata;
+  public cancelDownloadYoutubeContentEdata: IInteractEventEdata;
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
@@ -32,12 +36,12 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
-    public utilService: UtilService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef, public utilService: UtilService, public offlineCardService: OfflineCardService) {
     this.resourceService = resourceService;
   }
 
   ngOnInit() {
+    this.setTelemetryData();
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
@@ -48,8 +52,18 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
-      data['downloadStatus'] = 'DOWNLOADING';
+      this.showModal = this.offlineCardService.isYoutubeContent(data);
+      if (this.showModal === false)  {
+        data['downloadStatus'] = 'DOWNLOADING';
+        this.clickEvent.emit({ 'action': action, 'data': data });
+      }
+    } else {
+      this.clickEvent.emit({ 'action': action, 'data': data });
     }
+  }
+
+  download(data, action) {
+    data['downloadStatus'] = 'DOWNLOADING';
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
@@ -59,5 +73,23 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
 
   checkStatus(status) {
     return this.utilService.getPlayerDownloadStatus(status, this.data, this.currentRoute);
+  }
+
+  setTelemetryData() {
+    this.telemetryInteractObject = {
+      id: this.contentId,
+      type: this.data.contentType,
+      ver: '1.0'
+    };
+    this.downloadYoutubeContentEdata = {
+      id: 'download-content',
+      type: 'click',
+      pageid: 'browse'
+    };
+    this.cancelDownloadYoutubeContentEdata = {
+      id: 'cancel-download-content',
+      type: 'click',
+      pageid: 'browse'
+    };
   }
 }
