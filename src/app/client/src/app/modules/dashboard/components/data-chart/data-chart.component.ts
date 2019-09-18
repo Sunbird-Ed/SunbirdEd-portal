@@ -81,7 +81,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private buildFiltersForm() {
+  buildFiltersForm() {
     this.filtersFormGroup = this.fb.group({});
     if (_.get(this.chartConfig, 'labelsExpr')) {
       _.forEach(this.filters, filter => {
@@ -140,7 +140,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  private prepareChart() {
+  prepareChart() {
     if (!this.checkForExternalChart()) {
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
       this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
@@ -153,7 +153,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.filters = _.get(this.chartConfig, 'filters') || [];
   }
 
-  private getDataSetValue(chartData = this.chartData) {
+  getDataSetValue(chartData = this.chartData) {
     let labels = [];
     let groupedDataBasedOnLabels;
     if (_.get(this.chartConfig, 'labelsExpr')) {
@@ -219,7 +219,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  private setTelemetryCdata() {
+  setTelemetryCdata() {
     this.telemetryCdata = [
       {
         id: 'dashboard:filter',
