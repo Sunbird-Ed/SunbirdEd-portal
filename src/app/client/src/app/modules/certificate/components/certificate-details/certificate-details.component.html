@@ -60,7 +60,7 @@
         <div class="sb-mobileDevice-speaker"></div>
         <div class="sb-mobileDevice-sensor"></div>
       </div>
-      <div class="player-thumbnail" (click)="playContent(contentId)" *ngIf="showVideoThumbnail"></div>
+      <div class="player-thumbnail" appTelemetryInteract [telemetryInteractEdata]="{id:'watch-video-button' , type:'click' , pageid:pageId }" (click)="playContent(contentId)" *ngIf="showVideoThumbnail"></div>
       <div class="h-100 certificate-area-player" *ngIf="!showVideoThumbnail">
       <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
     </div>

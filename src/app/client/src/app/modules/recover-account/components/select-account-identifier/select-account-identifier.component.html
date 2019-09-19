@@ -14,6 +14,6 @@
         <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-secondary" tabindex="0" [disabled]="disableFormSubmit" 
             appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
             [telemetryInteractEdata]="{id: 'submit', type: 'click', pageid: 'select-identifier', extra: { form: selectedAccountIdentifier} }"
-            (click)="handleGenerateOtp()">{{resourceService?.frmelmnts?.btn?.next}}</button>
+            (click)="handleGenerateOtp()">{{resourceService?.frmelmnts?.lbl?.getOTP}}</button>
     </div>
 </div>

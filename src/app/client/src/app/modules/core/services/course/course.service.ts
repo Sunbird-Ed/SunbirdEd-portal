@@ -6,6 +6,7 @@ import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { IEnrolledCourses, ICourses } from './../../interfaces';
 import { ContentService } from '../content/content.service';
+import {throwError as observableThrowError } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
  *  Service for course API calls.
@@ -105,8 +106,7 @@ export class CoursesService {
         return apiResponse;
       }),
       catchError((err) => {
-        this._enrolledCourseData$.next({ err: err, enrolledCourses: undefined });
-        return err;
+        return observableThrowError(err);
       }));
   }
 
