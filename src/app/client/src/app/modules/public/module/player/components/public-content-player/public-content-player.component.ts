@@ -55,9 +55,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   telemetryCdata: Array<{}>;
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
-  public downloadButtonInteractEdata: IInteractEventEdata;
   public objectRollup = {};
-  currentRoute: string;
   isOffline: boolean = environment.isOffline;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
@@ -90,13 +88,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.deviceDetector();
     });
 
-    if (this.isOffline ) {
-      this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'library';
-      this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
-          this.updateContentStatus(data);
-      });
-    }
-
   }
   setTelemetryData() {
     this.telemetryInteractObject = {
@@ -108,11 +99,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       id: 'close-player',
       type: 'click',
       pageid: 'public'
-    };
-    this.downloadButtonInteractEdata = {
-      id: 'download-content',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
   /**
@@ -208,23 +194,4 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     this.unsubscribe$.complete();
   }
 
-  startDownload(content) {
-    this.downloadManagerService.downloadContentId = content.identifier;
-    this.downloadManagerService.startDownload({}).subscribe(data => {
-      this.downloadManagerService.downloadContentId = '';
-      content['downloadStatus'] = 'DOWNLOADING';
-    }, error => {
-      this.downloadManagerService.downloadContentId = '';
-      content['downloadStatus'] = 'FAILED';
-      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
-    });
-  }
-
-  updateContentStatus(downloadListdata) {
-    this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
-  }
-
-  checkStatus(status) {
-  return this.utilService.getPlayerDownloadStatus(status, this.contentData, this.currentRoute);
-  }
 }
