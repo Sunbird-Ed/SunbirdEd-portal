@@ -19,7 +19,6 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   contentId: string;
   @Output() clickEvent = new EventEmitter<any>();
   public unsubscribe$ = new Subject<void>();
-  route: string;
   currentRoute: string;
   telemetryCdata: Array<{}>;
   private contentType: string ;
@@ -33,8 +32,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute ) { }
 
   ngOnInit() {
-    this.route = this.router.url;
-    this.currentRoute = _.includes(this.route, 'browse') ? 'browse' : 'library';
+    this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'library';
     this.setTelemetryData();
 
     this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
@@ -47,7 +45,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
     this.telemetryInteractObject = {
       id: this.contentData['identifier'],
       type: this.contentType,
-      ver: '1.0'
+      ver: this.contentData['pkgVersion'] || '1.0'
     };
 
     this.downloadContentInteractEdata = {
