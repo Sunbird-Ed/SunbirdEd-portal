@@ -27,7 +27,8 @@ describe('OfflineDialCodeCardComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [ OfflineDialCodeCardComponent, CdnprefixPipe ],
       providers: [ConfigService, CacheService, BrowserCacheTtlService, UtilService, OfflineCardService,
-        {provide: ResourceService, useValue: resourceServiceMockData}],
+        {provide: ResourceService, useValue: resourceServiceMockData},
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
