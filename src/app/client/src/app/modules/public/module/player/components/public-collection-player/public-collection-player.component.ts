@@ -298,7 +298,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
             const content = this.findContentById(data, this.contentId);
             this.playerContent = _.get(content, 'model');
             if (this.isOffline && _.isEqual(_.get(this.collectionData, 'downloadStatus'), 'DOWNLOADED')) {
-              this.playerContent['downloadStatus'] = 'DOWNLOADED';
+              this.playerContent['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
             }
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);

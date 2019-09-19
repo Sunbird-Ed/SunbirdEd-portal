@@ -12,6 +12,7 @@
           </h1>
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
+                <app-content-download [contentData]="playerContent"></app-content-download>
             </div>
             <button class="sb-btn sb-btn-xs sb-btn-error" type="button" (click)="closeContentPlayer()"
               appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata"
@@ -76,6 +77,7 @@
           </h1>
           <div class="ml-auto d-flex flex-ai-center">
             <div *ngIf="isOffline" class="mr-16">
+                <app-content-download [contentData]="collectionData"></app-content-download>
                 </div>
             <button class="sb-btn sb-btn-xs sb-btn-error " type="button" (click)="closeCollectionPlayer()"
               appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
