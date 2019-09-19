@@ -26,7 +26,7 @@ export class UtilService {
     const content: any = {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
-      addedToLibrary: data.addedToLibrary || false,
+      downloadStatus: data.downloadStatus,
       description: data.description,
       rating: data.me_averageRating || '0',
       subject: data.subject,
@@ -37,7 +37,8 @@ export class UtilService {
       topic: this.getTopicSubTopic('topic', data.topic),
       subTopic: this.getTopicSubTopic('subTopic', data.topic),
       metaData: {},
-      completionPercentage: data.completionPercentage || 0
+      completionPercentage: data.completionPercentage || 0,
+      mimeTypesCount: data.mimeTypesCount || 0
     };
 
     // this customization is done for enrolled courses
@@ -161,5 +162,14 @@ export class UtilService {
       }
     });
     return formInputData;
+  }
+  getPlayerDownloadStatus(status, content, currentRoute) {
+    if (currentRoute === 'browse') {
+      if (status === 'DOWNLOAD') {
+        return (!content['downloadStatus'] || content['downloadStatus'] === 'FAILED');
+      }
+      return (content['downloadStatus'] === status);
+    }
+    return false;
   }
 }

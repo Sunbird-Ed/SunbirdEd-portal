@@ -107,3 +107,8 @@
   <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent |
       interpolate:'{contentName}':contentName}}</h2>
 </sui-dimmer>
+<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
+  </h2>
+</sui-dimmer>

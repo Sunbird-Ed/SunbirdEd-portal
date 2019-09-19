@@ -185,3 +185,40 @@ display: inline-block;
     margin: 0;
   }
 }
+
+.ui.label > .recovery-img{
+  background-color: #9b9b9b;
+ -webkit-mask-image: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
+ -webkit-mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
+ mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
+ -webkit-mask-size: cover;
+ mask-size: cover;
+ height: 16px;
+ width: 16px;
+}
+.avatar-container {
+  width: 98px;
+  height: 98px;
+  margin: 0 auto;
+
+  .avatar-tickmark {
+    width: $base-block-space*4;
+    height: $base-block-space*4;
+    position: absolute;
+    left: 67%;
+   }
+}
+
+.my-avatar.verified /deep/ .avatar-content {
+  border: 1px solid #008840 !important;
+}
+ 
+ @include respond-below(sm) {
+  .avatar-tickmark {
+    left: 67%;
+  }
+ }
+
+.ui.label.dodger-blue > .recovery-img{
+  background-color: var(--primary-color);
+}

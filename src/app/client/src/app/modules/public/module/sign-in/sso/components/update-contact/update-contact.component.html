@@ -53,6 +53,11 @@
         <app-otp-popup [otpData]="otpData" (verificationSuccess)="handleOtpValidationSuccess($event)" (redirectToParent)="handleOtpValidationFailed($event)">
         </app-otp-popup>
       </div>
+      <div *ngIf="showMergeConfirmation">
+        <app-sso-merge-confirmation [userDetails]="userDetails" [identifierType]="contactForm.type"
+                                    [identifierValue]="contactForm.value">
+        </app-sso-merge-confirmation>
+      </div>
     </div>
   </div>
 </sui-modal>

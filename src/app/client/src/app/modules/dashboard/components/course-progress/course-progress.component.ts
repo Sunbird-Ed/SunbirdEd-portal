@@ -339,25 +339,31 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     }
   }
 
-  /**
+ /**
   * To method calls the download API with specific batch id and timeperiod
   */
-  downloadReport(): void {
-    const option = {
-      batchIdentifier: this.queryParams.batchIdentifier,
-    };
-    this.courseProgressService.downloadDashboardData(option).pipe(
+ downloadReport(downloadAssessmentReport: Boolean = false): void {
+  const option = {
+    batchIdentifier: this.queryParams.batchIdentifier,
+  };
+  this.courseProgressService.downloadDashboardData(option).pipe(
     takeUntil(this.unsubscribe))
     .subscribe(
       (apiResponse: ServerResponse) => {
-        window.open(_.get(apiResponse, 'result.signedUrl'), '_parent');
+        let downloadUrl;
+        if (!downloadAssessmentReport) {
+          downloadUrl = _.get(apiResponse, 'result.signedUrl') || _.get(apiResponse, 'result.reports.courseProgressReportUrl');
+        } else {
+          downloadUrl = _.get(apiResponse, 'result.reports.assessmentReportUrl');
+        }
+        window.open(downloadUrl, '_blank');
       },
       err => {
         this.toasterService.error(this.resourceService.messages.imsg.m0045);
       }
     );
-    this.setInteractEventData();
-  }
+  this.setInteractEventData();
+}
 
   navigateToPage(page: number): undefined | void {
     if (page < 1 || page > this.pager.totalPages) {

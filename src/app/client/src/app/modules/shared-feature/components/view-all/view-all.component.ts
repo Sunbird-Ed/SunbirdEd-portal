@@ -139,6 +139,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
+  showDownloadLoader = false;
+
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
@@ -203,9 +205,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     if (this.isOffline) {
-      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+      this.downloadManagerService.downloadListEvent.pipe(
+        takeUntil(this.unsubscribe)).subscribe((data) => {
         this.updateCardData(data);
       });
+
+      this.downloadManagerService.downloadEvent.pipe(tap(() => {
+        this.showDownloadLoader = false;
+      }), takeUntil(this.unsubscribe)).subscribe(() => {});
     }
   }
   getContents(data) {
@@ -330,6 +337,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     // For offline environment content will only play when event.action is open
     if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
+      this.showDownloadLoader = true;
+      this.contentName = event.data.name;
       return false;
     } else if (event.action === 'export' && this.isOffline) {
       this.showExportLoader = true;
@@ -437,9 +446,10 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       this.downloadManagerService.downloadContentId = '';
     }, error => {
       this.downloadManagerService.downloadContentId = '';
+      this.showDownloadLoader = false;
+
       _.each(this.searchList, (contents) => {
-        contents['addedToLibrary'] = false;
-        contents['showAddingToLibraryButton'] = false;
+        contents['downloadStatus'] = 'FAILED';
       });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
@@ -462,22 +472,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateCardData(downloadListdata) {
     _.each(this.searchList, (contents) => {
-
-      // If download is completed card should show added to library
-      _.find(downloadListdata.result.response.downloads.completed, (completed) => {
-        if (contents.metaData.identifier === completed.contentId) {
-          contents['addedToLibrary'] = true;
-          contents['showAddingToLibraryButton'] = false;
-        }
-      });
-
-      // If download failed, card should show again add to library
-      _.find(downloadListdata.result.response.downloads.failed, (failed) => {
-        if (contents.metaData.identifier === failed.contentId) {
-          contents['addedToLibrary'] = false;
-          contents['showAddingToLibraryButton'] = false;
-        }
-      });
+      this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
   }
 }

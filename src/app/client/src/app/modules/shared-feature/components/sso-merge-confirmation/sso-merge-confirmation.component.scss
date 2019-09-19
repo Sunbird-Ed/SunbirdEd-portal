@@ -1,0 +1,13 @@
+.fullpage {
+  ::ng-deep {
+    .ui.fullscreen.modal > .close {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}
+.sb-list-items{
+  text-align: left;
+    list-style-type: initial;
+    line-height: 20px;
+}

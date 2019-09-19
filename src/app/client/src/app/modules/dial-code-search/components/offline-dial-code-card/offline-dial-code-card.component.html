@@ -81,15 +81,15 @@
         <div (click)="onAction(data,data.action.onImage)" class="d-flex flex-jc-center">
           <button class="sb-btn sb-btn-outline-white sb-btn-normal">{{resourceService.frmelmnts?.lbl?.play}} <i class="play icon"></i> </button>
           </div>
-          <button (click)="onAction(data,'export')" *ngIf="checkOfflineRoutes === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
+          <button (click)="onAction(data,'export')" *ngIf="currentRoute === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
               class="sign in alternate icon"></i></button>
-          <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')" *ngIf="checkOfflineRoutes === 'browse' && data?.addedToLibrary !== true && data?.showAddingToLibraryButton !== true"
+          <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')" *ngIf="checkStatus('DOWNLOAD')"
             class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
             {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
-          <button *ngIf="checkOfflineRoutes === 'browse' && contentId === data.metaData.identifier && data?.showAddingToLibraryButton === true"
+          <button *ngIf="checkStatus('DOWNLOADING')"
             class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
             {{resourceService.frmelmnts?.btn?.addingToLibrary}}<i class="sign in alternate icon"></i></button>
-          <button *ngIf="data?.addedToLibrary === true && checkOfflineRoutes === 'browse' " class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
+          <button *ngIf="checkStatus('DOWNLOADED')" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
             {{resourceService.frmelmnts?.btn?.addedToLibrary}}
             <i class="sign in alternate icon"></i></button>
       </div>
@@ -97,3 +97,22 @@
   </div>
   
 </div>
+
+<sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
+  <div class="sb-modal-header">
+    {{resourceService.frmelmnts?.btn?.download}}
+  </div>
+  <div class="sb-modal-content">
+    {{resourceService.messages?.stmsg?.m0137}}
+  </div>
+  <div class="sb-modal-actions">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadYoutubeContentEdata" class="sb-btn sb-btn-normal sb-btn-primary" (click)="download(data,'download'); showModal = !showModal;">
+      {{resourceService.frmelmnts?.btn?.download}}
+    </button>
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelDownloadYoutubeContentEdata" class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="showModal = !showModal;">
+      {{resourceService.frmelmnts?.btn?.cancel}}
+    </button>
+  </div>
+</sui-modal>
