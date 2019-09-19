@@ -18,19 +18,19 @@ describe('OfflineCardComponent', () => {
       stmsg: { m0135: 'DOWNLOADING' },
     }
   };
+  const fakeActivatedRoute = { snapshot: { data: { telemetry: { pageid: 'browse' } } } };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
   }
-  class FakeActivatedRoute {
-  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [OfflineCardComponent, CdnprefixPipe],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService, OfflineCardService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useClass: FakeActivatedRoute },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {provide: ResourceService, useValue: resourceServiceMockData}],
       schemas: [NO_ERRORS_SCHEMA]
     })

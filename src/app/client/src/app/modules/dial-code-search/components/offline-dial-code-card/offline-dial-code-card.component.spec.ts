@@ -8,10 +8,13 @@ import { CacheService } from 'ng2-cache-service';
 import { OfflineDialCodeCardComponent } from './offline-dial-code-card.component';
 import { CdnprefixPipe } from './../../../shared/pipes/cdnprefix.pipe';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
+
 
 describe('OfflineDialCodeCardComponent', () => {
   let component: OfflineDialCodeCardComponent;
   let fixture: ComponentFixture<OfflineDialCodeCardComponent>;
+  const fakeActivatedRoute = { snapshot: { data: { telemetry: { pageid: 'browse' } } } };
 
   const resourceServiceMockData = {
     messages: {
@@ -27,7 +30,7 @@ describe('OfflineDialCodeCardComponent', () => {
         {provide: ResourceService, useValue: resourceServiceMockData}],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
