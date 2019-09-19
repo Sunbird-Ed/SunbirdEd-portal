@@ -173,3 +173,8 @@
         list-style-type: disc;
     }
 }
+
+.ui.error.message.bulkupload-error {
+    max-height: 200px;
+    overflow: auto;
+}
