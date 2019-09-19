@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { ResourceService, ICard, UtilService, OfflineCardService } from '@sunbird/shared';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -36,7 +36,8 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
-    private cdr: ChangeDetectorRef, public utilService: UtilService, public offlineCardService: OfflineCardService) {
+    private cdr: ChangeDetectorRef,
+    public utilService: UtilService, public offlineCardService: OfflineCardService, public activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
   }
 
@@ -84,12 +85,12 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     this.downloadYoutubeContentEdata = {
       id: 'download-content',
       type: 'click',
-      pageid: 'browse'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
     this.cancelDownloadYoutubeContentEdata = {
       id: 'cancel-download-content',
       type: 'click',
-      pageid: 'browse'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
 }

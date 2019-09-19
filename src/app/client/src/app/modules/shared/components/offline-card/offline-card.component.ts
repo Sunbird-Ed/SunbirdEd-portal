@@ -2,7 +2,7 @@ import { ResourceService, UtilService, OfflineCardService } from '../../services
 import { Component, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { ICard } from '../../interfaces';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { ConnectionService } from './../../../offline/services/connection-service/connection.service';
 import { takeUntil } from 'rxjs/operators';
@@ -45,7 +45,8 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   }
   constructor(public resourceService: ResourceService, private router: Router,
     private cdr: ChangeDetectorRef, private connectionService: ConnectionService,
-    public offlineCardService: OfflineCardService, public utilService: UtilService) {
+    public offlineCardService: OfflineCardService, public utilService: UtilService,
+    public activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
@@ -107,12 +108,12 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
     this.downloadYoutubeContentEdata = {
       id: 'download-content',
       type: 'click',
-      pageid: 'browse'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
     this.cancelDownloadYoutubeContentEdata = {
       id: 'cancel-download-content',
       type: 'click',
-      pageid: 'browse'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
 }
