@@ -83,7 +83,7 @@ const freeUpUser = async (req) => {
   };
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v1/identifier/freeup',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl + 'v1/identifier/freeup',
     headers: getHeaders(req),
     body: {
       request: freeUprequest
@@ -130,6 +130,7 @@ const createUser = async (req, jwtPayload) => {
     },
     json: true
   }
+  console.log('sso user create user request', JSON.stringify(options));
   logger.info({msg:'sso user create user request', additionalInfo:{requestBody: requestBody }})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
