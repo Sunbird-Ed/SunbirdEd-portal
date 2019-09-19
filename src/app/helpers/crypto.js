@@ -5,8 +5,8 @@ const key = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
 
 /**
- *
- * @param text
+ * Encrypts the data and return encrypted data with iv
+ * @param text string to encypt the data
  * @returns {{encryptedData: string, iv: string}}
  */
 const encrypt = (text) => {
@@ -16,6 +16,11 @@ const encrypt = (text) => {
   return {iv: iv.toString('hex'), encryptedData: encrypted.toString('hex')};
 };
 
+/**
+ * decrypts the data and returns back decrypted data
+ * @param text string to decrypt with the iv key
+ * @returns {string}
+ */
 const decrypt = (text) => {
   let iv = Buffer.from(text.iv, 'hex');
   let encryptedText = Buffer.from(text.encryptedData, 'hex');
