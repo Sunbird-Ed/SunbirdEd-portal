@@ -73,7 +73,7 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
     if (action === 'download') {
       this.showModal = this.offlineCardService.isYoutubeContent(data);
       if (this.showModal === false)  {
-        data['downloadStatus'] = 'DOWNLOADING';
+        data['downloadStatus'] = this.resourceService.messages.stmsg.m0135;
         this.clickEvent.emit({ 'action': action, 'data': data });
       }
     } else {
@@ -82,7 +82,7 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   download(data, action) {
-    data['downloadStatus'] = 'DOWNLOADING';
+    data['downloadStatus'] = this.resourceService.messages.stmsg.m0135;
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 

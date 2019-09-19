@@ -9,10 +9,8 @@ import { PublicCollectionPlayerComponent } from './public-collection-player.comp
 import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { WindowScrollService, SharedModule, ResourceService, ToasterService, UtilService } from '@sunbird/shared';
-import { CollectionHierarchyGetMockResponse, collectionTree,
-  download_list,
-  download_error, } from './public-collection-player.component.spec.data';
+import { WindowScrollService, SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
+import { CollectionHierarchyGetMockResponse, collectionTree} from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { DownloadManagerService } from '@sunbird/offline';
 
@@ -55,7 +53,7 @@ describe('PublicCollectionPlayerComponent', () => {
       imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
       TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [ContentService, PublicPlayerService, ResourceService,
-        DownloadManagerService, ToasterService, UtilService,
+        DownloadManagerService, ToasterService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -151,22 +149,5 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.OnPlayContent).toHaveBeenCalledWith(content, true);
     expect(component.playContent).toHaveBeenCalledWith(content);
   });
-
-
-   it('Test Download content ', () => {
-     const downloadManagerService = TestBed.get(DownloadManagerService);
-     const resourceService = TestBed.get(ResourceService);
-     const toasterService = TestBed.get(ToasterService);
-     resourceService.messages = resourceBundle.messages;
-     spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
-     spyOn(toasterService, 'error').and.callThrough();
-     component.collectionTreeNodes = collectionTree;
-     expect(component.collectionTreeNodes.downloadStatus).toBeFalsy();
-     component.startDownload(component.collectionTreeNodes.children[0].children[0]);
-     expect(component.collectionTreeNodes.children[0].children[0].downloadStatus).toEqual('FAILED');
-     expect(downloadManagerService.startDownload).toHaveBeenCalled();
-     expect(component.toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0090);
-   });
-
 
 });

@@ -5,7 +5,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
   CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent,
-  ContentRatingComponent, CommingSoonComponent
+  ContentRatingComponent, CommingSoonComponent, ContentDownloadComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
@@ -19,9 +19,9 @@ import { CoreModule } from '@sunbird/core';
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent],
+    CommingSoonComponent, ContentDownloadComponent],
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent]
+    CommingSoonComponent, ContentDownloadComponent]
 })
 export class PlayerHelperModule { }
