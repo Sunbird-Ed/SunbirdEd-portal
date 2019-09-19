@@ -356,7 +356,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         } else {
           downloadUrl = _.get(apiResponse, 'result.reports.assessmentReportUrl');
         }
-        window.open(downloadUrl, '_parent');
+        window.open(downloadUrl, '_blank');
       },
       err => {
         this.toasterService.error(this.resourceService.messages.imsg.m0045);
