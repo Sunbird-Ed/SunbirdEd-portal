@@ -315,7 +315,7 @@ module.exports = (app) => {
       req.session.migrateAccountInfo.encryptedData = encrypt(JSON.stringify(dataToEncrypt));
       const payload = JSON.stringify(req.session.migrateAccountInfo.encryptedData);
       url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
-      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&identifierValue=${req.query.identifierValue}&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
+      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&identifierValue=${req.query.identifierValue}&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
       console.log('url for migration', url + query);
     } catch (error) {
       response = {error: getErrorMessage(error, errType)};
@@ -343,6 +343,7 @@ module.exports = (app) => {
       return false;
     }
     if (req.session.migrateAccountInfo.client_id === 'android') {
+      console.log('mobile login success');
       const query = '?payload=' + req.session.migrateAccountInfo.encryptedData + '&code=' + req.query.code + '&automerge=1';
       res.redirect('/account/migrate/login' + query);
     } else {
@@ -352,7 +353,7 @@ module.exports = (app) => {
         req.session.nonStateUserToken = nonStateUserToken;
       } else {
         nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
-          console.log('error in verifyAuthToken', err.error);
+          console.log('error in verifyAuthToken', err);
           console.log('error details', err.statusCode, err.message)
         });
         const userToken = parseJson(nonStateUserToken);
@@ -376,13 +377,16 @@ module.exports = (app) => {
       const decryptedData = decrypt(req.session.migrateAccountInfo.encryptedData);
       stateUserData = parseJson(decryptedData);
       errType = 'VERIFY_SIGNATURE';
-      console.log('validating state token', decryptedData);
+      console.log('validating state token', JSON.stringify(decryptedData));
       await verifySignature(stateUserData.stateToken);
+      errType = 'JWT_DECODE';
       stateJwtPayload = jwt.decode(stateUserData.stateToken);
+      errType = 'VERIFY_TOKEN';
       verifyToken(stateJwtPayload);
       const nonStateUserData = jwt.decode(req.session.nonStateUserToken);
       errType = 'ERROR_VERIFYING_IDENTITY';
       const isMigrationAllowed = verifyIdentifier(stateUserData.identifierValue, nonStateUserData[stateUserData.identifier], stateUserData.identifier);
+      console.log('ismigration allowed', isMigrationAllowed);
       if (isMigrationAllowed) {
         errType = 'MIGRATE_USER';
         req.query.userId = getUserIdFromToken(req.session.nonStateUserToken);
@@ -399,13 +403,13 @@ module.exports = (app) => {
          // await updateRoles(req, req.query.userId, stateJwtPayload).catch(handleProfileUpdateError);
         }
         req.session.userDetails = userDetails;
-        redirectUrl ='/accountMerge?status=success&redirect_uri=/resources';
+        redirectUrl ='/accountMerge?status=success&merge_type=auto&redirect_uri=/resources';
       } else {
         errType = 'UNAUTHORIZED';
         throw 'USER_DETAILS_DID_NOT_MATCH';
       }
     } catch (error) {
-      redirectUrl ='/accountMerge?status=error&redirect_uri=/resources';
+      redirectUrl ='/accountMerge?status=error&merge_type=auto&redirect_uri=/resources';
       logger.error({
         msg: 'sso session create v2 api failed',
         "error": JSON.stringify(error),
