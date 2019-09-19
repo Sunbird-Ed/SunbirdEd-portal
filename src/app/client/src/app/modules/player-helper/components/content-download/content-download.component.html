@@ -1,0 +1,11 @@
+<button id="download_{{contentData.identifier}}" (click)="startDownload(contentData)" appTelemetryInteract
+[telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadContentInteractEdata"
+*ngIf="checkStatus('DOWNLOAD')" class="sb-btn sb-btn-outline-primary sb-btn-normal">
+<i class="download icon"></i>
+{{resourceService.frmelmnts?.btn?.addToLibrary}}
+</button>
+<button *ngIf="checkStatus('DOWNLOADING')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
+{{resourceService.frmelmnts?.btn?.addingToLibrary}}</button>
+<button *ngIf="checkStatus('DOWNLOADED')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
+{{resourceService.frmelmnts?.btn?.addedToLibrary}}
+</button>
