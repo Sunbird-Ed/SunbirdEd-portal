@@ -4,13 +4,14 @@ import { PublicPlayerService } from './../../../../services';
 import { PublicContentPlayerComponent } from './public-content-player.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, ResourceService, ToasterService, WindowScrollService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, WindowScrollService, UtilService } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
-
+import { DownloadManagerService } from '@sunbird/offline';
+import { download_list, download_error, download_success } from '../public-collection-player/public-collection-player.component.spec.data';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
   events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
@@ -29,7 +30,8 @@ const fakeActivatedRoute = {
 const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
-    stmsg: { m0009: 'error' }
+    stmsg: { m0009: 'error' },
+    fmsg: { m0090: 'Could not download. Try again later'}
   },
   frmelmnts: {
     btn: {
@@ -50,7 +52,8 @@ describe('PublicContentPlayerComponent', () => {
       TelemetryModule.forRoot()],
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PublicPlayerService,
+      providers: [PublicPlayerService, DownloadManagerService,
+        ToasterService, UtilService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
@@ -60,6 +63,9 @@ describe('PublicContentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
     component = fixture.componentInstance;
+  });
+  afterEach(() => {
+    fixture.destroy();
   });
 
   afterEach(() => {
@@ -114,4 +120,36 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showPlayer).toBeTruthy();
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
+
+  it('should download content', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const mockData = download_success;
+    const mockObservableData = observableOf(mockData);
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(mockObservableData);
+    component.startDownload(serverRes.result.result.content);
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+  });
+
+  it('Download content for failure', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    resourceService.messages = resourceServiceMockData.messages;
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.startDownload(serverRes.result.result.content);
+    expect(serverRes.result.result.content.downloadStatus).toEqual('FAILED');
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(component.toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0090);
+  });
+
+  it('Test Event emit', () => {
+    component.contentData = serverRes.result.result.content;
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(download_error));
+    component.startDownload(serverRes.result.result.content);
+    component.updateContentStatus(download_list);
+    expect(component.contentData['downloadStatus']).toBe('FAILED');
+  });
+
 });

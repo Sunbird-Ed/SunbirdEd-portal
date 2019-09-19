@@ -166,4 +166,14 @@ export class PublicPlayerService {
       }
     }, 0);
   }
+  updateDownloadStatus (downloadListdata, content) {
+        // If download is completed card should show added to library
+        if (_.find(downloadListdata.result.response.downloads.completed, { contentId: _.get(content, 'identifier') })) {
+          content['downloadStatus'] = 'DOWNLOADED';
+        }
+        // // If download failed, card should show again add to library
+        if (_.find(downloadListdata.result.response.downloads.failed, { contentId: _.get(content, 'identifier') })) {
+          content['downloadStatus'] = 'FAILED';
+        }
+  }
 }
