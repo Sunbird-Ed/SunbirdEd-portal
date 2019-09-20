@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
+import { TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-chapter-list',
@@ -40,7 +41,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public question_type: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService,
-    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
+    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute, public telemetryService: TelemetryService) {
   }
   private labelsHandler() {
     this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted', 'Published'] : ['Total', 'Created by me', 'Needs attention'];
@@ -134,7 +135,18 @@ export class ChapterListComponent implements OnInit, OnChanges {
       this.showChapterList(textBookMetaData);
     }, error => {
       this.showLoader = false;
-      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed');
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook Hierarchy failed');
+        const telemetryErrorData = {
+          context: {
+            env: 'cbse_program'
+          },
+          edata: {
+            err: error.status.toString(),
+            errtype: 'PROGRAMPORTAL',
+            stacktrace: _.get(error, 'error.params.errmsg') || 'Fetching TextBook Hierarchy failed'
+          }
+        };
+        this.telemetryService.error(telemetryErrorData);
     });
   }
 
@@ -201,6 +213,18 @@ export class ChapterListComponent implements OnInit, OnChanges {
     }, error => {
       this.showLoader = false;
       this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed');
+        const telemetryErrorData = {
+          context: {
+            env: 'cbse_program'
+          },
+          edata: {
+            err: error.status.toString(),
+            errtype: 'PROGRAMPORTAL',
+            stacktrace: _.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed'
+          }
+        };
+        this.telemetryService.error(telemetryErrorData);
+      
     });
   }
 

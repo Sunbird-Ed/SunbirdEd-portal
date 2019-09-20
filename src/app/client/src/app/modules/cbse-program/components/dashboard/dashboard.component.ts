@@ -7,6 +7,7 @@ import 'datatables.net';
 import * as _ from 'lodash-es';
 import { ExportToCsv } from 'export-to-csv';
 import { forkJoin } from 'rxjs';
+import { TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,7 +39,7 @@ export class DashboardComponent implements OnInit {
   };
 
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    public actionService: ActionService, public toasterService: ToasterService) { }
+    public actionService: ActionService, public toasterService: ToasterService, public telemetryService: TelemetryService) { }
 
   ngOnInit() {
 
@@ -108,7 +109,19 @@ export class DashboardComponent implements OnInit {
       this.textBookMeta = textBookMetaData;
       this.dashboardApi(this.textBookMeta);
     }, error => {
-      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed');
+      this.showLoader = false;
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook Hierarchy failed');
+        const telemetryErrorData = {
+          context: {
+            env: 'cbse_program'
+          },
+          edata: {
+            err: error.status.toString(),
+            errtype: 'PROGRAMPORTAL',
+            stacktrace: _.get(error, 'error.params.errmsg') || 'Fetching TextBook Hierarchy failed'
+          }
+        };
+        this.telemetryService.error(telemetryErrorData);
     });
   }
 
@@ -247,6 +260,21 @@ export class DashboardComponent implements OnInit {
 
       this.generateTableData(this.selectedReport);
       this.initializeDataTable(this.selectedReport);
+    },error => {
+      this.showLoader = false;
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching Aggregated Data Of TextBook failed');
+        const telemetryErrorData = {
+          context: {
+            env: 'cbse_program'
+          },
+          edata: {
+            err: error.status.toString(),
+            errtype: 'PROGRAMPORTAL',
+            stacktrace: _.get(error, 'error.params.errmsg') || 'Fetching Aggregated Data Of TextBook failed'
+          }
+        };
+        this.telemetryService.error(telemetryErrorData);
+      
     });
   }
 
