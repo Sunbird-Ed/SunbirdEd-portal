@@ -235,7 +235,7 @@
                   </span>     -->
                   
                   <td>
-                    <span *ngIf="student.certificates.length > 0" class="sb-label sb-label-table sb-label-success-0">Issued</span>
+                    <span *ngIf="student.certificates && student.certificates.length > 0" class="sb-label sb-label-table sb-label-success-0">Issued</span>
                   </td>
                   
                     <td *ngIf="!student.certificates"> - </td>
