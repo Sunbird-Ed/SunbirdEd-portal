@@ -329,7 +329,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showDownloadLoader = false;
       this.downloadManagerService.downloadContentId = '';
       _.each(this.itemsToDisplay, (contents) => {
-        contents['downloadStatus'] = 'FAILED';
+        contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
       });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
