@@ -38,6 +38,7 @@ module.exports = (app) => {
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
       req.session.userDetails = userDetails;
+      console.log("userDetails fetched", userDetails);
       if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
         redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
         logger.info({
@@ -253,6 +254,7 @@ module.exports = (app) => {
         errType = 'FREE_UP_USER';
         await freeUpUser(req).catch(handleProfileUpdateError);
       }
+      await delay();
       errType = 'CREATE_USER';
       req.query.type = req.query.identifier;
       req.query.value = req.query.identifierValue;
@@ -309,14 +311,17 @@ module.exports = (app) => {
         stateToken : req.session.migrateAccountInfo.stateToken,
         userId: req.query.userId,
         identifier: req.query.identifier,
-        identifierValue: req.query.identifierValue
+        identifierValue: req.query.identifierValue,
+        client_id: req.session.migrateAccountInfo.client_id
       };
       errType = 'ERROR_ENCRYPTING_DATA';
       req.session.migrateAccountInfo.encryptedData = encrypt(JSON.stringify(dataToEncrypt));
       const payload = JSON.stringify(req.session.migrateAccountInfo.encryptedData);
       url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
       query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&identifierValue=${req.query.identifierValue}&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
-      console.log('url for migration', url + query);
+      const userInfo = `&userId=${req.query.userId}&identifierType=${req.query.identifier}&identifierValue=${req.query.identifierValue}`;
+      redirectUrl = url + query + userInfo;
+      console.log('url for migration', redirectUrl);
     } catch (error) {
       response = {error: getErrorMessage(error, errType)};
       logger.error({
@@ -329,7 +334,7 @@ module.exports = (app) => {
       });
       logErrorEvent(req, errType, error);
     } finally {
-      res.redirect(url + query || errorUrl)
+      res.redirect(redirectUrl || errorUrl)
     }
   });
 
@@ -353,8 +358,9 @@ module.exports = (app) => {
         req.session.nonStateUserToken = nonStateUserToken;
       } else {
         nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
-          console.log('error in verifyAuthToken', err);
+          console.log('error in verifyAuthToken', err.error);
           console.log('error details', err.statusCode, err.message)
+          res.redirect(errorUrl)
         });
         const userToken = parseJson(nonStateUserToken);
         req.session.nonStateUserToken = userToken.access_token;
@@ -365,13 +371,20 @@ module.exports = (app) => {
 
   app.all('/migrate/user/account', async (req, res) => {
     let stateUserData, stateJwtPayload, errType;
-    console.log('migration initiated', req.session.nonStateUserToken, JSON.stringify(req.session.migrateAccountInfo));
-    if (!req.session.migrateAccountInfo || !req.session.nonStateUserToken) {
+    // to support mobile flow
+    if (!req.session.migrateAccountInfo) {
+      req.session.migrateAccountInfo = {
+        encryptedData: req.get('x-authenticated-user-data')
+      }
+    }
+    req.session.nonStateUserToken = req.session.nonStateUserToken || req.get('x-authenticated-user-token');
+    if (!req.session.nonStateUserToken || !(req.session.migrateAccountInfo && req.session.migrateAccountInfo.encryptedData)) {
       res.status(401).send({
         responseCode: 'UNAUTHORIZED'
       });
       return false;
     }
+    console.log('migration initiated', req.session.nonStateUserToken, JSON.stringify(req.session.migrateAccountInfo));
     console.log('decryption started');
     try {
       const decryptedData = decrypt(req.session.migrateAccountInfo.encryptedData);
