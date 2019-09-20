@@ -311,8 +311,7 @@ module.exports = (app) => {
         stateToken : req.session.migrateAccountInfo.stateToken,
         userId: req.query.userId,
         identifier: req.query.identifier,
-        identifierValue: req.query.identifierValue,
-        client_id: req.session.migrateAccountInfo.client_id
+        identifierValue: req.query.identifierValue
       };
       errType = 'ERROR_ENCRYPTING_DATA';
       req.session.migrateAccountInfo.encryptedData = encrypt(JSON.stringify(dataToEncrypt));
@@ -358,7 +357,7 @@ module.exports = (app) => {
         req.session.nonStateUserToken = nonStateUserToken;
       } else {
         nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
-          console.log('error in verifyAuthToken', err.error);
+          console.log('error in verifyAuthToken', err);
           console.log('error details', err.statusCode, err.message)
           res.redirect(errorUrl)
         });
