@@ -369,7 +369,7 @@ module.exports = (app) => {
   });
 
   app.all('/migrate/user/account', async (req, res) => {
-    let stateUserData, stateJwtPayload, errType, response;
+    let stateUserData, stateJwtPayload, errType, response, statusCode;
     // to support mobile flow
     if (req.query.client_id === 'android') {
       console.log('req.query.client_id', req.query.client_id);
@@ -424,7 +424,8 @@ module.exports = (app) => {
               "resmsgid": null, "err": null, "status": "success",
               "errmsg": null
             }, "responseCode": "OK", "result": {"response": "SUCCESS",}
-          }
+          };
+          statusCode = 200
         }
       } else {
         errType = 'UNAUTHORIZED';
@@ -438,7 +439,8 @@ module.exports = (app) => {
             "resmsgid": null, "err": error, "status": "error",
             "errType": errType
           }, "responseCode": "INTERNAL_SERVER_ERROR", "result": {"response": "ERROR",}
-        }
+        };
+        statusCode = 500
       }
       logger.error({
         msg: 'sso session create v2 api failed',
@@ -453,7 +455,7 @@ module.exports = (app) => {
       logErrorEvent(req, errType, error);
     } finally {
       if (req.query.client_id === 'android') {
-        res.send(response)
+        res.status(statusCode).send(response)
       } else {
         res.redirect(redirectUrl || errorUrl);
 
