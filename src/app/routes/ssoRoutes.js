@@ -369,12 +369,13 @@ module.exports = (app) => {
   });
 
   app.all('/migrate/user/account', async (req, res) => {
-    let stateUserData, stateJwtPayload, errType;
+    let stateUserData, stateJwtPayload, errType, response;
     // to support mobile flow
-    if (!req.session.migrateAccountInfo) {
+    if (req.query.client_id === 'android') {
+      console.log('req.query.client_id', req.query.client_id);
       req.session.migrateAccountInfo = {
         encryptedData: req.get('x-authenticated-user-data')
-      }
+      };
     }
     req.session.nonStateUserToken = req.session.nonStateUserToken || req.get('x-authenticated-user-token');
     if (!req.session.nonStateUserToken || !(req.session.migrateAccountInfo && req.session.migrateAccountInfo.encryptedData)) {
@@ -384,17 +385,18 @@ module.exports = (app) => {
       return false;
     }
     console.log('migration initiated', req.session.nonStateUserToken, JSON.stringify(req.session.migrateAccountInfo));
-    console.log('decryption started');
     try {
+      console.log('decryption started');
       const decryptedData = decrypt(req.session.migrateAccountInfo.encryptedData);
       stateUserData = parseJson(decryptedData);
       errType = 'VERIFY_SIGNATURE';
-      console.log('validating state token', JSON.stringify(decryptedData));
+      console.log('validating state token', JSON.stringify(stateUserData));
       await verifySignature(stateUserData.stateToken);
       errType = 'JWT_DECODE';
       stateJwtPayload = jwt.decode(stateUserData.stateToken);
       errType = 'VERIFY_TOKEN';
       verifyToken(stateJwtPayload);
+      console.log('state token validated success');
       const nonStateUserData = jwt.decode(req.session.nonStateUserToken);
       errType = 'ERROR_VERIFYING_IDENTITY';
       const isMigrationAllowed = verifyIdentifier(stateUserData.identifierValue, nonStateUserData[stateUserData.identifier], stateUserData.identifier);
@@ -415,13 +417,29 @@ module.exports = (app) => {
          // await updateRoles(req, req.query.userId, stateJwtPayload).catch(handleProfileUpdateError);
         }
         req.session.userDetails = userDetails;
-        redirectUrl ='/accountMerge?status=success&merge_type=auto&redirect_uri=/resources';
+        redirectUrl = '/accountMerge?status=success&merge_type=auto&redirect_uri=/resources';
+        if (req.query.client_id === 'android') {
+          response = {
+            "id": "api.user.migrate", "params": {
+              "resmsgid": null, "err": null, "status": "success",
+              "errmsg": null
+            }, "responseCode": "OK", "result": {"response": "SUCCESS",}
+          }
+        }
       } else {
         errType = 'UNAUTHORIZED';
         throw 'USER_DETAILS_DID_NOT_MATCH';
       }
     } catch (error) {
       redirectUrl ='/accountMerge?status=error&merge_type=auto&redirect_uri=/resources';
+      if (req.query.client_id === 'android') {
+        response = {
+          "id": "api.user.migrate", "params": {
+            "resmsgid": null, "err": error, "status": "error",
+            "errType": errType
+          }, "responseCode": "INTERNAL_SERVER_ERROR", "result": {"response": "ERROR",}
+        }
+      }
       logger.error({
         msg: 'sso session create v2 api failed',
         "error": JSON.stringify(error),
@@ -434,7 +452,12 @@ module.exports = (app) => {
       });
       logErrorEvent(req, errType, error);
     } finally {
-      res.redirect(redirectUrl || errorUrl);
+      if (req.query.client_id === 'android') {
+        res.send(response)
+      } else {
+        res.redirect(redirectUrl || errorUrl);
+
+      }
     }
   })
 };
