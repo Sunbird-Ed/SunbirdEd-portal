@@ -134,14 +134,6 @@ export class AssessmentScoreService {
     const request = {
       request: {
         userId: this._userId,
-        contents: [{
-          contentId: (_.get(this._contentDetails, 'identifier')),
-          batchId: _.get(this._batchDetails, 'batchId'),
-          status: 2, // because eid is END
-          courseId: _.get(this._batchDetails, 'courseId'),
-          lastAccessTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ')
-
-        }],
         assessments: [
           {
             assessmentTs: this._assessmentTs,
