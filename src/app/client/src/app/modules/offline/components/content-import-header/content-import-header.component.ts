@@ -10,23 +10,30 @@ import { HttpClient } from '@angular/common/http';
     styleUrls: ['./content-import-header.component.scss']
 })
 export class ContentImportHeaderComponent implements OnInit {
+    showImportModal = false;
     showVideoModal = false;
     ContentImportIntractEdata: IInteractEventEdata;
     WatchVideoIntractEdata: IInteractEventEdata;
     instance: string;
+    appMode = (<HTMLInputElement>document.getElementById('appMode')) ?
+    (<HTMLInputElement>document.getElementById('appMode')).value : 'STANDALONE';
     constructor(public resourceService: ResourceService, private http: HttpClient) { }
 
     ngOnInit() {
         this.setInteractData();
         this.instance = _.upperCase(this.resourceService.instance);
-
     }
     handleImport() {
-        this.http.get('/import/content').subscribe(data => {
-            console.log('called');
-        }, error => {
-            console.log('error');
-        });
+        if (this.appMode === 'STANDALONE') {
+            this.http.get('/dialog/import/content').subscribe(data => {
+                console.log('import dialog box shown');
+            }, error => {
+                console.log('error while showing import dialog box');
+            });
+        } else {
+            this.showImportModal = true;
+        }
+
     }
     setInteractData() {
         this.ContentImportIntractEdata = {
