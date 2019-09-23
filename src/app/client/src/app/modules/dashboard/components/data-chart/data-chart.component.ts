@@ -52,6 +52,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
   dateFilterReferenceName;
   telemetryCdata: Array<{}>;
   iframeDetails: any;
+  lastUpdatedOn: any;
+  showLastUpdatedOn: Boolean = false;
 
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
 
@@ -73,6 +75,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
+    if (_.get(this.chartInfo, 'lastUpdatedOn')) {
+      this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
+    }
     this.prepareChart();
     this.setTelemetryCdata();
     if (this.filters) {
@@ -146,6 +151,10 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
       this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
       this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
+      this.showLastUpdatedOn = false;
+      if (_.get(this.chartConfig, 'options.showLastUpdatedOn') && this.lastUpdatedOn) {
+        this.showLastUpdatedOn = true;
+      }
       this.getDataSetValue();
     } else {
       this.iframeDetails = _.get(this.chartConfig, 'iframeConfig');
