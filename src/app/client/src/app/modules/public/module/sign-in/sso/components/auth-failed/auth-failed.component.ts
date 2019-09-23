@@ -8,8 +8,11 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./auth-failed.component.scss']
 })
 export class AuthFailedComponent implements OnInit {
+  instance: string;
 
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService) {
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
 
   queryParam: any;
