@@ -11,6 +11,7 @@ export class MergeAccountStatusComponent implements OnInit {
   @ViewChild('modal') modal;
   isMergeSuccess: any = {};
   redirectUri: string;
+  mergeType: string;
 
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService) {
   }
@@ -19,6 +20,7 @@ export class MergeAccountStatusComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((queryParams) => {
       const queryParam = {...queryParams};
       this.isMergeSuccess = queryParam.status === 'success';
+      this.mergeType = queryParam.merge_type;
       this.redirectUri = queryParam.redirect_uri || '/resources';
     });
   }
