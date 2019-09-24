@@ -58,6 +58,7 @@ describe('RecoverAccountService', () => {
       const params = {
         'request': {
           'filters': {
+            'isDeleted' : 'false',
             'fuzzy': {
               'firstName': undefined
             },
