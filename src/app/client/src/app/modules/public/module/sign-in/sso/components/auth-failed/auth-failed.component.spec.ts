@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SuiModule} from 'ng2-semantic-ui';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of as observableOf} from 'rxjs';
-import {ResourceService} from '@sunbird/shared';
+import {ResourceService, InterpolatePipe} from '@sunbird/shared';
 
 import {AuthFailedComponent} from './auth-failed.component';
 
@@ -20,7 +20,7 @@ describe('AuthFailedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule],
-      declarations: [AuthFailedComponent],
+      declarations: [AuthFailedComponent, InterpolatePipe],
       providers: [{provide: ActivatedRoute, useValue: fakeActivatedRoute},
         {provide: ResourceService, useValue: resourceBundle}]
     })
