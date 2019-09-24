@@ -79,5 +79,13 @@ describe('OfflineDialCodeCardComponent', () => {
     expect(Response.emitData.data.downloadStatus).toBe(resourceService.messages.stmsg.m0135);
   });
 
+  it('should call getPlayerDownloadStatus() from utilservice', () => {
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'getPlayerDownloadStatus').and.returnValue(true);
+    component.currentRoute = 'browse';
+    component.checkStatus('DOWNLOAD');
+    expect(utilService.getPlayerDownloadStatus).toHaveBeenCalled();
+  });
+
 });
 
