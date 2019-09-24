@@ -17,6 +17,7 @@ let envVariables = {
   APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
   DEFAULT_CHANNEL: env.sunbird_default_channel,
   EKSTEP_ENV: env.ekstep_env || 'qa',
+  CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
   PORTAL_PORT: env.sunbird_port || 3000,
   PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
   PORTAL_TELEMETRY_PACKET_SIZE: env.sunbird_telemetry_packet_size || 1000,
@@ -100,3 +101,4 @@ envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
 module.exports = envVariables
+

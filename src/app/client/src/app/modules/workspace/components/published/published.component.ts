@@ -175,6 +175,9 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       if (FileURL) {
         window.open (FileURL, '_blank');
       }
+    },
+    (err: ServerResponse) => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0095);
     });
   }
   /**
