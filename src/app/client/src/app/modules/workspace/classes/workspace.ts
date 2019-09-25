@@ -54,8 +54,8 @@ export class WorkSpace {
             if (_.get(lockList, 'result.count')) {
                 const lockDataKeyByContentId = _.keyBy(lockList.result.data, 'resourceId');
                 _.each(contents, (eachContent, index) => {
-                    const lockInfo = lockDataKeyByContentId[eachContent.identifier];
-                    if (lockInfo) {
+                    const lockInfo = { ...lockDataKeyByContentId[eachContent.identifier]};
+                    if (!_.isEmpty(lockInfo) && eachContent.status !== 'Live') {
                         lockInfo.creatorInfo = JSON.parse(lockInfo.creatorInfo);
                         contents[index].lockInfo = lockInfo;
                     }
