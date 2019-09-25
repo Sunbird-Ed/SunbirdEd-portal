@@ -6,6 +6,8 @@ const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const kafkaService = require('../helpers/kafkaHelperService');
 const logger = require('sb_logger_util_v2');
+const {getUserIdFromToken} = require('../helpers/jwtHelper');
+const {getUserDetails} = require('../helpers/userHelper');
 let ssoWhiteListChannels;
 const privateBaseUrl = '/private/user/'
 
@@ -353,6 +355,29 @@ const verifyIdentifier = (stateVerifiedIdentifier, nonStateMaskedIdentifier, ide
   }
 };
 
+/**
+ *
+ */
+const fetchUserDetails = async (token) => {
+  const userId = getUserIdFromToken(token);
+  return await getUserDetails(userId, token);
+};
+
+/**
+ *
+ * @param identifier
+ * @returns {string}
+ */
+const getIdentifier = (identifier) => {
+  if (identifier === 'email') {
+    return 'email'
+  } else if (identifier === 'phone') {
+    return 'maskedPhone'
+  } else {
+    throw "UNKNOWN_IDENTIFIER_CANNOT_PROCESS"
+  }
+};
+
 module.exports = {
   verifySignature,
   verifyToken,
@@ -364,5 +389,7 @@ module.exports = {
   sendSsoKafkaMessage,
   migrateUser,
   freeUpUser,
-  verifyIdentifier
+  verifyIdentifier,
+  fetchUserDetails,
+  getIdentifier
 };
