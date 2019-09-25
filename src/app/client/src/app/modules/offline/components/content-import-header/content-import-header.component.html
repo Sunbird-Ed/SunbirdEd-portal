@@ -16,9 +16,6 @@
           class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-bs tour-1" (click)="handleImport()">
           {{resourceService?.frmelmnts?.lbl?.uploadContent}}
         </button>
-        <div *ngIf="showImportModal">
-          <app-content-import (closeImportModal)="showImportModal = false"></app-content-import>
-        </div>
       </div>
     </div>
     <div class="six wide column sb-offline-imports sb-offline-video-demo p-0 pl-16">
