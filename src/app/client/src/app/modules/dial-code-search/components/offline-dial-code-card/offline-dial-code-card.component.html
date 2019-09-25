@@ -83,8 +83,9 @@
           </div>
           <button (click)="onAction(data,'export')" *ngIf="currentRoute === 'library'" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">{{resourceService.frmelmnts?.btn?.export}}<i
               class="sign in alternate icon"></i></button>
-          <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')" *ngIf="checkStatus('DOWNLOAD')"
-            class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
+          <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')" appTelemetryInteract
+          [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadContentEdata" 
+            *ngIf="checkStatus('DOWNLOAD')" class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
             {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="sign in alternate icon"></i></button>
           <button *ngIf="checkStatus('DOWNLOADING')"
             class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16 disable">
@@ -107,7 +108,7 @@
     {{resourceService.messages?.stmsg?.m0137}}
   </div>
   <div class="sb-modal-actions">
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadYoutubeContentEdata" class="sb-btn sb-btn-normal sb-btn-primary" (click)="download(data,'download'); showModal = !showModal;">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadContentEdata" class="sb-btn sb-btn-normal sb-btn-primary" (click)="download(data,'download'); showModal = !showModal;">
       {{resourceService.frmelmnts?.btn?.download}}
     </button>
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="cancelDownloadYoutubeContentEdata" class="sb-btn sb-btn-normal sb-btn-outline-primary"

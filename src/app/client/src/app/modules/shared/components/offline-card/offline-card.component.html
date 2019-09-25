@@ -88,7 +88,8 @@
               class="copy icon"></i></button>
         </div>
         <button id="download_{{data.metaData.identifier}}" (click)="onAction(data,'download')"
-          *ngIf="checkStatus('DOWNLOAD')"
+          *ngIf="checkStatus('DOWNLOAD')" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
+          [telemetryInteractEdata]="downloadContentEdata"
           class="sb-btn sb-btn-outline-white sb-btn-normal sb-right-icon-btn mt-16">
           {{resourceService.frmelmnts?.btn?.addToLibrary}}<i class="download icon"></i></button>
         <button
@@ -112,7 +113,7 @@
     </div>
     <div class="sb-modal-actions">
       <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="downloadYoutubeContentEdata" class="sb-btn sb-btn-normal sb-btn-primary"
+        [telemetryInteractEdata]="downloadContentEdata" class="sb-btn sb-btn-normal sb-btn-primary"
         (click)="download(data,'download'); showModal = !showModal;">
         {{resourceService.frmelmnts?.btn?.download}}
       </button>
