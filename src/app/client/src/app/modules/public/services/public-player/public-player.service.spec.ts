@@ -3,7 +3,7 @@ import {of as observableOf,  Observable } from 'rxjs';
 import { TestBed, inject } from '@angular/core/testing';
 import { CoreModule, ContentService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './public-player.service';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ResourceService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { serverRes } from './public-player.service.spec.data';
@@ -45,5 +45,13 @@ describe('PublicPlayerService', () => {
     const playerConfig = playerService.getConfig(PlayerMeta);
     expect(playerConfig).toBeTruthy();
     expect(playerConfig.context.contentId).toContain('domain_66675');
+  });
+
+  it('should call player updateDownloadStatus()', () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
+    playerService.updateDownloadStatus(serverRes.download_list, serverRes.successResult.result.content);
+    expect(serverRes.successResult.result.content.downloadStatus).toBe(resourceService.messages.stmsg.m0138);
   });
 });

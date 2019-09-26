@@ -44,7 +44,68 @@ describe('ContentDownloadComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
+  it('should call setTelemetry() on ngOnInit', () => {
     expect(component).toBeTruthy();
+    spyOn(component, 'setTelemetryData');
+    component.ngOnInit();
+    expect(component.setTelemetryData).toHaveBeenCalled();
   });
+
+  it('should Initialize telemetry data on call of setTelemetry()', () => {
+    const edata = {
+      id: '',
+      type: '',
+      pageid: ''
+    };
+    component.downloadContentInteractEdata = edata;
+    component.contentData = serverRes.result.result.content;
+    component.setTelemetryData();
+    expect(component.downloadContentInteractEdata).toBeDefined();
+  });
+
+  it('should call download manager service on startDownload()', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableOf(serverRes.download_success));
+    component.contentData = serverRes.result.result.content;
+    component.startDownload(component.contentData);
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+  });
+
+  it('startDownload should fail', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(serverRes.download_error));
+    spyOn(toasterService, 'error').and.callThrough();
+    component.startDownload(serverRes.result.result.content);
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(component.toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0090);
+  });
+
+  it('should call getPlayerDownloadStatus()', () => {
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'getPlayerDownloadStatus').and.returnValue(true);
+    component.currentRoute = 'browse';
+    component.checkStatus('DOWNLOAD');
+    expect(utilService.getPlayerDownloadStatus).toHaveBeenCalled();
+  });
+
+  it('should call player updateDownloadStatus()', () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    spyOn(playerService, 'updateDownloadStatus').and.returnValue(observableOf(serverRes.downloading_content));
+    component.checkDownloadStatus(serverRes.download_list);
+    expect(playerService.updateDownloadStatus).toHaveBeenCalled();
+  });
+
+  it('should call offlinecardservice isyoutubecontent()', () => {
+    const offlineCardService = TestBed.get(OfflineCardService);
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
+    component.download(serverRes.result.result.content);
+    expect(component.showModal).toBeFalsy();
+    expect(offlineCardService.isYoutubeContent).toHaveBeenCalled();
+  });
+
 });
