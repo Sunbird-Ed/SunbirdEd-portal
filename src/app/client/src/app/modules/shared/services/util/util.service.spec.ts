@@ -1,3 +1,4 @@
+import { servicemockRes } from './util.service.spec.data';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { UtilService } from './util.service';
@@ -45,4 +46,20 @@ describe('UtilService', () => {
       expect(service.manipulateSoftConstraint).toBeDefined();
       expect(softconstraintsdata).toEqual({filters: userFrameworkData , mode: 'soft'});
     }));
+
+    it('should call getPlayerDownloadStatus() return true', () => {
+      const utilService = TestBed.get(UtilService);
+      const value = utilService.getPlayerDownloadStatus('DOWNLOAD', servicemockRes.successResult.result.content, 'browse');
+      expect(value).toBeTruthy();
+    });
+    it('should call getPlayerDownloadStatus() return false', () => {
+      const utilService = TestBed.get(UtilService);
+      const value = utilService.getPlayerDownloadStatus('DOWNLOAD', servicemockRes.successResult.result.content, 'library');
+      expect(value).toBeFalsy();
+    });
+    it('should call getPlayerDownloadStatus() return true when status is failed', () => {
+      const utilService = TestBed.get(UtilService);
+      const value = utilService.getPlayerDownloadStatus('FAILED', servicemockRes.successResult.result.content, 'browse');
+      expect(value).toBeTruthy();
+    });
 });

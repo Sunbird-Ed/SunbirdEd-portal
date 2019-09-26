@@ -84,4 +84,12 @@ describe('OfflineCardComponent', () => {
     expect(component.currentRoute).toBe('library');
   });
 
+  it('should call getPlayerDownloadStatus()', () => {
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'getPlayerDownloadStatus').and.returnValue(true);
+    component.currentRoute = 'browse';
+    component.checkStatus('DOWNLOAD');
+    expect(utilService.getPlayerDownloadStatus).toHaveBeenCalled();
+  });
+
 });
