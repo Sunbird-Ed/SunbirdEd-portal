@@ -2,7 +2,6 @@ import { IInteractEventEdata} from '@sunbird/telemetry';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { HttpClient } from '@angular/common/http';
 import { ElectronDialogService } from './../../services';
 @Component({
     selector: 'app-content-import-header',
@@ -14,7 +13,7 @@ export class ContentImportHeaderComponent implements OnInit {
     ContentImportIntractEdata: IInteractEventEdata;
     WatchVideoIntractEdata: IInteractEventEdata;
     instance: string;
-    constructor(public resourceService: ResourceService, private http: HttpClient, public electronDialogService: ElectronDialogService) { }
+    constructor(public resourceService: ResourceService, public electronDialogService: ElectronDialogService) { }
 
     ngOnInit() {
         this.setInteractData();
