@@ -1,3 +1,4 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
@@ -50,6 +51,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
   selectedFilters: {};
   dateFilterReferenceName;
   telemetryCdata: Array<{}>;
+  iframeDetails: any;
+  lastUpdatedOn: any;
+  showLastUpdatedOn: Boolean = false;
 
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
 
@@ -64,13 +68,16 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder,
-    private toasterService: ToasterService, private activatedRoute: ActivatedRoute) {
+    private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer) {
     this.alwaysShowCalendars = true;
   }
 
   ngOnInit() {
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
+    if (_.get(this.chartInfo, 'lastUpdatedOn')) {
+      this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
+    }
     this.prepareChart();
     this.setTelemetryCdata();
     if (this.filters) {
@@ -93,7 +100,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
         filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
       });
       if (this.filters.length > 0) {
-       this.showFilters = true;
+        this.showFilters = true;
       }
       this.filtersSubscription = this.filtersFormGroup.valueChanges
         .pipe(
@@ -123,13 +130,36 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
   }
 
+  private checkForExternalChart() {
+    const iframeConfig = _.get(this.chartConfig, 'iframeConfig');
+    if (iframeConfig) {
+      if (_.get(iframeConfig, 'sourceUrl')) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getIframeURL() {
+    const url = `${_.get(this.iframeDetails, 'sourceUrl')}?qs=${Math.round(Math.random() * 10000000)}`; // to prevent browser caching
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
   prepareChart() {
-    this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
-    this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
-    this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
-    this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
+    if (!this.checkForExternalChart()) {
+      this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
+      this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
+      this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
+      this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
+      this.showLastUpdatedOn = false;
+      if (_.get(this.chartConfig, 'options.showLastUpdatedOn') && this.lastUpdatedOn) {
+        this.showLastUpdatedOn = true;
+      }
+      this.getDataSetValue();
+    } else {
+      this.iframeDetails = _.get(this.chartConfig, 'iframeConfig');
+    }
     this.filters = _.get(this.chartConfig, 'filters') || [];
-    this.getDataSetValue();
   }
 
   getDataSetValue(chartData = this.chartData) {
@@ -217,4 +247,5 @@ export class DataChartComponent implements OnInit, OnDestroy {
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
+
 }
