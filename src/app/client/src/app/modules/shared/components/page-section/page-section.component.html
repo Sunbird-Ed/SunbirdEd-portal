@@ -19,7 +19,7 @@
     <!--/Header-->
 
     <!--Content-->
-    <div *ngIf="refresh" class="sb-pageSection-content pt-8">
+    <div *ngIf="refresh" class="sb-pageSection-content">
         <ngx-slick (afterChange)="handleAfterChange($event)" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
             <div ngxSlickItem *ngFor="let content of contentList" class="mr-16">
                 <!--Batch Card-->
@@ -33,15 +33,15 @@
                 <ng-template #contentcard>
                     <app-card *ngIf="!isOffline" appContentDirection [data]="content" appTelemetryInteract
                         [telemetryInteractEdata]="cardInteractEdata"
-                        [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
+                        [telemetryInteractObject]="{id:content.identifier || content.courseId,type:content.contentType || 'Course',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                         (clickEvent)="playContent($event)" [data]="content" class="d-block" [class.last-card]="mr-0">
                     </app-card>
-
-                    <app-offline-card *ngIf="isOffline" appContentDirection [data]="content" appTelemetryInteract
+                    <sb-library-card [content]= "content" [defaultImg]="defaultImg" *ngIf="isOffline" (cardClick)="playContent($event)"></sb-library-card>
+                    <!-- <app-offline-card *ngIf="isOffline" appContentDirection [data]="content" appTelemetryInteract
                         [telemetryInteractEdata]="cardInteractEdata"
                         [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractCdata]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType}"
                         (clickEvent)="playContent($event)" [data]="content" class="d-block" [class.last-card]="mr-0">
-                    </app-offline-card>
+                    </app-offline-card> -->
                 </ng-template>
                 <!--/Course & Resourse Card-->
             </div>

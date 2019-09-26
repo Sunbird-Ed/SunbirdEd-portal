@@ -43,12 +43,14 @@ export class PageSectionComponent implements OnInit, OnDestroy {
   maxSlide = 0;
 
   isOffline: boolean = environment.isOffline;
+  defaultImg = 'assets/images/book.png';
 
   constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     private cdr: ChangeDetectorRef) {
       this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
     }
   playContent(event) {
+    console.log('eventtttttt', event);
     event.section = this.section.name;
     this.playEvent.emit(event);
   }

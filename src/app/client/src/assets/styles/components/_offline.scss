@@ -506,8 +506,12 @@ background:$primary-0;
 
 .slick-initialized .slick-slide {
   display: block;
-  min-width: 214px;
+  min-width: 320px;
 }
 .slick-slider .slick-track, .slick-slider .slick-list {
   display:flex;
+}
+.slick-track{
+  padding-bottom: 8px;
+  padding-top:0px;
 }

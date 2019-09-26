@@ -171,7 +171,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.ExplorePage;
     const carouselData = _.reduce(sections, (collector, element) => {
       const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
-      element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
+      element.contents = contents;
+      // element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
       if (element.contents && element.contents.length) {
         collector.push(element);
       }
@@ -180,11 +181,12 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     return carouselData;
   }
   public prepareVisits(event) {
+    console.log('eventttt', event);
     _.forEach(event, (inView, index) => {
-      if (inView.metaData.identifier) {
+      if (inView.identifier) {
         this.inViewLogs.push({
-          objid: inView.metaData.identifier,
-          objtype: inView.metaData.contentType,
+          objid: inView.identifier,
+          objtype: inView.contentType,
           index: index,
           section: inView.section,
         });
@@ -195,7 +197,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-
+    console.log('eventtttttt', event);
     // For offline environment content will only play when event.action is open
     if (event.action === 'download' && this.isOffline) {
       this.startDownload(event.data.metaData.identifier);
@@ -211,7 +213,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.showLoginModal = true;
-      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.identifier;
     } else {
       if (_.includes(this.router.url, 'browse') && this.isOffline) {
         this.publicPlayerService.playContentForOfflineBrowse(event);
