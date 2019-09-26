@@ -12,6 +12,7 @@
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
     "CONTENT_PREFIX": "/content/",
+    "ELECTRON_DIALOG_PREFIX": "/dialog/",
     "PUBLIC_PREFIX": "/api/",
     "EXT_PLUGIN_PREFIX": "/plugin/",
     "ANNOUNCEMENT_PREFIX": "/announcement/v1",
@@ -175,6 +176,9 @@
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
       "RESET_PASSWORD": "user/v1/password/reset"
+    },
+    "ELECTRON_DIALOG": {
+      "CONTENT_IMPORT": "content/import"
     }
   }
 }

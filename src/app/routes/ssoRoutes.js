@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const envHelper = require('../helpers/environmentVariablesHelper');
 const {encrypt, decrypt} = require('../helpers/crypto');
 const {
-  verifySignature, verifyIdentifier, verifyToken, fetchUserWithExternalId, createUser,
-  createSession, updateContact, updateRoles, sendSsoKafkaMessage, migrateUser, freeUpUser
+  verifySignature, verifyIdentifier, verifyToken, fetchUserWithExternalId, createUser, fetchUserDetails,
+  createSession, updateContact, updateRoles, sendSsoKafkaMessage, migrateUser, freeUpUser, getIdentifier
 } = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
 const {generateAuthToken, getGrantFromCode} = require('../helpers/keyCloakHelperService');
@@ -397,7 +397,8 @@ module.exports = (app) => {
       errType = 'VERIFY_TOKEN';
       verifyToken(stateJwtPayload);
       console.log('state token validated success');
-      const nonStateUserData = jwt.decode(req.session.nonStateUserToken);
+      errType = 'ERROR_FETCHING_USER_DETAILS';
+      const nonStateUserData = await fetchUserDetails(req.session.nonStateUserToken);
       errType = 'ERROR_VERIFYING_IDENTITY';
       const isMigrationAllowed = verifyIdentifier(stateUserData.identifierValue, nonStateUserData[stateUserData.identifier], stateUserData.identifier);
       console.log('ismigration allowed', isMigrationAllowed);

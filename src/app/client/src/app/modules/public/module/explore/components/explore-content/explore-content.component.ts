@@ -267,7 +267,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             this.downloadManagerService.downloadContentId = '';
             this.showDownloadLoader = false;
             _.each(this.contentList, (contents) => {
-                contents['downloadStatus'] = 'FAILED';
+                contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
             });
             this.toasterService.error(this.resourceService.messages.fmsg.m0090);
         });

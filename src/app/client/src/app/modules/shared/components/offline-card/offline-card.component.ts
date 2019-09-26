@@ -33,7 +33,7 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   public unsubscribe = new Subject<void>();
   showModal = false;
   public telemetryInteractObject: IInteractEventObject;
-  public downloadYoutubeContentEdata: IInteractEventEdata;
+  public downloadContentEdata: IInteractEventEdata;
   public cancelDownloadYoutubeContentEdata: IInteractEventEdata;
 
   @HostListener('mouseenter') onMouseEnter() {
@@ -105,7 +105,7 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
       type: this.data.contentType,
       ver: '1.0'
     };
-    this.downloadYoutubeContentEdata = {
+    this.downloadContentEdata = {
       id: 'download-content',
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
