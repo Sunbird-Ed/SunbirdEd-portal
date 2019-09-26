@@ -125,7 +125,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   downloadCert(certificates) {
     _.forEach(certificates, (value, key) => {
-      if (value && value.name === '100PercentCompletionCertificate') {
+      if (key === 0) {
         const request = {
           request: {
             pdfUrl: _.get(value, 'url')
