@@ -156,5 +156,29 @@ export const Response = {
         'topic': 'Volumes and Capacity'
       },
         'section': 'Featured Content'
-        }
+        },
+      download_list : {
+          id: 'api.content.download.list',
+          ver: '1.0',
+          ts: '2019-08-22T05:07:39.363Z',
+          params: {
+            resmsgid: 'f2da2305-75c9-4b54-a454-72cfe6433ebe',
+            msgid: '2025a654-e573-4546-b87d-0a293f2f6564',
+            status: 'successful',
+            err: null,
+            errmsg: null,
+          },
+          responseCode: 'OK',
+          result: {
+            response: {
+              downloads: {
+                submitted: [],
+                inprogress: [],
+                failed: [],
+                completed: [],
+              },
+            },
+          },
+        },
+
 };
