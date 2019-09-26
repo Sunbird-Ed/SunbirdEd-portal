@@ -179,6 +179,25 @@ setFingerPrintTelemetry() {
       };
       this.telemetryService.exData(event);
     }
+
+    if (localStorage && localStorage.getItem('fpDetails_v1')) {
+      const fpDetails = JSON.parse(localStorage.getItem('fpDetails_v1'));
+      const fingerprintInfoV1 = {
+        deviceId: fpDetails.result,
+        components: fpDetails.components,
+        version: 'v1'
+      };
+      const event = {
+        context: {
+          env : 'app'
+        },
+        edata : {
+          type : 'fingerprint_info',
+          data : JSON.stringify(fingerprintInfoV1)
+        }
+      };
+      this.telemetryService.exData(event);
+    }
   }
 
   logCdnStatus() {
