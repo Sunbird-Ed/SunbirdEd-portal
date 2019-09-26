@@ -1,3 +1,6 @@
+@import 'variables';
+@import "./mixins/mixins";
+
 .sb-prominent-filter-field {
   .form-control {
     min-width: 100%;
@@ -187,7 +190,7 @@
     }
     .graph-stat-value{
       font-weight: bold;
-      font-size: 64px;
+      font-size: 40px;
     }
     .graph-stat-info{
       color: #999999;
@@ -208,4 +211,22 @@
     font-size: 14px;
     font-weight: bold;
  
+}
+
+
+@include respond-below(md) {
+  .dashboard-graph-statistics {
+    border-bottom: 1px solid #ddd;
+    .graph-stat-block {
+      .graph-stat-label {
+        font-size: 14px;
+      }
+      .graph-stat-value {
+        font-size: 28px;
+      }
+      .graph-stat-info {
+        font-size: 14px;
+      }
+    }
+  }
 }
