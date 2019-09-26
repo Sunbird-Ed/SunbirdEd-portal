@@ -154,7 +154,7 @@ file: any;
     this.userUploadInstructions = [
       { instructions: this.resourceService.frmelmnts.instn.t0099 },
       { instructions: this.resourceService.frmelmnts.instn.t0100 },
-      { instructions: this.resourceService.frmelmnts.instn.t0101 },
+      // { instructions: this.resourceService.frmelmnts.instn.t0101 },
       { instructions: this.resourceService.frmelmnts.instn.t0102 },
       { instructions: this.resourceService.frmelmnts.instn.t0103 },
       { instructions: this.resourceService.frmelmnts.instn.t0104 },
@@ -202,6 +202,7 @@ file: any;
             this.showLoader = false;
             this.processId = apiResponse.result.processId;
             this.toasterService.success(this.resourceService.messages.smsg.m0030);
+            this.modal.deny();
           },
           err => {
             this.showLoader = false;
