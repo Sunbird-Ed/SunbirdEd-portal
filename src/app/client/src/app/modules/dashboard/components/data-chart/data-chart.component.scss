@@ -40,7 +40,8 @@
   //   }
 }
 
-.graph-statistics {
+.graph-statistics
+ {
   border-bottom: 1px solid #ddd;
 }
 
@@ -167,3 +168,26 @@
   }
 } 
 
+.sb-last-update-status{
+  color: #999;
+  font-size: 14px;
+  font-weight: bold;
+} 
+
+.dashboard-graph-statistics{
+  border-bottom: 1px solid #ddd;
+  .graph-stat-block{
+    flex: 1;
+    .sb-label-name,.sb-label-value{
+      font-size: 18px;
+    }
+    .graph-stat-value{
+      font-weight: bold;
+      font-size: 64px;
+    }
+    .graph-stat-info{
+      color: #999999;
+      font-size: 18px;
+    }
+  }
+}
