@@ -1,5 +1,15 @@
 @import "../mixins/mixins";
 
+.sbcard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
+  grid-gap: 0rem;
+  @media screen and (min-width: 768px) {
+    grid-gap: 1rem;
+  }
+  //&__grid-item{}
+ }
+
 .sb-card {
   width: $sb-card-width;
   // max-width: $sb-card-width;
