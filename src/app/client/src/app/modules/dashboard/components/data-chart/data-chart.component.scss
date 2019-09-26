@@ -175,10 +175,14 @@
 } 
 
 .dashboard-graph-statistics{
-  border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 24px;
   .graph-stat-block{
     flex: 1;
-    .sb-label-name,.sb-label-value{
+    border-right:1px solid #d4d8da !important;
+    .graph-stat-label{
       font-size: 18px;
     }
     .graph-stat-value{
@@ -188,6 +192,9 @@
     .graph-stat-info{
       color: #999999;
       font-size: 18px;
+    }
+    &:nth-child(3n+3) {  
+      border-right:0px solid #d4d8da !important
     }
   }
 }
@@ -200,4 +207,5 @@
     color: #999;
     font-size: 14px;
     font-weight: bold;
+ 
 }
