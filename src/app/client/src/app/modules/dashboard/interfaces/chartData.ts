@@ -1,5 +1,5 @@
 export interface bigNumberChart {
-    header: 'string',
-    dataExpr: 'string',
-    footer?: 'string'
+    header: 'string';
+    dataExpr: 'string';
+    footer?: 'string';
 }

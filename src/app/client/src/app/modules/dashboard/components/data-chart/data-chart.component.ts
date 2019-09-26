@@ -1,3 +1,4 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
@@ -8,7 +9,7 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
-import { bigNumberChart } from '../../interfaces/chartData'
+import { bigNumberChart } from '../../interfaces/chartData';
 @Component({
   selector: 'app-data-chart',
   templateUrl: './data-chart.component.html',
@@ -54,6 +55,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
   showGraphStats: Boolean = false;
   bigNumberCharts: Array<{}> = [];
 
+  iframeDetails: any;
+  lastUpdatedOn: any;
+  showLastUpdatedOn: Boolean = false;
 
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
 
@@ -68,13 +72,16 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder,
-    private toasterService: ToasterService, private activatedRoute: ActivatedRoute) {
+    private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer) {
     this.alwaysShowCalendars = true;
   }
 
   ngOnInit() {
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
+    if (_.get(this.chartInfo, 'lastUpdatedOn')) {
+      this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
+    }
     this.prepareChart();
     this.setTelemetryCdata();
     if (this.filters) {
@@ -139,21 +146,44 @@ export class DataChartComponent implements OnInit, OnDestroy {
           bigNumberChart['data'] = _.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])));
           this.bigNumberCharts.push(bigNumberChart);
         }
-      })
+      });
     }
   }
 
-  prepareChart() {
-    this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
-    this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
-    this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
-    this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
-    this.filters = _.get(this.chartConfig, 'filters') || [];
-    this.showGraphStats = _.get(this.chartOptions, 'showGraphStats') || false;
-    if (_.get(this.chartConfig, 'bigNumbers')) {
-      this.calculateBigNumber();
+  private checkForExternalChart() {
+    const iframeConfig = _.get(this.chartConfig, 'iframeConfig');
+    if (iframeConfig) {
+      if (_.get(iframeConfig, 'sourceUrl')) {
+        return true;
+      }
     }
-    this.getDataSetValue();
+    return false;
+  }
+
+  getIframeURL() {
+    const url = `${_.get(this.iframeDetails, 'sourceUrl')}?qs=${Math.round(Math.random() * 10000000)}`; // to prevent browser caching
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  prepareChart() {
+    if (!this.checkForExternalChart()) {
+      this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
+      this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
+      this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
+      this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
+      this.showLastUpdatedOn = false;
+      if (_.get(this.chartConfig, 'options.showLastUpdatedOn') && this.lastUpdatedOn) {
+        this.showLastUpdatedOn = true;
+      }
+      this.showGraphStats = _.get(this.chartOptions, 'showGraphStats') || false;
+      if (_.get(this.chartConfig, 'bigNumbers')) {
+        this.calculateBigNumber();
+      }
+      this.getDataSetValue();
+    } else {
+      this.iframeDetails = _.get(this.chartConfig, 'iframeConfig');
+    }
+    this.filters = _.get(this.chartConfig, 'filters') || [];
   }
 
   getDataSetValue(chartData = this.chartData) {
@@ -243,6 +273,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
+
 }
 
 
