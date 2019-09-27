@@ -49,6 +49,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public dialSearchSource: string;
   public showBatchInfo = false;
   public selectedCourseBatches: any;
+  public singleContentRedirect = '';
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
@@ -121,6 +122,9 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
       this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
       this.appendItems(0, this.itemsToLoad);
+      if (this.searchResults.length === 1) {
+        this.singleContentRedirect = this.searchResults[0]['name'];
+      }
       this.showLoader = false;
     }, error => {
       this.showLoader = false;
