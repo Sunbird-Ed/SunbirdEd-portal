@@ -49,6 +49,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   public dialSearchSource: string;
   public showBatchInfo = false;
   public selectedCourseBatches: any;
+  public singleContentRedirect = '';
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
