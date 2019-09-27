@@ -168,16 +168,7 @@ setFingerPrintTelemetry() {
     }
 
     if (this.fingerprintInfo) {
-      const event = {
-        context: {
-          env : 'app'
-        },
-        edata : {
-          type : 'fingerprint_info',
-          data : JSON.stringify(this.fingerprintInfo)
-        }
-      };
-      this.telemetryService.exData(event);
+      this.logExData('fingerprint_info', this.fingerprintInfo );
     }
 
     if (localStorage && localStorage.getItem('fpDetails_v1')) {
@@ -187,17 +178,21 @@ setFingerPrintTelemetry() {
         components: fpDetails.components,
         version: 'v1'
       };
-      const event = {
-        context: {
-          env : 'app'
-        },
-        edata : {
-          type : 'fingerprint_info',
-          data : JSON.stringify(fingerprintInfoV1)
-        }
-      };
-      this.telemetryService.exData(event);
+      this.logExData('fingerprint_info', fingerprintInfoV1);
     }
+  }
+
+  logExData(type: string, data: object) {
+    const event = {
+      context: {
+        env : 'app'
+      },
+      edata : {
+        type : type,
+        data : JSON.stringify(data)
+      }
+    };
+    this.telemetryService.exData(event);
   }
 
   logCdnStatus() {
