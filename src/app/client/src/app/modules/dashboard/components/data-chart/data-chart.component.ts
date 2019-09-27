@@ -176,12 +176,12 @@ export class DataChartComponent implements OnInit, OnDestroy {
         this.showLastUpdatedOn = true;
       }
       this.showGraphStats = _.get(this.chartOptions, 'showGraphStats') || false;
-      if (_.get(this.chartConfig, 'bigNumbers')) {
-        this.calculateBigNumber();
-      }
       this.getDataSetValue();
     } else {
       this.iframeDetails = _.get(this.chartConfig, 'iframeConfig');
+    }
+    if (_.get(this.chartConfig, 'bigNumbers')) {
+      this.calculateBigNumber();
     }
     this.filters = _.get(this.chartConfig, 'filters') || [];
   }
