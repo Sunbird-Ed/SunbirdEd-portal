@@ -1,5 +1,5 @@
 <div class="graph-filters">
-  <form [formGroup]="filtersFormGroup" class="ui form" *ngIf="!iframeDetails">
+  <form [formGroup]="filtersFormGroup" class="ui form" *ngIf="showChart">
     <div class="d-flex flex-w-wrap reset-filter-section" *ngIf="showFilters">
       <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
         <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
@@ -96,12 +96,12 @@
   <div class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status" *ngIf="showLastUpdatedOn">
     <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
   </div>
-  <ng-container *ngIf="!iframeDetails; else externalChart">
+  <ng-container *ngIf="showChart && !iframeDetails">
     <canvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions" [chartType]="chartType"
       [legend]="legend" [colors]="chartColors"></canvas>
   </ng-container>
-  <ng-template #externalChart>
+  <ng-container *ngIf="iframeDetails">
     <iframe frameborder="0" class="dashboard-iframe" [src]="getIframeURL()">
     </iframe>
-  </ng-template>
+  </ng-container>
 </div>

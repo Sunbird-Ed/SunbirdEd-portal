@@ -58,6 +58,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   iframeDetails: any;
   lastUpdatedOn: any;
   showLastUpdatedOn: Boolean = false;
+  showChart: Boolean = false;
 
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
 
@@ -172,8 +173,12 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
       this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
       this.showLastUpdatedOn = false;
+      this.showChart = false;
       if (_.get(this.chartConfig, 'options.showLastUpdatedOn') && this.lastUpdatedOn) {
         this.showLastUpdatedOn = true;
+      }
+      if ((_.get(this.chartConfig, 'labelsExpr') || _.get(this.chartConfig, 'labels')) && _.get(this.chartConfig, 'datasets')) {
+        this.showChart = true;
       }
       this.showGraphStats = _.get(this.chartOptions, 'showGraphStats') || false;
       this.getDataSetValue();
