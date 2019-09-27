@@ -9,6 +9,7 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
+import { IBigNumberChart } from '../../interfaces/chartData';
 @Component({
   selector: 'app-data-chart',
   templateUrl: './data-chart.component.html',
@@ -51,6 +52,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
   selectedFilters: {};
   dateFilterReferenceName;
   telemetryCdata: Array<{}>;
+  showGraphStats: Boolean = false;
+  bigNumberCharts: Array<{}> = [];
+
   iframeDetails: any;
   lastUpdatedOn: any;
   showLastUpdatedOn: Boolean = false;
@@ -130,6 +134,22 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
   }
 
+  private calculateBigNumber() {
+    const bigNumbersConfig = _.get(this.chartConfig, 'bigNumbers');
+    this.bigNumberCharts = [];
+    if (bigNumbersConfig.length) {
+      _.forEach(bigNumbersConfig, (config: IBigNumberChart) => {
+        const bigNumberChartObj = {};
+        if (_.get(config, 'dataExpr')) {
+          bigNumberChartObj['header'] = _.get(config, 'header') || '';
+          bigNumberChartObj['footer'] = _.get(config, 'footer') || _.get(config, 'dataExpr');
+          bigNumberChartObj['data'] = _.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])));
+          this.bigNumberCharts.push(bigNumberChartObj);
+        }
+      });
+    }
+  }
+
   private checkForExternalChart() {
     const iframeConfig = _.get(this.chartConfig, 'iframeConfig');
     if (iframeConfig) {
@@ -155,9 +175,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
       if (_.get(this.chartConfig, 'options.showLastUpdatedOn') && this.lastUpdatedOn) {
         this.showLastUpdatedOn = true;
       }
+      this.showGraphStats = _.get(this.chartOptions, 'showGraphStats') || false;
       this.getDataSetValue();
     } else {
       this.iframeDetails = _.get(this.chartConfig, 'iframeConfig');
+    }
+    if (_.get(this.chartConfig, 'bigNumbers')) {
+      this.calculateBigNumber();
     }
     this.filters = _.get(this.chartConfig, 'filters') || [];
   }
@@ -182,14 +206,16 @@ export class DataChartComponent implements OnInit, OnDestroy {
       });
     });
 
-    _.forEach(this.datasets, dataset => {
-      this.resultStatistics[dataset.label] = {
-        sum: _.sumBy(dataset.data, (val) => _.toNumber(val)).toFixed(2),
-        min: _.minBy(dataset.data, (val) => _.toNumber(val)),
-        max: _.maxBy(dataset.data, (val) => _.toNumber(val)),
-        avg: dataset.data.length > 0 ? (_.sumBy(dataset.data, (val) => _.toNumber(val)) / dataset.data.length).toFixed(2) : 0
-      };
-    });
+    if (this.showGraphStats) {
+      _.forEach(this.datasets, dataset => {
+        this.resultStatistics[dataset.label] = {
+          sum: _.sumBy(dataset.data, (val) => _.toNumber(val)).toFixed(2),
+          min: _.minBy(dataset.data, (val) => _.toNumber(val)),
+          max: _.maxBy(dataset.data, (val) => _.toNumber(val)),
+          avg: dataset.data.length > 0 ? (_.sumBy(dataset.data, (val) => _.toNumber(val)) / dataset.data.length).toFixed(2) : 0
+        };
+      });
+    }
   }
 
   getData(groupedDataBasedOnLabels, dataExpr) {
@@ -249,3 +275,5 @@ export class DataChartComponent implements OnInit, OnDestroy {
   }
 
 }
+
+
