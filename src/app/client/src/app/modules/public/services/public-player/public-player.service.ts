@@ -126,16 +126,16 @@ export class PublicPlayerService {
   public playContentForOfflineBrowse(event) {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
-      if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      if (event.data.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         if (event.data.contentType === 'Course') {
-          this.router.navigate(['browse/play/learn/course', event.data.metaData.identifier]);
+          this.router.navigate(['browse/play/learn/course', event.data.identifier]);
         } else {
-          this.router.navigate(['browse/play/collection', event.data.metaData.identifier],
-            { queryParams: { contentType: event.data.metaData.contentType } });
+          this.router.navigate(['browse/play/collection', event.data.identifier],
+            { queryParams: { contentType: event.data.contentType } });
         }
       } else {
-        this.router.navigate(['browse/play/content', event.data.metaData.identifier],
-          { queryParams: { contentType: event.data.metaData.contentType } });
+        this.router.navigate(['browse/play/content', event.data.identifier],
+          { queryParams: { contentType: event.data.contentType } });
       }
     }, 0);
   }
@@ -143,16 +143,16 @@ export class PublicPlayerService {
   public playContent(event) {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
-      if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      if (event.data.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         if (event.data.contentType === 'Course') {
-          this.router.navigate(['learn/course', event.data.metaData.identifier]);
+          this.router.navigate(['learn/course', event.data.identifier]);
         } else {
-          this.router.navigate(['play/collection', event.data.metaData.identifier],
-          {queryParams: {contentType: event.data.metaData.contentType}});
+          this.router.navigate(['play/collection', event.data.identifier],
+          {queryParams: {contentType: event.data.contentType}});
         }
       } else {
-        this.router.navigate(['play/content', event.data.metaData.identifier],
-        {queryParams: {contentType: event.data.metaData.contentType}});
+        this.router.navigate(['play/content', event.data.identifier],
+        {queryParams: {contentType: event.data.contentType}});
       }
     }, 0);
   }

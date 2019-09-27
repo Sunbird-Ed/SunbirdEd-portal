@@ -44,6 +44,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     showExportLoader = false;
     contentName: string;
     showDownloadLoader = false;
+    defaultImg = 'assets/images/book.png';
 
     constructor(public searchService: SearchService, public router: Router,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -151,7 +152,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
             this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                 this.configService.appConfig.SEARCH.PAGE_LIMIT);
             const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
-            this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+            this.contentList = data.result.content;
+            // this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
         }, err => {
             this.showLoader = false;
             this.contentList = [];
@@ -194,6 +196,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         };
     }
     public playContent(event) {
+        console.log('eventtttttt', event);
         // For offline environment content will only play when event.action is open
         if (event.action === 'download' && this.isOffline) {
             this.startDownload(event.data.metaData.identifier);
@@ -209,7 +212,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
 
         if (!this.userService.loggedIn && event.data.contentType === 'Course') {
             this.showLoginModal = true;
-            this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
+            this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.identifier;
         } else {
             if (_.includes(this.router.url, 'browse') && this.isOffline) {
                 this.publicPlayerService.playContentForOfflineBrowse(event);
@@ -220,11 +223,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {
-            const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier});
+            const obj = _.find(this.inViewLogs, { objid: elem.data.identifier});
             if (!obj) {
                 this.inViewLogs.push({
-                    objid: elem.data.metaData.identifier,
-                    objtype: elem.data.metaData.contentType || 'content',
+                    objid: elem.data.identifier,
+                    objtype: elem.data.contentType || 'content',
                     index: elem.id
                 });
             }
