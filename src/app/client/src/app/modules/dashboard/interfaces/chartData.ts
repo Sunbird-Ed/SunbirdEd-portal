@@ -1,4 +1,4 @@
-export interface bigNumberChart {
+export interface IBigNumberChart {
     header: 'string';
     dataExpr: 'string';
     footer?: 'string';

@@ -9,7 +9,7 @@ import { Subscription, Subject } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
-import { bigNumberChart } from '../../interfaces/chartData';
+import { IBigNumberChart } from '../../interfaces/chartData';
 @Component({
   selector: 'app-data-chart',
   templateUrl: './data-chart.component.html',
@@ -138,13 +138,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
     const bigNumbersConfig = _.get(this.chartConfig, 'bigNumbers');
     this.bigNumberCharts = [];
     if (bigNumbersConfig.length) {
-      _.forEach(bigNumbersConfig, (config: bigNumberChart) => {
-        const bigNumberChart = {};
+      _.forEach(bigNumbersConfig, (config: IBigNumberChart) => {
+        const bigNumberChartObj = {};
         if (_.get(config, 'dataExpr')) {
-          bigNumberChart['header'] = _.get(config, 'header') || '';
-          bigNumberChart['footer'] = _.get(config, 'footer') || _.get(config, 'dataExpr');
-          bigNumberChart['data'] = _.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])));
-          this.bigNumberCharts.push(bigNumberChart);
+          bigNumberChartObj['header'] = _.get(config, 'header') || '';
+          bigNumberChartObj['footer'] = _.get(config, 'footer') || _.get(config, 'dataExpr');
+          bigNumberChartObj['data'] = _.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])));
+          this.bigNumberCharts.push(bigNumberChartObj);
         }
       });
     }
