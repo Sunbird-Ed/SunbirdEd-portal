@@ -374,7 +374,7 @@ module.exports = (app) => {
     if (req.query.client_id === 'android') {
       console.log('req.query.client_id', req.query.client_id);
       req.session.migrateAccountInfo = {
-        encryptedData: req.get('x-authenticated-user-data')
+        encryptedData: parseJson(decodeURIComponent(req.get('x-authenticated-user-data')))
       };
     }
     req.session.nonStateUserToken = req.session.nonStateUserToken || req.get('x-authenticated-user-token');
@@ -437,7 +437,7 @@ module.exports = (app) => {
       if (req.query.client_id === 'android') {
         response = {
           "id": "api.user.migrate", "params": {
-            "resmsgid": null, "err": error, "status": "error",
+            "resmsgid": null, "err": JSON.stringify(error), "status": "error",
             "errType": errType
           }, "responseCode": "INTERNAL_SERVER_ERROR", "result": {"response": "ERROR",}
         };

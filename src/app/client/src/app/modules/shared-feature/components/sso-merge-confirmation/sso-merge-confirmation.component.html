@@ -9,8 +9,10 @@
         {{resourceService.frmelmnts?.lbl?.mergeAccount}}</h3>
     </div>
     <div class="text-left">
-        <p class="py-8 m-0">{{resourceService.messages?.imsg?.m0070 | interpolate:'{instance}': instance }}:</p>
-        <ul class="m-0 sb-list-items">
+      <p
+        class="py-8 m-0">{{resourceService.messages?.imsg?.m0070 | interpolate:'{instance}': instance | interpolate:'{identifierValue}':identifierValue }}
+        :</p>
+      <ul class="m-0 sb-list-items">
           <li class="mb-8">
             {{resourceService.messages?.imsg?.m0063}}
           </li>
