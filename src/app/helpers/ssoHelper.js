@@ -6,6 +6,8 @@ const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const kafkaService = require('../helpers/kafkaHelperService');
 const logger = require('sb_logger_util_v2');
+const {getUserIdFromToken} = require('../helpers/jwtHelper');
+const {getUserDetails} = require('../helpers/userHelper');
 let ssoWhiteListChannels;
 const privateBaseUrl = '/private/user/'
 
@@ -75,6 +77,31 @@ const fetchUserWithExternalId = async (payload, req) => { // will be called from
     }
   }).catch(handleGetUserByIdError);
 }
+
+const freeUpUser = async (req) => {
+  const freeUprequest = {
+    id: req.query.userId,
+    identifier: [req.query.identifier]
+  };
+  const options = {
+    method: 'POST',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl + 'v1/identifier/freeup',
+    headers: getHeaders(req),
+    body: {
+      request: freeUprequest
+    },
+    json: true
+  };
+  logger.info({msg:'sso free up user request', additionalInfo:{requestBody: freeUprequest }});
+  return request(options).then(data => {
+    if (data.responseCode === 'OK' && _.get(data, 'result.response') === 'SUCCESS') {
+      logger.info({msg:'sso free up user response', additionalInfo:{data}});
+      return data;
+    } else {
+      throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+    }
+  })
+};
 const createUser = async (req, jwtPayload) => {
   const requestBody = {
     firstName: jwtPayload.name,
@@ -105,6 +132,7 @@ const createUser = async (req, jwtPayload) => {
     },
     json: true
   }
+  console.log('sso user create user request', JSON.stringify(options));
   logger.info({msg:'sso user create user request', additionalInfo:{requestBody: requestBody }})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
@@ -143,7 +171,7 @@ const updateContact = (req, userDetails) => { // will be called from player dock
       userId: userDetails.id,
       email: req.query.value,
       emailVerified: true
-    } 
+    }
   }
   const options = {
     method: 'PATCH',
@@ -190,7 +218,7 @@ const updateRoles = (req, userId, jwtPayload) => { // will be called from player
 }
 const migrateUser = (req, jwtPayload) => { // will be called from player docker to learner docker
   const requestBody = {
-    userId: req.query.userId,          
+    userId: req.query.userId,
     channel:jwtPayload.state_id,
     orgExternalId: jwtPayload.school_id,
     externalIds: [{
@@ -304,6 +332,55 @@ const sendSsoKafkaMessage = async (req) => {
   }
 };
 
+/**
+ *
+ * @param stateVerifiedIdentifier valid email or phone
+ * @param nonStateMaskedIdentifier masked email or phone
+ * @param identifierType can be email or phone
+ * @returns {*|boolean}
+ */
+const verifyIdentifier = (stateVerifiedIdentifier, nonStateMaskedIdentifier, identifierType) => {
+  console.log("stateVerifiedIdentifier", stateVerifiedIdentifier);
+  console.log("nonStateMaskedIdentifier", nonStateMaskedIdentifier);
+  console.log("identifierType", identifierType);
+  if (identifierType === 'email') {
+    var splittedData = nonStateMaskedIdentifier.split("@");
+    if (_.isArray(splittedData) && splittedData.length > 1) {
+      return stateVerifiedIdentifier.includes(splittedData[1]) && stateVerifiedIdentifier.includes(splittedData[0].slice(0, 2)) && nonStateMaskedIdentifier.length === stateVerifiedIdentifier.length;
+    } else {
+      throw "ERROR_PARSING_EMAIL"
+    }
+  } else if (identifierType === 'phone') {
+    var extractedNumber = nonStateMaskedIdentifier.slice(6, nonStateMaskedIdentifier.length);
+    return stateVerifiedIdentifier.includes(extractedNumber) && nonStateMaskedIdentifier.length === stateVerifiedIdentifier.length;
+  } else {
+    throw "UNKNOWN_IDENTIFIER"
+  }
+};
+
+/**
+ *
+ */
+const fetchUserDetails = async (token) => {
+  const userId = getUserIdFromToken(token);
+  return await getUserDetails(userId, token);
+};
+
+/**
+ *
+ * @param identifier
+ * @returns {string}
+ */
+const getIdentifier = (identifier) => {
+  if (identifier === 'email') {
+    return 'email'
+  } else if (identifier === 'phone') {
+    return 'maskedPhone'
+  } else {
+    throw "UNKNOWN_IDENTIFIER_CANNOT_PROCESS"
+  }
+};
+
 module.exports = {
   verifySignature,
   verifyToken,
@@ -313,5 +390,9 @@ module.exports = {
   updateContact,
   updateRoles,
   sendSsoKafkaMessage,
-  migrateUser
+  migrateUser,
+  freeUpUser,
+  verifyIdentifier,
+  fetchUserDetails,
+  getIdentifier
 };

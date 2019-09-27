@@ -14,6 +14,7 @@ export const CollectionHierarchyGetMockResponse = {
     'responseCode': 'OK',
     'result': {
         'content': {
+            'downloadStatus': 'DOWNLOAD',
             'code': 'org.ekstep.textbook.1498025274',
             'notes': '',
             'keywords': [

@@ -2,7 +2,7 @@ import { UserService } from '@sunbird/core';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import * as _ from 'lodash-es';
 @Component({
@@ -34,7 +34,8 @@ export class AccountRecoveryInfoComponent implements OnInit {
   constructor(
     public resourceService: ResourceService,
     public profileService: ProfileService,
-    public userService: UserService) { }
+    public userService: UserService,
+    public toasterService: ToasterService) { }
 
   ngOnInit() {
     this.contactType = 'emailId';
@@ -76,6 +77,9 @@ export class AccountRecoveryInfoComponent implements OnInit {
       if (_.get(error, 'error.params.err') === 'RECOVERY_PARAM_MATCH_EXCEPTION') {
         this.duplicateRecoveryId = true;
         this.accountRecoveryForm.reset();
+      } else {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        this.closeModal();
       }
     });
   }

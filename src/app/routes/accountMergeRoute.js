@@ -59,20 +59,23 @@ module.exports = (app) => {
       u2Token = u2Token.access_token;
     }
     console.log('target account logged in: getting access token', u2Token);
+    const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/logout?redirect_uri=`;
     const mergeResponse = await initiateAccountMerge(_.get(req, 'session.mergeAccountInfo.initiatorAccountDetails'),
       u2Token).catch(err => {
       console.log('error in initiateAccountMerge', JSON.stringify(err));
       console.log('error detals', err.statusCode, err.message);
-      const query = '?status=error&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
+      const query = '?status=error&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
       req.session.mergeAccountInfo = null;
-      res.redirect('/accountMerge' + query);
+      const redirectUri = `https://${req.get('host')}/accountMerge` + query;
+      res.redirect(url + redirectUri);
     });
     if (_.get(mergeResponse, 'result.result.status') === 'SUCCESS' && mergeResponse.responseCode === 'OK') {
       console.log('mergeResponse coming from backend', JSON.stringify(mergeResponse));
-      const query = '?status=success&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
+      const query = '?status=success&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
       console.log('after final success', query);
+      const redirectUri = `https://${req.get('host')}/accountMerge` + query;
       req.session.mergeAccountInfo = null;
-      res.redirect('/accountMerge' + query);
+      res.redirect(url + redirectUri);
     }
   })
 };

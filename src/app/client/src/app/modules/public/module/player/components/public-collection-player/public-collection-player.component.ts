@@ -1,20 +1,21 @@
 
-import { map, catchError, first, mergeMap } from 'rxjs/operators';
+import { map, catchError, first, mergeMap, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
-  ContentUtilsServiceService
+  ContentUtilsServiceService, UtilService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
-
+import { DownloadManagerService } from '@sunbird/offline';
+import { environment } from '@sunbird/environment';
 @Component({
   selector: 'app-public-collection-player',
   templateUrl: './public-collection-player.component.html'
@@ -91,11 +92,17 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 	*/
   public dialCode: string;
   playerOption: any;
+  public playerContent;
+  isOffline: boolean = environment.isOffline;
+  public unsubscribe$ = new Subject<void>();
+
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
-    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService) {
+    public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
+    public downloadManagerService: DownloadManagerService,
+    public utilService: UtilService) {
     this.contentService = contentService;
     this.route = route;
     this.playerService = playerService;
@@ -113,6 +120,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.getContent();
     this.deviceDetector();
     this.setTelemetryData();
+
   }
   setTelemetryData() {
     if (this.dialCode) {
@@ -134,6 +142,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       ver: '1.0'
     };
     this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
+
   }
 
   ngAfterViewInit () {
@@ -164,6 +173,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     if (this.subsrciption) {
       this.subsrciption.unsubscribe();
     }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   private initPlayer(id: string) {
@@ -285,6 +296,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
+            this.playerContent = _.get(content, 'model');
+            if (this.isOffline && _.isEqual(_.get(this.collectionData, 'downloadStatus'), 'DOWNLOADED')) {
+              this.playerContent['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
+            }
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
@@ -386,4 +401,5 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }
     };
   }
+
 }

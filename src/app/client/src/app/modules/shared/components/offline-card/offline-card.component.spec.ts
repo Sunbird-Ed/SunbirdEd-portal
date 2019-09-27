@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
+import { ResourceService, ConfigService, BrowserCacheTtlService, UtilService, OfflineCardService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -8,25 +8,33 @@ import { Response } from './offline-card.component.spec.data';
 import { OfflineCardComponent } from './offline-card.component';
 import { CacheService } from 'ng2-cache-service';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
-describe('CardComponent', () => {
+
+describe('OfflineCardComponent', () => {
   let component: OfflineCardComponent;
   let fixture: ComponentFixture<OfflineCardComponent>;
 
+  const resourceServiceMockData = {
+    messages: {
+      stmsg: { m0135: 'DOWNLOADING' },
+    }
+  };
+  const fakeActivatedRoute = { snapshot: { data: { telemetry: { pageid: 'browse' } } } };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
   }
-  class FakeActivatedRoute {
-  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [ OfflineCardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
+      declarations: [OfflineCardComponent, CdnprefixPipe],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService, OfflineCardService,
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        {provide: ResourceService, useValue: resourceServiceMockData}],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -56,21 +64,32 @@ describe('CardComponent', () => {
     spyOn(component.clickEvent, 'emit');
     component.onAction(component.data, 'export');
     expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
-    expect(component.showAddingToLibraryButton).toBeUndefined();
+    expect(component.data.downloadStatus).toBeUndefined();
   });
 
-   it('should emit change addingto librarybutton to true if the action is download in onAction ', () => {
+  it('should emit change addingto librarybutton to true if the action is download in onAction ', () => {
     const cdnprefixPipe = new CdnprefixPipe();
     component.data = Response.cardData;
     spyOn(component.clickEvent, 'emit');
+    component.data = Response.cardData;
+    const offlineCardService = TestBed.get(OfflineCardService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceServiceMockData.messages;
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(true);
     component.onAction(component.data, 'download');
-    expect(component.clickEvent.emit).toHaveBeenCalledTimes(1);
-    expect(Response.emitData.data.showAddingToLibraryButton).toBeTruthy();
+    expect(component.showModal).toBe(true);
+    expect(Response.emitData.data.downloadStatus).toBe(resourceService.messages.stmsg.m0135);  });
+
+  it('initially offlineRoute should be library', () => {
+    expect(component.currentRoute).toBe('library');
   });
 
-   it('initially offlineRoute should be library', () => {
-      expect(component.checkOfflineRoutes).toBe('library');
-    });
+  it('should call getPlayerDownloadStatus()', () => {
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'getPlayerDownloadStatus').and.returnValue(true);
+    component.currentRoute = 'browse';
+    component.checkStatus('DOWNLOAD');
+    expect(utilService.getPlayerDownloadStatus).toHaveBeenCalled();
+  });
 
 });
-

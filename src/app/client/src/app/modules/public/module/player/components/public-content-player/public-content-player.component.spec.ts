@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
-
+import { DownloadManagerService } from '@sunbird/offline';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
   events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
@@ -29,7 +29,8 @@ const fakeActivatedRoute = {
 const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
-    stmsg: { m0009: 'error' }
+    stmsg: { m0009: 'error' },
+    fmsg: { m0090: 'Could not download. Try again later'}
   },
   frmelmnts: {
     btn: {
@@ -50,7 +51,8 @@ describe('PublicContentPlayerComponent', () => {
       TelemetryModule.forRoot()],
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PublicPlayerService,
+      providers: [PublicPlayerService, DownloadManagerService,
+        ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
@@ -110,4 +112,5 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showPlayer).toBeTruthy();
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
+
 });

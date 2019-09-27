@@ -4,6 +4,10 @@ const learnerURL = envHelper.LEARNER_URL
 const learnerAuthorization = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryHelper = require('./telemetryHelper')
 const _ = require('lodash')
+const uuidv1 = require('uuid/v1');
+const requestPromise = require('request-promise'); //  'request' npm package with Promise support
+const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN;
+const logger = require('sb_logger_util_v2');
 
 module.exports = {
   updateLoginTime: function (req, callback) {
@@ -59,5 +63,27 @@ module.exports = {
         }
       }
     })
+  },
+  getUserDetails: async function (userId, userToken) {
+    const options = {
+      method: 'GET',
+      url: learnerURL + 'user/v1/read/' + userId,
+      headers: {
+        'x-msgid': uuidv1(),
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'Authorization': 'Bearer ' + apiAuthToken,
+        'x-authenticated-user-token': userToken
+      },
+      json: true
+    };
+    logger.info({msg: 'fetching user request', additionalInfo: {options: options}});
+    return requestPromise(options).then(data => {
+      if (data.responseCode === 'OK') {
+        return _.get(data, 'result.response');
+      } else {
+        throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+      }
+    })
   }
-}
+};

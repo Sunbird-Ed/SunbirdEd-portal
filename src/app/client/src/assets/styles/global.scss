@@ -49,7 +49,7 @@ body {
   }
 }
 .sb-offline {
-  padding-bottom: 170px;
+  padding-bottom: 145px;
   .footer-fix {
     min-height: calc(100vh - 180px);
    }
@@ -141,4 +141,7 @@ body {
 }
 .ui.info.message {
   color: black !important;
+}
+.cursor-default{
+  cursor: default !important;
 }

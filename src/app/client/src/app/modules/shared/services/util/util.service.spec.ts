@@ -1,3 +1,4 @@
+import { servicemockRes } from './util.service.spec.data';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { UtilService } from './util.service';
@@ -103,6 +104,4 @@ describe('UtilService', () => {
       spyOn(service, 'convertSelectedOption').and.callThrough();
       service.convertSelectedOption(null, null, null, null);
       expect(service.convertSelectedOption).toBeTruthy();
-    }));
-
-});
+    }));});

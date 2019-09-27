@@ -7,6 +7,7 @@ export const serverRes = {
         responseCode: 'OK',
         result: {
             content: {
+                downloadStatus: 'DOWNLOAD',
                 mimeType: 'application/vnd.ekstep.ecml-archive',
                 body: 'body',
                 identifier: 'domain_66675',

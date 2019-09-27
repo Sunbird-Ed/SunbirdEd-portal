@@ -6,13 +6,14 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash-es';
 import { Subject  } from 'rxjs';
 import {
-  ConfigService, ResourceService, ToasterService,
+  ConfigService, ResourceService, ToasterService, UtilService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-
+import { DownloadManagerService } from '@sunbird/offline';
+import { environment } from '@sunbird/environment';
 @Component({
   selector: 'app-public-content-player',
   templateUrl: './public-content-player.component.html'
@@ -55,11 +56,14 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
   public objectRollup = {};
+  isOffline: boolean = environment.isOffline;
+
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
-    private configService: ConfigService
+    private configService: ConfigService, public downloadManagerService: DownloadManagerService,
+    public utilService: UtilService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -83,6 +87,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.getContent();
       this.deviceDetector();
     });
+
   }
   setTelemetryData() {
     this.telemetryInteractObject = {
@@ -188,4 +193,5 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
 }
