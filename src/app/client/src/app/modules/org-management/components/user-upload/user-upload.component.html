@@ -24,7 +24,7 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     <div class="header">
       {{resourceService?.frmelmnts?.scttl?.instructions}}
     </div>
-    <div>{{resourceService?.frmelmnts?.instn?.t0098}} :</div>
+    <div>{{resourceService?.frmelmnts?.instn?.t0098}}</div>
     <ol class="ui list">
       <li *ngFor="let instn of userUploadInstructions">{{instn.instructions}}
       </li>
