@@ -23,7 +23,8 @@ const encrypt = (text) => {
  * @returns {string}
  */
 const decrypt = (text) => {
-  console.log(JSON.stringify(text));
+  console.log('object to decrypt', JSON.stringify(text));
+  console.log('encryption key', key);
   let iv = Buffer.from(text.iv, 'hex');
   console.log('iv captured', iv);
   let encryptedText = Buffer.from(text.encryptedData, 'hex');
