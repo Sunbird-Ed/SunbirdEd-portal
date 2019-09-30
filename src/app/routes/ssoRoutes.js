@@ -317,7 +317,7 @@ module.exports = (app) => {
       req.session.migrateAccountInfo.encryptedData = encrypt(JSON.stringify(dataToEncrypt));
       const payload = JSON.stringify(req.session.migrateAccountInfo.encryptedData);
       url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
-      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&identifierValue=${req.query.identifierValue}&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
+      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
       const userInfo = `&userId=${req.query.userId}&identifierType=${req.query.identifier}&identifierValue=${req.query.identifierValue}`;
       redirectUrl = url + query + userInfo;
       console.log('url for migration', redirectUrl);
@@ -458,6 +458,8 @@ module.exports = (app) => {
       });
       logErrorEvent(req, errType, error);
     } finally {
+      req.session.migrateAccountInfo = null;
+      req.session.nonStateUserToken = null;
       if (req.query.client_id === 'android') {
         res.status(statusCode).send(response)
       } else {
