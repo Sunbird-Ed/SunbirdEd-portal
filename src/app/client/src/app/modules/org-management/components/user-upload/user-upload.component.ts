@@ -226,12 +226,12 @@ file: any;
   }
   copyToClipboard() {
     const element = document.createElement('textarea');
-    document.body.appendChild(element);
+    document.getElementById('errorDiv').appendChild(element);
     element.value = this.error;
     element.select();
     document.execCommand('copy');
     setTimeout(() => {
-      document.body.removeChild(element);
+      document.getElementById('errorDiv').removeChild(element);
     }, 100);
   }
   ngOnDestroy() {
