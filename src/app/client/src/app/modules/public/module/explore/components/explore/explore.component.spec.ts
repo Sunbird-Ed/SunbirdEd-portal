@@ -27,9 +27,18 @@ describe('ExploreComponent', () => {
   }
   const resourceBundle = {
     'messages': {
-      'fmsg': {},
+      'fmsg': {
+        'm0027': 'Something went wrong',
+        'm0090': 'Could not download. Try again later',
+        'm0091': 'Could not copy content. Try again later'
+      },
+      'stmsg': {
+        'm0009': 'error',
+        'm0135': 'DOWNLOADING',
+        'm0138': 'FAILED',
+        'm0139': 'DOWNLOADED',
+      },
       'emsg': {},
-      'stmsg': {}
     }
   };
   class FakeActivatedRoute {
@@ -161,6 +170,35 @@ describe('ExploreComponent', () => {
     expect(component.showDownloadLoader).toBeFalsy();
     component.playContent(Response.download_event);
     expect(component.showDownloadLoader).toBeTruthy();
+  });
+
+  it('should call updateDownloadStatus when updateCardData is called' , () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    spyOn(playerService, 'updateDownloadStatus').and.callFake(() => {});
+    component.pageSections = mockPageSection;
+    component.updateCardData(Response.download_list);
+    expect(playerService.updateDownloadStatus).toHaveBeenCalled();
+  });
+
+  it('should call download manager service on when startDownload()', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceBundle.messages;
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(of(Response.download_success));
+    component.startDownload(Response.result.result.content);
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+  });
+
+  it('startDownload should fail', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    toasterService = TestBed.get(ToasterService);
+    resourceService.messages = resourceBundle.messages;
+    component.pageSections = mockPageSection;
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(throwError(Response.download_error));
+    component.startDownload(Response.result.result.content);
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(component.showDownloadLoader).toBeFalsy();
   });
 
 

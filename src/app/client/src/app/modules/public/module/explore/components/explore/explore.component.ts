@@ -288,7 +288,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showDownloadLoader = false;
       _.each(this.pageSections, (pageSection) => {
         _.each(pageSection.contents, (pageData) => {
-          pageData['downloadStatus'] = 'FAILED';
+          pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
         });
       });
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);

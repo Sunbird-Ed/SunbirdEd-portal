@@ -185,5 +185,12 @@ describe('ViewAllComponent', () => {
     expect(component.showDownloadLoader).toBeTruthy();
   });
 
+  it('should call updateDownloadStatus when updateCardData is called' , () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    spyOn(playerService, 'updateDownloadStatus');
+    component.searchList = Response.successData.result.content;
+    component.updateCardData(Response.download_list);
+    expect(playerService.updateDownloadStatus).toHaveBeenCalled();
+  });
 
 });

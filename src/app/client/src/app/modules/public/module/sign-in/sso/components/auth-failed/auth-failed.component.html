@@ -1,0 +1,20 @@
+<sui-modal [isClosable]="false" [size]="'fullscreen'" #modal [mustScroll]="true" [transitionDuration]="0"
+           class="fullpage" (dismissed)="modal.deny()">
+  <div class="sb-certificatePage p-16">
+    <div class="sb-certificatePage-header">
+      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
+    </div>
+    <div class="sb-merged-account-content text-center">
+      <h3 class="sb-merged-account-body-header my-24 font-weight-bold f-18">
+        {{resourceService.frmelmnts?.lbl?.mergeAccount}}</h3>
+      <p class="py-8 m-0 failed-message font-weight-bold">{{resourceService.messages?.imsg?.m0072}}
+        {{resourceService.messages?.imsg?.m0073 | interpolate:'{instance}': instance }}</p>
+    </div>
+    <div class="d-flex flex-jc-center mt-40">
+      <button class="sb-btn sb-btn-secondary sb-btn-md w-100"
+              (click)="createNewUser()">{{resourceService.frmelmnts?.btn?.createNew}}
+      </button>
+    </div>
+
+  </div>
+</sui-modal>

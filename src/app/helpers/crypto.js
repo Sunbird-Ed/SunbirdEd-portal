@@ -1,7 +1,8 @@
 // Nodejs encryption with CTR
 const crypto = require('crypto');
 const algorithm = 'aes-256-cbc';
-const key = crypto.randomBytes(32);
+const envHelper = require('./environmentVariablesHelper');
+const key = envHelper.CRYPTO_ENCRYPTION_KEY;
 const iv = crypto.randomBytes(16);
 
 /**
@@ -22,7 +23,10 @@ const encrypt = (text) => {
  * @returns {string}
  */
 const decrypt = (text) => {
+  console.log('object to decrypt', JSON.stringify(text));
+  console.log('encryption key', key);
   let iv = Buffer.from(text.iv, 'hex');
+  console.log('iv captured', iv);
   let encryptedText = Buffer.from(text.encryptedData, 'hex');
   let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
   let decrypted = decipher.update(encryptedText);

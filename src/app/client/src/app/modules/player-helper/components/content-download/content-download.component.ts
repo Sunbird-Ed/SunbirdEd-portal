@@ -5,7 +5,7 @@ import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { PublicPlayerService } from '@sunbird/public';
 import { DownloadManagerService } from '@sunbird/offline';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService, ICard, UtilService, ToasterService, ContentData } from '@sunbird/shared';
+import { ResourceService, ICard, UtilService, ToasterService, ContentData, OfflineCardService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -20,16 +20,17 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   @Output() clickEvent = new EventEmitter<any>();
   public unsubscribe$ = new Subject<void>();
   currentRoute: string;
-  telemetryCdata: Array<{}>;
   private contentType: string ;
   public telemetryInteractObject: IInteractEventObject;
   public downloadContentInteractEdata: IInteractEventEdata;
-  public downloadCollectionInteractEdata: IInteractEventEdata;
+  public cancelDownloadYoutubeContentEdata: IInteractEventEdata;
+  showModal: Boolean = false;
+  @Input() collectionId;
 
   constructor(public resourceService: ResourceService, public utilService: UtilService,
     public router: Router,  public downloadManagerService: DownloadManagerService,
     public toasterService: ToasterService, public playerService: PublicPlayerService,
-    public activatedRoute: ActivatedRoute ) { }
+    public activatedRoute: ActivatedRoute, public offlineCardService: OfflineCardService ) { }
 
   ngOnInit() {
     this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'library';
@@ -54,6 +55,12 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
 
+    this.cancelDownloadYoutubeContentEdata = {
+      id: 'cancel-download-content',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
   }
 
   startDownload(content) {
@@ -74,6 +81,12 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
 
   checkDownloadStatus(downloadListdata) {
     return this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
+  }
+  download(content) {
+    this.showModal = this.offlineCardService.isYoutubeContent(content);
+    if (!this.showModal) {
+      this.startDownload(content);
+    }
   }
 
   ngOnDestroy() {
