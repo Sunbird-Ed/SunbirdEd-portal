@@ -81,7 +81,7 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
  */
 error: '';
 file: any;
-activateUpload:boolean = false;
+activateUpload = false;
 
   /**
    * To call resource service which helps to use language constant
