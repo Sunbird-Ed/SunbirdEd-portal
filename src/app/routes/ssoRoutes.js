@@ -405,10 +405,13 @@ module.exports = (app) => {
       if (isMigrationAllowed) {
         errType = 'MIGRATE_USER';
         req.query.userId = getUserIdFromToken(req.session.nonStateUserToken);
+        console.log('userId fetched', req.query.userId);
         await migrateUser(req, stateJwtPayload);
         await delay();
+        console.log('migration success');
         errType = 'ERROR_FETCHING_USER_DETAILS';
         const userDetails = await fetchUserWithExternalId(stateJwtPayload, req); // to get userName
+        console.log('userDetails fetched from external ID', JSON.stringify(userDetails));
         if (_.isEmpty(userDetails)){
           errType = 'USER_DETAILS_EMPTY';
           throw 'USER_DETAILS_IS_EMPTY';
