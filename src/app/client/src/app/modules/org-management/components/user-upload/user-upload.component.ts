@@ -81,6 +81,7 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
  */
 error: '';
 file: any;
+activateUpload = false;
 
   /**
    * To call resource service which helps to use language constant
@@ -182,6 +183,7 @@ file: any;
   }
   fileChanged(event) {
     this.file = event.target.files[0];
+    this.activateUpload = true;
   }
   /**
   * This method helps to upload a csv file and return process id

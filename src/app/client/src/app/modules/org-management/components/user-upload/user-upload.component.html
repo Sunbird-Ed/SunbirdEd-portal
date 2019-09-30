@@ -37,7 +37,7 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
 
 <div class="sb-modal-actions">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-  [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="processId"
+  [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="!activateUpload"
   class="sb-btn sb-btn-normal sb-btn-primary" (click)="uploadUsersCSV()">
   {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
 </button>
