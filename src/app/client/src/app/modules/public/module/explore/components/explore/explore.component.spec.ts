@@ -34,7 +34,7 @@ describe('ExploreComponent', () => {
       },
       'stmsg': {
         'm0009': 'error',
-        'm0135': 'DOWNLOADING',
+        'm0140': 'DOWNLOADING',
         'm0138': 'FAILED',
         'm0139': 'DOWNLOADED',
       },

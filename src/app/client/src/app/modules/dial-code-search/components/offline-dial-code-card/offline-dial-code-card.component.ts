@@ -55,7 +55,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     if (action === 'download') {
       this.showModal = this.offlineCardService.isYoutubeContent(data);
       if (this.showModal === false)  {
-        data['downloadStatus'] = this.resourceService.messages.stmsg.m0135;
+        data['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
         this.clickEvent.emit({ 'action': action, 'data': data });
       }
     } else {
@@ -64,7 +64,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   }
 
   download(data, action) {
-    data['downloadStatus'] = this.resourceService.messages.stmsg.m0135;
+    data['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 

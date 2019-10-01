@@ -15,7 +15,7 @@ describe('OfflineCardComponent', () => {
 
   const resourceServiceMockData = {
     messages: {
-      stmsg: { m0135: 'DOWNLOADING' },
+      stmsg: { m0140: 'DOWNLOADING' },
     }
   };
   const fakeActivatedRoute = { snapshot: { data: { telemetry: { pageid: 'browse' } } } };
@@ -78,7 +78,7 @@ describe('OfflineCardComponent', () => {
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(true);
     component.onAction(component.data, 'download');
     expect(component.showModal).toBe(true);
-    expect(Response.emitData.data.downloadStatus).toBe(resourceService.messages.stmsg.m0135);  });
+    expect(Response.emitData.data.downloadStatus).toBe(resourceService.messages.stmsg.m0140);  });
 
   it('initially offlineRoute should be library', () => {
     expect(component.currentRoute).toBe('library');

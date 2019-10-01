@@ -61,7 +61,7 @@ export const serverRes = {
       resourceServiceMockData: {
         messages: {
             stmsg: {
-                m0135: 'DOWNLOADING',
+                m0140: 'DOWNLOADING',
                 m0138: 'FAILED',
                 m0139: 'DOWNLOADED',
             }
