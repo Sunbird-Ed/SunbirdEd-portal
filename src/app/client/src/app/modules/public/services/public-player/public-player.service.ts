@@ -169,12 +169,17 @@ export class PublicPlayerService {
   }
   updateDownloadStatus (downloadListdata, content) {
     const identifier = !_.isEmpty(content.metaData) ? _.get(content, 'metaData.identifier') : _.get(content, 'identifier');
+    const inprogress = _.find(downloadListdata.result.response.downloads.inprogress, { contentId: identifier });
+    const completed = _.find(downloadListdata.result.response.downloads.completed, { contentId: identifier });
+    const failed = _.find(downloadListdata.result.response.downloads.failed, { contentId: identifier });
+
+    console.log('inprogress', inprogress, 'complted', completed, 'failed', failed);
         // If download is completed card should show added to library
-        if (_.find(downloadListdata.result.response.downloads.completed, { contentId: identifier })) {
+        if (inprogress) {
+          content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+        } else if (!inprogress && completed) {
           content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
-        }
-        // // If download failed, card should show again add to library
-        if (_.find(downloadListdata.result.response.downloads.failed, { contentId: identifier })) {
+        } else if (!inprogress && failed) {
           content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
         }
   }

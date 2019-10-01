@@ -3,6 +3,7 @@ import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared'
 import { PublicDataService } from '@sunbird/core';
 import { throwError as observableThrowError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import * as _ from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +53,32 @@ export class DownloadManagerService {
       url: `${this.configService.urlConFig.URLS.OFFLINE.EXPORT}/${contentId}`
     };
     return this.publicDataService.get(exportOptions);
+  }
+
+  updateContent(data) {
+    const requestParams = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.UPDATE}/${data.contentId}`,
+      data: {
+        request: {
+          parentId:  _.get(data, 'parentId')
+        }
+      }
+    };
+  return this.publicDataService.post(requestParams).pipe(
+    map((result) => {
+      this.toasterService.info('Updating...');
+      this.downloadEvent.emit('Update started');
+      return result;
+    }),
+    catchError((err) => {
+      return observableThrowError(err);
+    }));
+  }
+
+  getContent(content) {
+    const request = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.READ}/${content.identifier}`,
+    };
+    return this.publicDataService.get(request);
   }
 }

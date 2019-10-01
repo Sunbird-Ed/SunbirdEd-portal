@@ -1,5 +1,5 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { DownloadManagerService } from '@sunbird/offline';
+import { DownloadManagerService, ConnectionService } from '@sunbird/offline';
 import { serverRes } from './content-download.component.spec.data';
 import { of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { RouterTestingModule,  } from '@angular/router/testing';
@@ -46,6 +46,9 @@ describe('ContentDownloadComponent', () => {
 
   it('should call setTelemetry() on ngOnInit', () => {
     expect(component).toBeTruthy();
+    component.contentData = serverRes.result.result.content;
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
     spyOn(component, 'setTelemetryData');
     component.ngOnInit();
     expect(component.setTelemetryData).toHaveBeenCalled();
@@ -102,10 +105,87 @@ describe('ContentDownloadComponent', () => {
 
   it('should call offlinecardservice isyoutubecontent()', () => {
     const offlineCardService = TestBed.get(OfflineCardService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
     component.download(serverRes.result.result.content);
     expect(component.showModal).toBeFalsy();
     expect(offlineCardService.isYoutubeContent).toHaveBeenCalled();
   });
 
+  it('should call checkDownloadStatus()  when collectionId is present', () => {
+    spyOn(component, 'checkContentIsUpdated');
+    spyOn(component, 'checkOnlineStatus');
+    component.contentData = serverRes.result.result.content;
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
+    component.collectionId = 'do_112835337547972608153';
+    component.ngOnInit();
+    expect(component.checkContentIsUpdated).toHaveBeenCalled();
+    expect(component.checkOnlineStatus).toHaveBeenCalled();
+  });
+
+  it('should call updateContent() from downloadmanager service', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
+    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableOf(serverRes.content_update));
+    component.contentData = serverRes.result.result.content;
+    component.updateContent(component.contentData);
+    expect(downloadManagerService.updateContent).toHaveBeenCalled();
+  });
+
+  it('should throw errror on updateContent()', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
+    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableThrowError(serverRes.content_udpate_error));
+    component.contentData = serverRes.result.result.content;
+    component.updateContent(component.contentData);
+    expect(downloadManagerService.updateContent).toHaveBeenCalled();
+  });
+
+  it('should call assignLabel()', () => {
+    component.contentData = serverRes.result1.result.content;
+    component.currentRoute = 'library';
+    spyOn(component, 'assignLabel');
+    component.checkForUpdate(component.contentData);
+    expect(component.assignLabel).toHaveBeenCalled();
+  });
+
+  it('should call getContent from download managre service()', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
+    component.contentData = serverRes.result.result.content;
+    spyOn(downloadManagerService, 'getContent').and.returnValue(observableOf(serverRes.result1.result.content));
+    component.checkContentIsUpdated(component.contentData);
+    expect(downloadManagerService.getContent).toHaveBeenCalled();
+  });
+
+  it('should assign update content to updateLabel content', () => {
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
+    component.contentData = serverRes.result1.result.content;
+    component.assignLabel();
+    expect(component.updateLabel).toBe(resourceService.frmelmnts.lbl.updatecontent);
+  });
+
+  it('should call checkForUpdate when user is not in online', () => {
+    const connectionService = TestBed.get(ConnectionService);
+    const mockConnectionStatus = false;
+    const mockObservable = observableOf(mockConnectionStatus);
+    component.contentData = serverRes.result.result.content;
+    spyOn(connectionService, 'monitor').and.returnValue(mockObservable);
+    spyOn(component, 'checkForUpdate');
+    connectionService.monitor().subscribe(connectionMonitor => {
+      expect(connectionMonitor).toBe(mockConnectionStatus);
+    });
+    component.checkOnlineStatus();
+    expect(component.checkForUpdate).toHaveBeenCalled();
+  });
 });

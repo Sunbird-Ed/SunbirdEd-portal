@@ -1,3 +1,4 @@
+<!--Buttons for Downloading a content or collection -->
 <button id="download_{{contentData.identifier}}" (click)="download(contentData)" appTelemetryInteract
 [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadContentInteractEdata"
 *ngIf="checkStatus('DOWNLOAD')" class="sb-btn sb-btn-outline-primary sb-btn-normal">
@@ -9,6 +10,22 @@
 <button *ngIf="checkStatus('DOWNLOADED')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
 {{resourceService.frmelmnts?.btn?.addedToLibrary}}
 </button>
+<!--Buttons for Downloading a content or collection -->
+
+<!--Buttons for Updating a content or collection -->
+<button *ngIf="checkUpdateStatus('UPDATE')" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="updateContent(contentData)"
+appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="updateContentInteractEdata">
+{{ updateLabel }}
+</button>
+
+<button *ngIf="checkUpdateStatus('DOWNLOADING')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable" >
+Updating
+</button>
+
+<button *ngIf="checkUpdateStatus('DOWNLOADED')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
+UpTo Date
+</button>
+<!--Buttons for Updating a content or collection -->
 
 <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
 class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>

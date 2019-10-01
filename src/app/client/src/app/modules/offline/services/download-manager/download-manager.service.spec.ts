@@ -63,4 +63,32 @@ describe('DownloadManagerService', () => {
     });
   });
 
+  it('Updating data should be successfull', () => {
+    const service: DownloadManagerService = TestBed.get(DownloadManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    const params = {
+      updateContentId: '/domain_66675',
+      request : {}
+    };
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf(response.content_update));
+    const apiRes = service.updateContent(params);
+    publicDataService.post(params).subscribe(responseData => {
+      expect(responseData).toBe(response.content_update);
+    });
+  });
+
+  it('should get content successfully', () => {
+    const service: DownloadManagerService = TestBed.get(DownloadManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    const params = {
+      updateContentId: '/domain_66675',
+      request : {}
+    };
+    spyOn(publicDataService, 'get').and.callFake(() => observableOf(response.data));
+    const apiRes = service.getContent(params);
+    publicDataService.get(params).subscribe(responseData => {
+      expect(responseData).toBe(response.data);
+    });
+  });
+
 });
