@@ -284,6 +284,7 @@ module.exports = (app) => {
         }
       })
     } catch (error) {
+      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       response = { error: getErrorMessage(error, errType) };
       logger.error({
         msg: 'sso create user failed',
@@ -322,6 +323,7 @@ module.exports = (app) => {
       redirectUrl = url + query + userInfo;
       console.log('url for migration', redirectUrl);
     } catch (error) {
+      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       response = {error: getErrorMessage(error, errType)};
       logger.error({
         msg: 'sso migrate account initiate failed',
@@ -359,7 +361,8 @@ module.exports = (app) => {
         nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
           console.log('error in verifyAuthToken', err);
           console.log('error details', err.statusCode, err.message)
-          res.redirect(errorUrl)
+          const redirect_url = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
+          res.redirect(redirect_url)
         });
         const userToken = parseJson(nonStateUserToken);
         req.session.nonStateUserToken = userToken.access_token;
