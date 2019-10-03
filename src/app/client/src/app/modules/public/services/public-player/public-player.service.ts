@@ -172,11 +172,9 @@ export class PublicPlayerService {
 
         if (_.find(downloadListdata.result.response.downloads.inprogress, { contentId: identifier })) {
           content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-        } else if (!(_.find(downloadListdata.result.response.downloads.inprogress, { contentId: identifier })) &&
-        _.find(downloadListdata.result.response.downloads.completed, { contentId: identifier })) {
+        } else if (_.find(downloadListdata.result.response.downloads.completed, { contentId: identifier })) {
           content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
-        } else if (!(_.find(downloadListdata.result.response.downloads.inprogress, { contentId: identifier }))
-                    && _.find(downloadListdata.result.response.downloads.failed, { contentId: identifier })) {
+        } else if (_.find(downloadListdata.result.response.downloads.failed, { contentId: identifier })) {
           content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
         }
   }
