@@ -41,7 +41,7 @@
     <dl class="sb-meta-data" *ngIf="metadata.orgDetails && metadata.orgDetails.orgName">
         <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
         <dd>
-            <span class="d-inline-block mr-20">{{metadata.orgDetails?.orgName}}</span> &nbsp;
+            <span class="d-inline-block mr-20">{{metadata?.organisation?.join(', ')}}</span> &nbsp;
             <a ng-if="metadata.orgDetails?.email" href="mailto:{{metadata.orgDetails?.email}}?subject={{metadata.name}}">{{metadata.orgDetails?.email}}</a>
         </dd>
     </dl>

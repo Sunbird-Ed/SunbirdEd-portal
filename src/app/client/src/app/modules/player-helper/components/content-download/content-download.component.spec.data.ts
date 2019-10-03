@@ -64,6 +64,7 @@ export const serverRes = {
             fmsg: {
                 m0027: 'Something went wrong',
                 m0090: 'Could not download. Try again later',
+                m0096: 'Could not Update. Try again later'
             },
             stmsg: {
                 m0009: 'error',

@@ -141,8 +141,8 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
     this.downloadManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     }, err => {
-      const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}', content.name) :
-                            `Error:  ${err.error.params.errmsg}`;
+      const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}', content.name) : 
+                                              this.resourceService.messages.fmsg.m0096;
       this.toasterService.error(errorMessage);
     });
   }
@@ -153,7 +153,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
       this.contentData = _.get(response, 'result.content');
       this.checkForUpdate(this.contentData);
     }, (err) => {
-      console.log(`Error: ${err.error.params.errmsg}`);
+      console.log(`Error: ${err}`);
     });
   }
 
