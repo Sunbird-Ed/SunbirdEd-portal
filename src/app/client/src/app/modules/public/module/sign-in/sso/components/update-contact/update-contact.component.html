@@ -28,14 +28,14 @@
               <!-- pattern="validationPattern.phone" -->
               <i class=" icon">+91-</i>
             </div>
-            <label *ngIf="!userBlocked && contactForm.type === 'phone' && contactDetailsForm.controls.value && disableSubmitBtn && contactDetailsForm.controls.value.touched" class="ui basic error label" >
+            <label *ngIf="!userBlocked && !isValidIdentifier && contactForm.type === 'phone' && contactDetailsForm.controls.value && disableSubmitBtn && contactDetailsForm.controls.value.touched" class="ui basic error label" >
                 {{ resourceService.frmelmnts.lbl.validPhone}}</label>
             <div *ngIf="contactForm.type === 'email'" class="ui input d-flex">
               <input [(ngModel)]="contactForm.value" name="value"
               placeholder="{{ resourceService.frmelmnts.lbl.email }}" required>
               <!-- pattern="validationPattern.email" -->
             </div>
-            <label *ngIf="!userBlocked && contactForm.type === 'email' && contactDetailsForm.controls.value && disableSubmitBtn && contactDetailsForm.controls.value.touched" class="ui basic error label pb-0" >
+            <label *ngIf="!userBlocked && !isValidIdentifier && contactForm.type === 'email' && contactDetailsForm.controls.value && disableSubmitBtn && contactDetailsForm.controls.value.touched" class="ui basic error label pb-0" >
                 {{resourceService.frmelmnts.lbl.validEmail}}</label>
             <label *ngIf="disableSubmitBtn && userBlocked" class="ui basic error label" >
               {{resourceService.frmelmnts.lbl.blockedUserError}}</label>
@@ -44,7 +44,7 @@
             <div class="text-center">
               <button [disabled]="disableSubmitBtn" appTelemetryInteract [telemetryInteractEdata]="submitPhoneInteractEdata" appTelemetryInteract
               [telemetryInteractEdata]="submitPhoneInteractEdata" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
-              class="sb-btn sb-btn-normal sb-btn-secondary mt-24" tabindex="0" (click)="handleSubmitEvent()">{{resourceService.frmelmnts.btn.submitbtn}}</button>
+              class="sb-btn sb-btn-normal sb-btn-secondary mt-24" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts.btn.submitbtn}}</button>
             </div>
           </form>
         </div>
