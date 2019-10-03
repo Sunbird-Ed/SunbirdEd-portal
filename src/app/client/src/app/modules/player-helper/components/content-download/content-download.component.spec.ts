@@ -149,14 +149,4 @@ describe('ContentDownloadComponent', () => {
     expect(downloadManagerService.updateContent).toHaveBeenCalled();
   });
 
-  it('should call getContent() from downloadmanager service', () => {
-    const downloadManagerService = TestBed.get(DownloadManagerService);
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    component.contentData = serverRes.result.result.content;
-    resourceService.messages = serverRes.resourceServiceMockData.messages;
-    spyOn(downloadManagerService, 'getContent').and.returnValue(observableOf(serverRes.result1.result.content));
-    component.checkContentIsUpdated(serverRes.result.result.content);
-    expect(downloadManagerService.getContent).toHaveBeenCalled();
-  });
 });
