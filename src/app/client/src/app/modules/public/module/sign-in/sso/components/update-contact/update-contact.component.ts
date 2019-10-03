@@ -57,8 +57,6 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
         }
       };
     });
-    this.showOtpComp = false;
-    this.showMergeConfirmation = true;
   }
   handleFormChangeEvent() {
     this.contactDetailsForm.valueChanges.pipe(delay(1)).subscribe((data, data2) => {
