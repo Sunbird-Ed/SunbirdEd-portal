@@ -106,7 +106,7 @@ export const response = {
           }
       }
   },
-  content_update:
+  content_update_success:
   {
     'id': 'api.content.update',
     'ver': '1.0',
@@ -120,7 +120,7 @@ export const response = {
     'responseCode': 'OK',
     'result': '9226b2c8-9bc5-4020-bfda-48048883445d'
   },
-  content_udpate_error :
+  content_update_error :
   {
     'id': 'api.content.update',
     'ver': '1.0',

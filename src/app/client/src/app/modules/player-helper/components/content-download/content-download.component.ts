@@ -5,7 +5,7 @@ import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { PublicPlayerService } from '@sunbird/public';
 import { DownloadManagerService, ConnectionService } from '@sunbird/offline';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService, ICard, UtilService, ToasterService, ContentData, OfflineCardService } from '@sunbird/shared';
+import { ResourceService, ICard, UtilService, ToasterService, ContentData, OfflineCardService, ConfigService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -36,7 +36,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
     public router: Router,  public downloadManagerService: DownloadManagerService,
     public toasterService: ToasterService, public playerService: PublicPlayerService,
     public activatedRoute: ActivatedRoute, public offlineCardService: OfflineCardService,
-    private connectionService: ConnectionService ) { }
+    private connectionService: ConnectionService, public configService: ConfigService ) { }
 
   ngOnInit() {
     this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'library';
@@ -138,23 +138,22 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
       contentId: content.identifier,
       parentId: this.collectionId
     };
-    this.downloadManagerService.updateContent(request).subscribe(data => {
+    this.downloadManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-    }, error => {
-      if (!this.isConnected) {
-        this.toasterService.error(`You should be in online to update the content ${content.name}`);
-      } else {
-        this.toasterService.error(`Error:  ${error}`);
-      }
+    }, err => {
+      const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}', content.name) :
+                            `Error:  ${err.error.params.errmsg}`;
+      this.toasterService.error(errorMessage);
     });
   }
 
   checkContentIsUpdated(content) {
-    this.downloadManagerService.getContent(content).subscribe((data) => {
-      this.contentData = _.get(data, 'result.content');
+    const params = {params: this.configService.appConfig.PublicPlayer.contentApiQueryParams};
+    this.playerService.getContent(content.identifier, params).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      this.contentData = _.get(response, 'result.content');
       this.checkForUpdate(this.contentData);
-    }, error => {
-      console.log('error', error);
+    }, (err) => {
+      console.log(`Error: ${err.error.params.errmsg}`);
     });
   }
 

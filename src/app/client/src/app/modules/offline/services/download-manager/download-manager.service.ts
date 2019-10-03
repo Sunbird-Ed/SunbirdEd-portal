@@ -66,8 +66,8 @@ export class DownloadManagerService {
     };
   return this.publicDataService.post(requestParams).pipe(
     map((result) => {
-      this.toasterService.info('Updating...');
-      this.downloadEvent.emit('Update started');
+      this.toasterService.info(this.resourceService.messages.smsg.m0055);
+      this.downloadEvent.emit('updateStarted');
       return result;
     }),
     catchError((err) => {
@@ -75,10 +75,4 @@ export class DownloadManagerService {
     }));
   }
 
-  getContent(content) {
-    const request = {
-      url: `${this.configService.urlConFig.URLS.OFFLINE.READ}/${content.identifier}`,
-    };
-    return this.publicDataService.get(request);
-  }
 }

@@ -134,7 +134,7 @@ describe('ContentDownloadComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;
-    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableOf(serverRes.content_update));
+    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableOf(serverRes.content_update_success));
     component.updateContent(serverRes.result.result.content);
     expect(downloadManagerService.updateContent).toHaveBeenCalled();
   });
@@ -144,7 +144,7 @@ describe('ContentDownloadComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;
-    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableThrowError(serverRes.content_udpate_error));
+    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableThrowError(serverRes.content_update_error));
     component.updateContent(serverRes.result.result.content);
     expect(downloadManagerService.updateContent).toHaveBeenCalled();
   });
