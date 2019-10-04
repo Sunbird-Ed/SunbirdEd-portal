@@ -45,6 +45,11 @@ describe('CourseProgressComponent', () => {
       'stmsg' : {
        'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.'
       }
+    },
+    'frmelmnts': {
+      'instn' : {
+        't0056' : 'Please try again..'
+      }
     }
   };
 

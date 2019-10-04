@@ -340,6 +340,9 @@ const sendSsoKafkaMessage = async (req) => {
  * @returns {*|boolean}
  */
 const verifyIdentifier = (stateVerifiedIdentifier, nonStateMaskedIdentifier, identifierType) => {
+  console.log("stateVerifiedIdentifier", stateVerifiedIdentifier);
+  console.log("nonStateMaskedIdentifier", nonStateMaskedIdentifier);
+  console.log("identifierType", identifierType);
   if (identifierType === 'email') {
     var splittedData = nonStateMaskedIdentifier.split("@");
     if (_.isArray(splittedData) && splittedData.length > 1) {

@@ -18,7 +18,7 @@ describe('OfflineDialCodeCardComponent', () => {
 
   const resourceServiceMockData = {
     messages: {
-      stmsg: { m0135: 'DOWNLOADING' },
+      stmsg: { m0140: 'DOWNLOADING' },
     }
   };
 
@@ -76,7 +76,7 @@ describe('OfflineDialCodeCardComponent', () => {
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(true);
     component.onAction(component.data, 'download');
     expect(component.showModal).toBe(true);
-    expect(Response.emitData.data.downloadStatus).toBe(resourceService.messages.stmsg.m0135);
+    expect(Response.emitData.data.downloadStatus).toBe(resourceService.messages.stmsg.m0140);
   });
 
   it('should call getPlayerDownloadStatus() from utilservice', () => {

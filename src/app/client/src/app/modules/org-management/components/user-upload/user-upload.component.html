@@ -24,10 +24,12 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     <div class="header">
       {{resourceService?.frmelmnts?.scttl?.instructions}}
     </div>
+    <div>{{resourceService?.frmelmnts?.instn?.t0098}}</div>
     <ol class="ui list">
       <li *ngFor="let instn of userUploadInstructions">{{instn.instructions}}
       </li>
     </ol>
+    <div>{{resourceService?.frmelmnts?.instn?.t0106}}</div>
     <!-- <div>{{resourceService?.frmelmnts?.instn?.t0076}} <a href={{uploadUserRefLink}}
         target="_blank">{{resourceService?.frmelmnts?.instn?.t0077}}</a></div> -->
   </div>
@@ -35,7 +37,7 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
 
 <div class="sb-modal-actions">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-  [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="processId"
+  [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="!activateUpload"
   class="sb-btn sb-btn-normal sb-btn-primary" (click)="uploadUsersCSV()">
   {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
 </button>
@@ -58,10 +60,12 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     <div *ngFor = "let er of errors">
       <span> {{er}}</span>
     </div>
+    <div id="errorDiv"></div>
   </div>
   <div>
     <span> {{resourceService?.frmelmnts?.lbl?.errorMsg }}</span>
   </div>
+  
 </div>
 <div class="sb-modal-actions">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"

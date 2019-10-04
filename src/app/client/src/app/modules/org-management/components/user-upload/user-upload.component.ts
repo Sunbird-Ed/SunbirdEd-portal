@@ -81,6 +81,7 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
  */
 error: '';
 file: any;
+activateUpload = false;
 
   /**
    * To call resource service which helps to use language constant
@@ -154,7 +155,7 @@ file: any;
     this.userUploadInstructions = [
       { instructions: this.resourceService.frmelmnts.instn.t0099 },
       { instructions: this.resourceService.frmelmnts.instn.t0100 },
-      { instructions: this.resourceService.frmelmnts.instn.t0101 },
+      // { instructions: this.resourceService.frmelmnts.instn.t0101 },
       { instructions: this.resourceService.frmelmnts.instn.t0102 },
       { instructions: this.resourceService.frmelmnts.instn.t0103 },
       { instructions: this.resourceService.frmelmnts.instn.t0104 },
@@ -182,6 +183,7 @@ file: any;
   }
   fileChanged(event) {
     this.file = event.target.files[0];
+    this.activateUpload = true;
   }
   /**
   * This method helps to upload a csv file and return process id
@@ -202,6 +204,7 @@ file: any;
             this.showLoader = false;
             this.processId = apiResponse.result.processId;
             this.toasterService.success(this.resourceService.messages.smsg.m0030);
+            this.modal.deny();
           },
           err => {
             this.showLoader = false;
@@ -225,12 +228,12 @@ file: any;
   }
   copyToClipboard() {
     const element = document.createElement('textarea');
-    document.body.appendChild(element);
+    document.getElementById('errorDiv').appendChild(element);
     element.value = this.error;
     element.select();
     document.execCommand('copy');
     setTimeout(() => {
-      document.body.removeChild(element);
+      document.getElementById('errorDiv').removeChild(element);
     }, 100);
   }
   ngOnDestroy() {

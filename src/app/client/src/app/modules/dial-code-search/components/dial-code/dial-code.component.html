@@ -32,7 +32,7 @@
 
             <app-card *ngIf="!isOffline && content.contentType.toLowerCase() === 'course'" appContentDirection (clickEvent)="playCourse($event)" [dialCode]="dialCode" [data]="content"></app-card>
 
-            <app-dial-code-card *ngIf="!isOffline && content.contentType.toLowerCase() !== 'course'" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-dial-code-card>
+            <app-dial-code-card *ngIf="!isOffline && content.contentType.toLowerCase() !== 'course'" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"  [singleContentRedirect]="singleContentRedirect"></app-dial-code-card>
 
             <app-offline-dial-code-card *ngIf="isOffline" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-offline-dial-code-card>
 

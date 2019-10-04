@@ -284,6 +284,7 @@ module.exports = (app) => {
         }
       })
     } catch (error) {
+      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       response = { error: getErrorMessage(error, errType) };
       logger.error({
         msg: 'sso create user failed',
@@ -317,11 +318,12 @@ module.exports = (app) => {
       req.session.migrateAccountInfo.encryptedData = encrypt(JSON.stringify(dataToEncrypt));
       const payload = JSON.stringify(req.session.migrateAccountInfo.encryptedData);
       url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
-      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&identifierValue=${req.query.identifierValue}&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
+      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
       const userInfo = `&userId=${req.query.userId}&identifierType=${req.query.identifier}&identifierValue=${req.query.identifierValue}`;
       redirectUrl = url + query + userInfo;
       console.log('url for migration', redirectUrl);
     } catch (error) {
+      redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       response = {error: getErrorMessage(error, errType)};
       logger.error({
         msg: 'sso migrate account initiate failed',
@@ -359,7 +361,8 @@ module.exports = (app) => {
         nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
           console.log('error in verifyAuthToken', err);
           console.log('error details', err.statusCode, err.message)
-          res.redirect(errorUrl)
+          const redirect_url = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
+          res.redirect(redirect_url)
         });
         const userToken = parseJson(nonStateUserToken);
         req.session.nonStateUserToken = userToken.access_token;
@@ -374,7 +377,7 @@ module.exports = (app) => {
     if (req.query.client_id === 'android') {
       console.log('req.query.client_id', req.query.client_id);
       req.session.migrateAccountInfo = {
-        encryptedData: req.get('x-authenticated-user-data')
+        encryptedData: parseJson(decodeURIComponent(req.get('x-authenticated-user-data')))
       };
     }
     req.session.nonStateUserToken = req.session.nonStateUserToken || req.get('x-authenticated-user-token');
@@ -405,10 +408,13 @@ module.exports = (app) => {
       if (isMigrationAllowed) {
         errType = 'MIGRATE_USER';
         req.query.userId = getUserIdFromToken(req.session.nonStateUserToken);
+        console.log('userId fetched', req.query.userId);
         await migrateUser(req, stateJwtPayload);
         await delay();
+        console.log('migration success');
         errType = 'ERROR_FETCHING_USER_DETAILS';
         const userDetails = await fetchUserWithExternalId(stateJwtPayload, req); // to get userName
+        console.log('userDetails fetched from external ID', JSON.stringify(userDetails));
         if (_.isEmpty(userDetails)){
           errType = 'USER_DETAILS_EMPTY';
           throw 'USER_DETAILS_IS_EMPTY';
@@ -437,7 +443,7 @@ module.exports = (app) => {
       if (req.query.client_id === 'android') {
         response = {
           "id": "api.user.migrate", "params": {
-            "resmsgid": null, "err": error, "status": "error",
+            "resmsgid": null, "err": JSON.stringify(error), "status": "error",
             "errType": errType
           }, "responseCode": "INTERNAL_SERVER_ERROR", "result": {"response": "ERROR",}
         };
@@ -455,6 +461,8 @@ module.exports = (app) => {
       });
       logErrorEvent(req, errType, error);
     } finally {
+      req.session.migrateAccountInfo = null;
+      req.session.nonStateUserToken = null;
       if (req.query.client_id === 'android') {
         res.status(statusCode).send(response)
       } else {
