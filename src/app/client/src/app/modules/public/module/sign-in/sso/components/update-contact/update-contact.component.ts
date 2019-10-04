@@ -64,6 +64,8 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
         && this.validationPattern[this.contactForm.type].test(this.contactForm.value)) {
         this.disableSubmitBtn = false;
          this.isValidIdentifier = true;
+        this.userExist = false;
+        this.userBlocked = false;
       } else {
         this.disableSubmitBtn = true;
         this.isValidIdentifier = false;
@@ -87,17 +89,21 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
           this.generateOtp();
         } else {
           this.userExist = true;
+          this.userBlocked =  false;
           this.disableSubmitBtn = true;
         }
       }, err => {
         this.userDetails = {};
         if (_.get(err, 'error.params.status') && err.error.params.status === 'USER_ACCOUNT_BLOCKED') {
           this.userBlocked =  true;
+          this.userExist = false;
           this.disableSubmitBtn = true;
           return;
         }
         this.generateOtp();
         this.disableSubmitBtn = false;
+        this.userExist = false;
+        this.userBlocked = false;
     });
   }
   private getCustodianOrgDetails() {
