@@ -170,13 +170,14 @@ export class PublicPlayerService {
   updateDownloadStatus (downloadListdata, content) {
     const identifier = !_.isEmpty(content.metaData) ? _.get(content, 'metaData.identifier') : _.get(content, 'identifier');
 
-        if (_.find(downloadListdata.result.response.downloads.inprogress, { contentId: identifier }) ||
-        _.find(downloadListdata.result.response.downloads.submitted, { contentId: identifier })) {
-          content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-        } else if (_.find(downloadListdata.result.response.downloads.completed, { contentId: identifier })) {
-          content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
-        } else if (_.find(downloadListdata.result.response.downloads.failed, { contentId: identifier })) {
-          content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
-        }
+    if (_.find(downloadListdata.result.response.downloads.inprogress, { resourceId: identifier }) ||
+    _.find(downloadListdata.result.response.downloads.submitted, { resourceId: identifier })) {
+      content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    } else if (_.find(downloadListdata.result.response.downloads.completed, { resourceId: identifier })) {
+      content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
+    } else if (_.find(downloadListdata.result.response.downloads.failed, { resourceId: identifier })) {
+      content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+    }
   }
+
 }
