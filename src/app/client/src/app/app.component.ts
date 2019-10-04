@@ -84,6 +84,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   hideHeaderNFooter = true;
   queryParams: any;
   telemetryContextData: any ;
+  didV2: boolean;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -118,6 +119,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   ngOnInit() {
+    this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter( queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
       tap(queryParams => {
@@ -166,7 +168,7 @@ setFingerPrintTelemetry() {
       return;
     }
 
-    if (this.fingerprintInfo) {
+    if (this.fingerprintInfo && !this.didV2) {
       this.logExData('fingerprint_info', this.fingerprintInfo );
     }
 

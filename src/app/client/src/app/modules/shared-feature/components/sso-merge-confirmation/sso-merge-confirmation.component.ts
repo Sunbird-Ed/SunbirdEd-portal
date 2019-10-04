@@ -12,7 +12,13 @@ export class SsoMergeConfirmationComponent implements OnInit {
   @Input() identifierType: any;
   @Input() identifierValue: any;
   instance: string;
-
+  telemetryCdata = [{
+    id: 'user:account:migrate',
+    type: 'Feature'
+  }, {
+    id: 'SB-13773',
+    type: 'Task'
+  }];
   constructor(public resourceService: ResourceService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
