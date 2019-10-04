@@ -4,48 +4,48 @@
         "infinite": false,
         "speed": 300,
         "rtl": false,
-        "slidesToShow": 4,
+        "slidesToShow": 3.5,
         "slidesToScroll": 1,
         "responsive": [
             {
                 "breakpoint": 2800,
                 "settings": {
-                    "slidesToShow": 4,
+                    "slidesToShow": 3.5,
                     "slidesToScroll": 1
                 }
             },
             {
                 "breakpoint": 2200,
                 "settings": {
-                    "slidesToShow": 4,
+                    "slidesToShow": 3.5,
                     "slidesToScroll": 1
                 }
             },
             {
                 "breakpoint": 2000,
                 "settings": {
-                    "slidesToShow": 4,
+                    "slidesToShow": 3.5,
                     "slidesToScroll": 1
                 }
             },
             {
                 "breakpoint": 1600,
                 "settings": {
-                    "slidesToShow": 4,
+                    "slidesToShow": 3.5,
                     "slidesToScroll": 1
                 }
             },
             {
                 "breakpoint": 1200,
                 "settings": {
-                    "slidesToShow": 4,
+                    "slidesToShow": 3.5,
                     "slidesToScroll": 1
                 }
             },
             {
                 "breakpoint": 900,
                 "settings": {
-                    "slidesToShow": 4,
+                    "slidesToShow": 3.5,
                     "slidesToScroll": 1
                 }
             },
