@@ -66,14 +66,14 @@ module.exports = (app) => {
       console.log('error detals', err.statusCode, err.message);
       const query = '?status=error&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
       req.session.mergeAccountInfo = null;
-      const redirectUri = `https://${req.get('host')}/accountMerge` + query;
+      const redirectUri = `https://${req.get('host')}/accountMerge` + encodeURIComponent(query);
       res.redirect(url + redirectUri);
     });
     if (_.get(mergeResponse, 'result.result.status') === 'SUCCESS' && mergeResponse.responseCode === 'OK') {
       console.log('mergeResponse coming from backend', JSON.stringify(mergeResponse));
       const query = '?status=success&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
       console.log('after final success', query);
-      const redirectUri = `https://${req.get('host')}/accountMerge` + query;
+      const redirectUri = `https://${req.get('host')}/accountMerge` + encodeURIComponent(query);
       req.session.mergeAccountInfo = null;
       res.redirect(url + redirectUri);
     }
