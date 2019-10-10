@@ -4,7 +4,7 @@ import { NgModule , ModuleWithProviders} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
-  OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent
+  OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent
 } from './components';
 import { SlickModule } from 'ngx-slick';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -27,9 +27,9 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
     ReactiveFormsModule
   ],
   declarations: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
-    OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent
+    OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent
   ],
   exports: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
-    OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent]
+    OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent]
 })
 export class SharedFeatureModule { }
