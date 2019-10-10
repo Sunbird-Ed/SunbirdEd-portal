@@ -46,19 +46,23 @@
 
   <div class="sb-modal-actions">
     <div class="action-btns">
-      <button class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+      <button class="sb-btn sb-btn-normal sb-btn-primary mr-8" (click)="closeModal()"
+      >
         Yes
       </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()"
+      >
         No
       </button>
     </div>
 
-    <button class="sb-btn sb-btn-normal sb-btn-primary">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeModal()"
+    >
       Submit
     </button>
-    
-    <button class="sb-btn sb-btn-normal sb-btn-error">  <!--sb-btn-success-->
+
+    <button class="sb-btn sb-btn-normal sb-btn-error" (click)="closeModal()"
+    >  <!--sb-btn-success-->
       OK
     </button>
   </div>

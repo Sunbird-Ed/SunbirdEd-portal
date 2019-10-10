@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-validate-teacher-identifier-popup',
@@ -6,9 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./validate-teacher-identifier-popup.component.scss']
 })
 export class ValidateTeacherIdentifierPopupComponent implements OnInit {
+  @ViewChild('createValidateModal') createValidateModal;
 
   constructor() { }
-
+  closeModal() {
+    this.createValidateModal.deny();
+  }
   ngOnInit() {
   }
 
