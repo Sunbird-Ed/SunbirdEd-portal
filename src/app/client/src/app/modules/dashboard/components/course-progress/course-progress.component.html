@@ -269,7 +269,7 @@
         </div> -->
         <div class="sb-pagination-container flex-ai-center">
           <div *ngIf="dashboarData && dashboarData.data.length >0 && !showLoader">showing {{pager.startIndex+1}} -
-            {{pager.endIndex+1}} of {{dashboarData.data.count}} users</div>
+            {{pager.endIndex+1}} {{dashboarData.data.count}} users</div>
           <div
             *ngIf="dashboarData && dashboarData.data.length >0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader">
             <div class="sb-pagination ml-auto" *ngIf="pager.pages.length">
