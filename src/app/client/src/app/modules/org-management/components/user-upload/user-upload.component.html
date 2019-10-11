@@ -60,7 +60,9 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     <div *ngFor = "let er of errors">
       <span> {{er}}</span>
     </div>
-    <div id="errorDiv"></div>
+    <div id="errorDiv" class="errorDiv">
+      <textarea id="errorTextArea" class="errorTextArea"></textarea>
+    </div>
   </div>
   <div>
     <span> {{resourceService?.frmelmnts?.lbl?.errorMsg }}</span>
