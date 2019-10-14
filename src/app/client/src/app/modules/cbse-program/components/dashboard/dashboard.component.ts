@@ -213,12 +213,11 @@ export class DashboardComponent implements OnInit {
       this.toasterService.error('Please try again by refresh');
     }
     forkJoin(apiRequest).subscribe(data => {
-      let aggregatedData = _.concat(data[0], data[1])
-      
+      let aggregatedData = _.compact(_.concat(data[0], data[1]))
       this.textBookChapters = _.map(textBookMetaData, topicData => {
         const results = { name: topicData.name, topic: topicData.topic, identifier: topicData.identifier };
         _.forEach(aggregatedData, (Tobj) => {
-          if (Tobj.name === topicData.topic.toLowerCase()) {
+          if (Tobj && Tobj.name === topicData.topic.toLowerCase()) {
             _.forEach(Tobj.aggregations[0].values, (Cobj) => {
               let modify = _.map(Cobj.aggregations[0].values, (a) => {
                 let temp = {}
@@ -241,7 +240,7 @@ export class DashboardComponent implements OnInit {
       _.forEach(this.textBookChapters, (chap) => {
         _.forEach(this.questionType, (type, index) => {
           let filter_by_category = _.filter(data[index + 2], { name: chap.topic.toLowerCase() })
-          if (filter_by_category.length > 0) Object.assign(chap[type], { 'published': filter_by_category[0].count })
+          if (chap[type] && filter_by_category.length > 0) Object.assign(chap[type], { 'published': filter_by_category[0].count })
         });
       });
 
