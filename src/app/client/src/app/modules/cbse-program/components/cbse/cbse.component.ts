@@ -50,8 +50,8 @@ export class CbseComponent implements OnInit, OnDestroy {
   public resourceName: string;
   public resourceNameInput: string;
   public typeOptions = [
-    {value: 'Best School Certificate'},
-    {value: 'Best Student Certificate'}
+    {value: 'Best&nbsp;School&nbsp;Certificate'},
+    {value: 'Best&nbsp;Student&nbsp;Certificate'}
   ];
   public selectedOption;
   public showModal: boolean = false;

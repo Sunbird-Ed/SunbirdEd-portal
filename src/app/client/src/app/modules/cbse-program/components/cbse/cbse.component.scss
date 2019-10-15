@@ -9,8 +9,23 @@
 }
 
 }
+
 strong {
 	font-family: "noto_sanssemibold", "Noto Sans Gujarati Bold";
+}
+
+.mt-30 {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.sb-box-container {
+    text-align: center;
+    background: #fff;
+    padding: 48px 24px;
+    width: 90%;
+    border-radius: 2px;
+    box-shadow: 0 2px 7px 0 rgba(0,0,0,.16);
 }
 
 .sb-certificate-table-ct {
@@ -146,9 +161,9 @@ strong {
 	height: auto;
 	position: inherit;
 	z-index: 2;
-	padding: 96px 0px;
+	padding: 0px 0px;
 	box-sizing: border-box;
-	margin: 90px 0 0 0;
+	margin: 100px 0px;
 	left: 0px;
 	top: 0px;
 }

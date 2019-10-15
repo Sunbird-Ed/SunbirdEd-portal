@@ -1,4 +1,4 @@
-<div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white">
+<div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white" style="background-color: white;">
   <div class="ui container">
     <a class="item active" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR")' [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
       (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
@@ -61,7 +61,7 @@
       	</tr>
       </table>
     </div>
-    <div class="mt-30">
+    <div>
       <button appTelemetryInteract [disabled]="!selectedOption" [telemetryInteractEdata]="telemetryInteract" class="sb-btn sb-btn-sm sb-btn-primary btn-block" (click)="issueCertificate()">Issue</button>
     </div>
   </div>
