@@ -178,6 +178,7 @@ export class PublicPlayerService {
     } else if (_.find(downloadListdata.result.response.downloads.failed, { resourceId: identifier })) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
     }
+    return content;
   }
 
 }

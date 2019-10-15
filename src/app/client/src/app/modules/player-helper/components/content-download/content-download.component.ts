@@ -100,7 +100,10 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   }
 
   checkDownloadStatus(downloadListdata) {
-    return this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
+  this.contentData = this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
+  if (this.contentData ['downloadStatus'] === this.resourceService.messages.stmsg.m0139) {
+    this.toasterService.success('Update Successful');
+  }
   }
 
   download(content) {
@@ -111,7 +114,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   }
 
   checkUpdateStatus(status) {
-    return this.utilService.getPlayerUpdateStatus(status, this.contentData, this.currentRoute, this.showUpdate);
+   return this.utilService.getPlayerUpdateStatus(status, this.contentData, this.currentRoute, this.showUpdate);
   }
 
   assignLabel() {

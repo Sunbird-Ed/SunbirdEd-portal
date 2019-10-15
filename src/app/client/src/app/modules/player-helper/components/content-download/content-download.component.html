@@ -19,12 +19,9 @@ appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [teleme
 </button>
 
 <button *ngIf="checkUpdateStatus('DOWNLOADING')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable" >
-Updating
+{{resourceService.frmelmnts?.lbl?.updating}}
 </button>
 
-<button *ngIf="checkUpdateStatus('DOWNLOADED')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
-UpTo Date
-</button>
 <!--Buttons for Updating a content or collection -->
 
 <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
