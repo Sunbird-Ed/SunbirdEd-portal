@@ -166,6 +166,7 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
     }
     );
     this.getMyContent();
+    sessionStorage.removeItem('singleContent');
   }
 
   /**
