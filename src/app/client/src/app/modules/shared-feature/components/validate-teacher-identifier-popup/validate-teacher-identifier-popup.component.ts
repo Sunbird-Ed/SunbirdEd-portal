@@ -1,3 +1,4 @@
+import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, Output,  EventEmitter  } from '@angular/core';
 import { UserService } from '@sunbird/core';
 
@@ -18,9 +19,13 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   extIdVerified: boolean;
   extIdFailed: boolean;
   navivateToResult =  false;
+  instance: string;
 
-  constructor(public userService: UserService) { }
+  constructor(
+    public userService: UserService,
+    public resourceService: ResourceService) { }
   ngOnInit() {
+    this.instance = 'Tamil Nadu';
   }
 
   verifyExtId() {
