@@ -5,7 +5,8 @@
     [size]="'normal'" 
     class="sb-modal " 
     appBodyScroll 
-    #createValidateModal>
+    #createValidateModal
+    *ngIf="!isOffline">
     
 <!--sb-error ,,  sb-success  -->
 
