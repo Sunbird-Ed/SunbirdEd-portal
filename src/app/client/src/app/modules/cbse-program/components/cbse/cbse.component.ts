@@ -49,6 +49,12 @@ export class CbseComponent implements OnInit, OnDestroy {
   public role: any = {};
   public resourceName: string;
   public resourceNameInput: string;
+  public typeOptions = [
+    {value: 'Best School Certificate'},
+    {value: 'Best Student Certificate'}
+  ];
+  public selectedOption;
+  public showModal: boolean = false;
   constructor(public frameworkService: FrameworkService, public toasterService: ToasterService) { }
   private questionTypeName = {
     vsa: 'Very Short Answer',
@@ -73,7 +79,12 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
     this.fetchFrameWorkDetails();
     this.selectedAttributes.lastOpenedUnit = 0;
-    
+
+  }
+
+  public issueCertificate() {
+    console.log(this.selectedOption);
+    this.showModal = true;
   }
 
   public selectedClassSubjectHandler(event) {
