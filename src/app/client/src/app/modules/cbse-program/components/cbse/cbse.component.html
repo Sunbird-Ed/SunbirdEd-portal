@@ -1,4 +1,3 @@
-
 <div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white">
   <div class="ui container">
     <a class="item active" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR")' [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
@@ -6,11 +5,69 @@
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER")'
       [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER")'
-      [class.active]="(selectedAttributes.currentRole === 'PUBLISHER' && !showDashboard)" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
-      <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER")'
-      [class.active]="(selectedAttributes.currentRole === 'PUBLISHER' && showDashboard)" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange('Dashboard')">Dashboard</a>
+      [class.active]="selectedAttributes.currentRole === 'PUBLISHER'" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
+    <a class="item active" *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "gj")'
+      (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange()">Issue&nbsp;Certificate</a>
   </div>
 </div>
+
+<div class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
+  <div class="ui mt-30 container w-300 sb-box-container" [appTelemetryImpression]="telemetryImpression">
+    <h4>SELECT TYPE</h4>
+    <div class="mt-30">
+      <sui-select class="selection" [placeholder]="'Select Type'" [isSearchable]=false [(ngModel)]="selectedOption">
+        <sui-select-option *ngFor="let option of typeOptions" [value]="option.value">
+        </sui-select-option>
+      </sui-select>
+    </div>
+    <div class="row" *ngIf="selectedOption">
+      <table class="sb-certificate-table-ct">
+      	<tr>
+      		<td class="sb-certificate-table">
+      			<img src="assets/images/gujarat-state-outline.svg" class="state-outline-img"/>
+      			<img src="assets/images/certificate-frame.svg" class="certificate-frame"/>
+      			<div class="sb-certificate-container">
+      				<table width="100%" border="0" class="certificate-table-area">
+      					<tr class="sb-certificate-header">
+      						<td colspan="3">
+      							<div class="state-symbol">
+      								<img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo" alt="Government of Gujarat">
+      							</div>
+      							<p class="state-name">ગુજરાત સરકાર</p>
+      							<h1>પૂર્ણતા નું પ્રમાણપત્ર</h1>
+      							<p class="certificate-details">આ પ્રમાણપત્ર આપવા માટે છે કે શ્રી / શ્રીમતી <strong>રાધા કૃષ્ણ એમએ</strong> <strong>25 જુલાઇ 2019</strong> ના રોજ "ટીચર્સ પ્રોફેશનલ ડેવલપમેન્ટ પ્રોગ્રામ" સફળતાપૂર્વક તાલીમ પૂર્ણ કરી છે.</p>
+      						</td>
+      					</tr>
+      					<tr class="sb-certificate-footer">
+      						<td class="country-symbol">
+      							<img src="assets/images/DIKSHA.png" class="sb-certificatePage-logo"/>
+      							<p>આ દસ્તાવેજ ડિજિટલ સહી થયેલ છે</p>
+      						</td>
+      						<td class="state-sign">
+      							<img src="$signatory0Image" class="sb-certificatePage-logo"/>
+      							<div class="sign-line"></div>
+      							<p class="italic">એસસીઇઆરટી ગુજરાતના ડાયરેક્ટર</p>
+      						</td>
+      						<td class="certificate-qr-code">
+      							<img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
+      							<p>પ્રમાણપત્ર ચકાસવા માટે સ્કેન કરો</p>
+      						</td>
+      					</tr>
+      				</table>
+
+      			</div>
+      			<div class="sb-certificate-bg-"></div>
+      		</td>
+      	</tr>
+      </table>
+    </div>
+    <div class="mt-30">
+      <button appTelemetryInteract [disabled]="!selectedOption" [telemetryInteractEdata]="telemetryInteract" class="sb-btn sb-btn-sm sb-btn-primary btn-block" (click)="issueCertificate()">Issue</button>
+    </div>
+  </div>
+</div>
+
+<csv-upload *ngIf="showModal"></csv-upload>
 
 <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
 
@@ -27,10 +84,7 @@
               <span
                 class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
               <span
-                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.subject}}</span>
-              <span 
-                *ngIf="stages[currentStage] === 'topicList' || stages[currentStage] === 'createQuestion'"
-                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.textbookName}}</span>
+                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.subject}}</span>
           </div>
           <div *ngIf="stages[currentStage] === 'topicList' && role.currentRole === 'REVIEWER'">
             <div *ngFor="let field of formFieldOptions">
@@ -55,12 +109,9 @@
           <app-textbook-list [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
             (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
         </div>
-        <div *ngIf="stages[currentStage] === 'topicList' && !showDashboard">
+        <div *ngIf="stages[currentStage] === 'topicList'">
             <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [selectedSchool]="selectedSchoolForReview" [role]="role"
             (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
-        </div>
-        <div *ngIf="stages[currentStage] === 'topicList' && showDashboard">
-            <app-dashboard [selectedAttributes]="selectedAttributes"></app-dashboard>
         </div>
     </div>
 

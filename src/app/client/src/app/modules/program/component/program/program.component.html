@@ -1,3 +1,4 @@
-<app-cbse *ngIf="!showLoader && !showOnboardPopup" [programDetails]="programDetails" [userProfile]="userProfile"></app-cbse>
+<!-- *ngIf="!showLoader && !showOnboardPopup" -->
+<app-cbse [programDetails]="programDetails" [userProfile]="userProfile"></app-cbse>
 <app-onboard-popup *ngIf="!showLoader && showOnboardPopup" [programDetails]='programDetails'
   (updateEvent)="handleOnboardEvent($event)"></app-onboard-popup>

@@ -1,7 +1,160 @@
 ::ng-deep {
-    
+
     .breadcrumb {
     cursor: pointer;
 }
 
+.sb-bg-white{
+  background-color: white;
+}
+
+}
+strong {
+	font-family: "noto_sanssemibold", "Noto Sans Gujarati Bold";
+}
+
+.sb-certificate-table-ct {
+	padding: 0px;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	text-align: center
+}
+
+.sb-certificate-table {
+	width: 100%;
+	height: auto;
+	position: relative;
+	background: #fff
+}
+
+.sb-certificate-table .sb-certificate-bg {
+	background-size: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 56.25%;
+	z-index: 1;
+	margin: 0 auto;
+	height: auto;
+	background-repeat: no-repeat;
+	background-position: center
+}
+
+.sb-certificate-table .sb-certificate-container {
+	position: absolute;
+	z-index: 2;
+	left: 0px;
+	top: 100px
+}
+
+.sb-certificate-table .sb-certificate-container .certificate-table-area {
+	text-align: center;
+	width: 82%;
+	margin: 0 auto
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-header .state-symbol img {
+	height: 90px
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-header .state-name {
+	color: #333333;
+	font-size: 18px;
+	line-height: 1.4;
+	width: 85%;
+	margin: 0 auto;
+	margin-top: 10px
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-header h1 {
+	font-family: "july_seventhregular", "Noto Sans Gujarati Regular" cursive, "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	margin: 8px 0 40px 0;
+	color: #024f9d;
+	font-weight: 400;
+	font-size: 48px;
+	line-height: 48px;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-header p.certificate-details {
+	color: #333333;
+	font-size: 20px;
+	line-height: 40px;
+	text-align: center;
+	width: 75%;
+	margin: 0 auto;
+	min-height: 128px;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer td {
+	vertical-align: bottom;
+	padding-top: 95px;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .country-symbol {
+	text-align: left;
+	color: #999999;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .country-symbol img {
+	width: 128px;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .country-symbol p {
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .state-sign div.sign-line {
+	width: 75%;
+	margin: 8px auto;
+	height: 1px;
+	background: #999;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .state-sign p {
+	font-family: "noto_sansitalic";
+	font-style: italic;
+	font-size: 14px;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .certificate-qr-code {
+	text-align: right;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .certificate-qr-code p {
+	color: #333333;
+	font-size: 14px;
+	line-height: 18px;
+	margin-top: 5px;
+}
+
+.certificate-frame {
+	width: 100%;
+	height: auto;
+	position: absolute;
+	z-index: 2;
+	box-sizing: border-box;
+	left: 0px;
+	top: 0px;
+}
+
+.state-outline-img {
+	width: 65%;
+	height: auto;
+	position: inherit;
+	z-index: 2;
+	padding: 96px 0px;
+	box-sizing: border-box;
+	margin: 90px 0 0 0;
+	left: 0px;
+	top: 0px;
+}
+
+@page {
+	margin: 16px 24px 24px 24px;
+	size: landscape;
+	/* size: 223mm 300mm; */
 }
