@@ -245,9 +245,10 @@ export class CourseConsumptionComponent implements OnDestroy, AfterViewInit {
         (data: ServerResponse) => {
           if (data.result.count && data.result.content) {
             this.myCoursesList = data.result.content;
-            if (data.result.content.length === 1) {
+            if (data.result.content.length === 1 && !sessionStorage.getItem('singleContent')) {
               this.identifier = data.result.content[0].identifier;
               this.courseName = data.result.content[0].name;
+              sessionStorage.setItem('singleContent','singleContent');
               this.route.navigate(['dashBoard/activity/course/consumption', this.identifier, this.timePeriod]);
             } else {
               this.isMultipleCourses = true;
