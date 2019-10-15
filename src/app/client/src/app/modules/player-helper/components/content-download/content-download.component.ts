@@ -84,6 +84,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   }
 
   startDownload(content) {
+    this.showUpdate = false;
     this.downloadManagerService.downloadContentId = content.identifier;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
@@ -101,7 +102,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
 
   checkDownloadStatus(downloadListdata) {
   this.contentData = this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
-  if (this.contentData ['downloadStatus'] === this.resourceService.messages.stmsg.m0139) {
+  if (this.contentData ['downloadStatus'] === this.resourceService.messages.stmsg.m0139 && this.showUpdate) {
     this.toasterService.success('Update Successful');
   }
   }

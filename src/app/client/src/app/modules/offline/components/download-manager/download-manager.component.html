@@ -11,7 +11,7 @@
     <div content *ngIf="downloadResponse">
         <div class="sb-single-pannel-accordion-list-item" *ngIf="!downloadResponse.inprogress.length && !downloadResponse.submitted.length && !downloadResponse.completed.length && !downloadResponse.failed.length">
         <div class="d-flex flex-ai-center flex-basis-100">
-          <div class="download-text">No Downloads Available</div>
+          <div class="no-downloads">{{resourceService?.frmelmnts?.lbl?.noDownloads}}</div>
         </div>
       </div>
       <div class="sb-single-pannel-accordion-list-item"
