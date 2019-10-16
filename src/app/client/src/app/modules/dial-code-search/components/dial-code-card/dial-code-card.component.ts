@@ -15,7 +15,7 @@ export class DialCodeCardComponent implements OnInit {
   @Input() dialCode: string;
   @Input() customClass: string;
   @Output() clickEvent = new EventEmitter<any>();
-  @Input() singleContentRedirect: string;
+  @Input() singleContentRedirect: string; 
   telemetryCdata: Array<{}> = [];
 
   constructor(public resourceService: ResourceService) {
