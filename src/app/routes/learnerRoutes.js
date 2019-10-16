@@ -84,7 +84,17 @@ module.exports = function (app) {
         }
       }
     }))
+  
+  app.all('/learner/user/v1/get/phone/*',
+    permissionsHelper.checkPermission(),
+    proxyObj()
+  )
 
+  app.all('/learner/user/v1/get/email/*',
+    permissionsHelper.checkPermission(),
+    proxyObj()
+  )
+  
   app.all('/learner/*',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     permissionsHelper.checkPermission(),
@@ -111,4 +121,35 @@ module.exports = function (app) {
         }
       }
     }))
+}
+
+function proxyObj (){
+  return proxy(learnerURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      let urlParam = req.originalUrl.replace('/learner/', '')
+      let query = require('url').parse(req.url).query
+      if (query) {
+        return require('url').parse(learnerURL + urlParam + '?' + query).path
+      } else {
+        return require('url').parse(learnerURL + urlParam).path
+      }
+    },
+    userResDecorator: function (proxyRes, proxyResData,  req, res) {
+      try {
+        let data = JSON.parse(proxyResData.toString('utf8'))
+        let responseData = {};
+        if (data.responseCode === 'OK') {
+          responseData.isUserExists = true;
+          responseData.responseCode = 'OK';
+        }
+        if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+        else return proxyUtils.handleSessionExpiry(proxyRes, responseData, req, res, responseData);
+      } catch (err) {
+        logger.error({msg:'content api user res decorator json parse error:', proxyResData})
+        return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+      }
+    }
+  });
 }
