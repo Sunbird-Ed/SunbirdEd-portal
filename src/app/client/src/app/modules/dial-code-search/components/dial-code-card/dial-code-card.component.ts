@@ -30,7 +30,7 @@ export class DialCodeCardComponent implements OnInit {
       this.onAction(this.data, this.data.action.onImage);
     }
   }
-  
+
   public onAction(data, action) {
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
