@@ -174,7 +174,8 @@
     "OFFLINE": {
       "DOWNLOAD": "content/v1/download",
       "DOWNLOAD_LIST": "content/v1/download/list",
-      "EXPORT": "content/v1/export"
+      "EXPORT": "content/v1/export",
+      "UPDATE":"content/v1/update"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",

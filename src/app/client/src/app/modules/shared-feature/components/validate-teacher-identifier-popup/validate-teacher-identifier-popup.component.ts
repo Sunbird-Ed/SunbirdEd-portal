@@ -1,6 +1,7 @@
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, Output,  EventEmitter  } from '@angular/core';
 import { UserService } from '@sunbird/core';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-validate-teacher-identifier-popup',
@@ -20,7 +21,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   extIdFailed: boolean;
   navivateToResult =  false;
   instance: string;
-
+  isOffline = environment.isOffline;
   constructor(
     public userService: UserService,
     public resourceService: ResourceService) { }
