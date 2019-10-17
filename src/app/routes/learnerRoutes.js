@@ -138,14 +138,16 @@ function proxyObj (){
     },
     userResDecorator: function (proxyRes, proxyResData,  req, res) {
       try {
-        let data = JSON.parse(proxyResData.toString('utf8'))
-        let responseData = {};
+        let data = JSON.parse(proxyResData.toString('utf8'));
+        let response = data.result.response;
+        data.result.response = {id: '', rootOrgId: '',isUserExists:''};
         if (data.responseCode === 'OK') {
-          responseData.isUserExists = true;
-          responseData.responseCode = 'OK';
+          data.result.response.id = response.id;
+          data.result.response.rootOrgId = response.rootOrgId;
+          data.result.response.isUserExists = true;
         }
         if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-        else return proxyUtils.handleSessionExpiry(proxyRes, responseData, req, res, responseData);
+        else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
       } catch (err) {
         logger.error({msg:'content api user res decorator json parse error:', proxyResData})
         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
