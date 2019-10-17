@@ -1,5 +1,5 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { DownloadManagerService } from '@sunbird/offline';
+import { DownloadManagerService, ConnectionService } from '@sunbird/offline';
 import { serverRes } from './content-download.component.spec.data';
 import { of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { RouterTestingModule,  } from '@angular/router/testing';
@@ -46,6 +46,9 @@ describe('ContentDownloadComponent', () => {
 
   it('should call setTelemetry() on ngOnInit', () => {
     expect(component).toBeTruthy();
+    component.contentData = serverRes.result.result.content;
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
     spyOn(component, 'setTelemetryData');
     component.ngOnInit();
     expect(component.setTelemetryData).toHaveBeenCalled();
@@ -102,10 +105,46 @@ describe('ContentDownloadComponent', () => {
 
   it('should call offlinecardservice isyoutubecontent()', () => {
     const offlineCardService = TestBed.get(OfflineCardService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
     component.download(serverRes.result.result.content);
     expect(component.showModal).toBeFalsy();
     expect(offlineCardService.isYoutubeContent).toHaveBeenCalled();
   });
+
+  it('should call updateContent() from downloadmanager service', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
+    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableOf(serverRes.content_update_success));
+    component.contentData = serverRes.result.result.content;
+    component.updateContent(component.contentData);
+    expect(downloadManagerService.updateContent).toHaveBeenCalled();
+  });
+
+  it('should throw errror on updateContent()', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
+    resourceService.messages = serverRes.resourceServiceMockData.messages;
+    component.isConnected = false;
+    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableThrowError(serverRes.content_update_error));
+    component.contentData = serverRes.result.result.content;
+    component.updateContent(component.contentData);
+    expect(downloadManagerService.updateContent).toHaveBeenCalled();
+  });
+
+  it('should call getPlayerUpdateStatus()', () => {
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'getPlayerUpdateStatus').and.returnValue(true);
+    component.contentData = serverRes.result.result.content;
+    component.currentRoute = 'library';
+    component.showUpdate = true;
+    component.checkUpdateStatus('UPDATE');
+    expect(utilService.getPlayerUpdateStatus).toHaveBeenCalled();
+  });
+
 
 });
