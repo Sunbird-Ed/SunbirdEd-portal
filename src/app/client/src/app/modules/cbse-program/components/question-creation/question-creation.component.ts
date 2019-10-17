@@ -7,10 +7,11 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, Observable, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
+import { CbseProgramService } from '../../services';
 
 @Component({
   selector: 'app-question-creation',
@@ -51,6 +52,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     private userService: UserService,
     private configService: ConfigService,
     private http: HttpClient,
+    private cbseService: CbseProgramService,
     publicDataService: PublicDataService,
     toasterService: ToasterService,
     resourceService: ResourceService, public telemetryService: TelemetryService,
@@ -310,21 +312,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
        * - for local preview only question body required with all other parameter to create Ecml.
        */
       if(!forPreview) {
-        this.actionService.post(req).subscribe((res) => {
+        this.actionService.post(req).pipe(catchError(err => {
+          let errInfo = { errorMsg: 'Question creation failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        })).subscribe((res) => {
           this.questionStatus.emit({'status': 'success', 'type': 'create', 'identifier': res.result.node_id});
-        }, error => {
-          this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
-          const telemetryErrorData = {
-            context: {
-              env: 'cbse_program'
-            },
-            edata: {
-              err: error.status.toString(),
-              errtype: 'PROGRAMPORTAL',
-              stacktrace: _.get(error, 'error.params.errmsg') || 'Question creation failed'
-            }
-          };
-          this.telemetryService.error(telemetryErrorData);
         });
       } else {
         this.selectedAttributes.previewQuestionData = {
@@ -388,26 +380,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             }
           });
         }
-        this.actionService.patch(option).subscribe((res) => {
+        this.actionService.patch(option).pipe(catchError(err => {
+          let errInfo = { errorMsg: 'Question updation failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        })).subscribe((res) => {
           if (this.updateStatus === 'Live') {
             this.toasterService.success('Question Accepted');
           } else if (this.updateStatus === 'Reject') {
             this.toasterService.success('Question Rejected');
           }
           this.questionStatus.emit({'status': 'success', 'type': this.updateStatus, 'identifier': this.questionMetaData.data.identifier});
-        }, error => {
-            this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question update failed');
-            const telemetryErrorData = {
-              context: {
-                env: 'cbse_program'
-              },
-              edata: {
-                err: error.status.toString(),
-                errtype: 'PROGRAMPORTAL',
-                stacktrace: _.get(error, 'error.params.errmsg') || 'Question update failed'
-              }
-            };
-            this.telemetryService.error(telemetryErrorData);
         });
       });
   }

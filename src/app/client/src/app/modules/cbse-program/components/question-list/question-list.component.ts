@@ -2,10 +2,10 @@ import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDe
 import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, catchError } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
-import { of, forkJoin } from 'rxjs';
+import { of, forkJoin, throwError } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CbseProgramService } from '../../services';
 @Component({
@@ -17,8 +17,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
   @Input() selectedAttributes: any;
   @Input() role: any;
   @Input() resourceName: any;
-  @Output() changeStage = new EventEmitter <any> ();
-  @Output() publishButtonStatus = new EventEmitter <any> ();
+  @Output() changeStage = new EventEmitter<any>();
+  @Output() publishButtonStatus = new EventEmitter<any>();
 
   public questionList = [];
   public selectedQuestionId: any;
@@ -27,7 +27,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public refresh = true;
   public showLoader = true;
   public enableRoleChange = false;
-  public showSuccessModal =  false;
+  public showSuccessModal = false;
   public publishInProgress = false;
   public publishedResourceId: any;
   public questionSelectionStatus: any;
@@ -52,7 +52,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       this.initialized = false; // it should be false before fetch
       this.fetchQuestionWithRole();
     }
-    if((this.selectedAttributes.currentRole=== 'REVIEWER') || (this.selectedAttributes.currentRole === 'PUBLISHER')){
+    if ((this.selectedAttributes.currentRole === 'REVIEWER') || (this.selectedAttributes.currentRole === 'PUBLISHER')) {
       this.selectedAttributes['showMode'] = 'previewPlayer';
     } else {
       this.selectedAttributes['showMode'] = 'editorForm';
@@ -100,13 +100,18 @@ export class QuestionListComponent implements OnInit, OnChanges {
       req.data.request.filters.status = ['Review'];
     }
     let apiRequest;
-    apiRequest = [this.publicDataService.post(req).pipe(tap(data => this.showLoader = false))];
+    apiRequest = [this.publicDataService.post(req).pipe(tap(data => this.showLoader = false), catchError(err => { let errInfo = {errorMsg: 'Fetching question list failed' }; return throwError(this.cbseService.apiErrorHandling(err, errInfo)) }))];
     if (this.role.currentRole === "PUBLISHER") {
       delete req.data.request.filters.createdBy;
       req.data.request.filters.status = ['Live'];
       if (this.selectedAttributes.resourceIdentifier) {
         // tslint:disable-next-line:max-line-length
-        apiRequest = [this.publicDataService.post(req).pipe(tap(data => this.showLoader = false)), this.fetchExistingResource(this.selectedAttributes.resourceIdentifier)];
+        apiRequest = [this.publicDataService.post(req).pipe(tap(data => this.showLoader = false),
+          catchError(err => {
+            let errInfo = {errorMsg: 'Fetching question list failed' };
+            return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+          })),
+        this.fetchExistingResource(this.selectedAttributes.resourceIdentifier)];
       }
     }
 
@@ -114,39 +119,26 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
     forkJoin(apiRequest)
       .subscribe((res: any) => {
-          this.questionList = res[0].result.items || [];
-          let selectedQuestionList = [];
-          if (res[1]) {
-            selectedQuestionList  = _.map(_.get(res[1], 'result.content.questions'), 'identifier') || [];
+        this.questionList = res[0].result.items || [];
+        let selectedQuestionList = [];
+        if (res[1]) {
+          selectedQuestionList = _.map(_.get(res[1], 'result.content.questions'), 'identifier') || [];
+        }
+        _.forEach(this.questionList, (question) => {
+          if (_.includes(selectedQuestionList, question.identifier)) {
+            question.isSelected = true;
+          } else {
+            question.isSelected = false;
           }
-          _.forEach(this.questionList, (question) => {
-            if (_.includes(selectedQuestionList, question.identifier)) {
-              question.isSelected = true;
-            } else {
-              question.isSelected = false;
-            }
-          });
-          if (this.questionList.length) {
-            this.selectedQuestionId = this.questionList[0].identifier;
-            this.handleQuestionTabChange(this.selectedQuestionId);
-            this.questionSelectionStatus = this.questionList[0].isSelected;
+        });
+        if (this.questionList.length) {
+          this.selectedQuestionId = this.questionList[0].identifier;
+          this.handleQuestionTabChange(this.selectedQuestionId);
+          this.questionSelectionStatus = this.questionList[0].isSelected;
         }
         this.selectedAll = this.questionList.every((question: any) => {
           return question.isSelected === true;
         });
-      }, err => {
-        this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question list failed');
-        const telemetryErrorData = {
-          context: {
-            env: 'cbse_program'
-          },
-          edata: {
-            err: err.status.toString(),
-            errtype: 'PROGRAMPORTAL',
-            stacktrace: _.get(err, 'error.params.errmsg') || 'Fetching question list failed'
-          }
-        };
-        this.telemetryService.error(telemetryErrorData);
       });
   }
 
@@ -159,6 +151,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
       return response;
     }, err => {
       console.log(err);
+    }), catchError(err => {
+      let errInfo = {errorMsg: 'Resource updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
     }));
   }
 
@@ -189,28 +184,15 @@ export class QuestionListComponent implements OnInit, OnChanges {
           }, 1000);
         }
         // tslint:disable-next-line:max-line-length
-        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view')  && (this.selectedAttributes.showMode === 'editorForm')) {
+        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view') && (this.selectedAttributes.showMode === 'editorForm')) {
           this.refreshEditor();
-           }
-           this.initialized = true;
-      }, err => {
-        this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching question failed');
-        const telemetryErrorData = {
-          context: {
-            env: 'cbse_program'
-          },
-          edata: {
-            err: err.status.toString(),
-            errtype: 'PROGRAMPORTAL',
-            stacktrace: _.get(err, 'error.params.errmsg') || 'Fetching question list failed'
-          }
-        };
-        this.telemetryService.error(telemetryErrorData);
+        }
+        this.initialized = true;
       });
-      const selectedQuestion = _.find(this.questionList, {identifier : questionId});
-      if (selectedQuestion) {
-        this.questionSelectionStatus = selectedQuestion.isSelected;
-      }
+    const selectedQuestion = _.find(this.questionList, { identifier: questionId });
+    if (selectedQuestion) {
+      this.questionSelectionStatus = selectedQuestion.isSelected;
+    }
   }
   public getQuestionDetails(questionId) {
     if (this.questionReadApiDetails[questionId]) {
@@ -222,7 +204,11 @@ export class QuestionListComponent implements OnInit, OnChanges {
     return this.actionService.get(req).pipe(map(res => {
       this.questionReadApiDetails[questionId] = res.result.assessment_item;
       return res.result.assessment_item;
-    }));
+    }),
+      catchError(err => {
+        let errInfo = {errorMsg: 'Fetching Question details failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+      }));
   }
   public createNewQuestion(): void {
     this.questionMetaData = {
@@ -280,7 +266,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }
   }
   questionQueueStatusHandler(event) {
-    const selectedQuestion = _.find(this.questionList, {identifier : event.questionId});
+    const selectedQuestion = _.find(this.questionList, { identifier: event.questionId });
     if (selectedQuestion) {
       selectedQuestion.isSelected = event.status;
     }
@@ -289,7 +275,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     });
     this.questionSelectionStatus = event.status;
   }
- public publishQuestions() {
+  public publishQuestions() {
     let selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
     this.publishInProgress = true;
     this.publishButtonStatus.emit(this.publishInProgress);
@@ -318,7 +304,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
             'request': {
               'content': {
                 // tslint:disable-next-line:max-line-length
-                'name': this.resourceName  || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
+                'name': this.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
                 'contentType': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
                 'mimeType': 'application/vnd.ekstep.ecml-archive',
                 'programId': this.selectedAttributes.programId,
@@ -351,16 +337,19 @@ export class QuestionListComponent implements OnInit, OnChanges {
             }
           }
         };
-        this.publicDataService.post(option).subscribe((res) => {
-          console.log('res ', res);
-          if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
-            this.publishResource(res.result.content_id || res.result.node_id);
-          }
-        }, error => {
-          this.publishInProgress = false;
-          this.publishButtonStatus.emit(this.publishInProgress);
-          this.toasterService.error(_.get(error, 'error.params.errmsg') || 'content creation failed');
-        });
+        this.publicDataService.post(option).pipe(catchError(err => {
+          let errInfo = {errorMsg: 'Resource publish failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        }))
+          .subscribe((res) => {
+            console.log('res ', res);
+            if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
+              this.publishResource(res.result.content_id || res.result.node_id);
+            }
+          }, error => {
+            this.publishInProgress = false;
+            this.publishButtonStatus.emit(this.publishInProgress);
+          });
       });
     } else {
       this.publishInProgress = false;
@@ -386,41 +375,43 @@ export class QuestionListComponent implements OnInit, OnChanges {
         questions.push({ 'identifier': value });
       });
 
-    const updateBody = this.cbseService.getECMLJSON(selectedQuestionsData.ids);
-    const versionKey = this.getContentVersion(this.selectedAttributes.resourceIdentifier);
+      const updateBody = this.cbseService.getECMLJSON(selectedQuestionsData.ids);
+      const versionKey = this.getContentVersion(this.selectedAttributes.resourceIdentifier);
 
-    forkJoin([updateBody, versionKey]).subscribe((response: any) => {
-      const existingContentVersionKey = _.get(response[1], 'content.versionKey');
-      const options = {
-        url: `private/content/v3/update/${this.selectedAttributes.resourceIdentifier}`,
-        data : {
-          'request': {
-            'content': {
-              questions: questions,
-              body: JSON.stringify(response[0]),
-              versionKey: existingContentVersionKey,
-              'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
-              'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
-              // tslint:disable-next-line:max-line-length
-              name: this.resourceName  || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`
+      forkJoin([updateBody, versionKey]).subscribe((response: any) => {
+        const existingContentVersionKey = _.get(response[1], 'content.versionKey');
+        const options = {
+          url: `private/content/v3/update/${this.selectedAttributes.resourceIdentifier}`,
+          data: {
+            'request': {
+              'content': {
+                questions: questions,
+                body: JSON.stringify(response[0]),
+                versionKey: existingContentVersionKey,
+                'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
+                'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
+                // tslint:disable-next-line:max-line-length
+                name: this.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`
+              }
             }
           }
-        }
-      };
-      this.publicDataService.patch(options).subscribe((res) => {
-        if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
-          this.publishResource(res.result.content_id || res.result.node_id);
-        }
-      }, error => {
-        this.publishInProgress = false;
-        this.publishButtonStatus.emit(this.publishInProgress);
-        this.toasterService.error(_.get(error, 'error.params.errmsg') || 'content update failed');
+        };
+        this.publicDataService.patch(options).pipe(catchError(err => {
+          let errInfo = {errorMsg: 'Resource updation failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        }))
+          .subscribe((res) => {
+            if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
+              this.publishResource(res.result.content_id || res.result.node_id);
+            }
+          }, error => {
+            this.publishInProgress = false;
+            this.publishButtonStatus.emit(this.publishInProgress);
+          });
       });
-    });
     } else {
       this.publishInProgress = false;
       this.publishButtonStatus.emit(this.publishInProgress);
-      this.toasterService.error('Please select some questions to Publish');
     }
   }
 
@@ -436,7 +427,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
         this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content update failed');
       })
     );
-}
+  }
 
   publishResource(contentId) {
     const requestBody = {
@@ -451,16 +442,19 @@ export class QuestionListComponent implements OnInit, OnChanges {
       url: `private/content/v3/publish/${contentId}`,
       data: requestBody
     };
-    this.contentService.post(optionVal).subscribe(response => {
-      this.publishedResourceId = response.result.content_id || response.result.node_id  || '';
-      // tslint:disable-next-line:max-line-length
-      this.updateHierarchyObj(contentId, this.resourceName  || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`);
+    this.contentService.post(optionVal).pipe(catchError(err => {
+      let errInfo = {errorMsg: 'Resource updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+    }))
+      .subscribe(response => {
+        this.publishedResourceId = response.result.content_id || response.result.node_id || '';
+        // tslint:disable-next-line:max-line-length
+        this.updateHierarchyObj(contentId, this.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`);
 
-    }, (err) => {
-      this.publishInProgress = false;
-      this.publishButtonStatus.emit(this.publishInProgress);
-      this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content publish failed');
-    });
+      }, (err) => {
+        this.publishInProgress = false;
+        this.publishButtonStatus.emit(this.publishInProgress);
+      });
   }
 
   updateHierarchyObj(contentId, name) {
@@ -489,15 +483,19 @@ export class QuestionListComponent implements OnInit, OnChanges {
       url: `private/content/v3/hierarchy/update`,
       data: requestBody
     };
-    this.publicDataService.patch(req).subscribe((res) => {
-      this.showSuccessModal = true;
-      this.publishInProgress = false;
-      this.publishButtonStatus.emit(this.publishInProgress);
-      this.toasterService.success('content created & published successfully');
-    }, err => {
-      console.log(err);
-      this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content update failed');
-    });
+    this.publicDataService.patch(req).pipe(catchError(err => {
+      let errInfo = { errorMsg: 'Resource updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+    }))
+      .subscribe((res) => {
+        this.showSuccessModal = true;
+        this.publishInProgress = false;
+        this.publishButtonStatus.emit(this.publishInProgress);
+        this.toasterService.success('content created & published successfully');
+      }, err => {
+        console.log(err);
+        this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content update failed');
+      });
   }
 
   public dismissPublishModal() {
