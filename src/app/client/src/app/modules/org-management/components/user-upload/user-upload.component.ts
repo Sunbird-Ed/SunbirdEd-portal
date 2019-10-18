@@ -81,6 +81,7 @@ export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
  */
 error: '';
 file: any;
+activateUpload = false;
 
   /**
    * To call resource service which helps to use language constant
@@ -182,6 +183,7 @@ file: any;
   }
   fileChanged(event) {
     this.file = event.target.files[0];
+    this.activateUpload = true;
   }
   /**
   * This method helps to upload a csv file and return process id
@@ -225,14 +227,11 @@ file: any;
     this.bulkUploadErrorMessage = '';
   }
   copyToClipboard() {
-    const element = document.createElement('textarea');
-    document.body.appendChild(element);
+    const element = (<HTMLInputElement>document.getElementById('errorTextArea'));
+    element.value = '';
     element.value = this.error;
     element.select();
     document.execCommand('copy');
-    setTimeout(() => {
-      document.body.removeChild(element);
-    }, 100);
   }
   ngOnDestroy() {
     document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll

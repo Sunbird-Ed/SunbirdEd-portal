@@ -255,7 +255,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     requestData.name = data.name ? data.name : this.name,
       requestData.description = data.description ? data.description : this.description,
       requestData.createdBy = this.userProfile.id,
-      requestData.organisation = this.userProfile.organisationNames,
+      requestData.organisation = _.uniq(this.userProfile.organisationNames),
       requestData.createdFor = this.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;

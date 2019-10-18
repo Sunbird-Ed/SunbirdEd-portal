@@ -37,7 +37,7 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
 
 <div class="sb-modal-actions">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-  [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="processId"
+  [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="!activateUpload"
   class="sb-btn sb-btn-normal sb-btn-primary" (click)="uploadUsersCSV()">
   {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
 </button>
@@ -60,10 +60,14 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     <div *ngFor = "let er of errors">
       <span> {{er}}</span>
     </div>
+    <div id="errorDiv" class="errorDiv">
+      <textarea id="errorTextArea" class="errorTextArea"></textarea>
+    </div>
   </div>
   <div>
     <span> {{resourceService?.frmelmnts?.lbl?.errorMsg }}</span>
   </div>
+  
 </div>
 <div class="sb-modal-actions">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"

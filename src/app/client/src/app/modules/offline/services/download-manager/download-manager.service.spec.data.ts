@@ -71,5 +71,69 @@ export const response = {
                }
             }
 
+    },
+    data: {
+      id: 'api.content.read',
+      ver: '1.0',
+      ts: '2018-05-03T10:51:12.648Z',
+      params: 'params',
+      responseCode: 'OK',
+      result: {
+          content: {
+              downloadStatus: '',
+              mimeType: 'application/vnd.ekstep.ecml-archive',
+              body: 'body',
+              identifier: 'domain_66675',
+              versionKey: '1497028761823',
+              status: 'Live',
+              me_averageRating: '4',
+              description: 'ffgg',
+              name: 'ffgh',
+              concepts: ['AI', 'ML'],
+              contentType: '',
+              code: '',
+              framework: '',
+              userId: '',
+              userName: '',
+              desktopAppMetadata: {
+                addedUsing: 'download',
+                createdOn: 1569830943591,
+                ecarFile: 'domain_66675.ecar',
+                lastUpdateCheckedOn: 1569832294531,
+                updatedOn: 1569832294531,
+                updateAvailable: true
+              }
+          }
+      }
+  },
+  content_update_success:
+  {
+    'id': 'api.content.update',
+    'ver': '1.0',
+    'ts': '2019-09-30T08:09:02.218Z',
+    'params':
+    {
+      'resmsgid': '29be8811-c09f-4d37-9eba-c7b38f736829',
+      'msgid': '3b6b29ea-4d9f-4151-a9e3-e4a2490b2aa2',
+      'status': 'successful', 'err': null, 'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': '9226b2c8-9bc5-4020-bfda-48048883445d'
+  },
+  content_update_error :
+  {
+    'id': 'api.content.update',
+    'ver': '1.0',
+    'ts': '2019-09-30T08:12:51.751Z',
+    'params': {
+      'resmsgid': '3428302f-3022-4900-b075-e941616d5a6c',
+      'msgid': 'f60dffe9-cc6d-4d68-b7ff-46d9a3c29955',
+      'status': 'failed',
+      'err': 'ERR_INTERNAL_SERVER_ERROR',
+      'errmsg': 'getaddrinfo ENOTFOUND dev.sunbirded.org dev.sunbirded.org:443'
+    },
+    'responseCode': 'INTERNAL_SERVER_ERROR',
+    'result': {
     }
+  }
 };

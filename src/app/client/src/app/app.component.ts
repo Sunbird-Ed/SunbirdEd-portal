@@ -11,7 +11,7 @@ import { UserService, PermissionService, CoursesService, TenantService, OrgDetai
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest, BehaviorSubject } from 'rxjs';
-import { first, filter, mergeMap, tap, map, skipWhile } from 'rxjs/operators';
+import { first, filter, mergeMap, tap, map, skipWhile, startWith } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
@@ -84,6 +84,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   hideHeaderNFooter = true;
   queryParams: any;
   telemetryContextData: any ;
+  didV2: boolean;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -118,13 +119,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   ngOnInit() {
+    this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
-      tap( queryParams => {
-        this.queryParams = queryParams;
-        if (this.queryParams && this.queryParams.clientId === 'android' && this.queryParams.context) {
-          this.telemetryContextData = JSON.parse(decodeURIComponent(this.queryParams.context));
-        }
-      })
+      filter( queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
+      tap(queryParams => {
+        this.telemetryContextData = JSON.parse(decodeURIComponent(queryParams.context));
+      }),
+      startWith(null)
     );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
@@ -167,7 +168,7 @@ setFingerPrintTelemetry() {
       return;
     }
 
-    if (this.fingerprintInfo) {
+    if (this.fingerprintInfo && !this.didV2) {
       this.logExData('fingerprint_info', this.fingerprintInfo );
     }
 
@@ -179,6 +180,9 @@ setFingerPrintTelemetry() {
         version: 'v1'
       };
       this.logExData('fingerprint_info', fingerprintInfoV1);
+      if (localStorage.getItem('fpDetails_v2')) {
+        localStorage.removeItem('fpDetails_v1');
+      }
     }
   }
 
