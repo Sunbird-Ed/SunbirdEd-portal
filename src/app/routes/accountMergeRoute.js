@@ -18,14 +18,18 @@ module.exports = (app) => {
       });
       return false;
     }
+    // TODO: to remove mockValue after testing
     req.session.mergeAccountInfo = {
       initiatorAccountDetails: {
         userId: _.get(req, 'session.userId'),
         sessionToken: _.get(req, 'kauth.grant.access_token.token'),
-        redirectUri: req.query.redirectUri
+        redirectUri: req.query.redirectUri,
+        test: 'mockValue'
       }
     };
-    req.session.save();
+    req.session.save(function (result) {
+    console.log('result of saving the session', result);
+    console.log('session id before login', req.session.id);
     console.log('storing merge account initiator account details', JSON.stringify(req.session.mergeAccountInfo));
     const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
     const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/merge/account/u2/login/callback&scope=openid&response_type=code&mergeaccountprocess=1&version=2&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
@@ -33,12 +37,14 @@ module.exports = (app) => {
     console.log('url to redirect', url + query);
     console.log('request protocol', JSON.stringify(req.protocol));
     res.redirect(url + query)
+    });
   });
 
   /**
    * Successful login for account merge redirects to below url
    */
   app.all('/merge/account/u2/login/callback', async (req, res) => {
+    console.log('session id login callback', req.session.id);
     console.log('redirect url was initiated', JSON.stringify(req.session));
     if (!req.session.mergeAccountInfo) {
       res.status(401).send({
