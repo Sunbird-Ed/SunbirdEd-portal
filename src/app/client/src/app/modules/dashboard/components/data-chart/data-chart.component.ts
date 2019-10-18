@@ -144,7 +144,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
         if (_.get(config, 'dataExpr')) {
           bigNumberChartObj['header'] = _.get(config, 'header') || '';
           bigNumberChartObj['footer'] = _.get(config, 'footer') || _.get(config, 'dataExpr');
-          bigNumberChartObj['data'] = (_.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])))).toLocaleString('hi-IN');
+          bigNumberChartObj['data'] = 
+          (_.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])))).toLocaleString('hi-IN');
           this.bigNumberCharts.push(bigNumberChartObj);
         }
       });
