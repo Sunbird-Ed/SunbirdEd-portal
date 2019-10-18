@@ -18,6 +18,7 @@ module.exports = (app) => {
       });
       return false;
     }
+    // TODO: to remove mockValue after testing
     req.session.mergeAccountInfo = {
       initiatorAccountDetails: {
         userId: _.get(req, 'session.userId'),
