@@ -38,8 +38,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public collectionData;
   showLoader = true;
   showError = false;
-  public question_categories: any;
-  public question_type: Array<any> = [];
+  public queCategories: any;
+  public queType: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService, public telemetryService: TelemetryService, private cbseService: CbseProgramService,
     public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
@@ -53,14 +53,14 @@ export class ChapterListComponent implements OnInit, OnChanges {
      */
     this.activeRoute.data
       .subscribe((routerData) => {
-        this.question_categories = routerData.config.question_categories;
-        this.questionType = this.question_categories;
+        this.queCategories = routerData.config.question_categories;
+        this.questionType = this.queCategories;
 
         routerData.config.question_categories.map(category => {
           if (category !== 'mcq') {
-            this.question_type.push('reference');
+            this.queType.push('reference');
           } else {
-            this.question_type.push('mcq');
+            this.queType.push('mcq');
           }
         });
       });
