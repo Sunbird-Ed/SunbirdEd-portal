@@ -7,10 +7,11 @@ import {
   SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiCheckboxModule
 } from 'ng2-semantic-ui';
 import {MergeAccountStatusComponent} from './components/merge-account-status/merge-account-status.component';
+import { MergeLoginComponent } from './components/merge-login/merge-login.component';
 
 
 @NgModule({
-  declarations: [MergeAccountStatusComponent],
+  declarations: [MergeAccountStatusComponent, MergeLoginComponent],
   imports: [
     CommonModule,
     SharedModule,

@@ -32,7 +32,7 @@ module.exports = (app) => {
     console.log('session id before login', req.session.id);
     console.log('storing merge account initiator account details', JSON.stringify(req.session.mergeAccountInfo));
     const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
-    const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/merge/account/u2/login/callback&scope=openid&response_type=code&mergeaccountprocess=1&version=2&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
+    const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/accountMerge/login/callback&scope=openid&response_type=code&mergeaccountprocess=1&version=2&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
     // TODO: remove all console logs once feature is fully tested.
     console.log('url to redirect', url + query);
     console.log('request protocol', JSON.stringify(req.protocol));
@@ -52,7 +52,7 @@ module.exports = (app) => {
       });
       return false;
     }
-    const redirectUrl = `https://${req.get('host')}/merge/account/u2/login/callback`;
+    const redirectUrl = `https://${req.get('host')}/accountMerge/login/callback`;
     let u2Token = _.get(req, 'session.mergeAccountInfo.mergeFromAccountDetails.sessionToken');
     console.log('u2Token from google', JSON.stringify(u2Token));
     // merge from google sign in progress
