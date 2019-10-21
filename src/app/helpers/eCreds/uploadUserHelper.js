@@ -19,6 +19,7 @@ const async = require('async');
 const https = require('https');
 const baseDownloadDir = 'Downloads';
 var zipFolder = require('zip-folder');
+const cassandraUtil = require('./cassandraUtil');
 
 const isCsvFile = (req, res, next) => {
     const file = _.get(req, 'file');
@@ -124,9 +125,36 @@ const apiResponse = ({ responseCode, result, params: { err, errmsg, status } }) 
     }
 }
 
-const performDbQuery = () => {
+const insertCsvIntoDB = () => {
     return (req, res, next) => {
-        next();
+        const dataObj = _.get(req, 'jsonObj');
+
+        const data = {
+            createdby: "ravinder kumar",
+            createdon: new Date(),
+            data: JSON.stringify(dataObj),
+            failureresult: "",
+            lastupdatedon: new Date(),
+            objecttype: "certificate",
+            organisationid: "ORG_001",
+            processendtime: _.toString(new Date()),
+            processstarttime: _.toString(new Date()),
+            retrycount: 0,
+            status: 0,
+            storagedetails: "",
+            successresult: "",
+            uploadedby: "ravinder kumar",
+            uploadeddate: _.toString(new Date())
+        }
+
+        cassandraUtil.insertData(data, (err, result) => {
+            if (err && !result) {
+                console.log('Error occured while saving to DB', err);
+            } else {
+                req.processId = result;
+                next();
+            }
+        })
     }
 }
 
@@ -150,9 +178,8 @@ const generateAndAddCertificates = async (req, res, next) => {
     }, (err) => {
         if (!err) {
             async.waterfall([prepareZip], (err, result) => {
-                res.send({
-                    result
-                })
+                // upload the file to azure 
+                //   
             })
         }
     })
@@ -197,7 +224,7 @@ const downloadCertificateApiCall = ({ downloadUrl, certificateId, expiry = 3600 
     const endPoint = 'certreg/v1/certs/download';
     const options = {
         method: 'POST',
-        url: `${_.get(envHelper, 'LEARNER_URL')}/${endPoint}`,
+        url: `${_.get(envHelper, 'LEARNER_URL')}${endPoint}`,
         headers: {
             'Authorization': `Bearer ${_.get(envHelper, 'PORTAL_API_AUTH_TOKEN')}`,
             'Content-Type': 'application/json',
@@ -228,7 +255,7 @@ const addCertificateApiCall = (generateCertApiResponse, callback) => {
     const endPoint = 'certreg/v1/certs/add';
     const options = {
         method: 'POST',
-        url: `${_.get(envHelper, 'LEARNER_URL')}/${endPoint}`,
+        url: `${_.get(envHelper, 'LEARNER_URL')}${endPoint}`,
         headers: {
             'Authorization': `Bearer ${_.get(envHelper, 'PORTAL_API_AUTH_TOKEN')}`,
             'Content-Type': 'application/json'
@@ -259,7 +286,7 @@ const generateCertificateApiCall = (input, callback) => {
     const request = certGenerateRequestBody(input);
     const options = {
         method: 'POST',
-        url: `${_.get(envHelper, 'LEARNER_URL')}/cert/${endPoint}`,
+        url: `${_.get(envHelper, 'LEARNER_URL')}cert/${endPoint}`,
         headers: {
             'Authorization': `Bearer ${_.get(envHelper, 'PORTAL_API_AUTH_TOKEN')}`,
             'Content-Type': 'application/json'
@@ -306,7 +333,7 @@ const validateRequestBody = (req, res, next) => {
 module.exports = {
     isCsvFile,
     checkForErrors,
-    performDbQuery,
+    insertCsvIntoDB,
     generateAndAddCertificates,
     validateRequestBody
 }

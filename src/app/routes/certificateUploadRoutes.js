@@ -1,7 +1,7 @@
 const proxyUtils = require('../proxy/proxyUtils.js')
 const multer = require('multer');
-const fileFieldName = 'user';
-const { checkForErrors, isCsvFile, performDbQuery, generateAndAddCertificates, validateRequestBody } = require('../helpers/eCreds/uploadUserHelper');
+const fileFieldName = 'users';
+const { checkForErrors, isCsvFile, insertCsvIntoDB, generateAndAddCertificates, validateRequestBody } = require('../helpers/eCreds/uploadUserHelper');
 const _ = require('lodash');
 const bodyParser = require('body-parser');
 
@@ -24,7 +24,7 @@ module.exports = function (app) {
         validateRequestBody,
         isCsvFile,
         checkForErrors(),
-        performDbQuery(),
+        insertCsvIntoDB(),
         generateAndAddCertificates
     )
 }
