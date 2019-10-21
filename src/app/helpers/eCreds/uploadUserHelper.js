@@ -25,53 +25,49 @@ const validateName = (name) => name ? true : false;
 
 const convertCsvToJson = (csv) => csvjson.toObject(csv);
 
-const generateAndAddCertificates = (req, res, next) => {
-    const jsonData = _.get(req, 'jsonObj');
-    const certType = _.get(req, 'body.cert-type');
+const generateAndAddCertificates = (req) => {
+    var rspObj = _.get(req, 'rspObj');
     const successRecords = [];
     const failureRecords = [];
-    async.eachOf(jsonData, (data, key, cb) => {
+    async.eachOf(_.get(rspObj, 'jsonObj'), (data, key, cb) => {
         const name = _.get(data, 'Name');
-        async.waterfall([async.constant({ name, certType }), generateCertificateApiCall, addCertificateApiCall,
+        async.waterfall([async.constant({ name, rspObj }), generateCertificateApiCall, addCertificateApiCall,
             downloadCertificateApiCall, downloadCertificate], (err, result) => {
                 if (!result && err) {
-                    failureRecords.push(data);
+                    failureRecords.push({ name: data, status: 'failed', index: key });
                 } else {
-                    successRecords.push(data);
+                    successRecords.push({ name: data, status: 'success', index: key });
                 }
                 cb();
             })
     }, (err) => {
         if (!err) {
-            async.waterfall([prepareZip], (err, result) => {
-                res.send({
-                    successRecords,
-                    failureRecords
-                })
+            writeDataToCsv(_.get(rspObj, 'processId'), _.merge(successRecords, failureRecords));
+            async.waterfall([async.constant(rspObj), prepareZip], (err, result) => {
+
             })
         }
     })
 }
 
-const uploadToAzure = (containerName) => {
-    return async (req, res, next) => {
-        let result = {}
-        try {
-            result = await new Promise((resolve, reject) => {
-                //    
-            });
-        } catch (err) {
-            console.log(err);
-            result = err.message;
-        }
-        res.send(result);
-    }
+const uploadToAzure = (filePath, callback) => {
+    // upload the file to blobStorage
+    
 }
 
-const prepareZip = (callback) => {
-    const folder = 'ORG_001';
+const writeDataToCsv = (folder, data) => {
+    const options = {
+        headers: 'key'
+    }
+    const response = csvjson.toCSV(data, options);
+    fs.writeFileSync(path.join(__dirname, `${baseDownloadDir}/${folder}/result.csv`), response);
+}
+
+const prepareZip = (rspObj, callback) => {
+    const folder = _.get(rspObj, 'processId');
     const sourceDir = path.join(__dirname, `${baseDownloadDir}/${folder}`);
     const targetDir = path.join(__dirname, `${baseDownloadDir}/${folder}.zip`)
+
     zipFolder(sourceDir, targetDir, function (err) {
         if (err) {
             console.log('zip failed', err);
@@ -83,12 +79,13 @@ const prepareZip = (callback) => {
     });
 }
 
-const downloadCertificate = (signedUrl, folder, certificateId, callback) => {
+const downloadCertificate = (input, signedUrl, certificateId, callback) => {
+    const folder = _.get(input, 'rspObj.processId');
     const downloadDir = path.join(__dirname, `${baseDownloadDir}/${folder}`);
     if (!fs.existsSync(downloadDir)) {
         fs.mkdirSync(downloadDir, { recursive: true });
     }
-    const file = fs.createWriteStream(`${downloadDir}/${certificateId}.pdf`);
+    const file = fs.createWriteStream(`${downloadDir}/${_.get(input, 'name')}_${certificateId}.pdf`);
     https.get(signedUrl, response => {
         response.on('data', (val) => {
             file.write(val);
@@ -103,7 +100,7 @@ const downloadCertificate = (signedUrl, folder, certificateId, callback) => {
     });
 }
 
-const downloadCertificateApiCall = ({ downloadUrl, certificateId, expiry = 3600 }, callback) => {
+const downloadCertificateApiCall = (input, { downloadUrl, certificateId, expiry = 3600 }, callback) => {
     const endPoint = 'certreg/v1/certs/download';
     const options = {
         method: 'POST',
@@ -124,8 +121,7 @@ const downloadCertificateApiCall = ({ downloadUrl, certificateId, expiry = 3600 
     return requestPromise(options).then(apiResponse => {
         if (_.get(apiResponse, 'responseCode') === 'OK') {
             const signedUrl = _.get(apiResponse, 'result.signedUrl');
-            const folder = 'ORG_001'
-            callback(null, signedUrl, folder, certificateId);
+            callback(null, input, signedUrl, certificateId);
         }
     }).catch(err => {
         console.log('error while downloading certificate', _.get(err, 'message'))
@@ -133,7 +129,7 @@ const downloadCertificateApiCall = ({ downloadUrl, certificateId, expiry = 3600 
     })
 }
 
-const addCertificateApiCall = (generateCertApiResponse, callback) => {
+const addCertificateApiCall = (input, generateCertApiResponse, callback) => {
     const apiResponseObj = _.get(generateCertApiResponse, 'result.response')[0];
     const endPoint = 'certreg/v1/certs/add';
     const options = {
@@ -155,7 +151,7 @@ const addCertificateApiCall = (generateCertApiResponse, callback) => {
                 downloadUrl: _.get(generateCertApiResponse, 'result.response[0].pdfUrl'),
                 certificateId: _.get(apiResponseObj, 'id')
             }
-            callback(null, response);
+            callback(null, input, response);
         }
     }).catch(err => {
         console.log('Error while adding certificate to registry', _.get(err, 'message'))
@@ -182,7 +178,7 @@ const generateCertificateApiCall = (input, callback) => {
     }
     return requestPromise(options).then(apiResponse => {
         if (_.get(apiResponse, 'responseCode') === 'OK' && _.get(apiResponse, 'result.response')) {
-            callback(null, apiResponse);
+            callback(null, input, apiResponse);
         }
     }).catch(err => {
         console.log('Error while generating certificate', _.get(err, 'message'));
@@ -193,8 +189,11 @@ const generateCertificateApiCall = (input, callback) => {
 const validateRequestBody = (req, res, next) => {
     const file = _.get(req, 'file');
     const certType = _.get(req, 'body.cert-type');
+    const userDetails = _.get(req, 'userDetails');
+    var rspObj = { file, certType, userDetails };
     let err = [];
     if (!file) err.push('csv-file-missing');
+    if (!userDetails) err.push('user-details-missing');
     if (!certType) err.push('cert-type-missing')
     if (!file || !certType) {
         res.status(404);
@@ -209,12 +208,13 @@ const validateRequestBody = (req, res, next) => {
         }
         res.send(apiResponse(response))
     } else {
+        req.rspObj = rspObj;
         next();
     }
 }
 
 const isCsvFile = (req, res, next) => {
-    const file = _.get(req, 'file');
+    const file = _.get(req, 'rspObj.file');
     if (path.extname(_.get(file, 'originalname')) === '.csv' && _.get(file, 'mimetype') === 'text/csv') {
         next();
     } else {
@@ -234,12 +234,12 @@ const isCsvFile = (req, res, next) => {
 
 const checkForErrors = () => {
     return function (req, res, next) {
-        const fileDetails = _.get(req, 'file');
+        const fileDetails = _.get(req, 'rspObj.file');
         const csvObj = fs.readFileSync(path.join(_.get(fileDetails, 'path')), { encoding: 'utf8' });
         const jsonObj = convertCsvToJson(csvObj);
         const errors = checkForFileErrors(jsonObj);
         if (_.isEmpty(errors)) {
-            req.jsonObj = jsonObj;
+            req.rspObj.jsonObj = jsonObj;
             next();
         } else {
             res.status(400)
@@ -300,11 +300,11 @@ const apiResponse = ({ responseCode, result, params: { err, errmsg, status } }) 
 
 const insertCsvIntoDB = () => {
     return (req, res, next) => {
-        const dataObj = _.get(req, 'jsonObj');
+        const rspObj = _.get(req, 'rspObj');
         const data = {
             createdby: "ravinder kumar",
             createdon: new Date(),
-            data: JSON.stringify(dataObj),
+            data: JSON.stringify(_.get(rspObj, 'jsonObj')),
             failureresult: "",
             lastupdatedon: new Date(),
             objecttype: "certificate",
@@ -321,8 +321,23 @@ const insertCsvIntoDB = () => {
         cassandraUtil.insertData(data, (err, result) => {
             if (err && !result) {
                 console.log('Error occured while saving to DB', err);
+                res.status(500)
+                const response = {
+                    responseCode: "SERVER_ERROR",
+                    params: {
+                        err: "SERVER_ERROR",
+                        status: "SERVER_ERROR",
+                        errmsg: 'Error occured while saving to DB'
+                    },
+                    result: {}
+                }
+                res.send(apiResponse(response));
             } else {
-                req.processId = result;
+                rspObj['processId'] = result;
+                req.rspObj = rspObj;
+                res.send({
+                    processId: result
+                })
                 next();
             }
         })

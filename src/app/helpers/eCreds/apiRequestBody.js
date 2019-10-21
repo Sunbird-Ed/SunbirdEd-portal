@@ -21,14 +21,14 @@ const certGenerateRequestBody = (input) => {
                     "recipientId": "874ed8a5-782e-4f6c-8f36-e0288455901e"
                 }
             ],
-            "name": _.get(input, 'certType'),
+            "name": _.get(input, 'rspObj.certType'),
             "tag": "0125450863553740809",
             "issuer": {
                 "name": "Gujarat Council of Educational Research and Training",
                 "url": "https://gcert.gujarat.gov.in/gcert/",
                 "publicKey": ["1", "2"]
             },
-            "orgId": "ORG_001",
+            "orgId": _.get(input, 'rspObj.userDetails.orgId') || "ORG_001",
             "signatoryList": [
                 {
                     "name": "CEO Gujarat",
