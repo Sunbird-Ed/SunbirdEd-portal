@@ -15,9 +15,10 @@ const blobService = azure.createBlobService(envHelper.sunbird_azure_account_name
 const fs = require('fs');
 const { certAddRequestBody, certGenerateRequestBody } = require('./apiRequestBody');
 const requestPromise = require("request-promise");
-const { waterfall, constant } = require('async');
+const async = require('async');
 const https = require('https');
-const baseDownloadDir = 'Downloads'
+const baseDownloadDir = 'Downloads';
+var zipFolder = require('zip-folder');
 
 const isCsvFile = (req, res, next) => {
     const file = _.get(req, 'file');
@@ -135,52 +136,64 @@ const generateAndAddCertificates = async (req, res, next) => {
     const successRecords = [];
     const failureRecords = [];
 
-    _.forEach(jsonData, (data, key) => {
-        const name = _.get(data, 'name');
-        waterfall([constant(name), generateCertificateApiCall, addCertificateApiCall, downloadCertificateApiCall, downloadCertificate], (err, result) => {
-            if (!result && err) {
-                console.log('Error : Record', key);
-                failureRecords.push(key);
-            } else {
-                console.log('Success: Record', key)
-                successRecords.push(key);
-            }
-        })
-    })
-
-    res.send({
-        successRecords,
-        failureRecords
+    async.eachOf(jsonData, (data, key, cb) => {
+        const name = _.get(data, 'Name');
+        async.waterfall([async.constant({ name, certType }), generateCertificateApiCall, addCertificateApiCall,
+            downloadCertificateApiCall, downloadCertificate], (err, result) => {
+                if (!result && err) {
+                    failureRecords.push(key);
+                } else {
+                    successRecords.push(key);
+                }
+                cb();
+            })
+    }, (err) => {
+        if (!err) {
+            async.waterfall([prepareZip], (err, result) => {
+                res.send({
+                    result
+                })
+            })
+        }
     })
 }
 
-const prepareZip = () => {
-
+const prepareZip = (callback) => {
+    const folder = 'ORG_001';
+    const sourceDir = path.join(__dirname, `${baseDownloadDir}/${folder}`);
+    const targetDir = path.join(__dirname, `${baseDownloadDir}/${folder}.zip`)
+    zipFolder(sourceDir, targetDir, function (err) {
+        if (err) {
+            console.log('zip failed', err);
+            callback(true, null);
+        } else {
+            console.log('zip successful');
+            callback(null, targetDir);
+        }
+    });
 }
 
-const downloadCertificate = (signedUrl, folder, callback) => {
+const downloadCertificate = (signedUrl, folder, certificateId, callback) => {
     const downloadDir = path.join(__dirname, `${baseDownloadDir}/${folder}`);
     if (!fs.existsSync(downloadDir)) {
         fs.mkdirSync(downloadDir, { recursive: true });
-        const file = fs.createWriteStream(`${downloadDir}/aa.pdf`);
-        https.get(signedUrl, response => {
-            response.on('data', (val) => {
-                file.write(val);
-            });
-
-            response.on('end', val => {
-                file.end();
-                callback(null, true)
-            });
-
-            response.on('error', err => {
-                callback(true, null);
-            })
-        });
     }
+    const file = fs.createWriteStream(`${downloadDir}/${certificateId}.pdf`);
+    https.get(signedUrl, response => {
+        response.on('data', (val) => {
+            file.write(val);
+        });
+        response.on('end', val => {
+            file.end();
+            callback(null, true)
+        });
+        response.on('error', err => {
+            callback(true, null);
+        })
+    });
 }
 
-const downloadCertificateApiCall = ({ downloadUrl, expiry = 3600 }, callback) => {
+const downloadCertificateApiCall = ({ downloadUrl, certificateId, expiry = 3600 }, callback) => {
     const endPoint = 'certreg/v1/certs/download';
     const options = {
         method: 'POST',
@@ -202,7 +215,7 @@ const downloadCertificateApiCall = ({ downloadUrl, expiry = 3600 }, callback) =>
         if (_.get(apiResponse, 'responseCode') === 'OK') {
             const signedUrl = _.get(apiResponse, 'result.signedUrl');
             const folder = 'ORG_001'
-            callback(null, signedUrl, folder);
+            callback(null, signedUrl, folder, certificateId);
         }
     }).catch(err => {
         console.log('error while downloading certificate', _.get(err, 'message'))
@@ -211,6 +224,7 @@ const downloadCertificateApiCall = ({ downloadUrl, expiry = 3600 }, callback) =>
 }
 
 const addCertificateApiCall = (generateCertApiResponse, callback) => {
+    const apiResponseObj = _.get(generateCertApiResponse, 'result.response')[0];
     const endPoint = 'certreg/v1/certs/add';
     const options = {
         method: 'POST',
@@ -221,14 +235,15 @@ const addCertificateApiCall = (generateCertApiResponse, callback) => {
         },
         body: {
             params: {},
-            request: certAddRequestBody(_.get(generateCertApiResponse, 'result.response')[0])
+            request: certAddRequestBody(apiResponseObj)
         },
         json: true
     }
     return requestPromise(options).then(apiResponse => {
         if (_.get(apiResponse, 'responseCode') === 'OK' && _.get(apiResponse, 'result.id')) {
             const response = {
-                downloadUrl: _.get(generateCertApiResponse, 'result.response[0].pdfUrl')
+                downloadUrl: _.get(generateCertApiResponse, 'result.response[0].pdfUrl'),
+                certificateId: _.get(apiResponseObj, 'id')
             }
             callback(null, response);
         }
@@ -239,10 +254,9 @@ const addCertificateApiCall = (generateCertApiResponse, callback) => {
 }
 
 
-
-const generateCertificateApiCall = (name, callback) => {
+const generateCertificateApiCall = (input, callback) => {
     const endPoint = 'v1/certs/generate';
-    const request = certGenerateRequestBody(name); //send the name here ( missed )
+    const request = certGenerateRequestBody(input);
     const options = {
         method: 'POST',
         url: `${_.get(envHelper, 'LEARNER_URL')}/cert/${endPoint}`,

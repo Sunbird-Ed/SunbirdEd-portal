@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const dateFormat = require('dateformat');
 
 const certAddRequestBody = (response) => {
     const request = _.pick(response, ['id', 'accessCode', 'jsonData', 'pdfUrl']);
@@ -13,14 +14,14 @@ const certGenerateRequestBody = (input) => {
         certificate: {
             "htmlTemplate": "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download",
             "courseName": "new course may23",
-            "issuedDate": "2019-08-21",
+            "issuedDate": dateFormat(new Date(), 'yyyy-mm-dd'),
             "data": [
                 {
-                    "recipientName": input,
+                    "recipientName": _.get(input, 'name'),
                     "recipientId": "874ed8a5-782e-4f6c-8f36-e0288455901e"
                 }
             ],
-            "name": "100PercentCompletionCertificate",
+            "name": _.get(input, 'certType'),
             "tag": "0125450863553740809",
             "issuer": {
                 "name": "Gujarat Council of Educational Research and Training",
