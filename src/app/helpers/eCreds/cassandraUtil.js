@@ -44,8 +44,8 @@ const insertData = (data, cb) => {
     });
 }
 
-const updateData = (query_object, update_object, options, cb) => {
-    models.instance.bulk_upload_process.update(query_object, update_values_object, options, function (err) {
+const updateData = (query_object, update_object, cb) => {
+    models.instance.bulk_upload_process.update(query_object, update_object, function (err) {
         if (err) {
             cb(err, null);
         }

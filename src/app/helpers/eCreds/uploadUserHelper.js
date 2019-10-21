@@ -44,7 +44,27 @@ const generateAndAddCertificates = (req) => {
         if (!err) {
             writeDataToCsv(_.get(rspObj, 'processId'), _.merge(successRecords, failureRecords));
             async.waterfall([async.constant(rspObj), prepareZip], (err, result) => {
-
+                if (err) {
+                    console.log('Error: ', _.get(err, 'message'));
+                } else {
+                    const query_obj = { id: _.toString(_.get(rspObj, 'processId')) };
+                    const update_values_object = {
+                        failureresult: JSON.stringify(_.map(failureRecords, 'name')),
+                        successresult: JSON.stringify(_.map(successRecords, 'name')),
+                        lastupdatedon: new Date(),
+                        processendtime: _.toString(new Date()),
+                        retrycount: 2,
+                        storagedetails: result,
+                        status: 2
+                    }
+                    cassandraUtil.updateData(query_obj, update_values_object, (err, result) => {
+                        if (err) {
+                            console.log('updating bulk_upload_process table failed', _.get(err, 'message'))
+                        } else {
+                            console.log('successfully updated bulk_upload_process table', result);
+                        }
+                    })
+                }
             })
         }
     })
@@ -52,7 +72,7 @@ const generateAndAddCertificates = (req) => {
 
 const uploadToAzure = (filePath, callback) => {
     // upload the file to blobStorage
-    
+
 }
 
 const writeDataToCsv = (folder, data) => {
