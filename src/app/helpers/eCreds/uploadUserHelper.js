@@ -20,6 +20,7 @@ const https = require('https');
 const baseDownloadDir = 'Downloads';
 var zipFolder = require('zip-folder');
 const cassandraUtil = require('./cassandraUtil');
+const BATCH_SIZE = 10;
 
 const validateName = (name) => name ? true : false;
 
@@ -29,7 +30,7 @@ const generateAndAddCertificates = (req) => {
     var rspObj = _.get(req, 'rspObj');
     const successRecords = [];
     const failureRecords = [];
-    async.eachOf(_.get(rspObj, 'jsonObj'), (data, key, cb) => {
+    async.eachOfLimit(_.get(rspObj, 'jsonObj'), BATCH_SIZE, (data, key, cb) => {
         const name = _.get(data, 'Name');
         async.waterfall([async.constant({ name, rspObj }), generateCertificateApiCall, addCertificateApiCall,
             downloadCertificateApiCall, downloadCertificate], (err, result) => {
