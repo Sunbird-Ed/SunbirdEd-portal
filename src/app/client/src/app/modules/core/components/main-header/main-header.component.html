@@ -61,7 +61,7 @@
                             {{resourceService.frmelmnts?.lbl?.manageuser}}
                           </a>
                           <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
-                              [permission]='adminDashboard' routerLink="manage">
+                              [permission]='orgAdminRole' routerLink="manage">
                               {{resourceService.frmelmnts?.lbl?.manage}}
                           </a>
                           <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
