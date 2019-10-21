@@ -7,8 +7,9 @@ import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, Observable, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { CbseProgramService } from '../../services';
 
 @Component({
   selector: 'app-mcq-creation',
@@ -47,7 +48,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   constructor(public configService: ConfigService, private http: HttpClient,
     private userService: UserService, public actionService: ActionService,
-    public toasterService: ToasterService, private cdr: ChangeDetectorRef,
+    public toasterService: ToasterService, private cdr: ChangeDetectorRef,private cbseService: CbseProgramService,
     public telemetryService: TelemetryService) {
   }
   initForm() {
@@ -283,26 +284,16 @@ export class McqCreationComponent implements OnInit, OnChanges{
             }
           });
         }
-        this.actionService.patch(req).subscribe((res) => {
+        this.actionService.patch(req).pipe(catchError(err => {
+          let errInfo = { errorMsg: 'MCQ Question updation failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        })).subscribe((res) => {
           if (this.updateStatus === 'Live') {
             this.toasterService.success('Question Accepted');
           } else if (this.updateStatus === 'Reject') {
             this.toasterService.success('Question Rejected');
           }
           this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': res.result.node_id });
-        }, error => {
-          this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
-          const telemetryErrorData = {
-            context: {
-              env: 'cbse_program'
-            },
-            edata: {
-              err: error.status.toString(),
-              errtype: 'PROGRAMPORTAL',
-              stacktrace: _.get(error, 'error.params.errmsg') || 'Question creation failed'
-            }
-          };
-          this.telemetryService.error(telemetryErrorData);
         });
       });
   }
@@ -388,21 +379,11 @@ export class McqCreationComponent implements OnInit, OnChanges{
         };
         // Don't make any api call for a local preview.
         if (!forPreview) {
-          this.actionService.post(req).subscribe((res) => {
+          this.actionService.post(req).pipe(catchError(err => {
+            let errInfo = { errorMsg: 'MCQ Question creation failed' };
+            return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+          })).subscribe((res) => {
             this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': res.result.node_id });
-          }, error => {
-            this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Question creation failed');
-            const telemetryErrorData = {
-              context: {
-                env: 'cbse_program'
-              },
-              edata: {
-                err: error.status.toString(),
-                errtype: 'PROGRAMPORTAL',
-                stacktrace: _.get(error, 'error.params.errmsg') || 'Question update failed'
-              }
-            };
-            this.telemetryService.error(telemetryErrorData);
           });
         } else {
           this.selectedAttributes.previewQuestionData = {
