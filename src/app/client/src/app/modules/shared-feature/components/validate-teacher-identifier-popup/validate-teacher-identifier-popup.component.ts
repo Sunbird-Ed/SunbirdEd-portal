@@ -9,6 +9,8 @@ import { environment } from '@sunbird/environment';
   styleUrls: ['./validate-teacher-identifier-popup.component.scss']
 })
 export class ValidateTeacherIdentifierPopupComponent implements OnInit {
+  // code optimization yet to be done after API integration,
+  // msgs to be taken from api response
   @Output() close = new EventEmitter<any>();
   @ViewChild('createValidateModal') createValidateModal;
   @ViewChild('extIdInputField') extIdInputField: ElementRef;
