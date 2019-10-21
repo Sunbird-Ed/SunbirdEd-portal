@@ -169,6 +169,9 @@
     "ASSET":{
       "CREATE": "content/v3/create",
       "UPDATE": "content/v3/upload"
+    },
+    "REGISTRY": {
+      "VALIDATE_CERTIFICATE": "certreg/v1/certs/validate"
     }
   }
 }
