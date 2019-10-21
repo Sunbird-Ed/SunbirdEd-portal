@@ -3,6 +3,7 @@ var models = require('express-cassandra');
 const envHelper = require('../environmentVariablesHelper');
 const contactPoints = envHelper.PORTAL_CASSANDRA_URLS
 const keyspaceName = 'sunbird'
+let isConnected = false;
 
 models.setDirectory(__dirname + '/models').bind(
     {
@@ -22,7 +23,9 @@ models.setDirectory(__dirname + '/models').bind(
     function (err) {
         if (err) {
             console.log('error', err);
+            isConnected = false;
         } else {
+            isConnected = true;
             console.log('done')
         }
     }
@@ -52,5 +55,5 @@ const updateData = (query_object, update_object, options, cb) => {
     });
 }
 
-module.exports = { insertData, updateData }
+module.exports = { insertData, updateData, isConnected }
 
