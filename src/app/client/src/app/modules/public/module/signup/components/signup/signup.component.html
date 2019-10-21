@@ -14,16 +14,17 @@
           <div class="text-center pt-8 grey-text">
             {{resourceService.frmelmnts.lbl.provideDetails | interpolate:'{instance}': instance}}</div>
           <form class="ui form borderd" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
-            <label class="ui basic blue error label pt-0"
-              *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts.lbl.fnameLname}}</label>
-            <label class="ui basic blue error label pt-0"
-              *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
+            
             <div class="required field mb-16 mt-32">
+                <label class="ui basic blue error label pt-0"
+                *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts.lbl.fnameLname}}</label>
+              <label class="ui basic blue error label pt-0"
+                *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
               <label class="mb-8"
                 *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts.lbl.fullName}}</label>
               <input
                 [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}"
-                formControlName="name" type="text" name="name"
+                formControlName="name"  class="sb-form-control" type="text" name="name"
                 placeholder="{{resourceService.frmelmnts.lbl.enterfullName}}">
             </div>
             <div class="required field mb-16"><label class="pt-0"
@@ -38,7 +39,7 @@
             <div class="inline fields mt-10 mb-8" id="Mandatory">
               <div class="field">
                 <div class="ui radio checkbox" (click)="showContact='phone'">
-                  <input type="radio" checked="checked" value="phone" formControlName="contactType" role="phone"
+                  <input type="radio" class="sb-form-control" checked="checked" value="phone" formControlName="contactType" role="phone"
                     id="phoneNumber" aria-labelledby="Mandatory">
                   <label for="phoneNumber" class="pl-20">{{resourceService.frmelmnts.lbl.phoneNumber}}</label>
                 </div>
@@ -52,13 +53,13 @@
               </div>
             </div>
             <div class="field" *ngIf="showContact === 'email'">
-              <input type="email"
+              <input type="email" class="sb-form-control"
                 [ngClass]="{'orange-border': signUpForm.controls.email.touched && signUpForm.controls['email'].errors}"
                 formControlName="email" name="email" placeholder="{{resourceService.frmelmnts.lbl.email}}">
             </div>
             <div class="field" *ngIf="showContact === 'phone'">
               <div class="ui left icon input">
-                <input
+                <input class="sb-form-control"
                   [ngClass]="{'orange-border': signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors}"
                   formControlName="phone" type="number" name="phone"
                   placeholder="{{resourceService.frmelmnts.lbl.tenDigitPhone}}">
@@ -71,7 +72,7 @@
               <label class="mb-8"
                 *ngIf="!(signUpForm.controls.password.touched && signUpForm.controls['password'].errors)">{{resourceService.frmelmnts.lbl.password}}</label>
               <div class="ui icon input">
-                <input
+                <input class="sb-form-control"
                   [ngClass]="{'orange-border': signUpForm.controls.password.touched && signUpForm.controls['password'].errors}"
                   [type]="showPassword ? 'text' : 'password'" formControlName="password" name="password"
                   placeholder="{{resourceService.frmelmnts.lbl.EnterPassword}}">
@@ -83,7 +84,7 @@
             <div class="required field mb-16">
               <label class="mb-8"
                 *ngIf="!(signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors)">{{resourceService.frmelmnts.lbl.confirmPassword}}</label>
-              <input
+              <input class="sb-form-control "
                 [ngClass]="{'orange-border': signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors}"
                 formControlName="confirmPassword" type="password" name="confirmPassword"
                 placeholder="{{resourceService.frmelmnts.lbl.reEnterPassword}}">
@@ -94,7 +95,7 @@
           </form>
           <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
             [telemetryInteractCdata]="telemetryCdata"
-            [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}" class="ui button width-300 mt-10"
+            [ngClass]="{'sb-btn-gray disabled':disableSubmitBtn, 'sb-btn-secondary':!disableSubmitBtn}" class="width-300 mt-10 sb-btn sb-btn-normal button"
             tabindex="0" (click)="captchaRef.execute();">{{resourceService.frmelmnts.lbl.register}}</button>
           <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
         </div>

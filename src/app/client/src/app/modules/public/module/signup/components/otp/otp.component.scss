@@ -39,14 +39,12 @@
 .light-sea-green.button {
     background: $signup-btn-bg-active-color;
     color: $white-color;
-    height: 34px !important;
 }
 .grey.button {
     background: $signup-btn-bg-not-active-color;
     color: $white-color;
     pointer-events: none !important;
     cursor: not-allowed !important; 
-    height: 34px !important;
 }
 .grey-text{
     color: var(--gray-300) !important;
@@ -166,3 +164,4 @@ input[type=number]::-webkit-inner-spin-button {
 .ctct-inline-form .g-recaptcha {
     display: none !important
   }
+ 
