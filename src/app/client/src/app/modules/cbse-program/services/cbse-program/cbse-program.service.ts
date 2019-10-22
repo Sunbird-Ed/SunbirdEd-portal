@@ -20,7 +20,7 @@ export class CbseProgramService {
     formData.append('cert-type', certType);
     formData.append('userId', userId);
     formData.append('rootOrgId', rootOrgId);
-    return this.httpClient.post('http://localhost:3000/certificate/user/upload', formData);
+    return this.httpClient.post('/certificate/user/upload', formData);
   }
 
   getQuestionDetails(questionId) {
