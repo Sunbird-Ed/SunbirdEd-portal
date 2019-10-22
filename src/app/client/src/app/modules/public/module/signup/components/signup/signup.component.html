@@ -11,7 +11,7 @@
           <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
             class="sb-account-header-text  text-center">
             {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</div>
-          <div class="text-center pt-8 grey-text">
+          <div class="text-center mt-16 grey-text">
             {{resourceService.frmelmnts.lbl.provideDetails | interpolate:'{instance}': instance}}</div>
           <form class="ui form borderd" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
             

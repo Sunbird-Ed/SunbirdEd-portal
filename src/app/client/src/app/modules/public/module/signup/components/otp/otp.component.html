@@ -2,7 +2,7 @@
 <p *ngIf="mode === 'email' && !showSignUpLink" class="line-height-1-3 grey text text-center mb-50">{{resourceService.frmelmnts.instn.t0082 | interpolate:'{instance}': instance}}</p> -->
 <div class="grey text text-center pt-16">{{resourceService.frmelmnts.lbl.OTPhasbeensent}}</div>
 <div class="grey text text-center pt-8">{{resourceService.frmelmnts.lbl.toYourEmailPhone}}</div>
-<div class="grey text text-center pt-8 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
+<div class="grey text text-center mt-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
 
 <div *ngIf="showSignUpLink" class="orange text fs-1 text-center mb-50 line-height-1-3">{{unabletoVerifyErrorMessage}}<br>  Please
   <span (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
