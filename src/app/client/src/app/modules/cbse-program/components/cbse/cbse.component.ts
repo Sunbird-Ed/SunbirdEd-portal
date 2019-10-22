@@ -50,8 +50,8 @@ export class CbseComponent implements OnInit, OnDestroy {
   public resourceName: string;
   public resourceNameInput: string;
   public typeOptions = [
-    {value: 'Best&nbsp;School&nbsp;Certificate'},
-    {value: 'Best&nbsp;Student&nbsp;Certificate'}
+    {value: 'Best School Certificate'},
+    {value: 'Best Student Certificate'}
   ];
   public selectedOption;
   public showModal: boolean = false;
@@ -83,8 +83,10 @@ export class CbseComponent implements OnInit, OnDestroy {
   }
 
   public issueCertificate() {
-    console.log(this.selectedOption);
-    this.showModal = true;
+    this.showModal = false;
+    setTimeout(() => {
+      this.showModal = true;
+    }, 500);
   }
 
   public selectedClassSubjectHandler(event) {

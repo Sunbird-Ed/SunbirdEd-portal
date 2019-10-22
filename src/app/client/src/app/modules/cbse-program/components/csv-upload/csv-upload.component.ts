@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit, Input } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { OrgManagementService } from '../../../org-management/services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, first } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
+import { CbseProgramService } from '../../services/cbse-program/cbse-program.service';
 /**
  * This component helps to upload bulk users data (csv file)
  *
@@ -22,14 +22,13 @@ import * as _ from 'lodash-es';
 export class CsvUploadComponent {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
+  @Input() certType: string;
   /**
   *Element Ref  for copyLinkButton;
   */
  @ViewChild('copyErrorData') copyErrorButton: ElementRef;
-  /**
-* reference for ActivatedRoute
-*/
-  public activatedRoute: ActivatedRoute;
+ public userId: any;
+ public rootOrgId: any;
   /**
 * reference of config service.
 */
@@ -42,6 +41,8 @@ export class CsvUploadComponent {
 * To call admin service which helps to upload csv file
 */
   public orgManagementService: OrgManagementService;
+  public cbseProgramService: CbseProgramService;
+  public userService: UserService;
   /**
 * Contains process id
 */
@@ -105,7 +106,6 @@ activateUpload = false;
   downloadCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
-  private uploadUserRefLink: string;
   /**
 * Constructor to create injected service(s) object
 *
@@ -120,35 +120,32 @@ activateUpload = false;
     showLabels: true,
     headers: []
   };
-  constructor(orgManagementService: OrgManagementService, config: ConfigService,
-    formBuilder: FormBuilder, toasterService: ToasterService, private router: Router,
-    resourceService: ResourceService, activatedRoute: ActivatedRoute, public userService: UserService,
+  constructor(cbseProgramService: CbseProgramService, orgManagementService: OrgManagementService, config: ConfigService,
+    formBuilder: FormBuilder, toasterService: ToasterService,
+    resourceService: ResourceService, userService: UserService,
     public navigationhelperService: NavigationHelperService) {
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
+    this.cbseProgramService = cbseProgramService;
+    this.userService = userService;
     this.toasterService = toasterService;
     this.config = config;
-    this.activatedRoute = activatedRoute;
-    try {
-      this.uploadUserRefLink = (<HTMLInputElement>document.getElementById('userUploadRefLink')).value;
-    } catch (error) {
-      console.log('Error in reading environment variable for user upload reference link');
-    }
   }
   /**
  * This method initializes the user form and validates it,
  * also defines array of instructions to be displayed
  */
   ngOnInit() {
-    document.body.classList.add('no-scroll'); // This is a workaround  we need to remove it when library add support to remove body scroll
-    this.activatedRoute.data.subscribe(data => {
-      if (data.redirectUrl) {
-        this.redirectUrl = data.redirectUrl;
-      } else {
-        this.redirectUrl = '/resources';
+    this.userService.userData$.pipe(first()).subscribe(user => {
+      if (user && user.userProfile) {
+        this.userId = user.userProfile.userId;
+        this.rootOrgId = user.userProfile.rootOrgId;
       }
     });
+    console.log(this.certType);
+    console.log(this.userId);
+    console.log(this.rootOrgId);
     this.uploadUserForm = this.sbFormBuilder.group({
       provider: ['', null],
       externalId: ['', null],
@@ -173,7 +170,6 @@ activateUpload = false;
   public redirect() {
     this.fileName = '';
     this.processId = '';
-    this.router.navigate([this.redirectUrl]);
   }
   /**
   * This method helps to call uploadOrg method to upload a csv file
@@ -195,27 +191,47 @@ activateUpload = false;
     const data = this.uploadUserForm.value;
     if (file && file.name.match(/.(csv)$/i)) {
       this.showLoader = true;
-      const formData = new FormData();
-      formData.append('user', file);
-      const fd = formData;
-      this.fileName = file.name;
-      this.orgManagementService.bulkUserUpload(fd).pipe(
-        takeUntil(this.unsubscribe$))
-        .subscribe(
-          (apiResponse: ServerResponse) => {
-            this.showLoader = false;
-            this.processId = apiResponse.result.processId;
-            this.toasterService.success(this.resourceService.messages.smsg.m0030);
-            this.modal.deny();
-          },
-          err => {
-            this.showLoader = false;
-            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
-            this.resourceService.messages.fmsg.m0051;
-            this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
-            this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
-            this.modalName = 'error';
-          });
+      this.cbseProgramService.postCertData(file, this.certType, this.userId, this.rootOrgId)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.showLoader = false;
+          this.toasterService.success(this.resourceService.messages.smsg.m0030);
+          this.modal.deny();
+        },
+        err => {
+          console.log(err);
+          this.showLoader = false;
+          const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') : this.resourceService.messages.fmsg.m0051;
+          this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
+          this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
+          this.modalName = 'error';
+        },
+        () => {
+          console.log('Finally...');
+        }
+      );
+      // const formData = new FormData();
+      // formData.append('user', file);
+      // const fd = formData;
+      // this.fileName = file.name;
+      // this.orgManagementService.bulkUserUpload(fd).pipe(
+      //   takeUntil(this.unsubscribe$))
+      //   .subscribe(
+      //     (apiResponse: ServerResponse) => {
+      //       this.showLoader = false;
+      //       this.processId = apiResponse.result.processId;
+      //       this.toasterService.success(this.resourceService.messages.smsg.m0030);
+      //       this.modal.deny();
+      //     },
+      //     err => {
+      //       this.showLoader = false;
+      //       const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+      //       this.resourceService.messages.fmsg.m0051;
+      //       this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
+      //       this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
+      //       this.modalName = 'error';
+      //     });
     } else if (file && !(file.name.match(/.(csv)$/i))) {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);
@@ -237,11 +253,8 @@ activateUpload = false;
   }
   ngOnDestroy() {
     document.body.classList.remove('no-scroll'); // This is a workaround we need to remove it when library add support to remove body scroll
-    this.router.navigate(['/resources']);
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-  ngAfterViewInit() {
   }
   setInteractEventData() {
     this.userUploadInteractEdata = {
