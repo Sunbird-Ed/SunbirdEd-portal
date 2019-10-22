@@ -103,7 +103,7 @@
             tabindex="0" (click)="captchaRef.execute();">{{resourceService.frmelmnts.lbl.register}}</button>
           <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
         </div>
-        <div class="mt-32" *ngIf="!showSignUpForm"
+        <div class="mt-32" *ngIf="!showSignUpForm">
           <div class="sb-account-header-text  text-center">
             {{resourceService.frmelmnts.lbl.loginto | interpolate:'{instance}': instance}}</div>
           <app-otp [signUpdata]="signUpForm" (redirectToParent)="showParentForm($event)"></app-otp>
