@@ -30,6 +30,21 @@ const generateAndAddCertificates = (req) => {
     var rspObj = _.get(req, 'rspObj');
     const successRecords = [];
     const failureRecords = [];
+
+    // updates the processstart time
+    const update_values_object = {
+        processstarttime: _.toString(new Date()),
+        retrycount: 1,
+        status: 1
+    }
+    cassandraUtil.updateData({ id: _.toString(_.get(rspObj, 'processId')) }, update_values_object, (err, result) => {
+        if (err) {
+            console.log('updating bulk_upload_process table processstarttime', _.get(err, 'message'))
+        } else {
+            console.log('successfully updated bulk_upload_process processstarttime', result);
+        }
+    })
+
     async.eachOfLimit(_.get(rspObj, 'jsonObj'), BATCH_SIZE, (data, key, cb) => {
         const name = _.get(data, 'Name');
         async.waterfall([async.constant({ name, rspObj }), generateCertificateApiCall, addCertificateApiCall,
@@ -54,7 +69,7 @@ const generateAndAddCertificates = (req) => {
                         successresult: JSON.stringify(_.map(successRecords, 'name')),
                         lastupdatedon: new Date(),
                         processendtime: _.toString(new Date()),
-                        retrycount: 2,
+                        retrycount: 3,
                         storagedetails: result,
                         status: 2
                     }

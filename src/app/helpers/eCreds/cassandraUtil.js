@@ -1,16 +1,17 @@
 var _ = require('lodash');
 var models = require('express-cassandra');
 const envHelper = require('../environmentVariablesHelper');
-const contactPoints = envHelper.PORTAL_CASSANDRA_URLS
-const keyspaceName = 'sunbird'
+const contactPoints = envHelper.PORTAL_CASSANDRA_URLS;
+const keyspaceName = 'sunbird';
 let isConnected = false;
+const consistency = getConsistencyLevel(envHelper.PORTAL_CASSANDRA_CONSISTENCY_LEVEL);
 
 models.setDirectory(__dirname + '/models').bind(
     {
         clientOptions: {
             contactPoints: contactPoints,
             keyspace: keyspaceName,
-            queryOptions: { consistency: models.consistencies.one }
+            queryOptions: { consistency: consistency }
         },
         ormOptions: {
             defaultReplicationStrategy: {
@@ -26,10 +27,15 @@ models.setDirectory(__dirname + '/models').bind(
             isConnected = false;
         } else {
             isConnected = true;
-            console.log('done')
+            console.log('Successfully synced to bulk_upload_process')
         }
     }
 );
+
+function getConsistencyLevel(consistency) {
+    let consistencyValue = consistency && _.get(models, `consistencies.${consistency}`) ? _.get(models, `consistencies.${consistency}`) : models.consistencies.one
+    return consistencyValue;
+}
 
 const insertData = (data, cb) => {
     const processId = models.uuid();
@@ -55,5 +61,15 @@ const updateData = (query_object, update_object, cb) => {
     });
 }
 
-module.exports = { insertData, updateData, isConnected }
+const findRecord = (queryObj, cb) => {
+    models.instance.bulk_upload_process.find(queryObj, (err, result) => {
+        if (err) {
+            cb(err, null);
+        } else {
+            cb(null, result);
+        }
+    })
+}
+
+module.exports = { insertData, updateData, isConnected, findRecord }
 
