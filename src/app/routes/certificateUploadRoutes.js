@@ -28,5 +28,8 @@ module.exports = function (app) {
         generateAndAddCertificates
     )
 
-    app.get('/certificate/user/upload/status/:userId', checkUploadStatus)
+    app.post('/certificate/user/upload/status',
+        bodyParser.urlencoded({ extended: true }),
+        bodyParser.json(),
+        checkUploadStatus)
 }

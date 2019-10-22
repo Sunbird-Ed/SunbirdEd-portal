@@ -86,9 +86,14 @@ const generateAndAddCertificates = (req) => {
     })
 }
 
-const uploadToAzure = (filePath, callback) => {
-    // upload the file to blobStorage
-
+const uploadToAzure = (filePath, cb) => {
+    blobService.createBlockBlobFromLocalFile('cert-gj', 'test', filePath, (error, result, response) => {
+        if (!error) {
+            cb(null, filePath)
+        } else {
+            cb(error, null);
+        }
+    })
 }
 
 const writeDataToCsv = (folder, data) => {
@@ -96,23 +101,29 @@ const writeDataToCsv = (folder, data) => {
         headers: 'key'
     }
     const response = csvjson.toCSV(data, options);
-    fs.writeFileSync(path.join(__dirname, `${baseDownloadDir}/${folder}/result.csv`), response);
+    const sourceDir = path.join(__dirname, `${baseDownloadDir}/${folder}`);
+    if (fs.existsSync(sourceDir)) {
+        fs.writeFileSync(`${sourceDir}/result.csv`, response);
+    }
 }
 
 const prepareZip = (rspObj, callback) => {
     const folder = _.get(rspObj, 'processId');
     const sourceDir = path.join(__dirname, `${baseDownloadDir}/${folder}`);
-    const targetDir = path.join(__dirname, `${baseDownloadDir}/${folder}.zip`)
-
-    zipFolder(sourceDir, targetDir, function (err) {
-        if (err) {
-            console.log('zip failed', err);
-            callback(true, null);
-        } else {
-            console.log('zip successful');
-            callback(null, targetDir);
-        }
-    });
+    if (fs.existsSync(sourceDir)) {
+        const targetDir = path.join(__dirname, `${baseDownloadDir}/${folder}.zip`)
+        zipFolder(sourceDir, targetDir, function (err) {
+            if (err) {
+                console.log('zip failed', err);
+                callback({ message: 'zipping failed' }, null);
+            } else {
+                console.log('zip successful');
+                callback(null, targetDir);
+            }
+        });
+    } else {
+        callback({ message: 'zipping failed' }, null);
+    }
 }
 
 const downloadCertificate = (input, signedUrl, certificateId, callback) => {
@@ -399,40 +410,54 @@ const insertCsvIntoDB = () => {
 }
 
 const checkUploadStatus = (req, res) => {
-    const userId = _.get(req, 'params.userId');
-    const query_object = {
-        uploadedby: userId
-    }
-    let response;
-    const selectCriteria = ['id', 'status', 'storagedetails'];
-    cassandraUtil.findRecord(query_object, selectCriteria, (err, result) => {
-        if (err) {
-            res.status(500);
-            response = {
-                responseCode: "SERVER_ERROR",
-                params: {
-                    err: "SERVER_ERROR",
-                    status: "SERVER_ERROR",
-                    errmsg: 'Error occured while fetching from DB'
-                },
-                result: {}
-            }
-            res.send(apiResponse(response));
-        } else {
-            const response = {
-                responseCode: "OK",
-                params: {
-                    err: "",
-                    status: "",
-                    errmsg: ""
-                },
-                result: {
-                    response: result
-                }
-            }
-            res.send(apiResponse(response));
+    const userId = _.get(req, 'body.request.userId');
+    if (!userId) {
+        res.status(400);
+        response = {
+            responseCode: "CLIENT_ERROR",
+            params: {
+                err: "INVALID_REQUEST",
+                status: "",
+                errmsg: 'missing userId'
+            },
+            result: {}
         }
-    })
+        res.send(apiResponse(response));
+    } else {
+        const query_object = {
+            uploadedby: userId
+        }
+        let response;
+        const selectCriteria = ['id', 'status', 'storagedetails'];
+        cassandraUtil.findRecord(query_object, selectCriteria, (err, result) => {
+            if (err) {
+                res.status(500);
+                response = {
+                    responseCode: "SERVER_ERROR",
+                    params: {
+                        err: "SERVER_ERROR",
+                        status: "SERVER_ERROR",
+                        errmsg: 'Error occured while fetching from DB'
+                    },
+                    result: {}
+                }
+                res.send(apiResponse(response));
+            } else {
+                const response = {
+                    responseCode: "OK",
+                    params: {
+                        err: "",
+                        status: "",
+                        errmsg: ""
+                    },
+                    result: {
+                        response: result
+                    }
+                }
+                res.send(apiResponse(response));
+            }
+        })
+    }
 }
 
 
