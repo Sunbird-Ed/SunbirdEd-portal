@@ -61,9 +61,10 @@ const updateData = (query_object, update_object, cb) => {
     });
 }
 
-const findRecord = (queryObj, cb) => {
-    models.instance.bulk_upload_process.find(queryObj, (err, result) => {
+const findRecord = (queryObj, selectCriteria = [], cb) => {
+    models.instance.bulk_upload_process.find(queryObj, { allow_filtering: true, select: selectCriteria }, (err, result) => {
         if (err) {
+            console.log('error', _.get(err, 'message'));
             cb(err, null);
         } else {
             cb(null, result);

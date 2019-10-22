@@ -398,10 +398,51 @@ const insertCsvIntoDB = () => {
     }
 }
 
+const checkUploadStatus = (req, res) => {
+    const userId = _.get(req, 'params.userId');
+    const query_object = {
+        uploadedby: userId
+    }
+    let response;
+    const selectCriteria = ['id', 'status', 'storagedetails'];
+    cassandraUtil.findRecord(query_object, selectCriteria, (err, result) => {
+        if (err) {
+            res.status(500);
+            response = {
+                responseCode: "SERVER_ERROR",
+                params: {
+                    err: "SERVER_ERROR",
+                    status: "SERVER_ERROR",
+                    errmsg: 'Error occured while fetching from DB'
+                },
+                result: {}
+            }
+            res.send(apiResponse(response));
+        } else {
+            const response = {
+                responseCode: "OK",
+                params: {
+                    err: "",
+                    status: "",
+                    errmsg: ""
+                },
+                result: {
+                    response: result
+                }
+            }
+            res.send(apiResponse(response));
+        }
+    })
+}
+
+
+
+
 module.exports = {
     isCsvFile,
     checkForErrors,
     insertCsvIntoDB,
     generateAndAddCertificates,
-    validateRequestBody
+    validateRequestBody,
+    checkUploadStatus
 }
