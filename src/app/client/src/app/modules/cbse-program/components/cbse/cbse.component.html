@@ -67,7 +67,7 @@
   </div>
 </div>
 
-<csv-upload *ngIf="showModal"></csv-upload>
+<csv-upload [certType]="selectedOption" *ngIf="showModal"></csv-upload>
 
 <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
 
