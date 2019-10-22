@@ -21,6 +21,7 @@ const baseDownloadDir = 'Downloads';
 var zipFolder = require('zip-folder');
 const cassandraUtil = require('./cassandraUtil');
 const BATCH_SIZE = 10;
+const containerName = envHelper.sunbird_azure_certificates_container_name;
 
 const validateName = (name) => name ? true : false;
 
@@ -31,12 +32,12 @@ const generateAndAddCertificates = (req) => {
     const successRecords = [];
     const failureRecords = [];
 
-    // updates the processstart time
     const update_values_object = {
         processstarttime: _.toString(new Date()),
         retrycount: 1,
         status: 1
     }
+
     cassandraUtil.updateData({ id: _.toString(_.get(rspObj, 'processId')) }, update_values_object, (err, result) => {
         if (err) {
             console.log('updating bulk_upload_process table processstarttime', _.get(err, 'message'))
@@ -59,7 +60,7 @@ const generateAndAddCertificates = (req) => {
     }, (err) => {
         if (!err) {
             writeDataToCsv(_.get(rspObj, 'processId'), _.merge(successRecords, failureRecords));
-            async.waterfall([async.constant(rspObj), prepareZip], (err, result) => {
+            async.waterfall([async.constant(rspObj), prepareZip, uploadToAzure], (err, result) => {
                 if (err) {
                     console.log('Error: ', _.get(err, 'message'));
                 } else {
@@ -70,7 +71,7 @@ const generateAndAddCertificates = (req) => {
                         lastupdatedon: new Date(),
                         processendtime: _.toString(new Date()),
                         retrycount: 3,
-                        storagedetails: result,
+                        storagedetails: _.get(result, 'signedUrl'),
                         status: 2
                     }
                     cassandraUtil.updateData(query_obj, update_values_object, (err, result) => {
@@ -87,11 +88,26 @@ const generateAndAddCertificates = (req) => {
 }
 
 const uploadToAzure = (filePath, cb) => {
-    blobService.createBlockBlobFromLocalFile('cert-gj', 'test', filePath, (error, result, response) => {
-        if (!error) {
-            cb(null, filePath)
+    blobService.createBlockBlobFromLocalFile(containerName, path.basename(filePath), filePath, (err, result, response) => {
+        if (!err && result) {
+            var startDate = new Date();
+            var expiryDate = new Date(startDate);
+            expiryDate.setMinutes(startDate.getMinutes() + 3600);
+            startDate.setMinutes(startDate.getMinutes() - 3600);
+            var sharedAccessPolicy = {
+                AccessPolicy: {
+                    Permissions: azure.BlobUtilities.SharedAccessPermissions.READ,
+                    Start: startDate,
+                    Expiry: expiryDate
+                }
+            };
+            var token = blobService.generateSharedAccessSignature(containerName, path.basename(filePath), sharedAccessPolicy);
+            var sasUrl = blobService.getUrl(containerName, path.basename(filePath), token);
+            console.log('upload successful to azure');
+            cb(null, { signedUrl: sasUrl, fileDetails: result });
         } else {
-            cb(error, null);
+            console.log('upload failed to azure', err);
+            cb(err, null);
         }
     })
 }
