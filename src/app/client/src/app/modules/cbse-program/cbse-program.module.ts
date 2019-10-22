@@ -14,8 +14,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CsvUploadComponent } from './components/csv-upload/csv-upload.component';
+import { CertificateModule } from './../certificate/certificate.module';
 @NgModule({
-  declarations: [CsvUploadComponent, QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
+  declarations: [CsvUploadComponent, QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent,
+    ChapterListComponent,
     McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
     QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent, TextbookListComponent, DashboardComponent],
@@ -26,7 +28,8 @@ import { CsvUploadComponent } from './components/csv-upload/csv-upload.component
     ReactiveFormsModule, FormsModule, SharedModule,
     InfiniteScrollModule,
     PlayerHelperModule,
-    TelemetryModule
+    TelemetryModule,
+    CertificateModule
   ],
   exports: [ CbseComponent, SanitizeHtmlPipe ]
 })

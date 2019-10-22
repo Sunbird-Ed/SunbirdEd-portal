@@ -6,11 +6,22 @@ import { forkJoin, of } from 'rxjs';
 import * as _ from 'lodash-es';
 import { themeObject, stageObject, questionSetObject, questionObject, questionSetConfigCdataObject } from './data';
 import { UUID } from 'angular2-uuid';
+import { HttpClient } from  "@angular/common/http";
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class CbseProgramService {
-  constructor(private configService: ConfigService, public actionService: ActionService) { }
+  constructor(private httpClient: HttpClient, private configService: ConfigService, public actionService: ActionService) { }
+
+  public postCertData(file: any, certType: any, userId: any, rootOrgId: any): Observable<any> {
+    let formData = new FormData();
+    formData.append('users', file);
+    formData.append('cert-type', certType);
+    formData.append('userId', userId);
+    formData.append('rootOrgId', rootOrgId);
+    return this.httpClient.post('http://localhost:3000/certificate/user/upload', formData);
+  }
 
   getQuestionDetails(questionId) {
     const req = {
