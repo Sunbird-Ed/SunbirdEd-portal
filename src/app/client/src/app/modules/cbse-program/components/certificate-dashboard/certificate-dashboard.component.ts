@@ -8,9 +8,9 @@ import * as _ from 'lodash-es';
   styleUrls: ['./certificate-dashboard.component.scss']
 })
 export class CertificateDashboardComponent implements OnInit {
- userId: string;
- data: any;
-  constructor( public http: HttpClient, public userService: UserService) { }
+  userId: string;
+  data: any;
+  constructor(public http: HttpClient, public userService: UserService) { }
 
   ngOnInit() {
     this.userId = this.userService.userid;
@@ -22,7 +22,12 @@ export class CertificateDashboardComponent implements OnInit {
   }
 
   getTableData() {
-    this.http.get(`/certificate/user/upload/status/${this.userId}`).subscribe(
+    const request = {
+      'request': {
+        'userId': this.userId
+      }
+    };
+    this.http.post('/certificate/user/upload/status', request).subscribe(
       (data) => {
         this.data = _.get(data, 'result.response');
       }, (error) => {
