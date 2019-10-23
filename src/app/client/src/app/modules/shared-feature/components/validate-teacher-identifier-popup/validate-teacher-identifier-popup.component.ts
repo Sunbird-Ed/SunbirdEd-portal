@@ -25,64 +25,15 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   navivateToResult =  false;
   instance: string;
   isOffline = environment.isOffline;
+  userId: string;
   constructor(
     public userService: UserService,
     public resourceService: ResourceService) { }
   ngOnInit() {
     this.instance = 'Tamil Nadu';
+    this.userId = this.userService.userid;
   }
 
-  verifyExtId() {
-    const request = {
-
-    };
-    this.userService.validateExtId(request).subscribe(
-      (response) => {
-        this.extIdVerified = true;
-
-      }, (error) => {
-        this.count += 1;
-        this.extIdInputField.nativeElement.value = '';
-        this.extIdInputField.nativeElement.focus();
-        this.enableSubmitButton = false;
-        if (this.count === 2) {
-          this.navivateToResult = true;
-          this.failExtIdAndUpdateDb();
-        } else {
-          this.showError = true;
-        }
-      }
-    );
-  }
-
-  rejectExtId() {
-    const request = {
-
-    };
-    this.userService.rejectExtId(request).subscribe(
-      (response) => {
-        this.closeModal();
-
-
-      }, (error) => {
-        this.closeModal();
-      }
-    );
-  }
-
-  failExtIdAndUpdateDb() {
-    const request = {
-
-    };
-    this.userService.failExtId(request).subscribe(
-      (response) => {
-
-      }, (error) => {
-        this.extIdFailed = true;
-
-      }
-    );
-  }
 
   getIdLength(event: any) {
     if (event.target.value.length > 0) {
