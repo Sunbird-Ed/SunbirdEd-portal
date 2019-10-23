@@ -14,6 +14,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
   @Output() assessmentEvents = new EventEmitter<any>();
+  @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
@@ -60,6 +61,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          playerElement.addEventListener('question:score:submit', telemetryEvent => this.generateScoreSubmitEvent(telemetryEvent));
         } catch (err) {
           console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();
@@ -77,6 +79,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          playerElement.addEventListener('question:score:submit', telemetryEvent => this.generateScoreSubmitEvent(telemetryEvent));
         } catch (err) {
           console.log('loading default player failed', err);
           const prevUrls = this.navigationHelperService.history;
@@ -116,6 +119,11 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       $('#contentPlayer').css('height', height + 'px');
     }
   }
+
+  generateScoreSubmitEvent(event: any) {
+    this.questionScoreSubmitEvents.emit(event);
+  }
+
   generateContentReadEvent(event: any) {
     const eid = event.detail.telemetryData.eid;
     if (eid && (eid === 'START' || eid === 'END')) {

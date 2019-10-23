@@ -159,10 +159,10 @@ export class AssessmentScoreService {
   }
 
   /**
-   * handles browser change or route change in b/w courseplay.
+   * handles submit button clicked in course player
    */
-  handleInterruptEvent(interrupt: Boolean) {
-    if (interrupt && this._startEvent && this.initialized) {
+  handleSubmitButtonClickEvent(clicked: Boolean) {
+    if (clicked && this._startEvent && this.initialized) {
       this.processAssessEvents();
     }
   }

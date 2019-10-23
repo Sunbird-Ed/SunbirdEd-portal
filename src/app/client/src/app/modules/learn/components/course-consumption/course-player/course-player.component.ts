@@ -296,7 +296,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       queryParams: { 'contentId': content.id },
       relativeTo: this.activatedRoute
     };
-    this.assessmentScoreService.handleInterruptEvent(true);
     const playContentDetail = this.findContentById(content.id);
     if (playContentDetail.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
       this.showExtContentMsg = false;
@@ -334,6 +333,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       return;
     }
     this.assessmentScoreService.receiveTelemetryEvents(event);
+  }
+
+  questionScoreSubmitEvents(event) {
+    if (event) {
+      this.assessmentScoreService.handleSubmitButtonClickEvent(true);
+    }
   }
 
   private validEndEvent(event) {
@@ -378,7 +383,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
-    this.assessmentScoreService.handleInterruptEvent(true);
   }
   private setTelemetryStartEndData() {
     this.telemetryCdata = [{ 'type': 'Course', 'id': this.courseId }];
