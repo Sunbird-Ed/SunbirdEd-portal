@@ -12,7 +12,7 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
       <a href="/assets/SampleUserCsv.csv">{{resourceService?.frmelmnts?.btn?.smplcsv}}</a>
   </div>
 
-  <div class="hiddenFileInput sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
+  <div class="hiddenFileInput sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn" (click)="inputbtn.click();">
     {{resourceService?.frmelmnts?.btn?.uploadcsv}}
     <input type="file" #inputbtn class="sb-btn-upload" name="file" accept=".csv" (change)="fileChanged($event)"/>
   </div>
