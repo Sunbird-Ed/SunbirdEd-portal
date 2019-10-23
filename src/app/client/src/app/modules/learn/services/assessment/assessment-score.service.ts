@@ -71,7 +71,7 @@ export class AssessmentScoreService {
       this._assessEvents.push(eventData);
     } else if (eventData && eid === 'END') {
       this._endEvent = eventData;
-      this.processAssessEvents();
+      // this.processAssessEvents();
     }
   }
 
