@@ -94,7 +94,9 @@ let envVariables = {
   KEYCLOAK_ANDROID_CLIENT: {
     clientId: env.sunbird_android_keycloak_client_id || 'android',
   },
-  LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true'
+  LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
+  DESKTOP_APP_STORAGE_URL: env.desktop_app_storage_url || 'https://sunbirdofflineinstaller.blob.core.windows.net/dev-offlineinstaller',
+  DOMAIN_NAME: env.domain_name || 'https://diksha.gov.in'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
