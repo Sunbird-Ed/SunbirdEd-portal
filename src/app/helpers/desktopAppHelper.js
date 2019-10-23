@@ -10,7 +10,7 @@ function getAppDetails() {
         request(`${envHelper.DESKTOP_APP_STORAGE_URL}/latest/latest.json`, function (error, resp, data) {
             if (error) {
                 res.status(500).send({
-                    'id': 'api.appUpdate',
+                    'id': 'api.desktop.update',
                     'ver': '1.0',
                     'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
                     'params': {
@@ -35,7 +35,7 @@ function getAppDetails() {
                 }
 
                 res.status(200).send({
-                    'id': 'api.appUpdate',
+                    'id': 'api.desktop.update',
                     'ver': '1.0',
                     'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
                     'params': {

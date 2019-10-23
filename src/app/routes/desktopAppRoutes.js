@@ -10,6 +10,6 @@ module.exports = function (app) {
 
     app.use(bodyParser.json())
 
-    app.post('/appUpdateAvailable',
+    app.post('/v1/desktop/update',
         desktopAppHelper.getAppDetails())
 }
