@@ -65,6 +65,7 @@ let envVariables = {
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
   sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
+  sunbird_azure_certificates_container_name: env.sunbird_azure_certificates_container_name || 'cert-gj',
   sunbird_azure_account_name: env.sunbird_azure_account_name,
   sunbird_azure_account_key: env.sunbird_azure_account_key,
   sunbird_portal_health_check_enabled: env.sunbird_health_check_enable || 'true',

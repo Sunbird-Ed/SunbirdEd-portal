@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Noto Sans Gujarati';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./NotoSansGujarati-Regular.eot);
+  src:
+    url(./NotoSansGujarati-Regular.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansGujarati-Regular.woff2) format('woff2'),
+    url(./NotoSansGujarati-Regular.woff) format('woff'),
+    url(./NotoSansGujarati-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Sans Gujarati';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./NotoSansGujarati-Bold.eot);
+  src:
+    url(./NotoSansGujarati-Bold.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansGujarati-Bold.woff2) format('woff2'),
+    url(./NotoSansGujarati-Bold.woff) format('woff'),
+    url(./NotoSansGujarati-Bold.ttf) format('truetype');
+}

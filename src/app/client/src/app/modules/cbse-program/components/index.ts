@@ -9,3 +9,5 @@ export * from './ckeditor-tool/ckeditor-tool.component';
 export * from './question-preview/question-preview.component';
 export * from './question-creation-header/question-creation-header.component';
 export * from './textbook-list/textbook-list.component';
+export * from './csv-upload/csv-upload.component';
+export * from './certificate-dashboard/certificate-dashboard.component';

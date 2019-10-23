@@ -13,11 +13,16 @@ import { TextbookListComponent } from './components/textbook-list/textbook-list.
 import { TelemetryModule } from '@sunbird/telemetry';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { CsvUploadComponent } from './components/csv-upload/csv-upload.component';
+import { CertificateModule } from './../certificate/certificate.module';
+import { CertificateDashboardComponent } from './components/certificate-dashboard/certificate-dashboard.component';
 @NgModule({
-  declarations: [QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
+  declarations: [CsvUploadComponent, QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent,
+    ChapterListComponent,
     McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
-    QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent, TextbookListComponent, DashboardComponent],
+    QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent, TextbookListComponent, DashboardComponent,
+    CertificateDashboardComponent],
   imports: [
     CommonModule,
     SuiTabsModule,
@@ -25,7 +30,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     ReactiveFormsModule, FormsModule, SharedModule,
     InfiniteScrollModule,
     PlayerHelperModule,
-    TelemetryModule
+    TelemetryModule,
+    CertificateModule
   ],
   exports: [ CbseComponent, SanitizeHtmlPipe ]
 })

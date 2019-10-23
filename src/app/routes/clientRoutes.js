@@ -84,6 +84,7 @@ module.exports = (app, keycloak) => {
     // '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
     // '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
     // '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'
+    ,'/certs/public/*'
   ], indexPage(false))
 
   app.all('/:slug/get', (req, res) => res.redirect('/get'))
