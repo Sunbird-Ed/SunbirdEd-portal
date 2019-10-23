@@ -63,9 +63,9 @@ strong {
 
 .sb-certificate-table .sb-certificate-container {
 	position: absolute;
-	z-index: 2;
-	left: 0px;
-	top: 100px
+    z-index: 2;
+    left: 194px;
+    top: 100px;
 }
 
 .sb-certificate-table .sb-certificate-container .certificate-table-area {
@@ -151,12 +151,12 @@ strong {
 
 .certificate-frame {
 	width: 100%;
-	height: auto;
-	position: absolute;
-	z-index: 2;
-	box-sizing: border-box;
-	left: 0px;
-	top: 0px;
+    height: 93%;
+    position: absolute;
+    z-index: 2;
+    box-sizing: border-box;
+    left: 0px;
+    top: 0px;
 }
 
 .state-outline-img {

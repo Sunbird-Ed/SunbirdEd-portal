@@ -8,6 +8,7 @@ import { takeUntil, first } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { CbseProgramService } from '../../services/cbse-program/cbse-program.service';
+import { CbseComponent } from '../cbse/cbse.component';
 /**
  * This component helps to upload bulk users data (csv file)
  *
@@ -43,6 +44,7 @@ export class CsvUploadComponent {
   public orgManagementService: OrgManagementService;
   public cbseProgramService: CbseProgramService;
   public userService: UserService;
+  public CbseComponent: CbseComponent;
   /**
 * Contains process id
 */
@@ -153,12 +155,12 @@ activateUpload = false;
     });
     this.userUploadInstructions = [
       { instructions: this.resourceService.frmelmnts.instn.t0099 },
-      { instructions: this.resourceService.frmelmnts.instn.t0100 },
-      // { instructions: this.resourceService.frmelmnts.instn.t0101 },
-      { instructions: this.resourceService.frmelmnts.instn.t0102 },
-      { instructions: this.resourceService.frmelmnts.instn.t0103 },
-      { instructions: this.resourceService.frmelmnts.instn.t0104 },
-      { instructions: this.resourceService.frmelmnts.instn.t0105 }
+      // { instructions: this.resourceService.frmelmnts.instn.t0100 },
+      // // { instructions: this.resourceService.frmelmnts.instn.t0101 },
+      // { instructions: this.resourceService.frmelmnts.instn.t0102 },
+      // { instructions: this.resourceService.frmelmnts.instn.t0103 },
+      // { instructions: this.resourceService.frmelmnts.instn.t0104 },
+      // { instructions: this.resourceService.frmelmnts.instn.t0105 }
       ];
     this.showLoader = false;
     this.setInteractEventData();
@@ -198,6 +200,7 @@ activateUpload = false;
           this.showLoader = false;
           this.toasterService.success(this.resourceService.messages.smsg.m0030);
           this.modal.deny();
+          this.CbseComponent.selectedOption = "";
         },
         err => {
           console.log(err);
@@ -206,6 +209,7 @@ activateUpload = false;
           this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
           this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
           this.modalName = 'error';
+          this.CbseComponent.selectedOption = "";
         },
         () => {
           console.log('Finally...');

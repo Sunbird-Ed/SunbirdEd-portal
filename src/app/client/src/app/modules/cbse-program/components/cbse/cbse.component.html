@@ -1,17 +1,19 @@
 <div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white" style="background-color: white;">
   <div class="ui container">
-    <a class="item active" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR")' [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
+    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR")' [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
       (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER")'
       [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER")'
       [class.active]="selectedAttributes.currentRole === 'PUBLISHER'" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
-    <a class="item active" *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "gj")'
+    <a class="item" [class.active]="!showCertDashboard" *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "gj")'
       (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange()">Issue&nbsp;Certificate</a>
+      <a class="item" [class.active]="showCertDashboard" *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "gj")'
+      (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange('dashboard')">Dashboard</a>
   </div>
 </div>
 
-<div class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
+<div *ngIf='!showCertDashboard' class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
   <div class="ui mt-30 container w-300 sb-box-container" [appTelemetryImpression]="telemetryImpression">
     <h4>SELECT TYPE</h4>
     <div class="mt-30">
@@ -69,6 +71,10 @@
 
 <csv-upload [certType]="selectedOption" *ngIf="showModal"></csv-upload>
 
+<div *ngIf="showCertDashboard" class="ui mt-30 container w-300 sb-box-container">
+  <app-certificate-dashboard></app-certificate-dashboard>
+</div>
+
 <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
 
   <div *ngIf="stages[currentStage] === 'chooseClass'">
@@ -116,7 +122,7 @@
     </div>
 
 
-    <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
+     <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
         <div class="sb-pageSection">
             <div class="sb-pageSection-header ui grid">
 
