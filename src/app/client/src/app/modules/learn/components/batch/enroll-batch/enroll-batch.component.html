@@ -55,7 +55,7 @@
   <!--/Content-->
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button appTelemetryInteract [telemetryInteractObject]="{id:batchId , ver : '1.0' , type:'CourseBatch'}" [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
+    <button appTelemetryInteract [telemetryInteractObject]="{id:batchId , ver : '1.0' , type:'CourseBatch' , rollup:{l1: batchDetails.courseId}}" [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
         [disabled]="disableSubmitBtn" 
         class="sb-btn sb-btn-normal sb-btn-primary" 
         id="enrollToCourse" 
