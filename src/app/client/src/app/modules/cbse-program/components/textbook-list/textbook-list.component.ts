@@ -4,6 +4,9 @@ import { PublicDataService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { TelemetryService } from '@sunbird/telemetry';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { CbseProgramService } from '../../services';
 
 
 @Component({
@@ -19,7 +22,7 @@ export class TextbookListComponent implements OnInit {
   showLoader = true;
   telemetryImpression = {};
   telemetryInteract = {};
-  constructor(private configService: ConfigService, public publicDataService: PublicDataService,
+  constructor(private configService: ConfigService, public publicDataService: PublicDataService,private cbseService: CbseProgramService,
     public utilService: UtilService, public toasterService: ToasterService, public router: Router,
     public telemetryService: TelemetryService) { }
 
@@ -42,7 +45,11 @@ export class TextbookListComponent implements OnInit {
         }
       }
     };
-    this.publicDataService.post(req).subscribe((res) => {
+    this.publicDataService.post(req).pipe(catchError(err => {
+      let errInfo = { errorMsg: 'Question creation failed' };
+      this.showLoader = false;
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+    })).subscribe((res) => {
       var filteredTextbook = [];
       this.showLoader = false;
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
@@ -77,20 +84,6 @@ export class TextbookListComponent implements OnInit {
         }
       };
 
-    }, error => {
-      this.showLoader = false;
-      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook failed');
-      const telemetryErrorData = {
-        context: {
-          env: 'cbse_program'
-        },
-        edata: {
-          err: error.status.toString(),
-          errtype: 'PROGRAMPORTAL',
-          stacktrace: _.get(error, 'error.params.errmsg') || 'Fetching TextBook failed'
-        }
-      };
-      this.telemetryService.error(telemetryErrorData);
     });
   }
 

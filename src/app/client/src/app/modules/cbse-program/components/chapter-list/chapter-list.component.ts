@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } from '@angular/core';
 import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
-import { map } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { TelemetryService } from '@sunbird/telemetry';
+import { CbseProgramService } from '../../services';
+import { map, catchError } from 'rxjs/operators';
+import { forkJoin, of, throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 
@@ -36,10 +38,10 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public collectionData;
   showLoader = true;
   showError = false;
-  public question_categories: any;
-  public question_type: Array<any> = [];
+  public routerQuestionCategory: any;
+  public questionPattern: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    private userService: UserService, public actionService: ActionService,
+    private userService: UserService, public actionService: ActionService, public telemetryService: TelemetryService, private cbseService: CbseProgramService,
     public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
   }
   private labelsHandler() {
@@ -50,18 +52,18 @@ export class ChapterListComponent implements OnInit, OnChanges {
      * @description : this will fetch question Category configuration based on currently active route
      */
     this.activeRoute.data
-    .subscribe( (routerData) => {
-      this.question_categories = routerData.config.question_categories;
-      this.questionType = this.question_categories;
+      .subscribe((routerData) => {
+        this.routerQuestionCategory = routerData.config.question_categories;
+        this.questionType = this.routerQuestionCategory;
 
-      routerData.config.question_categories.map( category => {
-        if (category !== 'mcq') {
-          this.question_type.push('reference');
-        } else {
-          this.question_type.push('mcq');
-        }
+        routerData.config.question_categories.map(category => {
+          if (category !== 'mcq') {
+            this.questionPattern.push('reference');
+          } else {
+            this.questionPattern.push('mcq');
+          }
+        });
       });
-    });
     this.labelsHandler();
     this.telemetryImpression = {
       context: {
@@ -96,67 +98,68 @@ export class ChapterListComponent implements OnInit, OnChanges {
       url: 'content/v3/hierarchy/' + identifier, // `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
       param: { 'mode': 'edit' }
     };
-    this.actionService.get(req).subscribe((response) => {
-      this.collectionData = response.result.content;
-      hierarchy = this.getHierarchyObj(this.collectionData);
-      this.selectedAttributes.hierarchyObj  = { hierarchy };
-      const textBookMetaData = [];
-      _.forEach(this.collectionData.children, data => {
+    this.actionService.get(req).pipe(catchError(err => {
+      let errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+    }))
+      .subscribe((response) => {
+        this.collectionData = response.result.content;
+        hierarchy = this.getHierarchyObj(this.collectionData);
+        this.selectedAttributes.hierarchyObj = { hierarchy };
+        const textBookMetaData = [];
+        _.forEach(this.collectionData.children, data => {
 
-        if (data.topic && data.topic[0]) {
-          if (data.children ) {
-            let questionBankUnit: any;
-            if (_.includes(this.questionType, 'curiosity')) {
-              questionBankUnit = _.find(data.children, (val) => {
-                return val.name === 'Curiosity Questions';
+          if (data.topic && data.topic[0]) {
+            if (data.children) {
+              let questionBankUnit: any;
+              if (_.includes(this.questionType, 'curiosity')) {
+                questionBankUnit = _.find(data.children, (val) => {
+                  return val.name === 'Curiosity Questions';
+                });
+              } else {
+                questionBankUnit = _.find(data.children, (val) => {
+                  return val.name === 'Question Bank' || val.name === 'Practice Questions';
+                });
+              }
+              textBookMetaData.push({
+                name: data.name,
+                topic: data.topic[0],
+                identifier: questionBankUnit ? questionBankUnit.identifier : data.identifier
               });
             } else {
-              questionBankUnit = _.find(data.children, (val) => {
-                return val.name === 'Question Bank' || val.name === 'Practice Questions';
+              textBookMetaData.push({
+                name: data.name,
+                topic: data.topic[0],
+                identifier: data.identifier
               });
             }
-            textBookMetaData.push({
-              name : data.name,
-              topic: data.topic[0],
-              identifier: questionBankUnit ?  questionBankUnit.identifier : data.identifier
-            });
-          } else {
-            textBookMetaData.push({
-              name : data.name,
-              topic: data.topic[0],
-              identifier: data.identifier
-            });
           }
-        }
-      });
-      this.textBookMeta = textBookMetaData;
+        });
+        this.textBookMeta = textBookMetaData;
 
-      this.showChapterList(textBookMetaData);
-    }, error => {
-      this.showLoader = false;
-      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed');
-    });
+        this.showChapterList(textBookMetaData);
+      });
   }
 
   public getHierarchyObj(data) {
-    const instance  = this;
+    const instance = this;
     if (data.identifier) {
-            this.hierarchyObj[data.identifier] = {
-                'name': data.name,
-                'contentType': data.contentType,
-                'children': _.map(data.children, (child) => {
-                    return child.identifier;
-                }),
-                'root': data.contentType === 'TextBook' ? true : false
-            };
+      this.hierarchyObj[data.identifier] = {
+        'name': data.name,
+        'contentType': data.contentType,
+        'children': _.map(data.children, (child) => {
+          return child.identifier;
+        }),
+        'root': data.contentType === 'TextBook' ? true : false
+      };
 
-            _.forEach(data.children, (collection) => {
-                instance.getHierarchyObj(collection);
-            });
-        }
-
-        return  this.hierarchyObj;
+      _.forEach(data.children, (collection) => {
+        instance.getHierarchyObj(collection);
+      });
     }
+
+    return this.hierarchyObj;
+  }
 
   public showChapterList(textBookMetaData) {
     let apiRequest;
@@ -171,7 +174,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       apiRequest = [...this.questionType.map(fields => this.searchQuestionsByType(fields)),
       ...this.questionType.map(fields => this.searchQuestionsByType(fields, '', 'Live')),
       ...this.questionType.map(type => this.searchResources(type))
-    ];
+      ];
     }
 
     if (!apiRequest) {
@@ -182,25 +185,24 @@ export class ChapterListComponent implements OnInit, OnChanges {
     forkJoin(apiRequest).subscribe(data => {
       this.showLoader = true;
       this.textBookChapters = _.map(textBookMetaData, topicData => {
-        const results = { name: topicData.name, topic:  topicData.topic, identifier: topicData.identifier  };
+        const results = { name: topicData.name, topic: topicData.topic, identifier: topicData.identifier };
         _.forEach(this.questionType, (type: string, index) => {
           results[type] = {
             name: type,
             total: this.getResultCount(data[index], topicData.topic),
             me: this.getResultCount(data[index + this.questionType.length], topicData.topic),
             attention: this.getResultCount(data[index + (2 * this.questionType.length)], topicData.topic),
-            buttonStatus: this.getButtonStatus(data[index +  (2 * this.questionType.length)], topicData.topic),
+            buttonStatus: this.getButtonStatus(data[index + (2 * this.questionType.length)], topicData.topic),
             resourceName: this.getResourceName(data[index + (2 * this.questionType.length)], topicData.topic)
           };
         });
         this.showLoader = false;
         // text book-unit-id added
-        results.identifier =  topicData.identifier;
+        results.identifier = topicData.identifier;
         return results;
       });
     }, error => {
       this.showLoader = false;
-      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching TextBook details failed');
     });
   }
 
@@ -210,9 +212,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
   }
 
   public getResourceName(data, topic: string) {
-    const topicData = _.find(data, {name: topic.toLowerCase() });
+    const topicData = _.find(data, { name: topic.toLowerCase() });
     // tslint:disable-next-line:max-line-length
-    return topicData ?  topicData.resourceName : false;
+    return topicData ? topicData.resourceName : false;
   }
   public getButtonStatus(data, topic: string) {
     const topicData = _.find(data, { name: topic.toLowerCase() });
@@ -226,7 +228,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
         'request': {
           'filters': {
             'objectType': 'content',
-            'contentType': qtype === 'curiosity' ? 'CuriosityQuestionSet' :  'PracticeQuestionSet',
+            'contentType': qtype === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
             'mimeType': 'application/vnd.ekstep.ecml-archive',
             'board': this.selectedAttributes.board,
             'framework': this.selectedAttributes.framework,
@@ -234,9 +236,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'status': ['Live'],
-            'questionCategories': (qtype === 'curiosity') ? 'CuriosityQuestion' :  qtype.toUpperCase()
+            'questionCategories': (qtype === 'curiosity') ? 'CuriosityQuestion' : qtype.toUpperCase()
           },
-          'sort_by' : {'createdOn': 'desc'},
+          'sort_by': { 'createdOn': 'desc' },
           'fields': ['identifier', 'status', 'createdOn', 'topic', 'name', 'questions'],
           'facets': ['topic']
         }
@@ -244,20 +246,22 @@ export class ChapterListComponent implements OnInit, OnChanges {
     };
     return this.publicDataService.post(request).pipe(
       map(res => {
-        const content  = _.get(res, 'result.content');
+        const content = _.get(res, 'result.content');
         const publishCount = [];
         _.forIn(_.groupBy(content, 'topic'), (value, key) => {
           // publishCount.push({name: key.toLowerCase(), count: _.uniq([].concat(..._.map(value, 'questions'))).length });
           // tslint:disable-next-line:max-line-length
-          publishCount.push({name: key.toLowerCase(), count: _.uniq(value[0].questions).length, resourceId: _.get(value[0], 'identifier'), resourceName: _.get(value[0], 'name') });
+          publishCount.push({ name: key.toLowerCase(), count: _.uniq(value[0].questions).length, resourceId: _.get(value[0], 'identifier'), resourceName: _.get(value[0], 'name') });
 
-      });
-       return publishCount;
-      }, err => {
-        console.log(err);
+        });
+        return publishCount;
+      }),
+      catchError((err) => {
+        let errInfo = { errorMsg: 'Published Resource search failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
       }));
   }
-  public searchQuestionsByType(questionType: string, createdBy?: string , status?: any) {
+  public searchQuestionsByType(questionType: string, createdBy?: string, status?: any) {
     const req = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
       data: {
@@ -288,10 +292,13 @@ export class ChapterListComponent implements OnInit, OnChanges {
       req.data.request.filters['organisation'] = this.selectedAttributes.selectedSchoolForReview;
     }
     return this.publicDataService.post(req).pipe(
-      map(res => _.get(res, 'result.facets[0].values')));
+      map(res => _.get(res, 'result.facets[0].values')), catchError((err) => {
+        let errInfo = { errorMsg: 'Questions search by type failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+      }));
   }
 
-  emitQuestionTypeTopic(type, topic, topicIdentifier, resourceIdentifier, resourceName ) {
+  emitQuestionTypeTopic(type, topic, topicIdentifier, resourceIdentifier, resourceName) {
     this.selectedQuestionTypeTopic.emit({
       'questionType': type,
       'topic': topic,

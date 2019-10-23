@@ -1,12 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { ConfigService, ToasterService } from '@sunbird/shared';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import * as $ from 'jquery';
 import 'datatables.net';
 import * as _ from 'lodash-es';
 import { ExportToCsv } from 'export-to-csv';
-import { forkJoin } from 'rxjs';
+import { forkJoin, throwError } from 'rxjs';
+import { CbseProgramService } from '../../services';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,7 +39,7 @@ export class DashboardComponent implements OnInit {
   };
 
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    public actionService: ActionService, public toasterService: ToasterService) { }
+    public actionService: ActionService, public toasterService: ToasterService,private cbseService: CbseProgramService,) { }
 
   ngOnInit() {
 
@@ -163,9 +164,9 @@ export class DashboardComponent implements OnInit {
       map(res => {
         let result = []
         return result = _.get(res, 'result.aggregations[0].values')
-      },
-        err => {
-          this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching aggregations of TextBook failed');
+      }), catchError((err) => {
+          let errInfo = { errorMsg: 'Questions search by type failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
         }));
   }
 
@@ -201,8 +202,10 @@ export class DashboardComponent implements OnInit {
 
         });
         return publishCount;
-      }, err => {
-        this.toasterService.error(_.get(err, 'error.params.errmsg') || 'Fetching Resource details failed');
+      }),
+      catchError((err) => {
+        let errInfo = { errorMsg: 'Published Resource search failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
       }));
   }
 

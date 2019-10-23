@@ -18,19 +18,19 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody class="sb-table-body body-large"  *ngFor = "let question_category of question_categories; let z = index">
+            <tbody class="sb-table-body body-large"  *ngFor = "let question_category of routerQuestionCategory; let z = index">
               <tr (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
-              appTelemetryInteract [telemetryInteractEdata]="{id: question_category+'_tr', type:'click', pageid:'chapterlist', extra:{type: question_type[i] ,category: question_category ,topic:textbook.topic}}">
+              appTelemetryInteract [telemetryInteractEdata]="{id: question_category+'_tr', type:'click', pageid:'chapterlist', extra:{type: questionPattern[i] ,category: question_category ,topic:textbook.topic}}">
                 <td>{{questionTypeName[textbook[question_category].name]}}</td>
                 <td>{{textbook[question_category].total}}</td>
                 <td>{{textbook[question_category].me}}</td>
                 <td *ngIf="selectedAttributes.currentRole !== 'REVIEWER'">{{textbook[question_category].attention}}</td>
                 <td *ngIf="selectedAttributes.currentRole !== 'PUBLISHER'"><button class="sb-btn sb-btn-primary sb-btn-normal"
                   (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
-                  appTelemetryInteract [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: question_type[z],category: question_category ,topic:textbook.topic}}" >Open</button></td>
+                  appTelemetryInteract [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: questionPattern[z],category: question_category ,topic:textbook.topic}}" >Open</button></td>
                 <td *ngIf="selectedAttributes.currentRole === 'PUBLISHER'"><button class="sb-btn sb-btn-primary sb-btn-normal"
                   (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
-                  appTelemetryInteract [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: question_type[z],category: question_category ,topic:textbook.topic}}" >{{textbook[question_category].buttonStatus ? 'Edit' : 'Create' }}</button></td>
+                  appTelemetryInteract [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: questionPattern[z],category: question_category ,topic:textbook.topic}}" >{{textbook[question_category].buttonStatus ? 'Edit' : 'Create' }}</button></td>
               </tr>
             </tbody>
           </table>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, ToasterService } from '@sunbird/shared';
+import { TelemetryService } from '@sunbird/telemetry';
 import { ActionService } from '@sunbird/core';
 import { map, mergeMap, catchError, tap } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
@@ -12,6 +13,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CbseProgramService {
+
   constructor(private httpClient: HttpClient, private configService: ConfigService, public actionService: ActionService) { }
 
   public postCertData(file: any, certType: any, userId: any, rootOrgId: any): Observable<any> {
@@ -118,5 +120,20 @@ export class CbseProgramService {
           };
         })
       );
+  }
+
+  apiErrorHandling(err, errorInfo){
+    this.toasterService.error(_.get(err, 'error.params.errmsg') || errorInfo.errorMsg);
+    const telemetryErrorData = {
+      context: {
+        env: 'cbse_program'
+      },
+      edata: {
+        err: err.status.toString(),
+        errtype: 'SYSTEM',
+        stacktrace: _.get(err, 'error.params.errmsg') || errorInfo.errorMsg
+      }
+    };
+    this.telemetryService.error(telemetryErrorData);
   }
 }
