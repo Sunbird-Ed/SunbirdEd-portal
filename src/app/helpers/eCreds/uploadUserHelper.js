@@ -21,6 +21,7 @@ const baseDownloadDir = 'Downloads';
 var zipFolder = require('zip-folder');
 const cassandraUtil = require('./cassandraUtil');
 const BATCH_SIZE = 10;
+const containerName = envHelper.sunbird_azure_certificates_container_name;
 
 const validateName = (name) => name ? true : false;
 
@@ -31,12 +32,12 @@ const generateAndAddCertificates = (req) => {
     const successRecords = [];
     const failureRecords = [];
 
-    // updates the processstart time
     const update_values_object = {
         processstarttime: _.toString(new Date()),
         retrycount: 1,
         status: 1
     }
+
     cassandraUtil.updateData({ id: _.toString(_.get(rspObj, 'processId')) }, update_values_object, (err, result) => {
         if (err) {
             console.log('updating bulk_upload_process table processstarttime', _.get(err, 'message'))
@@ -59,7 +60,7 @@ const generateAndAddCertificates = (req) => {
     }, (err) => {
         if (!err) {
             writeDataToCsv(_.get(rspObj, 'processId'), _.merge(successRecords, failureRecords));
-            async.waterfall([async.constant(rspObj), prepareZip], (err, result) => {
+            async.waterfall([async.constant(rspObj), prepareZip, uploadToAzure], (err, result) => {
                 if (err) {
                     console.log('Error: ', _.get(err, 'message'));
                 } else {
@@ -70,7 +71,7 @@ const generateAndAddCertificates = (req) => {
                         lastupdatedon: new Date(),
                         processendtime: _.toString(new Date()),
                         retrycount: 3,
-                        storagedetails: result,
+                        storagedetails: _.get(result, 'signedUrl'),
                         status: 2
                     }
                     cassandraUtil.updateData(query_obj, update_values_object, (err, result) => {
@@ -86,9 +87,29 @@ const generateAndAddCertificates = (req) => {
     })
 }
 
-const uploadToAzure = (filePath, callback) => {
-    // upload the file to blobStorage
-
+const uploadToAzure = (filePath, cb) => {
+    blobService.createBlockBlobFromLocalFile(containerName, path.basename(filePath), filePath, (err, result, response) => {
+        if (!err && result) {
+            var startDate = new Date();
+            var expiryDate = new Date(startDate);
+            expiryDate.setMinutes(startDate.getMinutes() + 3600);
+            startDate.setMinutes(startDate.getMinutes() - 3600);
+            var sharedAccessPolicy = {
+                AccessPolicy: {
+                    Permissions: azure.BlobUtilities.SharedAccessPermissions.READ,
+                    Start: startDate,
+                    Expiry: expiryDate
+                }
+            };
+            var token = blobService.generateSharedAccessSignature(containerName, path.basename(filePath), sharedAccessPolicy);
+            var sasUrl = blobService.getUrl(containerName, path.basename(filePath), token);
+            console.log('upload successful to azure');
+            cb(null, { signedUrl: sasUrl, fileDetails: result });
+        } else {
+            console.log('upload failed to azure', err);
+            cb(err, null);
+        }
+    })
 }
 
 const writeDataToCsv = (folder, data) => {
@@ -96,23 +117,29 @@ const writeDataToCsv = (folder, data) => {
         headers: 'key'
     }
     const response = csvjson.toCSV(data, options);
-    fs.writeFileSync(path.join(__dirname, `${baseDownloadDir}/${folder}/result.csv`), response);
+    const sourceDir = path.join(__dirname, `${baseDownloadDir}/${folder}`);
+    if (fs.existsSync(sourceDir)) {
+        fs.writeFileSync(`${sourceDir}/result.csv`, response);
+    }
 }
 
 const prepareZip = (rspObj, callback) => {
     const folder = _.get(rspObj, 'processId');
     const sourceDir = path.join(__dirname, `${baseDownloadDir}/${folder}`);
-    const targetDir = path.join(__dirname, `${baseDownloadDir}/${folder}.zip`)
-
-    zipFolder(sourceDir, targetDir, function (err) {
-        if (err) {
-            console.log('zip failed', err);
-            callback(true, null);
-        } else {
-            console.log('zip successful');
-            callback(null, targetDir);
-        }
-    });
+    if (fs.existsSync(sourceDir)) {
+        const targetDir = path.join(__dirname, `${baseDownloadDir}/${folder}.zip`)
+        zipFolder(sourceDir, targetDir, function (err) {
+            if (err) {
+                console.log('zip failed', err);
+                callback({ message: 'zipping failed' }, null);
+            } else {
+                console.log('zip successful');
+                callback(null, targetDir);
+            }
+        });
+    } else {
+        callback({ message: 'zipping failed' }, null);
+    }
 }
 
 const downloadCertificate = (input, signedUrl, certificateId, callback) => {
@@ -225,13 +252,20 @@ const generateCertificateApiCall = (input, callback) => {
 const validateRequestBody = (req, res, next) => {
     const file = _.get(req, 'file');
     const certType = _.get(req, 'body.cert-type');
-    const userDetails = _.get(req, 'userDetails');
+    let userDetailsPresent = true;
+    const userDetails = {
+        userId: _.get(req, 'body.userId'),
+        rootOrgId: _.get(req, 'body.rootOrgId')
+    }
     var rspObj = { file, certType, userDetails };
     let err = [];
     if (!file) err.push('csv-file-missing');
-    if (!userDetails) err.push('user-details-missing');
-    if (!certType) err.push('cert-type-missing')
-    if (!file || !certType) {
+    if (!_.get(userDetails, 'userId') || !_.get(userDetails, 'rootOrgId')) {
+        userDetailsPresent = false;
+        err.push('user-details-missing')
+    };
+    if (!certType) err.push('cert-type-missing');
+    if (!file || !certType || !userDetailsPresent) {
         res.status(404);
         const response = {
             responseCode: "CLIENT_ERROR",
@@ -338,20 +372,20 @@ const insertCsvIntoDB = () => {
     return (req, res, next) => {
         const rspObj = _.get(req, 'rspObj');
         const data = {
-            createdby: "ravinder kumar",
+            createdby: _.get(rspObj, 'userDetails.userId'),
             createdon: new Date(),
             data: JSON.stringify(_.get(rspObj, 'jsonObj')),
             failureresult: "",
             lastupdatedon: new Date(),
             objecttype: "certificate",
-            organisationid: "ORG_001",
+            organisationid: _.get(rspObj, 'userDetails.rootOrgId'),
             processendtime: _.toString(new Date()),
             processstarttime: _.toString(new Date()),
             retrycount: 0,
             status: 0,
             storagedetails: "",
             successresult: "",
-            uploadedby: "ravinder kumar",
+            uploadedby: _.get(rspObj, 'userDetails.userId'),
             uploadeddate: _.toString(new Date())
         }
         cassandraUtil.insertData(data, (err, result) => {
@@ -369,21 +403,87 @@ const insertCsvIntoDB = () => {
                 }
                 res.send(apiResponse(response));
             } else {
+                console.log('successfully inserted data in Db', result);
                 rspObj['processId'] = result;
                 req.rspObj = rspObj;
-                res.send({
-                    processId: result
-                })
+                res.status(200)
+                const response = {
+                    responseCode: "OK",
+                    params: {
+                        err: "",
+                        status: "",
+                        errmsg: ''
+                    },
+                    result: {
+                        processId: result
+                    }
+                }
+                res.send(apiResponse(response));
                 next();
             }
         })
     }
 }
 
+const checkUploadStatus = (req, res) => {
+    const userId = _.get(req, 'body.request.userId');
+    if (!userId) {
+        res.status(400);
+        response = {
+            responseCode: "CLIENT_ERROR",
+            params: {
+                err: "INVALID_REQUEST",
+                status: "",
+                errmsg: 'missing userId'
+            },
+            result: {}
+        }
+        res.send(apiResponse(response));
+    } else {
+        const query_object = {
+            uploadedby: userId
+        }
+        let response;
+        const selectCriteria = ['id', 'status', 'storagedetails'];
+        cassandraUtil.findRecord(query_object, selectCriteria, (err, result) => {
+            if (err) {
+                res.status(500);
+                response = {
+                    responseCode: "SERVER_ERROR",
+                    params: {
+                        err: "SERVER_ERROR",
+                        status: "SERVER_ERROR",
+                        errmsg: 'Error occured while fetching from DB'
+                    },
+                    result: {}
+                }
+                res.send(apiResponse(response));
+            } else {
+                const response = {
+                    responseCode: "OK",
+                    params: {
+                        err: "",
+                        status: "",
+                        errmsg: ""
+                    },
+                    result: {
+                        response: result
+                    }
+                }
+                res.send(apiResponse(response));
+            }
+        })
+    }
+}
+
+
+
+
 module.exports = {
     isCsvFile,
     checkForErrors,
     insertCsvIntoDB,
     generateAndAddCertificates,
-    validateRequestBody
+    validateRequestBody,
+    checkUploadStatus
 }

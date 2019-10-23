@@ -5,7 +5,6 @@ const certAddRequestBody = (response) => {
     const request = _.pick(response, ['id', 'accessCode', 'jsonData', 'pdfUrl']);
     request['userId'] = _.get(response, 'recipientId');
     request['recipientType'] = 'individual';
-    request['recipientName'] = 'ravinder kumar';
     return request;
 }
 
@@ -28,7 +27,7 @@ const certGenerateRequestBody = (input) => {
                 "url": "https://gcert.gujarat.gov.in/gcert/",
                 "publicKey": ["1", "2"]
             },
-            "orgId": _.get(input, 'rspObj.userDetails.orgId') || "ORG_001",
+            "orgId": _.get(input, 'rspObj.userDetails.rootOrgId'),
             "signatoryList": [
                 {
                     "name": "CEO Gujarat",
