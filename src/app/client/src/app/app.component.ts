@@ -85,6 +85,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   queryParams: any;
   telemetryContextData: any ;
   didV2: boolean;
+  flag = false;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,

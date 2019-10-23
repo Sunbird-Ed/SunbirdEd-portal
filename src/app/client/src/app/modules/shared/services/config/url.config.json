@@ -44,7 +44,10 @@
       "LOCATION_SEARCH": "data/v1/location/search",
       "TYPE": "user/v1/type/list",
       "VALIDATE_CERTIFICATE": "user/v1/certs/validate",
-      "DOWNLOAD_CERTIFICATE": "user/v1/certs/download"
+      "DOWNLOAD_CERTIFICATE": "user/v1/certs/download",
+      "VALIDATE_EXT_ID": "user/v1/ext/validate",
+      "REJECT_EXT_ID": "user/v1/ext/reject",
+      "FAIL_EXT_ID": "user/v1/ext/fail"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
