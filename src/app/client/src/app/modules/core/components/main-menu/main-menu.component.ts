@@ -38,6 +38,7 @@ export class MainMenuComponent implements OnInit {
    * reference of config service.
    */
   public config: ConfigService;
+  public slugValue = (<HTMLInputElement>document.getElementById('defaultTenant')).value
   /**
  * user profile details.
  */

@@ -71,11 +71,11 @@
 
 <csv-upload [certType]="selectedOption" *ngIf="showModal"></csv-upload>
 
-<div *ngIf="showCertDashboard">
+<div *ngIf="showCertDashboard" class="ui mt-30 container w-300 sb-box-container">
   <app-certificate-dashboard></app-certificate-dashboard>
 </div>
 
-<!-- <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
+<div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
 
   <div *ngIf="stages[currentStage] === 'chooseClass'">
     <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
@@ -119,10 +119,10 @@
             <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [selectedSchool]="selectedSchoolForReview" [role]="role"
             (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
         </div>
-    </div> -->
+    </div>
 
 
-    <!-- <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
+     <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
         <div class="sb-pageSection">
             <div class="sb-pageSection-header ui grid">
 
@@ -163,4 +163,4 @@
             </div>
         </div>
       <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role" [resourceName]="resourceNameInput" (changeStage)="navigate($event)" (publishButtonStatus)="publishButtonStatusHandler($event)"></app-question-list>
-    </div> -->
+    </div>

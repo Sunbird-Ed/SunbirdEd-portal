@@ -122,6 +122,7 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
     if(component === 'dashboard'){
       this.showCertDashboard = true;
+      this.selectedOption = "";
     } else{
       this.showCertDashboard = false;
     }
