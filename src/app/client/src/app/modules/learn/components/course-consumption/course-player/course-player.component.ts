@@ -399,6 +399,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         id: this.courseId,
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
         ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
+        rollup: {
+          l1: this.courseId
+        }
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -417,7 +420,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       object: {
         id: this.courseId,
         type: this.activatedRoute.snapshot.data.telemetry.object.type,
-        ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
+        rollup: {
+          l1: this.courseId
+        }
       },
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
@@ -444,7 +450,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       object: {
         id: this.courseId,
         type: 'Course',
-        ver: '1.0'
+        ver: '1.0',
+        rollup: {
+          l1: this.courseId
+        }
       }
     };
   }
