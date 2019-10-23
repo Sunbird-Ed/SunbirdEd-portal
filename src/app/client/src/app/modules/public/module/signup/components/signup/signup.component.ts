@@ -35,6 +35,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryImpression: IImpressionEventInput;
   submitInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}>;
+  instance: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
@@ -45,6 +46,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance);
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
       data => {
         if (data && !data.err) {
