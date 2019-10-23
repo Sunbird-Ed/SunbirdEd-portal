@@ -24,10 +24,8 @@ const certGenerateRequestBody = (input) => {
             "tag": "0125450863553740809",
             "issuer": {
                 "name": "Gujarat Council of Educational Research and Training",
-                "url": "https://gcert.gujarat.gov.in/gcert/",
-                "publicKey": ["1", "2"]
+                "url": "https://gcert.gujarat.gov.in/gcert/"
             },
-            "orgId": _.get(input, 'rspObj.userDetails.rootOrgId'),
             "signatoryList": [
                 {
                     "name": "CEO Gujarat",
@@ -35,7 +33,10 @@ const certGenerateRequestBody = (input) => {
                     "designation": "CEO",
                     "image": "https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg"
                 }
-            ]
+            ],
+            "criteria": {
+                "narrative": "course completion certificate"
+            }
         }
     }
 }
