@@ -62,13 +62,12 @@ export class CertificateDetailsComponent implements OnInit {
     };
     this.certificateService.validateCertificate(request).subscribe(
       (data: ServerResponse) => {
-        this.getCourseVideoUrl(_.get(data, 'result.response.courseId'));
+        this.watchVideoLink = _.get(data, 'result.response.related.introUrl');
+        this.getContentId(this.watchVideoLink);
         const certData = _.get(data, 'result.response.json');
         this.loader = false;
         this.viewCertificate = true;
         this.recipient = _.get(certData, 'recipient.name');
-        this.courseName = _.get(certData, 'badge.name');
-        this.issuedOn = moment(new Date(_.get(certData, 'issuedOn'))).format('DD MMM YYYY');
       },
       (err) => {
         this.wrongCertificateCode = true;
@@ -126,20 +125,15 @@ export class CertificateDetailsComponent implements OnInit {
   }
 
   /** to get the certtificate video url and courseId from that url */
-  getCourseVideoUrl(courseId: string) {
-    this.playerService.getCollectionHierarchy(courseId).subscribe(
-      (response: ServerResponse) => {
-        this.watchVideoLink = _.get(response, 'result.content.certVideoUrl');
-        if (this.watchVideoLink) {
-          const splitedData = this.watchVideoLink.split('/');
-          splitedData.forEach((value) => {
-            if (value.includes('do_')) {
-              this.contentId = value;
-            }
-          });
+  getContentId(watchVideoLink: string) {
+    if (watchVideoLink) {
+      const splitedData = watchVideoLink.split('/');
+      splitedData.forEach((value) => {
+        if (value.includes('do_')) {
+          this.contentId = value;
         }
-      }, (error) => {
       });
+    }
   }
 
   /** to play content on the certificate details page */
