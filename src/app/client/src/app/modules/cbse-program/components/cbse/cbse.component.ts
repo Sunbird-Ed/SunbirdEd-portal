@@ -53,6 +53,8 @@ export class CbseComponent implements OnInit, OnDestroy {
     {value: 'Best School Certificate'},
     {value: 'Best Student Certificate'}
   ];
+  public showCertDashboard = false;
+  public slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value
   public selectedOption;
   public showModal: boolean = false;
   constructor(public frameworkService: FrameworkService, public toasterService: ToasterService) { }
@@ -71,7 +73,8 @@ export class CbseComponent implements OnInit, OnDestroy {
       board: _.get(this.programDetails, 'config.scope.board[0]'),
       medium: _.get(this.programDetails, 'config.scope.medium[0]'),
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
-      programId: _.get(this.programDetails, 'programId'),
+      //programId: _.get(this.programDetails, 'programId'),
+      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1',
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
@@ -117,7 +120,12 @@ export class CbseComponent implements OnInit, OnDestroy {
 
   handleRoleChange(component?:string) {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
-    this.showDashboard = (component === 'Dashboard');
+    if(component === 'dashboard'){
+      this.showCertDashboard = true;
+    } else{
+      this.showCertDashboard = false;
+    }
+    //this.showDashboard = (component === 'Dashboard');
   }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);

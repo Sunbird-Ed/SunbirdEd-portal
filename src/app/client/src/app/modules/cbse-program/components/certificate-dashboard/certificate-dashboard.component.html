@@ -1,0 +1,25 @@
+<div class="sb-table-container">
+  <table class="sb-table sb-table-fixed sb-table-hover">
+  <thead class="sb-table-header heading-large">
+      <tr>
+      <th>File name</th>
+      <th>Status</th>
+      <th>Download Url</th>
+      </tr>
+  </thead>
+  <tbody class="sb-table-body body-large" *ngFor="let tableData of data">
+      <tr>
+      <td data-label="Name">
+          <div class="sb-media">
+          <img src="" alt="" class="sb-media-object mr-15">
+          <div class="sb-media-body">
+              <h6 class="media-heading">{{tableData.processId}}</h6>
+          </div>
+          </div>
+      </td>
+      <td data-label="Age">{{tableData.status}}</td>
+      <td style="cursor: pointer;" data-label="Job">{{tableData.downloadUrl}}</td>
+      </tr>
+  </tbody>
+  </table>
+</div>
