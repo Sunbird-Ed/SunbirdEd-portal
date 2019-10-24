@@ -122,12 +122,12 @@ export class CbseComponent implements OnInit, OnDestroy {
   handleRoleChange(component?:string) {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
     this.showDashboard = (component === 'Dashboard');
-    // if(component === 'dashboard'){
-    //   this.showCertDashboard = true;
-    //   this.selectedOption = "";
-    // } else{
-    //   this.showCertDashboard = false;
-    // }
+    if(component === 'dashboard'){
+      this.showCertDashboard = true;
+      this.selectedOption = "";
+    } else{
+      this.showCertDashboard = false;
+    }
   }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);
