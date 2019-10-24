@@ -39,10 +39,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   public pageSections: Array<ICaraouselData> = [];
-  resourceService: ResourceService;
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
-    resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
+    public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, public formService: FormService,
@@ -55,7 +54,6 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.redirectUrl = this.configService.appConfig.courses.inPageredirectUrl;
     this.filterType = this.configService.appConfig.courses.filterType;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
-    this.resourceService = resourceService;
   }
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
