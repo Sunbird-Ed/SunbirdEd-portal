@@ -3,7 +3,7 @@ const dateFormat = require('dateformat');
 const uuidv1 = require('uuid/v1');
 const request = require('request');
 const _ = require('lodash');
-var compareVersions = require('compare-versions');
+const compareVersions = require('compare-versions');
 
 function getAppUpdate() {
     return function (req, res) {
