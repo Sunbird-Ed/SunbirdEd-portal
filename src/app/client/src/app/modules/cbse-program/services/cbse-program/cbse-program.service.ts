@@ -14,7 +14,8 @@ import { Observable } from 'rxjs';
 })
 export class CbseProgramService {
 
-  constructor(private httpClient: HttpClient, private configService: ConfigService, public actionService: ActionService) { }
+  constructor(private httpClient: HttpClient, private configService: ConfigService, public actionService: ActionService,
+    public toasterService: ToasterService, public telemetryService: TelemetryService) { }
 
   public postCertData(file: any, certType: any, userId: any, rootOrgId: any): Observable<any> {
     let formData = new FormData();
