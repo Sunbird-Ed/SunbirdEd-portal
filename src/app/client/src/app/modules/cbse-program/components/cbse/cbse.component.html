@@ -6,7 +6,8 @@
       [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER")'
       [class.active]="selectedAttributes.currentRole === 'PUBLISHER'" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
-    <a class="item" [class.active]="!showCertDashboard programDetails?.userDetails?.roles.includes('ORG_ADMIN') && (slug == 'as')" *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "sunbird")'
+    <a class="item" [class.active]="!showCertDashboard programDetails?.userDetails?.roles.includes('ORG_ADMIN') && (slug == 'as')"
+     *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "as")'
       (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange()">Issue&nbsp;Certificate</a>
       <a class="item" [class.active]="showCertDashboard" *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "as")'
       (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange('dashboard')">Dashboard</a>
