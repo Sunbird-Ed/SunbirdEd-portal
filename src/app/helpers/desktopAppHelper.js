@@ -24,13 +24,15 @@ function getAppUpdate() {
                     'result': {}
                 });
             } else {
-                try { data = JSON.parse(data); } catch (e) { }
+                try { data = JSON.parse(data); } catch (e) {
+                    console.log('Parsing error: ', e);
+                }
                 let updateAvailable = false;
                 let response = { updateAvailable: updateAvailable };
 
                 if (_.get(data, 'version') > _.get(req, 'body.request.appVersion')) {
                     response.updateAvailable = true;
-                    let artifactName = data[_.get(req, 'body.request.os')][_.get(req, 'body.request.arch')];
+                    let artifactName = data[_.toLower(_.get(req, 'body.request.os'))][_.toLower(_.get(req, 'body.request.arch'))];
                     response.url = `${envHelper.DOMAIN_NAME}/desktop/latest/artifactUrl/${artifactName}`;
                 }
 
@@ -52,5 +54,6 @@ function getAppUpdate() {
         })
     }
 }
+
 
 module.exports.getAppUpdate = getAppUpdate
