@@ -6,14 +6,16 @@
       [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER")'
       [class.active]="selectedAttributes.currentRole === 'PUBLISHER'" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
-    <a class="item" [class.active]="!showCertDashboard" *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "gj")'
+    <a class="item" [class.active]="!showCertDashboard && (programDetails?.userDetails?.roles.includes('ORG_ADMIN') && (slug == 'as'))"
+     *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "as")'
       (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange()">Issue&nbsp;Certificate</a>
-      <a class="item" [class.active]="showCertDashboard" *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "gj")'
+      <a class="item" [class.active]="showCertDashboard && (programDetails?.userDetails?.roles.includes('ORG_ADMIN') && (slug == 'as'))"
+       *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "as")'
       (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange('dashboard')">Dashboard</a>
   </div>
 </div>
 
-<div *ngIf='!showCertDashboard' class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
+<div *ngIf='!showCertDashboard && (programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "as"))' class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
   <div class="ui mt-30 container w-300 sb-box-container" [appTelemetryImpression]="telemetryImpression">
     <h4>SELECT TYPE</h4>
     <div class="mt-30">
@@ -23,6 +25,7 @@
       </sui-select>
     </div>
     <div class="row" *ngIf="selectedOption">
+      <div> Certificate Preview</div>
       <table class="sb-certificate-table-ct">
       	<tr>
       		<td class="sb-certificate-table">
@@ -71,7 +74,7 @@
 
 <csv-upload [certType]="selectedOption" *ngIf="showModal"></csv-upload>
 
-<div *ngIf="showCertDashboard" class="ui mt-30 container w-300 sb-box-container">
+<div *ngIf="showCertDashboard && (programDetails?.userDetails?.roles.includes('ORG_ADMIN') && (slug == 'as'))" class="ui mt-30 container w-300 sb-box-container">
   <app-certificate-dashboard></app-certificate-dashboard>
 </div>
 

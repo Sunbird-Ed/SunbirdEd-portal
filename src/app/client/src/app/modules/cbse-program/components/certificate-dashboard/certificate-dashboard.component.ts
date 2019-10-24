@@ -17,8 +17,8 @@ export class CertificateDashboardComponent implements OnInit {
     this.getTableData();
   }
 
-  download(url: string) {
-    window.open(url);
+  downloadCert(url: string) {
+    
   }
 
   getTableData() {

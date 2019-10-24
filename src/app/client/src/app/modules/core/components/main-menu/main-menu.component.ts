@@ -38,7 +38,7 @@ export class MainMenuComponent implements OnInit {
    * reference of config service.
    */
   public config: ConfigService;
-  public slugValue = (<HTMLInputElement>document.getElementById('defaultTenant')).value
+  public slugValue = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
   /**
  * user profile details.
  */
@@ -89,12 +89,14 @@ export class MainMenuComponent implements OnInit {
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
+          this.slugValue = _.get(this.userProfile, 'rootOrg.slug');
         }
       });
     setTimeout(() => {
       let activeRoute = this.router.url.split('/')[3];
       this.activeRoute(activeRoute);
     }, 1000);
+    
   }
 
   getProgramUrl() {
