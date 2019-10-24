@@ -3,6 +3,7 @@ const dateFormat = require('dateformat');
 const uuidv1 = require('uuid/v1');
 const request = require('request');
 const _ = require('lodash');
+var compareVersions = require('compare-versions');
 
 function getAppUpdate() {
     return function (req, res) {
@@ -30,7 +31,7 @@ function getAppUpdate() {
                 let updateAvailable = false;
                 let response = { updateAvailable: updateAvailable };
 
-                if (_.get(data, 'version') > _.get(req, 'body.request.appVersion')) {
+                if (compareVersions.compare(_.get(data, 'version'), _.get(req, 'body.request.appVersion'), '>')) {
                     response.updateAvailable = true;
                     let artifactName = data[_.toLower(_.get(req, 'body.request.os'))][_.toLower(_.get(req, 'body.request.arch'))];
                     response.url = `${envHelper.DOMAIN_NAME}/desktop/latest/artifactUrl/${artifactName}`;

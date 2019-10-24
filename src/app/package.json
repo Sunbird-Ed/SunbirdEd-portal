@@ -77,6 +77,7 @@
     "body-parser": "^1.17.2",
     "cassandra-session-store": "1.0.6",
     "codacy-coverage": "3.0.0",
+    "compare-versions": "^3.5.1",
     "compression": "1.7.2",
     "cookie-parser": "^1.4.4",
     "dateformat": "^2.0.0",
