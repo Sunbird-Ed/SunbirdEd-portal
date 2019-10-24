@@ -44,7 +44,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   public showDashboard: boolean = false;
   public publishInProgress = false;
   public selectedAttributes: ISelectedAttributes = {};
-  public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
+  public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion', 'certificate'];
   public currentStage = 0;
   public role: any = {};
   public resourceName: string;
@@ -73,8 +73,8 @@ export class CbseComponent implements OnInit, OnDestroy {
       board: _.get(this.programDetails, 'config.scope.board[0]'),
       medium: _.get(this.programDetails, 'config.scope.medium[0]'),
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
-      programId: _.get(this.programDetails, 'programId'),
-      //programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1',
+      //programId: _.get(this.programDetails, 'programId'),
+      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1',
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
@@ -122,12 +122,12 @@ export class CbseComponent implements OnInit, OnDestroy {
   handleRoleChange(component?:string) {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
     this.showDashboard = (component === 'Dashboard');
-    if(component === 'dashboard'){
-      this.showCertDashboard = true;
-      this.selectedOption = "";
-    } else{
-      this.showCertDashboard = false;
-    }
+    // if(component === 'dashboard'){
+    //   this.showCertDashboard = true;
+    //   this.selectedOption = "";
+    // } else{
+    //   this.showCertDashboard = false;
+    // }
   }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);
