@@ -45,46 +45,6 @@ export class UserLocationComponent implements OnInit {
 
   ngOnInit() {
     this.initializeFormFields();
-    // TODO: remove after testing
-    // this.deviceProfile = {
-    //   'userDeclaredLocation': {'state': 'Haryana', 'district': 'PANCHKULA'},
-    //   'ipLocation': {'state': 'Haryana', 'district': 'PANCHKULA'}
-    // };
-    // TODO:remove code
-    // this.processedDeviceLocation = {
-    //   ipLocation: {
-    //     district: {
-    //       code: '1038',
-    //       name: 'ARWAL',
-    //       id: 'f2b8ea48-5f01-4edf-b21d-c193f363db12',
-    //       type: 'district',
-    //       parentId: '15dd37c2-6d7c-489c-aa51-fb2b1de07cc0'
-    //     },
-    //     state: {
-    //       code: '10',
-    //       name: 'Bihar',
-    //       id: '15dd37c2-6d7c-489c-aa51-fb2b1de07cc0',
-    //       type: 'state'
-    //     }
-    //   },
-    //   userDeclaredLocation: {
-    //     district: {
-    //       code: '0601',
-    //       id: '8341ed61-2dc6-4f61-87dd-320c4fd14358',
-    //       name: 'PANCHKULA',
-    //       parentId: '36957684-5120-457f-9c32-d0170934e9cd',
-    //       type: 'district'
-    //     },
-    //     state: {
-    //       code: '06',
-    //       id: '36957684-5120-457f-9c32-d0170934e9cd',
-    //       name: 'Haryana',
-    //       type: 'state'
-    //     }
-    //   }
-    // };
-    // TODO: remove end
-
     this.getState();
   }
 
@@ -105,30 +65,13 @@ export class UserLocationComponent implements OnInit {
     });
   }
 
-  setSelectedState() {
-    if (this.userService.loggedIn) {
-
-    } else {
-      if (!this.deviceProfile.userDeclaredLocation) {
-        // this.setStateByDeviceProfile(this.deviceProfile.ipLocation);
-      }
-    }
-  }
-
   processStateLocation(state) {
     let locationExist: any = {};
-    // const district = deviceProfile.district;
     if (state) {
       locationExist = _.find(this.allStates, (locations) => {
         return locations.name.toLowerCase() === state.toLowerCase() && locations.type === 'state';
       });
     }
-
-    // if (district) {
-    //   locationExist.district = _.find(this.allDistricts, (locations) => {
-    //     return locations.code === district.code && locations.type === 'district';
-    //   });
-    // }
     return locationExist;
   }
 
@@ -208,9 +151,6 @@ export class UserLocationComponent implements OnInit {
     } else {
       if (!this.deviceProfile.userDeclaredLocation) {
         this.setSelectedLocation(this.deviceProfile.ipLocation, false, true);
-
-//        this.setData(this.processedDeviceLocation.ipLocation);
-        //      this.isDeviceProfileUpdateAllowed = true;
         // render using ip
         // update device profile only
       }
@@ -238,45 +178,9 @@ export class UserLocationComponent implements OnInit {
     });
   }
 
-  setUserDeclaredLocation(userDeclaredLocation) {
-    this.processedDeviceLocation.userDeclaredLocation = userDeclaredLocation;
-  }
-
-  getUserDeclaredLocation() {
-    return this.processedDeviceLocation.userDeclaredLocation;
-  }
-
   getLocationCodes(locationToProcess) {
     const mappedStateDetails = this.processStateLocation(locationToProcess.state);
     return this.processDistrictLocation(locationToProcess.district, mappedStateDetails);
-  }
-
-  async getProcessedLocation() {
-    if (this.deviceProfile.userDeclaredLocation) {
-      const userDeclaredLocation = this.deviceProfile.userDeclaredLocation;
-      const mappedStateDetails = this.processStateLocation(userDeclaredLocation.state);
-      this.processDistrictLocation(userDeclaredLocation.district, mappedStateDetails).pipe()
-        .subscribe((mappedDistrictDetails) => {
-          console.log('asd', mappedDistrictDetails);
-          // TODO: remove
-          this.processedDeviceLocation.userDeclaredLocation = {
-            state: mappedStateDetails,
-            district: mappedDistrictDetails
-          };
-        });
-    }
-    if (this.deviceProfile.ipLocation) {
-      const ipLocation = this.deviceProfile.ipLocation;
-      const mappedIpStateDetails = this.processStateLocation(this.deviceProfile.ipLocation.state);
-      this.processDistrictLocation(ipLocation.district, mappedIpStateDetails).pipe()
-        .subscribe((mappedIpDistrict) => {
-          console.log('ip loc', mappedIpDistrict);
-          this.processedDeviceLocation.ipLocation = {
-            state: mappedIpStateDetails,
-            district: mappedIpDistrict
-          };
-        });
-    }
   }
 
   getState() {
@@ -318,32 +222,6 @@ export class UserLocationComponent implements OnInit {
       this.allDistricts = res.result.response;
       return this.allDistricts;
     }));
-
-
-    // this.showDistrictDivLoader = true;
-    // const requestData = {'filters': {'type': 'district', parentId: stateId}};
-    // this.profileService.getUserLocation(requestData).subscribe(res => {
-    //   this.allDistricts = res.result.response;
-    //   this.showDistrictDivLoader = false;
-
-
-    // this.setDistrict(this.processedDeviceLocation.district);
-    // const location = _.find(this.userProfile.userLocations, (locations) => {
-    //   return locations.type === 'district';
-    // });
-    // let locationExist: any;
-    // if (location) {
-    //   locationExist = _.find(this.allDistricts, (locations) => {
-    //     return locations.code === location.code;
-    //   });
-    // }
-    // this.selectedDistrict = locationExist;
-    // locationExist ? this.userDetailsForm.controls['district'].setValue(locationExist.code) :
-    //   this.userDetailsForm.controls['district'].setValue('');
-    // }, err => {
-    //   this.closeModal();
-    //   this.toasterService.error(this.resourceService.messages.emsg.m0017);
-    // });
   }
 
   clearInput(event, formControlName) {
@@ -384,26 +262,8 @@ export class UserLocationComponent implements OnInit {
   }
 
   updateLocation(data, locationDetails) {
-    // TODO: handle it
     this.enableSubmitBtn = false;
     let response1: any;
-    // if (this.isDeviceProfileUpdateAllowed) {
-    //   let districtData, stateData;
-    //   if (locationDetails.stateCode) {
-    //     stateData = _.find(this.allStates, (states) => {
-    //       return states.code === locationDetails.stateCode;
-    //     });
-    //   }
-    //   if (locationDetails.districtCode) {
-    //     districtData = _.find(this.allDistricts, (districts) => {
-    //       return districts.code === locationDetails.districtCode;
-    //     });
-    //   }
-    //   response1 = this.deviceRegisterService.updateDeviceProfile({
-    //     state: stateData.name,
-    //     district: districtData.name
-    //   });
-    // }
     response1 = this.updateDeviceProfileData(data, locationDetails);
     const response2 = this.updateUserProfileData(data);
     forkJoin([response1, response2]).subscribe((res) => {
