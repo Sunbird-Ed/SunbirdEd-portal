@@ -48,7 +48,8 @@
     <dl class="sb-meta-data">
         <dt>{{resourceService.frmelmnts.lbl?.copyRight}}</dt>
         <dd>
-            <span *ngIf="metadata.copyright" class="d-inline-block mr-20">{{metadata.copyright}}</span> &nbsp;
+            <span *ngIf="metadata.copyright" class="d-inline-block mr-20">{{metadata.copyright}}
+                <span *ngIf="metadata.copyrightYear">,&nbsp;{{metadata.copyrightYear}}</span></span> &nbsp;
             <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer">
                 {{resourceService.frmelmnts.lbl.contentCredits}}
             </a>
