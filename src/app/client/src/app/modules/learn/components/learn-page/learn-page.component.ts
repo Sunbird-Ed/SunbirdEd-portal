@@ -39,9 +39,10 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   public pageSections: Array<ICaraouselData> = [];
+  resourceService: ResourceService;
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
-    public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
+    resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, public formService: FormService,
@@ -54,6 +55,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.redirectUrl = this.configService.appConfig.courses.inPageredirectUrl;
     this.filterType = this.configService.appConfig.courses.filterType;
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this.resourceService = resourceService;
   }
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -181,7 +183,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
       this.enrolledCourses = enrolledCourses;
       const enrolledSection = {
-        name: 'My Courses',
+        name: this.resourceService.frmelmnts.lbl.mycourses,
         length: 0,
         count: 0,
         contents: []
@@ -215,7 +217,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public playContent({ section, data }) {
     const { metaData } = data;
-    if (section === 'My Courses') { // play course if course is in My course section
+    if (section === this.resourceService.frmelmnts.lbl.mycourses) { // play course if course is in My course section
       return this.playerService.playContent(metaData);
     }
 

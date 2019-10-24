@@ -161,7 +161,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   private fetchEnrolledCoursesSection() {
     return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
       const enrolledSection = {
-        name: 'My Courses',
+        name: this.resourceService.frmelmnts.lbl.mycourses,
         length: 0,
         contents: []
       };
