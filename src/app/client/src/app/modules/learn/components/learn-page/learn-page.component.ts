@@ -181,7 +181,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
       this.enrolledCourses = enrolledCourses;
       const enrolledSection = {
-        name: this.resourceService.frmelmnts.lbl.mycourses,
+        name: 'My Courses',
         length: 0,
         count: 0,
         contents: []
