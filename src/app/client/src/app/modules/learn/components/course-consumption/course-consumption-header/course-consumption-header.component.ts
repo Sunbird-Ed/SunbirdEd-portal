@@ -85,7 +85,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         }
       });
       this.interval = setInterval(() => {
-        if (document.getElementById("closebutton")) {
+        if (document.getElementById('closebutton')) {
           this.showResumeCourse = true;
         } else {
           this.showResumeCourse = false;
