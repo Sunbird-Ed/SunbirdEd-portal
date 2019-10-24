@@ -3,6 +3,6 @@ const bodyParser = require('body-parser')
 
 module.exports = function (app) {
     app.post('/v1/desktop/update', bodyParser.urlencoded({ extended: true }),
-        bodyParser.json({ limit: '10mb' }),
+        bodyParser.json(),
         desktopAppHelper.getAppUpdate())
 }
