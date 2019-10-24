@@ -56,6 +56,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   public showCertDashboard = false;
   public slug ;
   public selectedOption;
+  public isshowCertificate = false;
   public showModal: boolean = false;
   constructor(public frameworkService: FrameworkService, public toasterService: ToasterService) { }
   private questionTypeName = {
@@ -83,7 +84,9 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.fetchFrameWorkDetails();
     this.selectedAttributes.lastOpenedUnit = 0;
     this.slug = _.get(this.userProfile, 'rootOrg.slug') || (<HTMLInputElement>document.getElementById('defaultTenant')).value
-
+    if(this.slug === 'sunbird' && _.includes(_.get(this.programDetails,'userDetails.roles'),"ORG_ADMIN")){
+      this.isshowCertificate = true
+    }
   }
 
   public issueCertificate() {
