@@ -1,20 +1,20 @@
 <div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white" style="background-color: white;">
   <div class="ui container">
-    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR")' [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
+    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR") && !showCertificate' [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
       (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
-    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER")'
+    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER") && !showCertificate'
       [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
-    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER")'
+    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
       [class.active]="selectedAttributes.currentRole === 'PUBLISHER'" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
-    <a class="item" [class.active]="!showCertDashboard && (selectedAttributes.currentRole === 'ORG_ADMIN' && (slug == 'sunbird'))"
-     *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "sunbird")'
+    <a class="item" [class.active]="!showCertDashboard && showCertificate"
+     *ngIf='showCertificate'
       (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange()">Issue&nbsp;Certificate</a>
-      <a class="item" [class.active]="showCertDashboard && (selectedAttributes.currentRole === 'ORG_ADMIN' && (slug == 'sunbird'))"
-       *ngIf='programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "sunbird")'
+      <a class="item" [class.active]="showCertDashboard && showCertificate"
+       *ngIf='showCertificate'
       (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange('dashboard')">Dashboard</a>
   </div>
 </div>
-<div *ngIf="stages[currentStage] === 'certificate'">
+<div *ngIf="showCertificate">
   <div *ngIf='!showCertDashboard && (programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "sunbird"))'
     class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
     <div class="ui mt-30 container w-300 sb-box-container" [appTelemetryImpression]="telemetryImpression">
@@ -84,92 +84,96 @@
     <app-certificate-dashboard></app-certificate-dashboard>
   </div>
 </div>
-<div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
 
-  <div *ngIf="stages[currentStage] === 'chooseClass'">
-    <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
-      (selectedClassSubjectEvent)="selectedClassSubjectHandler($event)"></app-select-textbook>
-  </div>
+<div *ngIf="!showCertificate">
+  <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
 
-  <div class="ui container" *ngIf="stages[currentStage] === 'chooseTextbook' || stages[currentStage] === 'topicList' ">
-      <div class="sb-pageSection">
-        <div class="sb-pageSection-header d-flex flex-jc-space-between">
-          <div>
-              <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for </span>
-              <span
-                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
-              <span
-                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.subject}}</span>
-          </div>
-          <div *ngIf="stages[currentStage] === 'topicList' && role.currentRole === 'REVIEWER'">
-            <div *ngFor="let field of formFieldOptions">
-                <div *ngIf="field.inputType ==='select' && field.code === 'school'" class="field d-flex flex-jc-center flex-ai-center">
-                  <label class="mr-8 mb-0">Select {{field.label}}</label>
-                  <div class="field">
-                    <sui-select [isSearchable]="true" id={{field.code}} name={{field.code}} class="selection"
-                      [(ngModel)]="selectedSchoolForReview" labelField="name" valueField="name"
-                      [options]="field.range" #select>
-                      <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option"></sui-select-option>
-                    </sui-select>
-                  </div>
-                </div>
-              </div>
-          </div>
-          <button (click)="navigate('prev')"
-          appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
-          class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
-        </div>
+      <div *ngIf="stages[currentStage] === 'chooseClass'">
+        <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+          (selectedClassSubjectEvent)="selectedClassSubjectHandler($event)"></app-select-textbook>
       </div>
-      <div *ngIf="stages[currentStage] === 'chooseTextbook'">
-          <app-textbook-list [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
-            (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
-        </div>
-        <div *ngIf="stages[currentStage] === 'topicList'">
-            <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [selectedSchool]="selectedSchoolForReview" [role]="role"
-            (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
-        </div>
-    </div>
 
-
-     <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
-        <div class="sb-pageSection">
-            <div class="sb-pageSection-header ui grid">
-
-              <div class="three wide column">
-                  <div>
-                      <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for</span>
-                      <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
-                    </div>
+      <div class="ui container" *ngIf="stages[currentStage] === 'chooseTextbook' || stages[currentStage] === 'topicList' ">
+          <div class="sb-pageSection">
+            <div class="sb-pageSection-header d-flex flex-jc-space-between">
+              <div>
+                  <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for </span>
+                  <span
+                    class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
+                  <span
+                    class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.subject}}</span>
               </div>
-              <div class="nine wide column p-0">
-                <div class="d-flex flex-ai-end">
-                    <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole === 'REVIEWER' && selectedSchoolForReview !== undefined"
-                    class="field d-flex flex-jc-center flex-ai-center">
-                      <span><b>Selected School:</b> <span style="font-style: italic">{{selectedSchoolForReview}}</span></span>
-                    </div>
-                    <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR'"
-                    class="field d-flex flex-ai-center flex-basis-1">
-                    <div class="sb-field-group w-50">
-                        <label>Practice Set Name</label>
-                        <div class="sb-field m-0">
-                            <input autofocus="" [(ngModel)]='resourceName' (keyup)="onResourceNameChange($event)" class="sb-form-control" type="text" placeholder="Name">
-                        </div>
-                    </div>
-                    </div>
-                    <div class="d-flex ml-auto">
-                        <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
-                        appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
-                        (click)="sendResourceName();questionList.updateQuestions() ">Update</button>
-                        <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && !selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
-                        appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
-                        (click)="sendResourceName(); questionList.publishQuestions()">Publish</button>
-                        <button *ngIf="!isPreviewShown" (click)="navigate('prev')"
-                        appTelemetryInteract  [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
-                        class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+              <div *ngIf="stages[currentStage] === 'topicList' && role.currentRole === 'REVIEWER'">
+                <div *ngFor="let field of formFieldOptions">
+                    <div *ngIf="field.inputType ==='select' && field.code === 'school'" class="field d-flex flex-jc-center flex-ai-center">
+                      <label class="mr-8 mb-0">Select {{field.label}}</label>
+                      <div class="field">
+                        <sui-select [isSearchable]="true" id={{field.code}} name={{field.code}} class="selection"
+                          [(ngModel)]="selectedSchoolForReview" labelField="name" valueField="name"
+                          [options]="field.range" #select>
+                          <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option"></sui-select-option>
+                        </sui-select>
                       </div>
-                </div>
+                    </div>
+                  </div>
               </div>
+              <button (click)="navigate('prev')"
+              appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
+              class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+            </div>
+          </div>
+          <div *ngIf="stages[currentStage] === 'chooseTextbook'">
+              <app-textbook-list [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+                (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
+            </div>
+            <div *ngIf="stages[currentStage] === 'topicList'">
+                <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [selectedSchool]="selectedSchoolForReview" [role]="role"
+                (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
             </div>
         </div>
-      <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role" [resourceName]="resourceNameInput" (changeStage)="navigate($event)" (publishButtonStatus)="publishButtonStatusHandler($event)"></app-question-list>
-    </div>
+
+
+        <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
+            <div class="sb-pageSection">
+                <div class="sb-pageSection-header ui grid">
+
+                  <div class="three wide column">
+                      <div>
+                          <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for</span>
+                          <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
+                        </div>
+                  </div>
+                  <div class="nine wide column p-0">
+                    <div class="d-flex flex-ai-end">
+                        <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole === 'REVIEWER' && selectedSchoolForReview !== undefined"
+                        class="field d-flex flex-jc-center flex-ai-center">
+                          <span><b>Selected School:</b> <span style="font-style: italic">{{selectedSchoolForReview}}</span></span>
+                        </div>
+                        <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR'"
+                        class="field d-flex flex-ai-center flex-basis-1">
+                        <div class="sb-field-group w-50">
+                            <label>Practice Set Name</label>
+                            <div class="sb-field m-0">
+                                <input autofocus="" [(ngModel)]='resourceName' (keyup)="onResourceNameChange($event)" class="sb-form-control" type="text" placeholder="Name">
+                            </div>
+                        </div>
+                        </div>
+                        <div class="d-flex ml-auto">
+                            <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
+                            appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                            (click)="sendResourceName();questionList.updateQuestions() ">Update</button>
+                            <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && !selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
+                            appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                            (click)="sendResourceName(); questionList.publishQuestions()">Publish</button>
+                            <button *ngIf="!isPreviewShown" (click)="navigate('prev')"
+                            appTelemetryInteract  [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                            class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+                          </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role" [resourceName]="resourceNameInput" (changeStage)="navigate($event)" (publishButtonStatus)="publishButtonStatusHandler($event)"></app-question-list>
+        </div>
+  </div>
+</div>
