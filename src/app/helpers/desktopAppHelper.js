@@ -4,7 +4,7 @@ const uuidv1 = require('uuid/v1');
 const request = require('request');
 const _ = require('lodash');
 
-function getAppDetails() {
+function getAppUpdate() {
     return function (req, res) {
 
         request(`${envHelper.DESKTOP_APP_STORAGE_URL}/latest/latest.json`, function (error, resp, data) {
@@ -28,7 +28,7 @@ function getAppDetails() {
                 let updateAvailable = false;
                 let response = { updateAvailable: updateAvailable };
 
-                if ((_.get(data, 'version')) > (_.get(req, 'body.request.appVersion'))) {
+                if (_.get(data, 'version') > _.get(req, 'body.request.appVersion')) {
                     response.updateAvailable = true;
                     let artifactName = data[_.get(req, 'body.request.os')][_.get(req, 'body.request.arch')];
                     response.url = `${envHelper.DOMAIN_NAME}/desktop/latest/artifactUrl/${artifactName}`;
@@ -53,4 +53,4 @@ function getAppDetails() {
     }
 }
 
-module.exports.getAppDetails = getAppDetails
+module.exports.getAppUpdate = getAppUpdate
