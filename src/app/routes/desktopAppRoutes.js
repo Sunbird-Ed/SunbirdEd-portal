@@ -5,4 +5,8 @@ module.exports = function (app) {
     app.post('/v1/desktop/update', bodyParser.urlencoded({ extended: true }),
         bodyParser.json(),
         desktopAppHelper.getAppUpdate())
+
+    app.get('/desktop/latest/:artifact', function (req, res) {
+        res.redirect(`/latest/${req.params.artifact}`);
+    });
 }
