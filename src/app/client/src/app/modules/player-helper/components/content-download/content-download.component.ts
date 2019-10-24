@@ -19,7 +19,6 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   @Output() clickEvent = new EventEmitter<any>();
   public unsubscribe$ = new Subject<void>();
   currentRoute: string;
-  private contentType: string ;
   public telemetryInteractObject: IInteractEventObject;
   public downloadContentInteractEdata: IInteractEventEdata;
   public cancelDownloadYoutubeContentEdata: IInteractEventEdata;
@@ -59,7 +58,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
 
     this.telemetryInteractObject = {
       id: this.contentData['identifier'],
-      type: this.contentType,
+      type: this.contentData['contentType'],
       ver: this.contentData['pkgVersion'] || '1.0'
     };
 

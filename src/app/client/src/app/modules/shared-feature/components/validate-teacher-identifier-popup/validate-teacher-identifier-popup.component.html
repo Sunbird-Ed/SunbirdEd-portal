@@ -4,41 +4,37 @@
     [transitionDuration]="0" 
     [size]="'normal'" 
     class="sb-modal " 
-    appBodyScroll 
+    [ngClass]="{'sb-error': extIdFailed, 'sb-success' : extIdVerified }" 
     #createValidateModal
     *ngIf="!isOffline">
     
-<!--sb-error ,,  sb-success  -->
-
   <!--Header-->
   <div class="sb-modal-header">
-    Teacher ID Verification
+    {{resourceService?.frmelmnts?.lbl?.teacherIdVarification}}
   </div>
   <!--/Header-->
 
   <!--modal content-->
   <div class="sb-modal-content">
-    <div class="">
-      Are you a government scoll teacher in Tamil Nadu?
+    <div *ngIf="!processValidation">
+      {{resourceService?.frmelmnts?.lbl?.govtSchoolTeacher | interpolate: '{instance}':instance}}
     </div>
-    <form class="sb-form" autocomplete="off">
-      <div class="sb-field-group mb-16 text-left">
+      <div *ngIf="processValidation && !navivateToResult && !(extIdVerified || extIdFailed)" class="sb-field-group mb-16 text-left">
         <div class="sb-field">
           <label class="required">Enter you teacher ID for verification</label>
-          <!-- [ngClass]="{'is-invalid': false }" -->
-          <input class="sb-form-control" name="id" placeholder="For example, ER12345">
-          <span class="sb-color-error fxsmall mt-8">
-            The ID entered is incorrect. Enter the ID again
+          <input #extIdInputField (keyup)="getIdLength($event)" [(ngModel)]="externalId" type="text" required autofocus name="extId" placeholder="For example, ER12345" class="sb-form-control"/>
+          <span *ngIf="showError" class="sb-color-error fxsmall mt-8">
+            {{resourceService?.frmelmnts?.lbl?.incorrectTeacherId}}
           </span>
         </div>
       </div>
-    </form>
-    <div class="text-center my-24">
-      Teacher profile verified successfully
+      <!-- Success / error field  -->
+    <div *ngIf="extIdVerified" class="text-center my-24">
+      {{resourceService?.frmelmnts?.lbl?.teacherIdVerified}}
     </div>
 
-    <div class="text-center my-24">
-      Could not verify teacher teacher profile as teacher ID entered is incorrect
+    <div *ngIf="extIdFailed" class="text-center my-24">
+      {{resourceService?.frmelmnts?.lbl?.teacherIDnotVerified}}
     </div>
   </div>
 <!--modal content-->
@@ -46,25 +42,19 @@
 <!--action buttons-->
 
   <div class="sb-modal-actions">
-    <div class="action-btns">
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8" (click)="closeModal()"
-      >
-        Yes
+    <div class="action-btns" *ngIf="!processValidation">
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="rejectExtId()">
+        {{resourceService?.frmelmnts?.btn?.no}}
       </button>
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()"
-      >
-        No
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="navigateToValidateId()">
+        {{resourceService?.frmelmnts?.btn?.yes}}
       </button>
     </div>
-
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeModal()"
-    >
-      Submit
+    <button [disabled]="!enableSubmitButton" *ngIf="processValidation && !(extIdVerified || extIdFailed)" type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="verifyExtId()" >
+      {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
-
-    <button  type="button" class="sb-btn sb-btn-normal sb-btn-error" (click)="closeModal()"
-    >  <!--sb-btn-success-->
-      OK
+    <button *ngIf="extIdVerified || extIdFailed" [ngClass]="{'sb-btn-error' : extIdFailed, 'sb-btn-success' : extIdVerified }" type="button" class="sb-btn sb-btn-normal" (click)="closeModal()">  <!--sb-btn-success-->
+      {{resourceService?.frmelmnts?.btn?.ok}}
     </button>
   </div>
   <!--action buttons-->
