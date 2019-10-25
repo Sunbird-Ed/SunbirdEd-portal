@@ -25,6 +25,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   private questionType: Array<any> = [];
   private textBookMeta: any;
   public hierarchyObj = {};
+  public collectionHierarchy: any;
 
   private questionTypeName = {
     vsa: 'Very Short Answer',
@@ -107,6 +108,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
         hierarchy = this.getHierarchyObj(this.collectionData);
         this.selectedAttributes.hierarchyObj = { hierarchy };
         const textBookMetaData = [];
+         this.collectionHierarchy =  this.getUnitWithChildren(this.collectionData.children);
         _.forEach(this.collectionData.children, data => {
 
           if (data.topic && data.topic[0]) {
@@ -139,6 +141,28 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
         this.showChapterList(textBookMetaData);
       });
+  }
+
+  getUnitWithChildren(data) {
+    const self = this;
+    const tree = data.map(child => {
+      const treeItem = {
+        identifier: child.identifier,
+        name: child.name,
+        contentType: child.contentType,
+        topic: child.topic
+      };
+      const textbookUnit = _.find(child.children, ['contentType', 'TextBookUnit']);
+      if (child.children) {
+        const treeUnit =  self.getUnitWithChildren(child.children);
+        const treeChildren = treeUnit.filter(item => item.contentType === 'TextBookUnit');
+        const treeLeaf = treeUnit.filter(item => item.contentType !== 'TextBookUnit');
+        treeItem['children'] = (treeChildren.length > 0) ? treeChildren : null;
+        treeItem['leaf'] = (treeLeaf.length > 0) ? treeLeaf : null;
+      }
+      return treeItem;
+    });
+    return tree;
   }
 
   public getHierarchyObj(data) {

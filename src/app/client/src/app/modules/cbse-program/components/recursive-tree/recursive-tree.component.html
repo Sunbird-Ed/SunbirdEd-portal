@@ -1,0 +1,39 @@
+<div *ngFor="let textbook of textbookChapters; let i = index">
+  <sui-accordion-panel [isOpen]="">
+    <div title class="sb-accordion-title d-flex flex-ai-center">
+        <i class="plus circle icon mr-0 mr-8 fs-1-16"></i>
+        {{textbook.name}} ( {{textbook.topic}} )
+        <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
+        (mousedown)="showModal = !showModal"><i class="add icon"></i>Create</button>
+    </div>
+    <div content>
+        <div class="chapter-list-details" *ngIf="textbook.leaf">
+          <div class="list-item"  *ngFor="let content of textbook.leaf; let i=index">
+            <span class="item-name">
+                {{content.name}}
+            </span>
+            <span class="item-status mr-24">
+                <div class="sb-label sb-label-table sb-label-warning-0">Under Review</div>
+            </span>
+            <span class="item-link mr-16">
+              <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button>
+            </span>
+            <span class="item relative position">
+                <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
+                  <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+                  <div class="menu" suiDropdownMenu>
+                    <div class="item">Preview</div>
+                    <div class="item" (click)="showLargeModal = !showLargeModal">Move</div>
+
+                    <div class="item">Delete</div>
+                  </div>
+                </div>
+              </span>
+          </div>
+        </div>
+        <div class="sb-chapterlist-child" *ngIf="textbook.children">
+          <app-recursive-tree [textbookChapters]="textbook.children"></app-recursive-tree>
+        </div>
+    </div>
+  </sui-accordion-panel>
+</div>
