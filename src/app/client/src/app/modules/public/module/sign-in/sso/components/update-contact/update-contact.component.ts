@@ -81,7 +81,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       userDetails: data[0], custOrgDetails: data[1]
     })))
     .subscribe(({userDetails, custOrgDetails}) => {
-        if (_.get(userDetails, 'result.response.rootOrg.rootOrgId') === _.get(custOrgDetails, 'result.response.value')) {
+        if (_.get(userDetails, 'result.response.rootOrgId') === _.get(custOrgDetails, 'result.response.value')) {
           this.userDetails = userDetails.result.response;
           this.disableSubmitBtn = false;
           this.userExist = false;
