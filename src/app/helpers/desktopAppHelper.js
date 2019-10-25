@@ -25,7 +25,9 @@ function getAppUpdate() {
                     'result': {}
                 });
             } else {
-                try { data = JSON.parse(data); } catch (e) {
+                try {
+                    data = JSON.parse(data);
+                } catch (e) {
                     console.log('Parsing error: ', e);
                 }
                 let updateAvailable = false;
