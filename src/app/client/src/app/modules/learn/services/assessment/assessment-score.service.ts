@@ -4,6 +4,7 @@ import * as _ from 'lodash-es';
 import * as Md5 from 'md5';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
+import { UUID } from 'angular2-uuid';
 
 @Injectable()
 export class AssessmentScoreService {
@@ -117,13 +118,10 @@ export class AssessmentScoreService {
   }
 
   /**
-   * generates md5 hash from four strings (courseId , batchId , contentId and userId)
+   * generates UUID for attemptId
    */
   private generateHash() {
-    const string = _.join([_.get(this._batchDetails, 'courseId'), _.get(this._batchDetails, 'batchId'),
-    _.get(this._contentDetails, 'identifier'),
-    this._userId], '-');
-    const hash = Md5(string);
+    const hash = UUID.UUID();
     return hash;
   }
 
