@@ -71,7 +71,7 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
 </div>
 <div class="sb-modal-actions">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-  [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="processId"
+  [telemetryInteractEdata]="userErrorInteractEdata" [disabled]="processId"
   class="sb-btn sb-btn-normal sb-btn-primary" (click)="copyToClipboard()">
   {{resourceService?.frmelmnts?.btn?.copytoclipboard}}
   </button>

@@ -1,3 +1,9 @@
+/**
+ * Component to render & apply filter on admin chart
+ * @author Ravinder Kumar
+ */
+
+import { UsageService } from './../../services';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
@@ -5,8 +11,8 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription, Subject } from 'rxjs';
-import { distinctUntilChanged, map, debounceTime, takeUntil } from 'rxjs/operators';
+import { Subscription, Subject, timer } from 'rxjs';
+import { distinctUntilChanged, map, debounceTime, takeUntil, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { IBigNumberChart } from '../../interfaces/chartData';
@@ -73,7 +79,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder,
-    private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer) {
+    private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
+    private usageService: UsageService) {
     this.alwaysShowCalendars = true;
   }
 
@@ -144,7 +151,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
         if (_.get(config, 'dataExpr')) {
           bigNumberChartObj['header'] = _.get(config, 'header') || '';
           bigNumberChartObj['footer'] = _.get(config, 'footer') || _.get(config, 'dataExpr');
-          bigNumberChartObj['data'] = _.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])));
+          bigNumberChartObj['data'] =
+            (_.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])))).toLocaleString('hi-IN');
           this.bigNumberCharts.push(bigNumberChartObj);
         }
       });
@@ -188,7 +196,28 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (_.get(this.chartConfig, 'bigNumbers')) {
       this.calculateBigNumber();
     }
+    const refreshInterval = _.get(this.chartConfig, 'refreshInterval');
+    if (refreshInterval) { this.refreshChartDataAfterInterval(refreshInterval); }
     this.filters = _.get(this.chartConfig, 'filters') || [];
+  }
+
+  refreshChartDataAfterInterval(interval) {
+    timer(interval, interval).pipe(
+      switchMap(val => {
+        return this.usageService.getData(_.get(this.chartInfo, 'downloadUrl'));
+      }),
+      takeUntil(this.unsubscribe)
+    ).subscribe(apiResponse => {
+      if (_.get(apiResponse, 'responseCode') === 'OK') {
+        const chartData = _.get(apiResponse, 'result.data');
+        this.getDataSetValue(chartData);
+        // to apply current filters to new updated chart data;
+        const currentFilterValue = _.get(this.filtersFormGroup, 'value');
+        this.filtersFormGroup.patchValue(currentFilterValue);
+      }
+    }, err => {
+      console.log('failed to update chart data', err);
+    });
   }
 
   getDataSetValue(chartData = this.chartData) {

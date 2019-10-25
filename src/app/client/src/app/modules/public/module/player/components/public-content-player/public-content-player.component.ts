@@ -148,6 +148,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     } finally {
       setTimeout(() => {
         if (this.dialCode) {
+          sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
           this.router.navigate(['/get/dial/', this.dialCode]);
         } else {
           this.navigationHelperService.navigateToResource('/explore');

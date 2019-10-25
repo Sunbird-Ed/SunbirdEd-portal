@@ -100,6 +100,7 @@ activateUpload = false;
 	*/
   telemetryImpression: IImpressionEventInput;
   userUploadInteractEdata: IInteractEventEdata;
+  userErrorInteractEdata: IInteractEventEdata;
   downloadCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
@@ -256,6 +257,11 @@ activateUpload = false;
       id: this.userService.userid,
       type: 'User',
       ver: '1.0'
+    };
+    this.userErrorInteractEdata = {
+      id: 'error-upload-user',
+      type: 'click',
+      pageid: 'profile-read'
     };
   }
 }
