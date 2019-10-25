@@ -114,7 +114,14 @@ describe('LimitedPublishedComponent', () => {
       'TextBook',
       'Course',
       'LessonPlan',
-      'Resource'
+      'Resource',
+      'FocusSpot',
+      'LearningOutcomeDefinition',
+      'PracticeQuestionSet',
+      'CuriosityQuestions',
+      'MarkingSchemeRubric',
+      'ExplanationResource',
+      'ExperientialResource'
     ],
     'objectType': 'Content'
     },
