@@ -195,7 +195,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (_.get(this.chartConfig, 'bigNumbers')) {
       this.calculateBigNumber();
     }
-    const refreshInterval = _.get(this.chartConfig, 'refreshInterval');
+    const refreshInterval = _.get(this.chartConfig, 'options.refreshInterval');
     if (refreshInterval) { this.refreshChartDataAfterInterval(refreshInterval); }
     this.filters = _.get(this.chartConfig, 'filters') || [];
   }
