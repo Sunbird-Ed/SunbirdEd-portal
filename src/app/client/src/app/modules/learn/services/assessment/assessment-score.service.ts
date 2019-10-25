@@ -81,7 +81,7 @@ export class AssessmentScoreService {
    */
   private checkContentForAssessment() {
     if (_.get(this._batchDetails, 'batchId') && _.get(this._contentDetails, 'identifier') && _.get(this._batchDetails, 'courseId')) {
-      if (this._contentDetails && _.get(this._contentDetails, 'totalQuestions') > 0) {
+      if (this._contentDetails && _.get(this._contentDetails, 'contentType') === 'SelfAssess') {
         this.initialized = true;
       } else {
         this.initialized = false;
