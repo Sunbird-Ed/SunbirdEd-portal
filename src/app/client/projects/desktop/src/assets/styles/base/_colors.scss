@@ -1,0 +1,45 @@
+// text colors
+.sb-color-primary,
+.sb-color-info {
+    color: $primary-color;
+}
+.sb-color-success,
+.sb-color-secondary {
+    color: $secondary-200;
+}
+.sb-color-warning,
+.sb-color-tertiary {
+    color: $warning-color;
+}
+.sb-color-error {
+    color: $red !important;
+}
+.sb-color-gray {
+    color: $gray-800;
+}
+
+// bg colors
+.sb-workspace-bg {
+    background-image: linear-gradient(to left, $primary-0, $primary-0 50%, $primary-0 65%, $white 75%);
+}
+.sb-bg-color-primary,
+.sb-bg-color-info {
+    background-color: $primary-color;
+}
+.sb-bg-color-success,
+.sb-bg-color-secondary {
+    background-color: $secondary-200;
+}
+.sb-bg-color-warning, 
+.sb-bg-color-tertiary {
+    background-color: $warning-color;
+}
+.sb-bg-color-error {
+    background-color: $red;
+}
+.sb-bg-color-gray {
+    background-color: $gray-800;
+}
+.sb-bg-color-black {
+    background-color: $black;
+}

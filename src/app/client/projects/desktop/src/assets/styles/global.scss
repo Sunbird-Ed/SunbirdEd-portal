@@ -1,0 +1,147 @@
+@import "./variables";
+@import "./mixins/mixins";
+html,
+body {
+  height: 100%;
+  font-size: $font-size-base;
+}
+
+body {
+  background: $body-background-color !important;
+  position: relative;
+  font-family: $font-stack-en;
+  letter-spacing: 0.2px;
+  height: auto;
+  color: $default-text-color;
+  padding-bottom: 336px;
+  min-height: 100vh;
+  &.pushable {
+    background: $body-background-color !important;
+    &>.pusher {
+      background: transparent !important;
+      padding-bottom: 400px !important;
+      &.dimmed {
+        height: 100vh;
+      }
+    }
+  }
+}
+@include respond-above(sm) {
+  body {
+    padding-bottom: 168px;
+    .pusher {
+      padding-bottom: 240px !important;
+    }
+    .footer-fix {
+      min-height: calc(100vh - 168px);
+      padding-bottom: $base-block-space * 4;
+    }
+    .sb-mid-container-min-height{
+      min-height: calc(100vh - 288px);
+      margin-bottom: -($base-block-space * 4) !important;
+    }
+  }
+}
+@include respond-below(sm) {
+  .footer-fix {
+    min-height: calc(100vh - 336px);
+    padding-bottom: $base-block-space * 3;
+  }
+}
+.sb-offline {
+  padding-bottom: 145px;
+  .footer-fix {
+    min-height: calc(100vh - 180px);
+   }
+  }
+
+*[lang="en"] body {
+  font-family: $font-stack-en;
+}
+
+*[lang="hi"] body {
+  font-family: $font-stack-hi;
+}
+
+*[lang="ur"] body {
+  font-family: $font-stack-ur;
+}
+
+
+.publicmenusection.ui.secondary.menu .active.item {
+  color: $primary-color;
+  text-transform: capitalize;
+}
+.publicmenusection.ui.secondary.vertical.menu > .item {
+  text-transform: capitalize;
+}
+
+.sb-placeholder{
+  justify-content: center !important;
+}
+[dir="rtl"] {
+  .sb-explore-qr-container{
+    .dial-section-column {
+      border-right:0px solid rgba(51, 51, 51,0.1) !important;
+      border-left:1px solid rgba(51, 51, 51,0.1);
+    }
+  }
+}
+
+[dir="ltr"] {
+  .sb-explore-qr-container{
+    .dial-section-column {
+      border-left:0px solid rgba(51, 51, 51,0.1);
+      border-right:1px solid rgba(51, 51, 51,0.1);
+    }
+  }
+}
+.description.annannouncement-description{
+  .sb-label-status-error {
+    color: $sb-label-status-error-color;
+    font-size: 11px;
+  }
+
+  .sb-label-12size {
+    font-size: 11px;
+  }
+}
+// don't delete this
+.iziModal-isAttached{
+  body{
+    overflow: hidden;
+  }
+}
+
+.sb-prominent-filter{
+  .accordion {
+    .content {
+      padding: .5em 0 0 0;
+    }
+  }
+}
+
+// calender styles
+.ui.calendar .ui.celled.table tr td, .ui.calendar .ui.celled.table tr th {
+  cursor:pointer;
+  }
+  .ui.calendar .ui.table tr td.disabled, .ui.calendar .ui.table tr.disabled td, .ui.calendar .ui.table tr.disabled:hover, .ui.calendar .ui.table tr:hover td.disabled {
+  cursor:default
+  }
+
+
+.ui.info.message{
+    background-color: var(--primary-0) !important;
+}
+.ui.info.message .header {
+  color: var(--primary-color) !important;
+}
+.ui.ordered.list .list, ol.ui.list ol {
+  margin-left: 2em !important;
+}
+.ui.info.message {
+  color: black !important;
+}
+.cursor-default{
+  cursor: default !important;
+}

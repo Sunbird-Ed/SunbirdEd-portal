@@ -1,0 +1,23 @@
+.ui.progress {
+  .bar {
+    background: $primary-color;
+    height: 4px !important;
+    min-width: 0;
+
+    .progress {
+      display: none;
+    }
+  }
+}
+
+.ui.progress.blue .bar {
+  background-color: $primary-color!important;
+}
+
+.ui.progress.success .bar {
+  background-color: $success-color !important;
+}
+
+.ui.progress .label {
+  display: none;
+}

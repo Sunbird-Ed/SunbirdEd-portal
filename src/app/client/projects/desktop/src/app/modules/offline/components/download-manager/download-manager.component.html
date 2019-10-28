@@ -1,0 +1,72 @@
+<sui-accordion class="styled fluid sb-single-pannel-accordion sb-download-manager-panel"
+  [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true}">
+  <sui-accordion-panel [(isOpen)]="isOpen">
+    <div title class="p-0">
+      <div class="sb-single-pannel-accordion-heading" appTelemetryInteract
+        [telemetryInteractEdata]="getTelemetryInteractData()">
+        <span>{{resourceService?.frmelmnts?.btn?.downloadManager}}</span>
+        <i class="chevron up icon d-flex flex-ai-center"></i>
+      </div>
+    </div>
+    <div content *ngIf="downloadResponse">
+        <div class="sb-single-pannel-accordion-list-item" *ngIf="!downloadResponse.inprogress.length && !downloadResponse.submitted.length && !downloadResponse.completed.length && !downloadResponse.failed.length">
+        <div class="d-flex flex-ai-center flex-basis-100">
+          <div class="no-downloads">{{resourceService?.frmelmnts?.lbl?.noDownloads}}</div>
+        </div>
+      </div>
+      <div class="sb-single-pannel-accordion-list-item"
+        *ngFor="let data of downloadResponse.inprogress | orderBy:'createdOn': true">
+        <div class="d-flex flex-ai-center flex-basis-100">
+          <div class="download-text">{{data.name}}</div>
+          <!-- <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary sb-left-icon-btn ml-auto">
+            <i class="pause circle icon outline mr-8"></i>Pause
+          </button>
+          <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-error sb-left-icon-btn ml-8">
+            <i class="close icon mr-8"></i>Close
+          </button> -->
+        </div>
+        <div class="info-text">{{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+        <sui-progress [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100"
+          class="mb-0 mr-8"></sui-progress>
+      </div>
+
+      <div class="sb-single-pannel-accordion-list-item"
+        *ngFor="let data of downloadResponse.failed | orderBy:'createdOn': true">
+        <div class="d-flex flex-ai-center flex-basis-100">
+          <div class="download-text">{{data.name}}</div>
+          <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-error sb-left-icon-btn ml-auto">
+            <i class="exclamation triangle icon mr-8"></i>
+            {{resourceService?.frmelmnts?.btn?.downloadFailed}}
+          </button>
+        </div>
+        <!-- <div class="error-text">Download failed</div> -->
+      </div>
+
+      <div class="sb-single-pannel-accordion-list-item"
+        *ngFor="let data of downloadResponse.submitted | orderBy:'createdOn': true">
+        <div class="d-flex flex-ai-center flex-basis-100">
+          <!-- <i class="history icon waiting-icon d-flex flex-ai-center"></i> -->
+          <div class="download-text">{{data.name}}</div>
+          <div class="sb-label sb-label-table sb-label-warning-0 ml-auto">
+            {{resourceService?.frmelmnts?.btn?.downloadPending}}</div>
+          <!-- <div class="waiting-text">Waiting...</div> -->
+        </div>
+        <!-- <div class="error-text">Download failed</div> -->
+      </div>
+
+
+      <div class="cursor-pointer sb-single-pannel-accordion-list-item"
+        *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true" appTelemetryInteract
+        [telemetryInteractObject]="{id:data.contentId,type:data.contentType,ver:data.pkgVersion ? data.pkgVersion.toString():'1.0'}"
+        (click)="openContent(data.contentId, data.mimeType)" [telemetryInteractEdata]="telemetryInteractEdata">
+        <div class="d-flex flex-ai-center flex-basis-100">
+          <div class="download-text">{{data.name}}</div>
+          <div class="sb-label sb-label-table sb-label-success-0 ml-auto">
+            <i class="check circle icon success-icon ml-auto"></i>{{resourceService?.frmelmnts?.btn?.downloadCompleted}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </sui-accordion-panel>
+</sui-accordion>

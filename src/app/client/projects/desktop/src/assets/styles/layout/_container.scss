@@ -1,0 +1,19 @@
+//Container styles
+/*@include respond-between(xl,xxxl) {
+  .ui.container {
+      width: 1288px;
+  }
+}*/
+
+@include respond-above(lg) {
+  .ui.container,.ui.grid.container {
+    width: 1216px !important;
+  }
+}
+
+@include respond-above(xxl) {
+  .ui.container,.ui.grid.container {
+    width: 1524px !important;
+  }
+}
+

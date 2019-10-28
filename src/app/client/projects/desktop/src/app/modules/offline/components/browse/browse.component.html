@@ -1,0 +1,14 @@
+<div class="ui container mt-20" *ngIf="!isConnected">
+  <div  class="d-flex flex-ai-center flex-jc-center offline-page-content mt-32">
+    <div class="text-center">
+      <img src="../../../../../assets/images/offline-cloud.png" alt="offline computer image">
+      <h2 class="offline-page-heading text-center">{{resourceService.frmelmnts?.lbl?.offline}}</h2>
+      <div class="offline-page-subheading mt-10">{{resourceService.frmelmnts?.lbl?.connectInternet}}</div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="isConnected">
+    <app-explore-component></app-explore-component>
+</div>

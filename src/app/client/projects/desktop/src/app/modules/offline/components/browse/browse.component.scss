@@ -1,0 +1,29 @@
+ .offline-page-content {
+  min-height: calc(100vh - 50vh);
+ }
+ .offline-page-heading {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+ }
+ .offline-page-subheading {
+    font-size: 18px;
+    color: #666;
+ }
+ .sb-card {
+   .sb-card-hover {
+     position: absolute;
+     top:0;
+     max-width:292px;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(2,79,157,0.85);
+     display: none;
+     .sb-card-hover-content {
+       display:flex;
+       align-items: center;
+       height: 100%;
+       justify-content: center;  
+     }
+   }
+ }
