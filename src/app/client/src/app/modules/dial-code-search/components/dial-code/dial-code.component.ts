@@ -10,7 +10,7 @@ import { takeUntil, map, catchError, mergeMap, first } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from './../../../offline/services';
+import { DownloadManagerService } from './../../../../../../projects/desktop/src/app/modules/offline';
 
 const treeModel = new TreeModel();
 

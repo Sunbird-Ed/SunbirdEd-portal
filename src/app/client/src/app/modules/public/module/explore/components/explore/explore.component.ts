@@ -1,4 +1,3 @@
-import { OfflineFileUploaderService } from '../../../../../offline/services';
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
@@ -13,7 +12,7 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, tap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from './../../../../../offline/services';
+import { DownloadManagerService, OfflineFileUploaderService } from './../../../../../../../../projects/desktop/src/app/modules/offline';
 
 @Component({
   selector: 'app-explore-component',
