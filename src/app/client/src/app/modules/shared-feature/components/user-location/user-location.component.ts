@@ -5,9 +5,6 @@ import {DeviceRegisterService, UserService} from '@sunbird/core';
 import {ProfileService} from '@sunbird/profile';
 import * as _ from 'lodash-es';
 import {IInteractEventEdata, IInteractEventObject} from '@sunbird/telemetry';
-import * as moment from 'moment';
-import {UUID} from 'angular2-uuid';
-import {await} from 'asyncawait';
 import {map} from 'rxjs/operators';
 import {of, forkJoin} from 'rxjs';
 
