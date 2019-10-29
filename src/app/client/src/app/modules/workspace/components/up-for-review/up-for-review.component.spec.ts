@@ -137,7 +137,13 @@ describe('UpForReviewComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
-    const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource'];
+    const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource', 'FocusSpot',
+      'LearningOutcomeDefinition',
+      'PracticeQuestionSet',
+      'CuriosityQuestions',
+      'MarkingSchemeRubric',
+      'ExplanationResource',
+      'ExperientialResource'];
     expect(returnContentType).toEqual(ContentType);
   }));
   it('should call setpage method and set proper page number', inject([ConfigService, Router],
