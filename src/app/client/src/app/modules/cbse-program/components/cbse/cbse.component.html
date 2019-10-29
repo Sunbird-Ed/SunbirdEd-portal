@@ -8,19 +8,19 @@
       [class.active]="selectedAttributes.currentRole === 'PUBLISHER'" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
     <a class="item" [class.active]="!showCertDashboard && showCertificate"
      *ngIf='showCertificate'
-      (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange()">Issue&nbsp;Certificate</a>
+      (click)="selectedAttributes.currentRole = 'CERTFICATE_ISSUER';handleRoleChange()">Issue&nbsp;Certificate</a>
       <a class="item" [class.active]="showCertDashboard && showCertificate"
        *ngIf='showCertificate'
-      (click)="selectedAttributes.currentRole = 'ORG_ADMIN';handleRoleChange('dashboard')">Dashboard</a>
+      (click)="selectedAttributes.currentRole = 'CERTFICATE_ISSUER';handleRoleChange('dashboard')">Certificate Dashboard</a>
   </div>
 </div>
 <div *ngIf="showCertificate">
-  <div *ngIf='!showCertDashboard && (programDetails?.userDetails?.roles.includes("ORG_ADMIN") && (slug == "sunbird"))'
+  <div *ngIf='!showCertDashboard && (programDetails?.userDetails?.roles.includes("CERTFICATE_ISSUER") && (slug == "sunbird"))'
     class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
     <div class="ui mt-30 container w-300 sb-box-container" [appTelemetryImpression]="telemetryImpression">
-      <h4>SELECT TYPE</h4>
+      <!-- <h4>SELECT TYPE</h4> -->
       <div class="mt-30">
-        <sui-select class="selection" [placeholder]="'Select Type'" [isSearchable]=false [(ngModel)]="selectedOption">
+        <sui-select class="selection" [placeholder]="'Select Certificate Type'" [isSearchable]=false [(ngModel)]="selectedOption">
           <sui-select-option *ngFor="let option of typeOptions" [value]="option.value">
           </sui-select-option>
         </sui-select>
@@ -50,7 +50,7 @@
                   <tr class="sb-certificate-footer">
                     <td class="country-symbol">
                       <img src="assets/images/DIKSHA.png" class="sb-certificatePage-logo" />
-                      <p>આ દસ્તાવેજ ડિજિટલ સહી થયેલ છે</p>
+                      <!-- <p>આ દસ્તાવેજ ડિજિટલ સહી થયેલ છે</p> -->
                     </td>
                     <td class="state-sign">
                       <img src="$signatory0Image" class="sb-certificatePage-logo" />
@@ -72,14 +72,14 @@
       </div>
       <div>
         <button appTelemetryInteract [disabled]="!selectedOption" [telemetryInteractEdata]="telemetryInteract"
-          class="sb-btn sb-btn-sm sb-btn-primary btn-block" (click)="issueCertificate()">Issue</button>
+          class="sb-btn sb-btn-sm sb-btn-primary btn-block" (click)="issueCertificate()">Generate</button>
       </div>
     </div>
   </div>
 
   <csv-upload [certType]="selectedOption" *ngIf="showModal"></csv-upload>
 
-  <div *ngIf="showCertDashboard && (programDetails?.userDetails?.roles.includes('ORG_ADMIN') && (slug == 'sunbird'))"
+  <div *ngIf="showCertDashboard && (programDetails?.userDetails?.roles.includes('CERTFICATE_ISSUER') && (slug == 'sunbird'))"
     class="ui mt-30 container w-300 sb-box-container">
     <app-certificate-dashboard></app-certificate-dashboard>
   </div>

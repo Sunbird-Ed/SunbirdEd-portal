@@ -2,7 +2,8 @@
 class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal
 *ngIf="modalName === 'upload'">
 <div class="sb-modal-header">
-  {{resourceService?.frmelmnts?.instn?.t0016}}
+  <!-- {{resourceService?.frmelmnts?.instn?.t0016}} -->
+  Upload FIle
 </div>
 <div class="sb-modal-content">
   <div class="m-0">
@@ -13,7 +14,7 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
   </div>
 
   <div class="hiddenFileInput sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn" (click)="inputbtn.click();">
-    {{resourceService?.frmelmnts?.btn?.uploadcsv}}
+    {{resourceService?.frmelmnts?.btn?.uploadcsv}} file
     <input type="file" #inputbtn class="sb-btn-upload" name="file" accept=".csv" (change)="fileChanged($event)"/>
   </div>
   <div *ngIf="file">
