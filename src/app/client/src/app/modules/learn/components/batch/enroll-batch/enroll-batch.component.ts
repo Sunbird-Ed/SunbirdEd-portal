@@ -62,12 +62,12 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
   }
-  telemetryLogEvents(status:boolean){
-    let level='ERROR';
-    let msg='Enrollment to the batch failed';
-    if(status){
-      level='SUCCESS';
-      msg='Enrollment to the batch was success';
+  telemetryLogEvents(status: boolean) {
+    let level = 'ERROR';
+    let msg = 'Enrollment to the batch failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = 'Enrollment to the batch was success';
     }
     const event = {
       context: {
