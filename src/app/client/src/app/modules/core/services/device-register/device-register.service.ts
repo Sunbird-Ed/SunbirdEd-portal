@@ -17,6 +17,7 @@ export class DeviceRegisterService  {
   private appId: string;
   private deviceId: string;
   private deviceRegisterApi: string;
+  private deviceProfileApi: string;
   private timer$: Observable<any>;
   private timerSubscription: Subscription;
   deviceProfile: any;
@@ -31,8 +32,8 @@ export class DeviceRegisterService  {
     this.appId = (<HTMLInputElement>document.getElementById('appId'))
     && (<HTMLInputElement>document.getElementById('appId')).value;
 
-    this.deviceRegisterApi = (<HTMLInputElement>document.getElementById('deviceRegisterApi'))
-    && (<HTMLInputElement>document.getElementById('deviceRegisterApi')).value;
+    this.deviceProfileApi = (<HTMLInputElement>document.getElementById('deviceProfileApi'))
+    && (<HTMLInputElement>document.getElementById('deviceProfileApi')).value;
   }
 
   public initialize() {
@@ -49,10 +50,7 @@ export class DeviceRegisterService  {
         'Content-Type': 'application/json'
       }
     };
-    const systemSetting = {
-      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
-    };
-    return this.http.get('https://dev.sunbirded.org/api/v3/device/profile/' + this.deviceId, httpOptions);
+    return this.http.get(this.deviceProfileApi + this.deviceId, httpOptions);
   }
 
   getDeviceProfile() {
