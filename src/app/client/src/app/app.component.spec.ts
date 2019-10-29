@@ -223,42 +223,4 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
   });
-
-  it('should initialize ShepherdData', () => {
-    resourceService.messages = mockData.resourceBundle.messages;
-    resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
-    spyOn(component, 'interpolateInstance');
-    component.initializeShepherdData();
-    expect(component.interpolateInstance).toHaveBeenCalledTimes(7);
-  });
-
-  it('should call initializeShepherdData method', () => {
-    resourceService.messages = mockData.resourceBundle.messages;
-    resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
-    spyOn(component, 'initializeShepherdData');
-    setTimeout(() => {
-      component.ngAfterViewInit();
-    }, 1000);
-    jasmine.clock().tick(10001);
-    expect(component.initializeShepherdData).toHaveBeenCalled();
-  });
-
-  it('ShepherdData should match with resourcedata', () => {
-    resourceService.messages = mockData.resourceBundle.messages;
-    resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
-    component.initializeShepherdData();
-    expect(component.shepherdData[0].id).toBe(resourceService.frmelmnts.instn.t0086);
-    expect(component.shepherdData[1].options.title).toBe(resourceService.frmelmnts.instn.t0087);
-    expect(component.shepherdData[0].options.text[0]).toContain([resourceService.frmelmnts.instn.t0090.replace('{instance}',
-                                                                                              component.instance.toUpperCase())]);
-    expect(component.shepherdData[0].options.text[0]).toContain(component.instance.toUpperCase());
-  });
-
-  it('ShepherdData should match with given instance', () => {
-    resourceService.messages = mockData.resourceBundle.messages;
-    resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
-    component.instance = 'preprod';
-    component.initializeShepherdData();
-    expect(component.shepherdData[0].options.text[0]).toContain(component.instance.toUpperCase());
-  });
 });
