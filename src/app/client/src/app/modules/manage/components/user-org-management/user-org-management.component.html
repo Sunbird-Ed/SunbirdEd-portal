@@ -27,7 +27,9 @@
     </div>
   </div>
 
-  <div class="ui container">
+<user-upload *ngIf="showModal"></user-upload>
+
+  <div class="ui container" *ngIf="userProfile && userProfile['rootOrg'] && !(userProfile['rootOrg']['isSSOEnabled'])">
     <div class="sb-pageSection mt-24">
       <div class="sb-pageSection-header sb-user-list">
         <h4 class="sb-pageSection-title">
@@ -37,8 +39,7 @@
       <div class="sb-pageSection-content">
         <div class="d-inline-flex flex-ai-center">
           <span class="sb-label-name">Upload file with list of users:</span>
-          <div class="sb-btn sb-btn-outline-primary sb-btn-normal ml-8 sb-upload-file"> Select file
-            <input class="sb-upload-btn" name="file" type="file"></div>
+          <div class="sb-btn sb-btn-outline-primary sb-btn-normal ml-8 sb-upload-file" (click)="openModal();"> Select file </div>
         </div>
         <div class="pt-32">
           <div class="sb-label-name pb-8">

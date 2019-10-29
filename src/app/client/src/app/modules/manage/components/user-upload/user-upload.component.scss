@@ -1,0 +1,11 @@
+// component css goes here
+.ui.error.message.bulkupload-error {
+    max-height: 200px;
+    overflow: auto;
+    .errorDiv{
+        opacity: 0.00001;
+        .errorTextArea{
+            height:8px;
+        }
+    }
+}

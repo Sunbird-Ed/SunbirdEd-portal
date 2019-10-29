@@ -106,7 +106,7 @@ export class MainHeaderComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(queryParams => this.queryParam = { ...queryParams });
     this.tenantService.tenantData$.subscribe(({tenantData}) => {
       this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
-      this.tenantInfo.titleName = tenantData ? tenantData.titleName.toUpperCase() : undefined;
+      this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
     });
     this.setInteractEventData();
     this.cdr.detectChanges();
