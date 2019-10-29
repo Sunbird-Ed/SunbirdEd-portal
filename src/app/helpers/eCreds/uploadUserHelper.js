@@ -444,7 +444,7 @@ const checkUploadStatus = (req, res) => {
             uploadedby: userId
         }
         let response;
-        const selectCriteria = ['id', 'status', 'storagedetails'];
+        const selectCriteria = ['createdon' ,'status', 'storagedetails'];
         cassandraUtil.findRecord(query_object, selectCriteria, (err, result) => {
             if (err) {
                 res.status(500);

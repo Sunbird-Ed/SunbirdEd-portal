@@ -44,7 +44,7 @@ export class CsvUploadComponent {
   public orgManagementService: OrgManagementService;
   public cbseProgramService: CbseProgramService;
   public userService: UserService;
-  public CbseComponent: CbseComponent;
+  public cbseComponent: CbseComponent;
   /**
 * Contains process id
 */
@@ -122,10 +122,11 @@ activateUpload = false;
     showLabels: true,
     headers: []
   };
-  constructor(cbseProgramService: CbseProgramService, orgManagementService: OrgManagementService, config: ConfigService,
+  constructor(cbseComponent: CbseComponent, cbseProgramService: CbseProgramService, orgManagementService: OrgManagementService, config: ConfigService,
     formBuilder: FormBuilder, toasterService: ToasterService,
     resourceService: ResourceService, userService: UserService,
     public navigationhelperService: NavigationHelperService) {
+    this.cbseComponent = cbseComponent;
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
     this.orgManagementService = orgManagementService;
@@ -200,7 +201,7 @@ activateUpload = false;
           this.showLoader = false;
           this.toasterService.success(this.resourceService.messages.smsg.m0030);
           this.modal.deny();
-          this.CbseComponent.selectedOption = "";
+          this.cbseComponent.selectedOption = '';
         },
         err => {
           console.log(err);
@@ -209,7 +210,7 @@ activateUpload = false;
           this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
           this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
           this.modalName = 'error';
-          this.CbseComponent.selectedOption = "";
+          this.cbseComponent.selectedOption = '';
         },
         () => {
           console.log('Finally...');

@@ -9,3 +9,15 @@
         }
     }
 }
+.hiddenFileInput > input{
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: none;
+}
+.hiddenFileInput{
+  width: 105px;
+  overflow: hidden;
+  cursor: pointer;
+}

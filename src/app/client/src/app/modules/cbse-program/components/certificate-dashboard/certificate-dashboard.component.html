@@ -1,25 +1,34 @@
 <div class="sb-table-container">
-  <table class="sb-table sb-table-fixed sb-table-hover">
-  <thead class="sb-table-header heading-large">
-      <tr>
-      <th>File name</th>
-      <th>Status</th>
-      <th>Download Url</th>
-      </tr>
-  </thead>
-  <tbody class="sb-table-body body-large" *ngFor="let tableData of data">
-      <tr>
-      <td data-label="Name">
-          <div class="sb-media">
-          <img src="" alt="" class="sb-media-object mr-15">
-          <div class="sb-media-body">
-              <h6 class="media-heading">{{tableData.processId}}</h6>
-          </div>
-          </div>
-      </td>
-      <td data-label="Age">{{tableData.status}}</td>
-      <td style="cursor: pointer;" data-label="Job">{{tableData.downloadUrl}}</td>
-      </tr>
-  </tbody>
-  </table>
+    <table class="sb-table sb-table-fixed sb-table-hover">
+        <thead class="sb-table-header heading-large">
+            <tr>
+                <th>Sl No</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Download Url</th>
+            </tr>
+        </thead>
+        <tbody class="sb-table-body body-large" *ngFor="let tableData of data; index as i">
+            <tr>
+                <td data-label="">
+                    <div class="sb-media-body">
+                        <h6 class="media-heading">{{i+1}}</h6>
+                    </div>
+                </td>
+                <td data-label="">
+                    {{tableData.createdon}}
+                </td>
+                <td data-label="Age" *ngIf="tableData.status === 0">Completed with Error</td>
+                <td data-label="Age" *ngIf="tableData.status === 1">In-progress</td>
+                <td data-label="Age" *ngIf="tableData.status === 2">Completed</td>
+                <td style="cursor: pointer;" data-label="Job" *ngIf="tableData.storagedetails !== ''">
+                    <button
+                        class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-certificate-trained-flex-space"
+                        (click)="downloadCert(tableData.storagedetails)">
+                        <i class="download icon"></i>Download Zip</button></td>
+                <td style="cursor: pointer;" data-label="Job" *ngIf="tableData.storagedetails === ''">
+                    -- </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

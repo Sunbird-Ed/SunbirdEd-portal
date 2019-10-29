@@ -44,7 +44,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   public showDashboard: boolean = false;
   public publishInProgress = false;
   public selectedAttributes: ISelectedAttributes = {};
-  public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion'];
+  public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion', 'certificate'];
   public currentStage = 0;
   public role: any = {};
   public resourceName: string;
@@ -54,8 +54,9 @@ export class CbseComponent implements OnInit, OnDestroy {
     {value: 'Best Student Certificate'}
   ];
   public showCertDashboard = false;
-  public slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value
+  public slug ;
   public selectedOption;
+  public showCertificate = false;
   public showModal: boolean = false;
   constructor(public frameworkService: FrameworkService, public toasterService: ToasterService) { }
   private questionTypeName = {
@@ -82,7 +83,10 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
     this.fetchFrameWorkDetails();
     this.selectedAttributes.lastOpenedUnit = 0;
-
+    this.slug = _.get(this.userProfile, 'rootOrg.slug') || (<HTMLInputElement>document.getElementById('defaultTenant')).value
+    if(this.slug === 'sunbird' && _.includes(_.get(this.programDetails,'userDetails.roles'),"ORG_ADMIN")){
+      this.showCertificate = true
+    }
   }
 
   public issueCertificate() {
@@ -120,13 +124,13 @@ export class CbseComponent implements OnInit, OnDestroy {
 
   handleRoleChange(component?:string) {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
+    this.showDashboard = (component === 'Dashboard');
     if(component === 'dashboard'){
       this.showCertDashboard = true;
       this.selectedOption = "";
     } else{
       this.showCertDashboard = false;
     }
-    //this.showDashboard = (component === 'Dashboard');
   }
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.selectedAttributes.framework);
