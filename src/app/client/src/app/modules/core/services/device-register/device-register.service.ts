@@ -32,8 +32,11 @@ export class DeviceRegisterService  {
     this.appId = (<HTMLInputElement>document.getElementById('appId'))
     && (<HTMLInputElement>document.getElementById('appId')).value;
 
+    this.deviceRegisterApi = (<HTMLInputElement>document.getElementById('deviceRegisterApi'))
+      && (<HTMLInputElement>document.getElementById('deviceRegisterApi')).value;
+
     this.deviceProfileApi = (<HTMLInputElement>document.getElementById('deviceProfileApi'))
-    && (<HTMLInputElement>document.getElementById('deviceProfileApi')).value;
+      && (<HTMLInputElement>document.getElementById('deviceProfileApi')).value;
   }
 
   public initialize() {
