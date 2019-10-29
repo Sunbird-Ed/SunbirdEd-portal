@@ -71,7 +71,7 @@
         "src/app/modules/player-helper"
       ],
       "@sunbird/offline": [
-        "src/app/modules/offline"
+        "projects/desktop/src/app/modules/offline"
       ]
     }
   },
