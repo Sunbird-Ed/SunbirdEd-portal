@@ -356,28 +356,6 @@ export class UserService {
     return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
   }
 
-  validateExtId(requestBody) {
-    const options = {
-      url: this.config.urlConFig.URLS.USER.VALIDATE_EXT_ID,
-      data: requestBody
-    };
-    return this.learnerService.post(options);
-  }
 
-  rejectExtId(requestBody) {
-    const options = {
-      url: this.config.urlConFig.URLS.USER.REJECT_EXT_ID,
-      data: requestBody
-    };
-    return this.learnerService.post(options);
-  }
-
-  failExtId(requestBody) {
-    const options = {
-      url: this.config.urlConFig.URLS.USER.FAIL_EXT_ID,
-      data: requestBody
-    };
-    return this.learnerService.post(options);
-  }
 
 }

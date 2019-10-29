@@ -30,7 +30,7 @@
                                     <h4 class="sb-pageSection-title sb-pageSection-title-light">{{resourceService.frmelmnts.lbl.coursestructure}}</h4>
                                 </div>
                             </div>
-                            
+
                             <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
                                     [contentStatus]="contentStatus"></app-collection-tree>
                             <ng-template #dataCommingSoon>
@@ -38,7 +38,7 @@
                                     <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
                                     <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
                                     <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-                                </div> 
+                                </div>
                             </ng-template>
                         </div>
                         <div class='three wide column'>
@@ -93,7 +93,7 @@
                                 <div class="sb-pageSection" id="app-player-collection-renderer">
                                     <div  class="sb-pageSection-header">
                                         <h4 class="sb-pageSection-title m-0 mr-5"> {{contentTitle}}</h4>
-                                        <button appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
+                                        <button id="closebutton" appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
                                         [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeContentPlayer()">
                                         {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
                                     </div>
@@ -105,7 +105,7 @@
                                 </div>
                                 <div class="ui grid">
                                     <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" (assessmentEvents)="assessmentEvents($event)" class="content-player" [playerConfig] ="playerConfig" [playerOption] = "playerOption"></app-player>
+                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" (assessmentEvents)="assessmentEvents($event)" (questionScoreSubmitEvents)="questionScoreSubmitEvents($event)" class="content-player" [playerConfig] ="playerConfig" [playerOption] = "playerOption"></app-player>
                                     </div>
                                 </div>
                             </div>

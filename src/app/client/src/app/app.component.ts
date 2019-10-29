@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
-    this.telemetryService.syncEvents();
+    this.telemetryService.syncEvents(false);
   }
   handleLogin() {
     window.location.reload();
