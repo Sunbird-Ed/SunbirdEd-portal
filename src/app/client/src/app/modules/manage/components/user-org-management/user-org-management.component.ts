@@ -12,6 +12,8 @@ export class UserOrgManagementComponent {
   public showModal: boolean = false;
   public userService: UserService;
   public userProfile: any;
+  public geoData: any;
+  public uploadedDetails: any;
 
   constructor(userService: UserService) {
     this.userService = userService;
@@ -23,6 +25,18 @@ export class UserOrgManagementComponent {
         this.userProfile = user.userProfile;
       }
     });
+    this.geoData = {
+      'districts': 23,
+      'blocks': 390,
+      'schools': 6500
+    };
+    this.uploadedDetails = {
+      'totalUploadedCount': 2435,
+      'validatedAccountsCount': 124,
+      'rejectedAccountsCount': 200,
+      'failedAccountsCount': 46,
+      'duplicatedAccountsCount': 12
+    }
   }
 
   public openModal() {
