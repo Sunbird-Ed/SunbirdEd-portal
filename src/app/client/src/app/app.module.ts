@@ -1,3 +1,4 @@
+import { OfflineModule } from '@sunbird/offline';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
@@ -33,6 +34,7 @@ import { PluginModules } from './framework.config';
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
+    OfflineModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],

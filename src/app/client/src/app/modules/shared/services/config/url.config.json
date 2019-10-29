@@ -172,7 +172,8 @@
       "DOWNLOAD": "content/v1/download",
       "DOWNLOAD_LIST": "content/v1/download/list",
       "EXPORT": "content/v1/export",
-      "UPDATE":"content/v1/update"
+      "UPDATE":"content/v1/update",
+      "APP_UPDATE": "desktop/v1/update"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
