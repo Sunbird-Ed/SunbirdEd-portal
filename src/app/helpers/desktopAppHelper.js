@@ -34,9 +34,14 @@ function getAppUpdate() {
                 let response = { updateAvailable: updateAvailable };
 
                 if (_.get(data, 'version') && _.get(req, 'body.request.appVersion') && compareVersions.compare(_.get(data, 'version'), _.get(req, 'body.request.appVersion'), '>')) {
+                    let host = req.hostname;
+                    let headerHost = req.headers.host.split(':');
+                    let port = headerHost[1] || '';
+                    let protocol = req.headers['x-forwarded-proto'] || req.protocol;      
+                    let domain = protocol + '://' + host + (port === '' ? '' : ':' + port);
                     response.updateAvailable = true;
                     let artifactName = data[_.toLower(_.get(req, 'body.request.os'))][_.toLower(_.get(req, 'body.request.arch'))];
-                    response.url = `${envHelper.DOMAIN_NAME}/desktop/latest/artifactUrl/${artifactName}`;
+                    response.url = `${domain}/desktop/latest/artifactUrl/${artifactName}`;
                 }
 
                 res.status(200).send({

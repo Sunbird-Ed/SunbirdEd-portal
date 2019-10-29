@@ -13,6 +13,7 @@ import { of, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from '../../../services';
 import { fakeBatchDetails } from './enroll-batch.component.spec.data';
+import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { By } from '@angular/platform-browser';
 describe('EnrollBatchComponent', () => {
@@ -63,7 +64,7 @@ describe('EnrollBatchComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule, SuiModule, LearnModule, RouterTestingModule,
         DashboardModule, HttpClientTestingModule],
-      providers: [CourseConsumptionService, CourseBatchService, CourseProgressService,
+      providers: [CourseConsumptionService, TelemetryService, CourseBatchService, CourseProgressService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         {
           provide: ResourceService, useValue: fakeResourceService
@@ -127,6 +128,7 @@ describe('EnrollBatchComponent', () => {
     const courseBatchServiceSpy = spyOn(courseBatchService, 'enrollToCourse').and.callFake(() => of(''));
     spyOnProperty(component.userService, 'userid').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
     const fetchEnrolledCourseDataSpy = spyOn(component, 'fetchEnrolledCourseData');
+    const telemetryLogEvent = spyOn(component, 'telemetryLogEvents');
     component.ngOnInit();
     enrollButton.triggerEventHandler('click', null);
     expect(component.disableSubmitBtn).toBe(true);
@@ -140,6 +142,7 @@ describe('EnrollBatchComponent', () => {
     });
     expect(component.disableSubmitBtn).toBe(true);
     expect(fetchEnrolledCourseDataSpy).toHaveBeenCalled();
+    expect(telemetryLogEvent).toHaveBeenCalled();
   });
 
   it('should handle error occured during enrolling to course', () => {
@@ -148,6 +151,7 @@ describe('EnrollBatchComponent', () => {
     const courseBatchServiceSpy = spyOn(courseBatchService, 'enrollToCourse').and.callFake(() => throwError(''));
     spyOnProperty(component.userService, 'userid').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
     const toasterSpy = spyOn(toasterService, 'error');
+    const telemetryLogEvent = spyOn(component, 'telemetryLogEvents');
     component.ngOnInit();
     enrollButton.triggerEventHandler('click', null);
     expect(courseBatchServiceSpy).toHaveBeenCalled();
@@ -158,6 +162,7 @@ describe('EnrollBatchComponent', () => {
         'batchId': '01278712683697766417'
       }
     });
+    expect(telemetryLogEvent).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBe(false);
     expect(toasterSpy).toHaveBeenCalled();
     expect(toasterSpy).toHaveBeenCalledWith(fakeResourceService.messages.emsg.m0001);
