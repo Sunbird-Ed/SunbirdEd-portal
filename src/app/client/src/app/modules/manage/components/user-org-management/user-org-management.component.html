@@ -10,15 +10,15 @@
         </div>
         <div class="sb-meta-data-container pt-16 sb-meta-data-column d-flex flex-w-wrap">
           <dl class="sb-meta-data">
-            <dt>23</dt>
+            <dt>{{ geoData['districts'] }}</dt>
             <dd>Districts</dd>
           </dl>
           <dl class="sb-meta-data">
-            <dt>390</dt>
+            <dt>{{ geoData['blocks'] }}</dt>
             <dd>Blocks</dd>
           </dl>
           <dl class="sb-meta-data">
-            <dt>6500</dt>
+            <dt>{{ geoData['schools'] }}</dt>
             <dd>Schools</dd>
           </dl>
           <button class="sb-btn sb-btn-normal sb-btn-primary ml-auto">Download</button>
@@ -27,7 +27,9 @@
     </div>
   </div>
 
-  <div class="ui container">
+<app-user-upload *ngIf="showModal"></app-user-upload>
+
+  <div class="ui container" *ngIf="userProfile && userProfile['rootOrg'] && !(userProfile['rootOrg']['isSSOEnabled'])">
     <div class="sb-pageSection mt-24">
       <div class="sb-pageSection-header sb-user-list">
         <h4 class="sb-pageSection-title">
@@ -37,24 +39,23 @@
       <div class="sb-pageSection-content">
         <div class="d-inline-flex flex-ai-center">
           <span class="sb-label-name">Upload file with list of users:</span>
-          <div class="sb-btn sb-btn-outline-primary sb-btn-normal ml-8 sb-upload-file"> Select file
-            <input class="sb-upload-btn" name="file" type="file"></div>
+          <div class="sb-btn sb-btn-outline-primary sb-btn-normal ml-8 sb-upload-file" (click)="openModal();"> Select file </div>
         </div>
         <div class="pt-32">
           <div class="sb-label-name pb-8">
-            <span>2435 teacher details uploaded:</span>
+            <span>{{ uploadedDetails['totalUploadedCount'] }} teacher details uploaded:</span>
           </div>
           <div class="pt-8">
-            <a class="text-decoration-underline" href="" title="124 accounts validated">124 accounts validated</a>
+            <a class="text-decoration-underline" href="" title="124 accounts validated"> {{ uploadedDetails['validatedAccountsCount'] }} accounts validated</a>
           </div>
           <div class="pt-8">
-            <a class="text-decoration-underline" href="" title="200 accounts rejected"> 200 accounts rejected</a>
+            <a class="text-decoration-underline" href="" title="200 accounts rejected"> {{ uploadedDetails['rejectedAccountsCount'] }} accounts rejected</a>
           </div>
           <div class="pt-8">
-            <a class="text-decoration-underline" href="" title="46 accounts failed"> 46 accounts failed</a>
+            <a class="text-decoration-underline" href="" title="46 accounts failed"> {{ uploadedDetails['failedAccountsCount'] }} accounts failed</a>
           </div>
           <div class="pt-8">
-            <a class="text-decoration-underline" href="" title=" Duplicate phone numbers/email id: 12 entered"> Duplicate phone numbers/email id: 12 entered</a>
+            <a class="text-decoration-underline" href="" title=" Duplicate phone numbers/email id: 12 entered"> Duplicate phone numbers/email id: {{ uploadedDetails['duplicatedAccountsCount'] }} entered</a>
           </div>
         </div>
       </div>

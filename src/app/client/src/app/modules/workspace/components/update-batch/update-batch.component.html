@@ -61,7 +61,7 @@
           <div class="ui read-only calendar rangestartAdd" id="rangestartAdd">
             <div class="sb-field ui left icon input">
               <i class="calendar icon date-calendar"></i>
-              <input class="sb-form-control" [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode) ? true : null"
+              <input class="sb-form-control" [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode) ? true : false"
                 [pickerMinDate]='batchDetails.status !== 0 ? batchUpdateForm.controls["startDate"].value : pickerMinDate'
                 suiDatepicker formControlName="startDate" [pickerMode]="'date'">
             </div>
@@ -165,7 +165,7 @@
       [ngClass]="{ 'disabled': batchDetails.status === 2 }"
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-      (click)="batchUpdateForm.reset()" 
+      (click)="clearForm()" 
       [disabled]="showFormInViewMode"
       >
       {{resourceService?.frmelmnts?.btn?.clear}}
