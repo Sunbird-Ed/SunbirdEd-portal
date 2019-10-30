@@ -9,7 +9,7 @@ import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector: 'user-upload',
+    selector: 'app-user-upload',
     templateUrl: 'user-upload.component.html',
     styleUrls: ['user-upload.component.scss']
 })

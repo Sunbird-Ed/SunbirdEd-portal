@@ -9,7 +9,7 @@ import { first } from 'rxjs/operators';
 })
 export class UserOrgManagementComponent {
 
-  public showModal: boolean = false;
+  public showModal = false;
   public userService: UserService;
   public userProfile: any;
   public geoData: any;
@@ -36,7 +36,7 @@ export class UserOrgManagementComponent {
       'rejectedAccountsCount': 200,
       'failedAccountsCount': 46,
       'duplicatedAccountsCount': 12
-    }
+    };
   }
 
   public openModal() {
