@@ -73,7 +73,7 @@ export class UserLocationComponent implements OnInit {
   }
 
   processDistrictLocation(district, stateData) {
-    const requestData = {'filters': {'type': 'district', parentId: stateData.id}};
+    const requestData = {'filters': {'type': 'district', parentId: stateData && stateData.id || ''}};
     return this.profileService.getUserLocation(requestData).pipe(map(res => {
       const districts = res.result.response;
       let locationExist: any = {};
@@ -134,7 +134,9 @@ export class UserLocationComponent implements OnInit {
               return location.type === 'state';
             })
           };
-          this.setSelectedLocation(userLocation, false, true);
+          this.isUserProfileUpdateAllowed = false;
+          this.isDeviceProfileUpdateAllowed = true;
+          this.setData(userLocation);
           // render using user location
           // update only device profile
 
