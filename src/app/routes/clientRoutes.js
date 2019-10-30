@@ -138,6 +138,7 @@ function getLocals(req) {
   locals.offlineDesktopAppDownloadUrl = envHelper.sunbird_portal_offline_app_download_url
   locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
   locals.deviceId = '';
+  locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
   return locals
 }
 

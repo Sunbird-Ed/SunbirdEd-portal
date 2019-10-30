@@ -83,6 +83,7 @@ let envVariables = {
   sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug',
+  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || 'https://staging.open-sunbird.org/api/v3/device/profile/',
   KEYCLOAK_GOOGLE_ANDROID_CLIENT: {
     clientId: env.sunbird_google_android_keycloak_client_id,
     secret: env.sunbird_google_android_keycloak_secret

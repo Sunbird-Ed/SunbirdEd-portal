@@ -11,7 +11,7 @@ import { UserService, PermissionService, CoursesService, TenantService, OrgDetai
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest, BehaviorSubject } from 'rxjs';
-import { first, filter, mergeMap, tap, map, skipWhile, startWith } from 'rxjs/operators';
+import {first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil} from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
@@ -86,6 +86,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryContextData: any ;
   didV2: boolean;
   flag = false;
+  deviceProfile: any;
+  usersProfile: any;
+  isLocationConfirmed = true;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -161,6 +164,25 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       document.body.classList.add('sb-offline');
     }
 }
+
+  checkLocationStatus() {
+    this.usersProfile = this.userService.userProfile;
+    this.deviceRegisterService.getDeviceProfile().pipe().subscribe((deviceProfile: any) => {
+      this.deviceProfile = deviceProfile;
+      if (this.userService.loggedIn) {
+        if (!deviceProfile.userDeclaredLocation ||
+          !(this.usersProfile && this.usersProfile.userLocations && this.usersProfile.userLocations.length >= 1)) {
+          this.isLocationConfirmed = false;
+        }
+      } else {
+        if (!deviceProfile.userDeclaredLocation) {
+          this.isLocationConfirmed = false;
+        }
+      }
+    }, (error) => {
+      this.isLocationConfirmed = true;
+    });
+  }
 
 setFingerPrintTelemetry() {
   const printFingerprintDetails  = (<HTMLInputElement>document.getElementById('logFingerprintDetails'))
@@ -238,9 +260,12 @@ setFingerPrintTelemetry() {
     const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
     if (frameWorkPopUp) {
       this.showFrameWorkPopUp = false;
+      this.checkLocationStatus();
     } else {
       if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
         this.showFrameWorkPopUp = true;
+      } else {
+        this.checkLocationStatus();
       }
     }
   }
@@ -391,12 +416,13 @@ setFingerPrintTelemetry() {
     this.profileService.updateProfile(req).subscribe(res => {
       this.frameWorkPopUp.modal.deny();
       this.showFrameWorkPopUp = false;
+      this.checkLocationStatus();
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
     }, err => {
       this.toasterService.warning(this.resourceService.messages.emsg.m0012);
       this.frameWorkPopUp.modal.deny();
-      this.router.navigate(['/resources']);
+      this.checkLocationStatus();
       this.cacheService.set('showFrameWorkPopUp', 'installApp');
     });
   }
