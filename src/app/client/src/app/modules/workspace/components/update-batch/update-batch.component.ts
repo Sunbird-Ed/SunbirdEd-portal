@@ -490,6 +490,15 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryCdata = _.unionBy(this.telemetryCdata, cdata, 'id');
   }
 
+  public clearForm() {
+    this.batchUpdateForm.controls['name'].reset();
+    this.batchUpdateForm.controls['mentors'].reset();
+    this.batchUpdateForm.controls['enrollmentEndDate'].reset();
+    this.batchUpdateForm.controls['endDate'].reset();
+    this.batchUpdateForm.controls['description'].reset();
+    this.batchUpdateForm.controls['users'].reset();
+  }
+
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {
       this.updateBatchModal.deny();
