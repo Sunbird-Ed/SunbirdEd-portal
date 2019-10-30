@@ -15,10 +15,6 @@ import {first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil} from
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
-import {builtInButtons, defaultStepOptions} from './shepherd-data';
-
-
-
 
 /**
  * main app component
@@ -27,7 +23,7 @@ import {builtInButtons, defaultStepOptions} from './shepherd-data';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
@@ -445,83 +441,6 @@ setFingerPrintTelemetry() {
     });
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.initializeShepherdData();
-      if (this.isOffline) {
-        this.shepherdService.defaultStepOptions = defaultStepOptions;
-        this.shepherdService.disableScroll = true;
-        this.shepherdService.modal = true;
-        this.shepherdService.confirmCancel = false;
-        this.shepherdService.addSteps(this.shepherdData);
-        if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
-          localStorage.setItem('TakeOfflineTour', 'show');
-          this.shepherdService.start();
-        }
-      }
-    }, 1000);
-  }
-
-  initializeShepherdData() {
-    this.shepherdData = [
-      {
-      id: this.resourceService.frmelmnts.instn.t0086,
-      useModalOverlay: true,
-      options: {
-          attachTo: '.tour-1 bottom',
-          buttons: [
-              builtInButtons.skip,
-              builtInButtons.next],
-          classes: 'sb-guide-text-area',
-          title: this.resourceService.frmelmnts.instn.t0086,
-          text: [ this.interpolateInstance(this.resourceService.frmelmnts.instn.t0090)]
-      }
-    },
-    {
-      id: this.resourceService.frmelmnts.instn.t0087,
-      useModalOverlay: true,
-      options: {
-          attachTo: '.tour-2 bottom',
-          buttons: [
-              builtInButtons.skip,
-              builtInButtons.back,
-              builtInButtons.next
-          ],
-          classes: 'sb-guide-text-area',
-          title: this.resourceService.frmelmnts.instn.t0087,
-          text: [this.resourceService.frmelmnts.instn.t0091]
-      }
-    },
-    {
-      id:  this.interpolateInstance(this.resourceService.frmelmnts.instn.t0088),
-      useModalOverlay: true,
-      options: {
-          attachTo: '.tour-3 bottom',
-          buttons: [
-              builtInButtons.skip,
-              builtInButtons.back,
-              builtInButtons.next,
-          ],
-          classes: 'sb-guide-text-area',
-          title:  this.interpolateInstance(this.resourceService.frmelmnts.instn.t0088),
-          text: [this.interpolateInstance(this.resourceService.frmelmnts.instn.t0092)]
-      }
-    },
-    {
-      id:  this.interpolateInstance(this.resourceService.frmelmnts.instn.t0089),
-      useModalOverlay: true,
-      options: {
-          attachTo: '.tour-4 bottom',
-          buttons: [
-              builtInButtons.back,
-              builtInButtons.cancel,
-          ],
-          classes: 'sb-guide-text-area',
-          title: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0089),
-          text: [ this.interpolateInstance(this.resourceService.frmelmnts.instn.t0093)]
-      }
-    }];
-  }
   ngOnDestroy() {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();

@@ -1,0 +1,25 @@
+@mixin btn-theme($btn-color) {
+	border-color: $btn-color;
+	background-color: $btn-color;
+	color: $white;
+}
+
+@mixin btn-theme-bgwhite($btn-color) {
+	background-color: $white;
+	color: $btn-color;
+}
+
+@mixin btn-theme-links($btn-color) {
+	color:($btn-color);
+}
+
+@mixin btn-theme-links($btn-color) {
+	color:($btn-color);
+}
+
+@mixin trans($val...) {
+	-webkit-transition: $val;
+	-moz-transition: $val;
+	-o-transition: $val;
+	transition: $val;
+}

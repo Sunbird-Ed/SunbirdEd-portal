@@ -22,6 +22,9 @@
       "@sunbird/notes": [
         "app/modules/notes"
       ],
+      "@sunbird/admin": [
+        "app/modules/admin"
+      ],
       "@sunbird/resource": [
         "app/modules/resource"
       ],
@@ -34,6 +37,9 @@
       "@sunbird/org-management": [
         "app/modules/org-management"
       ],
+      "@sunbird/public": [
+        "app/modules/public"
+      ],
       "@sunbird/profile": [
         "app/plugins/profile"
       ],
@@ -45,9 +51,6 @@
       ],
       "@sunbird/badge": [
         "app/modules/badging"
-      ],
-      "@sunbird/public": [
-        "app/modules/public"
       ],
       "@sunbird/shared-feature": [
         "app/modules/shared-feature"
@@ -64,8 +67,8 @@
       "@sunbird/player-helper": [
         "app/modules/player-helper"
       ],
-      "@sunbird/offline": [
-        "app/modules/offline"
+      "@sunbird/offline" : [
+        "./../projects/desktop/src/app/modules/offline"
       ]
     },
     "module": "es2015",

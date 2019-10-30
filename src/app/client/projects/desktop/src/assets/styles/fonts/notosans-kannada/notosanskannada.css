@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Noto Sans Kannada';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(./NotoSansKannada-Regular.eot);
+  src:
+    url(./NotoSansKannada-Regular.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansKannada-Regular.woff2) format('woff2'),
+    url(./NotoSansKannada-Regular.woff) format('woff'),
+    url(./NotoSansKannada-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Sans Kannada';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(./NotoSansKannada-Bold.eot);
+  src:
+    url(./NotoSansKannada-Bold.eot?#iefix) format('embedded-opentype'),
+    url(./NotoSansKannada-Bold.woff2) format('woff2'),
+    url(./NotoSansKannada-Bold.woff) format('woff'),
+    url(./NotoSansKannada-Bold.ttf) format('truetype');
+}

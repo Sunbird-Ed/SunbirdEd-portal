@@ -1,0 +1,203 @@
+/* modal styles */
+
+.sb-modal {
+    .ui.modal {
+        @include margin(3.5rem auto 0 auto);
+        @include position(null, 0 0 null 0); //bourbon
+        @include size(100%, auto); //bourbon
+        .sb-modal-header {
+            background-color: $sb-modal-header-bg;
+            color: $sb-modal-header-color;
+            font-weight: $font-weight-bold;
+            font-size: $sb-modal-header-fsize;
+            padding: $sb-modal-header-padding;
+            border-bottom: 0 solid $gray-100; //@include size(auto,($base-block-space * 5)); //bourbon
+            min-height: $sb-modal-header-height;
+            line-height:$sb-modal-header-line-height;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+        .sb-modal-content {
+            min-height: 100px;
+            padding: $sb-modal-content-padding;
+            overflow-y: auto;
+        }
+        &>.close {
+            color: $white-color;
+            font-size: $font-size-base;
+            @include padding(0 0); //bourbon
+            @include margin(0 0);
+            @include size(($base-block-space * 5), ($base-block-space * 5)); //bourbon
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            @include position(absolute, 0 0 null null); //bourbon
+        }
+        .sb-modal-actions {
+            padding: $sb-modal-actions-padding;
+            background: $sb-modal-actions-bg;
+            border-top: 1px solid $gray-100;
+            min-height: $sb-modal-actions-height;
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            .sb-btn+.sb-btn{
+                @include margin(0 $base-block-space 0 0);
+            }
+        }
+        .small {
+            color: $gray-400;
+        }
+        &.small {
+            max-width: $sb-modal-small-width;
+        }
+        &.normal {
+            max-width: $sb-modal-normal-width;
+            .sb-modal-content {
+                max-height: 380px;
+                &.o-y-visible {
+                    max-height: inherit;
+                }
+            }
+        }
+        &.large {
+            width: 90%;
+            max-width: $sb-modal-large-width;
+            .sb-modal-content {
+                height: calc(100vh - 200px);
+            }
+        }
+        &.sb-modal-fullscreen {
+            @include position(fixed, 0 0 0 0); //bourbon
+            width: 100%;
+            @include margin(0 auto);
+            overflow-y: auto;
+            overflow-x: hidden;
+            .sb-modal-header {
+                height: $sb-modal-fs-header-height;
+                width: auto;
+                border-radius: 0;
+                display: flex;
+                justify-content: space-between;
+            }
+            .sb-modal-content {
+                height: calc(100vh - 120px);
+            }
+            .close {
+                position: relative;
+            }
+        }
+    } // sb modal confirmation/alert styles 
+    &-center {
+        .sb-modal-header{
+            text-align:center;
+        }
+        .sb-modal-content {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            text-align:center;
+        }
+        .sb-modal-actions {
+          @extend .sb-modal-content;
+          border-top:0px !important;
+          padding-bottom:24px !important;
+        }
+    }
+    &.sb-warning .ui.modal {
+        .sb-modal-header {
+            background-color: $sb-modal-header-bg-warning;
+        }
+    }
+    &.sb-success .ui.modal {
+        .sb-modal-header {
+            background-color: $sb-modal-header-bg-success;
+        }
+    }
+    &.sb-error .ui.modal {
+        .sb-modal-header {
+            background-color: $sb-modal-header-bg-error;
+        }
+    }
+}
+.sb-batch-modal.sb-modal{
+    .ui.modal{
+        margin-top: 100px !important
+    }
+}
+[dir="rtl"] .sb-modal {
+    .ui.modal {
+        &>.close {
+            right: auto;
+            left: 0;
+        }
+        .sb-modal-actions {
+            .sb-btn+.sb-btn{
+                @include margin(0 0 0 $base-block-space);
+            }
+        }
+    }
+}
+
+@include respond-below(sm) {
+    .sb-modal {
+        .ui.modal {
+            position: absolute;
+            width: 95%;
+            margin: 0 auto !important;
+            top: 50%;
+            transform: translate(0, -50%);
+            height: inherit;
+            &>.close {
+                top: 0 !important;
+                right: 0 !important;
+            }
+            &>.sb-modal-actions {
+                padding: $block-padding-y-x; // recheck this style
+            }
+        }
+        .ui.modal .scrolling.content {
+            max-height: calc(100vh - 10rem);
+            overflow: auto;
+        }
+        .ui.page.dimmer {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
+// workspace modal spacing issue
+.sb-workspace-modal{
+    .twelve.wide.column{
+        padding: 0;
+    }
+    .six.wide.column:nth-child(even){
+        padding: 0;
+        padding-right: 8px;
+    }
+    .six.wide.column:nth-child(odd){
+        padding: 0;
+        padding-left: 8px;
+    }
+}
+//merge account modal bullet list
+.sb-merge-account-modal {
+    ul {
+        list-style-type: disc;
+    }
+}
+
+.ui.error.message.bulkupload-error {
+    max-height: 200px;
+    overflow: auto;
+    .errorDiv{
+        opacity: 0.00001;
+        .errorTextArea{
+            height:8px;
+        }
+    }
+}
+

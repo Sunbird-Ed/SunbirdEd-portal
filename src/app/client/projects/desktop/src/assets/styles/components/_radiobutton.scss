@@ -1,0 +1,76 @@
+.sb-radio-btn {
+    input[type="radio"] {
+      &:checked, &:not(:checked) {
+        position: absolute;
+        left: -9999px;
+      }
+      &[disabled="disabled"] + label{
+        opacity: $sb-radio-btn-disabled-opacity;
+        cursor: not-allowed;
+      }
+      &[disabled="disabled"]:checked + label:before, &[disabled="disabled"]:not(:checked) + label:before {
+        border: $sb-radio-btn-border solid $sb-radio-btn-border-disabled-color;
+        opacity: $sb-radio-btn-disabled-opacity;
+      }
+      &:checked + label, &:not(:checked) + label {
+        position: relative;
+        padding-left: ($base-block-space * 3);
+        cursor: pointer;
+        line-height: 20px;
+        display: inline-block;
+        color: $sb-radio-btn-label-color;
+      }
+      &:checked + label:before, &:not(:checked) + label:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 1px;
+        width: ($base-block-space * 2);
+        height: ($base-block-space * 2);
+        border: $sb-radio-btn-border solid $sb-radio-btn-border-color;
+        border-radius: $sb-radio-btn-border-radius;
+        background: $sb-radio-btn-backgroud-before-checked;
+      }
+      &:checked + label:after {
+        content: '';
+        width: ($base-block-space * 1);
+        height: ($base-block-space * 1);
+        background: $sb-radio-btn-backgroud-after-checked;
+        position: absolute;
+        top: 5px;
+        left: 4px;
+        border-radius: $sb-radio-btn-border-radius;
+        -webkit-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+      }
+      &:not(:checked) + label:after {
+        content: '';
+        width: ($base-block-space * 1);;
+        height: ($base-block-space * 1);;
+        background: $sb-radio-btn-backgroud-after-checked;
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        border-radius: $sb-radio-btn-border-radius;
+        -webkit-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+        opacity: 0;
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      }
+      &:checked + label:after {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+      }
+    }
+ }
+ .sb-account-recover-page{
+  .sb-radio-btn-checkbox.sb-radio-btn-primary label:before {
+    border: 1px solid $blue !important;
+  }
+  .sb-radio-btn-checkbox.sb-radio-btn-primary input:checked ~ label:after {
+    background-color: $blue !important;
+  }
+ }
+ 
