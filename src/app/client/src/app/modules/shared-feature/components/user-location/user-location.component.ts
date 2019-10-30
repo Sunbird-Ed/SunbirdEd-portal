@@ -203,8 +203,8 @@ export class UserLocationComponent implements OnInit {
           const state = _.find(this.allStates, (states) => {
             return states.code === stateControl.value;
           });
+          this.showDistrictDivLoader = true;
           this.getDistrict(state.id).subscribe((districts) => {
-            this.allDistricts = districts;
             stateValue = stateControl.value;
           });
         }
@@ -213,13 +213,10 @@ export class UserLocationComponent implements OnInit {
 
   getDistrict(stateId) {
     const requestData = {'filters': {'type': 'district', parentId: stateId}};
-    if (this.allDistricts) {
-      return of(this.allDistricts);
-    }
     return this.profileService.getUserLocation(requestData).pipe(map(res => {
       this.showDistrictDivLoader = false;
       this.allDistricts = res.result.response;
-      return this.allDistricts;
+      return res.result.response;
     }));
   }
 
