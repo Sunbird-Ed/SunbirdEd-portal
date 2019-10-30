@@ -17,8 +17,7 @@
   <div class="sb-modal-content o-y-visible">
     <form class="ui form" [formGroup]="userDetailsForm">
       <div class="field">
-        <p>Your location details helps us to suggest content that is useful to you. Is the location given correct?,
-          if not, select your correct location and click Submit</p>
+        <p>{{resourceService?.messages?.imsg?.m0074}}</p>
         <label>{{resourceService?.frmelmnts?.lbl?.state}}:</label>
         <div class="field">
           <sui-select [isSearchable]="true" class="selection" formControlName="state" [options]="allStates"
