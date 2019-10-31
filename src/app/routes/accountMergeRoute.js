@@ -30,7 +30,7 @@ module.exports = (app) => {
     req.session.save(function (result) {
     console.log('result of saving the session', result);
     console.log('session id before login', req.session.id);
-    console.log('storing merge account initiator account details', JSON.stringify(req.session.mergeAccountInfo));
+    console.log('storing merge account initiator account details', JSON.stringify(req.session));
     const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
     const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/merge/account/u2/login/callback&scope=openid&response_type=code&mergeaccountprocess=1&version=2&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
     // TODO: remove all console logs once feature is fully tested.
@@ -47,6 +47,19 @@ module.exports = (app) => {
     console.log('session id login callback', req.session.id);
     console.log('redirect url was initiated', JSON.stringify(req.session));
     if (!req.session.mergeAccountInfo) {
+      console.log('value were not stored in session', JSON.stringify(req.session));
+      const initiatorToken = _.get(req, 'session.keycloak-token');
+      const parsedToken = parseJson(initiatorToken);
+      req.session.mergeAccountInfo = {
+        initiatorAccountDetails: {
+          userId: _.get(req, 'session.userId'),
+          sessionToken: _.get(parsedToken, 'access_token'),
+          redirectUri: '/resourcess'
+        }
+      };
+    }
+    if (!req.session.mergeAccountInfo) {
+      console.log('fallback not working value not stored in session', JSON.stringify(req.session));
       res.status(401).send({
         responseCode: 'UNAUTHORIZED'
       });

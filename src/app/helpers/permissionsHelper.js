@@ -112,6 +112,12 @@ let PERMISSIONS_HELPER = {
           reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
           reqObj.session.rootOrg = body.result.response.rootOrg
         }
+        // TODO: remove code after testing, only for testing merge account issue
+        reqObj.session.initiatorAccountInfo = {
+          redirectUri: '/resources',
+          userId: body && body.result && body.result.response && body.result.response.identifier,
+          mockValue: 'test'
+        }
       }
     } catch (e) {
       console.log(e)
