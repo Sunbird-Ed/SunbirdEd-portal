@@ -19,7 +19,7 @@ export class CertificateDashboardComponent implements OnInit {
 
   downloadCert(url: string) {
     //TODO call the API to GET the signed URL and then download the zip file
-    window.open(url,'_blank')
+    window.open(url,'_blank');
   }
 
   getTableData() {
