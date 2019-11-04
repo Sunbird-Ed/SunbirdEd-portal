@@ -8,6 +8,7 @@
   <!-- <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn && !isOffline">
   </app-install-app> -->
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
+  <app-desktop-app-update></app-desktop-app-update>
   <router-outlet *ngIf="initApp"></router-outlet>
 </div>
 <app-footer *ngIf="!hideHeaderNFooter"></app-footer>
