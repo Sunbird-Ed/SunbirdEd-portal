@@ -22,7 +22,7 @@ describe('AppUpdateService', () => {
     const service: AppUpdateService = TestBed.get(AppUpdateService);
     const publicDataService = TestBed.get(PublicDataService);
     spyOn(publicDataService, 'get').and.returnValue(observableOf(serverRes.app_update));
-    service.isAppUpdated().subscribe(response => {
+    service.checkForAppUpdate().subscribe(response => {
       expect(response).toBe(serverRes.app_update);
     });
     expect(publicDataService.get).toHaveBeenCalled();
@@ -32,7 +32,7 @@ describe('AppUpdateService', () => {
     const service: AppUpdateService = TestBed.get(AppUpdateService);
     const publicDataService = TestBed.get(PublicDataService);
     spyOn(publicDataService, 'get').and.returnValue(throwError(serverRes.error));
-    service.isAppUpdated().subscribe(data => {}, err => {
+    service.checkForAppUpdate().subscribe(data => {}, err => {
       expect(err).toBe(serverRes.error);
     });
     expect(publicDataService.get).toHaveBeenCalled();

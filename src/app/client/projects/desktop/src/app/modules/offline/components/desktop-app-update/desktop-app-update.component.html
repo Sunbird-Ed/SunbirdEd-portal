@@ -17,14 +17,14 @@
           <img src="assets/images/Group16.svg" class="logo" alt="DEV Logo" />
         </div>
         <div class="sb-offline-updates-content-desc mb-32">
-          <h3 class="sb-offline-updates-content-title mt-16 mb-8 font-weight-bold">New Update Available!</h3>
+          <h3 class="sb-offline-updates-content-title mt-16 mb-8 font-weight-bold">{{resourceService.frmelmnts?.lbl?.appUpdateAvailable}}</h3>
           <p class="sb-offline-updates-content-para">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            {{resourceService.frmelmnts?.lbl?.appUpdateDescription}}
           </p>
         </div>
         <div class="sb-offline-label">
           <div class="d-inline-flex">
-            <span class="sb-label-name mr-8">Use this:</span>
+            <span class="sb-label-name mr-8">{{resourceService.frmelmnts?.lbl?.useThis}}</span>
             <span>
               <a href="{{downloadUrl}}" class="sb-color-success" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
               [telemetryInteractEdata]="telemetryInteractEdata">{{ downloadUrl }}</a>

@@ -1,3 +1,4 @@
+import { ResourceService, ServerResponse } from '@sunbird/shared';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -17,19 +18,20 @@ export class DesktopAppUpdateComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   telemetryInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
-  constructor(public appUpdateService: AppUpdateService) { }
+  latestVersion;
+
+  constructor(public appUpdateService: AppUpdateService, public resourceService: ResourceService) { }
 
   ngOnInit() {
-    this.isAppUpdated();
-    this.setTelemetry();
+    this.checkForAppUpdate();
   }
 
-  isAppUpdated() {
-    this.appUpdateService.isAppUpdated().pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
+  checkForAppUpdate() {
+    this.appUpdateService.checkForAppUpdate().pipe(takeUntil(this.unsubscribe$)).subscribe((response: ServerResponse) => {
       this.isUpdated = _.get(response, 'result.updateAvailable');
-      if (this.isUpdated) {
-        this.downloadUrl = _.get(response, 'result.url');
-      }
+      this.downloadUrl = _.get(response, 'result.url');
+      this.latestVersion = _.get(response, 'result.version');
+      this.setTelemetry();
     }, (error) => {
         console.log(`Received Error while checking app update Error: ${JSON.stringify(error.error)}`);
     });
@@ -41,7 +43,7 @@ export class DesktopAppUpdateComponent implements OnInit, OnDestroy {
   }
 
   setTelemetry() {
-    this.telemetryInteractObject = {
+  this.telemetryInteractObject = {
       id: 'app-update',
       type: 'click',
       ver: <HTMLInputElement>document.getElementById('buildNumber') ?
@@ -51,7 +53,10 @@ export class DesktopAppUpdateComponent implements OnInit, OnDestroy {
     this.telemetryInteractEdata =  {
       id: 'app-update',
       type: 'click',
-      pageid: 'library'
+      pageid: 'library',
+      extra: {
+        latestVersion: this.latestVersion
+      }
     };
   }
 }
