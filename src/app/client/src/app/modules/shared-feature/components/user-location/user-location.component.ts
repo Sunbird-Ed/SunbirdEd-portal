@@ -304,9 +304,9 @@ export class UserLocationComponent implements OnInit {
 
   setTelemetryData() {
     this.telemetryCdata = [
-      {id:'user:state:districtConfimation', type:'Feature'},
-      {id: 'SC-1373', type: 'Task'}
+      { id: 'user:state:districtConfimation', type: 'Feature' },
+      { id: 'SC-1373', type: 'Task' }
     ];
-    this.mergeIntractEdata = {id:'user-state-districtConfimation', type:'click'};
+    this.mergeIntractEdata = { id: 'user-state-districtConfimation', type: 'click' };
   }
 }
