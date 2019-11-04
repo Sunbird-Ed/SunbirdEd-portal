@@ -173,6 +173,7 @@
       "DOWNLOAD_LIST": "content/v1/download/list",
       "EXPORT": "content/v1/export",
       "UPDATE":"content/v1/update",
+      "APP_UPDATE": "desktop/v1/update",
       "RESUME_IMPORT":"content/v2/import/resume",
       "CANCEL_IMPORT":"content/v2/import/cancel",
       "PAUSE_IMPORT":"content/v2/import/pause"

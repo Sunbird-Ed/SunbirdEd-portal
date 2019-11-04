@@ -10,7 +10,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
-  BrowseComponent, DownloadManagerComponent, OfflineHelpCenterComponent
+  BrowseComponent, DownloadManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -37,7 +37,8 @@ import { SlickModule } from 'ngx-slick';
   providers: [DeviceDetectorService, OfflineFileUploaderService, DownloadManagerService],
   declarations: [ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
     BrowseComponent, WatchVideoComponent, ContentImportHeaderComponent, BrowseComponent,
-    NetworkStatusComponent, WatchVideoComponent, DownloadManagerComponent, OfflineHelpCenterComponent
+    NetworkStatusComponent, WatchVideoComponent, DownloadManagerComponent, OfflineHelpCenterComponent,
+    DesktopAppUpdateComponent
   ],
   entryComponents: [
     ContentImportHeaderComponent,
@@ -46,6 +47,7 @@ import { SlickModule } from 'ngx-slick';
     DownloadManagerComponent,
     WatchVideoComponent,
     ContentImportHeaderComponent
-  ]
+  ],
+  exports: [DesktopAppUpdateComponent]
 })
 export class OfflineModule { }
