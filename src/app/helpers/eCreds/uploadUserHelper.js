@@ -25,6 +25,8 @@ const containerName = envHelper.sunbird_azure_certificates_container_name;
 
 const validateName = (name) => name ? true : false;
 
+const validateExternalId = (schoolExtId) => schoolExtId ? true : false;
+
 const convertCsvToJson = (csv) => csvjson.toObject(csv);
 
 const generateAndAddCertificates = (req) => {
@@ -332,14 +334,20 @@ const checkForFileErrors = (jsonObj) => {
         const err = [];
         _.each(jsonObj, function (value, key) {
             var isName = false;
+            var isExternalId = false;
             var error = ''
             for (var val in value) {
                 if (val.toLowerCase() === 'name') {
                     isName = validateName(value[val]);
+                } else if (val.toLowerCase() === 'school external id') {
+                    isExternalId = validateExternalId(value[val]);
                 }
             }
+
             if (!isName) {
                 error = `Row ${(Number(key) + 1)} : Name is Empty`
+            } else if (!isExternalId) {
+                error = `Row ${(Number(key) + 1)} : School External ID is Empty`
             }
             if (error) {
                 err.push(error);

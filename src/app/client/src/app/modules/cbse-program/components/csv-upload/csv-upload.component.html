@@ -7,10 +7,10 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
 </div>
 <div class="sb-modal-content">
   <div class="m-0">
-    <span class="m-0 mr-16">{{resourceService?.frmelmnts?.lbl?.uploadmsg}}</span>
+    <span class="m-0 mr-16">Please upload the CSV file in the required format</span>
     <!-- <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Download Sample
       CSV</button> -->
-      <a href="/assets/SampleUserCsv.csv">{{resourceService?.frmelmnts?.btn?.smplcsv}}</a>
+      <a href="/assets/SampleCsv.csv">Download sample CSV</a>
   </div>
 
   <div class="hiddenFileInput sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn" (click)="inputbtn.click();">
