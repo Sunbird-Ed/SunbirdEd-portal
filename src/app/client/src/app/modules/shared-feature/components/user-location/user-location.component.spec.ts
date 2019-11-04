@@ -1,7 +1,7 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SuiModule} from 'ng2-semantic-ui';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
+import {TelemetryModule} from '@sunbird/telemetry';
 import {UserLocationComponent} from './user-location.component';
 import {ResourceService, ToasterService, ConfigService, BrowserCacheTtlService} from '@sunbird/shared';
 import {ProfileService} from '@sunbird/profile';
@@ -17,7 +17,7 @@ describe('UserLocationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule],
+      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, TelemetryModule.forRoot()],
       declarations: [UserLocationComponent],
       providers: [ResourceService, ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService,
         DeviceDetectorService]
