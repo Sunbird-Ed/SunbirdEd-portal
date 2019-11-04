@@ -107,12 +107,12 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }))
   app.use('/action/textbook/v1/toc/*', addCorsHeaders,
-  proxy(learner_Service_Local_BaseUrl, {
+  proxy(learnerURL, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: (req) => {
       var originalUrl = req.originalUrl
-      originalUrl = originalUrl.replace('/action/textbook/v1/', '/v1/textbook/')
-      return require('url').parse(learner_Service_Local_BaseUrl + originalUrl).path
+      originalUrl = originalUrl.replace('/action/textbook/v1/', 'textbook/v1/')
+      return require('url').parse(learnerURL + originalUrl).path
     },
     userResDecorator: userResDecorator
   }))
