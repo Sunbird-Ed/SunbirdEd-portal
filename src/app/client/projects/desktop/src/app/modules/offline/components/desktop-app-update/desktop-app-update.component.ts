@@ -18,7 +18,7 @@ export class DesktopAppUpdateComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   telemetryInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
-  latestVersion;
+  newVersion;
 
   constructor(public appUpdateService: AppUpdateService, public resourceService: ResourceService) { }
 
@@ -30,7 +30,7 @@ export class DesktopAppUpdateComponent implements OnInit, OnDestroy {
     this.appUpdateService.checkForAppUpdate().pipe(takeUntil(this.unsubscribe$)).subscribe((response: ServerResponse) => {
       this.isUpdated = _.get(response, 'result.updateAvailable');
       this.downloadUrl = _.get(response, 'result.url');
-      this.latestVersion = _.get(response, 'result.version');
+      this.newVersion = _.get(response, 'result.version');
       this.setTelemetry();
     }, (error) => {
         console.log(`Received Error while checking app update Error: ${JSON.stringify(error.error)}`);
@@ -55,7 +55,7 @@ export class DesktopAppUpdateComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'library',
       extra: {
-        latestVersion: this.latestVersion
+        newVersion: this.newVersion
       }
     };
   }
