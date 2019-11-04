@@ -157,6 +157,7 @@ export class UserLocationComponent implements OnInit {
   }
 
   setSelectedLocation(location, updateUserProFile, updateDeviceProfile) {
+    location = location ? location : {'state': '', 'district': ''};
     const mappedStateDetails = this.processStateLocation(location.state);
     this.getLocationCodes(location).subscribe((mappedDistrictDetails) => {
       this.processedDeviceLocation = {
