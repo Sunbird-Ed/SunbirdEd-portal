@@ -18,6 +18,7 @@ export class DeviceRegisterService  {
   private deviceId: string;
   private deviceRegisterApi: string;
   private deviceProfileApi: string;
+  private deviceAPIBaseURL: string;
   private timer$: Observable<any>;
   private timerSubscription: Subscription;
   deviceProfile: any;
@@ -37,6 +38,9 @@ export class DeviceRegisterService  {
 
     this.deviceProfileApi = (<HTMLInputElement>document.getElementById('deviceProfileApi'))
       && (<HTMLInputElement>document.getElementById('deviceProfileApi')).value;
+
+    this.deviceAPIBaseURL = (<HTMLInputElement>document.getElementById('deviceApi'))
+      && (<HTMLInputElement>document.getElementById('deviceApi')).value;
   }
 
   public initialize() {
@@ -53,7 +57,7 @@ export class DeviceRegisterService  {
         'Content-Type': 'application/json'
       }
     };
-    return this.http.get(this.deviceProfileApi + this.deviceId, httpOptions);
+    return this.http.get(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.PROFILE + this.deviceId, httpOptions);
   }
 
   getDeviceProfile() {
@@ -94,7 +98,7 @@ export class DeviceRegisterService  {
         'Content-Type': 'application/json'
       }
     };
-    this.http.post(this.deviceRegisterApi + this.deviceId, data, httpOptions)
+    this.http.post(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId, data, httpOptions)
     .subscribe(() => {
     });
   }
