@@ -75,4 +75,28 @@ export class DownloadManagerService {
     }));
   }
 
+  resumeImportContent(importId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.RESUME_IMPORT}/${importId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
+  cancelImportContent(importId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.CANCEL_IMPORT}/${importId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
+  pauseImportContent(importId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.PAUSE_IMPORT}/${importId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
 }

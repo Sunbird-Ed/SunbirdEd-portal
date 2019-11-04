@@ -4,67 +4,149 @@
     <div title class="p-0">
       <div class="sb-single-pannel-accordion-heading" appTelemetryInteract
         [telemetryInteractEdata]="getTelemetryInteractData()">
-        <span>{{resourceService?.frmelmnts?.btn?.downloadManager}}</span>
+        <span>{{resourceService?.frmelmnts?.lbl?.contentManager}}</span>
         <i class="chevron up icon d-flex flex-ai-center"></i>
       </div>
     </div>
     <div content *ngIf="downloadResponse">
-        <div class="sb-single-pannel-accordion-list-item" *ngIf="!downloadResponse.inprogress.length && !downloadResponse.submitted.length && !downloadResponse.completed.length && !downloadResponse.failed.length">
-        <div class="d-flex flex-ai-center flex-basis-100">
-          <div class="no-downloads">{{resourceService?.frmelmnts?.lbl?.noDownloads}}</div>
-        </div>
-      </div>
       <div class="sb-single-pannel-accordion-list-item"
         *ngFor="let data of downloadResponse.inprogress | orderBy:'createdOn': true">
-        <div class="d-flex flex-ai-center flex-basis-100">
-          <div class="download-text">{{data.name}}</div>
-          <!-- <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary sb-left-icon-btn ml-auto">
-            <i class="pause circle icon outline mr-8"></i>Pause
-          </button>
-          <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-error sb-left-icon-btn ml-8">
-            <i class="close icon mr-8"></i>Close
-          </button> -->
+        <div class="download-details-container">
+          <div class="d-flex flex-ai-center flex-w-wrap">
+            <div class="download-text">{{data.name}}</div>
+            <button *ngIf="data.addedUsing === 'import'" type="button"
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;" [disabled]="data.pauseStatus === contentStatus.pausing">
+              {{data.pauseStatus || contentStatus.pause}}
+            </button>
+            <button *ngIf="data.addedUsing === 'import'" type="button"
+              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;" [disabled]="data.cancelStatus === contentStatus.canceling">
+              {{data.cancelStatus || contentStatus.cancel}}
+            </button>
+          </div>
+          <div *ngIf="data.addedUsing !== 'import'" class="info-text">
+            {{resourceService?.frmelmnts?.lbl?.downloading}} {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+          <div *ngIf="data.addedUsing === 'import'" class="info-text">
+            {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
+          <sui-progress *ngIf="data.addedUsing !== 'import'"
+            [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-0 mt-8">
+          </sui-progress>
+          <sui-progress *ngIf="data.addedUsing === 'import'" [value]="data.downloadedSize" [maximum]="100"
+            class="mb-0 mr-0 mt-8"></sui-progress>
         </div>
-        <div class="info-text">{{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
-        <sui-progress [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100"
-          class="mb-0 mr-8"></sui-progress>
       </div>
 
       <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of downloadResponse.failed | orderBy:'createdOn': true">
-        <div class="d-flex flex-ai-center flex-basis-100">
-          <div class="download-text">{{data.name}}</div>
-          <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-error sb-left-icon-btn ml-auto">
-            <i class="exclamation triangle icon mr-8"></i>
-            {{resourceService?.frmelmnts?.btn?.downloadFailed}}
-          </button>
+        *ngFor="let data of downloadResponse.resume | orderBy:'createdOn': true">
+        <div class="download-details-container">
+          <div class="d-flex flex-ai-center flex-w-wrap">
+            <div class="download-text">{{data.name}}</div>
+            <button *ngIf="data.addedUsing === 'import'" type="button"
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;" [disabled]="data.pauseStatus === contentStatus.pausing">
+              {{data.pauseStatus || contentStatus.pause}}
+            </button>
+            <button *ngIf="data.addedUsing === 'import'" type="button"
+              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;" [disabled]="data.cancelStatus === contentStatus.canceling">
+              {{data.cancelStatus || contentStatus.cancel}}
+            </button>
+          </div>
+          <div *ngIf="data.addedUsing !== 'import'" class="info-text">
+            {{resourceService?.frmelmnts?.lbl?.downloading}} {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+          <div *ngIf="data.addedUsing === 'import'" class="info-text">
+            {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
+          <sui-progress *ngIf="data.addedUsing !== 'import'"
+            [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-0 mt-8">
+          </sui-progress>
+          <sui-progress *ngIf="data.addedUsing === 'import'" [value]="data.downloadedSize" [maximum]="100"
+            class="mb-0 mr-0 mt-8"></sui-progress>
         </div>
-        <!-- <div class="error-text">Download failed</div> -->
       </div>
+
+      <div class="sb-single-pannel-accordion-list-item"
+        *ngFor="let data of downloadResponse.paused | orderBy:'createdOn': true">
+        <div class="download-details-container">
+          <div class="d-flex flex-ai-center flex-w-wrap">
+            <div class="download-text">{{data.name}}</div>
+            <button *ngIf="data.addedUsing === 'import'" type="button"
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" (click)="resumeImportContent(data.id); data.resumeStatus = contentStatus.resuming;" [disabled]="data.resumeStatus === contentStatus.resuming">
+              {{data.resumeStatus || contentStatus.resume}}
+            </button>
+            <button *ngIf="data.addedUsing === 'import'" type="button"
+              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;" [disabled]="data.cancelStatus === contentStatus.canceling" [disabled]="data.cancelStatus === contentStatus.canceling">
+              {{data.cancelStatus || contentStatus.cancel}}
+            </button>
+          </div>
+
+          <div class="info-text">
+            {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
+        </div>
+      </div>
+
+      <!-- <div class="sb-single-pannel-accordion-list-item" *ngIf="!downloadResponse.inprogress.length && !downloadResponse.submitted.length && !downloadResponse.completed.length && !downloadResponse.failed.length">
+                <div class="d-flex flex-ai-center flex-basis-100">
+                  <div class="no-downloads">{{resourceService?.frmelmnts?.lbl?.noDownloads}}</div>
+                </div>
+              </div> -->
+
+      <div class="sb-single-pannel-accordion-list-item flex-ai-center"
+        *ngFor="let data of downloadResponse.failed | orderBy:'createdOn': true">
+        <div class="download-details-container">
+          <div class="d-flex flex-ai-center flex-w-wrap">
+            <div class="download-text mr-auto">{{data.name}}</div>
+            <!-- <button *ngIf="data.addedUsing === 'import'" type="button"
+              class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8">
+              Retry
+            </button> -->
+          </div>
+          <div class="info-text" *ngIf="data.totalSize">{{data.totalSize | filesize}}</div>
+        </div>
+      </div>
+
+      <!-- <div class="sb-single-pannel-accordion-list-item"
+        *ngFor="let data of downloadResponse.canceled | orderBy:'createdOn': true">
+        <i class="check circle icon success-icon mr-8 fs-1-429"></i>
+        <div class="download-details-container">
+          <div class="d-flex flex-ai-center flex-w-wrap">
+            <div class="download-text">{{data.name}}</div>
+          </div>
+          <div class="info-text" *ngIf="data.totalSize">{{data.totalSize | filesize}}</div>
+          <div class="fs-0-785 sb-color-success">
+            {{contentStatus.canceled}}
+          </div>
+        </div>
+      </div> -->
 
       <div class="sb-single-pannel-accordion-list-item"
         *ngFor="let data of downloadResponse.submitted | orderBy:'createdOn': true">
-        <div class="d-flex flex-ai-center flex-basis-100">
-          <!-- <i class="history icon waiting-icon d-flex flex-ai-center"></i> -->
-          <div class="download-text">{{data.name}}</div>
-          <div class="sb-label sb-label-table sb-label-warning-0 ml-auto">
-            {{resourceService?.frmelmnts?.btn?.downloadPending}}</div>
-          <!-- <div class="waiting-text">Waiting...</div> -->
-        </div>
-        <!-- <div class="error-text">Download failed</div> -->
-      </div>
-
-
-      <div class="cursor-pointer sb-single-pannel-accordion-list-item"
-        *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true" appTelemetryInteract
-        [telemetryInteractObject]="{id:data.contentId,type:data.contentType,ver:data.pkgVersion ? data.pkgVersion.toString():'1.0'}"
-        (click)="openContent(data.contentId, data.mimeType)" [telemetryInteractEdata]="telemetryInteractEdata">
-        <div class="d-flex flex-ai-center flex-basis-100">
-          <div class="download-text">{{data.name}}</div>
-          <div class="sb-label sb-label-table sb-label-success-0 ml-auto">
-            <i class="check circle icon success-icon ml-auto"></i>{{resourceService?.frmelmnts?.btn?.downloadCompleted}}
+        <div class="download-details-container">
+          <div class="d-flex flex-ai-center flex-w-wrap">
+            <div class="download-text mr-auto">{{data.name}}
+            </div>
+            <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
+              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;" [disabled]="data.cancelStatus === contentStatus.canceling">
+              {{data.cancelStatus || contentStatus.cancel}}
+            </button>
           </div>
-
+          <div class="info-text">{{data.totalSize | filesize}}</div>
+          <div *ngIf="data.addedUsing === 'import'" class="fs-0-785 sb-color-warning">
+            {{resourceService?.frmelmnts?.lbl?.waitingForUpload}}
+          </div>
+          <div *ngIf="data.addedUsing !== 'import'" class="fs-0-785 sb-color-warning">
+            {{resourceService?.frmelmnts?.lbl?.waitingForDownload}}
+          </div>
+        </div>
+      </div>
+      ​
+      <div class="sb-single-pannel-accordion-list-item"
+        *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true">
+        <i class="check circle icon success-icon mr-8 fs-1-429"></i>
+        <div class="download-details-container">
+          <div class="d-flex flex-ai-center flex-w-wrap">
+            <div class="download-text">{{data.name}}</div>
+          </div>
+          <div class="info-text" *ngIf="data.totalSize">{{data.totalSize | filesize}}</div>
+          <div class="fs-0-785 sb-color-success">
+            {{contentStatus.completed}}
+          </div>
         </div>
       </div>
     </div>
