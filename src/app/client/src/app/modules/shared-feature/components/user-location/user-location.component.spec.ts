@@ -8,6 +8,8 @@ import {ProfileService} from '@sunbird/profile';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {CacheService} from 'ng2-cache-service';
 import {DeviceDetectorService} from 'ngx-device-detector';
+import {RouterTestingModule} from '@angular/router/testing';
+
 
 
 describe('UserLocationComponent', () => {
@@ -17,7 +19,7 @@ describe('UserLocationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, TelemetryModule.forRoot()],
+      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [UserLocationComponent],
       providers: [ResourceService, ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService,
         DeviceDetectorService]
