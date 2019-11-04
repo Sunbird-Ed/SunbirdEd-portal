@@ -31,7 +31,8 @@ export class UserLocationComponent implements OnInit {
   enableSubmitBtn = false;
   isDeviceProfileUpdateAllowed = false;
   isUserProfileUpdateAllowed = false;
-
+  mergeIntractEdata: IInteractEventEdata;
+  public telemetryCdata: Array<{}> = [];
 
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
@@ -43,6 +44,7 @@ export class UserLocationComponent implements OnInit {
   ngOnInit() {
     this.initializeFormFields();
     this.getState();
+    this.setTelemetryData();
   }
 
   initializeFormFields() {
@@ -298,5 +300,13 @@ export class UserLocationComponent implements OnInit {
       return of({});
     }
     return this.profileService.updateProfile(data);
+  }
+
+  setTelemetryData() {
+    this.telemetryCdata = [
+      {id:'user:state:districtConfimation', type:'Feature'},
+      {id: 'SC-1373', type: 'Task'}
+    ];
+    this.mergeIntractEdata = {id:'user-state-districtConfimation', type:'click'};
   }
 }
