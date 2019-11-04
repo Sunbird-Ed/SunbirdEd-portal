@@ -135,7 +135,7 @@ export class DeviceRegisterService  {
         'Content-Type': 'application/json'
       }
     };
-    return this.http.post(this.deviceRegisterApi + this.deviceId, data, httpOptions)
+    return this.http.post(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId, data, httpOptions)
       .pipe(map((res) => {
         return res;
       }));
