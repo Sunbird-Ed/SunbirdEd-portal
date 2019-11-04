@@ -27,7 +27,7 @@
       </div>
       <div class="row" *ngIf="selectedOption">
         <div> Certificate Preview</div>
-        <table class="sb-certificate-table-ct">
+        <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best School Certificate'">
           <tr>
             <td class="sb-certificate-table">
               <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" />
@@ -42,6 +42,48 @@
                       </div>
                       <p class="state-name">ગુજરાત સરકાર</p>
                       <h1>પૂર્ણતા નું પ્રમાણપત્ર</h1>
+                      <p class="certificate-details">આ પ્રમાણપત્ર આપવા માટે છે કે શ્રી / શ્રીમતી <strong>રાધા કૃષ્ણ
+                          એમએ</strong> <strong>25 જુલાઇ 2019</strong> ના રોજ "ટીચર્સ પ્રોફેશનલ ડેવલપમેન્ટ પ્રોગ્રામ"
+                        સફળતાપૂર્વક તાલીમ પૂર્ણ કરી છે.</p>
+                    </td>
+                  </tr>
+                  <tr class="sb-certificate-footer">
+                    <td class="country-symbol">
+                      <img src="assets/images/DIKSHA.png" class="sb-certificatePage-logo" />
+                      <!-- <p>આ દસ્તાવેજ ડિજિટલ સહી થયેલ છે</p> -->
+                    </td>
+                    <td class="state-sign">
+                      <img src="$signatory0Image" class="sb-certificatePage-logo" />
+                      <div class="sign-line"></div>
+                      <p class="italic">એસસીઇઆરટી ગુજરાતના ડાયરેક્ટર</p>
+                    </td>
+                    <td class="certificate-qr-code">
+                      <img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
+                      <p>પ્રમાણપત્ર ચકાસવા માટે સ્કેન કરો</p>
+                    </td>
+                  </tr>
+                </table>
+
+              </div>
+              <div class="sb-certificate-bg-"></div>
+            </td>
+          </tr>
+        </table>
+        <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best Student Certificate'">
+          <tr>
+            <td class="sb-certificate-table">
+              <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" />
+              <img src="assets/images/certificate-frame.svg" class="certificate-frame" />
+              <div class="sb-certificate-container">
+                <table width="100%" border="0" class="certificate-table-area">
+                  <tr class="sb-certificate-header">
+                    <td colspan="3">
+                      <div class="state-symbol">
+                        <img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo"
+                          alt="Government of Gujarat">
+                      </div>
+                      <p class="state-name">ગુજરાત સરકાર BEST STUDENT</p>
+                      <h1>પૂર્ણતા નું પ્રમાણપત્ર BEST STUDENT</h1>
                       <p class="certificate-details">આ પ્રમાણપત્ર આપવા માટે છે કે શ્રી / શ્રીમતી <strong>રાધા કૃષ્ણ
                           એમએ</strong> <strong>25 જુલાઇ 2019</strong> ના રોજ "ટીચર્સ પ્રોફેશનલ ડેવલપમેન્ટ પ્રોગ્રામ"
                         સફળતાપૂર્વક તાલીમ પૂર્ણ કરી છે.</p>
