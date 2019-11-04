@@ -9,9 +9,40 @@ const certAddRequestBody = (response) => {
 }
 
 const certGenerateRequestBody = (input) => {
+    let templet = "";
+    let issuer = {};
+    let signatoryList = [];
+    let signatory = {};
+    if (_.get(input, 'rspObj.certType') === 'Best School Certificate') {
+        templet = "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download";
+        issuer = {
+            "name": "Gujarat Council of Educational Research and Training",
+            "url": "https://gcert.gujarat.gov.in/gcert/"
+        }
+        signatory = {
+            "name": "CEO Gujarat",
+            "id": "CEO",
+            "designation": "CEO",
+            "image": "https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg"
+        }
+        signatoryList.push(signatory);
+    } else {
+        templet = "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download";
+        issuer = {
+            "name": "Gujarat Council of Educational Research and Training",
+            "url": "https://gcert.gujarat.gov.in/gcert/"
+        }
+        signatory = {
+            "name": "CEO Gujarat",
+            "id": "CEO",
+            "designation": "CEO",
+            "image": "https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg"
+        }
+        signatoryList.push(signatory);
+    }
     return {
         certificate: {
-            "htmlTemplate": "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download",
+            "htmlTemplate": templet,
             "courseName": "new course may23",
             "issuedDate": dateFormat(new Date(), 'yyyy-mm-dd'),
             "data": [
@@ -22,18 +53,8 @@ const certGenerateRequestBody = (input) => {
             ],
             "name": _.get(input, 'rspObj.certType'),
             "tag": "0125450863553740809",
-            "issuer": {
-                "name": "Gujarat Council of Educational Research and Training",
-                "url": "https://gcert.gujarat.gov.in/gcert/"
-            },
-            "signatoryList": [
-                {
-                    "name": "CEO Gujarat",
-                    "id": "CEO",
-                    "designation": "CEO",
-                    "image": "https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg"
-                }
-            ],
+            "issuer": issuer,
+            "signatoryList": signatoryList,
             "criteria": {
                 "narrative": "course completion certificate"
             }
