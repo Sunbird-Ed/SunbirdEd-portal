@@ -25,7 +25,7 @@ export class DownloadManagerComponent implements OnInit {
   telemetryInteractEdata: IInteractEventEdata = {
     id: 'content-click',
     type: 'click',
-    pageid: 'download-manager'
+    pageid: 'content-manager'
   };
 
   contentStatus = {
@@ -40,6 +40,9 @@ export class DownloadManagerComponent implements OnInit {
   };
 
   subscription: any;
+  pauseInteractData: IInteractEventEdata;
+  cancelInteractData: IInteractEventEdata;
+  resumeInteractData: IInteractEventEdata;
 
   constructor(public downloadManagerService: DownloadManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -49,6 +52,7 @@ export class DownloadManagerComponent implements OnInit {
     public router: Router) { }
 
   ngOnInit() {
+    this.setTelemetryInteractData();
     // Call download list initailly
     this.getDownloadList();
 
@@ -145,9 +149,27 @@ export class DownloadManagerComponent implements OnInit {
 
   getTelemetryInteractData() {
     return  {
-      id: this.isOpen ? 'download-manager-close' : 'download-manager-open',
+      id: this.isOpen ? 'content-manager-close' : 'content-manager-open',
       type: 'click',
-      pageid: 'download-manager'
+      pageid: 'content-manager'
+    };
+  }
+
+  setTelemetryInteractData() {
+    this.pauseInteractData = {
+      id: 'pause',
+      type: 'click',
+      pageid: 'content-manager'
+    };
+    this.cancelInteractData = {
+      id: 'cancel',
+      type: 'click',
+      pageid: 'content-manager'
+    };
+    this.resumeInteractData = {
+      id: 'resume',
+      type: 'click',
+      pageid: 'content-manager'
     };
   }
 

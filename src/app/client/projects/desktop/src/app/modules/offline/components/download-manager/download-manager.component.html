@@ -15,16 +15,23 @@
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text">{{data.name}}</div>
             <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;" [disabled]="data.pauseStatus === contentStatus.pausing">
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
+              (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;"
+              [disabled]="data.pauseStatus === contentStatus.pausing" appTelemetryInteract
+              [telemetryInteractEdata]="pauseInteractData">
               {{data.pauseStatus || contentStatus.pause}}
             </button>
             <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;" [disabled]="data.cancelStatus === contentStatus.canceling">
+              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
+              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
+              [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
+              [telemetryInteractEdata]="cancelInteractData">
               {{data.cancelStatus || contentStatus.cancel}}
             </button>
           </div>
           <div *ngIf="data.addedUsing !== 'import'" class="info-text">
-            {{resourceService?.frmelmnts?.lbl?.downloading}} {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+            {{resourceService?.frmelmnts?.lbl?.downloading}}
+            {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
           <div *ngIf="data.addedUsing === 'import'" class="info-text">
             {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
           <sui-progress *ngIf="data.addedUsing !== 'import'"
@@ -41,16 +48,23 @@
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text">{{data.name}}</div>
             <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;" [disabled]="data.pauseStatus === contentStatus.pausing">
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
+              (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;"
+              [disabled]="data.pauseStatus === contentStatus.pausing" appTelemetryInteract
+              [telemetryInteractEdata]="pauseInteractData">
               {{data.pauseStatus || contentStatus.pause}}
             </button>
             <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;" [disabled]="data.cancelStatus === contentStatus.canceling">
+              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
+              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
+              [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
+              [telemetryInteractEdata]="cancelInteractData">
               {{data.cancelStatus || contentStatus.cancel}}
             </button>
           </div>
           <div *ngIf="data.addedUsing !== 'import'" class="info-text">
-            {{resourceService?.frmelmnts?.lbl?.downloading}} {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+            {{resourceService?.frmelmnts?.lbl?.downloading}}
+            {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
           <div *ngIf="data.addedUsing === 'import'" class="info-text">
             {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
           <sui-progress *ngIf="data.addedUsing !== 'import'"
@@ -67,11 +81,18 @@
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text">{{data.name}}</div>
             <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" (click)="resumeImportContent(data.id); data.resumeStatus = contentStatus.resuming;" [disabled]="data.resumeStatus === contentStatus.resuming">
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
+              (click)="resumeImportContent(data.id); data.resumeStatus = contentStatus.resuming;"
+              [disabled]="data.resumeStatus === contentStatus.resuming" appTelemetryInteract
+              [telemetryInteractEdata]="resumeInteractData">
               {{data.resumeStatus || contentStatus.resume}}
             </button>
             <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;" [disabled]="data.cancelStatus === contentStatus.canceling" [disabled]="data.cancelStatus === contentStatus.canceling">
+              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
+              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
+              [disabled]="data.cancelStatus === contentStatus.canceling"
+              [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
+              [telemetryInteractEdata]="cancelInteractData">
               {{data.cancelStatus || contentStatus.cancel}}
             </button>
           </div>
@@ -81,11 +102,12 @@
         </div>
       </div>
 
-      <!-- <div class="sb-single-pannel-accordion-list-item" *ngIf="!downloadResponse.inprogress.length && !downloadResponse.submitted.length && !downloadResponse.completed.length && !downloadResponse.failed.length">
-                <div class="d-flex flex-ai-center flex-basis-100">
-                  <div class="no-downloads">{{resourceService?.frmelmnts?.lbl?.noDownloads}}</div>
-                </div>
-              </div> -->
+      <!-- <div class="sb-single-pannel-accordion-list-item"
+        *ngIf="!downloadResponse.inprogress.length && !downloadResponse.submitted.length && !downloadResponse.completed.length && !downloadResponse.failed.length">
+        <div class="d-flex flex-ai-center flex-basis-100">
+          <div class="no-downloads">{{resourceService?.frmelmnts?.lbl?.noDownloads}}</div>
+        </div>
+      </div> -->
 
       <div class="sb-single-pannel-accordion-list-item flex-ai-center"
         *ngFor="let data of downloadResponse.failed | orderBy:'createdOn': true">
@@ -122,7 +144,9 @@
             <div class="download-text mr-auto">{{data.name}}
             </div>
             <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
-              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;" [disabled]="data.cancelStatus === contentStatus.canceling">
+              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
+              [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
+              [telemetryInteractEdata]="cancelInteractData">
               {{data.cancelStatus || contentStatus.cancel}}
             </button>
           </div>
