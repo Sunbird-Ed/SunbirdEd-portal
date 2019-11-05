@@ -90,6 +90,10 @@
       "COURSE_CONSUMPTION": "dashboard/v1/consumption/course",
       "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
     },
+    "DEVICE": {
+      "REGISTER": "register/",
+      "PROFILE": "profile/"
+    },
     "NOTES": {
       "SEARCH": "notes/v1/search",
       "CREATE": "notes/v1/create",

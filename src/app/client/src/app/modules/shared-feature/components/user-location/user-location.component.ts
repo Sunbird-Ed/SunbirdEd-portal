@@ -31,8 +31,11 @@ export class UserLocationComponent implements OnInit {
   enableSubmitBtn = false;
   isDeviceProfileUpdateAllowed = false;
   isUserProfileUpdateAllowed = false;
-
-
+  mergeIntractEdata: any;
+  public telemetryCdata: Array<{}> = [];
+  public suggestionType: any;
+  public tempLocation: any;
+  public isLocationChanged = false;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
               formBuilder: FormBuilder, public profileService: ProfileService,
@@ -122,9 +125,10 @@ export class UserLocationComponent implements OnInit {
       if (!isUserLocationConfirmed && this.deviceProfile.userDeclaredLocation) {
         // render using userDeclaredLocation
         // update user profile only
+        this.suggestionType = 'userDeclared';
         this.setSelectedLocation(this.deviceProfile.userDeclaredLocation, true, false);
       }
-      if (!this.deviceProfile.userDeclaredLocation) {
+      if (!(this.deviceProfile && this.deviceProfile.userDeclaredLocation)) {
         if (isUserLocationConfirmed) {
           const userLocation = {
             district: _.find(userProfileData.userLocations, (location) => {
@@ -139,12 +143,13 @@ export class UserLocationComponent implements OnInit {
           this.setData(userLocation);
           // render using user location
           // update only device profile
-
+          this.suggestionType = 'userLocation';
         } else if (!isUserLocationConfirmed) {
           // this.setData(this.deviceProfile.ipLocation);
           this.setSelectedLocation(this.deviceProfile.ipLocation, true, true);
           // render using ip
           // update device location and user location
+          this.suggestionType = 'ipLocation';
         }
       }
     } else {
@@ -152,6 +157,7 @@ export class UserLocationComponent implements OnInit {
         this.setSelectedLocation(this.deviceProfile.ipLocation, false, true);
         // render using ip
         // update device profile only
+        this.suggestionType = 'ipLocation';
       }
     }
   }
@@ -207,6 +213,7 @@ export class UserLocationComponent implements OnInit {
           this.showDistrictDivLoader = true;
           this.getDistrict(state.id).subscribe((districts) => {
             stateValue = stateControl.value;
+            this.isLocationChanged = true;
           });
         }
       });
@@ -298,5 +305,19 @@ export class UserLocationComponent implements OnInit {
       return of({});
     }
     return this.profileService.updateProfile(data);
+  }
+
+  setTelemetryData() {
+    this.telemetryCdata = [
+      { id: 'user:state:districtConfimation', type: 'Feature' },
+      { id: 'SC-1373', type: 'Task' }
+    ];
+    this.mergeIntractEdata = {
+      id: 'user-state-districtConfimation',
+      type: 'click',
+      suggestionType: this.suggestionType,
+      isLocationChanged: this.isLocationChanged
+    };
+    this.updateUserLocation();
   }
 }
