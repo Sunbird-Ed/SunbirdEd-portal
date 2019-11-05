@@ -123,8 +123,8 @@ export class PlayerService {
       }
     }
     switch (contentDetails.contentData.contentType) {
-      case this.configService.appConfig.SELFASSESSMENTPLUGIN.contentType : 
-        if(contentDetails.courseId){
+      case this.configService.appConfig.SELFASSESSMENTPLUGIN.contentType :
+        if (contentDetails.courseId) {
           configuration.config.plugins.push(this.configService.appConfig.SELFASSESSMENTPLUGIN.endpageplugin);
         } else {
           configuration.config.plugins.push(this.configService.appConfig.DEFAULTPLUGINS.endpageplugin);
