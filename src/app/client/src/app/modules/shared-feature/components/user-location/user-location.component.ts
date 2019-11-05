@@ -35,7 +35,7 @@ export class UserLocationComponent implements OnInit {
   public telemetryCdata: Array<{}> = [];
   public suggestionType: any;
   public tempLocation: any;
-  public isLocationChanged: boolean = false;
+  public isLocationChanged = false;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
               formBuilder: FormBuilder, public profileService: ProfileService,
@@ -312,7 +312,12 @@ export class UserLocationComponent implements OnInit {
       { id: 'user:state:districtConfimation', type: 'Feature' },
       { id: 'SC-1373', type: 'Task' }
     ];
-    this.mergeIntractEdata = { id: 'user-state-districtConfimation', type: 'click', suggestionType: this.suggestionType, isLocationChanged: this.isLocationChanged };
+    this.mergeIntractEdata = {
+      id: 'user-state-districtConfimation',
+      type: 'click',
+      suggestionType: this.suggestionType,
+      isLocationChanged: this.isLocationChanged
+    };
     this.updateUserLocation();
   }
 }
