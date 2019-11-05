@@ -4,18 +4,17 @@ import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared'
 import { timer } from 'rxjs';
 import { switchMap, delay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { DownloadManagerService } from './../../services';
-import { ConnectionService } from './../../services';
+import { ContentManagerService } from '../../services';
+import { ConnectionService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 
-
 @Component({
-  selector: 'app-download-manager',
-  templateUrl: './download-manager.component.html',
-  styleUrls: ['./download-manager.component.scss']
+  selector: 'app-content-manager',
+  templateUrl: './content-manager.component.html',
+  styleUrls: ['./content-manager.component.scss']
 })
-export class DownloadManagerComponent implements OnInit {
+export class ContentManagerComponent implements OnInit {
 
   downloadResponse: any;
   isConnected: boolean = navigator.onLine;
@@ -44,7 +43,7 @@ export class DownloadManagerComponent implements OnInit {
   cancelInteractData: IInteractEventEdata;
   resumeInteractData: IInteractEventEdata;
 
-  constructor(public downloadManagerService: DownloadManagerService,
+  constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public connectionService: ConnectionService,
     public configService: ConfigService,
@@ -63,14 +62,14 @@ export class DownloadManagerComponent implements OnInit {
     });
 
     // Call download list when clicked on add to library
-    this.downloadManagerService.downloadEvent.subscribe((data) => {
+    this.contentManagerService.downloadEvent.subscribe((data) => {
       this.isOpen = true;
       this.getDownloadList();
     });
   }
 
   getDownloadList() {
-    this.downloadManagerService.getDownloadList().subscribe(
+    this.contentManagerService.getDownloadList().subscribe(
       (apiResponse: any) => {
         this.downloadResponse = apiResponse.result.response.downloads;
         this.localCount = apiResponse.result.response.downloads.inprogress.length + apiResponse.result.response.downloads.submitted.length;
@@ -82,7 +81,7 @@ export class DownloadManagerComponent implements OnInit {
 
   cancelImportContent(importId) {
     this.subscription.unsubscribe();
-    this.downloadManagerService.cancelImportContent(importId).pipe(
+    this.contentManagerService.cancelImportContent(importId).pipe(
       delay(2000), // wait for user to see canceling
     ).subscribe(
       (apiResponse: any) => {
@@ -95,7 +94,7 @@ export class DownloadManagerComponent implements OnInit {
 
   pauseImportContent(importId) {
     this.subscription.unsubscribe();
-    this.downloadManagerService.pauseImportContent(importId).pipe(
+    this.contentManagerService.pauseImportContent(importId).pipe(
       delay(2000), // wait for user to see pausing
     ).subscribe(
       (apiResponse: any) => {
@@ -108,7 +107,7 @@ export class DownloadManagerComponent implements OnInit {
 
   resumeImportContent(importId) {
     this.subscription.unsubscribe();
-    this.downloadManagerService.resumeImportContent(importId).pipe(
+    this.contentManagerService.resumeImportContent(importId).pipe(
       delay(2000), // wait for user to see resuming
     ).subscribe(
       (apiResponse: any) => {
@@ -121,7 +120,7 @@ export class DownloadManagerComponent implements OnInit {
 
   private getDownloadListUsingTimer() {
     const result = timer(1, 2000).pipe(
-      switchMap(() => this.downloadManagerService.getDownloadList())
+      switchMap(() => this.contentManagerService.getDownloadList())
     );
 
     this.subscription = result.subscribe(

@@ -1,24 +1,24 @@
 import { of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DownloadManagerComponent } from './download-manager.component';
-import { DownloadManagerService, ConnectionService } from '../../services';
+import { ContentManagerComponent } from './content-manager.component';
+import { ContentManagerService, ConnectionService } from '../../services';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-semantic-ui';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {FileSizeModule} from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { RouterTestingModule } from '@angular/router/testing';
-import { response } from '../../services/download-manager/download-manager.service.spec.data';
+import { response } from '../../services/content-manager/content-manager.service.spec.data';
 import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER, IInteractEventEdata  } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
 
 
 
-describe('DownloadManagerComponent', () => {
-  let component: DownloadManagerComponent;
-  let fixture: ComponentFixture<DownloadManagerComponent>;
+describe('ContentManagerComponent', () => {
+  let component: ContentManagerComponent;
+  let fixture: ComponentFixture<ContentManagerComponent>;
   let connectionService: ConnectionService;
-  let downloadManagerService: DownloadManagerService;
+  let contentManagerService: ContentManagerService;
 
   const resourceMockData = {
     frmelmnts: {
@@ -32,18 +32,18 @@ describe('DownloadManagerComponent', () => {
     TestBed.configureTestingModule({
       imports: [ SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule,
         RouterTestingModule, FileSizeModule, OrderModule, TelemetryModule ],
-      declarations: [DownloadManagerComponent],
-      providers: [ DownloadManagerService, ConnectionService, TelemetryService,
+      declarations: [ContentManagerComponent],
+      providers: [ ContentManagerService, ConnectionService, TelemetryService,
         { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, {provide: ResourceService, useValue: resourceMockData} ]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DownloadManagerComponent);
+    fixture = TestBed.createComponent(ContentManagerComponent);
     component = fixture.componentInstance;
     connectionService = TestBed.get(ConnectionService);
-    downloadManagerService = TestBed.get(DownloadManagerService);
+    contentManagerService = TestBed.get(ContentManagerService);
     fixture.detectChanges();
   });
 
@@ -63,7 +63,7 @@ describe('DownloadManagerComponent', () => {
     const mockObservable = observableOf(mockConnectionStatus);
     const spy = spyOn(connectionService, 'monitor').and.returnValue(mockObservable);
     const componentMethod =  spyOn(component, 'getDownloadList').and.callThrough();
-    const serviceMethod =  spyOn(downloadManagerService, 'getDownloadList').and.callThrough();
+    const serviceMethod =  spyOn(contentManagerService, 'getDownloadList').and.callThrough();
     connectionService.monitor().subscribe(connectionMonitor => {
       expect(connectionMonitor).toBe(mockConnectionStatus);
     });
@@ -73,19 +73,19 @@ describe('DownloadManagerComponent', () => {
     expect(componentMethod).toHaveBeenCalledTimes(2);
     });
 
-  it('should go to downloadManager service and call getDownloadList method', () => {
-    downloadManagerService = TestBed.get(DownloadManagerService);
+  it('should go to contentManager service and call getDownloadList method', () => {
+    contentManagerService = TestBed.get(ContentManagerService);
    const componentMethod =  spyOn(component, 'getDownloadList').and.callThrough();
-   const serviceMethod =  spyOn(downloadManagerService, 'getDownloadList').and.callThrough();
+   const serviceMethod =  spyOn(contentManagerService, 'getDownloadList').and.callThrough();
     component.ngOnInit();
     expect(serviceMethod).toHaveBeenCalledTimes(1);
     expect(componentMethod).toHaveBeenCalledTimes(1);
   });
 
-  it('should go to downloadManager service and call getDownloadList method', () => {
-    downloadManagerService = TestBed.get(DownloadManagerService);
+  it('should go to contentManager service and call getDownloadList method', () => {
+    contentManagerService = TestBed.get(ContentManagerService);
    const componentMethod =  spyOn(component, 'getDownloadList').and.callThrough();
-   const serviceMethod =  spyOn(downloadManagerService, 'getDownloadList').and.callThrough();
+   const serviceMethod =  spyOn(contentManagerService, 'getDownloadList').and.callThrough();
     component.ngOnInit();
     expect(serviceMethod).toHaveBeenCalledTimes(1);
     expect(componentMethod).toHaveBeenCalledTimes(1);
@@ -94,8 +94,8 @@ describe('DownloadManagerComponent', () => {
    it('should not route getDownloadListUsingTimer', () => {
     const mockData = response.downloadListStatus;
     const mockObservableData = observableOf(mockData);
-    spyOn(downloadManagerService, 'getDownloadList').and.returnValue(mockObservableData);
-    downloadManagerService.getDownloadList().subscribe(responseData => {
+    spyOn(contentManagerService, 'getDownloadList').and.returnValue(mockObservableData);
+    contentManagerService.getDownloadList().subscribe(responseData => {
         expect(responseData).toBe(mockData);
         component.downloadResponse = responseData;
         component.localCount = responseData.result.response.downloads.inprogress.length +

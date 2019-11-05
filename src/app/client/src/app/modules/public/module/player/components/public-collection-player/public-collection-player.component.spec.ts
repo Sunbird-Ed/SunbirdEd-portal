@@ -12,7 +12,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { CollectionHierarchyGetMockResponse, collectionTree} from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { DownloadManagerService } from '@sunbird/offline';
+import { ContentManagerService } from '@sunbird/offline';
 
 describe('PublicCollectionPlayerComponent', () => {
   let component: PublicCollectionPlayerComponent;
@@ -53,7 +53,7 @@ describe('PublicCollectionPlayerComponent', () => {
       imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
       TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [ContentService, PublicPlayerService, ResourceService,
-        DownloadManagerService, ToasterService,
+        ContentManagerService, ToasterService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],

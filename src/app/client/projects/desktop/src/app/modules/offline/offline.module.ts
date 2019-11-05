@@ -1,5 +1,5 @@
 import { ExploreModule } from './../../../../../../src/app/modules/public/module/explore/explore.module';
-import { OfflineFileUploaderService, DownloadManagerService } from './services';
+import { OfflineFileUploaderService, ContentManagerService } from './services';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule, SuiTabsModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
-  BrowseComponent, DownloadManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent
+  BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -34,17 +34,17 @@ import { SlickModule } from 'ngx-slick';
     OrderModule,
     SlickModule
   ],
-  providers: [DeviceDetectorService, OfflineFileUploaderService, DownloadManagerService],
+  providers: [DeviceDetectorService, OfflineFileUploaderService, ContentManagerService],
   declarations: [ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
     BrowseComponent, WatchVideoComponent, ContentImportHeaderComponent, BrowseComponent,
-    NetworkStatusComponent, WatchVideoComponent, DownloadManagerComponent, OfflineHelpCenterComponent,
+    NetworkStatusComponent, WatchVideoComponent, ContentManagerComponent, OfflineHelpCenterComponent,
     DesktopAppUpdateComponent
   ],
   entryComponents: [
     ContentImportHeaderComponent,
     BrowseComponent,
     NetworkStatusComponent,
-    DownloadManagerComponent,
+    ContentManagerComponent,
     WatchVideoComponent,
     ContentImportHeaderComponent
   ],

@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 @Injectable({
   providedIn: 'root'
 })
-export class DownloadManagerService {
+export class ContentManagerService {
 
   downloadContentId: string;
   downloadEvent = new EventEmitter();

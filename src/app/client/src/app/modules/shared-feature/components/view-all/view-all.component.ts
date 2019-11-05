@@ -13,8 +13,8 @@ import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService
-} from './../../../../../../projects/desktop/src/app/modules/offline/services/download-manager/download-manager.service';
+import { ContentManagerService
+} from './../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
 
 @Component({
   selector: 'app-view-all',
@@ -148,7 +148,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService) {
+    public navigationhelperService: NavigationHelperService, public contentManagerService: ContentManagerService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -206,12 +206,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     if (this.isOffline) {
-      this.downloadManagerService.downloadListEvent.pipe(
+      this.contentManagerService.downloadListEvent.pipe(
         takeUntil(this.unsubscribe)).subscribe((data) => {
         this.updateCardData(data);
       });
 
-      this.downloadManagerService.downloadEvent.pipe(tap(() => {
+      this.contentManagerService.downloadEvent.pipe(tap(() => {
         this.showDownloadLoader = false;
       }), takeUntil(this.unsubscribe)).subscribe(() => {});
     }
@@ -442,11 +442,11 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   startDownload (contentId) {
-    this.downloadManagerService.downloadContentId = contentId;
-    this.downloadManagerService.startDownload({}).subscribe(data => {
-      this.downloadManagerService.downloadContentId = '';
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.startDownload({}).subscribe(data => {
+      this.contentManagerService.downloadContentId = '';
     }, error => {
-      this.downloadManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentId = '';
       this.showDownloadLoader = false;
 
       _.each(this.searchList, (contents) => {
@@ -457,7 +457,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   exportOfflineContent(contentId) {
-    this.downloadManagerService.exportContent(contentId).subscribe(data => {
+    this.contentManagerService.exportContent(contentId).subscribe(data => {
       const link = document.createElement('a');
       link.href = data.result.response.url;
       link.style.display = 'none';

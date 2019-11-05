@@ -13,8 +13,8 @@ import { takeUntil, map, mergeMap, first, filter, tap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import {
-  DownloadManagerService
-} from './../../../../../../../../projects/desktop/src/app/modules/offline/services/download-manager/download-manager.service';
+  ContentManagerService
+} from './../../../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
 import {
   OfflineFileUploaderService
 } from './../../../../../../../../projects/desktop/src/app/modules/offline/services';
@@ -62,7 +62,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
-    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService) {
+    public navigationhelperService: NavigationHelperService, public contentManagerService: ContentManagerService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -92,12 +92,12 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         self.fetchPageData();
       });
 
-      this.downloadManagerService.downloadListEvent.pipe(
+      this.contentManagerService.downloadListEvent.pipe(
         takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
       });
 
-      this.downloadManagerService.downloadEvent.pipe(tap(() => {
+      this.contentManagerService.downloadEvent.pipe(tap(() => {
         this.showDownloadLoader = false;
       }), takeUntil(this.unsubscribe$)).subscribe(() => {});
     }
@@ -284,11 +284,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   startDownload (contentId) {
-    this.downloadManagerService.downloadContentId = contentId;
-    this.downloadManagerService.startDownload({}).subscribe(data => {
-      this.downloadManagerService.downloadContentId = '';
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.startDownload({}).subscribe(data => {
+      this.contentManagerService.downloadContentId = '';
     }, error => {
-      this.downloadManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentId = '';
       this.showDownloadLoader = false;
       _.each(this.pageSections, (pageSection) => {
         _.each(pageSection.contents, (pageData) => {
@@ -300,7 +300,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   exportOfflineContent(contentId) {
-    this.downloadManagerService.exportContent(contentId).subscribe(data => {
+    this.contentManagerService.exportContent(contentId).subscribe(data => {
       const link = document.createElement('a');
       link.href = data.result.response.url;
       link.style.display = 'none';

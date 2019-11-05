@@ -80,7 +80,7 @@
     border-radius: 4px 4px 0 0;
     box-shadow: 0 -4px 5px 0 rgba(0,0,0,0.25);
   }
-.sb-download-manager-panel {
+.sb-content-manager-panel {
     z-index: 999;
 }
   .sb-single-pannel-accordion-heading {
@@ -102,7 +102,7 @@
     display: flex;
     // flex-wrap: wrap;
     min-height: ($base-block-space * 10);
-    border-bottom: $sb-download-manager-border;
+    border-bottom: $sb-content-manager-border;
     align-items: center;
     .info-text {
         font-size: 12px;

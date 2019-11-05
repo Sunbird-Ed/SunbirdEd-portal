@@ -15,7 +15,7 @@
     <p class="d-block">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
   </div>
 </div> -->
-    <extension-point [name]="'download-manager'" *ngIf="isOffline"></extension-point>
+    <extension-point [name]="'content-manager'" *ngIf="isOffline"></extension-point>
 <footer class="footer" *ngIf="showFooter">
 
   <div class="ui container" *ngIf="!isOffline">
