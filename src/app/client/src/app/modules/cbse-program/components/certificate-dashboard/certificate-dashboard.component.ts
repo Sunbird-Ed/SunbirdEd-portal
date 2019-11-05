@@ -2,6 +2,7 @@ import { UserService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash-es';
+import * as moment from 'moment';
 @Component({
   selector: 'app-certificate-dashboard',
   templateUrl: './certificate-dashboard.component.html',
@@ -31,6 +32,12 @@ export class CertificateDashboardComponent implements OnInit {
     this.http.post('/certificate/user/upload/status', request).subscribe(
       (data) => {
         this.data = _.get(data, 'result.response');
+        _.forEach(this.data, function(value) {
+          //console.log(value.createdon);
+          value['createdon'] = moment(value['createdon']).format('DD/MM/YYYY HH:mm');
+        });
+       this.data = _.sortBy(this.data, ['createdon']);
+          //val['createdon'] = moment(val['createdon']).format('DD/MM/YYYY HH:mm');
       }, (error) => {
 
       }

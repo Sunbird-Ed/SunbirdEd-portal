@@ -84,8 +84,10 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.fetchFrameWorkDetails();
     this.selectedAttributes.lastOpenedUnit = 0;
     this.slug = _.get(this.userProfile, 'rootOrg.slug') || (<HTMLInputElement>document.getElementById('defaultTenant')).value
-    if(this.slug === 'sunbird' && _.includes(_.get(this.programDetails,'userDetails.roles'),"CERTFICATE_ISSUER")){
-      this.showCertificate = true
+    if(_.includes(_.get(this.programDetails,'userDetails.roles'),"CERTFICATE_ISSUER")){
+      this.showCertificate = true;
+      (<HTMLInputElement>document.getElementById('workspace')).style.display= "none";
+      (<HTMLInputElement>document.getElementById('curiosity')).style.display= "none";
     }
   }
 

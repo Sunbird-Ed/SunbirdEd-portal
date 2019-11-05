@@ -202,7 +202,7 @@ activateUpload = false;
         data => {
           console.log(data);
           this.showLoader = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0030);
+          this.toasterService.success('File uploaded successfully');
           this.modal.deny();
           this.cbseComponent.selectedOption = '';
         },
