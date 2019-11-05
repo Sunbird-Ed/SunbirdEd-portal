@@ -122,6 +122,18 @@ export class PlayerService {
         id: contentDetails.batchId} );
       }
     }
+    switch (contentDetails.contentData.contentType) {
+      case this.configService.appConfig.SELFASSESSMENTPLUGIN.contentType :
+        if (contentDetails.courseId) {
+          configuration.config.plugins.push(this.configService.appConfig.SELFASSESSMENTPLUGIN.endpageplugin);
+        } else {
+          configuration.config.plugins.push(this.configService.appConfig.DEFAULTPLUGINS.endpageplugin);
+        }
+      break;
+      default :
+      configuration.config.plugins.push(this.configService.appConfig.DEFAULTPLUGINS.endpageplugin);
+      break;
+    }
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
