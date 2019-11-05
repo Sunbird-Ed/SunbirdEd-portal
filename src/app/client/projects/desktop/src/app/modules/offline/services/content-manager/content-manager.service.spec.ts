@@ -22,7 +22,7 @@ describe('ContentManagerService', () => {
     const publicDataService = TestBed.get(PublicDataService);
     expect(service).toBeTruthy();
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(response.downloadListStatus));
-    const apiRes = service.getDownloadList();
+    const apiRes = service.getContentList();
     expect(publicDataService.post).toHaveBeenCalled();
   });
 

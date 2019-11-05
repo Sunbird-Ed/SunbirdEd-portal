@@ -52,18 +52,18 @@ describe('ContentManagerComponent', () => {
     expect(progressData).toBe(50);
   });
 
-  it('should call getDownloadList method once', () => {
-    spyOn(component, 'getDownloadList');
+  it('should call getContentList method once', () => {
+    spyOn(component, 'getContentList');
     component.ngOnInit();
-    expect(component.getDownloadList).toHaveBeenCalledTimes(1);
+    expect(component.getContentList).toHaveBeenCalledTimes(1);
   });
 
-  it('should  call getDownloadList method twice when the connection status changes', () => {
+  it('should  call getContentList method twice when the connection status changes', () => {
     const mockConnectionStatus = false;
     const mockObservable = observableOf(mockConnectionStatus);
     const spy = spyOn(connectionService, 'monitor').and.returnValue(mockObservable);
-    const componentMethod =  spyOn(component, 'getDownloadList').and.callThrough();
-    const serviceMethod =  spyOn(contentManagerService, 'getDownloadList').and.callThrough();
+    const componentMethod =  spyOn(component, 'getContentList').and.callThrough();
+    const serviceMethod =  spyOn(contentManagerService, 'getContentList').and.callThrough();
     connectionService.monitor().subscribe(connectionMonitor => {
       expect(connectionMonitor).toBe(mockConnectionStatus);
     });
@@ -73,36 +73,36 @@ describe('ContentManagerComponent', () => {
     expect(componentMethod).toHaveBeenCalledTimes(2);
     });
 
-  it('should go to contentManager service and call getDownloadList method', () => {
+  it('should go to contentManager service and call getContentList method', () => {
     contentManagerService = TestBed.get(ContentManagerService);
-   const componentMethod =  spyOn(component, 'getDownloadList').and.callThrough();
-   const serviceMethod =  spyOn(contentManagerService, 'getDownloadList').and.callThrough();
+   const componentMethod =  spyOn(component, 'getContentList').and.callThrough();
+   const serviceMethod =  spyOn(contentManagerService, 'getContentList').and.callThrough();
     component.ngOnInit();
     expect(serviceMethod).toHaveBeenCalledTimes(1);
     expect(componentMethod).toHaveBeenCalledTimes(1);
   });
 
-  it('should go to contentManager service and call getDownloadList method', () => {
+  it('should go to contentManager service and call getContentList method', () => {
     contentManagerService = TestBed.get(ContentManagerService);
-   const componentMethod =  spyOn(component, 'getDownloadList').and.callThrough();
-   const serviceMethod =  spyOn(contentManagerService, 'getDownloadList').and.callThrough();
+   const componentMethod =  spyOn(component, 'getContentList').and.callThrough();
+   const serviceMethod =  spyOn(contentManagerService, 'getContentList').and.callThrough();
     component.ngOnInit();
     expect(serviceMethod).toHaveBeenCalledTimes(1);
     expect(componentMethod).toHaveBeenCalledTimes(1);
   });
 
-   it('should not route getDownloadListUsingTimer', () => {
+   it('should not route getContentListUsingTimer', () => {
     const mockData = response.downloadListStatus;
     const mockObservableData = observableOf(mockData);
-    spyOn(contentManagerService, 'getDownloadList').and.returnValue(mockObservableData);
-    contentManagerService.getDownloadList().subscribe(responseData => {
+    spyOn(contentManagerService, 'getContentList').and.returnValue(mockObservableData);
+    contentManagerService.getContentList().subscribe(responseData => {
         expect(responseData).toBe(mockData);
-        component.downloadResponse = responseData;
+        component.contentResponse = responseData;
         component.localCount = responseData.result.response.downloads.inprogress.length +
                                responseData.result.response.downloads.submitted.length ;
         expect(component.localCount).toBe(0);
-        expect(component.downloadResponse).toBe(mockData);
-        const privateMethod = spyOn<any>(component, 'getDownloadListUsingTimer').and.callThrough();
+        expect(component.contentResponse).toBe(mockData);
+        const privateMethod = spyOn<any>(component, 'getContentListUsingTimer').and.callThrough();
         expect(privateMethod).not.toHaveBeenCalled();
     });
   });
@@ -110,7 +110,7 @@ describe('ContentManagerComponent', () => {
   it('should show No Downloads available label', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.frmelmnts = resourceMockData.frmelmnts;
-    component.downloadResponse = { inprogress : [], submitted: [], failed: [], completed: []};
+    component.contentResponse = { inprogress : [], submitted: [], failed: [], completed: []};
     fixture.detectChanges();
     const compiled = fixture.debugElement.query(By.css('.no-downloads'));
     expect(compiled.nativeElement.textContent).toBe(resourceMockData.frmelmnts.lbl.noDownloads);

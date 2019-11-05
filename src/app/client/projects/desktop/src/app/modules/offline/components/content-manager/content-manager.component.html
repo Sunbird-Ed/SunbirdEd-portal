@@ -8,9 +8,9 @@
         <i class="chevron up icon d-flex flex-ai-center"></i>
       </div>
     </div>
-    <div content *ngIf="downloadResponse">
+    <div content *ngIf="contentResponse">
       <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of downloadResponse.inprogress | orderBy:'createdOn': true">
+        *ngFor="let data of contentResponse.inprogress | orderBy:'createdOn': true">
         <div class="download-details-container">
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text">{{data.name}}</div>
@@ -18,14 +18,14 @@
               class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
               (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;"
               [disabled]="data.pauseStatus === contentStatus.pausing" appTelemetryInteract
-              [telemetryInteractEdata]="pauseInteractData">
+              [telemetryInteractEdata]="pauseInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
               {{data.pauseStatus || contentStatus.pause}}
             </button>
             <button *ngIf="data.addedUsing === 'import'" type="button"
               class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
               (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
               [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
-              [telemetryInteractEdata]="cancelInteractData">
+              [telemetryInteractEdata]="cancelInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
               {{data.cancelStatus || contentStatus.cancel}}
             </button>
           </div>
@@ -43,7 +43,7 @@
       </div>
 
       <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of downloadResponse.resume | orderBy:'createdOn': true">
+        *ngFor="let data of contentResponse.resume | orderBy:'createdOn': true">
         <div class="download-details-container">
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text">{{data.name}}</div>
@@ -51,14 +51,14 @@
               class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
               (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;"
               [disabled]="data.pauseStatus === contentStatus.pausing" appTelemetryInteract
-              [telemetryInteractEdata]="pauseInteractData">
+              [telemetryInteractEdata]="pauseInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
               {{data.pauseStatus || contentStatus.pause}}
             </button>
             <button *ngIf="data.addedUsing === 'import'" type="button"
               class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
               (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
               [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
-              [telemetryInteractEdata]="cancelInteractData">
+              [telemetryInteractEdata]="cancelInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
               {{data.cancelStatus || contentStatus.cancel}}
             </button>
           </div>
@@ -76,7 +76,7 @@
       </div>
 
       <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of downloadResponse.paused | orderBy:'createdOn': true">
+        *ngFor="let data of contentResponse.paused | orderBy:'createdOn': true">
         <div class="download-details-container">
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text">{{data.name}}</div>
@@ -84,7 +84,7 @@
               class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
               (click)="resumeImportContent(data.id); data.resumeStatus = contentStatus.resuming;"
               [disabled]="data.resumeStatus === contentStatus.resuming" appTelemetryInteract
-              [telemetryInteractEdata]="resumeInteractData">
+              [telemetryInteractEdata]="resumeInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
               {{data.resumeStatus || contentStatus.resume}}
             </button>
             <button *ngIf="data.addedUsing === 'import'" type="button"
@@ -92,7 +92,7 @@
               (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
               [disabled]="data.cancelStatus === contentStatus.canceling"
               [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
-              [telemetryInteractEdata]="cancelInteractData">
+              [telemetryInteractEdata]="cancelInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
               {{data.cancelStatus || contentStatus.cancel}}
             </button>
           </div>
@@ -103,14 +103,14 @@
       </div>
 
       <!-- <div class="sb-single-pannel-accordion-list-item"
-        *ngIf="!downloadResponse.inprogress.length && !downloadResponse.submitted.length && !downloadResponse.completed.length && !downloadResponse.failed.length">
+        *ngIf="!contentResponse.inprogress.length && !contentResponse.submitted.length && !contentResponse.completed.length && !contentResponse.failed.length">
         <div class="d-flex flex-ai-center flex-basis-100">
           <div class="no-downloads">{{resourceService?.frmelmnts?.lbl?.noDownloads}}</div>
         </div>
       </div> -->
 
       <div class="sb-single-pannel-accordion-list-item flex-ai-center"
-        *ngFor="let data of downloadResponse.failed | orderBy:'createdOn': true">
+        *ngFor="let data of contentResponse.failed | orderBy:'createdOn': true">
         <div class="download-details-container">
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text mr-auto">{{data.name}}</div>
@@ -124,7 +124,7 @@
       </div>
 
       <!-- <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of downloadResponse.canceled | orderBy:'createdOn': true">
+        *ngFor="let data of contentResponse.canceled | orderBy:'createdOn': true">
         <i class="check circle icon success-icon mr-8 fs-1-429"></i>
         <div class="download-details-container">
           <div class="d-flex flex-ai-center flex-w-wrap">
@@ -138,7 +138,7 @@
       </div> -->
 
       <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of downloadResponse.submitted | orderBy:'createdOn': true">
+        *ngFor="let data of contentResponse.submitted | orderBy:'createdOn': true">
         <div class="download-details-container">
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text mr-auto">{{data.name}}
@@ -146,7 +146,7 @@
             <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
               (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
               [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
-              [telemetryInteractEdata]="cancelInteractData">
+              [telemetryInteractEdata]="cancelInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
               {{data.cancelStatus || contentStatus.cancel}}
             </button>
           </div>
@@ -161,7 +161,7 @@
       </div>
       ​
       <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of downloadResponse.completed | orderBy:'createdOn': true">
+        *ngFor="let data of contentResponse.completed | orderBy:'createdOn': true">
         <i class="check circle icon success-icon mr-8 fs-1-429"></i>
         <div class="download-details-container">
           <div class="d-flex flex-ai-center flex-w-wrap">

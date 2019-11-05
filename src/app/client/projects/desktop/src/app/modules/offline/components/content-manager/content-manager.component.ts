@@ -16,7 +16,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 })
 export class ContentManagerComponent implements OnInit {
 
-  downloadResponse: any;
+  contentResponse: any;
   isConnected: boolean = navigator.onLine;
   isOpen = false;
   count = 0;
@@ -53,28 +53,28 @@ export class ContentManagerComponent implements OnInit {
   ngOnInit() {
     this.setTelemetryInteractData();
     // Call download list initailly
-    this.getDownloadList();
+    this.getContentList();
 
     // Subscribe connection service to check online/offline and call download list
     this.connectionService.monitor().subscribe(isConnected => {
       this.isConnected = isConnected;
-      this.getDownloadList();
+      this.getContentList();
     });
 
     // Call download list when clicked on add to library
     this.contentManagerService.downloadEvent.subscribe((data) => {
       this.isOpen = true;
-      this.getDownloadList();
+      this.getContentList();
     });
   }
 
-  getDownloadList() {
-    this.contentManagerService.getDownloadList().subscribe(
+  getContentList() {
+    this.contentManagerService.getContentList().subscribe(
       (apiResponse: any) => {
-        this.downloadResponse = apiResponse.result.response.downloads;
+        this.contentResponse = apiResponse.result.response.downloads;
         this.localCount = apiResponse.result.response.downloads.inprogress.length + apiResponse.result.response.downloads.submitted.length;
         if (this.localCount > 0 && this.isConnected) {
-          this.getDownloadListUsingTimer();
+          this.getContentListUsingTimer();
         }
       });
   }
@@ -85,10 +85,10 @@ export class ContentManagerComponent implements OnInit {
       delay(2000), // wait for user to see canceling
     ).subscribe(
       (apiResponse: any) => {
-        this.getDownloadList();
+        this.getContentList();
       },
       (err) => {
-        this.getDownloadList();
+        this.getContentList();
       });
   }
 
@@ -98,10 +98,10 @@ export class ContentManagerComponent implements OnInit {
       delay(2000), // wait for user to see pausing
     ).subscribe(
       (apiResponse: any) => {
-        this.getDownloadList();
+        this.getContentList();
       },
       (err) => {
-        this.getDownloadList();
+        this.getContentList();
       });
   }
 
@@ -111,25 +111,25 @@ export class ContentManagerComponent implements OnInit {
       delay(2000), // wait for user to see resuming
     ).subscribe(
       (apiResponse: any) => {
-        this.getDownloadList();
+        this.getContentList();
       },
       (err) => {
-        this.getDownloadList();
+        this.getContentList();
       });
   }
 
-  private getDownloadListUsingTimer() {
+  private getContentListUsingTimer() {
     const result = timer(1, 2000).pipe(
-      switchMap(() => this.contentManagerService.getDownloadList())
+      switchMap(() => this.contentManagerService.getContentList())
     );
 
     this.subscription = result.subscribe(
       (apiResponse: any) => {
-        this.downloadResponse = apiResponse.result.response.downloads;
+        this.contentResponse = apiResponse.result.response.downloads;
         this.count = apiResponse.result.response.downloads.inprogress.length + apiResponse.result.response.downloads.submitted.length;
         if ((this.localCount > this.count) || !this.isConnected) {
           this.subscription.unsubscribe();
-          this.getDownloadList();
+          this.getContentList();
         }
       });
   }

@@ -17,7 +17,7 @@ export class ContentManagerService {
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService) { }
 
-  getDownloadList() {
+  getContentList() {
     const downloadListOptions = {
       url: this.configService.urlConFig.URLS.OFFLINE.DOWNLOAD_LIST,
       data: {}
