@@ -323,21 +323,16 @@ export class UserLocationComponent implements OnInit {
   }
 
   setTelemetryData() {
+    this.mergeIntractEdata = {
+      type: 'click',
+      suggestionType: this.suggestionType,
+      isLocationChanged: this.isLocationChanged
+    };
     if (this.isDeviceProfileUpdateAllowed) {
-      this.mergeIntractEdata = {
-        id: 'update-device-profile',
-        type: 'click',
-        suggestionType: this.suggestionType,
-        isLocationChanged: this.isLocationChanged
-      };
+      this.mergeIntractEdata.id = 'update-device-profile';
     }
     if (this.isUserProfileUpdateAllowed) {
-      this.mergeIntractEdata = {
-        id: 'update-user-profile',
-        type: 'click',
-        suggestionType: this.suggestionType,
-        isLocationChanged: this.isLocationChanged
-      };
+      this.mergeIntractEdata.id = 'update-user-profile';
     }
     this.telemetryCdata = [
       { id: 'user:state:districtConfimation', type: 'Feature' },
@@ -354,10 +349,10 @@ export class UserLocationComponent implements OnInit {
     }
     const event = {
       context: {
-        env: 'app'
+        env: 'portal'
       },
       edata: {
-        type: 'enroll-batch',
+        type: 'update-location',
         level: level,
         message: msg
       }
