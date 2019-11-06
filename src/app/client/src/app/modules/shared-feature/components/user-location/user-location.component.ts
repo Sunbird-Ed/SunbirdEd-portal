@@ -278,7 +278,8 @@ export class UserLocationComponent implements OnInit {
     forkJoin([response1, response2]).subscribe((res) => {
       if (res[0] !== {}) {
         this.telemetryLogEvents('Device Profile', true);
-      } else if (res[1] !== {}) {
+      }
+      if (res[1] !== {}) {
         this.telemetryLogEvents('User Profile', true);
       }
       this.closeModal();
@@ -286,7 +287,8 @@ export class UserLocationComponent implements OnInit {
     }, (err) => {
       if (err[0] !== {}) {
         this.telemetryLogEvents('Device Profile', false);
-      } else if (err[1] !== {}) {
+      }
+      if (err[1] !== {}) {
         this.telemetryLogEvents('User Profile', false);
       }
       this.closeModal();
