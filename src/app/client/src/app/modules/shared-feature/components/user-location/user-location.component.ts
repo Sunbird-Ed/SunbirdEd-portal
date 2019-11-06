@@ -276,11 +276,10 @@ export class UserLocationComponent implements OnInit {
     response1 = this.updateDeviceProfileData(data, locationDetails);
     const response2 = this.updateUserProfileData(data);
     forkJoin([response1, response2]).subscribe((res) => {
-      console.log('response', res[0]);
       if (res[0] !== {}) {
         this.telemetryLogEvents('Device Profile', true);
       } else {
-        this.telemetryLogEvents('Device Profile', true);
+        this.telemetryLogEvents('User Profile', true);
       }
       this.closeModal();
       this.toasterService.success(this.resourceService.messages.smsg.m0046);
@@ -288,7 +287,7 @@ export class UserLocationComponent implements OnInit {
       if (err[0] !== {}) {
         this.telemetryLogEvents('Device Profile', false);
       } else {
-        this.telemetryLogEvents('Device Profile', false);
+        this.telemetryLogEvents('User Profile', false);
       }
       this.closeModal();
       this.toasterService.error(this.resourceService.messages.emsg.m0018);
