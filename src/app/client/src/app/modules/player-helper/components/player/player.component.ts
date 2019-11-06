@@ -90,7 +90,6 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           }
         }
       };
-      // window.addEventListener('renderer:question:sumbitscore', test => this.generateScoreSubmitEvent(event));
     }, 0);
   }
   /**
