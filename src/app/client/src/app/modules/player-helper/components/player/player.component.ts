@@ -61,7 +61,8 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          playerElement.addEventListener('question:score:submit', telemetryEvent => this.generateScoreSubmitEvent(telemetryEvent));
+          //playerElement.addEventListener('question:score:submit', telemetryEvent => this.generateScoreSubmitEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', event => this.generateScoreSubmitEvent(event), false);
         } catch (err) {
           console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();
@@ -79,7 +80,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          playerElement.addEventListener('question:score:submit', telemetryEvent => this.generateScoreSubmitEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', event => this.generateScoreSubmitEvent(event), false);
         } catch (err) {
           console.log('loading default player failed', err);
           const prevUrls = this.navigationHelperService.history;
@@ -88,6 +89,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           }
         }
       };
+      // window.addEventListener('renderer:question:sumbitscore', test => this.generateScoreSubmitEvent(event));
     }, 0);
   }
   /**
@@ -121,6 +123,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   }
 
   generateScoreSubmitEvent(event: any) {
+    if(event.data === 'renderer:question:sumbitscore')
     this.questionScoreSubmitEvents.emit(event);
   }
 
