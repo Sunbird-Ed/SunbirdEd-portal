@@ -123,8 +123,8 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   }
 
   generateScoreSubmitEvent(event: any) {
-    if(event.data === this.assessEvent)
-    this.questionScoreSubmitEvents.emit(event);
+    if (event.data === this.assessEvent)
+      this.questionScoreSubmitEvents.emit(event);
   }
 
   generateContentReadEvent(event: any) {
