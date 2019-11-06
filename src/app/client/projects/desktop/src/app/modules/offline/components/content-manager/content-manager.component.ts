@@ -21,6 +21,7 @@ export class ContentManagerComponent implements OnInit {
   isOpen = false;
   count = 0;
   localCount: 0;
+  statusArray = [];
   telemetryInteractEdata: IInteractEventEdata = {
     id: 'content-click',
     type: 'click',
@@ -71,11 +72,14 @@ export class ContentManagerComponent implements OnInit {
   getContentList() {
     this.contentManagerService.getContentList().subscribe(
       (apiResponse: any) => {
-        this.contentResponse = apiResponse.result.response.downloads;
-        this.localCount = apiResponse.result.response.downloads.inprogress.length + apiResponse.result.response.downloads.submitted.length;
-        if (this.localCount > 0 && this.isConnected) {
+        this.contentResponse = apiResponse.result.response.contents;
+
+
+        // this.localCount = apiResponse.result.response.downloads.inprogress.length +
+        // apiResponse.result.response.downloads.submitted.length;
+        // if (this.localCount > 0 && this.isConnected) {
           this.getContentListUsingTimer();
-        }
+        // }
       });
   }
 
@@ -125,12 +129,12 @@ export class ContentManagerComponent implements OnInit {
 
     this.subscription = result.subscribe(
       (apiResponse: any) => {
-        this.contentResponse = apiResponse.result.response.downloads;
-        this.count = apiResponse.result.response.downloads.inprogress.length + apiResponse.result.response.downloads.submitted.length;
-        if ((this.localCount > this.count) || !this.isConnected) {
-          this.subscription.unsubscribe();
-          this.getContentList();
-        }
+        this.contentResponse = apiResponse.result.response.contents;
+        // this.count = apiResponse.result.response.downloads.inprogress.length + apiResponse.result.response.downloads.submitted.length;
+        // if ((this.localCount > this.count) || !this.isConnected) {
+          // this.subscription.unsubscribe();
+          // this.getContentList();
+        // }
       });
   }
 
