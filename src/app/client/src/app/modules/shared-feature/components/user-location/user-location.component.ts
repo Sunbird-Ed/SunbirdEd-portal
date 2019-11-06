@@ -326,15 +326,17 @@ export class UserLocationComponent implements OnInit {
 
   setTelemetryData() {
     this.mergeIntractEdata = {
+      id: 'user-state-districtConfimation',
       type: 'click',
       suggestionType: this.suggestionType,
-      isLocationChanged: this.isLocationChanged
+      isLocationChanged: this.isLocationChanged,
+      locationUpdateType: []
     };
     if (this.isDeviceProfileUpdateAllowed) {
-      this.mergeIntractEdata.id = 'update-device-profile';
+      this.mergeIntractEdata.locationUpdateType.push('update-device-profile');
     }
     if (this.isUserProfileUpdateAllowed) {
-      this.mergeIntractEdata.id = 'update-user-profile';
+      this.mergeIntractEdata.locationUpdateType.push('update-user-profile');
     }
     this.telemetryCdata = [
       { id: 'user:state:districtConfimation', type: 'Feature' },
