@@ -4,7 +4,7 @@ import {FormBuilder, Validators, FormGroup, FormControl} from '@angular/forms';
 import {DeviceRegisterService, UserService} from '@sunbird/core';
 import {ProfileService} from '@sunbird/profile';
 import * as _ from 'lodash-es';
-import {IInteractEventEdata, IInteractEventObject} from '@sunbird/telemetry';
+import {TelemetryService, IInteractEventEdata, IInteractEventObject} from '@sunbird/telemetry';
 import {map} from 'rxjs/operators';
 import {of, forkJoin} from 'rxjs';
 
@@ -36,16 +36,21 @@ export class UserLocationComponent implements OnInit {
   public suggestionType: any;
   public tempLocation: any;
   public isLocationChanged = false;
+  public interval: any;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
               formBuilder: FormBuilder, public profileService: ProfileService,
-              public userService: UserService, public deviceRegisterService: DeviceRegisterService) {
+              public userService: UserService, public deviceRegisterService: DeviceRegisterService,
+              private telemetryService: TelemetryService) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
     this.initializeFormFields();
     this.getState();
+    this.interval = setInterval(() => {
+      this.setTelemetryData();
+    }, 500);
   }
 
   initializeFormFields() {
@@ -153,7 +158,7 @@ export class UserLocationComponent implements OnInit {
         }
       }
     } else {
-      if (!this.deviceProfile.userDeclaredLocation) {
+      if (!(this.deviceProfile && this.deviceProfile.userDeclaredLocation)) {
         this.setSelectedLocation(this.deviceProfile.ipLocation, false, true);
         // render using ip
         // update device profile only
@@ -271,9 +276,20 @@ export class UserLocationComponent implements OnInit {
     response1 = this.updateDeviceProfileData(data, locationDetails);
     const response2 = this.updateUserProfileData(data);
     forkJoin([response1, response2]).subscribe((res) => {
+      console.log('response', res[0]);
+      if (res[0] !== {}) {
+        this.telemetryLogEvents('Device Profile', true);
+      } else {
+        this.telemetryLogEvents('Device Profile', true);
+      }
       this.closeModal();
       this.toasterService.success(this.resourceService.messages.smsg.m0046);
-    }, () => {
+    }, (err) => {
+      if (err[0] !== {}) {
+        this.telemetryLogEvents('Device Profile', false);
+      } else {
+        this.telemetryLogEvents('Device Profile', false);
+      }
       this.closeModal();
       this.toasterService.error(this.resourceService.messages.emsg.m0018);
     });
@@ -308,16 +324,50 @@ export class UserLocationComponent implements OnInit {
   }
 
   setTelemetryData() {
+    if (this.isDeviceProfileUpdateAllowed) {
+      this.mergeIntractEdata = {
+        id: 'update-device-profile',
+        type: 'click',
+        suggestionType: this.suggestionType,
+        isLocationChanged: this.isLocationChanged
+      };
+    }
+    if (this.isUserProfileUpdateAllowed) {
+      this.mergeIntractEdata = {
+        id: 'update-user-profile',
+        type: 'click',
+        suggestionType: this.suggestionType,
+        isLocationChanged: this.isLocationChanged
+      };
+    }
     this.telemetryCdata = [
       { id: 'user:state:districtConfimation', type: 'Feature' },
       { id: 'SC-1373', type: 'Task' }
     ];
-    this.mergeIntractEdata = {
-      id: 'user-state-districtConfimation',
-      type: 'click',
-      suggestionType: this.suggestionType,
-      isLocationChanged: this.isLocationChanged
-    };
-    this.updateUserLocation();
   }
+
+  telemetryLogEvents(locationType: any, status: boolean) {
+    let level = 'ERROR';
+    let msg = 'Updation of '+locationType+' failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = 'Updation of '+locationType+' success';
+    }
+    const event = {
+      context: {
+        env: 'app'
+      },
+      edata: {
+        type: 'enroll-batch',
+        level: level,
+        message: msg
+      }
+    };
+    this.telemetryService.log(event);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+  }
+
 }
