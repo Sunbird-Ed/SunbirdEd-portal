@@ -9,168 +9,86 @@
       </div>
     </div>
     <div content *ngIf="contentResponse">
-      <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of contentResponse.inprogress | orderBy:'createdOn': true">
-        <div class="download-details-container">
-          <div class="d-flex flex-ai-center flex-w-wrap">
-            <div class="download-text">{{data.name}}</div>
-            <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
-              (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;"
-              [disabled]="data.pauseStatus === contentStatus.pausing" appTelemetryInteract
-              [telemetryInteractEdata]="pauseInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
-              {{data.pauseStatus || contentStatus.pause}}
-            </button>
-            <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
-              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
-              [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
-              [telemetryInteractEdata]="cancelInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
-              {{data.cancelStatus || contentStatus.cancel}}
-            </button>
-          </div>
-          <div *ngIf="data.addedUsing !== 'import'" class="info-text">
-            {{resourceService?.frmelmnts?.lbl?.downloading}}
-            {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
-          <div *ngIf="data.addedUsing === 'import'" class="info-text">
-            {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
-          <sui-progress *ngIf="data.addedUsing !== 'import'"
-            [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-0 mt-8">
-          </sui-progress>
-          <sui-progress *ngIf="data.addedUsing === 'import'" [value]="data.downloadedSize" [maximum]="100"
-            class="mb-0 mr-0 mt-8"></sui-progress>
-        </div>
-      </div>
-
-      <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of contentResponse.resume | orderBy:'createdOn': true">
-        <div class="download-details-container">
-          <div class="d-flex flex-ai-center flex-w-wrap">
-            <div class="download-text">{{data.name}}</div>
-            <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
-              (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;"
-              [disabled]="data.pauseStatus === contentStatus.pausing" appTelemetryInteract
-              [telemetryInteractEdata]="pauseInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
-              {{data.pauseStatus || contentStatus.pause}}
-            </button>
-            <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
-              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
-              [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
-              [telemetryInteractEdata]="cancelInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
-              {{data.cancelStatus || contentStatus.cancel}}
-            </button>
-          </div>
-          <div *ngIf="data.addedUsing !== 'import'" class="info-text">
-            {{resourceService?.frmelmnts?.lbl?.downloading}}
-            {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
-          <div *ngIf="data.addedUsing === 'import'" class="info-text">
-            {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
-          <sui-progress *ngIf="data.addedUsing !== 'import'"
-            [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-0 mt-8">
-          </sui-progress>
-          <sui-progress *ngIf="data.addedUsing === 'import'" [value]="data.downloadedSize" [maximum]="100"
-            class="mb-0 mr-0 mt-8"></sui-progress>
-        </div>
-      </div>
-
-      <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of contentResponse.paused | orderBy:'createdOn': true">
-        <div class="download-details-container">
-          <div class="d-flex flex-ai-center flex-w-wrap">
-            <div class="download-text">{{data.name}}</div>
-            <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
-              (click)="resumeImportContent(data.id); data.resumeStatus = contentStatus.resuming;"
-              [disabled]="data.resumeStatus === contentStatus.resuming" appTelemetryInteract
-              [telemetryInteractEdata]="resumeInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
-              {{data.resumeStatus || contentStatus.resume}}
-            </button>
-            <button *ngIf="data.addedUsing === 'import'" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
-              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
-              [disabled]="data.cancelStatus === contentStatus.canceling"
-              [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
-              [telemetryInteractEdata]="cancelInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
-              {{data.cancelStatus || contentStatus.cancel}}
-            </button>
-          </div>
-
-          <div class="info-text">
-            {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
-        </div>
-      </div>
-
-      <!-- <div class="sb-single-pannel-accordion-list-item"
-        *ngIf="!contentResponse.inprogress.length && !contentResponse.submitted.length && !contentResponse.completed.length && !contentResponse.failed.length">
-        <div class="d-flex flex-ai-center flex-basis-100">
-          <div class="no-downloads">{{resourceService?.frmelmnts?.lbl?.noDownloads}}</div>
-        </div>
-      </div> -->
-
       <div class="sb-single-pannel-accordion-list-item flex-ai-center"
-        *ngFor="let data of contentResponse.failed | orderBy:'createdOn': true">
+        *ngFor="let data of contentResponse | orderBy:'createdOn': true">
+        <i class="check circle icon success-icon mr-8 fs-1-429" *ngIf="data.status === 'completed'"></i>
         <div class="download-details-container">
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text mr-auto">{{data.name}}</div>
+
+            <!-- Buttons -->
+            <button *ngIf="data.addedUsing === 'import' && (data.status === 'inProgress' || data.status === 'resume')"
+              type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
+              (click)="pauseImportContent(data.id); data.pauseStatus = contentStatus.pausing;"
+              [disabled]="data.pauseStatus === contentStatus.pausing" appTelemetryInteract
+              [telemetryInteractEdata]="pauseInteractData"
+              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
+              {{data.pauseStatus || contentStatus.pause}}
+            </button>
+
+            <button *ngIf="data.addedUsing === 'import' && data.status === 'paused'" type="button"
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
+              (click)="resumeImportContent(data.id); data.resumeStatus = contentStatus.resuming;"
+              [disabled]="data.resumeStatus === contentStatus.resuming" appTelemetryInteract
+              [telemetryInteractEdata]="resumeInteractData"
+              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
+              {{data.resumeStatus || contentStatus.resume}}
+            </button>
+
+            <button *ngIf="data.addedUsing === 'import' && (data.status !== 'completed' && data.status !== 'failed')"
+              type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
+              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
+              [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
+              [telemetryInteractEdata]="cancelInteractData"
+              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
+              {{data.cancelStatus || contentStatus.cancel}}
+            </button>
+
             <!-- <button *ngIf="data.addedUsing === 'import'" type="button"
               class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8">
               Retry
             </button> -->
-          </div>
-          <div class="info-text" *ngIf="data.totalSize">{{data.totalSize | filesize}}</div>
-        </div>
-      </div>
 
-      <!-- <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of contentResponse.canceled | orderBy:'createdOn': true">
-        <i class="check circle icon success-icon mr-8 fs-1-429"></i>
-        <div class="download-details-container">
-          <div class="d-flex flex-ai-center flex-w-wrap">
-            <div class="download-text">{{data.name}}</div>
+            <!-- Buttons -->
           </div>
-          <div class="info-text" *ngIf="data.totalSize">{{data.totalSize | filesize}}</div>
-          <div class="fs-0-785 sb-color-success">
-            {{contentStatus.canceled}}
-          </div>
-        </div>
-      </div> -->
 
-      <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of contentResponse.submitted | orderBy:'createdOn': true">
-        <div class="download-details-container">
-          <div class="d-flex flex-ai-center flex-w-wrap">
-            <div class="download-text mr-auto">{{data.name}}
-            </div>
-            <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
-              (click)="cancelImportContent(data.id); data.cancelStatus = contentStatus.canceling;"
-              [disabled]="data.cancelStatus === contentStatus.canceling" appTelemetryInteract
-              [telemetryInteractEdata]="cancelInteractData" [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:'1.0'}">
-              {{data.cancelStatus || contentStatus.cancel}}
-            </button>
+          <!-- File details -->
+          <div class="info-text" *ngIf="data.totalSize && data.status !== 'inProgress'">{{data.totalSize | filesize}}
           </div>
-          <div class="info-text">{{data.totalSize | filesize}}</div>
-          <div *ngIf="data.addedUsing === 'import'" class="fs-0-785 sb-color-warning">
-            {{resourceService?.frmelmnts?.lbl?.waitingForUpload}}
-          </div>
-          <div *ngIf="data.addedUsing !== 'import'" class="fs-0-785 sb-color-warning">
-            {{resourceService?.frmelmnts?.lbl?.waitingForDownload}}
-          </div>
-        </div>
-      </div>
-      ​
-      <div class="sb-single-pannel-accordion-list-item"
-        *ngFor="let data of contentResponse.completed | orderBy:'createdOn': true">
-        <i class="check circle icon success-icon mr-8 fs-1-429"></i>
-        <div class="download-details-container">
-          <div class="d-flex flex-ai-center flex-w-wrap">
-            <div class="download-text">{{data.name}}</div>
-          </div>
-          <div class="info-text" *ngIf="data.totalSize">{{data.totalSize | filesize}}</div>
-          <div class="fs-0-785 sb-color-success">
-            {{contentStatus.completed}}
-          </div>
+
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'inProgress'" class="info-text">
+            {{resourceService?.frmelmnts?.lbl?.downloading}} {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'inProgress'" class="info-text">
+            {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
+          <!-- File details -->
+
+          <!-- Progress bar -->
+          <sui-progress *ngIf="data.status === 'inProgress' && data.addedUsing === 'download'"
+            [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-0 mt-8">
+          </sui-progress>
+          <sui-progress *ngIf="data.status === 'inProgress' && data.addedUsing === 'import'"
+            [value]="data.downloadedSize" [maximum]="100" class="mb-0 mr-0 mt-8"></sui-progress>
+          <!-- Progress bar -->
+
+          <!-- Content status -->
+          <div *ngIf="data.status === 'paused' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
+            Upload paused. Click resume to continue. </div>
+
+          <div *ngIf="data.status === 'completed'" class="fs-0-785 sb-color-success"> {{contentStatus.completed}} </div>
+
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'failed'" class="fs-0-785 sb-color-error">
+            Download Failed. Try again </div>
+
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'failed'" class="fs-0-785 sb-color-error"> Upload
+            Failed. Try again </div>
+
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'inQueue'" class="fs-0-785 sb-color-warning">
+            {{resourceService?.frmelmnts?.lbl?.waitingForUpload}} </div>
+
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'inQueue'" class="fs-0-785 sb-color-warning">
+            {{resourceService?.frmelmnts?.lbl?.waitingForDownload}} </div>
+          <!-- Content status -->
         </div>
       </div>
     </div>
