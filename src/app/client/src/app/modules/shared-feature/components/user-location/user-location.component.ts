@@ -348,10 +348,10 @@ export class UserLocationComponent implements OnInit {
 
   telemetryLogEvents(locationType: any, status: boolean) {
     let level = 'ERROR';
-    let msg = 'Updation of '+locationType+' failed';
+    let msg = 'Updation of ' + locationType + ' failed';
     if (status) {
       level = 'SUCCESS';
-      msg = 'Updation of '+locationType+' success';
+      msg = 'Updation of ' + locationType + ' success';
     }
     const event = {
       context: {
