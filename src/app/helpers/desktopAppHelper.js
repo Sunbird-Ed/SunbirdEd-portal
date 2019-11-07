@@ -41,7 +41,8 @@ function getAppUpdate() {
                     let domain = protocol + '://' + host + (port === '' ? '' : ':' + port);
                     response.updateAvailable = true;
                     let artifactName = data[_.toLower(_.get(req, 'body.request.os'))][_.toLower(_.get(req, 'body.request.arch'))];
-                    response.url = `${domain}/desktop/latest/artifactUrl/${artifactName}`;
+                    response.version = _.get(data, 'version');
+                    response.url = `${domain}/desktop/latest/${artifactName}`;
                 }
 
                 res.status(200).send({
