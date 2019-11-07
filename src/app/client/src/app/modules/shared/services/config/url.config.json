@@ -174,9 +174,9 @@
       "EXPORT": "content/v1/export",
       "UPDATE":"content/v1/update",
       "APP_UPDATE": "desktop/v1/update",
-      "RESUME_IMPORT":"content/v2/import/resume",
-      "CANCEL_IMPORT":"content/v2/import/cancel",
-      "PAUSE_IMPORT":"content/v2/import/pause"
+      "RESUME_IMPORT":"content/v1/import/resume",
+      "CANCEL_IMPORT":"content/v1/import/cancel",
+      "PAUSE_IMPORT":"content/v1/import/pause"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",

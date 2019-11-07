@@ -2,9 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { timer } from 'rxjs';
-import { switchMap, delay } from 'rxjs/operators';
+import { switchMap, delay, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { ContentManagerService } from '../../services';
+import { ContentManagerService, ElectronDialogService } from '../../services';
 import { ConnectionService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -20,23 +20,12 @@ export class ContentManagerComponent implements OnInit {
   isConnected: boolean = navigator.onLine;
   isOpen = false;
   count = 0;
-  localCount: 0;
-  statusArray = [];
+  localCount = 0;
+  contentStatusObject = {};
   telemetryInteractEdata: IInteractEventEdata = {
     id: 'content-click',
     type: 'click',
     pageid: 'content-manager'
-  };
-
-  contentStatus = {
-    pause: this.resourceService.frmelmnts.btn.pause,
-    pausing: this.resourceService.frmelmnts.btn.pausing,
-    resume: this.resourceService.frmelmnts.btn.resume,
-    resuming: this.resourceService.frmelmnts.btn.resuming,
-    cancel: this.resourceService.frmelmnts.btn.cancel,
-    canceling: this.resourceService.frmelmnts.btn.canceling,
-    canceled: this.resourceService.frmelmnts.btn.canceled,
-    completed: this.resourceService.frmelmnts.btn.completed
   };
 
   subscription: any;
@@ -46,7 +35,7 @@ export class ContentManagerComponent implements OnInit {
 
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
-    public connectionService: ConnectionService,
+    public connectionService: ConnectionService, public electronDialogService: ElectronDialogService,
     public configService: ConfigService,
     public activatedRoute: ActivatedRoute,
     public router: Router) { }
@@ -62,80 +51,125 @@ export class ContentManagerComponent implements OnInit {
       this.getContentList();
     });
 
-    // Call download list when clicked on add to library
+    // Call content list when clicked on add to library
     this.contentManagerService.downloadEvent.subscribe((data) => {
+      this.isOpen = true;
+      this.getContentList();
+    });
+
+    // Call content list while uploading content
+    this.electronDialogService.uploadEvent.subscribe((data) => {
       this.isOpen = true;
       this.getContentList();
     });
   }
 
   getContentList() {
-    this.contentManagerService.getContentList().subscribe(
-      (apiResponse: any) => {
-        this.contentResponse = apiResponse.result.response.contents;
-
-
-        // this.localCount = apiResponse.result.response.downloads.inprogress.length +
-        // apiResponse.result.response.downloads.submitted.length;
-        // if (this.localCount > 0 && this.isConnected) {
-          this.getContentListUsingTimer();
-        // }
-      });
-  }
-
-  cancelImportContent(importId) {
-    this.subscription.unsubscribe();
-    this.contentManagerService.cancelImportContent(importId).pipe(
-      delay(2000), // wait for user to see canceling
-    ).subscribe(
-      (apiResponse: any) => {
-        this.getContentList();
-      },
-      (err) => {
-        this.getContentList();
-      });
-  }
-
-  pauseImportContent(importId) {
-    this.subscription.unsubscribe();
-    this.contentManagerService.pauseImportContent(importId).pipe(
-      delay(2000), // wait for user to see pausing
-    ).subscribe(
-      (apiResponse: any) => {
-        this.getContentList();
-      },
-      (err) => {
-        this.getContentList();
-      });
-  }
-
-  resumeImportContent(importId) {
-    this.subscription.unsubscribe();
-    this.contentManagerService.resumeImportContent(importId).pipe(
-      delay(2000), // wait for user to see resuming
-    ).subscribe(
-      (apiResponse: any) => {
-        this.getContentList();
-      },
-      (err) => {
-        this.getContentList();
-      });
+    this.contentManagerService.getContentList()
+      .pipe(
+        map((resp: any) => {
+          this.localCount = 0;
+          _.forEach(_.get(resp, 'result.response.contents'), (value) => {
+            const data = this.contentStatusObject[value.id];
+            if (data) { value.status = data.currentStatus; }
+            if (value.status === 'inProgress' || value.status === 'inQueue' ||
+              value.status === 'resume' || value.status === 'resuming') {
+              this.localCount++;
+            }
+          });
+          return _.get(resp, 'result.response.contents');
+        }))
+      .subscribe(
+        (apiResponse: any) => {
+          this.contentResponse = apiResponse;
+          if (this.localCount && this.isConnected) {
+            this.getContentListUsingTimer();
+          }
+        });
   }
 
   private getContentListUsingTimer() {
-    const result = timer(1, 2000).pipe(
+    const result = timer(1, 3000).pipe(
       switchMap(() => this.contentManagerService.getContentList())
     );
 
-    this.subscription = result.subscribe(
+    this.subscription = result
+      .pipe(
+        map((resp: any) => {
+          this.count = 0;
+          _.forEach(_.get(resp, 'result.response.contents'), (value) => {
+            const data = this.contentStatusObject[value.id];
+            if (data) { value.status = data.currentStatus; }
+            if (value.status === 'inProgress' || value.status === 'inQueue' ||
+              value.status === 'resume' || value.status === 'resuming') {
+              this.count++;
+            }
+          });
+          return _.get(resp, 'result.response.contents');
+        }))
+      .subscribe(
+        (apiResponse: any) => {
+          this.contentResponse = apiResponse;
+          if (this.count === 0 || !this.isConnected) {
+            this.subscription.unsubscribe();
+            this.getContentList();
+          }
+        });
+  }
+
+  updateLocalStatus(contentData, currentStatus) {
+    this.contentStatusObject[contentData.id] = {
+      currentStatus: currentStatus,
+      previousState: contentData.status
+    };
+    const data = _.find(this.contentResponse, { id: contentData.id });
+    data.status = currentStatus;
+  }
+
+  cancelImportContent(contentId) {
+    this.subscription.unsubscribe();
+    this.contentManagerService.cancelImportContent(contentId).subscribe(
       (apiResponse: any) => {
-        this.contentResponse = apiResponse.result.response.contents;
-        // this.count = apiResponse.result.response.downloads.inprogress.length + apiResponse.result.response.downloads.submitted.length;
-        // if ((this.localCount > this.count) || !this.isConnected) {
-          // this.subscription.unsubscribe();
-          // this.getContentList();
-        // }
+        this.getContentList();
+        this.deleteLocalContentStatus(contentId);
+      },
+      (err) => {
+        console.log('Unable to cancel');
+        this.getContentList();
+        this.deleteLocalContentStatus(contentId);
       });
+  }
+
+  pauseImportContent(contentId) {
+    this.subscription.unsubscribe();
+    this.contentManagerService.pauseImportContent(contentId).subscribe(
+      (apiResponse: any) => {
+        this.getContentList();
+        this.deleteLocalContentStatus(contentId);
+      },
+      (err) => {
+        console.log('Unable to pause');
+        this.getContentList();
+        this.deleteLocalContentStatus(contentId);
+      });
+  }
+
+  resumeImportContent(contentId) {
+    this.subscription.unsubscribe();
+    this.contentManagerService.resumeImportContent(contentId).subscribe(
+      (apiResponse: any) => {
+        this.getContentList();
+        this.deleteLocalContentStatus(contentId);
+      },
+      (err) => {
+        console.log('Unable to resume');
+        this.getContentList();
+        this.deleteLocalContentStatus(contentId);
+      });
+  }
+
+  deleteLocalContentStatus(contentId) {
+    delete this.contentStatusObject[contentId];
   }
 
   showProgressValue(progressSize, totalSize) {
@@ -143,15 +177,15 @@ export class ContentManagerComponent implements OnInit {
   }
 
   openContent(contentId, mimeType) {
-      if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        this.router.navigate(['play/collection', contentId]);
-      } else {
-        this.router.navigate(['play/content', contentId]);
-      }
+    if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      this.router.navigate(['play/collection', contentId]);
+    } else {
+      this.router.navigate(['play/content', contentId]);
+    }
   }
 
   getTelemetryInteractData() {
-    return  {
+    return {
       id: this.isOpen ? 'content-manager-close' : 'content-manager-open',
       type: 'click',
       pageid: 'content-manager'
@@ -175,5 +209,4 @@ export class ContentManagerComponent implements OnInit {
       pageid: 'content-manager'
     };
   }
-
 }

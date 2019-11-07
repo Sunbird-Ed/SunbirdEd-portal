@@ -169,9 +169,19 @@ export class PublicPlayerService {
   }
   updateDownloadStatus (downloadListdata, content) {
     const identifier = !_.isEmpty(content.metaData) ? _.get(content, 'metaData.identifier') : _.get(content, 'identifier');
-    const { inprogress = [], submitted= [], completed= [], failed= [] } = _.get(downloadListdata, 'result.response.downloads');
+    const inprogress = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'inProgress';
+    });
+    const submitted = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'inQueue';
+    });
+    const failed = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'failed';
+    });
+    const completed = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'completed';
+    });
     const compare = { resourceId: identifier };
-
     if (_.find(inprogress, compare) || _.find(submitted, compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     } else if (_.find(completed, compare)) {
