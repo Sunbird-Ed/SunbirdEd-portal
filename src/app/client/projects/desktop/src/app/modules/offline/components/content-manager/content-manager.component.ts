@@ -19,19 +19,19 @@ export class ContentManagerComponent implements OnInit {
   contentResponse: any;
   isConnected: boolean = navigator.onLine;
   isOpen = false;
-  count = 0;
-  localCount = 0;
+  callContentList = false;
+  callContentListTimer = false;
   contentStatusObject = {};
   telemetryInteractEdata: IInteractEventEdata = {
     id: 'content-click',
     type: 'click',
     pageid: 'content-manager'
   };
-
   subscription: any;
   pauseInteractData: IInteractEventEdata;
   cancelInteractData: IInteractEventEdata;
   resumeInteractData: IInteractEventEdata;
+  localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming'];
 
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -68,13 +68,13 @@ export class ContentManagerComponent implements OnInit {
     this.contentManagerService.getContentList()
       .pipe(
         map((resp: any) => {
-          this.localCount = 0;
+          this.callContentListTimer = false;
+          // Changing content status if local content status is changed
           _.forEach(_.get(resp, 'result.response.contents'), (value) => {
             const data = this.contentStatusObject[value.id];
             if (data) { value.status = data.currentStatus; }
-            if (value.status === 'inProgress' || value.status === 'inQueue' ||
-              value.status === 'resume' || value.status === 'resuming') {
-              this.localCount++;
+            if (_.includes(this.localStatusArr, value.status)) {
+              this.callContentListTimer = true;
             }
           });
           return _.get(resp, 'result.response.contents');
@@ -82,7 +82,7 @@ export class ContentManagerComponent implements OnInit {
       .subscribe(
         (apiResponse: any) => {
           this.contentResponse = apiResponse;
-          if (this.localCount && this.isConnected) {
+          if (this.callContentListTimer && this.isConnected) {
             this.getContentListUsingTimer();
           }
         });
@@ -96,13 +96,13 @@ export class ContentManagerComponent implements OnInit {
     this.subscription = result
       .pipe(
         map((resp: any) => {
-          this.count = 0;
+          this.callContentList = false;
+          // Changing content status if local content status is changed
           _.forEach(_.get(resp, 'result.response.contents'), (value) => {
             const data = this.contentStatusObject[value.id];
             if (data) { value.status = data.currentStatus; }
-            if (value.status === 'inProgress' || value.status === 'inQueue' ||
-              value.status === 'resume' || value.status === 'resuming') {
-              this.count++;
+            if (_.includes(this.localStatusArr, value.status)) {
+              this.callContentList = true;
             }
           });
           return _.get(resp, 'result.response.contents');
@@ -110,7 +110,7 @@ export class ContentManagerComponent implements OnInit {
       .subscribe(
         (apiResponse: any) => {
           this.contentResponse = apiResponse;
-          if (this.count === 0 || !this.isConnected) {
+          if (this.callContentList === false || !this.isConnected) {
             this.subscription.unsubscribe();
             this.getContentList();
           }
@@ -134,7 +134,7 @@ export class ContentManagerComponent implements OnInit {
         this.deleteLocalContentStatus(contentId);
       },
       (err) => {
-        console.log('Unable to cancel');
+        this.toasterService.info(this.resourceService.messages.fmsg.m0097);
         this.getContentList();
         this.deleteLocalContentStatus(contentId);
       });
@@ -148,7 +148,7 @@ export class ContentManagerComponent implements OnInit {
         this.deleteLocalContentStatus(contentId);
       },
       (err) => {
-        console.log('Unable to pause');
+        this.toasterService.info(this.resourceService.messages.fmsg.m0097);
         this.getContentList();
         this.deleteLocalContentStatus(contentId);
       });
@@ -162,7 +162,7 @@ export class ContentManagerComponent implements OnInit {
         this.deleteLocalContentStatus(contentId);
       },
       (err) => {
-        console.log('Unable to resume');
+        this.toasterService.info(this.resourceService.messages.fmsg.m0097);
         this.getContentList();
         this.deleteLocalContentStatus(contentId);
       });
