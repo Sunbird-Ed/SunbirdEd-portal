@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ExploreContentComponent, ExploreComponent, LibraryComponent } from './components';
+import { ExploreContentComponent, ExploreComponent } from './components';
 import {ViewAllComponent} from '@sunbird/shared-feature';
 const routes: Routes = [
     {
