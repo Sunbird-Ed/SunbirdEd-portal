@@ -29,21 +29,21 @@ body {
 @include respond-above (lg){
   body{
     .footer-fix {
-      padding-bottom: $base-block-space * 7;
+      padding-bottom: 56px;
     }
   }
 }
 @include respond-between (md, lg){
   body{
     .footer-fix {
-      padding-bottom: $base-block-space * 8;
+      padding-bottom: 64px;
     }
   }
 }
 @include respond-between (sm, md){
   body{
     .footer-fix {
-      padding-bottom: $base-block-space * 14;
+      padding-bottom: 112px;
     }
   }
 }
