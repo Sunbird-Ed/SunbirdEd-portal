@@ -29,7 +29,6 @@ body {
 @include respond-above (lg){
   body{
     .footer-fix {
-      min-height: calc(100vh - 168px);
       padding-bottom: $base-block-space * 7;
     }
   }
@@ -37,7 +36,6 @@ body {
 @include respond-between (md, lg){
   body{
     .footer-fix {
-      min-height: calc(100vh - 168px);
       padding-bottom: $base-block-space * 8;
     }
   }
@@ -45,7 +43,6 @@ body {
 @include respond-between (sm, md){
   body{
     .footer-fix {
-      min-height: calc(100vh - 168px);
       padding-bottom: $base-block-space * 14;
     }
   }
