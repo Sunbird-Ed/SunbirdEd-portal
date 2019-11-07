@@ -25,7 +25,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   isCdnWorking: string;
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
-  }
+  };
   /**
  * Dom element reference of contentRatingModal
  */
