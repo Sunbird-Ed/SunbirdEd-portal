@@ -1,10 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ExploreContentComponent, ExploreComponent } from './components';
+import { ExploreContentComponent, ExploreComponent, LibraryComponent } from './components';
 import {ViewAllComponent} from '@sunbird/shared-feature';
 const routes: Routes = [
-  {
+    {
     path: '', component: ExploreComponent, data: {
+      telemetry: {
+        env: 'explore', pageid: 'explore', type: 'view', subtype: 'paginate'
+      },
+      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
+    }
+  },
+  {
+    path: 'library', component: LibraryComponent, data: {
       telemetry: {
         env: 'explore', pageid: 'explore', type: 'view', subtype: 'paginate'
       },
