@@ -3,7 +3,7 @@ import {SuiModule} from 'ng2-semantic-ui';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TelemetryModule} from '@sunbird/telemetry';
 import {UserLocationComponent} from './user-location.component';
-import {ResourceService, ToasterService, ConfigService, BrowserCacheTtlService} from '@sunbird/shared';
+import {ResourceService, ToasterService, ConfigService, BrowserCacheTtlService, NavigationHelperService} from '@sunbird/shared';
 import {ProfileService} from '@sunbird/profile';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {CacheService} from 'ng2-cache-service';
@@ -22,7 +22,7 @@ describe('UserLocationComponent', () => {
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [UserLocationComponent],
       providers: [ResourceService, ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService,
-        DeviceDetectorService]
+        NavigationHelperService, DeviceDetectorService]
     })
       .compileComponents();
   }));

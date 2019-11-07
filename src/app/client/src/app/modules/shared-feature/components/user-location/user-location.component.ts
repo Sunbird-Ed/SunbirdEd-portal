@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {HttpOptions, ResourceService, ToasterService} from '@sunbird/shared';
+import {HttpOptions, ResourceService, ToasterService, NavigationHelperService} from '@sunbird/shared';
 import {FormBuilder, Validators, FormGroup, FormControl} from '@angular/forms';
 import {DeviceRegisterService, UserService} from '@sunbird/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import {ProfileService} from '@sunbird/profile';
 import * as _ from 'lodash-es';
-import {TelemetryService, IInteractEventEdata, IInteractEventObject} from '@sunbird/telemetry';
+import {TelemetryService, IImpressionEventInput, IInteractEventEdata, IInteractEventObject} from '@sunbird/telemetry';
 import {map} from 'rxjs/operators';
 import {of, forkJoin} from 'rxjs';
 
@@ -32,6 +33,7 @@ export class UserLocationComponent implements OnInit {
   isDeviceProfileUpdateAllowed = false;
   isUserProfileUpdateAllowed = false;
   mergeIntractEdata: any;
+  telemetryImpression: IImpressionEventInput;
   public telemetryCdata: Array<{}> = [];
   public suggestionType: any;
   public tempLocation: any;
@@ -39,9 +41,9 @@ export class UserLocationComponent implements OnInit {
   public interval: any;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
-              formBuilder: FormBuilder, public profileService: ProfileService,
-              public userService: UserService, public deviceRegisterService: DeviceRegisterService,
-              private telemetryService: TelemetryService) {
+              formBuilder: FormBuilder, public profileService: ProfileService, private activatedRoute: ActivatedRoute,
+              public router: Router, public userService: UserService, public deviceRegisterService: DeviceRegisterService,
+              public navigationhelperService: NavigationHelperService, private telemetryService: TelemetryService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -51,6 +53,23 @@ export class UserLocationComponent implements OnInit {
     this.interval = setInterval(() => {
       this.setTelemetryData();
     }, 500);
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: 'sunbird'
+        },
+        edata: {
+          type: 'view',
+          pageid: this.router.url.split('/')[1],
+          uri: this.router.url,
+          subtype: 'paginate',
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   initializeFormFields() {
