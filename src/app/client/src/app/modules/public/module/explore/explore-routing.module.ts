@@ -12,14 +12,6 @@ const routes: Routes = [
     }
   },
   {
-    path: 'library', component: LibraryComponent, data: {
-      telemetry: {
-        env: 'explore', pageid: 'explore', type: 'view', subtype: 'paginate'
-      },
-      softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
-    }
-  },
-  {
     path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
     data: {
       telemetry: {

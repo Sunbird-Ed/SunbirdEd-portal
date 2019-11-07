@@ -13,7 +13,6 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { LibraryComponent } from './components/library/library.component';
 
 @NgModule({
   imports: [
@@ -27,7 +26,7 @@ import { LibraryComponent } from './components/library/library.component';
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule, CommonConsumptionModule
   ],
-  declarations: [ ExploreContentComponent, ExploreComponent, LibraryComponent],
+  declarations: [ ExploreContentComponent, ExploreComponent],
   exports: [ExploreComponent]
 })
 export class ExploreModule { }
