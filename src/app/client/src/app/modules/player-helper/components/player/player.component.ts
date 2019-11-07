@@ -23,6 +23,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   contentRatingModal = false;
   previewCdnUrl: string;
   isCdnWorking: string;
+  assessEvent = 'renderer:question:submitscore';
   /**
  * Dom element reference of contentRatingModal
  */
@@ -61,7 +62,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          playerElement.addEventListener('question:score:submit', telemetryEvent => this.generateScoreSubmitEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
           console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();
@@ -79,7 +80,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          playerElement.addEventListener('question:score:submit', telemetryEvent => this.generateScoreSubmitEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
           console.log('loading default player failed', err);
           const prevUrls = this.navigationHelperService.history;
@@ -121,7 +122,9 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   }
 
   generateScoreSubmitEvent(event: any) {
-    this.questionScoreSubmitEvents.emit(event);
+    if (event.data === this.assessEvent) {
+      this.questionScoreSubmitEvents.emit(event);
+    }
   }
 
   generateContentReadEvent(event: any) {
