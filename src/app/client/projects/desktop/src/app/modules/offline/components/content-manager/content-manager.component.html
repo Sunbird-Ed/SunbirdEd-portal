@@ -17,7 +17,8 @@
             <div class="download-text mr-auto">{{data.name}}</div>
 
             <!-- Buttons -->
-            <button *ngIf="data.addedUsing === 'import' && cancelId !== data.id && (data.status === 'pausing' || data.status === 'inProgress')"
+            <button
+              *ngIf="data.addedUsing === 'import' && cancelId !== data.id && (data.status === 'pausing' || data.status === 'inProgress')"
               type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
               (click)="pauseImportContent(data.id);  updateLocalStatus(data, 'pausing');"
               [disabled]="data.status === 'pausing'" appTelemetryInteract [telemetryInteractEdata]="pauseInteractData"
@@ -37,8 +38,7 @@
 
             <button
               *ngIf="data.addedUsing === 'import' && (data.status === 'canceling' || data.status !== 'completed' && data.status !== 'failed' && cancelId !== data.id)"
-              type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
-              (click)="cancelId = data.id;"
+              type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelId = data.id;"
               [disabled]="data.status === 'canceling'" appTelemetryInteract
               [telemetryInteractEdata]="cancelInteractData"
               [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
@@ -54,10 +54,19 @@
           </div>
 
           <!-- Cancel confirmation message -->
-          <div class="d-flex flex-ai-center" *ngIf="data.addedUsing === 'import' && cancelId === data.id && (data.status !== 'completed' && data.status !== 'failed')">
-            <div class="fs-1 font-weight-bold sb-color-error mr-auto"> {{resourceService?.frmelmnts?.lbl?.cancelUpload}} </div>
-            <button (click)="cancelImportContent(data.id); updateLocalStatus(data, 'canceling'); cancelId = ''" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" type="button"> {{resourceService?.frmelmnts?.btn?.yes}} </button>
-            <button (click)="cancelId = ''" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" type="button"> {{resourceService?.frmelmnts?.btn?.no}} </button>
+          <div class="d-flex flex-ai-center"
+            *ngIf="data.addedUsing === 'import' && cancelId === data.id && (data.status !== 'completed' && data.status !== 'failed')">
+            <div class="fs-1 font-weight-bold sb-color-error mr-auto"> {{resourceService?.frmelmnts?.lbl?.cancelUpload}}
+            </div>
+            <button (click)="cancelImportContent(data.id); updateLocalStatus(data, 'canceling'); cancelId = ''"
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" type="button" appTelemetryInteract
+              [telemetryInteractEdata]="confirmCancelInteractData"
+              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.yes}} </button>
+            <button (click)="cancelId = ''" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" type="button"
+              appTelemetryInteract [telemetryInteractEdata]="denyCancelInteractData"
+              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.no}} </button>
           </div>
           <!-- Cancel confirmation message -->
 

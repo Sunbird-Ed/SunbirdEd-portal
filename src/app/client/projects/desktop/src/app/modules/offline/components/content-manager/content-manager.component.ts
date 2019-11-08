@@ -31,6 +31,8 @@ export class ContentManagerComponent implements OnInit {
   pauseInteractData: IInteractEventEdata;
   cancelInteractData: IInteractEventEdata;
   resumeInteractData: IInteractEventEdata;
+  confirmCancelInteractData: IInteractEventEdata;
+  denyCancelInteractData: IInteractEventEdata;
   localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming'];
   cancelId: string;
 
@@ -206,6 +208,16 @@ export class ContentManagerComponent implements OnInit {
     };
     this.resumeInteractData = {
       id: 'resume',
+      type: 'click',
+      pageid: 'content-manager'
+    };
+    this.confirmCancelInteractData = {
+      id: 'confirm-cancel',
+      type: 'click',
+      pageid: 'content-manager'
+    };
+    this.denyCancelInteractData = {
+      id: 'deny-cancel',
       type: 'click',
       pageid: 'content-manager'
     };
