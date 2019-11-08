@@ -48,7 +48,8 @@ export class UserOrgManagementComponent {
             data => {
               const result = JSON.parse(JSON.stringify(data.result));
               this.uploadedDetails = {
-                'total_uploaded': result['accounts_validated'] + result['accounts_rejected'] + result['accounts_failed'] + result['duplicate_account'] + result['accounts_unclaimed'],
+                'total_uploaded': result['accounts_validated'] + result['accounts_rejected'] + result['accounts_failed']
+                + result['duplicate_account'] + result['accounts_unclaimed'],
                 'accounts_validated': result['accounts_validated'] ? result['accounts_validated'] : 0,
                 'accounts_rejected': result['accounts_rejected'] ? result['accounts_rejected'] : 0,
                 'accounts_failed': result['accounts_failed'] ? result['accounts_failed'] : 0,
