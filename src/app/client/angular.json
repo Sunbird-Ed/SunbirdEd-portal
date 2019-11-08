@@ -159,13 +159,13 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/desktop",
+            "outputPath": "../dist",
             "index": "projects/desktop/src/index.html",
             "main": "projects/desktop/src/main.ts",
             "polyfills": "projects/desktop/src/polyfills.ts",
             "tsConfig": "projects/desktop/tsconfig.app.json",
             "assets": [
-              { "glob": "**/*", "input": "./projects/desktop/src/assets", "output": "./assets" }
+              { "glob": "**/*", "input": "./src/assets", "output": "./assets" }
             ],
             "styles": [
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
