@@ -17,28 +17,29 @@
             <div class="download-text mr-auto">{{data.name}}</div>
 
             <!-- Buttons -->
-            <button *ngIf="data.addedUsing === 'import' && (data.status === 'pausing' || data.status === 'inProgress')"
+            <button *ngIf="data.addedUsing === 'import' && cancelId !== data.id && (data.status === 'pausing' || data.status === 'inProgress')"
               type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
               (click)="pauseImportContent(data.id);  updateLocalStatus(data, 'pausing');"
-              [disabled]="data.status === resourceService?.frmelmnts?.btn?.pausing" appTelemetryInteract
-              [telemetryInteractEdata]="pauseInteractData"
+              [disabled]="data.status === 'pausing'" appTelemetryInteract [telemetryInteractEdata]="pauseInteractData"
               [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.pause}}
             </button>
 
-            <button *ngIf="data.addedUsing === 'import' && (data.status === 'paused' || data.status === 'resume' || data.status === 'resuming')" type="button"
-              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
+            <button
+              *ngIf="data.addedUsing === 'import'  && cancelId !== data.id && (data.status === 'paused' || data.status === 'resume' || data.status === 'resuming')"
+              type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
               (click)="resumeImportContent(data.id); updateLocalStatus(data, 'resuming');"
-              [disabled]="data.status === resourceService?.frmelmnts?.btn?.resuming" appTelemetryInteract
+              [disabled]="data.status === 'resuming'  || data.status === 'resume'" appTelemetryInteract
               [telemetryInteractEdata]="resumeInteractData"
               [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.resume}}
             </button>
 
-            <button *ngIf="data.addedUsing === 'import' && (data.status === 'canceling' || data.status !== 'completed' && data.status !== 'failed')"
+            <button
+              *ngIf="data.addedUsing === 'import' && (data.status === 'canceling' || data.status !== 'completed' && data.status !== 'failed' && cancelId !== data.id)"
               type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
-              (click)="cancelImportContent(data.id); updateLocalStatus(data, 'canceling');"
-              [disabled]="data.status === resourceService?.frmelmnts?.btn?.canceling" appTelemetryInteract
+              (click)="cancelId = data.id;"
+              [disabled]="data.status === 'canceling'" appTelemetryInteract
               [telemetryInteractEdata]="cancelInteractData"
               [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.cancel}}
@@ -51,6 +52,14 @@
 
             <!-- Buttons -->
           </div>
+
+          <!-- Cancel confirmation message -->
+          <div class="d-flex flex-ai-center" *ngIf="data.addedUsing === 'import' && cancelId === data.id && (data.status !== 'completed' && data.status !== 'failed')">
+            <div class="fs-1 font-weight-bold sb-color-error mr-auto"> {{resourceService?.frmelmnts?.lbl?.cancelUpload}} </div>
+            <button (click)="cancelImportContent(data.id); updateLocalStatus(data, 'canceling'); cancelId = ''" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" type="button"> {{resourceService?.frmelmnts?.btn?.yes}} </button>
+            <button (click)="cancelId = ''" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" type="button"> {{resourceService?.frmelmnts?.btn?.no}} </button>
+          </div>
+          <!-- Cancel confirmation message -->
 
           <!-- File details -->
           <div class="info-text" *ngIf="data.totalSize && data.status !== 'inProgress'">{{data.totalSize | filesize}}
@@ -73,20 +82,26 @@
           <!-- Progress bar -->
 
           <!-- Content status -->
-          <div *ngIf="data.status === 'paused' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary"> {{resourceService?.frmelmnts?.lbl?.uploadPaused}} </div>
+          <div *ngIf="data.status === 'paused' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
+            {{resourceService?.frmelmnts?.lbl?.uploadPaused}} </div>
 
-          <div *ngIf="data.status === 'resuming' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary"> {{resourceService?.frmelmnts?.btn?.resuming}} </div>
+          <div *ngIf="(data.status === 'resuming' || data.status === 'resume') && data.addedUsing === 'import'"
+            class="fs-0-785 sb-color-primary"> {{resourceService?.frmelmnts?.btn?.resuming}} </div>
 
-          <div *ngIf="data.status === 'Pausing' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary"> {{resourceService?.frmelmnts?.btn?.pausing}} </div>
+          <div *ngIf="data.status === 'Pausing' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
+            {{resourceService?.frmelmnts?.btn?.pausing}} </div>
 
-          <div *ngIf="data.status === 'Pausing' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary"> {{resourceService?.frmelmnts?.btn?.canceling}} </div>
+          <div *ngIf="data.status === 'Pausing' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
+            {{resourceService?.frmelmnts?.btn?.canceling}} </div>
 
           <div *ngIf="data.status === 'completed'" class="fs-0-785 sb-color-success">
             {{resourceService?.frmelmnts?.btn?.completed}} </div>
 
-          <div *ngIf="data.addedUsing === 'download' && data.status === 'failed'" class="fs-0-785 sb-color-error"> {{resourceService?.frmelmnts?.lbl?.downloadFailed}} </div>
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'failed'" class="fs-0-785 sb-color-error">
+            {{resourceService?.frmelmnts?.lbl?.downloadFailed}} </div>
 
-          <div *ngIf="data.addedUsing === 'import' && data.status === 'failed'" class="fs-0-785 sb-color-error"> {{resourceService?.frmelmnts?.lbl?.uploadFailed}} </div>
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'failed'" class="fs-0-785 sb-color-error">
+            {{resourceService?.frmelmnts?.lbl?.uploadFailed}} </div>
 
           <div *ngIf="data.addedUsing === 'import' && data.status === 'inQueue'" class="fs-0-785 sb-color-warning">
             {{resourceService?.frmelmnts?.lbl?.waitingForUpload}} </div>

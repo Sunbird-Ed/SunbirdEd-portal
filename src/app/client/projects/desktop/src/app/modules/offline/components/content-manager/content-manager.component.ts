@@ -32,6 +32,7 @@ export class ContentManagerComponent implements OnInit {
   cancelInteractData: IInteractEventEdata;
   resumeInteractData: IInteractEventEdata;
   localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming'];
+  cancelId: string;
 
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,

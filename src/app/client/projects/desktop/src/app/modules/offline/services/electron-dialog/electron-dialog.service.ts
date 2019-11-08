@@ -18,7 +18,7 @@ export class ElectronDialogService extends DataService {
   showContentImportDialog() {
     this.get({url : this.configService.urlConFig.URLS.ELECTRON_DIALOG.CONTENT_IMPORT}).subscribe(response => {
       console.log('import dialog box opened', response);
-      if (_.get(response, 'data')) {
+      if (_.get(response, 'filePaths')) {
         this.uploadEvent.emit('Upload started');
       }
     }, error => {
