@@ -23,7 +23,9 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   contentRatingModal = false;
   previewCdnUrl: string;
   isCdnWorking: string;
-  assessEvent = 'renderer:question:submitscore';
+  CONSTANT = {
+    ACCESSEVENT: 'renderer:question:submitscore'
+  };
   /**
  * Dom element reference of contentRatingModal
  */
@@ -122,7 +124,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   }
 
   generateScoreSubmitEvent(event: any) {
-    if (event.data === this.assessEvent) {
+    if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
       this.questionScoreSubmitEvents.emit(event);
     }
   }

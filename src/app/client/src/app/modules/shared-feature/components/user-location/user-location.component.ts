@@ -302,7 +302,6 @@ export class UserLocationComponent implements OnInit {
         this.telemetryLogEvents('User Profile', true);
       }
       this.closeModal();
-      this.toasterService.success(this.resourceService.messages.smsg.m0046);
     }, (err) => {
       if (err[0] !== {}) {
         this.telemetryLogEvents('Device Profile', false);
@@ -311,7 +310,6 @@ export class UserLocationComponent implements OnInit {
         this.telemetryLogEvents('User Profile', false);
       }
       this.closeModal();
-      this.toasterService.error(this.resourceService.messages.emsg.m0018);
     });
   }
 
