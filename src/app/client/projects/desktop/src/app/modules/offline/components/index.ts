@@ -5,3 +5,6 @@ export * from './watch-video/watch-video.component';
 export * from './download-manager/download-manager.component';
 export * from './offline-help-center/offline-help-center.component';
 export * from './desktop-app-update/desktop-app-update.component';
+export * from './desktop-header/desktop-header.component';
+export * from './library/library.component';
+export * from './library-filters/library-filters.component';

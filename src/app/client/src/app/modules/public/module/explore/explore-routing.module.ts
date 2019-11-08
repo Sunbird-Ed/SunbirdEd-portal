@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ExploreContentComponent, ExploreComponent } from './components';
 import {ViewAllComponent} from '@sunbird/shared-feature';
 const routes: Routes = [
-    {
+  {
     path: '', component: ExploreComponent, data: {
       telemetry: {
         env: 'explore', pageid: 'explore', type: 'view', subtype: 'paginate'
