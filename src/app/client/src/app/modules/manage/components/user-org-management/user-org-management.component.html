@@ -21,7 +21,7 @@
             <dt>{{ geoData['schools'] }}</dt>
             <dd>Schools</dd>
           </dl>
-          <button class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadGeoData()">Download</button>
+          <button class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(geoCSV)">Download</button>
         </div>
       </div>
     </div>
@@ -42,24 +42,34 @@
           <div class="sb-btn sb-btn-outline-primary sb-btn-normal ml-8 sb-upload-file" (click)="openModal();"> Select file </div>
         </div>
         <div class="pt-32">
-          <div class="sb-label-name pb-8" *ngIf="uploadedDetails['total_uploaded'] != 0">
-            <span>teacher details uploaded: {{ uploadedDetails['total_uploaded'] }}</span>
+          <div class="sb-label-name pb-8" *ngIf="uploadedDetails['total_uploaded'] && uploadedDetails['total_uploaded'] != 0">
+            <span>Teacher Details Uploaded: {{ uploadedDetails['total_uploaded'] }}</span>
           </div>
-          <div class="pt-8" *ngIf="uploadedDetails['accounts_validated'] != 0">
-          <span>accounts validated: {{ uploadedDetails['accounts_validated'] }}</span>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_validated'] && uploadedDetails['accounts_validated'] != 0">
+          <span>Accounts Validated: {{ uploadedDetails['accounts_validated'] }}</span>
           </div>
-          <div class="pt-8" *ngIf="uploadedDetails['accounts_rejected'] != 0">
-            <span>accounts rejected: {{ uploadedDetails['accounts_rejected'] }}</span>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_rejected'] && uploadedDetails['accounts_rejected'] != 0">
+            <span>Accounts Rejected: {{ uploadedDetails['accounts_rejected'] }}</span>
           </div>
-          <div class="pt-8" *ngIf="uploadedDetails['accounts_failed'] != 0">
-            <span>accounts failed: {{ uploadedDetails['accounts_failed'] }}</span>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_failed'] && uploadedDetails['accounts_failed'] != 0">
+            <span>Accounts Failed: {{ uploadedDetails['accounts_failed'] }}</span>
           </div>
-          <div class="pt-8" *ngIf="uploadedDetails['duplicate_account'] != 0">
-            <span>Duplicate phone numbers/email id: {{ uploadedDetails['duplicate_account'] }} entered</span>
+          <div class="pt-8" *ngIf="uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0">
+            <span>Duplicate Mobile Numbers/Email Address: {{ uploadedDetails['duplicate_account'] }} entered</span>
           </div>
-          <button class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadUserData()">Download</button>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0">
+            <span>Unclaimed Accounts: {{ uploadedDetails['accounts_unclaimed'] }}</span>
+          </div>
         </div>
       </div>
+      <br />
+      <button *ngIf="(uploadedDetails['total_uploaded'] && uploadedDetails['total_uploaded'] != 0) ||
+      (uploadedDetails['accounts_validated'] && uploadedDetails['accounts_validated'] != 0) ||
+      (uploadedDetails['accounts_rejected'] && uploadedDetails['accounts_rejected'] != 0) ||
+      (uploadedDetails['accounts_failed'] && uploadedDetails['accounts_failed'] != 0) ||
+      (uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0) ||
+      (uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0) "
+      class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(userCSV)">Download</button>
     </div>
   </div>
 </div>

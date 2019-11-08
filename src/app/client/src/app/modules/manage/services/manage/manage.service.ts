@@ -58,7 +58,11 @@ export class ManageService {
     return this.learnerService.get(options);
   }
 
-  public getData(slug: any, fileNmae: any): Observable<any> {
+  public getGeoData(slug: any, fileNmae: any): Observable<any> {
+    return this.httpClient.get('/admin-user-reports/' + slug + '/' + fileNmae);
+  }
+
+  public getUserData(slug: any, fileNmae: any): Observable<any> {
     return this.httpClient.get('/admin-user-reports/' + slug + '/' + fileNmae);
   }
 

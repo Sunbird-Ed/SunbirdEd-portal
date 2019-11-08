@@ -24,7 +24,8 @@ export class UserOrgManagementComponent {
     'accounts_validated': 0,
     'accounts_rejected': 0,
     'accounts_failed': 0,
-    'duplicate_account': 0
+    'duplicate_account': 0,
+    'accounts_unclaimed': 0
   };
   public manageService: ManageService;
   public slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
@@ -43,10 +44,17 @@ export class UserOrgManagementComponent {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
         if (user.userProfile && user.userProfile['rootOrg'] && !user.userProfile['rootOrg']['isSSOEnabled']) {
-          this.manageService.getData(this.slug, this.geoJSON).subscribe(
+          this.manageService.getGeoData(this.slug, this.userJSON).subscribe(
             data => {
               const result = JSON.parse(JSON.stringify(data.result));
-              this.uploadedDetails = result;
+              this.uploadedDetails = {
+                'total_uploaded': result['accounts_validated'] + result['accounts_rejected'] + result['accounts_failed'] + result['duplicate_account'] + result['accounts_unclaimed'],
+                'accounts_validated': result['accounts_validated'] ? result['accounts_validated'] : 0,
+                'accounts_rejected': result['accounts_rejected'] ? result['accounts_rejected'] : 0,
+                'accounts_failed': result['accounts_failed'] ? result['accounts_failed'] : 0,
+                'duplicate_account': result['duplicate_account'] ? result['duplicate_account'] : 0,
+                'accounts_unclaimed': result['accounts_unclaimed'] ? result['accounts_unclaimed'] : 0
+              };
             },
             error => {
               console.log(error);
@@ -55,10 +63,14 @@ export class UserOrgManagementComponent {
         }
       }
     });
-    this.manageService.getData(this.slug, this.userJSON).subscribe(
+    this.manageService.getUserData(this.slug, this.geoJSON).subscribe(
       data => {
         const result = JSON.parse(JSON.stringify(data.result));
-        this.geoData = result;
+        this.geoData = {
+          'districts': result['districts'] ? result['districts'] : 0,
+          'blocks': result['blocks'] ? result['blocks'] : 0,
+          'schools': result['schools'] ? result['schools'] : 0
+        };
       },
       error => {
         console.log(error);
@@ -73,23 +85,24 @@ export class UserOrgManagementComponent {
     }, 500);
   }
 
-  public downloadGeoData() {
-    this.manageService.getData(this.slug, this.geoCSV).subscribe(
-      data => {
-        const downloadUrl = _.get(data.result, this.geoCSV);
-        window.open(downloadUrl, '_blank');
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
-
-  public downloadUserData() {
-    this.manageService.getData(this.slug, this.userCSV).subscribe(
-      data => {
-        const downloadUrl = _.get(data.result, this.userCSV);
-        window.open(downloadUrl, '_blank');
+  public downloadCSVFile(fileName: any) {
+    this.manageService.getGeoData(this.slug, fileName)
+    .subscribe(
+      response => {
+        const data = JSON.stringify(_.get(response, 'result'));
+        const blob = new Blob(
+          [data],
+          {
+            type: 'text/csv;charset=utf-8'
+          }
+        );
+        const downloadUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        a.href = downloadUrl;
+        a.download = fileName;
+        a.click();
+        document.body.removeChild(a);
       },
       error => {
         console.log(error);
