@@ -1,8 +1,9 @@
+import { ElectronDialogService } from './../electron-dialog/electron-dialog.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
 import { throwError as observableThrowError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 @Injectable({
@@ -15,7 +16,8 @@ export class DownloadManagerService {
   downloadListEvent = new EventEmitter();
 
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
-    public toasterService: ToasterService, public resourceService: ResourceService) { }
+    public toasterService: ToasterService, public resourceService: ResourceService,
+    private electronDialogService: ElectronDialogService) { }
 
   getDownloadList() {
     const downloadListOptions = {
@@ -49,10 +51,17 @@ export class DownloadManagerService {
   }
 
   exportContent(contentId) {
-    const exportOptions = {
+    const exportOptions: any = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.EXPORT}/${contentId}`
     };
-    return this.publicDataService.get(exportOptions);
+    return this.electronDialogService.showContentExportDialog().pipe(mergeMap((response: any) => {
+      if (response.destFolder) {
+        exportOptions.param = {
+          destFolder: response.destFolder
+        };
+      }
+      return this.publicDataService.get(exportOptions);
+    }));
   }
 
   updateContent(data) {
