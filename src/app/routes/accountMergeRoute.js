@@ -6,38 +6,83 @@ const {parseJson} = require('../helpers/utilityService');
 const request = require('request-promise');
 const envHelper = require('./../helpers/environmentVariablesHelper.js');
 const authorizationToken = envHelper.PORTAL_API_AUTH_TOKEN;
+const logger = require('sb_logger_util_v2');
+
 module.exports = (app) => {
 
   /**
    * User initiated merge process is redirected to following url
    */
-  app.get('/merge/account/initiate', (req, res) => {
+  app.get('/user/session/save', (req, res) => {
     if (!_.get(req, 'kauth.grant.access_token.token')) {
       res.status(401).send({
         responseCode: 'UNAUTHORIZED'
       });
       return false;
     }
-    // TODO: to remove mockValue after testing
     req.session.mergeAccountInfo = {
       initiatorAccountDetails: {
         userId: _.get(req, 'session.userId'),
         sessionToken: _.get(req, 'kauth.grant.access_token.token'),
-        redirectUri: req.query.redirectUri,
-        test: 'mockValue'
+        redirectUri: req.query.redirectUri
       }
     };
     req.session.save(function (result) {
-    console.log('result of saving the session', result);
-    console.log('session id before login', req.session.id);
-    console.log('storing merge account initiator account details', JSON.stringify(req.session.mergeAccountInfo));
+      console.log('session id before login', req.session.id);
+      console.log('storing merge account initiator account details', JSON.stringify(req.session.mergeAccountInfo));
+      if (result) {
+        logger.error({
+          msg: 'user/session/save failed to save user session',
+          error: JSON.stringify(result),
+          additionalInfo: {
+            userId: _.get(req, 'session.userId'),
+            redirectUri: req.query.redirectUri
+          }
+        });
+        res.status(500).send({
+          "id": "api.user-session.save",
+          "responseCode": "INTERNAL_SERVER_ERROR",
+          "result": {
+            "message": "ERROR"
+          }
+        });
+      } else {
+        logger.debug({
+          msg: 'user/session/save user session saved successfully',
+          error: JSON.stringify(result),
+          additionalInfo: {
+            userId: _.get(req, 'session.userId'),
+            redirectUri: req.query.redirectUri
+          }
+        });
+        res.status(200).send({
+          "id": "api.user-session.save",
+          "responseCode": "OK",
+          "result": {
+            "message": "USER_SESSION_SAVED_SUCCESSFULLY",
+            "status": "SUCCESS"
+          }
+        });
+      }
+    });
+  });
+
+  /**
+   * Redirect the user to subdomain auth server
+   */
+  app.get('/merge/account/initiate', (req, res) => {
+    console.log('i will initiate merge account my id before login', req.session.id);
+    console.log('i will initiate merge account storing merge account details', JSON.stringify(req.session.mergeAccountInfo));
+    if (!req.session.mergeAccountInfo) {
+      res.status(401).send({
+        responseCode: 'UNAUTHORIZED'
+      });
+      return false;
+    }
     const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
     const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/merge/account/u2/login/callback&scope=openid&response_type=code&mergeaccountprocess=1&version=2&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
-    // TODO: remove all console logs once feature is fully tested.
-    console.log('url to redirect', url + query);
-    console.log('request protocol', JSON.stringify(req.protocol));
+    console.log('i will redirect to', url, query);
     res.redirect(url + query)
-    });
   });
 
   /**
@@ -72,7 +117,7 @@ module.exports = (app) => {
       console.log('error in initiateAccountMerge', JSON.stringify(err));
       console.log('error detals', err.statusCode, err.message);
       const query = '?status=error&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
-      req.session.mergeAccountInfo = null;
+      delete req.session.mergeAccountInfo;
       const redirectUri = `https://${req.get('host')}/accountMerge` + encodeURIComponent(query);
       res.redirect(url + redirectUri);
     });
@@ -81,7 +126,7 @@ module.exports = (app) => {
       const query = '?status=success&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
       console.log('after final success', query);
       const redirectUri = `https://${req.get('host')}/accountMerge` + encodeURIComponent(query);
-      req.session.mergeAccountInfo = null;
+      delete req.session.mergeAccountInfo;
       res.redirect(url + redirectUri);
     }
   })
