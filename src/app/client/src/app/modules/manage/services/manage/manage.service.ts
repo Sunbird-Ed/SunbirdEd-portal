@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from  "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { ConfigService, RequestParam, ServerResponse, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from '../../../core/services/learner/learner.service';
 import { Observable } from 'rxjs';
@@ -8,10 +8,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ManageService {
-
-  public getData(slug: any, fileNmae: any): Observable < any > {
-    return this.httpClient.get('/admin-user-reports/' + slug + '/' + fileNmae);
-  }
 
   /**
   * reference of config service.
@@ -52,14 +48,18 @@ export class ManageService {
     };
     return this.learnerService.post(httpOptions);
   }
- /**
- * This method is used to call status api to get the status of uploaded file
- */
+  /**
+  * This method is used to call status api to get the status of uploaded file
+  */
   getBulkUploadStatus(processId) {
     const options = {
       url: this.configService.urlConFig.URLS.ADMIN.BULK.STATUS + '/' + processId
     };
     return this.learnerService.get(options);
+  }
+
+  public getData(slug: any, fileNmae: any): Observable<any> {
+    return this.httpClient.get('/admin-user-reports/' + slug + '/' + fileNmae);
   }
 
 }

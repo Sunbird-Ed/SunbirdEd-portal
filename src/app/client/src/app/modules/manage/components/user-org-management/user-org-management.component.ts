@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { first } from 'rxjs/operators';
+import * as _ from 'lodash-es';
 
 @Component({
     selector: 'app-user-org-management',
@@ -19,14 +20,18 @@ export class UserOrgManagementComponent {
     'schools': 0
   };
   public uploadedDetails: any = {
-    'totalUploadedCount': 0,
-    'validatedAccountsCount': 0,
-    'rejectedAccountsCount': 0,
-    'failedAccountsCount': 0,
-    'duplicatedAccountsCount': 0
+    'total_uploaded': 0,
+    'accounts_validated': 0,
+    'accounts_rejected': 0,
+    'accounts_failed': 0,
+    'duplicate_account': 0
   };
   public manageService: ManageService;
   public slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
+  public geoJSON: any = 'geo-detail.json';
+  public geoCSV: any = 'geo-detail.csv';
+  public userJSON: any = 'user-summary.json';
+  public userCSV: any = 'user-summary.csv';
 
   constructor(userService: UserService, manageService: ManageService) {
     this.userService = userService;
@@ -38,11 +43,10 @@ export class UserOrgManagementComponent {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
         if (user.userProfile && user.userProfile['rootOrg'] && !user.userProfile['rootOrg']['isSSOEnabled']) {
-          this.manageService.getData(this.slug, 'geo-detail.json').subscribe(
+          this.manageService.getData(this.slug, this.geoJSON).subscribe(
             data => {
-              console.log(data);
-              let result = JSON.parse(JSON.stringify(data.result));
-              this.uploadedDetails = result.uploadedDetails;
+              const result = JSON.parse(JSON.stringify(data.result));
+              this.uploadedDetails = result;
             },
             error => {
               console.log(error);
@@ -51,11 +55,10 @@ export class UserOrgManagementComponent {
         }
       }
     });
-    this.manageService.getData(this.slug, 'user-summary.json').subscribe(
+    this.manageService.getData(this.slug, this.userJSON).subscribe(
       data => {
-        console.log(data);
-        let result = JSON.parse(JSON.stringify(data.result));
-        this.geoData = result.geoData;
+        const result = JSON.parse(JSON.stringify(data.result));
+        this.geoData = result;
       },
       error => {
         console.log(error);
@@ -69,4 +72,29 @@ export class UserOrgManagementComponent {
       this.showModal = true;
     }, 500);
   }
+
+  public downloadGeoData() {
+    this.manageService.getData(this.slug, this.geoCSV).subscribe(
+      data => {
+        const downloadUrl = _.get(data.result, this.geoCSV);
+        window.open(downloadUrl, '_blank');
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+  public downloadUserData() {
+    this.manageService.getData(this.slug, this.userCSV).subscribe(
+      data => {
+        const downloadUrl = _.get(data.result, this.userCSV);
+        window.open(downloadUrl, '_blank');
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
 }

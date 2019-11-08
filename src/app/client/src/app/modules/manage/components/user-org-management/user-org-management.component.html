@@ -21,7 +21,7 @@
             <dt>{{ geoData['schools'] }}</dt>
             <dd>Schools</dd>
           </dl>
-          <button class="sb-btn sb-btn-normal sb-btn-primary ml-auto">Download</button>
+          <button class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadGeoData()">Download</button>
         </div>
       </div>
     </div>
@@ -42,21 +42,22 @@
           <div class="sb-btn sb-btn-outline-primary sb-btn-normal ml-8 sb-upload-file" (click)="openModal();"> Select file </div>
         </div>
         <div class="pt-32">
-          <div class="sb-label-name pb-8">
-            <span>{{ uploadedDetails['totalUploadedCount'] }} teacher details uploaded:</span>
+          <div class="sb-label-name pb-8" *ngIf="uploadedDetails['total_uploaded'] != 0">
+            <span>teacher details uploaded: {{ uploadedDetails['total_uploaded'] }}</span>
           </div>
-          <div class="pt-8">
-            <a class="text-decoration-underline" href="" title="124 accounts validated"> {{ uploadedDetails['validatedAccountsCount'] }} accounts validated</a>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_validated'] != 0">
+          <span>accounts validated: {{ uploadedDetails['accounts_validated'] }}</span>
           </div>
-          <div class="pt-8">
-            <a class="text-decoration-underline" href="" title="200 accounts rejected"> {{ uploadedDetails['rejectedAccountsCount'] }} accounts rejected</a>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_rejected'] != 0">
+            <span>accounts rejected: {{ uploadedDetails['accounts_rejected'] }}</span>
           </div>
-          <div class="pt-8">
-            <a class="text-decoration-underline" href="" title="46 accounts failed"> {{ uploadedDetails['failedAccountsCount'] }} accounts failed</a>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_failed'] != 0">
+            <span>accounts failed: {{ uploadedDetails['accounts_failed'] }}</span>
           </div>
-          <div class="pt-8">
-            <a class="text-decoration-underline" href="" title=" Duplicate phone numbers/email id: 12 entered"> Duplicate phone numbers/email id: {{ uploadedDetails['duplicatedAccountsCount'] }} entered</a>
+          <div class="pt-8" *ngIf="uploadedDetails['duplicate_account'] != 0">
+            <span>Duplicate phone numbers/email id: {{ uploadedDetails['duplicate_account'] }} entered</span>
           </div>
+          <button class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadUserData()">Download</button>
         </div>
       </div>
     </div>
