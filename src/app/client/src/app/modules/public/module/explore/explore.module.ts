@@ -12,8 +12,6 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
   SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +22,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     ExploreRoutingModule,
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-    SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule, CommonConsumptionModule
+    SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule
   ],
   declarations: [ ExploreContentComponent, ExploreComponent],
   exports: [ExploreComponent]
