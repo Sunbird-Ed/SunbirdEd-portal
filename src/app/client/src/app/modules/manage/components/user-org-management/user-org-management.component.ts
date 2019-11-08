@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../../core/services/user/user.service';
+import { ManageService } from '../../services/manage/manage.service';
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -12,31 +13,54 @@ export class UserOrgManagementComponent {
   public showModal = false;
   public userService: UserService;
   public userProfile: any;
-  public geoData: any;
-  public uploadedDetails: any;
+  public geoData: any = {
+    'districts': 0,
+    'blocks': 0,
+    'schools': 0
+  };
+  public uploadedDetails: any = {
+    'totalUploadedCount': 0,
+    'validatedAccountsCount': 0,
+    'rejectedAccountsCount': 0,
+    'failedAccountsCount': 0,
+    'duplicatedAccountsCount': 0
+  };
+  public manageService: ManageService;
+  public slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
 
-  constructor(userService: UserService) {
+  constructor(userService: UserService, manageService: ManageService) {
     this.userService = userService;
+    this.manageService = manageService;
   }
 
   ngOnInit(): void {
     this.userService.userData$.pipe(first()).subscribe(user => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
+        if (user.userProfile && user.userProfile['rootOrg'] && !user.userProfile['rootOrg']['isSSOEnabled']) {
+          this.manageService.getData(this.slug, 'geo-detail.json').subscribe(
+            data => {
+              console.log(data);
+              let result = JSON.parse(JSON.stringify(data.result));
+              this.uploadedDetails = result.uploadedDetails;
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        }
       }
     });
-    this.geoData = {
-      'districts': 23,
-      'blocks': 390,
-      'schools': 6500
-    };
-    this.uploadedDetails = {
-      'totalUploadedCount': 2435,
-      'validatedAccountsCount': 124,
-      'rejectedAccountsCount': 200,
-      'failedAccountsCount': 46,
-      'duplicatedAccountsCount': 12
-    };
+    this.manageService.getData(this.slug, 'user-summary.json').subscribe(
+      data => {
+        console.log(data);
+        let result = JSON.parse(JSON.stringify(data.result));
+        this.geoData = result.geoData;
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   public openModal() {
