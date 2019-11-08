@@ -45,7 +45,7 @@ export class ContentManagerComponent implements OnInit {
 
   ngOnInit() {
     this.setTelemetryInteractData();
-    // Call download list initailly
+    // Call download list initially
     this.getContentList();
 
     // Subscribe connection service to check online/offline and call download list

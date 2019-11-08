@@ -53,23 +53,6 @@
             <!-- Buttons -->
           </div>
 
-          <!-- Cancel confirmation message -->
-          <div class="d-flex flex-ai-center"
-            *ngIf="data.addedUsing === 'import' && cancelId === data.id && (data.status !== 'completed' && data.status !== 'failed')">
-            <div class="fs-1 font-weight-bold sb-color-error mr-auto"> {{resourceService?.frmelmnts?.lbl?.cancelUpload}}
-            </div>
-            <button (click)="cancelImportContent(data.id); updateLocalStatus(data, 'canceling'); cancelId = ''"
-              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" type="button" appTelemetryInteract
-              [telemetryInteractEdata]="confirmCancelInteractData"
-              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
-              {{resourceService?.frmelmnts?.btn?.yes}} </button>
-            <button (click)="cancelId = ''" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" type="button"
-              appTelemetryInteract [telemetryInteractEdata]="denyCancelInteractData"
-              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
-              {{resourceService?.frmelmnts?.btn?.no}} </button>
-          </div>
-          <!-- Cancel confirmation message -->
-
           <!-- File details -->
           <div class="info-text" *ngIf="data.totalSize && data.status !== 'inProgress'">{{data.totalSize | filesize}}
           </div>
@@ -84,10 +67,10 @@
 
           <!-- Progress bar -->
           <sui-progress *ngIf="data.status === 'inProgress' && data.addedUsing === 'download'"
-            [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="mb-0 mr-0 mt-8">
+            [value]="showProgressValue(data.downloadedSize, data.totalSize)" [maximum]="100" class="my-0 mr-0">
           </sui-progress>
           <sui-progress *ngIf="data.status === 'inProgress' && data.addedUsing === 'import'"
-            [value]="data.downloadedSize" [maximum]="100" class="mb-0 mr-0 mt-8"></sui-progress>
+            [value]="data.downloadedSize" [maximum]="100" class="my-0 mr-0"></sui-progress>
           <!-- Progress bar -->
 
           <!-- Content status -->
@@ -118,6 +101,23 @@
           <div *ngIf="data.addedUsing === 'download' && data.status === 'inQueue'" class="fs-0-785 sb-color-warning">
             {{resourceService?.frmelmnts?.lbl?.waitingForDownload}} </div>
           <!-- Content status -->
+
+          <!-- Cancel confirmation message -->
+          <div class="d-flex flex-ai-center mt-8"
+            *ngIf="data.addedUsing === 'import' && cancelId === data.id && (data.status !== 'completed' && data.status !== 'failed')">
+            <div class="fs-1 font-weight-bold sb-color-error mr-auto"> {{resourceService?.frmelmnts?.lbl?.cancelUpload}}
+            </div>
+            <button (click)="cancelImportContent(data.id); updateLocalStatus(data, 'canceling'); cancelId = ''"
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" type="button" appTelemetryInteract
+              [telemetryInteractEdata]="confirmCancelInteractData"
+              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.yes}} </button>
+            <button (click)="cancelId = ''" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" type="button"
+              appTelemetryInteract [telemetryInteractEdata]="denyCancelInteractData"
+              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.no}} </button>
+          </div>
+          <!-- Cancel confirmation message -->
         </div>
       </div>
     </div>
