@@ -52,8 +52,8 @@ export class AccountMergeModalComponent implements OnInit {
     };
     this.http.get('/user/session/save?redirectUri=' + this.router.url)
       .subscribe((data: any) => {
-        if (data.responseCode === 'OK' && data.result && data.result.status === 'SUCCESS') {
-          this.redirect();
+        if (data.responseCode === 'OK' && data.result && data.result.status === 'SUCCESS' && data.result.redirectUrl) {
+          this.redirect(data.result.redirectUrl);
         } else {
           this.closeModal();
         }
@@ -62,8 +62,8 @@ export class AccountMergeModalComponent implements OnInit {
       });
   }
 
-  redirect() {
+  redirect(redirectUrl) {
     this.closeModal();
-    window.location.href = 'merge/account/initiate?redirectUri=' + this.router.url;
+    window.location.href = redirectUrl;
   }
 }

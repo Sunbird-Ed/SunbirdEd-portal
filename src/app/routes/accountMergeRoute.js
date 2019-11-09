@@ -55,35 +55,22 @@ module.exports = (app) => {
             redirectUri: req.query.redirectUri
           }
         });
+        const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
+        const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/merge/account/u2/login/callback&scope=openid&response_type=code&mergeaccountprocess=1&version=2&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
+        console.log('redirecting to', url + query);
         res.status(200).send({
           "id": "api.user-session.save",
           "responseCode": "OK",
           "result": {
             "message": "USER_SESSION_SAVED_SUCCESSFULLY",
-            "status": "SUCCESS"
+            "status": "SUCCESS",
+            "redirectUrl": url + query
           }
         });
       }
     });
   });
 
-  /**
-   * Redirect the user to subdomain auth server
-   */
-  app.get('/merge/account/initiate', (req, res) => {
-    console.log('i will initiate merge account my id before login', req.session.id);
-    console.log('i will initiate merge account storing merge account details', JSON.stringify(req.session.mergeAccountInfo));
-    if (!req.session.mergeAccountInfo) {
-      res.status(401).send({
-        responseCode: 'UNAUTHORIZED'
-      });
-      return false;
-    }
-    const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
-    const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/merge/account/u2/login/callback&scope=openid&response_type=code&mergeaccountprocess=1&version=2&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
-    console.log('redirecting to', url, query);
-    res.redirect(url + query)
-  });
 
   /**
    * Successful login for account merge redirects to below url
