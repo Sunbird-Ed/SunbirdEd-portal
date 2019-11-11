@@ -108,8 +108,11 @@
     <div class="sb-modal-header">
       {{resourceService.frmelmnts?.btn?.download}}
     </div>
-    <div class="sb-modal-content">
+    <div class="sb-modal-content" *ngIf="!!data?.mimeTypesCount">
       {{resourceService.messages?.stmsg?.m0137}}
+    </div>
+    <div class="sb-modal-content"*ngIf="!data?.mimeTypesCount">
+      {{resourceService.messages?.stmsg?.m0141}}
     </div>
     <div class="sb-modal-actions">
       <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
