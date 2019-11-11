@@ -31,9 +31,15 @@ function isValidSlug() {
     }
 }
 
-function azureBlobStream() {
+function azureBlobStream(isAdminReports) {
     return function (req, res, next) {
-        blobService.getBlobToText(envHelper.sunbird_azure_report_container_name, req.params.slug + '/' + req.params.filename, function (error, text) {
+        let container = envHelper.sunbird_azure_report_container_name;
+        let fileToGet = req.params.slug + '/' + req.params.filename;
+        if (isAdminReports) {
+          container = envHelper.sunbird_azure_admin_container_name;
+          fileToGet = req.params.slug + '-' + req.params.filename;
+        }
+        blobService.getBlobToText(container, fileToGet, function (error, text) {
             if (error && error.statusCode === 404) {
                 console.log('Error with status code 404 - ', error);
                 res.status(404).send({

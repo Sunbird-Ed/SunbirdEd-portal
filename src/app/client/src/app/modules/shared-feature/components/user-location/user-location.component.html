@@ -5,6 +5,7 @@
   [size]="'normal'"
   class="sb-modal"
   (dismissed)="closeModal();"
+  [appTelemetryImpression]="telemetryImpression"
   #userLocationModal>
 
   <!--Header-->
@@ -54,7 +55,10 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary"
+    <button appTelemetryInteract
+            [telemetryInteractObject]="telemetryCdata"
+            [telemetryInteractEdata]="mergeIntractEdata"
+            class="sb-btn sb-btn-normal sb-btn-primary"
             [disabled]="!enableSubmitBtn"
             (click)="updateUserLocation()">
       {{resourceService?.frmelmnts?.btn?.submit}}
