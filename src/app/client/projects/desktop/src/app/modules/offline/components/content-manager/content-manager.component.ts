@@ -4,19 +4,17 @@ import { timer, Subject, combineLatest } from 'rxjs';
 import { switchMap, map, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ContentManagerService, ElectronDialogService } from '../../services';
-import { ConnectionService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-​
+
 @Component({
   selector: 'app-content-manager',
   templateUrl: './content-manager.component.html',
   styleUrls: ['./content-manager.component.scss']
 })
 export class ContentManagerComponent implements OnInit {
-​
+
   contentResponse: any;
-  isConnected: boolean = navigator.onLine;
   isOpen = false;
   callContentList = false;
   callContentListTimer = false;
@@ -27,24 +25,20 @@ export class ContentManagerComponent implements OnInit {
     pageid: 'content-manager'
   };
   subscription: any;
-  pauseInteractData: IInteractEventEdata;
-  cancelInteractData: IInteractEventEdata;
-  resumeInteractData: IInteractEventEdata;
-  confirmCancelInteractData: IInteractEventEdata;
-  denyCancelInteractData: IInteractEventEdata;
+  interactData: IInteractEventEdata;
   localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming'];
   cancelId: string;
-  apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList && this.isConnected)));
+  apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
-    public connectionService: ConnectionService, public electronDialogService: ElectronDialogService,
+    public electronDialogService: ElectronDialogService,
     public configService: ConfigService,
     public activatedRoute: ActivatedRoute,
     public router: Router) {
-      this.getList();
-    }
-​
+    this.getList();
+  }
+
   getList() {
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
       .pipe(switchMap(() => this.contentManagerService.getContentList()),
@@ -59,33 +53,27 @@ export class ContentManagerComponent implements OnInit {
           });
           return _.get(resp, 'result.response.contents');
         })).subscribe((apiResponse: any) => {
-            this.contentResponse = apiResponse;
-          });
+          this.contentResponse = apiResponse;
+        });
   }
   ngOnInit() {
-    this.setTelemetryInteractData();
     // Call download list initially
     this.apiCallSubject.next();
-    // Subscribe connection service to check online/offline and call download list
-    this.connectionService.monitor().subscribe(isConnected => {
-      this.isConnected = isConnected;
-      this.apiCallSubject.next();
-    });
-​
+
     // Call content list when clicked on add to library
     this.contentManagerService.downloadEvent.subscribe((data) => {
       this.isOpen = true;
       this.apiCallSubject.next();
     });
-​
+
     // Call content list while uploading content
     this.electronDialogService.uploadEvent.subscribe((data) => {
       this.isOpen = true;
       this.apiCallSubject.next();
     });
   }
-​
-​
+
+
   updateLocalStatus(contentData, currentStatus) {
     this.contentStatusObject[contentData.id] = {
       currentStatus: currentStatus,
@@ -94,7 +82,7 @@ export class ContentManagerComponent implements OnInit {
     const data = _.find(this.contentResponse, { id: contentData.id });
     data.status = currentStatus;
   }
-​
+
   cancelImportContent(contentId) {
     this.contentManagerService.cancelImportContent(contentId).subscribe(
       (apiResponse: any) => {
@@ -107,7 +95,7 @@ export class ContentManagerComponent implements OnInit {
         this.deleteLocalContentStatus(contentId);
       });
   }
-​
+
   pauseImportContent(contentId) {
     this.contentManagerService.pauseImportContent(contentId).subscribe(
       (apiResponse: any) => {
@@ -120,7 +108,7 @@ export class ContentManagerComponent implements OnInit {
         this.deleteLocalContentStatus(contentId);
       });
   }
-​
+
   resumeImportContent(contentId) {
     this.contentManagerService.resumeImportContent(contentId).subscribe(
       (apiResponse: any) => {
@@ -133,15 +121,15 @@ export class ContentManagerComponent implements OnInit {
         this.deleteLocalContentStatus(contentId);
       });
   }
-​
+
   deleteLocalContentStatus(contentId) {
     delete this.contentStatusObject[contentId];
   }
-​
+
   showProgressValue(progressSize, totalSize) {
     return (progressSize / totalSize) * 100;
   }
-​
+
   openContent(contentId, mimeType) {
     if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
       this.router.navigate(['play/collection', contentId]);
@@ -149,40 +137,28 @@ export class ContentManagerComponent implements OnInit {
       this.router.navigate(['play/content', contentId]);
     }
   }
-​
+
   getTelemetryInteractData() {
     return {
       id: this.isOpen ? 'content-manager-close' : 'content-manager-open',
       type: 'click',
-      pageid: 'content-manager'
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') ?
+        _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') : ''
     };
   }
-​
-  setTelemetryInteractData() {
-    this.pauseInteractData = {
-      id: 'pause',
+
+  setTelemetryInteractEdataData(id, percentage) {
+    this.interactData = {
+      id: id,
       type: 'click',
-      pageid: 'content-manager'
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') ?
+        _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') : ''
     };
-    this.cancelInteractData = {
-      id: 'cancel',
-      type: 'click',
-      pageid: 'content-manager'
-    };
-    this.resumeInteractData = {
-      id: 'resume',
-      type: 'click',
-      pageid: 'content-manager'
-    };
-    this.confirmCancelInteractData = {
-      id: 'confirm-cancel',
-      type: 'click',
-      pageid: 'content-manager'
-    };
-    this.denyCancelInteractData = {
-      id: 'deny-cancel',
-      type: 'click',
-      pageid: 'content-manager'
-    };
+
+    if (percentage) {
+      this.interactData['extra'] = {
+        percentage: percentage
+      };
+    }
   }
 }

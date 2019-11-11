@@ -182,11 +182,11 @@ export class PublicPlayerService {
       return o.status === 'completed';
     });
     const compare = { resourceId: identifier };
-    if (_.find(inprogress, compare) || _.find(submitted, compare)) {
+    if (_.find([inprogress], compare) || _.find([submitted], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-    } else if (_.find(completed, compare)) {
+    } else if (_.find([completed], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
-    } else if (_.find(failed, compare)) {
+    } else if (_.find([failed], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
     }
     return content;

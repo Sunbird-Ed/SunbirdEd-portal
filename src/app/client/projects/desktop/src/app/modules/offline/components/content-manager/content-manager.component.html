@@ -8,6 +8,7 @@
         <i class="chevron up icon d-flex flex-ai-center"></i>
       </div>
     </div>
+    
     <div content *ngIf="contentResponse">
       <div class="sb-single-pannel-accordion-list-item flex-ai-center"
         *ngFor="let data of contentResponse | orderBy:'createdOn': true">
@@ -20,28 +21,30 @@
             <button
               *ngIf="data.addedUsing === 'import' && cancelId !== data.id && (data.status === 'pausing' || data.status === 'inProgress')"
               type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
-              (click)="pauseImportContent(data.id);  updateLocalStatus(data, 'pausing');"
-              [disabled]="data.status === 'pausing'" appTelemetryInteract [telemetryInteractEdata]="pauseInteractData"
-              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
+              (click)="pauseImportContent(data.id);  updateLocalStatus(data, 'pausing'); setTelemetryInteractEdataData('pause', showProgressValue(data.downloadedSize, data.totalSize));"
+              [disabled]="data.status === 'pausing'" appTelemetryInteract [telemetryInteractEdata]="interactData"
+              [telemetryInteractCdata]="[{ 'type': 'import', 'id': data.id }]"
+              [telemetryInteractObject]="{id:data.contentId,type:data.mimeType ? data.mimetype : '',ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.pause}}
             </button>
 
             <button
               *ngIf="data.addedUsing === 'import'  && cancelId !== data.id && (data.status === 'paused' || data.status === 'resume' || data.status === 'resuming')"
               type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
-              (click)="resumeImportContent(data.id); updateLocalStatus(data, 'resuming');"
+              (click)="resumeImportContent(data.id); updateLocalStatus(data, 'resuming'); setTelemetryInteractEdataData('resume', showProgressValue(data.downloadedSize, data.totalSize));"
               [disabled]="data.status === 'resuming'  || data.status === 'resume'" appTelemetryInteract
-              [telemetryInteractEdata]="resumeInteractData"
-              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
+              [telemetryInteractEdata]="interactData" [telemetryInteractCdata]="[{ 'type': 'import', 'id': data.id }]"
+              [telemetryInteractObject]="{id:data.contentId,type:data.mimeType ? data.mimetype : '',ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.resume}}
             </button>
 
             <button
               *ngIf="data.addedUsing === 'import' && (data.status === 'canceling' || data.status !== 'completed' && data.status !== 'failed' && cancelId !== data.id)"
-              type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelId = data.id;"
-              [disabled]="data.status === 'canceling'" appTelemetryInteract
-              [telemetryInteractEdata]="cancelInteractData"
-              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
+              type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8"
+              (click)="cancelId = data.id; setTelemetryInteractEdataData('cancel', showProgressValue(data.downloadedSize, data.totalSize));"
+              [disabled]="data.status === 'canceling'" appTelemetryInteract [telemetryInteractEdata]="interactData"
+              [telemetryInteractCdata]="[{ 'type': 'import', 'id': data.id }]"
+              [telemetryInteractObject]="{id:data.contentId,type:data.mimeType ? data.mimetype : '',ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.cancel}}
             </button>
 
@@ -107,14 +110,17 @@
             *ngIf="data.addedUsing === 'import' && cancelId === data.id && (data.status !== 'completed' && data.status !== 'failed')">
             <div class="fs-1 font-weight-bold sb-color-error mr-auto"> {{resourceService?.frmelmnts?.lbl?.cancelUpload}}
             </div>
-            <button (click)="cancelImportContent(data.id); updateLocalStatus(data, 'canceling'); cancelId = ''"
+            <button
+              (click)="cancelImportContent(data.id); updateLocalStatus(data, 'canceling'); cancelId = ''; setTelemetryInteractEdataData('confirm-cancel', showProgressValue(data.downloadedSize, data.totalSize));"
               class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" type="button" appTelemetryInteract
-              [telemetryInteractEdata]="confirmCancelInteractData"
-              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
+              [telemetryInteractEdata]="interactData"
+              [telemetryInteractObject]="{id:data.contentId,type:data.mimeType ? data.mimetype : '',ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.yes}} </button>
-            <button (click)="cancelId = ''" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" type="button"
-              appTelemetryInteract [telemetryInteractEdata]="denyCancelInteractData"
-              [telemetryInteractObject]="{id:data.contentId,type:'Content',ver:data.pkgVersion ? data.pkgVersion : ''}">
+            <button
+              (click)="cancelId = ''; setTelemetryInteractEdataData('deny-cancel', showProgressValue(data.downloadedSize, data.totalSize));"
+              class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" type="button" appTelemetryInteract
+              [telemetryInteractEdata]="interactData"
+              [telemetryInteractObject]="{id:data.contentId,type:data.mimeType ? data.mimetype : '',ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.no}} </button>
           </div>
           <!-- Cancel confirmation message -->
