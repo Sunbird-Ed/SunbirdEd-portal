@@ -108,7 +108,6 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   }
 
   download(content) {
-    console.log('content', content);
     this.showModal = this.offlineCardService.isYoutubeContent(content);
     if (!this.showModal) {
       this.startDownload(content);
