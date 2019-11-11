@@ -5,11 +5,11 @@ const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const blobService = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
 
-function isValidSlug() {
+function isValidSlug(allowedRoles) {
     return function (req, res, next) {
         const roles = _.get(req, 'session.roles');
         if ((_.get(req, 'session.rootOrg.slug') === req.params.slug || req.params.slug === 'public') &&
-            (_.indexOf(roles, "ORG_ADMIN") >= 0 || _.indexOf(roles, "REPORT_VIEWER")) >= 0) {
+            ((_.intersection(roles, allowedRoles)).length > 0 )) {
             next()
         } else {
             res.status(403)
@@ -31,14 +31,10 @@ function isValidSlug() {
     }
 }
 
-function azureBlobStream(isAdminReports) {
+function azureBlobStream() {
     return function (req, res, next) {
         let container = envHelper.sunbird_azure_report_container_name;
         let fileToGet = req.params.slug + '/' + req.params.filename;
-        if (isAdminReports) {
-          container = envHelper.sunbird_azure_admin_container_name;
-          fileToGet = req.params.slug + '-' + req.params.filename;
-        }
         blobService.getBlobToText(container, fileToGet, function (error, text) {
             if (error && error.statusCode === 404) {
                 console.log('Error with status code 404 - ', error);

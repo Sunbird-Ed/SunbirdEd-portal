@@ -59,11 +59,11 @@ export class ManageService {
   }
 
   public getGeoData(slug: any, fileNmae: any): Observable<any> {
-    return this.httpClient.get('/admin-user-reports/' + slug + '/' + fileNmae);
+    return this.httpClient.get('/admin-reports/' + slug + '/' + fileNmae);
   }
 
   public getUserData(slug: any, fileNmae: any): Observable<any> {
-    return this.httpClient.get('/admin-user-reports/' + slug + '/' + fileNmae);
+    return this.httpClient.get('/admin-reports/' + slug + '/' + fileNmae);
   }
 
 }

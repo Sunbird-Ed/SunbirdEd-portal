@@ -29,10 +29,10 @@ export class UserOrgManagementComponent {
   };
   public manageService: ManageService;
   public slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
-  public geoJSON: any = 'geo-detail.json';
+  public geoJSON: any = 'geo-summary.json';
   public geoCSV: any = 'geo-detail.csv';
   public userJSON: any = 'user-summary.json';
-  public userCSV: any = 'user-summary.csv';
+  public userCSV: any = 'user-detail.csv';
 
   constructor(userService: UserService, manageService: ManageService) {
     this.userService = userService;
@@ -90,7 +90,7 @@ export class UserOrgManagementComponent {
     this.manageService.getGeoData(this.slug, fileName)
     .subscribe(
       response => {
-        const data = JSON.stringify(_.get(response, 'result'));
+        const data = (_.get(response, 'result'));
         const blob = new Blob(
           [data],
           {
