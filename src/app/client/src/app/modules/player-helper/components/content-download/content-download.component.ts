@@ -114,7 +114,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
       this.startDownload(content);
     } else {
       this.message = content.mimeType !== 'application/vnd.ekstep.content-collection' ? this.resourceService.messages.stmsg.m0141 :
-      _.replace(this.resourceService.messages.stmsg.m0137, '{contentType}', content.contentType);
+      this.resourceService.messages.stmsg.m0137;
     }
   }
 

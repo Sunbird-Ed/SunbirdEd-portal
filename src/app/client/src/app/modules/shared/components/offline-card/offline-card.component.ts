@@ -80,7 +80,7 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
         this.clickEvent.emit({ 'action': action, 'data': data });
       } else {
         this.message = data.metaData.mimeType !== 'application/vnd.ekstep.content-collection' ? this.resourceService.messages.stmsg.m0141 :
-        _.replace(this.resourceService.messages.stmsg.m0137, '{contentType}', data.metaData.contentType);
+        this.resourceService.messages.stmsg.m0137;
       }
     } else {
       this.clickEvent.emit({ 'action': action, 'data': data });
