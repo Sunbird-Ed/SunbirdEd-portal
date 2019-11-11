@@ -91,7 +91,7 @@ export class ContentManagerComponent implements OnInit {
         _this.deleteLocalContentStatus(contentId);
       },
       error(err) {
-        _this.toasterService.error(this.resourceService.messages.fmsg.m0097);
+        _this.toasterService.error(_this.resourceService.messages.fmsg.m0097);
         _this.apiCallSubject.next();
         _this.deleteLocalContentStatus(contentId);
       }
