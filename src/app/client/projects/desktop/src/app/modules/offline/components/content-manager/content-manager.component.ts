@@ -83,50 +83,38 @@ export class ContentManagerComponent implements OnInit {
     data.status = currentStatus;
   }
 
-  cancelImportContent(contentId) {
-    this.contentManagerService.cancelImportContent(contentId).subscribe(
-      (apiResponse: any) => {
-        this.apiCallSubject.next();
-        this.deleteLocalContentStatus(contentId);
+  private getSubscription(contentId) {
+    const _this = this;
+    return ({
+      next(apiResponse: any) {
+        _this.apiCallSubject.next();
+        _this.deleteLocalContentStatus(contentId);
       },
-      (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0097);
-        this.apiCallSubject.next();
-        this.deleteLocalContentStatus(contentId);
-      });
+      error(err) {
+        _this.toasterService.error(this.resourceService.messages.fmsg.m0097);
+        _this.apiCallSubject.next();
+        _this.deleteLocalContentStatus(contentId);
+      }
+    });
+  }
+
+  cancelImportContent(contentId) {
+    this.contentManagerService.cancelImportContent(contentId).subscribe(this.getSubscription(contentId));
   }
 
   pauseImportContent(contentId) {
-    this.contentManagerService.pauseImportContent(contentId).subscribe(
-      (apiResponse: any) => {
-        this.apiCallSubject.next();
-        this.deleteLocalContentStatus(contentId);
-      },
-      (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0097);
-        this.apiCallSubject.next();
-        this.deleteLocalContentStatus(contentId);
-      });
+    this.contentManagerService.pauseImportContent(contentId).subscribe(this.getSubscription(contentId));
   }
 
   resumeImportContent(contentId) {
-    this.contentManagerService.resumeImportContent(contentId).subscribe(
-      (apiResponse: any) => {
-        this.apiCallSubject.next();
-        this.deleteLocalContentStatus(contentId);
-      },
-      (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0097);
-        this.apiCallSubject.next();
-        this.deleteLocalContentStatus(contentId);
-      });
+    this.contentManagerService.resumeImportContent(contentId).subscribe(this.getSubscription(contentId));
   }
 
   deleteLocalContentStatus(contentId) {
     delete this.contentStatusObject[contentId];
   }
 
-  showProgressValue(progressSize, totalSize) {
+  getContentPercentage(progressSize, totalSize) {
     return (progressSize / totalSize) * 100;
   }
 
