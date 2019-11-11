@@ -5,3 +5,6 @@ export * from './watch-video/watch-video.component';
 export * from './download-manager/download-manager.component';
 export * from './offline-help-center/offline-help-center.component';
 export * from './desktop-app-update/desktop-app-update.component';
+export * from './offline-help-videos/offline-help-videos.component';
+export * from './offline-report-issues/offline-report-issues.component';
+export * from './offline-faq/offline-faq.component';
