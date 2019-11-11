@@ -183,7 +183,8 @@
       "RESET_PASSWORD": "user/v1/password/reset"
     },
     "ELECTRON_DIALOG": {
-      "CONTENT_IMPORT": "content/import"
+      "CONTENT_IMPORT": "content/import",
+      "CONTENT_EXPORT": "content/export"
     }
   }
 }

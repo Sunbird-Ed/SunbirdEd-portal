@@ -343,12 +343,6 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   exportOfflineContent(contentId) {
     this.contentManagerService.exportContent(contentId).subscribe(data => {
-      const link = document.createElement('a');
-      link.href = data.result.response.url;
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
       this.showExportLoader = false;
     }, error => {
       this.showExportLoader = false;
