@@ -90,7 +90,7 @@ export class ContentManagerComponent implements OnInit {
         this.deleteLocalContentStatus(contentId);
       },
       (err) => {
-        this.toasterService.info(this.resourceService.messages.fmsg.m0097);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0097);
         this.apiCallSubject.next();
         this.deleteLocalContentStatus(contentId);
       });
@@ -103,7 +103,7 @@ export class ContentManagerComponent implements OnInit {
         this.deleteLocalContentStatus(contentId);
       },
       (err) => {
-        this.toasterService.info(this.resourceService.messages.fmsg.m0097);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0097);
         this.apiCallSubject.next();
         this.deleteLocalContentStatus(contentId);
       });
@@ -116,7 +116,7 @@ export class ContentManagerComponent implements OnInit {
         this.deleteLocalContentStatus(contentId);
       },
       (err) => {
-        this.toasterService.info(this.resourceService.messages.fmsg.m0097);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0097);
         this.apiCallSubject.next();
         this.deleteLocalContentStatus(contentId);
       });
