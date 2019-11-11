@@ -118,11 +118,13 @@ export class ContentManagerComponent implements OnInit {
     return (progressSize / totalSize) * 100;
   }
 
-  openContent(contentId, mimeType) {
-    if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', contentId]);
-    } else {
-      this.router.navigate(['play/content', contentId]);
+  openContent(contentId, mimeType, status) {
+    if (status === 'completed') {
+      if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        this.router.navigate(['play/collection', contentId]);
+      } else {
+        this.router.navigate(['play/content', contentId]);
+      }
     }
   }
 

@@ -13,7 +13,7 @@
       <div class="sb-single-pannel-accordion-list-item flex-ai-center"
         *ngFor="let data of contentResponse | orderBy:'createdOn': true">
         <i class="check circle icon success-icon mr-8 fs-1-429" *ngIf="data.status === 'completed'"></i>
-        <div class="download-details-container">
+        <div class="download-details-container" (click)="openContent(data.contentId, data.mimeType, data.status)">
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text mr-auto">{{data.name}}</div>
 
