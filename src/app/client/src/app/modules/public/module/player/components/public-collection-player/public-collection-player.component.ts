@@ -279,7 +279,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   private getContent(): void {
     this.subsrciption = this.route.params.pipe(
-      first(),
       mergeMap((params) => {
         this.collectionId = params.collectionId;
         this.telemetryCdata = [{id: this.collectionId, type: this.contentType}];
