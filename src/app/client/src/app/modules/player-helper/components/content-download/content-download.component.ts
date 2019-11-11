@@ -31,6 +31,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   isUpdated: Boolean = false;
   showUpdate: Boolean = false;
   showUpdated = false;
+  message;
   constructor(public resourceService: ResourceService, public utilService: UtilService,
     public router: Router,  public downloadManagerService: DownloadManagerService,
     public toasterService: ToasterService, public playerService: PublicPlayerService,
@@ -107,9 +108,13 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   }
 
   download(content) {
+    console.log('content', content);
     this.showModal = this.offlineCardService.isYoutubeContent(content);
     if (!this.showModal) {
       this.startDownload(content);
+    } else {
+      this.message = content.mimeType !== 'application/vnd.ekstep.content-collection' ? this.resourceService.messages.stmsg.m0141 :
+      _.replace(this.resourceService.messages.stmsg.m0137, '{contentType}', content.contentType);
     }
   }
 
