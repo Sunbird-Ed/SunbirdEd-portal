@@ -13,7 +13,8 @@ import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService
+import {
+  DownloadManagerService
 } from './../../../../../../projects/desktop/src/app/modules/offline/services/download-manager/download-manager.service';
 
 @Component({
@@ -194,7 +195,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
       takeUntil(this.unsubscribe)
     ).subscribe((response: any) => {
-        this.getContents(response);
+      this.getContents(response);
     }, (error) => {
       this.showLoader = false;
       this.noResult = true;
@@ -208,12 +209,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.isOffline) {
       this.downloadManagerService.downloadListEvent.pipe(
         takeUntil(this.unsubscribe)).subscribe((data) => {
-        this.updateCardData(data);
-      });
+          this.updateCardData(data);
+        });
 
       this.downloadManagerService.downloadEvent.pipe(tap(() => {
         this.showDownloadLoader = false;
-      }), takeUntil(this.unsubscribe)).subscribe(() => {});
+      }), takeUntil(this.unsubscribe)).subscribe(() => { });
     }
   }
   getContents(data) {
@@ -294,8 +295,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     if (!this.isOffline || _.includes(this.router.url, 'browse')) {
       requestParams['exists'] = request.queryParams.exists,
-      requestParams['sort_by'] = request.queryParams.sortType ?
-      { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy);
+        requestParams['sort_by'] = request.queryParams.sortType ?
+          { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy);
     }
     if (_.get(manipulatedData, 'filters')) {
       requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
@@ -365,7 +366,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   handleCourseRedirection({ data }) {
     const { metaData } = data;
-    const {onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch} = this.coursesService.findEnrolledCourses(metaData.identifier);
+    const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(metaData.identifier);
 
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
       return this.playerService.playContent(metaData);
@@ -414,7 +415,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.setTelemetryImpressionData();
     });
@@ -441,7 +442,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showLoginModal = false;
   }
 
-  startDownload (contentId) {
+  startDownload(contentId) {
     this.downloadManagerService.downloadContentId = contentId;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
@@ -460,8 +461,11 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.downloadManagerService.exportContent(contentId).subscribe(data => {
       this.showExportLoader = false;
     }, error => {
+      console.log(error, 'error view all ');
       this.showExportLoader = false;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      if (error.error.responseCode !== "NO_DEST_FOLDER") {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      }
     });
   }
 

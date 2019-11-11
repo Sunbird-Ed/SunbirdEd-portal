@@ -94,12 +94,12 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.downloadManagerService.downloadListEvent.pipe(
         takeUntil(this.unsubscribe$)).subscribe((data) => {
-        this.updateCardData(data);
-      });
+          this.updateCardData(data);
+        });
 
       this.downloadManagerService.downloadEvent.pipe(tap(() => {
         this.showDownloadLoader = false;
-      }), takeUntil(this.unsubscribe$)).subscribe(() => {});
+      }), takeUntil(this.unsubscribe$)).subscribe(() => { });
     }
   }
 
@@ -283,7 +283,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  startDownload (contentId) {
+  startDownload(contentId) {
     this.downloadManagerService.downloadContentId = contentId;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
@@ -304,7 +304,10 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showExportLoader = false;
     }, error => {
       this.showExportLoader = false;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      console.log(error, 'error explore');
+      if (error.error.responseCode !== "NO_DEST_FOLDER") {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      }
     });
   }
 
