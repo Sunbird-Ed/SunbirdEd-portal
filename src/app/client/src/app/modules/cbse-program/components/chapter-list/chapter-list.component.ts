@@ -19,6 +19,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   @Input() topicList: any;
   @Input() role: any;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
+  @Output() selectedTemplate = new EventEmitter<any>();
   @Input() selectedSchool: any;
 
   public textBookChapters: Array<any> = [];
@@ -26,6 +27,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
   private textBookMeta: any;
   public hierarchyObj = {};
   public collectionHierarchy: any;
+  public templateDetails: any = {};
+  public selectedChapter;
 
   private questionTypeName = {
     vsa: 'Very Short Answer',
@@ -39,8 +42,33 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public collectionData;
   showLoader = true;
   showError = false;
+  showUpload = false;
+  showResourceTemplatePopup = false;
   public routerQuestionCategory: any;
   public questionPattern: Array<any> = [];
+  public configResourceList = [{
+    name: 'Explanation',
+    contentType: 'ExplanationResource',
+    mimeType: ['application/pdf'],
+    filesAccepted: 'pdf',
+    filesize: '50'
+  }, {
+    name: 'Experimental',
+    contentType: 'ExperientialResource',
+    mimeType: ['video/mp4', 'video/webm', 'video/x-youtube'],
+    filesAccepted: 'mp4, webm, youtube',
+    filesize: '50'
+  }, {
+    name: 'Practice Sets',
+    contentType: 'PracticeQuestionSet',
+    mimeType: ['application/vnd.ekstep.ecml-archive'],
+    questionCategories: ['vsa', 'sa', 'la', 'mcq']
+  }, {
+    name: 'Curiosity',
+    contentType: 'CuriosityQuestionSet',
+    mimeType: ['application/vnd.ekstep.ecml-archive'],
+    questionCategories: ['curiosity']
+  }];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService, public telemetryService: TelemetryService, private cbseService: CbseProgramService,
     public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
@@ -77,8 +105,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
       }
     };
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
-    //clearing the selected questionId when user comes back from question list
-    delete this.selectedAttributes["questionList"];
+    // clearing the selected questionId when user comes back from question list
+    delete this.selectedAttributes['questionList'];
   }
   ngOnChanges(changed: any) {
     this.labelsHandler();
@@ -164,7 +192,6 @@ export class ChapterListComponent implements OnInit, OnChanges {
     });
     return tree;
   }
-
   public getHierarchyObj(data) {
     const instance = this;
     if (data.identifier) {
@@ -176,11 +203,12 @@ export class ChapterListComponent implements OnInit, OnChanges {
         }),
         'root': data.contentType === 'TextBook' ? true : false
       };
-
+      if(data.children){
       _.forEach(data.children, (collection) => {
         instance.getHierarchyObj(collection);
       });
     }
+  }
 
     return this.hierarchyObj;
   }
@@ -322,6 +350,34 @@ export class ChapterListComponent implements OnInit, OnChanges {
       }));
   }
 
+  public openPopup(e) {
+    e.stopPropagation();
+    this.showResourceTemplatePopup = true;
+  }
+
+  public selectedChapterHandler(event) {
+    console.log(event);
+    this.showResourceTemplatePopup = event.showModal;
+    this.selectedChapter = event.unitIdentifier;
+  }
+
+  handleTemplateSelection(event) {
+    this.showResourceTemplatePopup = false;
+    if (event.type === 'submit') {
+      this.templateDetails = _.find(this.configResourceList, function(o) {
+        return o.contentType === event.template;
+      });
+      if(_.indexOf(this.templateDetails.mimeType, 'application/vnd.ekstep.ecml-archive') < 0){
+        this.showUpload = true;
+      } else {
+        this.showUpload = false;
+      }
+      this.selectedTemplate.emit({
+        template: this.templateDetails,
+        selectedChapterId: this.selectedChapter
+      });
+    }
+  }
   emitQuestionTypeTopic(type, topic, topicIdentifier, resourceIdentifier, resourceName) {
     this.selectedQuestionTypeTopic.emit({
       'questionType': type,

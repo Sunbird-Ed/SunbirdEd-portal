@@ -18,14 +18,21 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
   public playerConfig: any;
   public theme: any;
   previewInitialized: boolean;
+  showUpload = true;
 
   constructor(private toEcml: CbseProgramService, private userService: UserService ) {
 
   }
 
   ngOnInit() {
+
   this.previewInitialized = true;
-  if (!this.selectedAttributes.previewQuestionData) {
+  if (this.questionMetaData.mimeType !== 'application/vnd.ekstep.ecml-archive') {
+    this.theme = null;
+    const context = this.getContext();
+
+    this.playerConfig = this.setPlayerConfig(context, this.theme);
+  } else if (!this.selectedAttributes.previewQuestionData) {
     this.toEcml
     .getECMLJSON(this.selectedAttributes.questionList)
     .subscribe( (theme) => {
@@ -36,6 +43,8 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       this.theme = theme;
       const context = this.getContext();
       this.playerConfig =  this.setPlayerConfig(context, theme);
+    }, error => {
+      console.log(error);
     });
     } else {
     this.toEcml
@@ -48,12 +57,17 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       this.theme = theme;
       const context = this.getContext();
       this.playerConfig =  this.setPlayerConfig(context, theme);
+    }, error => {
+      console.log(error);
     });
     }
+
+
   }
-  
-  ngOnChanges(){
-    if(this.previewInitialized){
+
+  ngOnChanges() {
+
+    if (this.previewInitialized) {
       if(this.questionMetaData && this.questionMetaData.mode !== 'create'){
         this.toEcml
         .getECMLJSON(this.selectedAttributes.questionList)
@@ -88,9 +102,20 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       metadata: PlayerConfig.metadata,
       context: context,
       config: PlayerConfig.config,
+    };
+
+     if (this.questionMetaData.mimeType !== 'application/vnd.ekstep.ecml-archive') {
+      finalPlayerConfiguration.data = {};
+      finalPlayerConfiguration.metadata = this.questionMetaData;
     }
     return finalPlayerConfiguration;
   }
+
+  // getUploadedContentMeta(e) {
+  //    this.showUpload = false;
+  //    this.playerConfig.data = {};
+  //    this.playerConfig.metadata = e;
+  // }
 
   getContext() {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));

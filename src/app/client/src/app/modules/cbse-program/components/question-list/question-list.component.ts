@@ -17,6 +17,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   @Input() selectedAttributes: any;
   @Input() role: any;
   @Input() resourceName: any;
+  @Input() templateDetails: any;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
 
@@ -50,7 +51,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
   ngOnChanges(changedProps: any) {
     if (this.enableRoleChange) {
       this.initialized = false; // it should be false before fetch
-      this.fetchQuestionWithRole();
+      if(this.selectedAttributes.questionType) {
+        this.fetchQuestionWithRole();
+      }
     }
     if ((this.selectedAttributes.currentRole === 'REVIEWER') || (this.selectedAttributes.currentRole === 'PUBLISHER')) {
       this.selectedAttributes['showMode'] = 'previewPlayer';
@@ -60,7 +63,11 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     console.log('changes detected in question list', this.role);
-    this.fetchQuestionWithRole();
+    if (this.selectedAttributes.questionType) {
+      this.fetchQuestionWithRole();
+    } else {
+      console.log(this.templateDetails.questionCategories);
+    }
     this.enableRoleChange = true;
     this.selectedAll = false;
   }
@@ -428,7 +435,10 @@ export class QuestionListComponent implements OnInit, OnChanges {
       })
     );
   }
-
+  public selectQuestionCategory(questionCategory) {
+    this.selectedAttributes.questionType = questionCategory;
+    this.fetchQuestionWithRole();
+  }
   publishResource(contentId) {
     const requestBody = {
       request: {

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-program-component',
@@ -17,10 +17,12 @@ export class ProgramComponent implements OnInit {
   public userProfile: any;
   public showLoader = true;
   public showOnboardPopup = false;
+  public programSelected = false;
+  public associatedPrograms: any;
 
   constructor(public resourceService: ResourceService, public configService: ConfigService, public activatedRoute: ActivatedRoute,
     public extPluginService: ExtPluginService, public userService: UserService, public toasterService: ToasterService) {
-    this.programId = this.activatedRoute.snapshot.params.programId;
+    this.programId = this.activatedRoute.snapshot.params.programId || 'b9cf4fa0-f4b5-11e9-a323-3b4a9d67ea97';
     localStorage.setItem('programId', this.programId);
   }
 
@@ -29,6 +31,13 @@ export class ProgramComponent implements OnInit {
     if (['null', null, undefined, 'undefined'].includes(this.programId)) {
       console.log('no programId found'); // TODO: need to handle this case
     }
+    this.getAssociatedPrograms().subscribe(response => {
+      if (response  && response.result) {
+        this.associatedPrograms = response.result;
+      }
+    }, error => {
+
+    });
     this.fetchProgramDetails().subscribe((programDetails) => {
       if (!this.programDetails.userDetails || !this.programDetails.userDetails.onBoarded) {
         this.showOnboardPopup = true;
@@ -38,6 +47,23 @@ export class ProgramComponent implements OnInit {
       const errorMes = typeof _.get(error, 'error.params.errmsg') === 'string' && _.get(error, 'error.params.errmsg');
       this.toasterService.error(errorMes || 'Fetching program details failed');
     });
+  }
+
+  getAssociatedPrograms() {
+    const req = {
+      url: `program/v1/list`,
+      data: {
+        'request': {
+          'filters': {
+            'userId': this.userService.userid
+          }
+        }
+      }
+    };
+    return this.extPluginService.post(req).pipe(map(res => {
+      console.log(res);
+      return res;
+    }));
   }
 
   fetchProgramDetails() {

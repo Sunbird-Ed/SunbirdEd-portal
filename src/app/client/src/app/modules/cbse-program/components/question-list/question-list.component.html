@@ -1,5 +1,21 @@
+<div>
+  <sui-modal *ngIf="!selectedAttributes.questionType" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+    appBodyScroll (dismissed)="selectedAttributes.questionType; dismissPublishModal();" #modal>
+    <div class="sb-modal-header">
+      Select Question Category
+    </div>
+    <div class="sb-modal-content">
+      <ul>
+        <li (click)="selectQuestionCategory(contentType)" *ngFor="let contentType of templateDetails.questionCategories">
+          {{contentType}}
+        </li>
+      </ul>
+    </div>
+  </sui-modal>
+</div>
 
-<div class="ui twelve column grid p-0 m-0">
+
+<div *ngIf="selectedAttributes?.questionType" class="ui twelve column grid p-0 m-0">
   <div class="three wide column p-0 pr-16">
     <div class="ui questionsMenu">
       <button *ngIf="role.currentRole === 'CONTRIBUTOR'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"

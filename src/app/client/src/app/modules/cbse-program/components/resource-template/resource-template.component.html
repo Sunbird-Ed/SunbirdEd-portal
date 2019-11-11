@@ -1,0 +1,32 @@
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal" #modal>
+  <div class="sb-modal-header">
+    Create Resource
+  </div>
+  <!-- Selection of Layout in modal -->
+
+  <div class="sb-modal-content sb-chapterlist-modal">
+    <div class="d-flex flex-jc-center flex-w-wrap">
+        <div *ngFor="let resourceType of configResourceList" [ngClass]="{'active': selectedResource === resourceType.contentType}"
+        class="sb-card mb-16 template-items p-16 mr-16 relative" (click)="showButton=true; selectedResource = resourceType.contentType">
+            <div class="selected-icon">
+              <i class="check circle icon"></i>
+            </div>
+            <div class="sb-card-metas mb-8 flex-jc-center">
+              <div class="sb-card-image">
+                <img src="assets/images/mcq_template/horizontal.png"></div>
+            </div>
+            <div class="sb-card-content-list mt-8">
+              <h6 class="mb-0 text-center"> {{resourceType.name}}</h6>
+            </div>
+          </div>
+    </div>
+  </div>
+
+  <!-- Selection of Question in modal -->
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!showButton" (click)="handleSubmit()">
+      {{'Submit'}}
+    </button>
+  </div>
+</sui-modal>

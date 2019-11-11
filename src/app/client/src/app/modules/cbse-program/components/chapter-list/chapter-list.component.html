@@ -1,14 +1,14 @@
 <div class="ui container sb-textbook-details-container mb-24">
-    <div class="sb-textbook-allchapters my-16">
-        <sui-select class="selection w-100" placeholder="All Chapters" [(ngModel)]="selectedOptions" [options]="options"
-          labelField="name" [isSearchable]="searchable" [isDisabled]="disabled" #multiSelect>
-          <sui-select-option *ngFor="let textbook of textBookChapters; let i = index" [value]="textbook">
-          </sui-select-option>
-        </sui-select>
-      </div>
-      <div class="ui container sb-chapterlist mt-16">
-          <sui-accordion class="styled fluid sb-accordion" [closeOthers]="true">
-            <!-- <div *ngFor="let textbook of textBookChapters; let i = index">
+  <div class="sb-textbook-allchapters my-16">
+    <sui-select class="selection w-100" placeholder="All Chapters" [(ngModel)]="selectedOptions" [options]="options"
+      labelField="name" [isSearchable]="searchable" [isDisabled]="disabled" #multiSelect>
+      <sui-select-option *ngFor="let textbook of textBookChapters; let i = index" [value]="textbook">
+      </sui-select-option>
+    </sui-select>
+  </div>
+  <div class="ui container sb-chapterlist mt-16">
+    <sui-accordion class="styled fluid sb-accordion" [closeOthers]="true">
+      <!-- <div *ngFor="let textbook of textBookChapters; let i = index">
               <sui-accordion-panel  [isOpen]="true">
                   <div title class="sb-accordion-title d-flex flex-ai-center">
                       <i class="minus circle icon mr-0 mr-8 fs-1-16"></i>
@@ -21,16 +21,21 @@
                   </div>
               </sui-accordion-panel>
             </div> -->
-            <app-recursive-tree [textbookChapters]="collectionHierarchy"></app-recursive-tree>
-          </sui-accordion>
-      </div>
+      <app-recursive-tree [textbookChapters]="collectionHierarchy" (selectedChapter)="selectedChapterHandler($event)"></app-recursive-tree>
+    </sui-accordion>
+  </div>
 </div>
-<!-- <div *ngIf='!showLoader && !showError' class="ui container sb-chapter-list" [appTelemetryImpression]="telemetryImpression">
+<div *ngIf='!showLoader && !showError' class="ui container sb-chapter-list"
+  [appTelemetryImpression]="telemetryImpression">
   <div *ngIf="textBookChapters.length" class="mt-16">
-    <sui-accordion class="styled fluid sb-accordion" [closeOthers]="true">
-      <sui-accordion-panel [isOpen]="(selectedAttributes.lastOpenedUnit == 0) ? (i == 0) : (selectedAttributes.lastOpenedUnit == textbook.identifier)" *ngFor="let textbook of textBookChapters; let i = index">
+    <!-- <sui-accordion class="styled fluid sb-accordion" [closeOthers]="true">
+      <sui-accordion-panel
+        [isOpen]="(selectedAttributes.lastOpenedUnit == 0) ? (i == 0) : (selectedAttributes.lastOpenedUnit == textbook.identifier)"
+        *ngFor="let textbook of textBookChapters; let i = index">
         <div title class="sb-accordion-title">
           {{textbook.name}} ( {{textbook.topic}} )
+          <button (click)="openPopup($event);" class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"><i
+              class="add icon"></i>Create</button>
           <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
         </div>
         <div content class="sb-table-container my-0 sb-accordion-content">
@@ -44,38 +49,50 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody class="sb-table-body body-large"  *ngFor = "let question_category of routerQuestionCategory; let z = index">
-              <tr (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
-              appTelemetryInteract [telemetryInteractEdata]="{id: question_category+'_tr', type:'click', pageid:'chapterlist', extra:{type: questionPattern[i] ,category: question_category ,topic:textbook.topic}}">
+            <tbody class="sb-table-body body-large"
+              *ngFor="let question_category of routerQuestionCategory; let z = index">
+              <tr
+                (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
+                appTelemetryInteract
+                [telemetryInteractEdata]="{id: question_category+'_tr', type:'click', pageid:'chapterlist', extra:{type: questionPattern[i] ,category: question_category ,topic:textbook.topic}}">
                 <td>{{questionTypeName[textbook[question_category].name]}}</td>
                 <td>{{textbook[question_category].total}}</td>
                 <td>{{textbook[question_category].me}}</td>
                 <td *ngIf="selectedAttributes.currentRole !== 'REVIEWER'">{{textbook[question_category].attention}}</td>
-                <td *ngIf="selectedAttributes.currentRole !== 'PUBLISHER'"><button class="sb-btn sb-btn-primary sb-btn-normal"
-                  (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
-                  appTelemetryInteract [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: questionPattern[z],category: question_category ,topic:textbook.topic}}" >Open</button></td>
-                <td *ngIf="selectedAttributes.currentRole === 'PUBLISHER'"><button class="sb-btn sb-btn-primary sb-btn-normal"
-                  (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
-                  appTelemetryInteract [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: questionPattern[z],category: question_category ,topic:textbook.topic}}" >{{textbook[question_category].buttonStatus ? 'Edit' : 'Create' }}</button></td>
+                <td *ngIf="selectedAttributes.currentRole !== 'PUBLISHER'">
+                  <button
+                    class="sb-btn sb-btn-primary sb-btn-normal"
+                    (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
+                    appTelemetryInteract
+                    [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: questionPattern[z],category: question_category ,topic:textbook.topic}}">
+                    Open
+                  </button>
+                </td>
+                <td *ngIf="selectedAttributes.currentRole === 'PUBLISHER'">
+                  <button
+                    class="sb-btn sb-btn-primary sb-btn-normal"
+                    (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
+                    appTelemetryInteract
+                    [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: questionPattern[z],category: question_category ,topic:textbook.topic}}">
+                    {{textbook[question_category].buttonStatus ? 'Edit' : 'Create' }}
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </sui-accordion-panel>
-    </sui-accordion>
+    </sui-accordion> -->
   </div>
   <div class="twelve wide column" *ngIf="!textBookChapters.length">
     <app-no-result></app-no-result>
   </div>
-</div> -->
+</div>
 <app-loader *ngIf='showLoader && !showError'></app-loader>
 
 
-<div class="sb-cbse-homepage-container">
-  <!-- Contribute HTML-->
+<!-- <div class="sb-cbse-homepage-container">
 
-
-  <!-- Review HTML-->
 
   <div class="ui container sb-textbook-details-container mb-24">
     <div class="sb-chapters-approved-details d-flex flex-jc-flex-end">
@@ -175,8 +192,9 @@
       </sui-accordion>
     </div>
   </div>
-</div>
-
+</div> -->
+<app-resource-template *ngIf="showResourceTemplatePopup" style="z-index: 1000"
+      [configResourceList]="configResourceList" (templateSelection)="handleTemplateSelection($event)"></app-resource-template>
 <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
   class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal" #modal>
   <div class="sb-modal-header">
@@ -185,69 +203,79 @@
   <!-- Selection of Layout in modal -->
 
   <div class="sb-modal-content sb-chapterlist-modal">
-    <div class="d-flex flex-jc-center flex-w-wrap">
-      <div class="sb-card mb-16 template-items p-16 mr-16 relative active">
-        <div class="selected-icon">
-          <i class="check circle icon"></i>
-        </div>
-        <div class="sb-card-metas mb-8 flex-jc-center">
-          <div class="sb-card-image">
-            <img src="../../assets/images/horizontal.png"></div>
-        </div>
-        <div class="sb-card-content-list mt-8">
-          <h6 class="mb-0 text-center"> Experimental</h6>
-        </div>
-      </div>
-      <div class="sb-card mb-16 template-items p-16 mr-16 relative">
-        <div class="selected-icon">
-          <i class="check circle icon"></i>
-        </div>
-        <div class="sb-card-metas mb-8 flex-jc-center">
-          <div class="sb-card-image">
-            <img src="../../assets/images/horizontal.png"></div>
-        </div>
-        <div class="sb-card-content-list mt-8">
-          <h6 class="mb-0 text-center"> Explanation</h6>
-        </div>
-      </div>
-      <div class="sb-card mb-16 template-items p-16 mr-16 relative">
-        <div class="selected-icon">
-          <i class="check circle icon"></i>
-        </div>
-        <div class="sb-card-metas mb-8 flex-jc-center">
-          <div class="sb-card-image">
-            <img src="../../assets/images/horizontal.png"></div>
-        </div>
-        <div class="sb-card-content-list mt-8">
-          <h6 class="mb-0 text-center"> Lesson Plans</h6>
-        </div>
-      </div>
-      <div class="sb-card mb-16 template-items p-16 mr-16 relative">
-        <div class="selected-icon">
-          <i class="check circle icon"></i>
-        </div>
-        <div class="sb-card-metas mb-8 flex-jc-center">
-          <div class="sb-card-image">
-            <img src="../../assets/images/horizontal.png"></div>
-        </div>
-        <div class="sb-card-content-list mt-8">
-          <h6 class="mb-0 text-center"> Practice Sets</h6>
-        </div>
-      </div>
-      <div class="sb-card mb-16 template-items p-16 mr-16 relative">
-        <div class="selected-icon">
-          <i class="check circle icon"></i>
-        </div>
-        <div class="sb-card-metas mb-8 flex-jc-center">
-          <div class="sb-card-image">
-            <img src="../../assets/images/horizontal.png"></div>
-        </div>
-        <div class="sb-card-content-list mt-8">
-          <h6 class="mb-0 text-center"> Curosity</h6>
+    <app-resource-template *ngIf="showResourceTemplatePopup" style="z-index: 1000"
+      [configResourceList]="configResourceList" (templateSelection)="handleTemplateSelection($event)">
+      <div class="d-flex flex-jc-center flex-w-wrap">
+        <div *ngFor="let type of contentType" class="sb-card mb-16 template-items p-16 mr-16 relative">
+          {{type.name}}
         </div>
       </div>
 
-    </div>
+
+      <div class="d-flex flex-jc-center flex-w-wrap">
+        <div class="sb-card mb-16 template-items p-16 mr-16 relative active">
+          <div class="selected-icon">
+            <i class="check circle icon"></i>
+          </div>
+          <div class="sb-card-metas mb-8 flex-jc-center">
+            <div class="sb-card-image">
+              <img src="../../assets/images/horizontal.png"></div>
+          </div>
+          <div class="sb-card-content-list mt-8">
+            <h6 class="mb-0 text-center"> Experimental</h6>
+          </div>
+        </div>
+        <div class="sb-card mb-16 template-items p-16 mr-16 relative">
+          <div class="selected-icon">
+            <i class="check circle icon"></i>
+          </div>
+          <div class="sb-card-metas mb-8 flex-jc-center">
+            <div class="sb-card-image">
+              <img src="../../assets/images/horizontal.png"></div>
+          </div>
+          <div class="sb-card-content-list mt-8">
+            <h6 class="mb-0 text-center"> Explanation</h6>
+          </div>
+        </div>
+        <div class="sb-card mb-16 template-items p-16 mr-16 relative">
+          <div class="selected-icon">
+            <i class="check circle icon"></i>
+          </div>
+          <div class="sb-card-metas mb-8 flex-jc-center">
+            <div class="sb-card-image">
+              <img src="../../assets/images/horizontal.png"></div>
+          </div>
+          <div class="sb-card-content-list mt-8">
+            <h6 class="mb-0 text-center"> Lesson Plans</h6>
+          </div>
+        </div>
+        <div class="sb-card mb-16 template-items p-16 mr-16 relative">
+          <div class="selected-icon">
+            <i class="check circle icon"></i>
+          </div>
+          <div class="sb-card-metas mb-8 flex-jc-center">
+            <div class="sb-card-image">
+              <img src="../../assets/images/horizontal.png"></div>
+          </div>
+          <div class="sb-card-content-list mt-8">
+            <h6 class="mb-0 text-center"> Practice Sets</h6>
+          </div>
+        </div>
+        <div class="sb-card mb-16 template-items p-16 mr-16 relative">
+          <div class="selected-icon">
+            <i class="check circle icon"></i>
+          </div>
+          <div class="sb-card-metas mb-8 flex-jc-center">
+            <div class="sb-card-image">
+              <img src="../../assets/images/horizontal.png"></div>
+          </div>
+          <div class="sb-card-content-list mt-8">
+            <h6 class="mb-0 text-center"> Curosity</h6>
+          </div>
+        </div>
+
+      </div>
+    </app-resource-template>
   </div>
 
   <!-- Selection of Question in modal -->
@@ -261,6 +289,7 @@
     </button>
   </div>
 </sui-modal>
+
 
 
 <sui-modal *ngIf="showLargeModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"

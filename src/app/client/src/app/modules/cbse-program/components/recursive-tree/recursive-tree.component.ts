@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-recursive-tree',
@@ -8,14 +8,19 @@ import { Component, OnInit, Input } from '@angular/core';
 export class RecursiveTreeComponent implements OnInit {
 
   @Input() textbookChapters;
+  @Output() selectedChapter = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
     console.log(this.textbookChapters);
-
-
-
   }
 
+  public createHandler(e, unitIdentifier) {
+    e.stopPropagation();
+    this.selectedChapter.emit({
+      showModal: true,
+      unitIdentifier: unitIdentifier
+    });
+  }
 }
