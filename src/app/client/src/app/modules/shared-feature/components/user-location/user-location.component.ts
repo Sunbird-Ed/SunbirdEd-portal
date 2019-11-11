@@ -19,6 +19,7 @@ export class UserLocationComponent implements OnInit {
   @Output() close = new EventEmitter<any>();
   @Input() userLocationDetails: any;
   @Input() deviceProfile: any;
+  @Input() isCustodianOrgUser: any;
   @Input() userProfile: any;
   @ViewChild('userLocationModal') userLocationModal;
   userDetailsForm: FormGroup;
@@ -335,7 +336,7 @@ export class UserLocationComponent implements OnInit {
   }
 
   updateUserProfileData(data) {
-    if (!this.isUserProfileUpdateAllowed) {
+    if (!this.isUserProfileUpdateAllowed || !this.isCustodianOrgUser) {
       return of({});
     }
     return this.profileService.updateProfile(data);
