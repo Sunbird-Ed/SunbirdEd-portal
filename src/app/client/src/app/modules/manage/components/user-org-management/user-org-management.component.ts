@@ -90,7 +90,7 @@ export class UserOrgManagementComponent {
     this.manageService.getGeoData(this.slug, fileName)
     .subscribe(
       response => {
-        const data = JSON.stringify(_.get(response, 'result'));
+        const data = (_.get(response, 'result'));
         const blob = new Blob(
           [data],
           {
