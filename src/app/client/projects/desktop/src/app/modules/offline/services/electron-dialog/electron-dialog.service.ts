@@ -19,4 +19,7 @@ export class ElectronDialogService extends DataService {
       console.log('error while showing import dialog box');
     });
   }
+  showContentExportDialog() {
+    return this.get({url : this.configService.urlConFig.URLS.ELECTRON_DIALOG.CONTENT_EXPORT});
+  }
 }
