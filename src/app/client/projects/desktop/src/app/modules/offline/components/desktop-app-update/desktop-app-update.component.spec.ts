@@ -3,10 +3,11 @@ import { serverRes } from './desktop-app-update.component.spec.data';
 import { of as observableOf, throwError } from 'rxjs';
 import { AppUpdateService } from './../../services/app-update/app-update.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConfigService, ResourceService } from '@sunbird/shared';
+import { ConfigService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DesktopAppUpdateComponent } from './desktop-app-update.component';
 import { SuiModalModule } from 'ng2-semantic-ui';
+import { CacheService } from 'ng2-cache-service';
 
 describe('DesktopAppUpdateComponent', () => {
   let component: DesktopAppUpdateComponent;
@@ -16,7 +17,7 @@ describe('DesktopAppUpdateComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ DesktopAppUpdateComponent ],
       imports: [SuiModalModule, HttpClientTestingModule, TelemetryModule],
-      providers: [ConfigService, ResourceService]
+      providers: [ConfigService, ResourceService, CacheService, BrowserCacheTtlService]
     })
     .compileComponents();
   }));

@@ -7,14 +7,19 @@ import {
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 
+declare const __karma__: any;
 declare const require: any;
+const tags = __karma__.config.args[0];
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
-// Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
-// And load the modules.
-context.keys().map(context);
+
+// then we find all the tests.
+const filterRegExp = (tags) ? new RegExp(tags, 'g') : /\.spec\.ts$/,
+    context = require.context('./', true, /\.spec\.ts$/),
+    specFiles = context.keys().filter(path => filterRegExp.test(path));
+// and load the modules.
+specFiles.map(context);
