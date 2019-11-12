@@ -304,7 +304,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.showExportLoader = false;
     }, error => {
       this.showExportLoader = false;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      if (error.error.responseCode !== "NO_DEST_FOLDER") {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      }
     });
   }
 
