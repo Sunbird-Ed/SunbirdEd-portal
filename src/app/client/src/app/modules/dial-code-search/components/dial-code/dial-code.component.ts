@@ -10,8 +10,7 @@ import { takeUntil, map, catchError, mergeMap, first } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
-import {
-  DownloadManagerService
+import { DownloadManagerService
 } from './../../../../../../projects/desktop/src/app/modules/offline/services/download-manager/download-manager.service';
 
 const treeModel = new TreeModel();
@@ -71,16 +70,16 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     EkTelemetry.config.batchsize = 2;
     observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
-      (params, queryParams) => {
-        return { ...params, ...queryParams };
-      }).subscribe((params) => {
-        this.dialSearchSource = params.source || 'search';
-        this.itemsToDisplay = [];
-        this.searchResults = [];
-        this.dialCode = params.dialCode;
-        this.setTelemetryData();
-        this.searchDialCode();
-      });
+    (params, queryParams) => {
+      return { ...params, ...queryParams };
+    }).subscribe((params) => {
+      this.dialSearchSource = params.source || 'search';
+      this.itemsToDisplay = [];
+      this.searchResults = [];
+      this.dialCode = params.dialCode;
+      this.setTelemetryData();
+      this.searchDialCode();
+    });
     this.handleMobilePopupBanner();
 
     if (this.isOffline) {
@@ -88,9 +87,9 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.updateCardData(data);
       });
       this.downloadManagerService.downloadEvent.pipe(first(),
-        takeUntil(this.unsubscribe$)).subscribe(() => {
-          this.showDownloadLoader = false;
-        });
+      takeUntil(this.unsubscribe$)).subscribe(() => {
+        this.showDownloadLoader = false;
+      });
 
     }
     this.instance = _.upperCase(this.resourceService.instance);
@@ -140,7 +139,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.appendItems(startIndex, this.itemsToLoad);
   }
 
-  appendItems(startIndex, endIndex) {
+  appendItems (startIndex, endIndex) {
     this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
   }
 
@@ -172,7 +171,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.userService.loggedIn) {
       this.coursesService.getEnrolledCourses().subscribe(() => {
         const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
-          this.coursesService.findEnrolledCourses(metaData.identifier);
+        this.coursesService.findEnrolledCourses(metaData.identifier);
         if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
           return this.playerService.playContent(metaData);
         }
@@ -240,7 +239,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit () {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
@@ -265,7 +264,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       };
     });
   }
-  closeMobileAppPopup() {
+  closeMobileAppPopup () {
     if (!this.isRedirectToDikshaApp) {
       this.telemetryService.interact(this.closeMobilePopupInteractData);
       (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
@@ -273,7 +272,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  redirectToDikshaApp() {
+  redirectToDikshaApp () {
     this.isRedirectToDikshaApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
@@ -282,7 +281,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     applink = `${applink}&utm_source=${utm_source}&utm_medium=${this.dialSearchSource}&utm_campaign=dial&utm_term=${this.dialCode}`;
     window.location.href = applink.replace(/\s+/g, '');
   }
-  setTelemetryData() {
+  setTelemetryData () {
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
@@ -322,13 +321,13 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  handleMobilePopupBanner() {
+  handleMobilePopupBanner () {
     setTimeout(() => {
       this.showMobilePopup = true;
     }, 500);
   }
 
-  startDownload(contentId) {
+  startDownload (contentId) {
     this.downloadManagerService.downloadContentId = contentId;
     this.downloadManagerService.startDownload({}).subscribe(data => {
       this.downloadManagerService.downloadContentId = '';
@@ -346,17 +345,15 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.downloadManagerService.exportContent(contentId).subscribe(data => {
       this.showExportLoader = false;
     }, error => {
-      console.log(error, 'error dial code ');
       this.showExportLoader = false;
       if (error.error.responseCode !== "NO_DEST_FOLDER") {
         this.toasterService.error(this.resourceService.messages.fmsg.m0091);
       }
     });
   }
-
   updateCardData(downloadListdata) {
     _.each(this.itemsToDisplay, (contents) => {
-      this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
+    this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
   }
 
