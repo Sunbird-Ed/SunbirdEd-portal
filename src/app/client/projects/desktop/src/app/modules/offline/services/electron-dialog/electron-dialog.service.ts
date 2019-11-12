@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@sunbird/shared';
 import { DataService } from '@sunbird/core';
@@ -8,8 +8,6 @@ import * as _ from 'lodash-es';
   providedIn: 'root'
 })
 export class ElectronDialogService extends DataService {
-
-  uploadEvent = new EventEmitter();
 
   constructor(public http: HttpClient, public configService: ConfigService) {
     super(http);
