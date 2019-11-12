@@ -40,7 +40,7 @@ describe('ContentManagerService', () => {
     expect(publicDataService.post).toHaveBeenCalled();
   });
 
-  it('should make export API call', () => {
+  xit('should make export API call', () => {
 
     const service: ContentManagerService = TestBed.get(ContentManagerService);
     const publicDataService = TestBed.get(PublicDataService);
