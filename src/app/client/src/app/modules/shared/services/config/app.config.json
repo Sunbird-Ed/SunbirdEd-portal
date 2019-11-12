@@ -561,7 +561,7 @@
       },
       "config": {
         "showEndPage": false,
-        "endpage": [
+        "endPage": [
           {
           "template": "assessment",
           "contentType": ["SelfAccess"]

@@ -4,7 +4,7 @@
   <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp && !isOffline">
   </app-tnc-popup>
   <app-validate-teacher-identifier-popup *ngIf="flag"> </app-validate-teacher-identifier-popup>
-  <app-user-location *ngIf="!isLocationConfirmed" [deviceProfile]="deviceProfile" [userProfile]="usersProfile">
+  <app-user-location *ngIf="!isLocationConfirmed" [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile" [userProfile]="usersProfile">
   </app-user-location>
   <app-header *ngIf="!hideHeaderNFooter" [routerEvents]="routeData$"></app-header>
   <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn && !isOffline">
