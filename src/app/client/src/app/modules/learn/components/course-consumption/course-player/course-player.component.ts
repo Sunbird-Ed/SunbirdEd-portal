@@ -355,7 +355,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     const content = this.findContentById(this.contentId);
     const contentMimeType = _.get(content, 'model.mimeType');
     const contentType = _.get(content, 'model.contentType');
-    if (contentType === "SelfAssess") {
+    if (contentType === 'SelfAssess') {
       return false;
     }
     const validSummary = (summaryList: Array<any>) => (percentage: number) => _.find(summaryList, (requiredProgress =>
