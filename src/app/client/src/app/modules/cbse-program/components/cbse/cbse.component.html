@@ -15,7 +15,7 @@
   </div>
 </div>
 <div *ngIf="showCertificate">
-  <div *ngIf='!showCertDashboard && (programDetails?.userDetails?.roles.includes("CERTFICATE_ISSUER") && (slug == "sunbird"))'
+  <div *ngIf='!showCertDashboard && (programDetails?.userDetails?.roles.includes("CERTFICATE_ISSUER"))'
     class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
     <div class="ui mt-30 container w-300 sb-box-container" [appTelemetryImpression]="telemetryImpression">
       <!-- <h4>SELECT TYPE</h4> -->
@@ -121,7 +121,7 @@
 
   <csv-upload [certType]="selectedOption" *ngIf="showModal"></csv-upload>
 
-  <div *ngIf="showCertDashboard && (programDetails?.userDetails?.roles.includes('CERTFICATE_ISSUER') && (slug == 'sunbird'))"
+  <div *ngIf="showCertDashboard && (programDetails?.userDetails?.roles.includes('CERTFICATE_ISSUER'))"
     class="ui mt-30 container w-300 sb-box-container">
     <app-certificate-dashboard></app-certificate-dashboard>
   </div>
