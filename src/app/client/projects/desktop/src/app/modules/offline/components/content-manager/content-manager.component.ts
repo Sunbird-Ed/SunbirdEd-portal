@@ -26,7 +26,7 @@ export class ContentManagerComponent implements OnInit {
   };
   subscription: any;
   interactData: IInteractEventEdata;
-  localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming'];
+  localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming', 'pausing', 'canceling'];
   cancelId: string;
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
@@ -87,13 +87,14 @@ export class ContentManagerComponent implements OnInit {
     const _this = this;
     return ({
       next(apiResponse: any) {
-        _this.apiCallSubject.next();
         _this.deleteLocalContentStatus(contentId);
+        _this.apiCallSubject.next();
       },
       error(err) {
+        _this.deleteLocalContentStatus(contentId);
         _this.toasterService.error(_this.resourceService.messages.fmsg.m0097);
         _this.apiCallSubject.next();
-        _this.deleteLocalContentStatus(contentId);
+        // _this.deleteLocalContentStatus(contentId);
       }
     });
   }
