@@ -37,6 +37,11 @@ export class ContentManagerComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router) {
     this.getList();
+    document.addEventListener('content:import', (event) => {
+      console.log('------------import event----------', event);
+      this.isOpen = true;
+      this.apiCallSubject.next();
+    });
   }
 
   getList() {
@@ -56,6 +61,7 @@ export class ContentManagerComponent implements OnInit {
           this.contentResponse = apiResponse;
         });
   }
+
   ngOnInit() {
     // Call download list initially
     this.apiCallSubject.next();
@@ -65,14 +71,7 @@ export class ContentManagerComponent implements OnInit {
       this.isOpen = true;
       this.apiCallSubject.next();
     });
-
-    // Call content list while uploading content
-    this.electronDialogService.uploadEvent.subscribe((data) => {
-      this.isOpen = true;
-      this.apiCallSubject.next();
-    });
   }
-
 
   updateLocalStatus(contentData, currentStatus) {
     this.contentStatusObject[contentData.id] = {
