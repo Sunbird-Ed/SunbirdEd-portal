@@ -239,13 +239,28 @@
             "polyfills": "projects/desktop/src/polyfills.ts",
             "tsConfig": "projects/desktop/tsconfig.spec.json",
             "karmaConfig": "projects/desktop/karma.conf.js",
-            "styles": [
-              "projects/desktop/src/styles.css"
-            ],
-            "scripts": [],
             "assets": [
-              "projects/desktop/src/favicon.ico",
-              "projects/desktop/src/assets"
+              { "glob": "**/*", "input": "./src/assets", "output": "./assets" }
+            ],
+            "styles": [
+              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
+              "src/assets/styles/semantic/semantic.min.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/shepherd.js/dist/css/shepherd-theme-default.css",
+              "src/assets/styles/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/styles/"
+              ]
+            },
+            "scripts": [
+              "src/assets/libs/iziToast/iziToast.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/slick-carousel/slick/slick.min.js",
+              "node_modules/@project-sunbird/telemetry-sdk/index.js",
+              "src/assets/libs/semantic.min.js",
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
             ]
           }
         },

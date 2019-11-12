@@ -6,7 +6,7 @@ import { ConfigService, BrowserCacheTtlService, ToasterService, ResourceService,
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER  } from '@sunbird/telemetry';
 import { BrowseComponent } from './browse.component';
-import { ExploreModule } from '../../../../modules/public/module/explore';
+import { ExploreModule } from '../../../../../../../../src/app/modules/public/module/explore';
 
 
 
