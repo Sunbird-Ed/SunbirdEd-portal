@@ -13,8 +13,8 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService
-} from './../../../../../../../../projects/desktop/src/app/modules/offline/services/download-manager/download-manager.service';
+import { ContentManagerService
+} from './../../../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
 
 @Component({
     templateUrl: './explore-content.component.html'
@@ -53,7 +53,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
         public userService: UserService, public frameworkService: FrameworkService,
         public cacheService: CacheService, public navigationhelperService: NavigationHelperService,
-        public downloadManagerService: DownloadManagerService) {
+        public contentManagerService: ContentManagerService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.explore.filterType;
     }
@@ -75,11 +75,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         );
 
         if (this.isOffline) {
-            this.downloadManagerService.downloadEvent.pipe(tap(() => {
+            this.contentManagerService.downloadEvent.pipe(tap(() => {
                 this.showDownloadLoader = false;
               }), takeUntil(this.unsubscribe$)).subscribe(() => {});
 
-            this.downloadManagerService.downloadListEvent.pipe(
+            this.contentManagerService.downloadListEvent.pipe(
                 takeUntil(this.unsubscribe$)).subscribe((data) => {
                 this.updateCardData(data);
             });
@@ -261,11 +261,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     startDownload(contentId) {
-        this.downloadManagerService.downloadContentId = contentId;
-        this.downloadManagerService.startDownload({}).subscribe(data => {
-            this.downloadManagerService.downloadContentId = '';
+        this.contentManagerService.downloadContentId = contentId;
+        this.contentManagerService.startDownload({}).subscribe(data => {
+            this.contentManagerService.downloadContentId = '';
         }, error => {
-            this.downloadManagerService.downloadContentId = '';
+            this.contentManagerService.downloadContentId = '';
             this.showDownloadLoader = false;
             _.each(this.contentList, (contents) => {
                 contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
@@ -275,11 +275,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     exportOfflineContent(contentId) {
-        this.downloadManagerService.exportContent(contentId).subscribe(data => {
+        this.contentManagerService.exportContent(contentId).subscribe(data => {
             this.showExportLoader = false;
         }, error => {
             this.showExportLoader = false;
-            this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+            if (error.error.responseCode !== "NO_DEST_FOLDER") {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+              }
         });
     }
 

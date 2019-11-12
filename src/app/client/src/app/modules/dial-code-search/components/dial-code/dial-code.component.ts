@@ -10,8 +10,8 @@ import { takeUntil, map, catchError, mergeMap, first } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService
-} from './../../../../../../projects/desktop/src/app/modules/offline/services/download-manager/download-manager.service';
+import { ContentManagerService
+} from './../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
 
 const treeModel = new TreeModel();
 
@@ -64,7 +64,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
-    public downloadManagerService: DownloadManagerService, public publicPlayerService: PublicPlayerService) {
+    public contentManagerService: ContentManagerService, public publicPlayerService: PublicPlayerService) {
   }
 
   ngOnInit() {
@@ -83,10 +83,10 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.handleMobilePopupBanner();
 
     if (this.isOffline) {
-      this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+      this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
       });
-      this.downloadManagerService.downloadEvent.pipe(first(),
+      this.contentManagerService.downloadEvent.pipe(first(),
       takeUntil(this.unsubscribe$)).subscribe(() => {
         this.showDownloadLoader = false;
       });
@@ -328,12 +328,12 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   startDownload (contentId) {
-    this.downloadManagerService.downloadContentId = contentId;
-    this.downloadManagerService.startDownload({}).subscribe(data => {
-      this.downloadManagerService.downloadContentId = '';
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.startDownload({}).subscribe(data => {
+      this.contentManagerService.downloadContentId = '';
     }, error => {
       this.showDownloadLoader = false;
-      this.downloadManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentId = '';
       _.each(this.itemsToDisplay, (contents) => {
         contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
       });
@@ -342,14 +342,15 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   exportOfflineContent(contentId) {
-    this.downloadManagerService.exportContent(contentId).subscribe(data => {
+    this.contentManagerService.exportContent(contentId).subscribe(data => {
       this.showExportLoader = false;
     }, error => {
       this.showExportLoader = false;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      if (error.error.responseCode !== "NO_DEST_FOLDER") {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      }
     });
   }
-
   updateCardData(downloadListdata) {
     _.each(this.itemsToDisplay, (contents) => {
     this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
