@@ -26,7 +26,7 @@ export class ContentManagerComponent implements OnInit {
   };
   subscription: any;
   interactData: IInteractEventEdata;
-  localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming'];
+  localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming', 'pausing', 'canceling'];
   cancelId: string;
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
@@ -37,6 +37,11 @@ export class ContentManagerComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public router: Router) {
     this.getList();
+    document.addEventListener('content:import', (event) => {
+      console.log('------------import event----------', event);
+      this.isOpen = true;
+      this.apiCallSubject.next();
+    });
   }
 
   getList() {
@@ -56,6 +61,7 @@ export class ContentManagerComponent implements OnInit {
           this.contentResponse = apiResponse;
         });
   }
+
   ngOnInit() {
     // Call download list initially
     this.apiCallSubject.next();
@@ -65,14 +71,7 @@ export class ContentManagerComponent implements OnInit {
       this.isOpen = true;
       this.apiCallSubject.next();
     });
-
-    // Call content list while uploading content
-    this.electronDialogService.uploadEvent.subscribe((data) => {
-      this.isOpen = true;
-      this.apiCallSubject.next();
-    });
   }
-
 
   updateLocalStatus(contentData, currentStatus) {
     this.contentStatusObject[contentData.id] = {
@@ -87,13 +86,13 @@ export class ContentManagerComponent implements OnInit {
     const _this = this;
     return ({
       next(apiResponse: any) {
-        _this.apiCallSubject.next();
         _this.deleteLocalContentStatus(contentId);
+        _this.apiCallSubject.next();
       },
       error(err) {
+        _this.deleteLocalContentStatus(contentId);
         _this.toasterService.error(_this.resourceService.messages.fmsg.m0097);
         _this.apiCallSubject.next();
-        _this.deleteLocalContentStatus(contentId);
       }
     });
   }

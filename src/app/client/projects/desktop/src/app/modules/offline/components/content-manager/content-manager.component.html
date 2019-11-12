@@ -83,10 +83,10 @@
           <div *ngIf="(data.status === 'resuming' || data.status === 'resume') && data.addedUsing === 'import'"
             class="fs-0-785 sb-color-primary"> {{resourceService?.frmelmnts?.btn?.resuming}} </div>
 
-          <div *ngIf="data.status === 'Pausing' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
+          <div *ngIf="data.status === 'pausing' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
             {{resourceService?.frmelmnts?.btn?.pausing}} </div>
 
-          <div *ngIf="data.status === 'Pausing' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
+          <div *ngIf="data.status === 'canceling' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
             {{resourceService?.frmelmnts?.btn?.canceling}} </div>
 
           <div *ngIf="data.status === 'completed'" class="fs-0-785 sb-color-success">
