@@ -13,6 +13,7 @@ import { INoteData } from '@sunbird/notes';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as TreeModel from 'tree-model';
+const ACCESSEVENT = 'renderer:question:submitscore';
 
 @Component({
   selector: 'app-course-player',
@@ -312,7 +313,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
       return;
     }
-    const eid = event.detail.telemetryData.eid;
+    const eid = _.get(event, 'detail.telemetryData.eid');
     if (eid === 'END' && !this.validEndEvent(event)) {
       return;
     }
@@ -323,6 +324,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       batchId: this.batchId,
       status: eid === 'END' ? 2 : 1
     };
+    if (!eid) {
+      const contentType = _.get(this.findContentById(this.contentId), 'model.contentType');
+      if (contentType === 'SelfAssess' && _.get(event, 'data') === ACCESSEVENT) {
+        request['status'] = 2;
+      }
+    }
+
     this.courseConsumptionService.updateContentsState(request).pipe(first())
       .subscribe(updatedRes => this.contentStatus = updatedRes.content,
         err => console.log('updating content status failed', err));
@@ -338,12 +346,18 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   questionScoreSubmitEvents(event) {
     if (event) {
       this.assessmentScoreService.handleSubmitButtonClickEvent(true);
+      this.contentProgressEvent(event);
     }
   }
 
   private validEndEvent(event) {
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
-    const contentMimeType = _.get(this.findContentById(this.contentId), 'model.mimeType');
+    const content = this.findContentById(this.contentId);
+    const contentMimeType = _.get(content, 'model.mimeType');
+    const contentType = _.get(content, 'model.contentType');
+    if (contentType === "SelfAssess") {
+      return false;
+    }
     const validSummary = (summaryList: Array<any>) => (percentage: number) => _.find(summaryList, (requiredProgress =>
       summary => summary && summary.progress >= requiredProgress)(percentage));
     if (validSummary(playerSummary)(20) && ['video/x-youtube', 'video/mp4', 'video/webm'].includes(contentMimeType)) {
