@@ -51,6 +51,20 @@
   --red-0: #FBCCD1; // toast bg
   --red-100: #FF6979; // buttong bg, toast
   --red-400: var(--red); // icon color, lable, notification
+  
+  --alpha0: 0;
+  --alpha25: 0.25;
+  --alpha50: 0.50;
+  --alpha75: 0.75;
+
+  --base-font-size:14px;
+  --base-block-space: 8px;
+  --icon-svg-xxs: 12px;
+  --icon-svg-xs: calc(var(--base-block-space) * 2);
+  --icon-svg-sm: calc(var(--base-block-space) * 3);
+  --icon-svg-md: calc(var(--base-block-space) * 4);
+  --icon-svg-lg: calc(var(--base-block-space) * 5);
+  --icon-svg-xl: calc(var(--base-block-space) * 6);
 }
 
 // Variables
