@@ -564,7 +564,7 @@
         "endPage": [
           {
           "template": "assessment",
-          "contentType": ["SelfAccess"]
+          "contentType": ["SelfAssess"]
           }
         ],
         "showStartPage": true,
