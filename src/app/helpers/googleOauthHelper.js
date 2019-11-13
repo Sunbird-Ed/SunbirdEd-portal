@@ -43,7 +43,9 @@ class GoogleOauth {
     const { data } = await plus.people.get({ userId: 'me' }).catch(this.handleError)
     return {
       name: data.displayName,
-      emailId: _.get(_.find(data.emails, {type: 'account'}), 'value')
+      emailId: _.get(_.find(data.emails, function (email) {
+        return email && email.type && email.type.toLowerCase() === 'account';
+      }), 'value')
     }
   }
   handleError(error){
