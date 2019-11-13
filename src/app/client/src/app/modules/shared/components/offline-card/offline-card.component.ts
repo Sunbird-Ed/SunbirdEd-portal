@@ -4,7 +4,8 @@ import { ICard } from '../../interfaces';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { ConnectionService } from './../../../offline/services/connection-service/connection.service';
+import { ConnectionService
+} from './../../../../../../projects/desktop/src/app/modules/offline/services/connection-service/connection.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -32,6 +33,7 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
   onlineContent = false;
   public unsubscribe = new Subject<void>();
   showModal = false;
+  message;
   public telemetryInteractObject: IInteractEventObject;
   public downloadContentEdata: IInteractEventEdata;
   public cancelDownloadYoutubeContentEdata: IInteractEventEdata;
@@ -75,6 +77,9 @@ export class OfflineCardComponent implements OnInit, OnChanges, OnDestroy {
       if (this.showModal === false)  {
         data['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
         this.clickEvent.emit({ 'action': action, 'data': data });
+      } else {
+        this.message = data.metaData.mimeType !== 'application/vnd.ekstep.content-collection' ? this.resourceService.messages.stmsg.m0141 :
+        this.resourceService.messages.stmsg.m0137;
       }
     } else {
       this.clickEvent.emit({ 'action': action, 'data': data });

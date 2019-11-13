@@ -13,11 +13,14 @@
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
     "test-coverage": "ng test src --code-coverage=true --watch=false",
+    "desktop-test-coverage": "ng test desktop --watch=false",
     "build-cdn": "ng build --prod",
     "build-offline": "ng build --project offline --deployUrl dist/ --c=offline && mv ../dist/index.html ../dist/index.ejs",
     "start-offline": "nodemon  --exec 'npm run build-offline'",
     "build-offline-prod": "ng build --project offline  --c=offlineProduction && mv ../dist/index.html ../dist/index.ejs",
-    "inject-cdn-fallback": "gulp inject:cdnFallBack:script"
+    "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
+    "offline-dev": "ng build --project desktop --watch=true --outputPath=<desktop_portal_dist_file>",
+    "offline-prod": "ng build --project desktop --prod"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
@@ -37,6 +40,7 @@
     "@angular/platform-browser": "^7.2.10",
     "@angular/platform-browser-dynamic": "^7.2.10",
     "@angular/router": "^7.2.10",
+    "@project-sunbird/common-consumption": "^2.5.0",
     "@project-sunbird/telemetry-sdk": "^0.0.24",
     "@project-sunbird/web-extensions": "^0.0.2",
     "@types/lodash": "^4.14.104",

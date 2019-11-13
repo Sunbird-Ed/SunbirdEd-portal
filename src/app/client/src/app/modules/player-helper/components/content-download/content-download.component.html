@@ -32,7 +32,7 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
   {{resourceService.frmelmnts?.btn?.download}}
 </div>
 <div class="sb-modal-content">
-  {{resourceService.messages?.stmsg?.m0137}}
+  {{message}}
 </div>
 <div class="sb-modal-actions">
   <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractCdata]= "[{id: contentData.identifier, type: contentData.contentType}]"

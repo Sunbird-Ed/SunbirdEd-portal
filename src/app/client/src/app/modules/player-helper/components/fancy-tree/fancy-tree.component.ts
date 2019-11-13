@@ -10,12 +10,12 @@ import { TelemetryInteractDirective } from '@sunbird/telemetry';
 export class FancyTreeComponent implements AfterViewInit {
   @ViewChild('fancyTree') public tree: ElementRef;
   @Input() public nodes: any;
-  @Input() public options: IFancytreeOptions;
+  @Input() public options: any;
   @Input() public rootNode;
   @Output() public itemSelect: EventEmitter<Fancytree.FancytreeNode> = new EventEmitter();
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective: TelemetryInteractDirective;
   ngAfterViewInit() {
-    let options: IFancytreeOptions = {
+    let options: any = {
       extensions: ['glyph'],
       clickFolderMode: 3,
       source: this.nodes,
