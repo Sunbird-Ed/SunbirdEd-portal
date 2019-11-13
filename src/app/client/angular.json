@@ -149,23 +149,23 @@
         }
       }
     },
-    "offline": {
-      "root": "",
-      "sourceRoot": "src",
+    "desktop": {
+      "root": "projects/desktop/",
+      "sourceRoot": "",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "../dist",
-            "index": "src/index.html",
-            "main": "src/main.offline.ts",
-            "tsConfig": "src/tsconfig.app.json",
-            "polyfills": "src/polyfills.ts",
+            "index": "projects/desktop/src/index.html",
+            "main": "projects/desktop/src/main.ts",
+            "polyfills": "projects/desktop/src/polyfills.ts",
+            "tsConfig": "projects/desktop/tsconfig.app.json",
             "assets": [
-              "src/assets",
-              "src/thirdparty",
-              "src/favicon.png"
+              { "glob": "**/*", "input": "./src/assets", "output": "./assets" }
             ],
             "styles": [
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
@@ -189,7 +189,13 @@
             ]
           },
           "configurations": {
-            "offlineProduction": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/desktop/src/environments/environment.ts",
+                  "with": "projects/desktop/src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -199,44 +205,11 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "fileReplacements": [
+              "budgets": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.offline.ts"
-                }
-              ]
-            },
-            "offline": {
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": true,
-              "extractCss": true,
-              "namedChunks": true,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.offline.ts"
-                }
-              ]
-            },
-            "staging": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.offline.ts"
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 }
               ]
             }
@@ -245,41 +218,35 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "src:build"
+            "browserTarget": "desktop:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "src:build:production"
-            },
-            "staging": {
-              "browserTarget": "src:build:staging"
+              "browserTarget": "desktop:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "src:build"
+            "browserTarget": "desktop:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "src/assets/libs/iziToast/iziToast.min.js",
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/slick-carousel/slick/slick.min.js",
-              "node_modules/@project-sunbird/telemetry-sdk/index.js",
-              "src/assets/libs/semantic.min.js",
-              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
+            "main": "projects/desktop/src/test.ts",
+            "polyfills": "projects/desktop/src/polyfills.ts",
+            "tsConfig": "projects/desktop/tsconfig.spec.json",
+            "karmaConfig": "projects/desktop/karma.conf.js",
+            "assets": [
+              { "glob": "**/*", "input": "./src/assets", "output": "./assets" }
             ],
             "styles": [
+              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/shepherd.js/dist/css/shepherd-theme-default.css",
               "src/assets/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {
@@ -287,10 +254,13 @@
                 "src/assets/styles/"
               ]
             },
-            "assets": [
-              "src/assets",
-              "src/thirdparty",
-              "src/favicon.png"
+            "scripts": [
+              "src/assets/libs/iziToast/iziToast.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/slick-carousel/slick/slick.min.js",
+              "node_modules/@project-sunbird/telemetry-sdk/index.js",
+              "src/assets/libs/semantic.min.js",
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
             ]
           }
         },
@@ -298,9 +268,37 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
+              "projects/desktop/tsconfig.app.json",
+              "projects/desktop/tsconfig.spec.json"
             ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "desktop-e2e": {
+      "root": "projects/desktop-e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/desktop-e2e/protractor.conf.js",
+            "devServerTarget": "desktop:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "desktop:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "projects/desktop-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]

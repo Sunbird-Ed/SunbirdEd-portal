@@ -3,7 +3,7 @@ import { takeUntil, first, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { PublicPlayerService } from '@sunbird/public';
-import { DownloadManagerService, ConnectionService } from '@sunbird/offline';
+import { ContentManagerService, ConnectionService } from '@sunbird/offline';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ICard, UtilService, ToasterService, ContentData, OfflineCardService, ConfigService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -31,8 +31,9 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
   isUpdated: Boolean = false;
   showUpdate: Boolean = false;
   showUpdated = false;
+  message;
   constructor(public resourceService: ResourceService, public utilService: UtilService,
-    public router: Router,  public downloadManagerService: DownloadManagerService,
+    public router: Router,  public contentManagerService: ContentManagerService,
     public toasterService: ToasterService, public playerService: PublicPlayerService,
     public activatedRoute: ActivatedRoute, public offlineCardService: OfflineCardService,
     private connectionService: ConnectionService, public configService: ConfigService ) { }
@@ -41,7 +42,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
     this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'library';
     this.setTelemetryData();
 
-    this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+    this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.checkDownloadStatus(data);
     });
 
@@ -84,12 +85,12 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
 
   startDownload(content) {
     this.showUpdate = false;
-    this.downloadManagerService.downloadContentId = content.identifier;
-    this.downloadManagerService.startDownload({}).subscribe(data => {
-      this.downloadManagerService.downloadContentId = '';
+    this.contentManagerService.downloadContentId = content.identifier;
+    this.contentManagerService.startDownload({}).subscribe(data => {
+      this.contentManagerService.downloadContentId = '';
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     }, error => {
-      this.downloadManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentId = '';
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
@@ -110,6 +111,9 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
     this.showModal = this.offlineCardService.isYoutubeContent(content);
     if (!this.showModal) {
       this.startDownload(content);
+    } else {
+      this.message = content.mimeType !== 'application/vnd.ekstep.content-collection' ? this.resourceService.messages.stmsg.m0141 :
+      this.resourceService.messages.stmsg.m0137;
     }
   }
 
@@ -141,7 +145,7 @@ export class ContentDownloadComponent implements OnInit, OnDestroy {
       contentId: content.identifier,
       parentId: this.collectionId
     };
-    this.downloadManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+    this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     }, err => {
       const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}', content.name) :

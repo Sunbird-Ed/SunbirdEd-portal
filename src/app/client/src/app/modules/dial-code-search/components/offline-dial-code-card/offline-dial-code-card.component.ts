@@ -24,6 +24,7 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   currentRoute: string;
   contentId: string;
   showModal = false;
+  message;
   public telemetryInteractObject: IInteractEventObject;
   public downloadContentEdata: IInteractEventEdata;
   public cancelDownloadYoutubeContentEdata: IInteractEventEdata;
@@ -57,6 +58,9 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
       if (this.showModal === false)  {
         data['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
         this.clickEvent.emit({ 'action': action, 'data': data });
+      } else {
+        this.message = data.metaData.mimeType !== 'application/vnd.ekstep.content-collection' ? this.resourceService.messages.stmsg.m0141 :
+        this.resourceService.messages.stmsg.m0137;
       }
     } else {
       this.clickEvent.emit({ 'action': action, 'data': data });

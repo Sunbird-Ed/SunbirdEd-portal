@@ -14,7 +14,7 @@ import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
-import { DownloadManagerService } from '@sunbird/offline';
+import { ContentManagerService } from '@sunbird/offline';
 import { environment } from '@sunbird/environment';
 @Component({
   selector: 'app-public-collection-player',
@@ -101,7 +101,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
-    public downloadManagerService: DownloadManagerService,
+    public contentManagerService: ContentManagerService,
     public utilService: UtilService) {
     this.contentService = contentService;
     this.route = route;
@@ -279,7 +279,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   private getContent(): void {
     this.subsrciption = this.route.params.pipe(
-      first(),
       mergeMap((params) => {
         this.collectionId = params.collectionId;
         this.telemetryCdata = [{id: this.collectionId, type: this.contentType}];
