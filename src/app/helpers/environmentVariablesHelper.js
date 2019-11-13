@@ -99,7 +99,7 @@ let envVariables = {
   },
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
   DESKTOP_APP_STORAGE_URL: env.desktop_app_storage_url,
-  DESKTOP_APP_BASE_URL: env.desktop_app_base_url
+  PORTAL_BASE_URL: env.portal_base_url
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
