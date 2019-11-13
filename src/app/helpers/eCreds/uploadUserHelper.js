@@ -1,8 +1,8 @@
 /**
- * @name : uploadUserHelper.js
- * @description :: Responsible for generating, adding to registry , downloading certificates and uploading to azure for particular csv
- * @author      :: Ravinder Kumar
- */
+* @name : uploadUserHelper.js
+* @description :: Responsible for generating, adding to registry , downloading certificates and uploading to azure for particular csv
+* @author :: Ravinder Kumar
+*/
 
 const envHelper = require('../environmentVariablesHelper.js');
 const csvjson = require('csvjson')
@@ -21,6 +21,7 @@ const baseDownloadDir = 'Downloads';
 var zipFolder = require('zip-folder');
 const cassandraUtil = require('./cassandraUtil');
 const BATCH_SIZE = 10;
+//const REFRESH_INTERVAL = 100000;
 const containerName = envHelper.sunbird_azure_certificates_container_name;
 
 const validateName = (name) => name ? true : false;
@@ -35,7 +36,7 @@ const generateAndAddCertificates = (req) => {
     const failureRecords = [];
 
     const update_values_object = {
-        processstarttime: _.toString(new Date()),
+        processstarttime: _.toString((new Date).getTime()),
         retrycount: 1,
         status: 1
     }
@@ -63,27 +64,34 @@ const generateAndAddCertificates = (req) => {
         if (!err) {
             writeDataToCsv(_.get(rspObj, 'processId'), _.merge(successRecords, failureRecords));
             async.waterfall([async.constant(rspObj), prepareZip, uploadToAzure], (err, result) => {
+                const query_obj = { id: _.toString(_.get(rspObj, 'processId')) };
+                let update_values_object;
                 if (err) {
                     console.log('Error: ', _.get(err, 'message'));
+                    update_values_object = {
+                        lastupdatedon: new Date(),
+                        processendtime: _.toString((new Date).getTime()),
+                        retrycount: 2,
+                        status: 0
+                    }
                 } else {
-                    const query_obj = { id: _.toString(_.get(rspObj, 'processId')) };
-                    const update_values_object = {
+                    update_values_object = {
                         failureresult: JSON.stringify(_.map(failureRecords, 'name')),
                         successresult: JSON.stringify(_.map(successRecords, 'name')),
                         lastupdatedon: new Date(),
-                        processendtime: _.toString(new Date()),
-                        retrycount: 3,
+                        processendtime: _.toString((new Date).getTime()),
+                        retrycount: 2,
                         storagedetails: _.get(result, 'signedUrl'),
                         status: 2
                     }
-                    cassandraUtil.updateData(query_obj, update_values_object, (err, result) => {
-                        if (err) {
-                            console.log('updating bulk_upload_process table failed', _.get(err, 'message'))
-                        } else {
-                            console.log('successfully updated bulk_upload_process table', result);
-                        }
-                    })
                 }
+                cassandraUtil.updateData(query_obj, update_values_object, (err, result) => {
+                    if (err) {
+                        console.log('updating bulk_upload_process table failed', _.get(err, 'message'))
+                    } else {
+                        console.log('successfully updated bulk_upload_process table', result);
+                    }
+                })
             })
         }
     })
@@ -387,8 +395,8 @@ const insertCsvIntoDB = () => {
             lastupdatedon: new Date(),
             objecttype: "certificate",
             organisationid: _.get(rspObj, 'userDetails.rootOrgId'),
-            processendtime: _.toString(new Date()),
-            processstarttime: _.toString(new Date()),
+            processendtime: _.toString((new Date).getTime()),
+            processstarttime: _.toString((new Date).getTime()),
             retrycount: 0,
             status: 0,
             storagedetails: "",
@@ -452,7 +460,7 @@ const checkUploadStatus = (req, res) => {
             uploadedby: userId
         }
         let response;
-        const selectCriteria = ['createdon' ,'status', 'storagedetails'];
+        const selectCriteria = ['createdon', 'status', 'storagedetails'];
         cassandraUtil.findRecord(query_object, selectCriteria, (err, result) => {
             if (err) {
                 res.status(500);
@@ -484,8 +492,47 @@ const checkUploadStatus = (req, res) => {
     }
 }
 
+// const checkForInprogressUploads = (cb) => {
+//     const query_object = {
+//         status: 1,
+//         processendtime: {
+//             '$lte': _.toString((new Date()).getTime() - REFRESH_INTERVAL)
+//         }
+//     }
+//     const selectCriteria = ['processendtime', 'status'];
+//     cassandraUtil.findRecord(query_object, selectCriteria, (err, result) => {
+//         if (err) {
+//             console.log('job failed', _.get(err, 'message'));
+//             cb(err, null);
+//         } else {
+//             cb(null, result);
+//         }
+//     })
+// }
 
+// const changeStatusOfExpiredUploads = (result, cb) => {
+//     if (result) {
+//         async.forEachOfLimit(result, BATCH_SIZE, (item, key, callback) => {
+//             // update each item
+//         }, (err) => {
+//             // error occured
+//         })
+//     }
+// }
 
+// const changeProgressOfExpiredUploads = () => {
+//     async.waterfall([checkForInprogressUploads], (err, result) => {
+//         if (err && !result) {
+//             console.log('error occured while changing progress of expired uploads', _.get(err, 'message'));
+//         } else {
+//             console.log('result from the job itself', result)
+//         }
+//     })
+// }
+
+// setTimeout(() => {
+//     changeProgressOfExpiredUploads();
+// }, 5000)
 
 module.exports = {
     isCsvFile,
