@@ -10,7 +10,7 @@ import { UserService, PermissionService, CoursesService, TenantService, OrgDetai
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { Observable, of, throwError, combineLatest, BehaviorSubject } from 'rxjs';
+import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin} from 'rxjs';
 import {first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil} from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -87,6 +87,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   didV2: boolean;
   flag = false;
   deviceProfile: any;
+  isCustodianOrgUser: any;
   usersProfile: any;
   isLocationConfirmed = true;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
@@ -167,19 +168,39 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   checkLocationStatus() {
     this.usersProfile = this.userService.userProfile;
-    this.deviceRegisterService.getDeviceProfile().pipe().subscribe((deviceProfile: any) => {
+    const deviceRegister = this.deviceRegisterService.getDeviceProfile();
+    const custodianOrgDetails = this.orgDetailsService.getCustodianOrgDetails();
+    forkJoin([deviceRegister, custodianOrgDetails]).subscribe((res) => {
+      const deviceProfile = res[0];
       this.deviceProfile = deviceProfile;
-      if (this.userService.loggedIn) {
-        if (!deviceProfile.userDeclaredLocation ||
-          !(this.usersProfile && this.usersProfile.userLocations && this.usersProfile.userLocations.length >= 1)) {
-          this.isLocationConfirmed = false;
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(res[1], 'result.response.value')) {
+        // non state user
+        this.isCustodianOrgUser = true;
+        this.deviceProfile = deviceProfile;
+        if (this.userService.loggedIn) {
+          if (!deviceProfile.userDeclaredLocation ||
+            !(this.usersProfile && this.usersProfile.userLocations && this.usersProfile.userLocations.length >= 1)) {
+            this.isLocationConfirmed = false;
+          }
+        } else {
+          if (!deviceProfile.userDeclaredLocation) {
+            this.isLocationConfirmed = false;
+          }
         }
       } else {
-        if (!deviceProfile.userDeclaredLocation) {
-          this.isLocationConfirmed = false;
+        // state user
+        this.isCustodianOrgUser = false;
+        if (this.userService.loggedIn) {
+          if (!deviceProfile.userDeclaredLocation) {
+            this.isLocationConfirmed = false;
+          }
+        } else {
+          if (!deviceProfile.userDeclaredLocation) {
+            this.isLocationConfirmed = false;
+          }
         }
       }
-    }, (error) => {
+    }, (err) => {
       this.isLocationConfirmed = true;
     });
   }

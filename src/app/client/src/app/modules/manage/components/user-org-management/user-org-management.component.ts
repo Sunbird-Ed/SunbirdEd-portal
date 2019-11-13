@@ -29,10 +29,10 @@ export class UserOrgManagementComponent {
   };
   public manageService: ManageService;
   public slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
-  public geoJSON: any = 'geo-detail.json';
+  public geoJSON: any = 'geo-summary.json';
   public geoCSV: any = 'geo-detail.csv';
   public userJSON: any = 'user-summary.json';
-  public userCSV: any = 'user-summary.csv';
+  public userCSV: any = 'user-detail.csv';
 
   constructor(userService: UserService, manageService: ManageService) {
     this.userService = userService;
@@ -44,7 +44,8 @@ export class UserOrgManagementComponent {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
         if (user.userProfile && user.userProfile['rootOrg'] && !user.userProfile['rootOrg']['isSSOEnabled']) {
-          this.manageService.getGeoData(this.slug, this.userJSON).subscribe(
+          this.slug = _.get(this.userService, 'userProfile.rootOrg.slug');
+          this.manageService.getData(this.slug, this.userJSON).subscribe(
             data => {
               const result = JSON.parse(JSON.stringify(data.result));
               this.uploadedDetails = {
@@ -61,22 +62,22 @@ export class UserOrgManagementComponent {
               console.log(error);
             }
           );
+          this.manageService.getData(this.slug, this.geoJSON).subscribe(
+            data => {
+              const result = JSON.parse(JSON.stringify(data.result));
+              this.geoData = {
+                'districts': result['districts'] ? result['districts'] : 0,
+                'blocks': result['blocks'] ? result['blocks'] : 0,
+                'schools': result['schools'] ? result['schools'] : 0
+              };
+            },
+            error => {
+              console.log(error);
+            }
+          );
         }
       }
     });
-    this.manageService.getUserData(this.slug, this.geoJSON).subscribe(
-      data => {
-        const result = JSON.parse(JSON.stringify(data.result));
-        this.geoData = {
-          'districts': result['districts'] ? result['districts'] : 0,
-          'blocks': result['blocks'] ? result['blocks'] : 0,
-          'schools': result['schools'] ? result['schools'] : 0
-        };
-      },
-      error => {
-        console.log(error);
-      }
-    );
   }
 
   public openModal() {
@@ -87,10 +88,10 @@ export class UserOrgManagementComponent {
   }
 
   public downloadCSVFile(fileName: any) {
-    this.manageService.getGeoData(this.slug, fileName)
+    this.manageService.getData(this.slug, fileName)
     .subscribe(
       response => {
-        const data = JSON.stringify(_.get(response, 'result'));
+        const data = (_.get(response, 'result'));
         const blob = new Blob(
           [data],
           {
