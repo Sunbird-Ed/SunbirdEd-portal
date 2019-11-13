@@ -37,7 +37,7 @@ function getAppUpdate() {
                     response.updateAvailable = true;
                     let artifactName = data[_.toLower(_.get(req, 'body.request.os'))][_.toLower(_.get(req, 'body.request.arch'))];
                     response.version = _.get(data, 'version');
-                    response.url = `${envHelper.PORTAL_BASE_URL}/desktop/latest/${artifactName}`;
+                    response.url = `${envHelper.SUNBIRD_PORTAL_BASE_URL}/desktop/latest/${artifactName}`;
                 }
 
                 res.status(200).send({
