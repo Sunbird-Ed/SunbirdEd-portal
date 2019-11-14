@@ -19,8 +19,8 @@
     "start-offline": "nodemon  --exec 'npm run build-offline'",
     "build-offline-prod": "ng build --project offline  --c=offlineProduction && mv ../dist/index.html ../dist/index.ejs",
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
-    "build-desktop-dev": "ng build --project desktop --watch=true --outputPath=./../../../../sunbird-desktop-app/src/public/portal",
-"build-desktop-prod": "ng build --project desktop --prod --outputPath=../dist && mv ../dist/index.html ../dist/index.ejs"
+    "offline-dev": "ng build --project desktop --watch=true --outputPath=<desktop_portal_dist_file>",
+    "offline-prod": "ng build --project desktop --prod"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"

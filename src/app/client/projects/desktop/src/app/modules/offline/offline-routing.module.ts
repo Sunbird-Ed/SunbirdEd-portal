@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowseComponent, OfflineHelpCenterComponent } from './components';
-import { LibraryComponent } from './components';
 import {ViewAllComponent} from '@sunbird/shared-feature';
 import { ExploreContentComponent } from './../../../../../../src/app/modules/public/module/explore';
 
@@ -55,8 +54,7 @@ const routes: Routes = [
     path: 'browse/get', loadChildren: './../../../../../../src/app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
   },
   {
-    //path: '', loadChildren: './../../../../../../src/app/modules/public/module/explore/explore.module#ExploreModule'
-    path: '', component: LibraryComponent
+    path: '', loadChildren: './../../../../../../src/app/modules/public/module/explore/explore.module#ExploreModule'
   },
   {
     path: ':slug/explore', loadChildren: './../../../../../../src/app/modules/public/module/explore/explore.module#ExploreModule'
@@ -72,3 +70,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class OfflineRoutingModule { }
+
