@@ -11,7 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
   BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
-  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent
+  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
+  OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -42,7 +43,10 @@ import { SlickModule } from 'ngx-slick';
     DesktopAppUpdateComponent,
     LibraryComponent,
     DesktopHeaderComponent,
-    LibraryFiltersComponent
+    LibraryFiltersComponent,
+    OfflineFaqComponent,
+    OfflineReportIssuesComponent,
+    OfflineHelpVideosComponent
   ],
   entryComponents: [
     ContentImportHeaderComponent,
