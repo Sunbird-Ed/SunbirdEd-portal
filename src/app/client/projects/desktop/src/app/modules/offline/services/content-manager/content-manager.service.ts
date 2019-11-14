@@ -14,6 +14,7 @@ export class ContentManagerService {
   downloadContentId: string;
   downloadEvent = new EventEmitter();
   downloadListEvent = new EventEmitter();
+  completeEvent = new EventEmitter();
 
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,

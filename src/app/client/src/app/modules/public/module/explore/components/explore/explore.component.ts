@@ -15,9 +15,7 @@ import { environment } from '@sunbird/environment';
 import {
   ContentManagerService
 } from './../../../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
-import {
-  OfflineFileUploaderService
-} from './../../../../../../../../projects/desktop/src/app/modules/offline/services';
+
 
 @Component({
   selector: 'app-explore-component',
@@ -57,7 +55,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
-    public offlineFileUploaderService: OfflineFileUploaderService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
@@ -87,16 +84,16 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     if (this.isOffline) {
-      const self = this;
-      this.offlineFileUploaderService.isUpload.subscribe(() => {
-        self.fetchPageData();
-      });
-
       this.contentManagerService.downloadListEvent.pipe(
         takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
       });
-
+      this.contentManagerService.completeEvent.pipe(
+        takeUntil(this.unsubscribe$)).subscribe((data) => {
+          if (this.router.url === '/') {
+            this.fetchPageData();
+          }
+      });
       this.contentManagerService.downloadEvent.pipe(tap(() => {
         this.showDownloadLoader = false;
       }), takeUntil(this.unsubscribe$)).subscribe(() => {});
