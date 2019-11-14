@@ -16,38 +16,40 @@ export class DesktopHeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.selectMedium = this.selectOption[0];
-    this.selectOption = [
-      {
-        name: 'English',
-        value: '0'
-      }, {
-        name: 'বাংলা',
-        value: '1'
-      }, {
-        name: 'اردو',
-        value: '2'
-      }, {
-        name: 'मराठी',
-        value: '3'
-      }
-      , {
-        name: 'ಕನ್ನಡ',
-        value: '4'
-      }
-      , {
-        name: 'తెలుగు',
-        value: '5'
-      }
-      , {
-        name: 'हिंदी',
-        value: '6'
-      }
-      , {
-        name: 'தமிழ்',
-        value: '7'
-      }
-    ];
+
+    //   this.selectMedium = this.selectOption[0];
+    //   this.selectOption = [
+    //     {
+    //       name: 'English',
+    //       value: '0'
+    //     }, {
+    //       name: 'বাংলা',
+    //       value: '1'
+    //     }, {
+    //       name: 'اردو',
+    //       value: '2'
+    //     }, {
+    //       name: 'मराठी',
+    //       value: '3'
+    //     }
+    //     , {
+    //       name: 'ಕನ್ನಡ',
+    //       value: '4'
+    //     }
+    //     , {
+    //       name: 'తెలుగు',
+    //       value: '5'
+    //     }
+    //     , {
+    //       name: 'हिंदी',
+    //       value: '6'
+    //     }
+    //     , {
+    //       name: 'தமிழ்',
+    //       value: '7'
+    //     }
+    //   ];
+
   }
 
 }

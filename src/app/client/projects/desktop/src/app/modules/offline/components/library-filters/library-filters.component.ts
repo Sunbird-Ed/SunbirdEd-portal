@@ -12,8 +12,8 @@ export class LibraryFiltersComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.multiSelect1 = [{name: 'Karnataka'}, {name: 'Andhra Pradesh'}, {name: 'Tamil Nadu'},
-    {name: 'Maharashtra'}, {name: 'Kerala'}, {name: 'Telangana'}];
+    // this.multiSelect1 = [{name: 'Karnataka'}, {name: 'Andhra Pradesh'}, {name: 'Tamil Nadu'},
+    // {name: 'Maharashtra'}, {name: 'Kerala'}, {name: 'Telangana'}];
   }
 
 }
