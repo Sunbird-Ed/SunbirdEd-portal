@@ -1,6 +1,7 @@
 import { ResourceService, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { DOCUMENT } from '@angular/common';
 import * as $ from 'jquery';
 import * as _ from 'lodash-es';
 
@@ -12,17 +13,30 @@ import * as _ from 'lodash-es';
 export class OfflineHelpVideosComponent implements OnInit {
 
   @Output() closeVideoModal = new EventEmitter<any>();
+
+  @ViewChild('aspectRatio') aspectRatio;
+  @ViewChild('playerInfo') playerInfo;
+  videoContainerHeight: number;
+  aspectRatioHeight: number;
+  playerInfoHeight: number;
+
   slideConfig: object;
   slideData: object;
   activeVideoObject;
   instance: string;
   selectVideoInteractEdata: IInteractEventEdata;
-  constructor(public resourceService: ResourceService, public configService: ConfigService) {
+  constructor(@Inject(DOCUMENT) private document: Document, public resourceService: ResourceService, public configService: ConfigService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
-        ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+      ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
 
   ngOnInit() {
+
+    // video height
+    this.aspectRatioHeight = this.aspectRatio.nativeElement.offsetHeight;
+    this.playerInfoHeight = this.playerInfo.nativeElement.offsetHeight;
+    this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
+
     this.slideConfig = this.configService.offlineConfig.watchVideo;
     this.slideData = [
       {
@@ -81,4 +95,11 @@ export class OfflineHelpVideosComponent implements OnInit {
       pageid: 'library'
     };
   }
+
+
+  onWindowResize(event) {
+    this.aspectRatioHeight = event.target.document.querySelector('#help-video-aspect-ratio').offsetHeight;
+    this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
+  }
+
 }
