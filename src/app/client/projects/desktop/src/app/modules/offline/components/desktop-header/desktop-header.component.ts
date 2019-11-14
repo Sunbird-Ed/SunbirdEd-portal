@@ -12,6 +12,7 @@ import { Component, OnInit } from '@angular/core';
 export class DesktopHeaderComponent implements OnInit {
   selectOption: any;
   selectMedium: { name: string; id: string; value: string; };
+  isShown = true;
   constructor() { }
 
   ngOnInit() {
