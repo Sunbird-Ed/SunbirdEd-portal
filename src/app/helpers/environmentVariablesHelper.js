@@ -45,6 +45,7 @@ let envVariables = {
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
   PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
+  sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
   DEVICE_REGISTER_API: process.env.sunbird_device_register_api || 'https://api.open-sunbird.org/v3/device/register/',
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   sunbird_theme: env.sunbird_theme || 'default',
@@ -67,6 +68,7 @@ let envVariables = {
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
   sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
+  sunbird_azure_admin_container_name: env.sunbird_azure_admin_container_name || 'admin-user-reports',
   sunbird_azure_account_name: env.sunbird_azure_account_name,
   sunbird_azure_account_key: env.sunbird_azure_account_key,
   sunbird_portal_health_check_enabled: env.sunbird_health_check_enable || 'true',
@@ -103,4 +105,3 @@ envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
 module.exports = envVariables
-

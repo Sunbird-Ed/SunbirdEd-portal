@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { combineLatest as observableCombineLatest } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,12 +6,12 @@ import { SearchService, SearchParam, PlayerService, CoursesService, UserService 
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { takeUntil, map, catchError, mergeMap, first } from 'rxjs/operators';
+import { takeUntil, map, catchError, mergeMap, first, finalize } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService
-} from './../../../../../../projects/desktop/src/app/modules/offline/services/download-manager/download-manager.service';
+import { ContentManagerService
+} from './../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
 
 const treeModel = new TreeModel();
 
@@ -21,12 +21,13 @@ const treeModel = new TreeModel();
   templateUrl: './dial-code.component.html',
   styleUrls: ['./dial-code.component.scss']
 })
-export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DialCodeComponent implements OnInit, OnDestroy {
   public inviewLogs: any = [];
   /**
 	 * telemetryImpression
 	*/
   public telemetryImpression: IImpressionEventInput;
+  public dialResultImpression: IImpressionEventInput;
   /**
    * Initializing the infinite scroller
    */
@@ -64,7 +65,7 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
-    public downloadManagerService: DownloadManagerService, public publicPlayerService: PublicPlayerService) {
+    public contentManagerService: ContentManagerService, public publicPlayerService: PublicPlayerService) {
   }
 
   ngOnInit() {
@@ -83,10 +84,10 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.handleMobilePopupBanner();
 
     if (this.isOffline) {
-      this.downloadManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+      this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
       });
-      this.downloadManagerService.downloadEvent.pipe(first(),
+      this.contentManagerService.downloadEvent.pipe(first(),
       takeUntil(this.unsubscribe$)).subscribe(() => {
         this.showDownloadLoader = false;
       });
@@ -119,7 +120,15 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         return of([]);
       }
-    })).subscribe(data => {
+    }))
+    .pipe(
+      finalize(() => {
+        this.telemetryImpression.edata.pageid = `${this.activatedRoute.snapshot.data.telemetry.pageid}-post-populate`;
+        this.telemetryImpression.edata.duration = this.navigationhelperService.getPageLoadTime();
+        this.dialResultImpression = _.cloneDeep(this.telemetryImpression);
+      })
+    )
+    .subscribe(data => {
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
       this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
       this.appendItems(0, this.itemsToLoad);
@@ -127,8 +136,10 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.singleContentRedirect = this.searchResults[0]['name'];
       }
       this.showLoader = false;
+      this.logTelemetryEvents(true);
     }, error => {
       this.showLoader = false;
+      this.logTelemetryEvents(false);
       this.toasterService.error(this.resourceService.messages.fmsg.m0049);
     });
   }
@@ -235,35 +246,12 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.telemetryImpression.edata.visits = this.inviewLogs;
+    this.telemetryImpression.edata.pageid = this.activatedRoute.snapshot.data.telemetry.pageid;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
-  ngAfterViewInit () {
-    setTimeout(() => {
-      this.telemetryImpression = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env,
-          cdata: [{
-            type: 'DialCode',
-            id: this.activatedRoute.snapshot.params.dialCode
-          }]
-        },
-        object: {
-          id: this.activatedRoute.snapshot.params.dialCode,
-          type: 'DialCode',
-          ver: '1.0'
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          uri: this.router.url,
-          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-          duration: this.navigationhelperService.getPageLoadTime()
-        }
-      };
-    });
-  }
+
   closeMobileAppPopup () {
     if (!this.isRedirectToDikshaApp) {
       this.telemetryService.interact(this.closeMobilePopupInteractData);
@@ -314,6 +302,27 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         pageid: 'get-dial'
       }
     };
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          type: 'DialCode',
+          id: this.activatedRoute.snapshot.params.dialCode
+        }]
+      },
+      object: {
+        id: this.activatedRoute.snapshot.params.dialCode,
+        type: 'DialCode',
+        ver: '1.0'
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: `${this.activatedRoute.snapshot.data.telemetry.pageid}-pre-populate`,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationhelperService.getPageLoadTime()
+      }
+    };
   }
   ngOnDestroy() {
     sessionStorage.removeItem('singleContentRedirect');
@@ -328,12 +337,12 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   startDownload (contentId) {
-    this.downloadManagerService.downloadContentId = contentId;
-    this.downloadManagerService.startDownload({}).subscribe(data => {
-      this.downloadManagerService.downloadContentId = '';
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.startDownload({}).subscribe(data => {
+      this.contentManagerService.downloadContentId = '';
     }, error => {
       this.showDownloadLoader = false;
-      this.downloadManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentId = '';
       _.each(this.itemsToDisplay, (contents) => {
         contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
       });
@@ -342,19 +351,40 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   exportOfflineContent(contentId) {
-    this.downloadManagerService.exportContent(contentId).subscribe(data => {
+    this.contentManagerService.exportContent(contentId).subscribe(data => {
       this.showExportLoader = false;
     }, error => {
       this.showExportLoader = false;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      if (error.error.responseCode !== 'NO_DEST_FOLDER') {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      }
     });
   }
-
   updateCardData(downloadListdata) {
     _.each(this.itemsToDisplay, (contents) => {
     this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
   }
 
+  logTelemetryEvents(status: boolean) {
+    let level = 'ERROR';
+    let msg = 'Search Dialcode failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = 'Search Dialcode was success';
+    }
+    const event = {
+      context: {
+        env: 'dialcode'
+      },
+      edata: {
+        type: 'search-dialcode',
+        level: level,
+        message: msg,
+        pageid: this.router.url.split('?')[0]
+      }
+    };
+    this.telemetryService.log(event);
+  }
 
 }

@@ -9,7 +9,7 @@ import * as _ from 'lodash-es';
 @Injectable({
   providedIn: 'root'
 })
-export class DownloadManagerService {
+export class ContentManagerService {
 
   downloadContentId: string;
   downloadEvent = new EventEmitter();
@@ -19,7 +19,7 @@ export class DownloadManagerService {
     public toasterService: ToasterService, public resourceService: ResourceService,
     private electronDialogService: ElectronDialogService) { }
 
-  getDownloadList() {
+  getContentList() {
     const downloadListOptions = {
       url: this.configService.urlConFig.URLS.OFFLINE.DOWNLOAD_LIST,
       data: {}
@@ -82,6 +82,30 @@ export class DownloadManagerService {
     catchError((err) => {
       return observableThrowError(err);
     }));
+  }
+
+  resumeImportContent(importId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.RESUME_IMPORT}/${importId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
+  cancelImportContent(importId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.CANCEL_IMPORT}/${importId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
+  pauseImportContent(importId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.PAUSE_IMPORT}/${importId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
   }
 
 }

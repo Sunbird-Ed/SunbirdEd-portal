@@ -12,7 +12,7 @@ import { Response } from './explore.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ExploreComponent } from './explore.component';
-import { DownloadManagerService } from '@sunbird/offline';
+import { ContentManagerService } from '@sunbird/offline';
 
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
@@ -57,7 +57,7 @@ describe('ExploreComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreComponent],
-      providers: [PublicPlayerService, DownloadManagerService, { provide: ResourceService, useValue: resourceBundle },
+      providers: [PublicPlayerService, ContentManagerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -180,24 +180,24 @@ describe('ExploreComponent', () => {
     expect(playerService.updateDownloadStatus).toHaveBeenCalled();
   });
 
-  it('should call download manager service on when startDownload()', () => {
-    const downloadManagerService = TestBed.get(DownloadManagerService);
+  it('should call content manager service on when startDownload()', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
-    spyOn(downloadManagerService, 'startDownload').and.returnValue(of(Response.download_success));
+    spyOn(contentManagerService, 'startDownload').and.returnValue(of(Response.download_success));
     component.startDownload(Response.result.result.content);
-    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(contentManagerService.startDownload).toHaveBeenCalled();
   });
 
   it('startDownload should fail', () => {
-    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const contentManagerService = TestBed.get(ContentManagerService);
     const resourceService = TestBed.get(ResourceService);
     toasterService = TestBed.get(ToasterService);
     resourceService.messages = resourceBundle.messages;
     component.pageSections = mockPageSection;
-    spyOn(downloadManagerService, 'startDownload').and.returnValue(throwError(Response.download_error));
+    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError(Response.download_error));
     component.startDownload(Response.result.result.content);
-    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(contentManagerService.startDownload).toHaveBeenCalled();
     expect(component.showDownloadLoader).toBeFalsy();
   });
 

@@ -90,6 +90,10 @@
       "COURSE_CONSUMPTION": "dashboard/v1/consumption/course",
       "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
     },
+    "DEVICE": {
+      "REGISTER": "v3/device/register/",
+      "PROFILE": "v3/device/profile/"
+    },
     "NOTES": {
       "SEARCH": "notes/v1/search",
       "CREATE": "notes/v1/create",
@@ -173,7 +177,10 @@
       "DOWNLOAD_LIST": "content/v1/download/list",
       "EXPORT": "content/v1/export",
       "UPDATE":"content/v1/update",
-      "APP_UPDATE": "desktop/v1/update"
+      "APP_UPDATE": "desktop/v1/update",
+      "RESUME_IMPORT":"content/v1/import/resume",
+      "CANCEL_IMPORT":"content/v1/import/cancel",
+      "PAUSE_IMPORT":"content/v1/import/pause"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",

@@ -548,6 +548,22 @@
       "value": "Other"
     }
   ],
+  "DEFAULTPLUGINS": {
+    "contentType": "default",
+    "endpageplugin": {
+      "id": "org.sunbird.player.endpage",
+      "ver": 1.1,
+      "type": "plugin"
+    }
+  },
+  "SELFASSESSMENTPLUGIN": {
+    "contentType": "SelfAssess",
+    "endpageplugin": {
+      "id": "org.sunbird.assess.endpage",
+      "ver": 1.0,
+      "type": "plugin"
+    }
+  },
   "PLAYER_CONFIG": {
     "playerConfig": {
       "context": {
@@ -580,11 +596,6 @@
           {
             "id": "org.sunbird.iframeEvent",
             "ver": 1.0,
-            "type": "plugin"
-          },
-          {
-            "id": "org.sunbird.player.endpage",
-            "ver": 1.1,
             "type": "plugin"
           }
         ]

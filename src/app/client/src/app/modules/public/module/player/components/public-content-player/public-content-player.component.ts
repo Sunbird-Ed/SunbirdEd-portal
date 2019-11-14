@@ -12,7 +12,7 @@ import {
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-import { DownloadManagerService } from '@sunbird/offline';
+import { ContentManagerService } from '@sunbird/offline';
 import { environment } from '@sunbird/environment';
 @Component({
   selector: 'app-public-content-player',
@@ -62,7 +62,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
-    private configService: ConfigService, public downloadManagerService: DownloadManagerService,
+    private configService: ConfigService, public contentManagerService: ContentManagerService,
     public utilService: UtilService
   ) {
     this.playerOption = {
