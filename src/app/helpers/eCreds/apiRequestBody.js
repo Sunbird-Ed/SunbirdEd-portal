@@ -1,5 +1,8 @@
 const _ = require('lodash');
 const dateFormat = require('dateformat');
+const fs = require('fs');
+const path = require('path');
+const config = fs.readFileSync(path.join(__dirname,'./config.json'), {encoding: 'utf-8'});
 
 const certAddRequestBody = (response) => {
     const request = _.pick(response, ['id', 'accessCode', 'jsonData', 'pdfUrl']);
@@ -9,12 +12,12 @@ const certAddRequestBody = (response) => {
 }
 
 const certGenerateRequestBody = (input) => {
-    let templet = "";
+    let template = "";
     let issuer = {};
     let signatoryList = [];
     let signatory = {};
     if (_.get(input, 'rspObj.certType') === 'Best School Certificate') {
-        templet = "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download";
+        template = "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download";
         issuer = {
             "name": "Gujarat Council of Educational Research and Training",
             "url": "https://gcert.gujarat.gov.in/gcert/"
@@ -27,7 +30,7 @@ const certGenerateRequestBody = (input) => {
         }
         signatoryList.push(signatory);
     } else {
-        templet = "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download";
+        template = "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download";
         issuer = {
             "name": "Gujarat Council of Educational Research and Training",
             "url": "https://gcert.gujarat.gov.in/gcert/"
@@ -42,7 +45,7 @@ const certGenerateRequestBody = (input) => {
     }
     return {
         certificate: {
-            "htmlTemplate": templet,
+            "htmlTemplate": template,
             "courseName": "new course may23",
             "issuedDate": dateFormat(new Date(), 'yyyy-mm-dd'),
             "data": [
