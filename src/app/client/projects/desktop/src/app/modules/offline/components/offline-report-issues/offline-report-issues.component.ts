@@ -6,10 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./offline-report-issues.component.scss']
 })
 export class OfflineReportIssuesComponent implements OnInit {
-
+  issueReportText = false;
   constructor() { }
 
   ngOnInit() {
   }
-
+  submitIssue() {
+    this.issueReportText = !this.issueReportText;
+  }
 }
