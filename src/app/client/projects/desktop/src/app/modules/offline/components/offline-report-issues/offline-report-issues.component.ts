@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OfflineReportIssuesComponent implements OnInit {
   issueReportText = false;
+  showNormalModal = false;
   constructor() { }
 
   ngOnInit() {
