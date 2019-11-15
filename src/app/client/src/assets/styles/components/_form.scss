@@ -114,6 +114,12 @@
   right: 8px;
   color: var(--gray-200);
   font-size: $font-size-sm;
+  background: var(--white);
+  border-radius: 8px;
+  html[dir="rtl"] &{
+    right:auto;
+    left:8px;
+  }
 }
 
 // .sb-textarea {
