@@ -1,4 +1,51 @@
-<div *ngIf="slideData">
+
+    <div class="sb-two-column help-video">
+        <div class="sb-column help-video__player" id="player-area-height">
+            <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
+              <div>
+                <video width="400" controls>
+                  <source src="mov_bbb.mp4" type="video/mp4">
+                  <source src="mov_bbb.ogg" type="video/ogg">
+                  Your browser does not support HTML5 video.
+                </video>
+              </div>
+            </div>
+        
+            <div class="help-video__player__title sb-bg-color-white" #playerInfo>
+              <h6 class="ml-16 sb__ellipsis sb__ellipsis--two">How do i add content to SUNBIRD app when i am offline or using a pen drive?&lrm;</h6>
+              <div class="help-video__player__tools">
+                <div class="icons-withtext__cloud-download"><i class="cloud download icon"></i>Download</div>
+              </div>
+            </div>
+          </div>
+          <div class="sb-column help-video__content" [style.height.px]="videoContainerHeight"
+            (window:resize)="onWindowResize($event)">
+        
+            <!-- card component -->
+            <div *ngFor="let videoitem of videoitems" class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">{{ videoitem.text }}</h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+    
+
+
+
+<div style="display: none;" *ngIf="slideData">
   <div class="sb-modal-header">
     {{activeVideoObject.name}}
   </div>

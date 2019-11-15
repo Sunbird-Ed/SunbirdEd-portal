@@ -1,14 +1,12 @@
-<div class="ui container sb-two-column help-faq mt-32 mb-32">
-  <div class="sb-column help-faq__list"></div>
-  <div class="sb-column help-faq__report">
-    <p class="help-faq__report_text">
-      Haven't found what are you looking for?
-    </p>
-    <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary"
-      (click)="showNormalModal = !showNormalModal">Report other issue</button>
-  </div>
+<div class="help-faq__report">
+  <p class="help-faq__report_text">
+    Haven't found what are you looking for?&lrm;
+  </p>
+  <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary"
+    (click)="showNormalModal = !showNormalModal">Report other issue</button>
 </div>
 
+  
 <sui-modal *ngIf="showNormalModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
   class="sb-modal" appBodyScroll (dismissed)="showNormalModal = !showNormalModal" #modal>
   <div class="sb-modal-header">Report an issue</div>
@@ -17,12 +15,12 @@
       <div class="sb-field">
         <label for="email">Email address</label>
         <input type="email" name="email" class="sb-form-control is-invalid mb-8" placeholder="Enter email address here">
-        <small class="message sb-color-error">Enter phone number</small>
+        <small class="message sb-color-error">Enter Email address</small>
       </div>
       <div class="sb-field">
         <label for="moretext">Tell us a more about the problem you faced</label>
         <div class="relative">
-        <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
+        <textarea rows="4" name="moretext" class="sb-form-control pb-24" placeholder="Type here..."></textarea>
         <span class="characters-left">1000 Characters left</span>
       </div>
       </div>
@@ -32,7 +30,7 @@
        <img src="../../assets/images/circle-with-check-symbol.svg">
       </div>
       <div class="text-center font-weight-bold sb-success-text">Issue reported successfully.</div>
-      <div class="text-center fs-0-785 sb-success-para">Note: Your report will be automatically sent to DIKSHA while
+      <div class="text-center fs-0-785 sb-success-para">Note: Your report will be automatically sent to SUNBIRD while
         online. </div>
     </div>
   </div>
