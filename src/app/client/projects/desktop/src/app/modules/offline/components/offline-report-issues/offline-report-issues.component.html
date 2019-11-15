@@ -1,8 +1,10 @@
-<p class="help-faq__report_text">
-  Haven't found what are you looking for?
-</p>
-<button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary"
-  (click)="showNormalModal = !showNormalModal">Report other issue</button>
+<div class="help-faq__report">
+  <p class="help-faq__report_text">
+    Haven't found what are you looking for?
+  </p>
+  <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary"
+    (click)="showNormalModal = !showNormalModal">Report other issue</button>
+</div>
 
   
 <sui-modal *ngIf="showNormalModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
@@ -13,7 +15,7 @@
       <div class="sb-field">
         <label for="email">Email address</label>
         <input type="email" name="email" class="sb-form-control is-invalid mb-8" placeholder="Enter email address here">
-        <small class="message sb-color-error">Enter phone number</small>
+        <small class="message sb-color-error">Enter Email address</small>
       </div>
       <div class="sb-field">
         <label for="moretext">Tell us a more about the problem you faced</label>

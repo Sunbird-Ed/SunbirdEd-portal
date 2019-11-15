@@ -12,6 +12,44 @@ import * as _ from 'lodash-es';
 })
 export class OfflineHelpVideosComponent implements OnInit {
 
+
+  // video list item demo data
+  videoitems = [
+    {
+      imgpath: '',
+      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
+    },
+    {
+      imgpath: '',
+      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
+    },
+    {
+      imgpath: '',
+      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
+    },
+    {
+      imgpath: '',
+      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
+    },
+    {
+      imgpath: '',
+      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
+    },
+    {
+      imgpath: '',
+      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
+    },
+    {
+      imgpath: '',
+      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
+    },
+    {
+      imgpath: '',
+      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
+    }
+
+  ];
+
   @Output() closeVideoModal = new EventEmitter<any>();
 
   @ViewChild('aspectRatio') aspectRatio;

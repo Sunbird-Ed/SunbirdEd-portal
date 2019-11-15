@@ -175,4 +175,7 @@
     &:last-child{
       margin-bottom:0px !important;
     }
+  &:hover h4.sbcard__title {
+    color:var(--primary-400);
+  }
   }
