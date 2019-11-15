@@ -49,11 +49,7 @@
                 <i class=" icon">+91-</i>
               </div>
             </div>
-            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.password.touched && (passwordError == 'charerror')">{{resourceService.frmelmnts.lbl.charError}}</label>
-            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.password.touched && (passwordError == 'lwcerror')">{{resourceService.frmelmnts.lbl.lwcsError}}</label>
-            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.password.touched && (passwordError == 'upcerror')">{{resourceService.frmelmnts.lbl.upcsError}}</label>
-            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.password.touched && (passwordError == 'numerror')">{{resourceService.frmelmnts.lbl.numError}}</label>
-            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.password.touched && (passwordError == 'specerror')">{{resourceService.frmelmnts.lbl.specError}}</label>
+            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.password.touched && isPasswordError">{{passwordErrorMsg}}</label>
             <div class="required field mb-20">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.password.touched && signUpForm.controls['password'].errors)">{{resourceService.frmelmnts.lbl.password}}</label>
               <div class="ui icon input">
