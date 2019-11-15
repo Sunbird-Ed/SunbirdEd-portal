@@ -11,3 +11,4 @@ export * from './offline-faq/offline-faq.component';
 export * from './desktop-header/desktop-header.component';
 export * from './library/library.component';
 export * from './library-filters/library-filters.component';
+export * from './user-location-update/user-location-update.component';

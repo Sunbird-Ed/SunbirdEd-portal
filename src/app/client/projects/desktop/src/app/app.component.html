@@ -1,31 +1,9 @@
-<div class="footer-fix" [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
-  <!-- <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp && !isOffline"
-    [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
-  <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp && !isOffline">
-  </app-tnc-popup>
-  <app-validate-teacher-identifier-popup *ngIf="flag"> </app-validate-teacher-identifier-popup> -->
+<app-user-location-update *ngIf="!locationFlag" (selectedLocationValues)="isLocationUpdated($event)"></app-user-location-update>
+
+<div class="footer-fix" [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}" *ngIf="locationFlag">
   <app-header [routerEvents]="routeData$"></app-header>
-  <!-- <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn && !isOffline">
-  </app-install-app> -->
-  <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
+
   <app-desktop-app-update></app-desktop-app-update>
-  <router-outlet *ngIf="initApp"></router-outlet>
+<router-outlet *ngIf="initApp"></router-outlet>
 </div>
-<app-footer *ngIf="!hideHeaderNFooter"></app-footer>
-<!-- <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-  (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">
-  <div class="sb-modal-header">
-      {{resourceService?.frmelmnts?.lbl?.sesnexrd}}
-    </div>
-  <div class="sb-modal-content">
-    <div class="ui center aligned segment">
-        {{resourceService?.frmelmnts?.lbl?.plslgn |
-          interpolate:'${instance}': instance }}
-    </div>
-  </div>
-  <div class="sb-modal-actions">
-    <a (click)="handleLogin()" class="sb-btn sb-btn-normal sb-btn-primary">
-      {{ resourceService?.frmelmnts?.btn?.login }}
-    </a>
-  </div>
-</sui-modal> -->
+<app-footer *ngIf="!hideHeaderNFooter && locationFlag"></app-footer>

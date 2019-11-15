@@ -74,6 +74,9 @@ body {
     min-height: calc(100vh - 180px);
    }
   }
+.o-y-hidden {
+    overflow: hidden;
+  }
 
 *[lang="en"] body {
   font-family: $font-stack-en;

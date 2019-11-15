@@ -1,0 +1,247 @@
+@import 'variables';
+@import 'mixins/mixins';
+
+.bg-image {
+  background: url('/assets/images/bg.svg') no-repeat center center;
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// login
+.loginform {
+  background: var(--white);
+  height: 100%;
+  width: 100%;
+  padding: 32px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 10px 40px -14px rgba(0,0,0,0.5);
+  overflow: hidden;
+  @include respond-above(sm) {
+    min-width: 360px;
+    max-width: 416px;
+    height: auto;
+  }
+
+  &__content {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    &__header {
+      padding: ($base-block-space * 2);
+      img {
+        width: 100px;
+      }
+    }
+    .swiper-slide {
+      height: 360px;
+      width:100%;
+      transition: all 2s linear;
+   
+      .slide-title {
+        font-size: 14px;
+        color:var(--primary-400);
+        margin-bottom: 0px;
+      }
+
+      &__title {
+        text-align: center;
+        font-size: 16px;
+        padding: ($base-block-space * 3) 0px;
+      }
+
+      &__para {
+        text-align: left;
+        font-size: 12px;
+        padding: ($base-block-space * 3) 0px;
+        color: #333333;
+      }
+
+      .language-selection {
+        width: 100%;
+        margin: 0px auto ($base-block-space * 6) auto;
+        text-align: center;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        background: $primary-0;
+        box-shadow: 0 2px 4px 0 #D8D8D8;
+        height: 100%;
+        padding: ($base-block-space * 2) 0px;
+        max-height: 280px;
+      }
+    }
+
+    .animate-slide-on {
+      transform: translateX(-430px);
+    }
+    .animate-slide-off {
+      transform: translateX(0px);
+    }
+  }
+}
+
+.arrow-icon {
+  float: right;
+}
+
+// bullets 
+.bullets-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0px;
+
+  .circle {
+    margin: 0 3px;
+    border: 1px solid #eee;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .active {
+    background: var(--secondary-400);
+  }
+
+  .update {
+    background: var(--primary-200);
+  }
+
+  .completed {
+    background:var(--secondary-400);
+  }
+}
+
+
+// scrollbar css //
+.scrollbar {
+  overflow-y: auto;
+  padding-right: ($base-block-space + 2);
+  width: 95%;
+  position: relative;
+  left: ($base-block-space + 2);
+}
+
+#stylingScroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 45px;
+  background-color: $primary-0;
+}
+
+#stylingScroll::-webkit-scrollbar {
+  width: 5px;
+  background-color: $primary-0;
+}
+
+#stylingScroll::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: rgb(228, 231, 235);
+}
+
+
+
+/* The container */
+.radio-container {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  padding: 16px 10px;
+  margin-bottom: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  border-bottom: 1px solid #ddd;
+  font-weight: normal;
+   
+  &:focus{
+    font-weight: 600; 
+  }
+   &:first-child{
+     padding-top:0px;
+   }
+
+   &:last-child{
+    border-bottom: 0px;
+    padding-bottom: 0px;
+  }
+
+  &:focus {
+    font-weight: 600;
+  }
+}
+
+/* Hide the browser's default checkbox */
+.radio-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  float: right;
+  background-color: #cec3c3;
+  cursor: pointer;
+}
+
+/* On mouse-over, add a grey background color */
+.radio-container:hover input~.checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.radio-container input:checked~.checkmark {
+  background-color: var(--green);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.radio-container input:checked~.checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.radio-container .checkmark:after {
+  left: 6px;
+  position: relative;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+
+
+
+
+
+.ui.selection.dropdown:focus, .ui.selection.dropdown:focus ~ label {
+  border:1px solid var(--primary-300);
+}
+
+

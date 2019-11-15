@@ -1,0 +1,96 @@
+ <div class="bg-image" [appTelemetryImpression]="telemetryImpressionData">
+    <div class="loginform">
+      <div class="loginform__content">
+  
+        <div class="loginform__content__header">
+          <img src="assets/images/DIKSHA.svg" alt="DIKSHA">
+        </div>
+  
+        <!-- Slides -->
+        <div class="d-flex">
+          <!-- <div class="swiper-slide" *ngIf="slides[activeSlide] =='slide-1'">
+            *ngIf="!showContent"
+            <div class="swiper-slide__title pt-8">Choose Your Preferred Language</div>
+            <div class="language-selection">
+              <div class="scrollbar" id="stylingScroll">
+                <label class="radio-container" *ngFor="let select of languageSelection">
+                  <div class="label">{{select.name}}</div>
+                  <input type="radio" [value]="select" [(ngModel)]="radiobtnchecked">
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+          </div> -->
+          <div class="swiper-slide " *ngIf="slides[activeSlide] =='slide-1'">
+            <!--*ngIf="!showContent"-->
+            <label class="swiper-slide__title p-0 m-0 sb-color-primary">Your Location</label>
+            <div class="swiper-slide__para pt-8">Your location details helps us to suggest content that is useful to you.
+              Is the location given correct? if not, select your correct location and click Submit </div>
+            <div class="d-flex flex-dc fields-selection">
+             <div class="sb-field">
+               <sui-select class="selection" labelField="name" [(ngModel)]="selectState" (ngModelChange)="onOptionChanges()" placeholder="Select State">
+                <sui-select-option *ngFor="let option of selectStateOption" [value]="option" >
+                </sui-select-option>
+              </sui-select>
+            </div>
+            <div class="sb-field" *ngIf="!!selectState">
+              <sui-select class="selection mt-10" labelField="name" [(ngModel)]="selectDistrict" (ngModelChange)="onOptionChanges()" placeholder="Select District">
+                <sui-select-option *ngFor="let option of selectDistrictOption" [value]="option">
+                </sui-select-option>
+              </sui-select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="swiper-slide" *ngIf="slides[activeSlide] =='slide-2'">
+            <!--*ngIf="showContent"-->
+            <div class="swiper-slide__para pt-8">Provide the details below for suggesting content that is relevant for
+              you. </div>
+            <div class='d-flex flex-dc fields-selection'>
+              <div class="pb-8 d-flex flex-dc">
+                <div class="sb-field">
+                  <label class="d-flex fields-selection__label" for="board">Board</label>
+                  <sui-select class="selection" id="board" labelField="name" [(ngModel)]="selectBoard" (ngModelChange)="onOptionChanges()" placeholder="Select Board">
+                    <sui-select-option *ngFor="let option of selectBoardOption" [value]="option">
+                    </sui-select-option>
+                  </sui-select>
+                </div>
+              </div>
+              <div class="pb-8 d-flex flex-dc" *ngIf="!!selectBoard">
+                <div class="sb-field">
+                <label class="d-flex fields-selection__label" for="medium">Medium</label>
+                  <sui-multi-select class="selection" id="medium" labelField="name" [(ngModel)]="selectMedium" (ngModelChange)="onOptionChanges()" placeholder="Select Medium"  #multiSelect>
+                  <sui-select-option *ngFor="let option of selectMediumOption" [value]="option">
+                  </sui-select-option>
+                </sui-multi-select>
+              </div>
+              </div>
+              <div class="pb-8 d-flex flex-dc" *ngIf="!!selectMedium">
+                <div class="sb-field">
+                <label class="d-flex fields-selection__label" for="class">Class</label>
+                <sui-multi-select class="selection" id="class" labelField="name" [(ngModel)]="selectClass" (ngModelChange)="onOptionChanges()" placeholder="Select Class" #multiSelect>
+                  <sui-select-option *ngFor="let option of selectClassOption" [value]="option">
+                  </sui-select-option>
+                </sui-multi-select>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+       
+        </div>
+  
+        <div class="bullets-container">
+          <!-- <div class="circle active update completed" *ngFor="let slide of slides;let i =index;" (click)="showNextContent(i)" ></div> -->
+          <div class="circle active"></div>
+          <div class="circle update" [ngClass]="{'completed': disableContinueBtn}"></div>
+          <!-- <div class="circle complete"></div> -->
+        </div>
+          <button type="button" [disabled]="!disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm" [ngClass]="{'disable': !disableContinueBtn}" (click)="nextSlides()" appTelemetryInteract [telemetryInteractContext]= " {env: 'offline'}" [telemetryInteractEdata] = "telemetryInteractEdata" [telemetryInteractObject]="telemetryInteractObject">
+            CONTINUE
+            <span class='arrow-icon'><i class="arrow right icon"></i></span></button>
+
+      </div>
+  
+    </div>
+  </div>

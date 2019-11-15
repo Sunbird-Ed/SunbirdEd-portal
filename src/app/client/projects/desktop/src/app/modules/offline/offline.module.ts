@@ -12,12 +12,13 @@ import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
   BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
   LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
-  OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent
+  OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, UserLocationUpdateComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { SlickModule } from 'ngx-slick';
+import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -35,7 +36,10 @@ import { SlickModule } from 'ngx-slick';
     SuiAccordionModule,
     SuiTabsModule,
     OrderModule,
-    SlickModule
+    SlickModule,
+    SuiSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [DeviceDetectorService, OfflineFileUploaderService, ContentManagerService],
   declarations: [ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
@@ -47,7 +51,8 @@ import { SlickModule } from 'ngx-slick';
     LibraryFiltersComponent,
     OfflineFaqComponent,
     OfflineReportIssuesComponent,
-    OfflineHelpVideosComponent
+    OfflineHelpVideosComponent,
+    UserLocationUpdateComponent
   ],
   entryComponents: [
     ContentImportHeaderComponent,
@@ -56,7 +61,8 @@ import { SlickModule } from 'ngx-slick';
     ContentManagerComponent,
     WatchVideoComponent,
     ContentImportHeaderComponent,
+    UserLocationUpdateComponent
   ],
-  exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent]
+  exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, UserLocationUpdateComponent]
 })
 export class OfflineModule { }

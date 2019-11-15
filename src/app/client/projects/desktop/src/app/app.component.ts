@@ -86,6 +86,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryContextData: any ;
   didV2: boolean;
   flag = false;
+  locationFlag = false;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -120,6 +121,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   ngOnInit() {
+    this.locationFlag = localStorage && !_.isEmpty(localStorage.getItem('userLocation')) &&
+    !_.isEmpty(localStorage.getItem('userContentFilters'));
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter( queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
@@ -158,8 +161,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.changeLanguageAttribute();
     if (this.isOffline) {
-      document.body.classList.add('sb-offline');
+    document.body.classList.add('sb-offline');
     }
+    !this.locationFlag ? document.body.classList.add('o-y-hidden') : document.body.classList.remove('o-y-hidden');
 }
 
 setFingerPrintTelemetry() {
@@ -419,9 +423,9 @@ setFingerPrintTelemetry() {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.initializeShepherdData();
-      if (this.isOffline) {
+    if (this.locationFlag) {
+      setTimeout(() => {
+        this.initializeShepherdData();
         this.shepherdService.defaultStepOptions = defaultStepOptions;
         this.shepherdService.disableScroll = true;
         this.shepherdService.modal = true;
@@ -431,10 +435,10 @@ setFingerPrintTelemetry() {
           localStorage.setItem('TakeOfflineTour', 'show');
           this.shepherdService.start();
         }
-      }
-    }, 1000);
-  }
+      }, 1000);
+    }
 
+  }
   initializeShepherdData() {
     this.shepherdData = [
       {
@@ -502,5 +506,10 @@ setFingerPrintTelemetry() {
   }
   interpolateInstance(message) {
     return message.replace('{instance}', _.upperCase(this.instance));
+  }
+  isLocationUpdated(event) {
+  this.locationFlag = event;
+  document.body.classList.remove('o-y-hidden');
+  this.ngAfterViewInit();
   }
 }
