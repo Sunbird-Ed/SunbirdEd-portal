@@ -32,7 +32,6 @@
   grid-gap: 16px;
 
   .sb-column {
-    background: #f2f2f2;
     grid-column: col-start / span 12;
   }
 
@@ -45,7 +44,6 @@
     grid-template-columns: repeat(12, [col-start] 1fr);
 
     .sb-column {
-      background: #f2f2f2;
       grid-column: col-start / span 8;
     }
 
