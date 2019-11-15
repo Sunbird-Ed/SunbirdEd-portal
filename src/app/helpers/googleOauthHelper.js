@@ -73,6 +73,7 @@ class GoogleOauth {
     const { tokens } = await client.getToken(req.query.code).catch(this.handleError)
     client.setCredentials(tokens)
     const tokenInfo = decodeToken(tokens.id_token);
+    // TODO: Remove console logs add fallback method fetching userprofile from google api
     console.log('token information', tokenInfo);
     return {
       name: tokenInfo.name,
