@@ -146,11 +146,11 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onPasswordChange(): void {
     this.signUpForm.get('password').valueChanges.subscribe(val => {
-      let lwcsRegex = new RegExp('^(?=.*[a-z])');
-      let upcsRegex = new RegExp('^(?=.*[A-Z])');
-      let charRegex = new RegExp('^(?=.{8,})');
-      let numRegex = new RegExp('^(?=.*[0-9])');
-      let specRegex = new RegExp('^[^<>{}\'\"/|;:.,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
+      const lwcsRegex = new RegExp('^(?=.*[a-z])');
+      const upcsRegex = new RegExp('^(?=.*[A-Z])');
+      const charRegex = new RegExp('^(?=.{8,})');
+      const numRegex = new RegExp('^(?=.*[0-9])');
+      const specRegex = new RegExp('^[^<>{}\'\"/|;:.,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
       if (!charRegex.test(val)) {
         this.passwordError = 'charerror';
       } else if (!lwcsRegex.test(val)) {
