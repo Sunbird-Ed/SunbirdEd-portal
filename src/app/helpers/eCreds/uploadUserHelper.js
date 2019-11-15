@@ -295,7 +295,7 @@ const validateRequestBody = (req, res, next) => {
 
 const isCsvFile = (req, res, next) => {
     const file = _.get(req, 'rspObj.file');
-    if (path.extname(_.get(file, 'originalname')) === '.csv' && _.get(file, 'mimetype') === 'text/csv') {
+    if (path.extname(_.get(file, 'originalname')) === '.csv') {
         next();
     } else {
         res.status(400)
