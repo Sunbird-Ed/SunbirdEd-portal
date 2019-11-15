@@ -1,212 +1,211 @@
-<div class="ui container sb-two-column help-video mt-32">
-    <div class="sb-column help-video__player" id="player-area-height">
-  
-      <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
-        <div>
-          <video width="400" controls>
-            <source src="mov_bbb.mp4" type="video/mp4">
-            <source src="mov_bbb.ogg" type="video/ogg">
-            Your browser does not support HTML5 video.
-          </video>
-        </div>
-      </div>
-  
-      <div class="help-video__player__title" #playerInfo>
-        <h6 class="ml-16 sb__ellipsis sb__ellipsis--two">How do i add content to DIKSHA app when i am offline or using a pen drive?</h6>
-        <div class="help-video__player__tools">
-          <div class="icons-withtext__share-alternate"><i class="share alternate icon"></i>Share</div>
-          <div class="icons-withtext__cloud-download"><i class="cloud download icon"></i>Download</div>
-        </div>
-      </div>
+
+    <div class="sb-two-column help-video">
+        <div class="sb-column help-video__player" id="player-area-height">
+            <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
+              <div>
+                <video width="400" controls>
+                  <source src="mov_bbb.mp4" type="video/mp4">
+                  <source src="mov_bbb.ogg" type="video/ogg">
+                  Your browser does not support HTML5 video.
+                </video>
+              </div>
+            </div>
+        
+            <div class="help-video__player__title" #playerInfo>
+              <h6 class="ml-16 sb__ellipsis sb__ellipsis--two">How do i add content to DIKSHA app when i am offline or using a pen drive?</h6>
+              <div class="help-video__player__tools">
+                <div class="icons-withtext__share-alternate"><i class="share alternate icon"></i>Share</div>
+                <div class="icons-withtext__cloud-download"><i class="cloud download icon"></i>Download</div>
+              </div>
+            </div>
+          </div>
+          <div class="sb-column help-video__content" [style.height.px]="videoContainerHeight"
+            (window:resize)="onWindowResize($event)">
+        
+            <!-- card component -->
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard sbcard--recently-viewed mb-8">
+              <div class="sbcard__main-area">
+                <!-- card img -->
+                <div class="sbcard__img">
+                  <div class="img-container">
+                    <img src="./assets/images/book.png" alt="">
+                  </div>
+                </div>
+                <!-- card mobile view details -->
+                <div class="sbcard__info">
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
+                    lives for the rest of our lives. </h4>
+                  <div class="sbcard__meta1">
+                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
     
-    <div class="sb-column help-video__content" [style.height.px]="videoContainerHeight"
-      (window:resize)="onWindowResize($event)">
-  
-      <!-- card component -->
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="sbcard sbcard--recently-viewed mb-8">
-        <div class="sbcard__main-area">
-          <!-- card img -->
-          <div class="sbcard__img">
-            <div class="img-container">
-              <img src="./assets/images/book.png" alt="">
-            </div>
-          </div>
-          <!-- card mobile view details -->
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">Photographs are a way of preserving a moment in our
-              lives for the rest of our lives. </h4>
-            <div class="sbcard__meta1">
-              <span class="sb__ellipsis sb-color-primary">Play Video</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
 
 
