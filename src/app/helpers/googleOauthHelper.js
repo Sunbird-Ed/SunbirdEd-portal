@@ -8,6 +8,7 @@ const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
+const {decodeToken} = require('./jwtHelper');
 
 const keycloakGoogle = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
@@ -71,13 +72,11 @@ class GoogleOauth {
     }
     const { tokens } = await client.getToken(req.query.code).catch(this.handleError)
     client.setCredentials(tokens)
-    const plus = google.plus({ version: 'v1', auth: client})
-    const { data } = await plus.people.get({ userId: 'me' }).catch(this.handleError)
+    const tokenInfo = decodeToken(tokens.id_token);
+    console.log('token information', tokenInfo);
     return {
-      name: data.displayName,
-      emailId: _.get(_.find(data.emails, function (email) {
-        return email && email.type && email.type.toLowerCase() === 'account';
-      }), 'value')
+      name: tokenInfo.name,
+      emailId: tokenInfo.email
     }
   }
   handleError(error){
