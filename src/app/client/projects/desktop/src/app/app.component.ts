@@ -121,8 +121,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   ngOnInit() {
-    this.locationFlag = localStorage && !_.isEmpty(localStorage.getItem('userLocation')) &&
-    !_.isEmpty(localStorage.getItem('userContentFilters'));
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter( queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
@@ -160,9 +158,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.changeLanguageAttribute();
-    if (this.isOffline) {
     document.body.classList.add('sb-offline');
-    }
     !this.locationFlag ? document.body.classList.add('o-y-hidden') : document.body.classList.remove('o-y-hidden');
 }
 
