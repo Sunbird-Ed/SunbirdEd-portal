@@ -1,6 +1,6 @@
 import { ExploreModule } from './../../../../../../src/app/modules/public/module/explore/explore.module';
 import { ContentManagerService } from './services';
-import { SuiModalModule, SuiProgressModule, SuiAccordionModule, SuiTabsModule } from 'ng2-semantic-ui';
+import { SuiModalModule, SuiProgressModule, SuiAccordionModule, SuiTabsModule, SuiSelectModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
@@ -11,7 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
   BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
-  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent
+  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
+  OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -27,6 +28,7 @@ import { SlickModule } from 'ngx-slick';
     OfflineRoutingModule,
     SuiModalModule,
     SuiProgressModule,
+    SuiSelectModule,
     WebExtensionModule,
     ExploreModule,
     FileSizeModule,
@@ -42,7 +44,10 @@ import { SlickModule } from 'ngx-slick';
     DesktopAppUpdateComponent,
     LibraryComponent,
     DesktopHeaderComponent,
-    LibraryFiltersComponent
+    LibraryFiltersComponent,
+    OfflineFaqComponent,
+    OfflineReportIssuesComponent,
+    OfflineHelpVideosComponent
   ],
   entryComponents: [
     ContentImportHeaderComponent,

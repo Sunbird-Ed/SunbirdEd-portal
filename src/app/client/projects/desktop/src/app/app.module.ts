@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { HttpClientModule } from '@angular/common/http';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule, SuiSelectModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -26,6 +26,7 @@ import { WebExtensionsConfig, PluginModules } from './framework.config';
     BrowserModule,
     HttpClientModule,
     SuiModule,
+    SuiSelectModule,
     SharedModule.forRoot(),
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
