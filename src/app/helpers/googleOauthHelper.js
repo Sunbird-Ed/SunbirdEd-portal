@@ -2,13 +2,14 @@ const { google } = require('googleapis');
 const _ = require('lodash');
 const { GOOGLE_OAUTH_CONFIG } = require('./environmentVariablesHelper.js')
 const redirectPath = '/google/auth/callback';
-const defaultScope = ['https://www.googleapis.com/auth/plus.me', 'https://www.googleapis.com/auth/userinfo.email', ' https://www.googleapis.com/auth/plus.login'];
+const defaultScope = ['https://www.googleapis.com/auth/userinfo.email', 'openid', 'email', 'profile', 'https://www.googleapis.com/auth/userinfo.profile'];
 const { getKeyCloakClient } = require('./keyCloakHelper')
 const envHelper = require('./environmentVariablesHelper.js')
 const request = require('request-promise'); //  'request' npm package with Promise support
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const {decodeToken} = require('./jwtHelper');
+const logger = require('sb_logger_util_v2')
 
 const keycloakGoogle = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
@@ -73,11 +74,25 @@ class GoogleOauth {
     const { tokens } = await client.getToken(req.query.code).catch(this.handleError)
     client.setCredentials(tokens)
     const tokenInfo = decodeToken(tokens.id_token);
-    // TODO: Remove console logs add fallback method fetching userprofile from google api
-    console.log('token information', tokenInfo);
+    let userInfo = {
+      email: tokenInfo.email,
+      name: tokenInfo.name
+    };
+    // TODO: Remove console logs
+    if (!_.get(userInfo, 'name') || !_.get(userInfo, 'email')) {
+      logger.info('userInformation being fetched from oauth2 api');
+      var oauth2 = google.oauth2({
+        auth: client,
+        version: 'v2'
+      });
+      const googleProfileFetched = await oauth2.userinfo.get().catch(this.handleError);
+      userInfo = googleProfileFetched.data;
+      logger.info('userInformation fetched from oauth2 api', userInfo);
+    }
+    console.log('user information', userInfo);
     return {
-      name: tokenInfo.name,
-      emailId: tokenInfo.email
+      name: userInfo.name,
+      emailId: userInfo.email
     }
   }
   handleError(error){
