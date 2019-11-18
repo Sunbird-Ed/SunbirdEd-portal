@@ -5,13 +5,16 @@
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER") && !showCertificate'
       [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
-      [class.active]="selectedAttributes.currentRole === 'PUBLISHER'" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
+      [class.active]="selectedAttributes.currentRole === 'PUBLISHER' && !showDashboard" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
+    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
+      [class.active]="(selectedAttributes.currentRole === 'PUBLISHER' && showDashboard)" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange('Dashboard')"
+      >Dashboard</a>
     <a class="item" [class.active]="!showCertDashboard && showCertificate"
      *ngIf='showCertificate'
       (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange()">Issue&nbsp;Certificate</a>
       <a class="item" [class.active]="showCertDashboard && showCertificate"
        *ngIf='showCertificate'
-      (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange('dashboard')">Certificate Dashboard</a>
+      (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange('certificatedashboard')">Certificate Dashboard</a>
   </div>
 </div>
 <div *ngIf="showCertificate">
