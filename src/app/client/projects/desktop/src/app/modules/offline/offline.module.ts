@@ -8,6 +8,7 @@ import { SharedModule } from '@sunbird/shared';
 import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
   BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
@@ -18,11 +19,13 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { SlickModule } from 'ngx-slick';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     BrowserAnimationsModule,
     CommonModule,
+    FormsModule,
     CoreModule,
     SharedModule,
     OfflineRoutingModule,
@@ -35,7 +38,8 @@ import { SlickModule } from 'ngx-slick';
     SuiAccordionModule,
     SuiTabsModule,
     OrderModule,
-    SlickModule
+    SlickModule,
+    CommonConsumptionModule
   ],
   providers: [DeviceDetectorService, OfflineFileUploaderService, ContentManagerService],
   declarations: [ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,

@@ -5,17 +5,17 @@
       <div class="state-medium-container__dropdown">
         <!-- state component -->
         <div class="sb-field mb-0">
-        <!-- <sui-select class="selection state-selection" placeholder="Select State" labelField="name" #multiSelect>
+        <sui-select class="selection state-selection" placeholder="Select State" labelField="name" #multiSelect>
             <sui-select-option *ngFor="let option of multiSelect1" [value]="option">
             </sui-select-option>
-        </sui-select> -->
+        </sui-select>
     </div>
         <!-- state component ends -->
       </div>
       <div class="state-medium-container__separator"></div>
       <div class="state-medium-container__medium">
         <!-- medium component -->
-        Medium component comes here
+        <sb-library-filters [list]="mediums" [layout]="mediumLayout" [selectedItems]="[0]" (selectedFilter)="selectedFilter($event)"></sb-library-filters>
         <!-- medium component ends -->
       </div>
     </div>
@@ -25,7 +25,7 @@
   <!-- class component -->
   <div class="sb-class-bar sb-bg-color-gray-0">
     <div class="ui container">
-      class component comes here
+        <sb-library-filters [list]="classes" [layout]="classLayout" [selectedItems]="[0]" (selectedFilter)="selectedFilter($event)"></sb-library-filters>
     </div>
   </div>
   <!-- class component ends -->

@@ -1,2 +1,66 @@
 @import "variables";
 @import "mixins/mixins";
+@import "../../../../../../../../node_modules/common-consumption-styles/assets/styles";
+:host {
+  .page {
+    background-color: #e5edf5;
+  }
+  .page-container {
+    margin: 16px 32px;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    margin: 15px 0;
+    padding: 10px 0;
+    .title {
+      font-family: inherit;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      flex: 1;
+      height: ($base-block-space * 3);
+      color: var(--primary-color);
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: capitalize;
+      line-height: ($base-block-space * 3);
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .cards-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    // justify-content: space-between;
+    margin: 0 -15px;
+    .item {
+      padding: 0 15px;
+      box-sizing: border-box;
+      &.show-3 {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+      }
+
+      &.show-4 {
+        flex: 0 0 25%;
+        max-width: 25%;
+      }
+      &.show-5 {
+        flex: 0 0 20%;
+        max-width: 20%;
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    .cards-container {
+      .item {
+        flex: 0 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 15px;
+      }
+    }
+  }
+}

@@ -1,3 +1,56 @@
-<p>Recently view items</p>
+<div class="library-container sb-bg-color-primary-100">
+    <div class="ui container">
+        <div class="header">
+            <div class="title">
+                Recently Added
+            </div>
+            <button class="sbbtn sbbtn--sm sbbtn--ol-secondary" (click)="onViewMoreClick($event)">
+                {{viewAllButtonText}}
+            </button>
+        </div>
+        <div class="cards-container">
+            <div class="item show-4" *ngFor="let content of contentList | slice:0:4">
+                <sb-library-card [content]="content" [isRecentlyViewed]="true" [isMobile]="true"
+                    (click)="cardClick($event)"></sb-library-card>
+            </div>
+        </div>
+        <div style="margin-bottom: 16px">
+            <sb-library-cards-grid [title]="subjects[0]" [contentList]="contentList1"
+                [viewMoreButtonText]="viewAllButtonText" (viewMoreClick)="showAllList($event)"
+                (cardClick)="cardClick($event)">
+            </sb-library-cards-grid>
+        </div>
 
-<p>List of card items</p>
+        <div style="margin-bottom: 16px">
+            <sb-library-cards-grid [title]="subjects[1]" [contentList]="contentList"
+                [viewMoreButtonText]="viewAllButtonText" (viewMoreClick)="showAllList($event)"
+                (cardClick)="cardClick($event)">
+            </sb-library-cards-grid>
+        </div>
+
+
+        <div style="margin-bottom: 16px">
+            <sb-library-cards-grid [title]="subjects[2]" [contentList]="contentList"
+                [viewMoreButtonText]="viewAllButtonText" (viewMoreClick)="showAllList($event)"
+                (cardClick)="cardClick($event)" [maxCardCount]="3">
+            </sb-library-cards-grid>
+        </div>
+
+
+        <div style="margin-bottom: 16px">
+            <sb-library-cards-grid [title]="subjects[3]" [contentList]="contentList"
+                [viewMoreButtonText]="viewAllButtonText" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
+                (cardClick)="cardClick($event)">
+            </sb-library-cards-grid>
+        </div>
+
+
+        <div style="margin-bottom: 16px">
+            <sb-library-cards-grid [title]="subjects[4]" [contentList]="contentList"
+                [viewMoreButtonText]="viewAllButtonText" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
+                (cardClick)="cardClick($event)">
+            </sb-library-cards-grid>
+        </div>
+
+    </div>
+</div>
