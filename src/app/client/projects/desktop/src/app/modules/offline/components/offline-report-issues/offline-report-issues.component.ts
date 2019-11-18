@@ -13,8 +13,7 @@ export class OfflineReportIssuesComponent implements OnInit {
   descriptionCount: any;
   reportOtherissueForm: FormGroup;
   constructor(
-    private formBuilder: FormBuilder,
-    private offlineReportIssuesService: OfflineReportIssuesService
+    private formBuilder: FormBuilder, private offlineReportIssuesService: OfflineReportIssuesService
   ) { }
   ngOnInit() {
     this.createReportOtherissueForm();
