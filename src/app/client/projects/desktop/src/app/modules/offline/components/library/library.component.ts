@@ -34,11 +34,7 @@ export class LibraryComponent implements OnInit {
     public unsubscribe$ = new Subject<void>();
 
     /* Hardcoded data */
-    defaultImage = 'assets/imgs/default.png';
     contentList = [];
-
-    title = 'desktopLibTest';
-    viewAllButtonText = 'View all';
 
     public subjects = ['english', 'mathematics', 'geology', 'biology', 'zoology', 'Botany', 'Environmental Science'];
     public mediums = [
@@ -59,7 +55,7 @@ export class LibraryComponent implements OnInit {
         'Class 5',
         'Class 6',
         'Class 7'
-    ]
+    ];
 
     /* Hardcoded data */
 
@@ -90,7 +86,7 @@ export class LibraryComponent implements OnInit {
             // this.setNoResultMessage();
         },
             error => {
-                console.error("Error", error);
+                console.error('Error', error);
                 this.router.navigate(['']);
             }
         );
@@ -146,7 +142,6 @@ export class LibraryComponent implements OnInit {
         }
         this.pageApiService.getPageData(option)
             .subscribe(data => {
-                console.log("data", data);
                 this.showLoader = false;
                 // this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
                 if (!this.carouselMasterData.length) {

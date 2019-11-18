@@ -5,7 +5,7 @@
                 Recently Added
             </div>
             <button class="sbbtn sbbtn--sm sbbtn--ol-secondary" (click)="onViewMoreClick($event)">
-                {{viewAllButtonText}}
+                {{resourceService?.frmelmnts?.lnk?.viewall}}
             </button>
         </div>
         <div class="cards-container">
@@ -16,14 +16,14 @@
         </div>
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[0]" [contentList]="contentList"
-                [viewMoreButtonText]="viewAllButtonText" (viewMoreClick)="showAllList($event)"
+                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" (viewMoreClick)="showAllList($event)"
                 (cardClick)="cardClick($event)">
             </sb-library-cards-grid>
         </div>
 
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[1]" [contentList]="contentList"
-                [viewMoreButtonText]="viewAllButtonText" (viewMoreClick)="showAllList($event)"
+                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" (viewMoreClick)="showAllList($event)"
                 (cardClick)="cardClick($event)">
             </sb-library-cards-grid>
         </div>
@@ -31,7 +31,7 @@
 
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[2]" [contentList]="contentList"
-                [viewMoreButtonText]="viewAllButtonText" (viewMoreClick)="showAllList($event)"
+                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" (viewMoreClick)="showAllList($event)"
                 (cardClick)="cardClick($event)" [maxCardCount]="3">
             </sb-library-cards-grid>
         </div>
@@ -39,7 +39,7 @@
 
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[3]" [contentList]="contentList"
-                [viewMoreButtonText]="viewAllButtonText" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
+                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
                 (cardClick)="cardClick($event)">
             </sb-library-cards-grid>
         </div>
@@ -47,7 +47,7 @@
 
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[4]" [contentList]="contentList"
-                [viewMoreButtonText]="viewAllButtonText" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
+                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
                 (cardClick)="cardClick($event)">
             </sb-library-cards-grid>
         </div>
