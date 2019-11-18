@@ -4,44 +4,42 @@
   </p>
   <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary"
     (click)="showNormalModal = !showNormalModal">Report other issue</button>
-</div>
-<sui-modal *ngIf="showNormalModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+ </div>
+ <sui-modal *ngIf="showNormalModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
   class="sb-modal" appBodyScroll (dismissed)="showNormalModal = !showNormalModal" #modal>
   <div class="sb-modal-header">Report an issue</div>
   <form [formGroup]="reportOtherissueForm">
-    <div class="sb-modal-content">
-      <div *ngIf='!issueReportText'>
-        <div class="sb-field">
-          <label for="email">Email address</label>
-          <input type="email" name="email" formControlName="email"
-            [ngClass]="{'is-invalid': reportOtherissueForm.controls.email.touched && reportOtherissueForm.controls['email'].errors}"
-            class="sb-form-control  mb-8" placeholder="Enter email address here">
-          <small *ngIf="reportOtherissueForm.controls.email.touched && reportOtherissueForm.controls['email'].errors"
-            class="message sb-color-error">Please enter valid Email address</small>
-        </div>
-        <div class="sb-field">
-          <label for="moretext">Tell us a more about the problem you faced</label>
-          <div class="relative">
-            <textarea rows="4" name="moretext" class="sb-form-control" formControlName="description" maxlength="1000"
-              placeholder="Type here..."></textarea>
-            <span class="characters-left">{{descriptionCount}} Characters left</span>
-          </div>
-        </div>
+  <div class="sb-modal-content">
+    <div *ngIf='!issueReportText'>
+      <div class="sb-field">
+        <label for="email">Email address</label>
+        <input type="email" name="email" formControlName="email"
+        [ngClass]="{'is-invalid': reportOtherissueForm.controls.email.touched && reportOtherissueForm.controls['email'].errors}"
+         class="sb-form-control  mb-8" placeholder="Enter email address here">
+        <small *ngIf="reportOtherissueForm.controls.email.touched && reportOtherissueForm.controls['email'].errors"
+        class="message sb-color-error">Please enter valid Email address</small>
       </div>
-      <div class="sb-report-content" *ngIf='issueReportText'>
-        <div class='d-flex flex-jc-center flex-ai-center sb-icon'>
-          <img src="../../assets/images/circle-with-check-symbol.svg">
-        </div>
-        <div class="text-center font-weight-bold sb-success-text">Issue reported successfully.</div>
-        <div class="text-center fs-0-785 sb-success-para">Note: Your report will be automatically sent to DIKSHA while
-          online. </div>
+      <div class="sb-field">
+        <label for="moretext">Tell us a more about the problem you faced</label>
+        <div class="relative">
+        <textarea rows="4" name="moretext" class="sb-form-control" formControlName="description" maxlength="1000" placeholder="Type here..."></textarea>
+        <span class="characters-left">{{descriptionCount}} Characters left</span>
+      </div>
       </div>
     </div>
-    <div class="sb-modal-actions" *ngIf='!issueReportText'>
-      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="submitIssue()"
-        [disabled]="reportOtherissueForm.invalid">
-        Submit Issue
-      </button>
+    <div class="sb-report-content" *ngIf='issueReportText'>
+      <div class='d-flex flex-jc-center flex-ai-center sb-icon'>
+       <img src="../../assets/images/circle-with-check-symbol.svg">
+      </div>
+      <div class="text-center font-weight-bold sb-success-text">Issue reported successfully.</div>
+      <div class="text-center fs-0-785 sb-success-para">Note: Your report will be automatically sent to DIKSHA while
+        online. </div>
     </div>
-  </form>
-</sui-modal>
+  </div>
+  <div class="sb-modal-actions" *ngIf='!issueReportText'>
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="submitIssue()" [disabled]="reportOtherissueForm.invalid">
+      Submit Issue
+    </button>
+  </div>
+ </form>
+ </sui-modal>
