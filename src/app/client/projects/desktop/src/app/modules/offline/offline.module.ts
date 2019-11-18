@@ -18,7 +18,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { SlickModule } from 'ngx-slick';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms'; 
 
 @NgModule({
   imports: [
