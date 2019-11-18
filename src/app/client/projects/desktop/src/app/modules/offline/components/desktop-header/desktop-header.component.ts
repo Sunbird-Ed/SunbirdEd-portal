@@ -4,8 +4,8 @@ import { CacheService } from 'ng2-cache-service';
 import { first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
-import { OrgDetailsService, FormService, TenantService } from 'src/app/modules/core';
-import { ConfigService, ResourceService } from 'src/app/modules/shared';
+import { OrgDetailsService, FormService, TenantService } from '@sunbird/core';
+import { ConfigService, ResourceService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { ElectronDialogService } from '../../services';
 
