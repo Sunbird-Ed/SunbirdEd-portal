@@ -195,4 +195,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     this.unsubscribe$.complete();
   }
 
+  printPdf(pdfUrl: string) {
+    window.open(pdfUrl, '_blank');
+  }
 }

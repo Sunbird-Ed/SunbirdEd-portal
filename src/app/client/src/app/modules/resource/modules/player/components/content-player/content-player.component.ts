@@ -235,4 +235,8 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
   }
+
+  printPdf(pdfUrl: string) {
+    window.open(pdfUrl, '_blank');
+  }
 }

@@ -12,6 +12,13 @@
               {{contentData.name}}
             </h1>
             <!--/Title-->
+            <!-- Print Button for printable contents-->
+            <span class="d-inline-block" *ngIf="contentData.printPdfUrl">
+              <a class="cursor-pointer btn-bg p-8 d-flex font-weight-bold" (click)="printPdf(contentData.printPdfUrl)">
+                  <img src="assets/images/print.svg" width="16" /> <span>&nbsp;&nbsp;{{resourceService.frmelmnts.btn.print}}</span>
+              </a>
+            </span>
+            <!-- /Print Button for printable contents-->
             <div class="ml-auto d-flex flex-ai-center">
               <div *ngIf="isOffline" class="mr-16">
                   <app-content-download [contentData]="contentData"></app-content-download>

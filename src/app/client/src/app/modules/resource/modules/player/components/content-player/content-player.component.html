@@ -31,6 +31,13 @@
                                     <i class="ui large blue flag outline icon"></i>
                                     {{resourceService?.frmelmnts?.lbl?.report}}
                                 </a> -->
+                                <!-- Print Button for printable contents-->
+                                <span class="d-inline-block" *ngIf="contentData.printPdfUrl">
+                                    <a class="cursor-pointer btn-bg p-8 d-flex font-weight-bold" (click)="printPdf(contentData.printPdfUrl)">
+                                        <img src="assets/images/print.svg" width="16" /> <span>&nbsp;&nbsp;{{resourceService.frmelmnts.btn.print}}</span>
+                                    </a>
+                                </span>
+                                <!-- /Print Button for printable contents-->
                             </div>
                         </div>
                         <div class="ui divider"></div>
