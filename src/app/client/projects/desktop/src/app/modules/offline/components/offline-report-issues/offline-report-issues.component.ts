@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
+import { OfflineReportIssuesService } from '../../services/offline-report-issues/offline-report-issues.service';
 @Component({
   selector: 'app-offline-report-issues',
   templateUrl: './offline-report-issues.component.html',
@@ -11,7 +12,10 @@ export class OfflineReportIssuesComponent implements OnInit {
   showNormalModal = false;
   descriptionCount: any;
   reportOtherissueForm: FormGroup;
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private offlineReportIssuesService: OfflineReportIssuesService
+  ) { }
   ngOnInit() {
     this.createReportOtherissueForm();
   }
@@ -33,7 +37,16 @@ export class OfflineReportIssuesComponent implements OnInit {
     const emailControl = this.reportOtherissueForm.get('email');
     emailControl.setValidators([Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]);
   }
+  openModal() {
+    this.showNormalModal = !this.showNormalModal;
+    if (this.issueReportText) {
+      this.issueReportText = false;
+    }
+  }
   submitIssue() {
+    console.log(this.reportOtherissueForm.getRawValue());
+    this.createReportOtherissueForm();
     this.issueReportText = !this.issueReportText;
+
   }
 }

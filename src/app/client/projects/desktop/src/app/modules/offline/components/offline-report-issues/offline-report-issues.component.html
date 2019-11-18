@@ -2,11 +2,11 @@
   <p class="help-faq__report_text">
     Haven't found what are you looking for?
   </p>
-  <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary"
-    (click)="showNormalModal = !showNormalModal">Report other issue</button>
+  <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="openModal()"
+    data-target="#openPopUp">Report other issue</button>
 </div>
 <sui-modal *ngIf="showNormalModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal" appBodyScroll (dismissed)="showNormalModal = !showNormalModal" #modal>
+  class="sb-modal" appBodyScroll (dismissed)="showNormalModal = !showNormalModal" #modal id="openPopUp">
   <div class="sb-modal-header">Report an issue</div>
   <form [formGroup]="reportOtherissueForm">
     <div class="sb-modal-content">
