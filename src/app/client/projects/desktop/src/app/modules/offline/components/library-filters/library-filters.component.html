@@ -15,7 +15,7 @@
       <div class="state-medium-container__separator"></div>
       <div class="state-medium-container__medium">
         <!-- medium component -->
-        <sb-library-filters [list]="mediums" [layout]="mediumLayout" [selectedItems]="[0]" (selectedFilter)="selectedFilter($event)"></sb-library-filters>
+        <sb-library-filters [list]="mediums" [layout]="mediumLayout" [selectedItems]="[0]" (selectedFilter)="getSelectedFilters($event, 'mediums')"></sb-library-filters>
         <!-- medium component ends -->
       </div>
     </div>
@@ -25,7 +25,7 @@
   <!-- class component -->
   <div class="sb-class-bar sb-bg-color-gray-0">
     <div class="ui container">
-        <sb-library-filters [list]="classes" [layout]="classLayout" [selectedItems]="[0]" (selectedFilter)="selectedFilter($event)"></sb-library-filters>
+        <sb-library-filters [list]="classes" [layout]="classLayout" [selectedItems]="[0]" (selectedFilter)="getSelectedFilters($event, 'classes')"></sb-library-filters>
     </div>
   </div>
   <!-- class component ends -->

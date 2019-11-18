@@ -68,7 +68,7 @@
                         {{resourceService?.frmelmnts?.btn?.takeTour}}
                     </button>
                     <button (click)="handleImport()" appTelemetryInteract
-                        [telemetryInteractEdata]="ContentImportInteractEdata"
+                        [telemetryInteractEdata]="contentImportInteractEdata"
                         class="sb-btn sb-btn-normal sb-btn-outline-tertiary">{{resourceService?.frmelmnts?.lbl?.uploadContent}}</button>
                 </div>
 
@@ -85,16 +85,15 @@
                 <div class="ui container d-flex flex-ai-center flex-jc-space-between">
 
                     <div class="d-flex sb-offline-menu-container flex-ai-center">
-                        <a [routerLink]="'/'"
-                            [ngClass]="(router.isActive('/') && !(router.isActive('/browse') || router.isActive('/help-center')) ) ? 'active': ''">
+                        <a [routerLink]="'/'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                             <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
                         </a>
-                        <a [ngClass]="router.isActive('/browse')? 'active': ''" [routerLink]="'/browse'"
-                            appTelemetryInteract [telemetryInteractEdata]="browseEdata">
+                        <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
+                            [telemetryInteractEdata]="browseEdata">
                             <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
                         </a>
-                        <a [ngClass]="router.isActive('/help-center')? 'active': ''" [routerLink]="'/help-center'"
-                            appTelemetryInteract [telemetryInteractEdata]="helpCenterEdata">
+                        <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract
+                            [telemetryInteractEdata]="helpCenterEdata">
                             <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
                         </a>
                     </div>

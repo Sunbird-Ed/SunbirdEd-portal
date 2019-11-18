@@ -4,27 +4,27 @@
             <div class="title">
                 Recently Added
             </div>
-            <button class="sbbtn sbbtn--sm sbbtn--ol-secondary" (click)="onViewMoreClick($event)">
+            <button class="sbbtn sbbtn--sm sbbtn--ol-secondary" (click)="onViewAllClick($event)">
                 {{resourceService?.frmelmnts?.lnk?.viewall}}
             </button>
         </div>
         <div class="cards-container">
             <div class="item show-4" *ngFor="let content of contentList | slice:0:4">
                 <sb-library-card [content]="content" [isRecentlyViewed]="true" [isMobile]="true"
-                    (click)="cardClick($event)"></sb-library-card>
+                    (click)="openContent($event)"></sb-library-card>
             </div>
         </div>
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[0]" [contentList]="contentList"
                 [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" (viewMoreClick)="showAllList($event)"
-                (cardClick)="cardClick($event)">
+                (cardClick)="openContent($event)">
             </sb-library-cards-grid>
         </div>
 
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[1]" [contentList]="contentList"
                 [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" (viewMoreClick)="showAllList($event)"
-                (cardClick)="cardClick($event)">
+                (cardClick)="openContent($event)">
             </sb-library-cards-grid>
         </div>
 
@@ -32,7 +32,7 @@
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[2]" [contentList]="contentList"
                 [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" (viewMoreClick)="showAllList($event)"
-                (cardClick)="cardClick($event)" [maxCardCount]="3">
+                (cardClick)="openContent($event)" [maxCardCount]="3">
             </sb-library-cards-grid>
         </div>
 
@@ -40,7 +40,7 @@
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[3]" [contentList]="contentList"
                 [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
-                (cardClick)="cardClick($event)">
+                (cardClick)="openContent($event)">
             </sb-library-cards-grid>
         </div>
 
@@ -48,7 +48,7 @@
         <div style="margin-bottom: 16px">
             <sb-library-cards-grid [title]="subjects[4]" [contentList]="contentList"
                 [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
-                (cardClick)="cardClick($event)">
+                (cardClick)="openContent($event)">
             </sb-library-cards-grid>
         </div>
 

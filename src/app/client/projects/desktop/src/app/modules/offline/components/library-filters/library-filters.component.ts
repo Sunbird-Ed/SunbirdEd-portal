@@ -45,4 +45,8 @@ export class LibraryFiltersComponent implements OnInit {
         ];
     }
 
+    getSelectedFilters(event, type) {
+        console.log('Event', event);
+    }
+
 }

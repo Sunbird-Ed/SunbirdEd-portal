@@ -35,7 +35,6 @@ export class LibraryComponent implements OnInit {
 
     /* Hardcoded data */
     contentList = [];
-
     public subjects = ['english', 'mathematics', 'geology', 'biology', 'zoology', 'Botany', 'Environmental Science'];
     public mediums = [
         'english',
@@ -66,8 +65,8 @@ export class LibraryComponent implements OnInit {
         private utilService: UtilService,
         private toasterService: ToasterService,
         private configService: ConfigService,
-        private resourceService: ResourceService,
         private orgDetailsService: OrgDetailsService,
+        public resourceService: ResourceService,
         public offlineFileUploaderService: OfflineFileUploaderService,
     ) { }
 
@@ -165,4 +164,15 @@ export class LibraryComponent implements OnInit {
         this.unsubscribe$.complete();
     }
 
+    onViewAllClick(event) {
+        console.log('Event', event);
+    }
+
+    showAllList(event) {
+        console.log('Event', event);
+    }
+
+    openContent(event) {
+        console.log('Event', event);
+    }
 }
