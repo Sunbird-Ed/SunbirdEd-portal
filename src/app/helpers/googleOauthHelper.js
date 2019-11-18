@@ -85,8 +85,8 @@ class GoogleOauth {
         auth: client,
         version: 'v2'
       });
-      const googleProfileFetched = await oauth2.userinfo.get().catch(this.handleError);
-      userInfo = googleProfileFetched.data;
+      const googleProfileFetched = await oauth2.userinfo.get().catch(this.handleError) || {};
+      userInfo = googleProfileFetched.data || {};
       logger.info('userInformation fetched from oauth2 api', userInfo);
     }
     console.log('user information', userInfo);
