@@ -361,7 +361,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           if (downloadUrl) {
             window.open(downloadUrl, '_blank');
           } else {
-            this.toasterService.error(this.resourceService.messages.stmsg.m0131 + ' ' + this.resourceService.frmelmnts.instn.t0056);
+            this.toasterService.error(this.resourceService.messages.stmsg.m0141);
           }
         },
         err => {
