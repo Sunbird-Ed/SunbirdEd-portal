@@ -1,5 +1,5 @@
 import { ExploreModule } from './../../../../../../src/app/modules/public/module/explore/explore.module';
-import { OfflineFileUploaderService, ContentManagerService } from './services';
+import { ContentManagerService } from './services';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule, SuiTabsModule, SuiSelectModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -37,7 +37,7 @@ import { SlickModule } from 'ngx-slick';
     OrderModule,
     SlickModule
   ],
-  providers: [DeviceDetectorService, OfflineFileUploaderService, ContentManagerService],
+  providers: [DeviceDetectorService, ContentManagerService],
   declarations: [ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
     BrowseComponent, WatchVideoComponent, ContentImportHeaderComponent, BrowseComponent,
     NetworkStatusComponent, WatchVideoComponent, ContentManagerComponent, OfflineHelpCenterComponent,
