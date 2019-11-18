@@ -1,30 +1,30 @@
 <div class="help-faq__report">
   <p class="help-faq__report_text">
-    Haven't found what are you looking for?
+    {{resourceService.frmelmnts?.lbl?.haventFoundAnyOtherissue}}
   </p>
   <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="openModal()"
-    data-target="#openPopUp">Report other issue</button>
+    data-target="#openPopUp"> {{resourceService.frmelmnts?.lbl?.reportOtherIssue}} </button>
 </div>
 <sui-modal *ngIf="showNormalModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
   class="sb-modal" appBodyScroll (dismissed)="showNormalModal = !showNormalModal" #modal id="openPopUp">
-  <div class="sb-modal-header">Report an issue</div>
+  <div class="sb-modal-header">{{resourceService.frmelmnts?.lbl?.reportAnIssue}} </div>
   <form [formGroup]="reportOtherissueForm">
     <div class="sb-modal-content">
       <div *ngIf='!issueReportText'>
         <div class="sb-field">
-          <label for="email">Email address</label>
+          <label for="email">{{resourceService.frmelmnts?.lbl?.email}}</label>
           <input type="email" name="email" formControlName="email"
             [ngClass]="{'is-invalid': reportOtherissueForm.controls.email.touched && reportOtherissueForm.controls['email'].errors}"
-            class="sb-form-control  mb-8" placeholder="Enter email address here">
+            class="sb-form-control  mb-8" placeholder="{{resourceService.frmelmnts?.lbl?.enterEmailID}}">
           <small *ngIf="reportOtherissueForm.controls.email.touched && reportOtherissueForm.controls['email'].errors"
-            class="message sb-color-error">Please enter valid Email address</small>
+            class="message sb-color-error">{{resourceService.frmelmnts?.lbl?.validEmail}}</small>
         </div>
         <div class="sb-field">
-          <label for="moretext">Tell us a more about the problem you faced</label>
+          <label for="moretext">{{resourceService.frmelmnts?.lbl?.tellUsMoreAboutProblem}} </label>
           <div class="relative">
             <textarea rows="4" name="moretext" class="sb-form-control" formControlName="description" maxlength="1000"
-              placeholder="Type here..."></textarea>
-            <span class="characters-left">{{descriptionCount}} Characters left</span>
+              placeholder="{{resourceService.frmelmnts?.lbl?.typeHere}}"></textarea>
+            <span class="characters-left">{{descriptionCount}} {{resourceService.frmelmnts?.lbl?.characterleft}} </span>
           </div>
         </div>
       </div>
@@ -32,15 +32,17 @@
         <div class='d-flex flex-jc-center flex-ai-center sb-icon'>
           <img src="../../assets/images/circle-with-check-symbol.svg">
         </div>
-        <div class="text-center font-weight-bold sb-success-text">Issue reported successfully.</div>
-        <div class="text-center fs-0-785 sb-success-para">Note: Your report will be automatically sent to DIKSHA while
-          online. </div>
+        <div class="text-center font-weight-bold sb-success-text">
+          {{resourceService.frmelmnts?.lbl?.issueReportedSuccessfuly}}</div>
+        <div class="text-center fs-0-785 sb-success-para">
+          {{resourceService?.frmelmnts?.lbl?.issueReportedSuccessfulySubNote | interpolate:'{instance}': instance}}
+        </div>
       </div>
     </div>
     <div class="sb-modal-actions" *ngIf='!issueReportText'>
       <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="submitIssue()"
         [disabled]="reportOtherissueForm.invalid">
-        Submit Issue
+        {{resourceService.frmelmnts?.lbl?.submitIssueButton}}
       </button>
     </div>
   </form>

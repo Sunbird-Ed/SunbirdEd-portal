@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
+import { ResourceService, } from '@sunbird/shared';
+
+
 import { OfflineReportIssuesService } from '../../services/offline-report-issues/offline-report-issues.service';
 @Component({
   selector: 'app-offline-report-issues',
@@ -11,12 +14,17 @@ export class OfflineReportIssuesComponent implements OnInit {
   issueReportText = false;
   showNormalModal = false;
   descriptionCount: any;
+  instance: string;
   reportOtherissueForm: FormGroup;
   constructor(
-    private formBuilder: FormBuilder, private offlineReportIssuesService: OfflineReportIssuesService
+    private formBuilder: FormBuilder,
+    private offlineReportIssuesService: OfflineReportIssuesService,
+    public resourceService: ResourceService,
   ) { }
   ngOnInit() {
     this.createReportOtherissueForm();
+    this.instance = _.upperCase(this.resourceService.instance);
+
   }
   createReportOtherissueForm() {
     this.reportOtherissueForm = this.formBuilder.group({
@@ -34,7 +42,7 @@ export class OfflineReportIssuesComponent implements OnInit {
   }
   setValidators() {
     const emailControl = this.reportOtherissueForm.get('email');
-    emailControl.setValidators([Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]);
+    emailControl.setValidators([Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
   }
   openModal() {
     this.showNormalModal = !this.showNormalModal;
