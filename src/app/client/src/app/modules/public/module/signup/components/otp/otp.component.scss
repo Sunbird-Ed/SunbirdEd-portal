@@ -36,11 +36,11 @@
 .ui.form.borderd input:focus {
     border-color: $form-input-border-active-color !important;
 }
-.light-sea-green.button {
+.ui.light-sea-green.button {
     background: $signup-btn-bg-active-color;
     color: $white-color;
 }
-.grey.button {
+.ui.grey.button {
     background: $signup-btn-bg-not-active-color;
     color: $white-color;
     pointer-events: none !important;
