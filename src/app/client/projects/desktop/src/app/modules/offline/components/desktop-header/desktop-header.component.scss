@@ -41,12 +41,18 @@
     }
     &__search {
       width: 100%;
-      flex: 0 0 70%;
-      @include respond-above(sm) {
-        flex: 0 0 70%;
-      }
+      flex:1;
     }
     &__actions {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      @include respond-above(sm) {
+        width: inherit;
+      }
+      & > button {
+        flex: 50%;
+      }
     }
   }
 

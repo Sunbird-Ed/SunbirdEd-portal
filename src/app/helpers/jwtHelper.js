@@ -16,4 +16,13 @@ const getUserIdFromToken = (accessToken) => {
   }
 };
 
-module.exports = {getUserIdFromToken};
+/**
+ * JWT token to decode
+ * @param token
+ * @returns {null|{payload, signature, header}}
+ */
+const decodeToken = (token) => {
+  return jwt.decode(token);
+};
+
+module.exports = {getUserIdFromToken, decodeToken};
