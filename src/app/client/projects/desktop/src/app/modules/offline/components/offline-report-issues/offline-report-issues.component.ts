@@ -44,7 +44,6 @@ export class OfflineReportIssuesComponent implements OnInit {
     }
   }
   submitIssue() {
-    console.log(this.reportOtherissueForm.getRawValue());
     this.createReportOtherissueForm();
     this.issueReportText = !this.issueReportText;
 
