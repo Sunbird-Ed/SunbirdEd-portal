@@ -18,6 +18,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { SlickModule } from 'ngx-slick';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { SlickModule } from 'ngx-slick';
     SuiAccordionModule,
     SuiTabsModule,
     OrderModule,
-    SlickModule
+    SlickModule,
+    ReactiveFormsModule
   ],
   providers: [DeviceDetectorService, OfflineFileUploaderService, ContentManagerService],
   declarations: [ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
