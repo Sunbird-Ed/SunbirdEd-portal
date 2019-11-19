@@ -11,8 +11,7 @@
             <div class="sbheader__branding sbheader--offline__branding">
                 <div class="logo" (click)="navigateToHome()" appTelemetryInteract
                     [telemetryInteractEdata]="homeInteractEdata">
-                    <!-- TODO: Need to add tenant logo <img src="{{tenantInfo.logo}}" alt={{tenantInfo.titleName}}> -->
-                    <img src="https://staging.ntp.net.in/assets/imgs/logos.svg" alt={{tenantInfo.titleName}>
+                    <img src="{{tenantInfo.logo}}" alt={{tenantInfo.titleName}}>
                 </div>
                 <app-network-status></app-network-status>
             </div>
