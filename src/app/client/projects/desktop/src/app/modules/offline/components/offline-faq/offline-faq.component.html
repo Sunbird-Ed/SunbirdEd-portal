@@ -1,3 +1,4 @@
-<p>
-  offline-faq works!
-</p>
+<h3>{{resourceService.frmelmnts?.lbl?.faqheader || "Frequently asked questions (FAQ's)"}}</h3>
+<sb-faq *ngIf="faqData" [data]="faqData" [appName]="resourceService.instance" (toggleGroupEvent)="handleEvents($event);"
+  (yesClickedEvent)="handleEvents($event);" (noClickedEvent)="handleEvents($event);"
+  (submitClickedEvent)="handleEvents($event);"></sb-faq>
