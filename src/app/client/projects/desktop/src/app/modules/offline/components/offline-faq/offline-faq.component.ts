@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PublicDataService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ResourceService } from '@sunbird/shared';
 import { takeUntil } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './offline-faq.component.html',
   styleUrls: ['./offline-faq.component.scss']
 })
-export class OfflineFaqComponent implements OnInit {
+export class OfflineFaqComponent implements OnInit, OnDestroy {
 
   public unsubscribe$ = new Subject<void>();
   faqData;
@@ -19,7 +19,6 @@ export class OfflineFaqComponent implements OnInit {
     public resourceService: ResourceService, public telemetryService: TelemetryService, public activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.fetchFaqs('en');
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
     .subscribe(item => {
       this.fetchFaqs(item.value);
@@ -59,5 +58,9 @@ export class OfflineFaqComponent implements OnInit {
         }
         console.log(`Received Error while fetching faqs ${JSON.stringify(error.error)}`);
       });
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
