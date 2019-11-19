@@ -11,6 +11,7 @@ export class ContentPlayerMetadataComponent implements OnInit {
   metadata: any;
   contentFieldData: any;
   fieldData = [];
+  instance: string;
   // conceptNames: any;
   // filteredConcepts: any;
   showContentCreditsModal: boolean;
@@ -21,6 +22,7 @@ export class ContentPlayerMetadataComponent implements OnInit {
   ngOnInit() {
     this.metadata = { ...this.contentData };
     this.validateContent();
+    this.instance = _.upperCase(this.resourceService.instance);
   }
 
   validateContent() {

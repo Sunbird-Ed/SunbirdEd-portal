@@ -1,0 +1,46 @@
+<sui-modal
+  [mustScroll]="true"
+  [isClosable]="false"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  (dismissed)="modal.deny();closeModal()"
+  #modal>
+
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService.frmelmnts?.lbl?.mergeAccount }}
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content">
+    <div class="sb-merge-account-modal">
+      <p class="mb-8"> {{resourceService.messages?.imsg?.m0060 | interpolate:'{instance}': instance }}
+        <b>{{resourceService.frmelmnts?.btn?.merge | titlecase}}</b> {{resourceService.messages?.imsg?.m0061}}:</p>
+      <ul class="m-0">
+        <li class="mb-8">
+          {{resourceService.messages?.imsg?.m0063}}
+        </li>
+        <li class="mb-8">
+          {{resourceService.messages?.imsg?.m0064}}
+        </li>
+      </ul>
+      <p>{{resourceService.messages?.imsg?.m0062}} <b>{{resourceService.frmelmnts?.btn?.cancel}}</b></p>
+    </div>
+  </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button appTelemetryInteract [telemetryInteractEdata]="mergeIntractEdata"
+            [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-primary" (click)="initiateMerge()">
+      {{resourceService.frmelmnts?.btn?.merge}}
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
+      {{resourceService.frmelmnts?.btn?.cancel}}
+    </button>
+  </div>
+  <!--/Actions-->
+
+</sui-modal>

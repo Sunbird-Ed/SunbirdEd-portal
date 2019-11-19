@@ -1,12 +1,14 @@
-import { combineLatest,  Subscription ,  Observable ,  Subject, of } from 'rxjs';
+import { combineLatest, Subscription, Observable, Subject, of } from 'rxjs';
 
-import {first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay} from 'rxjs/operators';
+import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
-import { ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
-  NavigationHelperService } from '@sunbird/shared';
+import {
+  ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
+  NavigationHelperService
+} from '@sunbird/shared';
 import { CourseProgressService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
@@ -45,9 +47,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	 * This variable sets the user id
 	 */
   userId: string;
-    /**
-   * value typed
-   */
+  /**
+ * value typed
+ */
   searchText: string;
   /**
 	 * This variable sets the dashboard result related to the given batch
@@ -90,38 +92,38 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	 * This variable helps to show the warning div
 	 */
   showWarningDiv = false;
-   /**
-	 * This variable helps to show the csv downloadURl
-	 */
+  /**
+  * This variable helps to show the csv downloadURl
+  */
   showDownloadLink = true;
   /**
    * To navigate to other pages
    */
   route: Router;
-   /**
-       * Contains page limit of inbox list
-    */
-   pageLimit: number;
-
-   /**
-     * Current page number of inbox list
+  /**
+      * Contains page limit of inbox list
    */
-   pageNumber = 1;
+  pageLimit: number;
 
-   /**
-     * totalCount of the list
-   */
-   totalCount: Number;
+  /**
+    * Current page number of inbox list
+  */
+  pageNumber = 1;
+
+  /**
+    * totalCount of the list
+  */
+  totalCount: Number;
   /**
    *  to store the current batch when updated;
    */
-   currentBatch: any;
+  currentBatch: any;
 
-   /**
-     * Contains returned object of the pagination service
-   * which is needed to show the pagination on inbox view
-     */
-   pager: IPagination;
+  /**
+    * Contains returned object of the pagination service
+  * which is needed to show the pagination on inbox view
+    */
+  pager: IPagination;
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to parent component
@@ -146,7 +148,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * For showing pagination on draft list
   */
-   private paginationService: PaginationService;
+  private paginationService: PaginationService;
   /**
     * To get url, app configs
     */
@@ -174,7 +176,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     activatedRoute: ActivatedRoute,
     resourceService: ResourceService,
     toasterService: ToasterService,
-    courseProgressService: CourseProgressService,  paginationService: PaginationService,
+    courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
     public navigationhelperService: NavigationHelperService) {
     this.user = user;
@@ -209,7 +211,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       this.courseProgressService.getBatches(searchParamsCreator),
       this.courseProgressService.getBatches(searchParamsMentor),
     ).pipe(takeUntil(this.unsubscribe))
-     .subscribe((results) => {
+      .subscribe((results) => {
         this.batchlist = _.union(results[0].result.response.content, results[1].result.response.content);
         this.showLoader = false;
         const isBatchExist = _.find(this.batchlist, (batch) => batch.id === this.queryParams.batchIdentifier);
@@ -221,7 +223,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.populateCourseDashboardData(isBatchExist);
         } else if (this.batchlist.length === 1 && isBatchExist === undefined) {
           this.queryParams.batchIdentifier = this.batchlist[0].id;
-          this.selectedOption =  this.batchlist[0].id;
+          this.selectedOption = this.batchlist[0].id;
           this.currentBatch = this.batchlist[0];
           this.populateCourseDashboardData(this.batchlist[0]);
         } else {
@@ -240,7 +242,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   *
 	* @param {string} batchId batch identifier
   */
-  setBatchId(batch ?: any): void {
+  setBatchId(batch?: any): void {
     this.queryParams.batchIdentifier = batch.id;
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
@@ -283,7 +285,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
-  populateCourseDashboardData(batch ?: any): void {
+  populateCourseDashboardData(batch?: any): void {
     if (!batch && this.currentBatch) {
       batch = this.currentBatch;
     }
@@ -303,26 +305,26 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       option.username = this.searchText;
     }
     this.courseProgressService.getDashboardData(option).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(
-      (apiResponse: ServerResponse) => {
-        this.showLoader = false;
-        this.dashboarData = apiResponse.result;
-        this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
-        this.dashboarData.count = _.get(batch, 'participantCount');
-        this.totalCount = _.get(batch, 'participantCount');
-        if (this.totalCount >= 10000) {
-          this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
-        } else {
-          this.pager = this.paginationService.getPager(
-            apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
+      takeUntil(this.unsubscribe))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          this.showLoader = false;
+          this.dashboarData = apiResponse.result;
+          this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
+          this.dashboarData.count = _.get(batch, 'participantCount');
+          this.totalCount = _.get(batch, 'participantCount');
+          if (this.totalCount >= 10000) {
+            this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
+          } else {
+            this.pager = this.paginationService.getPager(
+              apiResponse.result.count, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
+          }
+        },
+        err => {
+          this.toasterService.error(err.error.params.errmsg);
+          this.showLoader = false;
         }
-      },
-      err => {
-        this.toasterService.error(err.error.params.errmsg);
-        this.showLoader = false;
-      }
-    );
+      );
   }
 
   /**
@@ -340,28 +342,38 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   /**
-  * To method calls the download API with specific batch id and timeperiod
-  */
-  downloadReport(): void {
+   * To method calls the download API with specific batch id and timeperiod
+   */
+  downloadReport(downloadAssessmentReport: Boolean = false): void {
     const option = {
       batchIdentifier: this.queryParams.batchIdentifier,
     };
     this.courseProgressService.downloadDashboardData(option).pipe(
-    takeUntil(this.unsubscribe))
-    .subscribe(
-      (apiResponse: ServerResponse) => {
-        window.open(_.get(apiResponse, 'result.signedUrl'), '_parent');
-      },
-      err => {
-        this.toasterService.error(this.resourceService.messages.imsg.m0045);
-      }
-    );
+      takeUntil(this.unsubscribe))
+      .subscribe(
+        (apiResponse: ServerResponse) => {
+          let downloadUrl;
+          if (!downloadAssessmentReport) {
+            downloadUrl = _.get(apiResponse, 'result.signedUrl') || _.get(apiResponse, 'result.reports.courseProgressReportUrl');
+          } else {
+            downloadUrl = _.get(apiResponse, 'result.reports.assessmentReportUrl');
+          }
+          if (downloadUrl) {
+            window.open(downloadUrl, '_blank');
+          } else {
+            this.toasterService.error(this.resourceService.messages.stmsg.m0141);
+          }
+        },
+        err => {
+          this.toasterService.error(this.resourceService.messages.imsg.m0045);
+        }
+      );
     this.setInteractEventData();
   }
 
   navigateToPage(page: number): undefined | void {
     if (page < 1 || page > this.pager.totalPages) {
-        return;
+      return;
     }
     this.pageNumber = page;
     this.queryParams.pageNumber = this.pageNumber;
@@ -375,12 +387,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
   searchBatch() {
     this.modelChanged.pipe(debounceTime(1000),
-    distinctUntilChanged(),
-    switchMap(search => of(search))
+      distinctUntilChanged(),
+      switchMap(search => of(search))
     ).
-    subscribe(query => {
-      this.populateCourseDashboardData();
-    });
+      subscribe(query => {
+        this.populateCourseDashboardData();
+      });
   }
   /**
   * To method subscribes the user data to get the user id.
@@ -411,7 +423,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.setInteractEventData();
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
@@ -442,9 +454,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
   setInteractEventData() {
     if (_.get(this.queryParams, 'batchIdentifier')) {
-      this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier}];
+      this.telemetryCdata = [{ 'type': 'batch', 'id': this.queryParams.batchIdentifier }];
     } else {
-      this.telemetryCdata = [{ 'type': 'course', 'id': this.courseId}];
+      this.telemetryCdata = [{ 'type': 'course', 'id': this.courseId }];
     }
   }
 }

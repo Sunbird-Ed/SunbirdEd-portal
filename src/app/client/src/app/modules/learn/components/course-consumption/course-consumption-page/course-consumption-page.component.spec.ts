@@ -2,7 +2,7 @@
 import {throwError, of,  Observable } from 'rxjs';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
 import { CourseHierarchyGetMockResponse } from './../course-player/course-player.component.mock.data';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { CourseConsumptionPageComponent } from './course-consumption-page.component';
 import {SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { CoreModule, CoursesService, LearnerService } from '@sunbird/core';
@@ -92,27 +92,30 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(toasterService, 'error').and.returnValue('');
     activatedRouteStub.snapshot.firstChild.params = { courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};
   });
-  it('should fetch courseHierarchy,EnrolledBatchDetails if course is enrolled', () => {
+  it('should fetch courseHierarchy,EnrolledBatchDetails if course is enrolled', fakeAsync(() => {
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     courseService.initialize();
     component.ngOnInit();
+    tick(200);
     expect(component.courseHierarchy).toBeDefined();
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.batchId).toBeTruthy();
-  });
-  it('should navigate to course consumption page if course is present in enrolled list, if batchId is not in activated route', () => {
+  }));
+  it('should navigate to course consumption page if course is present in enrolled list,if batchId is not in activated route',
+  fakeAsync(() => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178'};
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
     courseService.initialize();
     component.ngOnInit();
+    tick(200);
     expect(component.router.navigate).toHaveBeenCalledWith(['learn/course/do_212347136096788480178/batch/do_112498388508524544160']);
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.courseHierarchy).toBeDefined();
-  });
+  }));
   it('should navigate to course view page if fetching enrolled course fails', () => {
     spyOn(learnerService, 'get').and.returnValue(throwError(enrolledCourse.courseSuccessEnroll));
     courseService.initialize();
@@ -120,14 +123,15 @@ describe('CourseConsumptionPageComponent', () => {
     expect(component.toasterService.error).toHaveBeenCalled();
     expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('/learn');
   });
-  it('should fetch course details if it not enrolled course and should not fetch enrolled batch details', () => {
+  it('should fetch course details if it not enrolled course and should not fetch enrolled batch details', fakeAsync(() => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123'};
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
     courseService.initialize();
     component.ngOnInit();
+    tick(200);
     expect(component.courseHierarchy).toBeDefined();
-  });
+  }));
   it('should navigate to course view page if batchId/courseId combination dint match any enrolled course list', () => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123',  batchId: '123'};
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));

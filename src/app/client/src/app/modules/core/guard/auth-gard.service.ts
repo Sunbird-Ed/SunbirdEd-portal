@@ -60,11 +60,13 @@ export class AuthGuard implements CanActivate, CanLoad {
     getPermission(roles) {
         return Observable.create(observer => {
             if (roles === 'rootOrgAdmin') {
-                if (_.get(this.userService.userProfile, 'rootOrgAdmin')) {
-                    observer.next(true);
-                } else {
-                    this.navigateToHome(observer);
-                }
+                this.userService.userData$.subscribe(data => {
+                    if (_.get(this.userService.userProfile, 'rootOrgAdmin')) {
+                        observer.next(true);
+                    } else {
+                        this.navigateToHome(observer);
+                    }
+                });
             } else {
                 this.permissionService.permissionAvailable$.subscribe(
                     permissionAvailable => {

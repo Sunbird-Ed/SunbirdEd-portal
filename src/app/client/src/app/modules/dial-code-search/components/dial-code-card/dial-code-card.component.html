@@ -1,6 +1,7 @@
 <div class="sb-card bs-0 sb-card-qr" *ngIf="data" (click)="onAction(data,data.action.onImage)" appTelemetryInteract
-  [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}"
+  [telemetryInteractObject]="{id:data.metaData.identifier,type:data.contentType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}"
   [telemetryInteractEdata]="data.telemetryInteractEdata" [telemetryInteractCdata]="telemetryCdata" tabindex="0">
+  
   <!--Body-->
   <div class="sb-card-body br-top">
     <!--Metas-->
@@ -71,7 +72,7 @@
 
   <div class="btn-div play-btn">
     <button class="sb-btn p-0 sb-btn-secondary">
-        <i class="caret right icon"></i> {{resourceService?.frmelmnts?.lbl?.playContent}}
+        <i class="caret right icon"></i> {{resourceService?.frmelmnts?.lbl?.play}}
       </button>
   </div>
 </div>

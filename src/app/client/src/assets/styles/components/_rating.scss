@@ -1,0 +1,11 @@
+.sb-rating.ui.rating {
+    
+    .icon {
+        margin-right: $base-block-space/2;
+    }
+    .active.icon, .icon.selected {
+        color: $primary-300 !important;
+        text-shadow: none !important;
+    }
+
+} 

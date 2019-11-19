@@ -1,0 +1,63 @@
+<sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" [isClosable]="'false'" #modal [mustScroll]="'true'">
+  <div [appTelemetryImpression]="telemetryImpression" class="signup-background">
+    <div class="ui raised shadow container segment">
+      <div *ngIf="!showOtpComp">
+        <div class="d-flex flex-jc-center mb-30">
+          <img class="image centered" alt={{tenantInfo.tenantName}} height="45" src="{{tenantInfo.logo}}">
+        </div>
+        <h6 class="text-center mb-24">{{resourceService?.frmelmnts?.lbl?.mobileEmailInfoText |  interpolate:'{instance}': resourceService.instance}}</h6>
+        <div class="width-300 mx-auto mt-30">
+          <form #contactDetailsForm="ngForm">
+            <div class="inline fields d-flex flex-w-wrap" id="Mandatory">
+              <div class="field mb-16 mr-16">
+                <div class="ui radio checkbox" (click)="resetForm('phone')">
+                  <input type="radio" value="phone" [(ngModel)]="contactForm.type" name='type'>
+                  <label for="phoneNumber">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</label>
+                </div>
+              </div>
+              <div class="field mb-24">
+                <div class="ui radio checkbox" (click)="resetForm('email')">
+                  <input type="radio" value="email" [(ngModel)]="contactForm.type" name='type'>
+                  <label for="email">{{resourceService?.frmelmnts?.lbl?.email}}</label>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="contactForm.type === 'phone'" class="ui left icon input d-flex">
+              <input [(ngModel)]="contactForm.value" name="value"
+              placeholder="{{ resourceService?.frmelmnts?.lbl?.tenDigitPhone }}" required>
+              <!-- pattern="validationPattern.phone" -->
+              <i class=" icon">+91-</i>
+            </div>
+            <label *ngIf="!userBlocked && !isValidIdentifier && contactForm.type === 'phone' && contactDetailsForm.controls.value && disableSubmitBtn && contactDetailsForm.controls.value.touched" class="ui basic error label" >
+                {{ resourceService.frmelmnts?.lbl?.validPhone}}</label>
+            <div *ngIf="contactForm.type === 'email'" class="ui input d-flex">
+              <input [(ngModel)]="contactForm.value" name="value"
+              placeholder="{{ resourceService.frmelmnts?.lbl?.email }}" required>
+              <!-- pattern="validationPattern.email" -->
+            </div>
+            <label *ngIf="!userBlocked && !isValidIdentifier && contactForm.type === 'email' && contactDetailsForm.controls.value && disableSubmitBtn && contactDetailsForm.controls.value.touched" class="ui basic error label pb-0" >
+                {{resourceService.frmelmnts?.lbl?.validEmail}}</label>
+            <label *ngIf="disableSubmitBtn && userBlocked" class="ui basic error label" >
+              {{resourceService.frmelmnts?.lbl?.blockedUserError}}</label>
+            <label *ngIf="disableSubmitBtn && userExist" class="ui basic error label" >
+              {{ contactForm.type === 'phone' ? resourceService.frmelmnts?.lbl?.uniquePhone : resourceService.frmelmnts?.lbl?.uniqueEmail}}</label>
+            <div class="text-center">
+              <button [disabled]="disableSubmitBtn" appTelemetryInteract [telemetryInteractEdata]="submitPhoneInteractEdata" appTelemetryInteract
+              [telemetryInteractEdata]="submitPhoneInteractEdata" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
+              class="sb-btn sb-btn-normal sb-btn-secondary mt-24" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div *ngIf="showOtpComp">
+        <app-otp-popup [otpData]="otpData" (verificationSuccess)="handleOtpValidationSuccess($event)" (redirectToParent)="handleOtpValidationFailed($event)">
+        </app-otp-popup>
+      </div>
+      <div *ngIf="showMergeConfirmation">
+        <app-sso-merge-confirmation [userDetails]="userDetails" [identifierType]="contactForm.type"
+                                    [identifierValue]="contactForm.value">
+        </app-sso-merge-confirmation>
+      </div>
+    </div>
+  </div>
+</sui-modal>

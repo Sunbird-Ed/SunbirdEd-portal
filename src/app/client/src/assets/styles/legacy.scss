@@ -1,5 +1,5 @@
-@import "variables";
-
+@import "./variables";
+@import "./mixins/mixins";
 .color-4 {
   color: #979797;
 }
@@ -292,10 +292,10 @@ span.icon.play.circle:before {
   font-size: 1.1em !important;
 }
 *[dir="ltr"] .black-divider {
-  border-right: 1px solid black !important;
+  border-right: 1px solid #d4d8da !important;
 }
 *[dir="rtl"] .black-divider {
-  border-left: 1px solid black !important;
+  border-left: 1px solid #d4d8da !important;
 }
 .capitalizeTextInfo {
   text-transform: capitalize;
@@ -339,9 +339,9 @@ h4.ui.header.sectionHeading {
   font-weight:400;
 }
 .ui.secondary.pointing.menu {
-  // background: #fdfdfd;
+  background: #fff;
   margin: 0rem;
-  // justify-content: center;
+  justify-content: flex-start;
 }
 .ui.dropdown .menu > .item.headerDropdownProfile {
   cursor: text;
@@ -475,7 +475,11 @@ i.large.icon.limitedPublishingLinkIcon {
   // padding: 0.8em 0 0.8em 1em;
 }
 
-
+// .ui.selection.dropdown {
+//   border: 0;
+//   border-bottom: 1px solid #333333;
+//   border-radius: 0;
+// }
 .ui.dropdown.genderSelectionDropDown {
   border: 0;
   border-bottom: 1px solid #333333;
@@ -739,6 +743,7 @@ h5.ui.header {
   border-top: none;
   border-left: none;
   border-bottom: 1px solid rgba(51, 51, 51, 0.33);
+  border-radius: 0;
 }
 .ann-fileupload-list {
   overflow-x: hidden;
@@ -930,12 +935,6 @@ ul.subList-padding {
   border-radius: 0;
   border: 0;
   margin: 0;
-  .sb-pageSection{
-    margin:0;
-    .sb-pageSection-title{
-      text-transform: none;
-    }
-  }
 }
 .tocplayer.ui.grid {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -948,13 +947,13 @@ ul.subList-padding {
   color: #7c7b7b;
   line-height: 1.6;
   font-size: 1em;
-  padding-left: 12px;
 }
 .courseupdate b {
   font-weight: 400;
 }
 .courseupdate span{
   font-weight: 600;
+  color: $gray-800;
 }
 .container-with-button {
   width: 100% !important;
@@ -2460,7 +2459,6 @@ i.blue.icon{
     max-width: 100vw;
   }
 }
-
 .click-notify-xurl {
   position: absolute;
   z-index: 12 !important;
@@ -2474,3 +2472,343 @@ i.blue.icon{
     left: auto;
   }
 }
+// To clean
+
+/* Margin in all direction */
+.m-5 {
+  @include margin(5px);
+}
+.m-10 {
+  @include margin(10px);
+}
+.m-15 {
+  @include margin(15px);
+}
+.m-20 {
+  @include margin(20px);
+}
+
+/* Margin in top direction */
+.mt-3 {
+  @include margin(3px null null null);
+}
+.mt-5 {
+  @include margin(5px null null null);
+}
+.mt-10 {
+  @include margin(10px null null null);
+}
+.mt-14 {
+  @include margin(14px null null null);
+}
+.mt-15 {
+  @include margin(15px null null null);
+}
+.mt-30 {
+  @include margin(30px null null null);
+}
+.mt-60 {
+  @include margin(60px null null null);
+}
+.mt-90 {
+  @include margin(90px null null null);
+}
+.mt-190 {
+  @include margin(190px null null null);
+}
+
+/* Margin in bottom direction */
+.mb-auto {
+  @include margin(null null auto null);
+}
+.mb-0 {
+  @include margin(null null 0 null);
+}
+.mb-5 {
+  @include margin(null null 5px null);
+}
+.mb-10 {
+  @include margin(null null 10px null);
+}
+.mb-15 {
+  @include margin(null null 15px null);
+}
+.mb-20 {
+  @include margin(null null 20px null);
+}
+.mb-30 {
+  @include margin(null null 30px null);
+}
+.mb-50 {
+  @include margin(null null 50px null);
+}
+
+/* Margin in horizontal direction */
+.mx-5 {
+  @include margin(null 5px);
+}
+.mx-10 {
+  @include margin(null 10px);
+}
+.mx-15 {
+  @include margin(null 15px);
+}
+.mx-20 {
+  @include margin(null 20px);
+}
+
+/* Margin in vertical direction */
+.my-5 {
+  @include margin(5px null);
+}
+.my-10 {
+  @include margin(10px null);
+}
+.my-15 {
+  @include margin(15px null);
+}
+.my-20 {
+  @include margin(20px null);
+}
+
+/* Margin in left direction if ltr but will be right in rtl */
+*[dir="ltr"]{
+  .ml-5 {
+    @include margin(null null null 5px);
+  }
+  .ml-10 {
+    @include margin(null null null 10px);
+  }
+  .ml-15 {
+    @include margin(null null null 15px);
+  }
+}
+*[dir="rtl"]{
+  .ml-5 {
+    @include margin(null 5px null null);
+  }
+  .ml-10 {
+    @include margin(null 10px null null);
+  }
+  .ml-15 {
+    @include margin(null 15px null null);
+  }
+}
+
+/* Margin in right direction if ltr but will be left in rtl */
+*[dir="ltr"]{
+  .mr-5 {
+    @include margin(null 5px null null);
+  }
+  .mr-10 {
+    @include margin(null 10px null null);
+  }
+  .mr-15 {
+    @include margin(null 15px null null);
+  }
+  .mr-30 {
+    @include margin(null 30px null null);
+  }
+  .mr-100 {
+    @include margin(null 100px null null);
+  }
+}
+*[dir="rtl"]{
+  .mr-5 {
+    @include margin(null null null 5px);
+  }
+  .mr-10 {
+    @include margin(null null null 10px);
+  }
+  .mr-15 {
+    @include margin(null null null 15px);
+  }
+  .mr-30 {
+    @include margin(null null null 30px);
+  }
+  .mr-100 {
+    @include margin(null null null 100px);
+  }
+}
+/* Padding in all direction */
+.p-5 {
+  @include padding(5px);
+}
+.p-10 {
+  @include padding(10px);
+}
+.p-15 {
+  @include padding(15px);
+}
+.p-20 {
+  @include padding(20px);
+}
+.p-50 {
+  @include padding(50px);
+}
+
+/* Padding in top direction */
+.pt-5 {
+  @include padding(5px null null null);
+}
+.pt-10 {
+  @include padding(10px null null null);
+}
+.pt-15 {
+  @include padding(15px null null null);
+}
+.pt-20 {
+  @include padding(20px null null null);
+}
+.pt-30 {
+  @include padding(30px null null null);
+}
+
+/* Padding in bottom direction */
+.pb-5 {
+  @include padding(null null 5px null);
+}
+.pb-10 {
+  @include padding(null null 10px null);
+}
+.pb-15 {
+  @include padding(null null 15px null);
+}
+.pb-20 {
+  @include padding(null null 20px null);
+}
+.pb-30 {
+  @include padding(null null 30px null);
+}
+
+/* Padding in horizontal direction */
+.px-3 {
+  @include padding(null 3px);
+}
+.px-5 {
+  @include padding(null 5px);
+}
+.px-7 {
+  @include padding(null 7px);
+}
+.px-10 {
+  @include padding(null 10px);
+}
+.px-15 {
+  @include padding(null 15px);
+}
+.px-20 {
+  @include padding(null 20px);
+}
+.px-60 {
+  @include padding(null 60px);
+}
+
+/* Padding in vertical direction */
+.py-2 {
+  @include padding(2px null);
+}
+.py-3 {
+  @include padding(3px null);
+}
+.py-5 {
+  @include padding(5px null);
+}
+.py-6 {
+  @include padding(6px null);
+}
+.py-10 {
+  @include padding(10px null);
+}
+.py-15 {
+  @include padding(15px null);
+}
+.py-20 {
+  @include padding(20px null);
+}
+
+/* Padding in left direction if ltr but will be right in rtl */
+*[dir="ltr"]{
+  .pl-5 {
+    @include padding(null null null 5px);
+  }
+  .pl-10 {
+    @include padding(null null null 10px);
+  }
+  .pl-15 {
+    @include padding(null null null 15px);
+  }
+  .pl-20 {
+    @include padding(null null null 20px);
+  }
+  .pl-30 {
+    @include padding(null null null 30px);
+  }
+  .pl-60 {
+    @include padding(null null null 60px);
+  }
+}
+
+*[dir="rtl"]{
+  .pl-5 {
+    @include padding(null 5px null null);
+  }
+  .pl-10 {
+    @include padding(null 10px null null);
+  }
+  .pl-15 {
+    @include padding(null 15px null null);
+  }
+  .pl-20 {
+    @include padding(null 20px null null);
+  }
+  .pl-30 {
+    @include padding(null 30px null null);
+  }
+  .pl-60 {
+    @include padding(null 60px null null);
+  }
+}
+
+/* Padding in right direction if ltr but will be left in rtl */
+*[dir="ltr"]{
+  .pr-5 {
+    @include padding(null 5px null null);
+  }
+  .pr-10 {
+    @include padding(null 10px null null);
+  }
+  .pr-15 {
+    @include padding(null 15px null null);
+  }
+  .pr-20 {
+    @include padding(null 20px null null);
+  }
+  .pr-30 {
+    @include padding(null 30px null null);
+  }
+  .pr-60 {
+    @include padding(null 60px null null);
+  }
+}
+*[dir="rtl"]{
+  .pr-5 {
+    @include padding(null null null 5px);
+  }
+  .pr-10 {
+    @include padding(null null null 10px);
+  }
+  .pr-15 {
+    @include padding(null null null 15px);
+  }
+  .pr-20 {
+    @include padding(null null null 20px);
+  }
+  .pr-30 {
+    @include padding(null null null 30px);
+  }
+  .pr-60 {
+    @include padding(null null null 60px);
+  }
+}
+

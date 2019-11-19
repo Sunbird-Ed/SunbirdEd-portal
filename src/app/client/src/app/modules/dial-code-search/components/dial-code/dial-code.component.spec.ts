@@ -2,7 +2,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, UtilService, ConfigService } from '@sunbird/shared';
-import { SearchService } from '@sunbird/core';
+import { SearchService, OrgDetailsService } from '@sunbird/core';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -35,7 +35,8 @@ describe('DialCodeComponent', () => {
       'fmsg': {
         'm0049': 'Fetching serach result failed'
       }
-    }
+    },
+    languageSelected$: observableOf({})
   };
   const fakeActivatedRoute = {
     'params': observableOf({ dialCode: '61U24C' }),
@@ -59,7 +60,7 @@ describe('DialCodeComponent', () => {
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [DialCodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [SearchService, UtilService, ConfigService,
+      providers: [SearchService, UtilService, ConfigService, OrgDetailsService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
@@ -70,7 +71,6 @@ describe('DialCodeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DialCodeComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should return matching contents for valid dialcode query', () => {
@@ -82,6 +82,7 @@ describe('DialCodeComponent', () => {
   });
   it('should return appropriate message on no contents', () => {
     const searchService = TestBed.get(SearchService);
+    const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noData));
     component.searchDialCode();
     fixture.detectChanges();
@@ -95,32 +96,6 @@ describe('DialCodeComponent', () => {
     fixture.detectChanges();
     expect(component.showLoader).toBeFalsy();
     expect(component.searchResults).toEqual([]);
-  });
-  it('should navigate to dialcode search when user enters data', () => {
-    const route = TestBed.get(Router);
-    component.searchKeyword = '61U24C';
-    component.navigateToSearch();
-    fixture.detectChanges();
-    expect(route.navigate).toHaveBeenCalledWith(['/get/dial', component.searchKeyword]);
-  });
-  it('should navigate to content player page for resource content types', () => {
-    const route = TestBed.get(Router);
-    const item = Response.event;
-    component.searchKeyword = '61U24C';
-    item.data.metaData.mimeType = 'application/vnd.ekstep.content';
-    component.getEvent(item);
-    fixture.detectChanges();
-    expect(route.navigate).toHaveBeenCalledWith(['play/content', item.data.metaData.identifier],
-     { queryParams: { dialCode: '61U24C'}});
-  });
-  it('should navigate to collection player page for collection types', () => {
-    const route = TestBed.get(Router);
-    const item = Response.event;
-    component.searchKeyword = '61U24C';
-    item.data.metaData.mimeType = 'application/vnd.ekstep.content-collection';
-    component.getEvent(item);
-    expect(route.navigate).toHaveBeenCalledWith(['play/collection', item.data.metaData.identifier],
-    { queryParams: { dialCode: '61U24C'}});
   });
   it('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();
@@ -155,11 +130,18 @@ describe('DialCodeComponent', () => {
     expect(component.itemsToLoad).toEqual(70);
   });
 
-  it('should append the items to display list', () => {
+  xit('should append the items to display list', () => {
     component.searchResults = ['one', 'two'];
     component.appendItems(0, 1);
     fixture.detectChanges();
     expect(component.itemsToDisplay).toEqual(['one']);
   });
 
+  it('showDownloadLoader to be true' , () => {
+    spyOn(component, 'startDownload');
+    component.isOffline = true;
+    expect(component.showDownloadLoader).toBeFalsy();
+    component.getEvent(Response.download_event);
+    expect(component.showDownloadLoader).toBeTruthy();
+  });
 });

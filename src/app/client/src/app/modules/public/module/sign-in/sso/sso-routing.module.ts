@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SelectOrgComponent, UpdatePhoneComponent } from './components';
+import {AuthFailedComponent, SelectOrgComponent, UpdateContactComponent} from './components';
 import { UUID } from 'angular2-uuid';
 const uuid = UUID.UUID();
 const telemetryEnv = 'sso-sign-in';
@@ -8,18 +8,23 @@ const routes: Routes = [
   {
     path: 'select-org', component: SelectOrgComponent,
     data: {
+      hideHeaderNFooter : true,
       telemetry: {
         env: telemetryEnv, pageid: 'select-org', uri: '/select-org', type: 'view', mode: 'self', uuid: uuid
       }
     }
   },
   {
-    path: 'update-phone', component: UpdatePhoneComponent,
+    path: 'update/contact', component: UpdateContactComponent,
     data: {
+      hideHeaderNFooter : true,
       telemetry: {
-        env: telemetryEnv, pageid: 'update-phone', uri: '/update-phone', type: 'view', mode: 'self', uuid: uuid
+        env: telemetryEnv, pageid: 'update-contact', uri: '/update-contact', type: 'view', mode: 'self', uuid: uuid
       }
     }
+  },
+  {
+    path: 'auth', component: AuthFailedComponent
   }
 ];
 

@@ -7,9 +7,15 @@ _ = require('lodash'),
 path = require('path'),
 envHelper = require('../helpers/environmentVariablesHelper.js'),
 tenantHelper = require('../helpers/tenantHelper.js'),
+logger = require('sb_logger_util_v2'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {}
+cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
+proxyUtils = require('../proxy/proxyUtils.js')
+
+logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
+
 const setZipConfig = (req, res, type, encoding, dist = '../') => {
     if (pathMap[req.path + type] && pathMap[req.path + type] === 'notExist') {
       return false;
@@ -27,21 +33,26 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
         return true
     } else {
       pathMap[req.path + type] = 'notExist';
-      console.log('zip file not exist for: ', req.url, type)
+      logger.info({msg:'zip file not exist' ,
+      additionalInfo: {
+        url: req.url,
+        type: type
+      }})
       return false;
     }
 }
 module.exports = (app, keycloak) => {
+
   app.set('view engine', 'ejs')
 
   app.get(['*.js', '*.css'], (req, res, next) => {
     res.setHeader('Cache-Control', 'public, max-age=' + oneDayMS * 30)
     res.setHeader('Expires', new Date(Date.now() + oneDayMS * 30).toUTCString())
-    if(req.get('Accept-Encoding').includes('br')){ // send br files
+    if(req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('br')){ // send br files
       if(!setZipConfig(req, res, 'br', 'br') && req.get('Accept-Encoding').includes('gzip')){
         setZipConfig(req, res, 'gz', 'gzip') // send gzip if br file not found
       }
-    } else if(req.get('Accept-Encoding').includes('gzip')){
+    } else if(req.get('Accept-Encoding') && req.get('Accept-Encoding').includes('gzip')){
       setZipConfig(req, res, 'gz', 'gzip')
     }
     next();
@@ -74,33 +85,23 @@ module.exports = (app, keycloak) => {
     res.setHeader('Expires', new Date(Date.now() + oneDayMS).toUTCString())
     next()
   })
-
   if (envHelper.cbse_programId) {
     app.all('/', (req, res) => res.redirect('/program/cbse/' + envHelper.cbse_programId))
   }
 
-  app.all(['/' 
-    // ,'/get', '/get/dial/:dialCode', '/explore',
-    // '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course',
-    // '/explore-course/*', '/:slug/explore-course', '/:slug/explore-course/*',
-    // '/:slug/signup', '/signup', '/:slug/sign-in/*', '/sign-in/*'
-    ,'/public/certs/*'
-  ], indexPage(false))
+  app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
+    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
+    '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
+    '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/download/*', '/certs/*', '/recover/*', '/public/certs/*'], redirectTologgedInPage, indexPage(false))
 
-  app.all('/:slug/get', (req, res) => res.redirect('/get'))
-
-  app.all('/:slug/get/dial/:dialCode', (req, res) => res.redirect('/get/dial/:dialCode'))
-
-  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode))
+  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
-  app.all([ '/workspace/*', '/profile', '/profile/*'
-    // '/home', '/home/*', '/announcement', '/announcement/*', '/search', '/search/*',
-    // '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
-    // '/workspace', '/learn', '/learn/*', '/resources',
-    // '/resources/*', '/myActivity', '/myActivity/*'
-  ], keycloak.protect(), indexPage(true))
+  app.all(['/announcement', '/announcement/*', '/search', '/search/*',
+    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
+    '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
+    '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
   app.get('/program/:templateId/:programId', renderProgramPage)
@@ -114,7 +115,7 @@ function renderProgramPage(req, res){
 }
 function getLocals(req) {
   var locals = {}
-  if(req.loggedInRoute){
+  if(req.includeUserDetail){
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
   } else {
@@ -136,20 +137,33 @@ function getLocals(req) {
   locals.cloudStorageUrls = envHelper.CLOUD_STORAGE_URLS
   locals.userUploadRefLink = envHelper.sunbird_portal_user_upload_ref_link
   locals.deviceRegisterApi = envHelper.DEVICE_REGISTER_API
+  locals.deviceApi = envHelper.sunbird_device_api
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
   locals.PlayerCdnUrl = envHelper.sunbird_portal_player_cdn_url
   locals.cbse_programId = envHelper.cbse_programId
+  locals.previewCdnUrl = envHelper.sunbird_portal_preview_cdn_url
+  locals.offlineDesktopAppTenant = envHelper.sunbird_portal_offline_tenant
+  locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version
+  locals.offlineDesktopAppReleaseDate = envHelper.sunbird_portal_offline_app_release_date
+  locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
+  locals.offlineDesktopAppDownloadUrl = envHelper.sunbird_portal_offline_app_download_url
+  locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
+  locals.deviceId = '';
+  locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
   return locals
 }
 
 const indexPage = (loggedInRoute) => {
-  return function(req, res){
+  return async (req, res) => {
     if (envHelper.DEFAULT_CHANNEL && req.path === '/') {
       renderTenantPage(req, res)
     } else {
-      req.loggedInRoute = loggedInRoute
+      req.includeUserDetail = true
+      if(!loggedInRoute) { // for public route, if user token is valid then send user details
+        await proxyUtils.validateUserToken(req, res).catch(err => req.includeUserDetail = false)
+      }
       renderDefaultIndexPage(req, res)
     }
   }
@@ -162,10 +176,26 @@ const renderDefaultIndexPage = (req, res) => {
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
-    if(envHelper.hasCdnIndexFile && req.cookies.cdnFailed !== 'true'){ // assume cdn works and send cdn ejs file
-      res.render(path.join(__dirname, '../dist', 'cdn_index.ejs'))
+    logger.info({
+      msg:'cdn parameters:',
+      additionalInfo: {
+        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL,
+        cdnIndexFileExist: cdnIndexFileExist,
+        cdnFailedCookies: req.cookies.cdnFailed
+      }
+    })
+    if(envHelper.PORTAL_CDN_URL && cdnIndexFileExist && req.cookies.cdnFailed !== 'yes'){ // assume cdn works and send cdn ejs file
+      res.locals.cdnWorking = 'yes';
+      res.render(path.join(__dirname, '../dist', 'index_cdn.ejs'))
     } else { // load local file if cdn fails or cdn is not enabled
-      console.log("CDN Failed - loading local files");
+      if(req.cookies.cdnFailed === 'yes'){
+        logger.info({msg:'CDN Failed - loading local files',
+      additionalInfo: {
+        cdnIndexFileExist: cdnIndexFileExist,
+        PORTAL_CDN_URL: envHelper.PORTAL_CDN_URL
+      }})
+      }
+      res.locals.cdnWorking = 'no';
       res.render(path.join(__dirname, '../dist', 'index.ejs'))
     }
   }
@@ -173,6 +203,10 @@ const renderDefaultIndexPage = (req, res) => {
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
 const renderTenantPage = (req, res) => {
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
+  if(req.query.cdnFailed === 'true') {
+    loadTenantFromLocal(req, res)
+    return;
+  }
   if (envHelper.TENANT_CDN_URL) {
     request(`${envHelper.TENANT_CDN_URL}/${tenantName}/index.html`, (error, response, body) => {
       if (error || !body || response.statusCode !== 200) {
@@ -193,4 +227,28 @@ const loadTenantFromLocal = (req, res) => {
   } else {
     renderDefaultIndexPage(req, res)
   }
+}
+const redirectTologgedInPage = (req, res) => {
+	let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1' };
+	if (req.params.slug) {
+		redirectRoutes = {
+			[`/${req.params.slug}/explore`]: '/resources',
+			[`/${req.params.slug}/explore-course`]: '/learn'
+		}
+	}
+	if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
+		if (_.get(redirectRoutes, req.originalUrl)) {
+			const routes = _.get(redirectRoutes, req.originalUrl);
+			res.redirect(routes)
+		} else {
+			if (_.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`)) {
+				const routes = _.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`);
+				res.redirect(routes)
+			} else {
+				renderDefaultIndexPage(req, res)
+			}
+		}
+	} else {
+		renderDefaultIndexPage(req, res)
+	}
 }

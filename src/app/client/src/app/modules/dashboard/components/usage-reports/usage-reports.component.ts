@@ -1,5 +1,4 @@
-import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective } from '@sunbird/telemetry';
-import { IImpressionEventInput } from './../../../telemetry/interfaces/telemetry';
+import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective , IImpressionEventInput} from '@sunbird/telemetry';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UsageService } from './../../services';
 import * as _ from 'lodash-es';
@@ -79,37 +78,31 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     const url = report.dataSource;
     this.showLoader = true;
     this.downloadUrl = report.downloadUrl;
-    this.usageService.getData(url).subscribe((response) => {
-      if (_.get(response, 'responseCode') === 'OK') {
-        const data = _.get(response, 'result');
-        this.showLoader = false;
-        if (_.get(report, 'charts')) { this.createChartData(_.get(report, 'charts'), data); }
-        if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); } else {
-          this.renderTable({}, data);
+    this.usageService.getData(url)
+      .subscribe((response) => {
+        if (_.get(response, 'responseCode') === 'OK') {
+          const data = _.get(response, 'result');
+          this.showLoader = false;
+          if (_.get(report, 'charts')) {
+            this.createChartData(_.get(report, 'charts'), data, url);
+          }
+          if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); } else {
+            this.renderTable({}, data);
+          }
+        } else {
+          console.log(response);
         }
-      } else {
-        console.log(response);
-      }
-    }, err => { console.log(err); });
+      }, err => { console.log(err); });
   }
 
-  createChartData(charts, data) {
+  createChartData(charts, data, downloadUrl) {
     this.chartData = [];
     _.forEach(charts, chart => {
       const chartObj: any = {};
-      chartObj.options = _.get(chart, 'options') || { responsive: true };
-      chartObj.colors = _.get(chart, 'colors') || ['#024F9D'];
-      chartObj.chartType = _.get(chart, 'chartType') || 'line';
-      chartObj.labels = _.get(chart, 'labels') || _.get(data, _.get(chart, 'labelsExpr'));
-      chartObj.legend = (_.get(chart, 'legend') === false) ? false : true;
-      chartObj.filters = _.get(chart, 'filters');
-      chartObj.datasets = [];
-      _.forEach(chart.datasets, dataset => {
-        chartObj.datasets.push({
-          label: dataset.label,
-          data: _.get(dataset, 'data') || _.get(data, _.get(dataset, 'dataExpr'))
-        });
-      });
+      chartObj.chartConfig = chart;
+      chartObj.downloadUrl = downloadUrl;
+      chartObj.chartData = _.get(data, 'data');
+      chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn');
       this.chartData.push(chartObj);
     });
   }
@@ -119,7 +112,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     tables = _.isArray(tables) ? tables : [tables];
     _.forEach(tables, table => {
       const tableData: any = {};
-      tableData.id = _.get(table, 'id') || 'table';
+      tableData.id = _.get(table, 'id') || `table-${_.random(1000)}`;
       tableData.name = _.get(table, 'name') || 'Table';
       tableData.header = _.get(table, 'columns') || _.get(data, _.get(table, 'columnsExpr'));
       tableData.data = _.get(table, 'values') || _.get(data, _.get(table, 'valuesExpr'));

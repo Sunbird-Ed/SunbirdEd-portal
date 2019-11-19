@@ -1301,6 +1301,43 @@ export const mockRes = {
                 }
             }]
     },
+    cardClickEvent: {
+        'action': 'batchcardclick',
+        'data': {
+          'identifier': '012767178876862464110',
+          'createdFor': [
+            'ORG_001'
+          ],
+          'courseAdditionalInfo': {
+            'courseName': 'Course TestCourse test5307115132',
+            'leafNodesCount': '0',
+            'description': 'Course Test',
+            'courseLogoUrl': '',
+            'tocUrl': '',
+            'status': 'Live'
+          },
+          'countIncrementDate': '2019-05-22 02:36:50:462+0000',
+          'description': 'ABC',
+          'completedCount': 1,
+          'countIncrementStatus': true,
+          'createdDate': '2019-05-22 02:36:50:175+0000',
+          'reportUpdatedOn': '2019-06-24T07:39:05Z',
+          'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+          'courseCreator': 'a02bce3d-8f1f-4c6f-ab4d-b71b7e9c007a',
+          'hashTagId': '012767178876862464110',
+          'participantCount': 1,
+          'mentors': [],
+          'countDecrementStatus': false,
+          'name': 'ABC',
+          'id': '012767178876862464110',
+          'enrollmentType': 'invite-only',
+          'courseId': 'do_1127562904188026881135',
+          'startDate': '2019-05-22',
+          'status': 1,
+          'label': 1,
+          'userName': 'Creation '
+        }
+      },
     telemetryData: {
         context: {
             env: 'workspace'

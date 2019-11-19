@@ -1,94 +1,87 @@
-<div class="ui segment br-0 p-0 prominent-filter" *ngIf="showFilters">
+<div class="sb-prominent-filter" *ngIf="showFilters && refresh">
   <div class="ui container">
-    <div class="ui grid stackable">
-      <div class="twelve wide column" *ngIf="refresh">
-        <div class="ui accordion">
-          <div class="width-100 mt-15">
-            <label class="prominent-filter-heading">
-              {{resourceService.frmelmnts?.lbl?.userFilterForm}}
-            </label>
-            <i class="mobile only large angle down icon link right-floated" [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}"
-              (click)="collapse = !collapse" title="{{collapse==true?'Expand':'Collapse'}}" popupInverted>
-            </i>
-          </div>
-          <div class="ui active width-100" [suiCollapse]="collapse">
-            <form class="ui form">
-              <div class="ui grid stackable top aligned my-0">
-                <div class="twelve wide tablet ten wide computer column mobile-p-0">
-                  <div class="ui grid">
-                    <div *ngIf="allUserType" class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field">
-                        <label class="mb-10">{{resourceService.frmelmnts?.lbl?.userType}}</label>
-                        <app-custom-multi-select [inputData]="inputData.Usertype" [field]="allUserType" [valueField]="valueField" (selectedValue)="selectedValue($event, allUserType.code);"></app-custom-multi-select>
-                      </div>
-                    </div>
-                    <div *ngIf="medium" class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field">
-                        <label class="mb-10">{{resourceService.frmelmnts?.lbl?.medium}}</label>
-                        <app-custom-multi-select [inputData]="inputData.medium" [field]="medium" (selectedValue)="selectedValue($event, medium.code);"></app-custom-multi-select>
-                      </div>
-                    </div>
-                    <div *ngIf="class" class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field">
-                        <label class="mb-10">{{resourceService.frmelmnts?.lbl?.class}}</label>
-                        <app-custom-multi-select [inputData]="inputData.gradeLevel" [field]="class" (selectedValue)="selectedValue($event, class.code);"></app-custom-multi-select>
-                      </div>
-                    </div>
-                    <div *ngIf="subject" class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field">
-                        <label class="mb-10">{{resourceService.frmelmnts?.lbl?.subject}}</label>
-                        <app-custom-multi-select [inputData]="inputData.subject" [field]="subject" (selectedValue)="selectedValue($event, subject.code);"></app-custom-multi-select>
-                      </div>
-                    </div>
-                    <div class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field large user-search-select">
-                        <label class="mb-10">{{resourceService.frmelmnts?.lbl?.district}}</label>
-                        <sui-select [(ngModel)]="selectedDistrict" (ngModelChange)="onDistrictChange($event)" [isSearchable]="true" class="selection bordered"
-                          [options]="allDistricts" labelField="name" valueField="id" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
-                          #districtDiv>
-                          <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
-                        </sui-select>
-                      </div>
-                    </div>
-                    <div class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field large user-search-select">
-                        <label class="mb-10">{{resourceService.frmelmnts?.lbl?.block}}</label>
-                        <sui-select [(ngModel)]="selectedBlock" (ngModelChange)="onBlockChange($event)" [isSearchable]="true" class="selection bordered" [options]="allBlocks"
-                          labelField="name" valueField="id" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock}}"
-                          #blockDiv>
-                          <sui-select-option *ngFor="let block of blockDiv.filteredOptions | slice:0:100" [value]="block"></sui-select-option>
-                        </sui-select>
-                      </div>
-                    </div>
-                    <div class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field large user-search-select">
-                        <label class="mb-10">{{resourceService.frmelmnts?.lbl?.school}}</label>
-                        <sui-select [(ngModel)]="selectedSchool" (ngModelChange)="onSchoolChange($event)" [isSearchable]="true" class="selection bordered"
-                          [options]="allSchools" labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool}}"
-                          #schoolDiv>
-                          <sui-select-option *ngFor="let school of schoolDiv.filteredOptions | slice:0:100" [value]="school"></sui-select-option>
-                        </sui-select>
-                      </div>
-                    </div>
-                    <div *ngIf="allRoles" class="six wide mobile three wide tablet three wide computer column">
-                      <div class="field large">
-                        <label class="mb-10">{{resourceService.frmelmnts?.lbl?.role}}</label>
-                        <app-custom-multi-select [inputData]="inputData.Roles" [field]="allRoles" (selectedValue)="selectedValue($event, allRoles.code);"></app-custom-multi-select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button">
-                  <label class="computer-only mb-5">&nbsp;</label>
-                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()">{{resourceService.frmelmnts?.btn?.submit}}
-                  </a>
-                  <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="resetInteractEdata" class="ml-10 sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</a>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
+
+    <!--Header-->
+    <h5 class="sb-prominent-filter-header">
+      {{resourceService.frmelmnts?.lbl?.userFilterForm}}
+      <i class="mobile only large angle down icon link right-floated" 
+        [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}"
+        (click)="collapse = !collapse"
+        title="{{collapse==true?'Expand':'Collapse'}}" 
+        popupInverted>
+      </i>
+    </h5>
+    <!--/Header-->
+
+    <!--Filter-->
+    <div class="ui active sb-prominent-filter-container" [suiCollapse]="collapse">
+      
+      <div *ngIf="allUserType" class="sb-prominent-filter-field">
+        <label>{{resourceService.frmelmnts?.lbl?.userType}}</label>
+        <app-custom-multi-select [inputData]="inputData.Usertype" [field]="allUserType" [valueField]="valueField" (selectedValue)="selectedValue($event, allUserType.code);">
+        </app-custom-multi-select>
       </div>
+
+      <div *ngIf="medium" class="sb-prominent-filter-field">
+        <label>{{resourceService.frmelmnts?.lbl?.medium}}</label>
+        <app-custom-multi-select [inputData]="inputData.medium" [field]="medium" (selectedValue)="selectedValue($event, medium.code);"></app-custom-multi-select>
+      </div>
+
+      <div *ngIf="class" class="sb-prominent-filter-field">
+        <label>{{resourceService.frmelmnts?.lbl?.class}}</label>
+        <app-custom-multi-select [inputData]="inputData.gradeLevel" [field]="class" (selectedValue)="selectedValue($event, class.code);"></app-custom-multi-select>
+      </div>
+
+      <div *ngIf="subject" class="sb-prominent-filter-field">
+        <label>{{resourceService.frmelmnts?.lbl?.subject}}</label>
+        <app-custom-multi-select [inputData]="inputData.subject" [field]="subject" (selectedValue)="selectedValue($event, subject.code);"></app-custom-multi-select>
+      </div>
+
+      <div class="sb-prominent-filter-field">
+        <label>{{resourceService.frmelmnts?.lbl?.district}}</label>
+        <sui-select [(ngModel)]="selectedDistrict" (ngModelChange)="onDistrictChange($event)" [isSearchable]="true" class="selection"
+          [options]="allDistricts" labelField="name" valueField="id" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
+          #districtDiv>
+          <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
+        </sui-select>
+      </div>
+
+      <div class="sb-prominent-filter-field">
+        <label>{{resourceService.frmelmnts?.lbl?.block}}</label>
+        <sui-select [(ngModel)]="selectedBlock" (ngModelChange)="onBlockChange($event)" [isSearchable]="true" class="selection" [options]="allBlocks"
+          labelField="name" valueField="id" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock}}"
+          #blockDiv>
+          <sui-select-option *ngFor="let block of blockDiv.filteredOptions | slice:0:100" [value]="block"></sui-select-option>
+        </sui-select>
+      </div>
+
+      <div class="sb-prominent-filter-field">
+        <label>{{resourceService.frmelmnts?.lbl?.school}}</label>
+        <sui-select [(ngModel)]="selectedSchool" (ngModelChange)="onSchoolChange($event)" [isSearchable]="true" class="selection"
+          [options]="allSchools" labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool}}"
+          #schoolDiv>
+          <sui-select-option *ngFor="let school of schoolDiv.filteredOptions | slice:0:100" [value]="school"></sui-select-option>
+        </sui-select>
+      </div>
+
+      <div *ngIf="allRoles" class="sb-prominent-filter-field">
+        <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
+        <app-custom-multi-select [inputData]="inputData.Roles" [field]="allRoles" (selectedValue)="selectedValue($event, allRoles.code);"></app-custom-multi-select>
+      </div>
+
+      <div class="sb-prominent-filter-field">
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="resetInteractEdata" 
+          class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()">
+            {{resourceService.frmelmnts?.btn?.reset}}
+        </button>
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" 
+          class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="applyFilters()">
+            {{resourceService.frmelmnts?.btn?.submit}}
+        </button>
+      </div>
+
     </div>
+    <!--/Filter-->
+
   </div>
 </div>

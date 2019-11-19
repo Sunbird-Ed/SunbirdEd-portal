@@ -1,0 +1,38 @@
+<sui-modal [isClosable]="false" [size]="'fullscreen'" #modal [mustScroll]="true" [transitionDuration]="0"
+           class="fullpage" (dismissed)="modal.deny();closeModal()">
+  <div class="sb-certificatePage p-16">
+    <div class="sb-certificatePage-header">
+      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo" />
+    </div>
+    <div class="sb-merged-account-content text-center">
+      <h3 class="sb-merged-account-body-header my-24 font-weight-bold">
+        {{resourceService.frmelmnts?.lbl?.mergeAccount}}</h3>
+    </div>
+    <div class="text-left">
+      <p
+        class="py-8 m-0">{{resourceService.messages?.imsg?.m0070 | interpolate:'{instance}': instance | interpolate:'{identifierValue}':identifierValue }}:
+      </p>
+      <ul class="m-0 sb-list-items">
+          <li class="mb-8">
+            {{resourceService.messages?.imsg?.m0063}}
+          </li>
+          <li class="mb-8">
+            {{resourceService.messages?.imsg?.m0064}}
+          </li>
+        </ul>
+        <p class="">{{resourceService.messages?.imsg?.m0062}} {{resourceService.messages?.imsg?.m0141 | interpolate:'{instance}': instance}}</p>
+    </div>
+    <div class="d-flex mt-40">
+      <button class="sb-btn sb-btn-outline-secondary sb-btn-md width-100 mr-8 mb-auto"
+              appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+              [telemetryInteractEdata]="{id: 'sso-create-user', type: 'click', pageid: 'user-migrate'}"
+               (click)="createNewUser()">{{resourceService.frmelmnts?.btn?.createNew}}
+      </button>
+      <button class="sb-btn sb-btn-secondary sb-btn-md width-100 ml-8 mb-auto"
+              appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+              [telemetryInteractEdata]="{id: 'sso-user-migrate', type: 'click', pageid: 'user-migrate'}"
+              (click)="migrateUser()">{{resourceService.frmelmnts?.btn?.merge}}
+      </button>
+    </div>
+  </div>
+</sui-modal>

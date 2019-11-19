@@ -1,26 +1,28 @@
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
-  <section class="pt-30 pb-30 d-flex flex-ai-center flex-dc">
+  <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
-      <div class="mb-15 d-flex flex-jc-center relative">
-        <ngx-avatar class="my-avatar" [style]="{
-          backgroundColor: '#ffffff',
-          border: '1px solid #fff',
-          boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
-          borderRadius: '50%',
-          color: '#9017FF',
-          fontWeight: 'bold',
-          fontFamily: 'inherit'}" [size]="90" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
-        </ngx-avatar>
+      <div class="mb-15 d-flex flex-jc-center relative avatar-container" >
+       <img *ngIf="userProfile.stateValidated" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
+       suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
+       <ngx-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar" [style]="{
+         backgroundColor: '#ffffff',
+         border: '1px solid #fff',
+         boxShadow: '0 0 6px 0 rgba(0,0,0,0.38)',
+         borderRadius: '50%',
+         color: '#9017FF',
+         fontWeight: '700',
+         fontFamily: 'inherit'}" [size]="98" initialsSize="1" [textSizeRatio]="2" name="{{userProfile.firstName}} ">
+       </ngx-avatar>
       </div>
     </div>
     <div class="fs-2-5 font-w-bold d-flex mb-15 text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
       <div class="computer only">
-          <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
-      </div>
-      <div class="mobile only name-info-mobile">
-          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
-      </div>
+        <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
+    </div>
+    <div class="mobile only name-info-mobile">
+        <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
+    </div>  
     </div>
     <div class="mb-10 d-flex mb-5 flex-jc-center">
       <div class="fs-1-16">{{resourceService?.frmelmnts?.lbl?.userId}} :</div>
@@ -114,20 +116,39 @@
           class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
           appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
           [telemetryInteractEdata]="editMobileInteractEdata">
-          <i class="phone icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
+          <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
         </div>
       </div>
+     <div class="d-flex flex-jc-center">
       <div (click)="showContactPopup=true;contactType='email'"
-        class="ui semi-circular dodger-blue basic label cursor-pointer" *ngIf="userProfile.email" appTelemetryInteract
-        [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
-        <i class="mail icon mr-5"></i> {{userProfile.email}}
-      </div>
-      <div (click)="showContactPopup=true;contactType='email'"
-        class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
-        appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="editEmailInteractEdata">
-        <i class="mail icon mr-5 pr-30"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
-      </div>
+      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
+      [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="editEmailInteractEdata">
+      <i class="mail blue icon mr-5"></i> {{userProfile.email}}
+    </div>
+    <div (click)="showContactPopup=true;contactType='email'"
+      class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="editEmailInteractEdata">
+      <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
+    </div>
+     </div>
+
+      <!-- Add/edit recovery email/phone-->
+    <div class="d-flex flex-jc-center">
+      <div *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex" 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="editRecoveryIdInteractEdata">
+        <div class="recovery-img mr-5"></div>
+        <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
+        <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
+       </div>
+       <div *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex" 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="addRecoveryIdInteractEdata">
+        <div class="recovery-img mr-5"></div>
+       <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
+       </div>
+     </div>
     </div>
   </section>
 
@@ -202,7 +223,7 @@
   <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
   <!-- my badges section ends -->
 
-  <div class="profile-bg-c-2 pt-30">
+  <div class="pt-30">
     <div class="ui container">
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
@@ -225,67 +246,42 @@
       <!--contributions computer view ends-->
       <!--contributions view ends-->
       <!-- tarainings attended computer view strats-->
-      <table class="ui basic table profile-bg-c-1 mt-20 mb-30 computer only"
-        *ngIf="attendedTraining && attendedTraining.length">
-        <thead>
-          <tr>
-            <th colspan="2" class="fs-1-7 pl-30">{{resourceService.frmelmnts.lbl.trainingAttended}}
-              ({{attendedTraining.length}})&#x200E;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <ul class="pl-30 pr-30">
-              <li class="d-flex flex-jc-space-between mb-20"
-                *ngFor="let data of attendedTraining | slice:0:courseLimit">
-                <span class="fs-1-16 sb-text-gray-800">{{data.courseName}}</span>
-                <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
-              </li>
-              <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
-                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                  [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}"
-                  class="ui semi-circular dodger-blue button" *ngIf="showMoreTrainings"
-                  (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}
-                  <i class="chevron down icon pl-10"></i>
-                </button>
-                <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                  [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
-                  class="ui semi-circular dodger-blue button" (click)="toggleCourse(false)"
-                  *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}
-                  <i class="chevron up icon pl-10"></i>
-                </button>
-              </div>
-            </ul>
-          </tr>
-        </tbody>
-      </table>
-      <!-- tarainings attended computer view ends-->
-    </div>
-  </div>
-
-  <!-- tarainings attended mobile view strats-->
-  <div class="fs-1-7 font-w-bold mt-30 pl-20 mobile only" *ngIf="attendedTraining && attendedTraining.length > 0">
-    {{resourceService.frmelmnts.lbl.trainingAttended}} ({{attendedTraining.length}})&#x200E;</div>
-  <div class="ui divider my-5 mobile only"></div>
-  <div class="profile-bg-c-1 mobile only" *ngIf="attendedTraining && attendedTraining.length > 0">
-    <ul class="px-20">
-      <li class="d-flex flex-dc mb-20" *ngFor="let data of attendedTraining | slice:0:courseLimit">
-        <span class="fs-1-16 sb-text-gray-800">{{data.courseName}}</span>
-        <span class="fs-1 color-4" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy'}}</span>
-      </li>
-      <div class=" mb-15 d-flex flex-jc-center relative" *ngIf="attendedTraining.length > 3">
-        <button class="ui semi-circular dodger-blue button center-aligned" *ngIf="showMoreTrainings"
-          (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}
-          <i class="chevron down icon pl-10"></i>
-        </button>
-        <button class="ui semi-circular dodger-blue button center-aligned" (click)="toggleCourse(false)"
-          *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}
-          <i class="chevron up icon pl-10"></i>
-        </button>
+      <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
+          <div class="d-flex flex-ai-center sb-ct-list list-heading">
+            <label
+              class="mb-0">{{resourceService.frmelmnts.lbl.trainingAttended}}({{attendedTraining.length}})&#x200E;</label>
+          </div>
+          <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
+            <div class="d-flex flex-ai-center sb-ct-list list-item" *ngIf="data.courseName">
+              <label class="mr-auto mb-0">{{data.courseName}}</label>
+              <span class="list-date mr-24" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
+              <button appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadCertificateEData" 
+              [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]" 
+              class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-certificate-trained-flex-space" *ngIf="data.certificates && data.certificates.length > 0" (click)="downloadCert(data.certificates)">
+              <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+              <div class="sb-certificate-trained-line d-flex flex-ai-center flex-jc-center sb-certificate-trained-flex-space" *ngIf="!data.certificates || (data.certificates && data.certificates.length === 0)">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+            </div>
+          </div>
+          <div class="d-flex flex-ai-center flex-jc-center sb-ct-list list-item" *ngIf="attendedTraining.length > 3">
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
+              (click)="toggleCourse(true)">{{resourceService.frmelmnts.lbl.viewmore}}<i
+                class="chevron down icon"></i></button>
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
+              (click)="toggleCourse(false)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
+                class="chevron up icon"></i></button>
+          </div>
+        </div>
       </div>
-    </ul>
+      <!-- tarainings attended computer view ends-->
   </div>
-  <!-- tarainings attended mobile view ends-->
 </div>
 <app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"
   [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
@@ -294,4 +290,5 @@
   [contactType]="contactType"></app-update-contact-details>
 <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup" *ngIf="showEditUserDetailsPopup"
   [userProfile]="userProfile"></app-update-user-details>
+  <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
 <router-outlet></router-outlet>

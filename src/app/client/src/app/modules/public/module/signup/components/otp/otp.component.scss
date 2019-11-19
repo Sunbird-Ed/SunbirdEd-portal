@@ -39,19 +39,22 @@
 .ui.light-sea-green.button {
     background: $signup-btn-bg-active-color;
     color: $white-color;
-    height: 38px !important;
 }
 .ui.grey.button {
     background: $signup-btn-bg-not-active-color;
     color: $white-color;
     pointer-events: none !important;
     cursor: not-allowed !important; 
-    height: 38px !important;
+}
+.grey-text{
+    color: var(--gray-300) !important;
+    font-size: 12px !important;
 }
 .grey.text {
-    color: $signup-thankyou-text-color !important;
+    color:$black;
     pointer-events: none !important;
     cursor: not-allowed !important;
+    font-size: 14px;
 }
 .orange.text {
     color: $danger-color;
@@ -161,3 +164,4 @@ input[type=number]::-webkit-inner-spin-button {
 .ctct-inline-form .g-recaptcha {
     display: none !important
   }
+ 

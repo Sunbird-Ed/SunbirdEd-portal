@@ -1,25 +1,39 @@
 a {
-  cursor: pointer;
+  color: $primary-color;
+  &:hover {
+    opacity: 0.8;
+    color: $primary-color;
+  }
+  &:focus {
+    outline: 0;
 }
-a:hover {
-  text-decoration: underline;
 }
 .text-capitalize {
-  text-transform: capitalize;
+  text-transform: capitalize !important;
 }
 .text-uppercase {
   text-transform: uppercase !important;
 }
 .text-lowercase {
-  text-transform: uppercase !important;
+  text-transform: lowercase !important;
 }
-.text-center {
-  text-align: center !important;
+.text-sentencecase {
+  text-transform: lowercase !important;
+  &::first-letter {
+    text-transform: uppercase !important;
+  }
+}
+.text-inherit {
+  text-transform: inherit !important;
+}
+.text-underline {
+  text-decoration: underline;
 }
 .ellipsis{
   white-space: nowrap; 
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
 }
 .break-word {
   word-break: break-word;
@@ -48,13 +62,8 @@ a:hover {
 .va-middle {
   vertical-align: middle;
 }
-a {
-  color: $primary-color;
-
-  &:hover {
-    opacity:0.8;
-    color: $primary-color;
-  }
+.text-center {
+  text-align: center !important;
 }
 
 *[dir="ltr"] {

@@ -127,6 +127,11 @@
               "src/assets",
               "src/thirdparty",
               "src/favicon.png"
+            ],
+            "codeCoverageExclude": [
+              "src/assets/**",
+              "src/thidparty/**",
+              "src/app/modules/offline/**"
             ]
           }
         },
@@ -166,6 +171,7 @@
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/shepherd.js/dist/css/shepherd-theme-default.css",
               "src/assets/styles/styles.scss"
             ],
             "stylePreprocessorOptions": {

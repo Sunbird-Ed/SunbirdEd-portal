@@ -1,7 +1,7 @@
-import { of as observableOf } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { of as observableOf, Observable, of } from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
@@ -29,7 +29,8 @@ export class CourseProgressService {
 
 
   constructor(contentService: ContentService, configService: ConfigService,
-    userService: UserService, public coursesService: CoursesService) {
+    userService: UserService, public coursesService: CoursesService, private toasterService: ToasterService,
+    private resourceService: ResourceService) {
     this.contentService = contentService;
     this.configService = configService;
     this.userService = userService;
@@ -63,7 +64,7 @@ export class CourseProgressService {
       }), catchError((err) => {
         this.courseProgressData.emit({ lastPlayedContentId: req.contentIds[0] });
         return err;
-      }), );
+      }));
 
     }
   }
@@ -72,24 +73,24 @@ export class CourseProgressService {
     this.courseProgress[courseId_batchId] = {
       progress: 0,
       completedCount: 0,
-      totalCount: req.contentIds.length,
+      totalCount: _.uniq(req.contentIds).length,
       content: []
     };
     const resContentIds = [];
     if (res.result.contentList.length > 0) {
-      _.forEach(res.result.contentList, (content) => {
-        if (content.batchId === req.batchId && content.courseId === req.courseId) {
+      _.forEach(_.uniq(req.contentIds), (contentId) => {
+        const content = _.find(res.result.contentList, { 'contentId': contentId });
+        if (content) {
           this.courseProgress[courseId_batchId].content.push(content);
           resContentIds.push(content.contentId);
+        } else {
+          this.courseProgress[courseId_batchId].content.push({
+            'contentId': contentId,
+            'status': 0,
+            'courseId': req.courseId,
+            'batchId': req.batchId,
+          });
         }
-      });
-      _.forEach(_.difference(req.contentIds, resContentIds), (value, key) => {
-        this.courseProgress[courseId_batchId].content.push({
-          'contentId': value,
-          'status': 0,
-          'courseId': req.courseId,
-          'batchId': req.batchId,
-        });
       });
       this.calculateProgress(courseId_batchId);
     } else {
@@ -172,5 +173,19 @@ export class CourseProgressService {
     };
     return this.contentService.patch(channelOptions)
       .pipe(map((updateCourseStatesData: ServerResponse) => ({ updateCourseStatesData })));
+  }
+
+  sendAssessment(data): Observable<any> {
+    const channelOptions = {
+      url: this.configService.urlConFig.URLS.COURSE.USER_CONTENT_STATE_UPDATE,
+      data: _.get(data, 'requestBody')
+    };
+    return _.get(data, 'methodType') === 'PATCH' && this.contentService.patch(channelOptions).pipe(
+      retry(1),
+      catchError(err => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        return of(err);
+      })
+    );
   }
 }

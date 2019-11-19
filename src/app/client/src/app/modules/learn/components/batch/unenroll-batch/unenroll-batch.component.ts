@@ -41,6 +41,7 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit 
         takeUntil(this.unsubscribe))
         .subscribe((data) => {
           this.batchDetails = data;
+          this.telemetryInteractObject = { id: this.batchId, type: 'Course', ver: '1.0', rollup: {l1: _.get(data, 'courseId')}};
           if (this.batchDetails.enrollmentType !== 'open') {
             this.toasterService.error(this.resourceService.messages.fmsg.m0082);
             this.redirect();

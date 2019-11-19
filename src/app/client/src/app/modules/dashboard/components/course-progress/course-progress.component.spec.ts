@@ -43,7 +43,13 @@ describe('CourseProgressComponent', () => {
         'm0045': 'Download has failed. Please try again after sometime'
       },
       'stmsg' : {
-       'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.'
+       'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
+       'm0141': 'Data unavailable to generate Score Report'
+      }
+    },
+    'frmelmnts': {
+      'instn' : {
+        't0056' : 'Please try again..'
       }
     }
   };

@@ -1,0 +1,51 @@
+<div class="sb-account-recover-page-section" [appTelemetryImpression]="telemetryImpression">
+  <!-- <div class="sb-account-recover-page-info-msg mt-32">
+    {{resourceService?.frmelmnts?.lbl?.enterEmailPhoneAsRegisteredInAccount | interpolate:'{instance}': resourceService.instance}},
+    {{resourceService?.frmelmnts?.lbl?.enternameAsRegisteredInAccount | interpolate:'{instance}': resourceService.instance}}
+  </div> -->
+  <form [formGroup]="form" class="sb-form mt-48" autocomplete="off">
+    <div class="sb-field-group mb-16 text-left">
+      <div class="sb-field">
+        <label
+          class="sb-account-recoverpage-label required">{{resourceService?.frmelmnts?.lbl?.email}}/{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</label>
+        <input class="sb-form-control"
+          [ngClass]="{'is-invalid': form.controls.identifier.touched && form.controls.identifier.errors }"
+          formControlName="identifier" name="identifier"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterEmailID}}/{{resourceService?.frmelmnts?.lbl?.phone}}">
+        <span *ngIf="identiferStatus === 'MATCHED'" class="sb-field-verified"><i
+            class="check circle icon"></i></span>
+        <span class="sb-color-warning fxsmall mt-8"
+          *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.required">
+          {{resourceService?.frmelmnts?.lbl?.email}}/{{resourceService?.frmelmnts?.lbl?.phoneRequired}}
+        </span>
+        <span class="sb-color-error fxsmall mt-8"
+          *ngIf="form.controls.identifier.touched && form.controls.identifier.errors && form.controls.identifier.errors.pattern">
+          {{resourceService?.frmelmnts?.lbl?.validEmail}}/{{resourceService?.frmelmnts?.lbl?.phone}}
+        </span>
+        <span class="sb-color-error fxsmall mt-8" *ngIf="identiferStatus === 'NOT_MATCHED'">
+          {{resourceService?.frmelmnts?.lbl?.emailPhonenotRegistered | interpolate:'{instance}': resourceService.instance}}
+        </span>
+      </div>
+    </div>
+    <div class="sb-field-group mb-16 text-left">
+      <div class="sb-field">
+        <label class="sb-account-recoverpage-label required">{{resourceService?.frmelmnts?.lbl?.anncmnttblname}}</label>
+        <input class="sb-form-control" formControlName="name" name="name"
+          placeholder="{{resourceService?.frmelmnts?.lbl?.enterName | interpolate:'{instance}': resourceService.instance}}"
+          [ngClass]="{ 'is-invalid': form.controls.name.touched && form.controls.name.errors }">
+        <span class=" sb-color-warning fxsmall mt-8"
+          *ngIf="form.controls.name.touched && form.controls.name.errors && form.controls.name.errors.required">
+          {{resourceService?.frmelmnts?.lbl?.nameRequired}}
+        </span>
+        <span class="sb-color-error fxsmall mt-8" *ngIf="nameNotExist">
+          {{resourceService?.frmelmnts?.lbl?.enterNameNotMatch | interpolate:'{instance}': resourceService.instance}}
+        </span>
+      </div>
+    </div>
+    <button class="sb-btn sb-btn-normal width-100 sb-btn-secondary" [disabled]="disableFormSubmit" tabindex="0"
+      appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+      [telemetryInteractEdata]="{id: 'submit', type: 'click', pageid: 'identify-account', extra: {form: form.value} }"
+      (click)="handleNext()">
+      {{resourceService?.frmelmnts?.lbl?.next}}</button>
+  </form>
+</div>

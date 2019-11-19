@@ -5,11 +5,13 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
-import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './components';
+  SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
+import { GetComponent, DialCodeComponent, DialCodeCardComponent, OfflineDialCodeCardComponent } from './components';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { PlayerHelperModule } from '@sunbird/player-helper';
 
 @NgModule({
   imports: [
@@ -19,11 +21,13 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     SharedModule,
     NgInviewModule,
     DialCodeSearchRoutingModule,
-    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
+    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule, SuiDimmerModule,
     SuiRatingModule, SuiCollapseModule,
     FormsModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    PlayerHelperModule,
+    SharedFeatureModule
   ],
-  declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent]
+  declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent, OfflineDialCodeCardComponent]
 })
 export class DialCodeSearchModule { }

@@ -5,7 +5,9 @@ import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
 import { HttpClient } from '@angular/common/http';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Observable, timer, Subscription } from 'rxjs';
+import {Observable, timer, Subscription, of} from 'rxjs';
+import * as _ from 'lodash-es';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +17,11 @@ export class DeviceRegisterService  {
   private appId: string;
   private deviceId: string;
   private deviceRegisterApi: string;
+  private deviceProfileApi: string;
+  private deviceAPIBaseURL: string;
   private timer$: Observable<any>;
-  private channel: string;
   private timerSubscription: Subscription;
+  deviceProfile: any;
 
   constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
     private configService: ConfigService, private http: HttpClient) {
@@ -30,19 +34,43 @@ export class DeviceRegisterService  {
     && (<HTMLInputElement>document.getElementById('appId')).value;
 
     this.deviceRegisterApi = (<HTMLInputElement>document.getElementById('deviceRegisterApi'))
-    && (<HTMLInputElement>document.getElementById('deviceRegisterApi')).value;
+      && (<HTMLInputElement>document.getElementById('deviceRegisterApi')).value;
+
+    this.deviceProfileApi = (<HTMLInputElement>document.getElementById('deviceProfileApi'))
+      && (<HTMLInputElement>document.getElementById('deviceProfileApi')).value;
+
+    this.deviceAPIBaseURL = (<HTMLInputElement>document.getElementById('deviceApi'))
+      && (<HTMLInputElement>document.getElementById('deviceApi')).value;
   }
 
-  public initialize(channel) {
-    this.registerDevice(channel);
+  public initialize() {
+    this.registerDevice();
     this.timer$ = timer(3.6e+6, 3.6e+6);
     this.timerSubscription = this.timer$.subscribe(t => {
-      this.registerDevice(this.channel);
+      this.registerDevice();
     });
   }
 
-  registerDevice(channel: string, deviceId?: string) {
-    this.channel = channel;
+  fetchDeviceProfile() {
+    const httpOptions: HttpOptions = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    return this.http.get(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.PROFILE + this.deviceId, httpOptions);
+  }
+
+  getDeviceProfile() {
+    if (this.deviceProfile) {
+      return of(this.deviceProfile);
+    }
+    return this.fetchDeviceProfile().pipe(map(deviceProfile => {
+      this.deviceProfile = _.get(deviceProfile, 'result');
+      return this.deviceProfile;
+    }));
+  }
+
+  registerDevice() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo(); // call register api every 24hrs
     this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
     && (<HTMLInputElement>document.getElementById('deviceId')).value;
@@ -55,14 +83,14 @@ export class DeviceRegisterService  {
       },
       request: {
         did: this.deviceId,
+        producer: this.appId,
         uaspec: {
           agent: deviceInfo.browser,
           ver: deviceInfo.browser_version,
           system: deviceInfo.os_version,
           platform: deviceInfo.os,
           raw: deviceInfo.userAgent
-        },
-        channel: channel
+        }
       }
     };
     const httpOptions: HttpOptions = {
@@ -70,8 +98,46 @@ export class DeviceRegisterService  {
         'Content-Type': 'application/json'
       }
     };
-    this.http.post(this.deviceRegisterApi + this.deviceId, data, httpOptions)
+    this.http.post(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId, data, httpOptions)
     .subscribe(() => {
     });
+  }
+
+  updateDeviceProfile(userDeclaredLocation) {
+    const deviceInfo = this.deviceDetectorService.getDeviceInfo(); // call register api every 24hrs
+    this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
+      && (<HTMLInputElement>document.getElementById('deviceId')).value;
+    const data = {
+      id: this.appId,
+      ver: this.portalVersion,
+      ts: moment().format(),
+      params: {
+        msgid: UUID.UUID()
+      },
+      request: {
+        did: this.deviceId,
+        producer: this.appId,
+        uaspec: {
+          agent: deviceInfo.browser,
+          ver: deviceInfo.browser_version,
+          system: deviceInfo.os_version,
+          platform: deviceInfo.os,
+          raw: deviceInfo.userAgent
+        },
+        userDeclaredLocation: {
+          state: userDeclaredLocation.state || '',
+          district: userDeclaredLocation.district || ''
+        }
+      }
+    };
+    const httpOptions: HttpOptions = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    return this.http.post(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId, data, httpOptions)
+      .pipe(map((res) => {
+        return res;
+      }));
   }
 }

@@ -39,7 +39,7 @@ describe('ContentCreditsComponent', () => {
     component.contentData = Response.metaData;
     component.ngOnChanges();
     const actualKeys = Object.keys(component.contentCreditsData);
-    const expectedKeys = ['contributors', 'creators', 'attributions'];
+    const expectedKeys = ['contributors', 'creators', 'attributions', 'copyright'];
     fixture.detectChanges();
     expect(actualKeys).toEqual(expectedKeys);
     expect(component.contentCreditsData).toBeDefined();

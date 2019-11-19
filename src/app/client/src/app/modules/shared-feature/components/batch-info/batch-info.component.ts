@@ -5,6 +5,7 @@ import * as _ from 'lodash-es';
 import { Router } from '@angular/router';
 import { takeUntil, mergeMap, tap, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-batch-info',
@@ -76,6 +77,11 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     event.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
     event.contentType = 'Course'; // to route to course page
     this.playerService.playContent(event);
+  }
+  public handleEnrollmentEndDate(batchDetails) {
+    const enrollmentEndDate = moment(_.get(batchDetails, 'enrollmentEndDate')).format('YYYY-MM-DD');
+    const systemDate = moment();
+    return enrollmentEndDate ? moment(enrollmentEndDate).isBefore(systemDate) : false;
   }
   public handleEnrollEvent(event) {
     this.disableEnrollBtn = true;

@@ -2,7 +2,7 @@
     <!--Header-->
     <div *ngIf="section.name" class="sb-pageSection-header">
         <!--Section Title-->
-        <h4 class="sb-pageSection-title m-0 mr-5"> {{section.name}}</h4>
+        <h4 class="sb-pageSection-title sb-pageSection-sentenceCase m-0 mr-8">{{section.name}}</h4>
         <!--/Section Title-->
         <!--Count-->
         <span class="sb-pageSection-count sb-label sb-label-xs sb-label-error">{{section.count}}</span>
@@ -19,13 +19,11 @@
     <!--/Header-->
 
     <!--Content-->
-    <div *ngIf="refresh" class="sb-pageSection-content">
-        <ngx-slick (afterChange)="handleAfterChange($event)" appTelemetryInteract
-            [telemetryInteractEdata]="{id: 'slick-nav', type: 'click', pageid: pageid, extra: { section: section.name}}"
-            class="carousel" #slickModal="slick-modal" [config]="slideConfig">
-            <div ngxSlickItem *ngFor="let content of contentList" class="mr-15">
+    <div *ngIf="refresh" class="sb-pageSection-content pt-8">
+        <ngx-slick (afterChange)="handleAfterChange($event)" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+            <div ngxSlickItem *ngFor="let content of contentList" class="mr-16">
                 <!--Batch Card-->
-                <app-batch-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+                <app-batch-card appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
                     [telemetryInteractObject]="{id:content.metaData.identifier}"
                     *ngIf="cardType && cardType === 'batch' else contentcard" [batch]="content"
                     (clickEvent)="playContent($event)">
@@ -33,11 +31,17 @@
                 <!--/Batch Card-->
                 <!--Course & Resourse Card-->
                 <ng-template #contentcard>
-                    <app-card appContentDirection [data]="content" appTelemetryInteract
-                        [telemetryInteractEdata]="cardIntractEdata"
-                        [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}"
+                    <app-card *ngIf="!isOffline" appContentDirection [data]="content" appTelemetryInteract
+                        [telemetryInteractEdata]="cardInteractEdata"
+                        [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0', rollup: getObjectRollup(content)}"
                         (clickEvent)="playContent($event)" [data]="content" class="d-block" [class.last-card]="mr-0">
                     </app-card>
+
+                    <app-offline-card *ngIf="isOffline" appContentDirection [data]="content" appTelemetryInteract
+                        [telemetryInteractEdata]="cardInteractEdata"
+                        [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractCdata]="[{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType}]"
+                        (clickEvent)="playContent($event)" [data]="content" class="d-block" [class.last-card]="mr-0">
+                    </app-offline-card>
                 </ng-template>
                 <!--/Course & Resourse Card-->
             </div>

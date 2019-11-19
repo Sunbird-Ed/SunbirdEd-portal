@@ -1,175 +1,313 @@
-import { ResourceService } from '@sunbird/shared';
+/**
+ * Component to render & apply filter on admin chart
+ * @author Ravinder Kumar
+ */
+
+import { UsageService } from './../../services';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
-import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Subscription, Subject, timer } from 'rxjs';
+import { distinctUntilChanged, map, debounceTime, takeUntil, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
-import { FormGroup, FormControl } from '@angular/forms';
-import { combineLatest, Subscription } from 'rxjs';
-import { startWith, tap } from 'rxjs/operators';
+import { IInteractEventObject } from '@sunbird/telemetry';
+import { IBigNumberChart } from '../../interfaces/chartData';
 @Component({
   selector: 'app-data-chart',
   templateUrl: './data-chart.component.html',
   styleUrls: ['./data-chart.component.scss']
 })
-export class DataChartComponent implements OnInit, AfterViewInit {
+export class DataChartComponent implements OnInit, OnDestroy {
 
-  @Input() chartData: any;
-  chart;
-  chartFilters: FormGroup;
-  @ViewChild(BaseChartDirective) chartInfo: BaseChartDirective;
-  startDate;
-  endDate;
-  labelString;
-  showTimeLine = false;
-  selectedTime;
-  timeLineRange;
-  showFilters;
-  showLabelsFilter = false;
-  timeLineRangeoptions;
-  chartFiltersSubscription: Subscription;
-  filters;
-  constructor(public resourceService: ResourceService) { }
+  @Input() chartInfo: any;
+  @Input() telemetryInteractObject: IInteractEventObject;
+  public unsubscribe = new Subject<void>();
+  // contains the chart configuration
+  chartConfig;
+  chartData;
+  showStats: Boolean = false;
+  chartType;
+  chartColors;
+  legend;
+  chartOptions;
+  loadash = _;
+  datasets;
+  chartLabels = [];
+  filters: Array<{}>;
+  filtersFormGroup: FormGroup;
+  showFilters: Boolean = false;
+  filtersSubscription: Subscription;
+  noResultsFound: Boolean;
+
+  availableChartTypeOptions = ['Bar', 'Line'];
+
+  pickerMinDate; // min date that can be selected in the datepicker
+  pickerMaxDate; // max date that can be selected in datepicker
+
+  selectedStartDate;
+  selectedEndDate;
+
+  datePickerConfig = { applyLabel: 'Set Date', format: 'DD-MM-YYYY' };
+  alwaysShowCalendars: boolean;
+
+  resultStatistics = {};
+  selectedFilters: {};
+  dateFilterReferenceName;
+  telemetryCdata: Array<{}>;
+  showGraphStats: Boolean = false;
+  bigNumberCharts: Array<{}> = [];
+
+  iframeDetails: any;
+  lastUpdatedOn: any;
+  showLastUpdatedOn: Boolean = false;
+  showChart: Boolean = false;
+
+  @ViewChild('datePickerForFilters') datepicker: ElementRef;
+
+  ranges: any = {
+    'Today': [moment(), moment()],
+    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    'This Month': [moment().startOf('month'), moment().endOf('month')],
+    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+  };
+
+  @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
+  constructor(public resourceService: ResourceService, private fb: FormBuilder,
+    private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
+    private usageService: UsageService) {
+    this.alwaysShowCalendars = true;
+  }
 
   ngOnInit() {
-    this.chart = _.cloneDeep(this.chartData);
-    this.chartFilters = new FormGroup({
-      timeLineRange: new FormControl(''),
-      labels: new FormControl(''),
-      dataSet: new FormControl(''),
-      timeLine: new FormControl(''),
-    });
-    this.showFilters = _.get(this.chart, 'filters.display');
-    this.filters = _.get(this.chart, 'filters.types');
-    this.labelString = _.get(this.chartData, 'options.scales.xAxes[0].scaleLabel.labelString') || 'Labels';
-    if (_.get(this.chartData, 'chartType') === 'horizontalBar') {
-      this.labelString = _.get(this.chartData, 'options.scales.yAxes[0].scaleLabel.labelString') || 'Labels';
+    this.chartConfig = _.get(this.chartInfo, 'chartConfig');
+    this.chartData = _.get(this.chartInfo, 'chartData');
+    if (_.get(this.chartInfo, 'lastUpdatedOn')) {
+      this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
     }
-    const dateIndex = _.findIndex(this.filters, (filter) => /date/i.test(filter.name));
-    if (dateIndex !== -1) {
-      this.showTimeLine = true;
-      this.timeLineRangeoptions = this.filters[dateIndex].options.timeLineRange;
-      this.startDate = moment(this.chartData.labels[0], 'DD-MM-YYYY').toDate();
-      this.endDate = moment(this.chartData.labels[this.chartData.labels.length - 1], 'DD-MM-YYYY').toDate();
-    } else {
-      this.showLabelsFilter = true;
+    this.prepareChart();
+    this.setTelemetryCdata();
+    if (this.filters) {
+      this.showFilters = false;
+      this.buildFiltersForm();
     }
   }
 
-  ngAfterViewInit() {
-    this.applyFilters();
+  buildFiltersForm() {
+    this.filtersFormGroup = this.fb.group({});
+    if (_.get(this.chartConfig, 'labelsExpr')) {
+      _.forEach(this.filters, filter => {
+        if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
+          const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
+          this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
+          this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
+          this.dateFilterReferenceName = filter.reference;
+        }
+        this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
+        filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
+      });
+      if (this.filters.length > 0) {
+        this.showFilters = true;
+      }
+      this.filtersSubscription = this.filtersFormGroup.valueChanges
+        .pipe(
+          takeUntil(this.unsubscribe),
+          map(filters => {
+            return _.omitBy(filters, _.isEmpty);
+          }),
+          debounceTime(100),
+          distinctUntilChanged()
+        )
+        .subscribe((filters) => {
+          this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
+          const res: Array<{}> = _.filter(this.chartData, data => {
+            return _.every(filters, (value, key) => {
+              return _.includes(value, data[key].toLowerCase());
+            });
+          });
+          this.noResultsFound = (res.length > 0) ? false : true;
+          if (this.noResultsFound) {
+            this.toasterService.error(this.resourceService.messages.stmsg.m0008);
+          }
+          this.getDataSetValue(res);
+
+        }, (err) => {
+          console.log(err);
+        });
+    }
   }
 
-  applyFilters() {
-    combineLatest(this.onLabelsChange(), this.onTimeLineChange(), this.onDataSetChange(), this.onTimeLineRangeChange())
-      .subscribe(value => {
-        if (this.chartInfo) {
-          this.chartInfo.update();
+  private calculateBigNumber() {
+    const bigNumbersConfig = _.get(this.chartConfig, 'bigNumbers');
+    this.bigNumberCharts = [];
+    if (bigNumbersConfig.length) {
+      _.forEach(bigNumbersConfig, (config: IBigNumberChart) => {
+        const bigNumberChartObj = {};
+        if (_.get(config, 'dataExpr')) {
+          bigNumberChartObj['header'] = _.get(config, 'header') || '';
+          bigNumberChartObj['footer'] = _.get(config, 'footer') || _.get(config, 'dataExpr');
+          bigNumberChartObj['data'] =
+            (_.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])))).toLocaleString('hi-IN');
+          this.bigNumberCharts.push(bigNumberChartObj);
         }
       });
+    }
   }
 
-  onTimeLineChange = () => {
-    return this.chartFilters.get('timeLine').valueChanges
-      .pipe(
-        startWith(null),
-        tap((time) => {
-          if (!_.isNull(time)) {
-            this.selectedTime = time;
-
-            if (!this.timeLineRange) {
-              this.chartFilters.get('timeLineRange').setValue(this.timeLineRangeoptions[0].value);
-            }
-            const newDate = moment(time, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            const endIndex = _.findIndex(this.chartData.labels, (date) => date === newDate) + 1;
-            const startIndex = (endIndex - this.timeLineRange < 0) ? 0 : endIndex - this.timeLineRange;
-            const labels = _.slice(this.chartData.labels, startIndex, endIndex);
-            const dataSets = [];
-            _.forEach(this.chartData.datasets, (dataset, i) => {
-              dataSets.push({
-                label: _.get(dataset, 'label'),
-                data: _.slice(dataset.data, startIndex, endIndex)
-              });
-            });
-            this.chart.labels = labels;
-            _.forEach(dataSets, (dataset, i) => {
-              this.chartInfo.datasets[i].data = dataSets[i].data;
-            });
-          }
-        })
-      );
+  private checkForExternalChart() {
+    const iframeConfig = _.get(this.chartConfig, 'iframeConfig');
+    if (iframeConfig) {
+      if (_.get(iframeConfig, 'sourceUrl')) {
+        return true;
+      }
+    }
+    return false;
   }
 
-  onLabelsChange = () => {
-    return this.chartFilters.get('labels').valueChanges.pipe(
-      startWith(null),
-      tap(labels => {
-        if (!_.isNull(labels)) {
-          const indices = _.map(labels, label => {
-            return _.indexOf(this.chartData.labels, label);
-          });
-          const dataSets = [];
-          _.forEach(this.chartData.datasets, (dataset, i) => {
-            dataSets.push({
-              label: _.get(dataset, 'label'),
-              data: _.map(indices, index => dataset.data[index])
-            });
-          });
-          this.chart.labels = labels;
-          _.forEach(dataSets, (dataset, i) => {
-            this.chartInfo.datasets[i].data = dataSets[i].data;
-          });
-        }
-      })
-    );
+  getIframeURL() {
+    const url = `${_.get(this.iframeDetails, 'sourceUrl')}?qs=${Math.round(Math.random() * 10000000)}`; // to prevent browser caching
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  onDataSetChange = () => {
-    return this.chartFilters.get('dataSet').valueChanges
-      .pipe(
-        startWith(null),
-        tap(datasetsToShow => {
-          if (!_.isNull(datasetsToShow)) {
-            _.forEach(this.chartInfo.datasets, dataset => {
-              if (_.includes(datasetsToShow, dataset)) {
-                dataset.hidden = false;
-              } else {
-                dataset.hidden = true;
-              }
-            });
-          }
-        })
-      );
+  prepareChart() {
+    if (!this.checkForExternalChart()) {
+      this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
+      this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
+      this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
+      this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
+      this.showLastUpdatedOn = false;
+      this.showChart = false;
+      if (_.get(this.chartConfig, 'options.showLastUpdatedOn') && this.lastUpdatedOn) {
+        this.showLastUpdatedOn = true;
+      }
+      if ((_.get(this.chartConfig, 'labelsExpr') || _.get(this.chartConfig, 'labels')) && _.get(this.chartConfig, 'datasets')) {
+        this.showChart = true;
+      }
+      this.showGraphStats = _.get(this.chartOptions, 'showGraphStats') || false;
+      this.getDataSetValue();
+    } else {
+      this.iframeDetails = _.get(this.chartConfig, 'iframeConfig');
+    }
+    if (_.get(this.chartConfig, 'bigNumbers')) {
+      this.calculateBigNumber();
+    }
+    const refreshInterval = _.get(this.chartConfig, 'options.refreshInterval');
+    if (refreshInterval) { this.refreshChartDataAfterInterval(refreshInterval); }
+    this.filters = _.get(this.chartConfig, 'filters') || [];
   }
 
-  onTimeLineRangeChange = () => {
-    return this.chartFilters.get('timeLineRange').valueChanges
-      .pipe(
-        startWith(null),
-        tap(range => {
-          if (!_.isNull(range)) {
-            this.timeLineRange = range;
-            if (this.selectedTime) {
-              this.chartFilters.get('timeLine').setValue(this.selectedTime);
-            } else {
-              this.chartFilters.get('timeLine').setValue(this.endDate);
-            }
-          }
-        })
-      );
+  refreshChartDataAfterInterval(interval) {
+    timer(interval, interval).pipe(
+      switchMap(val => {
+        return this.usageService.getData(_.get(this.chartInfo, 'downloadUrl'));
+      }),
+      takeUntil(this.unsubscribe)
+    ).subscribe(apiResponse => {
+      if (_.get(apiResponse, 'responseCode') === 'OK') {
+        const chartData = _.get(apiResponse, 'result.data');
+        this.getDataSetValue(chartData);
+        // to apply current filters to new updated chart data;
+        const currentFilterValue = _.get(this.filtersFormGroup, 'value');
+        this.filtersFormGroup.patchValue(currentFilterValue);
+      }
+    }, err => {
+      console.log('failed to update chart data', err);
+    });
+  }
+
+  getDataSetValue(chartData = this.chartData) {
+    let labels = [];
+    let groupedDataBasedOnLabels;
+    if (_.get(this.chartConfig, 'labelsExpr')) {
+      groupedDataBasedOnLabels = _.groupBy(chartData, (data) => _.trim(data[_.get(this.chartConfig, 'labelsExpr')].toLowerCase()));
+      labels = _.keys(groupedDataBasedOnLabels);
+    }
+    if (_.get(this.chartConfig, 'labels')) {
+      labels = _.get(this.chartConfig, 'labels');
+    }
+    this.chartLabels = labels;
+    this.datasets = [];
+    _.forEach(this.chartConfig.datasets, dataset => {
+      this.datasets.push({
+        label: dataset.label,
+        data: _.get(dataset, 'data') || this.getData(groupedDataBasedOnLabels, dataset['dataExpr']),
+        hidden: _.get(dataset, 'hidden') || false
+      });
+    });
+
+    if (this.showGraphStats) {
+      _.forEach(this.datasets, dataset => {
+        this.resultStatistics[dataset.label] = {
+          sum: _.sumBy(dataset.data, (val) => _.toNumber(val)).toFixed(2),
+          min: _.minBy(dataset.data, (val) => _.toNumber(val)),
+          max: _.maxBy(dataset.data, (val) => _.toNumber(val)),
+          avg: dataset.data.length > 0 ? (_.sumBy(dataset.data, (val) => _.toNumber(val)) / dataset.data.length).toFixed(2) : 0
+        };
+      });
+    }
+  }
+
+  getData(groupedDataBasedOnLabels, dataExpr) {
+    const data = _.mapValues(groupedDataBasedOnLabels, value => {
+      return _.sumBy(value, (o) => +o[dataExpr]);
+    });
+    return _.values(data);
+  }
+
+
+  getDateRange({ startDate, endDate }, columnRef) {
+    this.selectedStartDate = moment(startDate).subtract(1, 'day');
+    this.selectedEndDate = moment(endDate).add(1, 'day');
+    const dateRange = [];
+    const currDate = moment(this.selectedStartDate).startOf('day');
+    const lastDate = moment(this.selectedEndDate).startOf('day');
+    while (currDate.add(1, 'days').diff(lastDate) < 0) {
+      dateRange.push(currDate.clone().format('DD-MM-YYYY'));
+    }
+    this.filtersFormGroup.get(columnRef).setValue(dateRange);
+  }
+
+  changeChartType(chartType) {
+    this.chartType = _.lowerCase(chartType);
   }
 
   resetFilter() {
-    this.selectedTime = null;
-    this.timeLineRange = null;
-    this.chartFilters.reset();
-    this.chart.labels = this.chartData.labels;
-    _.forEach(this.chartData.datasets, (dataset, i) => {
-      this.chartInfo.datasets[i].hidden = false;
-      this.chartInfo.datasets[i].label = dataset.label;
-      this.chartInfo.datasets[i].data = dataset.data;
-    });
-    if (this.chartInfo) {
-      this.chartInfo.update();
+    this.filtersFormGroup.reset();
+    if (this.datepicker) {
+      this.datepicker.nativeElement.value = '';
     }
   }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+
+  setTelemetryCdata() {
+    this.telemetryCdata = [
+      {
+        id: 'dashboard:filter',
+        type: 'Feature'
+      }
+      , {
+        id: 'SB-13051',
+        type: 'Task'
+      }];
+  }
+
+  setTelemetryInteractEdata(val) {
+    return {
+      id: _.join(_.split(val, ' '), '-').toLowerCase(),
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+  }
+
 }
+
+

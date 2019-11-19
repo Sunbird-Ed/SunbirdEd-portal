@@ -1,6 +1,5 @@
 <!--Computer-->
 <div class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
-
 	<!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn" class='btn-group'>
 		<a *ngIf="programId" class="item" (click)="activeRoute('workspace')" id="workspace" [routerLink]= "'/workspace/program/' + programId">{{'Question Set'}}</a>
@@ -53,16 +52,18 @@
 	<!--/Not Logged in user-->
 	<!-- offline container-->
 	<ng-container *ngIf="isOffline">
-		<a class="item" [routerLink]="'/'" appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
-			{{resourceService.frmelmnts?.btn?.myLibrary}}
-		</a>
-		<a class="item" [routerLink]="'/'" appTelemetryInteract [telemetryInteractEdata]="browseEdata">
-			{{resourceService.frmelmnts?.btn?.browse}}
-		</a>
-		<!-- <a class="item" [routerLink]="'/'">
-			{{resourceService.frmelmnts?.btn?.settings}}
-		</a> -->
+			<a class="item tour-2" [routerLink]="'/'" [ngClass]="(router.isActive('/') && !(router.isActive('/browse') || router.isActive('/help-center')) ) ? 'active': ''" appTelemetryInteract
+			 [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+				{{resourceService.frmelmnts?.btn?.myLibrary}}
+			</a>
+			<a class="item tour-3" [ngClass]="router.isActive('/browse')? 'active': ''" [routerLink]="'/browse'" appTelemetryInteract [telemetryInteractEdata]="browseEdata">
+				{{resourceService.frmelmnts?.btn?.browse}}
+			</a>
+			<!-- <a class="item" [ngClass]="router.isActive('/help-center')? 'active': ''" [routerLink]="'/help-center'" appTelemetryInteract [telemetryInteractEdata]="helpCenterEdata">
+				{{resourceService.frmelmnts?.btn?.downloadPdf}}
+			</a> -->
 	</ng-container>
+
 	<!-- offline container-->
 
 </div>

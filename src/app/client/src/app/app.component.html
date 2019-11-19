@@ -3,13 +3,16 @@
     [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
   <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp && !isOffline">
   </app-tnc-popup>
-  <app-header></app-header>
+  <app-validate-teacher-identifier-popup *ngIf="flag"> </app-validate-teacher-identifier-popup>
+  <app-user-location *ngIf="!isLocationConfirmed" [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile" [userProfile]="usersProfile">
+  </app-user-location>
+  <app-header *ngIf="!hideHeaderNFooter" [routerEvents]="routeData$"></app-header>
   <!-- <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn && !isOffline">
   </app-install-app> -->
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
   <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
 </div>
-<app-footer></app-footer>
+<app-footer *ngIf="!hideHeaderNFooter"></app-footer>
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">
   <div class="sb-modal-header">

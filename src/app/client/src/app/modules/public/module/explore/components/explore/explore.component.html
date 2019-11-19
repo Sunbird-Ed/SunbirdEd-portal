@@ -2,10 +2,10 @@
   <app-prominent-filter [pageId]="'explore-page'" *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
     [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
     [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
-  <div class="ui container mt-20">
+  <div class="ui container mt-24">
     <div class="ui grid">
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
-        [ngClass]="{'last mb-30':last}">
+        [ngClass]="{'last mb-0':last}">
         <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"
           (viewAll)="viewAll($event)"></app-page-section>
       </div>
@@ -42,3 +42,15 @@
   </div>
   <!--/Actions-->
 </sui-modal>
+
+<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
+  </h2>
+</sui-dimmer>
+<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
+  </h2>
+</sui-dimmer>
+<app-offline-banner [slug]="slug"></app-offline-banner>

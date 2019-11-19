@@ -30,11 +30,12 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   tenantDataSubscription: Subscription;
   logo: string;
   tenantName: string;
-
+  resourceDataSubscription: any;
   telemetryStart: IStartEventInput;
   telemetryImpression: IImpressionEventInput;
   submitInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}>;
+  instance: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
@@ -45,6 +46,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance);
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
       data => {
         if (data && !data.err) {
@@ -68,7 +70,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getCacheLanguage() {
-    this.resourceService.languageSelected$
+    this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.resourceService.getResource(item.value);
       }
@@ -291,6 +293,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
   }
 
   setInteractEventData() {

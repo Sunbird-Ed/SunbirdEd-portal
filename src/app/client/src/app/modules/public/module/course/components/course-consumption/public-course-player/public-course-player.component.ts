@@ -35,6 +35,8 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
 
   public treeModel: any;
 
+  showContentCreditsModal: boolean;
+
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -105,9 +107,16 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
       },
       object: {
         id: this.activatedRoute.snapshot.params.courseId,
-        type: 'course',
-        ver: '1.0'
+        type: 'Course',
+        ver: '1.0',
+        rollup: {
+          l1: this.activatedRoute.snapshot.params.courseId
+        }
       }
     };
+  }
+
+  showContentCreditsPopup () {
+    this.showContentCreditsModal = true;
   }
 }

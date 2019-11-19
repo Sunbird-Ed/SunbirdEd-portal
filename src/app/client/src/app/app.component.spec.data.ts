@@ -1,25 +1,25 @@
 export const mockData = {
     tenantSuccess:
-        {
-            'id': 'api.tenant.info',
-            'ver': '1.0',
-            'ts': '2018-04-10 15:34:45:875+0530',
-            'params': {
-                'resmsgid': '98b0a030-3ca6-11e8-964f-83be3d8fc737',
-                'msgid': null,
-                'status': 'successful',
-                'err': '',
-                'errmsg': ''
-            },
-            'responseCode': 'OK',
-            'result': {
-                'titleName': 'Sunbird',
-                'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
-                'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
-                'favicon': 'http://localhost:3000/assets/images/favicon.ico',
-                'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
-            }
+    {
+        'id': 'api.tenant.info',
+        'ver': '1.0',
+        'ts': '2018-04-10 15:34:45:875+0530',
+        'params': {
+            'resmsgid': '98b0a030-3ca6-11e8-964f-83be3d8fc737',
+            'msgid': null,
+            'status': 'successful',
+            'err': '',
+            'errmsg': ''
         },
+        'responseCode': 'OK',
+        'result': {
+            'titleName': 'Sunbird',
+            'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
+            'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
+            'favicon': 'http://localhost:3000/assets/images/favicon.ico',
+            'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
+        }
+    },
     tenantFailure: {
         'id': 'api.tenant.info',
         'ver': '1.0',
@@ -1140,7 +1140,7 @@ export const mockData = {
     },
     tenantResponse: {
         'id': 'api.tenant.info',
-        'params': {resmsgid: 'c33a73c0-a0b6-11e8-8b56-a93ad7c7024d', msgid: null, status: 'successful'},
+        'params': { resmsgid: 'c33a73c0-a0b6-11e8-8b56-a93ad7c7024d', msgid: null, status: 'successful' },
         'responseCode': 'OK',
         'result': {
             'titleName': 'rj',
@@ -1148,7 +1148,35 @@ export const mockData = {
             'appLogo': 'https://staging.open-sunbird.org/assets/images/appLogo.png',
             'favicon': 'https://staging.open-sunbird.org/assets/images/favicon.ico',
             'poster': 'https://staging.open-sunbird.org/assets/images/sunbird_logo.png'
-    }
-}
+        }
+    },
+
+    resourceBundle: {
+        'messages': {
+            'fmsg': {
+                'm0050': 'Submiting failed'
+            },
+            'stmsg': {
+                'm0077': 'we are submiting your request'
+            }
+        },
+        'frmelmnts': {
+            'instn': {
+                't0086': 'Copy content from pendrive',
+                't0087': 'Offline library',
+                't0088': 'Browse online for {instance} content',
+                't0089': 'How to use {instance} app',
+                't0090': 'Copy {instance} files (eg. Maths_01.ecar) from your pendrive to your library to play them offline',
+                't0091': 'Click on My Library to access all your offline content',
+                't0092': 'Download content whenever you are online from {instance} to your library',
+                't0093': 'Watch detailed videos to understand how to use the {instance} desktop app'
+            },
+            'lbl': {
+                'medium': 'Medium',
+                'class': 'Class',
+                'subject': 'subject'
+            },
+        },
+    },
 };
 
