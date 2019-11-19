@@ -1,13 +1,7 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { combineLatest, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
-import { Router, ActivatedRoute } from '@angular/router';
-import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
-import {
-    ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData,
-    BrowserCacheTtlService, NavigationHelperService
-} from '@sunbird/shared';
-import { takeUntil, map, mergeMap, first, filter, tap } from 'rxjs/operators';
+import { ResourceService, ICaraouselData } from '@sunbird/shared';
 
 @Component({
     selector: 'app-library',
@@ -29,39 +23,11 @@ export class LibraryComponent implements OnInit {
     public dataDrivenFilterEvent = new EventEmitter();
     public unsubscribe$ = new Subject<void>();
 
-    /* Hardcoded data */
-    contentList = [];
+    public contentList = [];
     public subjects = ['english', 'mathematics', 'geology', 'biology', 'zoology', 'Botany', 'Environmental Science'];
-    public mediums = [
-        'english',
-        'mathematics',
-        'geology',
-        'biology',
-        'zoology',
-        'Botany',
-        'Environmental Science'
-    ];
 
-    classes = [
-        'Class 1',
-        'Class 2',
-        'Class 3',
-        'Class 4',
-        'Class 5',
-        'Class 6',
-        'Class 7'
-    ];
-
-    /* Hardcoded data */
 
     constructor(
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private pageApiService: PageApiService,
-        private utilService: UtilService,
-        private toasterService: ToasterService,
-        private configService: ConfigService,
-        private orgDetailsService: OrgDetailsService,
         public resourceService: ResourceService,
     ) { }
 

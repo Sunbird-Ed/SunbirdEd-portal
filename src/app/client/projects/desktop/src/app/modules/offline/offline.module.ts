@@ -42,7 +42,7 @@ import { FormsModule } from '@angular/forms';
     CommonConsumptionModule
   ],
   providers: [DeviceDetectorService, ContentManagerService],
-  declarations: [ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
+  declarations: [ContentImportHeaderComponent, WatchVideoComponent,
     BrowseComponent, WatchVideoComponent, ContentImportHeaderComponent, BrowseComponent,
     NetworkStatusComponent, WatchVideoComponent, ContentManagerComponent, OfflineHelpCenterComponent,
     DesktopAppUpdateComponent,
