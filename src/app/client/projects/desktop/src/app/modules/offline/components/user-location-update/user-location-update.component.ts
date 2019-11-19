@@ -16,8 +16,8 @@ export class UserLocationUpdateComponent implements OnInit, AfterViewInit {
   selectMediumOption: any[];
   selectBoardOption: any[];
   selectClassOption: any[];
-  selectStateOption: any[];
-  selectDistrictOption: any[];
+  allStates: any[];
+  allDistricts: any[];
   showContent: any;
   radiobtnchecked: any;
   showNormalModal;
@@ -43,28 +43,26 @@ export class UserLocationUpdateComponent implements OnInit, AfterViewInit {
     this.radiobtnchecked = this.languageSelection[0];
 
     this.selectMediumOption = [];
-
-    this.selectDistrictOption = [];
-
     this.selectBoardOption = [];
 
     this.selectClassOption = [];
-
-    this.selectStateOption = [];
 
   }
 
   ngOnInit() {
     this.activeSlide = 0;
-    this.getStatesData();
+    this.getAllStates();
   }
   showNextContent(ind: number) {
     this.activeSlide = ind;
   }
-  onOptionChanges() {
+  onOptionChanges(option) {
     this.disableContinueBtn = this.activeSlide < 1 ? !!this.selectState && !!this.selectDistrict :
       this.activeSlide === 1 ? !!this.selectClass && !!this.selectMedium && !!this.selectBoard : false;
       this.setTelemetryData();
+    if (option.type === 'state') {
+      this.getAllDistricts(option.id);
+    }
   }
 
   nextSlides() {
@@ -74,9 +72,6 @@ export class UserLocationUpdateComponent implements OnInit, AfterViewInit {
       this.activeSlide = 2;
       this.selectedLocationValues.emit(true);
     }
-    localStorage.setItem('userLocation', JSON.stringify({ state: this.selectState, district: this.selectDistrict }));
-    localStorage.setItem('userContentFilters',
-    JSON.stringify({Board: this.selectBoard, Class: this.selectClass, Medium: this.selectMedium }));
   }
 
   ngAfterViewInit() {
@@ -94,7 +89,6 @@ export class UserLocationUpdateComponent implements OnInit, AfterViewInit {
         uri: this.router.url
       }
     };
-    console.log('thia.ac', this.activeSlide);
    this.telemetryInteractEdata = {
       id: this.activeSlide !== 1 ? 'location' : 'board-medium-class',
       type: 'click',
@@ -106,9 +100,17 @@ export class UserLocationUpdateComponent implements OnInit, AfterViewInit {
       ver: '1.0'
     };
   }
-  getStatesData() {
-    const requestData = {'filters': {'type': 'state'}};
-    this.userLocationService.getUserLocation(requestData).subscribe(response => {
+  getAllStates() {
+    const requestData = { request: { filters: { type: 'state' }}};
+    this.userLocationService.getUserLocation(requestData).subscribe(data => {
+      this.allStates = _.get(data, 'result.response');
+    });
+  }
+  getAllDistricts(parentId) {
+    const requestData = { request: { filters: { type: 'district', parentId: parentId }} };
+    this.userLocationService.getUserLocation(requestData).subscribe(data => {
+      this.allDistricts = _.get(data, 'result.response');
+      this.disableContinueBtn = this.allDistricts.length <= 0;
     });
   }
 }

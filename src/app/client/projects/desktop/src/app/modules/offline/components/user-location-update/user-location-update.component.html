@@ -28,14 +28,14 @@
               Is the location given correct? if not, select your correct location and click Submit </div>
             <div class="d-flex flex-dc fields-selection">
              <div class="sb-field">
-               <sui-select class="selection" labelField="name" [(ngModel)]="selectState" (ngModelChange)="onOptionChanges()" placeholder="Select State">
-                <sui-select-option *ngFor="let option of selectStateOption" [value]="option" >
-                </sui-select-option>
+               <sui-select class="selection" labelField="name" [isSearchable]="true" [(ngModel)]="selectState" (ngModelChange)="onOptionChanges(selectState)" placeholder="Select State" [options]="allStates" #states>
+                <sui-select-option *ngFor="let state of states.filteredOptions" [value]="state" >
+                </sui-select-option >
               </sui-select>
             </div>
             <div class="sb-field" *ngIf="!!selectState">
-              <sui-select class="selection mt-10" labelField="name" [(ngModel)]="selectDistrict" (ngModelChange)="onOptionChanges()" placeholder="Select District">
-                <sui-select-option *ngFor="let option of selectDistrictOption" [value]="option">
+              <sui-select class="selection mt-10" labelField="name" [isSearchable]="true" [(ngModel)]="selectDistrict" (ngModelChange)="onOptionChanges(selectDistrict)" placeholder="Select District" [options]="allDistricts" #districts>
+                <sui-select-option *ngFor="let district of districts.filteredOptions" [value]="district">
                 </sui-select-option>
               </sui-select>
               </div>
@@ -50,7 +50,7 @@
               <div class="pb-8 d-flex flex-dc">
                 <div class="sb-field">
                   <label class="d-flex fields-selection__label" for="board">Board</label>
-                  <sui-select class="selection" id="board" labelField="name" [(ngModel)]="selectBoard" (ngModelChange)="onOptionChanges()" placeholder="Select Board">
+                  <sui-select class="selection" id="board" labelField="name" [(ngModel)]="selectBoard" (ngModelChange)="onOptionChanges(selectBoard)" placeholder="Select Board">
                     <sui-select-option *ngFor="let option of selectBoardOption" [value]="option">
                     </sui-select-option>
                   </sui-select>
@@ -59,7 +59,7 @@
               <div class="pb-8 d-flex flex-dc" *ngIf="!!selectBoard">
                 <div class="sb-field">
                 <label class="d-flex fields-selection__label" for="medium">Medium</label>
-                  <sui-multi-select class="selection" id="medium" labelField="name" [(ngModel)]="selectMedium" (ngModelChange)="onOptionChanges()" placeholder="Select Medium"  #multiSelect>
+                  <sui-multi-select class="selection" id="medium" labelField="name" [(ngModel)]="selectMedium" (ngModelChange)="onOptionChanges(selectMedium)" placeholder="Select Medium"  #multiSelect>
                   <sui-select-option *ngFor="let option of selectMediumOption" [value]="option">
                   </sui-select-option>
                 </sui-multi-select>
@@ -68,7 +68,7 @@
               <div class="pb-8 d-flex flex-dc" *ngIf="!!selectMedium">
                 <div class="sb-field">
                 <label class="d-flex fields-selection__label" for="class">Class</label>
-                <sui-multi-select class="selection" id="class" labelField="name" [(ngModel)]="selectClass" (ngModelChange)="onOptionChanges()" placeholder="Select Class" #multiSelect>
+                <sui-multi-select class="selection" id="class" labelField="name" [(ngModel)]="selectClass" (ngModelChange)="onOptionChanges(selectClass)" placeholder="Select Class" #multiSelect>
                   <sui-select-option *ngFor="let option of selectClassOption" [value]="option">
                   </sui-select-option>
                 </sui-multi-select>
