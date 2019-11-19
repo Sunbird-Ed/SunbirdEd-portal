@@ -49,6 +49,7 @@
     "angular2-multiselect-dropdown": "^3.2.1",
     "angular2-uuid": "^1.1.1",
     "chart.js": "^2.7.3",
+    "common-consumption-styles": "0.0.2",
     "core-js": "^2.4.1",
     "datatables.net-dt": "1.10.19",
     "fine-uploader": "^5.15.7",
