@@ -503,7 +503,7 @@ setFingerPrintTelemetry() {
   interpolateInstance(message) {
     return message.replace('{instance}', _.upperCase(this.instance));
   }
-  isLocationUpdated(event) {
+  saveLocation(event) {
   this.locationFlag = event;
   document.body.classList.remove('o-y-hidden');
   this.ngAfterViewInit();

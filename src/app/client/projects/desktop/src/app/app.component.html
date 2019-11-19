@@ -1,4 +1,4 @@
-<app-user-location-update *ngIf="!locationFlag" (selectedLocationValues)="isLocationUpdated($event)"></app-user-location-update>
+<app-user-location-update *ngIf="!locationFlag" (selectedLocationValues)="saveLocation($event)"></app-user-location-update>
 
 <div class="footer-fix" [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}" *ngIf="locationFlag">
   <app-header [routerEvents]="routeData$"></app-header>
