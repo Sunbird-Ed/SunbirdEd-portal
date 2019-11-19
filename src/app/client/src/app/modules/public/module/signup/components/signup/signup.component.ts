@@ -36,6 +36,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   submitInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}>;
   instance: string;
+  isPasswordError = false;
+  passwordErrorMsg: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
@@ -140,6 +142,35 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onContactTypeValueChanges();
     this.enableSignUpSubmitButton();
     this.onPhoneChange();
+    this.onPasswordChange();
+  }
+
+  onPasswordChange(): void {
+    this.signUpForm.get('password').valueChanges.subscribe(val => {
+      const lwcsRegex = new RegExp('^(?=.*[a-z])');
+      const upcsRegex = new RegExp('^(?=.*[A-Z])');
+      const charRegex = new RegExp('^(?=.{8,})');
+      const numRegex = new RegExp('^(?=.*[0-9])');
+      const specRegex = new RegExp('^[^<>{}\'\"/|;:.,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
+      if (!charRegex.test(val)) {
+        this.isPasswordError = true;
+        this.passwordErrorMsg = this.resourceService.frmelmnts.lbl.charError;
+      } else if (!lwcsRegex.test(val)) {
+        this.isPasswordError = true;
+        this.passwordErrorMsg = this.resourceService.frmelmnts.lbl.lwcsError;
+      } else if (!upcsRegex.test(val)) {
+        this.isPasswordError = true;
+        this.passwordErrorMsg = this.resourceService.frmelmnts.lbl.upcsError;
+      } else if (!numRegex.test(val)) {
+        this.isPasswordError = true;
+        this.passwordErrorMsg = this.resourceService.frmelmnts.lbl.numError;
+      } else if (specRegex.test(val)) {
+        this.isPasswordError = true;
+        this.passwordErrorMsg = this.resourceService.frmelmnts.lbl.specError;
+      } else {
+        this.isPasswordError = false;
+      }
+    });
   }
 
   onContactTypeValueChanges(): void {
