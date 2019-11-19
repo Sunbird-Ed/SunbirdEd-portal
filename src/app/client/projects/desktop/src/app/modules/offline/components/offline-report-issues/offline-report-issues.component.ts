@@ -11,8 +11,8 @@ import { OfflineReportIssuesService } from '../../services/offline-report-issues
   styleUrls: ['./offline-report-issues.component.scss']
 })
 export class OfflineReportIssuesComponent implements OnInit {
-  issueReportText = false;
-  showNormalModal = false;
+  issueReportedSuccessfully = false;
+  openReportIssueModal = false;
   descriptionCount: any;
   instance: string;
   reportOtherissueForm: FormGroup;
@@ -24,17 +24,17 @@ export class OfflineReportIssuesComponent implements OnInit {
   ngOnInit() {
     this.createReportOtherissueForm();
     this.instance = _.upperCase(this.resourceService.instance);
-
   }
   createReportOtherissueForm() {
     this.reportOtherissueForm = this.formBuilder.group({
       'email': ['', Validators.compose([Validators.required])],
-      'description': ['', Validators.compose([Validators.required,])],
+      'description': ['', Validators.compose([Validators.required])],
     }, {
       validator: (formControl) => {
         const emailControl = formControl.controls.email;
-        const typedDescriptionCount = formControl.controls.description.value;
-        this.descriptionCount = 1000 - typedDescriptionCount.length;
+        let typedDescriptionCount = formControl.controls.description.value;
+        typedDescriptionCount = typedDescriptionCount.trim();
+        this.descriptionCount = 1000 - (typedDescriptionCount.length);
         if (_.trim(emailControl.value) === '') { emailControl.setErrors({ required: true }); }
       }
     });
@@ -42,17 +42,18 @@ export class OfflineReportIssuesComponent implements OnInit {
   }
   setValidators() {
     const emailControl = this.reportOtherissueForm.get('email');
+    const descriptionControl = this.reportOtherissueForm.get('description');
     emailControl.setValidators([Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
+    descriptionControl.setValidators([Validators.required, Validators.pattern(/^[^\s]+([-a-zA-Z0-9 ])*$/)]);
   }
+
   openModal() {
-    this.showNormalModal = !this.showNormalModal;
-    if (this.issueReportText) {
-      this.issueReportText = false;
-    }
+    this.openReportIssueModal = !this.openReportIssueModal;
+    this.issueReportedSuccessfully = false;
   }
   submitIssue() {
     this.createReportOtherissueForm();
-    this.issueReportText = !this.issueReportText;
+    this.issueReportedSuccessfully = !this.issueReportedSuccessfully;
 
   }
 }

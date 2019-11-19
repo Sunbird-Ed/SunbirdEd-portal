@@ -5,12 +5,13 @@
   <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="openModal()"
     data-target="#openPopUp"> {{resourceService.frmelmnts?.lbl?.reportOtherIssue}} </button>
 </div>
-<sui-modal *ngIf="showNormalModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal" appBodyScroll (dismissed)="showNormalModal = !showNormalModal" #modal id="openPopUp">
+<sui-modal *ngIf="openReportIssueModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="openReportIssueModal = !openReportIssueModal" #modal
+  id="openPopUp">
   <div class="sb-modal-header">{{resourceService.frmelmnts?.lbl?.reportAnIssue}} </div>
   <form [formGroup]="reportOtherissueForm">
     <div class="sb-modal-content">
-      <div *ngIf='!issueReportText'>
+      <div *ngIf='!issueReportedSuccessfully'>
         <div class="sb-field">
           <label for="email">{{resourceService.frmelmnts?.lbl?.email}}</label>
           <input type="email" name="email" formControlName="email"
@@ -23,12 +24,16 @@
           <label for="moretext">{{resourceService.frmelmnts?.lbl?.tellUsMoreAboutProblem}} </label>
           <div class="relative">
             <textarea rows="4" name="moretext" class="sb-form-control" formControlName="description" maxlength="1000"
+              [ngClass]="{'is-invalid': reportOtherissueForm.controls.description.touched && reportOtherissueForm.controls['description'].errors}"
               placeholder="{{resourceService.frmelmnts?.lbl?.typeHere}}"></textarea>
             <span class="characters-left">{{descriptionCount}} {{resourceService.frmelmnts?.lbl?.characterleft}} </span>
           </div>
+          <small
+            *ngIf="reportOtherissueForm.controls.description.touched && reportOtherissueForm.controls['description'].errors"
+            class="message sb-color-error">{{resourceService.frmelmnts?.lbl?.validDescription}}</small>
         </div>
       </div>
-      <div class="sb-report-content" *ngIf='issueReportText'>
+      <div class="sb-report-content" *ngIf='issueReportedSuccessfully'>
         <div class='d-flex flex-jc-center flex-ai-center sb-icon'>
           <img src="../../assets/images/circle-with-check-symbol.svg">
         </div>
@@ -39,7 +44,7 @@
         </div>
       </div>
     </div>
-    <div class="sb-modal-actions" *ngIf='!issueReportText'>
+    <div class="sb-modal-actions" *ngIf='!issueReportedSuccessfully'>
       <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="submitIssue()"
         [disabled]="reportOtherissueForm.invalid">
         {{resourceService.frmelmnts?.lbl?.submitIssueButton}}
