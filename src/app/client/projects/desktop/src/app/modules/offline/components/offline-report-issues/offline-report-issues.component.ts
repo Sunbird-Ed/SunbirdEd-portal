@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
-import { ResourceService, } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 
 
 import { OfflineReportIssuesService } from '../../services/offline-report-issues/offline-report-issues.service';
@@ -21,6 +21,7 @@ export class OfflineReportIssuesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private offlineReportIssuesService: OfflineReportIssuesService,
     public resourceService: ResourceService,
+    public toasterService: ToasterService,
   ) { }
   ngOnInit() {
     this.createReportOtherissueForm();
@@ -59,7 +60,7 @@ export class OfflineReportIssuesComponent implements OnInit {
       this.isDisplayLoader = false;
       this.issueReportedSuccessfully = !this.issueReportedSuccessfully;
     }, (error) => {
-
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.errorWhileGeneratingTicket);
     });
   }
 }
