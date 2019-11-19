@@ -13,6 +13,7 @@ import { OfflineReportIssuesService } from '../../services/offline-report-issues
 export class OfflineReportIssuesComponent implements OnInit {
   issueReportedSuccessfully = false;
   openReportIssueModal = false;
+  isDisplayLoader = false;
   descriptionCount: any;
   instance: string;
   reportOtherissueForm: FormGroup;
@@ -52,8 +53,13 @@ export class OfflineReportIssuesComponent implements OnInit {
     this.issueReportedSuccessfully = false;
   }
   submitIssue() {
-    this.createReportOtherissueForm();
-    this.issueReportedSuccessfully = !this.issueReportedSuccessfully;
+    this.isDisplayLoader = true;
+    this.offlineReportIssuesService.reportOtherIssue(this.reportOtherissueForm.getRawValue()).subscribe(result => {
+      this.createReportOtherissueForm();
+      this.isDisplayLoader = false;
+      this.issueReportedSuccessfully = !this.issueReportedSuccessfully;
+    }, (error) => {
 
+    });
   }
 }

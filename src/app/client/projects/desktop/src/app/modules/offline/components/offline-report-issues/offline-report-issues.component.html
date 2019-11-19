@@ -43,6 +43,11 @@
           {{resourceService?.frmelmnts?.lbl?.issueReportedSuccessfulySubNote | interpolate:'{instance}': instance}}
         </div>
       </div>
+
+      <div class="text-center" *ngIf="isDisplayLoader">
+        <img src="../../assets/images/ajax-loader.gif">
+      </div>
+
     </div>
     <div class="sb-modal-actions" *ngIf='!issueReportedSuccessfully'>
       <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="submitIssue()"
