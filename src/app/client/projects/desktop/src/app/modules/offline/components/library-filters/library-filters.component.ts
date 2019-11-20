@@ -18,7 +18,7 @@ export class LibraryFiltersComponent implements OnInit {
     hashTagId: string;
 
 
-    states: string[] = [];
+    boards: string[] = [];
     mediums: string[] = [];
     classes: string[] = [];
 
@@ -51,7 +51,7 @@ export class LibraryFiltersComponent implements OnInit {
         this.frameworkCategories.forEach(element => {
             switch (element.code) {
                 case 'board':
-                    this.states = element.terms.map(state => state.name);
+                    this.boards = element.terms.map(state => state.name);
                     break;
                 case 'medium':
                     this.mediums = element.terms.map(medium => medium.name);
