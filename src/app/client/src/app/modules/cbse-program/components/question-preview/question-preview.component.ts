@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges} from '@angular/core';
 import { CbseProgramService } from '../../services';
 import * as _ from 'lodash-es';
 import {UserService} from '@sunbird/core';
@@ -96,7 +96,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
   }
     return assessDetails;
   }
-  
+
   setPlayerConfig(context, theme) {
     const finalPlayerConfiguration  = {
       data: theme,
