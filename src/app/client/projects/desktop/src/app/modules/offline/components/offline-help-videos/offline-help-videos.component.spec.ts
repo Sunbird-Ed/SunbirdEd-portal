@@ -1,16 +1,53 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { OfflineHelpVideosComponent } from './offline-help-videos.component';
+import { CacheService } from 'ng2-cache-service';
 
-xdescribe('OfflineHelpVideosComponent', () => {
+describe('OfflineHelpVideosComponent', () => {
   let component: OfflineHelpVideosComponent;
   let fixture: ComponentFixture<OfflineHelpVideosComponent>;
-
+  let resourceServiceStub;
   beforeEach(async(() => {
+    const fakeActivatedRoute = {
+      snapshot: {
+        data: {
+          telemetry: {
+            env: 'help', pageid: 'help', type: 'view'
+          }
+        }
+      }
+    };
+    resourceServiceStub = {
+      instance: 'sunbird',
+      frmelmnts: {
+        instn: {
+          't0094': 'How do I add content to the {instance} desktop app when I am connected to the Internet?',
+          't0095': 'How do I add content to the {instance} desktop app when I am offline or using a pen drive?',
+          't0096': 'My Library: How and where can I find content in My Library?',
+          't0097': 'How do I copy content to my pen drive?'
+        }
+      }
+    };
+    const routerStub = {
+      navigateByUrl: jasmine.createSpy('navigateByUrl')
+    };
+
     TestBed.configureTestingModule({
-      declarations: [ OfflineHelpVideosComponent ]
+      declarations: [OfflineHelpVideosComponent],
+      imports: [TelemetryModule, HttpClientTestingModule, RouterTestingModule],
+      providers: [TelemetryService, ConfigService, CacheService, BrowserCacheTtlService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ResourceService, useValue: resourceServiceStub },
+        { provide: Router, useValue: routerStub}
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +56,27 @@ xdescribe('OfflineHelpVideosComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  fit('should initialize slide data', () => {
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.instance = resourceServiceStub.instance;
+    resourceService.frmelmnts = resourceServiceStub.frmelmnts;
+    component.ngOnInit();
+    expect(component.slideData).toBeDefined();
+  });
+  fit('should changeVideoAttributes value', () => {
+    const data = component.slideData[0];
+    component.changeVideoAttributes(data);
+    expect(component.activeVideoObject).toBeDefined();
+  });
+
+  fit('should emit an event' , () => {
+    spyOn(component.closeVideoModal, 'emit');
+    component.closeModal();
+    expect(component.closeVideoModal.emit).toHaveBeenCalled();
+  });
+
 });

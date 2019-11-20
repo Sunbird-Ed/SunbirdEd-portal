@@ -59,7 +59,7 @@ export class OfflineHelpVideosComponent implements OnInit {
       },
       {
         id: 'add-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0107),
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0095),
         thumbnail: 'assets/images/play-icon.svg',
         url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_offline_or_using_a_pen_drive.mp4'
       }
