@@ -19,6 +19,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { SlickModule } from 'ngx-slick';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
@@ -41,6 +42,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     SuiTabsModule,
     OrderModule,
     SlickModule,
+    ReactiveFormsModule,
     CommonConsumptionModule
   ],
   providers: [DeviceDetectorService, ContentManagerService],
