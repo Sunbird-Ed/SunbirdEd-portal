@@ -19,6 +19,7 @@ import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { SlickModule } from 'ngx-slick';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
@@ -26,6 +27,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     CommonConsumptionModule,
     BrowserAnimationsModule,
     CommonModule,
+    FormsModule,
     CoreModule,
     SharedModule,
     OfflineRoutingModule,
@@ -40,9 +42,10 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     OrderModule,
     SlickModule,
     ReactiveFormsModule
+    CommonConsumptionModule
   ],
   providers: [DeviceDetectorService, ContentManagerService],
-  declarations: [ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
+  declarations: [ContentImportHeaderComponent, WatchVideoComponent,
     BrowseComponent, WatchVideoComponent, ContentImportHeaderComponent, BrowseComponent,
     NetworkStatusComponent, WatchVideoComponent, ContentManagerComponent, OfflineHelpCenterComponent,
     DesktopAppUpdateComponent,
