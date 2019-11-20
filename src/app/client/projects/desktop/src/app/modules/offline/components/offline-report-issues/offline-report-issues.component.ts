@@ -45,6 +45,7 @@ export class OfflineReportIssuesComponent implements OnInit {
   setValidators() {
     const emailControl = this.reportOtherissueForm.get('email');
     const descriptionControl = this.reportOtherissueForm.get('description');
+    // tslint:disable-next-line: max-line-length
     emailControl.setValidators([Validators.required, Validators.pattern(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
     descriptionControl.setValidators([Validators.required, Validators.pattern(/^[^\s]+([-a-zA-Z0-9 ])*$/)]);
   }
