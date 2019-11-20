@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -27,7 +28,8 @@ export class OfflineHelpVideosComponent implements OnInit {
   activeVideoObject;
   instance: string;
   selectVideoInteractEdata: IInteractEventEdata;
-  constructor(@Inject(DOCUMENT) private document: Document, public resourceService: ResourceService, public configService: ConfigService) {
+  constructor(@Inject(DOCUMENT) private document: Document, public resourceService: ResourceService, public configService: ConfigService,
+  public activatedRoute: ActivatedRoute) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
 
@@ -97,7 +99,7 @@ export class OfflineHelpVideosComponent implements OnInit {
     return {
       id: data.id,
       type: 'click',
-      pageid: 'help-center'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
 
