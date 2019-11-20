@@ -1,4 +1,4 @@
-<div class="bg-image">
+<div class="bg-image" [appTelemetryImpression]="telemetryImpressionData">
     <div class="loginform">
         <div class="loginform__content">
 
@@ -19,7 +19,7 @@
                 <div class="circle update" [ngClass]="{'completed': disableContinueBtn}"></div>
                 <!-- <div class="circle complete"></div> -->
             </div>
-            <button type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm" (click)="saveUserData()">
+            <button type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm" (click)="saveUserData()" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEdata" [telemetryInteractContext]="{env:'onboarding'}">
                 {{continueLabel}}
             <span class='arrow-icon'><i class="arrow right icon"></i></span></button>
         </div>
