@@ -91,7 +91,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
     }
     const topicTerm =  _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
-    if (topicTerm.associations) {
+    if (topicTerm && topicTerm.associations) {
       this.learningOutcomeOptions = topicTerm.associations;
     }
     this.initializeFormFields();

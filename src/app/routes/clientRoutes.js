@@ -85,6 +85,7 @@ module.exports = (app, keycloak) => {
     res.setHeader('Expires', new Date(Date.now() + oneDayMS).toUTCString())
     next()
   })
+  
   if (envHelper.cbse_programId) {
     app.all('/', (req, res) => res.redirect('/program/cbse/' + envHelper.cbse_programId))
   }

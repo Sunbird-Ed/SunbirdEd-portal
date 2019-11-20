@@ -1,7 +1,6 @@
-import { ContentService } from './../../../core/services/content/content.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
-import { PublicDataService } from '@sunbird/core';
+import { PublicDataService, ContentService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { TelemetryService } from '@sunbird/telemetry';

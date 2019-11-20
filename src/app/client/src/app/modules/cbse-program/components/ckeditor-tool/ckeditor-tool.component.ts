@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter, OnChange
 import * as ClassicEditor from '@project-sunbird/ckeditor-build-font';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
-import { PublicDataService, UserService, ActionService } from '@sunbird/core';
+import { PublicDataService, UserService, ActionService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -44,7 +44,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     publicDataService: PublicDataService,
     toasterService: ToasterService,
     resourceService: ResourceService,
-    public actionService: ActionService
+    public actionService: ActionService,
+    private contentService: ContentService
   ) {
     this.userService = userService;
     this.configService = configService;
@@ -222,7 +223,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         }
       }
     };
-    this.publicDataService.post(req).subscribe((res) => {
+    this.contentService.post(req).subscribe((res) => {
       _.map(res.result.content, (item) => {
         if (item.downloadUrl) {
           this.myAssets.push(item);
@@ -276,7 +277,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         }
       }
     };
-    this.publicDataService.post(req).pipe(catchError(err => {
+    this.contentService.post(req).pipe(catchError(err => {
       let errInfo = { errorMsg: 'Image search failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo))
     }))

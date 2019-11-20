@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PublicDataService, UserService, ActionService } from '@sunbird/core';
+import { PublicDataService, UserService, ActionService, ContentService } from '@sunbird/core';
 import { ConfigService, ToasterService } from '@sunbird/shared';
 import { map, catchError } from 'rxjs/operators';
 import * as $ from 'jquery';
@@ -39,7 +39,8 @@ export class DashboardComponent implements OnInit {
   };
 
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    public actionService: ActionService, public toasterService: ToasterService,private cbseService: CbseProgramService,) { }
+    public actionService: ActionService, public toasterService: ToasterService,private cbseService: CbseProgramService,
+    private contentService : ContentService) { }
 
   ngOnInit() {
 
@@ -160,7 +161,7 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-    return this.publicDataService.post(req).pipe(
+    return this.contentService.post(req).pipe(
       map(res => {
         let result = []
         return result = _.get(res, 'result.aggregations[0].values')
@@ -193,7 +194,7 @@ export class DashboardComponent implements OnInit {
         }
       }
     };
-    return this.publicDataService.post(request).pipe(
+    return this.contentService.post(request).pipe(
       map(res => {
         const content = _.get(res, 'result.content');
         const publishCount = [];

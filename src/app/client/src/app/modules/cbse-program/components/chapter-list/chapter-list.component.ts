@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } from '@angular/core';
-import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
+import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService, ContentService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { CbseProgramService } from '../../services';
@@ -42,7 +42,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public questionPattern: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService, public telemetryService: TelemetryService, private cbseService: CbseProgramService,
-    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
+    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute, private contentService: ContentService) {
   }
   private labelsHandler() {
     this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted', 'Published'] : ['Total', 'Created by me', 'Needs attention'];
@@ -244,7 +244,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
         }
       }
     };
-    return this.publicDataService.post(request).pipe(
+    return this.contentService.post(request).pipe(
       map(res => {
         const content = _.get(res, 'result.content');
         const publishCount = [];
@@ -291,7 +291,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       req.data.request.filters['status'] = status;
       req.data.request.filters['organisation'] = this.selectedAttributes.selectedSchoolForReview;
     }
-    return this.publicDataService.post(req).pipe(
+    return this.contentService.post(req).pipe(
       map(res => _.get(res, 'result.facets[0].values')), catchError((err) => {
         let errInfo = { errorMsg: 'Questions search by type failed' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo))

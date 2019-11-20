@@ -12,13 +12,13 @@ const appRoutes: Routes = [
     path: 'search', loadChildren: 'app/modules/search/search.module#SearchModule'
   },
   {
-    path: 'workspace/program', loadChildren: 'app/modules/program/program.module#ProgramModule'
-  },
-  {
     path: 'public/certs', loadChildren: 'app/modules/certificate/certificate.module#CertificateModule'
   },
   {
     path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
+  },
+  {
+    path: 'workspace/program', loadChildren: 'app/modules/program/program.module#ProgramModule'
   },
   // {
   //   path: 'home', loadChildren: 'app/modules/home/home.module#HomeModule'
