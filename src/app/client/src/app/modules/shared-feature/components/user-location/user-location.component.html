@@ -16,11 +16,10 @@
 
   <!--Content-->
   <div class="sb-modal-content o-y-visible">
-    <form class="ui form" [formGroup]="userDetailsForm">
-      <div class="field">
-        <p>{{resourceService?.messages?.imsg?.m0074}}</p>
+    <form class="sb-form" [formGroup]="userDetailsForm">
+        <p class="mb-8">{{resourceService?.messages?.imsg?.m0074}}</p>
+      <div class="sb-field">
         <label>{{resourceService?.frmelmnts?.lbl?.state}}:</label>
-        <div class="field">
           <sui-select [isSearchable]="true" class="selection" formControlName="state" [options]="allStates"
                       labelField="name" valueField="code"
                       name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}"
@@ -28,11 +27,10 @@
             <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100"
                                [value]="state"></sui-select-option>
           </sui-select>
-        </div>
       </div>
-      <div class="field">
+      <div class="sb-fielgroup">
         <label>{{resourceService?.frmelmnts?.lbl?.district}}:</label>
-        <div class="field">
+        <div class="sb-field">
           <div class="ui segment" *ngIf="showDistrictDivLoader">
             <div class="ui active inverted dimmer">
               <div class="ui mini text loader">{{resourceService?.messages?.stmsg?.m0130}}</div>
