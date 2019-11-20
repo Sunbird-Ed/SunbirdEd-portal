@@ -51,11 +51,13 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       const context = this.getContext();
       this.playerConfig =  this.setPlayerConfig(context, theme);
       this.assessDetails = this.prepareAssessDetails();
+      delete this.selectedAttributes.previewQuestionData //To clear the temporarily attacthed data after render
     });
     }
   }
   
   ngOnChanges(){
+    this.assessDetails = {} //To clear previously stored assesDetails
     if(this.previewInitialized){
       if(this.questionMetaData && this.questionMetaData.mode !== 'create'){
         this.toEcml
@@ -82,6 +84,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
           const context = this.getContext();
           this.playerConfig =  this.setPlayerConfig(context, theme);
           this.assessDetails = this.prepareAssessDetails();
+          delete this.selectedAttributes.previewQuestionData //To clear the temporarily attacthed data after render
         })
       }
     }
@@ -89,12 +92,15 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
 
   prepareAssessDetails(){
     const assessDetails = {}
-    if(this.questionMetaData){
-      assessDetails['correct_response'] = this.questionMetaData.data ? parseInt(this.questionMetaData.data.responseDeclaration.responseValue.correct_response.value) + 1 : parseInt(this.selectedAttributes.previewQuestionData.result.assessment_item.responseDeclaration.responseValue.correct_response.value) + 1;
+    let creationData = this.selectedAttributes.previewQuestionData ? this.selectedAttributes.previewQuestionData.result.assessment_item : undefined;
+    if((creationData && creationData.category ==='MCQ') || (this.questionMetaData && this.questionMetaData.data.category === 'MCQ')){
+      assessDetails['correct_response'] = creationData ? parseInt(creationData.responseDeclaration.responseValue.correct_response.value) + 1 : parseInt(this.questionMetaData.data.responseDeclaration.responseValue.correct_response.value) + 1 ;
       assessDetails['learningOutcome'] = (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : undefined;
-      assessDetails['bloomsLevel'] = this.questionMetaData.data ? this.questionMetaData.data.bloomsLevel[0] : this.selectedAttributes.previewQuestionData.result.assessment_item.bloomsLevel[0]; 
-  }
-    return assessDetails;
+      assessDetails['bloomsLevel'] = creationData ? creationData.bloomsLevel[0] : (this.questionMetaData.data.bloomsLevel) ? this.questionMetaData.data.bloomsLevel[0] : null; 
+      return assessDetails;
+    } else {
+    return undefined;
+    }
   }
 
   setPlayerConfig(context, theme) {
