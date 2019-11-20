@@ -10,7 +10,7 @@
         <div class="help-video__player__details sb-bg-color-white" #playerInfo>
             <h6 class="help-video__player__title ml-16 mr-auto sb__ellipsis sb__ellipsis--two">{{activeVideoObject.name}}&lrm;</h6>
             <div class="help-video__player__tools">
-                <div class="icons-withtext__cloud-download"><i class="cloud download icon"></i>Download</div>
+                <div class="icons-withtext__cloud-download"><i class="cloud download icon"></i>{{resourceService?.frmelmnts?.btn?.download}}</div>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
                 <!-- card mobile view details -->
                 <div class="sbcard__info">
                     <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">{{ video.name }}</h4>
-                    <div class="d-block sb-color-primary">Play Video</div>
+                    <div class="d-block sb-color-primary">{{resourceService?.frmelmnts?.lbl?.playVideo}}</div>
                 </div>
             </div>
         </div>
