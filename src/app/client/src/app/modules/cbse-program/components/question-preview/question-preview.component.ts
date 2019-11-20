@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges} from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { CbseProgramService } from '../../services';
 import * as _ from 'lodash-es';
 import {UserService} from '@sunbird/core';
@@ -18,7 +18,6 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
   public playerConfig: any;
   public theme: any;
   previewInitialized: boolean;
-  assessDetails;
 
   constructor(private toEcml: CbseProgramService, private userService: UserService ) {
 
@@ -37,7 +36,6 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       this.theme = theme;
       const context = this.getContext();
       this.playerConfig =  this.setPlayerConfig(context, theme);
-      this.assessDetails = this.prepareAssessDetails();
     });
     } else {
     this.toEcml
@@ -50,14 +48,11 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       this.theme = theme;
       const context = this.getContext();
       this.playerConfig =  this.setPlayerConfig(context, theme);
-      this.assessDetails = this.prepareAssessDetails();
-      delete this.selectedAttributes.previewQuestionData //To clear the temporarily attacthed data after render
     });
     }
   }
   
   ngOnChanges(){
-    this.assessDetails = {} //To clear previously stored assesDetails
     if(this.previewInitialized){
       if(this.questionMetaData && this.questionMetaData.mode !== 'create'){
         this.toEcml
@@ -70,7 +65,6 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
           this.theme = theme;
           const context = this.getContext();
           this.playerConfig =  this.setPlayerConfig(context, theme);
-          this.assessDetails = this.prepareAssessDetails();
         });
       } else {
         this.toEcml
@@ -83,23 +77,11 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
           this.theme = theme;
           const context = this.getContext();
           this.playerConfig =  this.setPlayerConfig(context, theme);
-          this.assessDetails = this.prepareAssessDetails();
-          delete this.selectedAttributes.previewQuestionData //To clear the temporarily attacthed data after render
         })
       }
     }
-  }
-
-  prepareAssessDetails(){
-    const assessDetails = {}
-    let creationData = this.selectedAttributes.previewQuestionData ? this.selectedAttributes.previewQuestionData.result.assessment_item : null;
-    if((creationData && creationData.category ==='MCQ') || (this.questionMetaData && this.questionMetaData.data.category === 'MCQ')){
-      assessDetails['correct_response'] = creationData ? parseInt(creationData.responseDeclaration.responseValue.correct_response.value) + 1 : parseInt(this.questionMetaData.data.responseDeclaration.responseValue.correct_response.value) + 1 ;
-      assessDetails['learningOutcome'] = (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : null;
-      assessDetails['bloomsLevel'] = creationData ? creationData.bloomsLevel[0] : (this.questionMetaData.data.bloomsLevel) ? this.questionMetaData.data.bloomsLevel[0] : null; 
-      return assessDetails;
-    } else {
-    return null;
+    if(this.questionMetaData && this.questionMetaData.data && this.questionMetaData.data.type === 'mcq'){
+      this.questionMetaData.data['correct_response'] =  parseInt(this.questionMetaData.data.responseDeclaration.responseValue.correct_response.value) + 1;
     }
   }
 
