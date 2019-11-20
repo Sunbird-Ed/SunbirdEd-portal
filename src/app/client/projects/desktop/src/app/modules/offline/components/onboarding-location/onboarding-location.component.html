@@ -1,0 +1,17 @@
+<label class="swiper-slide__title p-0 m-0 sb-color-primary">{{resourceService?.messages?.imsg?.m0075}}</label>
+<div class="swiper-slide__para pt-8">{{resourceService?.messages?.imsg?.m0074}} </div>
+<div class="d-flex flex-dc fields-selection">
+    <div class="sb-field">
+        <sui-select class="selection" labelField="name" [isSearchable]="true" [(ngModel)]="selectState" (ngModelChange)="onOptionChanges(selectState)" placeholder="Select State" [options]="allStates" #states>
+            <sui-select-option *ngFor="let state of states.filteredOptions" [value]="state">
+            </sui-select-option>
+        </sui-select>
+    </div>
+    <div class="sb-field" *ngIf="!!selectState">
+        <sui-select class="selection mt-10" labelField="name" [isSearchable]="true" [(ngModel)]="selectDistrict" (ngModelChange)="onOptionChanges(selectDistrict)" placeholder="Select District" [options]="allDistricts" #districts>
+            <sui-select-option *ngFor="let district of districts.filteredOptions" [value]="district">
+            </sui-select-option>
+        </sui-select>
+    </div>
+
+</div>

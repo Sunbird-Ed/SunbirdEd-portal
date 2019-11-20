@@ -86,6 +86,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryContextData: any ;
   didV2: boolean;
   flag = false;
+  locationFlag = false;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -157,9 +158,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.changeLanguageAttribute();
-    if (this.isOffline) {
-      document.body.classList.add('sb-offline');
-    }
+    document.body.classList.add('sb-offline');
+    !this.locationFlag ? document.body.classList.add('o-y-hidden') : document.body.classList.remove('o-y-hidden');
 }
 
 setFingerPrintTelemetry() {
@@ -419,20 +419,7 @@ setFingerPrintTelemetry() {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.initializeShepherdData();
-      if (this.isOffline) {
-        this.shepherdService.defaultStepOptions = defaultStepOptions;
-        this.shepherdService.disableScroll = true;
-        this.shepherdService.modal = true;
-        this.shepherdService.confirmCancel = false;
-        this.shepherdService.addSteps(this.shepherdData);
-        if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
-          localStorage.setItem('TakeOfflineTour', 'show');
-          this.shepherdService.start();
-        }
-      }
-    }, 1000);
+    this.initializeTourTravel();
   }
 
   initializeShepherdData() {
@@ -502,5 +489,28 @@ setFingerPrintTelemetry() {
   }
   interpolateInstance(message) {
     return message.replace('{instance}', _.upperCase(this.instance));
+  }
+  initializeTourTravel() {
+    if (this.locationFlag) {
+      setTimeout(() => {
+        this.initializeShepherdData();
+        if (this.isOffline) {
+          this.shepherdService.defaultStepOptions = defaultStepOptions;
+          this.shepherdService.disableScroll = true;
+          this.shepherdService.modal = true;
+          this.shepherdService.confirmCancel = false;
+          this.shepherdService.addSteps(this.shepherdData);
+          if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
+            localStorage.setItem('TakeOfflineTour', 'show');
+            this.shepherdService.start();
+          }
+        }
+      }, 1000);
+    }
+  }
+  saveOnBoadring(event) {
+    this.locationFlag = event;
+    document.body.classList.remove('o-y-hidden');
+    this.ngAfterViewInit();
   }
 }
