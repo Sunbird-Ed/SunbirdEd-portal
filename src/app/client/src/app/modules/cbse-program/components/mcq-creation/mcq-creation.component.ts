@@ -73,7 +73,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
       this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
     }
     const topicTerm = _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
-    if (topicTerm.associations) {
+    if (topicTerm && topicTerm.associations) {
       this.learningOutcomeOptions = topicTerm.associations;
     }
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
