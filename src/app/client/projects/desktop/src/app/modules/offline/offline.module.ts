@@ -18,9 +18,11 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
 import { SlickModule } from 'ngx-slick';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
   imports: [
+    CommonConsumptionModule,
     BrowserAnimationsModule,
     CommonModule,
     CoreModule,
