@@ -147,7 +147,9 @@
                   <span
                     class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
                   <span
-                    class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.subject}}</span>
+                    class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.subject}}</span>
+                  <span *ngIf="stages[currentStage] === 'topicList' || stages[currentStage] === 'createQuestion'"    
+                    class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.textbookName}}</span>
               </div>
               <div *ngIf="stages[currentStage] === 'topicList' && role.currentRole === 'REVIEWER'">
                 <div *ngFor="let field of formFieldOptions">
@@ -172,10 +174,13 @@
               <app-textbook-list [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
                 (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
             </div>
-            <div *ngIf="stages[currentStage] === 'topicList'">
+            <div *ngIf="stages[currentStage] === 'topicList' && !showDashboard">
                 <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [selectedSchool]="selectedSchoolForReview" [role]="role"
                 (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
             </div>
+            <div *ngIf="stages[currentStage] === 'topicList' && showDashboard">    
+              <app-dashboard [selectedAttributes]="selectedAttributes"></app-dashboard>    
+          </div>
         </div>
 
 
