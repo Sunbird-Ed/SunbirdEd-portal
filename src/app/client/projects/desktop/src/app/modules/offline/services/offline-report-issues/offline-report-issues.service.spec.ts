@@ -5,8 +5,8 @@ import { OfflineReportIssuesService } from './offline-report-issues.service';
 
 describe('OfflineReportIssuesService', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule,  SharedModule.forRoot()]
-}));
+    imports: [HttpClientTestingModule, SharedModule.forRoot()]
+  }));
   it('should be created', () => {
     const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     expect(service).toBeTruthy();
