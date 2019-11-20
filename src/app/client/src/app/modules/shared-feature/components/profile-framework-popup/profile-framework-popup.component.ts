@@ -205,13 +205,16 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
   onSubmitForm() {
     const selectedOption = _.cloneDeep(this.selectedOption);
-    selectedOption.board = [this.selectedOption.board];
+    selectedOption.board = _.get(this.selectedOption, 'board') ? [this.selectedOption.board] : null;
     selectedOption.id = this.frameWorkId;
     this.submit.emit(selectedOption);
   }
   private enableSubmitButton() {
-    if (_.get(this.selectedOption, 'board.length') && _.get(this.selectedOption, 'medium.length')
-      && _.get(this.selectedOption, 'gradeLevel.length')) {
+    const optionalFields = ['subject'];
+    const enableSubmitButton = _.every(this.selectedOption, (value, index) => {
+      return _.includes(optionalFields, index) ? true : value.length;
+    });
+    if (enableSubmitButton) {
       this.showButton = true;
     } else {
       this.showButton = false;

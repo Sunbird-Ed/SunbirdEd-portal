@@ -122,5 +122,24 @@ describe('ProfileFrameworkPopupComponent', () => {
     expect(component.formFieldOptions[3].range).toBeUndefined();
     expect(toasterService.warning).not.toHaveBeenCalled();
   });
+  it('should enable submit button if board value is not there in framework' , () => {
+    component.selectedOption = {
+      gradeLevel: ['Class 2'],
+      medium: ['English'],
+      subject: []
+    };
+    component['enableSubmitButton']();
+    expect(component.showButton).toBeTruthy();
+  });
+  it('should disable submit button if any of board, medium or gradeLevel is not present', () => {
+    component.selectedOption = {
+      gradeLevel: ['Class 1'],
+      medium: ['English'],
+      subject: ['Hindi'],
+      board: []
+    };
+    component['enableSubmitButton']();
+    expect(component.showButton).toBeFalsy();
+  });
 });
 
