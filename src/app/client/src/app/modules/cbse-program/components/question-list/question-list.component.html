@@ -15,7 +15,7 @@
           </div>
         </div>
       <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
-        <div class="questionTab ui center tertiary header aligned segment p-8"
+        <div class="questionTab ui center tertiary header aligned segment p-8 cursor-pointer"
           [class.tertiary]="selectedQuestionId === question.identifier"
           (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
           appTelemetryInteract
