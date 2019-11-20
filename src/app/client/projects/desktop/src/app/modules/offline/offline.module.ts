@@ -41,7 +41,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     SuiTabsModule,
     OrderModule,
     SlickModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
     CommonConsumptionModule
   ],
   providers: [DeviceDetectorService, ContentManagerService],
