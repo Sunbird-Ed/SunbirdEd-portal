@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, AfterViewInit } from '@angular/core';
 import { CbseProgramService } from '../../services';
 import * as _ from 'lodash-es';
 import {UserService} from '@sunbird/core';
@@ -18,6 +18,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
   public playerConfig: any;
   public theme: any;
   previewInitialized: boolean;
+  assessDetails;
 
   constructor(private toEcml: CbseProgramService, private userService: UserService ) {
 
@@ -36,6 +37,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       this.theme = theme;
       const context = this.getContext();
       this.playerConfig =  this.setPlayerConfig(context, theme);
+      this.assessDetails = this.prepareAssessDetails();
     });
     } else {
     this.toEcml
@@ -48,6 +50,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       this.theme = theme;
       const context = this.getContext();
       this.playerConfig =  this.setPlayerConfig(context, theme);
+      this.assessDetails = this.prepareAssessDetails();
     });
     }
   }
@@ -65,6 +68,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
           this.theme = theme;
           const context = this.getContext();
           this.playerConfig =  this.setPlayerConfig(context, theme);
+          this.assessDetails = this.prepareAssessDetails();
         });
       } else {
         this.toEcml
@@ -77,11 +81,22 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
           this.theme = theme;
           const context = this.getContext();
           this.playerConfig =  this.setPlayerConfig(context, theme);
+          this.assessDetails = this.prepareAssessDetails();
         })
       }
     }
   }
 
+  prepareAssessDetails(){
+    const assessDetails = {}
+    if(this.questionMetaData){
+      assessDetails['correct_response'] = this.questionMetaData.data ? parseInt(this.questionMetaData.data.responseDeclaration.responseValue.correct_response.value) + 1 : parseInt(this.selectedAttributes.previewQuestionData.result.assessment_item.responseDeclaration.responseValue.correct_response.value) + 1;
+      assessDetails['learningOutcome'] = (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : undefined;
+      assessDetails['bloomsLevel'] = this.questionMetaData.data ? this.questionMetaData.data.bloomsLevel[0] : this.selectedAttributes.previewQuestionData.result.assessment_item.bloomsLevel[0]; 
+  }
+    return assessDetails;
+  }
+  
   setPlayerConfig(context, theme) {
     const finalPlayerConfiguration  = {
       data: theme,
