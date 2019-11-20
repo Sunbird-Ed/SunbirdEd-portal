@@ -18,6 +18,8 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
 telemtryEventConfig['pdata']['id'] = appId
 telemtryEventConfig['pdata']['ver'] = packageObj.version
+telemtryEventConfig['pdata']['pid'] = appId
+
 module.exports = {
   /**
    * This function helps to get user spec
@@ -50,6 +52,7 @@ module.exports = {
     context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.session.userId, 'user')
+    console.log('logging session start event', context.did);
     telemetry.start({
       edata: edata,
       context: context,
@@ -69,6 +72,7 @@ module.exports = {
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
     context.sid = req.sessionID
     context.did = req.session.deviceId
+    console.log('logging session end event', context.did);
     context.rollup = telemetry.getRollUpData(dims)
     telemetry.end({
       edata: edata,

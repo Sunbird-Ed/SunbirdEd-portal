@@ -1,87 +1,116 @@
-import { ConfigService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, AfterViewInit } from '@angular/core';
+import { ConfigService, NavigationHelperService } from '@sunbird/shared';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
 })
-export class PlayerComponent implements OnInit, OnChanges, AfterViewInit {
+export class PlayerComponent implements AfterViewInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
+  @Output() assessmentEvents = new EventEmitter<any>();
+  @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
   @Input() playerOption: any;
   contentRatingModal = false;
-  playerCdnUrl: string;
-  rendererRunning: boolean;
-  playerElement: any;
+  previewCdnUrl: string;
+  isCdnWorking: string;
+  CONSTANT = {
+    ACCESSEVENT: 'renderer:question:submitscore'
+  };
   /**
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
-    public resourceService: ResourceService) {
+    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
-    this.playerCdnUrl = (<HTMLInputElement>document.getElementById('PlayerCdnUrl'))
-      ? (<HTMLInputElement>document.getElementById('PlayerCdnUrl')).value : undefined;
+    this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
+      ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
+    this.isCdnWorking = (<HTMLInputElement>document.getElementById('cdnWorking'))
+      ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
   }
   /**
-   * showPlayer method will be called
+   * loadPlayer method will be called
    */
-  ngOnInit() {
-    this.showPlayer();
+  ngAfterViewInit() {
+    if (this.playerConfig) {
+      this.loadPlayer();
+    }
   }
 
   ngOnChanges() {
     this.contentRatingModal = false;
-    this.showPlayer();
+    if (this.playerConfig) {
+      this.loadPlayer();
+    }
   }
-
-  ngAfterViewInit() {
-    this.playerElement = this.contentIframe.nativeElement;
+  loadCdnPlayer() {
+    const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.cdnUrl + '&build_number=' + this.buildNumber;
+    setTimeout(() => {
+      const playerElement = this.contentIframe.nativeElement;
+      playerElement.src = iFrameSrc;
+      playerElement.onload = (event) => {
+        try {
+          this.adjustPlayerHeight();
+          playerElement.contentWindow.initializePreview(this.playerConfig);
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+        } catch (err) {
+          console.log('loading cdn player failed', err);
+          this.loadDefaultPlayer();
+        }
+      };
+    }, 0);
   }
-
+  loadDefaultPlayer(url = this.configService.appConfig.PLAYER_CONFIG.baseURL) {
+    const iFrameSrc = url + '&build_number=' + this.buildNumber;
+    setTimeout(() => {
+      const playerElement = this.contentIframe.nativeElement;
+      playerElement.src = iFrameSrc;
+      playerElement.onload = (event) => {
+        try {
+          this.adjustPlayerHeight();
+          playerElement.contentWindow.initializePreview(this.playerConfig);
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+        } catch (err) {
+          console.log('loading default player failed', err);
+          const prevUrls = this.navigationHelperService.history;
+          if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
+            history.back();
+          }
+        }
+      };
+    }, 0);
+  }
   /**
    * Initializes player with given config and emits player telemetry events
    * Emits event when content starts playing and end event when content was played/read completely
    */
-  showPlayer(loadCdn = true) {
-    console.log("rendererRunning: ", this.rendererRunning)
-    if (this.rendererRunning === true) {
-      this.playerElement.contentWindow.initializePreview(this.playerConfig);
-    } else {
-      let src;
-      if (environment.isOffline) {
-        src = this.configService.appConfig.PLAYER_CONFIG.localBaseUrl;
-      } else {
-        src = this.playerCdnUrl && loadCdn ? this.playerCdnUrl : this.configService.appConfig.PLAYER_CONFIG.baseURL;
-      }
-      const iFrameSrc = src + '&build_number=' + this.buildNumber;
-      setTimeout(() => {
-        this.playerElement.src = iFrameSrc;
-        this.playerElement.onload = (event) => {
-          if (!_.get(this.playerElement, 'contentWindow.initializePreview') && loadCdn) {
-            console.log('cdn player load failed, loading local player');
-            this.showPlayer(false);
-          } else if (_.get(this.playerElement, 'contentWindow.initializePreview')) {
-            this.adjustPlayerHeight();
-            this.playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-            this.playerElement.contentWindow.initializePreview(this.playerConfig);
-            this.rendererRunning = true;
-          } else {
-            console.log('loading player failed');
-          }
-        };
-
-      }, 0);
+  loadPlayer() {
+    if (_.includes(this.router.url, 'browse') && environment.isOffline) {
+      this.loadDefaultPlayer(`${this.configService.appConfig.PLAYER_CONFIG.localBaseUrl}webview=true`);
+      return;
+    } else if (environment.isOffline) {
+      this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
+      return;
     }
+
+    if (this.previewCdnUrl !== '' && (this.isCdnWorking).toLowerCase() === 'yes') {
+      this.loadCdnPlayer();
+      return;
+    }
+    this.loadDefaultPlayer();
   }
   /**
    * Adjust player height after load
@@ -93,14 +122,24 @@ export class PlayerComponent implements OnInit, OnChanges, AfterViewInit {
       $('#contentPlayer').css('height', height + 'px');
     }
   }
+
+  generateScoreSubmitEvent(event: any) {
+    if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
+      this.questionScoreSubmitEvents.emit(event);
+    }
+  }
+
   generateContentReadEvent(event: any) {
-    if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
-      event.detail.telemetryData.eid === 'END')) {
+    const eid = event.detail.telemetryData.eid;
+    if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(event);
       this.contentProgressEvent.emit(event);
 
-    } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
+    } else if (eid && (eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
+    }
+    if (eid && (eid === 'ASSESS') || eid === 'START' || eid === 'END') {
+      this.assessmentEvents.emit(event);
     }
   }
   emitSceneChangeEvent(timer = 0) {

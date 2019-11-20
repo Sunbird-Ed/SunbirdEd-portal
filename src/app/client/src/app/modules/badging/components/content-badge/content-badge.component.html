@@ -1,12 +1,13 @@
-<div class="ui grid">
-  <div class="twelve wide column">
-    <div *ngIf="data && data.length > 0">
-      <div class="ui circular mr-10 d-inline-block" *ngFor="let selectedbadge of data">
-        <div *ngIf="selectedbadge.badgeClassImage || selectedbadge.name">
-          <img class="ui mini circular image mr-0" src="{{selectedbadge.badgeClassImage ||selectedbadge.image }}" suiPopup
-            popupText="{{selectedbadge.badgeClassName || selectedbadge.name | uppercase}}" [popupPlacement]="'top'">
-        </div>
-      </div>
+<div class="ui grid padded" *ngIf="data && data.length > 0">
+  <div class="twelve wide column p-0">
+    <div class="mr-8 d-inline-block" *ngFor="let selectedbadge of data">
+      <img 
+        *ngIf="selectedbadge.badgeClassImage || selectedbadge.name" 
+        class="ui mini image" 
+        src="{{selectedbadge.badgeClassImage ||selectedbadge.image}}"
+        alt="{{selectedbadge.badgeClassName || selectedbadge.name}}"
+        suiPopup popupText="{{selectedbadge.badgeClassName || selectedbadge.name | uppercase}}" [popupPlacement]="'top'" 
+      />
     </div>
   </div>
 </div>

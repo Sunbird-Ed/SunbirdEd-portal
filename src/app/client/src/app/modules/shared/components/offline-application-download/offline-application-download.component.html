@@ -1,0 +1,40 @@
+<div class ="ui container" [appTelemetryImpression]="telemetryImpression">
+<div class="ui stackable grid mt-32">
+  <div class="one wide column"></div>
+  <div class="six wide column pr-8">
+    <div class="offline-download-card">
+      <h2 class="offline-download-card-heading">{{resourceService?.frmelmnts?.lbl?.downloadDikshaLite}}</h2>
+      <dl class="mt-16">
+        <div class="d-flex" *ngIf="desktopAppVersion">
+          <dt class="description-list-key">{{resourceService?.frmelmnts?.lbl?.versionKey}}</dt>
+          <dd class="description-list-value">{{desktopAppVersion}}</dd>
+        </div>
+        <div class="d-flex mt-8" *ngIf="desktopAppReleaseDate">
+          <dt class="description-list-key">{{resourceService?.frmelmnts?.lbl?.releaseDateKey}}</dt>
+          <dd class="description-list-value">{{desktopAppReleaseDate}}</dd>
+        </div>
+        <div class="d-flex mt-8" *ngIf="desktopAppSupportedLanguage">
+          <dt class="description-list-key">{{resourceService?.frmelmnts?.lbl?.supportedLanguages}}</dt>
+          <dd class="description-list-value">{{desktopAppSupportedLanguage}}</dd>
+        </div>
+      </dl>
+      <div class="offline-download-card-description mt-32">{{resourceService?.frmelmnts?.lbl?.desktopAppDescription}}</div>
+      <ul class="sb-circular-list mt-32">
+        <li class="sb-circular-list-item mb-0">{{resourceService?.frmelmnts?.lbl?.desktopAppFeature001}}</li>
+        <li class="sb-circular-list-item mb-0">{{resourceService?.frmelmnts?.lbl?.desktopAppFeature002}}</li>
+        <li class="sb-circular-list-item mb-0">{{resourceService?.frmelmnts.lbl?.desktopAppFeature003}}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="four wide column pl-0">
+    <div class="offline-download-card offline-page-content">
+      <div class="d-flex flex-ai-center flex-jc-center text-center flex-dc offline-page-content">
+        <img src="../assets/images/offline-computer.png" alt="download diksha app">
+        <button appTelemetryInteract [telemetryInteractEdata]="{id:'offlineAppDownload-button' , type:'click' , pageid:'offline-application-download' }" type="button" class="sb-btn sb-btn-primary sb-btn-normal mt-32" (click)="downloadApp()">{{resourceService?.frmelmnts?.btn?.downloadDikshaForWindows}}&#x200E;</button>
+        <!--<div class="offline-download-card-extra mt-16 cursor-pointer">{{resourceService?.frmelmnts?.btn?.downloadInstruction}}</div> -->
+      </div>
+    </div>
+  </div>
+  <div class="one wide column"></div>
+</div>
+</div>

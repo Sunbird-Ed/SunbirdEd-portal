@@ -100,13 +100,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
       req.data.request.filters.status = ['Review'];
     }
     let apiRequest;
-    apiRequest = [this.publicDataService.post(req).pipe(tap(data => this.showLoader = false), catchError(err => { let errInfo = {errorMsg: 'Fetching question list failed' }; return throwError(this.cbseService.apiErrorHandling(err, errInfo)) }))];
+    apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false), catchError(err => { let errInfo = {errorMsg: 'Fetching question list failed' }; return throwError(this.cbseService.apiErrorHandling(err, errInfo)) }))];
     if (this.role.currentRole === "PUBLISHER") {
       delete req.data.request.filters.createdBy;
       req.data.request.filters.status = ['Live'];
       if (this.selectedAttributes.resourceIdentifier) {
         // tslint:disable-next-line:max-line-length
-        apiRequest = [this.publicDataService.post(req).pipe(tap(data => this.showLoader = false),
+        apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false),
           catchError(err => {
             let errInfo = {errorMsg: 'Fetching question list failed' };
             return throwError(this.cbseService.apiErrorHandling(err, errInfo))
@@ -146,7 +146,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     const request = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
     };
-    return this.publicDataService.get(request).pipe(map((response) => {
+    return this.contentService.get(request).pipe(map((response) => {
       this.existingContentVersionKey = _.get(response, 'result.content.versionKey');
       return response;
     }, err => {
@@ -337,7 +337,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
             }
           }
         };
-        this.publicDataService.post(option).pipe(catchError(err => {
+        this.contentService.post(option).pipe(catchError(err => {
           let errInfo = {errorMsg: 'Resource publish failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo))
         }))
@@ -396,7 +396,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
             }
           }
         };
-        this.publicDataService.patch(options).pipe(catchError(err => {
+        this.contentService.patch(options).pipe(catchError(err => {
           let errInfo = {errorMsg: 'Resource updation failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo))
         }))
@@ -419,7 +419,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}?mode=edit&fields=versionKey,createdBy`
     };
-    return this.publicDataService.get(req).pipe(
+    return this.contentService.get(req).pipe(
       map(res => {
         return _.get(res, 'result');
       }, err => {
@@ -483,7 +483,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       url: `private/content/v3/hierarchy/update`,
       data: requestBody
     };
-    this.publicDataService.patch(req).pipe(catchError(err => {
+    this.contentService.patch(req).pipe(catchError(err => {
       let errInfo = { errorMsg: 'Resource updation failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo))
     }))

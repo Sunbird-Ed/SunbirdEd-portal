@@ -19,6 +19,5 @@ export class CertificateService {
       data: data
     };
     return this.learnerService.post(option);
-
   }
 }

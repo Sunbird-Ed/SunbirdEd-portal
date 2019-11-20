@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
-import { PublicDataService } from '@sunbird/core';
+import { PublicDataService, ContentService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -24,7 +24,7 @@ export class TextbookListComponent implements OnInit {
   telemetryInteract = {};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,private cbseService: CbseProgramService,
     public utilService: UtilService, public toasterService: ToasterService, public router: Router,
-    public telemetryService: TelemetryService) { }
+    public telemetryService: TelemetryService, private contentService: ContentService) { }
 
   ngOnInit() {
     const req = {
@@ -45,7 +45,7 @@ export class TextbookListComponent implements OnInit {
         }
       }
     };
-    this.publicDataService.post(req).pipe(catchError(err => {
+    this.contentService.post(req).pipe(catchError(err => {
       let errInfo = { errorMsg: 'Question creation failed' };
       this.showLoader = false;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo))

@@ -6,6 +6,7 @@ import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { IEnrolledCourses, ICourses } from './../../interfaces';
 import { ContentService } from '../content/content.service';
+import {throwError as observableThrowError } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
  *  Service for course API calls.
@@ -83,6 +84,30 @@ export class CoursesService {
   public initialize() {
     this.getEnrolledCourses().subscribe((date) => {
     });
+  }
+
+   /**
+   *  api call for getting course QR code CSV file.
+   */
+  public getQRCodeFile() {
+    const userId = [this.userService.userid] ;
+    const option = {
+      url: this.config.urlConFig.URLS.COURSE.GET_QR_CODE_FILE,
+      data: {
+        'request': {
+          'filter': {
+            'userIds': userId
+          }
+        }
+      }
+    };
+    return this.learnerService.post(option).pipe(
+      map((apiResponse: ServerResponse) => {
+        return apiResponse;
+      }),
+      catchError((err) => {
+        return observableThrowError(err);
+      }));
   }
 
   public updateCourseProgress(courseId, batchId, Progress) {

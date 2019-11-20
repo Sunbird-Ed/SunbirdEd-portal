@@ -26,16 +26,32 @@
 }
 
 .ui.left.icon.input .icon{
-    left: 11px;
-    top: 13px;
+    //left: 11px;
+   // top: 13px;
     font-size: 1rem;
     font-family: inherit;
  }
 
-.ui.input > input {
-    padding-left: 3.37142857em !important;
-}
+// .ui.input > input {
+//     padding-left: 3.37142857em !important;
+// }
 
 .height-200 {
     height: 200px !important;
+}
+
+.sb-field.ui.input{
+    display: block;
+    .icon{
+        left: 0;
+        top: 10px;
+    }
+    .sb-form-control{
+        border: $sb-input-border-normal;
+        line-height: 1.5;
+        padding: 0.5714rem;
+        &:hover {
+            border: $sb-input-border-hover; 
+        }
+    }
 }

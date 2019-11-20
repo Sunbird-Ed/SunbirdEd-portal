@@ -1,9 +1,10 @@
 
 import { filter } from 'rxjs/operators';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
 import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
+import { environment } from '@sunbird/environment';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
@@ -14,7 +15,7 @@ import * as _ from 'lodash-es';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   /**
    * Sui dropdown initiator
    */
@@ -56,6 +57,7 @@ export class SearchComponent implements OnInit {
   searchUrl: object;
   config: ConfigService;
   userProfile: IUserProfile;
+  isOffline: boolean = environment.isOffline;
 
   searchDropdownValues: Array<string> = ['All', 'Courses', 'Library'];
 
@@ -132,7 +134,11 @@ export class SearchComponent implements OnInit {
   onChange() {
     this.route.navigate([this.search[this.selectedOption], 1]);
   }
-
+  ngOnDestroy() {
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
+  }
   /**
    * search input box placeholder value
    */

@@ -7,6 +7,8 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/platform-browser';
+import { environment } from '@sunbird/environment';
+
 /**
  * This display a a section
  */
@@ -40,10 +42,12 @@ export class PageSectionComponent implements OnInit, OnDestroy {
 
   maxSlide = 0;
 
+  isOffline: boolean = environment.isOffline;
+
   constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     private cdr: ChangeDetectorRef) {
-      this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
-    }
+    this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
+  }
   playContent(event) {
     event.section = this.section.name;
     this.playEvent.emit(event);
@@ -126,5 +130,13 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
+  }
+  getObjectRollup(content) {
+    const rollup = {};
+    const contentType = _.get(content, 'contentType') || _.get(content, 'metaData.contentType');
+    if (_.lowerCase(contentType) === 'course') {
+      rollup['l1'] = _.get(content, 'metaData.courseId') || _.get(content, 'metaData.identifier');
+    }
+    return rollup;
   }
 }

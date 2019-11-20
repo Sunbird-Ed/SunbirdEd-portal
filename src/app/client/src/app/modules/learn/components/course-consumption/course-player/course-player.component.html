@@ -30,7 +30,7 @@
                                     <h4 class="sb-pageSection-title sb-pageSection-title-light">{{resourceService.frmelmnts.lbl.coursestructure}}</h4>
                                 </div>
                             </div>
-                            
+
                             <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="navigateToContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"
                                     [contentStatus]="contentStatus"></app-collection-tree>
                             <ng-template #dataCommingSoon>
@@ -38,7 +38,7 @@
                                     <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
                                     <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
                                     <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-                                </div> 
+                                </div>
                             </ng-template>
                         </div>
                         <div class='three wide column'>
@@ -61,14 +61,22 @@
                             <app-curriculum-card *ngIf="curriculum && curriculum.length > 0" [curriculum]="curriculum"></app-curriculum-card>
                             <br>
                             <div class="courseupdate">
+                                <p class="mb-5" *ngIf="courseHierarchy.author">{{resourceService.frmelmnts.lbl.author}}: {{courseHierarchy.author}}</p>
                                 <p class="mb-5" *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</p>
-                                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.orgName">{{courseHierarchy.orgDetails.orgName}}</p>
+                                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.orgName">{{resourceService.frmelmnts.lbl.publishedBy}}: {{courseHierarchy?.organisation?.join(', ')}}</p>
                                 <p class="mb-5"*ngIf="courseHierarchy.orgDetails?.email">
                                     <a href="mailto:{{courseHierarchy.orgDetails?.email}}?subject={{courseHierarchy.name}}">{{courseHierarchy.orgDetails?.email}}</a>
                                 </p>
                                 <div class="ui divider"></div>
                                 <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.coursecreatedon}}</span>: {{courseHierarchy.createdOn | dateFormat}}</p>
                                 <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.updatedon}}</span>: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
+                                <p class="mb-5">
+                                    <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.courseCredits}}" class="cursor-pointer">
+                                      {{resourceService.frmelmnts.lbl.courseCredits}}
+                                    </a>
+                                </p>
+                                <div class="ui divider"></div>
+                                <p class="mb-5" *ngIf="courseHierarchy.license">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
                                 <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
                             </div>
                         </div>
@@ -85,8 +93,9 @@
                                 <div class="sb-pageSection" id="app-player-collection-renderer">
                                     <div  class="sb-pageSection-header">
                                         <h4 class="sb-pageSection-title m-0 mr-5"> {{contentTitle}}</h4>
-                                        <button appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
-                                        [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeContentPlayer()">Close <i class="close icon"></i></button>
+                                        <button id="closebutton" appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="contentInteractObject"
+                                        [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeContentPlayer()">
+                                        {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
                                     </div>
                                 </div>
                                 <div class="ui warning message click-notify-xurl" *ngIf="showExtContentMsg">
@@ -96,7 +105,7 @@
                                 </div>
                                 <div class="ui grid">
                                     <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression">
-                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" class="content-player" [playerConfig] ="playerConfig" [playerOption] = "playerOption"></app-player>
+                                        <app-player (contentProgressEvent)="contentProgressEvent($event)" (assessmentEvents)="assessmentEvents($event)" (questionScoreSubmitEvents)="questionScoreSubmitEvents($event)" class="content-player" [playerConfig] ="playerConfig" [playerOption] = "playerOption"></app-player>
                                     </div>
                                 </div>
                             </div>
@@ -156,4 +165,6 @@
     </div>
 </div>
 </div>
+<app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false">
+</app-content-credits>
 <router-outlet></router-outlet>

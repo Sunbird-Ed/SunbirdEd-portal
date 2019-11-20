@@ -1,5 +1,5 @@
 import { ExploreContentComponent } from './explore-content.component';
-import { BehaviorSubject, throwError, of } from 'rxjs';
+import { BehaviorSubject, throwError, of} from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
@@ -11,6 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { DownloadManagerService } from '@sunbird/offline';
 
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
@@ -25,9 +26,18 @@ describe('ExploreContentComponent', () => {
   }
   const resourceBundle = {
     'messages': {
-      'fmsg': {},
+      'fmsg': {
+        'm0027': 'Something went wrong',
+        'm0090': 'Could not download. Try again later',
+        'm0091': 'Could not copy content. Try again later'
+      },
+      'stmsg': {
+        'm0009': 'error',
+        'm0140': 'DOWNLOADING',
+        'm0138': 'FAILED',
+        'm0139': 'DOWNLOADED',
+      },
       'emsg': {},
-      'stmsg': {}
     }
   };
   class FakeActivatedRoute {
@@ -48,7 +58,7 @@ describe('ExploreContentComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
-      providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
+      providers: [PublicPlayerService, DownloadManagerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -173,4 +183,42 @@ describe('ExploreContentComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+
+  it('showDownloadLoader to be true' , () => {
+    spyOn(component, 'startDownload');
+    component.isOffline = true;
+    expect(component.showDownloadLoader).toBeFalsy();
+    component.playContent(Response.download_event);
+    expect(component.showDownloadLoader).toBeTruthy();
+  });
+
+  it('should call updateDownloadStatus when updateCardData is called' , () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    spyOn(playerService, 'updateDownloadStatus');
+    component.contentList = Response.successData.result.content;
+    component.updateCardData(Response.download_list);
+    expect(playerService.updateDownloadStatus).toHaveBeenCalled();
+  });
+
+  it('should call download manager service on when startDownload()', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.messages = resourceBundle.messages;
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(of(Response.download_success));
+    component.startDownload(Response.result.result.content);
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+  });
+
+  it('startDownload should fail', () => {
+    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const resourceService = TestBed.get(ResourceService);
+    toasterService = TestBed.get(ToasterService);
+    resourceService.messages = resourceBundle.messages;
+    component.contentList = Response.successData.result.content;
+    spyOn(downloadManagerService, 'startDownload').and.returnValue(throwError(Response.download_error));
+    component.startDownload(Response.result.result.content);
+    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(component.showDownloadLoader).toBeFalsy();
+  });
+
 });

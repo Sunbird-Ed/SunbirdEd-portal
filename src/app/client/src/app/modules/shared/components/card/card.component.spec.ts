@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Response } from './card.component.spec.data';
@@ -11,11 +12,18 @@ describe('CardComponent', () => {
   let component: CardComponent;
   let fixture: ComponentFixture<CardComponent>;
 
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url = jasmine.createSpy('url');
+  }
+  class FakeActivatedRoute {
+  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [ CardComponent, CdnprefixPipe ],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

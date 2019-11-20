@@ -1,13 +1,6 @@
 <div class="ui container" [appTelemetryImpression]="telemetryImpression">
-  <div class="content-grid py-20">
+  <div class="content-grid py-24">
     <div class="row">
-      <!-- <div class="six wide computer twelve wide mobile eight wide tablet column centered pt-10">
-          <div class="ui fluid icon input">
-            <input type="text" name="search" (keyup.enter)="navigateToSearch()" [(ngModel)]="searchKeyword" placeholder="{{resourceService.frmelmnts?.prmpt?.searchContent}}"
-              title="Search" />
-            <i class="search icon dialcode-search-icon cursor-pointer" tabindex="0" (click)="navigateToSearch()"></i>
-          </div>
-        </div> -->
     </div>
     <div class="row" *ngIf="showLoader">
       <div class="twelve wide column">
@@ -21,66 +14,71 @@
           <span class="sb-pageSection-count sb-label sb-label-xs sb-label-error mr-5">{{dialCode}}</span>
           <span class="header-label">{{resourceService.frmelmnts?.lbl?.linkedContents}}
             ({{searchResults.length}})</span>
-          <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
+          <button *ngIf="!isOffline" appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
             [telemetryInteractCdata]="telemetryCdata"
-            class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn computer only" type="button" routerLink="/get">Close
+            class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn computer only" type="button" routerLink="/get">
+            {{resourceService?.frmelmnts?.btn?.close}}
             <i class="close icon"></i></button>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div infinite-scroll
-           [infiniteScrollDistance]="scrollDistance"
-           [infiniteScrollThrottle]="throttle"
-           (scrolled)="onScrollDown()">
-
+    <div class="row" [appTelemetryImpression]="dialResultImpression">
+      <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
+        (scrolled)="onScrollDown()">
         <div *ngIf="!showLoader && itemsToDisplay.length" in-view-container (inview)="inview($event)"
-             [throttle]="[1000]" [trigger]="itemsToDisplay"
-             class="masonry-grid dynamic-section-card">
-
+          [throttle]="[1000]" [trigger]="itemsToDisplay" class="masonry-grid dynamic-section-card">
           <div in-view-item [id]="i" [data]="content" class="masonry-item"
-               *ngFor="let content of itemsToDisplay;let i = index;">
-            <app-dial-code-card appContentDirection [dialCode]="dialCode" [data]="content"
-                                (clickEvent)="getEvent($event)"></app-dial-code-card>
+            *ngFor="let content of itemsToDisplay;let i = index;">
+
+            <app-card *ngIf="!isOffline && content.contentType.toLowerCase() === 'course'" appContentDirection (clickEvent)="playCourse($event)" [dialCode]="dialCode" [data]="content"></app-card>
+
+            <app-dial-code-card *ngIf="!isOffline && content.contentType.toLowerCase() !== 'course'" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"  [singleContentRedirect]="singleContentRedirect"></app-dial-code-card>
+
+            <app-offline-dial-code-card *ngIf="isOffline" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-offline-dial-code-card>
+
           </div>
         </div>
       </div>
-    </div>
-    <div class="row sb-placeholder">
-      <div *ngIf="!showLoader && !searchResults.length">
-        <div class="placeholder mt-40">
-          <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl}}" />
-          <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-          <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-        </div>
+      <div class="row sb-placeholder">
+          <div *ngIf="!showLoader && !searchResults.length">
+            <app-comming-soon></app-comming-soon>
+          </div>
       </div>
     </div>
   </div>
 </div>
-
-
 <div class="mobile-popup-dimmer" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
   <div class="mobile-app-popup" [ngClass]="{'bottom-0': showMobilePopup}">
     <div class="download-diksha" (click)="redirectToDikshaApp()">
-      <!-- <button class="ui button close-mobile-div">
-        <i class="close icon"></i>
-      </button> -->
       <div class="diksha-logo p-15">
         <div class="mobile-circles">
           <div class="big-box border-round border-r50"></div>
-          <div class="oval-box border-round ml-20 ml-10"></div>
-          <div class="small-box border-round border-r50 ml-20 mr-10"></div>
+          <div class="oval-box border-round ml-24"></div>
+          <div class="small-box border-round border-r50 ml-16 mr-8"></div>
           <div class="small-box border-round border-r50"></div>
         </div>
-        <label class="d-block pb-10 text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile}}</label>
+        <label class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
         <a id='app-download-mobile' class="d-block pb-10 text-center app-download">
-          <img class="playStore-img" src="../../../../../assets/images/google_playstore.png"
-            alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}"
-            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile}}">
+          <img class="playStore-img" src="assets/images/google_playstore.png"
+            alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}"
+            title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}">
         </a>
-        <p class="d-block text-center pt-10">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}
+        <p class="d-block text-center pt-8">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}
         </p>
       </div>
     </div>
   </div>
 </div>
+
+<app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>
+
+<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
+  </h2>
+</sui-dimmer>
+<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
+  </h2>
+</sui-dimmer>

@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, ConfigService, NavigationHelperService
 import { CourseBatchService } from './../../../services';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IImpressionEventInput,  IInteractEventObject, IInteractEventEdata  } from '@sunbird/telemetry';
+import { TelemetryService, IImpressionEventInput,  IInteractEventObject, IInteractEventEdata  } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 
@@ -31,6 +31,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
     public configService: ConfigService, public coursesService: CoursesService,
+    private telemetryService: TelemetryService,
     public navigationhelperService: NavigationHelperService) { }
 
   ngOnInit() {
@@ -61,6 +62,26 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
   }
+  telemetryLogEvents(status: boolean) {
+    let level = 'ERROR';
+    let msg = 'Enrollment to the batch failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = 'Enrollment to the batch was success';
+    }
+    const event = {
+      context: {
+        env: 'app'
+      },
+      edata: {
+        type: 'enroll-batch',
+        level: level,
+        message: msg,
+        pageid: this.router.url.split('?')[0]
+      }
+    };
+    this.telemetryService.log(event);
+  }
   enrollToCourse(batchId?: any) {
     this.setTelemetryData();
     const request = {
@@ -76,9 +97,11 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((data) => {
         this.disableSubmitBtn = true;
         this.fetchEnrolledCourseData();
+        this.telemetryLogEvents(true);
       }, (err) => {
         this.disableSubmitBtn = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0001);
+        this.telemetryLogEvents(false);
       });
   }
   fetchEnrolledCourseData() {
@@ -119,7 +142,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   setTelemetryData() {
     this.submitInteractEdata = {
-      id: 'enroll-batch',
+      id: 'enroll-batch-popup',
       type: 'click',
       pageid: 'course-consumption'
     };

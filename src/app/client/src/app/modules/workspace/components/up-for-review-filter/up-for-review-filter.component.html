@@ -24,7 +24,7 @@
       <div class="field">
         <div class="content dropdown-content">
          <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}:</span>
-          <div class="ui inline dropdown search-dropdown" id="sortByDropDown">
+          <div class="ui inline dropdown search-dropdown content-filter-sort" id="sortByDropDown">
             <sui-select class="inline" (selectedOptionChange)= "applySorting($event)" [(ngModel)]="sortByOption" [options]="sortingOptions"
             valueField="field"
         labelField="name"  #selectSort>
@@ -43,7 +43,7 @@
 
 <ng-template let-popup #popupTemplate>
   <div class="popup-content">
-      <app-data-driven-filter [pageId]="'up-for-review-page'" [ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType"
+      <app-data-driven-filter [pageId]="'up-for-review-page'" [ignoreQuery]="['key','sortType','sort_by','query']" *ngIf="filterType" [filterEnv]="filterType"
       [accordionDefaultOpen]=true [isShowFilterLabel]=false [showSearchedParam]=false></app-data-driven-filter>
     </div>
 </ng-template>

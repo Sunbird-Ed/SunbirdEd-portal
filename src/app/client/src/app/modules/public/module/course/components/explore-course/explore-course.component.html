@@ -1,20 +1,14 @@
-<div class="ui segment br-0 p-0 prominent-filter" *ngIf="!showLoader">
-    <div class="ui container">
-          <div class="twelve wide column mb-15">
-              <app-data-driven-filter  [enrichFilters]="facetsList" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-search'"
-              *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
-              [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
-              [hashTagId]="hashTagId" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-              </div>
-    </div>
-</div>
+<app-data-driven-filter  [enrichFilters]="facetsList" [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-search'"
+        *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
+        [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
+        [hashTagId]="hashTagId" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
 <div class="ui container">
-    <div class="content-grid">
+    <div class="content-grid mt-24">
         <div class="sb-pageSection" *ngIf="!showLoader && contentList.length && this.queryParams.key">
             <div  class="sb-pageSection-header">
-                <h4 class="sb-pageSection-title m-0 mr-5">{{resourceService.frmelmnts?.lbl?.showingResultsFor |
-                        interpolate:'{searchString}':this.queryParams.key}}</h4>
-                <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  [routerLink]="['/explore-course']">Close <i class="close icon"></i></button>
+                <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML] ="resourceService.frmelmnts?.lbl?.showingResultsFor |
+                interpolate:'{searchString}':this.queryParams.key "></h4>
+                <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  [routerLink]="['/explore-course']">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
             </div>
         </div>
         
@@ -42,7 +36,7 @@
                     <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.currentPage + 1)"
                         class="sb-item">&gt;</a>
                     <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}" (click)="navigateToPage(paginationDetails.totalPages)"
-                        class="sb-item ">&raquo</a>
+                        class="sb-item ">&raquo;</a>
                 </div>
             </div>
         </div>

@@ -63,16 +63,18 @@ export class ResourceService {
     return ResourceService.singletonInstance;
   }
   public initialize() {
-    this.getResource(this._cacheService.get('portalLanguage') || 'en');
+    const range  = {value: 'en', label: 'English', dir: 'ltr'};
+    this.getResource(this._cacheService.get('portalLanguage') || 'en', range);
   }
   /**
    * method to fetch resource bundle
   */
-  public getResource(language = 'en'): void {
+  public getResource(language = 'en', range: any = {}): void {
     const resourcebundles: any | null = this.cacheService.get('resourcebundles' + language);
     if (resourcebundles) {
       this.messages = resourcebundles.messages;
       this.frmelmnts = resourcebundles.frmelmnts;
+      this.getLanguageChange(range);
     } else {
       const option = {
         url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
@@ -87,6 +89,7 @@ export class ResourceService {
           }, {
               maxAge: this.browserCacheTtlService.browserCacheTtl
             });
+          this.getLanguageChange(range);
         },
         (err: ServerResponse) => {
         }
@@ -122,7 +125,7 @@ export class ResourceService {
  * get method to fetch instance.
  */
   get instance(): string {
-    return this._instance;
+    return _.upperCase(this._instance);
   }
 
   getLanguageChange(language) {

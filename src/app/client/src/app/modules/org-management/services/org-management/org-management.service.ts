@@ -39,7 +39,7 @@ export class OrgManagementService {
  */
   public bulkUserUpload(req): Observable<ServerResponse> {
     const httpOptions: RequestParam = {
-      url: this.configService.urlConFig.URLS.ADMIN.BULK.USERS_UPLOAD,
+      url: this.configService.urlConFig.URLS.ADMIN.BULK.USER_UPLOAD_SHADOW,
       data: req
     };
     return this.learnerService.post(httpOptions);

@@ -1,0 +1,32 @@
+<sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" #modal [mustScroll]="true">
+
+  <div class="sb-certificatePage p-16">
+    <div class="sb-certificatePage-header">
+      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo" />
+    </div>
+    <div class="sb-merged-account-content text-center">
+      <h3 class="sb-merged-account-body-header my-24 font-weight-bold f-18">
+        {{resourceService.frmelmnts?.lbl?.mergeAccount}}</h3>
+      <div *ngIf="mergeType === 'manual'">
+        <p *ngIf="isMergeSuccess" class="sb-merged-account-body-para sb-color-success font-weight-bold py-8">
+          {{resourceService.messages?.imsg?.m0065}}. {{resourceService.messages?.imsg?.m0066}}</p>
+        <p *ngIf="!isMergeSuccess" class="sb-merged-account-body-para sb-color-error font-weight-bold py-8">
+          {{resourceService.messages?.imsg?.m0067}} </p>
+      </div>
+
+      <div *ngIf="mergeType === 'auto'">
+        <p *ngIf="isMergeSuccess" class="sb-merged-account-body-para sb-color-success font-weight-bold py-8">
+          {{resourceService.messages?.imsg?.m0081}}</p>
+
+        <p *ngIf="!isMergeSuccess" class="sb-merged-account-body-para sb-color-error font-weight-bold py-8">
+          {{resourceService.messages?.imsg?.m0080}} </p>
+      </div>
+
+    </div>
+    <div class="d-flex flex-jc-center mt-40">
+        <button class="sb-btn sb-btn-secondary sb-btn-md w-100"
+                (click)="closeModal()">{{resourceService.frmelmnts?.btn?.ok}}
+        </button>
+      </div>
+  </div>
+</sui-modal>

@@ -1,0 +1,61 @@
+<sui-modal 
+    [mustScroll]="true" 
+    [isClosable]="false" 
+    [transitionDuration]="0" 
+    [size]="'normal'" 
+    class="sb-modal " 
+    [ngClass]="{'sb-error': extIdFailed, 'sb-success' : extIdVerified }" 
+    #createValidateModal
+    *ngIf="!isOffline">
+    
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.teacherIdVarification}}
+  </div>
+  <!--/Header-->
+
+  <!--modal content-->
+  <div class="sb-modal-content">
+    <div *ngIf="!processValidation">
+      {{resourceService?.frmelmnts?.lbl?.govtSchoolTeacher | interpolate: '{instance}':instance}}
+    </div>
+      <div *ngIf="processValidation && !navivateToResult && !(extIdVerified || extIdFailed)" class="sb-field-group mb-16 text-left">
+        <div class="sb-field">
+          <label class="required">Enter you teacher ID for verification</label>
+          <input #extIdInputField (keyup)="getIdLength($event)" [(ngModel)]="externalId" type="text" required autofocus name="extId" placeholder="For example, ER12345" class="sb-form-control"/>
+          <span *ngIf="showError" class="sb-color-error fxsmall mt-8">
+            {{resourceService?.frmelmnts?.lbl?.incorrectTeacherId}}
+          </span>
+        </div>
+      </div>
+      <!-- Success / error field  -->
+    <div *ngIf="extIdVerified" class="text-center my-24">
+      {{resourceService?.frmelmnts?.lbl?.teacherIdVerified}}
+    </div>
+
+    <div *ngIf="extIdFailed" class="text-center my-24">
+      {{resourceService?.frmelmnts?.lbl?.teacherIDnotVerified}}
+    </div>
+  </div>
+<!--modal content-->
+
+<!--action buttons-->
+
+  <div class="sb-modal-actions">
+    <div class="action-btns" *ngIf="!processValidation">
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="rejectExtId()">
+        {{resourceService?.frmelmnts?.btn?.no}}
+      </button>
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="navigateToValidateId()">
+        {{resourceService?.frmelmnts?.btn?.yes}}
+      </button>
+    </div>
+    <button [disabled]="!enableSubmitButton" *ngIf="processValidation && !(extIdVerified || extIdFailed)" type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="verifyExtId()" >
+      {{resourceService?.frmelmnts?.btn?.submit}}
+    </button>
+    <button *ngIf="extIdVerified || extIdFailed" [ngClass]="{'sb-btn-error' : extIdFailed, 'sb-btn-success' : extIdVerified }" type="button" class="sb-btn sb-btn-normal" (click)="closeModal()">  <!--sb-btn-success-->
+      {{resourceService?.frmelmnts?.btn?.ok}}
+    </button>
+  </div>
+  <!--action buttons-->
+</sui-modal>

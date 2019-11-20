@@ -1,0 +1,120 @@
+
+.sb-bulk-upload {
+    .bulk-upload-title {
+      font-size: $font-size-md;
+      font-weight: 600;
+    }
+  
+    .bulk-content-upload-info {
+      p {
+        font-size: $font-size-sm;
+        color: $gray-400;
+      }
+    }
+    .sb-bulk-upload-details-report-info {
+      border-bottom: 1px solid #ddd;
+  
+      .sb-bulk-upload-file {
+        flex-basis: 70%;
+  
+        .sb-bulk-upload-content-title {
+          font-size: $font-size-sm;
+          color: $gray-400;
+        }
+  
+        .sb-upload-file {
+          height: ($base-block-space * 7);
+          width:  ($base-block-space * 7);
+          background: #6666;
+          margin-top: auto;
+          margin-bottom: auto;
+        }
+      }
+  
+      .sb-bulk-upload-status {
+        flex-basis: 15%;
+      }
+  
+      .sb-bulk-upload-details-report {
+        flex-basis: 15%;
+      }
+    }
+    .sb-btn {
+        text-transform: initial;
+    }
+    input {
+        position: absolute;
+        font-size: 50px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+      }
+  }
+  
+  .sb-modal {
+    .sb-bulk-upload-btn{
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+          .sb-btn-upload{
+            position: absolute;
+            opacity: 0;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            height: 100%;
+            cursor: pointer;
+          }
+      }
+    .sb-bulk-upload-file {
+      .sb-upload-file {
+          height: ($base-block-space * 7);
+          width:  ($base-block-space * 7);
+          background: #6666;
+          margin-top: auto;
+          margin-bottom: auto;
+      }
+  
+      .sb-bulk-upload-content-title {
+        font-size: $font-size-sm;
+        color: $gray-400;
+      }
+    }
+  
+    .sb-bulk-upload-error-info {
+      .ui.basic.error {
+        background: $white-color;
+        color: $danger-color !important;
+        font-size: $font-size-base;
+        font-weight: bold;
+        border: none !important;
+  
+        .sb-bulk-upload-extra-label {
+          font-size: $font-size-sm;
+          font-weight: normal;
+        }
+      }
+  
+      .sb-bulk-upload-error-list {
+        max-height: 140px;
+        overflow-y: auto;
+  
+        .sb-bulk-upload-error-list-item {
+          font-size: $font-size-sm;
+          color: $gray-400;
+          line-height: 20px;
+          margin-bottom: ($base-block-space / 2);
+          padding-bottom: ($base-block-space / 2);
+          border-bottom: 1px solid #ddd;
+          &:last-child {
+            margin: 0;
+          }
+        }
+      }
+    }
+    .sb-bulk-upload-options {
+      color: $gray-400;
+    }
+  }
+  

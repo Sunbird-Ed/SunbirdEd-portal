@@ -22,6 +22,7 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
   public navigate = jasmine.createSpy('navigate');
+  public url = '';
   public events = new Observable(observer => {
     observer.next(this.navigationEnd);
     observer.complete();
@@ -30,8 +31,10 @@ class RouterStub {
 const fakeActivatedRoute = {
   snapshot: {
     root: { firstChild: { params: { slug: 'sunbird' } } }
-  }
+  },
+  queryParams: of({})
 };
+
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -39,6 +42,8 @@ describe('AppComponent', () => {
   let telemetryService;
   let configService;
   let userService;
+  let timerCallback;
+  let resourceService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
@@ -64,9 +69,10 @@ describe('AppComponent', () => {
     telemetryService = TestBed.get(TelemetryService);
     configService = TestBed.get(ConfigService);
     userService = TestBed.get(UserService);
+    resourceService = TestBed.get(ResourceService);
     spyOn(navigationHelperService, 'initialize').and.callFake(() => {});
     spyOn(telemetryService, 'initialize');
-    spyOn(component, 'setDeviceId').and.returnValue(of('device'));
+    spyOn(telemetryService, 'getDeviceId').and.callFake((cb) => cb('123'));
     spyOn(document, 'querySelector').and.returnValue({ setAttribute: () => { }});
     spyOn(Fingerprint2, 'constructor').and.returnValue({get: () => {}});
     spyOn(document, 'getElementById').and.callFake((id) => {
@@ -80,8 +86,13 @@ describe('AppComponent', () => {
         return { value: 'defaultTenant' };
       }
     });
+    timerCallback = jasmine.createSpy('timerCallback');
+    jasmine.clock().install();
   });
 
+afterEach(() => {
+  jasmine.clock().uninstall();
+});
   it('should config telemetry service for login Session', () => {
     const learnerService = TestBed.get(LearnerService);
     const publicDataService = TestBed.get(PublicDataService);
@@ -128,7 +139,7 @@ describe('AppComponent', () => {
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
-    expect(deviceRegisterService.initialize).toHaveBeenCalledWith('b00bc992ef25f1a9a8d63291e20efc8d');
+    expect(deviceRegisterService.initialize).toHaveBeenCalled();
   });
 const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
   it('should config telemetry service for Anonymous Session', () => {
@@ -175,7 +186,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
-    expect(deviceRegisterService.initialize).toHaveBeenCalledWith('1235654');
+    expect(deviceRegisterService.initialize).toHaveBeenCalledWith();
   });
 
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {
@@ -211,5 +222,43 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
+  });
+
+  it('should initialize ShepherdData', () => {
+    resourceService.messages = mockData.resourceBundle.messages;
+    resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
+    spyOn(component, 'interpolateInstance');
+    component.initializeShepherdData();
+    expect(component.interpolateInstance).toHaveBeenCalledTimes(7);
+  });
+
+  it('should call initializeShepherdData method', () => {
+    resourceService.messages = mockData.resourceBundle.messages;
+    resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
+    spyOn(component, 'initializeShepherdData');
+    setTimeout(() => {
+      component.ngAfterViewInit();
+    }, 1000);
+    jasmine.clock().tick(10001);
+    expect(component.initializeShepherdData).toHaveBeenCalled();
+  });
+
+  it('ShepherdData should match with resourcedata', () => {
+    resourceService.messages = mockData.resourceBundle.messages;
+    resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
+    component.initializeShepherdData();
+    expect(component.shepherdData[0].id).toBe(resourceService.frmelmnts.instn.t0086);
+    expect(component.shepherdData[1].options.title).toBe(resourceService.frmelmnts.instn.t0087);
+    expect(component.shepherdData[0].options.text[0]).toContain([resourceService.frmelmnts.instn.t0090.replace('{instance}',
+                                                                                              component.instance.toUpperCase())]);
+    expect(component.shepherdData[0].options.text[0]).toContain(component.instance.toUpperCase());
+  });
+
+  it('ShepherdData should match with given instance', () => {
+    resourceService.messages = mockData.resourceBundle.messages;
+    resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
+    component.instance = 'preprod';
+    component.initializeShepherdData();
+    expect(component.shepherdData[0].options.text[0]).toContain(component.instance.toUpperCase());
   });
 });

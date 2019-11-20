@@ -1,0 +1,25 @@
+.sb-graph-section{
+    border: 1px solid #ddd;
+    padding: 24px;
+    margin-top: 24px;
+    background: #fff;
+    box-shadow: 0 2px 7px 0 rgba(0,0,0,.16);
+    border-radius: 4px;
+}
+.sb-btn-normal i::after {
+    content: "\f019";
+    font-size: 13px;
+    color: #fff;
+}
+.no-bg {
+    background:none;
+}
+.dashboard-body-scroll{
+    display: flex;
+    align-items: flex-start;
+}
+.sb-sidebar-menu{
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 0;
+}

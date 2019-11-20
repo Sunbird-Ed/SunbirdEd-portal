@@ -31,6 +31,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   private userProfile: IUserProfile;
   private routeParams: any;
   private buildNumber: string;
+  private deviceId: string;
   private portalVersion: string;
   public logo: string;
   public showLoader = true;
@@ -53,6 +54,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService,
     private frameworkService: FrameworkService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
+    this.deviceId = deviceId ? deviceId.value : '';
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
   }
@@ -189,6 +192,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
         this.userProfile.firstName
       },
+      did: this.deviceId,
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,
       pdata: {
@@ -331,6 +335,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     }
     sessionStorage.setItem('inEditor', 'false');
     this.workspaceService.toggleWarning();
+    const removeIzi = document.querySelector('.iziModal-isAttached');
+    if (removeIzi) {
+      removeIzi.classList.remove('iziModal-isAttached');
+    }
   }
   /**
    * to assign the value to Editor Config

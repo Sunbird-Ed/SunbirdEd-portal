@@ -1,0 +1,19 @@
+<div class="sb-account-recover-page-section" [appTelemetryImpression]="telemetryImpression">
+    <div class="mt-32 sb-account-recover-page-radio">
+        <div class="text-center sb-account-recover-page-radio-label">{{resourceService?.frmelmnts?.lbl?.willsendOTP}}
+        </div>
+        <div class="text-center sb-account-recover-page-radio-label pb-16">
+            {{resourceService?.frmelmnts?.lbl?.receiveOTP}}</div>
+        <div class="mb-16 mt-24 text-left" *ngFor="let identifier of validIdentifiers">
+            <sui-radio-button class="sb-radio-btn-checkbox sb-radio-btn-primary" name="id" value="{{identifier.value}}"
+                (ngModelChange)="setSelectIdentifier(identifier)" [(ngModel)]="selectedAccountIdentifier.value">
+                {{identifier.value}}
+            </sui-radio-button>
+            <br>
+        </div>
+        <button class="sb-btn sb-btn-normal width-100 mt-16 sb-btn-secondary" tabindex="0" [disabled]="disableFormSubmit" 
+            appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+            [telemetryInteractEdata]="{id: 'generate-otp', type: 'click', pageid: 'select-identifier', extra: { form: selectedAccountIdentifier} }"
+            (click)="handleGenerateOtp()">{{resourceService?.frmelmnts?.lbl?.getOTP}}</button>
+    </div>
+</div>
