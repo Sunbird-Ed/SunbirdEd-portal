@@ -92,14 +92,14 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
 
   prepareAssessDetails(){
     const assessDetails = {}
-    let creationData = this.selectedAttributes.previewQuestionData ? this.selectedAttributes.previewQuestionData.result.assessment_item : undefined;
+    let creationData = this.selectedAttributes.previewQuestionData ? this.selectedAttributes.previewQuestionData.result.assessment_item : null;
     if((creationData && creationData.category ==='MCQ') || (this.questionMetaData && this.questionMetaData.data.category === 'MCQ')){
       assessDetails['correct_response'] = creationData ? parseInt(creationData.responseDeclaration.responseValue.correct_response.value) + 1 : parseInt(this.questionMetaData.data.responseDeclaration.responseValue.correct_response.value) + 1 ;
-      assessDetails['learningOutcome'] = (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : undefined;
+      assessDetails['learningOutcome'] = (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : null;
       assessDetails['bloomsLevel'] = creationData ? creationData.bloomsLevel[0] : (this.questionMetaData.data.bloomsLevel) ? this.questionMetaData.data.bloomsLevel[0] : null; 
       return assessDetails;
     } else {
-    return undefined;
+    return null;
     }
   }
 
