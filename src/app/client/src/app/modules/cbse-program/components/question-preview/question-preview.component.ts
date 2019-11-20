@@ -80,6 +80,9 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
         })
       }
     }
+    if(this.questionMetaData && this.questionMetaData.data && this.questionMetaData.data.type === 'mcq'){
+      this.questionMetaData.data['correct_response'] =  parseInt(this.questionMetaData.data.responseDeclaration.responseValue.correct_response.value) + 1;
+    }
   }
 
   setPlayerConfig(context, theme) {

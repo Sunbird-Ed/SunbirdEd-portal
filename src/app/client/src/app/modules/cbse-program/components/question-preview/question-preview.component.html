@@ -1,4 +1,11 @@
 <div class="twelve wide column">
         <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
 </div>
-    
+
+<div *ngIf="questionMetaData && questionMetaData.data && questionMetaData.data.type === 'mcq'">
+        <div class="ui one column grid mt-24">
+                <div class="column"><label class="mb-0 font-weight-bold fs-1-143">Correct Option :</label><span class="ml-8 font-weight-normal" style="overflow-wrap: break-word"> {{questionMetaData?.data?.correct_response}}</span></div>
+                <div class="column"><label class="mb-0 font-weight-bold fs-1-143">Learning Outcome :</label><span class="ml-8 font-weight-normal" style="overflow-wrap: break-word">{{(questionMetaData.data.learningOutcome)?(questionMetaData?.data?.learningOutcome[0]): ''}}</span></div>
+                <div class="column"><label class="mb-0 font-weight-bold fs-1-143">Learning Level :</label><span class="ml-8 font-weight-normal" style="overflow-wrap: break-word">{{(questionMetaData.data.bloomsLevel)?(questionMetaData?.data?.bloomsLevel[0]): ''}}</span></div>
+            </div>
+</div>
