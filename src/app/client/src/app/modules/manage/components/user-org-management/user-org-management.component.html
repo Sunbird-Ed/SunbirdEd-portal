@@ -1,8 +1,8 @@
 <div class="sb-manage-section">
-  <div class="ui container">
+  <div class="ui container sb-multi-rows">
     <h4 class="sb-manage-section-title py-16 m-0">User & Org Management</h4>
   </div>
-  <div class="sb-pageSection sb-white-bg">
+  <div class="sb-pageSection sb-multi-rows">
     <div class="ui container py-20">
       <div class="sb-pageSection-content">
         <div class="d-inline-flex">
@@ -21,16 +21,127 @@
             <dt>{{ geoData['schools'] }}</dt>
             <dd>Schools</dd>
           </dl>
-          <button class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(geoCSV)">Download</button>
+         <div class="ml-auto">
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="downloadCSVFile(geoCSV)">View Less</button>
+           <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16">Download</button>
+         </div>
         </div>
       </div>
     </div>
+   <div class="sb-manage-table-section">
+      <div class="ui container">
+          <div class="sb-table-responsive">
+              <div class="sb-table-container">
+                <table class="sb-table sb-table-striped sb-table-sortable sb-table-fixed">
+                  <thead class="sb-table-header sb-table-thead-gray">
+                    <tr>
+                      <th class="sb-sort-icon">Serial No:</th>
+                      <th class="sb-sort-icon">Districts</th>
+                      <th class="sb-sort-icon">Blocks</th>
+                      <th class="sb-sort-icon">Schools</th>
+                      <th class="sb-sort-icon">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="sb-table-body">
+                    <tr>
+                      <td data-label="no">01</td>
+                      <td data-label="districts">Chikkamagaluru</td>
+                      <td data-label="blocks">08</td>
+                      <td data-label="schools">160</td>
+                      <td data-label="action"><button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-secondary">Download</button></td>
+                    </tr>
+                    <tr>
+                      <td data-label="no">02</td>
+                      <td data-label="districts">Tumakuru</td>
+                      <td data-label="blocks">06</td>
+                      <td data-label="schools">130</td>
+                      <td data-label="action"><button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-secondary">Download</button></td>
+                    </tr>
+                    <tr>
+                      <td data-label="no">03</td>
+                      <td data-label="districts">Chikkamagaluru</td>
+                      <td data-label="blocks">08</td>
+                      <td data-label="schools">160</td>
+                      <td data-label="action"><button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-secondary">Download</button></td>
+                    </tr>
+                    <tr>
+                      <td data-label="no">04</td>
+                      <td data-label="districts">Tumakuru</td>
+                      <td data-label="blocks">06</td>
+                      <td data-label="schools">130</td>
+                      <td data-label="action"><button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-secondary">Download</button></td>
+                    </tr>
+                    <tr>
+                      <td data-label="no">05</td>
+                      <td data-label="districts">Chikkamagaluru</td>
+                      <td data-label="blocks">08</td>
+                      <td data-label="schools">160</td>
+                      <td data-label="action"><button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-secondary">Download</button></td>
+                    </tr>
+                    <tr>
+                      <td data-label="no">06</td>
+                      <td data-label="districts">Tumakuru</td>
+                      <td data-label="blocks">06</td>
+                      <td data-label="schools">130</td>
+                      <td data-label="action"><button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-secondary">Download</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- table pagination -->
+        <!-- <div class="twelve wide column right aligned pb-16" *ngIf="">
+            <div class="sb-pagination-container flex-jc-flex-end" *ngIf="pager.pages.length">
+                <div class="sb-pagination my-0">
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(1) ">&laquo;</a>
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
+                <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)"
+                    class="sb-item">{{page}}</a>
+                    <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)"
+                    class="sb-item">&gt;</a>
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)"
+                    class="sb-item ">&raquo;</a>
+                </div>
+            </div>
+        </div> -->
+      </div>
+   </div>
   </div>
 
-<app-user-upload *ngIf="showModal"></app-user-upload>
+  <div class="sb-pageSection sb-multi-rows">
+      <div class="ui container py-20">
+        <div class="sb-pageSection-content">
+          <div class="d-inline-flex">
+            <span class="sb-label-name">Validated State Teachers:</span>
+          </div>
+          <div class="sb-meta-data-container pt-16 sb-meta-data-column d-flex flex-w-wrap">
+            <dl class="sb-meta-data">
+              <dt>{{ geoData['districts'] }}</dt>
+              <dd>Districts</dd>
+            </dl>
+            <dl class="sb-meta-data">
+              <dt>{{ geoData['blocks'] }}</dt>
+              <dd>Blocks</dd>
+            </dl>
+            <dl class="sb-meta-data">
+              <dt>{{ geoData['schools'] }}</dt>
+              <dd>Schools</dd>
+            </dl>
+            <dl class="sb-meta-data">
+                <dt>20,000</dt>
+                <dd>Teachers</dd>
+              </dl>
+           <div class="ml-auto">
+              <button class="sb-btn sb-btn-normal sb-btn-primary">View Details</button>
+              <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16">Download</button>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="ui container" *ngIf="userProfile && userProfile['rootOrg'] && !(userProfile['rootOrg']['isSSOEnabled'])">
-    <div class="sb-pageSection mt-24">
+  <div class="sb-pageSection sb-multi-rows" *ngIf="userProfile && userProfile['rootOrg'] && !(userProfile['rootOrg']['isSSOEnabled'])">
+    <div class="ui container py-20">
       <div class="sb-pageSection-header sb-user-list">
         <h4 class="sb-pageSection-title">
           User List Upload
@@ -72,4 +183,6 @@
       class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(userCSV)">Download</button>
     </div>
   </div>
+
+  <app-user-upload *ngIf="showModal"></app-user-upload>
 </div>

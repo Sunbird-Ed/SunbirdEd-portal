@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: 'help-center', component: OfflineHelpCenterComponent, data: {
       telemetry: {
-        env: 'offline', pageid: 'help-center', type: 'view'
+        env: 'help', pageid: 'help', type: 'view'
       }
     }
   },

@@ -30,6 +30,7 @@ export class ContentManagerComponent implements OnInit {
   cancelId: string;
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
+  completedCount;
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -49,13 +50,21 @@ export class ContentManagerComponent implements OnInit {
       .pipe(switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
           this.callContentList = false;
+          let completedCount = 0;
           _.forEach(_.get(resp, 'result.response.contents'), (value) => {
             const data = this.contentStatusObject[value.id];
             if (data) { value.status = data.currentStatus; }
             if (_.includes(this.localStatusArr, value.status)) {
               this.callContentList = true;
             }
+            if (value.status === 'completed') {
+              completedCount += 1;
+            }
           });
+          if ((completedCount > this.completedCount) && this.completedCount !== undefined) {
+            this.contentManagerService.completeEvent.emit();
+          }
+          this.completedCount = completedCount;
           return _.get(resp, 'result.response.contents');
         })).subscribe((apiResponse: any) => {
           this.contentResponse = apiResponse;

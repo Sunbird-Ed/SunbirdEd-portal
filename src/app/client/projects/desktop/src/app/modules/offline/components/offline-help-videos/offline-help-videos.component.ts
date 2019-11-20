@@ -1,5 +1,5 @@
 import { ResourceService, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Inject, OnChanges, AfterViewInit } from '@angular/core';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { DOCUMENT } from '@angular/common';
 import * as $ from 'jquery';
@@ -10,45 +10,9 @@ import * as _ from 'lodash-es';
   templateUrl: './offline-help-videos.component.html',
   styleUrls: ['./offline-help-videos.component.scss']
 })
-export class OfflineHelpVideosComponent implements OnInit {
+export class OfflineHelpVideosComponent implements OnInit, OnChanges, AfterViewInit {
 
 
-  // video list item demo data
-  videoitems = [
-    {
-      imgpath: '',
-      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
-    },
-    {
-      imgpath: '',
-      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
-    },
-    {
-      imgpath: '',
-      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
-    },
-    {
-      imgpath: '',
-      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
-    },
-    {
-      imgpath: '',
-      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
-    },
-    {
-      imgpath: '',
-      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
-    },
-    {
-      imgpath: '',
-      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
-    },
-    {
-      imgpath: '',
-      text: 'Photographs are a way of preserving a moment in our lives for the rest of our lives.'
-    }
-
-  ];
 
   @Output() closeVideoModal = new EventEmitter<any>();
 
@@ -66,14 +30,10 @@ export class OfflineHelpVideosComponent implements OnInit {
   constructor(@Inject(DOCUMENT) private document: Document, public resourceService: ResourceService, public configService: ConfigService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+
   }
 
   ngOnInit() {
-
-    // video height
-    this.aspectRatioHeight = this.aspectRatio.nativeElement.offsetHeight;
-    this.playerInfoHeight = this.playerInfo.nativeElement.offsetHeight;
-    this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
 
     this.slideConfig = this.configService.offlineConfig.watchVideo;
     this.slideData = [
@@ -100,6 +60,54 @@ export class OfflineHelpVideosComponent implements OnInit {
         name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
         thumbnail: 'assets/images/play-icon.svg',
         url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
+      },
+      {
+        id: 'find-content-offline',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
+      },
+      {
+        id: 'copy-content',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
+      },
+      {
+        id: 'find-content-offline',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
+      },
+      {
+        id: 'copy-content',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
+      },
+      {
+        id: 'find-content-offline',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
+      },
+      {
+        id: 'copy-content',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
+      },
+      {
+        id: 'find-content-offline',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
+      },
+      {
+        id: 'copy-content',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
       }
     ];
 
@@ -111,6 +119,15 @@ export class OfflineHelpVideosComponent implements OnInit {
     };
 
     this.setInteractData();
+
+    // video height
+    setTimeout(() => {
+      console.log('aspect ratio value', this.aspectRatio);
+      this.aspectRatioHeight = this.aspectRatio.nativeElement.offsetHeight;
+      this.playerInfoHeight = this.playerInfo.nativeElement.offsetHeight;
+      this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
+
+    }, 500);
   }
 
   interpolateInstance(message) {
@@ -134,10 +151,19 @@ export class OfflineHelpVideosComponent implements OnInit {
     };
   }
 
+  ngOnChanges() {
+
+  }
+
+  ngAfterViewInit() {
+
+  }
 
   onWindowResize(event) {
-    this.aspectRatioHeight = event.target.document.querySelector('#help-video-aspect-ratio').offsetHeight;
-    this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
+    setTimeout(() => {
+      this.aspectRatioHeight = event.target.document.querySelector('#help-video-aspect-ratio').offsetHeight;
+      this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
+    }, 500);
   }
 
 }

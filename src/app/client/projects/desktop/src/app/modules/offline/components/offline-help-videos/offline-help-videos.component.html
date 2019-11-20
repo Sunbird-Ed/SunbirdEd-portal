@@ -3,39 +3,38 @@
         <div class="sb-column help-video__player" id="player-area-height">
             <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
               <div>
-                <video width="400" controls>
-                  <source src="mov_bbb.mp4" type="video/mp4">
-                  <source src="mov_bbb.ogg" type="video/ogg">
-                  Your browser does not support HTML5 video.
+                  <video id="video" autoplay width="560" height="349" controls class="sb-offline-video-player"
+                  src="{{activeVideoObject.url}}">
                 </video>
               </div>
             </div>
         
-            <div class="help-video__player__title sb-bg-color-white" #playerInfo>
-              <h6 class="ml-16 sb__ellipsis sb__ellipsis--two">How do i add content to SUNBIRD app when i am offline or using a pen drive?&lrm;</h6>
+            <div class="help-video__player__details sb-bg-color-white" #playerInfo>
+              <h6 class="help-video__player__title ml-16 mr-auto sb__ellipsis sb__ellipsis--two">{{activeVideoObject.name}}&lrm;</h6>
               <div class="help-video__player__tools">
                 <div class="icons-withtext__cloud-download"><i class="cloud download icon"></i>Download</div>
               </div>
             </div>
           </div>
+
           <div class="sb-column help-video__content" [style.height.px]="videoContainerHeight"
             (window:resize)="onWindowResize($event)">
         
             <!-- card component -->
-            <div *ngFor="let videoitem of videoitems" class="sbcard sbcard--recently-viewed mb-8">
+            <div *ngFor="let video of slideData" class="sbcard sbcard--recently-viewed mb-8" [ngClass]="{active:activeVideoObject.id === video.id }"
+            (click)="changeVideoAttributes(video)" appTelemetryInteract [telemetryInteractEdata]="selectVideoInteractEdata">
               <div class="sbcard__main-area">
                 <!-- card img -->
                 <div class="sbcard__img">
                   <div class="img-container">
-                    <img src="./assets/images/book.png" alt="">
+                    <!-- <img src="./assets/images/book.png" alt=""> -->
+                    <img class="thumbnail" src="{{video.thumbnail}}" alt="">
                   </div>
                 </div>
                 <!-- card mobile view details -->
                 <div class="sbcard__info">
-                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">{{ videoitem.text }}</h4>
-                  <div class="sbcard__meta1">
-                    <span class="sb__ellipsis sb-color-primary">Play Video</span>
-                  </div>
+                  <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">{{ video.name }}</h4>
+                  <div class="d-block sb-color-primary">Play Video</div>
                 </div>
               </div>
             </div>
@@ -43,7 +42,7 @@
     </div>
     
 
-
+<!--
 
 <div style="display: none;" *ngIf="slideData">
   <div class="sb-modal-header">
@@ -78,3 +77,4 @@
     </div>
   </div>
 </div>
+-->
