@@ -4,6 +4,7 @@ import { PlayerComponent } from './player.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Subject } from 'rxjs';
 
 const startEvent = {
   detail: {
@@ -50,11 +51,12 @@ describe('PlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PlayerComponent);
     component = fixture.componentInstance;
+    component.contentProgressEvents$ = new Subject();
   });
 
   it('should emit "START"', () => {
     let contentProgressEvent;
-    component.contentProgressEvent.subscribe((data) => {
+    component.contentProgressEvents$.subscribe((data) => {
       contentProgressEvent = data;
     });
     component.contentIframe.nativeElement.contentWindow.EkstepRendererAPI = {
@@ -68,7 +70,7 @@ describe('PlayerComponent', () => {
 
   it('should emit "END" event', () => {
     let contentProgressEvent;
-    component.contentProgressEvent.subscribe((data) => {
+    component.contentProgressEvents$.subscribe((data) => {
       contentProgressEvent = data;
     });
     component.playerConfig = playerConfig;
@@ -77,7 +79,7 @@ describe('PlayerComponent', () => {
   });
   it('should emit "END" event and open contentRating', () => {
     let contentProgressEvent;
-    component.contentProgressEvent.subscribe((data) => {
+    component.contentProgressEvents$.subscribe((data) => {
       contentProgressEvent = data;
     });
     component.playerConfig = playerConfig;
