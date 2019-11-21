@@ -5,7 +5,7 @@ import { OfflineReportIssuesService } from './offline-report-issues.service';
 import { PublicDataService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { of as observableOf } from 'rxjs';
-import { response } from '../offline-report-issues/offline-report-issues.service.spec.data'
+import { response } from '../offline-report-issues/offline-report-issues.service.spec.data';
 describe('OfflineReportIssuesService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule, SharedModule.forRoot()],
@@ -17,7 +17,7 @@ describe('OfflineReportIssuesService', () => {
     expect(service).toBeTruthy();
   });
 
-  fit('should be call report other issue method', () => {
+  it('should be call report other issue method', () => {
     const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     const publicDataService = TestBed.get(PublicDataService);
     const params = {

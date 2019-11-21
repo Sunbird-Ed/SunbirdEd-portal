@@ -53,7 +53,7 @@ describe('OfflineReportIssuesComponent', () => {
   it('should open report issue modal when you click on Report other issue button', () => {
     spyOn(component, 'openModal');
 
-    let button = fixture.debugElement.nativeElement.querySelector('button');
+    const button = fixture.debugElement.nativeElement.querySelector('button');
     button.click();
 
     fixture.whenStable().then(() => {
