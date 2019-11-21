@@ -31,88 +31,89 @@
       <div class="row" *ngIf="selectedOption">
         <div> Certificate Preview</div>
         <div class="ui container">
-          <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best School Certificate'"> 
-              <tr>
-                <td class="sb-certificate-table">
-                  <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" />
-                  <img src="assets/images/certificate-frame.svg" class="certificate-frame" />
-                  <div class="sb-certificate-container">
-                    <table width="100%" border="0" class="certificate-table-area">
-                      <tr class="sb-certificate-header">
-                        <td colspan="3">
-                          <div class="state-symbol">
-                            <img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo"
-                              alt="Government of Gujarat">
-                          </div>
-                          <p class="state-name">Government of Gujarat</p>
-                          <h1>Best School Certificate</h1>
-                          <p class="certificate-details">This is to certify that Ms <strong>School Name</strong>
-                            is certified as <strong>"Best School"</strong> on
-                            <strong>25 Jan 2019</strong> </p>
-                        </td>
-                      </tr>
-                      <tr class="sb-certificate-footer">
-                        <td class="country-symbol">
-                          <img src="assets/images/DIKSHA.png" class="sb-certificatePage-logo" />
-                          <!-- <p>આ દસ્તાવેજ ડિજિટલ સહી થયેલ છે</p> -->
-                        </td>
-                        <td class="state-sign">
-                          <img src="$signatory0Image" class="sb-certificatePage-logo" />
-                          <div class="sign-line"></div>
-                          <p class="italic">Director of GCERT</p>
-                        </td>
-                        <td class="certificate-qr-code">
-                          <img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
-                          <p>Scan to verify certificate</p>
-                        </td>
-                      </tr>
-                    </table>
-
-                  </div>
-                  <div class="sb-certificate-bg-"></div>
-                </td>
-              </tr>
+          <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best School Certificate'"style="padding: 0px;width: 100%;height: auto;margin: 0;text-align: center;">
+            <tr>
+              <td class="sb-certificate-table" style="width: 100%;height: auto;position: relative;background: #fff;">
+                <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" style="width: 65%;height: auto;position: inherit;z-index: 2;padding: 96px 0px;box-sizing: border-box;margin: 90px 0 0 0;left: 0px;top: 0px;"/>
+                <img src="assets/images/certificate-frame-blue.svg" class="certificate-frame" style="width: 100%;height: auto;position: absolute;z-index: 2;box-sizing: border-box;left: 0px;top: 0px;"/>
+                <div class="sb-certificate-container" style="position: absolute;z-index: 2;left: 0px;top: 80px;">
+                  <table width="100%" border="0" class="certificate-table-area" style="text-align: center;width: 82%;margin: 0 auto;">
+                    <tr class="sb-certificate-header">
+                      <td colspan="3">
+                        <div class="state-symbol">
+                          <img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo" style="margin-top:16px;" height="120" alt="Government of Gujarat">
+                        </div>
+                        <p style="color:#333333;font-size: 18px;
+            line-height: 1.4;width: 75%;margin: 8px auto;">Government of Gujarat</p>
+                        <h1 style="margin: 0px 0 40px 0;color: #024f9d;font-weight: bold;font-size: 48px;line-height: 48px;font-family: 'july_seventhregular';">Best School Award</h1>
+                        <div class="certificate-details" style="color: #333333;font-size: 20px;line-height: 40px;text-align: center;width: 75%;margin: 0 auto;min-height: 128px;">Awarded to <br>
+                          <strong>Thingamajig Kadigan</strong><br>
+                          <!--<hr width="360"> -->
+                          in the month of <strong>November 2019</strong></div>
+                      </td>
+                    </tr>
+                    <tr class="sb-certificate-footer">
+                      <td class="country-symbol" style="text-align: left;color: #999999;vertical-align: bottom;padding-top:64px;width:33.3333%;">
+                        <img src="assets/images/DIKSHA.png" width="128" class="sb-certificatePage-logo"/>
+                        <p style="font-size: 12px;margin-top: 5px;"></p>
+                      </td>
+                      <td class="state-sign" style="vertical-align: bottom;padding-top:64px;width:33.3333%;"> <!-- $signatory0Image -->
+                        <img src="assets/images/signature-523237__340.jpg" height="80" class="sb-certificatePage-logo"/>
+                        <div style="width: 75%;margin: 8px auto;height: 1px;background: #999;" class="sign-line"></div>
+                        <p style="font-family: 'noto_sansitalic'; font-style: italic; font-size: 14px;" class="italic">Director of SCERT</p>
+                      </td>
+                      <td style="vertical-align: bottom;padding-top:64px;width:33.3333%;text-align: right;" class="certificate-qr-code">
+                        <img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
+                        <p style="color: #333333;font-size: 14px;line-height: 18px;margin-top: 5px">Scan to Verify Certificate</p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <!--<div class="sb-certificate-bg"></div> -->
+              </td>
+            </tr>
           </table>
-          <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best Student Certificate'">
-              <tr>
-                <td class="sb-certificate-table">
-                  <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" />
-                  <img src="assets/images/certificate-frame.svg" class="certificate-frame" />
-                  <div class="sb-certificate-container">
-                    <table width="100%" border="0" class="certificate-table-area">
-                      <tr class="sb-certificate-header">
-                        <td colspan="3">
-                          <div class="state-symbol">
-                            <img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo"
-                              alt="Government of Gujarat">
-                          </div>
-                          <p class="state-name">Government of Gujarat</p>
-                          <h1>Best Student Certificate</h1>
-                          <p class="certificate-details">This is to certify that Mr/Ms<strong>Student Name</strong> 
-                            is certified as <strong>"Best Student"</strong> on<strong>25 May 2019</strong> </p>
-                        </td>
-                      </tr>
-                      <tr class="sb-certificate-footer">
-                        <td class="country-symbol">
-                          <img src="assets/images/DIKSHA.png" class="sb-certificatePage-logo" />
-                          <!-- <p>આ દસ્તાવેજ ડિજિટલ સહી થયેલ છે</p> -->
-                        </td>
-                        <td class="state-sign">
-                          <img src="$signatory0Image" class="sb-certificatePage-logo" />
-                          <div class="sign-line"></div>
-                          <p class="italic">Director of GCERT</p>
-                        </td>
-                        <td class="certificate-qr-code">
-                          <img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
-                          <p>Scan to verify certificate</p>
-                        </td>
-                      </tr>
-                    </table>
-
-                  </div>
-                  <div class="sb-certificate-bg-"></div>
-                </td>
-              </tr>
+          <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best Student Certificate'"style="padding: 0px;width: 100%;height: auto;margin: 0;text-align: center;">
+            <tr>
+              <td class="sb-certificate-table" style="width: 100%;height: auto;position: relative;background: #fff;">
+                <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" style="width: 65%;height: auto;position: inherit;z-index: 2;padding: 96px 0px;box-sizing: border-box;margin: 90px 0 0 0;left: 0px;top: 0px;"/>
+                <img src="assets/images/certificate-frame.svg" class="certificate-frame" style="width: 100%;height: auto;position: absolute;z-index: 2;box-sizing: border-box;left: 0px;top: 0px;"/>
+                <div class="sb-certificate-container" style="position: absolute;z-index: 2;left: 0px;top: 80px;">
+                  <table width="100%" border="0" class="certificate-table-area" style="text-align: center;width: 82%;margin: 0 auto;">
+                    <tr class="sb-certificate-header">
+                      <td colspan="3">
+                        <div class="state-symbol">
+                          <img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo" style="margin-top:16px;" height="120" alt="Government of Gujarat">
+                        </div>
+                        <p style="color:#333333;font-size: 18px;
+            line-height: 1.4;width: 75%;margin: 8px auto;">Government of Gujarat</p>
+                        <h1 style="margin: 0px 0 40px 0;color: #024f9d;font-weight: bold;font-size: 48px;line-height: 48px;font-family: 'july_seventhregular';">Best Student Award</h1>
+                        <div class="certificate-details" style="color: #333333;font-size: 20px;line-height: 40px;text-align: center;width: 75%;margin: 0 auto;min-height: 128px;">Awarded to <br>
+                          <strong>Thingamajig Kadigan</strong><br>
+                          <!--<hr width="360"> -->
+                          in the month of <strong>November 2019</strong></div>
+                      </td>
+                    </tr>
+                    <tr class="sb-certificate-footer">
+                      <td class="country-symbol" style="text-align: left;color: #999999;vertical-align: bottom;padding-top:64px;width:33.3333%;">
+                        <img src="assets/images/DIKSHA.png" width="128" class="sb-certificatePage-logo"/>
+                        <p style="font-size: 12px;margin-top: 5px;"></p>
+                      </td>
+                      <td class="state-sign" style="vertical-align: bottom;padding-top:64px;width:33.3333%;"> <!-- $signatory0Image -->
+                        <img src="assets/images/signature-523237__340.jpg" height="80" class="sb-certificatePage-logo"/>
+                        <div style="width: 75%;margin: 8px auto;height: 1px;background: #999;" class="sign-line"></div>
+                        <p style="font-family: 'noto_sansitalic'; font-style: italic; font-size: 14px;" class="italic">Director of SCERT</p>
+                      </td>
+                      <td style="vertical-align: bottom;padding-top:64px;width:33.3333%;text-align: right;" class="certificate-qr-code">
+                        <img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
+                        <p style="color: #333333;font-size: 14px;line-height: 18px;margin-top: 5px">Scan to Verify Certificate</p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+                <!--<div class="sb-certificate-bg"></div> -->
+              </td>
+            </tr>
           </table>
         </div>
       </div>
