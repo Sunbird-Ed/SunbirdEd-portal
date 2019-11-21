@@ -53,6 +53,8 @@ describe('OfflineHelpVideosComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OfflineHelpVideosComponent);
     component = fixture.componentInstance;
+    spyOn(component, 'setVideoAspectRatio').and.callFake(() => {});
+    spyOn(component, 'onWindowResize').and.callFake(() => {});
     fixture.detectChanges();
   });
 
@@ -65,20 +67,20 @@ describe('OfflineHelpVideosComponent', () => {
     resourceService.instance = resourceServiceStub.instance;
     resourceService.frmelmnts = resourceServiceStub.frmelmnts;
     component.ngOnInit();
-    tick(500);
+    tick(600);
     expect(component.slideData).toBeDefined();
   }));
   it('should changeVideoAttributes value', fakeAsync(() => {
     const data = component.slideData[0];
     component.changeVideoAttributes(data);
-    tick(500);
+    tick(600);
     expect(component.activeVideoObject).toBeDefined();
   }));
 
   it('should emit an event' , fakeAsync(() => {
     spyOn(component.closeVideoModal, 'emit');
     component.closeModal();
-    tick(500);
+    tick(600);
     expect(component.closeVideoModal.emit).toHaveBeenCalled();
   }));
 

@@ -71,7 +71,9 @@ export class OfflineHelpVideosComponent implements OnInit {
       thumbnail: 'assets/images/play-icon.svg',
       url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_connected_to_the_Internet.mp4'
     };
-
+    this.setVideoAspectRatio();
+  }
+  setVideoAspectRatio() {
     // video height
     setTimeout(() => {
       console.log('aspect ratio value', this.aspectRatio);
@@ -81,7 +83,6 @@ export class OfflineHelpVideosComponent implements OnInit {
 
     }, 500);
   }
-
   interpolateInstance(message) {
     return message.replace('{instance}', _.upperCase(this.instance));
   }
