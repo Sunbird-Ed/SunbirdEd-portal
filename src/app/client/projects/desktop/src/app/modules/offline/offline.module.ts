@@ -12,7 +12,7 @@ import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
   BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
   LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
-  OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent, 
+  OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
   OnboardingLocationComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
