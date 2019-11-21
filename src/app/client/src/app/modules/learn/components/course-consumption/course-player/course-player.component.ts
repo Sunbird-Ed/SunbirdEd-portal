@@ -220,7 +220,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
     this.courseConsumptionService.getContentState(req).pipe(first())
       .subscribe(res => this.contentStatus = res.content,
-        err => console.log(err, 'content read api failed'));
+        err => console.log(err, 'content read  api failed'));
   }
 
   private subscribeToContentProgressEvents() {
