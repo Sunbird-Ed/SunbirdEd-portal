@@ -15,7 +15,7 @@
         </div>
     </div>
 
-    <div class="sb-column help-video__content" [style.height.px]="videoContainerHeight" (window:resize)="onWindowResize($event)">
+    <div class="sb-column help-video__content" [style.height.px]="videoContainerHeight">
 
         <!-- card component -->
         <div *ngFor="let video of slideData" class="sbcard sbcard--recently-viewed mb-8" [ngClass]="{active:activeVideoObject.id === video.id }" (click)="changeVideoAttributes(video)" appTelemetryInteract [telemetryInteractEdata]="setInteractData(video)">
