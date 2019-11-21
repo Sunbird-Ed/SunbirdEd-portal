@@ -175,3 +175,209 @@ strong {
 	size: landscape;
 	/* size: 223mm 300mm; */
 }
+@font-face {
+	font-family: 'july_seventhregular';
+	src: url("../../../../../assets/fonts/july-seventh/july_seventh_regular-webfont.eot");
+	src: url("../../../../../assets/fonts/july-seventh/july_seventh_regular-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../assets/fonts/july-seventh/july_seventh_regular-webfont.woff2") format("woff2"), url("../../../../../assets/fonts/july-seventh/july_seventh_regular-webfont.woff") format("woff"), url("../../../../../assets/fonts/july-seventh/july_seventh_regular-webfont.ttf") format("truetype"), url("../../../../../assets/fonts/july-seventh/july_seventh_regular-webfont.svg#july_seventhregular") format("svg");
+	font-weight: normal;
+	font-style: normal
+}
+
+@font-face {
+	font-family: 'noto_sansregular';
+	src: url("../../../../../assets/fonts/notosans/notosans-regular-webfont.eot");
+	src: url("../../../../../assets/fonts/notosans/notosans-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../assets/fonts/notosans/notosans-regular-webfont.woff2") format("woff2"), url("../../../../../assets/fonts/notosans/notosans-regular-webfont.woff") format("woff"), url("../../../../../assets/fonts/notosans/notosans-regular-webfont.ttf") format("truetype"), url("../../../../../assets/fonts/notosans/notosans-regular-webfont.svg#noto_sansregular") format("svg");
+	font-weight: normal;
+	font-style: normal
+}
+
+@font-face {
+	font-family: 'noto_sanssemibold';
+	src: url("../../../../../assets/fonts/notosans/notosans-semibold-webfont.eot");
+	src: url("../../../../../assets/fonts/notosans/notosans-semibold-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../assets/fonts/notosans/notosans-semibold-webfont.woff2") format("woff2"), url("../../../../../assets/fonts/notosans/notosans-semibold-webfont.woff") format("woff"), url("../../../../../assets/fonts/notosans/notosans-semibold-webfont.ttf") format("truetype"), url("../../../../../assets/fonts/notosans/notosans-semibold-webfont.svg#noto_sanssemibold") format("svg");
+	font-weight: normal;
+	font-style: normal
+}
+
+@font-face {
+	font-family: 'noto_sansitalic';
+	src: url('../../../../../assets/fonts/notosans/notosans-italic-webfont.eot');
+	src: url('../../../../../assets/fonts/notosans/notosans-italic-webfont.eot?#iefix') format('embedded-opentype'), url('../../../../../assets/fonts/notosans/notosans-italic-webfont.woff2') format('woff2'), url('../../../../../assets/fonts/notosans/notosans-italic-webfont.woff') format('woff'), url('../../../../../assets/fonts/notosans/notosans-italic-webfont.ttf') format('truetype'), url('../../../../../assets/fonts/notosans/notosans-italic-webfont.svg#noto_sansitalic') format('svg');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Noto Sans Gujarati Regular';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Regular.eot');
+	src: url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Regular.eot?#iefix') format('embedded-opentype'), url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Regular.woff2') format('woff2'), url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Regular.woff') format('woff'), url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Noto Sans Gujarati Bold';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Bold.eot');
+	src: url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Bold.eot?#iefix') format('embedded-opentype'), url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Bold.woff2') format('woff2'), url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Bold.woff') format('woff'), url('../../../../../assets/fonts/notosans-gujarati/NotoSansGujarati-Bold.ttf') format('truetype');
+}
+
+// html,
+// body {
+// 	font-size: 16px;
+// }
+
+// *,
+// body {
+	
+// 	padding: 0;
+// 	margin: 0;
+// 	outline: none
+// }
+
+strong {
+	font-family: "noto_sanssemibold", "Noto Sans Gujarati Bold";
+}
+
+
+
+
+
+/*
+.sb-certificate-table-ct {
+	padding: 0px;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	text-align: center;
+}
+.sb-certificate-table {
+	width: 100%;
+	height: auto;
+	position: relative;
+	background: #fff;
+}
+.sb-certificate-table .sb-certificate-container {
+	position: absolute;
+	z-index: 2;
+	left: 0px;
+	top: 80px;
+}
+.sb-certificate-table .sb-certificate-container .certificate-table-area {
+	text-align: center;
+	width: 82%;
+	margin: 0 auto;
+}
+.sb-certificate-table .sb-certificate-container .sb-certificate-header .state-symbol img {
+	height: 120px;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-header .state-name {
+	color: #333333;
+	font-size: 18px;
+	line-height: 1.4;
+	width: 75%;
+	margin: 0 auto;
+	margin-top: 10px
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-header h1 {
+	margin: 0px 0 40px 0;
+	color: #024f9d;
+	font-weight: bold;
+	font-size: 48px;
+	line-height: 48px;
+	font-family: "july_seventhregular";
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-header .certificate-details {
+	color: #333333;
+	font-size: 20px;
+	line-height: 40px;
+	text-align: center;
+	width: 75%;
+	margin: 0 auto;
+	min-height: 128px;
+}
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer td {
+	vertical-align: bottom;
+	padding-top:64px;
+	width:33.3333%;
+}
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .country-symbol {
+	text-align: left;
+	color: #999999;
+}
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .country-symbol img {
+	width: 128px;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .country-symbol p {
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .state-sign p {
+	font-family: "noto_sansitalic";
+	font-style: italic;
+	font-size: 14px;
+}
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .state-sign div.sign-line {
+	width: 75%;
+	margin: 8px auto;
+	height: 1px;
+	background: #999;
+}
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .certificate-qr-code {
+	text-align: right;
+}
+
+.sb-certificate-table .sb-certificate-container .sb-certificate-footer .certificate-qr-code p {
+	color: #333333;
+	font-size: 14px;
+	line-height: 18px;
+	margin-top: 5px;
+}
+.certificate-frame {
+	width: 100%;
+	height: auto;
+	position: absolute;
+	z-index: 2;
+	box-sizing: border-box;
+	left: 0px;
+	top: 0px;
+}
+
+.state-outline-img {
+	width: 65%;
+    	height: auto;
+    	position: inherit;
+    	z-index: 2;
+    	padding: 96px 0px;
+    	box-sizing: border-box;
+    	margin: 90px 0 0 0;
+    	left: 0px;
+    	top: 0px;
+}
+*/
+
+
+@page {
+	margin: 16px 24px 24px 24px;
+	size: landscape;
+	/* size: 223mm 300mm; */
+}
+
+.certDiv{
+	font-family: "noto_sansregular", "Noto Sans Gujarati Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	position: absolute;
+    z-index: 2;
+    left: 0px;
+    top: 120px;
+    width: 80%;
+    right: 0px;
+    margin: 0 auto;
+}
