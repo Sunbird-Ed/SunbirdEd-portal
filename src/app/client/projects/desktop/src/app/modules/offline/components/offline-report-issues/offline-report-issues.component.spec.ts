@@ -1,14 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { OfflineReportIssuesComponent } from './offline-report-issues.component';
-import { ConfigService, ResourceService, BrowserCacheTtlService, ToasterService, SharedModule } from '@sunbird/shared';
-import { of as observableOf, throwError } from 'rxjs';
+import { ResourceService, SharedModule } from '@sunbird/shared';
+import { of, throwError } from 'rxjs';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { CacheService } from 'ng2-cache-service';
-import { OfflineReportIssuesService } from '../../services/offline-report-issues/offline-report-issues.service';
+import { OfflineReportIssuesService } from './../../services/offline-report-issues/offline-report-issues.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-
 describe('OfflineReportIssuesComponent', () => {
   let component: OfflineReportIssuesComponent;
   let fixture: ComponentFixture<OfflineReportIssuesComponent>;
@@ -19,7 +18,8 @@ describe('OfflineReportIssuesComponent', () => {
       frmelmnts: {
         lbl: {
           issueReportedSuccessfuly: 'Issue reported successfully',
-          issueReportedSuccessfulySubNote: 'Note: Your report will be automatically sent to {instance} while online.'
+          issueReportedSuccessfulySubNote: 'Note: Your report will be automatically sent to {instance} while online.',
+          errorWhileGeneratingTicket: 'Unable to raise ticket. please try again after some times.'
         }
       }
     };
@@ -27,11 +27,7 @@ describe('OfflineReportIssuesComponent', () => {
       declarations: [OfflineReportIssuesComponent],
       imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot()],
       providers: [
-        ConfigService,
         { provide: ResourceService, useValue: resourceServiceStub },
-        CacheService,
-        ToasterService,
-        BrowserCacheTtlService,
         OfflineReportIssuesService,
         FormBuilder,
       ],
@@ -49,15 +45,17 @@ describe('OfflineReportIssuesComponent', () => {
     spyOn(component, 'createReportOtherissueForm');
     component.ngOnInit();
     expect(component.createReportOtherissueForm).toHaveBeenCalled();
+    spyOn(component, 'setValidators');
+
   });
   it('should open report issue modal when you click on Report other issue button', () => {
     spyOn(component, 'openModal');
 
-    const button = fixture.debugElement.nativeElement.querySelector('button');
-    button.click();
-
+    const button = fixture.debugElement.nativeElement.querySelector('#submitIssueButton');
     fixture.whenStable().then(() => {
-      expect(component.openModal).toHaveBeenCalled();
+      expect(component.issueReportedSuccessfully).toBeDefined();
+      expect(component.openReportIssueModal).toBeDefined();
+
     });
   });
   it('should throw email validation error ', () => {
@@ -68,6 +66,8 @@ describe('OfflineReportIssuesComponent', () => {
     email.setValue('');
     errors = email.errors || {};
     expect(errors['required']).toBeTruthy();
+    expect(component.reportOtherissueForm.invalid).toBeTruthy();
+
   });
   it('should throw description validation error ', () => {
     spyOn(component, 'setValidators');
@@ -77,15 +77,20 @@ describe('OfflineReportIssuesComponent', () => {
     description.setValue('');
     errors = description.errors || {};
     expect(errors['required']).toBeTruthy();
+    expect(component.reportOtherissueForm.invalid).toBeTruthy();
   });
-  it('should call  submitIssue method', () => {
+  it('should call  submitIssue method and success ', () => {
     const offlineReportIssuesService = TestBed.get(OfflineReportIssuesService);
-    spyOn(offlineReportIssuesService, 'reportOtherIssue').and.returnValue(observableOf('true'));
+    spyOn(offlineReportIssuesService, 'reportOtherIssue').and.returnValue(of('true'));
     component.submitIssue();
     expect(component.issueReportedSuccessfully).toBeDefined();
     expect(component.isDisplayLoader).toBeDefined();
     spyOn(component, 'createReportOtherissueForm');
-    component.ngOnInit();
-    expect(component.createReportOtherissueForm).toHaveBeenCalled();
+  });
+  it('should call  submitIssue method and error case ', () => {
+    const offlineReportIssuesService = TestBed.get(OfflineReportIssuesService);
+    spyOn(offlineReportIssuesService, 'reportOtherIssue').and.returnValue(of('false'));
+    component.submitIssue();
+    expect(component.toasterService.error(resourceServiceStub.frmelmnts.lbl.errorWhileGeneratingTicket));
   });
 });
