@@ -57,17 +57,15 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   getLocationData(event) {
     this.userLocation = event.data;
     this.disableContinueBtn = event.enable;
-    console.log('event', event, this.disableContinueBtn);
   }
 
   saveUserData() {
     this.location.saveLocation(this.userLocation);
     this.location.locationSaved.subscribe(isSaved => {
-    if (this.disableContinueBtn) {
-      this.disableContinueBtn = isSaved;
-      this.activeSlide = this.activeSlide + 1;
-      this.disableContinueBtn = !this.disableContinueBtn;
-    }
+      if (!this.disableContinueBtn) {
+        this.activeSlide = this.activeSlide + 1;
+        this.disableContinueBtn = !this.disableContinueBtn;
+      }
     });
 
 
