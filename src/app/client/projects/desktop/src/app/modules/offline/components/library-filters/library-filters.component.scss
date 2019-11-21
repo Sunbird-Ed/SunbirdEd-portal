@@ -3,6 +3,7 @@
 
 .state-medium-container {
     position: relative;
+    z-index: 2;
     height:64px;
     &__dropdown {
       padding: ($base-block-space * 2) 0;
@@ -25,6 +26,7 @@
   .sb-class-bar{
     box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2);
     position: relative;
+    z-index: 1;
   }
 
 
