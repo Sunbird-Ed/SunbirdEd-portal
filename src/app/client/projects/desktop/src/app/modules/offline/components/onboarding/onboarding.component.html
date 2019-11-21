@@ -9,7 +9,7 @@
             <!-- Slides -->
             <div class="d-flex">
                 <div class="swiper-slide " *ngIf="slides[activeSlide] =='slide-1'">
-                    <app-onboarding-location (selectedLocation)="getLocationData($event)" [userLocationData]="saveUserLocation.asObservable()"></app-onboarding-location>
+                    <app-onboarding-location (selectedLocation)="getLocationData($event)" #location></app-onboarding-location>
                 </div>
             </div>
 

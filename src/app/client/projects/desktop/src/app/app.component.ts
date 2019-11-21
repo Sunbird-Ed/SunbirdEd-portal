@@ -16,6 +16,7 @@ import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
 import {builtInButtons, defaultStepOptions} from './shepherd-data';
+import { OnboardingService } from '@sunbird/offline';
 
 
 
@@ -86,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryContextData: any ;
   didV2: boolean;
   flag = false;
-  locationFlag = false;
+  showOnboardingPopup = { userData: undefined, showPopup: false};
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -95,7 +96,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    private shepherdService: ShepherdService) {
+    private shepherdService: ShepherdService, public onboardingService: OnboardingService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
@@ -142,6 +143,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           this.userService.startSession();
           return this.setUserDetails();
         } else {
+          this.getDesktopUserData();
           return this.setOrgDetails();
         }
       }))
@@ -159,7 +161,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.changeLanguageAttribute();
     document.body.classList.add('sb-offline');
-    !this.locationFlag ? document.body.classList.add('o-y-hidden') : document.body.classList.remove('o-y-hidden');
+    _.isEmpty(this.showOnboardingPopup.userData) ? document.body.classList.add('o-y-hidden') : document.body.classList.remove('o-y-hidden');
 }
 
 setFingerPrintTelemetry() {
@@ -419,7 +421,9 @@ setFingerPrintTelemetry() {
   }
 
   ngAfterViewInit() {
-    this.initializeTourTravel();
+    if (!_.isEmpty(this.showOnboardingPopup.userData)) {
+      this.initializeTourTravel();
+    }
   }
 
   initializeShepherdData() {
@@ -482,6 +486,7 @@ setFingerPrintTelemetry() {
       }
     }];
   }
+
   ngOnDestroy() {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
@@ -491,7 +496,6 @@ setFingerPrintTelemetry() {
     return message.replace('{instance}', _.upperCase(this.instance));
   }
   initializeTourTravel() {
-    if (this.locationFlag) {
       setTimeout(() => {
         this.initializeShepherdData();
         if (this.isOffline) {
@@ -506,11 +510,15 @@ setFingerPrintTelemetry() {
           }
         }
       }, 1000);
-    }
   }
-  saveOnBoadring(event) {
-    this.locationFlag = event;
-    document.body.classList.remove('o-y-hidden');
-    this.ngAfterViewInit();
+
+  getDesktopUserData() {
+    this.onboardingService.getUser().subscribe(data => {
+      document.body.classList.remove('o-y-hidden');
+      this.showOnboardingPopup = { userData: this.onboardingService.userData, showPopup: false };
+    }, err => {
+      document.body.classList.add('o-y-hidden');
+      this.showOnboardingPopup = { userData: undefined, showPopup: true };
+    });
   }
 }
