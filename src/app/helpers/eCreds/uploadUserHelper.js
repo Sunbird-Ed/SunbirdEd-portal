@@ -338,7 +338,7 @@ const checkForErrors = () => {
 }
 
 const checkForFileErrors = (jsonObj) => {
-    if (jsonObj) {
+    if (jsonObj && jsonObj.length > 0) {
         const err = [];
         _.each(jsonObj, function (value, key) {
             var isName = false;
@@ -363,7 +363,8 @@ const checkForFileErrors = (jsonObj) => {
         });
         return err;
     } else {
-        return [];
+        const err =["The Uploaded file is empty. Please upload file with Data"];
+        return err;
     }
 }
 
