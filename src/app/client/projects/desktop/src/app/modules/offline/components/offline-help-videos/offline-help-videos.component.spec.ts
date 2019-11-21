@@ -55,7 +55,6 @@ describe('OfflineHelpVideosComponent', () => {
     component = fixture.componentInstance;
     spyOn(component, 'setVideoAspectRatio').and.callFake(() => {});
     spyOn(component, 'onWindowResize').and.callFake(() => {});
-    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -70,6 +69,7 @@ describe('OfflineHelpVideosComponent', () => {
     expect(component.slideData).toBeDefined();
   });
   it('should changeVideoAttributes value', () => {
+    component.ngOnInit();
     const data = component.slideData[0];
     component.changeVideoAttributes(data);
     expect(component.activeVideoObject).toBeDefined();
