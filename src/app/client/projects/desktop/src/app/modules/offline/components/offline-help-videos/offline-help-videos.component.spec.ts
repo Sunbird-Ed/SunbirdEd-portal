@@ -62,26 +62,23 @@ describe('OfflineHelpVideosComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize slide data', fakeAsync(() => {
+  it('should initialize slide data', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.instance = resourceServiceStub.instance;
     resourceService.frmelmnts = resourceServiceStub.frmelmnts;
     component.ngOnInit();
-    tick(600);
     expect(component.slideData).toBeDefined();
-  }));
-  it('should changeVideoAttributes value', fakeAsync(() => {
+  });
+  it('should changeVideoAttributes value', () => {
     const data = component.slideData[0];
     component.changeVideoAttributes(data);
-    tick(600);
     expect(component.activeVideoObject).toBeDefined();
-  }));
+  });
 
-  it('should emit an event' , fakeAsync(() => {
+  it('should emit an event' , () => {
     spyOn(component.closeVideoModal, 'emit');
     component.closeModal();
-    tick(600);
     expect(component.closeVideoModal.emit).toHaveBeenCalled();
-  }));
+  });
 
 });
