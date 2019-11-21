@@ -155,10 +155,10 @@ activateUpload = false;
       organisationId: ['', null]
     });
     this.userUploadInstructions = [
-      { instructions: 'Write the school name or the student name (depending on the certificate type) in the "Name" column'},
-      { instructions: 'The State has provided your school  with a unique ID. Write this ID in the "School External ID" column'},
-      { instructions: 'Make sure that there is only one record per row'},
-      { instructions: 'Maximum records per file is 300'},
+      { instructions: 'Enter the school name or the student name (depending on the certificate type) in the "Name" column'},
+      { instructions: 'Enter School External ID. This is the unique ID provided by the state.'},
+      { instructions: 'Enter only one name and ID per row'},
+      { instructions: 'Maximum records per file is 200'},
       { instructions: 'Save the file as .csv '},
       // // { instructions: this.resourceService.frmelmnts.instn.t0101 },
       // { instructions: this.resourceService.frmelmnts.instn.t0102 },

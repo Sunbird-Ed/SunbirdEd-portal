@@ -3,11 +3,11 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
 *ngIf="modalName === 'upload'">
 <div class="sb-modal-header">
   <!-- {{resourceService?.frmelmnts?.instn?.t0016}} -->
-  Upload FIle
+  Upload File
 </div>
 <div class="sb-modal-content">
   <div class="m-0">
-    <span class="m-0 mr-16">Please upload the CSV file in the required format</span>
+    <span class="m-0 mr-16">Follow the instructions to fill the CSV file</span>
     <!-- <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Download Sample
       CSV</button> -->
       <a href="/assets/SampleCsv.csv">Download sample CSV</a>
@@ -30,7 +30,7 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
       <li *ngFor="let instn of userUploadInstructions">{{instn.instructions}}
       </li>
     </ol>
-    <div>{{resourceService?.frmelmnts?.instn?.t0106}}</div>
+    <!-- <div>{{resourceService?.frmelmnts?.instn?.t0106}}</div> -->
     <!-- <div>{{resourceService?.frmelmnts?.instn?.t0076}} <a href={{uploadUserRefLink}}
         target="_blank">{{resourceService?.frmelmnts?.instn?.t0077}}</a></div> -->
   </div>

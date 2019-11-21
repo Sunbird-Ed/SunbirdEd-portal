@@ -11,8 +11,9 @@ import * as moment from 'moment';
 export class CertificateDashboardComponent implements OnInit {
   userId: string;
   data: any;
+  sortOrder:string;
+  reverse:boolean = true;
   constructor(public http: HttpClient, public userService: UserService) { }
-
   ngOnInit() {
     this.userId = this.userService.userid;
     this.getTableData();
@@ -42,5 +43,19 @@ export class CertificateDashboardComponent implements OnInit {
 
       }
     );
+  }
+  /**
+  * To method helps to set order of a specific field
+  *
+	* @param {string} value Field name that is to be sorted
+  */
+  setOrder(value: string): void {
+    this.reverse = !this.reverse;
+    this.sortOrder = this.reverse ? 'desc' : 'asc';
+    if(value === 'createdon'){
+      this.data = _.orderBy(this.data, ['createdon'],this.sortOrder);
+    } else{
+      this.data = _.orderBy(this.data, ['status'],this.sortOrder);
+    }
   }
 }
