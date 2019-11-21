@@ -1,33 +1,42 @@
 import { TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
+import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OfflineReportIssuesService } from './offline-report-issues.service';
 import { PublicDataService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
-import { of as observableOf } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { response } from '../offline-report-issues/offline-report-issues.service.spec.data';
 describe('OfflineReportIssuesService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule, SharedModule.forRoot()],
-    providers: [ConfigService, ToasterService, ResourceService, OfflineReportIssuesService,
-      PublicDataService, CacheService, BrowserCacheTtlService]
+    providers: [OfflineReportIssuesService,
+      PublicDataService, CacheService]
   }));
   it('should be created', () => {
     const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     expect(service).toBeTruthy();
   });
-
   it('should be call report other issue method', () => {
     const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
-    const publicDataService = TestBed.get(PublicDataService);
     const params = {
       email: 'sample@emal.com',
       description: 'sample description'
     };
-    spyOn(publicDataService, 'post').and.callFake(() => observableOf(response.reportOtherIssueStatus));
-    const apiRes = service.reportOtherIssue(params);
-    publicDataService.post(params).subscribe(responseData => {
-      expect(responseData).toBe(response.reportOtherIssueStatus);
+    spyOn(service, 'reportOtherIssue').and.callFake(() => of(response.reportOtherIssueStatusSuccess.success));
+    service.reportOtherIssue(params).subscribe(data => {
+      expect(data).toBe(response.reportOtherIssueStatusSuccess.success);
+    });
+
+  });
+  fit('should be call report other issue method throw error', () => {
+    const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
+    const params = {
+      email: 'sample@emal.com',
+      description: 'sample description'
+    };
+    spyOn(service, 'reportOtherIssue').and.callFake(() => throwError(response.reportOtherIssueStatusError.error));
+    service.reportOtherIssue(params).subscribe(data => {
+      expect(data).toBe(response.reportOtherIssueStatusError.error);
     });
   });
 });
