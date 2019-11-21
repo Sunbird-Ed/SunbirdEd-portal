@@ -1,5 +1,6 @@
+import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, ViewChild, Inject, OnChanges, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { DOCUMENT } from '@angular/common';
 import * as $ from 'jquery';
@@ -10,7 +11,7 @@ import * as _ from 'lodash-es';
   templateUrl: './offline-help-videos.component.html',
   styleUrls: ['./offline-help-videos.component.scss']
 })
-export class OfflineHelpVideosComponent implements OnInit, OnChanges, AfterViewInit {
+export class OfflineHelpVideosComponent implements OnInit {
 
 
 
@@ -27,7 +28,8 @@ export class OfflineHelpVideosComponent implements OnInit, OnChanges, AfterViewI
   activeVideoObject;
   instance: string;
   selectVideoInteractEdata: IInteractEventEdata;
-  constructor(@Inject(DOCUMENT) private document: Document, public resourceService: ResourceService, public configService: ConfigService) {
+  constructor(@Inject(DOCUMENT) private document: Document, public resourceService: ResourceService, public configService: ConfigService,
+  public activatedRoute: ActivatedRoute) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
 
@@ -44,70 +46,22 @@ export class OfflineHelpVideosComponent implements OnInit, OnChanges, AfterViewI
         url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_connected_to_the_Internet.mp4'
       },
       {
+        id: 'find-content-offline',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
+      },
+      {
+        id: 'copy-content',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
+      },
+      {
         id: 'add-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0095),
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0107),
         thumbnail: 'assets/images/play-icon.svg',
         url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_offline_or_using_a_pen_drive.mp4'
-      },
-      {
-        id: 'find-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
-      },
-      {
-        id: 'copy-content',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
-      },
-      {
-        id: 'find-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
-      },
-      {
-        id: 'copy-content',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
-      },
-      {
-        id: 'find-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
-      },
-      {
-        id: 'copy-content',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
-      },
-      {
-        id: 'find-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
-      },
-      {
-        id: 'copy-content',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
-      },
-      {
-        id: 'find-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
-      },
-      {
-        id: 'copy-content',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0097),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
       }
     ];
 
@@ -117,8 +71,6 @@ export class OfflineHelpVideosComponent implements OnInit, OnChanges, AfterViewI
       thumbnail: 'assets/images/play-icon.svg',
       url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_connected_to_the_Internet.mp4'
     };
-
-    this.setInteractData();
 
     // video height
     setTimeout(() => {
@@ -143,20 +95,12 @@ export class OfflineHelpVideosComponent implements OnInit, OnChanges, AfterViewI
     this.closeVideoModal.emit('success');
   }
 
-  setInteractData() {
-    this.selectVideoInteractEdata = {
-      id: this.activeVideoObject.id,
+  setInteractData(data) {
+    return {
+      id: data.id,
       type: 'click',
-      pageid: 'library'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
-  }
-
-  ngOnChanges() {
-
-  }
-
-  ngAfterViewInit() {
-
   }
 
   onWindowResize(event) {
