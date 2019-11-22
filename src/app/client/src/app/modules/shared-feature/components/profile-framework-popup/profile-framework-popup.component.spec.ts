@@ -141,5 +141,17 @@ describe('ProfileFrameworkPopupComponent', () => {
     component['enableSubmitButton']();
     expect(component.showButton).toBeFalsy();
   });
+  it('should submit board value in form as null when board value is not present in the framework', () => {
+    const selectedOptions = {
+      gradeLevel: ['Class 1'],
+      medium: ['English'],
+      subject: ['Hindi']
+    };
+    component.selectedOption = selectedOptions;
+    component['frameWorkId'] = 'NCFCOPY2';
+    const submitEventEmitter = spyOn(component.submit, 'emit');
+    component.onSubmitForm();
+    expect(submitEventEmitter).toHaveBeenCalledWith({...selectedOptions, ...{board: null, id: 'NCFCOPY2' }});
+  });
 });
 
