@@ -11,37 +11,28 @@ export class OnboardingService {
   userData;
   constructor(public configService: ConfigService, public publicDataService: PublicDataService) { }
 
-  getUserLocation(request): Observable<ServerResponse> {
+  searchLocation(filters): Observable<ServerResponse> {
     const options = {
       url: this.configService.urlConFig.URLS.USER.LOCATION_SEARCH,
-      data: request
+      data: {
+        request: {
+          filters
+        }
+      }
     };
-    return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
-      return response;
-    }), catchError(err => {
-      return observableThrowError(err);
-    }));
+    return this.publicDataService.post(options);
   }
   getUser() {
     const options = {
       url: this.configService.urlConFig.URLS.OFFLINE.READ_USER
     };
-    return this.publicDataService.get(options).pipe(map((response: ServerResponse) => {
-      this.userData = _.get(response, 'result');
-      return response;
-    }), catchError(err => {
-      return observableThrowError(err);
-    }));
+    return this.publicDataService.get(options);
   }
-  saveUserLocation(request) {
+  saveLocation(request) {
     const options = {
       url: this.configService.urlConFig.URLS.OFFLINE.LOCATION_SAVE,
       data: request
     };
-    return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
-      return response;
-    }), catchError(err => {
-      return observableThrowError(err);
-    }));
+    return this.publicDataService.post(options);
   }
 }

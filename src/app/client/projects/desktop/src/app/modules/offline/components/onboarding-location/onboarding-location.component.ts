@@ -12,18 +12,16 @@ import * as _ from 'lodash-es';
   styleUrls: ['./onboarding-location.component.scss']
 })
 export class OnboardingLocationComponent implements OnInit {
-  @Input() selectState;
-  @Input() selectDistrict;
-  allStates = [];
-  allDistricts = [];
+  selectedState: any;
+  selectedDistrict: any;
+  stateList = [];
+  districtList = [];
   @Output() locationSaved = new EventEmitter();
   disableContinueBtn = true;
   telemetryImpressionData: IImpressionEventInput;
   telemetryInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   continueLabel = _.upperCase(this.resourceService.frmelmnts.lbl.continue);
-  @Input() userLocationData;
-  @Input() deviceId;
 
   constructor(public onboardingService: OnboardingService, public activatedRoute: ActivatedRoute, private router: Router,
     public resourceService: ResourceService, public deviceRegister: DeviceRegisterService, public toasterService: ToasterService) {
@@ -34,57 +32,46 @@ export class OnboardingLocationComponent implements OnInit {
   }
 
   onOptionChanges(option) {
-    this.disableContinueBtn = !this.disableContinueBtn;
-    // this.selectedLocation.emit({enable: this.disableContinueBtn});
+    console.log('selected', option);
     if (option.type === 'state') {
+      this.selectedDistrict = {};
+      this.districtList = [];
       this.getAllDistricts(option.id);
+    } else {
+      this.disableContinueBtn = false;
     }
-    this.enableContinueButton();
   }
 
   getAllStates() {
-    const requestData = { request: { filters: { type: 'state' } } };
-    this.onboardingService.getUserLocation(requestData).subscribe(data => {
-      this.allStates = _.get(data, 'result.response');
+    this.onboardingService.searchLocation({ type: 'state' })
+    .subscribe(data => {
+      this.stateList = _.get(data, 'result.response');
     });
   }
 
   getAllDistricts(parentId) {
-    const requestData = { request: { filters: { type: 'district', parentId: parentId } } };
-    this.onboardingService.getUserLocation(requestData).subscribe(data => {
-      this.allDistricts = _.get(data, 'result.response');
+    this.onboardingService.searchLocation({ type: 'district', parentId: parentId })
+    .subscribe(data => {
+      this.districtList = _.get(data, 'result.response');
     });
   }
 
-  enableContinueButton() {
-    setTimeout(() => {
-      this.disableContinueBtn = this.allDistricts.length <= 0 ? false : _.isEmpty(this.selectDistrict);
-      const locationData = {
-        type: 'location',
-        data: {
-          state: this.selectState,
-          city: this.selectDistrict || {}
-        },
-        enable: this.disableContinueBtn
-      };
-      if (!this.disableContinueBtn) {
-        // this.selectedLocation.emit(locationData);
+  handleSubmitButton() {
+    this.disableContinueBtn = true;
+    const requestParams = {
+      request: {
+        state: this.selectedState,
+        city: this.selectedDistrict
       }
-    }, 500);
-  }
-
-  saveLocation(request) {
-    const requestParams = {request: request};
-      this.onboardingService.saveUserLocation(requestParams).subscribe(() => {
-      this.disableContinueBtn = false;
-      this.locationSaved.emit(this.disableContinueBtn);
+    };
+    this.onboardingService.saveLocation(requestParams).subscribe(() => {
+      this.locationSaved.emit('SUCCUSS');
       this.toasterService.success(this.resourceService.messages.smsg.m0057);
-      }, error => {
-      this.disableContinueBtn = true;
-      this.locationSaved.emit(this.disableContinueBtn);
+    }, error => {
+      this.disableContinueBtn = false;
+      this.locationSaved.emit('ERROR');
       this.toasterService.error(this.resourceService.messages.emsg.m0021);
-
-      });
+    });
   }
 
 }

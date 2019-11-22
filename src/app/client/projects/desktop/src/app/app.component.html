@@ -1,5 +1,6 @@
-<app-onboarding *ngIf="!showOnboardingPopup.userData && showOnboardingPopup.showPopup" [deviceId]="userDeviceId"></app-onboarding>
-<div class="footer-fix" [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}" *ngIf="showOnboardingPopup.userData && !showOnboardingPopup.showPopup">
+<app-onboarding *ngIf="!showOnboardingPopup.userData && showOnboardingPopup.showPopup" (onboardCompletion)="handleUserOnboardEvent($event)" ></app-onboarding>
+<div class="footer-fix" [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}"
+    *ngIf="showOnboardingPopup.userData && !showOnboardingPopup.showPopup">
     <app-header [routerEvents]="routeData$"></app-header>
     <app-desktop-app-update></app-desktop-app-update>
     <router-outlet *ngIf="initApp"></router-outlet>

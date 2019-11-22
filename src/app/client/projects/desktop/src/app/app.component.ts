@@ -521,4 +521,7 @@ setFingerPrintTelemetry() {
       this.showOnboardingPopup = { userData: undefined, showPopup: true };
     });
   }
+  handleUserOnboardEvent(event) {
+
+  }
 }

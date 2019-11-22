@@ -12,7 +12,6 @@ import * as _ from 'lodash-es';
 })
 export class OnboardingComponent implements OnInit, OnDestroy {
 
-  @Input() deviceId;
   @Output() onboardCompletion = new EventEmitter();
   slide = 'location';
   telemetryImpressionData: IImpressionEventInput;
