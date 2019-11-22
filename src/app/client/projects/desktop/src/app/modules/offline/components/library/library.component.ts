@@ -31,17 +31,7 @@ export class LibraryComponent implements OnInit {
 
     public noResultMessage: INoResultMessage;
 
-    public subjects = ['english', 'mathematics', 'geology', 'biology', 'zoology', 'Botany', 'Environmental Science'];
-
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
-    // {
-    //     'centerPadding': "16px",
-    //     'infinite': false,
-    //     'rtl': false,
-    //     'variableWidth': true,
-    //     "slidesToShow": 4,
-    //     "slidesToScroll": 1,
-    // };
 
 
     @HostListener('window:scroll', []) onScroll(): void {
@@ -157,7 +147,7 @@ export class LibraryComponent implements OnInit {
 
     private prepareDataForCard(contents) {
         contents.forEach((item) => {
-            item.cardImg = item.appIcon || item.courseLogoUrl
+            item.cardImg = item.appIcon || item.courseLogoUrl;
         });
         return contents;
     }
