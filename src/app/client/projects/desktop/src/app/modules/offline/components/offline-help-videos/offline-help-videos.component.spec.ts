@@ -1,8 +1,7 @@
-import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, SharedModule } from '@sunbird/shared';
 import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
@@ -41,7 +40,7 @@ describe('OfflineHelpVideosComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [OfflineHelpVideosComponent],
-      imports: [TelemetryModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [TelemetryModule, HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot()],
       providers: [TelemetryService, ConfigService, CacheService, BrowserCacheTtlService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceServiceStub },
@@ -58,35 +57,25 @@ describe('OfflineHelpVideosComponent', () => {
     timerCallback = jasmine.createSpy('timerCallback');
     jasmine.clock().install();
   });
+
   afterEach(() => {
     jasmine.clock().uninstall();
   });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize slide data', fakeAsync(() => {
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.instance = resourceServiceStub.instance;
-    resourceService.frmelmnts = resourceServiceStub.frmelmnts;
-    setTimeout(() => {
-      component.ngOnInit();
-    });
-    jasmine.clock().tick(10001);
-    expect(component.slideData).toBeDefined();
-  }));
-  it('should changeVideoAttributes value', fakeAsync(() => {
+  it('should changeVideoAttributes value', () => {
     const data = component.slideData[0];
     component.changeVideoAttributes(data);
-    tick(500);
     expect(component.activeVideoObject).toBeDefined();
-  }));
+  });
 
-  it('should emit an event' , fakeAsync(() => {
+  it('should emit an event' , () => {
     spyOn(component.closeVideoModal, 'emit');
     component.closeModal();
-    tick(500);
     expect(component.closeVideoModal.emit).toHaveBeenCalled();
-  }));
+  });
 
 });
