@@ -13,6 +13,7 @@ describe('OfflineHelpVideosComponent', () => {
   let component: OfflineHelpVideosComponent;
   let fixture: ComponentFixture<OfflineHelpVideosComponent>;
   let resourceServiceStub;
+  let timerCallback;
   beforeEach(async(() => {
     const fakeActivatedRoute = {
       snapshot: {
@@ -54,8 +55,12 @@ describe('OfflineHelpVideosComponent', () => {
     fixture = TestBed.createComponent(OfflineHelpVideosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    timerCallback = jasmine.createSpy('timerCallback');
+    jasmine.clock().install();
   });
-
+  afterEach(() => {
+    jasmine.clock().uninstall();
+  });
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -64,8 +69,10 @@ describe('OfflineHelpVideosComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.instance = resourceServiceStub.instance;
     resourceService.frmelmnts = resourceServiceStub.frmelmnts;
-    component.ngOnInit();
-    tick(500);
+    setTimeout(() => {
+      component.ngOnInit();
+    });
+    jasmine.clock().tick(10001);
     expect(component.slideData).toBeDefined();
   }));
   it('should changeVideoAttributes value', fakeAsync(() => {
