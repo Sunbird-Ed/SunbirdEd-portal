@@ -21,7 +21,7 @@ export class OnboardingLocationComponent implements OnInit {
   telemetryImpressionData: IImpressionEventInput;
   telemetryInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
-  continueLabel;
+  continueLabel = _.upperCase(this.resourceService.frmelmnts.lbl.continue);
   @Input() userLocationData;
   @Input() deviceId;
   @Output() locationSaved = new EventEmitter();

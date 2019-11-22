@@ -67,8 +67,6 @@ export class OnboardingComponent implements OnInit, OnDestroy {
         this.disableContinueBtn = !this.disableContinueBtn;
       }
     });
-
-
   }
 
   ngOnDestroy() {
