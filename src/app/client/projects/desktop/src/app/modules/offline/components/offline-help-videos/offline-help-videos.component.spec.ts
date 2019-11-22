@@ -1,18 +1,17 @@
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ResourceService, ConfigService, BrowserCacheTtlService, SharedModule } from '@sunbird/shared';
-import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ResourceService, SharedModule } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OfflineHelpVideosComponent } from './offline-help-videos.component';
-import { CacheService } from 'ng2-cache-service';
 
 describe('OfflineHelpVideosComponent', () => {
   let component: OfflineHelpVideosComponent;
   let fixture: ComponentFixture<OfflineHelpVideosComponent>;
   let resourceServiceStub;
-  let timerCallback;
   beforeEach(async(() => {
     const fakeActivatedRoute = {
       snapshot: {
@@ -40,9 +39,8 @@ describe('OfflineHelpVideosComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [OfflineHelpVideosComponent],
-      imports: [TelemetryModule, HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot()],
-      providers: [TelemetryService, ConfigService, CacheService, BrowserCacheTtlService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      imports: [TelemetryModule.forRoot(), HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot()],
+      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceServiceStub },
         { provide: Router, useValue: routerStub}
       ]
@@ -54,8 +52,6 @@ describe('OfflineHelpVideosComponent', () => {
     fixture = TestBed.createComponent(OfflineHelpVideosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    timerCallback = jasmine.createSpy('timerCallback');
-    jasmine.clock().install();
   });
 
   afterEach(() => {
@@ -66,10 +62,32 @@ describe('OfflineHelpVideosComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should call setVideoHeight method', () => {
+    component.instance = resourceServiceStub.instance;
+    spyOn(component, 'setVideoHeight');
+    spyOn(component, 'interpolateInstance');
+    component.ngOnInit();
+    expect(component.slideData).toBeDefined();
+    expect(component.slideData[0]['id']).toEqual('add-content-online');
+    expect(component.setVideoHeight).toHaveBeenCalled();
+    expect(component.interpolateInstance).toHaveBeenCalled();
+  });
+
   it('should changeVideoAttributes value', () => {
-    const data = component.slideData[0];
+    const data = component.slideData[1];
     component.changeVideoAttributes(data);
     expect(component.activeVideoObject).toBeDefined();
+    expect(component.activeVideoObject.id).toEqual('find-content-offline');
+  });
+
+  it('should changeVideoAttributes value', () => {
+    spyOn(component, 'changeVideoAttributes');
+    const data = (resourceServiceStub.frmelmnts.instn.t0094).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
+    const button = fixture.debugElement.query(By.css('.sbcard.sbcard--recently-viewed.mb-8')).nativeElement;
+    const value = fixture.debugElement.query(By.css('h6')).nativeElement.innerText;
+    button.click();
+    expect(component.changeVideoAttributes).toHaveBeenCalled();
+    expect(value).toContain(data);
   });
 
   it('should emit an event' , () => {
