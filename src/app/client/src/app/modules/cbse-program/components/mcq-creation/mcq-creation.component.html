@@ -4,44 +4,54 @@
 
   <div *ngIf='showForm'>
   <form #mcqFormControl="ngForm" class="ui form mcq-vertical mt-8" *ngIf="!showPreview">
-    <div class="field mcq-title">
-      <label class="mb-16 fs-1-286">Question</label>
+    <div class="sb-field mcq-title mb-16">
+      <label class="p-16 fs-1 mb-0 question-list">Question</label>
       <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)"
-        class="ui basic red error label pt-1">Fill Question</label>
-      <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);"
-        [editorConfig]="questionMetaData" [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
+        class="ui basic red error label pt-1 question-list">Fill Question</label>
+        <div class="ckeditor-tool-container">
+          <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);"
+            [editorConfig]="questionMetaData" [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
+        </div>
     </div>
     <div class="mcq-options">
-      <label *ngIf="showFormError && !mcqForm.answer" class="ui basic red error label pt-1">Select one correct
-        answer</label>
-      <div class="mcq-option" *ngFor="let option of mcqForm.options; let i=index">
-        <div class="twelve wide field">
-          <label class="mb-8 fs-1">Option {{i + 1}}:</label>
-          <label *ngIf="showFormError && (option.body === undefined || option.body === '')"
-            class="ui basic red error label pt-1">Fill this option</label>
-          <app-ckeditor-tool (hasError)="handleEditorError($event)"
-            (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
-            [editorConfig]="questionMetaData" [editorDataInput]="option.body" [setCharacterLimit]="setCharacterLimit"
-            [setImageLimit]="setImageLimit"></app-ckeditor-tool>
-          <div class="mcq-checkbox-answer">
-            <!-- <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
-              <label>Mark as right answer</label> -->
-            <button *ngIf='mcqForm.answer !== i.toString()' (click)="mcqForm.answer = i.toString()"
-              class="sb-btn sb-btn-outline-gray-disabled sb-btn-xs mr-auto"><i class="checkmark icon"></i>Mark as right
-              answer </button>
-            <button *ngIf='mcqForm.answer === i.toString()'
-              class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary mr-auto"><i class="checkmark icon"></i>Marked as
-              right answer </button>
-            <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)"
-              class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn"><i
-                class="trash alternate outline icon"></i>Delete</button>
+      <div class="sb-mcq-options-answer width-100">
+        <label class="question-list p-16 fs-1 mb-0">Answers</label>
+        <label *ngIf="showFormError && !mcqForm.answer" class="ui basic red error label pt-1">Select one correct
+          answer</label>
+        <div class="mcq-option mb-0" *ngFor="let option of mcqForm.options; let i=index">
+          <div class="twelve wide field">
+            <label class="p-16 fs-0-986 mb-0 font-weight-normal">Option {{i + 1}}:</label>
+            <label *ngIf="showFormError && (option.body === undefined || option.body === '')"
+              class="ui basic red error label pt-1">Fill this option</label>
+              <div class="ckeditor-tool-container">
+                <app-ckeditor-tool (hasError)="handleEditorError($event)"
+                  (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
+                  [editorConfig]="questionMetaData" [editorDataInput]="option.body" [setCharacterLimit]="setCharacterLimit"
+                  [setImageLimit]="setImageLimit"></app-ckeditor-tool>
+                  <div class="mcq-checkbox-answer">
+                    <!-- <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
+                      <label>Mark as right answer</label> -->
+                    <button *ngIf='mcqForm.answer !== i.toString()' (click)="mcqForm.answer = i.toString()"
+                      class="sb-btn sb-btn-outline-gray-disabled sb-btn-xs mr-auto"><i class="checkmark icon"></i>Mark as right
+                      answer </button>
+                    <button *ngIf='mcqForm.answer === i.toString()'
+                      class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary mr-auto"><i class="checkmark icon"></i>Marked as
+                      right answer </button>
+                    <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)"
+                      class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn"><i
+                        class="trash alternate outline icon"></i>Delete</button>
+                  </div>
+              </div>
+            <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce the
+              size</label>
           </div>
-          <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce the
-            size</label>
         </div>
+        
       </div>
-      <button *ngIf='mcqForm.options.length < 4' class="sb-btn sb-btn-normal sb-btn-primary"
-        (click)="mcqForm.addOptions()"> Add more Options </button>
+          <div class="text-center mt-16">
+            <button *ngIf='mcqForm.options.length < 4' class="sb-btn sb-btn-normal sb-btn-primary"
+              (click)="mcqForm.addOptions()"> Add more Options </button>
+          </div>
     </div>
     <div class="ui two column grid width-100">
       <div class="one column row" *ngIf="learningOutcomeOptions.length">

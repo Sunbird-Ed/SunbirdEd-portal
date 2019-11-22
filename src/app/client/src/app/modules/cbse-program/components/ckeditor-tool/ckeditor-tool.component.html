@@ -1,10 +1,10 @@
-<button type="button" 
-appTelemetryInteract [telemetryInteractEdata]="{id:'add_image',type:'click',pageid:'questioncreate'}"
-data-tooltip="Add image" data-position="bottom center" data-variation="mini" data-inverted="" title="Add image" [disabled]="isAssetBrowserReadOnly || isEditorFocused" (click)="initializeImagePicker('question')" class="ui icon button insert-image-btn">
-  <i class="image outline icon"></i>
-</button>
 
 <div class="editorWrapper" [ngClass]="{'hasError': limitExceeded}">
+    <button type="button" 
+    appTelemetryInteract [telemetryInteractEdata]="{id:'add_image',type:'click',pageid:'questioncreate'}"
+    data-tooltip="Add image" data-position="bottom center" data-variation="mini" data-inverted="" title="Add image" [disabled]="isAssetBrowserReadOnly || isEditorFocused" (click)="initializeImagePicker('question')" class="ui icon button insert-image-btn">
+      <i class="image outline icon"></i>
+    </button>
   <textarea class="editor" #editor name="question" placeholder=""></textarea>
   <div *ngIf="setCharacterLimit > 0">
     <div class="characterCount">
