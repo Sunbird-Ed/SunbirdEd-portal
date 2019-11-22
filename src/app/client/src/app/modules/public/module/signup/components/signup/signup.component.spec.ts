@@ -184,12 +184,13 @@ describe('SignUpComponent', () => {
     contactType.setValue('email');
     const uniqueContact = component.signUpForm.controls['uniqueContact'];
     uniqueContact.setValue(true);
-     expect(component.disableSubmitBtn).toBeFalsy();
+    expect(component.disableSubmitBtn).toBeFalsy();
   });
   it('should call displayPassword method to show password', () => {
-    component.showPassword = false;
+    component.ngOnInit();
     component.displayPassword();
-    expect(component.showPassword).toBeTruthy();  });
+    expect(component.showPassword).toBeTruthy();
+  });
   it('should call displayPassword method to hide password', () => {
     component.showPassword = true;
     component.displayPassword();
