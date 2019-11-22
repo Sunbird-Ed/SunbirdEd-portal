@@ -12,7 +12,7 @@ import { OnboardingService } from './../../services';
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.scss']
 })
-export class OnboardingComponent implements OnInit, OnDestroy {
+export class OnboardingComponent implements OnInit {
 
   slide = 'location';
   telemetryImpressionData: IImpressionEventInput;
@@ -23,17 +23,19 @@ export class OnboardingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.setTelemetryData();
   }
+
   handleLocationSaveEvent() {
     // this.slide = 'contentPreference';
-    this.onboardingService.onboardCompletion.emit('SUCCUSS');
+    this.onboardingService.onboardCompletion.emit('SUCCESS');
   }
+
   handleContentPreferenceSaveEvent() {
-    this.onboardingService.onboardCompletion.emit('SUCCUSS');
+    this.onboardingService.onboardCompletion.emit('SUCCESS');
   }
+
   setTelemetryData() {
-    this.telemetryImpressionData = {
+   return {
       context: { env: 'onboarding' },
       edata: {
         type: 'view',
@@ -41,14 +43,6 @@ export class OnboardingComponent implements OnInit, OnDestroy {
         uri: this.router.url
       }
     };
-    this.telemetryInteractEdata = {
-      id: 'onboarding_location',
-      type: 'click',
-      pageid: 'onboarding_location_setting'
-    };
   }
 
-  ngOnDestroy() {
-
-  }
 }

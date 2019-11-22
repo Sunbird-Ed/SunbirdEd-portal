@@ -4,7 +4,7 @@
     </div>
     <!-- Slides -->
     <div class="d-flex">
-        <div class="swiper-slide ">
+        <div class="swiper-slide">
             <label
                 class="swiper-slide__title p-0 m-0 sb-color-primary">{{resourceService?.messages?.imsg?.m0075}}</label>
             <div class="swiper-slide__para pt-8">{{resourceService?.messages?.imsg?.m0074}} </div>
@@ -25,19 +25,16 @@
                         </sui-select-option>
                     </sui-select>
                 </div>
-
             </div>
         </div>
     </div>
 
     <div class="bullets-container">
-        <!-- <div class="circle active update completed" *ngFor="let slide of slides;let i =index;" (click)="showNextContent(i)" ></div> -->
         <div class="circle active"></div>
         <div class="circle update" [ngClass]="{'completed': disableContinueBtn}"></div>
-        <!-- <div class="circle complete"></div> -->
     </div>
     <button type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm"
-        (click)="handleSubmitButton()" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEdata"
+        (click)="handleSubmitButton()" appTelemetryInteract [telemetryInteractEdata]="setTelemetry()"
         [telemetryInteractContext]="{env:'onboarding'}">
         {{continueLabel}}
         <span class='arrow-icon'><i class="arrow right icon"></i></span></button>

@@ -136,16 +136,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     combineLatest(queryParams$, this.setSlug(), this.setDeviceId(), this.getDesktopUserData())
     .pipe(
       mergeMap(data => {
-        console.log('got userdata', data[3]);
         if (data[3]) {
           return of(data);
         } else {
           this.showOnboardingPopup = true;
           return this.onboardingService.onboardCompletion;
         }
-      }),
+      }), first(),
       mergeMap(data => {
-        console.log('----mergeMap----', data);
         this.showOnboardingPopup = false;
         this.navigationHelperService.initialize();
         this.userService.initialize(this.userService.loggedIn);
@@ -153,7 +151,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       }))
       .subscribe(data => {
         this.initializeTourTravel();
-        console.log('got data');
+        document.body.classList.remove('o-y-hidden');
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
@@ -523,8 +521,6 @@ setFingerPrintTelemetry() {
       document.body.classList.add('o-y-hidden');
       return of(undefined);
     }));
-    // _.isEmpty(this.showOnboardingPopup.userData)
-    // ? document.body.classList.add('o-y-hidden') : document.body.classList.remove('o-y-hidden');
   }
   handleUserOnboardEvent(event) {
 

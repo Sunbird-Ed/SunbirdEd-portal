@@ -32,7 +32,6 @@ export class OnboardingLocationComponent implements OnInit {
   }
 
   onOptionChanges(option) {
-    console.log('selected', option);
     if (option.type === 'state') {
       this.selectedDistrict = {};
       this.districtList = [];
@@ -65,13 +64,20 @@ export class OnboardingLocationComponent implements OnInit {
       }
     };
     this.onboardingService.saveLocation(requestParams).subscribe(() => {
-      this.locationSaved.emit('SUCCUSS');
-      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0057') || 'SUCCUSS');
+      this.locationSaved.emit('SUCCESS');
+      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0057') || 'SUCCESS');
     }, error => {
       this.disableContinueBtn = false;
       this.locationSaved.emit('ERROR');
       this.toasterService.error(this.resourceService.messages.emsg.m0021);
     });
+  }
+  setTelemetry() {
+    return {
+      id: 'onboarding_location',
+      type: 'click',
+      pageid: 'onboarding_location_setting'
+    };
   }
 
 }
