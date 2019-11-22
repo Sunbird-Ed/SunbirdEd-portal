@@ -5,9 +5,9 @@ import { OfflineReportIssuesComponent } from './offline-report-issues.component'
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { of, throwError } from 'rxjs';
 import { SuiModalModule } from 'ng2-semantic-ui';
-import { CacheService } from 'ng2-cache-service';
-import { OfflineReportIssuesService } from './../../services/offline-report-issues/offline-report-issues.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { OfflineReportIssuesService } from '../../services';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 describe('OfflineReportIssuesComponent', () => {
   let component: OfflineReportIssuesComponent;
   let fixture: ComponentFixture<OfflineReportIssuesComponent>;
@@ -50,8 +50,10 @@ describe('OfflineReportIssuesComponent', () => {
   });
   it('should open report issue modal when you click on Report other issue button', () => {
     spyOn(component, 'openModal');
-
-    const button = fixture.debugElement.nativeElement.querySelector('#submitIssueButton');
+    const openModal: DebugElement = fixture.debugElement;
+    const buttonQuerySelector = openModal.query(By.css('button.sb-btn-outline-primary'));
+    const button: HTMLElement = buttonQuerySelector.nativeElement;
+    button.click();
     fixture.whenStable().then(() => {
       expect(component.issueReportedSuccessfully).toBeDefined();
       expect(component.openReportIssueModal).toBeDefined();
@@ -79,7 +81,7 @@ describe('OfflineReportIssuesComponent', () => {
     expect(errors['required']).toBeTruthy();
     expect(component.reportOtherissueForm.invalid).toBeTruthy();
   });
-  it('should call  submitIssue method and success ', () => {
+  it('should show success message when successfully ticket has been raised ', () => {
     const offlineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     spyOn(offlineReportIssuesService, 'reportOtherIssue').and.returnValue(of('true'));
     component.submitIssue();
@@ -87,7 +89,7 @@ describe('OfflineReportIssuesComponent', () => {
     expect(component.isDisplayLoader).toBeDefined();
     spyOn(component, 'createReportOtherissueForm');
   });
-  it('should call  submitIssue method and error case ', () => {
+  it('should throw error an when unable raise ticket ', () => {
     const offlineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     spyOn(offlineReportIssuesService, 'reportOtherIssue').and.returnValue(of('false'));
     component.submitIssue();

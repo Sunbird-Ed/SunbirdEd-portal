@@ -12,11 +12,8 @@ describe('OfflineReportIssuesService', () => {
     providers: [OfflineReportIssuesService,
       PublicDataService, CacheService]
   }));
-  it('should be created', () => {
-    const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
-    expect(service).toBeTruthy();
-  });
-  it('should be call report other issue method', () => {
+
+  it('should be call report other issue method and successfully raise ticket case', () => {
     const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     const params = {
       email: 'sample@emal.com',
@@ -28,7 +25,7 @@ describe('OfflineReportIssuesService', () => {
     });
 
   });
-  fit('should be call report other issue method throw error', () => {
+  it('should be call report other issue method and error while submiting raise ticket case', () => {
     const service: OfflineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     const params = {
       email: 'sample@emal.com',
