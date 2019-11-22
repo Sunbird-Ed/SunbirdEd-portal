@@ -32,6 +32,7 @@ export class OnboardingLocationComponent implements OnInit {
   }
 
   onOptionChanges(option) {
+    console.log('selected', option);
     if (option.type === 'state') {
       this.selectedDistrict = {};
       this.districtList = [];
@@ -71,13 +72,6 @@ export class OnboardingLocationComponent implements OnInit {
       this.locationSaved.emit('ERROR');
       this.toasterService.error(this.resourceService.messages.emsg.m0021);
     });
-  }
-  setTelemetry() {
-    return {
-      id: 'onboarding_location',
-      type: 'click',
-      pageid: 'onboarding_location_setting'
-    };
   }
 
 }

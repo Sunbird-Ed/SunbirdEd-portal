@@ -36,4 +36,11 @@ export class OnboardingService {
     };
     return this.publicDataService.post(options);
   }
+  saveUserPreference(request) {
+    const options = {
+      url: this.configService.urlConFig.URLS.OFFLINE.CREATE_USER,
+      data: request
+    };
+    return this.publicDataService.post(options);
+  }
 }

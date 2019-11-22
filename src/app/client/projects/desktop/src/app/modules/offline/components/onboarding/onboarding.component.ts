@@ -26,8 +26,7 @@ export class OnboardingComponent implements OnInit {
   }
 
   handleLocationSaveEvent() {
-    // this.slide = 'contentPreference';
-    this.onboardingService.onboardCompletion.emit('SUCCESS');
+    this.slide = 'contentPreference';
   }
 
   handleContentPreferenceSaveEvent() {
