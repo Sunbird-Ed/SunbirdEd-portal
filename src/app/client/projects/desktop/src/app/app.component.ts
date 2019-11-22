@@ -11,7 +11,7 @@ import { UserService, PermissionService, CoursesService, TenantService, OrgDetai
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest, BehaviorSubject } from 'rxjs';
-import { first, filter, mergeMap, tap, map, skipWhile, startWith } from 'rxjs/operators';
+import { first, filter, mergeMap, tap, map, skipWhile, startWith, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
@@ -87,7 +87,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryContextData: any ;
   didV2: boolean;
   flag = false;
-  showOnboardingPopup = { userData: undefined, showPopup: false};
+  showOnboardingPopup = false;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -125,6 +125,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter( queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
+      first(),
       tap(queryParams => {
         this.telemetryContextData = JSON.parse(decodeURIComponent(queryParams.context));
       }),
@@ -132,22 +133,27 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
-    combineLatest(queryParams$, this.setSlug(), this.setDeviceId())
+    combineLatest(queryParams$, this.setSlug(), this.setDeviceId(), this.getDesktopUserData())
     .pipe(
       mergeMap(data => {
+        console.log('got userdata', data[3]);
+        if (data[3]) {
+          return of(data);
+        } else {
+          this.showOnboardingPopup = true;
+          return this.onboardingService.onboardCompletion;
+        }
+      }),
+      mergeMap(data => {
+        console.log('----mergeMap----', data);
+        this.showOnboardingPopup = false;
         this.navigationHelperService.initialize();
         this.userService.initialize(this.userService.loggedIn);
-        if (this.userService.loggedIn) {
-          this.permissionService.initialize();
-          this.courseService.initialize();
-          this.userService.startSession();
-          return this.setUserDetails();
-        } else {
-          this.getDesktopUserData();
-          return this.setOrgDetails();
-        }
+        return this.setOrgDetails();
       }))
       .subscribe(data => {
+        this.initializeTourTravel();
+        console.log('got data');
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
@@ -161,7 +167,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.changeLanguageAttribute();
     document.body.classList.add('sb-offline');
-    _.isEmpty(this.showOnboardingPopup.userData) ? document.body.classList.add('o-y-hidden') : document.body.classList.remove('o-y-hidden');
 }
 
 setFingerPrintTelemetry() {
@@ -421,9 +426,7 @@ setFingerPrintTelemetry() {
   }
 
   ngAfterViewInit() {
-    if (!_.isEmpty(this.showOnboardingPopup.userData)) {
-      this.initializeTourTravel();
-    }
+
   }
 
   initializeShepherdData() {
@@ -513,13 +516,15 @@ setFingerPrintTelemetry() {
   }
 
   getDesktopUserData() {
-    this.onboardingService.getUser().subscribe(data => {
+    return this.onboardingService.getUser().pipe(
+    tap(data => {
       document.body.classList.remove('o-y-hidden');
-      this.showOnboardingPopup = { userData: this.onboardingService.userData, showPopup: false };
-    }, err => {
+    }), catchError(error => {
       document.body.classList.add('o-y-hidden');
-      this.showOnboardingPopup = { userData: undefined, showPopup: true };
-    });
+      return of(undefined);
+    }));
+    // _.isEmpty(this.showOnboardingPopup.userData)
+    // ? document.body.classList.add('o-y-hidden') : document.body.classList.remove('o-y-hidden');
   }
   handleUserOnboardEvent(event) {
 

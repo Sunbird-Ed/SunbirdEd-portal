@@ -1,13 +1,14 @@
 import { map, catchError } from 'rxjs/operators';
 import { PublicDataService } from '@sunbird/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { throwError as observableThrowError, Observable } from 'rxjs';
 import * as _ from 'lodash-es';
 @Injectable({
   providedIn: 'root'
 })
 export class OnboardingService {
+  onboardCompletion = new EventEmitter();
   userData;
   constructor(public configService: ConfigService, public publicDataService: PublicDataService) { }
 

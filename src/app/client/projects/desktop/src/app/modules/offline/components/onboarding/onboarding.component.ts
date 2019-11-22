@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
+import { OnboardingService } from './../../services';
+
 @Component({
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
@@ -12,22 +14,23 @@ import * as _ from 'lodash-es';
 })
 export class OnboardingComponent implements OnInit, OnDestroy {
 
-  @Output() onboardCompletion = new EventEmitter();
   slide = 'location';
   telemetryImpressionData: IImpressionEventInput;
   telemetryInteractEdata: IInteractEventEdata;
   constructor(private router: Router, public toasterService: ToasterService,
-    public activatedRoute: ActivatedRoute, public resourceService: ResourceService) {
+    public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
+    public onboardingService: OnboardingService) {
   }
 
   ngOnInit() {
     this.setTelemetryData();
   }
   handleLocationSaveEvent() {
-    this.slide = 'contentPreference';
+    // this.slide = 'contentPreference';
+    this.onboardingService.onboardCompletion.emit('SUCCUSS');
   }
   handleContentPreferenceSaveEvent() {
-    this.onboardCompletion.emit('SUCCUSS');
+    this.onboardingService.onboardCompletion.emit('SUCCUSS');
   }
   setTelemetryData() {
     this.telemetryImpressionData = {
