@@ -210,7 +210,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.submit.emit(selectedOption);
   }
   private enableSubmitButton() {
-    const optionalFields = ['subject'];
+    const optionalFields = _.map(_.filter(this._formFieldProperties, formField => !_.get(formField, 'required')), 'code');
     const enableSubmitButton = _.every(this.selectedOption, (value, index) => {
       return _.includes(optionalFields, index) ? true : value.length;
     });
