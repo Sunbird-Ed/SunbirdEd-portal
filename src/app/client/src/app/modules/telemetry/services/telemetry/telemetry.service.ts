@@ -62,6 +62,7 @@ export class TelemetryService {
    */
   public initialize(context: ITelemetryContext) {
     this.context = _.cloneDeep(context);
+    this.context.config['telemetryDebugEnabled']= true;
     this.telemetryProvider.initialize(this.context.config);
     this.isInitialized = true;
   }

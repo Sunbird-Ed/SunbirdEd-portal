@@ -100,6 +100,7 @@ export class TextbookListComponent implements OnInit {
       edata: {
         type: 'view',
         pageid: 'texbook-list',
+        subtype: 'paginate',
         uri: this.router.url,
       }
     };
