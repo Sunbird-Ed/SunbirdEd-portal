@@ -17,7 +17,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     SuiModalModule,
     CertificateRoutingModule,
     FormsModule,
-    SharedModule,
+    SharedModule.forRoot(),
     TelemetryModule,
     PlayerHelperModule
   ]
