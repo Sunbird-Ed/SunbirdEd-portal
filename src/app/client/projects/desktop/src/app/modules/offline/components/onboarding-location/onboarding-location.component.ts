@@ -16,7 +16,7 @@ export class OnboardingLocationComponent implements OnInit {
   @Input() selectDistrict;
   allStates = [];
   allDistricts = [];
-  @Output() selectedLocation = new EventEmitter();
+  @Output() locationSaved = new EventEmitter();
   disableContinueBtn = true;
   telemetryImpressionData: IImpressionEventInput;
   telemetryInteractEdata: IInteractEventEdata;
@@ -24,7 +24,6 @@ export class OnboardingLocationComponent implements OnInit {
   continueLabel = _.upperCase(this.resourceService.frmelmnts.lbl.continue);
   @Input() userLocationData;
   @Input() deviceId;
-  @Output() locationSaved = new EventEmitter();
 
   constructor(public onboardingService: OnboardingService, public activatedRoute: ActivatedRoute, private router: Router,
     public resourceService: ResourceService, public deviceRegister: DeviceRegisterService, public toasterService: ToasterService) {
@@ -36,7 +35,7 @@ export class OnboardingLocationComponent implements OnInit {
 
   onOptionChanges(option) {
     this.disableContinueBtn = !this.disableContinueBtn;
-    this.selectedLocation.emit({enable: this.disableContinueBtn});
+    // this.selectedLocation.emit({enable: this.disableContinueBtn});
     if (option.type === 'state') {
       this.getAllDistricts(option.id);
     }
@@ -69,7 +68,7 @@ export class OnboardingLocationComponent implements OnInit {
         enable: this.disableContinueBtn
       };
       if (!this.disableContinueBtn) {
-        this.selectedLocation.emit(locationData);
+        // this.selectedLocation.emit(locationData);
       }
     }, 500);
   }

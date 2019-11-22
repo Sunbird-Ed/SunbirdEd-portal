@@ -1,7 +1,6 @@
-import { Subject } from 'rxjs';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { ToasterService } from '@sunbird/shared';
-import { Component, OnInit, Renderer2, Inject, Output, OnDestroy, Input, ViewChild, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, OnInit, Output, OnDestroy, Input, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { ResourceService } from '@sunbird/shared';
@@ -13,31 +12,24 @@ import * as _ from 'lodash-es';
 })
 export class OnboardingComponent implements OnInit, OnDestroy {
 
-  @ViewChild('location') location;
-  activeSlide: number;
-  slides: string[] = ['slide-1', 'slide-2'];
+  @Input() deviceId;
+  @Output() onboardCompletion = new EventEmitter();
+  slide = 'location';
   telemetryImpressionData: IImpressionEventInput;
   telemetryInteractEdata: IInteractEventEdata;
-  userLocation;
-  continueLabel;
-  disableContinueBtn = true;
-  @Output() saveUserLocation = new Subject<void>();
-  @Input() deviceId;
-  showLoader = false;
-
-  constructor(@Inject(DOCUMENT) private document: Document, private router: Router, private renderer: Renderer2,
-    public toasterService: ToasterService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService
-  ) {
-    this.activeSlide = 0;
-    this.continueLabel = _.upperCase(this.resourceService.frmelmnts.lbl.continue);
+  constructor(private router: Router, public toasterService: ToasterService,
+    public activatedRoute: ActivatedRoute, public resourceService: ResourceService) {
   }
 
   ngOnInit() {
-    this.activeSlide = 0;
     this.setTelemetryData();
-
   }
-
+  handleLocationSaveEvent() {
+    this.slide = 'contentPreference';
+  }
+  handleContentPreferenceSaveEvent() {
+    this.onboardCompletion.emit('SUCCUSS');
+  }
   setTelemetryData() {
     this.telemetryImpressionData = {
       context: { env: 'onboarding' },
@@ -54,23 +46,7 @@ export class OnboardingComponent implements OnInit, OnDestroy {
     };
   }
 
-  getLocationData(event) {
-    this.userLocation = event.data;
-    this.disableContinueBtn = event.enable;
-  }
-
-  saveUserData() {
-    this.location.saveLocation(this.userLocation);
-    this.location.locationSaved.subscribe(isSaved => {
-      if (!this.disableContinueBtn) {
-        this.activeSlide = this.activeSlide + 1;
-        this.disableContinueBtn = !this.disableContinueBtn;
-      }
-    });
-  }
-
   ngOnDestroy() {
-    this.saveUserLocation.next();
-    this.saveUserLocation.complete();
+
   }
 }
