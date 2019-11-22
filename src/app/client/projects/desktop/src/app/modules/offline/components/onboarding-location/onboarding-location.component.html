@@ -37,7 +37,7 @@
         <!-- <div class="circle complete"></div> -->
     </div>
     <button type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm"
-        (click)="saveUserData()" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEdata"
+        (click)="handleSubmitButton()" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEdata"
         [telemetryInteractContext]="{env:'onboarding'}">
         {{continueLabel}}
         <span class='arrow-icon'><i class="arrow right icon"></i></span></button>

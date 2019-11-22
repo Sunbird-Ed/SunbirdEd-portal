@@ -66,7 +66,7 @@ export class OnboardingLocationComponent implements OnInit {
     };
     this.onboardingService.saveLocation(requestParams).subscribe(() => {
       this.locationSaved.emit('SUCCUSS');
-      this.toasterService.success(this.resourceService.messages.smsg.m0057);
+      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0057') || 'SUCCUSS');
     }, error => {
       this.disableContinueBtn = false;
       this.locationSaved.emit('ERROR');
