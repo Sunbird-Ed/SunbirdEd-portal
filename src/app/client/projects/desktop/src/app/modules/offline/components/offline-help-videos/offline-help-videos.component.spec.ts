@@ -54,9 +54,6 @@ describe('OfflineHelpVideosComponent', () => {
     fixture.detectChanges();
   });
 
-  afterEach(() => {
-    jasmine.clock().uninstall();
-  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
