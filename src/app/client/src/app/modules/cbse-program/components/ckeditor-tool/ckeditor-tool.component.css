@@ -42,7 +42,8 @@
   z-index: 1;
   left: 355px;
   background-color: transparent;
-  padding: 15px !important;
+  padding: 12px 14px !important;
+  margin-left: 6px;
 }
 
 .insert-image-btn>.icon {
