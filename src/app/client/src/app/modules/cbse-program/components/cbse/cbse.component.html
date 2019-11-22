@@ -155,7 +155,7 @@
                 <div *ngFor="let field of formFieldOptions">
                     <div *ngIf="field.inputType ==='select' && field.code === 'school'" class="field d-flex flex-jc-center flex-ai-center">
                       <label class="mr-8 mb-0">Select {{field.label}}</label>
-                      <div class="field">
+                      <div class="sb-field mb-0">
                         <sui-select [isSearchable]="true" id={{field.code}} name={{field.code}} class="selection"
                           [(ngModel)]="selectedSchoolForReview" labelField="name" valueField="name"
                           [options]="field.range" #select>

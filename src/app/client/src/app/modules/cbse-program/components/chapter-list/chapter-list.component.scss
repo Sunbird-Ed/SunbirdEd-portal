@@ -1,22 +1,37 @@
-.sb-table .sb-table-body td {
+.sb-table {
+  .sb-table-body td {
     padding: 16px 24px;
     text-align: center;
+
     &:first-child {
-        text-align: left;
+      text-align: left;
     }
-}
+  }
 
-.sb-table .sb-table-header.heading-large tr th {
+  .sb-table-header.heading-large tr th {
     text-align: center;
+  }
+
+  .sb-table-body tr:last-child td,
+  tbody {
+    tr:last-child td {
+      border-bottom: 1px solid #ccc;
+    }
+
+    &:last-of-type {
+      tr:last-child td {
+        border-bottom: none;
+      }
+    }
+  }
 }
 
-
-    ::ng-deep {
-        .ui.styled.accordion.sb-accordion .active.title {
-            i.icon {
-                transform: rotate(180deg);
-                -webkit-transform: rotate(180deg);
-            }
-        }
-    
+::ng-deep {
+  .ui.styled.accordion.sb-accordion .active.title {
+    i.icon {
+      transform: rotate(180deg);
+      -webkit-transform: rotate(180deg);
     }
+  }
+
+}

@@ -47,7 +47,7 @@
       <div class="one column row" *ngIf="learningOutcomeOptions.length">
         <div class="column">
           <label>Learning Outcome</label>
-          <div>
+          <div class="sb-field">
             <sui-select class="selection width-100" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
               name="'learningOutcome'">
               <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name">
@@ -60,7 +60,7 @@
       </div>
       <div class="column">
         <label>Learning Level</label>
-        <div>
+        <div class="sb-field">
           <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel"
             name="'bloomsLevel'">
             <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
@@ -70,10 +70,10 @@
           *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
       </div>
 
-      <div class="one column row" >
+      <div class="two column row" >
           <div class="column">
               <label>Authors</label> <br/>
-              <div class="ui small icon input">
+              <div class="sb-field">
                   <input #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName" >
               </div>
           </div>
