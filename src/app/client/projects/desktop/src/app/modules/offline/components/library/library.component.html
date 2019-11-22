@@ -1,57 +1,41 @@
-<app-library-filters></app-library-filters>
-<div class="library-container sb-bg-color-primary-100">
+<app-library-filters (libraryFilters)="getFilters($event)"></app-library-filters>
+<div class="sb-bg-color-primary-100">
     <div class="ui container">
-        <div class="header">
-            <div class="title">
-                {{resourceService?.frmelmnts?.lbl?.recentlyAdded}}
-            </div>
-            <button class="sbbtn sbbtn--sm sbbtn--ol-secondary" (click)="onViewAllClick($event)">
-                {{resourceService?.frmelmnts?.lnk?.viewall}}
-            </button>
+
+        <div class="twelve wide column" *ngIf="showLoader">
+            <app-loader [data]='loaderMessage'></app-loader>
         </div>
-        <div class="cards-container">
-            <div class="item show-4" *ngFor="let content of contentList | slice:0:4">
-                <sb-library-card [content]="content" [isRecentlyViewed]="true" [isMobile]="true" [cardImg]="content?.cardImg"
-                    (click)="openContent($event)"></sb-library-card>
-            </div>
+
+        <div class="twelve wide column" *ngIf="carouselMasterData.length === 0 && !showLoader">
+            <app-no-result [data]="noResultMessage"></app-no-result>
         </div>
-        <div class="MB-16">
-            <sb-library-cards-grid [title]="subjects[0]" [contentList]="contentList"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" (viewMoreClick)="showAllList($event)"
-                (cardClick)="openContent($event)">
+        <section class="mb-16" *ngFor="let section of pageSections; let i=index;">
+
+            <!-- START OF RECENTLY VIEWED CONTENT-->
+            <section *ngIf="section && section?.name === 'Recently Added Content'">
+                <div class="header">
+                    <h3 class="title">
+                        {{resourceService?.frmelmnts?.lbl?.recentlyAdded}}
+                    </h3>
+                    <button class="sb-btn sb-btn--sm sb-btn-outline-secondary sb-btn-white"
+                        (click)="onViewAllClick($event)">
+                        {{resourceService?.frmelmnts?.lnk?.viewall}}
+                    </button>
+                </div>
+                <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig"
+                    (afterChange)="afterChange($event)">
+                    <div ngxSlickItem *ngFor="let content of section?.contents" class="sbcardwidth slide mr-16">
+                        <sb-library-card [content]="content" [type]="'recently_viewed'" [cardImg]="content?.cardImg"
+                            (click)="openContent($event)"></sb-library-card>
+                    </div>
+                </ngx-slick>
+            </section>
+            <!-- END OF RECENTLY VIEWED CONTENT-->
+
+            <sb-library-cards-grid *ngIf="i !== 0" [title]="section?.name" [contentList]="section?.contents"
+                [type]="'infinite_card_grid'" (cardClick)="openContent($event)">
             </sb-library-cards-grid>
-        </div>
 
-        <div class="MB-16">
-            <sb-library-cards-grid [title]="subjects[1]" [contentList]="contentList"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" (viewMoreClick)="showAllList($event)"
-                (cardClick)="openContent($event)">
-            </sb-library-cards-grid>
-        </div>
-
-
-        <div class="MB-16">
-            <sb-library-cards-grid [title]="subjects[2]" [contentList]="contentList"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" (viewMoreClick)="showAllList($event)"
-                (cardClick)="openContent($event)" [maxCardCount]="3">
-            </sb-library-cards-grid>
-        </div>
-
-
-        <div class="MB-16">
-            <sb-library-cards-grid [title]="subjects[3]" [contentList]="contentList"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
-                (cardClick)="openContent($event)">
-            </sb-library-cards-grid>
-        </div>
-
-
-        <div class="MB-16">
-            <sb-library-cards-grid [title]="subjects[4]" [contentList]="contentList"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
-                (cardClick)="openContent($event)">
-            </sb-library-cards-grid>
-        </div>
-
+        </section>
     </div>
 </div>

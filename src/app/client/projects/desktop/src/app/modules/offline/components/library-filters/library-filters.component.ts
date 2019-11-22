@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
 import { OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { mergeMap, first } from 'rxjs/operators';
@@ -7,16 +7,17 @@ import * as _ from 'lodash-es';
 import {
     ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService
 } from '@sunbird/shared';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-library-filters',
     templateUrl: './library-filters.component.html',
     styleUrls: ['./library-filters.component.scss']
 })
-export class LibraryFiltersComponent implements OnInit {
+export class LibraryFiltersComponent implements OnInit, OnChanges {
     frameworkName: string;
     hashTagId: string;
-
+    selectedBoard: string;
 
     boards: string[] = [];
     mediums: string[] = [];
@@ -26,8 +27,12 @@ export class LibraryFiltersComponent implements OnInit {
     classLayout = LibraryFiltersLayout.ROUND;
 
     frameworkCategories: any;
+    filterQueryParam: any = {};
 
+    @Output() libraryFilters: EventEmitter<any> = new EventEmitter();
     constructor(
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
         public resourceService: ResourceService,
         public frameworkService: FrameworkService,
         private orgDetailsService: OrgDetailsService
@@ -47,6 +52,10 @@ export class LibraryFiltersComponent implements OnInit {
             });
     }
 
+    ngOnChanges(event) {
+        console.log('event', event);
+    }
+
     setFilters() {
         this.frameworkCategories.forEach(element => {
             switch (element.code) {
@@ -61,9 +70,26 @@ export class LibraryFiltersComponent implements OnInit {
                     break;
             }
         });
+
+        this.libraryFilters.emit([]);
     }
 
     getSelectedFilters(event, type) {
+        this.filterQueryParam.board = ['CBSE'];
+
+        if (type === 'medium') {
+            this.filterQueryParam.medium = [event.data.text];
+        } else if (type === 'class') {
+            this.filterQueryParam.gradeLevel = [event.data.text];
+        }
+
+        this.filterQueryParam['appliedFilters'] = true;
+        this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.filterQueryParam });
         console.log('Event', event);
+        console.log('filterQueryParam', this.filterQueryParam);
+    }
+
+    applyFilters() {
+
     }
 }

@@ -5,7 +5,7 @@
       <div class="state-medium-container__dropdown">
         <!-- state component -->
         <div class="sb-field mb-0">
-        <sui-select class="selection state-selection" placeholder="Select State" #multiSelect>
+        <sui-select class="selection state-selection" placeholder="Select State" [(ngModel)]="selectedBoard">
             <sui-select-option *ngFor="let option of boards" [value]="option">
             </sui-select-option>
         </sui-select>
@@ -15,7 +15,7 @@
       <div class="state-medium-container__separator"></div>
       <div class="state-medium-container__medium">
         <!-- medium component -->
-        <sb-library-filters [list]="mediums" [layout]="mediumLayout" [selectedItems]="[0]" (selectedFilter)="getSelectedFilters($event, 'mediums')"></sb-library-filters>
+        <sb-library-filters [list]="mediums" [layout]="mediumLayout" [selectedItems]="[0]" (selectedFilter)="getSelectedFilters($event, 'medium')"></sb-library-filters>
         <!-- medium component ends -->
       </div>
     </div>
@@ -25,7 +25,7 @@
   <!-- class component -->
   <div class="sb-class-bar sb-bg-color-gray-0">
     <div class="ui container">
-        <sb-library-filters [list]="classes" [layout]="classLayout" [selectedItems]="[0]" (selectedFilter)="getSelectedFilters($event, 'classes')"></sb-library-filters>
+        <sb-library-filters [list]="classes" [layout]="classLayout" [selectedItems]="[0]" (selectedFilter)="getSelectedFilters($event, 'class')"></sb-library-filters>
     </div>
   </div>
   <!-- class component ends -->
