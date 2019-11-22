@@ -104,7 +104,8 @@ describe('SignUpComponent', () => {
     expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
-  it('should show required validation error message for password', () => {
+  it('should show required lowercase validation error message for password', () => {
+    spyOn(component, 'onPasswordChange');
     component.ngOnInit();
     let errors = {};
     const password = component.signUpForm.controls['password'];
@@ -113,6 +114,50 @@ describe('SignUpComponent', () => {
     expect(errors['required']).toBeTruthy();
     expect(password.valid).toBeFalsy();
     expect(password.touched).toBeFalsy();
+    expect(component.disableSubmitBtn).toBeTruthy();
+  });
+  it('should show required uppercase validation error message for password', () => {
+    spyOn(component, 'onPasswordChange');
+    component.ngOnInit();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('a');
+    errors = password.errors || {};
+    expect(errors).toBeTruthy();
+    expect(password.valid).toBeFalsy();
+    expect(component.disableSubmitBtn).toBeTruthy();
+  });
+  it('should show required digit validation error message for password', () => {
+    spyOn(component, 'onPasswordChange');
+    component.ngOnInit();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('aA');
+    errors = password.errors || {};
+    expect(errors).toBeTruthy();
+    expect(password.valid).toBeFalsy();
+    expect(component.disableSubmitBtn).toBeTruthy();
+  });
+  it('should show required special character validation error message for password', () => {
+    spyOn(component, 'onPasswordChange');
+    component.ngOnInit();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('aA1');
+    errors = password.errors || {};
+    expect(errors).toBeTruthy();
+    expect(password.valid).toBeFalsy();
+    expect(component.disableSubmitBtn).toBeTruthy();
+  });
+  it('should show required at least 8 characters validation error message for password', () => {
+    spyOn(component, 'onPasswordChange');
+    component.ngOnInit();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('aA1@');
+    errors = password.errors || {};
+    expect(errors).toBeTruthy();
+    expect(password.valid).toBeFalsy();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
   it('should call onEmailChange method', () => {
@@ -130,20 +175,22 @@ describe('SignUpComponent', () => {
     const name = component.signUpForm.controls['name'];
     name.setValue('sourav');
     const password = component.signUpForm.controls['password'];
-    password.setValue('password');
+    password.setValue('passwWORD1@');
     const confirmPassword = component.signUpForm.controls['confirmPassword'];
-    confirmPassword.setValue('password');
+    confirmPassword.setValue('passwWORD1@');
     const email = component.signUpForm.controls['email'];
     email.setValue('abc@gmail.com');
     const contactType = component.signUpForm.controls['contactType'];
     contactType.setValue('email');
     const uniqueContact = component.signUpForm.controls['uniqueContact'];
     uniqueContact.setValue(true);
-     expect(component.disableSubmitBtn).toBeFalsy();
+    expect(component.disableSubmitBtn).toBeFalsy();
   });
   it('should call displayPassword method to show password', () => {
+    component.ngOnInit();
     component.displayPassword();
-    expect(component.showPassword).toBeTruthy();  });
+    expect(component.showPassword).toBeTruthy();
+  });
   it('should call displayPassword method to hide password', () => {
     component.showPassword = true;
     component.displayPassword();
