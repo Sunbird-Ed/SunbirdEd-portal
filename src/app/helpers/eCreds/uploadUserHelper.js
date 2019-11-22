@@ -363,7 +363,7 @@ const checkForFileErrors = (jsonObj) => {
         });
         return err;
     } else {
-        const err =["The Uploaded file is empty. Please upload file with Data"];
+        const err =["You cannot upload an empty CSV file"];
         return err;
     }
 }

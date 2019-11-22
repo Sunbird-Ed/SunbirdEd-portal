@@ -10,7 +10,7 @@ class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.de
     <span class="m-0 mr-16">Follow the instructions to fill the CSV file</span>
     <!-- <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Download Sample
       CSV</button> -->
-      <a href="/assets/SampleCsv.csv">Download sample CSV</a>
+      <a href="/assets/SampleCsv.csv" class="float-right">Download Sample CSV</a>
   </div>
 
   <div class="hiddenFileInput sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn" (click)="inputbtn.click();">
@@ -51,7 +51,7 @@ Generate Certificate
 <sui-modal *ngIf="modalName === 'error'" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
      [size]="'normal'" class="sb-modal sb-error" appBodyScroll  (dismissed)="redirect();modal.deny();" #errormodal>
 <div class="sb-modal-header">
-  {{resourceService?.frmelmnts?.lbl?.errorinupload}}
+  File Upload Failed
 </div>
 <div class="sb-modal-content">
   <div class="ui error message bulkupload-error">

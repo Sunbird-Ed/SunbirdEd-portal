@@ -1,6 +1,6 @@
 <div class="sb-table-container">
     <table class="ui celled table selectable sb-table-striped sb-data-table mt-10" cellspacing="0">
-        <thead class="sb-data-table-header sb-table-header sb-table-thead-gray"> 
+        <thead class="sb-data-table-header sb-table-header sb-table-thead-gray" style="font-size: 18px;"> 
             <tr>
                 <th>Sl No</th>
                 <th><div  class="cursor-pointer" (click)="setOrder('createdon')">
@@ -34,7 +34,7 @@
                 <td data-label="">
                     {{tableData.createdon}}
                 </td>
-                <td data-label="Age" *ngIf="tableData.status === 0">Completed with Error</td>
+                <td data-label="Age" *ngIf="tableData.status === 0">Failed</td>
                 <td data-label="Age" *ngIf="tableData.status === 1">In-progress</td>
                 <td data-label="Age" *ngIf="tableData.status === 2">Completed</td>
                 <td style="cursor: pointer;" data-label="Job" *ngIf="tableData.storagedetails !== ''">

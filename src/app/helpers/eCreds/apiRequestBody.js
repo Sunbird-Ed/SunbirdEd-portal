@@ -1,8 +1,10 @@
+const envHelper = require('../environmentVariablesHelper.js');
 const _ = require('lodash');
 const dateFormat = require('dateformat');
 const fs = require('fs');
 const path = require('path');
 const config = fs.readFileSync(path.join(__dirname,'./config.json'), {encoding: 'utf-8'});
+const baseUrl = envHelper.sunbird_environment_base_url;
 
 const certAddRequestBody = (response) => {
     const request = _.pick(response, ['id', 'accessCode', 'jsonData', 'pdfUrl']);
@@ -60,7 +62,8 @@ const certGenerateRequestBody = (input) => {
             "signatoryList": signatoryList,
             "criteria": {
                 "narrative": "course completion certificate"
-            }
+            },
+            "basePath": baseUrl+"/public/certs" 
         }
     }
 }
