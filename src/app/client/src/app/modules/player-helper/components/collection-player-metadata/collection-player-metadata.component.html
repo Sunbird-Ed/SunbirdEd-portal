@@ -42,7 +42,13 @@
   </dl>
   <dl class="sb-meta-data">
       <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
-      <dd *ngIf="metaData.license">{{metaData.license}}&#x200E;</dd>
+      <!-- <dd *ngIf="metaData.license">{{metaData.license}}&#x200E;</dd> -->
+      <dd *ngIf="metadata.license && metadata.license.name">
+          {{metadata.license.name}}: 
+      </dd>
+      <dd *ngIf="metadata.license && metadata.license.url">
+          <a href="metadata.license.url">{{metadata.license.url}}</a>
+      </dd>
   </dl>
   <dl class="sb-meta-data" *ngIf="metaData.orgDetails && metaData.orgDetails.orgName">
       <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
