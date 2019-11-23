@@ -32,7 +32,6 @@ export class OnboardingLocationComponent implements OnInit {
   }
 
   onOptionChanges(option) {
-    console.log('selected', option);
     if (option.type === 'state') {
       this.selectedDistrict = {};
       this.districtList = [];

@@ -32,17 +32,9 @@ export class OnboardingService {
     return this.publicDataService.get(options);
   }
 
-  saveLocation(request) {
+  saveLocation(request): Observable<ServerResponse> {
     const options = {
       url: this.configService.urlConFig.URLS.OFFLINE.LOCATION_SAVE,
-      data: request
-    };
-    return this.publicDataService.post(options);
-  }
-
-  saveUserPreference(request) {
-    const options = {
-      url: this.configService.urlConFig.URLS.OFFLINE.CREATE_USER,
       data: request
     };
     return this.publicDataService.post(options);

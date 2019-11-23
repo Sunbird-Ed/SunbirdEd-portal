@@ -21,12 +21,13 @@ export class OnboardingComponent {
   }
 
   handleLocationSaveEvent() {
-    this.slide = 'contentPreference';
-  }
-
-  handleContentPreferenceSaveEvent() {
+    // this.slide = 'contentPreference';
     this.onboardingService.onboardCompletion.emit('SUCCESS');
   }
+
+  // handleContentPreferenceSaveEvent() {
+  //   this.onboardingService.onboardCompletion.emit('SUCCESS');
+  // }
 
   setTelemetryData() {
     return {

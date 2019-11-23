@@ -13,4 +13,3 @@ export * from './library/library.component';
 export * from './library-filters/library-filters.component';
 export * from './onboarding/onboarding.component';
 export * from './onboarding-location/onboarding-location.component';
-export * from './onboarding-user/onboarding-user.component';

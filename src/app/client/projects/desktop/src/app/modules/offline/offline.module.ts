@@ -13,7 +13,7 @@ import {
   BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
   LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
   OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
-  OnboardingLocationComponent, OnboardingUserComponent
+  OnboardingLocationComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -58,7 +58,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     OfflineHelpVideosComponent,
     OnboardingComponent,
     OnboardingLocationComponent,
-    OnboardingUserComponent
   ],
   entryComponents: [
     ContentImportHeaderComponent,
@@ -69,6 +68,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     ContentImportHeaderComponent,
   ],
   exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
-    OnboardingLocationComponent, OnboardingUserComponent]
+    OnboardingLocationComponent]
 })
 export class OfflineModule { }
