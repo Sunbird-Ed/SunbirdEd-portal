@@ -207,19 +207,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(component.interpolateInstance).toHaveBeenCalledTimes(7);
   });
 
-  it('should call initializeShepherdData method', () => {
-    resourceService.messages = mockData.resourceBundle.messages;
-    resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
-    spyOn(component, 'initializeShepherdData');
-    component.showOnboardingPopup = false;
-    component.initApp = true;
-    setTimeout(() => {
-      component.ngAfterViewInit();
-    }, 1000);
-    jasmine.clock().tick(10001);
-    expect(component.initializeShepherdData).toHaveBeenCalled();
-  });
-
   it('ShepherdData should match with resourcedata', () => {
     resourceService.messages = mockData.resourceBundle.messages;
     resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
