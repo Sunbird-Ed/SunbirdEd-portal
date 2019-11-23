@@ -424,7 +424,9 @@ setFingerPrintTelemetry() {
   }
 
   ngAfterViewInit() {
-
+    if (!this.showOnboardingPopup && this.initApp) {
+      this.initializeTourTravel();
+    }
   }
 
   initializeShepherdData() {
@@ -521,8 +523,5 @@ setFingerPrintTelemetry() {
       document.body.classList.add('o-y-hidden');
       return of(undefined);
     }));
-  }
-  handleUserOnboardEvent(event) {
-
   }
 }

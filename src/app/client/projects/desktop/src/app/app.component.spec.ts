@@ -211,8 +211,8 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     resourceService.messages = mockData.resourceBundle.messages;
     resourceService.frmelmnts = mockData.resourceBundle.frmelmnts;
     spyOn(component, 'initializeShepherdData');
-    component.showOnboardingPopup.userData = 'user';
-    component.showOnboardingPopup.showPopup = false;
+    component.showOnboardingPopup = false;
+    component.initApp = true;
     setTimeout(() => {
       component.ngAfterViewInit();
     }, 1000);
