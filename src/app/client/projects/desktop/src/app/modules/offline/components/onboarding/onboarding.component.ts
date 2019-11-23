@@ -25,10 +25,6 @@ export class OnboardingComponent {
     this.onboardingService.onboardCompletion.emit('SUCCESS');
   }
 
-  // handleContentPreferenceSaveEvent() {
-  //   this.onboardingService.onboardCompletion.emit('SUCCESS');
-  // }
-
   setTelemetryData() {
     return {
       context: { env: 'onboarding' },
