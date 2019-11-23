@@ -164,7 +164,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
 
-  it('Should subscribe to tenant service and retrieve title and favicon details', () => {
+  xit('Should subscribe to tenant service and retrieve title and favicon details', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
