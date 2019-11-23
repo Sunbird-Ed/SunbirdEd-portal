@@ -122,5 +122,44 @@ describe('ProfileFrameworkPopupComponent', () => {
     expect(component.formFieldOptions[3].range).toBeUndefined();
     expect(toasterService.warning).not.toHaveBeenCalled();
   });
+
+  describe('enable/disable submit button based on required fields in form API', () => {
+
+    beforeEach(() => {
+      component['_formFieldProperties'] = Response.formWithoutBoard;
+    });
+
+    it('should enable submit button if board value is not there in framework' , () => {
+      component.selectedOption = {
+        gradeLevel: ['Class 2'],
+        medium: ['English'],
+        subject: []
+      };
+      component['enableSubmitButton']();
+      expect(component.showButton).toBeTruthy();
+    });
+    it('should disable submit button if any of board, medium or gradeLevel is not present', () => {
+      component.selectedOption = {
+        gradeLevel: ['Class 1'],
+        medium: ['English'],
+        subject: ['Hindi'],
+        board: []
+      };
+      component['enableSubmitButton']();
+      expect(component.showButton).toBeFalsy();
+    });
+    it('should submit board value in form as null when board value is not present in the framework', () => {
+      const selectedOptions = {
+        gradeLevel: ['Class 1'],
+        medium: ['English'],
+        subject: ['Hindi']
+      };
+      component.selectedOption = selectedOptions;
+      component['frameWorkId'] = 'NCFCOPY2';
+      const submitEventEmitter = spyOn(component.submit, 'emit');
+      component.onSubmitForm();
+      expect(submitEventEmitter).toHaveBeenCalledWith({...selectedOptions, ...{board: null, id: 'NCFCOPY2' }});
+    });
+  });
 });
 
