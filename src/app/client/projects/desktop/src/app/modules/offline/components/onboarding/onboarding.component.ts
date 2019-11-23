@@ -1,8 +1,7 @@
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { ToasterService } from '@sunbird/shared';
-import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService } from '@sunbird/shared';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { OnboardingService } from './../../services';
 
@@ -11,29 +10,18 @@ import { OnboardingService } from './../../services';
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.scss']
 })
-export class OnboardingComponent {
+export class OnboardingComponent implements OnInit {
   slide = 'location';
-  telemetryImpressionData: IImpressionEventInput;
-  telemetryInteractEdata: IInteractEventEdata;
-  constructor(private router: Router, public toasterService: ToasterService,
-    public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
-    public onboardingService: OnboardingService) {
+  constructor(public toasterService: ToasterService, public onboardingService: OnboardingService) {
   }
-
-  handleLocationSaveEvent() {
+  ngOnInit() {
+    document.body.classList.add('o-y-hidden');
+  }
+  handleLocationSaveEvent(event) {
+    if (event === 'SUCCESS') {
     // this.slide = 'contentPreference';
+    document.body.classList.remove('o-y-hidden');
     this.onboardingService.onboardCompletion.emit('SUCCESS');
+    }
   }
-
-  setTelemetryData() {
-    return {
-      context: { env: 'onboarding' },
-      edata: {
-        type: 'view',
-        pageid: 'onboarding_location_setting',
-        uri: this.router.url
-      }
-    };
-  }
-
 }

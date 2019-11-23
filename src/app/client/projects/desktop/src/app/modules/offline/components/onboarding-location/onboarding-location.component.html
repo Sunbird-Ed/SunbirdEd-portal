@@ -1,4 +1,4 @@
-<div class="loginform__content">
+<div class="loginform__content" [appTelemetryImpression]="telemetryImpression">
     <div class="loginform__content__header">
         <img src="assets/images/SUNBIRD.svg" alt="SUNBIRD">
     </div>
@@ -34,7 +34,7 @@
         <div class="circle update"></div>
     </div>
     <button type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm"
-        (click)="handleSubmitButton()" appTelemetryInteract>
+        (click)="handleSubmitButton()" appTelemetryInteract [telemetryInteractEdata]= "telemetryInteractEdata">
         {{continueLabel}}
         <span class='arrow-icon'><i class="arrow right icon"></i></span></button>
 </div>

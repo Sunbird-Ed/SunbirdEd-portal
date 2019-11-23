@@ -1,9 +1,9 @@
+import { Router } from '@angular/router';
 import { DeviceRegisterService } from '@sunbird/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { OnboardingService } from './../../services';
-import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { Router, ActivatedRoute } from '@angular/router';
+import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -18,17 +18,18 @@ export class OnboardingLocationComponent implements OnInit {
   districtList = [];
   @Output() locationSaved = new EventEmitter();
   disableContinueBtn = true;
-  telemetryImpressionData: IImpressionEventInput;
   telemetryInteractEdata: IInteractEventEdata;
-  telemetryInteractObject: IInteractEventObject;
+  public telemetryImpression: IImpressionEventInput;
+
   continueLabel = _.upperCase(this.resourceService.frmelmnts.lbl.continue);
 
-  constructor(public onboardingService: OnboardingService, public activatedRoute: ActivatedRoute, private router: Router,
-    public resourceService: ResourceService, public deviceRegister: DeviceRegisterService, public toasterService: ToasterService) {
+  constructor(public onboardingService: OnboardingService,
+    public resourceService: ResourceService, public toasterService: ToasterService, private router: Router) {
   }
 
   ngOnInit() {
     this.getAllStates();
+    this.setTelemetryData();
   }
 
   onOptionChanges(option) {
@@ -64,13 +65,32 @@ export class OnboardingLocationComponent implements OnInit {
       }
     };
     this.onboardingService.saveLocation(requestParams).subscribe(() => {
+      this.disableContinueBtn = false;
       this.locationSaved.emit('SUCCESS');
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0057') || 'SUCCESS');
     }, error => {
-      this.disableContinueBtn = false;
+      this.disableContinueBtn = true;
       this.locationSaved.emit('ERROR');
       this.toasterService.error(this.resourceService.messages.emsg.m0021);
     });
   }
+
+  setTelemetryData () {
+    this.telemetryImpression = {
+      context: { env: 'offline' },
+      edata: {
+        type: 'view',
+        pageid: 'onboarding_location_setting',
+        uri: this.router.url
+      }
+    };
+
+    this.telemetryInteractEdata = {
+      id: 'onboarding_location',
+      type: 'click',
+      pageid: 'onboarding_location_setting'
+    };
+  }
+
 
 }

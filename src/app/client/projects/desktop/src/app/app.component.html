@@ -5,4 +5,4 @@
     <app-desktop-app-update></app-desktop-app-update>
     <router-outlet></router-outlet>
 </div>
-<app-footer *ngIf="initApp && !showOnboardingPopup"></app-footer>
+<app-footer *ngIf="!hideHeaderNFooter && !showOnboardingPopup"></app-footer>

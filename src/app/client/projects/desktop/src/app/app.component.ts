@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -28,7 +28,7 @@ import { OnboardingService } from '@sunbird/offline';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
@@ -136,22 +136,22 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     combineLatest(queryParams$, this.setSlug(), this.setDeviceId(), this.getDesktopUserData())
     .pipe(
       mergeMap(data => {
-        if (data[3]) {
-          return of(data);
-        } else {
-          this.showOnboardingPopup = true;
-          return this.onboardingService.onboardCompletion;
-        }
-      }), first(),
-      mergeMap(data => {
-        this.showOnboardingPopup = false;
         this.navigationHelperService.initialize();
         this.userService.initialize(this.userService.loggedIn);
-        return this.setOrgDetails();
+        if (this.userService.loggedIn) {
+          this.permissionService.initialize();
+          this.courseService.initialize();
+          this.userService.startSession();
+          return this.setUserDetails();
+        } else {
+          _.isEmpty(data[3]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
+          this.onboardingService.onboardCompletion.subscribe(event => {
+            event !== 'SUCCESS' ? this.showOnboardingPopup = true : this.initializeTourTravel();
+          });
+          return this.setOrgDetails();
+        }
       }))
       .subscribe(data => {
-        this.initializeTourTravel();
-        document.body.classList.remove('o-y-hidden');
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
@@ -423,12 +423,6 @@ setFingerPrintTelemetry() {
     });
   }
 
-  ngAfterViewInit() {
-    if (!this.showOnboardingPopup && this.initApp) {
-      this.initializeTourTravel();
-    }
-  }
-
   initializeShepherdData() {
     this.shepherdData = [
       {
@@ -499,9 +493,9 @@ setFingerPrintTelemetry() {
     return message.replace('{instance}', _.upperCase(this.instance));
   }
   initializeTourTravel() {
+    this.showOnboardingPopup = false;
       setTimeout(() => {
         this.initializeShepherdData();
-        if (this.isOffline) {
           this.shepherdService.defaultStepOptions = defaultStepOptions;
           this.shepherdService.disableScroll = true;
           this.shepherdService.modal = true;
@@ -511,16 +505,13 @@ setFingerPrintTelemetry() {
             localStorage.setItem('TakeOfflineTour', 'show');
             this.shepherdService.start();
           }
-        }
       }, 1000);
   }
 
   getDesktopUserData() {
     return this.onboardingService.getUser().pipe(
     tap(data => {
-      document.body.classList.remove('o-y-hidden');
     }), catchError(error => {
-      document.body.classList.add('o-y-hidden');
       return of(undefined);
     }));
   }
