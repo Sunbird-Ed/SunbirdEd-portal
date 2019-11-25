@@ -356,6 +356,16 @@ export class UserService {
     return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
   }
 
+  getFeedData() {
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_FEED + '/' + this.userid});
+  }
 
+  userMigrate(requestBody) {
+    const option = {
+      url: this.config.urlConFig.URLS.USER.USER_MIGRATE,
+      data: requestBody
+    };
+    return this.learnerService.post(option);
+  }
 
 }

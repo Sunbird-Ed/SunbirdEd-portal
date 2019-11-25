@@ -60,4 +60,31 @@ describe('userService', () => {
     userService.initialize(true);
     expect(userService._userProfile.rootOrgAdmin).toBeFalsy();
   }));
+
+  it('should fetch userFeed Data', () => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(mockUserData.feedSuccessResponse);
+    userService.getFeedData();
+    const url = {url : 'user/v1/feed/' + userService.userId};
+    expect(learnerService.get).toHaveBeenCalledWith(url);
+  });
+
+  it('should migrate custodian user', () => {
+    const userService = TestBed.get(UserService);
+    const learnerService = TestBed.get(LearnerService);
+    const params = {
+      'request' : {
+        'userId': '12345',
+        'action': 'accept',
+        'userExtId': 'bt240',
+        'channel': 'TN',
+        'feedId': '32145669877'
+      }
+    };
+    spyOn(learnerService, 'post').and.returnValue(mockUserData.migrateSuccessResponse);
+    userService.userMigrate(params);
+    const options = { url: 'user/v1/migrate', data: params};
+    expect(learnerService.post).toHaveBeenCalledWith(options);
+  });
 });

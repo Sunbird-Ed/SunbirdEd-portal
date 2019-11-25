@@ -1,25 +1,25 @@
 export const mockUserData = {
     tenantSuccess:
-        {
-            'id': 'api.tenant.info',
-            'ver': '1.0',
-            'ts': '2018-04-10 15:34:45:875+0530',
-            'params': {
-                'resmsgid': '98b0a030-3ca6-11e8-964f-83be3d8fc737',
-                'msgid': null,
-                'status': 'successful',
-                'err': '',
-                'errmsg': ''
-            },
-            'responseCode': 'OK',
-            'result': {
-                'titleName': 'SUNBIRD',
-                'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
-                'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
-                'favicon': 'http://localhost:3000/assets/images/favicon.ico',
-                'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
-            }
+    {
+        'id': 'api.tenant.info',
+        'ver': '1.0',
+        'ts': '2018-04-10 15:34:45:875+0530',
+        'params': {
+            'resmsgid': '98b0a030-3ca6-11e8-964f-83be3d8fc737',
+            'msgid': null,
+            'status': 'successful',
+            'err': '',
+            'errmsg': ''
         },
+        'responseCode': 'OK',
+        'result': {
+            'titleName': 'SUNBIRD',
+            'logo': 'http://localhost:3000/assets/images/sunbird_logo.png',
+            'poster': 'http://localhost:3000/assets/images/sunbird_logo.png',
+            'favicon': 'http://localhost:3000/assets/images/favicon.ico',
+            'appLogo': 'http://localhost:3000/assets/images/sunbird_logo.png'
+        }
+    },
     tenantFailure: {
         'id': 'api.tenant.info',
         'ver': '1.0',
@@ -1134,6 +1134,57 @@ export const mockUserData = {
                 'location': '',
                 'status': 1
             }
+        }
+    },
+    feedSuccessResponse: {
+        'id': null,
+        'ver': null,
+        'ts': null,
+        'params': null,
+        'responseCode': 'OK',
+        'result': {
+            'response': {
+                'userFeed': [
+                    {
+                        'expireOn': 1574611273492,
+                        'feedData': {
+                            'channel': [
+                                'TN',
+                                'RJ',
+                                'AP'
+                            ],
+                            'order': 1
+                        },
+                        'createdBy': '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8',
+                        'closable': false,
+                        'channel': 'TN',
+                        'feedAction': 'unRead',
+                        'id': '01289921810742476874',
+                        'category': 'orgMigrationAction',
+                        'priority': 1,
+                        'userId': '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8',
+                        'createdOn': 1574611273492
+                    }
+                ]
+            }
+        }
+    },
+
+    migrateSuccessResponse: {
+        'id': 'api.user.migrate',
+        'ver': 'v1',
+        'ts': '2019-11-18 18:02:28:841+0530',
+        'params': {
+            'resmsgid': null,
+            'msgid': null,
+            'err': null,
+            'status': 'success',
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'response': 'SUCCESS',
+            'errors': []
         }
     }
 };
