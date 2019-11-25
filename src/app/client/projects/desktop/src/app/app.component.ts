@@ -138,18 +138,11 @@ export class AppComponent implements OnInit, OnDestroy {
       mergeMap(data => {
         this.navigationHelperService.initialize();
         this.userService.initialize(this.userService.loggedIn);
-        if (this.userService.loggedIn) {
-          this.permissionService.initialize();
-          this.courseService.initialize();
-          this.userService.startSession();
-          return this.setUserDetails();
-        } else {
-          _.isEmpty(data[3]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
-          this.onboardingService.onboardCompletion.subscribe(event => {
-            event !== 'SUCCESS' ? this.showOnboardingPopup = true : this.initializeTourTravel();
-          });
-          return this.setOrgDetails();
-        }
+        _.isEmpty(data[3]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
+        this.onboardingService.onboardCompletion.subscribe(event => {
+          event !== 'SUCCESS' ? this.showOnboardingPopup = true : this.initializeTourTravel();
+        });
+        return this.setOrgDetails();
       }))
       .subscribe(data => {
         this.tenantService.getTenantInfo(this.slug);
