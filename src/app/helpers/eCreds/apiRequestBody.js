@@ -19,7 +19,7 @@ const certGenerateRequestBody = (input) => {
     let signatoryList = [];
     let signatory = {};
     if (_.get(input, 'rspObj.certType') === 'Best School Certificate') {
-        template = "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download";
+        template = "https://drive.google.com/uc?export=download&id=1byiZwFwZv7u7o2PYTayV4tdsWH6w0e3X";
         issuer = {
             "name": "Gujarat Council of Educational Research and Training",
             "url": "https://gcert.gujarat.gov.in/gcert/"
@@ -28,11 +28,11 @@ const certGenerateRequestBody = (input) => {
             "name": "CEO Gujarat",
             "id": "CEO",
             "designation": "CEO",
-            "image": "https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg"
+            "image": "https://preprodall.blob.core.windows.net/e-credentials/signature-523237__340.jpg"
         }
         signatoryList.push(signatory);
     } else {
-        template = "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download";
+        template = "https://drive.google.com/uc?export=download&id=1WyTDLdUGwBf5zy3BgWrdMrPw_yvYbkU4";
         issuer = {
             "name": "Gujarat Council of Educational Research and Training",
             "url": "https://gcert.gujarat.gov.in/gcert/"
@@ -41,7 +41,7 @@ const certGenerateRequestBody = (input) => {
             "name": "CEO Gujarat",
             "id": "CEO",
             "designation": "CEO",
-            "image": "https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg"
+            "image": "https://preprodall.blob.core.windows.net/e-credentials/signature-523237__340.jpg"
         }
         signatoryList.push(signatory);
     }
