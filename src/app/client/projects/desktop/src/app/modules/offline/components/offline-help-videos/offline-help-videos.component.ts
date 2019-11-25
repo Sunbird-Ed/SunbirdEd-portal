@@ -59,27 +59,22 @@ export class OfflineHelpVideosComponent implements OnInit {
       },
       {
         id: 'add-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0107),
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0095),
         thumbnail: 'assets/images/play-icon.svg',
         url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_offline_or_using_a_pen_drive.mp4'
       }
     ];
 
-    this.activeVideoObject = {
-      id: 'add-content-online',
-      name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0094),
-      thumbnail: 'assets/images/play-icon.svg',
-      url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_connected_to_the_Internet.mp4'
-    };
+    this.activeVideoObject = this.slideData[0];
+    this.setVideoHeight();
 
-    // video height
-    setTimeout(() => {
-      console.log('aspect ratio value', this.aspectRatio);
-      this.aspectRatioHeight = this.aspectRatio.nativeElement.offsetHeight;
-      this.playerInfoHeight = this.playerInfo.nativeElement.offsetHeight;
-      this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
+  }
 
-    }, 500);
+  setVideoHeight() {
+    console.log('aspect ratio value', this.aspectRatio);
+    this.aspectRatioHeight = this.aspectRatio.nativeElement.offsetHeight;
+    this.playerInfoHeight = this.playerInfo.nativeElement.offsetHeight;
+    this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
   }
 
   interpolateInstance(message) {
@@ -104,10 +99,8 @@ export class OfflineHelpVideosComponent implements OnInit {
   }
 
   onWindowResize(event) {
-    setTimeout(() => {
       this.aspectRatioHeight = event.target.document.querySelector('#help-video-aspect-ratio').offsetHeight;
       this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
-    }, 500);
   }
 
 }
