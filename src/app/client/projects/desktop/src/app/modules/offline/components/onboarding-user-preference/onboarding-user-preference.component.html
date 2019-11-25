@@ -46,6 +46,6 @@
   </div>
   <button (click)="saveUserData()" type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm"
   appTelemetryInteract [telemetryInteractEdata]= "setTelemetryData()">
-    {{resourceService?.frmelmnts?.btn?.submit}}
+    {{submitLabel}}
     <span class='arrow-icon'></span></button>
 </div>

@@ -22,6 +22,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
   showClass = false;
   disableContinueBtn = true;
   @Output() userPreferenceSaved = new EventEmitter();
+  submitLabel = _.upperCase(this.resourceService.frmelmnts.lbl.submit);
 
   constructor(public onboardingService: OnboardingService,
     public orgDetailsService: OrgDetailsService, public channelService: ChannelService,
@@ -90,7 +91,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
       'request': {
         'framework': {
           'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),
-          'board': this.selectedBoard.name,
+          'board': _.get(this.selectedBoard, 'name'),
           'medium': _.map(this.selectedMedium, 'name'),
           'gradeLevel': _.map(this.selectedClass, 'name')
         }
@@ -114,7 +115,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
       extra: {
         'framework': {
           'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),
-          'board': this.selectedBoard.name,
+          'board': _.get(this.selectedBoard, 'name'),
           'medium': _.map(this.selectedMedium, 'name'),
           'gradeLevel': _.map(this.selectedClass, 'name')
         }
