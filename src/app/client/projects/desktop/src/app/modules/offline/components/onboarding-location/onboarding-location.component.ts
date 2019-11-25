@@ -33,6 +33,7 @@ export class OnboardingLocationComponent implements OnInit {
   }
 
   onOptionChanges(option) {
+    this.disableContinueBtn = true;
     if (option.type === 'state') {
       this.selectedDistrict = {};
       this.districtList = [];
