@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { ResourceService, ToasterService } from '@sunbird/shared';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 
 import { OfflineReportIssuesService } from '../../services/offline-report-issues/offline-report-issues.service';
@@ -17,6 +18,8 @@ export class OfflineReportIssuesComponent implements OnInit {
   descriptionCount: any;
   instance: string;
   reportOtherissueForm: FormGroup;
+  raiseSupportTicketInteractEdata: IInteractEventEdata;
+  onClickReportOtherIssueInteractEdata: IInteractEventEdata;
   constructor(
     private formBuilder: FormBuilder,
     private offlineReportIssuesService: OfflineReportIssuesService,
@@ -26,6 +29,7 @@ export class OfflineReportIssuesComponent implements OnInit {
   ngOnInit() {
     this.createReportOtherissueForm();
     this.instance = _.upperCase(this.resourceService.instance);
+    this.setTelemetryData();
   }
   createReportOtherissueForm() {
     this.reportOtherissueForm = this.formBuilder.group({
@@ -63,5 +67,17 @@ export class OfflineReportIssuesComponent implements OnInit {
     }, (error) => {
       this.toasterService.error(this.resourceService.frmelmnts.lbl.errorWhileGeneratingTicket);
     });
+  }
+  setTelemetryData() {
+    this.raiseSupportTicketInteractEdata = {
+      id: 'onclick_summit_issue_button',
+      type: 'click',
+      pageid: 'raise_support_ticket'
+    };
+    this.onClickReportOtherIssueInteractEdata = {
+      id: 'onclick_report_other_issue_button',
+      type: 'click',
+      pageid: 'raise_support_ticket'
+    };
   }
 }
