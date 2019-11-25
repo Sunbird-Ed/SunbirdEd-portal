@@ -182,7 +182,10 @@
       "CANCEL_IMPORT":"content/v1/import/cancel",
       "PAUSE_IMPORT":"content/v1/import/pause",
       "REPORT_OTHER_ISSUE":"help/v1/report/issue",
-      "READ_FAQ": "faqs/v1/read"
+      "READ_FAQ": "faqs/v1/read",
+      "CREATE_USER": "desktop/user/v1/create",
+      "READ_USER": "desktop/user/v1/read",
+      "LOCATION_SAVE": "data/v1/location/save"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
