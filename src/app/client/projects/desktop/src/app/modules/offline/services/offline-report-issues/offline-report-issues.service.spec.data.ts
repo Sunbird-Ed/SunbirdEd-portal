@@ -17,7 +17,7 @@ export const response = {
     },
     reportOtherIssueStatusError: {
         'error': {
-            'id': 'api.desktop.update',
+            'id': 'api.desktop.reportIssue',
             'ver': '1.0',
             'ts': '2019-10-25T09:39:51.560Z',
             'params': {

@@ -13,6 +13,7 @@ import { ResourceService } from 'src/app/modules/shared';
 import { LibraryFiltersComponent } from '../library-filters/library-filters.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { of, throwError } from 'rxjs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 describe('LibraryComponent', () => {
@@ -42,6 +43,7 @@ describe('LibraryComponent', () => {
                 ToasterService,
                 ResourceService,
                 OrgDetailsService],
+                schemas:[CUSTOM_ELEMENTS_SCHEMA]
         })
             .compileComponents();
     }));
