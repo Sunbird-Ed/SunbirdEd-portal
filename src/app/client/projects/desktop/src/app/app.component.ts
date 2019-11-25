@@ -137,7 +137,6 @@ export class AppComponent implements OnInit, OnDestroy {
     .pipe(
       mergeMap(data => {
         this.navigationHelperService.initialize();
-        this.userService.initialize(this.userService.loggedIn);
         _.isEmpty(data[3]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
         this.onboardingService.onboardCompletion.subscribe(event => {
           event !== 'SUCCESS' ? this.showOnboardingPopup = true : this.initializeTourTravel();
