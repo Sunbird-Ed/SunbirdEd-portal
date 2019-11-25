@@ -66,7 +66,7 @@ export const onboarding_user_preference_test = {
                     'preferredLanguage': null,
                     'approvedBy': null,
                     'channel': 'ROOT_ORG',
-                    'description': 'National Teacher Platform',
+                    'description': '',
                     'updatedDate': '2017-08-25 06:56:00:887+0000',
                     'addressId': null,
                     'provider': null,
@@ -171,8 +171,8 @@ export const onboarding_user_preference_test = {
                 }],
                 'createdOn': '2018-02-12T11:38:44.292+0000',
                 'versionKey': '1518435524292',
-                'appId': 'sunbird_portal',
-                'name': 'sunbird',
+                'appId': 'te_portal',
+                'name': 'te',
                 'lastUpdatedOn': '2018-02-12T11:38:44.292+0000',
                 'defaultFramework': 'TEST',
                 'status': 'Live'
@@ -366,7 +366,7 @@ export const onboarding_user_preference_test = {
         'appLogo': '/appLogo.png',
         'favicon': '/favicon.ico',
         'logo': '/logo.png',
-        'titleName': 'Sunbird'
+        'titleName': 'te'
     }
 };
 
