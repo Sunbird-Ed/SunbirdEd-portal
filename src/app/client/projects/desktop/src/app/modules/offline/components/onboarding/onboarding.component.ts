@@ -19,9 +19,11 @@ export class OnboardingComponent implements OnInit {
   }
   handleLocationSaveEvent(event) {
     if (event === 'SUCCESS') {
-    // this.slide = 'contentPreference';
+    this.slide = 'contentPreference';
+    }
+  }
+  handleContentPreferenceSaveEvent() {
     document.body.classList.remove('o-y-hidden');
     this.onboardingService.onboardCompletion.emit('SUCCESS');
-    }
   }
 }

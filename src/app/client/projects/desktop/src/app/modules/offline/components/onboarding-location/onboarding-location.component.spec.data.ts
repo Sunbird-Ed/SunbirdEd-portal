@@ -110,6 +110,12 @@ export const onboarding_location_test = {
           'responseCode': 'INTERNAL_SERVER_ERROR',
           'result': {}
         }
+    },
+    tenantInfo: {
+        'appLogo': '/appLogo.png',
+        'favicon': '/favicon.ico',
+        'logo': '/logo.png',
+        'titleName': 'Sunbird'
     }
 };
 

@@ -60,9 +60,10 @@ describe('OnboardingLocationComponent', () => {
   });
 
   it('should call getAllStates', () => {
+    spyOn(component.tenantService, 'tenantData$').and.returnValue(observableOf(onboarding_location_test.tenantInfo));
     spyOn(component, 'getAllStates');
     component.ngOnInit();
-    expect(component.getAllStates).toHaveBeenCalled();
+    expect(component.tenantInfo).toBeDefined();
   });
 
   it('should call allDistrict', () => {
