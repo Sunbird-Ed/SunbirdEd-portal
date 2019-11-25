@@ -94,10 +94,10 @@ export class MainMenuComponent implements OnInit {
         }
       });
     setTimeout(() => {
-      let activeRoute = this.router.url.split('/')[3];
+      const activeRoute = this.router.url.split('/')[3];
       this.activeRoute(activeRoute);
     }, 1000);
-    
+
   }
 
   getProgramUrl() {
@@ -200,8 +200,7 @@ export class MainMenuComponent implements OnInit {
     if (route === 'curiosity') {
       document.getElementById(route).classList.add('active');
       document.getElementById('workspace').classList.remove('active');
-    }
-    else {
+    } else {
       document.getElementById('workspace').classList.add('active');
       document.getElementById('curiosity').classList.remove('active');
     }

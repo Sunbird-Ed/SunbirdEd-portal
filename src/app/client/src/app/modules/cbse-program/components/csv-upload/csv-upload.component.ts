@@ -16,7 +16,7 @@ import { CbseComponent } from '../cbse/cbse.component';
  */
 @Component({
     moduleId: module.id,
-    selector: 'csv-upload',
+    selector: 'app-csv-upload',
     templateUrl: 'csv-upload.component.html',
     styleUrls: ['csv-upload.component.scss']
 })

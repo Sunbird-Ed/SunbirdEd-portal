@@ -41,10 +41,12 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public routerQuestionCategory: any;
   public questionPattern: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    private userService: UserService, public actionService: ActionService, public telemetryService: TelemetryService, private cbseService: CbseProgramService,
-    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute, private contentService: ContentService) {
+    private userService: UserService, public actionService: ActionService, public telemetryService: TelemetryService,
+    private cbseService: CbseProgramService, public toasterService: ToasterService, public router: Router,
+    public activeRoute: ActivatedRoute, private contentService: ContentService) {
   }
   private labelsHandler() {
+    // tslint:disable-next-line:max-line-length
     this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted', 'Published'] : ['Total', 'Created by me', 'Needs attention'];
   }
   ngOnInit() {
@@ -76,8 +78,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
       }
     };
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
-    //clearing the selected questionId when user comes back from question list
-    delete this.selectedAttributes["questionList"];
+      //clearing the selected questionId when user comes back from question list
+    delete this.selectedAttributes['questionList'];
   }
   ngOnChanges(changed: any) {
     this.labelsHandler();
@@ -99,8 +101,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
       param: { 'mode': 'edit' }
     };
     this.actionService.get(req).pipe(catchError(err => {
-      let errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+      const errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }))
       .subscribe((response) => {
         this.collectionData = response.result.content;
@@ -197,7 +199,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
           };
         });
         this.showLoader = false;
-        // text book-unit-id added
+         // text book-unit-id added
         results.identifier = topicData.identifier;
         return results;
       });
@@ -213,7 +215,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
   public getResourceName(data, topic: string) {
     const topicData = _.find(data, { name: topic.toLowerCase() });
-    // tslint:disable-next-line:max-line-length
+     // tslint:disable-next-line:max-line-length
     return topicData ? topicData.resourceName : false;
   }
   public getButtonStatus(data, topic: string) {
@@ -249,16 +251,16 @@ export class ChapterListComponent implements OnInit, OnChanges {
         const content = _.get(res, 'result.content');
         const publishCount = [];
         _.forIn(_.groupBy(content, 'topic'), (value, key) => {
-          // publishCount.push({name: key.toLowerCase(), count: _.uniq([].concat(..._.map(value, 'questions'))).length });
-          // tslint:disable-next-line:max-line-length
+           // publishCount.push({name: key.toLowerCase(), count: _.uniq([].concat(..._.map(value, 'questions'))).length });
+           // tslint:disable-next-line:max-line-length
           publishCount.push({ name: key.toLowerCase(), count: _.uniq(value[0].questions).length, resourceId: _.get(value[0], 'identifier'), resourceName: _.get(value[0], 'name') });
 
         });
         return publishCount;
       }),
       catchError((err) => {
-        let errInfo = { errorMsg: 'Published Resource search failed' };
-        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        const errInfo = { errorMsg: 'Published Resource search failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }));
   }
   public searchQuestionsByType(questionType: string, createdBy?: string, status?: any) {
@@ -293,8 +295,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
     }
     return this.contentService.post(req).pipe(
       map(res => _.get(res, 'result.facets[0].values')), catchError((err) => {
-        let errInfo = { errorMsg: 'Questions search by type failed' };
-        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        const errInfo = { errorMsg: 'Questions search by type failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }));
   }
 

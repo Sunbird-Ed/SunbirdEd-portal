@@ -24,9 +24,9 @@ export class DashboardComponent implements OnInit {
   textBookChapters;
   reports;
   selectedReport;
-  statusLabel
+  statusLabel;
   headersTooltip: Array<any> = [];
-  showLoader: boolean = false;
+  showLoader = false;
   selectedCategory;
   tableData;
   firstcolumnHeader;
@@ -39,20 +39,20 @@ export class DashboardComponent implements OnInit {
   };
 
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    public actionService: ActionService, public toasterService: ToasterService,private cbseService: CbseProgramService,
-    private contentService : ContentService) { }
+    public actionService: ActionService, public toasterService: ToasterService, private cbseService: CbseProgramService,
+    private contentService: ContentService) { }
 
   ngOnInit() {
 
     this.reports = [{ name: 'Question Bank Status' }, { name: 'Textbook Status' }];
     this.selectedReport = this.reports[0].name;
-    this.firstcolumnHeader = 'Topic Name'
+    this.firstcolumnHeader = 'Topic Name';
     //should not change the order of below array
     this.questionType = ['vsa', 'sa', 'la', 'mcq', 'curiosityquestion'];
     //default selected category
     this.selectedCategory = 'vsa';
-    this.headersTooltip = [{ tip: "No. of resource (no. of published questions)" }];
-    this.statusLabel = [{ name: 'Up For Review', tip: "No. of questions pending for review" }, { name: "Rejected", tip: 'No. of questions rejected by reviewer' }, { name: 'Accepted', tip: 'No. of questions approved by reviewer' }, { name: 'Published', tip: 'No. of questions published by publisher' }];
+    this.headersTooltip = [{ tip: 'No. of resource (no. of published questions)' }];
+    this.statusLabel = [{ name: 'Up For Review', tip: 'No. of questions pending for review' }, { name: 'Rejected', tip: 'No. of questions rejected by reviewer' }, { name: 'Accepted', tip: 'No. of questions approved by reviewer' }, { name: 'Published', tip: 'No. of questions published by publisher' }];
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
   }
 
@@ -138,23 +138,23 @@ export class DashboardComponent implements OnInit {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
       data: {
         'request': {
-          "filters": {
-            "objectType": "AssessmentItem",
+          'filters': {
+            'objectType': 'AssessmentItem',
             'board': this.selectedAttributes.board,
             'framework': this.selectedAttributes.framework,
             'gradeLevel': this.selectedAttributes.gradeLevel,
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'programId': this.selectedAttributes.programId,
-            "status": [],
+            'status': [],
             'type': questionType === 'mcq' ? 'mcq' : 'reference',
           },
-          "limit": 0,
-          "aggregations": [
+          'limit': 0,
+          'aggregations': [
             {
-              "l1": "topic",
-              "l2": "category",
-              "l3": "status"
+              'l1': 'topic',
+              'l2': 'category',
+              'l3': 'status'
             }
           ]
         }
@@ -163,11 +163,11 @@ export class DashboardComponent implements OnInit {
 
     return this.contentService.post(req).pipe(
       map(res => {
-        let result = []
-        return result = _.get(res, 'result.aggregations[0].values')
+        let result = [];
+        return result = _.get(res, 'result.aggregations[0].values');
       }), catchError((err) => {
-          let errInfo = { errorMsg: 'Questions search by type failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+          const errInfo = { errorMsg: 'Questions search by type failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         }));
   }
 
@@ -205,46 +205,46 @@ export class DashboardComponent implements OnInit {
         return publishCount;
       }),
       catchError((err) => {
-        let errInfo = { errorMsg: 'Published Resource search failed' };
-        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        const errInfo = { errorMsg: 'Published Resource search failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }));
   }
 
   dashboardApi(textBookMetaData) {
     let apiRequest;
-    apiRequest = [this.searchQuestionsByType(), this.searchQuestionsByType('mcq'), ...this.questionType.map(type => this.searchResources(type))]
+    apiRequest = [this.searchQuestionsByType(), this.searchQuestionsByType('mcq'), ...this.questionType.map(type => this.searchResources(type))];
     if (!apiRequest) {
       this.toasterService.error('Please try again by refresh');
     }
     forkJoin(apiRequest).subscribe(data => {
-      let aggregatedData = _.compact(_.concat(data[0], data[1]))
+      const aggregatedData = _.compact(_.concat(data[0], data[1]));
       this.textBookChapters = _.map(textBookMetaData, topicData => {
         const results = { name: topicData.name, topic: topicData.topic, identifier: topicData.identifier };
         _.forEach(aggregatedData, (Tobj) => {
           if (Tobj && Tobj.name === topicData.topic.toLowerCase()) {
             _.forEach(Tobj.aggregations[0].values, (Cobj) => {
-              let modify = _.map(Cobj.aggregations[0].values, (a) => {
-                let temp = {}
+              const modify = _.map(Cobj.aggregations[0].values, (a) => {
+                const temp = {};
                 temp[a.name] = a.count;
                 return temp;
-              })
+              });
 
               results[Cobj.name] = modify.reduce((result, item) => {
-                var key = Object.keys(item)[0];
+                const key = Object.keys(item)[0];
                 result[key] = item[key];
                 return result;
               }, {});
-            })
+            });
           }
-        })
+        });
         return results;
       });
 
       //Below code to make api call to get published question and to include in the variable 'textBookChapters'
       _.forEach(this.textBookChapters, (chap) => {
         _.forEach(this.questionType, (type, index) => {
-          let filter_by_category = _.filter(data[index + 2], { name: chap.topic.toLowerCase() })
-          if (chap[type] && filter_by_category.length > 0) Object.assign(chap[type], { 'published': filter_by_category[0].count })
+          const filter_by_category = _.filter(data[index + 2], { name: chap.topic.toLowerCase() });
+          if (chap[type] && filter_by_category.length > 0) { Object.assign(chap[type], { 'published': filter_by_category[0].count }); }
         });
       });
 
@@ -254,13 +254,13 @@ export class DashboardComponent implements OnInit {
   }
 
   refreshReport() {
-    this.getCollectionHierarchy(this.selectedAttributes.textbook)
+    this.getCollectionHierarchy(this.selectedAttributes.textbook);
   }
 
   downloadReport() {
-    var optional;
+    let optional;
     if (this.selectedReport === this.reports[0].name) {
-      optional = `Selected Category: ${this.questionTypeName[this.selectedCategory]}`
+      optional = `Selected Category: ${this.questionTypeName[this.selectedCategory]}`;
     }
     const options = {
       filename: `${this.selectedReport}`,
@@ -269,7 +269,7 @@ export class DashboardComponent implements OnInit {
       decimalSeparator: '.',
       showLabels: true,
       showTitle: true,
-      title: `Texbook Name: ${this.selectedAttributes.textbookName}, ${optional ? optional : ""}`,
+      title: `Texbook Name: ${this.selectedAttributes.textbookName}, ${optional ? optional : ''}`,
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
@@ -281,11 +281,11 @@ export class DashboardComponent implements OnInit {
   }
 
   generateTableData(report) {
-    let Tdata
+    let Tdata;
     if (report === this.reports[0].name) {
       Tdata = _.map(this.textBookChapters, (item) => {
-        let result = {};
-        result[this.firstcolumnHeader] = item.name + "(" + item.topic + ")";
+        const result = {};
+        result[this.firstcolumnHeader] = item.name + '(' + item.topic + ')';
         result[this.statusLabel[0].name] = (item[this.selectedCategory] && item[this.selectedCategory].review) ? item[this.selectedCategory].review : 0;
         result[this.statusLabel[1].name] = (item[this.selectedCategory] && item[this.selectedCategory].reject) ? item[this.selectedCategory].reject : 0;
         result[this.statusLabel[2].name] = (item[this.selectedCategory] && item[this.selectedCategory].live) ? item[this.selectedCategory].live : 0;
@@ -296,8 +296,8 @@ export class DashboardComponent implements OnInit {
 
     } else if (report === this.reports[1].name) {
       Tdata = _.map(this.textBookChapters, (item) => {
-        let result = {};
-        result[this.firstcolumnHeader] = item.name + "(" + item.topic + ")";
+        const result = {};
+        result[this.firstcolumnHeader] = item.name + '(' + item.topic + ')';
         result[this.questionTypeName[this.questionType[0]]] = (item[this.questionType[0]] && item[this.questionType[0]].published) ? item[this.questionType[0]].published : 0;
         result[this.questionTypeName[this.questionType[1]]] = (item[this.questionType[1]] && item[this.questionType[1]].published) ? item[this.questionType[1]].published : 0;
         result[this.questionTypeName[this.questionType[2]]] = (item[this.questionType[2]] && item[this.questionType[2]].published) ? item[this.questionType[2]].published : 0;
@@ -317,12 +317,12 @@ export class DashboardComponent implements OnInit {
   }
 
   initializeDataTable(report) {
-    let dtOptions = {
+    const dtOptions = {
       paging: false,
       searching: false,
       info: false,
       destroy: true,
-    }
+    };
     this.showLoader = false;
     if (report === this.reports[0].name) {
       setTimeout(() => {

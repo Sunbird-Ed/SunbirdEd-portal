@@ -13,7 +13,7 @@ import { of as observableOf, throwError as observableError } from 'rxjs';
 describe('TextbookListComponent', () => {
   let component: TextbookListComponent;
   let fixture: ComponentFixture<TextbookListComponent>;
-  let sampleResponseData = { result: { content: [{ identifier: '1', status: 'Draft' }, { identifier: '2', status: 'Live' }, { identifier: '2', status: 'Draft' }] } }
+  const sampleResponseData = { result: { content: [{ identifier: '1', status: 'Draft' }, { identifier: '2', status: 'Live' }, { identifier: '2', status: 'Draft' }] } };
   let sampleEventData = { data: { metaData: { identifier: '1' } } }, errorInitiate;
   const PublicDataServiceStub = {
     post() {
@@ -23,7 +23,7 @@ describe('TextbookListComponent', () => {
         return observableOf(sampleResponseData);
       }
     }
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -38,12 +38,12 @@ describe('TextbookListComponent', () => {
     fixture = TestBed.createComponent(TextbookListComponent);
     component = fixture.componentInstance;
     component.selectedAttributes = {
-      board: "NCERT",
-      framework: "NCFCOPY",
-      gradeLevel: "Kindergarten",
-      subject: "Hindi",
-      medium: "English",
-      programId: "31ab2990-7892-11e9-8a02-93c5c62c03f1"
+      board: 'NCERT',
+      framework: 'NCFCOPY',
+      gradeLevel: 'Kindergarten',
+      subject: 'Hindi',
+      medium: 'English',
+      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1'
     },
       errorInitiate = false;
     fixture.detectChanges();

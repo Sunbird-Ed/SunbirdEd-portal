@@ -120,7 +120,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       userName = this.userService.userProfile.firstName;
     }
     if (this.userService.userProfile.lastName) {
-      userName += (' ' + this.userService.userProfile.lastName)
+      userName += (' ' + this.userService.userProfile.lastName);
     }
     return userName;
   }
@@ -162,7 +162,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     } else if ((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')) {
       this.showPreview = false;
     }
-  if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status=== 'Reject' &&
+  if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' &&
     this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
@@ -216,7 +216,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.selectedAttributes.showMode = 'previewPlayer';
       // call createQuestion with param true to get the local question data
       if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
-        this.createQuestion(true)
+        this.createQuestion(true);
       }
     } else if (event === 'edit') {
       this.selectedAttributes.showMode = 'editorForm';
@@ -245,7 +245,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
    * @param forPreview  {boolean}
    * - set param forPreview to true for local question preview
    */
-  createQuestion(forPreview?:boolean) {
+  createQuestion(forPreview?: boolean) {
     forkJoin([this.getConvertedLatex(this.question), this.getConvertedLatex(this.editorState.solutions)])
     .subscribe((res) => {
       this.body = res[0];
@@ -255,8 +255,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       if (!_.isEmpty(this.userService.userProfile.lastName)) {
         creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
       }
-      if(this.role.currentRole === 'CONTRIBUTOR'){
-       authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
+      if (this.role.currentRole === 'CONTRIBUTOR') {
+       authorName = (this.authorName.nativeElement.value == '' ) ? this.userName :  this.authorName.nativeElement.value;
       }
       const req = {
         url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
@@ -300,7 +300,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'status': 'Review',
                 'media': this.mediaArr,
                 'qumlVersion': 0.5,
-                'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier,
+                'textBookUnitIdentifier': this.selectedAttributes.textBookUnitIdentifier,
                 'author': authorName
               }
             }
@@ -311,10 +311,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
        * - If it is a local preview don't create question.
        * - for local preview only question body required with all other parameter to create Ecml.
        */
-      if(!forPreview) {
+      if (!forPreview) {
         this.actionService.post(req).pipe(catchError(err => {
-          let errInfo = { errorMsg: 'Question creation failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+          const errInfo = { errorMsg: 'Question creation failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((res) => {
           this.questionStatus.emit({'status': 'success', 'type': 'create', 'identifier': res.result.node_id});
         });
@@ -347,7 +347,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'objectType': 'AssessmentItem',
                 'metadata': {
                   'body': this.body,
-                  'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion': this.selectedAttributes.questionType.toUpperCase(),
+                  'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' : this.selectedAttributes.questionType.toUpperCase(),
                   'solutions': [this.solution],
                   'editorState': {
                     solutions: [this.editorState.solutions]
@@ -381,8 +381,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           });
         }
         this.actionService.patch(option).pipe(catchError(err => {
-          let errInfo = { errorMsg: 'Question updation failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+          const errInfo = { errorMsg: 'Question updation failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((res) => {
           if (this.updateStatus === 'Live') {
             this.toasterService.success('Question Accepted');
@@ -429,7 +429,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       return forkJoin(latexBody).pipe(
         map((res) => {
           _.forEach(res, (latex, i) => {
-            body = latex.includes('Error') ? body : body.replace(isMathML[i], '<span class="mathText">'+latex+'</span>');
+            body = latex.includes('Error') ? body : body.replace(isMathML[i], '<span class="mathText">' + latex + '</span>');
           });
           return body;
         })

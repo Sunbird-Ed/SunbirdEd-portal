@@ -7,7 +7,7 @@ import { forkJoin, of } from 'rxjs';
 import * as _ from 'lodash-es';
 import { themeObject, stageObject, questionSetObject, questionObject, questionSetConfigCdataObject } from './data';
 import { UUID } from 'angular2-uuid';
-import { HttpClient } from  "@angular/common/http";
+import { HttpClient } from  '@angular/common/http';
 import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class CbseProgramService {
     public toasterService: ToasterService, public telemetryService: TelemetryService) { }
 
   public postCertData(file: any, certType: any, userId: any, rootOrgId: any): Observable<any> {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('users', file);
     formData.append('cert-type', certType);
     formData.append('userId', userId);
@@ -92,7 +92,7 @@ export class CbseProgramService {
 
               return this.actionService.get(req).pipe(
                 map(res => {
-                  return this.getQuestionPluginConfig(res, questionSetConfigCdata, collections, role)
+                  return this.getQuestionPluginConfig(res, questionSetConfigCdata, collections, role);
                 }),
                 catchError(err => of (err))
               );
@@ -123,7 +123,7 @@ export class CbseProgramService {
       );
   }
 
-  apiErrorHandling(err, errorInfo){
+  apiErrorHandling(err, errorInfo) {
     this.toasterService.error(_.get(err, 'error.params.errmsg') || errorInfo.errorMsg);
     const telemetryErrorData = {
       context: {
