@@ -45,6 +45,15 @@
     color: $white-color;
     pointer-events: none !important;
     cursor: not-allowed !important; 
+    font-size: $font-size-sm;
+    height: 32px;
+}
+.ui.button.sb-btn-primary{
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: var(--white);
+    height: 32px;
+    font-size: $font-size-sm;
 }
 .grey-text{
     color: var(--gray-300) !important;

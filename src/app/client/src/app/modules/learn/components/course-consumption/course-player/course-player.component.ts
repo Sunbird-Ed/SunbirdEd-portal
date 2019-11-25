@@ -1,4 +1,4 @@
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest, Subject, merge } from 'rxjs';
 import { takeUntil, first, mergeMap, map } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { UserService, PermissionService, CoursesService } from '@sunbird/core';
@@ -109,6 +109,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public collectionTreeOptions: ICollectionTreeOptions;
 
   public unsubscribe = new Subject<void>();
+  public contentProgressEvents$ = new Subject();
   playerOption: any;
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
@@ -125,26 +126,28 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     };
   }
   ngOnInit() {
-    this.activatedRoute.params.pipe(first(),
-      mergeMap(({ courseId, batchId, courseStatus }) => {
-        this.courseId = courseId;
-        this.batchId = batchId;
-        this.courseStatus = courseStatus;
-        this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
-        if (this.batchId) {
-          this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
-        }
-        this.setTelemetryCourseImpression();
-        const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-        if (this.batchId) {
-          return combineLatest(
-            this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-            this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-          ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
-        }
-        return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
-          .pipe(map(courseHierarchy => ({ courseHierarchy })));
-      })).subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
+    merge(this.activatedRoute.params.pipe(first(),
+    mergeMap(({ courseId, batchId, courseStatus }) => {
+      this.courseId = courseId;
+      this.batchId = batchId;
+      this.courseStatus = courseStatus;
+      this.telemetryCdata = [{ id: this.courseId, type: 'Course' }];
+      if (this.batchId) {
+        this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+      }
+      this.setTelemetryCourseImpression();
+      const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
+      if (this.batchId) {
+        return combineLatest(
+          this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+          this.courseBatchService.getEnrolledBatchDetails(this.batchId),
+        ).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
+      }
+      return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
+        .pipe(map(courseHierarchy => ({ courseHierarchy })));
+    })), this.subscribeToContentProgressEvents())
+    .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
+       if (!contentProgressEvent) {
         this.courseHierarchy = courseHierarchy;
         this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
         this.courseInteractObject = {
@@ -172,6 +175,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
         this.collectionTreeNodes = { data: this.courseHierarchy };
         this.loader = false;
+       }
       }, (error) => {
         this.loader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
@@ -218,6 +222,19 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(res => this.contentStatus = res.content,
         err => console.log(err, 'content read api failed'));
   }
+
+  private subscribeToContentProgressEvents() {
+    return this.contentProgressEvents$.pipe(
+      map(event => {
+        this.contentProgressEvent(event);
+        return {
+          contentProgressEvent: event
+        };
+      }),
+      takeUntil(this.unsubscribe)
+    );
+  }
+
   private subscribeToQueryParam() {
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe))
       .subscribe(({ contentId }) => {
