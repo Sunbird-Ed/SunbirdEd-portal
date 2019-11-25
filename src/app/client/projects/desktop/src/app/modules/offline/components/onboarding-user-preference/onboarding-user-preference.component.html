@@ -1,6 +1,6 @@
 <div class="loginform__content">
   <div class="loginform__content__header">
-    <img src="assets/images/SUNBIRD.svg" alt="SUNBIRD">
+    <img src="{{tenantInfo.logo}}" alt="{{tenantInfo.titleName}}">
   </div>
   <!-- Slides -->
   <div class="d-flex">
@@ -9,31 +9,29 @@
       <div class="d-flex flex-dc fields-selection">
         <div class="sb-field" *ngIf="boardOption">
           <label class="d-flex fields-selection__label" for="board">{{resourceService?.frmelmnts?.lbl?.boards}}</label>
-          <sui-select placeholder="{{resourceService?.messages?.stmsg?.m0126}}" class="selection" id="board"
-            [(ngModel)]="selectedBoard" (ngModelChange)="onBoardChange(selectedBoard)" labelField="name"
-            [isSearchable]="true" [(ngModel)]="selectedBoard">
-            <sui-select-option *ngFor="let option of boardOption" [value]="option">
+          <sui-select class="selection" labelField="name" [isSearchable]="true" [(ngModel)]="selectedBoard"
+            (ngModelChange)="onBoardChange(selectedBoard)" placeholder="{{resourceService?.messages?.stmsg?.m0126}}"
+            [options]="boardOption" #boards>
+            <sui-select-option *ngFor="let board of boards.filteredOptions" [value]="board">
             </sui-select-option>
           </sui-select>
         </div>
 
         <div class="sb-field" *ngIf="showMedium">
           <label class="d-flex fields-selection__label" for="medium">{{resourceService?.frmelmnts?.lbl?.medium}}</label>
-          <sui-multi-select [isSearchable]="true" placeholder="{{resourceService?.messages?.stmsg?.m0127}}"
-            class="selection" id="medium" labelField="name" (ngModelChange)="onMediumChange($event)"
-            [(ngModel)]="selectedMedium" #multiSelect>
-            <sui-select-option *ngFor="let option of mediumOption" [value]="option">
-            </sui-select-option>
+          <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0127}}" class="selection"
+            [(ngModel)]="selectedMedium" (ngModelChange)="onMediumChange($event)" [options]="mediumOption"
+            labelField="name" [isSearchable]="true" #mediums>
+            <sui-select-option *ngFor="let medium of mediums.filteredOptions" [value]="medium"> </sui-select-option>
           </sui-multi-select>
         </div>
 
         <div class="sb-field" *ngIf="showClass">
           <label class="d-flex fields-selection__label" for="class">{{resourceService?.frmelmnts?.lbl?.class}}</label>
-          <sui-multi-select [isSearchable]="true" placeholder="{{resourceService?.messages?.stmsg?.m0128}}"
-            class="selection" id="class" labelField="name" (ngModelChange)="onClassChange($event)"
-            [(ngModel)]="selectedClass" #multiSelect>
-            <sui-select-option *ngFor="let option of classOption" [value]="option">
-            </sui-select-option>
+          <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0128}}" class="selection"
+            [(ngModel)]="selectedClass" (ngModelChange)="onClassChange($event)" [options]="classOption"
+            labelField="name" [isSearchable]="true" #classes>
+            <sui-select-option *ngFor="let class of classes.filteredOptions" [value]="class"> </sui-select-option>
           </sui-multi-select>
         </div>
       </div>
@@ -45,7 +43,7 @@
     <div class="circle active"></div>
   </div>
   <button (click)="saveUserData()" type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm"
-  appTelemetryInteract [telemetryInteractEdata]= "setTelemetryData()">
+    appTelemetryInteract [telemetryInteractEdata]="setTelemetryData()">
     {{submitLabel}}
     <span class='arrow-icon'></span></button>
 </div>

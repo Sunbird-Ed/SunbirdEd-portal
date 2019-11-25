@@ -62,18 +62,10 @@ describe('OnboardingUserPreferenceComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should call getOrgDetails and get success', () => {
-    spyOn(component.orgDetailsService, 'getOrgDetails').and.returnValue(observableOf(onboarding_user_preference_test.orgSearch));
-    spyOn(component, 'readChannel');
+  it('should get tenant data', () => {
+    spyOn(component.tenantService, 'tenantData$').and.returnValue(observableOf(onboarding_user_preference_test.tenantInfo));
     component.ngOnInit();
-    expect(component.readChannel).toHaveBeenCalled();
-  });
-
-  it('should call getOrgDetails and get error', () => {
-    spyOn(component.orgDetailsService, 'getOrgDetails').and.returnValue(throwError(onboarding_user_preference_test.orgSearch_error));
-    spyOn(component.toasterService, 'error').and.returnValue(throwError(resourceBundle.messages.emsg.m0005));
-    component.ngOnInit();
-    expect(component.toasterService.error).toHaveBeenCalled();
+    expect(component.tenantInfo).toBeDefined();
   });
 
   it('should call readChannel and get board option', () => {

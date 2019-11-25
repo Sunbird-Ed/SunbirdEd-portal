@@ -1,11 +1,11 @@
 export const onboarding_user_preference_test = {
     options: {
         board: {
-            'identifier': 'as_k-12',
-            'name': 'State (Assam)',
+            'identifier': 'Test',
+            'name': 'Test',
             'objectType': 'Framework',
             'relation': 'hasSequenceMember',
-            'description': 'as_k-12 Assam',
+            'description': 'Test',
             'index': 3,
             'status': 'Live'
         },
@@ -18,11 +18,11 @@ export const onboarding_user_preference_test = {
                 'category': 'topic',
                 'status': 'Live'
             }],
-            'identifier': 'as_k-12_medium_assamese',
-            'code': 'assamese',
+            'identifier': 'as_k-12_medium_Test',
+            'code': 'Test',
             'translations': null,
-            'name': 'Assamese',
-            'description': 'Assamese',
+            'name': 'Test',
+            'description': 'Test',
             'index': 1,
             'category': 'medium',
             'status': 'Live'
@@ -146,26 +146,26 @@ export const onboarding_user_preference_test = {
                 }],
                 'frameworks': [{
                     'identifier': 'as_k-12',
-                    'name': 'State (Assam)',
+                    'name': 'State (Test)',
                     'objectType': 'Framework',
                     'relation': 'hasSequenceMember',
-                    'description': 'as_k-12 Assam',
+                    'description': 'as_k-12 Test',
                     'index': 3,
                     'status': 'Live'
                 }, {
                     'identifier': 'ka_k-12',
-                    'name': 'State (Karnataka)',
+                    'name': 'State (Test 1)',
                     'objectType': 'Framework',
                     'relation': 'hasSequenceMember',
-                    'description': 'State (Karnataka)',
+                    'description': 'State (Test 1)',
                     'index': 13,
                     'status': 'Live'
                 }, {
                     'identifier': 'ch_k-12',
-                    'name': 'State (Chandigarh)',
+                    'name': 'State (Test 2)',
                     'objectType': 'Framework',
                     'relation': 'hasSequenceMember',
-                    'description': 'State (Chandigarh)',
+                    'description': 'State (Test 2)',
                     'index': 5,
                     'status': 'Live'
                 }],
@@ -211,8 +211,8 @@ export const onboarding_user_preference_test = {
             'framework': {
                 'identifier': 'as_k-12',
                 'code': 'as_k-12',
-                'name': 'State (Assam)',
-                'description': 'as_k-12 Assam',
+                'name': 'State (Test)',
+                'description': 'as_k-12 Test',
                 'graph_id': 'domain',
                 'nodeType': 'DATA_NODE',
                 'type': 'K-12',
@@ -237,11 +237,11 @@ export const onboarding_user_preference_test = {
                             'category': 'topic',
                             'status': 'Live'
                         }],
-                        'identifier': 'as_k-12_board_stateassam',
-                        'code': 'stateassam',
+                        'identifier': 'as_k-12_board_stateTest',
+                        'code': 'stateTest',
                         'translations': null,
-                        'name': 'State (Assam)',
-                        'description': 'State (Assam)',
+                        'name': 'State (Test)',
+                        'description': 'State (Test)',
                         'index': 1,
                         'category': 'board',
                         'status': 'Live'
@@ -272,11 +272,11 @@ export const onboarding_user_preference_test = {
                             'category': 'topic',
                             'status': 'Live'
                         }],
-                        'identifier': 'as_k-12_medium_assamese',
-                        'code': 'assamese',
+                        'identifier': 'as_k-12_medium_Test',
+                        'code': 'Test',
                         'translations': null,
-                        'name': 'Assamese',
-                        'description': 'Assamese',
+                        'name': 'Test',
+                        'description': 'Test',
                         'index': 1,
                         'category': 'medium',
                         'status': 'Live'
@@ -361,6 +361,12 @@ export const onboarding_user_preference_test = {
         },
         'responseCode': 'INTERNAL_SERVER_ERROR',
         'result': {}
+    },
+    tenantInfo: {
+        'appLogo': '/appLogo.png',
+        'favicon': '/favicon.ico',
+        'logo': '/logo.png',
+        'titleName': 'Sunbird'
     }
 };
 

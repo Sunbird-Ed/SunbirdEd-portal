@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { DeviceRegisterService } from '@sunbird/core';
+import { DeviceRegisterService, TenantService } from '@sunbird/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { OnboardingService } from './../../services';
@@ -20,16 +20,22 @@ export class OnboardingLocationComponent implements OnInit {
   disableContinueBtn = true;
   telemetryInteractEdata: IInteractEventEdata;
   public telemetryImpression: IImpressionEventInput;
+  tenantInfo: any = {};
 
   continueLabel = _.upperCase(this.resourceService.frmelmnts.lbl.continue);
 
   constructor(public onboardingService: OnboardingService,
-    public resourceService: ResourceService, public toasterService: ToasterService, private router: Router) {
+    public resourceService: ResourceService, public toasterService: ToasterService, private router: Router,
+    public tenantService: TenantService) {
   }
 
   ngOnInit() {
-    this.getAllStates();
-    this.setTelemetryData();
+    this.tenantService.tenantData$.subscribe(({ tenantData }) => {
+      this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
+      this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
+      this.getAllStates();
+      this.setTelemetryData();
+    });
   }
 
   onOptionChanges(option) {

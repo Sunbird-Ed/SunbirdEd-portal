@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { OnboardingService } from './../../services';
-import { OrgDetailsService, ChannelService, FrameworkService } from '@sunbird/core';
+import { OrgDetailsService, ChannelService, FrameworkService, TenantService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 
@@ -21,19 +21,20 @@ export class OnboardingUserPreferenceComponent implements OnInit {
   showMedium = false;
   showClass = false;
   disableContinueBtn = true;
+  tenantInfo: any = {};
   @Output() userPreferenceSaved = new EventEmitter();
   submitLabel = _.upperCase(this.resourceService.frmelmnts.lbl.submit);
 
   constructor(public onboardingService: OnboardingService,
     public orgDetailsService: OrgDetailsService, public channelService: ChannelService,
-    public frameworkService: FrameworkService,
+    public frameworkService: FrameworkService, public tenantService: TenantService,
     public resourceService: ResourceService, public toasterService: ToasterService) { }
 
   ngOnInit() {
-    this.orgDetailsService.getOrgDetails().subscribe(orgdata => {
+    this.tenantService.tenantData$.subscribe(({tenantData}) => {
+      this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
+      this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
       this.readChannel();
-    }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
