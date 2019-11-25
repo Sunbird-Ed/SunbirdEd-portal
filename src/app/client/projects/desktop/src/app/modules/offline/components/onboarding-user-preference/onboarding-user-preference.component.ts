@@ -56,12 +56,14 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     this.frameworkService.getFrameworkCategories(_.get(option, 'identifier')).subscribe((data) => {
       if (data && _.get(data, 'result.framework.categories')) {
         this.frameworkCategories = _.get(data, 'result.framework.categories');
-        this.setFrmeworkData();
+        this.setFrameworkData();
       }
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
-  setFrmeworkData() {
+  setFrameworkData() {
     this.frameworkCategories.forEach(element => {
       switch (element.code) {
         case 'medium':
@@ -76,12 +78,14 @@ export class OnboardingUserPreferenceComponent implements OnInit {
   }
 
   onMediumChange(mediumData) {
+    console.log('mediumData', JSON.stringify(mediumData));
     this.showClass = true;
     this.selectedMedium = mediumData;
     this.disableContinueBtn = _.isEmpty(this.selectedMedium) || _.isEmpty(this.selectedClass) ? true : false;
   }
 
   onClassChange(classData) {
+    console.log('classData', JSON.stringify(classData));
     this.selectedClass = classData;
     this.disableContinueBtn = _.isEmpty(this.selectedMedium) || _.isEmpty(this.selectedClass) ? true : false;
   }
