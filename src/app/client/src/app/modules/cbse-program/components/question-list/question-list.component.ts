@@ -81,7 +81,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'type': this.selectedAttributes.questionType === 'mcq' ? 'mcq' : 'reference',
-            'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' : this.selectedAttributes.questionType.toUpperCase(),
+            'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' :
+              this.selectedAttributes.questionType.toUpperCase(),
             'topic': this.selectedAttributes.topic,
             'createdBy': this.userService.userid,
             'programId': this.selectedAttributes.programId,
@@ -100,7 +101,12 @@ export class QuestionListComponent implements OnInit, OnChanges {
       req.data.request.filters.status = ['Review'];
     }
     let apiRequest;
-    apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false), catchError(err => { const errInfo = {errorMsg: 'Fetching question list failed' }; return throwError(this.cbseService.apiErrorHandling(err, errInfo)); }))];
+    apiRequest = [this.contentService.post(req).pipe(
+      tap(data => this.showLoader = false),
+      catchError(err => {
+        const errInfo = { errorMsg: 'Fetching question list failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+      }))];
     if (this.role.currentRole === 'PUBLISHER') {
       delete req.data.request.filters.createdBy;
       req.data.request.filters.status = ['Live'];
@@ -108,7 +114,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
         // tslint:disable-next-line:max-line-length
         apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false),
           catchError(err => {
-            const errInfo = {errorMsg: 'Fetching question list failed' };
+            const errInfo = { errorMsg: 'Fetching question list failed' };
             return throwError(this.cbseService.apiErrorHandling(err, errInfo));
           })),
         this.fetchExistingResource(this.selectedAttributes.resourceIdentifier)];
@@ -152,7 +158,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }, err => {
       console.log(err);
     }), catchError(err => {
-      const errInfo = {errorMsg: 'Resource updation failed' };
+      const errInfo = { errorMsg: 'Resource updation failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }));
   }
@@ -206,7 +212,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       return res.result.assessment_item;
     }),
       catchError(err => {
-        const errInfo = {errorMsg: 'Fetching Question details failed' };
+        const errInfo = { errorMsg: 'Fetching Question details failed' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }));
   }
@@ -338,7 +344,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
           }
         };
         this.contentService.post(option).pipe(catchError(err => {
-          const errInfo = {errorMsg: 'Resource publish failed' };
+          const errInfo = { errorMsg: 'Resource publish failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         }))
           .subscribe((res) => {
@@ -397,7 +403,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
           }
         };
         this.contentService.patch(options).pipe(catchError(err => {
-          const errInfo = {errorMsg: 'Resource updation failed' };
+          const errInfo = { errorMsg: 'Resource updation failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         }))
           .subscribe((res) => {
@@ -443,7 +449,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       data: requestBody
     };
     this.contentService.post(optionVal).pipe(catchError(err => {
-      const errInfo = {errorMsg: 'Resource updation failed' };
+      const errInfo = { errorMsg: 'Resource updation failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }))
       .subscribe(response => {

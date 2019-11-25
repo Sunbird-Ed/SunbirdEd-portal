@@ -78,7 +78,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       }
     };
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
-      //clearing the selected questionId when user comes back from question list
+    // clearing the selected questionId when user comes back from question list
     delete this.selectedAttributes['questionList'];
   }
   ngOnChanges(changed: any) {

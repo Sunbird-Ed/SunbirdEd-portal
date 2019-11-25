@@ -56,9 +56,9 @@ export class TextbookListComponent implements OnInit {
 
       // --> The textbook of either of status ['Live', 'Draft'] && In case of both 'Draft' is shown to avoid duplicate.
       const group_arr = _.groupBy(res.result.content, 'identifier');
-      _.forEach(group_arr, function (val) {
+      _.forEach(group_arr, val => {
         if (val.length > 1) {
-          const ab = _.find(val, function (v) {
+          const ab = _.find(val, v => {
             return v.status === 'Draft';
           });
           filteredTextbook.push(ab);

@@ -13,12 +13,18 @@ import { of as observableOf, throwError as observableError } from 'rxjs';
 describe('TextbookListComponent', () => {
   let component: TextbookListComponent;
   let fixture: ComponentFixture<TextbookListComponent>;
-  const sampleResponseData = { result: { content: [{ identifier: '1', status: 'Draft' }, { identifier: '2', status: 'Live' }, { identifier: '2', status: 'Draft' }] } };
-  let sampleEventData = { data: { metaData: { identifier: '1' } } }, errorInitiate;
+  const sampleResponseData = {
+    result: {
+      content: [{ identifier: '1', status: 'Draft' }, { identifier: '2', status: 'Live' },
+      { identifier: '2', status: 'Draft' }]
+    }
+  };
+  const sampleEventData = { data: { metaData: { identifier: '1' } } };
+  let errorInitiate;
   const PublicDataServiceStub = {
     post() {
       if (errorInitiate) {
-        return observableError({  status: 404  });
+        return observableError({ status: 404 });
       } else {
         return observableOf(sampleResponseData);
       }
@@ -29,7 +35,8 @@ describe('TextbookListComponent', () => {
     TestBed.configureTestingModule({
       imports: [TelemetryModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot()],
       declarations: [TextbookListComponent],
-      providers: [{ provide: PublicDataService, useValue: PublicDataServiceStub }, ConfigService, UtilService, ToasterService, TelemetryService]
+      providers: [{ provide: PublicDataService, useValue: PublicDataServiceStub }, ConfigService, UtilService,
+        ToasterService, TelemetryService]
     })
       .compileComponents();
   }));
@@ -69,8 +76,8 @@ describe('TextbookListComponent', () => {
     spyOn(component.toasterService, 'error');
     spyOn(component.telemetryService, 'error');
     component.ngOnInit();
-   expect(component.toasterService.error).toHaveBeenCalledWith('Fetching TextBook failed');
-   expect(component.telemetryService.error).toHaveBeenCalled();
+    expect(component.toasterService.error).toHaveBeenCalledWith('Fetching TextBook failed');
+    expect(component.telemetryService.error).toHaveBeenCalled();
   });
 
 });

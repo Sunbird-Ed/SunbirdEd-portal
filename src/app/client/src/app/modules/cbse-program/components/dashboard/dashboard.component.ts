@@ -47,18 +47,22 @@ export class DashboardComponent implements OnInit {
     this.reports = [{ name: 'Question Bank Status' }, { name: 'Textbook Status' }];
     this.selectedReport = this.reports[0].name;
     this.firstcolumnHeader = 'Topic Name';
-    //should not change the order of below array
+    // should not change the order of below array
     this.questionType = ['vsa', 'sa', 'la', 'mcq', 'curiosityquestion'];
-    //default selected category
+    // default selected category
     this.selectedCategory = 'vsa';
     this.headersTooltip = [{ tip: 'No. of resource (no. of published questions)' }];
-    this.statusLabel = [{ name: 'Up For Review', tip: 'No. of questions pending for review' }, { name: 'Rejected', tip: 'No. of questions rejected by reviewer' }, { name: 'Accepted', tip: 'No. of questions approved by reviewer' }, { name: 'Published', tip: 'No. of questions published by publisher' }];
+    this.statusLabel = [
+      { name: 'Up For Review', tip: 'No. of questions pending for review' },
+      { name: 'Rejected', tip: 'No. of questions rejected by reviewer' },
+      { name: 'Accepted', tip: 'No. of questions approved by reviewer' },
+      { name: 'Published', tip: 'No. of questions published by publisher' }];
     this.getCollectionHierarchy(this.selectedAttributes.textbook);
   }
 
   changeQuestionCategory(type) {
     this.showLoader = true;
-    //refresh datatable values and re-initializing it, setTimeOut is given to show loader on change of data
+    // refresh datatable values and re-initializing it, setTimeOut is given to show loader on change of data
     setTimeout(() => {
       this.showLoader = false;
       this.initializeDataTable(this.selectedReport);
@@ -166,9 +170,9 @@ export class DashboardComponent implements OnInit {
         let result = [];
         return result = _.get(res, 'result.aggregations[0].values');
       }), catchError((err) => {
-          const errInfo = { errorMsg: 'Questions search by type failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-        }));
+        const errInfo = { errorMsg: 'Questions search by type failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+      }));
   }
 
   public searchResources(qtype) {
@@ -199,7 +203,10 @@ export class DashboardComponent implements OnInit {
         const content = _.get(res, 'result.content');
         const publishCount = [];
         _.forIn(_.groupBy(content, 'topic'), (value, key) => {
-          publishCount.push({ name: key.toLowerCase(), count: _.uniq(value[0].questions).length, resourceId: _.get(value[0], 'identifier'), resourceName: _.get(value[0], 'name') });
+          publishCount.push({
+            name: key.toLowerCase(), count: _.uniq(value[0].questions).length, resourceId: _.get(value[0],
+              'identifier'), resourceName: _.get(value[0], 'name')
+          });
 
         });
         return publishCount;
@@ -212,7 +219,8 @@ export class DashboardComponent implements OnInit {
 
   dashboardApi(textBookMetaData) {
     let apiRequest;
-    apiRequest = [this.searchQuestionsByType(), this.searchQuestionsByType('mcq'), ...this.questionType.map(type => this.searchResources(type))];
+    apiRequest = [this.searchQuestionsByType(), this.searchQuestionsByType('mcq'),
+    ...this.questionType.map(type => this.searchResources(type))];
     if (!apiRequest) {
       this.toasterService.error('Please try again by refresh');
     }
@@ -240,7 +248,7 @@ export class DashboardComponent implements OnInit {
         return results;
       });
 
-      //Below code to make api call to get published question and to include in the variable 'textBookChapters'
+      // Below code to make api call to get published question and to include in the variable 'textBookChapters'
       _.forEach(this.textBookChapters, (chap) => {
         _.forEach(this.questionType, (type, index) => {
           const filter_by_category = _.filter(data[index + 2], { name: chap.topic.toLowerCase() });
@@ -286,10 +294,14 @@ export class DashboardComponent implements OnInit {
       Tdata = _.map(this.textBookChapters, (item) => {
         const result = {};
         result[this.firstcolumnHeader] = item.name + '(' + item.topic + ')';
-        result[this.statusLabel[0].name] = (item[this.selectedCategory] && item[this.selectedCategory].review) ? item[this.selectedCategory].review : 0;
-        result[this.statusLabel[1].name] = (item[this.selectedCategory] && item[this.selectedCategory].reject) ? item[this.selectedCategory].reject : 0;
-        result[this.statusLabel[2].name] = (item[this.selectedCategory] && item[this.selectedCategory].live) ? item[this.selectedCategory].live : 0;
-        result[this.statusLabel[3].name] = (item[this.selectedCategory] && item[this.selectedCategory].published) ? item[this.selectedCategory].published : 0;
+        result[this.statusLabel[0].name] = (item[this.selectedCategory] && item[this.selectedCategory].review) ?
+          item[this.selectedCategory].review : 0;
+        result[this.statusLabel[1].name] = (item[this.selectedCategory] && item[this.selectedCategory].reject) ?
+          item[this.selectedCategory].reject : 0;
+        result[this.statusLabel[2].name] = (item[this.selectedCategory] && item[this.selectedCategory].live) ?
+          item[this.selectedCategory].live : 0;
+        result[this.statusLabel[3].name] = (item[this.selectedCategory] && item[this.selectedCategory].published) ?
+          item[this.selectedCategory].published : 0;
         return result;
       });
       this.tableData = Tdata;
@@ -298,11 +310,16 @@ export class DashboardComponent implements OnInit {
       Tdata = _.map(this.textBookChapters, (item) => {
         const result = {};
         result[this.firstcolumnHeader] = item.name + '(' + item.topic + ')';
-        result[this.questionTypeName[this.questionType[0]]] = (item[this.questionType[0]] && item[this.questionType[0]].published) ? item[this.questionType[0]].published : 0;
-        result[this.questionTypeName[this.questionType[1]]] = (item[this.questionType[1]] && item[this.questionType[1]].published) ? item[this.questionType[1]].published : 0;
-        result[this.questionTypeName[this.questionType[2]]] = (item[this.questionType[2]] && item[this.questionType[2]].published) ? item[this.questionType[2]].published : 0;
-        result[this.questionTypeName[this.questionType[3]]] = (item[this.questionType[3]] && item[this.questionType[3]].published) ? item[this.questionType[3]].published : 0;
-        result[this.questionTypeName[this.questionType[4]]] = (item[this.questionType[4]] && item[this.questionType[4]].published) ? item[this.questionType[4]].published : 0;
+        result[this.questionTypeName[this.questionType[0]]] = (item[this.questionType[0]] && item[this.questionType[0]].published) ?
+          item[this.questionType[0]].published : 0;
+        result[this.questionTypeName[this.questionType[1]]] = (item[this.questionType[1]] && item[this.questionType[1]].published) ?
+          item[this.questionType[1]].published : 0;
+        result[this.questionTypeName[this.questionType[2]]] = (item[this.questionType[2]] && item[this.questionType[2]].published) ?
+          item[this.questionType[2]].published : 0;
+        result[this.questionTypeName[this.questionType[3]]] = (item[this.questionType[3]] && item[this.questionType[3]].published) ?
+          item[this.questionType[3]].published : 0;
+        result[this.questionTypeName[this.questionType[4]]] = (item[this.questionType[4]] && item[this.questionType[4]].published) ?
+          item[this.questionType[4]].published : 0;
         return result;
       });
       this.tableData = Tdata;
