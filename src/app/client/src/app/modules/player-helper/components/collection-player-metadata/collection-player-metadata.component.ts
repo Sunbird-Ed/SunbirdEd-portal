@@ -30,4 +30,8 @@ export class CollectionPlayerMetadataComponent implements OnInit {
     this.showContentCreditsModal = true;
   }
 
+  typeof(item: any) {
+    return typeof item === 'string';
+  }
+
 }

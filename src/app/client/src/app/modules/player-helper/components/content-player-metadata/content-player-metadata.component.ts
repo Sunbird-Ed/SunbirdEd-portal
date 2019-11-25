@@ -44,6 +44,10 @@ export class ContentPlayerMetadataComponent implements OnInit {
     this.showContentCreditsModal = true;
   }
 
+  typeof(item: any) {
+    return typeof item === 'string';
+  }
+
 }
 
 
