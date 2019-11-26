@@ -54,7 +54,11 @@ describe('OfflineReportIssuesComponent', () => {
     const buttonQuerySelector = openModal.query(By.css('button.sb-btn-outline-primary'));
     const button: HTMLElement = buttonQuerySelector.nativeElement;
     button.click();
-    spyOn(component, 'setTelemetryData');
+    spyOn(component, 'setTelemetryData').and.callThrough();
+    component.setTelemetryData();
+    expect(component.setTelemetryData).toHaveBeenCalled();
+    expect(component.onClickReportOtherIssueInteractEdata).toBeDefined();
+
     fixture.whenStable().then(() => {
       expect(component.issueReportedSuccessfully).toBeDefined();
       expect(component.openReportIssueModal).toBeDefined();
@@ -86,7 +90,10 @@ describe('OfflineReportIssuesComponent', () => {
     const offlineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     spyOn(offlineReportIssuesService, 'reportOtherIssue').and.returnValue(of('true'));
     component.submitIssue();
-    spyOn(component, 'setTelemetryData');
+    spyOn(component, 'setTelemetryData').and.callThrough();
+    component.setTelemetryData();
+    expect(component.setTelemetryData).toHaveBeenCalled();
+    expect(component.raiseSupportTicketInteractEdata).toBeDefined();
     expect(component.issueReportedSuccessfully).toBeDefined();
     expect(component.isDisplayLoader).toBeDefined();
     spyOn(component, 'createReportOtherissueForm');
@@ -95,7 +102,10 @@ describe('OfflineReportIssuesComponent', () => {
     const offlineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     spyOn(offlineReportIssuesService, 'reportOtherIssue').and.returnValue(of('false'));
     component.submitIssue();
-    spyOn(component, 'setTelemetryData');
+    spyOn(component, 'setTelemetryData').and.callThrough();
+    component.setTelemetryData();
+    expect(component.setTelemetryData).toHaveBeenCalled();
+    expect(component.raiseSupportTicketInteractEdata).toBeDefined();
     expect(component.toasterService.error(resourceServiceStub.frmelmnts.lbl.errorWhileGeneratingTicket));
   });
 });
