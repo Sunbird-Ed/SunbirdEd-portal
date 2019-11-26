@@ -75,6 +75,7 @@ let envVariables = {
   sunbird_portal_player_cdn_url: env.sunbird_portal_player_cdn_url,
   sunbird_processing_kafka_host: process.env.sunbird_processing_kafka_host,
   sunbird_sso_kafka_topic: process.env.sunbird_sso_kafka_topic,
+  sunbird_environment_base_url:env.sunbird_environment_base_url || 'https://preprod.ntp.net.in',
   cbse_programId: process.env.cbse_programId,
   sunbird_azure_certificates_container_name: env.sunbird_azure_certificates_container_name || 'cert-gj',
 }
