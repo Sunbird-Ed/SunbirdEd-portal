@@ -63,9 +63,12 @@
 
 }
 
-.select-language {
-  border: none;
+.sb-field .ui.selection.dropdown.select-language {
+  min-width: 80px;
+  border: 0px;
   background: none;
+}
+.ui.dropdown.select-language > .text {
   color: var(--primary-400);
-  outline: none;
+  padding-right: 24px !important;
 }
