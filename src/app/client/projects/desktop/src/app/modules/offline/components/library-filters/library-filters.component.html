@@ -1,31 +1,32 @@
-
-<!-- State and Medium components -->
+<!-- State and Medium sections -->
 <div class="d-flex state-medium-container sb-bg-color-white">
     <div class="ui container d-flex">
-      <div class="state-medium-container__dropdown">
-        <!-- state component -->
-        <div class="sb-field mb-0">
-        <sui-select class="selection state-selection" placeholder="Select State" [(ngModel)]="selectedBoard">
-            <sui-select-option *ngFor="let option of boards" [value]="option">
-            </sui-select-option>
-        </sui-select>
+        <div class="state-medium-container__dropdown">
+            <!-- state section -->
+            <div class="sb-field mb-0">
+                <sui-select class="selection state-selection" [placeholder]="resourceService?.messages?.stmsg?.m0126"
+                    [(ngModel)]="selectedBoard" labelField="name" (ngModelChange)="onBoardChange(selectedBoard)">
+                    <sui-select-option *ngFor="let board of boards" [value]="board"></sui-select-option>
+                </sui-select>
+            </div>
+            <!-- state section ends -->
+        </div>
+        <!-- medium section -->
+        <div class="state-medium-container__separator"></div>
+        <div class="state-medium-container__medium">
+            <sb-library-filters [list]="mediums" [layout]="mediumLayout" [selectedItems]="[]"
+                (selectedFilter)="applyFilters($event, 'medium')"></sb-library-filters>
+        </div>
+        <!-- medium section ends -->
     </div>
-        <!-- state component ends -->
-      </div>
-      <div class="state-medium-container__separator"></div>
-      <div class="state-medium-container__medium">
-        <!-- medium component -->
-        <sb-library-filters [list]="mediums" [layout]="mediumLayout" [selectedItems]="[0]" (selectedFilter)="getSelectedFilters($event, 'medium')"></sb-library-filters>
-        <!-- medium component ends -->
-      </div>
-    </div>
-  </div>
-  <!-- State and Medium components ends-->
-  
-  <!-- class component -->
-  <div class="sb-class-bar sb-bg-color-gray-0">
+</div>
+<!-- State and Medium sections ends-->
+
+<!-- class section -->
+<div class="sb-class-bar sb-bg-color-gray-0">
     <div class="ui container">
-        <sb-library-filters [list]="classes" [layout]="classLayout" [selectedItems]="[0]" (selectedFilter)="getSelectedFilters($event, 'class')"></sb-library-filters>
+        <sb-library-filters [list]="classes" [layout]="classLayout" [selectedItems]="[]"
+            (selectedFilter)="applyFilters($event, 'class')"></sb-library-filters>
     </div>
-  </div>
-  <!-- class component ends -->
+</div>
+<!-- class section ends -->

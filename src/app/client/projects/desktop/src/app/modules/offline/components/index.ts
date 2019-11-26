@@ -11,3 +11,5 @@ export * from './offline-faq/offline-faq.component';
 export * from './desktop-header/desktop-header.component';
 export * from './library/library.component';
 export * from './library-filters/library-filters.component';
+export * from './desktop-explore-content/desktop-explore-content.component';
+export * from './desktop-view-all/desktop-view-all.component';

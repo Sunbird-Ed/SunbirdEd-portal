@@ -5,9 +5,12 @@ import { takeUntil } from 'rxjs/operators';
 
 import * as _ from 'lodash-es';
 import {
-    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage
+    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage,
+    BrowserCacheTtlService
 } from '@sunbird/shared';
 import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
+import { CacheService } from 'ng2-cache-service';
+import { PublicPlayerService } from '@sunbird/public';
 
 @Component({
     selector: 'app-library',
@@ -33,7 +36,6 @@ export class LibraryComponent implements OnInit {
 
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
 
-
     @HostListener('window:scroll', []) onScroll(): void {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
             && this.pageSections.length < this.carouselMasterData.length) {
@@ -48,7 +50,10 @@ export class LibraryComponent implements OnInit {
         private toasterService: ToasterService,
         private configService: ConfigService,
         private resourceService: ResourceService,
-        private orgDetailsService: OrgDetailsService
+        private orgDetailsService: OrgDetailsService,
+        private cacheService: CacheService,
+        private browserCacheTtlService: BrowserCacheTtlService,
+        private publicPlayerService: PublicPlayerService
     ) { }
 
     ngOnInit() {
@@ -61,11 +66,8 @@ export class LibraryComponent implements OnInit {
     }
 
 
-    getFilters(event) {
-        this.dataDrivenFilters = {
-            board: 'CBSE'
-        };
-
+    getFilters(data) {
+        this.dataDrivenFilters = data.filters;
         this.fetchContentOnParamChange();
     }
 
@@ -132,24 +134,19 @@ export class LibraryComponent implements OnInit {
     }
 
     private prepareCarouselData(sections = []) {
+        const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.ExplorePage;
         const carouselData = _.reduce(sections, (collector, element) => {
-            const contents = _.get(element, 'contents') || [];
-
-            element.contents = this.prepareDataForCard(contents);
-
+            const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
+            element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
             if (element.contents && element.contents.length) {
+                element.contents.forEach((item) => {
+                    item.cardImg = item.cardImg || item.courseLogoUrl || 'assets/images/book.png';
+                });
                 collector.push(element);
             }
             return collector;
         }, []);
         return carouselData;
-    }
-
-    private prepareDataForCard(contents) {
-        contents.forEach((item) => {
-            item.cardImg = item.appIcon || item.courseLogoUrl;
-        });
-        return contents;
     }
 
     private setNoResultMessage() {
@@ -167,16 +164,35 @@ export class LibraryComponent implements OnInit {
     }
 
     onViewAllClick(event) {
+        const section = _.cloneDeep(this.carouselMasterData[0]);
+        const searchQuery = JSON.parse(section.searchQuery);
+        const softConstraintsFilter = {
+            board: [this.dataDrivenFilters.board],
+            channel: this.hashTagId,
+        };
+        if (_.includes(this.router.url, 'browse')) {
+            searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+            searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
+            searchQuery.request.filters.exists = searchQuery.request.exists;
+        }
+        this.cacheService.set('viewAllQuery', searchQuery.request.filters);
+        this.cacheService.set('pageSection', section, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+        const queryParams = { ...searchQuery.request.filters, ...this.queryParams };
+        const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + section.name.replace(/\s/g, '-');
+        this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
+
     }
 
-    showAllList(event) {
-        console.log('Event', event);
+    public playContent(event) {
+        if (_.includes(this.router.url, 'browse')) {
+            this.publicPlayerService.playContentForOfflineBrowse(event);
+        } else {
+            this.publicPlayerService.playContent(event);
+        }
     }
 
-    openContent(event) {
-        console.log('Event', event);
-    }
 
+    // To Handle in-view logs
     afterChange(event) {
         console.log('AfterChange', event);
     }

@@ -63,6 +63,10 @@
     right: -16px !important;
   }
 }
+/* sb-card styles getting overriden by _cards.scss */
+::ng-deep .sb-card:hover {
+  transform: none !important;
+}
 
 .sbcardwidth {
   width: 292px !important;

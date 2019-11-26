@@ -107,8 +107,8 @@ export class DesktopHeaderComponent implements OnInit {
         this.queryParam = {};
         if (key && key.length) {
             this.queryParam.key = key;
+            this.routeToOffline();
         }
-        this.routeToOffline();
     }
 
     routeToOffline() {

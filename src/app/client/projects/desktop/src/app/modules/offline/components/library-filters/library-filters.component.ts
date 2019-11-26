@@ -1,67 +1,76 @@
-import { Component, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
-import { OrgDetailsService, FrameworkService } from '@sunbird/core';
-import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { mergeMap, first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 
-import {
-    ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService
-} from '@sunbird/shared';
-import { Router, ActivatedRoute } from '@angular/router';
+import { OrgDetailsService, FrameworkService, ChannelService } from '@sunbird/core';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 
 @Component({
     selector: 'app-library-filters',
     templateUrl: './library-filters.component.html',
     styleUrls: ['./library-filters.component.scss']
 })
-export class LibraryFiltersComponent implements OnInit, OnChanges {
+export class LibraryFiltersComponent implements OnInit {
     frameworkName: string;
     hashTagId: string;
-    selectedBoard: string;
 
-    boards: string[] = [];
-    mediums: string[] = [];
-    classes: string[] = [];
+    selectedBoard: any;
+    selectedMedium: string;
+    selectedClass: string;
 
-    mediumLayout = LibraryFiltersLayout.SQUARE;
-    classLayout = LibraryFiltersLayout.ROUND;
+    boards: Array<any> = [];
+    mediums: Array<any> = [];
+    classes: Array<any> = [];
+
+    mediumLayout: LibraryFiltersLayout = LibraryFiltersLayout.SQUARE;
+    classLayout: LibraryFiltersLayout = LibraryFiltersLayout.ROUND;
 
     frameworkCategories: any;
     filterQueryParam: any = {};
 
+    @Input() data;
     @Output() libraryFilters: EventEmitter<any> = new EventEmitter();
+
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
         public resourceService: ResourceService,
         public frameworkService: FrameworkService,
-        private orgDetailsService: OrgDetailsService
-    ) { }
-
-    ngOnInit() {
-        this.orgDetailsService.getOrgDetails().pipe(
-            mergeMap((orgDetails: any) => {
-                this.hashTagId = orgDetails.hashTagId;
-                this.frameworkService.initialize(undefined, this.hashTagId);
-                return this.frameworkService.frameworkData$;
-            }), first()).subscribe((data) => {
-                if (data && data.frameworkdata && data.frameworkdata.defaultFramework && data.frameworkdata.defaultFramework.categories) {
-                    this.frameworkCategories = data.frameworkdata.defaultFramework.categories;
-                    this.setFilters();
-                }
-            });
+        private orgDetailsService: OrgDetailsService,
+        private channelService: ChannelService,
+        private toasterService: ToasterService
+    ) {
     }
 
-    ngOnChanges(event) {
-        console.log('event', event);
+    ngOnInit() {
+
+        this.orgDetailsService.getOrgDetails().subscribe(orgdata => {
+            this.readChannel();
+        }, err => {
+            this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        });
+    }
+
+    readChannel() {
+        this.channelService.getFrameWork(_.get(this.orgDetailsService, 'orgDetails.hashTagId')).subscribe(data => {
+            this.boards = _.get(data, 'result.channel.frameworks');
+
+            this.getUserPreference();
+        }, err => {
+            // this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        });
+    }
+
+    getUserPreference() {
+        this.selectedBoard = this.boards[0];
+        this.onBoardChange(this.boards[0]);
     }
 
     setFilters() {
         this.frameworkCategories.forEach(element => {
             switch (element.code) {
-                case 'board':
-                    this.boards = element.terms.map(state => state.name);
-                    break;
                 case 'medium':
                     this.mediums = element.terms.map(medium => medium.name);
                     break;
@@ -71,25 +80,53 @@ export class LibraryFiltersComponent implements OnInit, OnChanges {
             }
         });
 
-        this.libraryFilters.emit([]);
+        const data = {
+            filters: {
+                board: this.selectedBoard.identifier
+            }
+        };
+
+        this.libraryFilters.emit(data);
     }
 
-    getSelectedFilters(event, type) {
-        this.filterQueryParam.board = ['CBSE'];
+    onBoardChange(option) {
+        this.mediums = [];
+        this.classes = [];
+        this.selectedClass = '';
+        this.selectedMedium = '';
+        this.frameworkService.getFrameworkCategories(_.get(option, 'identifier')).subscribe((data) => {
+            if (data && _.get(data, 'result.framework.categories')) {
+                this.frameworkCategories = _.get(data, 'result.framework.categories');
+                this.setFilters();
+            }
+        });
+    }
+
+    applyFilters(event, type) {
+        this.getSelectedBMCData();
 
         if (type === 'medium') {
             this.filterQueryParam.medium = [event.data.text];
+            this.filterQueryParam.class = '';
+            this.selectedMedium = '';
         } else if (type === 'class') {
             this.filterQueryParam.gradeLevel = [event.data.text];
         }
 
         this.filterQueryParam['appliedFilters'] = true;
         this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.filterQueryParam });
-        console.log('Event', event);
-        console.log('filterQueryParam', this.filterQueryParam);
     }
 
-    applyFilters() {
+    getSelectedBMCData() {
+        this.filterQueryParam.board = this.selectedBoard.identifier;
 
+        if (this.selectedMedium && this.selectedMedium.length) {
+            this.filterQueryParam.medium = this.selectedMedium;
+        }
+
+        if (this.selectedClass && this.selectedClass.length) {
+            this.filterQueryParam.class = this.selectedClass;
+        }
     }
 }
+

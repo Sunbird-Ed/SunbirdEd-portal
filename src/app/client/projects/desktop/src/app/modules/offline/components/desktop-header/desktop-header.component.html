@@ -76,14 +76,14 @@
 </div>
 <!-- header component ends -->
 
-<!-- menu bar with langugage selection component -->
+<!-- menu bar with language selection component -->
 <div class="sb-menubar sb-bg-color-primary-100">
     <div class="ui container d-flex flex-ai-center flex-jc-space-between">
         <!-- menu component -->
             <div class="w-100 d-flex flex-ai-center flex-jc-space-between">
 
                 <div class="d-flex sb-offline-menu-container flex-ai-center">
-                    <a [routerLink]="'/'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <a [routerLink]="'/'" [ngClass]="(router.isActive('/', false) && !(router.isActive('/browse', false) || router.isActive('/help-center', false)) ) ? 'active': ''">
                         <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
                     </a>
                     <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
