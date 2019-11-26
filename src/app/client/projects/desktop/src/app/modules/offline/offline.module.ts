@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
   BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
-  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,DesktopViewAllComponent,
+  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent, DesktopViewAllComponent,
   OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
   OnboardingLocationComponent, OnboardingUserPreferenceComponent
 } from './components';
