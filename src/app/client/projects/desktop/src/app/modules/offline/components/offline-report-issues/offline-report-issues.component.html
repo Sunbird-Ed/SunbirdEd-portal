@@ -2,8 +2,9 @@
   <p class="help-faq__report_text">
     {{resourceService.frmelmnts?.lbl?.haventFoundAnyOtherissue}}
   </p>
-  <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="openModal()"
-    data-target="#openPopUp"> {{resourceService.frmelmnts?.lbl?.reportOtherIssue}} </button>
+  <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="openModal()" appTelemetryInteract
+  [telemetryInteractEdata]="onClickReportOtherIssueInteractEdata" data-target="#openPopUp">
+  {{resourceService.frmelmnts?.lbl?.reportOtherIssue}} </button>
 </div>
 <sui-modal *ngIf="openReportIssueModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="openReportIssueModal = !openReportIssueModal" #modal
@@ -50,9 +51,10 @@
       </div>
 
     </div>
-    <div class="sb-modal-actions" *ngIf='!issueReportedSuccessfully' >
-      <button class="sb-btn sb-btn-normal sb-btn-primary"  (click)="submitIssue()"
-        [disabled]="reportOtherissueForm.invalid">
+    <div class="sb-modal-actions" *ngIf='!issueReportedSuccessfully'>
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="submitIssue()"
+        [disabled]="reportOtherissueForm.invalid" appTelemetryInteract
+        [telemetryInteractEdata]="raiseSupportTicketInteractEdata">
         {{resourceService.frmelmnts?.lbl?.submitIssueButton}}
       </button>
     </div>
