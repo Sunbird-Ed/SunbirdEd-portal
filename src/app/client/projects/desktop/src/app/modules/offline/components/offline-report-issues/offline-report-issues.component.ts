@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 import { OfflineReportIssuesService } from '../../services/offline-report-issues/offline-report-issues.service';
@@ -25,6 +26,8 @@ export class OfflineReportIssuesComponent implements OnInit {
     private offlineReportIssuesService: OfflineReportIssuesService,
     public resourceService: ResourceService,
     public toasterService: ToasterService,
+    public activatedRoute: ActivatedRoute,
+    public router: Router,
   ) { }
   ngOnInit() {
     this.createReportOtherissueForm();
@@ -70,14 +73,15 @@ export class OfflineReportIssuesComponent implements OnInit {
   }
   setTelemetryData() {
     this.raiseSupportTicketInteractEdata = {
-      id: 'onclick_summit_issue_button',
+      id: 'submit_issue',
       type: 'click',
-      pageid: 'raise_support_ticket'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+
     };
     this.onClickReportOtherIssueInteractEdata = {
-      id: 'onclick_report_other_issue_button',
+      id: 'report_other_issue',
       type: 'click',
-      pageid: 'raise_support_ticket'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
   }
 }
