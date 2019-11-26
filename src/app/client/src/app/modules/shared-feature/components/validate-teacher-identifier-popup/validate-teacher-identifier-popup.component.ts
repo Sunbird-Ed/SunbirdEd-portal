@@ -25,7 +25,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   extIdFailed: boolean;
   isOffline = environment.isOffline;
   userId: string;
-  channelData: string[];
+  channelData: [];
   showStateDropdown: boolean;
   telemetryCdata: Array<{}> = [];
   telemetryInteractObject: IInteractEventObject;
