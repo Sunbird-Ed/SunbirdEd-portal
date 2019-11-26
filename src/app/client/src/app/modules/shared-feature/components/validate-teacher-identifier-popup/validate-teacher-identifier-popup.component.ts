@@ -23,7 +23,6 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   showError: boolean;
   extIdVerified: boolean;
   extIdFailed: boolean;
-  navivateToResult = false;
   isOffline = environment.isOffline;
   userId: string;
   channelData: string[];
