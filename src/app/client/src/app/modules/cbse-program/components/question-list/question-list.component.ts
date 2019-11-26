@@ -81,7 +81,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
             'type': this.selectedAttributes.questionType === 'mcq' ? 'mcq' : 'reference',
-            'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' : this.selectedAttributes.questionType.toUpperCase(),
+            'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' :
+              this.selectedAttributes.questionType.toUpperCase(),
             'topic': this.selectedAttributes.topic,
             'createdBy': this.userService.userid,
             'programId': this.selectedAttributes.programId,
@@ -100,16 +101,21 @@ export class QuestionListComponent implements OnInit, OnChanges {
       req.data.request.filters.status = ['Review'];
     }
     let apiRequest;
-    apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false), catchError(err => { let errInfo = {errorMsg: 'Fetching question list failed' }; return throwError(this.cbseService.apiErrorHandling(err, errInfo)) }))];
-    if (this.role.currentRole === "PUBLISHER") {
+    apiRequest = [this.contentService.post(req).pipe(
+      tap(data => this.showLoader = false),
+      catchError(err => {
+        const errInfo = { errorMsg: 'Fetching question list failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+      }))];
+    if (this.role.currentRole === 'PUBLISHER') {
       delete req.data.request.filters.createdBy;
       req.data.request.filters.status = ['Live'];
       if (this.selectedAttributes.resourceIdentifier) {
         // tslint:disable-next-line:max-line-length
         apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false),
           catchError(err => {
-            let errInfo = {errorMsg: 'Fetching question list failed' };
-            return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+            const errInfo = { errorMsg: 'Fetching question list failed' };
+            return throwError(this.cbseService.apiErrorHandling(err, errInfo));
           })),
         this.fetchExistingResource(this.selectedAttributes.resourceIdentifier)];
       }
@@ -152,8 +158,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }, err => {
       console.log(err);
     }), catchError(err => {
-      let errInfo = {errorMsg: 'Resource updation failed' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+      const errInfo = { errorMsg: 'Resource updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }));
   }
 
@@ -206,8 +212,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
       return res.result.assessment_item;
     }),
       catchError(err => {
-        let errInfo = {errorMsg: 'Fetching Question details failed' };
-        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        const errInfo = { errorMsg: 'Fetching Question details failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }));
   }
   public createNewQuestion(): void {
@@ -276,10 +282,10 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.questionSelectionStatus = event.status;
   }
   public publishQuestions() {
-    let selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
+    const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
     this.publishInProgress = true;
     this.publishButtonStatus.emit(this.publishInProgress);
-    let selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
+    const selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
       final.author.push(_.get(question, 'author'));
       final.category.push(_.get(question, 'category'));
@@ -338,8 +344,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
           }
         };
         this.contentService.post(option).pipe(catchError(err => {
-          let errInfo = {errorMsg: 'Resource publish failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+          const errInfo = { errorMsg: 'Resource publish failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         }))
           .subscribe((res) => {
             console.log('res ', res);
@@ -359,10 +365,10 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   public updateQuestions() {
-    let selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
+    const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
     this.publishInProgress = true;
     this.publishButtonStatus.emit(this.publishInProgress);
-    let selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
+    const selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
       final.author.push(_.get(question, 'author'));
       final.category.push(_.get(question, 'category'));
@@ -397,8 +403,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
           }
         };
         this.contentService.patch(options).pipe(catchError(err => {
-          let errInfo = {errorMsg: 'Resource updation failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+          const errInfo = { errorMsg: 'Resource updation failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         }))
           .subscribe((res) => {
             if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
@@ -443,8 +449,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
       data: requestBody
     };
     this.contentService.post(optionVal).pipe(catchError(err => {
-      let errInfo = {errorMsg: 'Resource updation failed' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+      const errInfo = { errorMsg: 'Resource updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }))
       .subscribe(response => {
         this.publishedResourceId = response.result.content_id || response.result.node_id || '';
@@ -484,8 +490,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
       data: requestBody
     };
     this.contentService.patch(req).pipe(catchError(err => {
-      let errInfo = { errorMsg: 'Resource updation failed' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+      const errInfo = { errorMsg: 'Resource updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }))
       .subscribe((res) => {
         this.showSuccessModal = true;

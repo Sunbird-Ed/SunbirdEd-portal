@@ -8,7 +8,7 @@ const routes: Routes = [
     path: ':programId', component: ProgramComponent,
     data: {
       telemetry: { env: 'cbse_program', pageid: 'program', type: 'view', subtype: 'paginate' },
-      config: { question_categories: ['vsa','sa','la','mcq']}
+      config: { question_categories: ['vsa', 'sa', 'la', 'mcq']}
     }
   },
   {

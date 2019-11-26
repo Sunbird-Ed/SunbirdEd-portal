@@ -19,8 +19,7 @@ export class CertificateDashboardComponent implements OnInit {
   }
 
   downloadCert(url: string) {
-    //TODO call the API to GET the signed URL and then download the zip file
-    window.open(url,'_blank');
+    window.open(url, '_blank');
   }
 
   getTableData() {
@@ -32,12 +31,10 @@ export class CertificateDashboardComponent implements OnInit {
     this.http.post('/certificate/user/upload/status', request).subscribe(
       (data) => {
         this.data = _.get(data, 'result.response');
-        _.forEach(this.data, function(value) {
-          //console.log(value.createdon);
+        _.forEach(this.data, value => {
           value['createdon'] = moment(value['createdon']).format('DD/MM/YYYY HH:mm');
         });
        this.data = _.sortBy(this.data, ['createdon']);
-          //val['createdon'] = moment(val['createdon']).format('DD/MM/YYYY HH:mm');
       }, (error) => {
 
       }

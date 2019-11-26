@@ -103,7 +103,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private shepherdService: ShepherdService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-      if((<HTMLInputElement>document.getElementById('cbse_programId'))){
+      if ((<HTMLInputElement>document.getElementById('cbse_programId'))) {
         this.programId = (<HTMLInputElement>document.getElementById('cbse_programId')).value;
       }
   }

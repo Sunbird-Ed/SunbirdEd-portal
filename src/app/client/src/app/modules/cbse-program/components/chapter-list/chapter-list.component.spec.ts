@@ -17,7 +17,7 @@ import { By } from '@angular/platform-browser';
 describe('ChapterListComponent', () => {
   let component: ChapterListComponent;
   let fixture: ComponentFixture<ChapterListComponent>;
-  let publicDataService, errorInitiate, de: DebugElement;
+  let errorInitiate, de: DebugElement;
   const actionServiceStub = {
     get() {
       if (errorInitiate) {
@@ -26,21 +26,22 @@ describe('ChapterListComponent', () => {
         return observableOf(responseSample);
       }
     }
-  }
+  };
   const UserServiceStub = {
     userid: '874ed8a5-782e-4f6c-8f36-e0288455901e'
-  }
+  };
   const PublicDataServiceStub = {
     post() {
       return observableOf(fetchedQueCount);
     }
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TelemetryModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule],
       declarations: [ChapterListComponent],
-      providers: [{ provide: ActionService, useValue: actionServiceStub }, { provide: UserService, useValue: UserServiceStub }, { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService]
+      providers: [{ provide: ActionService, useValue: actionServiceStub }, { provide: UserService, useValue: UserServiceStub },
+        { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService]
     })
       .compileComponents();
   }));
@@ -62,7 +63,7 @@ describe('ChapterListComponent', () => {
   });
 
   it('should call showChapterList on successfully collecting textBookMetaData', () => {
-    component.selectedAttributes.currentRole = 'REVIEWER'
+    component.selectedAttributes.currentRole = 'REVIEWER';
     fixture.detectChanges();
     spyOn(component, 'showChapterList');
     component.getCollectionHierarchy(selectedAttributes.textbook);
@@ -70,7 +71,7 @@ describe('ChapterListComponent', () => {
   });
 
   it('should call showChapterList with role  CONTRIBUTOR', () => {
-    component.selectedAttributes.currentRole = 'CONTRIBUTOR'
+    component.selectedAttributes.currentRole = 'CONTRIBUTOR';
     fixture.detectChanges();
     spyOn(component, 'showChapterList');
     component.getCollectionHierarchy(selectedAttributes.textbook);
@@ -78,7 +79,7 @@ describe('ChapterListComponent', () => {
   });
 
   it('should call showChapterList with role  PUBLISHER', () => {
-    component.selectedAttributes.currentRole = 'PUBLISHER'
+    component.selectedAttributes.currentRole = 'PUBLISHER';
     fixture.detectChanges();
     spyOn(component, 'showChapterList');
     component.getCollectionHierarchy(selectedAttributes.textbook);
@@ -98,32 +99,32 @@ describe('ChapterListComponent', () => {
     component.showError = false;
     component.textBookChapters = chapterlistSample;
     fixture.detectChanges();
-    let tableRow = de.nativeElement.querySelector('tr:nth-child(2)');
+    const tableRow = de.nativeElement.querySelector('tr:nth-child(2)');
     tableRow.click();
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       expect(component.emitQuestionTypeTopic).toHaveBeenCalled();
-    })
+    });
   });
-it('should execute ngOnChanges', ()=>{
-  let changed = { selectedSchool: { currentValue: 'newOne', previousValue: 'oldOne'}}
-     spyOn(component, "ngOnChanges").and.callThrough();
+it('should execute ngOnChanges', () => {
+  const changed = { selectedSchool: { currentValue: 'newOne', previousValue: 'oldOne'}};
+     spyOn(component, 'ngOnChanges').and.callThrough();
      component.getCollectionHierarchy(selectedAttributes.textbook);
      component.ngOnChanges(changed);
      expect(component.selectedAttributes.selectedSchoolForReview).toEqual('newOne');
 });
 
-it('should execute ngOnChanges without break if selectedSchool is not changed', ()=>{
-  let changed = { }
-     spyOn(component, "ngOnChanges").and.callThrough();
+it('should execute ngOnChanges without break if selectedSchool is not changed', () => {
+  const changed = { };
+     spyOn(component, 'ngOnChanges').and.callThrough();
      spyOn(component, 'showChapterList');
      component.getCollectionHierarchy(selectedAttributes.textbook);
      component.ngOnChanges(changed);
      expect(component.showChapterList).toHaveBeenCalled();
 });
 
-it('should throw error on failure of apiRequest', ()=>{
-  component.selectedAttributes.currentRole = 'unknown'
+it('should throw error on failure of apiRequest', () => {
+  component.selectedAttributes.currentRole = 'unknown';
     fixture.detectChanges();
     spyOn(component.toasterService, 'error');
     component.showChapterList(textbookMeta);

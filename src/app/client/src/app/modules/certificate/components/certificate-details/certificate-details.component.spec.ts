@@ -79,14 +79,6 @@ xdescribe('CertificateDetailsComponent', () => {
     expect(component.enableVerifyButton).toBe(false);
   });
 
-  it('should get content id', () => {
-    const playerService = TestBed.get(PublicPlayerService);
-    spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(validateCertMockResponse.getCourseIdResponse));
-    component.watchVideoLink = validateCertMockResponse.getCourseIdResponse.result.content.certVideoUrl;
-    component.getCourseVideoUrl('do_1126972203209768961327');
-    expect(component.contentId).toBe('do_112831862871203840114');
-  });
-
   it('should play the content', () => {
     component.showVideoThumbnail = false;
     const playerService = TestBed.get(PublicPlayerService);

@@ -22,7 +22,7 @@ export class TextbookListComponent implements OnInit {
   showLoader = true;
   telemetryImpression = {};
   telemetryInteract = {};
-  constructor(private configService: ConfigService, public publicDataService: PublicDataService,private cbseService: CbseProgramService,
+  constructor(private configService: ConfigService, public publicDataService: PublicDataService, private cbseService: CbseProgramService,
     public utilService: UtilService, public toasterService: ToasterService, public router: Router,
     public telemetryService: TelemetryService, private contentService: ContentService) { }
 
@@ -46,20 +46,20 @@ export class TextbookListComponent implements OnInit {
       }
     };
     this.contentService.post(req).pipe(catchError(err => {
-      let errInfo = { errorMsg: 'Question creation failed' };
+      const errInfo = { errorMsg: 'Question creation failed' };
       this.showLoader = false;
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     })).subscribe((res) => {
-      var filteredTextbook = [];
+      const filteredTextbook = [];
       this.showLoader = false;
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
 
       // --> The textbook of either of status ['Live', 'Draft'] && In case of both 'Draft' is shown to avoid duplicate.
-      let group_arr = _.groupBy(res.result.content, "identifier");
-      _.forEach(group_arr, function (val) {
+      const group_arr = _.groupBy(res.result.content, 'identifier');
+      _.forEach(group_arr, val => {
         if (val.length > 1) {
-          let ab = _.find(val, function (v) {
-            return v.status === "Draft"
+          const ab = _.find(val, v => {
+            return v.status === 'Draft';
           });
           filteredTextbook.push(ab);
         } else {

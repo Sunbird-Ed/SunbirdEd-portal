@@ -51,10 +51,10 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     });
     }
   }
-  
-  ngOnChanges(){
-    if(this.previewInitialized){
-      if(this.questionMetaData && this.questionMetaData.mode !== 'create'){
+
+  ngOnChanges() {
+    if (this.previewInitialized) {
+      if (this.questionMetaData && this.questionMetaData.mode !== 'create') {
         this.toEcml
         .getECMLJSON(this.selectedAttributes.questionList)
         .subscribe( (theme) => {
@@ -77,7 +77,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
           this.theme = theme;
           const context = this.getContext();
           this.playerConfig =  this.setPlayerConfig(context, theme);
-        })
+        });
       }
     }
   }
@@ -88,7 +88,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       metadata: PlayerConfig.metadata,
       context: context,
       config: PlayerConfig.config,
-    }
+    };
     return finalPlayerConfiguration;
   }
 

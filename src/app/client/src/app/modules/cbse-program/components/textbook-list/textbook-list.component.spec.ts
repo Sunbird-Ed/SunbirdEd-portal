@@ -13,23 +13,30 @@ import { of as observableOf, throwError as observableError } from 'rxjs';
 describe('TextbookListComponent', () => {
   let component: TextbookListComponent;
   let fixture: ComponentFixture<TextbookListComponent>;
-  let sampleResponseData = { result: { content: [{ identifier: '1', status: 'Draft' }, { identifier: '2', status: 'Live' }, { identifier: '2', status: 'Draft' }] } }
-  let sampleEventData = { data: { metaData: { identifier: '1' } } }, errorInitiate;
+  const sampleResponseData = {
+    result: {
+      content: [{ identifier: '1', status: 'Draft' }, { identifier: '2', status: 'Live' },
+      { identifier: '2', status: 'Draft' }]
+    }
+  };
+  const sampleEventData = { data: { metaData: { identifier: '1' } } };
+  let errorInitiate;
   const PublicDataServiceStub = {
     post() {
       if (errorInitiate) {
-        return observableError({  status: 404  });
+        return observableError({ status: 404 });
       } else {
         return observableOf(sampleResponseData);
       }
     }
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TelemetryModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot()],
       declarations: [TextbookListComponent],
-      providers: [{ provide: PublicDataService, useValue: PublicDataServiceStub }, ConfigService, UtilService, ToasterService, TelemetryService]
+      providers: [{ provide: PublicDataService, useValue: PublicDataServiceStub }, ConfigService, UtilService,
+        ToasterService, TelemetryService]
     })
       .compileComponents();
   }));
@@ -38,12 +45,12 @@ describe('TextbookListComponent', () => {
     fixture = TestBed.createComponent(TextbookListComponent);
     component = fixture.componentInstance;
     component.selectedAttributes = {
-      board: "NCERT",
-      framework: "NCFCOPY",
-      gradeLevel: "Kindergarten",
-      subject: "Hindi",
-      medium: "English",
-      programId: "31ab2990-7892-11e9-8a02-93c5c62c03f1"
+      board: 'NCERT',
+      framework: 'NCFCOPY',
+      gradeLevel: 'Kindergarten',
+      subject: 'Hindi',
+      medium: 'English',
+      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1'
     },
       errorInitiate = false;
     fixture.detectChanges();
@@ -69,8 +76,8 @@ describe('TextbookListComponent', () => {
     spyOn(component.toasterService, 'error');
     spyOn(component.telemetryService, 'error');
     component.ngOnInit();
-   expect(component.toasterService.error).toHaveBeenCalledWith('Fetching TextBook failed');
-   expect(component.telemetryService.error).toHaveBeenCalled();
+    expect(component.toasterService.error).toHaveBeenCalledWith('Fetching TextBook failed');
+    expect(component.telemetryService.error).toHaveBeenCalled();
   });
 
 });
