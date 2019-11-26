@@ -11,17 +11,17 @@ const routes: Routes = [
       softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 }
     }
   },
-//   {
-//     path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
-//     data: {
-//       telemetry: {
-//         env: 'explore', pageid: 'view-all', type: 'view', subtype: 'paginate'
-//       },
-//       filterType: 'explore',
-//       softConstraints: {badgeAssertions: 98, board: 99, channel: 100},
-//       applyMode: true
-//     }
-//   },
+  {
+    path: 'view-all/:section/:pageNumber', component: ViewAllComponent,
+    data: {
+      telemetry: {
+        env: 'explore', pageid: 'view-all', type: 'view', subtype: 'paginate'
+      },
+      filterType: 'explore',
+      softConstraints: {badgeAssertions: 98, board: 99, channel: 100},
+      applyMode: true
+    }
+  },
     {
       path: ':pageNumber', component: ExploreContentComponent, data: {
         telemetry: {
