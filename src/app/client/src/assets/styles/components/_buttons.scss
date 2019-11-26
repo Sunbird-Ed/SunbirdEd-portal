@@ -192,9 +192,9 @@ a.sb-btn {
   }
 }
 .sb-btn-white{
-    box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.2);
-    border: 0px solid #ddd;
-   }
+  box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.2);
+  border: 0px solid #ddd;
+}
 .sb-btn-primary,
 .sb-btn-info {
   @include btn-theme($primary-color);
@@ -525,6 +525,63 @@ a.sb-btn {
     .icon {
       margin: 0;
       vertical-align: top;
+    }
+  }
+}
+
+//Button icons with title - Square
+.sb-btn-square {
+  &.sb-btn {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-sm;
+    padding: $base-block-space;
+
+    i.icon {
+      margin: 0 0 0 0;
+    }
+
+    span {
+      margin: $base-block-space 0 0 0;
+    }
+  }
+  &.sb-btn-sm {
+    height: $base-block-space*6;
+    width: $base-block-space*6;
+    font-size: $font-size-xs;
+    i.icon {
+      font-size: 18px;
+    }
+  }
+  &.sb-btn-normal {
+    height: $base-block-space*8;
+    width: $base-block-space*8;
+    i.icon {
+      font-size: 18px;
+    }
+  }
+
+  &.sb-btn-lg {
+    height: 128px;
+    width: 128px;
+    font-size: $font-size-base;
+    i.icon {
+      font-size: $font-size-lg;
+    }
+  }
+
+  &.sb-btn-xs {
+    padding: 4px;
+    height: $base-block-space*4;
+    min-width: $base-block-space*4;
+    font-size: $font-size-xs;
+    i.icon {
+      font-size: $font-size-xs;
+    }
+    span {
+      margin: 4px 0 0 0;
     }
   }
 }
