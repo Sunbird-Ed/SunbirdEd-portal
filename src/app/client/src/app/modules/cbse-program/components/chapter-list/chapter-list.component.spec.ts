@@ -33,14 +33,14 @@ describe('ChapterListComponent', () => {
     data: of({
       config: {
         question_categories: [
-          "vsa",
-          "sa",
-          "la",
-          "mcq"
+          'vsa',
+          'sa',
+          'la',
+          'mcq'
         ]
       }
     })
-  }
+  };
 
   const UserServiceStub = {
     userid: '874ed8a5-782e-4f6c-8f36-e0288455901e'
@@ -146,7 +146,7 @@ describe('ChapterListComponent', () => {
     fixture.detectChanges();
     spyOn(component.toasterService, 'error');
     component.showChapterList(textbookMeta);
-    expect(component.toasterService.error).toHaveBeenCalledWith("You don't have permission to access this page");
+    expect(component.toasterService.error).toHaveBeenCalledWith('You don\'t have permission to access this page');
   });
 
 });

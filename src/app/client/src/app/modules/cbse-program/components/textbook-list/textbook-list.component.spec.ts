@@ -62,7 +62,7 @@ describe('TextbookListComponent', () => {
   });
 
   it('Should return Textbooklist', () => {
-    spyOn(component['contentService'],'post').and.returnValue(of(Response.textbookListSearchApiResponse));
+    spyOn(component['contentService'], 'post').and.returnValue(of(Response.textbookListSearchApiResponse));
     component.ngOnInit();
     expect(component.textbookList.length).toBeGreaterThan(1);
   });
