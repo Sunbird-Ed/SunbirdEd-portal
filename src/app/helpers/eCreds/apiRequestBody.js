@@ -19,7 +19,7 @@ const certGenerateRequestBody = (input) => {
     let signatoryList = [];
     let signatory = {};
     if (_.get(input, 'rspObj.certType') === 'Best School Certificate') {
-        template = "https://drive.google.com/uc?export=download&id=1byiZwFwZv7u7o2PYTayV4tdsWH6w0e3X";
+        template = "https://sunbirddev.blob.core.windows.net/e-credentials/certificate_school.zip";
         issuer = {
             "name": "Gujarat Council of Educational Research and Training",
             "url": "https://gcert.gujarat.gov.in/gcert/"
@@ -32,7 +32,7 @@ const certGenerateRequestBody = (input) => {
         }
         signatoryList.push(signatory);
     } else {
-        template = "https://drive.google.com/uc?export=download&id=1WyTDLdUGwBf5zy3BgWrdMrPw_yvYbkU4";
+        template = "https://sunbirddev.blob.core.windows.net/e-credentials/cert_student_award.zip";
         issuer = {
             "name": "Gujarat Council of Educational Research and Training",
             "url": "https://gcert.gujarat.gov.in/gcert/"
