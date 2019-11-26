@@ -7,11 +7,25 @@ import { of, throwError } from 'rxjs';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { OfflineReportIssuesService } from '../../services';
 import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
 describe('OfflineReportIssuesComponent', () => {
   let component: OfflineReportIssuesComponent;
   let fixture: ComponentFixture<OfflineReportIssuesComponent>;
   let resourceServiceStub;
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
+  class ActivatedRouteStub {
+    snapshot = {
+      data: {
+        telemetry: {
+          env: 'help',
+          pageid: 'help'
+        }
+      }
+    };
+  }
   beforeEach(async(() => {
     resourceServiceStub = {
       instance: 'sunbird',
@@ -28,6 +42,8 @@ describe('OfflineReportIssuesComponent', () => {
       imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot()],
       providers: [
         { provide: ResourceService, useValue: resourceServiceStub },
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         OfflineReportIssuesService,
         FormBuilder,
       ],
