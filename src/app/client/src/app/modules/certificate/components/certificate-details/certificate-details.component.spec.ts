@@ -14,7 +14,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { validateCertMockResponse } from './certificate-details.component.spec.data';
 
-xdescribe('CertificateDetailsComponent', () => {
+describe('CertificateDetailsComponent', () => {
   let component: CertificateDetailsComponent;
   let fixture: ComponentFixture<CertificateDetailsComponent>;
 
@@ -65,7 +65,6 @@ xdescribe('CertificateDetailsComponent', () => {
     expect(component.loader).toBe(false);
     expect(component.viewCertificate).toBe(true);
     expect(component.recipient).toBe(certData.result.response.json.recipient.name);
-    expect(component.courseName).toBe(certData.result.response.json.badge.name);
   });
 
   it('should not verify the certificate', () => {
