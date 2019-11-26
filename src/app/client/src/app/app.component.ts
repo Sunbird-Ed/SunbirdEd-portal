@@ -475,23 +475,31 @@ export class AppComponent implements OnInit, OnDestroy {
   interpolateInstance(message) {
     return message.replace('{instance}', _.upperCase(this.instance));
   }
+  /** will be triggered once location popup gets closed */
+  onLocationSubmit() {
+    if (this.userFeed) {
+      this.showUserVerificationPopup = true;
+    }
+  }
 
   /** It will fetch user feed data if user is custodian as well as logged in. */
   getUserFeedData() {
     this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
       if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
-      }
-      if (this.userService.loggedIn) {
-        this.userService.getFeedData().subscribe(
-          (data) => {
-            const feedData = _.get(data, 'result.response.userFeed[0]');
-            if (feedData && _.get(feedData, 'category') === 'orgMigrationAction') {
-              this.showUserVerificationPopup = true;
-              this.userFeed = feedData;
-            }
-          },
-          (error) => {
-          });
+        if (this.userService.loggedIn) {
+          this.userService.getFeedData().subscribe(
+            (data) => {
+              const feedData = _.get(data, 'result.response.userFeed[0]');
+              if (feedData && _.get(feedData, 'category') === 'orgMigrationAction') {
+                this.userFeed = feedData;
+              }
+              if (this.isLocationConfirmed) {
+                this.showUserVerificationPopup = true;
+              }
+            },
+            (error) => {
+            });
+        }
       }
     });
   }
