@@ -11,8 +11,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
   BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
-  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
-  OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, DesktopViewAllComponent
+  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,DesktopViewAllComponent,
+  OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
+  OnboardingLocationComponent, OnboardingUserPreferenceComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -62,7 +63,10 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     OfflineReportIssuesComponent,
     OfflineHelpVideosComponent,
     DesktopExploreContentComponent,
-    DesktopViewAllComponent
+    DesktopViewAllComponent,
+    OnboardingComponent,
+    OnboardingLocationComponent,
+    OnboardingUserPreferenceComponent,
   ],
   entryComponents: [
     ContentImportHeaderComponent,
@@ -72,6 +76,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     WatchVideoComponent,
     ContentImportHeaderComponent,
   ],
-  exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent]
+  exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
+    OnboardingLocationComponent]
 })
 export class OfflineModule { }

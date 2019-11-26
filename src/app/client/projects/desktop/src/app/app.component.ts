@@ -5,17 +5,18 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest, BehaviorSubject } from 'rxjs';
-import { first, filter, mergeMap, tap, map, skipWhile, startWith } from 'rxjs/operators';
+import { first, filter, mergeMap, tap, map, skipWhile, startWith, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
 import {builtInButtons, defaultStepOptions} from './shepherd-data';
+import { OnboardingService } from '@sunbird/offline';
 
 
 
@@ -27,7 +28,7 @@ import {builtInButtons, defaultStepOptions} from './shepherd-data';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
@@ -86,6 +87,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryContextData: any ;
   didV2: boolean;
   flag = false;
+  showOnboardingPopup = false;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -94,7 +96,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    private shepherdService: ShepherdService) {
+    private shepherdService: ShepherdService, public onboardingService: OnboardingService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
@@ -123,6 +125,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter( queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
+      first(),
       tap(queryParams => {
         this.telemetryContextData = JSON.parse(decodeURIComponent(queryParams.context));
       }),
@@ -130,19 +133,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
-    combineLatest(queryParams$, this.setSlug(), this.setDeviceId())
+    combineLatest(queryParams$, this.setSlug(), this.setDeviceId(), this.getDesktopUserData())
     .pipe(
       mergeMap(data => {
         this.navigationHelperService.initialize();
-        this.userService.initialize(this.userService.loggedIn);
-        if (this.userService.loggedIn) {
-          this.permissionService.initialize();
-          this.courseService.initialize();
-          this.userService.startSession();
-          return this.setUserDetails();
-        } else {
-          return this.setOrgDetails();
-        }
+        _.isEmpty(data[3]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
+        this.onboardingService.onboardCompletion.subscribe(event => {
+          event !== 'SUCCESS' ? this.showOnboardingPopup = true : this.initializeTourTravel();
+        });
+        return this.setOrgDetails();
       }))
       .subscribe(data => {
         this.tenantService.getTenantInfo(this.slug);
@@ -157,9 +156,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       });
 
     this.changeLanguageAttribute();
-    if (this.isOffline) {
-      document.body.classList.add('sb-offline');
-    }
+    document.body.classList.add('sb-offline');
 }
 
 setFingerPrintTelemetry() {
@@ -418,23 +415,6 @@ setFingerPrintTelemetry() {
     });
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.initializeShepherdData();
-      if (this.isOffline) {
-        this.shepherdService.defaultStepOptions = defaultStepOptions;
-        this.shepherdService.disableScroll = true;
-        this.shepherdService.modal = true;
-        this.shepherdService.confirmCancel = false;
-        this.shepherdService.addSteps(this.shepherdData);
-        if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
-          localStorage.setItem('TakeOfflineTour', 'show');
-          this.shepherdService.start();
-        }
-      }
-    }, 1000);
-  }
-
   initializeShepherdData() {
     this.shepherdData = [
       {
@@ -495,6 +475,7 @@ setFingerPrintTelemetry() {
       }
     }];
   }
+
   ngOnDestroy() {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
@@ -502,5 +483,28 @@ setFingerPrintTelemetry() {
   }
   interpolateInstance(message) {
     return message.replace('{instance}', _.upperCase(this.instance));
+  }
+  initializeTourTravel() {
+    this.showOnboardingPopup = false;
+      setTimeout(() => {
+        this.initializeShepherdData();
+          this.shepherdService.defaultStepOptions = defaultStepOptions;
+          this.shepherdService.disableScroll = true;
+          this.shepherdService.modal = true;
+          this.shepherdService.confirmCancel = false;
+          this.shepherdService.addSteps(this.shepherdData);
+          if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
+            localStorage.setItem('TakeOfflineTour', 'show');
+            this.shepherdService.start();
+          }
+      }, 1000);
+  }
+
+  getDesktopUserData() {
+    return this.onboardingService.getUser().pipe(
+    tap(data => {
+    }), catchError(error => {
+      return of(undefined);
+    }));
   }
 }

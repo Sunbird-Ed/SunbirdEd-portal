@@ -855,5 +855,55 @@ export const Response = {
       'visibility': null,
       'compatibilityLevel': null
     }
+  ],
+  formWithoutBoard: [
+    {
+      'code': 'medium',
+      'visible': true,
+      'displayProperty': 'Editable',
+      'editable': true,
+      'dataType': 'text',
+      'renderingHints': {
+        'semanticColumnWidth': 'four'
+      },
+      'name': 'Medium',
+      'description': 'Mediumofinstruction',
+      'index': 1,
+      'inputType': 'select',
+      'label': 'Medium',
+      'required': true
+    },
+    {
+      'code': 'gradeLevel',
+      'visible': true,
+      'displayProperty': 'Editable',
+      'editable': true,
+      'dataType': 'text',
+      'renderingHints': {
+        'semanticColumnWidth': 'four'
+      },
+      'name': 'Class',
+      'description': 'Grade',
+      'index': 2,
+      'inputType': 'select',
+      'label': 'Class',
+      'required': true
+    },
+    {
+      'code': 'subject',
+      'visible': true,
+      'displayProperty': 'Editable',
+      'editable': true,
+      'dataType': 'text',
+      'renderingHints': {
+        'semanticColumnWidth': 'four'
+      },
+      'name': 'Subject',
+      'description': 'SubjectoftheContenttousetoteach',
+      'index': 3,
+      'inputType': 'select',
+      'label': 'Subject',
+      'required': false
+    }
   ]
 };
