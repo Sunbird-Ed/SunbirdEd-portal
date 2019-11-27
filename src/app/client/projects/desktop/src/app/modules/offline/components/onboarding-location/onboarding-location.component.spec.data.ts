@@ -116,7 +116,27 @@ export const onboarding_location_test = {
         'favicon': '/favicon.ico',
         'logo': '/logo.png',
         'titleName': 'Sunbird'
-    }
+    },
+    resourceBundle: {
+        frmelmnts: {
+          lbl: {
+            continue: 'Continue'
+          }
+        },
+        messages: {
+          emsg: {
+            m0021: 'Unable to save location. please try again after some time.',
+          },
+          smsg: {
+            m0057: 'Location saved successfully...'
+          },
+          imsg: {
+            m0075: 'Your Location',
+            // tslint:disable-next-line:max-line-length
+            m0074: 'Your location details helps us to suggest content that is useful to you. Is the location given correct? if not, select your correct location and click Submit'
+          }
+        }
+      }
 };
 
 
