@@ -14,22 +14,6 @@ import { SharedModule, ResourceService } from '@sunbird/shared';
 describe('OnboardingLocationComponent', () => {
   let component: OnboardingLocationComponent;
   let fixture: ComponentFixture<OnboardingLocationComponent>;
-
-  const resourceBundle = {
-    frmelmnts: {
-      lbl: {
-        continue: 'Continue'
-      }
-    },
-    messages: {
-      emsg: {
-        m0021: 'Unable to save location. please try again after some time.',
-      },
-      smsg: {
-        m0057: 'Location saved successfully...'
-      }
-    }
-  };
   class ActivatedRouteStub {
   }
 
@@ -41,7 +25,7 @@ describe('OnboardingLocationComponent', () => {
       declarations: [ OnboardingLocationComponent ],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot(), SuiModule, FormsModule, ReactiveFormsModule],
       providers: [
-        { provide: ResourceService, useValue: resourceBundle },
+        { provide: ResourceService, useValue: onboarding_location_test.resourceBundle },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
       ],
@@ -96,7 +80,7 @@ describe('OnboardingLocationComponent', () => {
   it('should call saveLocation (successful) in onboarding service', () => {
     spyOn(component.onboardingService, 'saveLocation').and.returnValue(observableOf(onboarding_location_test.saveLocation));
     spyOn(component.locationSaved, 'emit').and.returnValue(observableOf('SUCCESS'));
-    spyOn(component.toasterService, 'success').and.returnValue(observableOf(resourceBundle.messages.smsg.m0057));
+    spyOn(component.toasterService, 'success').and.returnValue(observableOf(onboarding_location_test.resourceBundle.messages.smsg.m0057));
     component.handleSubmitButton();
     expect(component.onboardingService.saveLocation).toHaveBeenCalled();
     expect(component.disableContinueBtn).toBeFalsy();
@@ -107,11 +91,22 @@ describe('OnboardingLocationComponent', () => {
   it('should call saveLocation (error) in onboarding service', () => {
     spyOn(component.onboardingService, 'saveLocation').and.returnValue(throwError(onboarding_location_test.error));
     spyOn(component.locationSaved, 'emit').and.returnValue(observableOf('ERROR'));
-    spyOn(component.toasterService, 'error').and.returnValue(throwError(resourceBundle.messages.emsg.m0021));
+    spyOn(component.toasterService, 'error').and.returnValue(throwError(onboarding_location_test.resourceBundle.messages.emsg.m0021));
     component.handleSubmitButton();
     expect(component.onboardingService.saveLocation).toHaveBeenCalled();
     expect(component.disableContinueBtn).toBeTruthy();
     expect(component.locationSaved.emit).toHaveBeenCalled();
     expect(component.toasterService.error).toHaveBeenCalled();
   });
+
+  it('should show location label obtained from resourceService', () => {
+    const value = fixture.debugElement.query(By.css('.swiper-slide__title.p-0.m-0.sb-color-primary')).nativeElement.innerText;
+    expect(value).toEqual(onboarding_location_test.resourceBundle.messages.imsg.m0075);
+  });
+
+  it('should show location message label obtained from resourceService', () => {
+    const value = fixture.debugElement.query(By.css('.swiper-slide__para.pt-8')).nativeElement.innerText;
+    expect(value).toEqual(onboarding_location_test.resourceBundle.messages.imsg.m0074);
+  });
+
 });
