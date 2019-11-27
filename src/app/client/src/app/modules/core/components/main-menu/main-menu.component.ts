@@ -192,7 +192,7 @@ export class MainMenuComponent implements OnInit {
       this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
     });
   }
-  
+
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
     if (authroles) {
