@@ -14,7 +14,7 @@ import { CbseProgramService } from '../../services';
 @Component({
   selector: 'app-mcq-creation',
   templateUrl: './mcq-creation.component.html',
-  styleUrls: ['./mcq-creation.component.css']
+  styleUrls: ['./mcq-creation.component.scss']
 })
 export class McqCreationComponent implements OnInit, OnChanges{
   @Input() selectedAttributes: any;

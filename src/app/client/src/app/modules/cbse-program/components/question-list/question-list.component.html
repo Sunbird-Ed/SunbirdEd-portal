@@ -2,11 +2,6 @@
 <div class="ui twelve column grid p-0 m-0">
   <div class="three wide column p-0 pr-16">
     <div class="ui questionsMenu">
-      <button *ngIf="role.currentRole === 'CONTRIBUTOR'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"
-        (click)="createNewQuestion()" appTelemetryInteract
-        [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
-        class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
-
         <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
           <div class="sb-checkbox sb-checkbox-primary">
             <input type="checkbox" [(ngModel)]="selectedAll" appTelemetryInteract [telemetryInteractEdata]="{id:'select_all_questions',type:'click',pageid:'questionlist'}"
@@ -16,10 +11,13 @@
         </div>
       <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
 
+        <!-- Question list new design -->
+
         <!-- <div class="questionTab ui header aligned segment p-16 cursor-pointer active">
           <div class="item d-flex flex-ai-center">
           <span class="sb-status-label sb-bg-success sb-shape-circle mr-16"></span>
-          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 1<i class="info circle sb-color-warning fs-1 icon ml-16"></i></label>
+          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 1</label>
+          <i class="info circle sb-color-warning fs-1 icon mr-16"></i>
           <i class="trash alternate outline icon"></i>
           <i class="expand arrows alternate icon ml-16"></i>
           </div>
@@ -60,6 +58,10 @@
           </div>
         </div>
       </div>
+      <button *ngIf="role.currentRole === 'CONTRIBUTOR'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"
+        (click)="createNewQuestion()" appTelemetryInteract
+        [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:selectedAttributes.questionType.toUpperCase(),topic:selectedAttributes.topic}}"
+        class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
     </div>
   </div>
 

@@ -494,3 +494,24 @@ i.icon {
     }
   }
 }
+
+// Progress bar for modal
+.uploading-files {
+  margin: ($base-block-space * 3) auto;
+
+  .process-icon {
+    width: ($base-block-space * 7);
+    height: ($base-block-space * 6);
+  }
+
+  .ui.progress {
+    margin: ($base-block-space + 4) ($base-block-space * 3) ($base-block-space * 3 + 4) ($base-block-space * 3) !important;
+    width: 60%;
+  }
+
+  .ui.progress .bar {
+    background: $tertiary-100;
+    height: ($base-block-space) !important;
+  }
+
+}
