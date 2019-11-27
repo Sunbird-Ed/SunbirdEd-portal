@@ -57,36 +57,61 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     this.frameworkService.getFrameworkCategories(_.get(option, 'identifier')).subscribe((data) => {
       if (data && _.get(data, 'result.framework.categories')) {
         this.frameworkCategories = _.get(data, 'result.framework.categories');
-        this.setFrameworkData();
+        const board = _.find(this.frameworkCategories, (element) => {
+          return element.code === 'board';
+        });
+        this.mediumOption = this.getAssociationData(board.terms, 'medium');
+        this.showMedium = true;
       }
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
-  setFrameworkData() {
-    this.frameworkCategories.forEach(element => {
-      switch (element.code) {
-        case 'medium':
-          this.mediumOption = element.terms.map(medium => medium);
-          this.showMedium = true;
-          break;
-        case 'gradeLevel':
-          this.classOption = element.terms.map(gradeLevel => gradeLevel);
-          break;
+  getAssociationData(selectedData: Array<any>, category: string) {
+    // Getting data for selected parent, eg: If board is selected it will get the medium data from board array
+    let selectedCategoryData = [];
+    _.forEach(selectedData, (data) => {
+      const categoryData = _.filter(data.associations, (o) => {
+        return o.category === category;
+      });
+      if (categoryData) {
+        selectedCategoryData = _.concat(selectedCategoryData, categoryData);
       }
     });
+
+    // Getting associated data from next category, eg: If board is selected it will get the association data for medium
+    let associationData;
+    _.forEach(this.frameworkCategories, (data) => {
+      if (data.code === category) {
+        associationData = data.terms;
+      }
+    });
+
+    // Mapping the final data for next drop down
+    let resultArray = [];
+    _.forEach(selectedCategoryData, (data) => {
+      const codeData = _.find(associationData, (element) => {
+        return element.code === data.code;
+      });
+      if (codeData) {
+        resultArray = _.concat(resultArray, codeData);
+      }
+    });
+
+    return _.sortBy(_.unionBy(resultArray, 'name'), 'index');
   }
 
   onMediumChange(mediumData) {
-    console.log('mediumData', JSON.stringify(mediumData));
+    this.classOption = [];
+    this.selectedClass = '';
+    this.classOption = this.getAssociationData(mediumData, 'gradeLevel');
     this.showClass = true;
     this.selectedMedium = mediumData;
     this.disableContinueBtn = _.isEmpty(this.selectedMedium) || _.isEmpty(this.selectedClass) ? true : false;
   }
 
   onClassChange(classData) {
-    console.log('classData', JSON.stringify(classData));
     this.selectedClass = classData;
     this.disableContinueBtn = _.isEmpty(this.selectedMedium) || _.isEmpty(this.selectedClass) ? true : false;
   }
