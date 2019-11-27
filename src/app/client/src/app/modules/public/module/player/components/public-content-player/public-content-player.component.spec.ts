@@ -115,6 +115,6 @@ describe('PublicContentPlayerComponent', () => {
 
   afterEach(() => {
     component.ngOnDestroy();
-  })
+  });
 
 });

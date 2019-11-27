@@ -19,7 +19,7 @@ describe('MainMenuComponent', () => {
       params: {
         slug: of('sunbird')
       }
-    }
+    };
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({

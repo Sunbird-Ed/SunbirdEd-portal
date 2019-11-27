@@ -7,7 +7,7 @@ import { SelectTextbookComponent } from './select-textbook.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Response } from './select-textbook.component.spec.data'
+import { Response } from './select-textbook.component.spec.data';
 
 describe('TextbookSearchComponent', () => {
   let component: SelectTextbookComponent;

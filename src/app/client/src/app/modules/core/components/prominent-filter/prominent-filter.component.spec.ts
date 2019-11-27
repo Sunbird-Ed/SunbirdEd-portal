@@ -105,5 +105,5 @@ describe('ProminentFilterComponent', () => {
   });
   afterEach(() => {
     component.ngOnDestroy();
-  })
+  });
 });
