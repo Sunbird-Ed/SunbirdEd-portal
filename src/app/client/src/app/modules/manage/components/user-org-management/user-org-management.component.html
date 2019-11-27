@@ -2,7 +2,7 @@
   <div class="ui container">
     <h4 class="sb-manage-section-title py-16 m-0">User & Org Management</h4>
   </div>
-  <div class="sb-pageSection sb-white-bg">
+  <div class="sb-pageSection sb-white-bg hide">
     <div class="ui container py-20">
       <div class="sb-pageSection-content">
         <div class="d-inline-flex">
@@ -28,7 +28,7 @@
   </div>
 
 <app-user-upload *ngIf="showModal"></app-user-upload>
-
+<div class="sb-pageSection sb-white-bg">
   <div class="ui container" *ngIf="userProfile && userProfile['rootOrg'] && !(userProfile['rootOrg']['isSSOEnabled'])">
     <div class="sb-pageSection mt-24">
       <div class="sb-pageSection-header sb-user-list">
@@ -70,6 +70,8 @@
       (uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0) ||
       (uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0) "
       class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(userCSV)">Download</button>
+      <div class="mt-24"></div>
     </div>
+  </div>
   </div>
 </div>

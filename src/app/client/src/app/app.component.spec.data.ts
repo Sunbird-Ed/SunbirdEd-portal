@@ -1143,7 +1143,7 @@ export const mockData = {
         'params': { resmsgid: 'c33a73c0-a0b6-11e8-8b56-a93ad7c7024d', msgid: null, status: 'successful' },
         'responseCode': 'OK',
         'result': {
-            'titleName': 'rj',
+            'titleName': 'CBSE',
             'logo': 'https://staging.open-sunbird.org/assets/images/logo.png',
             'appLogo': 'https://staging.open-sunbird.org/assets/images/appLogo.png',
             'favicon': 'https://staging.open-sunbird.org/assets/images/favicon.ico',

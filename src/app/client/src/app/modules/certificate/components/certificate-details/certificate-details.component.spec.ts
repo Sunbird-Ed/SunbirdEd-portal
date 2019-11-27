@@ -14,7 +14,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { validateCertMockResponse } from './certificate-details.component.spec.data';
 
-xdescribe('CertificateDetailsComponent', () => {
+describe('CertificateDetailsComponent', () => {
   let component: CertificateDetailsComponent;
   let fixture: ComponentFixture<CertificateDetailsComponent>;
 
@@ -65,7 +65,6 @@ xdescribe('CertificateDetailsComponent', () => {
     expect(component.loader).toBe(false);
     expect(component.viewCertificate).toBe(true);
     expect(component.recipient).toBe(certData.result.response.json.recipient.name);
-    expect(component.courseName).toBe(certData.result.response.json.badge.name);
   });
 
   it('should not verify the certificate', () => {
@@ -77,14 +76,6 @@ xdescribe('CertificateDetailsComponent', () => {
     expect(component.loader).toBe(false);
     expect(component.wrongCertificateCode).toBe(true);
     expect(component.enableVerifyButton).toBe(false);
-  });
-
-  it('should get content id', () => {
-    const playerService = TestBed.get(PublicPlayerService);
-    spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(validateCertMockResponse.getCourseIdResponse));
-    component.watchVideoLink = validateCertMockResponse.getCourseIdResponse.result.content.certVideoUrl;
-    component.getCourseVideoUrl('do_1126972203209768961327');
-    expect(component.contentId).toBe('do_112831862871203840114');
   });
 
   it('should play the content', () => {

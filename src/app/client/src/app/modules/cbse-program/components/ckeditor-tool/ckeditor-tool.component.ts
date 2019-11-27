@@ -278,8 +278,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       }
     };
     this.contentService.post(req).pipe(catchError(err => {
-      let errInfo = { errorMsg: 'Image search failed' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+      const errInfo = { errorMsg: 'Image search failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }))
       .subscribe((res) => {
         _.map(res.result.content, (item) => {
@@ -351,8 +351,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         }
       };
       this.actionService.post(req).pipe(catchError(err => {
-        let errInfo = { errorMsg: 'Image upload failed' };
-        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+        const errInfo = { errorMsg: 'Image upload failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       })).subscribe((res) => {
         const imgId = res['result'].node_id;
         const request = {
@@ -360,8 +360,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
           data: formData
         };
         this.actionService.post(request).pipe(catchError(err => {
-          let errInfo = { errorMsg: 'Image upload failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+          const errInfo = { errorMsg: 'Image upload failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((response) => {
           this.addImageInEditor(response.result.content_url, response.result.node_id);
           this.showImagePicker = false;
@@ -406,8 +406,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   }
   // Here Event listener is attacthed to document to listen the click event from Wiris plugin ('OK'-> button)
   attacthEvent(editor) {
-    document.addEventListener('click', function (e) {
-      if (e.target && (<Element>e.target).className == 'wrs_modal_button_accept') {
+    document.addEventListener('click', e => {
+      if (e.target && (<Element>e.target).className === 'wrs_modal_button_accept') {
         editor.model.change(writer => {
           const insertPosition = editor.model.document.selection.getFirstPosition();
           writer.insertText(' ', insertPosition);
