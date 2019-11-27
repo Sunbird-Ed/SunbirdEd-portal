@@ -36,4 +36,23 @@ describe('OnboardingComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should change slide value to contentPreference', () => {
+    expect(component.slide).toEqual('location');
+    component.handleLocationSaveEvent('SUCCESS');
+    expect(component.slide).toEqual('contentPreference');
+  });
+
+  it('should not change slide value', () => {
+    expect(component.slide).toEqual('location');
+    component.handleLocationSaveEvent('ERROR');
+    expect(component.slide).not.toEqual('contentPreference');
+  });
+
+  it('should emit onboard completion event', () => {
+    spyOn(component.onboardingService.onboardCompletion, 'emit');
+    component.handleContentPreferenceSaveEvent();
+    expect(component.onboardingService.onboardCompletion.emit).toHaveBeenCalled();
+  });
+
 });
