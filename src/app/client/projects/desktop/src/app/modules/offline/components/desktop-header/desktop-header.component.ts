@@ -1,185 +1,200 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
-import { first } from 'rxjs/operators';
-import * as _ from 'lodash-es';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { CacheService } from "ng2-cache-service";
+import { first } from "rxjs/operators";
+import * as _ from "lodash-es";
 
-import { OrgDetailsService, FormService, TenantService } from '@sunbird/core';
-import { ConfigService, ResourceService } from '@sunbird/shared';
-import { IInteractEventEdata } from '@sunbird/telemetry';
-import { ElectronDialogService } from '../../services';
-
+import { OrgDetailsService, FormService, TenantService } from "@sunbird/core";
+import { ConfigService, ResourceService } from "@sunbird/shared";
+import { IInteractEventEdata } from "@sunbird/telemetry";
+import { ElectronDialogService } from "../../services";
 
 export interface ILanguage {
-    value: string;
-    label: string;
-    dir: string;
+  value: string;
+  label: string;
+  dir: string;
 }
 @Component({
-    selector: 'app-desktop-header',
-    templateUrl: './desktop-header.component.html',
-    styleUrls: [
-        './desktop-header.component.scss',
-        './desktop-header-menubar.component.scss',
-        './desktop-header-search.component.scss'
-    ]
+  selector: "app-desktop-header",
+  templateUrl: "./desktop-header.component.html",
+  styleUrls: [
+    "./desktop-header.component.scss",
+    "./desktop-header-menubar.component.scss",
+    "./desktop-header-search.component.scss"
+  ]
 })
 export class DesktopHeaderComponent implements OnInit {
-    appLanguage: ILanguage;
-    availableLanguages: ILanguage[];
+  appLanguage: ILanguage;
+  availableLanguages: ILanguage[];
 
-    contentImportInteractEdata: IInteractEventEdata;
-    browseEdata: IInteractEventEdata;
-    helpCenterEdata: IInteractEventEdata;
-    enterDialCodeInteractEdata: IInteractEventEdata;
-    takeTourInteractEdata: IInteractEventEdata;
-    clearSearchInteractEdata: IInteractEventEdata;
-    homeInteractEdata: IInteractEventEdata;
+  contentImportInteractEdata: IInteractEventEdata;
+  browseEdata: IInteractEventEdata;
+  helpCenterEdata: IInteractEventEdata;
+  enterDialCodeInteractEdata: IInteractEventEdata;
+  takeTourInteractEdata: IInteractEventEdata;
+  clearSearchInteractEdata: IInteractEventEdata;
+  homeInteractEdata: IInteractEventEdata;
 
-    languageFormQuery = {
-        formType: 'content',
-        formAction: 'search',
-        filterEnv: 'resourcebundle'
+  languageFormQuery = {
+    formType: "content",
+    formAction: "search",
+    filterEnv: "resourcebundle"
+  };
+  showQrModal = false;
+  queryParam: any = {};
+  tenantInfo: any = {};
+
+  constructor(
+    public router: Router,
+    public orgDetailsService: OrgDetailsService,
+    private _cacheService: CacheService,
+    public configService: ConfigService,
+    public formService: FormService,
+    public resourceService: ResourceService,
+    public electronDialogService: ElectronDialogService,
+    public tenantService: TenantService
+  ) {}
+
+  ngOnInit() {
+    this.orgDetailsService.orgDetails$.pipe(first()).subscribe(data => {
+      if (data && !data.err) {
+        this.getLanguage(data.orgDetails.hashTagId);
+      }
+    });
+
+    this.setInteractData();
+    this.getTenantInfo();
+  }
+
+  getTenantInfo() {
+    this.tenantService.tenantData$.subscribe(({ tenantData }) => {
+      if (tenantData) {
+        this.tenantInfo.logo = tenantData.logo ? tenantData.logo : undefined;
+        this.tenantInfo.titleName = tenantData.titleName
+          ? tenantData.titleName.toUpperCase()
+          : undefined;
+      }
+    });
+  }
+
+  navigateToHome() {
+    this.router.navigate([""]);
+  }
+
+  getLanguage(channelId) {
+    const isCachedDataExists = this._cacheService.get(
+      this.languageFormQuery.filterEnv + this.languageFormQuery.formAction
+    );
+    if (isCachedDataExists) {
+      this.availableLanguages = isCachedDataExists[0].range;
+    } else {
+      const formServiceInputParams = {
+        formType: this.languageFormQuery.formType,
+        formAction: this.languageFormQuery.formAction,
+        contentType: this.languageFormQuery.filterEnv
+      };
+      this.formService
+        .getFormConfig(formServiceInputParams, channelId)
+        .subscribe(
+          (data: any) => {
+            this.availableLanguages = data[0].range;
+            this._cacheService.set(
+              this.languageFormQuery.filterEnv +
+                this.languageFormQuery.formAction,
+              data,
+              {
+                maxAge:
+                  this.configService.appConfig.cacheServiceConfig
+                    .setTimeInMinutes *
+                  this.configService.appConfig.cacheServiceConfig
+                    .setTimeInSeconds
+              }
+            );
+          },
+          (err: any) => {
+            this.availableLanguages = [
+              { value: "en", label: "English", dir: "ltr" }
+            ];
+          }
+        );
+    }
+  }
+
+  onEnter(key) {
+    this.queryParam = {};
+    if (key && key.length) {
+      this.queryParam.key = key;
+    }
+    this.routeToOffline();
+  }
+
+  routeToOffline() {
+    if (_.includes(this.router.url, "browse")) {
+      this.router.navigate(["browse", 1], { queryParams: this.queryParam });
+    } else {
+      this.router.navigate(["search", 1], { queryParams: this.queryParam });
+    }
+  }
+
+  getSearchButtonInteractEdata(key) {
+    const searchInteractEData = {
+      id: `search-button`,
+      type: "click",
+      pageid: this.router.url.split("/")[1]
     };
-    showQrModal = false;
-    queryParam: any = {};
-    tenantInfo: any = {};
 
-    constructor(
-        public router: Router,
-        public orgDetailsService: OrgDetailsService,
-        private _cacheService: CacheService,
-        public configService: ConfigService,
-        public formService: FormService,
-        public resourceService: ResourceService,
-        public electronDialogService: ElectronDialogService,
-        public tenantService: TenantService
-    ) { }
-
-    ngOnInit() {
-        this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
-            if (data && !data.err) {
-                this.getLanguage(data.orgDetails.hashTagId);
-            }
-        });
-
-        this.setInteractData();
-        this.getTenantInfo();
+    if (key) {
+      searchInteractEData["extra"] = {
+        query: key
+      };
     }
 
-    getTenantInfo() {
-        this.tenantService.tenantData$.subscribe(({ tenantData }) => {
-            if (tenantData) {
-                this.tenantInfo.logo = tenantData.logo ? tenantData.logo : undefined;
-                this.tenantInfo.titleName = tenantData.titleName ? tenantData.titleName.toUpperCase() : undefined;
-            }
-        });
-    }
+    return searchInteractEData;
+  }
 
-    navigateToHome() {
-        this.router.navigate(['']);
-    }
+  clearSearchQuery() {
+    this.queryParam = {};
+  }
 
-    getLanguage(channelId) {
-        const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);
-        if (isCachedDataExists) {
-            this.availableLanguages = isCachedDataExists[0].range;
-        } else {
-            const formServiceInputParams = {
-                formType: this.languageFormQuery.formType,
-                formAction: this.languageFormQuery.formAction,
-                contentType: this.languageFormQuery.filterEnv
-            };
-            this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
-                this.availableLanguages = data[0].range;
-                this._cacheService.set(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction, data,
-                    {
-                        maxAge: this.configService.appConfig.cacheServiceConfig.setTimeInMinutes *
-                            this.configService.appConfig.cacheServiceConfig.setTimeInSeconds
-                    });
-            }, (err: any) => {
-                this.availableLanguages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
-            });
-        }
-    }
+  handleImport() {
+    this.electronDialogService.showContentImportDialog();
+  }
 
-    onEnter(key) {
-        this.queryParam = {};
-        if (key && key.length) {
-            this.queryParam.key = key;
-        }
-        this.routeToOffline();
-    }
-
-    routeToOffline() {
-        if (_.includes(this.router.url, 'browse')) {
-            this.router.navigate(['browse', 1], { queryParams: this.queryParam });
-        } else {
-            this.router.navigate(['search', 1], { queryParams: this.queryParam });
-        }
-    }
-
-    getSearchButtonInteractEdata(key) {
-        const searchInteractEData = {
-            id: `search-button`,
-            type: 'click',
-            pageid: this.router.url.split('/')[1]
-        };
-
-        if (key) {
-            searchInteractEData['extra'] = {
-                query: key
-            };
-        }
-
-        return searchInteractEData;
-    }
-
-
-    clearSearchQuery() {
-        this.queryParam = {};
-    }
-
-    handleImport() {
-        this.electronDialogService.showContentImportDialog();
-    }
-
-    setInteractData() {
-        this.contentImportInteractEdata = {
-            id: 'content-import-button',
-            type: 'click',
-            pageid: 'library'
-        };
-        this.browseEdata = {
-            id: 'browse-tab',
-            type: 'click',
-            pageid: 'browse'
-        };
-        this.helpCenterEdata = {
-            id: 'help-center-tab',
-            type: 'click',
-            pageid: 'help-center'
-        };
-        this.enterDialCodeInteractEdata = {
-            id: 'click-dial-code',
-            type: 'click',
-            pageid: 'explore'
-        };
-        this.takeTourInteractEdata = {
-            id: 'take-tour-button',
-            type: 'click',
-            pageid: 'explore'
-        };
-        this.clearSearchInteractEdata = {
-            id: 'clear-search-button',
-            type: 'click',
-            pageid: 'explore'
-        };
-        this.homeInteractEdata = {
-            id: 'tenant-logo',
-            type: 'click',
-            pageid: 'explore'
-        };
-
-    }
+  setInteractData() {
+    this.contentImportInteractEdata = {
+      id: "content-import-button",
+      type: "click",
+      pageid: "library"
+    };
+    this.browseEdata = {
+      id: "browse-tab",
+      type: "click",
+      pageid: "browse"
+    };
+    this.helpCenterEdata = {
+      id: "help-center-tab",
+      type: "click",
+      pageid: "help-center"
+    };
+    this.enterDialCodeInteractEdata = {
+      id: "click-dial-code",
+      type: "click",
+      pageid: "explore"
+    };
+    this.takeTourInteractEdata = {
+      id: "take-tour-button",
+      type: "click",
+      pageid: "explore"
+    };
+    this.clearSearchInteractEdata = {
+      id: "clear-search-button",
+      type: "click",
+      pageid: "explore"
+    };
+    this.homeInteractEdata = {
+      id: "tenant-logo",
+      type: "click",
+      pageid: "explore"
+    };
+  }
 }

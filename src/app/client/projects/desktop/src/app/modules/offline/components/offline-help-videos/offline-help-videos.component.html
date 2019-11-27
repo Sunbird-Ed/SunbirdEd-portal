@@ -1,20 +1,21 @@
 <div class="sb-two-column help-video">
   <div class="sb-column help-video__player" id="player-area-height">
+    <!-- video placeholder -->
     <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
       <div>
         <video id="video" autoplay width="560" height="349" controls class="sb-offline-video-player"
           src="{{activeVideoObject.url}}">
         </video>
       </div>
-
-      <div class="help-video__player__details sb-bg-color-white" #playerInfo>
-        <h6 class="help-video__player__title ml-8 mr-auto sb__ellipsis sb__ellipsis--two">
-          {{activeVideoObject.name}}&lrm;</h6>
-        <div class="help-video__player__tools">
-          <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i
-              class="icon download alternate"></i><span>Download</span></button>
-        </div>
-      </div>
+    </div>
+    <!-- video meta data holder -->
+    <div class="help-video__player__details sb-bg-color-white" #playerInfo>
+      <h6 class="help-video__player__title ml-8 mr-auto sb__ellipsis sb__ellipsis--two">
+        {{activeVideoObject.name}}&lrm;</h6>
+      <!-- <div class="help-video__player__tools">
+        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i
+            class="icon download alternate"></i><span>Download</span></button>
+      </div> -->
     </div>
   </div>
   <div class="sb-column help-video__content" [style.height.px]="videoContainerHeight"
@@ -33,7 +34,7 @@
         </div>
         <!-- card mobile view details -->
         <div class="sbcard__info">
-          <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two">{{ video.name }}</h4>
+          <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two" title="{{ video.name }}">{{ video.name }}</h4>
           <div class="d-block sb-color-primary">{{resourceService?.frmelmnts?.lbl?.playVideo}}</div>
         </div>
       </div>

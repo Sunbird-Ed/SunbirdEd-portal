@@ -1,5 +1,5 @@
 <app-library-filters></app-library-filters>
-<div class="library-container sb-bg-color-primary-100">
+<div class="library-container">
     <div class="ui container">
         <div class="header">
             <div class="title">
@@ -11,8 +11,8 @@
         </div>
         <div class="cards-container">
             <div class="item show-4" *ngFor="let content of contentList | slice:0:4">
-                <sb-library-card [content]="content" [isRecentlyViewed]="true" [isMobile]="true" [cardImg]="content?.cardImg"
-                    (click)="openContent($event)"></sb-library-card>
+                <sb-library-card [content]="content" [isRecentlyViewed]="true" [isMobile]="true"
+                    [cardImg]="content?.cardImg" (click)="openContent($event)"></sb-library-card>
             </div>
         </div>
         <div class="MB-16">
@@ -40,16 +40,16 @@
 
         <div class="MB-16">
             <sb-library-cards-grid [title]="subjects[3]" [contentList]="contentList"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
-                (cardClick)="openContent($event)">
+                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4"
+                (viewMoreClick)="showAllList($event)" (cardClick)="openContent($event)">
             </sb-library-cards-grid>
         </div>
 
 
         <div class="MB-16">
             <sb-library-cards-grid [title]="subjects[4]" [contentList]="contentList"
-                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4" (viewMoreClick)="showAllList($event)"
-                (cardClick)="openContent($event)">
+                [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall" [maxCardCount]="4"
+                (viewMoreClick)="showAllList($event)" (cardClick)="openContent($event)">
             </sb-library-cards-grid>
         </div>
 
