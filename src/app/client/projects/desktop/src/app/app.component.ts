@@ -121,6 +121,9 @@ export class AppComponent implements OnInit, OnDestroy {
         _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
     });
   }
+  getUserData() {
+    return combineLatest(this.setOrgDetails(), this.getDesktopUserData());
+  }
   ngOnInit() {
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
@@ -133,21 +136,20 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
-    combineLatest(queryParams$, this.setSlug(), this.setDeviceId(), this.getDesktopUserData())
+    combineLatest(this.setSlug(), this.setDeviceId())
     .pipe(
       mergeMap(data => {
+        return this.getUserData();
+      }))
+      .subscribe(data => {
+        this.telemetryService.initialize(this.getTelemetryContext());
         this.navigationHelperService.initialize();
-        _.isEmpty(data[3]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
+        _.isEmpty(data[1]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
         this.onboardingService.onboardCompletion.subscribe(event => {
           event !== 'SUCCESS' ? this.showOnboardingPopup = true : this.initializeTourTravel();
         });
-        return this.setOrgDetails();
-      }))
-      .subscribe(data => {
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
-        this.telemetryService.initialize(this.getTelemetryContext());
-        this.logCdnStatus();
         this.setFingerPrintTelemetry();
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
@@ -195,26 +197,6 @@ setFingerPrintTelemetry() {
       }
     };
     this.telemetryService.exData(event);
-  }
-
-  logCdnStatus() {
-    const isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
-    ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
-    if (isCdnWorking !== 'no') {
-      return;
-    }
-    const event = {
-      context: {
-        env: 'app'
-      },
-      edata: {
-        type: 'cdn_failed',
-        level: 'ERROR',
-        message: 'cdn failed, loading files from portal',
-        pageid: this.router.url.split('?')[0]
-      }
-    };
-    this.telemetryService.log(event);
   }
   /**
    * checks if user has accepted the tnc and show tnc popup.

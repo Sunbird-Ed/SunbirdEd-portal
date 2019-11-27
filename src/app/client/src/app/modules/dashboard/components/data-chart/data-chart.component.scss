@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 @import "./mixins/mixins";
 
 .sb-prominent-filter-field {
@@ -43,12 +43,13 @@
   //   }
 }
 
-.graph-statistics
- {
+.graph-statistics {
   border-bottom: 1px solid #ddd;
 }
 
-.sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field:last-child {
+.sb-prominent-filter
+  .sb-prominent-filter-container
+  .sb-prominent-filter-field:last-child {
   margin-left: 0;
   margin-top: 0;
   text-align: left;
@@ -76,15 +77,14 @@
 }
 
 :host ::ng-deep {
-
-  .ui.toggle.checkbox input:checked~label,
-  .ui.checkbox input.hidden+label {
+  .ui.toggle.checkbox input:checked ~ label,
+  .ui.checkbox input.hidden + label {
     margin-bottom: 0px;
   }
 
   .ui.toggle.checkbox .box:before,
   .ui.toggle.checkbox label:before {
-    background: rgba(0, 0, 0, .20);
+    background: rgba(0, 0, 0, 0.2);
   }
 
   .ui.toggle.checkbox .box:after,
@@ -94,13 +94,13 @@
     top: 2px;
   }
 
-  .ui.toggle.checkbox input~.box:after,
-  .ui.toggle.checkbox input~label:after {
+  .ui.toggle.checkbox input ~ .box:after,
+  .ui.toggle.checkbox input ~ label:after {
     left: 0.1rem;
   }
 
-  .ui.toggle.checkbox input:checked~.box:after,
-  .ui.toggle.checkbox input:checked~label:after {
+  .ui.toggle.checkbox input:checked ~ .box:after,
+  .ui.toggle.checkbox input:checked ~ label:after {
     left: 1.8rem;
   }
 
@@ -119,7 +119,6 @@
     .ui.styled.accordion .title {
       padding-left: 0;
       padding-right: 0;
-
     }
 
     .ui.styled.accordion .accordion .content,
@@ -132,7 +131,6 @@
       box-shadow: none;
       border-bottom: 1px solid #ddd;
     }
-
   }
 }
 
@@ -146,7 +144,7 @@
       }
 
       .btn {
-        background-color: #024f9d;
+        background-color: var(--primary-400);
         margin-right: 16px;
         line-height: 32px;
         margin-right: 16px;
@@ -159,7 +157,7 @@
   }
 }
 
-.ui.form{
+.ui.form {
   ::ng-deep {
     sui-accordion {
       sui-accordion-panel {
@@ -169,50 +167,48 @@
       }
     }
   }
-} 
+}
 
-.sb-last-update-status{
+.sb-last-update-status {
   color: #999;
   font-size: 14px;
   font-weight: bold;
-} 
+}
 
-.dashboard-graph-statistics{
-    border-bottom: 1px solid #ddd;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 24px;
-  .graph-stat-block{
+.dashboard-graph-statistics {
+  border-bottom: 1px solid #ddd;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 24px;
+  .graph-stat-block {
     flex: 1;
-    border-right:1px solid #d4d8da !important;
-    .graph-stat-label{
+    border-right: 1px solid #d4d8da !important;
+    .graph-stat-label {
       font-size: 18px;
     }
-    .graph-stat-value{
+    .graph-stat-value {
       font-weight: bold;
       font-size: 40px;
     }
-    .graph-stat-info{
+    .graph-stat-info {
       color: #999999;
       font-size: 18px;
     }
-    &:nth-child(3n+3) {  
-      border-right:0px solid #d4d8da !important
+    &:nth-child(3n + 3) {
+      border-right: 0px solid #d4d8da !important;
     }
   }
 }
-.dashboard-iframe{
+.dashboard-iframe {
   width: 100%;
   height: 700px;
 }
 
-.sb-last-update-status{
-    color: #999;
-    font-size: 14px;
-    font-weight: bold;
- 
+.sb-last-update-status {
+  color: #999;
+  font-size: 14px;
+  font-weight: bold;
 }
-
 
 @include respond-below(md) {
   .dashboard-graph-statistics {

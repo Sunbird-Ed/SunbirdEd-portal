@@ -2,9 +2,8 @@
 @import "mixins/mixins";
 
 :host {
-
-   // search box ui
-   .sbsearchbox {
+  // search box ui
+  .sbsearchbox {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -59,16 +58,4 @@
       }
     }
   }
-
-
-}
-
-.sb-field .ui.selection.dropdown.select-language {
-  min-width: 80px;
-  border: 0px;
-  background: none;
-}
-.ui.dropdown.select-language > .text {
-  color: var(--primary-400);
-  padding-right: 24px !important;
 }

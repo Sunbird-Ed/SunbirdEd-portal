@@ -41,7 +41,7 @@
     }
     &__search {
       width: 100%;
-      flex:1;
+      flex: 1;
     }
     &__actions {
       display: flex;
@@ -70,6 +70,9 @@
       border: 0px solid #ddd;
     }
   }
-  //header bar ends
 
+  .sb-menubar {
+    width: 100%;
+  }
+  //header bar ends
 }
