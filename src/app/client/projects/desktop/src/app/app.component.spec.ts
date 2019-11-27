@@ -18,6 +18,7 @@ import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { OnboardingService } from './modules/offline';
 
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
@@ -57,7 +58,7 @@ describe('AppComponent', () => {
         ToasterService, TenantService, CacheService, AnimationBuilder,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
-        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService],
+        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService, OnboardingService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -93,46 +94,14 @@ describe('AppComponent', () => {
 afterEach(() => {
   jasmine.clock().uninstall();
 });
-  xit('should config telemetry service for login Session', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    userService._authenticated = true;
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    component.ngOnInit();
-    const config = {
-      userOrgDetails: {
-        userId: userService.userProfile.userId,
-        rootOrgId: userService.userProfile.rootOrgId,
-        rootOrg: userService.userProfile.rootOrg,
-        organisationIds: userService.userProfile.hashTagIds
-      },
-      config: {
-        pdata: {
-          id: component.userService.appId,
-          ver: '1.1.12',
-          pid: configService.appConfig.TELEMETRY.PID
-        },
-        endpoint: configService.urlConFig.URLS.TELEMETRY.SYNC,
-        apislug: configService.urlConFig.URLS.CONTENT_PREFIX,
-        host: '',
-        uid: userService.userProfile.userId,
-        sid: component.userService.sessionId,
-        channel: _.get(userService.userProfile, 'rootOrg.hashTagId'),
-        env: 'home',
-        enableValidation: true,
-        timeDiff: 0
-      }
-    };
-    expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
-  });
+
 const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
-  xit('should config telemetry service for Anonymous Session', () => {
+  it('should config telemetry service for Anonymous Session', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
+    const onboardingService = TestBed.get(OnboardingService);
+    spyOn(onboardingService, 'getUser').and.returnValue(of(undefined));
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of(maockOrgDetails));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
@@ -161,42 +130,37 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
         timeDiff: 0
       }
     };
+    expect(onboardingService.getUser).toHaveBeenCalled();
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
 
-  xit('Should subscribe to tenant service and retrieve title and favicon details', () => {
+  it('Should subscribe to tenant service and retrieve title and favicon details', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
+    const onboardingService = TestBed.get(OnboardingService);
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
+    spyOn(onboardingService, 'getUser').and.returnValue(of(undefined));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
+    expect(onboardingService.getUser).toHaveBeenCalled();
   });
 
-  xit('Should display the tenant logo if user is not logged in', () => {
+  it('Should display the tenant logo if user is not logged in', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
+    const onboardingService = TestBed.get(OnboardingService);
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
+    spyOn(onboardingService, 'getUser').and.returnValue(of(undefined));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
-  });
-  xit('should check framework key is in user read api and open the popup  ', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    userService._authenticated = true;
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'postWithHeaders').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    component.ngOnInit();
-    expect(component.showFrameWorkPopUp).toBeTruthy();
   });
 
   it('should initialize ShepherdData', () => {
