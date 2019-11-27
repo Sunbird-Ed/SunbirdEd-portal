@@ -46,6 +46,8 @@ describe('MainHeaderComponent', () => {
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     fixture.detectChanges();
+    expect(userService._userProfile).toBeDefined();
+    component.ngOnInit();
     expect(component.userProfile).toBeTruthy();
   });
 

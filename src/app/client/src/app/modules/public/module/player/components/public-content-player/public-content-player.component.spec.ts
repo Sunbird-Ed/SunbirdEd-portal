@@ -23,6 +23,9 @@ const fakeActivatedRoute = {
       telemetry: {
         env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
       }
+    },
+    params:{
+      contentId: 'd0_33567325'
     }
   }
 };
@@ -62,6 +65,7 @@ describe('PublicContentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should config content player if content status is "Live"', () => {
@@ -85,21 +89,19 @@ describe('PublicContentPlayerComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableThrowError(serverRes.failureResult));
     fixture.detectChanges();
+    component.getContent();
     expect(component.playerConfig).toBeUndefined();
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
   it('should call tryAgain method', () => {
-    const windowScrollService = TestBed.get(WindowScrollService);
-    spyOn(windowScrollService, 'smoothScroll');
     spyOn(component, 'tryAgain').and.callThrough();
-    spyOn(component, 'getContent').and.callThrough();
+    spyOn(component, 'getContent');
     component.tryAgain();
     expect(component.showError).toBeFalsy();
     expect(component.getContent).toHaveBeenCalled();
   });
   it('should unsubscribe from all observable subscriptions', () => {
-    component.getContent();
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
