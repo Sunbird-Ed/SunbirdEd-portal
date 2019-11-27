@@ -103,5 +103,7 @@ describe('ProminentFilterComponent', () => {
     component.applyFilters();
     expect(component.router.navigate).toHaveBeenCalled();
   });
-
+  afterEach(() => {
+    component.ngOnDestroy();
+  });
 });
