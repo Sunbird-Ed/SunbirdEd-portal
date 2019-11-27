@@ -33,5 +33,5 @@ describe('QuestionPreviewComponent', () => {
 
   afterEach(() => {
     fixture.destroy();
-  })
+  });
 });

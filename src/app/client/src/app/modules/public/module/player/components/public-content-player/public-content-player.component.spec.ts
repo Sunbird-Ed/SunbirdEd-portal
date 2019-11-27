@@ -24,7 +24,7 @@ const fakeActivatedRoute = {
         env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
       }
     },
-    params:{
+    params: {
       contentId: 'd0_33567325'
     }
   }
