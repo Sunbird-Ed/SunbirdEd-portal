@@ -24,6 +24,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
   tenantInfo: any = {};
   @Output() userPreferenceSaved = new EventEmitter();
   submitLabel = _.upperCase(this.resourceService.frmelmnts.lbl.submit);
+  
 
   constructor(public onboardingService: OnboardingService,
     public orgDetailsService: OrgDetailsService, public channelService: ChannelService,
