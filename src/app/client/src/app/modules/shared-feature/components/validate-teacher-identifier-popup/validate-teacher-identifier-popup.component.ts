@@ -66,8 +66,8 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   verifyExtId(action: string) {
     let request = {};
     if (action === 'accept') {
-      const channelValue = _.get(this.userFeedData, 'feedData.channel').length > 1 ?
-        this.userDetailsForm.get('state').value : _.get(this.userFeedData, 'feedData.channel[0]');
+      const channelValue = _.get(this.userFeedData, 'data.prospectChannels').length > 1 ?
+        this.userDetailsForm.get('state').value : _.get(this.userFeedData, 'data.prospectChannels[0]');
       request = {
         request: {
           'userId': this.userId,
@@ -105,7 +105,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   }
 
   processUserFeedData() {
-    this.channelData = _.get(this.userFeedData, 'feedData.channel');
+    this.channelData = _.get(this.userFeedData, 'data.prospectChannels');
     this.showStateDropdown = this.channelData.length > 1 ? true : false;
   }
 
