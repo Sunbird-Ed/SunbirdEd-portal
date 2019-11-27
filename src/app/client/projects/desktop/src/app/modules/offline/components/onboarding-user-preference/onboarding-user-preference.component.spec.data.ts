@@ -348,7 +348,7 @@ export const onboarding_user_preference_test = {
             'id': '19f3964c-4213-4de3-9d5b-71d036492483'
         }
     },
-    user_error : {
+    user_error: {
         'id': 'api.desktop.user.create',
         'ver': '1.0',
         'ts': '2019-11-25T08:36:07.287Z',
@@ -367,6 +367,63 @@ export const onboarding_user_preference_test = {
         'favicon': '/favicon.ico',
         'logo': '/logo.png',
         'titleName': 'te'
+    },
+    get_user: {
+        'id': 'api.desktop.user.read',
+        'ver': '1.0',
+        'ts': '2019-11-27T12:18:27.289Z',
+        'params': {
+            'resmsgid': '0ba18248-d9ab-4c6e-a23f-2ec2985f1293',
+            'msgid': 'f9ba8652-4e13-4e5c-b90d-a2cda627a98c',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'framework': {
+                'id': '505c7c48ac6dc1edc9b08f21db5a571d',
+                'board': 'State (Karnataka)',
+                'medium': ['English'],
+                'gradeLevel': ['Class 4', 'Class 6']
+            },
+            'formatedName': 'guest',
+            'name': 'guest',
+            'createdOn': 1574856716829,
+            'updatedOn': 1574856716829,
+            '_id': 'c18229aa-e42c-4463-bb88-29f67391f400',
+            'location': {
+                'doc': {
+                    'state': {
+                        'code': 'FT_State_Code-1544604001076',
+                        'name': 'state_location_nameJMRUXuUbT6',
+                        'id': 'bd47e788-e92e-4d12-9f26-b9eb9a4b70a5',
+                        'type': 'state'
+                    },
+                    'city': {
+                        'code': 'FT_District_Code-1544603939757',
+                        'name': 'state_location_nameFniQB7lOZt',
+                        'id': '8f3f79e8-a52f-42bb-a1f8-af6b3f0e57d8',
+                        'type': 'district',
+                        'parentId': 'bd47e788-e92e-4d12-9f26-b9eb9a4b70a5'
+                    }
+                }
+            }
+        }
+    },
+    get_user_error: {
+        'id': 'api.desktop.user.read',
+        'ver': '1.0',
+        'ts': '2019-11-27T12:26:07.114Z',
+        'params': {
+            'resmsgid': '0c97824f-264e-4dd4-9205-30ce68500e96',
+            'msgid': 'ca7bb07b-15e8-4599-a3d3-ddb91e95196a',
+            'status': 'failed',
+            'err': 'ERR_DATA_NOT_FOUND',
+            'errmsg': 'User not found with name guest'
+        },
+        'responseCode': 'RESOURCE_NOT_FOUND',
+        'result': {}
     }
 };
 

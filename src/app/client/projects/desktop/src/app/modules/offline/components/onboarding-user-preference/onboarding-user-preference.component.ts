@@ -130,10 +130,18 @@ export class OnboardingUserPreferenceComponent implements OnInit {
 
     this.onboardingService.saveUserPreference(requestData).subscribe(data => {
       this.toasterService.success(this.resourceService.messages.smsg.m0058);
-      this.userPreferenceSaved.emit('SUCCUSS');
+      this.getUserData();
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0022);
       this.userPreferenceSaved.emit('ERROR');
+    });
+  }
+
+  getUserData() {
+    this.onboardingService.getUser().subscribe(data => {
+      this.userPreferenceSaved.emit('SUCCESS');
+    }, err => {
+      this.userPreferenceSaved.emit('SUCCESS');
     });
   }
 

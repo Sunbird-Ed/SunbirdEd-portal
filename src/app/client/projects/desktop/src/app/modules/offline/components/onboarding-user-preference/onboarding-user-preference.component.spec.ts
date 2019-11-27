@@ -133,9 +133,11 @@ describe('OnboardingUserPreferenceComponent', () => {
 
   it('should call saveUserData and get success', () => {
     spyOn(component.onboardingService, 'saveUserPreference').and.returnValue(observableOf(onboarding_user_preference_test.user_save));
+    spyOn(component, 'getUserData');
     spyOn(component.toasterService, 'success').and.returnValue(observableOf(resourceBundle.messages.smsg.m0058));
     component.saveUserData();
     expect(component.toasterService.success).toHaveBeenCalled();
+    expect(component.getUserData).toHaveBeenCalled();
   });
 
   it('should call saveUserData and get error', () => {
@@ -143,5 +145,19 @@ describe('OnboardingUserPreferenceComponent', () => {
     spyOn(component.toasterService, 'error').and.returnValue(throwError(resourceBundle.messages.emsg.m0022));
     component.saveUserData();
     expect(component.toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should call getUserData, get success and emit event', () => {
+    spyOn(component.onboardingService, 'getUser').and.returnValue(observableOf(onboarding_user_preference_test.get_user));
+    spyOn(component.userPreferenceSaved, 'emit');
+    component.getUserData();
+    expect(component.userPreferenceSaved.emit).toHaveBeenCalledWith('SUCCESS');
+  });
+
+  it('should call getUserData, get error and emit event', () => {
+    spyOn(component.onboardingService, 'getUser').and.returnValue(throwError(onboarding_user_preference_test.get_user_error));
+    spyOn(component.userPreferenceSaved, 'emit');
+    component.getUserData();
+    expect(component.userPreferenceSaved.emit).toHaveBeenCalledWith('SUCCESS');
   });
 });
