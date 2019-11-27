@@ -1,3 +1,4 @@
+@import "../variables";
 @import "../mixins/mixins";
 
 // question list styles
@@ -115,7 +116,7 @@ i.icon.trash {
     .sb-mark {
       font-size: 12px;
       padding-right: 8px;
-      color: #024f9d;
+      color: var(--primary-400);
     }
     &.sb-learning-outcome-header {
       align-items: center;
@@ -160,7 +161,7 @@ i.icon.trash {
     .sb-question {
       margin-right: auto;
       font-size: 12px;
-      color: #024f9d;
+      color: var(--primary-400);
       margin-bottom: 16px;
     }
 

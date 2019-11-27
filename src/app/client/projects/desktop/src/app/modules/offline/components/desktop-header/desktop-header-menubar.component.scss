@@ -2,8 +2,7 @@
 @import "mixins/mixins";
 
 :host {
-
-  // menu bar 
+  // menu bar
   .sb-offline-menu-container {
     min-height: ($base-block-space * 4);
     // width: 100%;
@@ -65,4 +64,3 @@
   }
   // menu bar ends
 }
-
