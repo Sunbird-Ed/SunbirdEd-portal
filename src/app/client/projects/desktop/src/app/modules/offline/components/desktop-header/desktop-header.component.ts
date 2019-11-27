@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { CacheService } from "ng2-cache-service";
-import { first } from "rxjs/operators";
-import * as _ from "lodash-es";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CacheService } from 'ng2-cache-service';
+import { first } from 'rxjs/operators';
+import * as _ from 'lodash-es';
 
-import { OrgDetailsService, FormService, TenantService } from "@sunbird/core";
-import { ConfigService, ResourceService } from "@sunbird/shared";
-import { IInteractEventEdata } from "@sunbird/telemetry";
-import { ElectronDialogService } from "../../services";
+import { OrgDetailsService, FormService, TenantService } from '@sunbird/core';
+import { ConfigService, ResourceService } from '@sunbird/shared';
+import { IInteractEventEdata } from '@sunbird/telemetry';
+import { ElectronDialogService } from '../../services';
 
 export interface ILanguage {
   value: string;
@@ -15,12 +15,12 @@ export interface ILanguage {
   dir: string;
 }
 @Component({
-  selector: "app-desktop-header",
-  templateUrl: "./desktop-header.component.html",
+  selector: 'app-desktop-header',
+  templateUrl: './desktop-header.component.html',
   styleUrls: [
-    "./desktop-header.component.scss",
-    "./desktop-header-menubar.component.scss",
-    "./desktop-header-search.component.scss"
+    './desktop-header.component.scss',
+    './desktop-header-menubar.component.scss',
+    './desktop-header-search.component.scss'
   ]
 })
 export class DesktopHeaderComponent implements OnInit {
@@ -36,9 +36,9 @@ export class DesktopHeaderComponent implements OnInit {
   homeInteractEdata: IInteractEventEdata;
 
   languageFormQuery = {
-    formType: "content",
-    formAction: "search",
-    filterEnv: "resourcebundle"
+    formType: 'content',
+    formAction: 'search',
+    filterEnv: 'resourcebundle'
   };
   showQrModal = false;
   queryParam: any = {};
@@ -78,7 +78,7 @@ export class DesktopHeaderComponent implements OnInit {
   }
 
   navigateToHome() {
-    this.router.navigate([""]);
+    this.router.navigate(['']);
   }
 
   getLanguage(channelId) {
@@ -113,7 +113,7 @@ export class DesktopHeaderComponent implements OnInit {
           },
           (err: any) => {
             this.availableLanguages = [
-              { value: "en", label: "English", dir: "ltr" }
+              { value: 'en', label: 'English', dir: 'ltr' }
             ];
           }
         );
@@ -129,22 +129,22 @@ export class DesktopHeaderComponent implements OnInit {
   }
 
   routeToOffline() {
-    if (_.includes(this.router.url, "browse")) {
-      this.router.navigate(["browse", 1], { queryParams: this.queryParam });
+    if (_.includes(this.router.url, 'browse')) {
+      this.router.navigate(['browse', 1], { queryParams: this.queryParam });
     } else {
-      this.router.navigate(["search", 1], { queryParams: this.queryParam });
+      this.router.navigate(['search', 1], { queryParams: this.queryParam });
     }
   }
 
   getSearchButtonInteractEdata(key) {
     const searchInteractEData = {
       id: `search-button`,
-      type: "click",
-      pageid: this.router.url.split("/")[1]
+      type: 'click',
+      pageid: this.router.url.split('/')[1]
     };
 
     if (key) {
-      searchInteractEData["extra"] = {
+      searchInteractEData['extra'] = {
         query: key
       };
     }
@@ -162,39 +162,39 @@ export class DesktopHeaderComponent implements OnInit {
 
   setInteractData() {
     this.contentImportInteractEdata = {
-      id: "content-import-button",
-      type: "click",
-      pageid: "library"
+      id: 'content-import-button',
+      type: 'click',
+      pageid: 'library'
     };
     this.browseEdata = {
-      id: "browse-tab",
-      type: "click",
-      pageid: "browse"
+      id: 'browse-tab',
+      type: 'click',
+      pageid: 'browse'
     };
     this.helpCenterEdata = {
-      id: "help-center-tab",
-      type: "click",
-      pageid: "help-center"
+      id: 'help-center-tab',
+      type: 'click',
+      pageid: 'help-center'
     };
     this.enterDialCodeInteractEdata = {
-      id: "click-dial-code",
-      type: "click",
-      pageid: "explore"
+      id: 'click-dial-code',
+      type: 'click',
+      pageid: 'explore'
     };
     this.takeTourInteractEdata = {
-      id: "take-tour-button",
-      type: "click",
-      pageid: "explore"
+      id: 'take-tour-button',
+      type: 'click',
+      pageid: 'explore'
     };
     this.clearSearchInteractEdata = {
-      id: "clear-search-button",
-      type: "click",
-      pageid: "explore"
+      id: 'clear-search-button',
+      type: 'click',
+      pageid: 'explore'
     };
     this.homeInteractEdata = {
-      id: "tenant-logo",
-      type: "click",
-      pageid: "explore"
+      id: 'tenant-logo',
+      type: 'click',
+      pageid: 'explore'
     };
   }
 }
