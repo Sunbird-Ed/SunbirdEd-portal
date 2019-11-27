@@ -49,13 +49,13 @@ export const onboarding = {
                 'doc': {
                   'state': {
                     'code': '29',
-                    'name': 'Karnataka',
+                    'name': 'tes_state_2',
                     'id': '4a6d77a1-6653-4e30-9be8-93371b6b53b5',
                     'type': 'state'
                   },
                   'city': {
                     'code': '2907',
-                    'name': 'KOPPAL',
+                    'name': 'tes_district_1',
                     'id': 'cde02789-5803-424b-a3f5-10db347280e9',
                     'type': 'district',
                     'parentId': '4a6d77a1-6653-4e30-9be8-93371b6b53b5'

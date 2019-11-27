@@ -30,13 +30,13 @@ export const onboarding_location_test = {
             'response': [
                 {
                     'code': '1',
-                    'name': 'Jammu And Kashmir',
+                    'name': 'tes_state_1',
                     'id': 'f138e9c2-adae-4e5b-ab3c-0527ff6a2b5f',
                     'type': 'state'
                 },
                 {
                     'code': '29',
-                    'name': 'Karnataka',
+                    'name': 'tes_state_2',
                     'id': '4a6d77a1-6653-4e30-9be8-93371b6b53b5',
                     'type': 'state'
                 },
@@ -59,21 +59,21 @@ export const onboarding_location_test = {
             'response': [
                 {
                     'code': '2907',
-                    'name': 'KOPPAL',
+                    'name': 'tes_district_1',
                     'id': 'cde02789-5803-424b-a3f5-10db347280e9',
                     'type': 'district',
                     'parentId': '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
                 },
                 {
                     'code': '2909',
-                    'name': 'DHARWAD',
+                    'name': 'tes_district_2',
                     'id': '3ac37fb2-d833-45bf-a579-a2656b0cce62',
                     'type': 'district',
                     'parentId': '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
                 },
                 {
                     'code': '2918',
-                    'name': 'TUMAKURU',
+                    'name': 'tes_district_3',
                     'id': 'ed622a46-17bb-42c0-b0a0-50c02b38a05c',
                     'type': 'district',
                     'parentId': '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
