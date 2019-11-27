@@ -113,4 +113,8 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
 
+  afterEach(() => {
+    component.ngOnDestroy();
+  })
+
 });
