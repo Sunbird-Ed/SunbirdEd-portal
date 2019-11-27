@@ -35,6 +35,7 @@ describe('MainHeaderComponent', () => {
     fixture = TestBed.createComponent(MainHeaderComponent);
     component = fixture.componentInstance;
     component.routerEvents  = observableOf({id: 1, url: '/explore', urlAfterRedirects: '/explore'});
+    fixture.detectChanges();
   });
 
   it('should subscribe to user service', () => {
