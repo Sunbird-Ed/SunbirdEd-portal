@@ -150,7 +150,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       const upcsRegex = new RegExp('^(?=.*[A-Z])');
       const charRegex = new RegExp('^(?=.{8,})');
       const numRegex = new RegExp('^(?=.*[0-9])');
-      const specRegex = new RegExp('^[^<>{}\'\"/|;:.,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
+      const specRegex = new RegExp('^[^<>{}\'\"/|;:.\ ,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
       if (!charRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)) {
         this.passwordError = this.resourceService.frmelmnts.lbl.passwd;
       } else {
