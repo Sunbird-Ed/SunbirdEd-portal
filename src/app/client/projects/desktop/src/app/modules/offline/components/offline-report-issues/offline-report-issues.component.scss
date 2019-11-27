@@ -1,6 +1,5 @@
-@import 'variables';
-@import 'mixins/mixins';
-
+@import "variables";
+@import "mixins/mixins";
 
 .help-faq__report {
   width: 100%;
@@ -11,6 +10,9 @@
   justify-content: center;
   flex-direction: column;
   background: var(--white) !important;
+  &_text {
+    font-weight: bold;
+  }
 }
 
 .help-faq__text {
@@ -20,21 +22,20 @@
   color: var(--gray-800);
 }
 
-
 .sb-report-content {
-    .sb-icon {
-      padding: ($base-block-space * 2) 0px ($base-block-space);
-      & img {
-        width: ($base-block-space * 4);
-        height: ($base-block-space * 4);
-      }
-    }
-    .sb-success-text {
-      margin: ($base-block-space + 4) auto ($base-block-space * 3);
-      color: var(--primary-400);
-    }
-    .sb-success-para {
-      margin: ($base-block-space + 4) auto ($base-block-space * 5);
-      opacity: 0.8;
+  .sb-icon {
+    padding: ($base-block-space * 2) 0px ($base-block-space);
+    & img {
+      width: ($base-block-space * 4);
+      height: ($base-block-space * 4);
     }
   }
+  .sb-success-text {
+    margin: ($base-block-space + 4) auto ($base-block-space * 3);
+    color: var(--primary-400);
+  }
+  .sb-success-para {
+    margin: ($base-block-space + 4) auto ($base-block-space * 5);
+    opacity: 0.8;
+  }
+}
