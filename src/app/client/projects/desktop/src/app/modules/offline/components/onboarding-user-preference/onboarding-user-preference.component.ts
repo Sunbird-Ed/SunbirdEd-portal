@@ -3,6 +3,7 @@ import { OnboardingService } from './../../services';
 import { OrgDetailsService, ChannelService, FrameworkService, TenantService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ResourceService, ToasterService } from '@sunbird/shared';
+import { retry } from 'rxjs/operators';
 
 @Component({
   selector: 'app-onboarding-user-preference',
@@ -133,14 +134,15 @@ export class OnboardingUserPreferenceComponent implements OnInit {
       this.getUserData();
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0022);
-      this.userPreferenceSaved.emit('ERROR');
+      this.getUserData();
     });
   }
 
   getUserData() {
-    this.onboardingService.getUser().subscribe(data => {
+    this.onboardingService.getUser().pipe(retry(3))
+    .subscribe((response) => {
       this.userPreferenceSaved.emit('SUCCESS');
-    }, err => {
+    }, (error) => {
       this.userPreferenceSaved.emit('SUCCESS');
     });
   }
