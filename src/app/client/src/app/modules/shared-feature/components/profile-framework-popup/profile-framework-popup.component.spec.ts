@@ -158,7 +158,7 @@ describe('ProfileFrameworkPopupComponent', () => {
       component['frameWorkId'] = 'NCFCOPY2';
       const submitEventEmitter = spyOn(component.submit, 'emit');
       component.onSubmitForm();
-      expect(submitEventEmitter).toHaveBeenCalledWith({...selectedOptions, ...{board: null, id: 'NCFCOPY2' }});
+      expect(submitEventEmitter).toHaveBeenCalledWith({...selectedOptions, ...{board: [], id: 'NCFCOPY2' }});
     });
   });
 });
