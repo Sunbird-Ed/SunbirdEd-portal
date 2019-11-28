@@ -10,3 +10,5 @@ export * from './question-preview/question-preview.component';
 export * from './question-creation-header/question-creation-header.component';
 export * from './textbook-list/textbook-list.component';
 export * from './content-uploader/content-uploader.component';
+export * from './dashboard/dashboard.component';
+export * from './collection/collection.component';

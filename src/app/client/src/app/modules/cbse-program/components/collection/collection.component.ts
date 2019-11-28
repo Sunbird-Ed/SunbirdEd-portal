@@ -13,6 +13,30 @@ interface ICollectionComponentInput {
   userProfile?: any;
 }
 
+interface ISelectedAttributes {
+  textBookUnitIdentifier?: any;
+  lastOpenedUnit?: any;
+  framework?: string;
+  channel?: string;
+  board?: string;
+  medium?: string;
+  gradeLevel?: string;
+  subject?: string;
+  textbook?: string;
+  topic?: string;
+  questionType?: string;
+  programId?: string;
+  program?: string;
+  currentRole?: string;
+  bloomsLevel?: Array<any>;
+  topicList?: Array<any>;
+  onBoardSchool?: string;
+  selectedSchoolForReview?: string;
+  resourceIdentifier?: string;
+  hierarchyObj?: any;
+  textbookName?: any;
+}
+
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
@@ -22,9 +46,14 @@ export class CollectionComponent implements OnInit {
 
   @Input() collectionComponentInput: ICollectionComponentInput;
 
+  public selectedAttributes: ISelectedAttributes = {};
   public programDetails: any;
   public userProfile: any;
+  public programSession: any; // TODO: change to just programDetails after creating new program
+  public collectionComponentConfig: any;
   public textbookList: Array<any>;
+  public textbook;
+  public role: any = {};
   showLoader = true;
 
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
@@ -33,7 +62,20 @@ export class CollectionComponent implements OnInit {
   ngOnInit() {
     this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
+    this.collectionComponentConfig = _.get(this.collectionComponentInput, 'config');
     this.searchCollection();
+    this.selectedAttributes = {
+      currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
+      framework: _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'framework'}).defaultValue,
+      channel: _.get(this.programDetails, 'config.scope.channel'),
+      board: _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'board'}).defaultValue,
+      medium: _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'medium'}).defaultValue,
+      bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
+      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1' || _.get(this.programDetails, 'programId'),
+      program: _.get(this.programDetails, 'name'),
+      onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
+    };
+    this.role.currentRole = this.selectedAttributes.currentRole;
   }
 
   objectKey(obj) {
@@ -47,11 +89,11 @@ export class CollectionComponent implements OnInit {
         'request': {
           'filters': {
             'objectType': 'content',
-            'board': 'NCERT',
-            'framework': 'NCFCOPY',
+            'board': this.selectedAttributes.board,
+            'framework': this.selectedAttributes.framework,
             // 'gradeLevel': 'Kindergarten',
             // 'subject': 'Hindi',
-            'medium': 'English',
+            'medium': this.selectedAttributes.medium,
             'programId': '31ab2990-7892-11e9-8a02-93c5c62c03f1',
             'status': ['Draft', 'Live'],
             'contentType': 'TextBook'
@@ -90,6 +132,9 @@ export class CollectionComponent implements OnInit {
 
   cardClickHandler(event) {
     console.log(event);
+    this.selectedAttributes.textbook =  event.data.metaData.identifier;
+    this.selectedAttributes.textbookName = event.data.name;
+    this.textbook = event;
   }
 
 }

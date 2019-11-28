@@ -8,19 +8,28 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class RecursiveTreeComponent implements OnInit {
 
   @Input() textbookChapters;
-  @Output() selectedChapter = new EventEmitter<any>();
-
+  @Input() selectedChapter;
+  @Output() emitselectedChapter = new EventEmitter<any>();
+  @Output() resourceTemplate = new EventEmitter<any>();
+  public showModal = false;
+  
   constructor() { }
 
   ngOnInit() {
-    console.log(this.textbookChapters);
   }
 
-  public createHandler(e, unitIdentifier) {
+  showResourceTemplateEvent(event){
+    this.showModal = true;
+    this.resourceTemplate.emit({
+      showPopup: this.showModal
+    });
+  }
+
+  crateResource(e){
     e.stopPropagation();
-    this.selectedChapter.emit({
-      showModal: true,
-      unitIdentifier: unitIdentifier
+    this.showModal = true;
+    this.resourceTemplate.emit({
+      showPopup: this.showModal
     });
   }
 }

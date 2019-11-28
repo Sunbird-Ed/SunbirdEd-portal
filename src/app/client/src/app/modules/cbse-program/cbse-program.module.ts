@@ -17,16 +17,20 @@ import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tr
 import { ContentUploaderComponent } from './components/content-uploader/content-uploader.component';
 import { ResourceTemplateComponent } from './components/resource-template/resource-template.component';
 import { DynamicModule } from 'ng-dynamic-component';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CollectionComponent } from './components/collection/collection.component';
+
 
 @NgModule({
   declarations: [QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent, ChapterListComponent,
     McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
     QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent,
-    TextbookListComponent, DashboardComponent, RecursiveTreeComponent, ContentUploaderComponent, ResourceTemplateComponent],
+    TextbookListComponent, DashboardComponent, RecursiveTreeComponent, ContentUploaderComponent, ResourceTemplateComponent, CollectionComponent],
   imports: [
     CommonModule,
     SuiTabsModule,
+    CommonConsumptionModule,
     SuiModule,
     ReactiveFormsModule, FormsModule, SharedModule,
     InfiniteScrollModule,

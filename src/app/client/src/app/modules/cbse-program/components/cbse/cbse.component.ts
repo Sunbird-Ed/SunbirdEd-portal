@@ -6,7 +6,9 @@ import { first } from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import { QuestionListComponent  } from '../question-list/question-list.component';
 import { ContentUploaderComponent } from '../content-uploader/content-uploader.component';
-import {QuestionPreviewComponent} from '../question-preview/question-preview.component'
+import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
+
+
 interface ISelectedAttributes {
     textBookUnitIdentifier?: any;
     lastOpenedUnit?: any;
@@ -39,9 +41,12 @@ interface ISelectedAttributes {
 export class CbseComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') private modal;
-  @Input() programDetails: any;
-  @Input() userProfile: any;
+  @Input() collectionComponentInput: any;
+  // @Input() programDetails: any;
+  // @Input() userProfile: any;
   formFieldOptions: Array<any>;
+  public programDetails: any;
+  public userProfile: any;
   public showLoader: boolean = false;
   public showDashboard: boolean = false;
   public publishInProgress = false;
@@ -74,6 +79,8 @@ export class CbseComponent implements OnInit, OnDestroy {
   public outputs: any;
   public contentData: any;
   ngOnInit() {
+    this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
+    this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
     this.selectedAttributes = {
       currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
       framework: _.get(this.programDetails, 'config.scope.framework'),
@@ -130,7 +137,7 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.navigate('next');
   }
 
-  handleRoleChange(component?:string) {
+  handleRoleChange(component?: string) {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
     this.showDashboard = (component === 'Dashboard');
   }

@@ -1,3 +1,8 @@
+
+<div class="twelve wide column" *ngIf="showPreview">
+    <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+</div>
+
 <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
     class="sb-modal sb-file-upload-modal" appBodyScroll (dismissed)="closeModal();" #modal>
 
@@ -21,7 +26,6 @@
                   <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
                   <span class="qq-upload-file-selector qq-upload-file custom-qq-upload-file"></span>
                   <span class="qq-upload-size-selector qq-upload-size"></span>
-                  <!--<button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel custom-qq-upload-cancel">Cancel</button>-->
                   <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
                   <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
                   <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
@@ -82,7 +86,7 @@
               </div>
           </div>
           <div id="upload-content-div" style="margin-top: 15px"></div>
-          <div id="upload-content-loader-area"  style="width:69px;height:89px; top:38%;left:45%; position:absolute; padding:2px;"><br>Uploading..</div>
+          <div *ngIf="loading" id="upload-content-loader-area"  style="width:69px;height:89px; top:38%;left:45%; position:absolute; padding:2px;"><img width="64" height="64" src="../../../../../assets/images/loader.gif"><br>Uploading..</div>
           <div class="ui message">
               <ul class="list">
                   <li>File accepted - {{templateDetails.filesAccepted}}</li>
@@ -92,7 +96,7 @@
       </div>
       <div class="actions">
           <div class="ui buttons">
-              <button (click)="closeModal()" class="ui orange button">Cancel</button>
+              <button (click)="closeModal('none')" class="ui orange button">Cancel</button>
               <div class="or"></div>
               <button class="ui blue button" (click)="uploadContent()">Upload</button>
           </div>

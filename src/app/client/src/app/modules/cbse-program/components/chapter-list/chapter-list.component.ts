@@ -7,6 +7,7 @@ import { map, catchError } from 'rxjs/operators';
 import { forkJoin, of, throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
+import { inspect } from 'util';
 
 @Component({
   selector: 'app-chapter-list',
@@ -19,16 +20,19 @@ export class ChapterListComponent implements OnInit, OnChanges {
   @Input() topicList: any;
   @Input() role: any;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
-  @Output() selectedTemplate = new EventEmitter<any>();
   @Input() selectedSchool: any;
 
   public textBookChapters: Array<any> = [];
   private questionType: Array<any> = [];
   private textBookMeta: any;
   public hierarchyObj = {};
-  public collectionHierarchy: any;
-  public templateDetails: any = {};
-  public selectedChapter;
+  public collectionHierarchy;
+  public countData: Array<any> = [];
+  public levelOneChapterList: Array<any> = [];
+  public selectdChapterOption: any = {};
+  public showResourceTemplatePopup = false;
+  public showContentUploader = false;
+  public templateDetails;
 
   private questionTypeName = {
     vsa: 'Very Short Answer',
@@ -42,39 +46,16 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public collectionData;
   showLoader = true;
   showError = false;
-  showUpload = false;
-  showResourceTemplatePopup = false;
   public routerQuestionCategory: any;
   public questionPattern: Array<any> = [];
-  public configResourceList = [{
-    name: 'Explanation',
-    contentType: 'ExplanationResource',
-    mimeType: ['application/pdf'],
-    filesAccepted: 'pdf',
-    filesize: '50'
-  }, {
-    name: 'Experimental',
-    contentType: 'ExperientialResource',
-    mimeType: ['video/mp4', 'video/webm', 'video/x-youtube'],
-    filesAccepted: 'mp4, webm, youtube',
-    filesize: '50'
-  }, {
-    name: 'Practice Sets',
-    contentType: 'PracticeQuestionSet',
-    mimeType: ['application/vnd.ekstep.ecml-archive'],
-    questionCategories: ['vsa', 'sa', 'la', 'mcq']
-  }, {
-    name: 'Curiosity',
-    contentType: 'CuriosityQuestionSet',
-    mimeType: ['application/vnd.ekstep.ecml-archive'],
-    questionCategories: ['curiosity']
-  }];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    private userService: UserService, public actionService: ActionService, public telemetryService: TelemetryService, private cbseService: CbseProgramService,
+    private userService: UserService, public actionService: ActionService,
+    public telemetryService: TelemetryService, private cbseService: CbseProgramService,
     public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
   }
   private labelsHandler() {
-    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] : (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted', 'Published'] : ['Total', 'Created by me', 'Needs attention'];
+    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] :
+    (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted', 'Published'] : ['Total', 'Created by me', 'Needs attention'];
   }
   ngOnInit() {
     /**
@@ -104,9 +85,14 @@ export class ChapterListComponent implements OnInit, OnChanges {
         uri: this.router.url,
       }
     };
-    this.getCollectionHierarchy(this.selectedAttributes.textbook);
-    // clearing the selected questionId when user comes back from question list
-    delete this.selectedAttributes['questionList'];
+    this.levelOneChapterList.push({
+      identifier: 'all',
+      name: 'All Chapters'
+    });
+    this.selectdChapterOption = 'all';
+    this.getCollectionHierarchy(this.selectedAttributes.textbook, undefined);
+    //clearing the selected questionId when user comes back from question list
+    delete this.selectedAttributes["questionList"];
   }
   ngOnChanges(changed: any) {
     this.labelsHandler();
@@ -121,10 +107,15 @@ export class ChapterListComponent implements OnInit, OnChanges {
     }
   }
 
-  public getCollectionHierarchy(identifier: string) {
+  public getCollectionHierarchy(identifier: string, unitIdentifier: string) {
+    const instance = this;
     let hierarchy;
+    let hierarchyUrl = 'content/v3/hierarchy/' + identifier;
+    if (unitIdentifier) {
+      hierarchyUrl = hierarchyUrl + '/' + unitIdentifier;
+    }
     const req = {
-      url: 'content/v3/hierarchy/' + identifier, // `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
+      url: hierarchyUrl,
       param: { 'mode': 'edit' }
     };
     this.actionService.get(req).pipe(catchError(err => {
@@ -133,84 +124,74 @@ export class ChapterListComponent implements OnInit, OnChanges {
     }))
       .subscribe((response) => {
         this.collectionData = response.result.content;
-        hierarchy = this.getHierarchyObj(this.collectionData);
-        this.selectedAttributes.hierarchyObj = { hierarchy };
         const textBookMetaData = [];
-         this.collectionHierarchy =  this.getUnitWithChildren(this.collectionData.children);
-        _.forEach(this.collectionData.children, data => {
-
-          if (data.topic && data.topic[0]) {
-            if (data.children) {
-              let questionBankUnit: any;
-              if (_.includes(this.questionType, 'curiosity')) {
-                questionBankUnit = _.find(data.children, (val) => {
-                  return val.name === 'Curiosity Questions';
-                });
-              } else {
-                questionBankUnit = _.find(data.children, (val) => {
-                  return val.name === 'Question Bank' || val.name === 'Practice Questions';
-                });
-              }
-              textBookMetaData.push({
-                name: data.name,
-                topic: data.topic[0],
-                identifier: questionBankUnit ? questionBankUnit.identifier : data.identifier
-              });
-            } else {
-              textBookMetaData.push({
-                name: data.name,
-                topic: data.topic[0],
-                identifier: data.identifier
-              });
-            }
-          }
-        });
-        this.textBookMeta = textBookMetaData;
-
-        this.showChapterList(textBookMetaData);
+        instance.countData['total'] = 0;
+        instance.countData['review'] = 0;
+        instance.countData['reject'] = 0;
+        instance.countData['mycontribution'] = 0;
+        this.collectionHierarchy = this.getUnitWithChildren(this.collectionData, identifier);
+        hierarchy = instance.hierarchyObj;
+        this.selectedAttributes.hierarchyObj = { hierarchy };
+        this.showLoader = false;
+        this.showError = false;
       });
   }
 
-  getUnitWithChildren(data) {
+  getUnitWithChildren(data, collectionId) {
     const self = this;
-    const tree = data.map(child => {
-      const treeItem = {
-        identifier: child.identifier,
-        name: child.name,
-        contentType: child.contentType,
-        topic: child.topic
-      };
-      const textbookUnit = _.find(child.children, ['contentType', 'TextBookUnit']);
-      if (child.children) {
-        const treeUnit =  self.getUnitWithChildren(child.children);
-        const treeChildren = treeUnit.filter(item => item.contentType === 'TextBookUnit');
-        const treeLeaf = treeUnit.filter(item => item.contentType !== 'TextBookUnit');
-        treeItem['children'] = (treeChildren.length > 0) ? treeChildren : null;
-        treeItem['leaf'] = (treeLeaf.length > 0) ? treeLeaf : null;
+    this.hierarchyObj[data.identifier] = {
+      'name': data.name,
+      'contentType': data.contentType,
+      'children': _.map(data.children, (child) => {
+        return child.identifier;
+      }),
+      'root': data.contentType === 'TextBook' ? true : false
+    };
+    if (data.contentType !== 'TextBook' && data.contentType !== 'TextBookUnit') {
+      this.countData['total'] = this.countData['total'] + 1;
+      if (data.status === 'Review') {
+        this.countData['review'] = this.countData['review'] + 1;
       }
-      return treeItem;
-    });
-    return tree;
-  }
-  public getHierarchyObj(data) {
-    const instance = this;
-    if (data.identifier) {
-      this.hierarchyObj[data.identifier] = {
-        'name': data.name,
-        'contentType': data.contentType,
-        'children': _.map(data.children, (child) => {
-          return child.identifier;
-        }),
-        'root': data.contentType === 'TextBook' ? true : false
-      };
-      if(data.children){
-      _.forEach(data.children, (collection) => {
-        instance.getHierarchyObj(collection);
+    }
+    const childData = data.children;
+    if (childData) {
+      const tree = childData.map(child => {
+        if (child.parent && child.parent === collectionId) {
+          self.levelOneChapterList.push({
+            identifier: child.identifier,
+            name: child.name
+          });
+        }
+        const treeItem = {
+          identifier: child.identifier,
+          name: child.name,
+          contentType: child.contentType,
+          topic: child.topic,
+          status: child.status
+        };
+        const treeUnit = self.getUnitWithChildren(child, collectionId);
+        const treeChildren = treeUnit && treeUnit.filter(item => item.contentType === 'TextBookUnit');
+        const treeLeaf = treeUnit && treeUnit.filter(item => item.contentType !== 'TextBookUnit');
+        treeItem['children'] = (treeChildren && treeChildren.length > 0) ? treeChildren : null;
+        treeItem['leaf'] = (treeLeaf && treeLeaf.length > 0) ? treeLeaf : null;
+        return treeItem;
       });
+      return tree;
     }
   }
 
-    return this.hierarchyObj;
+  public getHierarchyObjforUnit(unitIdentifier) {
+    const req = {
+      url: 'content/v3/hierarchy/' + this.selectedAttributes.textbook + '/' + unitIdentifier, 
+      param: { 'mode': 'edit' }
+    };
+    this.actionService.get(req).pipe(catchError(err => {
+      let errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+    }))
+    .subscribe((response) => {
+
+    });
   }
 
   public showChapterList(textBookMetaData) {
@@ -350,34 +331,31 @@ export class ChapterListComponent implements OnInit, OnChanges {
       }));
   }
 
-  public openPopup(e) {
-    e.stopPropagation();
-    this.showResourceTemplatePopup = true;
-  }
-
-  public selectedChapterHandler(event) {
-    console.log(event);
-    this.showResourceTemplatePopup = event.showModal;
-    this.selectedChapter = event.unitIdentifier;
+  onSelectChapterChange() {
+    this.showLoader = true;
+    this.getCollectionHierarchy(this.selectedAttributes.textbook ,
+      this.selectdChapterOption === 'all' ? undefined :  this.selectdChapterOption);
   }
 
   handleTemplateSelection(event) {
     this.showResourceTemplatePopup = false;
-    if (event.type === 'submit') {
-      this.templateDetails = _.find(this.configResourceList, function(o) {
-        return o.contentType === event.template;
-      });
-      if(_.indexOf(this.templateDetails.mimeType, 'application/vnd.ekstep.ecml-archive') < 0){
-        this.showUpload = true;
-      } else {
-        this.showUpload = false;
-      }
-      this.selectedTemplate.emit({
-        template: this.templateDetails,
-        selectedChapterId: this.selectedChapter
-      });
+    if (event.template) {
+      this.showContentUploader = true;
+      this.templateDetails = {
+        name: 'Explanation',
+        contentType: 'ExplanationResource',
+        mimeType: [ 'application/pdf' ],
+        filesAccepted: 'pdf',
+        filesize: '50'
+      };
     }
+    console.log('handleTemplateSelection ', event);
   }
+
+  showResourceTemplate(event) {
+    this.showResourceTemplatePopup = event.showPopup;
+  }
+
   emitQuestionTypeTopic(type, topic, topicIdentifier, resourceIdentifier, resourceName) {
     this.selectedQuestionTypeTopic.emit({
       'questionType': type,

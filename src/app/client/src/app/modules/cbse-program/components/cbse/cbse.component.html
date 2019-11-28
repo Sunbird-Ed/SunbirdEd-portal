@@ -1,4 +1,4 @@
-<div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white">
+<!-- <div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white">
   <div class="ui container">
     <a class="item active" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR")'
       [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
@@ -13,7 +13,9 @@
       [class.active]="(selectedAttributes.currentRole === 'PUBLISHER' && showDashboard)"
       (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange('Dashboard')">Dashboard</a>
   </div>
-</div>
+</div> -->
+
+
 
 
 <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
