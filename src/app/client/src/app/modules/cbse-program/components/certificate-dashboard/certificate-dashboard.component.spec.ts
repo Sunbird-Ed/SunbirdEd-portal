@@ -1,16 +1,20 @@
+import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CertificateDashboardComponent } from './certificate-dashboard.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-xdescribe('CertificateDashboardComponent', () => {
+describe('CertificateDashboardComponent', () => {
   let component: CertificateDashboardComponent;
   let fixture: ComponentFixture<CertificateDashboardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CertificateDashboardComponent ]
+      declarations: [CertificateDashboardComponent],
+      imports: [HttpClientTestingModule, SharedModule.forRoot()]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

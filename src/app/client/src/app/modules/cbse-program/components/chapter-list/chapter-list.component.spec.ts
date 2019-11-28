@@ -127,8 +127,12 @@ describe('ChapterListComponent', () => {
   it('should execute ngOnChanges', () => {
     const changed = { selectedSchool: { currentValue: 'newOne', previousValue: 'oldOne' } };
     spyOn(component, 'ngOnChanges').and.callThrough();
-    component.getCollectionHierarchy(selectedAttributes.textbook);
+    spyOn(component, 'showChapterList');
+    this.textbookMeta = [{ test: 1 }];
     component.ngOnChanges(changed);
+    expect(component.showChapterList).toHaveBeenCalled();
+    expect(component.showChapterList).toHaveBeenCalledTimes(1);
+    expect(component.showChapterList).toHaveBeenCalledWith([{ test: 1 }]);
     expect(component.selectedAttributes.selectedSchoolForReview).toEqual('newOne');
   });
 
