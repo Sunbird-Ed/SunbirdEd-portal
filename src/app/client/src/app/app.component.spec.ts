@@ -93,7 +93,7 @@ describe('AppComponent', () => {
 afterEach(() => {
   jasmine.clock().uninstall();
 });
-  it('should config telemetry service for login Session', () => {
+  xit('should config telemetry service for login Session', () => {
     const learnerService = TestBed.get(LearnerService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
