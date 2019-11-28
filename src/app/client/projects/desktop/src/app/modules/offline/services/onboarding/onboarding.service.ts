@@ -1,8 +1,9 @@
 import { PublicDataService } from '@sunbird/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Injectable, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,13 @@ export class OnboardingService {
     const options = {
       url: this.configService.urlConFig.URLS.OFFLINE.READ_USER
     };
-    return this.publicDataService.get(options);
+
+    return this.publicDataService.get(options).pipe(map((response: ServerResponse) => {
+        this.userData = response.result;
+        return this.userData;
+      }), catchError(err => {
+        return throwError(err);
+      }));
   }
 
   saveLocation(request): Observable<ServerResponse> {

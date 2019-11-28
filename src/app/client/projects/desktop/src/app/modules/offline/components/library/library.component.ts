@@ -8,7 +8,7 @@ import {
     ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage,
     BrowserCacheTtlService
 } from '@sunbird/shared';
-import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
+import { PageApiService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { PublicPlayerService } from '@sunbird/public';
 
@@ -28,6 +28,8 @@ export class LibraryComponent implements OnInit {
     public carouselMasterData: Array<ICaraouselData> = [];
     public pageSections: Array<ICaraouselData> = [];
     public initFilters = false;
+    public userDetails: any = {};
+    public selectedFilters: any;
 
     public dataDrivenFilterEvent = new EventEmitter();
     public unsubscribe$ = new Subject<void>();
@@ -50,14 +52,19 @@ export class LibraryComponent implements OnInit {
         private toasterService: ToasterService,
         private configService: ConfigService,
         private resourceService: ResourceService,
-        private orgDetailsService: OrgDetailsService,
         private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService,
-        private publicPlayerService: PublicPlayerService
+        private publicPlayerService: PublicPlayerService,
     ) { }
 
     ngOnInit() {
+        this.getSelectedFilters();
         this.setNoResultMessage();
+        this.fetchContentOnParamChange();
+    }
+
+    getSelectedFilters() {
+        this.selectedFilters = this.publicPlayerService.libraryFilters;
     }
 
     ngOnDestroy() {
@@ -66,9 +73,20 @@ export class LibraryComponent implements OnInit {
     }
 
 
-    getFilters(data) {
-        this.dataDrivenFilters = data.filters;
-        this.fetchContentOnParamChange();
+    onFilterChange(event) {
+        this.dataDrivenFilters = _.cloneDeep(event);
+        // this.hashTagId = data.hashTagId;
+        // this.queryParams = data.filters;
+        // this.fetchContentOnParamChange();
+        console.log('event', event);
+        this.resetSections();
+        this.fetchPageData();
+        this.publicPlayerService.libraryFilters = event;
+    }
+
+    resetSections() {
+        this.carouselMasterData = [];
+        this.pageSections = [];
     }
 
     private fetchContentOnParamChange() {
@@ -194,6 +212,6 @@ export class LibraryComponent implements OnInit {
 
     // To Handle in-view logs
     afterChange(event) {
-        console.log('AfterChange', event);
+        // console.log('AfterChange', event);
     }
 }
