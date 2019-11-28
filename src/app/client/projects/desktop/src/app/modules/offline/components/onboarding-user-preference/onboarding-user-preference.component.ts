@@ -100,7 +100,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
       }
     });
 
-    return _.sortBy(_.unionBy(resultArray, 'name'), 'index');
+    return _.sortBy(_.unionBy(resultArray, 'identifier'), 'index');
   }
 
   onMediumChange(mediumData) {
