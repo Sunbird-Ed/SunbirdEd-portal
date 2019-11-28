@@ -486,8 +486,8 @@ export class AppComponent implements OnInit, OnDestroy {
   /** It will fetch user feed data if user is custodian as well as logged in. */
   getUserFeedData() {
     this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
-      if (this.userService.loggedIn) {
-        if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+      if (this.userService.loggedIn &&
+        (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value'))) {
           this.userService.getFeedData().subscribe(
             (data) => {
               const feedData = _.get(data, 'result.response.userFeed[0]');
@@ -501,7 +501,6 @@ export class AppComponent implements OnInit, OnDestroy {
             },
             (error) => {
             });
-        }
       }
     });
   }
