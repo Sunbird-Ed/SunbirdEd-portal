@@ -35,8 +35,8 @@ export class OnboardingLocationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkConnection();
     this.tenantService.tenantData$.subscribe(({ tenantData }) => {
+      this.checkConnection();
       this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
       this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
       this.getAllStates();
@@ -111,11 +111,13 @@ export class OnboardingLocationComponent implements OnInit {
      this.deviceRegisterService.fetchDeviceProfile().pipe(mergeMap((deviceProfile) => {
       this.currentLocation = _.get(deviceProfile, 'result.ipLocation');
       this.selectedState = _.find(this.stateList, {name: this.currentLocation.state});
-      return this.onboardingService.searchLocation({ type: 'district', parentId: this.selectedState.id });
+      if (!_.isEmpty(this.selectedState)) {
+        return this.onboardingService.searchLocation({ type: 'district', parentId: this.selectedState.id });
+      } else {return []; }
      })).subscribe(location => {
       this.districtList = _.get(location, 'result.response');
       this.selectedDistrict = _.find(this.districtList, {name: this.currentLocation.district});
-      this.disableContinueBtn = false;
+      this.disableContinueBtn = _.isEmpty(this.selectedDistrict);
     });
   }
 

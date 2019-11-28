@@ -118,7 +118,9 @@ describe('OnboardingLocationComponent', () => {
     component.stateList = onboarding_location_test.statesList.result.response;
     component.getUserCurrentLocation();
     component.deviceRegisterService.fetchDeviceProfile().subscribe(location => {
+      expect(component.disableContinueBtn).toBeFalsy();
       expect(location).toEqual(onboarding_location_test.deviceLocation);
+      expect(component.onboardingService.searchLocation).toHaveBeenCalled();
     });
   });
 
