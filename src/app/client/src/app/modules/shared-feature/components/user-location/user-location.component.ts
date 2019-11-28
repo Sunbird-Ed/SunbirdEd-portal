@@ -163,7 +163,7 @@ export class UserLocationComponent implements OnInit {
           };
           this.isUserProfileUpdateAllowed = false;
           this.isDeviceProfileUpdateAllowed = true;
-          this.setStateDistrict(userLocation);
+          this.setData(userLocation);
           // render using user location
           // update only device profile
           this.suggestionType = 'userLocation';
@@ -195,6 +195,12 @@ export class UserLocationComponent implements OnInit {
       this.setStateDistrict(this.processedDeviceLocation);
       this.isUserProfileUpdateAllowed = updateUserProFile;
       this.isDeviceProfileUpdateAllowed = updateDeviceProfile;
+    });
+  }
+
+  setData(location) {
+    this.getDistrict(location.state.id).subscribe((districts) => {
+      this.setStateDistrict(location);
     });
   }
 
