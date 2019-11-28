@@ -156,3 +156,10 @@ export const textbookMeta = [{
     name: 'जंगल और जनकपुर',
     topic: 'Topic 2'
 }];
+
+export const routerQuestionCategorySample = [
+    'vsa',
+    'sa',
+    'la',
+    'mcq'
+  ];
