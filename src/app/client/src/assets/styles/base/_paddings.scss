@@ -17,6 +17,9 @@
 .p-32 {
   @include padding(32px);
 }
+.p-40 {
+  @include padding(40px);
+}
 .p-48 {
   @include padding(48px);
 }
@@ -86,6 +89,9 @@
 }
 .pb-32 {
   @include padding(null null 32px null);
+}
+.pb-40 {
+  @include padding(null null 40px null);
 }
 .pb-48 {
   @include padding(null null 48px null);
