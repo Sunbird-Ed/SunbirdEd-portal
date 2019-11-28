@@ -393,20 +393,18 @@ export const onboarding_user_preference_test = {
             'updatedOn': 1574856716829,
             '_id': 'c18229aa-e42c-4463-bb88-29f67391f400',
             'location': {
-                'doc': {
-                    'state': {
-                        'code': 'FT_State_Code-1544604001076',
-                        'name': 'state_location_nameJMRUXuUbT6',
-                        'id': 'bd47e788-e92e-4d12-9f26-b9eb9a4b70a5',
-                        'type': 'state'
-                    },
-                    'city': {
-                        'code': 'FT_District_Code-1544603939757',
-                        'name': 'state_location_nameFniQB7lOZt',
-                        'id': '8f3f79e8-a52f-42bb-a1f8-af6b3f0e57d8',
-                        'type': 'district',
-                        'parentId': 'bd47e788-e92e-4d12-9f26-b9eb9a4b70a5'
-                    }
+                'state': {
+                    'code': 'FT_State_Code-1544604001076',
+                    'name': 'state_location_nameJMRUXuUbT6',
+                    'id': 'bd47e788-e92e-4d12-9f26-b9eb9a4b70a5',
+                    'type': 'state'
+                },
+                'city': {
+                    'code': 'FT_District_Code-1544603939757',
+                    'name': 'state_location_nameFniQB7lOZt',
+                    'id': '8f3f79e8-a52f-42bb-a1f8-af6b3f0e57d8',
+                    'type': 'district',
+                    'parentId': 'bd47e788-e92e-4d12-9f26-b9eb9a4b70a5'
                 }
             }
         }
