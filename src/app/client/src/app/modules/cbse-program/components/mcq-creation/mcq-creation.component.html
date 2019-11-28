@@ -1,48 +1,94 @@
-<app-question-creation-header *ngIf="questionMetaData" (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"
-    [questionMetaData]="questionMetaData" [disableSubmission]="isEditorThrowingError"
-    (questionStatus)="handleReviewrStatus($event)" (questionQueueStatus)="handleQuestionSelectionStatus($event)" [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
+<app-question-creation-header *ngIf="questionMetaData" (buttonType)="buttonTypeHandler($event)"
+  [rejectComment]="rejectComment" [questionMetaData]="questionMetaData" [disableSubmission]="isEditorThrowingError"
+  (questionStatus)="handleReviewrStatus($event)" (questionQueueStatus)="handleQuestionSelectionStatus($event)"
+  [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
 
-  <div *ngIf='showForm'>
+<div *ngIf='showForm'>
   <form #mcqFormControl="ngForm" class="ui form mcq-vertical mt-8" *ngIf="!showPreview">
-    <div class="field mcq-title">
-      <label class="mb-16 fs-1-286">Question</label>
+    <div class="sb-field mcq-title mb-16">
+      <label class="p-16 fs-1 mb-0 question-list">Question</label>
       <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)"
-        class="ui basic red error label pt-1">Fill Question</label>
-      <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);"
-        [editorConfig]="questionMetaData" [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
+        class="ui basic red error label pt-1 question-list">Fill Question</label>
+      <div class="ckeditor-tool-container">
+        <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);"
+          [editorConfig]="questionMetaData" [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
+      </div>
     </div>
     <div class="mcq-options">
-      <label *ngIf="showFormError && !mcqForm.answer" class="ui basic red error label pt-1">Select one correct
-        answer</label>
-      <div class="mcq-option" *ngFor="let option of mcqForm.options; let i=index">
-        <div class="twelve wide field">
-          <label class="mb-8 fs-1">Option {{i + 1}}:</label>
-          <label *ngIf="showFormError && (option.body === undefined || option.body === '')"
-            class="ui basic red error label pt-1">Fill this option</label>
-          <app-ckeditor-tool (hasError)="handleEditorError($event)"
-            (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
-            [editorConfig]="questionMetaData" [editorDataInput]="option.body" [setCharacterLimit]="setCharacterLimit"
-            [setImageLimit]="setImageLimit"></app-ckeditor-tool>
-          <div class="mcq-checkbox-answer">
-            <!-- <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
-              <label>Mark as right answer</label> -->
-            <button *ngIf='mcqForm.answer !== i.toString()' (click)="mcqForm.answer = i.toString()"
-              class="sb-btn sb-btn-outline-gray-disabled sb-btn-xs mr-auto"><i class="checkmark icon"></i>Mark as right
-              answer </button>
-            <button *ngIf='mcqForm.answer === i.toString()'
-              class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary mr-auto"><i class="checkmark icon"></i>Marked as
-              right answer </button>
-            <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)"
-              class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn"><i
-                class="trash alternate outline icon"></i>Delete</button>
-          </div>
-          <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce the
-            size</label>
+      <div class="sb-mcq-options-answer width-100">
+        <div class="d-flex question-list flex-ai-center">
+          <label class="p-16 fs-1 mb-0">Answers</label>
+          <label *ngIf="showFormError && !mcqForm.answer" class="ui basic red error label pt-1">Select one correct
+            answer</label>
+
+          <!-- add button to be integrated -->
+          <!-- <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-left-icon-btn ml-auto mr-16"><i class="plus icon"></i>ADD</button> -->
         </div>
+        <div class="mcq-option mb-0" *ngFor="let option of mcqForm.options; let i=index">
+          <div class="twelve wide field">
+            <label class="p-16 fs-0-986 mb-0 font-weight-normal">Option {{i + 1}}:</label>
+            <label *ngIf="showFormError && (option.body === undefined || option.body === '')"
+              class="ui basic red error label pt-1">Fill this option</label>
+            <div class="ckeditor-tool-container">
+              <app-ckeditor-tool (hasError)="handleEditorError($event)"
+                (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
+                [editorConfig]="questionMetaData" [editorDataInput]="option.body"
+                [setCharacterLimit]="setCharacterLimit" [setImageLimit]="setImageLimit"></app-ckeditor-tool>
+              <div class="mcq-checkbox-answer">
+                <!-- <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
+                      <label>Mark as right answer</label> -->
+                <button *ngIf='mcqForm.answer !== i.toString()' (click)="mcqForm.answer = i.toString()"
+                  class="sb-btn sb-btn-outline-gray-disabled sb-btn-xs mr-auto"><i class="checkmark icon"></i>Mark as
+                  right
+                  answer </button>
+                <button *ngIf='mcqForm.answer === i.toString()'
+                  class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary mr-auto"><i class="checkmark icon"></i>Marked
+                  as
+                  right answer </button>
+                <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)"
+                  class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn"><i
+                    class="trash alternate outline icon"></i>Delete</button>
+              </div>
+            </div>
+            <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce the
+              size</label>
+          </div>
+        </div>
+
       </div>
-      <button *ngIf='mcqForm.options.length < 4' class="sb-btn sb-btn-normal sb-btn-primary"
-        (click)="mcqForm.addOptions()"> Add more Options </button>
+      <div class="text-center mt-16">
+        <button *ngIf='mcqForm.options.length < 4' class="sb-btn sb-btn-normal sb-btn-primary"
+          (click)="mcqForm.addOptions()"> Add more Options </button>
+      </div>
+
+      <!-- Add Solution(Optional) HTML sturcture -->
+
+      <!-- <div class="mcq-primary-box my-16">
+        <div class="box-label d-flex flex-ai-center with-border">
+            <label class="mr-auto sb-color-primary mb-0 fs-1">Add Solution(Optional)</label>
+            <div class="ui dropdown sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary ml-auto sb-btn-dropdown"
+              suiDropdown autoClose="itemClick">
+              <div class="text">Select One</div>
+              <i class="dropdown icon"></i>
+              <div class="menu" suiDropdownMenu>
+                <div class="item">Modified on</div>
+                <div class="item">Created on</div>
+              </div>
+            </div>
+        </div>
+        <div class="box-body">
+          <div class="answer-field p-16">
+
+          </div>
+            <div class="mcq-checkbox-answer">
+                <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto"><i
+                    class="trash alternate outline icon"></i>Delete</button>
+              </div>
+        </div>
+      </div> -->
+
     </div>
+
     <div class="ui two column grid width-100">
       <div class="one column row" *ngIf="learningOutcomeOptions.length">
         <div class="column">
@@ -70,20 +116,80 @@
           *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
       </div>
 
-      <div class="two column row" >
-          <div class="column">
-              <label>Authors</label> <br/>
-              <div class="sb-field">
-                  <input #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName" >
-              </div>
+      <div class="two column row">
+        <div class="column">
+          <label>Authors</label> <br />
+          <div class="sb-field">
+            <input #author_names type="text"
+              [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
           </div>
+        </div>
       </div>
 
     </div>
+
+    <!-- Learning Outcome, level, Authors, License form field -->
+
+    <!-- <div class="middle-section-set">
+        <div class="ui container msg-box">
+          <div class="msg-box__content">
+              <div class="fs-0-92 msg-box__content__label">Under Review</div>
+               <div class="fs-0-92 msg-box__content__label">Published</div> 
+               <div class="msg-box__content__error-msg font-weight-normal fs-0-92">Rejected with comment: "go fish yourself"</div>
+               <div class="container msg-box__content__blank-box"></div>
+          </div>
+          </div>
+        
+          <form class='ui container licence-form'>
+            <div class='licence-form__content'>
+              <div class="d-flex licence-form__content__fields">
+                <div class="sb-field">
+                  <label for="outcome">Learning Outcome</label>
+                  <sui-select class="selection" labelField="name" name="outcome" [(ngModel)]="selectOutcome" placeholder="select">
+                    <sui-select-option *ngFor="let option of selectOutcomeOption" [value]="option">
+                    </sui-select-option>
+                  </sui-select>
+                </div>
+        
+                <div class="sb-field space-btn-field">
+                  <label for="level">Learning Level</label>
+                  <sui-select class="selection" labelField="name" name="level" [(ngModel)]="selectLevel" placeholder="select">
+                    <sui-select-option *ngFor="let option of selectLevelOption" [value]="option">
+                    </sui-select-option>
+                  </sui-select>
+                </div>
+              </div>
+        
+              <div class="d-flex licence-form__content__fields">
+                <div class="sb-field">
+                  <label for="author">Authors</label>
+                  <input type="email" name="author" class="sb-form-control" placeholder="Type Author's Name">
+                </div>
+        
+                <div class="sb-field space-btn-field">
+                  <label for="license">License</label>
+                  <sui-select class="selection" labelField="name" name="license" [(ngModel)]="selectLicence" placeholder="select">
+                    <sui-select-option *ngFor="let option of selectLicenseOption" [value]="option">
+                    </sui-select-option>
+                  </sui-select>
+                </div>
+              </div>
+            </div>
+        
+            <p class="paragraph fs-0-785">
+              “By creating content on SunbirdEd, you consent to publish it under the Creative Commons License Framework
+              <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
+              Please choose the applicable creative commons license you wish to apply to your content”.
+            </p>
+          </form>
+    </div> -->
+
   </form>
 </div>
 
-<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes"></app-question-preview>
+<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes">
+</app-question-preview>
 
-<app-mcq-template-selection *ngIf='showTemplatePopup' style="z-index: 1000" (templateSelection)="handleTemplateSelection($event)">
+<app-mcq-template-selection *ngIf='showTemplatePopup' style="z-index: 1000"
+  (templateSelection)="handleTemplateSelection($event)">
 </app-mcq-template-selection>

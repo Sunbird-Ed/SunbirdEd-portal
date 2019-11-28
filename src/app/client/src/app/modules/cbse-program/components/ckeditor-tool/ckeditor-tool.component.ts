@@ -11,7 +11,7 @@ import { CbseProgramService } from '../../services';
 @Component({
   selector: 'app-ckeditor-tool',
   templateUrl: './ckeditor-tool.component.html',
-  styleUrls: ['./ckeditor-tool.component.css']
+  styleUrls: ['./ckeditor-tool.component.scss']
 })
 export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild('editor') public editorRef: ElementRef;

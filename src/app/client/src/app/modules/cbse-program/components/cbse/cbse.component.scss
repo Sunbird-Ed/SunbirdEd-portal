@@ -1,3 +1,68 @@
+@import 'variables';
+@import 'mixins/mixins';
+
+.practical-appbar {
+  background: var(--primary-400);
+  height: ($base-block-space * 6);
+
+  &__content {
+//     margin: 0 ($base-block-space * 8 - 4);
+//     width: 100%;
+
+    .back-label {
+      color: var(--white);
+    }
+  }
+}
+
+
+.practical-header {
+  height: ($base-block-space * 11 + 10);
+
+  &__content {
+    // margin: 0 ($base-block-space * 8 - 4);
+    // width: 100%;
+
+    .practical-sb-buttons {
+      .sb-btn-file {
+        border-top: 1px solid var(--primary-200);
+        /* #7AB4EE;*/
+        border-bottom: 1px solid var(--primary-200);
+        /* #7AB4EE;*/
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        background: #E0F1FD;
+        color: var(--primary-400);
+      }
+
+      .sb-btn-submit {
+        background: var(--primary-200);
+        /*#07BC81 */
+        opacity: 50%;
+        color: var(--white);
+      }
+    }
+  }
+}
+
+.sb-field-group.textbook-edit {
+	width: 100%;
+	max-width: 480px;
+	
+	textarea {
+		height: 56px;
+		resize: none;
+	}
+
+	.characters-left {
+		position: absolute;
+		bottom: $base-block-space;
+		right: $base-block-space;
+		color: $gray-400;
+		font-size: $font-size-xs;
+	}
+}
+
 ::ng-deep {
 
     .breadcrumb {
