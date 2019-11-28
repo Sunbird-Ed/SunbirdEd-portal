@@ -62,7 +62,7 @@ export class ProgramComponent implements OnInit {
   public component;
   constructor(public resourceService: ResourceService, public configService: ConfigService, public activatedRoute: ActivatedRoute,
     public extPluginService: ExtPluginService, public userService: UserService, public toasterService: ToasterService) {
-    this.programId = this.activatedRoute.snapshot.params.programId || 'b9cf4fa0-f4b5-11e9-a323-3b4a9d67ea97';
+    this.programId = this.activatedRoute.snapshot.params.programId;
     localStorage.setItem('programId', this.programId);
   }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
-import { PublicDataService } from '@sunbird/core';
+import { PublicDataService, ContentService } from '@sunbird/core';
 
 import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';
@@ -57,7 +57,7 @@ export class CollectionComponent implements OnInit {
   showLoader = true;
 
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
-    private cbseService: CbseProgramService, public utilService: UtilService) { }
+    private cbseService: CbseProgramService, public utilService: UtilService, public contentService: ContentService) { }
 
   ngOnInit() {
     this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
@@ -101,7 +101,7 @@ export class CollectionComponent implements OnInit {
         }
       }
     };
-    this.publicDataService.post(req).pipe(catchError(err => {
+    this.contentService.post(req).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Question creation failed' };
       this.showLoader = false;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
