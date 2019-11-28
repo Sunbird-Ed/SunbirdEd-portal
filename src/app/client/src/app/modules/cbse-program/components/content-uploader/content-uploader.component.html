@@ -2,7 +2,6 @@
 <div class="twelve wide column" *ngIf="showPreview">
     <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
 </div>
-
 <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
     class="sb-modal sb-file-upload-modal" appBodyScroll (dismissed)="closeModal();" #modal>
 
@@ -41,14 +40,6 @@
                   <div>Browse</div>
               </div>
           </div>
-
-          <!-- <dialog class="qq-alert-dialog-selector">
-              <div class="qq-dialog-message-selector"></div>
-              <div class="qq-dialog-buttons">
-                  <button type="button" class="qq-cancel-button-selector">Close</button>
-              </div>
-          </dialog> -->
-
           <dialog class="qq-confirm-dialog-selector">
               <div class="qq-dialog-message-selector"></div>
               <div class="qq-dialog-buttons">
@@ -66,7 +57,7 @@
               </div>
           </dialog>
       </div>
-  </div>
+    </div>
   <div class="ui modal active" style="top: 10% !important">
       <div class="header">
           <div class="ui grid">
@@ -89,8 +80,8 @@
           <div *ngIf="loading" id="upload-content-loader-area"  style="width:69px;height:89px; top:38%;left:45%; position:absolute; padding:2px;"><img width="64" height="64" src="../../../../../assets/images/loader.gif"><br>Uploading..</div>
           <div class="ui message">
               <ul class="list">
-                  <li>File accepted - {{templateDetails.filesAccepted}}</li>
-                  <li>Max file size - {{templateDetails.filesize}} Mb</li>
+                  <li>File accepted - {{templateDetails.filesConfig.accepted}}</li>
+                  <li>Max file size - {{templateDetails.filesConfig.size}} Mb</li>
               </ul>
           </div>
       </div>
