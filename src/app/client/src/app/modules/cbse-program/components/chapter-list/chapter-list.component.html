@@ -1,44 +1,574 @@
+<div class="sb-cbse-homepage-container">
+
+  <!-- Contribute & Review Section -->
+  <div class="ui pointing secondary menu sb-bg-white">
+    <div class="ui container">
+      <a class="item active">Contribute</a>
+      <a class="item">Review</a>
+    </div>
+  </div>
+
+  <!-- Header Section -->
+  <div class="sb-pageSection-header">
+    <div class="ui container d-flex pt-24 pb-16">
+        <div class="d-flex mr-auto flex-ai-center">
+            <img src="./assets/images/book.png" alt="Book" title="Book" style="max-width: 48px;">
+            <div class="textbook-details ml-8">
+              <label class="d-block fs-1 mb-0">Mathematics</label>
+              <label class="d-block fs-0-92 font-weight-normal">Class 1</label>
+            </div>
+          </div>
+
+          <div class="sb-textbook-allchapters mr-24">
+            <label class="fs-0-92 font-weight-normal">Select Chapters</label>
+            <sui-select class="selection w-100" placeholder="All Chapters" [(ngModel)]="selectedOptions" [options]="options"
+              labelField="name" [isSearchable]="searchable" [isDisabled]="disabled" #multiSelect>
+              <sui-select-option *ngFor="let option of multiSelect1" [value]="option">
+              </sui-select-option>
+            </sui-select>
+          </div>
+
+          <div class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap ml-16">
+            <dl class="sb-meta-data">
+              <dt>23</dt>
+              <dd>Total Contribution</dd>
+            </dl>
+            <dl class="sb-meta-data">
+              <dt>9</dt>
+              <dd>My Contribution</dd>
+            </dl>
+            <dl class="sb-meta-data">
+              <dt>5</dt>
+              <dd>Rejected</dd>
+            </dl>
+            <dl class="sb-meta-data active">
+              <dt>6</dt>
+              <dd>Under Review</dd>
+            </dl>
+          </div>
+    </div>
+
+
+  </div>
+
+  <!-- Accordion Section -->
+  <div class="ui container sb-textbook-details-container mb-24">
+
+    <div class="sb-chapterlist">
+      <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
+        <sui-accordion-panel [isOpen]="true">
+          <div title class="sb-accordion-title d-flex flex-ai-center">
+            <i class="chevron down icon mr-16"></i>
+            Chapter 1
+            <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
+              (mousedown)="showModal = !showModal"><i class="add icon"></i>Create</button>
+
+          </div>
+          <div content>
+            <div class="chapter-lists level1">
+              <div class="chapter-lists--item">
+                <span class="item-name">Experiment 1</span>
+                <span class="item-status mr-24">
+                  <span class="sb-label sb-label-table sb-label-success-0">Under Review</span>
+                </span>
+                <span class="item-link mr-16"><button type="button"
+                    class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
+                <div class="item relative position">
+                  <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
+                    <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+                    <div class="menu" suiDropdownMenu>
+                      <div class="item">Preview</div>
+                      <div class="item" (click)="showLargeModal = !showLargeModal">Move</div>
+
+                      <div class="item">Delete</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="chapter-lists--item">
+                <span class="item-name">Experiment 1</span>
+                <span class="item-status mr-24">
+                  <span class="sb-label sb-label-table sb-label-primary-100">Published</span>
+                </span>
+                <span class="item-link mr-16"><button type="button"
+                    class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
+                <div class="item relative position">
+                  <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
+                    <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+                    <div class="menu" suiDropdownMenu>
+                      <div class="item">Preview</div>
+                      <div class="item" (click)="showLargeModal = !showLargeModal">Move</div>
+
+                      <div class="item">Delete</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sb-chapterlist-child">
+              <sui-accordion-panel [isOpen]="true">
+                <div title class="sb-accordion-title d-flex flex-ai-center">
+                  <i class="chevron down icon mr-16"></i>
+                  Chapter 1.1
+                  <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
+                    (mousedown)="showModal = !showModal"><i class="add icon"></i>Create</button>
+                </div>
+                <div content>
+                  <div class="chapter-lists level2">
+                    <div class="chapter-lists--item">
+                      <span class="item-name">Experiment 4</span>
+                      <span class="item-status mr-24">
+                        <span class="sb-label sb-label-table sb-label-primary-100">Published</span>
+                      </span>
+                      <span class="item-link mr-16"><button type="button"
+                          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
+                      <div class="item relative position">
+                        <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown
+                          autoClose="itemClick">
+                          <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+                          <div class="menu" suiDropdownMenu>
+                            <div class="item">Preview</div>
+                            <div class="item" (click)="showLargeModal = !showLargeModal">Move</div>
+
+                            <div class="item">Delete</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <sui-accordion-panel [isOpen]="true">
+                    <div title class="sb-accordion-title d-flex flex-ai-center">
+                      <i class="chevron down icon mr-16"></i>
+                      Chapter 1.1.1
+                      <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
+                        (mousedown)="showModal = !showModal"><i class="add icon"></i>Create</button>
+                    </div>
+                    <div content>
+                      <div class="chapter-lists level3">
+                        <div class="chapter-lists--item">
+                          <span class="item-name">Experiment 4</span>
+                          <span class="item-status mr-24">
+                            <span class="sb-label sb-label-table sb-label-success-0">Under Review</span>
+
+                          </span>
+                          <span class="item-link mr-16"><button type="button"
+                              class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
+                          <div class="item relative position">
+                            <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown
+                              autoClose="itemClick">
+                              <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+                              <div class="menu" suiDropdownMenu>
+                                <div class="item">Preview</div>
+                                <div class="item" (click)="showLargeModal = !showLargeModal">Move</div>
+
+                                <div class="item">Delete</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <sui-accordion-panel [isOpen]="true">
+                        <div title class="sb-accordion-title d-flex flex-ai-center">
+                          <i class="chevron down icon mr-16"></i>
+                          Chapter 1.1.1.1
+                          <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
+                            (mousedown)="showModal = !showModal"><i class="add icon"></i>Create</button>
+
+                        </div>
+                        <div content>
+                          <div class="chapter-lists level4">
+                            <div class="chapter-lists--item">
+                              <span class="item-name">Experiment 4</span>
+                              <span class="item-status mr-24">
+                                <span class="sb-label sb-label-table sb-label-error-0">Rejected</span>
+                              </span>
+                              <span class="item-link mr-16"><button type="button"
+                                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
+                              <div class="item relative position">
+                                <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown
+                                  autoClose="itemClick">
+                                  <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+                                  <div class="menu" suiDropdownMenu>
+                                    <div class="item">Preview</div>
+                                    <div class="item" (click)="showLargeModal = !showLargeModal">Move</div>
+
+                                    <div class="item">Delete</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </sui-accordion-panel>
+                    </div>
+                  </sui-accordion-panel>
+                </div>
+              </sui-accordion-panel>
+            </div>
+          </div>
+        </sui-accordion-panel>
+
+        <sui-accordion-panel [isOpen]="false">
+          <div title class="sb-accordion-title d-flex flex-ai-center"><i class="chevron down icon mr-16"></i>
+            Chapter 2
+            <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
+              (mousedown)="showModal = !showModal"><i class="add icon"></i>Create</button>
+          </div>
+          <div content>
+            <div class="chapter-lists">
+              <div class="chapter-lists--item">
+                <span class="item-name">Experiment 7</span>
+                <span class="item-status mr-24">
+                  <span class="sb-label sb-label-table sb-label-success-0">Under Review</span>
+                </span>
+                <span class="item-link mr-16"><button type="button"
+                    class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
+                <div class="item relative position">
+                  <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
+                    <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+                    <div class="menu" suiDropdownMenu>
+                      <div class="item">Preview</div>
+                      <div class="item">Move</div>
+
+                      <div class="item">Delete</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="chapter-lists--item">
+                <span class="item-name">Experiment 8</span>
+                <span class="item-status mr-24">
+                  <span class="sb-label sb-label-table sb-label-primary-100 ">Published</span>
+                </span>
+                <span class="item-link mr-16"><button type="button"
+                    class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
+                <div class="item relative position">
+                  <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
+                    <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+                    <div class="menu" suiDropdownMenu>
+                      <div class="item">Preview</div>
+                      <div class="item" (click)="showLargeModal = !showLargeModal">Move</div>
+
+                      <div class="item">Delete</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="chapter-lists--item">
+                <span class="item-name">Experiment 9</span>
+                <span class="item-status mr-24">
+                  <span class="sb-label sb-label-table sb-label-error-0">Rejected</span>
+                </span>
+                <span class="item-link mr-16"><button type="button"
+                    class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
+                <div class="item relative position">
+                  <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
+                    <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+                    <div class="menu" suiDropdownMenu>
+                      <div class="item">Preview</div>
+                      <div class="item" (click)="showLargeModal = !showLargeModal">Move</div>
+
+                      <div class="item">Delete</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sui-accordion-panel>
+
+      </sui-accordion>
+    </div>
+  </div>
+
+  <!-- Create Modal Section -->
+  <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+    class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal" #modal>
+    <div class="sb-modal-header">
+      Create
+    </div>
+    <div class="sb-modal-content">
+      <div class="twelve wide column">
+        <div class="ui grid flex-jc-center m-0">
+          <div class="three wide column p-8">
+            <div class="ui card text-center common-contribution-card active">
+              <div class="content">
+                <i class="check circle icon"></i>
+                <img class="mt-16" src="assets/images/book.png" rel="placeholder">
+                <div class="content-title py-16">Course</div>
+              </div>
+            </div>
+          </div>
+          <div class="three wide column p-8">
+            <div class="ui card text-center common-contribution-card">
+              <div class="content">
+                <i class="check circle icon"></i>
+                <img class="mt-16" src="assets/images/book.png" rel="placeholder">
+                <div class="content-title py-16">Explanation </div>
+              </div>
+            </div>
+          </div>
+          <div class="three wide column p-8">
+            <div class="ui card text-center common-contribution-card">
+              <div class="content">
+                <i class="check circle icon"></i>
+                <img class="mt-16" src="assets/images/book.png" rel="placeholder">
+                <div class="content-title py-16">Lesson PLans</div>
+              </div>
+            </div>
+          </div>
+          <div class="three wide column p-8">
+            <div class="ui card text-center common-contribution-card">
+              <div class="content">
+                <i class="check circle icon"></i>
+                <img class="mt-16" src="assets/images/book.png" rel="placeholder">
+                <div class="content-title py-16">Practice Sets</div>
+              </div>
+            </div>
+          </div>
+          <div class="three wide column p-8">
+            <div class="ui card text-center common-contribution-card">
+              <div class="content">
+                <i class="check circle icon"></i>
+                <img class="mt-16" src="assets/images/book.png" rel="placeholder">
+                <div class="content-title py-16">Curiosity</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selection of Question in modal -->
+
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showModal = !showModal">
+        Ok
+      </button>
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showModal = !showModal">
+        Cancel
+      </button>
+    </div>
+  </sui-modal>
+
+  <!-- Move to Modal Section -->
+  <sui-modal *ngIf="showLargeModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+    class="sb-modal" appBodyScroll (dismissed)="showLargeModal = !showLargeModal" #modal>
+    <div class="sb-modal-header">
+      Move to
+    </div>
+    <!-- Selection of Layout in modal -->
+    <div class="sb-modal-content sb-chapterlist-modal">
+
+      <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
+        <sui-accordion-panel [isOpen]="true">
+          <div title class="sb-accordion-title d-flex flex-ai-center">
+            <i class="chevron down icon mr-16"></i>
+            <div class="item d-flex flex-ai-center cursor-pointer width-100">
+              <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                <input type="radio" id="radio1" name="example">
+                <label for="radio1">Chapter 1</label>
+              </div>
+            </div>
+          </div>
+          <div content>
+            <div class="chapter-lists level1">
+              <div class="chapter-lists--item">
+                <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                  <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                    <input type="radio" id="radio1.1" name="example">
+                    <label for="radio1.1">Chapter 1.1</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="chapter-lists--item">
+                <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                  <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                    <input type="radio" id="radio1.0" name="example">
+                    <label for="radio1.0">Chapter 1.0</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="chapter-lists--item">
+                <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                  <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                    <input type="radio" id="radio1.1.1" name="example">
+                    <label for="radio1.1.1">Chapter 1.1.1</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="chapter-lists--item">
+                <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                  <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                    <input type="radio" id="radio1.1.1.1" name="example">
+                    <label for="radio1.1.1.1">Chapter 1.1.1.1</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sui-accordion-panel>
+
+      </sui-accordion>
+    </div>
+    <!-- Selection of Question in modal -->
+
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLargeModal = !showLargeModal">
+        Move
+      </button>
+    </div>
+  </sui-modal>
+
+</div>
+
 
 <div *ngIf='!showLoader && !showError' class="ui container sb-chapter-list" [appTelemetryImpression]="telemetryImpression">
-  <div *ngIf="textBookChapters.length" class="mt-16">
-    <sui-accordion class="styled fluid sb-accordion" [closeOthers]="true">
-      <sui-accordion-panel [isOpen]="(selectedAttributes.lastOpenedUnit == 0) ? (i == 0) : (selectedAttributes.lastOpenedUnit == textbook.identifier)" *ngFor="let textbook of textBookChapters; let i = index">
-        <div title class="sb-accordion-title">
-          {{textbook.name}} ( {{textbook.topic}} )
-          <i class="chevron down icon right-floated d-flex flex-ai-center"></i>
-        </div>
-        <div content class="sb-table-container my-0 sb-accordion-content sb-bg-white">
-          <table class="sb-table sb-table-fixed sb-table-hover">
-            <thead class="sb-table-header heading-large">
-              <tr>
-                <th>{{'Question Category'}}</th>
-                <th>{{labels[0]}}</th>
-                <th>{{labels[1]}}</th>
-                <th *ngIf="labels[2]">{{labels[2]}}</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody class="sb-table-body body-large"  *ngFor = "let question_category of routerQuestionCategory; let z = index">
-              <tr (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
-              appTelemetryInteract [telemetryInteractEdata]="{id: question_category+'_tr', type:'click', pageid:'chapterlist', extra:{type: questionPattern[i] ,category: question_category ,topic:textbook.topic}}">
-                <td>{{questionTypeName[textbook[question_category].name]}}</td>
-                <td>{{textbook[question_category].total}}</td>
-                <td>{{textbook[question_category].me}}</td>
-                <td *ngIf="selectedAttributes.currentRole !== 'REVIEWER'">{{textbook[question_category].attention}}</td>
-                <td *ngIf="selectedAttributes.currentRole !== 'PUBLISHER'"><button class="sb-btn sb-btn-primary sb-btn-normal"
-                  (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
-                  appTelemetryInteract [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: questionPattern[z],category: question_category ,topic:textbook.topic}}" >Open</button></td>
-                <td *ngIf="selectedAttributes.currentRole === 'PUBLISHER'"><button class="sb-btn sb-btn-primary sb-btn-normal"
-                  (click)="emitQuestionTypeTopic(question_category, textbook.topic, textbook.identifier, textbook[question_category].buttonStatus, textbook[question_category].resourceName)"
-                  appTelemetryInteract [telemetryInteractEdata]="{id:'open_' + question_category + '_questions',type:'click',pageid:'chapterlist',extra:{type: questionPattern[z],category: question_category ,topic:textbook.topic}}" >{{textbook[question_category].buttonStatus ? 'Edit' : 'Create' }}</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </sui-accordion-panel>
-    </sui-accordion>
+  <div class="mt-16" *ngIf="collectionHierarchy.length && !showContentUploader">
+      <div class="sb-cbse-homepage-container">
+
+          <!-- Header Section -->
+          <div class="sb-pageSection-header">
+            <div class="ui container d-flex pt-24 pb-16">
+                <div class="d-flex mr-auto flex-ai-center">
+                    <img src="./assets/images/book.png" alt="Book" title="Book" style="max-width: 48px;">
+                    <div class="textbook-details ml-8">
+                      <label class="d-block fs-1 mb-0">Mathematics</label>
+                      <label class="d-block fs-0-92 font-weight-normal">Class 1</label>
+                    </div>
+                  </div>
+
+                  <div class="sb-textbook-allchapters mr-24">
+                    <label class="fs-0-92 font-weight-normal">Select Chapters</label>
+                    <sui-select class="selection w-100" placeholder="All Chapters"  [isSearchable]=true
+                      labelField="name" valueField="identifier" [(ngModel)]="selectdChapterOption"  (selectedOptionChange)="onSelectChapterChange()"
+                      [options]="levelOneChapterList" #selectdChapter >
+                        <sui-select-option *ngFor="let option of selectdChapter.filteredOptions" [value]="option">
+                        </sui-select-option>
+                    </sui-select>
+                  </div>
+
+                  <div class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap ml-16">
+                    <dl class="sb-meta-data">
+                      <dt>{{countData['total']}}</dt>
+                      <dd>Total Contribution</dd>
+                    </dl>
+                    <dl class="sb-meta-data">
+                      <dt>{{countData['mycontribution']}}</dt>
+                      <dd>My Contribution</dd>
+                    </dl>
+                    <dl class="sb-meta-data">
+                        <dt>{{countData['reject']}}</dt>
+                      <dd>Rejected</dd>
+                    </dl>
+                    <dl class="sb-meta-data">
+                        <dt>{{countData['review']}}</dt>
+                      <dd>Under Review</dd>
+                    </dl>
+                  </div>
+            </div>
+
+
+          </div>
+
+          <!-- Accordion Section -->
+          <div class="ui container sb-textbook-details-container mb-24">
+
+            <div class="sb-chapterlist">
+              <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
+                <app-recursive-tree [textbookChapters]="collectionHierarchy" [selectedChapter]="selectdChapterOption"
+                (resourceTemplate)="showResourceTemplate($event)"></app-recursive-tree>
+              </sui-accordion>
+            </div>
+          </div>
+
+          <app-resource-template *ngIf='showResourceTemplatePopup' (templateSelection)="handleTemplateSelection($event)"></app-resource-template>
+
+
+          <!-- Move to Modal Section -->
+          <sui-modal *ngIf="showLargeModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+            class="sb-modal" appBodyScroll (dismissed)="showLargeModal = !showLargeModal" #modal>
+            <div class="sb-modal-header">
+              Move to
+            </div>
+            <!-- Selection of Layout in modal -->
+            <div class="sb-modal-content sb-chapterlist-modal">
+
+              <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
+                <sui-accordion-panel [isOpen]="true">
+                  <div title class="sb-accordion-title d-flex flex-ai-center">
+                    <i class="chevron down icon mr-16"></i>
+                    <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                      <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                        <input type="radio" id="radio1" name="example">
+                        <label for="radio1">Chapter 1</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div content>
+                    <div class="chapter-lists level1">
+                      <div class="chapter-lists--item">
+                        <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                          <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                            <input type="radio" id="radio1.1" name="example">
+                            <label for="radio1.1">Chapter 1.1</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="chapter-lists--item">
+                        <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                          <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                            <input type="radio" id="radio1.0" name="example">
+                            <label for="radio1.0">Chapter 1.0</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="chapter-lists--item">
+                        <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                          <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                            <input type="radio" id="radio1.1.1" name="example">
+                            <label for="radio1.1.1">Chapter 1.1.1</label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="chapter-lists--item">
+                        <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                          <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                            <input type="radio" id="radio1.1.1.1" name="example">
+                            <label for="radio1.1.1.1">Chapter 1.1.1.1</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </sui-accordion-panel>
+
+              </sui-accordion>
+            </div>
+
+            <!-- Selection of Question in modal -->
+
+            <div class="sb-modal-actions">
+              <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLargeModal = !showLargeModal">
+                Move
+              </button>
+            </div>
+          </sui-modal>
+      </div>
   </div>
-  <div class="twelve wide column" *ngIf="!textBookChapters.length">
+  <div class="twelve wide column" *ngIf="showContentUploader">
+      <app-content-uploader [selectedAttributes]="selectedAttributes" [templateDetails]="templateDetails"></app-content-uploader>
+  </div>
+  <div class="twelve wide column" *ngIf="!collectionHierarchy.length">
     <app-no-result></app-no-result>
   </div>
 </div>

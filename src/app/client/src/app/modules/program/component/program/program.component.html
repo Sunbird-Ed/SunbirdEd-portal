@@ -1,3 +1,7 @@
-<app-cbse *ngIf="!showLoader && !showOnboardPopup" [programDetails]="programDetails" [userProfile]="userProfile"></app-cbse>
+<app-program-header *ngIf="!showLoader" [headerComponentInput]="headerComponentInput" (emitTabChange)="tabChangeHandler($event)"></app-program-header>
+
+<ndc-dynamic *ngIf="!showLoader" [ndcDynamicComponent]="component" [ndcDynamicInputs]="dynamicInputs" [ndcDynamicOutputs]="outputs"></ndc-dynamic>
+
+<!-- <app-cbse *ngIf="!showLoader && !showOnboardPopup" [programDetails]="programDetails" [userProfile]="userProfile"></app-cbse> -->
 <app-onboard-popup *ngIf="!showLoader && showOnboardPopup" [programDetails]='programDetails'
   (updateEvent)="handleOnboardEvent($event)"></app-onboard-popup>

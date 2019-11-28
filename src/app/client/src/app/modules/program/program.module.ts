@@ -11,12 +11,18 @@ import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { OnboardPopupComponent } from './component/onboard-popup/onboard-popup.component';
 import { CbseProgramModule } from '@sunbird/cbse-program';
+import { ProgramHeaderComponent } from './component/program-header/program-header.component';
+import { CollectionComponent, DashboardComponent } from '../cbse-program';
+import { DynamicModule } from 'ng-dynamic-component';
+import { CommonConsumptionModule} from '@project-sunbird/common-consumption';
+
 
 @NgModule({
   imports: [
     SuiModule,
     CommonModule,
     ProgramRoutingModule,
+    CommonConsumptionModule,
     SlickModule,
     FormsModule,
     ReactiveFormsModule,
@@ -24,13 +30,18 @@ import { CbseProgramModule } from '@sunbird/cbse-program';
     CoreModule,
     NgInviewModule,
     TelemetryModule,
-    CbseProgramModule
+    CbseProgramModule,
+    DynamicModule.withComponents([CollectionComponent, DashboardComponent])
   ],
   declarations: [
     ProgramComponent,
     OnboardPopupComponent,
+    ProgramHeaderComponent,
   ],
-  providers: []
+  exports: [
+    ProgramComponent,
+    OnboardPopupComponent
+  ]
 })
 export class ProgramModule {
 }

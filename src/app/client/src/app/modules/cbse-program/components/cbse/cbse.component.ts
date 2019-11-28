@@ -4,6 +4,10 @@ import { ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { first } from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import { QuestionListComponent  } from '../question-list/question-list.component';
+import { ContentUploaderComponent } from '../content-uploader/content-uploader.component';
+import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
+
 
 interface ISelectedAttributes {
     textBookUnitIdentifier?: any;
@@ -37,14 +41,17 @@ interface ISelectedAttributes {
 export class CbseComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') private modal;
-  @Input() programDetails: any;
-  @Input() userProfile: any;
+  @Input() collectionComponentInput: any;
+  // @Input() programDetails: any;
+  // @Input() userProfile: any;
   formFieldOptions: Array<any>;
-  public showLoader = false;
-  public showDashboard = false;
+  public programDetails: any;
+  public userProfile: any;
+  public showLoader: boolean = false;
+  public showDashboard: boolean = false;
   public publishInProgress = false;
   public selectedAttributes: ISelectedAttributes = {};
-  public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion', 'certificate'];
+  public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion', 'uploadContent'];
   public currentStage = 0;
   public role: any = {};
   public resourceName: string;
@@ -58,6 +65,9 @@ export class CbseComponent implements OnInit, OnDestroy {
   public selectedOption;
   public showCertificate = false;
   public showModal = false;
+  public dynamicComponent: any;
+  public selectedComponent: any;
+  public templateDetails: any;
   constructor(public frameworkService: FrameworkService, public toasterService: ToasterService) { }
   private questionTypeName = {
     vsa: 'Very Short Answer',
@@ -66,7 +76,20 @@ export class CbseComponent implements OnInit, OnDestroy {
     mcq: 'Multiple Choice Question',
     curiosity: 'Curiosity Question'
   };
+  private creationComponentsList = {
+    ExplanationResource: ContentUploaderComponent,
+    ExperientialResource: ContentUploaderComponent,
+    PracticeQuestionSet: QuestionListComponent,
+    CuriosityQuestionSet: QuestionListComponent,
+    ContentPreview: QuestionPreviewComponent
+  };
+
+  public inputs: any;
+  public outputs: any;
+  public contentData: any;
   ngOnInit() {
+    this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
+    this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
     this.selectedAttributes = {
       currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
       framework: _.get(this.programDetails, 'config.scope.framework'),
@@ -74,7 +97,7 @@ export class CbseComponent implements OnInit, OnDestroy {
       board: _.get(this.programDetails, 'config.scope.board[0]'),
       medium: _.get(this.programDetails, 'config.scope.medium[0]'),
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
-      programId:  _.get(this.programDetails, 'programId'),
+      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1' || _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
@@ -95,7 +118,20 @@ export class CbseComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.showModal = true;
     }, 500);
+
+    this.outputs = {
+      contentDataHandler: (event) => {
+        this.contentData =  event.contentData;
+        this.selectedComponent = this.creationComponentsList[event.templateDetails];
+        this.inputs = {
+          questionMetaData: this.contentData,
+          selectedAttributes: this.selectedAttributes
+        };
+      }
+    };
   }
+
+
 
   public selectedClassSubjectHandler(event) {
     this.selectedAttributes.gradeLevel =  event.gradeLevel;
@@ -181,7 +217,26 @@ export class CbseComponent implements OnInit, OnDestroy {
       this.selectedAttributes.lastOpenedUnit = 0;
     }
   }
-
+  selectedTemplatehandler(event) {
+    this.templateDetails = event.template;
+    this.selectedComponent = this.creationComponentsList[event.template.contentType];
+    if (_.includes(event.template.mimeType, 'application/vnd.ekstep.ecml-archive')) {
+      this.inputs = {
+        selectedAttributes: this.selectedAttributes,
+        role: {
+          currentRole: this.selectedAttributes.currentRole
+        },
+        resourceName: this.resourceName,
+        templateDetails: this.templateDetails
+      }
+    } else {
+      this.inputs = {
+        selectedAttributes: this.selectedAttributes,
+        templateDetails: this.templateDetails
+      };
+    }
+    this.navigate('next');
+  }
   navigate(step) {
     if (step === 'next') {
       this.currentStage = this.currentStage + 1;

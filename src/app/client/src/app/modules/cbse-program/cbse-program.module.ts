@@ -16,22 +16,39 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CsvUploadComponent } from './components/csv-upload/csv-upload.component';
 import { CertificateModule } from './../certificate/certificate.module';
 import { CertificateDashboardComponent } from './components/certificate-dashboard/certificate-dashboard.component';
+import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
+import { ContentUploaderComponent } from './components/content-uploader/content-uploader.component';
+import { ResourceTemplateComponent } from './components/resource-template/resource-template.component';
+import { DynamicModule } from 'ng-dynamic-component';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CollectionComponent } from './components/collection/collection.component';
+
+
 @NgModule({
   declarations: [CsvUploadComponent, QuestionListComponent, SelectTextbookComponent, CbseComponent, QuestionCreationComponent,
     ChapterListComponent,
     McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
-    QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent, TextbookListComponent, DashboardComponent,
-    CertificateDashboardComponent],
+    QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent,
+    TextbookListComponent, DashboardComponent, RecursiveTreeComponent,
+    ContentUploaderComponent, CertificateDashboardComponent,  ResourceTemplateComponent, CollectionComponent],
   imports: [
     CommonModule,
     SuiTabsModule,
+    CommonConsumptionModule,
     SuiModule,
     ReactiveFormsModule, FormsModule, SharedModule,
     InfiniteScrollModule,
     PlayerHelperModule,
     TelemetryModule,
-    CertificateModule
+    CertificateModule,
+    DynamicModule.withComponents([QuestionListComponent, SelectTextbookComponent,
+       QuestionCreationComponent, ChapterListComponent,
+      McqCreationComponent, CkeditorToolComponent ,
+      McqTemplateSelectionComponent,
+      QuestionPreviewComponent, QuestionCreationHeaderComponent,
+      TextbookListComponent, DashboardComponent, RecursiveTreeComponent, ContentUploaderComponent, ResourceTemplateComponent]),
+
   ],
   exports: [ CbseComponent, SanitizeHtmlPipe ]
 })

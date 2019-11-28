@@ -1,0 +1,20 @@
+
+<div *ngIf='!showLoader && !textbook'>
+  <div class="ui container">
+      <!-- <sb-library-filters [list]="['All', 'First', 'Second']" [layout]="'square'" [selectedItems]="[1, 2, 3]"></sb-library-filters> -->
+    <div *ngFor="let key of objectKey(textbookList)">
+      <sb-library-cards-grid [title]="key" appTelemetryInteract [contentList]="textbookList[key]" [telemetryInteractEdata]="telemetryInteract" (cardClick)="cardClickHandler($event)"></sb-library-cards-grid>
+      <!-- <div class="masonry-item" *ngFor="let content of textbookList[key]; let i = index;"> -->
+        <!-- <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="telemetryInteract" [data]="content" appTelemetryInteract [telemetryInteractEdata]="telemetryInteract" (clickEvent)="showTopics($event)"></app-card> -->
+      <!-- </div> -->
+    </div>
+  </div>
+  <!-- <div class="twelve wide column">
+    <app-no-result [data]="{ message: 'messages.stmsg.m0006'}"></app-no-result>
+  </div> -->
+</div>
+
+<div *ngIf="textbook">
+  <app-chapter-list [selectedAttributes]="selectedAttributes" [topicList]="topicList" [role]="role" [selectedSchool]="selectedSchool" (selectedQuestionTypeTopic)="selectedQuestionTypeTopic"></app-chapter-list>
+
+</div>
