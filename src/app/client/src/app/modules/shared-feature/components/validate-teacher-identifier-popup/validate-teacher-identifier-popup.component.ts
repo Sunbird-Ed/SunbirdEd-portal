@@ -59,6 +59,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   handleSubmitButton() {
     this.enableSubmitButton = false;
     this.userDetailsForm.valueChanges.subscribe(val => {
+      this.showError = false;
       this.enableSubmitButton = (this.userDetailsForm.status === 'VALID');
     });
   }
@@ -87,20 +88,19 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
       };
     }
     this.userService.userMigrate(request).subscribe((data) => {
-      if (data && _.get(data, 'responseCode') === 'invalidUserExternalId' && _.get(data, 'result.error') === true &&
-        _.get(data, 'result.remainingAttempt') > 0) {
-        this.showError = true;
-      } else if (_.get(data, 'result.remainingAttempt') === 0) {
-        this.extIdFailed = true;
-      }
-
       if (_.get(data, 'responseCode') === 'OK' && _.get(data, 'result.response') === 'SUCCESS') {
         this.extIdVerified = true;
       }
-
     }, (error) => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      this.closeModal();
+      if (_.get(error, 'responseCode') === 'invalidUserExternalId' && _.get(error, 'result.remainingAttempt') > 0) {
+        this.userDetailsForm.reset();
+        this.showError = true;
+      } else if (_.get(error, 'error.params.err') === 'USER_MIGRATION_FAILED') {
+        this.extIdFailed = true;
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.closeModal();
+      }
     });
   }
 

@@ -10,8 +10,8 @@ export const mockUserData = {
                 'userFeed': [
                     {
                         'expireOn': 1574611273492,
-                        'feedData': {
-                            'channel': [
+                        'data': {
+                            'prospectChannels': [
                                 'TN',
                                 'RJ',
                                 'AP'
@@ -91,12 +91,14 @@ export const mockUserData = {
         'id': 'api.user.migrate',
         'ver': 'v1',
         'ts': '2019-11-18 18:01:13:308+0530',
-        'params': {
-            'resmsgid': null,
-            'msgid': null,
-            'err': 'USER_MIGRATION_FAILED',
-            'status': 'USER_MIGRATION_FAILED',
-            'errmsg': 'user is failed to migrate'
+        'error': {
+            'params': {
+                'resmsgid': null,
+                'msgid': null,
+                'err': 'USER_MIGRATION_FAILED',
+                'status': 'USER_MIGRATION_FAILED',
+                'errmsg': 'user is failed to migrate'
+            }
         },
         'responseCode': 'CLIENT_ERROR',
         'result': {}

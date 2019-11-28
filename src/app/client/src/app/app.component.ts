@@ -90,6 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isLocationConfirmed = true;
   userFeed: any;
   showUserVerificationPopup = false;
+  feedCategory = 'OrgMigrationAction';
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -485,13 +486,14 @@ export class AppComponent implements OnInit, OnDestroy {
   /** It will fetch user feed data if user is custodian as well as logged in. */
   getUserFeedData() {
     this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
-      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
-        if (this.userService.loggedIn) {
+      if (this.userService.loggedIn) {
+        if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
           this.userService.getFeedData().subscribe(
             (data) => {
               const feedData = _.get(data, 'result.response.userFeed[0]');
-              if (feedData && _.get(feedData, 'category') === 'orgMigrationAction') {
+              if (feedData && _.get(feedData, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
                 this.userFeed = feedData;
+                this.showUserVerificationPopup = true;
               }
               if (this.isLocationConfirmed) {
                 this.showUserVerificationPopup = true;

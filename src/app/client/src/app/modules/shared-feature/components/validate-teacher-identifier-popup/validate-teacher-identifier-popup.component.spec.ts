@@ -60,14 +60,14 @@ describe('ValidateTeacherIdentifierPopupComponent', () => {
 
   it('should call verifyExtId() with action as accept and should show error for invalid ext. id ', () => {
     const userService = TestBed.get(UserService);
-    spyOn(userService, 'userMigrate').and.returnValue(observableOf(mockUserData.migrateErrorResponseWithAttemptCount));
+    spyOn(userService, 'userMigrate').and.callFake(() => observableThrowError(mockUserData.migrateErrorResponseWithAttemptCount));
     component.verifyExtId('accept');
     expect(component.showError).toBe(true);
   });
 
   it('should call verifyExtId() with action as accept and should show error after trying twice ', () => {
     const userService = TestBed.get(UserService);
-    spyOn(userService, 'userMigrate').and.returnValue(observableOf(mockUserData.migrateErrorResponseWithNoAttemptCount));
+    spyOn(userService, 'userMigrate').and.callFake(() => (observableThrowError(mockUserData.migrateErrorResponse)));
     component.verifyExtId('accept');
     expect(component.extIdFailed).toBe(true);
   });
@@ -80,7 +80,7 @@ describe('ValidateTeacherIdentifierPopupComponent', () => {
   });
 
   it('should process feedData', () => {
-    component.channelData = _.get(component.userFeedData, 'feedData.channel');
+    component.channelData = _.get(component.userFeedData, 'data.prospectChannels');
     component.processUserFeedData();
     expect(component.showStateDropdown).toBeTruthy();
   });
