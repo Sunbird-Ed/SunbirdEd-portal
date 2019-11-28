@@ -118,7 +118,6 @@ export class OnboardingUserPreferenceComponent implements OnInit {
   }
 
   saveUserData() {
-    
     const requestData = {
       'request': {
         'framework': {
