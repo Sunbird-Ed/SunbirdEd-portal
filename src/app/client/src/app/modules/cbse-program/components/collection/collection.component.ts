@@ -51,7 +51,7 @@ export class CollectionComponent implements OnInit {
   public userProfile: any;
   public programSession: any; // TODO: change to just programDetails after creating new program
   public collectionComponentConfig: any;
-  public textbookList: Array<any>;
+  public collectionList: Array<any>;
   public textbook;
   public role: any = {};
   showLoader = true;
@@ -123,11 +123,21 @@ export class CollectionComponent implements OnInit {
           filteredTextbook.push(collection[0]);
         }
       });
-      this.textbookList = this.utilService.getDataForCard(filteredTextbook, constantData, dynamicFields, metaData);
-      this.textbookList = _.groupBy(this.textbookList, 'subject');
-      const textbook = this.textbookList;
+      const collectionCards = this.utilService.getDataForCard(filteredTextbook, constantData, dynamicFields, metaData);
+      const collectionsWithCardImage = _.forEach(collectionCards, collection => this.addCardImage(collection));
+      this.collectionList = this.groupByCollection(collectionsWithCardImage, 'subject');
+      const textbook = this.collectionList;
       this.showLoader = false;
     });
+  }
+
+  addCardImage(collection) {
+    collection.cardImg = collection.image;
+    return collection;
+  }
+
+  groupByCollection(collection, arg) {
+    return _.groupBy(collection, arg);
   }
 
   cardClickHandler(event) {
