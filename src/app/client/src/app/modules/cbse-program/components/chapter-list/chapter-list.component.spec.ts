@@ -10,7 +10,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, throwError as observableError, of } from 'rxjs';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 
-import { role, selectedAttributes, responseSample, fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample } from './chapter-list.component.data';
+import {
+  role, selectedAttributes, responseSample, fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample
+} from './chapter-list.component.data';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
