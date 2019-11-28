@@ -1,0 +1,10 @@
+<div class="sb-cbse-homepage-container">
+  <!-- Contribute & Review Section -->
+  <div class="ui pointing secondary menu sb-bg-white">
+    <div class="ui container">
+        <ng-container *ngFor="let tab of filterBy('index'); let i = index">
+          <a  *ngIf="tab?.visibility" (click)="handleTabChange(tab.onClick, tab.index)" class="item" [ngClass]="{active: tab.index == defaultTabIndex}">{{tab.label}}</a>
+        </ng-container>
+    </div>
+  </div>
+</div>
