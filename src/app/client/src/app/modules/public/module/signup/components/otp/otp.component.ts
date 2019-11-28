@@ -36,12 +36,16 @@ export class OtpComponent implements OnInit {
   generateVerifyOtpErrorInteractEdata: any;
   createUserErrorInteractEdata: any;
   telemetryCdata: Array<{}>;
-
+  instance: string;
+  emailAddress: any;
+  phoneNumber: any;
   constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit() {
+    this.emailAddress = this.signUpdata.value.email;
+    this.phoneNumber = this.signUpdata.value.phone;
     this.mode = this.signUpdata.controls.contactType.value;
     this.otpForm = new FormGroup({
       otp: new FormControl('', [Validators.required])
@@ -50,6 +54,8 @@ export class OtpComponent implements OnInit {
     this.unabletoVerifyErrorMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.unableToVerifyPhone :
       this.resourceService.frmelmnts.lbl.unableToVerifyEmail;
     this.setInteractEvent();
+    this.instance = _.upperCase(this.resourceService.instance);
+
   }
 
   verifyOTP() {
@@ -104,6 +110,10 @@ export class OtpComponent implements OnInit {
 
   createUser() {
     const createRequest = {
+      params: {
+        source: _.get(this.activatedRoute, 'snapshot.queryParams.client_id'),
+        signupType: 'self'
+      },
       'request': {
         'firstName': _.trim(this.signUpdata.controls.name.value),
         'password': _.trim(this.signUpdata.controls.password.value),
@@ -116,7 +126,6 @@ export class OtpComponent implements OnInit {
       createRequest.request['email'] = this.signUpdata.controls.email.value;
       createRequest.request['emailVerified'] = true;
     }
-
     this.signupService.createUser(createRequest).subscribe(
       (resp: ServerResponse) => {
         const reqQuery = this.activatedRoute.snapshot.queryParams;

@@ -8,7 +8,11 @@ import {Router} from '@angular/router';
 export class WorkspaceComponent implements OnInit {
 
   constructor(public router: Router) {
-    window.scroll(0, 0);
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 
   ngOnInit() {

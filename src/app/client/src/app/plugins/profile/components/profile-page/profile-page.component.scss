@@ -1,5 +1,5 @@
 @import "variables"; 
-
+@import "../../../../../assets/styles/mixins/mixins";
 /* fonts */
   .font-w-bold {
     font-weight: bold !important;
@@ -39,6 +39,12 @@
   .profile-label-container {
     max-width: 600px !important;
   }
+  
+  .profile-label-container {
+    .ui.basic.label:hover {
+      border: 1px solid #fdfdfd !important;
+    }
+  }
 
   @media only screen and (max-width: 767px) {
     .profile-label-container {
@@ -73,7 +79,7 @@
   line-height: 24px !important;
 }
 
-.ui.semi-circular.update.basic.label {
+.ui.semi-circular.update.basic.label, .ui.semi-circular.basic.label {
   border: 1px solid $primary-color !important;
   border-radius: 18.5px;
   font-size: 1.16rem;
@@ -154,3 +160,65 @@ display: inline-block;
 //     opacity: 0;
 //   }
 // }
+
+
+// TODO::need to move this to styles component(right now this is done to avoid shadow DOM)
+.ui.semi-circular.update.basic.label {
+  border-radius: 18.5px;
+  font-size: 1.16rem;
+  padding: 8px 16px;
+  color: #9b9b9b;
+  .icon {
+    margin: 0;
+  }
+}
+
+.ui.semi-circular.dodger-blue.basic.label {
+  border-radius: 18.5px;
+  font-size: 1.16rem;
+  padding: 8px 16px;
+  color: $primary-color;
+  &:hover {
+    border:0;
+  }
+  .icon {
+    margin: 0;
+  }
+}
+
+.ui.label > .recovery-img{
+  background-color: #9b9b9b;
+ -webkit-mask-image: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
+ -webkit-mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
+ mask: url(/assets/images/Recovery.svg) no-repeat 50% 50%;
+ -webkit-mask-size: cover;
+ mask-size: cover;
+ height: 16px;
+ width: 16px;
+}
+.avatar-container {
+  width: 98px;
+  height: 98px;
+  margin: 0 auto;
+
+  .avatar-tickmark {
+    width: $base-block-space*4;
+    height: $base-block-space*4;
+    position: absolute;
+    left: 67%;
+   }
+}
+
+.my-avatar.verified /deep/ .avatar-content {
+  border: 1px solid #008840 !important;
+}
+ 
+ @include respond-below(sm) {
+  .avatar-tickmark {
+    left: 67%;
+  }
+ }
+
+.ui.label.dodger-blue > .recovery-img{
+  background-color: var(--primary-color);
+}

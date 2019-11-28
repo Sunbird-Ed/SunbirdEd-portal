@@ -40,8 +40,8 @@ export class CbseComponent implements OnInit, OnDestroy {
   @Input() programDetails: any;
   @Input() userProfile: any;
   formFieldOptions: Array<any>;
-  public showLoader: boolean = false;
-  public showDashboard: boolean = false;
+  public showLoader = false;
+  public showDashboard = false;
   public publishInProgress = false;
   public selectedAttributes: ISelectedAttributes = {};
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion', 'certificate'];
@@ -57,7 +57,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   public slug ;
   public selectedOption;
   public showCertificate = false;
-  public showModal: boolean = false;
+  public showModal = false;
   constructor(public frameworkService: FrameworkService, public toasterService: ToasterService) { }
   private questionTypeName = {
     vsa: 'Very Short Answer',
@@ -74,8 +74,7 @@ export class CbseComponent implements OnInit, OnDestroy {
       board: _.get(this.programDetails, 'config.scope.board[0]'),
       medium: _.get(this.programDetails, 'config.scope.medium[0]'),
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
-      programId: _.get(this.programDetails, 'programId'),
-      //programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1',
+      programId:  _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
@@ -83,11 +82,11 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
     this.fetchFrameWorkDetails();
     this.selectedAttributes.lastOpenedUnit = 0;
-    this.slug = _.get(this.userProfile, 'rootOrg.slug') || (<HTMLInputElement>document.getElementById('defaultTenant')).value
-    if(_.includes(_.get(this.programDetails,'userDetails.roles'),"CERTIFICATE_ISSUER")){
+    this.slug = _.get(this.userProfile, 'rootOrg.slug') || (<HTMLInputElement>document.getElementById('defaultTenant')).value;
+    if (_.includes(_.get(this.programDetails, 'userDetails.roles'), 'CERTIFICATE_ISSUER')) {
       this.showCertificate = true;
-      (<HTMLInputElement>document.getElementById('workspace')).style.display= "none";
-      (<HTMLInputElement>document.getElementById('curiosity')).style.display= "none";
+      (<HTMLInputElement>document.getElementById('workspace')).style.display = 'none';
+      (<HTMLInputElement>document.getElementById('curiosity')).style.display = 'none';
     }
   }
 
@@ -124,13 +123,13 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.navigate('next');
   }
 
-  handleRoleChange(component?:string) {
+  handleRoleChange(component?: string) {
     this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
     this.showDashboard = (component === 'Dashboard');
-    if(component === 'certificatedashboard'){
+    if (component === 'certificatedashboard') {
       this.showCertDashboard = true;
-      this.selectedOption = "";
-    } else{
+      this.selectedOption = '';
+    } else {
       this.showCertDashboard = false;
     }
   }
@@ -150,13 +149,13 @@ export class CbseComponent implements OnInit, OnDestroy {
   }
   private removeSpecialChars(text) {
     if (text) {
-      const iChars = "!`~@#$^*+=[]\\\'{}|\"<>%"
+      const iChars = '!`~@#$^*+=[]\\\'{}|\"<>%';
       for (let i = 0; i < text.length; i++) {
         if (iChars.indexOf(text.charAt(i)) !== -1) {
           this.toasterService.error(`Special character ${text.charAt(i)} is not allowed`);
         }
       }
-      // tslint:disable-next-line:max-line-length
+       // tslint:disable-next-line:max-line-length
       text = text.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, '');
       return text;
     }
@@ -187,7 +186,7 @@ export class CbseComponent implements OnInit, OnDestroy {
     if (step === 'next') {
       this.currentStage = this.currentStage + 1;
     } else if (step === 'prev') {
-      this.setLastOpenedTopic(step,this.currentStage);
+      this.setLastOpenedTopic(step, this.currentStage);
       this.currentStage = this.currentStage - 1;
     }
   }

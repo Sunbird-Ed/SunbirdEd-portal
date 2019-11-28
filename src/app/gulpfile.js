@@ -9,10 +9,11 @@ const exec = require('child_process').exec
 const brotli = require('gulp-brotli');
 
 // To download editors
-const contentEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/artefacts/editor/content-editor-iframe-2.0.0.zip'
-const collectionEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/artefacts/editor/collection-editor-iframe-2.0.0.zip'
-const genericEditor = 'https://sunbirdpublic.blob.core.windows.net/sunbird-public-dev/artefacts/editor/generic-editor-iframe-2.0.0.zip'
+const contentEditor = process.env.sunbird_content_editor_artifact_url;
+const collectionEditor = process.env.sunbird_collection_editor_artifact_url;
+const genericEditor = process.env.sunbird_generic_editor_artifact_url;
 const editorsDestPath = 'client/src/thirdparty/editors/'
+
 
 gulp.task('clean:editors', () => {
     return gulp.src('./' + editorsDestPath, { read: false })
@@ -59,9 +60,9 @@ gulp.task('client:install', (cb) => {
 })
 
 // To build angular code and rename index file
-
+const buildScript = process.env.devBuild === 'true' ? 'build-dev' : 'build'
 gulp.task('client:dist', (cb) => {
-    exec('npm run build --prefix ./client ', { maxBuffer: Infinity }, function (err, stdout, stderr) {
+    exec(`npm run ${buildScript} --prefix ./client `, { maxBuffer: Infinity }, function (err, stdout, stderr) {
         console.log(stdout)
         console.log(stderr)
         cb(err)
@@ -121,7 +122,8 @@ gulp.task('build-resource-bundles', (cb) => {
         cb(err)
     })
 })
-const compress = process.env.disableCompression === 'true' ? [] : ['client:gzip', 'client:brotli']
+const compress = process.env.devBuild === 'true' ? '' : ['client:gzip'] // removed brotli due to gulp issue
+const cleanClient = process.env.devBuild === 'true' ? '' : 'clean:client:install'
 gulp.task('deploy',
     gulpSequence('clean:app:dist',
         'clean:editors',
@@ -130,7 +132,7 @@ gulp.task('deploy',
             'download:generic:editor'],
         'gzip:editors',
         'build-resource-bundles',
-        'clean:client:install',
+        // cleanClient,
         'client:install',
         'client:dist',
         compress,
@@ -138,7 +140,6 @@ gulp.task('deploy',
         'clean:index:file',
         'prepare:app:dist')
 )
-
 
 // offline app preparation tasks
 

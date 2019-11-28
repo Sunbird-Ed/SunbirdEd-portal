@@ -75,7 +75,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.otpForm.controls['otp'].setValue('');
         this.enableSubmitBtn = true;
         this.infoMessage = '';
-        this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
+        this.errorMessage = _.get(err, 'error.params.status') === 'ERROR_INVALID_OTP' ?
           wrongOTPMessage : this.resourceService.messages.fmsg.m0051;
       }
     );

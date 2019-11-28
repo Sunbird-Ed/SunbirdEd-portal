@@ -1,5 +1,6 @@
-import { OfflineFileUploaderService } from './services';
-import { SuiModalModule } from 'ng2-semantic-ui';
+import { ExploreModule } from './../public/module/explore/explore.module';
+import { OfflineFileUploaderService, DownloadManagerService } from './services';
+import { SuiModalModule, SuiProgressModule, SuiAccordionModule, SuiTabsModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
@@ -7,8 +8,14 @@ import { SharedModule } from '@sunbird/shared';
 import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ContentImportComponent, ContentImportHeaderComponent } from './components';
-
+import {
+  ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
+  BrowseComponent, DownloadManagerComponent, OfflineHelpCenterComponent
+} from './components';
+import { WebExtensionModule } from '@project-sunbird/web-extensions';
+import { FileSizeModule } from 'ngx-filesize';
+import { OrderModule } from 'ngx-order-pipe';
+import { SlickModule } from 'ngx-slick';
 
 @NgModule({
   imports: [
@@ -18,12 +25,26 @@ import { ContentImportComponent, ContentImportHeaderComponent } from './componen
     SharedModule,
     OfflineRoutingModule,
     SuiModalModule,
+    SuiProgressModule,
+    WebExtensionModule,
+    ExploreModule,
+    FileSizeModule,
+    SuiAccordionModule,
+    SuiTabsModule,
+    OrderModule,
+    SlickModule
   ],
-  providers: [DeviceDetectorService, OfflineFileUploaderService],
-  declarations: [
-    ContentImportComponent, ContentImportHeaderComponent
+  providers: [DeviceDetectorService, OfflineFileUploaderService, DownloadManagerService],
+  declarations: [ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
+    BrowseComponent, WatchVideoComponent, ContentImportHeaderComponent, BrowseComponent,
+    NetworkStatusComponent, WatchVideoComponent, DownloadManagerComponent, OfflineHelpCenterComponent
   ],
   entryComponents: [
+    ContentImportHeaderComponent,
+    BrowseComponent,
+    NetworkStatusComponent,
+    DownloadManagerComponent,
+    WatchVideoComponent,
     ContentImportHeaderComponent
   ]
 })

@@ -10,8 +10,9 @@
         <div id="app-player-collection-renderer">
           <div class="sb-pageSection">
               <div class="sb-pageSection-header">
-                <h4 class="sb-pageSection-title m-0 mr-5">{{contentTitle}}</h4>
-                <button class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="closeContentPlayer()" appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract" [telemetryInteractCdata]="telemetryCdata">Close <i class="close icon"></i></button>
+                <h4 class="sb-pageSection-title m-0 mr-8">{{contentTitle}}</h4>
+                <button class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="closeContentPlayer()" appTelemetryInteract [telemetryInteractEdata]="closeContentIntractEdata" [telemetryInteractObject]="objectContentInteract" [telemetryInteractCdata]="telemetryCdata">
+                    {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
               </div>
           </div>
           <div class="twelve wide column">
@@ -51,7 +52,7 @@
   <div class="sb-pageSection"  *ngIf="!loader" [appTelemetryImpression]="telemetryImpression">
       <div  class="sb-pageSection-header sb-pageSection-header-compact">
         <h4 class="sb-pageSection-title m-0 mr-5">{{collectionTitle}}</h4>
-        <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeCollectionPlayer()">Close <i class="close icon"></i></button>
+        <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" (click)="closeCollectionPlayer()">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
       </div>
       <div  class="sb-pageSection-content d-flex flex-ai-center" *ngIf="collectionStatus !== 'Unlisted'">
         <sui-rating class="ui star rating mr-16" [isReadonly]="true" [maximum]="5"></sui-rating>
@@ -59,16 +60,16 @@
           <i class="blue share alternate icon"></i>
           {{resourceService?.frmelmnts?.lbl?.share}}
         </a>
-        <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
+        <a href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
           [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
           <i class="blue clone outline icon"></i>
           {{resourceService?.frmelmnts?.lbl?.copy}}
-        </span>
-        <span *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
+        </a>
+        <a href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
           [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
           <i class="blue clone outline icon"></i>
           {{resourceService?.frmelmnts?.lbl?.copy}}
-        </span>
+        </a>
         <app-content-badge [data]="badgeData" class="ml-20 m-responsive-cp-badge-ml"></app-content-badge>
         <!-- Temporarily disable flagging-->
           <!-- <a routerLink="flag" class="pr-10 blue-text-color-sunbird">
@@ -88,11 +89,7 @@
       <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions">        
       </app-collection-tree>
       <ng-template #dataCommingSoon>
-        <div class="placeholder mt-40">
-            <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
-            <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-            <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-        </div> 
+        <app-comming-soon [contentOrgId]="collectionTreeNodes.data.channel"></app-comming-soon>
     </ng-template>
     </div>
   </div>

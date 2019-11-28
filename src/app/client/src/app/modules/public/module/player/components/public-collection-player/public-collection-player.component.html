@@ -2,26 +2,26 @@
   <div class="ui stackable grid">
 
     <!--Content Section-->
-    <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression" id="app-player-collection-renderer" *ngIf="showPlayer">
+    <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression" id="app-player-collection-renderer" *ngIf="showPlayer && playerContent">
 
       <!--Content Title-->
       <div class="sb-pageSection">
         <div class="sb-pageSection-header">
-          <h2 class="sb-pageSection-title m-0 mr-5">
-            {{contentTitle}}
-          </h2>
-          <button 
-            class="sb-btn sb-btn-xs sb-btn-error ml-auto" 
-            type="button" 
-            (click)="closeContentPlayer()" 
-            appTelemetryInteract 
-            [telemetryInteractCdata]="this.telemetryCdata" 
-            [telemetryInteractObject]="playerTelemetryInteractObject" 
-            [telemetryInteractEdata]="closePlayerInteractEdata"
-            >
+          <h1 class="sb-pageSection-title m-0 mr-8">
+            {{playerContent.name}}
+          </h1>
+          <div class="ml-auto d-flex flex-ai-center">
+            <div *ngIf="isOffline" class="mr-16">
+                <app-content-download [contentData]="playerContent" [collectionId]="collectionId"></app-content-download>
+            </div>
+            <button class="sb-btn sb-btn-xs sb-btn-error" type="button" (click)="closeContentPlayer()"
+              appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+              [telemetryInteractObject]="playerTelemetryInteractObject"
+              [telemetryInteractEdata]="closePlayerInteractEdata">
               {{resourceService.frmelmnts.btn.close}}
               <i class="ui remove icon"></i>
-          </button>
+            </button>
+          </div>
         </div>
       </div>
       <!--/Content Title-->
@@ -57,7 +57,6 @@
         </div>
       </div>
       <!--/Content Navigation-->
-    
     </div>
     <!--/Content Section-->
 
@@ -68,7 +67,7 @@
     <!--/Loader if collection data not ready-->
 
     <!--Collections-->
-    <div class="twelve wide column" *ngIf="!loader">
+    <div class="twelve wide column" *ngIf="!loader" [appTelemetryImpression]="telemetryImpression">
 
       <!--Collection Title-->
       <div class="sb-pageSection">
@@ -76,18 +75,19 @@
           <h1 class="sb-pageSection-title m-0 mr-5">
             {{collectionTitle}}
           </h1>
-          <button 
-            class="sb-btn sb-btn-xs sb-btn-error ml-auto" 
-            type="button" 
-            (click)="closeCollectionPlayer()" 
-            appTelemetryInteract 
-            [telemetryInteractCdata]="telemetryCdata" 
-            [telemetryInteractObject]="playerTelemetryInteractObject" 
-            [telemetryInteractEdata]="closeCollectionPlayerInteractEdata"
-            >
+          <div class="ml-auto d-flex flex-ai-center">
+            <div *ngIf="isOffline" class="mr-16">
+                <app-content-download [contentData]="collectionData"></app-content-download>
+                </div>
+            <button class="sb-btn sb-btn-xs sb-btn-error " type="button" (click)="closeCollectionPlayer()"
+              appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+              [telemetryInteractObject]="playerTelemetryInteractObject"
+              [telemetryInteractEdata]="closeCollectionPlayerInteractEdata">
               {{resourceService.frmelmnts.btn.close}}
               <i class="ui remove icon"></i>
-          </button>
+            </button>
+          </div>
+
         </div>
       </div>
       <!--/Collection Title-->
@@ -108,11 +108,7 @@
 
       <!--Content Coming soon-->
       <ng-template #dataCommingSoon>
-        <div class="mt-40 text-center">
-          <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}" alt="{{resourceService?.messages?.stmsg?.m0121}}"/>
-          <h5 class="mt-16">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-          <p class="">{{resourceService?.messages?.stmsg?.m0122}}</p>
-        </div> 
+        <app-comming-soon [contentOrgId]="collectionTreeNodes.data.channel"></app-comming-soon>
       </ng-template>
       <!--/Content Coming soon-->
     </div>

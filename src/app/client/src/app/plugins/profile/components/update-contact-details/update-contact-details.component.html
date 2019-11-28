@@ -20,26 +20,24 @@
 
     <!--Content-->
     <div class="sb-modal-content">
-      <form class="ui form borderd" [formGroup]="contactTypeForm">
+      <form class="sb-form borderd" [formGroup]="contactTypeForm">
         <div [ngSwitch]="contactType">
-          <div class="field" *ngSwitchCase="'email'">
-            <label class="fs-1">{{resourceService?.frmelmnts?.prmpt?.enteremailID}}</label>
-            <div class="field">
-              <input formControlName="email" type="text" name="email">
+          <div class="sb-field-group" *ngSwitchCase="'email'">
+            <label>{{resourceService?.frmelmnts?.prmpt?.enteremailID}}</label>
+            <div class="sb-field ui input">
+                <input class="sb-form-control" formControlName="email" type="text" placeholder="Enter Email">
             </div>
             <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.email.dirty && contactTypeForm.controls['email'].errors">{{resourceService?.frmelmnts?.lbl?.validEmail}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls.email.touched && contactTypeForm.controls['email'].errors)">{{showUniqueError}}</label>
           </div>
-          <div class="field" *ngSwitchCase="'phone'">
-            <label class="fs-1">{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}</label>
-            <div class="field">
-              <div class="ui left icon input">
-                <input formControlName="phone" type="number" name="phone">
-                <i class=" icon">{{resourceService?.frmelmnts?.lbl?.indPhoneCode}}-</i>
+          <div class="sb-field-group" *ngSwitchCase="'phone'">
+              <label>{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}</label>
+              <div class="sb-field ui left icon input">
+                  <input class="sb-form-control" formControlName="phone" type="number" placeholder="Enter Mobile Number">
+                  <i class=" icon">{{resourceService?.frmelmnts?.lbl?.indPhoneCode}}-</i>
               </div>
-            </div>
-            <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.phone.dirty && contactTypeForm.controls['phone'].errors">{{resourceService?.frmelmnts?.lbl?.validPhone}}</label>
-            <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls.phone.touched && contactTypeForm.controls['phone'].errors)">{{showUniqueError}}</label>
+              <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.phone.dirty && contactTypeForm.controls['phone'].errors">{{resourceService?.frmelmnts?.lbl?.validPhone}}</label>
+              <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls.phone.touched && contactTypeForm.controls['phone'].errors)">{{showUniqueError}}</label>
           </div>
         </div>
       </form>
@@ -53,7 +51,7 @@
         [ngClass]="{'disabled':!enableSubmitBtn}" 
         (click)="onSubmitForm()" 
         class="sb-btn sb-btn-normal sb-btn-primary">
-          {{resourceService?.frmelmnts?.btn?.submitbtn}}
+          {{resourceService?.frmelmnts?.btn?.submit}}
         </button>
     </div>
     <!--/Actions-->

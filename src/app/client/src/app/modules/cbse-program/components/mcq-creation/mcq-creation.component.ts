@@ -14,13 +14,13 @@ import { CbseProgramService } from '../../services';
 @Component({
   selector: 'app-mcq-creation',
   templateUrl: './mcq-creation.component.html',
-  styleUrls: ['./mcq-creation.component.css']
+  styleUrls: ['./mcq-creation.component.scss']
 })
-export class McqCreationComponent implements OnInit, OnChanges{
+export class McqCreationComponent implements OnInit, OnChanges {
   @Input() selectedAttributes: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
-  @Output() questionQueueStatus = new EventEmitter < any > ();
+  @Output() questionQueueStatus = new EventEmitter<any>();
   @Input() questionSelectionStatus: any;
   @Input() role: any;
   @ViewChild('mcqFormControl') private mcqFormControl;
@@ -48,7 +48,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   constructor(public configService: ConfigService, private http: HttpClient,
     private userService: UserService, public actionService: ActionService,
-    public toasterService: ToasterService, private cdr: ChangeDetectorRef,private cbseService: CbseProgramService,
+    public toasterService: ToasterService, private cdr: ChangeDetectorRef, private cbseService: CbseProgramService,
     public telemetryService: TelemetryService) {
   }
   initForm() {
@@ -73,12 +73,12 @@ export class McqCreationComponent implements OnInit, OnChanges{
       this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
     }
     const topicTerm = _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
-    if (topicTerm.associations) {
+    if (topicTerm && topicTerm.associations) {
       this.learningOutcomeOptions = topicTerm.associations;
     }
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
-      //this.buttonTypeHandler('preview');
+      // this.buttonTypeHandler('preview');
     }
     this.userName = this.setUserName();
   }
@@ -86,10 +86,11 @@ export class McqCreationComponent implements OnInit, OnChanges{
     this.previewData = this.questionMetaData;
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
-    } else if((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')){
+    } else if ((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')) {
       this.showPreview = false;
     }
-    if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' && this.questionMetaData.data.rejectComment) {
+    if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' &&
+      this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
     if (this.questionMetaData && this.questionMetaData.mode === 'create') {
@@ -114,11 +115,11 @@ export class McqCreationComponent implements OnInit, OnChanges{
   }
   setUserName() {
     let userName = '';
-    if (this.userService.userProfile.firstName){
+    if (this.userService.userProfile.firstName) {
       userName = this.userService.userProfile.firstName;
     }
-    if (this.userService.userProfile.lastName){
-      userName += (' ' + this.userService.userProfile.lastName)
+    if (this.userService.userProfile.lastName) {
+      userName += (' ' + this.userService.userProfile.lastName);
     }
     return userName;
   }
@@ -143,13 +144,12 @@ export class McqCreationComponent implements OnInit, OnChanges{
     this.isEditorThrowingError = event;
   }
   buttonTypeHandler(event) {
-    let optionSvgBody;
     if (event === 'preview') {
       this.selectedAttributes.showMode = 'previewPlayer';
-      //this.showPreview = true;
-      //call createQuestion with param true to get the local question data
-      if(this.selectedAttributes.currentRole === "CONTRIBUTOR"){
-        this.createQuestion(true)
+      // this.showPreview = true;
+      // call createQuestion with param true to get the local question data
+      if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+        this.createQuestion(true);
       }
     } else if (event === 'edit') {
       this.selectedAttributes.showMode = 'editorForm';
@@ -216,7 +216,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
   /**
    * @param optionalParams  {Array of Objects }  -Key and Value to add in metadata
    */
-  updateQuestion(optionalParams?: Array<Object>) {
+  updateQuestion(optionalParams?: Array<{}>) {
     forkJoin([this.getConvertedLatex(this.mcqForm.question), ...this.mcqForm.options.map(option => this.getConvertedLatex(option.body))])
       .subscribe((res) => {
         this.body = res[0]; // question with latex
@@ -235,33 +235,33 @@ export class McqCreationComponent implements OnInit, OnChanges{
           }
         });
 
-        let metadata = {
-            'code': UUID.UUID(),
-            'category': this.selectedAttributes.questionType.toUpperCase(),
-            'templateId': this.questionMetaData.data.templateId,
-            'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-            'body': questionData.body,
-            'responseDeclaration': questionData.responseDeclaration,
-            'question': this.mcqForm.question,
-            'options': options,
-            // 'qlevel': this.mcqForm.difficultyLevel,
-            'maxScore': 1, // Number(this.mcqForm.maxScore),
-            'status': 'Review',
-            'media': this.mediaArr,
-            'type': 'mcq',
-          }
+        const metadata = {
+          'code': UUID.UUID(),
+          'category': this.selectedAttributes.questionType.toUpperCase(),
+          'templateId': this.questionMetaData.data.templateId,
+          'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+          'body': questionData.body,
+          'responseDeclaration': questionData.responseDeclaration,
+          'question': this.mcqForm.question,
+          'options': options,
+          // 'qlevel': this.mcqForm.difficultyLevel,
+          'maxScore': 1, // Number(this.mcqForm.maxScore),
+          'status': 'Review',
+          'media': this.mediaArr,
+          'type': 'mcq',
+        };
 
-          if(this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
-            const authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
-            metadata['author'] = authorName;
-          }
+        if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+          const authorName = (this.authorName.nativeElement.value === '') ? this.userName : this.authorName.nativeElement.value;
+          metadata['author'] = authorName;
+        }
 
         if (this.mcqForm.learningOutcome) {
-          metadata["learningOutcome"] = [this.mcqForm.learningOutcome]
+          metadata['learningOutcome'] = [this.mcqForm.learningOutcome];
         }
 
         if (this.mcqForm.bloomsLevel) {
-          metadata["bloomsLevel"] = [this.mcqForm.bloomsLevel]
+          metadata['bloomsLevel'] = [this.mcqForm.bloomsLevel];
         }
 
 
@@ -285,15 +285,15 @@ export class McqCreationComponent implements OnInit, OnChanges{
           });
         }
         this.actionService.patch(req).pipe(catchError(err => {
-          let errInfo = { errorMsg: 'MCQ Question updation failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
-        })).subscribe((res) => {
+          const errInfo = { errorMsg: 'MCQ Question updation failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+        })).subscribe((apiRes) => {
           if (this.updateStatus === 'Live') {
             this.toasterService.success('Question Accepted');
           } else if (this.updateStatus === 'Reject') {
             this.toasterService.success('Question Rejected');
           }
-          this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': res.result.node_id });
+          this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': apiRes.result.node_id });
         });
       });
   }
@@ -323,54 +323,54 @@ export class McqCreationComponent implements OnInit, OnChanges{
         if (!_.isEmpty(this.userService.userProfile.lastName)) {
           creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
         }
-        if(this.role.currentRole === 'CONTRIBUTOR' && !this.showPreview){
-          authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
-         }
-        let metadata = {
-            'createdBy': this.userService.userid,
-            'creator': creator,
-            'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
-            'code': UUID.UUID(),
-            'type': this.selectedAttributes.questionType,
-            'category': this.selectedAttributes.questionType.toUpperCase(),
-            'itemType': 'UNIT',
-            'version': 3,
-            'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-            'body': questionData.body,
-            'responseDeclaration': questionData.responseDeclaration,
-            'question': this.mcqForm.question,
-            'options': options,
-            // 'qlevel': this.mcqForm.difficultyLevel,
-            'maxScore': 1, // Number(this.mcqForm.maxScore),
-            'templateId': this.templateDetails.templateClass,
-            'programId': this.selectedAttributes.programId,
-            'program': this.selectedAttributes.program,
-            'channel': this.selectedAttributes.channel,
-            'framework': this.selectedAttributes.framework,
-            'board': this.selectedAttributes.board,
-            'medium': this.selectedAttributes.medium,
-            'gradeLevel': [this.selectedAttributes.gradeLevel],
-            'subject': this.selectedAttributes.subject,
-            'topic': [this.selectedAttributes.topic],
-            'status': 'Review',
-            'media': this.mediaArr,
-            'qumlVersion': 0.5,
-            'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier,
-            'author': authorName
-          }
+        if (this.role.currentRole === 'CONTRIBUTOR' && !this.showPreview) {
+          authorName = (this.authorName.nativeElement.value === '') ? this.userName : this.authorName.nativeElement.value;
+        }
+        const metadata = {
+          'createdBy': this.userService.userid,
+          'creator': creator,
+          'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
+          'code': UUID.UUID(),
+          'type': this.selectedAttributes.questionType,
+          'category': this.selectedAttributes.questionType.toUpperCase(),
+          'itemType': 'UNIT',
+          'version': 3,
+          'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+          'body': questionData.body,
+          'responseDeclaration': questionData.responseDeclaration,
+          'question': this.mcqForm.question,
+          'options': options,
+          // 'qlevel': this.mcqForm.difficultyLevel,
+          'maxScore': 1, // Number(this.mcqForm.maxScore),
+          'templateId': this.templateDetails.templateClass,
+          'programId': this.selectedAttributes.programId,
+          'program': this.selectedAttributes.program,
+          'channel': this.selectedAttributes.channel,
+          'framework': this.selectedAttributes.framework,
+          'board': this.selectedAttributes.board,
+          'medium': this.selectedAttributes.medium,
+          'gradeLevel': [this.selectedAttributes.gradeLevel],
+          'subject': this.selectedAttributes.subject,
+          'topic': [this.selectedAttributes.topic],
+          'status': 'Review',
+          'media': this.mediaArr,
+          'qumlVersion': 0.5,
+          'textBookUnitIdentifier': this.selectedAttributes.textBookUnitIdentifier,
+          'author': authorName
+        };
 
         if (this.mcqForm.learningOutcome) {
-          metadata["learningOutcome"] = [this.mcqForm.learningOutcome]
+          metadata['learningOutcome'] = [this.mcqForm.learningOutcome];
         }
 
         if (this.mcqForm.bloomsLevel) {
-          metadata["bloomsLevel"] = [this.mcqForm.bloomsLevel]
+          metadata['bloomsLevel'] = [this.mcqForm.bloomsLevel];
         }
         const req = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
           data: {
             'request': {
-              'assessment_item':  {
+              'assessment_item': {
                 'objectType': 'AssessmentItem',
                 'metadata': metadata
               }
@@ -380,15 +380,15 @@ export class McqCreationComponent implements OnInit, OnChanges{
         // Don't make any api call for a local preview.
         if (!forPreview) {
           this.actionService.post(req).pipe(catchError(err => {
-            let errInfo = { errorMsg: 'MCQ Question creation failed' };
-            return throwError(this.cbseService.apiErrorHandling(err, errInfo))
-          })).subscribe((res) => {
-            this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': res.result.node_id });
+            const errInfo = { errorMsg: 'MCQ Question creation failed' };
+            return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+          })).subscribe((apiRes) => {
+            this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': apiRes.result.node_id });
           });
         } else {
           this.selectedAttributes.previewQuestionData = {
             result: {
-              assessment_item : req.data.request.assessment_item.metadata
+              assessment_item: req.data.request.assessment_item.metadata
             }
           };
           // Initialize preview player, Once all the data is attacthed
@@ -421,7 +421,7 @@ export class McqCreationComponent implements OnInit, OnChanges{
     return {
       body: questionBody,
       responseDeclaration: responseDeclaration,
-      correct_response: parseInt(this.mcqForm.answer) + 1,
+      correct_response: parseInt(this.mcqForm.answer, 10) + 1,
       // tslint:disable-next-line:max-line-length
       learningOutcome: (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : '',
       learningLevel: this.mcqForm.bloomsLevel || ''

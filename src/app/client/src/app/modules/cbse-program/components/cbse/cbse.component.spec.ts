@@ -1,14 +1,21 @@
+import { TelemetryModule } from '@sunbird/telemetry';
+import { CoreModule } from '@sunbird/core';
+import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CbseComponent } from './cbse.component';
+import { SuiModule } from 'ng2-semantic-ui';
+import { mockResponse } from './cbse.component.spec.data';
 
-xdescribe('CbseComponent', () => {
+describe('CbseComponent', () => {
   let component: CbseComponent;
   let fixture: ComponentFixture<CbseComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CbseComponent ]
+      declarations: [ CbseComponent ],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), SuiModule]
     })
     .compileComponents();
   }));
@@ -16,6 +23,7 @@ xdescribe('CbseComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CbseComponent);
     component = fixture.componentInstance;
+    component.userProfile = mockResponse.userProfile;
     fixture.detectChanges();
   });
 

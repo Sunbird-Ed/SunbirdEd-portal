@@ -4,24 +4,56 @@ import { SuiAccordionModule } from 'ng2-semantic-ui';
 import { FancyTreeComponent } from '..';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
+import { of as observableOf, Observable } from 'rxjs';
 // Import services
-import { ResourceService, BrowserCacheTtlService, ConfigService } from '@sunbird/shared';
+import { nodes, commonMessageApiResp } from './collection-tree.component.spec.data';
+import { ResourceService, BrowserCacheTtlService, ConfigService, ToasterService } from '@sunbird/shared';
+import { UserService, OrgDetailsService } from '@sunbird/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
+
 import { CacheService } from 'ng2-cache-service';
 describe('CollectionTreeComponent', () => {
   let component: CollectionTreeComponent;
   let fixture: ComponentFixture<CollectionTreeComponent>;
-
+  const resourceBundle = {
+    messages : {
+      imsg: { m0027: 'Something went wrong'},
+      stmsg: { m0007: 'error', m0006: 'result', m0121: 'default comming soon' }
+    },
+    languageSelected$: observableOf({})
+  };
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiAccordionModule, HttpClientTestingModule, HttpClientModule],
       declarations: [CollectionTreeComponent, FancyTreeComponent],
-      providers: [ ResourceService, CacheService, ConfigService, BrowserCacheTtlService]
+      providers: [ ResourceService, ToasterService,  { provide: ResourceService, useValue: resourceBundle },
+        { provide: Router, useClass: RouterStub }, CacheService, ConfigService, BrowserCacheTtlService]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CollectionTreeComponent);
     component = fixture.componentInstance;
+    component.options = {
+      folderIcon: 'sb-icon-folder',
+      fileIcon: 'sb-icon-content',
+      customFileIcon: {
+        'video': 'sb-icon-video',
+        'pdf': 'sb-icon-doc',
+        'youtube': 'sb-icon-video',
+        'H5P': 'sb-icon-content',
+        'audio': 'sb-icon-mp3',
+        'ECML': 'sb-icon-content',
+        'HTML': 'sb-icon-content',
+        'collection': 'sb-icon-collection',
+        'epub': 'sb-icon-doc',
+        'doc': 'sb-icon-doc'
+      }
+    };
   });
 
   it('should create', () => {
@@ -39,27 +71,34 @@ describe('CollectionTreeComponent', () => {
               id: '1.2.1',
               title: 'node1.2.1'
             }]
+        },
+        {
+          id: '1.2',
+          title: 'node1.2',
+          children: []
         }]
-      }
-    };
-
-    component.options = {
-      folderIcon: 'icon folder sb-fancyTree-icon',
-      fileIcon: 'sb-icon-content',
-      customFileIcon: {
-        'video': 'icon play circle sb-fancyTree-icon',
-        'pdf': 'sb-icon-doc sb-fancyTree-icon',
-        'youtube': 'icon play circle sb-fancyTree-icon',
-        'H5P': 'sb-icon-content sb-fancyTree-icon',
-        'audio': 'sb-icon-mp3 sb-fancyTree-icon',
-        'ECML': 'sb-icon-content sb-fancyTree-icon',
-        'HTML': 'sb-icon-content sb-fancyTree-icon',
-        'collection': 'icon folder sb-fancyTree-icon',
-        'epub': 'sb-icon-doc sb-fancyTree-icon',
-        'doc': 'sb-icon-doc sb-fancyTree-icon'
       }
     };
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('should show custom comming soon message if data doesnt exists', () => {
+    const userService = TestBed.get(UserService);
+    component.nodes = nodes;
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf(commonMessageApiResp));
+    orgDetailsService._rootOrgId = 'b00bc992ef25f1a9a8d63291e20efc8d';
+    component.ngOnInit();
+    expect(component.commingSoonMessage).toEqual('Org specific coming soon message');
+  });
+
+  it('should show default comming soon message if custom comming soon doesnt exists', () => {
+    component.nodes = nodes;
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    orgDetailsService._rootOrgId = 'org_002';
+    spyOn(orgDetailsService, 'getCommingSoonMessage').and.returnValue(observableOf({}));
+    component.ngOnInit();
+    expect(component.commingSoonMessage).toEqual('default comming soon');
   });
 });

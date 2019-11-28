@@ -24,6 +24,7 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const cookieParser = require('cookie-parser')
+const logger = require('sb_logger_util_v2');
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
   'auth-server-url': envHelper.PORTAL_AUTH_SERVER_URL,
@@ -31,6 +32,14 @@ let keycloak = getKeyCloakClient({
   'resource': envHelper.PORTAL_AUTH_SERVER_CLIENT,
   'public-client': true
 })
+const logLevel = envHelper.sunbird_portal_log_level;
+
+logger.init({
+  logLevel
+})
+
+logger.debug({ msg: `logger initialized with LEVEL= ${logLevel}` })
+
 const app = express()
 
 app.use(cookieParser())
@@ -55,9 +64,15 @@ app.get('/health', healthService.createAndValidateRequestBody, healthService.che
 
 app.get('/service/health', healthService.createAndValidateRequestBody, healthService.checkSunbirdPortalHealth)
 
+require('./routes/desktopAppRoutes.js')(app) // desktop app routes
+
 require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in routes
 
 require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
+
+require('./routes/refreshTokenRoutes.js')(app, keycloak) // refresh token routes
+
+require('./routes/accountMergeRoute.js')(app, keycloak) // refresh token routes
 
 require('./routes/clientRoutes.js')(app, keycloak) // client app routes
 
@@ -122,8 +137,8 @@ function endSession(request, response, next) {
 }
 
 if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
-  console.error('please set environment variable sunbird_environment, ' +
-    'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
+  logger.error({msg: `please set environment variable sunbird_environment,sunbird_instance
+  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird`})
   process.exit(1)
 }
 function runApp() {
@@ -134,39 +149,12 @@ function runApp() {
   fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
-      console.log(envHelper.defaultChannelId, 'is set as default channel id in evnHelper');
-      if (envHelper.PORTAL_CDN_URL) {
-        const cdnUrl = `${envHelper.PORTAL_CDN_URL}index.${packageObj.version}.${packageObj.buildHash}.ejs`
-        request.get(cdnUrl).then((data) => {
-          const cdnFallBackScript = `<script type="text/javascript" src="${envHelper.PORTAL_CDN_URL}assets/cdnHelper.js"></script>
-              <script>
-                try {
-                  if(!cdnFileLoaded){
-                    var now = new Date();
-                    now.setMinutes(now.getMinutes() + 5);
-                    document.cookie = "cdnFailed=true;expires=" + now.toUTCString() + ";"
-                    window.location.href = window.location.href
-                  }
-                } catch (err) {
-                  var now = new Date();
-                  now.setMinutes(now.getMinutes() + 5);
-                  document.cookie = "cdnFailed=true;expires=" + now.toUTCString() + ";"
-                  window.location.href = window.location.href
-                }
-              </script>`
-          data = data.replace('</app-root>', '</app-root>' + cdnFallBackScript)
-          fs.writeFile(path.join(__dirname, 'dist', 'cdn_index.ejs'), data, (err, data) => {
-            if(!err){
-              envHelper.hasCdnIndexFile = true
-            }
-          })
-        }).catch(err => console.log(`Error while fetching ${envHelper.PORTAL_CDN_URL}index.${packageObj.version}.${packageObj.buildHash}.ejs file when CDN enabled`));
-      }
-      console.log('app running on port ' + envHelper.PORTAL_PORT)
+      logger.info({msg: `app running on port ${envHelper.PORTAL_PORT}`})
     })
+    portal.server.keepAliveTimeout = 60000 * 5;
   })
 }
-const fetchDefaultChannelDetails = async (callback) => {
+const fetchDefaultChannelDetails = (callback) => {
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + '/org/v1/search',
@@ -196,5 +184,9 @@ telemetry.init({
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
 })
 
-process.on('unhandledRejection', (reason, p) => console.log("Unhandled Rejection at: Promise ", p, " reason: ", reason));
+process.on('unhandledRejection', (reason, p) => console.log('Unhandled Rejection', p, reason));
+process.on('uncaughtException', (err) => {
+  console.log('Uncaught Exception', err)
+  process.exit(1);
+});
 exports.close = () => portal.server.close()

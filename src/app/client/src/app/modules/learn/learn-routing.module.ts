@@ -11,8 +11,8 @@ import { FlagContentComponent, AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import { ViewAllComponent } from '@sunbird/shared-feature';
-const telemetryEnv = 'course';
-const objectType = 'course';
+const telemetryEnv = 'Course';
+const objectType = 'Course';
 const routes: Routes = [
   {
     path: '', component: LearnPageComponent,

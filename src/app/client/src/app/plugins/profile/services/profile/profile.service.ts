@@ -117,4 +117,12 @@ export class ProfileService {
     };
     return this.learnerService.post(options);
   }
+
+  public downloadCertificates(request) {
+    const options = {
+      url: this.configService.urlConFig.URLS.USER.DOWNLOAD_CERTIFICATE,
+      data: request,
+    };
+    return this.learnerService.post(options);
+  }
 }

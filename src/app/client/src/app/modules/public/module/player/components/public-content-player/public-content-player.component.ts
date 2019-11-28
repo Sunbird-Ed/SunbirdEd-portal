@@ -6,13 +6,14 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash-es';
 import { Subject  } from 'rxjs';
 import {
-  ConfigService, ResourceService, ToasterService,
+  ConfigService, ResourceService, ToasterService, UtilService,
   WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
 } from '@sunbird/shared';
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-
+import { DownloadManagerService } from '@sunbird/offline';
+import { environment } from '@sunbird/environment';
 @Component({
   selector: 'app-public-content-player',
   templateUrl: './public-content-player.component.html'
@@ -25,6 +26,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   /**
    * content id
    */
+  contentType: string;
   contentId: string;
   /**
    * contains player configuration
@@ -53,12 +55,15 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   telemetryCdata: Array<{}>;
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
+  public objectRollup = {};
+  isOffline: boolean = environment.isOffline;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
-    private configService: ConfigService
+    private configService: ConfigService, public downloadManagerService: DownloadManagerService,
+    public utilService: UtilService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -69,18 +74,25 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
+      if (_.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')) {
+        this.objectRollup = {
+          l1 : _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
+        };
+      }
       this.setTelemetryData();
       this.getContent();
       this.deviceDetector();
     });
+
   }
   setTelemetryData() {
     this.telemetryInteractObject = {
       id: this.contentId,
-      type: 'Content',
+      type: this.contentType,
       ver: '1.0'
     };
     this.closePlayerInteractEdata = {
@@ -93,34 +105,28 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * used to fetch content details and player config. On success launches player.
    */
   getContent() {
-    this.activatedRoute.queryParams.subscribe((queryParams) => {
-      this.dialCode = queryParams.dialCode;
-    });
     const options: any = { dialCode: this.dialCode };
     const params = {params: this.configService.appConfig.PublicPlayer.contentApiQueryParams};
-    this.playerService.getContent(this.contentId, params).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(
-        (response) => {
-          const contentDetails = {
-            contentId: this.contentId,
-            contentData: response.result.content
-          };
-          this.playerConfig = this.playerService.getConfig(contentDetails, options);
-          this.contentData = response.result.content;
-          if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
-            setTimeout(() => {
-              this.showExtContentMsg = true;
-            }, 5000);
-          }
-          this.showPlayer = true;
-          this.windowScrollService.smoothScroll('content-player');
-          this.badgeData = _.get(response, 'result.content.badgeAssertions');
-        },
-        (err) => {
-          this.showError = true;
-          this.errorMessage = this.resourceService.messages.stmsg.m0009;
-        });
+    this.playerService.getContent(this.contentId, params).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      const contentDetails = {
+        contentId: this.contentId,
+        contentData: response.result.content
+      };
+      this.playerConfig = this.playerService.getConfig(contentDetails, options);
+      this.playerConfig.context.objectRollup = this.objectRollup;
+      this.contentData = response.result.content;
+      if (this.contentData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
+        setTimeout(() => {
+          this.showExtContentMsg = true;
+        }, 5000);
+      }
+      this.showPlayer = true;
+      this.windowScrollService.smoothScroll('content-player');
+      this.badgeData = _.get(response, 'result.content.badgeAssertions');
+    }, (err) => {
+      this.showError = true;
+      this.errorMessage = this.resourceService.messages.stmsg.m0009;
+    });
   }
   /**
    * retry launching player with same content details
@@ -141,7 +147,12 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
     } finally {
       setTimeout(() => {
-        this.navigationHelperService.navigateToResource('/explore');
+        if (this.dialCode) {
+          sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
+          this.router.navigate(['/get/dial/', this.dialCode]);
+        } else {
+          this.navigationHelperService.navigateToResource('/explore');
+        }
       }, 100);
     }
   }
@@ -154,9 +165,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
   ngAfterViewInit () {
     setTimeout(() => {
-        this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
         if (this.dialCode) {
-          this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
+          this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
         }
         this.telemetryImpression = {
           context: {
@@ -165,8 +175,9 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
           },
           object: {
             id: this.activatedRoute.snapshot.params.contentId,
-            type: 'Content',
-            ver: '1.0'
+            type: this.contentType,
+            ver: '1.0',
+            rollup: this.objectRollup
           },
           edata: {
             type: this.activatedRoute.snapshot.data.telemetry.type,
@@ -183,4 +194,5 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
 }

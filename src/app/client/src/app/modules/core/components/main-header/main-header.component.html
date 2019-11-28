@@ -1,7 +1,10 @@
 <div *ngIf="showQrmodal">
     <app-qr-code-modal (closeQrModal)="showQrmodal = false"></app-qr-code-modal>
 </div>
-<div class="ui fixed main menu bs-0 d-block" appStickyHeader>
+<div *ngIf="showAccountMergemodal">
+    <app-account-merge-modal (closeAccountMergeModal)="showAccountMergemodal = false"></app-account-merge-modal>
+</div>
+<div class="ui fixed relative main menu bs-0 d-block">
     <extension-point [name]="'network-status-notify'" *ngIf="isOffline"></extension-point>
     <!--Header White Section-->
     <div class="ui container">
@@ -40,7 +43,7 @@
                                 [permission]='adminDashboard' routerLink="dashBoard/organization">
                                 {{resourceService.frmelmnts?.lnk?.dashboard}}
                             </a>
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                             <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='announcementRole' routerLink="announcement/outbox/1">
                                 {{resourceService.frmelmnts?.lnk?.announcement}}
                             </a> -->
@@ -51,8 +54,18 @@
                             <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='orgSetupRole' routerLink="org/orgType">
                                 {{resourceService.frmelmnts?.lbl?.orgtypes}}
-                            </a> -->
-                            <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+                            </a>
+                          <a class="item" *ngIf='!isValidCustodianOrgUser' (click)="showAccountMergemodal = true;">
+                            {{resourceService.frmelmnts?.lbl?.mergeAccount}}
+                          </a>
+                           <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgAdminRole' routerLink="/org/userUpload">
+                            {{resourceService.frmelmnts?.lbl?.manageuser}}
+                          </a> -->
+                          <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                              [permission]='orgAdminRole' routerLink="manage">
+                              {{resourceService.frmelmnts?.lbl?.manage}}
+                          </a>
+                          <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
                                 (click)="logout()">
                                 {{resourceService.frmelmnts?.lnk?.logout}}
                             </a>
@@ -63,5 +76,74 @@
             </div>
         </div>
     </div>
+    <!--Header White Section-->
+    <!--Header Blue Section-->
+    <!--Computer-->
+    <div class="sb-bg-color-primary p-8" *ngIf="showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre">
+        <div class="ui container d-flex flex-ai-center mx-0">
+            <!--QR Button-->
+            <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
+                [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
+                title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}">
+                <i class="qrcode icon d-flex flex-ai-center"></i>
+                <span>{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
+            </button>
+            <!--/QR Button-->
+            <!--Divider-->
+            <span class="computer only mx-10 search-qrcode-divider">|</span>
+            <!--/Divider-->
+            <!--Search Box-->
+            <!--Logged in Pages-->
+            <app-search class="sb-search-box b-0 mr-auto" *ngIf="!showExploreHeader && !isOffline"
+                [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
+            </app-search>
+            <!--/Logged in Pages-->
+            <!--Explore Pages-->
+            <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreHeader || isOffline"
+                [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
+                <div class="input-div relative">
+                    <i class="search icon"></i>
+                    <input type="text" id="keyword" name="filter_search" class="sb-search-input"
+                        title="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]='queryParam.key'
+                        placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
+                        (keyup.enter)="onEnter(queryParam.key)" />
+                    <!-- <i class="close icon"></i> [(ngModel)]="key"
+            <div class="sb-loader"></div> -->
+                </div>
+                <button appTelemetryInteract [telemetryInteractEdata]="getSearchButtonInteractEdata(queryParam.key)"
+                    class="sb-btn sb-btn-normal" (click)="onEnter(queryParam.key)"
+                    title="{{resourceService?.frmelmnts?.prmpt?.search}}" tabindex="0">{{resourceService.frmelmnts?.lbl?.search}}</button>
+            </div>
+            <!--/Explore Pages-->
+            <!--/Search Box-->
+            <!--Language Dropdown-->
+            <app-language-dropdown [languageRange]='languages' class="computer only ml-auto"
+                *ngIf="languages && !router.isActive('workspace', false)">
+            </app-language-dropdown>
+            <!--/Language Dropdown-->
+        </div>
+    </div>
+    <!--/Computer-->
+    <!--Mobile-->
+    <div class="p-8 mobile only" *ngIf="showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre">
+        <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
+            <!--QR Button-->
+            <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
+                [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
+                <i class="qrcode icon d-flex flex-ai-center"></i>
+                <span class="d-flex flex-ai-center">
+                    {{resourceService.frmelmnts?.lbl?.enterQrCode}}
+                </span>
+            </button>
+            <!--/QR Button-->
+            <!--Language Dropdown-->
+            <app-language-dropdown [languageRange]='languages' class="mobile only"
+                *ngIf="languages && !router.isActive('workspace', false)">
+            </app-language-dropdown>
+            <!--/Language Dropdown-->
+        </div>
+    </div>
+    <!--/Mobile-->
+    <!--/Header Blue Section-->
 </div>
-<!--Header White Section-->
+<extension-point [name]="'content-import'" *ngIf="isOffline && !showOfflineHelpCentre"></extension-point>

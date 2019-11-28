@@ -5,15 +5,28 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const kafkaService = require('../helpers/kafkaHelperService');
+const logger = require('sb_logger_util_v2');
+const {getUserIdFromToken} = require('../helpers/jwtHelper');
+const {getUserDetails} = require('../helpers/userHelper');
 let ssoWhiteListChannels;
+const privateBaseUrl = '/private/user/'
 
-let keycloak = getKeyCloakClient({
+const keycloakTrampoline = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
   bearerOnly: true,
   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
   realm: envHelper.PORTAL_REALM,
   credentials: {
     secret: envHelper.PORTAL_TRAMPOLINE_SECRET
+  }
+})
+const keycloakTrampolineAndroid = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.secret
   }
 })
 const verifySignature = async (token) => {
@@ -46,32 +59,84 @@ const verifyToken = (token) => {
 const fetchUserWithExternalId = async (payload, req) => { // will be called from player docker to learner docker
   const options = {
     method: 'GET',
-    url: `${envHelper.learner_Service_Local_BaseUrl}/private/user/v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
+    url: `${envHelper.learner_Service_Local_BaseUrl}${privateBaseUrl}v1/read/${payload.sub}?provider=${payload.state_id}&idType=${payload.state_id}`,
     headers: getHeaders(req),
     json: true
   }
-  console.log('sso fetching user with', options.url);
+  logger.info({msg:'sso fetch user with external id', additionalInfo:{options: options}})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
-      console.log('sso fetching user', data.result);
-      return _.get(data, 'result.response');
+      logger.info({msg: 'sso fetching user',
+      additionalInfo: {
+        result: data.result
+        }
+      })
+      return _.get(data, 'result.response')
     } else {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
   }).catch(handleGetUserByIdError);
 }
-const createUser = async (requestBody, req) => {
+
+const freeUpUser = async (req) => {
+  const freeUprequest = {
+    id: req.query.userId,
+    identifier: [req.query.identifier]
+  };
+  const options = {
+    method: 'POST',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl + 'v1/identifier/freeup',
+    headers: getHeaders(req),
+    body: {
+      request: freeUprequest
+    },
+    json: true
+  };
+  logger.info({msg:'sso free up user request', additionalInfo:{requestBody: freeUprequest }});
+  return request(options).then(data => {
+    if (data.responseCode === 'OK' && _.get(data, 'result.response') === 'SUCCESS') {
+      logger.info({msg:'sso free up user response', additionalInfo:{data}});
+      return data;
+    } else {
+      throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+    }
+  })
+};
+const createUser = async (req, jwtPayload) => {
+  const requestBody = {
+    firstName: jwtPayload.name,
+    channel: jwtPayload.state_id,
+    orgExternalId: jwtPayload.school_id,
+    externalIds: [{
+      id: jwtPayload.sub,
+      provider: jwtPayload.state_id,
+      idType: jwtPayload.state_id
+    }]
+  }
+  if(req.query.type === 'phone'){
+    requestBody.phone = req.query.value;
+    requestBody.phoneVerified = true
+  } else {
+    requestBody.email = req.query.value;
+    requestBody.emailVerified = true
+  }
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + 'user/v2/create',
     headers: getHeaders(req),
     body: {
+      params: {
+        signupType: "sso"
+      },
       request: requestBody
     },
     json: true
   }
+  console.log('sso user create user request', JSON.stringify(options));
+  logger.info({msg:'sso user create user request', additionalInfo:{requestBody: requestBody }})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
+      logger.info({msg:'sso new user create response', additionalInfo:{data}})
       return data;
     } else {
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
@@ -80,29 +145,44 @@ const createUser = async (requestBody, req) => {
 }
 const createSession = async (loginId, client_id, req, res) => {
   let grant;
+  let keycloakClient = keycloakTrampoline;
+  let scope = 'openid';
   if (client_id === 'android') {
-    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'offline_access')
-  } else {
-    grant = await keycloak.grantManager.obtainDirectly(loginId, undefined, undefined, 'openid')
+    keycloakClient = keycloakTrampolineAndroid;
+    scope = 'offline_access';
   }
-  keycloak.storeGrant(grant, req, res)
+  grant = await keycloakClient.grantManager.obtainDirectly(loginId, undefined, undefined, scope);
+  keycloakClient.storeGrant(grant, req, res)
   req.kauth.grant = grant
-  keycloak.authenticated(req)
+  keycloakClient.authenticated(req)
   return {
     access_token: grant.access_token.token,
     refresh_token: grant.refresh_token.token
   }
 }
-const updatePhone = (requestBody, req) => { // will be called from player docker to learner docker
+const updateContact = (req, userDetails) => { // will be called from player docker to learner docker
+  let requestBody = {
+    userId: userDetails.id,
+    phone: req.query.value,
+    phoneVerified: true
+  }
+  if(req.query.type === 'email'){
+    requestBody = {
+      userId: userDetails.id,
+      email: req.query.value,
+      emailVerified: true
+    }
+  }
   const options = {
-    method: 'POST',
-    url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/update',
+    method: 'PATCH',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/update',
     headers: getHeaders(req),
     body: {
       request: requestBody
     },
     json: true
   }
+  logger.info({msg:'sso update contact api request', additionalInfo:{requestBody: requestBody}})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
@@ -111,16 +191,54 @@ const updatePhone = (requestBody, req) => { // will be called from player docker
     }
   })
 }
-const updateRoles = (requestBody, req) => { // will be called from player docker to learner docker
+const updateRoles = (req, userId, jwtPayload) => { // will be called from player docker to learner docker
+  const requestBody = {
+    userId: userId,
+    externalId: jwtPayload.school_id,
+    provider: jwtPayload.state_id,
+    roles: jwtPayload.roles
+  }
   const options = {
     method: 'POST',
-    url: envHelper.learner_Service_Local_BaseUrl + '/private/user/v1/assign/role',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/assign/role',
     headers: getHeaders(req),
     body: {
       request: requestBody
     },
     json: true
   }
+  logger.info({msg:'sso update role api request', additionalInfo:{requestBody: requestBody}})
+  return request(options).then(data => {
+    if (data.responseCode === 'OK') {
+      return data;
+    } else {
+      throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+    }
+  })
+}
+const migrateUser = (req, jwtPayload) => { // will be called from player docker to learner docker
+  const requestBody = {
+    userId: req.query.userId,
+    channel:jwtPayload.state_id,
+    orgExternalId: jwtPayload.school_id,
+    externalIds: [{
+        id: jwtPayload.sub,
+        provider: jwtPayload.state_id,
+        idType: jwtPayload.state_id,
+        operation: 'ADD'
+      }]
+  }
+
+  const options = {
+    method: 'PATCH',
+    url: envHelper.learner_Service_Local_BaseUrl + privateBaseUrl +'v1/migrate',
+    headers: getHeaders(req),
+    body: {
+      request: requestBody
+    },
+    json: true
+  }
+  logger.info({msg: 'sso migrate user request', additionalInfo:{options: options}})
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;
@@ -193,7 +311,7 @@ const getSsoUpdateWhiteListChannels = async (req) => {
       return false
     }
   } catch (error) {
-    console.log('sso error fetching whileList channels: getSsoUpdateWhileListChannels');
+    logger.error({msg: 'sso error fetching whileList channels: getSsoUpdateWhileListChannels'});
     return false;
   }
 };
@@ -204,24 +322,77 @@ const sendSsoKafkaMessage = async (req) => {
     var kafkaPayloadData = getKafkaPayloadData(req.session);
     kafkaService.sendMessage(kafkaPayloadData, envHelper.sunbird_sso_kafka_topic, function (err, res) {
       if (err) {
-        console.log('sso sending message to kafka errored', err)
+        logger.error({msg: 'sso sending message to kafka errored', err})
       } else {
-        console.log('sso kafka message send successfully')
+        logger.info({msg: 'sso kafka message send successfully'})
       }
     });
   } else {
-    console.log('sso white list channels not matched or errored ')
+    logger.error({msg: 'sso white list channels not matched or errored'})
+  }
+};
+
+/**
+ *
+ * @param stateVerifiedIdentifier valid email or phone
+ * @param nonStateMaskedIdentifier masked email or phone
+ * @param identifierType can be email or phone
+ * @returns {*|boolean}
+ */
+const verifyIdentifier = (stateVerifiedIdentifier, nonStateMaskedIdentifier, identifierType) => {
+  console.log("stateVerifiedIdentifier", stateVerifiedIdentifier);
+  console.log("nonStateMaskedIdentifier", nonStateMaskedIdentifier);
+  console.log("identifierType", identifierType);
+  if (identifierType === 'email') {
+    var splittedData = nonStateMaskedIdentifier.split("@");
+    if (_.isArray(splittedData) && splittedData.length > 1) {
+      return stateVerifiedIdentifier.includes(splittedData[1]) && stateVerifiedIdentifier.includes(splittedData[0].slice(0, 2)) && nonStateMaskedIdentifier.length === stateVerifiedIdentifier.length;
+    } else {
+      throw "ERROR_PARSING_EMAIL"
+    }
+  } else if (identifierType === 'phone') {
+    var extractedNumber = nonStateMaskedIdentifier.slice(6, nonStateMaskedIdentifier.length);
+    return stateVerifiedIdentifier.includes(extractedNumber) && nonStateMaskedIdentifier.length === stateVerifiedIdentifier.length;
+  } else {
+    throw "UNKNOWN_IDENTIFIER"
+  }
+};
+
+/**
+ *
+ */
+const fetchUserDetails = async (token) => {
+  const userId = getUserIdFromToken(token);
+  return await getUserDetails(userId, token);
+};
+
+/**
+ *
+ * @param identifier
+ * @returns {string}
+ */
+const getIdentifier = (identifier) => {
+  if (identifier === 'email') {
+    return 'email'
+  } else if (identifier === 'phone') {
+    return 'maskedPhone'
+  } else {
+    throw "UNKNOWN_IDENTIFIER_CANNOT_PROCESS"
   }
 };
 
 module.exports = {
-  keycloak,
   verifySignature,
   verifyToken,
   fetchUserWithExternalId,
   createUser,
   createSession,
-  updatePhone,
+  updateContact,
   updateRoles,
-  sendSsoKafkaMessage
+  sendSsoKafkaMessage,
+  migrateUser,
+  freeUpUser,
+  verifyIdentifier,
+  fetchUserDetails,
+  getIdentifier
 };

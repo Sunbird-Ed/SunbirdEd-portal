@@ -61,8 +61,8 @@
             </div>
           </div>
           <div class="column ml-auto">
-            <button appTelemetryInteract [telemetryInteractEdata]="enrollInteractEdata" [telemetryInteractObject]="{id: batchDetails.identifier, type:'CourseBatch', ver:'1.0'}" [telemetryInteractCdata]="[{ type: 'course', id: batchDetails.courseId}]"
-            [disabled]="disableEnrollBtn" (click)="handleEnrollEvent(batchDetails)" class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.enroll}}</button>
+            <button appTelemetryInteract [telemetryInteractEdata]="enrollInteractEdata" [telemetryInteractObject]="{id: batchDetails.identifier, type:'CourseBatch', ver:'1.0', rollup:{l1: batchDetails.courseId}}" [telemetryInteractCdata]="[{ type: 'course', id: batchDetails.courseId}]"
+            [disabled]="handleEnrollmentEndDate(batchDetails) || disableEnrollBtn" (click)="handleEnrollEvent(batchDetails)" class="sb-btn sb-btn-normal sb-btn-outline-primary">{{resourceService.frmelmnts?.btn?.enroll}}</button>
           </div>
         </div>
       </div>

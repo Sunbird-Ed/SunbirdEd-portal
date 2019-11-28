@@ -1,5 +1,5 @@
 
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -34,6 +34,8 @@ describe('MainHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainHeaderComponent);
     component = fixture.componentInstance;
+    component.routerEvents  = observableOf({id: 1, url: '/explore', urlAfterRedirects: '/explore'});
+    fixture.detectChanges();
   });
 
   it('should subscribe to user service', () => {
@@ -44,6 +46,8 @@ describe('MainHeaderComponent', () => {
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     fixture.detectChanges();
+    expect(userService._userProfile).toBeDefined();
+    component.ngOnInit();
     expect(component.userProfile).toBeTruthy();
   });
 
@@ -76,7 +80,6 @@ describe('MainHeaderComponent', () => {
 
   it('All query param should be removed except key and language', () => {
     component.queryParam = { 'board': 'NCERT', 'medium': 'English' };
-    component.exploreRoutingUrl = 'explore';
     component.onEnter('test');
     expect(component.queryParam).toEqual({ 'key': 'test' });
   });

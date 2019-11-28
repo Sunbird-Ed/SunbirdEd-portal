@@ -5,19 +5,23 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
   CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent,
-  ContentRatingComponent
+  ContentRatingComponent, CommingSoonComponent, ContentDownloadComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
+import { CoreModule } from '@sunbird/core';
 @NgModule({
   imports: [
     CommonModule,
     SuiModule,
     TelemetryModule,
-    SharedModule
+    SharedModule,
+    CoreModule
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent],
+    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
+    CommingSoonComponent, ContentDownloadComponent],
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent]
+    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
+    CommingSoonComponent, ContentDownloadComponent]
 })
 export class PlayerHelperModule { }

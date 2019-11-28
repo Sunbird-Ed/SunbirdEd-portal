@@ -5,15 +5,20 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { Observable, of, throwError, combineLatest } from 'rxjs';
-import { first, filter, mergeMap, tap, map } from 'rxjs/operators';
+import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin} from 'rxjs';
+import {first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil} from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
+import { ShepherdService } from 'angular-shepherd';
+import {builtInButtons, defaultStepOptions} from './shepherd-data';
+
+
+
 
 /**
  * main app component
@@ -22,7 +27,7 @@ import { DOCUMENT } from '@angular/platform-browser';
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
@@ -58,6 +63,10 @@ export class AppComponent implements OnInit {
    * 2. user profile rootOrg hashtag for logged in
    */
   private channel: string;
+  private _routeData$ = new BehaviorSubject(undefined);
+  public readonly routeData$ = this._routeData$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
+
   /**
    * constructor
    */
@@ -71,6 +80,18 @@ export class AppComponent implements OnInit {
   instance: string;
   programId;
 
+  resourceDataSubscription: any;
+  shepherdData: Array<any>;
+  private fingerprintInfo: any;
+  hideHeaderNFooter = true;
+  queryParams: any;
+  telemetryContextData: any ;
+  didV2: boolean;
+  flag = false;
+  deviceProfile: any;
+  isCustodianOrgUser: any;
+  usersProfile: any;
+  isLocationConfirmed = true;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -78,10 +99,11 @@ export class AppComponent implements OnInit {
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
-    @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor) {
+    @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
+    private shepherdService: ShepherdService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-      if((<HTMLInputElement>document.getElementById('cbse_programId'))){
+      if ((<HTMLInputElement>document.getElementById('cbse_programId'))) {
         this.programId = (<HTMLInputElement>document.getElementById('cbse_programId')).value;
       }
   }
@@ -91,14 +113,34 @@ export class AppComponent implements OnInit {
    */
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
-    this.telemetryService.syncEvents();
+    this.telemetryService.syncEvents(false);
   }
   handleLogin() {
     window.location.reload();
   }
+  handleHeaderNFooter() {
+    this.router.events
+    .pipe(
+      filter(event => event instanceof NavigationEnd),
+      tap((event: NavigationEnd) => this._routeData$.next(event))
+      ).subscribe(data => {
+      this.hideHeaderNFooter = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.data.hideHeaderNFooter') ||
+        _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
+    });
+  }
   ngOnInit() {
+    this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
+    const queryParams$ = this.activatedRoute.queryParams.pipe(
+      filter( queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
+      tap(queryParams => {
+        this.telemetryContextData = JSON.parse(decodeURIComponent(queryParams.context));
+      }),
+      startWith(null)
+    );
+    this.handleHeaderNFooter();
     this.resourceService.initialize();
-    combineLatest(this.setSlug(), this.setDeviceId()).pipe(
+    combineLatest(queryParams$, this.setSlug(), this.setDeviceId())
+    .pipe(
       mergeMap(data => {
         this.navigationHelperService.initialize();
         this.userService.initialize(this.userService.loggedIn);
@@ -115,15 +157,116 @@ export class AppComponent implements OnInit {
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
-        this.deviceRegisterService.initialize(this.channel);
+        this.logCdnStatus();
+        this.setFingerPrintTelemetry();
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
       }, error => {
         this.initApp = true;
       });
+
     this.changeLanguageAttribute();
+    if (this.isOffline) {
+      document.body.classList.add('sb-offline');
+    }
+}
+
+  checkLocationStatus() {
+    this.usersProfile = this.userService.userProfile;
+    const deviceRegister = this.deviceRegisterService.getDeviceProfile();
+    const custodianOrgDetails = this.orgDetailsService.getCustodianOrgDetails();
+    forkJoin([deviceRegister, custodianOrgDetails]).subscribe((res) => {
+      const deviceProfile = res[0];
+      this.deviceProfile = deviceProfile;
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(res[1], 'result.response.value')) {
+        // non state user
+        this.isCustodianOrgUser = true;
+        this.deviceProfile = deviceProfile;
+        if (this.userService.loggedIn) {
+          if (!deviceProfile.userDeclaredLocation ||
+            !(this.usersProfile && this.usersProfile.userLocations && this.usersProfile.userLocations.length >= 1)) {
+            this.isLocationConfirmed = false;
+          }
+        } else {
+          if (!deviceProfile.userDeclaredLocation) {
+            this.isLocationConfirmed = false;
+          }
+        }
+      } else {
+        // state user
+        this.isCustodianOrgUser = false;
+        if (this.userService.loggedIn) {
+          if (!deviceProfile.userDeclaredLocation) {
+            this.isLocationConfirmed = false;
+          }
+        } else {
+          if (!deviceProfile.userDeclaredLocation) {
+            this.isLocationConfirmed = false;
+          }
+        }
+      }
+    }, (err) => {
+      this.isLocationConfirmed = true;
+    });
   }
 
+setFingerPrintTelemetry() {
+  const printFingerprintDetails  = (<HTMLInputElement>document.getElementById('logFingerprintDetails'))
+  ? (<HTMLInputElement>document.getElementById('logFingerprintDetails')).value : 'false';
+    if (printFingerprintDetails !== 'true') {
+      return;
+    }
+
+    if (this.fingerprintInfo && !this.didV2) {
+      this.logExData('fingerprint_info', this.fingerprintInfo );
+    }
+
+    if (localStorage && localStorage.getItem('fpDetails_v1')) {
+      const fpDetails = JSON.parse(localStorage.getItem('fpDetails_v1'));
+      const fingerprintInfoV1 = {
+        deviceId: fpDetails.result,
+        components: fpDetails.components,
+        version: 'v1'
+      };
+      this.logExData('fingerprint_info', fingerprintInfoV1);
+      if (localStorage.getItem('fpDetails_v2')) {
+        localStorage.removeItem('fpDetails_v1');
+      }
+    }
+  }
+
+  logExData(type: string, data: object) {
+    const event = {
+      context: {
+        env : 'app'
+      },
+      edata : {
+        type : type,
+        data : JSON.stringify(data)
+      }
+    };
+    this.telemetryService.exData(event);
+  }
+
+  logCdnStatus() {
+    const isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
+    ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
+    if (isCdnWorking !== 'no') {
+      return;
+    }
+    const event = {
+      context: {
+        env: 'app'
+      },
+      edata: {
+        type: 'cdn_failed',
+        level: 'ERROR',
+        message: 'cdn failed, loading files from portal',
+        pageid: this.router.url.split('?')[0]
+      }
+    };
+    this.telemetryService.log(event);
+  }
   /**
    * checks if user has accepted the tnc and show tnc popup.
    */
@@ -143,15 +286,18 @@ export class AppComponent implements OnInit {
     const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
     if (frameWorkPopUp) {
       this.showFrameWorkPopUp = false;
+      this.checkLocationStatus();
     } else {
       if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
         this.showFrameWorkPopUp = true;
+      } else {
+        this.checkLocationStatus();
       }
     }
   }
 
   /**
-   * once tnc is accpeted from tnc popup on submit this function is triggered
+   * once tnc is accepted from tnc popup on submit this function is triggered
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
@@ -162,11 +308,17 @@ export class AppComponent implements OnInit {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-    return new Observable(observer => this.telemetryService.getDeviceId(deviceId => {
-        (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-        observer.next(deviceId);
-        observer.complete();
-      }));
+      return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+          this.fingerprintInfo = {deviceId, components, version};
+          if (this.isOffline) {
+            deviceId = <HTMLInputElement>document.getElementById('deviceId') ?
+                        (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
+          }
+          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.deviceRegisterService.initialize();
+          observer.next(deviceId);
+          observer.complete();
+        }));
   }
   /**
    * set slug from url only for Anonymous user.
@@ -237,30 +389,36 @@ export class AppComponent implements OnInit {
         }
       };
     } else {
-      return {
+      const anonymousTelemetryContextData = {
         userOrgDetails: {
-          userId: 'anonymous',
-          rootOrgId: this.orgDetails.rootOrgId,
-          organisationIds: [this.orgDetails.hashTagId]
+        userId: 'anonymous',
+        rootOrgId: this.orgDetails.rootOrgId,
+        organisationIds: [this.orgDetails.hashTagId]
+      },
+      config: {
+        pdata: {
+          id: this.userService.appId,
+          ver: version,
+          pid: this.configService.appConfig.TELEMETRY.PID
         },
-        config: {
-          pdata: {
-            id: this.userService.appId,
-            ver: version,
-            pid: this.configService.appConfig.TELEMETRY.PID
-          },
-          batchsize: 2,
-          endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
-          apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
-          host: '',
-          uid: 'anonymous',
-          sid: this.userService.anonymousSid,
-          channel: this.orgDetails.hashTagId,
-          env: 'home',
-          enableValidation: environment.enableTelemetryValidation,
-          timeDiff: this.orgDetailsService.getServerTimeDiff
-        }
-      };
+        batchsize: 10,
+        endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
+        apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
+        host: '',
+        sid: this.userService.anonymousSid,
+        channel: this.orgDetails.hashTagId,
+        env: 'home',
+        enableValidation: environment.enableTelemetryValidation,
+        timeDiff: this.orgDetailsService.getServerTimeDiff
+      }
+    };
+    if (this.telemetryContextData) {
+      anonymousTelemetryContextData['config']['did'] = _.get(this.telemetryContextData, 'did');
+      anonymousTelemetryContextData['config']['pdata'] = _.get(this.telemetryContextData, 'pdata');
+      anonymousTelemetryContextData['config']['channel'] = _.get(this.telemetryContextData, 'channel');
+      anonymousTelemetryContextData['config']['sid'] = _.get(this.telemetryContextData, 'sid');
+    }
+      return anonymousTelemetryContextData;
     }
   }
   /**
@@ -284,6 +442,7 @@ export class AppComponent implements OnInit {
     this.profileService.updateProfile(req).subscribe(res => {
       this.frameWorkPopUp.modal.deny();
       this.showFrameWorkPopUp = false;
+      this.checkLocationStatus();
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
     }, err => {
@@ -291,6 +450,7 @@ export class AppComponent implements OnInit {
       this.toasterService.warning(this.resourceService.messages.emsg.m0012);
       this.frameWorkPopUp.modal.deny();
       // this.router.navigate(['/resources']);
+      this.checkLocationStatus();
       this.cacheService.set('showFrameWorkPopUp', 'installApp');
     });
   }
@@ -302,7 +462,7 @@ export class AppComponent implements OnInit {
     this.cacheService.set('showFrameWorkPopUp', 'installApp');
   }
   changeLanguageAttribute() {
-    this.resourceService.languageSelected$.subscribe(item => {
+    this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       if (item.value && item.dir) {
           this._document.documentElement.lang = item.value;
           this._document.documentElement.dir = item.dir;
@@ -311,5 +471,91 @@ export class AppComponent implements OnInit {
           this._document.documentElement.dir = 'ltr';
         }
     });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.initializeShepherdData();
+      if (this.isOffline) {
+        this.shepherdService.defaultStepOptions = defaultStepOptions;
+        this.shepherdService.disableScroll = true;
+        this.shepherdService.modal = true;
+        this.shepherdService.confirmCancel = false;
+        this.shepherdService.addSteps(this.shepherdData);
+        if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
+          localStorage.setItem('TakeOfflineTour', 'show');
+          this.shepherdService.start();
+        }
+      }
+    }, 1000);
+  }
+
+  initializeShepherdData() {
+    this.shepherdData = [
+      {
+      id: this.resourceService.frmelmnts.instn.t0086,
+      useModalOverlay: true,
+      options: {
+          attachTo: '.tour-1 bottom',
+          buttons: [
+              builtInButtons.skip,
+              builtInButtons.next],
+          classes: 'sb-guide-text-area',
+          title: this.resourceService.frmelmnts.instn.t0086,
+          text: [ this.interpolateInstance(this.resourceService.frmelmnts.instn.t0090)]
+      }
+    },
+    {
+      id: this.resourceService.frmelmnts.instn.t0087,
+      useModalOverlay: true,
+      options: {
+          attachTo: '.tour-2 bottom',
+          buttons: [
+              builtInButtons.skip,
+              builtInButtons.back,
+              builtInButtons.next
+          ],
+          classes: 'sb-guide-text-area',
+          title: this.resourceService.frmelmnts.instn.t0087,
+          text: [this.resourceService.frmelmnts.instn.t0091]
+      }
+    },
+    {
+      id:  this.interpolateInstance(this.resourceService.frmelmnts.instn.t0088),
+      useModalOverlay: true,
+      options: {
+          attachTo: '.tour-3 bottom',
+          buttons: [
+              builtInButtons.skip,
+              builtInButtons.back,
+              builtInButtons.next,
+          ],
+          classes: 'sb-guide-text-area',
+          title:  this.interpolateInstance(this.resourceService.frmelmnts.instn.t0088),
+          text: [this.interpolateInstance(this.resourceService.frmelmnts.instn.t0092)]
+      }
+    },
+    {
+      id:  this.interpolateInstance(this.resourceService.frmelmnts.instn.t0089),
+      useModalOverlay: true,
+      options: {
+          attachTo: '.tour-4 bottom',
+          buttons: [
+              builtInButtons.back,
+              builtInButtons.cancel,
+          ],
+          classes: 'sb-guide-text-area',
+          title: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0089),
+          text: [ this.interpolateInstance(this.resourceService.frmelmnts.instn.t0093)]
+      }
+    }];
+  }
+  ngOnDestroy() {
+    if (this.resourceDataSubscription) {
+      this.resourceDataSubscription.unsubscribe();
+    }
+  }
+  interpolateInstance(message) {
+    return message.replace('{instance}', _.upperCase(this.instance));
   }
 }

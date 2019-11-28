@@ -93,6 +93,17 @@ export class CourseBatchService {
       }));
     }
   }
+
+  getParticipantList(data) {
+    const options = {
+      url: this.configService.urlConFig.URLS.BATCH.GET_PARTICIPANT_LIST,
+      data: data
+    };
+    return this.learnerService.post(options).pipe(map((response: any) => {
+      return _.get(response, 'result.batch.participants') || [];
+    }));
+  }
+
   enrollToCourse(data) {
     const options = {
       url: this.configService.urlConFig.URLS.COURSE.ENROLL_USER_COURSE,
@@ -131,6 +142,14 @@ export class CourseBatchService {
       data: {
         request: request
       }
+    };
+    return this.learnerService.post(option);
+  }
+
+  removeUsersFromBatch(batchId, request) {
+    const option = {
+      url: this.configService.urlConFig.URLS.BATCH.REMOVE_USERS + '/' + batchId,
+      data: request
     };
     return this.learnerService.post(option);
   }

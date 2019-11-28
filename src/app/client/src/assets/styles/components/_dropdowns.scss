@@ -1,0 +1,24 @@
+.ui.sb-dotted-dropdown {
+    .menu {
+        right: 0;
+        left: auto; 
+        min-width: 148px;
+        &>.item{
+            font-size:$font-size-sm;
+            &:hover {
+                color:$primary-400;
+            }
+        }
+    }
+}
+
+.sb-btn-dropdown {
+    &.ui.dropdown {
+        .menu {
+          top:100%;
+          &>.item {
+            font-size:$font-size-sm;
+          }
+        }
+    }
+}

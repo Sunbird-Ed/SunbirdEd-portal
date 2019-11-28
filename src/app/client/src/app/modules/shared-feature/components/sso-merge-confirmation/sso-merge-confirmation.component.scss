@@ -1,0 +1,17 @@
+.fullpage {
+  ::ng-deep {
+    .ui.fullscreen.modal > .close {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}
+.sb-merged-account-body-header{	
+  font-size: 18px;	
+}
+.sb-list-items{
+  text-align: left;
+    list-style-type: initial;
+    padding-left: 16px;
+    line-height: normal;
+}

@@ -318,7 +318,7 @@ export const Response = {
         'name': 'board'
       }
     ],
-    filters: [
+  filters: [
       {
         'code': 'board',
         'dataType': 'text',
@@ -472,5 +472,119 @@ export const Response = {
           }
         ]
       }
-    ]
+    ],
+  download_event:
+    {
+      'action': 'download',
+      'data': {
+        'action':
+        {
+          'onImage': {'eventName': 'onImage'}
+        },
+      'addedToLibrary': true,
+      'completionPercentage': 0,
+      'contentType': 'Resource',
+      'description': 'Math-Magic_7_Jugs and Mugs_Bunny and Banno celebrate their Wedding Anniversary_Introduction to volume',
+      'gradeLevel': 'Class 4',
+      // tslint:disable-next-line:max-line-length
+      'image': 'https://ekstep-public-prod.s3-ap-south-1.amazonaws.com/content/do_312579855868370944110877/artifact/1n4jfaogvexvuuff6knjagpzmavlvdxk2.thumb.png',
+      'medium': 'English',
+      // tslint:disable-next-line:max-line-length
+      'metaData': {'identifier': 'do_312579855868370944110877', 'mimeType': 'video/x-youtube', 'framework': 'ekstep_ncert_k-12', 'contentType': 'Resource'},
+      'name': 'Jugs and Mugs_Bunny and Banno celebrate their Wedding Anniversary_2',
+      'orgDetails': {},
+      'rating': 3,
+      'ribbon': {
+        'left': {
+          'class': 'ui circular label  card-badges-image',
+          'image': 'https://ntpproduction.blob.core.windows.net/badgr/uploads/badges/739851bf8ecd6203aa5dd2d9de155f31.png'
+        },
+        'right': {
+          'class': 'ui black right ribbon label',
+          'name': 'Learn'
+        },
+      },
+      'subTopic': '',
+      'subject': 'Mathematics',
+      'topic': 'Volumes and Capacity'
+    },
+      'section': 'Featured Content'
+      },
+  download_list : {
+        id: 'api.content.download.list',
+        ver: '1.0',
+        ts: '2019-08-22T05:07:39.363Z',
+        params: {
+          resmsgid: 'f2da2305-75c9-4b54-a454-72cfe6433ebe',
+          msgid: '2025a654-e573-4546-b87d-0a293f2f6564',
+          status: 'successful',
+          err: null,
+          errmsg: null,
+        },
+        responseCode: 'OK',
+        result: {
+          response: {
+            downloads: {
+              submitted: [],
+              inprogress: [],
+              failed: [],
+              completed: [],
+            },
+          },
+        },
+      },
+   download_success : {
+      id: 'api.content.download',
+      ver: '1.0',
+      ts: '2019-08-16T04:54:02.569Z',
+      params: {
+        resmsgid: 'efe1bb13-a3a4-4458-baf1-234b1a109ea0',
+        msgid: 'c1932b9d-2a36-4036-ba57-2b80be4b3355',
+        status: 'successful',
+        err: null,
+        errmsg: null,
+      },
+      responseCode: 'OK',
+      result: { downloadId: '5e1ae60e-ecd8-459e-9e13-fe8ecf7c9487' },
+    },
+  download_error : {
+      id: 'api.content.download',
+      ver: '1.0',
+      ts: '2019-08-16T12:28:15.856Z',
+      params: {
+        resmsgid: 'dbbf8bd4-4da8-492b-bc5b-6c73351f1161',
+        msgid: '845ee75b-72e9-4d33-a0a2-1b38bf132b83',
+        status: 'failed',
+        err: 'ERR_INTERNAL_SERVER_ERROR',
+        errmsg: 'Error while processing the request',
+      },
+      responseCode: 'INTERNAL_SERVER_ERROR',
+      result: {},
+    },
+    result: {
+      id: 'api.content.read',
+      ver: '1.0',
+      ts: '2018-05-03T10:51:12.648Z',
+      params: 'params',
+      responseCode: 'OK',
+      result: {
+          content: {
+              downloadStatus: '',
+              mimeType: 'application/vnd.ekstep.ecml-archive',
+              body: 'body',
+              identifier: 'domain_66675',
+              versionKey: '1497028761823',
+              status: 'Live',
+              me_averageRating: '4',
+              description: 'ffgg',
+              name: 'ffgh',
+              concepts: ['AI', 'ML'],
+              contentType: '',
+              code: '',
+              framework: '',
+              userId: '',
+              userName: '',
+          }
+      }
+  }
 };

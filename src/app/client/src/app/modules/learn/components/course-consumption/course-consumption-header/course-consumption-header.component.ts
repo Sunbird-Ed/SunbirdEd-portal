@@ -49,6 +49,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   courseStatus: string;
   public unsubscribe = new Subject<void>();
   batchEndDate: any;
+  public interval: any;
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
@@ -83,13 +84,20 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           this.enrolledCourse = true;
         }
       });
+      this.interval = setInterval(() => {
+        if (document.getElementById('closebutton')) {
+          this.showResumeCourse = true;
+        } else {
+          this.showResumeCourse = false;
+        }
+      }, 500);
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
         this.enrolledCourse = true;
-        this.progress = courseProgressData.progress ? Math.round(courseProgressData.progress) : 0;
+        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
         this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
         if (!this.flaggedCourse && this.onPageLoadResume &&
           !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
@@ -151,6 +159,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     }];
   }
   ngOnDestroy() {
+    clearInterval(this.interval);
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }

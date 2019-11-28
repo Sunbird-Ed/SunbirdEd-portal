@@ -8,6 +8,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GetComponent } from './get.component';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { ResourceService } from '@sunbird/shared';
+
 describe('GetComponent', () => {
   let component: GetComponent;
   let fixture: ComponentFixture<GetComponent>;
@@ -32,7 +34,7 @@ describe('GetComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, ResourceService]
     })
     .compileComponents();
   }));

@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
-
+import { DownloadManagerService } from '@sunbird/offline';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
   events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
@@ -23,13 +23,17 @@ const fakeActivatedRoute = {
       telemetry: {
         env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
       }
+    },
+    params: {
+      contentId: 'd0_33567325'
     }
   }
 };
 const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
-    stmsg: { m0009: 'error' }
+    stmsg: { m0009: 'error' },
+    fmsg: { m0090: 'Could not download. Try again later'}
   },
   frmelmnts: {
     btn: {
@@ -50,7 +54,8 @@ describe('PublicContentPlayerComponent', () => {
       TelemetryModule.forRoot()],
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PublicPlayerService,
+      providers: [PublicPlayerService, DownloadManagerService,
+        ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     })
@@ -60,6 +65,7 @@ describe('PublicContentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should config content player if content status is "Live"', () => {
@@ -83,21 +89,19 @@ describe('PublicContentPlayerComponent', () => {
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableThrowError(serverRes.failureResult));
     fixture.detectChanges();
+    component.getContent();
     expect(component.playerConfig).toBeUndefined();
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
   it('should call tryAgain method', () => {
-    const windowScrollService = TestBed.get(WindowScrollService);
-    spyOn(windowScrollService, 'smoothScroll');
     spyOn(component, 'tryAgain').and.callThrough();
-    spyOn(component, 'getContent').and.callThrough();
+    spyOn(component, 'getContent');
     component.tryAgain();
     expect(component.showError).toBeFalsy();
     expect(component.getContent).toHaveBeenCalled();
   });
   it('should unsubscribe from all observable subscriptions', () => {
-    component.getContent();
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
@@ -110,4 +114,9 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showPlayer).toBeTruthy();
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
+
+  afterEach(() => {
+    component.ngOnDestroy();
+  });
+
 });

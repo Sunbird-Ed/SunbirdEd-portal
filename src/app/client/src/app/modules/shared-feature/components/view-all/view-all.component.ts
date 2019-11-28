@@ -12,6 +12,9 @@ import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+import { environment } from '@sunbird/environment';
+import { DownloadManagerService } from './../../../offline/services';
+
 @Component({
   selector: 'app-view-all',
   templateUrl: './view-all.component.html'
@@ -47,7 +50,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
    * To navigate to other pages
    */
-  private router: Router;
+  public router: Router;
   /**
   * To send activatedRoute.snapshot to router navigation
   * service for redirection to parent component
@@ -133,12 +136,18 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public closeUrl: string;
   public sectionName: string;
   public unsubscribe = new Subject<void>();
+  isOffline: boolean = environment.isOffline;
+  showExportLoader = false;
+  contentName: string;
+  showDownloadLoader = false;
+
+
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -193,6 +202,18 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       };
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     });
+
+
+    if (this.isOffline) {
+      this.downloadManagerService.downloadListEvent.pipe(
+        takeUntil(this.unsubscribe)).subscribe((data) => {
+        this.updateCardData(data);
+      });
+
+      this.downloadManagerService.downloadEvent.pipe(tap(() => {
+        this.showDownloadLoader = false;
+      }), takeUntil(this.unsubscribe)).subscribe(() => {});
+    }
   }
   getContents(data) {
     this.getContentList(data).subscribe((response: any) => {
@@ -267,12 +288,14 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       filters: _.get(this.queryParams, 'appliedFilters') ? this.filters : { ..._.get(manipulatedData, 'filters'), ...this.filters },
       limit: this.pageLimit,
       pageNumber: Number(request.params.pageNumber),
-      exists: request.queryParams.exists,
-      sort_by: request.queryParams.sortType ?
-        { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy),
       mode: _.get(manipulatedData, 'mode'),
       params: this.configService.appConfig.ViewAll.contentApiQueryParams
     };
+    if (!this.isOffline || _.includes(this.router.url, 'browse')) {
+      requestParams['exists'] = request.queryParams.exists,
+      requestParams['sort_by'] = request.queryParams.sortType ?
+      { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy);
+    }
     if (_.get(manipulatedData, 'filters')) {
       requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }
@@ -301,16 +324,29 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
     const url = decodeURI(this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString()));
-    window.scroll(0, 0);
     this.router.navigate([url], { queryParams: this.queryParams, relativeTo: this.activatedRoute });
     window.scroll({
-      top: 100,
-      left: 100,
+      top: 0,
+      left: 0,
       behavior: 'smooth'
     });
   }
 
   playContent(event) {
+
+    // For offline environment content will only play when event.action is open
+    if (event.action === 'download' && this.isOffline) {
+      this.startDownload(event.data.metaData.identifier);
+      this.showDownloadLoader = true;
+      this.contentName = event.data.name;
+      return false;
+    } else if (event.action === 'export' && this.isOffline) {
+      this.showExportLoader = true;
+      this.contentName = event.data.name;
+      this.exportOfflineContent(event.data.metaData.identifier);
+      return false;
+    }
+
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
     } else {
@@ -318,7 +354,11 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       if (url[1] === 'learn' || url[1] === 'resources') {
         this.handleCourseRedirection(event);
       } else {
-        this.publicPlayerService.playContent(event);
+        if (_.includes(this.router.url, 'browse') && this.isOffline) {
+          this.publicPlayerService.playContentForOfflineBrowse(event);
+        } else {
+          this.publicPlayerService.playContent(event);
+        }
       }
     }
   }
@@ -398,5 +438,41 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   closeModal() {
     this.showLoginModal = false;
+  }
+
+  startDownload (contentId) {
+    this.downloadManagerService.downloadContentId = contentId;
+    this.downloadManagerService.startDownload({}).subscribe(data => {
+      this.downloadManagerService.downloadContentId = '';
+    }, error => {
+      this.downloadManagerService.downloadContentId = '';
+      this.showDownloadLoader = false;
+
+      _.each(this.searchList, (contents) => {
+        contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+      });
+      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+    });
+  }
+
+  exportOfflineContent(contentId) {
+    this.downloadManagerService.exportContent(contentId).subscribe(data => {
+      const link = document.createElement('a');
+      link.href = data.result.response.url;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.showExportLoader = false;
+    }, error => {
+      this.showExportLoader = false;
+      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+    });
+  }
+
+  updateCardData(downloadListdata) {
+    _.each(this.searchList, (contents) => {
+      this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
+    });
   }
 }

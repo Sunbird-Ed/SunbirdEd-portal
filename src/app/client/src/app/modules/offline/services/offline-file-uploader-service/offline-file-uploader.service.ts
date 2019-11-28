@@ -3,7 +3,7 @@ import { FineUploader, UIOptions } from 'fine-uploader';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import { Output, EventEmitter } from '@angular/core';
-import { ToasterService } from '@sunbird/shared';
+import { ToasterService, ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class OfflineFileUploaderService {
 
 
   constructor(
-    public tosterService: ToasterService
+    public tosterService: ToasterService, public resourceService: ResourceService
   ) { }
   get getWindowObject(): any {
     return window;
@@ -44,11 +44,6 @@ export class OfflineFileUploaderService {
         mode: 'default',
         responseProperty: 'error'
       },
-      fileValidation: {
-        itemLimit: 100,
-        allowedExtensions: ['ecar'],
-        stopOnFirstInvalidFile: false,
-      }
     };
   }
 
@@ -68,6 +63,10 @@ export class OfflineFileUploaderService {
       autoUpload: true,
       request: options.request,
       warnBeforeUnload: true,
+      maxConnections: 1,
+      validation: {
+        acceptFiles: ['.ecar'],
+      },
       callbacks: {
         onProgress: () => {
           this.processingFiles = true;
@@ -81,19 +80,18 @@ export class OfflineFileUploaderService {
           const uploadingFailed = document.getElementsByClassName('qq-upload-fail');
           const totalFiles = document.getElementsByClassName('qq-upload-list-selector');
           const successFullyUploaded = document.getElementsByClassName('qq-upload-success');
-          if (uploadingFailed.length) {
-            this.tosterService.error(
-              `Content Import Failed: ${uploadingFailed.length} `
-            );
-          } else if (successFullyUploaded.length && uploadingFailed.length) {
-            this.tosterService.warning(
-              `Content Imported Successfully
-              : ${successFullyUploaded.length} , Content Import Failed: ${uploadingFailed.length}`
-            );
+          if (successFullyUploaded.length && uploadingFailed.length) {
+            const successMessage = _.replace(this.resourceService.messages.smsg.m0054,
+              '{UploadedContentLength}', successFullyUploaded.length);
+            const failureMessage = _.replace(this.resourceService.messages.fmsg.m0093,
+              '{FailedContentLength}', uploadingFailed.length);
+            this.tosterService.warning(`${successMessage}, ${failureMessage}`);
+          } else if (uploadingFailed.length) {
+            this.tosterService.error(_.replace(this.resourceService.messages.fmsg.m0093,
+              '{FailedContentLength}', uploadingFailed.length));
           } else if (successFullyUploaded.length) {
-            this.tosterService.success(
-              `Content Imported Successfully : ${successFullyUploaded.length}`
-            );
+            this.tosterService.success(_.replace(this.resourceService.messages.smsg.m0054,
+              '{UploadedContentLength}', successFullyUploaded.length));
             this.isUpload.emit('true');
           }
         },

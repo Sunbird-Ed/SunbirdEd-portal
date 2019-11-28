@@ -1,7 +1,9 @@
-import { Component, OnInit, AfterViewInit, Output, Input, EventEmitter ,
-  OnChanges, AfterViewChecked, ChangeDetectorRef, ElementRef, ViewChild} from '@angular/core';
+import {
+  Component, OnInit, AfterViewInit, Output, Input, EventEmitter,
+  OnChanges, AfterViewChecked, ChangeDetectorRef, ElementRef, ViewChild
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {  ConfigService, ResourceService, IUserData, IUserProfile, ToasterService  } from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
@@ -40,12 +42,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Input() questionSelectionStatus: any;
-  @Output() questionStatus = new EventEmitter < any > ();
+  @Output() questionStatus = new EventEmitter<any>();
   @Input() selectedAttributes: any;
   @Input() role: any;
   @ViewChild('author_names') authorName;
-  @Output() statusEmitter = new EventEmitter < string > ();
-  @Output() questionQueueStatus = new EventEmitter < any > ();
+  @Output() statusEmitter = new EventEmitter<string>();
+  @Output() questionQueueStatus = new EventEmitter<any>();
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -90,26 +92,26 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.selectedAttributes.bloomsLevel) {
       this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
     }
-    const topicTerm =  _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
-    if (topicTerm.associations) {
+    const topicTerm = _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
+    if (topicTerm && topicTerm.associations) {
       this.learningOutcomeOptions = topicTerm.associations;
     }
     this.initializeFormFields();
     if (this.questionMetaData && this.questionMetaData.data) {
-        this.question = this.questionMetaData.data.question;
-        this.editorState.solutions = this.questionMetaData.data.editorState.solutions
-               && this.questionMetaData.data.editorState.solutions[0];
-        if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
-          this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
-        }
-        this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
-        // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
-        // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
-        this.mediaArr = this.questionMetaData.data.media || [];
+      this.question = this.questionMetaData.data.question;
+      this.editorState.solutions = this.questionMetaData.data.editorState.solutions
+        && this.questionMetaData.data.editorState.solutions[0];
+      if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
+        this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
+      }
+      this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
+      // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
+      // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
+      this.mediaArr = this.questionMetaData.data.media || [];
     }
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
-      //this.buttonTypeHandler('preview');
+      // this.buttonTypeHandler('preview');
     }
     this.userName = this.setUserName();
   }
@@ -120,17 +122,17 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       userName = this.userService.userProfile.firstName;
     }
     if (this.userService.userProfile.lastName) {
-      userName += (' ' + this.userService.userProfile.lastName)
+      userName += (' ' + this.userService.userProfile.lastName);
     }
     return userName;
   }
 
   ngAfterViewInit() {
-   this.initializeDropdown();
-  // tslint:disable-next-line:max-line-length
-  // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
-  // tslint:disable-next-line:max-line-length
-  // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
+    this.initializeDropdown();
+    // tslint:disable-next-line:max-line-length
+    // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
+    // tslint:disable-next-line:max-line-length
+    // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
   }
   ngOnChanges() {
     if (this.initialized) {
@@ -144,7 +146,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.question = '';
       this.editorState.solutions = '';
       if (this.questionMetaData && this.questionMetaData.data) {
-       this.question = this.questionMetaData.data.question;
+        this.question = this.questionMetaData.data.question;
         this.editorState.solutions = this.questionMetaData.data.solutions && this.questionMetaData.data.editorState.solutions[0];
         if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
           this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
@@ -162,8 +164,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     } else if ((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')) {
       this.showPreview = false;
     }
-  if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status=== 'Reject' &&
-    this.questionMetaData.data.rejectComment) {
+    if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' &&
+      this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
   }
@@ -174,7 +176,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.prevShowPreview = this.showPreview;
   }
   initializeDropdown() {
-    ( < any > $('.ui.checkbox')).checkbox();
+    (<any>$('.ui.checkbox')).checkbox();
   }
   initializeFormFields() {
     if (this.learningOutcomeOptions.length > 0) {
@@ -209,26 +211,26 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     });
   }
   handleReviewrStatus(event) {
-    this.updateQuestion([{key: 'status', value: event.status}, {key: 'rejectComment', value: event.rejectComment}]);
+    this.updateQuestion([{ key: 'status', value: event.status }, { key: 'rejectComment', value: event.rejectComment }]);
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {
       this.selectedAttributes.showMode = 'previewPlayer';
       // call createQuestion with param true to get the local question data
       if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
-        this.createQuestion(true)
+        this.createQuestion(true);
       }
     } else if (event === 'edit') {
       this.selectedAttributes.showMode = 'editorForm';
       this.refreshEditor();
       this.showPreview = false;
-    }  else {
+    } else {
       this.handleSubmit(this.questionMetaForm);
     }
   }
   handleSubmit(questionMetaForm) {
     if (this.questionMetaForm.valid && this.question !== ''
-    && this.editorState.solutions !== '' ) {
+      && this.editorState.solutions !== '') {
       this.showFormError = false;
       if (this.questionMetaData.mode === 'create') {
         this.createQuestion();
@@ -245,90 +247,90 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
    * @param forPreview  {boolean}
    * - set param forPreview to true for local question preview
    */
-  createQuestion(forPreview?:boolean) {
+  createQuestion(forPreview?: boolean) {
     forkJoin([this.getConvertedLatex(this.question), this.getConvertedLatex(this.editorState.solutions)])
-    .subscribe((res) => {
-      this.body = res[0];
-      this.solution = res[1];
-      let creator = this.userService.userProfile.firstName;
-      let authorName;
-      if (!_.isEmpty(this.userService.userProfile.lastName)) {
-        creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
-      }
-      if(this.role.currentRole === 'CONTRIBUTOR'){
-       authorName = (this.authorName.nativeElement.value == "" ) ? this.userName :  this.authorName.nativeElement.value;
-      }
-      const req = {
-        url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
-        data: {
-          'request': {
-            'assessment_item': {
-              'objectType': 'AssessmentItem',
-              'metadata': {
-                'createdBy': this.userService.userid,
-                'creator': creator,
-                'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
-                'code': UUID.UUID(),
-                'type': 'reference',
-                // tslint:disable-next-line:max-line-length
-                'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' : this.selectedAttributes.questionType.toUpperCase(),
-                'itemType': 'UNIT',
-                'version': 3,
-                'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
-                'body': this.body,
-                'editorState': {
-                  solutions: [this.editorState.solutions]
-                },
-                'question': this.question,
-                'solutions': [this.solution],
-                'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
-                'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
-                // 'qlevel': this.questionMetaForm.value.qlevel,
-                // 'maxScore': Number(this.questionMetaForm.value.maxScore),
-                'templateId': 'NA',
-                'programId': this.selectedAttributes.programId,
-                'program': this.selectedAttributes.program,
-                'channel': this.selectedAttributes.channel,
-                'framework': this.selectedAttributes.framework,
-                'board': this.selectedAttributes.board,
-                'medium': this.selectedAttributes.medium,
-                'gradeLevel': [
-                  this.selectedAttributes.gradeLevel
-                ],
-                'subject': this.selectedAttributes.subject,
-                'topic': [this.selectedAttributes.topic],
-                'status': 'Review',
-                'media': this.mediaArr,
-                'qumlVersion': 0.5,
-                'textBookUnitIdentifier':this.selectedAttributes.textBookUnitIdentifier,
-                'author': authorName
+      .subscribe((res) => {
+        this.body = res[0];
+        this.solution = res[1];
+        let creator = this.userService.userProfile.firstName;
+        let authorName;
+        if (!_.isEmpty(this.userService.userProfile.lastName)) {
+          creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+        }
+        if (this.role.currentRole === 'CONTRIBUTOR') {
+          authorName = (this.authorName.nativeElement.value === '') ? this.userName : this.authorName.nativeElement.value;
+        }
+        const req = {
+          url: this.configService.urlConFig.URLS.ASSESSMENT.CREATE,
+          data: {
+            'request': {
+              'assessment_item': {
+                'objectType': 'AssessmentItem',
+                'metadata': {
+                  'createdBy': this.userService.userid,
+                  'creator': creator,
+                  'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
+                  'code': UUID.UUID(),
+                  'type': 'reference',
+                  // tslint:disable-next-line:max-line-length
+                  'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' : this.selectedAttributes.questionType.toUpperCase(),
+                  'itemType': 'UNIT',
+                  'version': 3,
+                  'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+                  'body': this.body,
+                  'editorState': {
+                    solutions: [this.editorState.solutions]
+                  },
+                  'question': this.question,
+                  'solutions': [this.solution],
+                  'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
+                  'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
+                  // 'qlevel': this.questionMetaForm.value.qlevel,
+                  // 'maxScore': Number(this.questionMetaForm.value.maxScore),
+                  'templateId': 'NA',
+                  'programId': this.selectedAttributes.programId,
+                  'program': this.selectedAttributes.program,
+                  'channel': this.selectedAttributes.channel,
+                  'framework': this.selectedAttributes.framework,
+                  'board': this.selectedAttributes.board,
+                  'medium': this.selectedAttributes.medium,
+                  'gradeLevel': [
+                    this.selectedAttributes.gradeLevel
+                  ],
+                  'subject': this.selectedAttributes.subject,
+                  'topic': [this.selectedAttributes.topic],
+                  'status': 'Review',
+                  'media': this.mediaArr,
+                  'qumlVersion': 0.5,
+                  'textBookUnitIdentifier': this.selectedAttributes.textBookUnitIdentifier,
+                  'author': authorName
+                }
               }
             }
           }
-        }
-      };
-      /**
-       * - If it is a local preview don't create question.
-       * - for local preview only question body required with all other parameter to create Ecml.
-       */
-      if(!forPreview) {
-        this.actionService.post(req).pipe(catchError(err => {
-          let errInfo = { errorMsg: 'Question creation failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
-        })).subscribe((res) => {
-          this.questionStatus.emit({'status': 'success', 'type': 'create', 'identifier': res.result.node_id});
-        });
-      } else {
-        this.selectedAttributes.previewQuestionData = {
-          result: {
-            assessment_item : req.data.request.assessment_item.metadata
-          }
         };
-        this.previewData = this.questionMetaData;
-        // Initialize preview player, Once all the data is attached
-        this.showPreview = true;
-      }
-    });
+        /**
+         * - If it is a local preview don't create question.
+         * - for local preview only question body required with all other parameter to create Ecml.
+         */
+        if (!forPreview) {
+          this.actionService.post(req).pipe(catchError(err => {
+            const errInfo = { errorMsg: 'Question creation failed' };
+            return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+          })).subscribe((apiRes) => {
+            this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': apiRes.result.node_id });
+          });
+        } else {
+          this.selectedAttributes.previewQuestionData = {
+            result: {
+              assessment_item: req.data.request.assessment_item.metadata
+            }
+          };
+          this.previewData = this.questionMetaData;
+          // Initialize preview player, Once all the data is attached
+          this.showPreview = true;
+        }
+      });
   }
   /**
    * @param optionalParams  {Array of Objects }  -Key and Value to add in metadata
@@ -347,7 +349,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'objectType': 'AssessmentItem',
                 'metadata': {
                   'body': this.body,
-                  'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion': this.selectedAttributes.questionType.toUpperCase(),
+                  'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' :
+                    this.selectedAttributes.questionType.toUpperCase(),
                   'solutions': [this.solution],
                   'editorState': {
                     solutions: [this.editorState.solutions]
@@ -369,7 +372,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           }
         };
         if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
-          const authorName = (this.authorName.nativeElement.value === '' ) ? this.userName :  this.authorName.nativeElement.value;
+          const authorName = (this.authorName.nativeElement.value === '') ? this.userName : this.authorName.nativeElement.value;
           option.data.request.assessment_item.metadata['author'] = authorName;
         }
         if (optionalParams) {
@@ -381,15 +384,15 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           });
         }
         this.actionService.patch(option).pipe(catchError(err => {
-          let errInfo = { errorMsg: 'Question updation failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo))
-        })).subscribe((res) => {
+          const errInfo = { errorMsg: 'Question updation failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+        })).subscribe((apiRes) => {
           if (this.updateStatus === 'Live') {
             this.toasterService.success('Question Accepted');
           } else if (this.updateStatus === 'Reject') {
             this.toasterService.success('Question Rejected');
           }
-          this.questionStatus.emit({'status': 'success', 'type': this.updateStatus, 'identifier': this.questionMetaData.data.identifier});
+          this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': this.questionMetaData.data.identifier });
         });
       });
   }
@@ -429,7 +432,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       return forkJoin(latexBody).pipe(
         map((res) => {
           _.forEach(res, (latex, i) => {
-            body = latex.includes('Error') ? body : body.replace(isMathML[i], '<span class="mathText">'+latex+'</span>');
+            body = latex.includes('Error') ? body : body.replace(isMathML[i], '<span class="mathText">' + latex + '</span>');
           });
           return body;
         })

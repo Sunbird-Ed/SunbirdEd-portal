@@ -38,7 +38,8 @@ export class MainMenuComponent implements OnInit {
    * reference of config service.
    */
   public config: ConfigService;
-  public slugValue = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
+  public slugValue = (<HTMLInputElement>document.getElementById('defaultTenant'))
+    ? (<HTMLInputElement>document.getElementById('defaultTenant')).value : undefined;
   /**
  * user profile details.
  */
@@ -52,6 +53,7 @@ export class MainMenuComponent implements OnInit {
   libraryMenuIntractEdata: IInteractEventEdata;
   myLibraryMenuInteractEdata: IInteractEventEdata;
   browseEdata: IInteractEventEdata;
+  helpCenterEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
   exploreRoutingUrl: string;
@@ -92,11 +94,6 @@ export class MainMenuComponent implements OnInit {
           this.slugValue = _.get(this.userProfile, 'rootOrg.slug');
         }
       });
-    setTimeout(() => {
-      let activeRoute = this.router.url.split('/')[3];
-      this.activeRoute(activeRoute);
-    }, 1000);
-    
   }
 
   getProgramUrl() {
@@ -124,6 +121,11 @@ export class MainMenuComponent implements OnInit {
       id: 'browse-tab',
       type: 'click',
       pageid: 'browse'
+    };
+    this.helpCenterEdata = {
+      id: 'help-center-tab',
+      type: 'click',
+      pageid: 'help-center'
     };
     this.learnMenuIntractEdata = {
       id: 'learn-tab',
@@ -189,16 +191,6 @@ export class MainMenuComponent implements OnInit {
       }
       this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
     });
-  }
-  activeRoute(route) {
-    if (route === 'curiosity') {
-      document.getElementById(route).classList.add('active');
-      document.getElementById('workspace').classList.remove('active');
-    }
-    else {
-      document.getElementById('workspace').classList.add('active');
-      document.getElementById('curiosity').classList.remove('active');
-    }
   }
 
   navigateToWorkspace() {

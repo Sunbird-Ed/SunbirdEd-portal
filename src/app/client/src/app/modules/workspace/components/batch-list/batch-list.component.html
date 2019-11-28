@@ -1,17 +1,18 @@
 <div class="ui container">
-   <div class="content-grid m-0">
+   <div class="content-grid mt-24">
       <div class="sb-pageSection">
           <div  class="sb-pageSection-header">
                   <h4 class="sb-pageSection-title font-weight-bold m-0 mr-5"> {{sectionName}}
                   </h4>
-              <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="[closeUrl]">Close <i class="close icon"></i></button>
+              <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="[closeUrl]">
+                  {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
           </div>
       </div>
     </div>
     <div class="ui grid m-0" >
       <div class="twelve wide column px-0" [appTelemetryImpression]="telemetryImpression">
         <div class="ui stackable four column grid" *ngIf="!showLoader && !noResult" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="batchList">
-          <div in-view-item *ngFor="let batch  of batchList;let i = index;" [id]="i" [data]="batch" class="column py-5">
+          <div in-view-item *ngFor="let batch  of batchList;let i = index;" [id]="i" [data]="batch" class="column py-0">
             <app-batch-card (clickEvent)="onCardClick($event)" [batch]="batch"></app-batch-card>
           </div>
         </div>

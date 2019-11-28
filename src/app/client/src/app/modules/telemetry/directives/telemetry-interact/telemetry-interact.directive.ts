@@ -38,6 +38,10 @@ export class TelemetryInteractDirective {
         edata: this.telemetryInteractEdata
       };
       if (this.telemetryInteractObject) {
+        if (this.telemetryInteractObject.ver) {
+          this.telemetryInteractObject.ver = _.isNumber(this.telemetryInteractObject.ver) ?
+          _.toString(this.telemetryInteractObject.ver) : this.telemetryInteractObject.ver;
+        }
         this.appTelemetryInteractData.object = this.telemetryInteractObject;
       }
       this.telemetryService.interact(this.appTelemetryInteractData);

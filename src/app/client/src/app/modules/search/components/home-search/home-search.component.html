@@ -1,23 +1,16 @@
-<div class="ui segment br-0 p-0 prominent-filter">
-  <div class="ui container">
-        <div class="twelve wide column mb-15">
-            <app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
-            [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
-        </div>
-  </div>
-</div>
+<app-data-driven-filter (dataDrivenFilter)="getFilters($event)" [pageId]="'home-page'" [ignoreQuery]="['key']" [accordionDefaultOpen]=false
+  [isShowFilterLabel]=true *ngIf="initFilters" [filterEnv]="filterType"></app-data-driven-filter>
 
-<div class="ui container">
+<div class="ui container mt-16">
   <div class="content-grid">
     <div class="sb-pageSection" *ngIf="!showLoader && contentList.length">
         <div  class="sb-pageSection-header">
                 <h4 class="sb-pageSection-title m-0 mr-5"> {{resourceService.frmelmnts?.lbl?.showingResults}}
-                    <span class="text-lowercase" *ngIf="this.queryParams.key">
-                        {{resourceService.frmelmnts?.lbl?.forSearch  | interpolate:'{searchString}':this.queryParams?.key}}
-                      </span>
+                    <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
                       {{resourceService.frmelmnts?.lbl?.inAll}}
                 </h4>
-            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  [routerLink]="['/home']">Close <i class="close icon"></i></button>
+            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  [routerLink]="['/profile']">
+              {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
         </div>
     </div>
     <div class="twelve wide column">

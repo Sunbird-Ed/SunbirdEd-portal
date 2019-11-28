@@ -1,0 +1,266 @@
+// base label styles
+.sb-label {
+    display: inline-block;
+    border: 1px solid;
+    color: $white-color;
+    line-height: inherit;
+    @include border-radius(3px);
+    text: {
+        transform: capitalize;
+        decoration: none;
+    }
+}
+// label sizes
+.sb-label-xs, 
+.sb-label-normal, 
+.sb-label-sm,
+.sb-label-md {
+    padding: ($base-block-space / 1) ($base-block-space * 2);
+}
+.sb-label-xs {
+    height: ($base-block-space * 3);
+    padding: ($base-block-space / 2) ($base-block-space / 2);
+    font-size: $font-size-sm;
+}
+//primary label style
+.sb-label-normal {
+    height: ($base-block-space * 4);
+    font-size: $font-size-sm;
+}
+.sb-label-sm {
+    height: ($base-block-space * 5);
+    font-size: $font-size-normal;
+}
+.sb-label-md {
+    height: ($base-block-space * 6);
+    font-size: $font-size-md;
+}
+.sb-label-lg {
+  height: ($base-block-space * 7);
+  padding: ($base-block-space * 3);
+  font-size: $font-size-lg;
+}
+.sb-label-table {
+    padding: ($base-block-space / 2) ($base-block-space);
+    font-size: $font-size-sm;
+    min-width: $base-block-space*6;
+    text-align: center;
+    .sb-live {
+        height: $base-block-space;
+        width: $base-block-space;
+        background: $secondary-200;
+        display: inline-block;
+        border-radius: 50%;
+        margin-right: $base-block-space/2;
+    }
+}
+// default outline colored labels
+.sb-label-outline-primary {
+    @include label-theme-bgwhite($primary-color);
+} 
+.sb-label-outline-secondary {
+    @include label-theme-bgwhite($secondary-200);
+} 
+.sb-label-outline-tertiary {
+    @include label-theme-bgwhite($tertiary-color);
+}
+// status outline labels
+.sb-label-outline-info {
+    @include label-theme-bgwhite($primary-color);
+} 
+.sb-label-outline-success {
+    @include label-theme-bgwhite($secondary-200);
+} 
+.sb-label-outline-warning {
+    @include label-theme-bgwhite($tertiary-color);
+}   
+.sb-label-outline-error {
+    @include label-theme-bgwhite($red);
+} 
+.sb-label-outline-gray {
+    @include label-theme-bgwhite($gray-800);
+} 
+// default colored labels
+.sb-label-primary,
+.sb-label-info {
+    @include label-theme($primary-color);
+}
+.sb-label-primary-100,
+.sb-label-info-100 {
+    @include label-theme($primary-100);
+    color: $primary-color;
+} 
+.sb-label-text-primary-100,
+.sb-label-text-info-100 {
+    color: $primary-color;
+} 
+.sb-label-secondary,
+.sb-label-success {
+    @include label-theme($secondary-200);
+}
+.sb-label-secondary-0,
+.sb-label-success-0 {
+    @include label-theme($secondary-0);
+    color: $secondary-200;
+}
+.sb-label-text-secondary-200,
+.sb-label-text-success-200 {
+    color: $secondary-200;
+}
+.sb-label-tertiary,
+.sb-label-warning {
+    @include label-theme($tertiary-color);
+}
+.sb-label-tertiary-0,
+.sb-label-warning-0 {
+    @include label-theme($tertiary-0);
+    color: $tertiary-color;
+}
+.sb-label-text-tertiary-0,
+.sb-label-text-warning-0 {
+    color: $tertiary-color;
+}
+.sb-label-success {
+    @include label-theme($success-color);
+} 
+.sb-label-info {
+    @include label-theme($info-color);
+}
+.sb-label-warning {
+    @include label-theme($warning-color);
+} 
+.sb-label-error {
+    @include label-theme($danger-color);
+}
+.sb-label-error-0 {
+    @include label-theme($red-0);
+    color: $red-400;
+}
+.sb-label-gray-0 {
+    @include label-theme($gray-0);
+    color: $gray-400;
+}
+.sb-label-text-gray-0 {
+    color: $gray-400;
+}
+//qr code result label
+.sb-result-label,
+.sb-pageSection-count{
+    background: $tertiary-color;
+    padding: ($base-block-space/2) ($base-block-space);
+    border-radius: ($base-block-space / 2);
+    font-size:($font-size-base + 2);
+    border: none;
+    height: auto;
+}
+.sb-section-title {
+    font-size: $font-size-md;
+    font-weight: 600;
+    line-height: ($base-block-space * 3);
+    color: $gray-800;
+    margin-bottom: 0px;
+}
+.sb-section-title {
+    font-size: $font-size-md;
+    font-weight: 600;
+    line-height: ($base-block-space * 3);
+    color: $gray-800;
+    margin-bottom: 0px;
+}
+.sb-filter-label {
+    display: inline-block;
+    >div.d-inline-flex {
+        align-items: center;
+        margin-bottom: $base-block-space;
+    }
+    .sb-label-name {
+        font-size: $font-size-sm;
+        padding-right: $base-block-space/2;
+    }
+    .sb-label-value {
+        background-color: $primary-200;
+        padding: ($base-block-space/2) $base-block-space;
+        color: $white;
+        display: inline-block;
+        font-size: $font-size-sm;
+        text-transform: capitalize;
+        margin-right: $base-block-space;
+        cursor: pointer;
+        border-radius: $base-block-space/4;
+    }
+}
+//network status label offline
+.sb-label-status {
+   width: $sb-label-status-width; 
+   position: relative;
+   padding: $sb-label-status-padding;
+   height:$sb-label-status-height;
+   display:flex;
+   align-items:center;
+   justify-content:center;
+   font-size:$sb-label-status-font-size;
+   z-index: 2;
+    &:before {
+        content: "";
+        position: absolute;
+        border: $sb-label-status-before-border; 
+        top: $sb-label-status-before-top;
+        bottom: $sb-label-status-before-bottom;
+        left: $sb-label-status-before-left;
+        right: $sb-label-status-before-right;
+        z-index: -1;
+        -webkit-transform: perspective(60px) rotateX(-40deg);
+        transform: perspective(200px) rotateX(-40deg);
+        border-bottom-left-radius: $sb-label-status-before-border-bottom-left-radius;
+        border-bottom-right-radius: $sb-label-status-before-border-bottom-right-radius;
+    }
+    &.sb-label-status-success:before {
+        border-color: $sb-label-status-success-border-color;
+        background-color: $sb-label-status-success-background-color;
+    }
+    &.sb-label-status-error:before {
+        border-color:$sb-label-status-error-border-color;  
+        background-color:$sb-label-status-error-background-color;
+    }
+    .sb-label-status-indicator {
+        height: $sb-label-status-indicator-height;
+        width: $sb-label-status-indicator-width;
+        display: inline-block;
+        border-radius: $sb-label-status-indicator-border-radius;
+        margin-right: $sb-label-status-indicator-margin-right;
+        &.sb-label-status-indicator-error {
+            background: $sb-label-status-indicator-error-background;
+        }
+        &.sb-label-status-indicator-success {
+            background: $sb-label-status-indicator-success-background;
+        }
+    }
+ }
+.sb-label-status-error {
+    color: $sb-label-status-error-color;  
+}
+.sb-label-status-success {
+    color: $sb-label-status-success-color;  
+  }
+
+  
+  // cbse 
+  .sb-status-label {
+    width:8px;
+    height: 8px;display: inline-block;
+    &.sb-shape-circle {
+        border-radius: 100%;
+    }
+    &.sb-bg-warning {
+      background:  $tertiary-100;
+    }
+    &.sb-bg-success {
+      background:  $secondary-color; 
+    }
+    &.sb-bg-error {
+      background:  $red;
+    }
+    &.sb-bg-primary{
+        background: $primary-color;
+    }
+}

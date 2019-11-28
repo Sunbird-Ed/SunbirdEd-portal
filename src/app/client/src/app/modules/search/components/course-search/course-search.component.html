@@ -1,19 +1,13 @@
-<div class="ui segment br-0 p-0 prominent-filter" *ngIf="!showLoader">
-    <div class="ui container">
-            <div class="twelve wide column mb-15">
-                    <app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'course-search'" *ngIf="initFilters" [ignoreQuery]="['key']" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-                </div>
-    </div>
-</div>
+<app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'course-search'" *ngIf="initFilters" [ignoreQuery]="['key']" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
 <div class="ui container">
-    <div class="content-grid">
+    <div class="content-grid mt-24">
         <div class="sb-pageSection">
-            <div  class="sb-pageSection-header" *ngIf="!showLoader && contentList.length && this.queryParams.key">
-                <h4 class="sb-pageSection-title m-0 mr-5"> {{resourceService.frmelmnts?.lbl?.showingResultsFor |
-                        interpolate:'{searchString}':this.queryParams.key}}</h4>
-                        <!-- <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning ml-8">25</span> -->
-                <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="['/learn']">Close <i class="close icon"></i></button>
-            </div>
+            <div  class="sb-pageSection-header" *ngIf="!showLoader && this.queryParams.key">
+                <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML] ="resourceService.frmelmnts?.lbl?.showingResultsFor |
+                interpolate:'{searchString}':this.queryParams.key "> </h4>
+                <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="['/learn']">
+                    {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
+            </div>      
         </div>
 
         <div class="twelve wide column">

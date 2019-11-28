@@ -7,8 +7,8 @@
                     <div [appTelemetryImpression]="telemetryImpression" class="content-grid">
                         <div class="sb-pageSection">
                             <div class="sb-pageSection-header sb-pageSection-header-compact" id="player-auto-scroll">
-                                <h1 class="sb-pageSection-title m-0 mr-5" *ngIf="contentData.name">{{contentData.name}}</h1>
-                                <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="sb-btn sb-btn-xs sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="close()">Close <i class="close icon"></i></button>
+                                <h1 class="sb-pageSection-title m-0 mr-8" *ngIf="contentData.name">{{contentData.name}}</h1>
+                                <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" [telemetryInteractObject]="objectInteract" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  (click)="close()">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
                             </div>
                             <div class="sb-pageSection-content d-flex flex-ai-center" *ngIf="contentStatus !== 'Unlisted'">
                                 <sui-rating class="ui star rating mr-16" [isReadonly]="true"

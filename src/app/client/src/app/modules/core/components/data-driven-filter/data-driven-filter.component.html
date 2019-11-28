@@ -1,75 +1,86 @@
-<div class="data-driven-filter  sb-explore-filter-container" *ngIf="showFilters">
-      <sui-accordion [closeOthers]="false">
-        <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
-          <div *ngIf="isShowFilterLabel" title class="cursor-text filter-title">
-            <span appTelemetryInteract [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata"(click)="accordionDefaultOpen = !accordionDefaultOpen" class="cursor-pointer">
-              <i alt="Filter" class="icon filter"></i>
-              {{resourceService.frmelmnts?.lbl?.filters}}
-              <i class="dropdown icon vertical-align-middle"></i>
-            </span>
-          </div>
-          <div content>
-            <div *ngIf="filtersDetails && formInputData && showSearchedParam" class="twelve wide column content mb-15">
-              <span *ngFor="let field of filtersDetails">
-                <span class="padded chip mt-5 mr-10" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
-                  {{field.label}}:
-                  <span *ngFor="let item of formInputData[field.code]">
-                    <a class="ui label mt-5 mr-5" *ngIf='!item?.name && field.code !== "channel"'>
-                      {{item}}
-                      <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
-                    </a>
-                    <a class="ui label mt-5 mr-5" *ngIf='item?.name && field.code !== "channel"'>
-                      {{item.name}}
-                      <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
-                    </a>
-                  </span>
-                  <span *ngFor="let item of channelInputLabel">
-                      <a class="ui label mt-5 mr-5" *ngIf='item?.name && field.code === "channel"'>
-                        {{item.name}}
-                        <i class="delete icon" (click)="removeFilterSelection(field.code,item.identifier)"></i>
-                      </a>
-                    </span>
-                </span>
-              </span>
-            </div>
-            <div *ngIf="refresh">
-              <form *ngIf="filtersDetails" class="ui form">
-                <div class="ui grid stackable top aligned">
-                <div class="twelve wide tablet ten wide computer column mobile-p-0">
-                    <div class="ui grid">
-                        <div *ngFor="let field of filtersDetails" class="six wide mobile three wide tablet three wide computer column">
-                          <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'" class="field large">
-                            <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
-                              defaultSelectionText={{field.label}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="selection filterFieldSearch"
-                              [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect>
-                              <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
-                            </sui-multi-select>
-                          </div>
-                          <div *ngIf="field.code === 'channel'" class="field large">
-                            <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}} name={{field.code}}
-                              defaultSelectionText={{field.name}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="selection filterFieldSearch"
-                              [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name" valueField="identifier"
-                              #multiSelect>
-                              <sui-select-option *ngFor="let option of field.range" [value]="option"></sui-select-option>
-                            </sui-multi-select>
-                          </div>
-                          <div *ngIf="field.code==='topic'" class="field">
-                            <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
-                          </div>
-                        </div>
-                      </div>
-                </div>
-                
-                <div class="twelve wide tablet two wide computer right aligned top aligned column filter-button">
-                  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="applyFilters()" appTelemetryInteract
-                    [telemetryInteractEdata]="applyFilterInteractEdata">{{resourceService.frmelmnts?.btn?.apply}}</button>
-                  <button appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata"
-                  class="sb-btn sb-btn-normal sb-btn-outline-primary ml-10" (click)="resetFilters()">{{resourceService.frmelmnts?.btn?.reset}}</button>
-                </div>
+<div class="sb-prominent-filter" *ngIf="showFilters">
+  <div class="ui container">
+    <sui-accordion [closeOthers]="false">
+      <sui-accordion-panel [isOpen]="accordionDefaultOpen" [isDisabled]="true">
+
+        <!--Toggle Header-->
+        <div *ngIf="isShowFilterLabel" title class="sb-data-driven-filter-header" appTelemetryInteract [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata" (click)="accordionDefaultOpen = !accordionDefaultOpen">
+          <i class="icon filter"></i>
+          {{resourceService.frmelmnts?.lbl?.filters}}
+          <i class="dropdown icon"></i>
+        </div>
+        <!--/Toggle Header-->
+
+        <!--Toggle Content-->
+        <ng-container content>
+
+          <!--Selected Filters list-->
+          <div class="mb-16" *ngIf="filtersDetails && formInputData && showSearchedParam">
+            <ng-container *ngFor="let field of filtersDetails">
+              <div class="d-inline-block" *ngIf='formInputData[field.code] && formInputData[field.code].length > 0'>
+
+                <label>{{field.label}} :&nbsp;</label> 
+
+                <ng-container *ngFor="let item of formInputData[field.code]">
+                  <a class="ui label mt-8 mr-8" *ngIf='!item?.name && field.code !== "channel"'>
+                    {{item}}
+                    <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
+                  </a>
+                  <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code !== "channel"'>
+                    {{item.name}}
+                    <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
+                  </a>
+                </ng-container>
+
+                <ng-container *ngFor="let item of channelInputLabel">
+                  <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code === "channel"'>
+                    {{item.name}}
+                    <i class="delete icon" (click)="removeFilterSelection(field.code,item.identifier)"></i>
+                  </a>
+                </ng-container>
+
               </div>
-              </form>
-            </div>
+            </ng-container>
           </div>
-        </sui-accordion-panel>
-      </sui-accordion>
+          <!--/Selected Filters list-->
+
+          <!--Filters-->
+          <div class="sb-prominent-filter-container" *ngIf="refresh && filtersDetails">
+
+            <div class="sb-prominent-filter-field" *ngFor="let field of filtersDetails">
+              <div *ngIf="(field.inputType==='select' || field.inputType === 'multi-select') && field.code !== 'channel'">
+                <sui-multi-select (ngModelChange)="setFilterInteractData()" id={{field.code}} name={{field.code}}
+                  defaultSelectionText={{field.label}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="ui selection dropdown multiple" [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" #multiSelect>
+                  <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
+                </sui-multi-select>
+              </div>
+              <div *ngIf="field.code === 'channel'">
+                <sui-multi-select (ngModelChange)="modelChange($event);setFilterInteractData()" id={{field.code}} name={{field.code}}
+                  defaultSelectionText={{field.name}} zeroSelectionText= {{resourceService.frmelmnts.lbl.Select}} class="ui selection dropdown multiple" [(ngModel)]="formInputData[field.code]" [options]="options" [hasLabels]="false" labelField="name" valueField="identifier" #multiSelect>
+                  <sui-select-option *ngFor="let option of field.range" [value]="option"></sui-select-option>
+                </sui-multi-select>
+              </div>
+              <div *ngIf="field.code==='topic'">
+                <app-topic-picker [selectedTopics]="formInputData[field.code]" [formTopic]="field" (topicChange)="handleTopicChange($event);setFilterInteractData()"></app-topic-picker>
+              </div>
+            </div>
+
+            <div class="sb-prominent-filter-field">
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()" appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata">
+                {{resourceService.frmelmnts?.btn?.reset}}
+              </button>
+              <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="applyFilters()" appTelemetryInteract [telemetryInteractEdata]="applyFilterInteractEdata">
+                {{resourceService.frmelmnts?.btn?.apply}}
+              </button>
+            </div>
+  
+          </div>
+          <!--Filters-->
+
+        </ng-container>
+        <!--/Toggle Content-->
+
+      </sui-accordion-panel>
+    </sui-accordion>
+  </div>
 </div>

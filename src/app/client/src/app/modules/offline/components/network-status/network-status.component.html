@@ -1,0 +1,8 @@
+<div class="d-flex flex-jc-center absolute width-100">
+  <div *ngIf="isConnected" class="sb-label-network-status sb-label-network-online-status sb-online-status">
+    <span class="sb-status-indicator sb-online-status-indicator"></span>{{resourceService.frmelmnts?.lbl?.online}}
+  </div>
+  <div *ngIf="!isConnected" class="sb-label-network-status sb-label-network-offline-status sb-offline-status">
+  <span class="sb-status-indicator sb-offline-status-indicator"></span>{{resourceService.frmelmnts?.lbl?.offline}}
+  </div>
+</div>

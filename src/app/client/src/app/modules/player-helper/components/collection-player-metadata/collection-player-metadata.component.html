@@ -37,23 +37,50 @@
   </dl>
 
   <dl class="sb-meta-data">
-    <dt>{{resourceService?.frmelmnts?.lbl?.ownership}}</dt>
-    <dd *ngIf="metaData.owner">
-      {{metaData.owner}} <br/>
-      <a (click)="showContentCreditsPopup()" title="{{resourceService?.frmelmnts?.lbl?.contentCredits}}" class="cursor-pointer d-inline-block mt-5">
-        {{resourceService?.frmelmnts?.lbl?.contentCredits}}
-      </a>
-    </dd>
+      <dt>{{resourceService.frmelmnts?.lbl?.createdInstanceName  | interpolate:'{instance}': instance}}</dt>
+      <dd *ngIf="metaData.creator">{{metaData.creator}}</dd>
   </dl>
-
+  <dl class="sb-meta-data">
+      <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
+      <dd *ngIf="metaData.license">{{metaData.license}}&#x200E;</dd>
+  </dl>
   <dl class="sb-meta-data" *ngIf="metaData.orgDetails && metaData.orgDetails.orgName">
-    <dt>{{resourceService?.frmelmnts?.lbl?.organization}}</dt>
-    <dd>
-      {{metaData?.orgDetails?.orgName}} <br/>
-      <a *ngIf="metaData.orgDetails.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}" class="cursor-pointer d-inline-block mt-5">
-        {{metaData.orgDetails?.email}}
-      </a>
-    </dd>
+      <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
+      <dd>
+          <span class="d-inline-block mr-20">{{metaData?.organisation?.join(', ')}}</span> &nbsp;
+          <a ng-if="metaData.orgDetails?.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}">{{metaData.orgDetails?.email}}</a>
+      </dd>
+  </dl>
+  <dl class="sb-meta-data">
+      <dt>{{resourceService.frmelmnts?.lbl?.contentCredits}}</dt>
+      <dd>
+          <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer text-underline">{{resourceService.frmelmnts?.lbl?.view}}</a>
+      </dd>
+  </dl>
+</div>
+
+<div *ngIf="metaData && metaData.originData" class="ui divider my-24"></div>
+
+<h4 *ngIf="metaData && metaData.originData" class="sb-section-title mb-16 d-block">{{resourceService.frmelmnts?.lbl?.contentcopiedtitle}}</h4>
+<div *ngIf="metaData && metaData.originData" class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap">
+  <dl class="sb-meta-data" *ngIf="metaData.originData.name">
+      <dt>{{resourceService.frmelmnts?.lbl?.contenttype}}</dt>
+      <dd>{{metaData.originData.name}}</dd>
+  </dl>
+  <dl class="sb-meta-data" *ngIf="metaData.originData.author">
+      <dt>{{resourceService.frmelmnts.lbl?.originalAuthor}}</dt>
+      <dd *ngIf="metaData.creator">{{metaData.originData.author}}</dd>
+  </dl>
+  <dl class="sb-meta-data" *ngIf="metaData.originData.license">
+      <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
+      <dd *ngIf="metaData.creator">{{metaData.originData.license}}&#x200E;</dd>
+  </dl>
+  <dl class="sb-meta-data" *ngIf="metaData.originData.organisation">
+      <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>
+      <dd>
+          <span class="d-inline-block mr-20">{{metaData.originData.organisation.join(', ')}}</span> &nbsp;
+          <a ng-if="metaData.orgDetails?.email" href="mailto:{{metaData.orgDetails?.email}}?subject={{metaData.name}}">{{metaData.originData.orgDetails?.email}}</a>
+      </dd>
   </dl>
 </div>
 

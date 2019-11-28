@@ -134,6 +134,24 @@ export class BatchService {
     }));
   }
 
+  getParticipantList(data) {
+    const options = {
+      url: this.configService.urlConFig.URLS.BATCH.GET_PARTICIPANT_LIST,
+      data: data
+    };
+    return this.learnerService.post(options).pipe(map((response: any) => {
+      return _.get(response, 'result.batch.participants') || [];
+    }));
+  }
+
+  removeUsersFromBatch(batchId, request) {
+    const option = {
+      url: this.configService.urlConFig.URLS.BATCH.REMOVE_USERS + '/' + batchId,
+      data: request
+    };
+    return this.learnerService.post(option);
+  }
+
   getCourseHierarchy(courseId) {
     if (this.courseHierarchy && this.courseHierarchy.identifier === courseId) {
       return observableOf(this.courseHierarchy);

@@ -1,4 +1,7 @@
 {
+  "UrlLinks": {
+    "downloadDikshaApp": "https://play.google.com/store/apps/details?id=in.gov.diksha.app"
+  },
   "Home": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
@@ -382,6 +385,11 @@
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
+  "dialPage": {
+    "contentApiQueryParams": {
+      "orgdetails": "orgName,email"
+    }
+  },
   "GetPage": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
@@ -412,7 +420,8 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "l1Parent"
       ]
     },
     "dynamicFields": {
@@ -584,6 +593,12 @@
       },
       "config": {
         "showEndPage": false,
+        "endPage": [
+          {
+          "template": "assessment",
+          "contentType": ["SelfAssess"]
+          }
+        ],
         "showStartPage": true,
         "host": "",
         "overlay": {
@@ -641,7 +656,8 @@
       "xUrl": "text/x-url"
     },
     "baseURL": "/content/preview/preview.html?webview=true",
-    "localBaseUrl": "/contentPlayer/preview/preview.html?offline=true"
+    "localBaseUrl": "/contentPlayer/preview/preview.html?",
+    "cdnUrl": "/content/preview/preview_cdn.html?webview=true"
   },
   "WORKSPACE": {
     "PAGE_LIMIT": 9,
@@ -650,7 +666,14 @@
       "TextBook",
       "Course",
       "LessonPlan",
-      "Resource"
+      "Resource",
+      "FocusSpot",
+      "LearningOutcomeDefinition",
+      "PracticeQuestionSet",
+      "CuriosityQuestions",
+      "MarkingSchemeRubric",
+      "ExplanationResource",
+      "ExperientialResource"
     ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",

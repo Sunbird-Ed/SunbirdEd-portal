@@ -150,7 +150,7 @@ input[type=number]::-webkit-inner-spin-button {
 
 .ui.left.icon.input .icon {
     left: 11px;
-    top: 14px;
+    top: 10px;
     font-size: 1rem;
     font-family: inherit;
 }
@@ -165,5 +165,49 @@ input[type=number]::-webkit-inner-spin-button {
   background: url('/assets/images/bg.svg') no-repeat center center fixed;
   background-size: cover;
   width: 100%;
-  position: fixed;
-}  
+  position: relative;
+
+  @media screen and (min-width: 768px) {
+    position: fixed;
+  }
+} 
+
+
+.sb-requirement-field{
+    font-size: 12px;
+    span{
+        color:$red;
+    }
+} .sb-account-header-text {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .signup-background{
+      height:100vh;
+  }
+  .grey-text{
+    color: var(--gray-300) !important;
+    font-size: 14px !important;
+}
+  @media only screen and (max-width: 767px){
+    .signup-background {
+        max-width: 320px!important;
+        margin: 0 auto!important;
+        box-shadow: none!important;
+        height: 100vh;
+        width: 100%!important;
+        background: #fff;
+        position: fixed;
+        left: 0;
+        right: 0;
+    }
+  }
+  .sb-form-control{
+      height:32px;
+  }
+  .checkbox{
+      label{
+        font-weight: normal;
+        cursor: pointer;
+      }
+  }

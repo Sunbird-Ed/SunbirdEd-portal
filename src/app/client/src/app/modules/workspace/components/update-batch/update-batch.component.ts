@@ -6,7 +6,7 @@ import { ResourceService, ToasterService, ServerResponse, NavigationHelperServic
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
 @Component({
@@ -85,11 +85,19 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public pickerMinDate = new Date(new Date().setHours(0, 0, 0, 0));
 
+  public pickerMinDateForEnrollmentEndDate;
+
   public pickerMinDateForEndDate = new Date(this.pickerMinDate.getTime() + (24 * 60 * 60 * 1000));
 
   public unsubscribe = new Subject<void>();
 
   public courseCreator = false;
+
+  updateBatchInteractEdata: IInteractEventEdata;
+  telemetryInteractObject: IInteractEventObject;
+  clearButtonInteractEdata: IInteractEventEdata;
+  telemetryCdata: Array<{}> = [];
+
   /**
 	 * Constructor to create injected service(s) object
    * @param {Router} router Reference of Router
@@ -120,10 +128,11 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         mergeMap((params) => {
           this.batchId = params.batchId;
           this.setTelemetryImpressionData();
+          this.setTelemetryInteractData();
           return this.fetchBatchDetails();
         }),
         takeUntil(this.unsubscribe))
-      .subscribe((data) => {
+      .subscribe((data: any) => {
         this.courseId = data.batchDetails.courseId;
         this.batchService.getCourseHierarchy(this.courseId).subscribe((courseDetails) => {
           if (courseDetails.createdBy === this.userService.userid) {
@@ -132,6 +141,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.showUpdateModal = true;
         this.batchDetails = data.batchDetails;
+        if (this.batchDetails.enrollmentType !== 'open' && data.participants && data.participants.length > 0) {
+          this.batchDetails.participants = data.participants;
+        }
         if (this.batchDetails.createdBy !== this.userService.userid) {
           this.showFormInViewMode = true;
         }
@@ -142,7 +154,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fetchParticipantDetails();
         this.initDropDown();
       }, (err) => {
-        if (err.error && err.error.params.errmsg) {
+        if (err.error && err.error.params && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
         } else {
           this.toasterService.error(this.resourceService.messages.fmsg.m0054);
@@ -154,7 +166,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     return combineLatest(
       this.batchService.getUserList(),
       this.batchService.getUpdateBatchDetails(this.batchId),
-      (userDetails, batchDetails) => ({ userDetails, batchDetails })
+      this.batchService.getParticipantList({'request': {'batch': {'batchId': this.batchId}}}),
+      (userDetails, batchDetails, participants) => ({userDetails, batchDetails, participants})
     );
   }
   /**
@@ -162,6 +175,12 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   */
   private initializeUpdateForm(): void {
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
+    const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
+    if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+      this.pickerMinDateForEnrollmentEndDate = new Date(new Date(this.batchDetails.startDate).setHours(0, 0, 0, 0));
+    } else {
+      this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
+    }
     this.batchUpdateForm = new FormGroup({
       name: new FormControl(this.batchDetails.name, [Validators.required]),
       description: new FormControl(this.batchDetails.description),
@@ -169,7 +188,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       startDate: new FormControl(new Date(this.batchDetails.startDate), [Validators.required]),
       endDate: new FormControl(endDate),
       mentors: new FormControl(),
-      users: new FormControl()
+      users: new FormControl(),
+      enrollmentEndDate: new FormControl(enrollmentEndDate)
     });
     this.batchUpdateForm.valueChanges.subscribe(val => {
       if (this.batchUpdateForm.status === 'VALID') {
@@ -178,15 +198,32 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.disableSubmitBtn = true;
       }
     });
+
+    this.batchUpdateForm.get('startDate').valueChanges.subscribe(value => {
+      const startDate = moment(value);
+      if (startDate.isValid()) {
+        if (!moment(startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+          this.pickerMinDateForEnrollmentEndDate = new Date(new Date(startDate).setHours(0, 0, 0, 0));
+        } else {
+          this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
+        }
+      }
+    });
   }
   /**
   * fetch mentors and participant details
   */
   private fetchParticipantDetails() {
+    let userListIdentifier = [];
     if (this.batchDetails.participants || (this.batchDetails.mentors && this.batchDetails.mentors.length > 0)) {
+      if (this.batchDetails.participants && this.batchDetails.participants.length > 100) {
+        userListIdentifier = this.batchDetails.mentors;
+      } else {
+        userListIdentifier = _.union(this.batchDetails.participants, this.batchDetails.mentors);
+      }
       const request = {
         filters: {
-          identifier: _.union(this.batchDetails.participants, this.batchDetails.mentors)
+          identifier: userListIdentifier
         }
       };
       this.batchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
@@ -230,7 +267,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     if (res.result.response.content && res.result.response.content.length > 0) {
       _.forEach(res.result.response.content, (userData) => {
         if ( _.find(this.selectedMentors , {'id': userData.identifier }) ||
-        _.find(this.selectedParticipants , {'id': userData.identifier })) {
+          _.find(this.selectedParticipants , {'id': userData.identifier })) {
           return;
         }
         if (userData.identifier !== this.userService.userid) {
@@ -255,10 +292,15 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private initDropDown() {
+    const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
     setTimeout(() => {
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
+        maxSelections: 100 - count,
+        message: {
+          maxSelections : this.resourceService.messages.imsg.m0046
+        },
         onAdd: () => {
         }
       });
@@ -322,6 +364,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
       id: this.batchId,
+      courseId: this.courseId,
       name: this.batchUpdateForm.value.name,
       description: this.batchUpdateForm.value.description,
       enrollmentType: this.batchUpdateForm.value.enrollmentType,
@@ -330,6 +373,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       createdFor: this.userService.userProfile.organisationIds,
       mentors: _.compact(mentors)
     };
+    if (this.batchUpdateForm.value.enrollmentType === 'open' && this.batchUpdateForm.value.enrollmentEndDate) {
+      requestBody['enrollmentEndDate'] = moment(this.batchUpdateForm.value.enrollmentEndDate).format('YYYY-MM-DD');
+    }
     const selected = [];
     _.forEach(this.selectedMentors, (value) => {
       selected.push(value.id);
@@ -421,6 +467,38 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.setTelemetryImpressionData();
     });
   }
+
+  setTelemetryInteractData() {
+    this.updateBatchInteractEdata = {
+      id: 'update-batch',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.clearButtonInteractEdata = {
+      id: 'clear-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.telemetryInteractObject = {
+      id: this.batchId,
+      type: this.activatedRoute.snapshot.data.telemetry.object.type,
+      ver: this.activatedRoute.snapshot.data.telemetry.object.ver
+    };
+  }
+
+  setTelemetryCData(cdata: []) {
+    this.telemetryCdata = _.unionBy(this.telemetryCdata, cdata, 'id');
+  }
+
+  public clearForm() {
+    this.batchUpdateForm.controls['name'].reset();
+    this.batchUpdateForm.controls['mentors'].reset();
+    this.batchUpdateForm.controls['enrollmentEndDate'].reset();
+    this.batchUpdateForm.controls['endDate'].reset();
+    this.batchUpdateForm.controls['description'].reset();
+    this.batchUpdateForm.controls['users'].reset();
+  }
+
   ngOnDestroy() {
     if (this.updateBatchModal && this.updateBatchModal.deny) {
       this.updateBatchModal.deny();

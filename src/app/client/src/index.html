@@ -49,6 +49,9 @@
   <% if (deviceRegisterApi) { %>
   <input type="hidden" id="deviceRegisterApi" value="<%=deviceRegisterApi%>" />
   <% } %>
+  <% if (deviceProfileApi) { %>
+  <input type="hidden" id="deviceProfileApi" value="<%=deviceProfileApi%>" />
+  <% } %>
   <% if (cdnUrl) { %>
   <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
   <% } %>
@@ -61,7 +64,11 @@
   <% if (instance) { %>
   <input type="hidden" id="instance" value="<%=instance%>" />
   <% } %>
-  <input type="hidden" id="deviceId" />
+  <% if (deviceId) { %>
+  <input type="hidden" id="deviceId" value="<%=deviceId%>" />	
+  <%} else { %>	
+  <input type="hidden" id="deviceId"/>	
+  <% } %>
   <% if (googleCaptchaSiteKey) { %>
   <input type="hidden" id="googleCaptchaSiteKey" value="<%=googleCaptchaSiteKey%>" />
   <% } %>
@@ -76,6 +83,33 @@
   <% } %>
   <% if (PlayerCdnUrl) { %>
     <input type="hidden" id="PlayerCdnUrl" value="<%=PlayerCdnUrl%>" />
+  <% } %>
+  <% if (previewCdnUrl) { %>
+    <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />
+  <% } %>
+  <% if (cdnWorking) { %>
+    <input type="hidden" id="cdnWorking" value="<%=cdnWorking%>" />
+  <% } %>
+  <% if (offlineDesktopAppTenant) { %>
+  <input type="hidden" id="offlineDesktopAppTenant" value="<%=offlineDesktopAppTenant%>" />
+  <% } %>
+  <% if (offlineDesktopAppVersion) { %>
+  <input type="hidden" id="offlineDesktopAppVersion" value="<%=offlineDesktopAppVersion%>" />
+  <% } %>
+  <% if (offlineDesktopAppReleaseDate) { %>
+  <input type="hidden" id="offlineDesktopAppReleaseDate" value="<%=offlineDesktopAppReleaseDate%>" />
+  <% } %>
+  <% if (offlineDesktopAppSupportedLanguage) { %>
+  <input type="hidden" id="offlineDesktopAppSupportedLanguage" value="<%=offlineDesktopAppSupportedLanguage%>" />
+  <% } %>
+  <% if (offlineDesktopAppDownloadUrl) { %>
+    <input type="hidden" id="offlineDesktopAppDownloadUrl" value="<%=offlineDesktopAppDownloadUrl%>" />
+  <% } %>
+  <% if (logFingerprintDetails) { %>
+    <input type="hidden" id="logFingerprintDetails" value="<%=logFingerprintDetails%>" />
+  <% } %>
+  <% if (deviceApi) { %>
+    <input type="hidden" id="deviceApi" value="<%=deviceApi%>" />
   <% } %>
   <app-root></app-root>
 </body>

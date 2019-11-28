@@ -282,6 +282,7 @@ export let stageObject = {
   'id': '',
   'rotate': null,
   'config': {
+    // tslint:disable-next-line:max-line-length
     '__cdata': '{\'opacity\':100,\'strokeWidth\':1,\'stroke\':\'rgba(255, 255, 255, 0)\',\'autoplay\':false,\'visible\':true,\'color\':\'#FFFFFF\',\'genieControls\':false,\'instructions\':\'\'}'
   },
   'manifest': {
