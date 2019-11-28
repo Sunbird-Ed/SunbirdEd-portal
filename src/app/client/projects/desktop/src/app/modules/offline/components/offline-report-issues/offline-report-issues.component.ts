@@ -60,14 +60,15 @@ export class OfflineReportIssuesComponent implements OnInit {
   openModal() {
     this.openReportIssueModal = !this.openReportIssueModal;
     this.issueReportedSuccessfully = false;
+    this.createReportOtherissueForm();
   }
   submitIssue() {
     this.isDisplayLoader = true;
     this.offlineReportIssuesService.reportOtherIssue(this.reportOtherissueForm.getRawValue()).subscribe(result => {
-      this.createReportOtherissueForm();
       this.isDisplayLoader = false;
       this.issueReportedSuccessfully = !this.issueReportedSuccessfully;
     }, (error) => {
+      this.isDisplayLoader = false;
       this.toasterService.error(this.resourceService.frmelmnts.lbl.errorWhileGeneratingTicket);
     });
   }
