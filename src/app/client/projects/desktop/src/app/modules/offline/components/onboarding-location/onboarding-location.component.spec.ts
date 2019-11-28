@@ -65,8 +65,11 @@ describe('OnboardingLocationComponent', () => {
 
   it('should call searchLocation (to get states) in onboarding service', () => {
     spyOn(component.onboardingService, 'searchLocation').and.returnValue(observableOf(onboarding_location_test.statesList));
+    spyOn(component, 'getUserCurrentLocation');
+    component.isConnected = true;
     component.getAllStates();
     expect(component.onboardingService.searchLocation).toHaveBeenCalled();
+    expect(component.getUserCurrentLocation).toHaveBeenCalled();
   });
 
   it('should call searchLocation (to get districts) in onboarding service', () => {
@@ -94,7 +97,7 @@ describe('OnboardingLocationComponent', () => {
     spyOn(component.toasterService, 'error').and.returnValue(throwError(onboarding_location_test.resourceBundle.messages.emsg.m0021));
     component.handleSubmitButton();
     expect(component.onboardingService.saveLocation).toHaveBeenCalled();
-    expect(component.disableContinueBtn).toBeTruthy();
+    expect(component.disableContinueBtn).toBeFalsy();
     expect(component.locationSaved.emit).toHaveBeenCalled();
     expect(component.toasterService.error).toHaveBeenCalled();
   });
@@ -107,6 +110,16 @@ describe('OnboardingLocationComponent', () => {
   it('should show location message label obtained from resourceService', () => {
     const value = fixture.debugElement.query(By.css('.swiper-slide__para.pt-8')).nativeElement.innerText;
     expect(value).toEqual(onboarding_location_test.resourceBundle.messages.imsg.m0074);
+  });
+
+  it('should call deviceProfile', () => {
+    spyOn(component.deviceRegisterService, 'fetchDeviceProfile').and.returnValue(observableOf(onboarding_location_test.deviceLocation));
+    spyOn(component.onboardingService, 'searchLocation').and.returnValue(observableOf(onboarding_location_test.districtList));
+    component.stateList = onboarding_location_test.statesList.result.response;
+    component.getUserCurrentLocation();
+    component.deviceRegisterService.fetchDeviceProfile().subscribe(location => {
+      expect(location).toEqual(onboarding_location_test.deviceLocation);
+    });
   });
 
 });

@@ -136,7 +136,24 @@ export const onboarding_location_test = {
             m0074: 'Your location details helps us to suggest content that is useful to you. Is the location given correct? if not, select your correct location and click Submit'
           }
         }
+      },
+    deviceLocation: {
+      'id': 'analytics.device-profile',
+      'ver': '1.0',
+      'ts': '2019-11-28T05:55:49.020+00:00',
+      'params': {
+        'resmsgid': '5469091e-1dc3-431e-8c73-9ab89e0e7b2f',
+        'status': 'successful',
+        'client_key': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'ipLocation': {
+          'state': 'test_state_1',
+          'district': 'test_district_1'
+        }
       }
+    }
 };
 
 

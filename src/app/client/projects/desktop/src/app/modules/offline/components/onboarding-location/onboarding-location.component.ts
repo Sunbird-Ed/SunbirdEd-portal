@@ -1,7 +1,9 @@
+import { ConnectionService } from './../../services';
+import { mergeMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { DeviceRegisterService, TenantService } from '@sunbird/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { OnboardingService } from './../../services';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -21,15 +23,19 @@ export class OnboardingLocationComponent implements OnInit {
   telemetryInteractEdata: IInteractEventEdata;
   public telemetryImpression: IImpressionEventInput;
   tenantInfo: any = {};
+  currentLocation;
+  isConnected = navigator.onLine;
 
   continueLabel = _.upperCase(this.resourceService.frmelmnts.lbl.continue);
 
   constructor(public onboardingService: OnboardingService,
     public resourceService: ResourceService, public toasterService: ToasterService, private router: Router,
-    public tenantService: TenantService) {
+    public tenantService: TenantService, public deviceRegisterService: DeviceRegisterService,
+    private connectionService: ConnectionService) {
   }
 
   ngOnInit() {
+    this.checkConnection();
     this.tenantService.tenantData$.subscribe(({ tenantData }) => {
       this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
       this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
@@ -52,7 +58,10 @@ export class OnboardingLocationComponent implements OnInit {
   getAllStates() {
     this.onboardingService.searchLocation({ type: 'state' })
     .subscribe(data => {
-      this.stateList = _.get(data, 'result.response');
+       this.stateList = _.get(data, 'result.response');
+       if (this.isConnected) {
+        this.getUserCurrentLocation();
+       }
     });
   }
 
@@ -76,7 +85,7 @@ export class OnboardingLocationComponent implements OnInit {
       this.locationSaved.emit('SUCCESS');
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0057') || 'SUCCESS');
     }, error => {
-      this.disableContinueBtn = true;
+      this.disableContinueBtn = false;
       this.locationSaved.emit('ERROR');
       this.toasterService.error(this.resourceService.messages.emsg.m0021);
     });
@@ -98,6 +107,22 @@ export class OnboardingLocationComponent implements OnInit {
       pageid: 'onboarding_location_setting'
     };
   }
+  getUserCurrentLocation() {
+     this.deviceRegisterService.fetchDeviceProfile().pipe(mergeMap((deviceProfile) => {
+      this.currentLocation = _.get(deviceProfile, 'result.ipLocation');
+      this.selectedState = _.find(this.stateList, {name: this.currentLocation.state});
+      return this.onboardingService.searchLocation({ type: 'district', parentId: this.selectedState.id });
+     })).subscribe(location => {
+      this.districtList = _.get(location, 'result.response');
+      this.selectedDistrict = _.find(this.districtList, {name: this.currentLocation.district});
+      this.disableContinueBtn = false;
+    });
+  }
 
+  checkConnection() {
+    this.connectionService.monitor().subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
+  }
 
 }
