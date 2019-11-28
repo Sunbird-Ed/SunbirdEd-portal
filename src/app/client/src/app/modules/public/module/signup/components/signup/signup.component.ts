@@ -150,17 +150,13 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       const upcsRegex = new RegExp('^(?=.*[A-Z])');
       const charRegex = new RegExp('^(?=.{8,})');
       const numRegex = new RegExp('^(?=.*[0-9])');
-      const specRegex = new RegExp('^[^<>{}\'\"/|;:.,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
-      if (!charRegex.test(val)) {
-        this.passwordError = this.resourceService.frmelmnts.lbl.passwd.charError;
-      } else if (!lwcsRegex.test(val)) {
-        this.passwordError = this.resourceService.frmelmnts.lbl.passwd.lwcsError;
-      } else if (!upcsRegex.test(val)) {
-        this.passwordError = this.resourceService.frmelmnts.lbl.passwd.upcsError;
-      } else if (!numRegex.test(val)) {
-        this.passwordError = this.resourceService.frmelmnts.lbl.passwd.numError;
-      } else if (specRegex.test(val)) {
-        this.passwordError = this.resourceService.frmelmnts.lbl.passwd.specError;
+      const specRegex = new RegExp('^[^<>{}\'\"/|;:.\ ,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
+      if (!charRegex.test(_.get(val)) ||
+        !lwcsRegex.test(_.get(val)) ||
+        !upcsRegex.test(_.get(val)) ||
+        !numRegex.test(_.get(val)) ||
+        specRegex.test(_.get(val))) {
+        this.passwordError = _.get(this.resourceService.frmelmnts.lbl.passwd);
       } else {
         this.passwordError = '';
       }
