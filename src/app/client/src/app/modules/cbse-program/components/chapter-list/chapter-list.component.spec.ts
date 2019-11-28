@@ -10,7 +10,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, throwError as observableError, of } from 'rxjs';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 
-import { role, selectedAttributes, responseSample, fetchedQueCount, chapterlistSample, textbookMeta } from './chapter-list.component.data';
+import { role, selectedAttributes, responseSample, fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample } from './chapter-list.component.data';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -53,7 +53,7 @@ describe('ChapterListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TelemetryModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule],
+      imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule],
       declarations: [ChapterListComponent],
       providers: [{ provide: ActionService, useValue: actionServiceStub }, { provide: UserService, useValue: UserServiceStub },
       { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService,
@@ -111,28 +111,29 @@ describe('ChapterListComponent', () => {
     expect(component.toasterService.error).toHaveBeenCalledWith('Fetching TextBook details failed');
   });
 
-  xit('should emit click event on click of chapterlist row', async () => {
+  xit('should emit click event on click of chapterlist row', () => {
     spyOn(component, 'emitQuestionTypeTopic');
+    spyOn(component, 'getCollectionHierarchy');
     component.showLoader = false;
     component.showError = false;
     component.textBookChapters = chapterlistSample;
+    component.routerQuestionCategory = routerQuestionCategorySample;
+    component.ngOnInit();
     fixture.detectChanges();
-    const tableRow = de.nativeElement.querySelector('tr:nth-child(2)');
-    tableRow.click();
+    const tableRow = de.nativeElement.querySelectorAll('tr');
+    tableRow[1].click();
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      expect(component.emitQuestionTypeTopic).toHaveBeenCalled();
-    });
+    expect(component.emitQuestionTypeTopic).toHaveBeenCalled();
   });
-  xit('should execute ngOnChanges', () => {
+
+  it('should execute ngOnChanges', () => {
     const changed = { selectedSchool: { currentValue: 'newOne', previousValue: 'oldOne' } };
     spyOn(component, 'ngOnChanges').and.callThrough();
     spyOn(component, 'showChapterList');
-    this.textbookMeta = [{ test: 1 }];
+    component['textbookMeta'] = [{ test: 1 }];
     component.ngOnChanges(changed);
     expect(component.showChapterList).toHaveBeenCalled();
     expect(component.showChapterList).toHaveBeenCalledTimes(1);
-    expect(component.showChapterList).toHaveBeenCalledWith([{ test: 1 }]);
     expect(component.selectedAttributes.selectedSchoolForReview).toEqual('newOne');
   });
 
