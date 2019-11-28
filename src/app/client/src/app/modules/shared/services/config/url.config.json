@@ -82,7 +82,9 @@
       "COPY": "content/v1/copy",
       "LOCK_LIST": "lock/v1/list",
       "LOCK_CREATE": "lock/v1/create",
-      "LOCK_RETIRE": "lock/v1/retire"
+      "LOCK_RETIRE": "lock/v1/retire",
+      "HIERARCHY_ADD": "content/v3/hierarchy/add",
+      "HIERARCHY_REMOVE": "content/v3/hierarchy/remove"
     },
     "DASHBOARD": {
       "ORG_CREATION": "dashboard/v1/creation/org",

@@ -1,3 +1,6 @@
+@import "variables";
+@import 'mixins/mixins';
+
 #url-upload .url-upload-label {
     float: left;
     margin-right: 10px;
@@ -48,3 +51,34 @@
 	font-size: 1.1em;
 	font-weight: bold;
 }
+
+.upload-file-section {
+	display: flex;
+	height: 240px;
+	width: 100%;
+	max-width: 800px;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	margin: 0 auto;
+	background-color: #F5F9FC;
+	border: 1px dashed $primary-200;
+  }
+  
+  .upload-file-description p {
+	color: $gray-200;
+  }
+  
+  .upload-file-description ul {
+	margin: 0;
+	list-style: disc;
+  }
+  
+  .upload-file-description ul li {
+	margin-bottom: $base-block-space;
+  }
+  
+  .upload-file-description ul li a {
+	cursor: pointer;
+	font-size: $font-size-sm;
+  }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } from '@angular/core';
-import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService, ContentService } from '@sunbird/core';
+import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { CbseProgramService } from '../../services';
@@ -33,6 +33,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public showResourceTemplatePopup = false;
   public showContentUploader = false;
   public templateDetails;
+  public unitIdentifier;
 
   private questionTypeName = {
     vsa: 'Very Short Answer',
@@ -49,9 +50,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public routerQuestionCategory: any;
   public questionPattern: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    private userService: UserService, public actionService: ActionService, public telemetryService: TelemetryService,
-    private cbseService: CbseProgramService, public toasterService: ToasterService, public router: Router,
-    public activeRoute: ActivatedRoute, private contentService: ContentService) {
+    private userService: UserService, public actionService: ActionService,
+    public telemetryService: TelemetryService, private cbseService: CbseProgramService,
+    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
   }
   private labelsHandler() {
     this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] :
@@ -91,8 +92,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
     });
     this.selectdChapterOption = 'all';
     this.getCollectionHierarchy(this.selectedAttributes.textbook, undefined);
-    // clearing the selected questionId when user comes back from question list
-    delete this.selectedAttributes['questionList'];
+    //clearing the selected questionId when user comes back from question list
+    delete this.selectedAttributes["questionList"];
   }
   ngOnChanges(changed: any) {
     this.labelsHandler();
@@ -119,8 +120,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
       param: { 'mode': 'edit' }
     };
     this.actionService.get(req).pipe(catchError(err => {
-      const errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+      let errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
     }))
       .subscribe((response) => {
         this.collectionData = response.result.content;
@@ -182,7 +183,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
   public getHierarchyObjforUnit(unitIdentifier) {
     const req = {
-      url: 'content/v3/hierarchy/' + this.selectedAttributes.textbook + '/' + unitIdentifier,
+      url: 'content/v3/hierarchy/' + this.selectedAttributes.textbook + '/' + unitIdentifier, 
       param: { 'mode': 'edit' }
     };
     this.actionService.get(req).pipe(catchError(err => {
@@ -230,7 +231,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
           };
         });
         this.showLoader = false;
-         // text book-unit-id added
+        // text book-unit-id added
         results.identifier = topicData.identifier;
         return results;
       });
@@ -246,7 +247,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
   public getResourceName(data, topic: string) {
     const topicData = _.find(data, { name: topic.toLowerCase() });
-     // tslint:disable-next-line:max-line-length
+    // tslint:disable-next-line:max-line-length
     return topicData ? topicData.resourceName : false;
   }
   public getButtonStatus(data, topic: string) {
@@ -277,21 +278,21 @@ export class ChapterListComponent implements OnInit, OnChanges {
         }
       }
     };
-    return this.contentService.post(request).pipe(
+    return this.publicDataService.post(request).pipe(
       map(res => {
         const content = _.get(res, 'result.content');
         const publishCount = [];
         _.forIn(_.groupBy(content, 'topic'), (value, key) => {
-           // publishCount.push({name: key.toLowerCase(), count: _.uniq([].concat(..._.map(value, 'questions'))).length });
-           // tslint:disable-next-line:max-line-length
+          // publishCount.push({name: key.toLowerCase(), count: _.uniq([].concat(..._.map(value, 'questions'))).length });
+          // tslint:disable-next-line:max-line-length
           publishCount.push({ name: key.toLowerCase(), count: _.uniq(value[0].questions).length, resourceId: _.get(value[0], 'identifier'), resourceName: _.get(value[0], 'name') });
 
         });
         return publishCount;
       }),
       catchError((err) => {
-        const errInfo = { errorMsg: 'Published Resource search failed' };
-        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+        let errInfo = { errorMsg: 'Published Resource search failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
       }));
   }
   public searchQuestionsByType(questionType: string, createdBy?: string, status?: any) {
@@ -324,10 +325,10 @@ export class ChapterListComponent implements OnInit, OnChanges {
       req.data.request.filters['status'] = status;
       req.data.request.filters['organisation'] = this.selectedAttributes.selectedSchoolForReview;
     }
-    return this.contentService.post(req).pipe(
+    return this.publicDataService.post(req).pipe(
       map(res => _.get(res, 'result.facets[0].values')), catchError((err) => {
-        const errInfo = { errorMsg: 'Questions search by type failed' };
-        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+        let errInfo = { errorMsg: 'Questions search by type failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo))
       }));
   }
 
@@ -341,19 +342,20 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.showResourceTemplatePopup = false;
     if (event.template) {
       this.showContentUploader = true;
-      this.templateDetails = {
-        name: 'Explanation',
-        contentType: 'ExplanationResource',
-        mimeType: [ 'application/pdf' ],
-        filesAccepted: 'pdf',
-        filesize: '50'
-      };
+      this.templateDetails = event.templateDetails;
     }
-    console.log('handleTemplateSelection ', event);
   }
 
   showResourceTemplate(event) {
-    this.showResourceTemplatePopup = event.showPopup;
+    this.unitIdentifier = event.unitIdentifier;
+    switch (event.action) {
+      case 'delete':
+        this.removeResourceToHierarchy(event.contentId, event.unitIdentifier);
+        break;
+      default:
+          this.showResourceTemplatePopup = event.showPopup;
+        break;
+    }
   }
 
   emitQuestionTypeTopic(type, topic, topicIdentifier, resourceIdentifier, resourceName) {
@@ -363,6 +365,48 @@ export class ChapterListComponent implements OnInit, OnChanges {
       'textBookUnitIdentifier': topicIdentifier,
       'resourceIdentifier': resourceIdentifier || false,
       'resourceName': resourceName
+    });
+  }
+
+  uploadHandler(event) {
+    if (event.contentId) {
+      this.addResourceToHierarchy(event.contentId);
+    }
+  }
+
+  public addResourceToHierarchy(contentId) {
+    const req = {
+      url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_ADD,
+      data: {
+        'request': {
+          'rootId': this.selectedAttributes.textbook,
+          'unitId': this.unitIdentifier,
+          'leafNodes': [contentId]
+        }
+      }
+    };
+    this.actionService.patch(req).pipe(map(data => data.result), catchError(err => {
+      return throwError('');
+    })).subscribe(res => {
+      console.log('result ', res);
+    });
+  }
+
+  public removeResourceToHierarchy(contentId, unitIdentifier) {
+    const req = {
+      url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_REMOVE,
+      data: {
+        'request': {
+          'rootId': this.selectedAttributes.textbook,
+          'unitId': unitIdentifier,
+          'leafNodes': [contentId]
+        }
+      }
+    };
+    this.actionService.delete(req).pipe(map(data => data.result), catchError(err => {
+      return throwError('');
+    })).subscribe(res => {
+      console.log('result ', res);
     });
   }
 

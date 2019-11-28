@@ -12,24 +12,36 @@ export class RecursiveTreeComponent implements OnInit {
   @Output() emitselectedChapter = new EventEmitter<any>();
   @Output() resourceTemplate = new EventEmitter<any>();
   public showModal = false;
-  
+  public unitIdentifier;
   constructor() { }
 
   ngOnInit() {
   }
 
-  showResourceTemplateEvent(event){
-    this.showModal = true;
+  showResourceTemplateEvent(event) {
     this.resourceTemplate.emit({
-      showPopup: this.showModal
+      action: event.action,
+      showPopup: event.action === 'add' ? true : false,
+      unitIdentifier: event.unitIdentifier,
+      contentId: event.contentId
     });
   }
 
-  crateResource(e){
+  crateResource(e, unitIdentifier) {
     e.stopPropagation();
     this.showModal = true;
     this.resourceTemplate.emit({
-      showPopup: this.showModal
+      action: 'add',
+      showPopup: this.showModal,
+      unitIdentifier: unitIdentifier
+    });
+  }
+
+  deleteResource(e, contentId, unitIdentifier) {
+    this.resourceTemplate.emit({
+      action: 'delete',
+      contentId: contentId,
+      unitIdentifier: unitIdentifier
     });
   }
 }

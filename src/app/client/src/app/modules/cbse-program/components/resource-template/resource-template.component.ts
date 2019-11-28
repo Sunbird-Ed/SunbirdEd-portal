@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-resource-template',
@@ -142,7 +143,10 @@ export class ResourceTemplateComponent implements OnInit, OnDestroy {
   }
 
   handleSubmit() {
-    this.templateSelection.emit({ type: 'next', template: this.templateSelected });
+    const templateDetails = _.find(this.templateList, (template) => {
+      return template.contentType === this.templateSelected;
+    });
+    this.templateSelection.emit({ type: 'next', template: this.templateSelected, templateDetails: templateDetails });
   }
 
   ngOnDestroy() {
