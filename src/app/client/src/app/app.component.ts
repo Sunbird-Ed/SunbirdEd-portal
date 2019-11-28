@@ -306,7 +306,6 @@ setFingerPrintTelemetry() {
                         (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
           }
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          this.deviceRegisterService.initialize();
           observer.next(deviceId);
           observer.complete();
         }));
