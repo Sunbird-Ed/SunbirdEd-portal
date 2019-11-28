@@ -38,7 +38,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.selectedOption = _.cloneDeep(this.formInput) || {}; // clone selected field inputs from parent
+    this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
     this.unsubscribe = this.isCustodianOrgUser().pipe(
       mergeMap((custodianOrgUser: boolean) => {
         this.custodianOrg = custodianOrgUser;
@@ -205,7 +205,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   }
   onSubmitForm() {
     const selectedOption = _.cloneDeep(this.selectedOption);
-    selectedOption.board = _.get(this.selectedOption, 'board') ? [this.selectedOption.board] : null;
+    selectedOption.board = _.get(this.selectedOption, 'board') ? [this.selectedOption.board] : [];
     selectedOption.id = this.frameWorkId;
     this.submit.emit(selectedOption);
   }
