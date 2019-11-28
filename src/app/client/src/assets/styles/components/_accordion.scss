@@ -24,7 +24,7 @@
   bottom: 0;
   width: 100%;
   margin-left: auto;
-  max-width: $base-block-space*60;
+  max-width: $base-block-space * 60;
   margin-right: 32px;
   z-index:99;
 }
@@ -99,7 +99,7 @@
 }
 .sb-single-pannel-accordion-list-item {
   font-size: 14px;
-  padding: ($base-block-space)*2;
+  padding: ($base-block-space) * 2;
   background: $white-color;
   display: flex;
   // flex-wrap: wrap;
@@ -149,8 +149,8 @@
     max-width: 400px;
   }
   .download-image {
-    width: $base-block-space*4;
-    height: $base-block-space*4;
+    width: $base-block-space * 4;
+    height: $base-block-space * 4;
     margin-right: 8px;
   }
   .download-details-container {

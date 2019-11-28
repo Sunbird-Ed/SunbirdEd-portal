@@ -2,15 +2,15 @@ import { environment } from '@sunbird/environment';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import {
-  UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
+  UtilService, ResourceService, ToasterService,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, Inject, OnDestroy } from '@angular/core';
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { Observable, of, throwError, combineLatest, BehaviorSubject } from 'rxjs';
+import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -29,11 +29,6 @@ import { OnboardingService } from '@sunbird/offline';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild('frameWorkPopUp') frameWorkPopUp;
-  /**
-   * user profile details.
-   */
-  private userProfile: IUserProfile;
   /**
    * user to load app after fetching user/org details.
    */
@@ -42,15 +37,6 @@ export class AppComponent implements OnInit, OnDestroy {
    * stores organization details for Anonymous user.
    */
   private orgDetails: any;
-  /**
-   * this variable is used to show the FrameWorkPopUp
-   */
-  public showFrameWorkPopUp = false;
-
-  /**
-   * this variable is used to show the terms and conditions popup
-   */
-  public showTermsAndCondPopUp = false;
 
   /**
    * Used to fetch tenant details and org details for Anonymous user. Possible values
@@ -81,13 +67,11 @@ export class AppComponent implements OnInit, OnDestroy {
   instance: string;
   resourceDataSubscription: any;
   shepherdData: Array<any>;
-  private fingerprintInfo: any;
   hideHeaderNFooter = true;
   queryParams: any;
   telemetryContextData: any ;
-  didV2: boolean;
-  flag = false;
   showOnboardingPopup = false;
+
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -121,8 +105,11 @@ export class AppComponent implements OnInit, OnDestroy {
         _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
     });
   }
+  getUserData() {
+    return combineLatest(this.setOrgDetails(), this.getDesktopUserData());
+  }
   ngOnInit() {
-    this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
+
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter( queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
       first(),
@@ -133,23 +120,20 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
-    combineLatest(queryParams$, this.setSlug(), this.setDeviceId(), this.getDesktopUserData())
+    combineLatest(this.setSlug())
     .pipe(
       mergeMap(data => {
+        return this.getUserData();
+      }))
+      .subscribe(data => {
+        this.telemetryService.initialize(this.getTelemetryContext());
         this.navigationHelperService.initialize();
-        _.isEmpty(data[3]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
+        _.isEmpty(data[1]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
         this.onboardingService.onboardCompletion.subscribe(event => {
           event !== 'SUCCESS' ? this.showOnboardingPopup = true : this.initializeTourTravel();
         });
-        return this.setOrgDetails();
-      }))
-      .subscribe(data => {
         this.tenantService.getTenantInfo(this.slug);
         this.setPortalTitleLogo();
-        this.telemetryService.initialize(this.getTelemetryContext());
-        this.logCdnStatus();
-        this.setFingerPrintTelemetry();
-        this.checkTncAndFrameWorkSelected();
         this.initApp = true;
       }, error => {
         this.initApp = true;
@@ -159,112 +143,6 @@ export class AppComponent implements OnInit, OnDestroy {
     document.body.classList.add('sb-offline');
 }
 
-setFingerPrintTelemetry() {
-  const printFingerprintDetails  = (<HTMLInputElement>document.getElementById('logFingerprintDetails'))
-  ? (<HTMLInputElement>document.getElementById('logFingerprintDetails')).value : 'false';
-    if (printFingerprintDetails !== 'true') {
-      return;
-    }
-
-    if (this.fingerprintInfo && !this.didV2) {
-      this.logExData('fingerprint_info', this.fingerprintInfo );
-    }
-
-    if (localStorage && localStorage.getItem('fpDetails_v1')) {
-      const fpDetails = JSON.parse(localStorage.getItem('fpDetails_v1'));
-      const fingerprintInfoV1 = {
-        deviceId: fpDetails.result,
-        components: fpDetails.components,
-        version: 'v1'
-      };
-      this.logExData('fingerprint_info', fingerprintInfoV1);
-      if (localStorage.getItem('fpDetails_v2')) {
-        localStorage.removeItem('fpDetails_v1');
-      }
-    }
-  }
-
-  logExData(type: string, data: object) {
-    const event = {
-      context: {
-        env : 'app'
-      },
-      edata : {
-        type : type,
-        data : JSON.stringify(data)
-      }
-    };
-    this.telemetryService.exData(event);
-  }
-
-  logCdnStatus() {
-    const isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
-    ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
-    if (isCdnWorking !== 'no') {
-      return;
-    }
-    const event = {
-      context: {
-        env: 'app'
-      },
-      edata: {
-        type: 'cdn_failed',
-        level: 'ERROR',
-        message: 'cdn failed, loading files from portal',
-        pageid: this.router.url.split('?')[0]
-      }
-    };
-    this.telemetryService.log(event);
-  }
-  /**
-   * checks if user has accepted the tnc and show tnc popup.
-   */
-  public checkTncAndFrameWorkSelected() {
-    if (_.has(this.userProfile, 'promptTnC') && _.has(this.userProfile, 'tncLatestVersion') &&
-      _.has(this.userProfile, 'tncLatestVersion') && this.userProfile.promptTnC === true) {
-      this.showTermsAndCondPopUp = true;
-    } else {
-      this.checkFrameworkSelected();
-    }
-  }
-
-  /**
-   * checks if user has selected the framework and shows popup if not selected.
-   */
-  public checkFrameworkSelected() {
-    const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
-    if (frameWorkPopUp) {
-      this.showFrameWorkPopUp = false;
-    } else {
-      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
-        this.showFrameWorkPopUp = true;
-      }
-    }
-  }
-
-  /**
-   * once tnc is accepted from tnc popup on submit this function is triggered
-   */
-  public onAcceptTnc() {
-    this.showTermsAndCondPopUp = false;
-    this.checkFrameworkSelected();
-  }
-
-  /**
-   * fetch device id using fingerPrint2 library.
-   */
-  public setDeviceId(): Observable<string> {
-      return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
-          this.fingerprintInfo = {deviceId, components, version};
-          if (this.isOffline) {
-            deviceId = <HTMLInputElement>document.getElementById('deviceId') ?
-                        (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
-          }
-          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          observer.next(deviceId);
-          observer.complete();
-        }));
-  }
   /**
    * set slug from url only for Anonymous user.
    */
@@ -276,21 +154,7 @@ setFingerPrintTelemetry() {
         map(data => this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug')));
     }
   }
-  /**
-   * set user details for loggedIn user.
-   */
-  private setUserDetails(): Observable<any> {
-    return this.userService.userData$.pipe(first(),
-      mergeMap((user: IUserData) => {
-        if (user.err) {
-          return throwError(user.err);
-        }
-        this.userProfile = user.userProfile;
-        this.slug = _.get(this.userProfile, 'rootOrg.slug');
-        this.channel = this.userService.hashTagId;
-        return of(user.userProfile);
-      }));
-  }
+
   /**
    * set org Details for Anonymous user.
    */
@@ -308,32 +172,6 @@ setFingerPrintTelemetry() {
   private getTelemetryContext(): ITelemetryContext {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
-    if (this.userService.loggedIn) {
-      return {
-        userOrgDetails: {
-          userId: this.userProfile.userId,
-          rootOrgId: this.userProfile.rootOrgId,
-          rootOrg: this.userProfile.rootOrg,
-          organisationIds: this.userProfile.hashTagIds
-        },
-        config: {
-          pdata: {
-            id: this.userService.appId,
-            ver: version,
-            pid: this.configService.appConfig.TELEMETRY.PID
-          },
-          endpoint: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
-          apislug: this.configService.urlConFig.URLS.CONTENT_PREFIX,
-          host: '',
-          uid: this.userProfile.userId,
-          sid: this.userService.sessionId,
-          channel: _.get(this.userProfile, 'rootOrg.hashTagId'),
-          env: 'home',
-          enableValidation: environment.enableTelemetryValidation,
-          timeDiff: this.userService.getServerTimeDiff
-        }
-      };
-    } else {
       const anonymousTelemetryContextData = {
         userOrgDetails: {
         userId: 'anonymous',
@@ -364,7 +202,6 @@ setFingerPrintTelemetry() {
       anonymousTelemetryContextData['config']['sid'] = _.get(this.telemetryContextData, 'sid');
     }
       return anonymousTelemetryContextData;
-    }
   }
   /**
    * set app title and favicon after getting tenant data
@@ -377,32 +214,7 @@ setFingerPrintTelemetry() {
       }
     });
   }
-  /**
-   * updates user framework. After update redirects to library
-   */
-  public updateFrameWork(event) {
-    const req = {
-      framework: event
-    };
-    this.profileService.updateProfile(req).subscribe(res => {
-      this.frameWorkPopUp.modal.deny();
-      this.showFrameWorkPopUp = false;
-      this.utilService.toggleAppPopup();
-      this.showAppPopUp = this.utilService.showAppPopUp;
-    }, err => {
-      this.toasterService.warning(this.resourceService.messages.emsg.m0012);
-      this.frameWorkPopUp.modal.deny();
-      this.router.navigate(['/resources']);
-      this.cacheService.set('showFrameWorkPopUp', 'installApp');
-    });
-  }
-  viewInBrowser() {
-    this.router.navigate(['/resources']);
-  }
-  closeIcon() {
-    this.showFrameWorkPopUp = false;
-    this.cacheService.set('showFrameWorkPopUp', 'installApp');
-  }
+
   changeLanguageAttribute() {
     this.resourceDataSubscription = this.resourceService.languageSelected$.subscribe(item => {
       if (item.value && item.dir) {

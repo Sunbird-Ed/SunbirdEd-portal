@@ -30,13 +30,13 @@ export const onboarding_location_test = {
             'response': [
                 {
                     'code': '1',
-                    'name': 'Jammu And Kashmir',
+                    'name': 'test_state_1',
                     'id': 'f138e9c2-adae-4e5b-ab3c-0527ff6a2b5f',
                     'type': 'state'
                 },
                 {
                     'code': '29',
-                    'name': 'Karnataka',
+                    'name': 'test_state_2',
                     'id': '4a6d77a1-6653-4e30-9be8-93371b6b53b5',
                     'type': 'state'
                 },
@@ -59,21 +59,21 @@ export const onboarding_location_test = {
             'response': [
                 {
                     'code': '2907',
-                    'name': 'KOPPAL',
+                    'name': 'test_district_1',
                     'id': 'cde02789-5803-424b-a3f5-10db347280e9',
                     'type': 'district',
                     'parentId': '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
                 },
                 {
                     'code': '2909',
-                    'name': 'DHARWAD',
+                    'name': 'test_district_2',
                     'id': '3ac37fb2-d833-45bf-a579-a2656b0cce62',
                     'type': 'district',
                     'parentId': '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
                 },
                 {
                     'code': '2918',
-                    'name': 'TUMAKURU',
+                    'name': 'test_district_3',
                     'id': 'ed622a46-17bb-42c0-b0a0-50c02b38a05c',
                     'type': 'district',
                     'parentId': '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
@@ -116,6 +116,43 @@ export const onboarding_location_test = {
         'favicon': '/favicon.ico',
         'logo': '/logo.png',
         'titleName': 'Sunbird'
+    },
+    resourceBundle: {
+        frmelmnts: {
+          lbl: {
+            continue: 'Continue'
+          }
+        },
+        messages: {
+          emsg: {
+            m0021: 'Unable to save location. please try again after some time.',
+          },
+          smsg: {
+            m0057: 'Location saved successfully...'
+          },
+          imsg: {
+            m0075: 'Your Location',
+            // tslint:disable-next-line:max-line-length
+            m0074: 'Your location details helps us to suggest content that is useful to you. Is the location given correct? if not, select your correct location and click Submit'
+          }
+        }
+      },
+    deviceLocation: {
+      'id': 'analytics.device-profile',
+      'ver': '1.0',
+      'ts': '2019-11-28T05:55:49.020+00:00',
+      'params': {
+        'resmsgid': '5469091e-1dc3-431e-8c73-9ab89e0e7b2f',
+        'status': 'successful',
+        'client_key': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'ipLocation': {
+          'state': 'test_state_1',
+          'district': 'test_district_1'
+        }
+      }
     }
 };
 

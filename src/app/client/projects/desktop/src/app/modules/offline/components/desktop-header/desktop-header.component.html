@@ -17,7 +17,7 @@
             </div>
 
             <div class="sbheader-mid-container">
-                <button class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-qrcode mx-8" appTelemetryInteract
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-qrcode mr-8" appTelemetryInteract
                     [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrModal = true;"
                     title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}">
                     <span class="qrcode">
@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            <div class="sboffline-header__actions">
+            <div class="sbheader--offline__actions">
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" appTelemetryInteract
                     [telemetryInteractEdata]="takeTourInteractEdata">
                     <i class="icon-svg icon-svg--xxs icon-play">
@@ -98,7 +98,7 @@
 
                 <!-- language component -->
                 <div class="sb-field mb-0">
-                    <app-language-dropdown [languageRange]="availableLanguages" class="computer only ml-auto"
+                    <app-language-dropdown [languageRange]="availableLanguages"
                         *ngIf="availableLanguages">
                     </app-language-dropdown>
                 </div>

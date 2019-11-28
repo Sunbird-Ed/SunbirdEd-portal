@@ -82,17 +82,17 @@ describe('OnboardingUserPreferenceComponent', () => {
   });
 
   it('should call onBoardChange and get framework api success', () => {
-    spyOn(component, 'setFrameworkData');
+    spyOn(component, 'getAssociationData');
     spyOn(component.frameworkService, 'getFrameworkCategories').and.returnValue(observableOf(onboarding_user_preference_test.framework));
     component.onBoardChange(onboarding_user_preference_test.options.board);
-    expect(component.setFrameworkData).toHaveBeenCalled();
-    expect(component.showMedium).toBeFalsy();
+    expect(component.getAssociationData).toHaveBeenCalled();
+    expect(component.showMedium).toBeTruthy();
     expect(component.showClass).toBeFalsy();
     expect(component.disableContinueBtn).toBeTruthy();
   });
 
   it('should call onBoardChange and get framework api error', () => {
-    spyOn(component, 'setFrameworkData');
+    spyOn(component, 'getAssociationData');
     spyOn(component.toasterService, 'error').and.returnValue(throwError(resourceBundle.messages.emsg.m0005));
     spyOn(component.frameworkService, 'getFrameworkCategories')
     .and.returnValue(throwError(onboarding_user_preference_test.framework_error));
@@ -116,7 +116,7 @@ describe('OnboardingUserPreferenceComponent', () => {
     component.onMediumChange(onboarding_user_preference_test.options.medium);
     expect(component.showMedium).toBeFalsy();
     expect(component.showClass).toBeTruthy();
-    expect(component.disableContinueBtn).toBeFalsy();
+    expect(component.disableContinueBtn).toBeTruthy();
   });
 
   it('should call onClassChange when medium is empty', () => {
@@ -133,9 +133,11 @@ describe('OnboardingUserPreferenceComponent', () => {
 
   it('should call saveUserData and get success', () => {
     spyOn(component.onboardingService, 'saveUserPreference').and.returnValue(observableOf(onboarding_user_preference_test.user_save));
+    spyOn(component, 'getUserData');
     spyOn(component.toasterService, 'success').and.returnValue(observableOf(resourceBundle.messages.smsg.m0058));
     component.saveUserData();
     expect(component.toasterService.success).toHaveBeenCalled();
+    expect(component.getUserData).toHaveBeenCalled();
   });
 
   it('should call saveUserData and get error', () => {
@@ -143,5 +145,19 @@ describe('OnboardingUserPreferenceComponent', () => {
     spyOn(component.toasterService, 'error').and.returnValue(throwError(resourceBundle.messages.emsg.m0022));
     component.saveUserData();
     expect(component.toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should call getUserData, get success and emit event', () => {
+    spyOn(component.onboardingService, 'getUser').and.returnValue(observableOf(onboarding_user_preference_test.get_user));
+    spyOn(component.userPreferenceSaved, 'emit');
+    component.getUserData();
+    expect(component.userPreferenceSaved.emit).toHaveBeenCalledWith('SUCCESS');
+  });
+
+  it('should call getUserData, get error and emit event', () => {
+    spyOn(component.onboardingService, 'getUser').and.returnValue(throwError(onboarding_user_preference_test.get_user_error));
+    spyOn(component.userPreferenceSaved, 'emit');
+    component.getUserData();
+    expect(component.userPreferenceSaved.emit).toHaveBeenCalledWith('SUCCESS');
   });
 });

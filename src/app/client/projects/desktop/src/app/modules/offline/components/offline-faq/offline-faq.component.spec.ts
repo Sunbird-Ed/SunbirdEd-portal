@@ -57,7 +57,7 @@ describe('OfflineFaqComponent', () => {
   });
 
   it('should show faq header label obtained from resourceService', () => {
-    const value = fixture.debugElement.query(By.css('h3')).nativeElement.innerText;
+    const value = fixture.debugElement.query(By.css('h4')).nativeElement.innerText;
     expect(value).toEqual(resourceBundle.frmelmnts.lbl.faqheader);
   });
   it('should trigger interact event for toggle-clicked event from "sb-faq" component', () => {
