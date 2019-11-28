@@ -156,7 +156,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         !upcsRegex.test(_.get(val)) ||
         !numRegex.test(_.get(val)) ||
         specRegex.test(_.get(val))) {
-        this.passwordError = this.resourceService.frmelmnts.lbl.passwd;
+        this.passwordError = _.get(this.resourceService.frmelmnts.lbl.passwd);
       } else {
         this.passwordError = '';
       }
