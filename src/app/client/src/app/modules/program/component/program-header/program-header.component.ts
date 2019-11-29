@@ -31,24 +31,19 @@ export class ProgramHeaderComponent implements OnInit {
     this.headerActions = {
       showTabs: _.get(this.headerComponentInput, 'actions.showTabs')
     };
-    this.userRoles = _.get(this.headerComponentInput, 'userDetails.roles');
+    this.userRoles = _.get(this.headerComponentInput, 'userDetails.roles[0]');
     this.programRoles = _.get(this.headerComponentInput, 'roles');
     this.defaultTabIndex = 1;
-
-
-    this.userRoles.forEach(role => {
+    const tabRoles = _.find(this.programRoles, {'name': this.userRoles}).tabs;
       this.tabs.forEach(tab => {
-        const tabRoles = _.find(this.programRoles, {'name': role}).tabs;
-        const roleId = _.find(this.programRoles, {'name': role}).id;
-        if (tabRoles && roleId && tabRoles.includes(roleId)) {
-          console.log(`Tab${tab.index} - SHOW FOR ${role}`);
+        if (tabRoles && tabRoles.includes(tab.index)) {
+          console.log(`Tab${tab.index} - SHOW FOR ${this.userRoles}`);
           tab.visibility = true;
         } else {
-            console.log(`Tab${tab.index} - HIDE FOR ${role}`);
+            console.log(`Tab${tab.index} - HIDE FOR ${this.userRoles}`);
             console.log('Tab show action is not defined '); // TODO: change to toaster
         }
       });
-    });
   }
 
   filterBy(prop: string) {

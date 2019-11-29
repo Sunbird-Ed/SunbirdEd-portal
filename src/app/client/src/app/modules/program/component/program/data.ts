@@ -431,19 +431,19 @@ const programTwoSession = {
       'id': 2,
       'name': 'REVIEWER',
       'defaultTab': 1,
-      'tabs': [1, 2]
+      'tabs': [2]
     },
     {
       'id': 3,
       'name': 'PUBLISHER',
       'defaultTab': 3,
-      'tabs': [1, 2]
+      'tabs': [1, 3]
     },
     {
       'id': 4,
       'name': 'CERT_ISSUER',
       'defaultTab': 1,
-      'tabs': [1, 2]
+      'tabs': [4]
     }
   ],
   'data': {},
