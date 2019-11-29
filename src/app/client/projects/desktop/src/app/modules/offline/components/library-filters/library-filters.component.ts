@@ -40,10 +40,10 @@ export class LibraryFiltersComponent implements OnInit {
 
     ngOnInit() {
         this.userDetails = this.onboardingService.userData;
-        this.setBMC();
+        this.setBoard();
     }
 
-    setBMC() {
+    setBoard() {
         this.channelService.getFrameWork(_.get(this.orgDetailsService, 'orgDetails.hashTagId')).subscribe(orgDetails => {
             this.boards = _.get(orgDetails, 'result.channel.frameworks');
 
@@ -135,7 +135,7 @@ export class LibraryFiltersComponent implements OnInit {
     }
 
     applyFilters(event, type) {
-        this.getSelectedBMCData();
+        this.getSelectedFilters();
 
         if (type === 'medium') {
             this.selectedMediumIndex = [event.data.index];
@@ -144,10 +144,10 @@ export class LibraryFiltersComponent implements OnInit {
             this.selectedClassIndex = [event.data.index];
         }
 
-        this.filterChange.emit(this.getSelectedBMCData());
+        this.filterChange.emit(this.getSelectedFilters());
     }
 
-    getSelectedBMCData() {
+    getSelectedFilters() {
         const filters: any = {};
         filters.board = this.selectedBoard.name;
 
