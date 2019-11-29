@@ -66,9 +66,9 @@
           (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
       </div>
       <div *ngIf="stages[currentStage] === 'topicList' && !showDashboard">
-        <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
+        <!-- <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
           [selectedSchool]="selectedSchoolForReview" [role]="role"
-          (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)" (selectedTemplate)="selectedTemplatehandler($event)"></app-chapter-list>
+          (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)" (selectedTemplate)="selectedTemplatehandler($event)"></app-chapter-list> -->
       </div>
       <div *ngIf="stages[currentStage] === 'topicList' && showDashboard">
         <app-dashboard [selectedAttributes]="selectedAttributes"></app-dashboard>

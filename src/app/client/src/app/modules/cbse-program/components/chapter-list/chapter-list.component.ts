@@ -1,13 +1,12 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
-import { forkJoin, of, throwError } from 'rxjs';
+import { forkJoin, throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { inspect } from 'util';
 
 @Component({
   selector: 'app-chapter-list',
@@ -16,12 +15,11 @@ import { inspect } from 'util';
 })
 export class ChapterListComponent implements OnInit, OnChanges {
 
-  @Input() selectedAttributes: any;
-  @Input() topicList: any;
-  @Input() role: any;
+  @Input() chapterListComponentInput: any;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
-  @Input() selectedSchool: any;
 
+  public selectedAttributes: any;
+  public role: any;
   public textBookChapters: Array<any> = [];
   private questionType: Array<any> = [];
   private textBookMeta: any;
@@ -29,25 +27,19 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public collectionHierarchy;
   public countData: Array<any> = [];
   public levelOneChapterList: Array<any> = [];
-  public selectdChapterOption: any = {};
+  public selectedChapterOption: any = {};
   public showResourceTemplatePopup = false;
   public showContentUploader = false;
   public templateDetails;
   public unitIdentifier;
-
-  private questionTypeName = {
-    vsa: 'Very Short Answer',
-    sa: 'Short Answer',
-    la: 'Long Answer',
-    mcq: 'Multiple Choice Question',
-    curiosity: 'Curiosity Question'
-  };
-  telemetryImpression = {};
+  public collection: any;
   private labels: Array<string>;
+
+
+  telemetryImpression = {};
   public collectionData;
   showLoader = true;
   showError = false;
-  public routerQuestionCategory: any;
   public questionPattern: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService,
@@ -59,14 +51,16 @@ export class ChapterListComponent implements OnInit, OnChanges {
     (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted', 'Published'] : ['Total', 'Created by me', 'Needs attention'];
   }
   ngOnInit() {
+
+    this.selectedAttributes = _.get(this.chapterListComponentInput, 'selectedAttributes');
+    this.role = _.get(this.chapterListComponentInput, 'role');
+    this.collection  = _.get(this.chapterListComponentInput, 'collection');
     /**
      * @description : this will fetch question Category configuration based on currently active route
      */
     this.activeRoute.data
       .subscribe((routerData) => {
-        this.routerQuestionCategory = routerData.config.question_categories;
-        this.questionType = this.routerQuestionCategory;
-
+        this.questionType = routerData.config.question_categories;
         routerData.config.question_categories.map(category => {
           if (category !== 'mcq') {
             this.questionPattern.push('reference');
@@ -75,6 +69,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
           }
         });
       });
+
+
     this.labelsHandler();
     this.telemetryImpression = {
       context: {
@@ -90,12 +86,14 @@ export class ChapterListComponent implements OnInit, OnChanges {
       identifier: 'all',
       name: 'All Chapters'
     });
-    this.selectdChapterOption = 'all';
-    this.getCollectionHierarchy(this.selectedAttributes.textbook, undefined);
-    //clearing the selected questionId when user comes back from question list
-    delete this.selectedAttributes["questionList"];
+    this.selectedChapterOption = 'all';
+    this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
+    // clearing the selected questionId when user comes back from question list
+    delete this.selectedAttributes['questionList'];
   }
   ngOnChanges(changed: any) {
+    this.selectedAttributes = _.get(this.chapterListComponentInput, 'selectedAttributes');
+    this.role = _.get(this.chapterListComponentInput, 'role');
     this.labelsHandler();
     if (this.textBookMeta) {
       if (changed.selectedSchool &&
@@ -183,7 +181,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
   public getHierarchyObjforUnit(unitIdentifier) {
     const req = {
-      url: 'content/v3/hierarchy/' + this.selectedAttributes.textbook + '/' + unitIdentifier, 
+      url: 'content/v3/hierarchy/' + this.selectedAttributes.collection + '/' + unitIdentifier,
       param: { 'mode': 'edit' }
     };
     this.actionService.get(req).pipe(catchError(err => {
@@ -334,8 +332,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
   onSelectChapterChange() {
     this.showLoader = true;
-    this.getCollectionHierarchy(this.selectedAttributes.textbook ,
-      this.selectdChapterOption === 'all' ? undefined :  this.selectdChapterOption);
+    this.getCollectionHierarchy(this.selectedAttributes.collection ,
+      this.selectedChapterOption === 'all' ? undefined :  this.selectedChapterOption);
   }
 
   handleTemplateSelection(event) {
@@ -379,7 +377,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_ADD,
       data: {
         'request': {
-          'rootId': this.selectedAttributes.textbook,
+          'rootId': this.selectedAttributes.collection,
           'unitId': this.unitIdentifier,
           'leafNodes': [contentId]
         }
@@ -397,7 +395,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_REMOVE,
       data: {
         'request': {
-          'rootId': this.selectedAttributes.textbook,
+          'rootId': this.selectedAttributes.collection,
           'unitId': unitIdentifier,
           'leafNodes': [contentId]
         }

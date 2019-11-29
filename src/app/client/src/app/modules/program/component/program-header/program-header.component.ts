@@ -37,10 +37,10 @@ export class ProgramHeaderComponent implements OnInit {
     const tabRoles = _.find(this.programRoles, {'name': this.userRoles}).tabs;
       this.tabs.forEach(tab => {
         if (tabRoles && tabRoles.includes(tab.index)) {
-          console.log(`Tab${tab.index} - SHOW FOR ${this.userRoles}`);
+          // console.log(`Tab${tab.index} - SHOW FOR ${this.userRoles}`);
           tab.visibility = true;
         } else {
-            console.log(`Tab${tab.index} - HIDE FOR ${this.userRoles}`);
+            // console.log(`Tab${tab.index} - HIDE FOR ${this.userRoles}`);
             console.log('Tab show action is not defined '); // TODO: change to toaster
         }
       });
