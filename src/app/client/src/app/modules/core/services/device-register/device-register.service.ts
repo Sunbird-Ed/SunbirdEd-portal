@@ -57,6 +57,11 @@ export class DeviceRegisterService  {
     });
   }
 
+  setDeviceId() {
+    this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
+      && (<HTMLInputElement>document.getElementById('deviceId')).value;
+  }
+
   fetchDeviceProfile() {
     const httpOptions: HttpOptions = {
       headers: {
