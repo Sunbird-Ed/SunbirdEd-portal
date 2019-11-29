@@ -134,8 +134,25 @@
         (uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0) "
         class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(userCSV)">Download</button>
       </div>
+<<<<<<< HEAD
+      <br />
+      <button *ngIf="(uploadedDetails['total_uploaded'] && uploadedDetails['total_uploaded'] != 0) ||
+      (uploadedDetails['accounts_validated'] && uploadedDetails['accounts_validated'] != 0) ||
+      (uploadedDetails['accounts_rejected'] && uploadedDetails['accounts_rejected'] != 0) ||
+      (uploadedDetails['accounts_failed'] && uploadedDetails['accounts_failed'] != 0) ||
+      (uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0) ||
+      (uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0) "
+      class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(userCSV)">Download</button>
+      <div class="mt-24"></div>
+=======
+>>>>>>> upstream/release-2.6.0
     </div>
   
     <app-user-upload *ngIf="showModal"></app-user-upload>
   </div>
+<<<<<<< HEAD
+  </div>
+</div>
+=======
   
+>>>>>>> upstream/release-2.6.0
