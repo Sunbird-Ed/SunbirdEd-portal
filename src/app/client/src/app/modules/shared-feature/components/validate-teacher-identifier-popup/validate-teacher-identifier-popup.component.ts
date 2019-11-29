@@ -41,16 +41,11 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   }
 
   initializeFormField() {
+    this.userDetailsForm = new FormGroup({
+      extId: new FormControl('', Validators.required)
+    });
     if (this.showStateDropdown) {
-      this.userDetailsForm = new FormGroup({
-        state: new FormControl('', Validators.required),
-        extId: new FormControl('', Validators.required)
-      });
-    } else {
-      this.userDetailsForm = new FormGroup({
-        extId: new FormControl('', Validators.required)
-      });
-
+      this.userDetailsForm.addControl('state', new FormControl('', Validators.required));
     }
     this.handleSubmitButton();
     this.setTelemetryData();
@@ -65,29 +60,21 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   }
 
   verifyExtId(action: string) {
-    let request = {};
+    const req = {
+      request: {
+        'userId': this.userId,
+        'action': action,
+        'feedId': _.get(this.userFeedData, 'id')
+      }
+    };
     if (action === 'accept') {
       const channelValue = _.get(this.userFeedData, 'data.prospectChannels').length > 1 ?
         this.userDetailsForm.get('state').value : _.get(this.userFeedData, 'data.prospectChannels[0]');
-      request = {
-        request: {
-          'userId': this.userId,
-          'userExtId': this.userDetailsForm.get('extId').value,
-          'channel': channelValue,
-          'action': 'accept',
-          'feedId': _.get(this.userFeedData, 'id')
-        }
-      };
-    } else {
-      request = {
-        request: {
-          'userId': this.userId,
-          'action': 'reject',
-          'feedId': _.get(this.userFeedData, 'id')
-        }
-      };
+        req.request['channel'] = channelValue;
+        req.request['userExtId'] = this.userDetailsForm.get('extId').value;
     }
-    this.userService.userMigrate(request).subscribe((data) => {
+
+    this.userService.userMigrate(req).subscribe((data) => {
       if (_.get(data, 'responseCode') === 'OK' && _.get(data, 'result.response') === 'SUCCESS') {
         this.extIdVerified = true;
       }

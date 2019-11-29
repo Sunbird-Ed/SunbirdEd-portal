@@ -128,7 +128,7 @@ afterEach(() => {
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
-  it('should call register Device api for login Session', () => {
+  it('should not call register Device api for login Session', () => {
     const learnerService = TestBed.get(LearnerService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
@@ -139,7 +139,7 @@ afterEach(() => {
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
-    expect(deviceRegisterService.initialize).toHaveBeenCalled();
+    expect(deviceRegisterService.initialize).toHaveBeenCalledTimes(0);
   });
 const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
   it('should config telemetry service for Anonymous Session', () => {
@@ -176,7 +176,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
-  it('should call register Device api for Anonymous Session', () => {
+  it('should not call register Device api for Anonymous Session', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
     const tenantService = TestBed.get(TenantService);
@@ -186,7 +186,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
-    expect(deviceRegisterService.initialize).toHaveBeenCalledWith();
+    expect(deviceRegisterService.initialize).toHaveBeenCalledTimes(0);
   });
 
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {

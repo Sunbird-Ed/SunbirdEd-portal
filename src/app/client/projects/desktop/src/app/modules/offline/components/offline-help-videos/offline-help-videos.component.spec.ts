@@ -78,12 +78,8 @@ describe('OfflineHelpVideosComponent', () => {
   });
 
   it('should changeVideoAttributes value', () => {
-    spyOn(component, 'changeVideoAttributes');
     const data = (resourceServiceStub.frmelmnts.instn.t0094).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
-    const button = fixture.debugElement.query(By.css('.sbcard.sbcard--recently-viewed.mb-8')).nativeElement;
     const value = fixture.debugElement.query(By.css('h6')).nativeElement.innerText;
-    button.click();
-    expect(component.changeVideoAttributes).toHaveBeenCalled();
     expect(value).toContain(data);
   });
 

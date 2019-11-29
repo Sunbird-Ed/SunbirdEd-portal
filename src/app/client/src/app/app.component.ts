@@ -305,17 +305,17 @@ export class AppComponent implements OnInit, OnDestroy {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-    return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
-      this.fingerprintInfo = { deviceId, components, version };
-      if (this.isOffline) {
-        deviceId = <HTMLInputElement>document.getElementById('deviceId') ?
-          (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
-      }
-      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-      this.deviceRegisterService.initialize();
-      observer.next(deviceId);
-      observer.complete();
-    }));
+      return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+          this.fingerprintInfo = {deviceId, components, version};
+          if (this.isOffline) {
+            deviceId = <HTMLInputElement>document.getElementById('deviceId') ?
+                        (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
+          }
+          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+        this.deviceRegisterService.setDeviceId();
+          observer.next(deviceId);
+          observer.complete();
+        }));
   }
   /**
    * set slug from url only for Anonymous user.
