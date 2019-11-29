@@ -36,15 +36,24 @@
 .ui.form.borderd input:focus {
     border-color: $form-input-border-active-color !important;
 }
-.light-sea-green.button {
+.ui.light-sea-green.button {
     background: $signup-btn-bg-active-color;
     color: $white-color;
 }
-.grey.button {
+.ui.grey.button {
     background: $signup-btn-bg-not-active-color;
     color: $white-color;
     pointer-events: none !important;
     cursor: not-allowed !important; 
+    font-size: $font-size-sm;
+    height: 32px;
+}
+.ui.button.sb-btn-primary{
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: var(--white);
+    height: 32px;
+    font-size: $font-size-sm;
 }
 .grey-text{
     color: var(--gray-300) !important;
