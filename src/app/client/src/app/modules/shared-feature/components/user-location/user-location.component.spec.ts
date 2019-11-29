@@ -44,30 +44,77 @@ describe('UserLocationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not set state as state and district not found', () => {
-    component.allDistricts = null;
-    component.allStates = null;
+  it('should call set state and district is state and district when empty object', () => {
+    spyOn(component, 'setState');
+    spyOn(component, 'setDistrict');
+    spyOn(component, 'onStateChange');
     component.setStateDistrict({state: {}, district: {}});
-    expect(component.selectedDistrict).toEqual(undefined);
-    expect(component.selectedState).toEqual(undefined);
+    expect(component.setState).toHaveBeenCalled();
+    expect(component.setDistrict).toHaveBeenCalled();
+    expect(component.onStateChange).toHaveBeenCalled();
   });
 
-  it('should set state and not set district as district list not found', () => {
-    component.allStates = userLocationMockData.stateList;
-    component.setStateDistrict({state: userLocationMockData.stateList[0], district: {}});
-    expect(component.selectedDistrict).toEqual(undefined);
-    expect(component.selectedState).toEqual(userLocationMockData.stateList[0]);
-  });
-
-  it('should set state and district', () => {
-    component.allStates = userLocationMockData.stateList;
-    component.allDistricts = userLocationMockData.districtList;
+  it('should call set state and district is state and district when state empty', () => {
+    spyOn(component, 'setState');
+    spyOn(component, 'setDistrict');
+    spyOn(component, 'onStateChange');
     component.setStateDistrict({
       state: userLocationMockData.stateList[0],
       district: userLocationMockData.districtList[0]
     });
-    expect(component.selectedDistrict).toEqual(userLocationMockData.districtList[0]);
-    expect(component.selectedState).toEqual(userLocationMockData.stateList[0]);
+    expect(component.setState).toHaveBeenCalled();
+    expect(component.setDistrict).toHaveBeenCalled();
+    expect(component.onStateChange).toHaveBeenCalled();
+  });
+
+  it('should call onStateChange when state and district null', () => {
+    spyOn(component, 'setState');
+    spyOn(component, 'setDistrict');
+    spyOn(component, 'onStateChange');
+    component.setStateDistrict({state: null, district: null});
+    expect(component.setState).toHaveBeenCalledTimes(0);
+    expect(component.setDistrict).toHaveBeenCalledTimes(0);
+    expect(component.onStateChange).toHaveBeenCalled();
+  });
+
+  it('should call set state when district undefined', () => {
+    spyOn(component, 'setState');
+    spyOn(component, 'setDistrict');
+    spyOn(component, 'onStateChange');
+    component.setStateDistrict({state: undefined, district: undefined});
+    expect(component.setState).toHaveBeenCalledTimes(0);
+    expect(component.setDistrict).toHaveBeenCalledTimes(0);
+    expect(component.onStateChange).toHaveBeenCalled();
+  });
+
+  it('should call set state change when location null', () => {
+    spyOn(component, 'setState');
+    spyOn(component, 'setDistrict');
+    spyOn(component, 'onStateChange');
+    component.setStateDistrict(null);
+    expect(component.setState).toHaveBeenCalledTimes(0);
+    expect(component.setDistrict).toHaveBeenCalledTimes(0);
+    expect(component.onStateChange).toHaveBeenCalled();
+  });
+
+  it('should call set state change when location undefined', () => {
+    spyOn(component, 'setState');
+    spyOn(component, 'setDistrict');
+    spyOn(component, 'onStateChange');
+    component.setStateDistrict(undefined);
+    expect(component.setState).toHaveBeenCalledTimes(0);
+    expect(component.setDistrict).toHaveBeenCalledTimes(0);
+    expect(component.onStateChange).toHaveBeenCalled();
+  });
+
+  it('should call only set state change when location empty object', () => {
+    spyOn(component, 'setState');
+    spyOn(component, 'setDistrict');
+    spyOn(component, 'onStateChange');
+    component.setStateDistrict({});
+    expect(component.setState).toHaveBeenCalledTimes(0);
+    expect(component.setDistrict).toHaveBeenCalledTimes(0);
+    expect(component.onStateChange).toHaveBeenCalled();
   });
 
 });

@@ -205,8 +205,14 @@ export class UserLocationComponent implements OnInit {
   }
 
   setStateDistrict(location) {
-    this.setState(location.state);
-    this.setDistrict(location.district);
+    if (location) {
+      if (location.state) {
+        this.setState(location.state);
+      }
+      if (location.district) {
+        this.setDistrict(location.district);
+      }
+    }
     this.onStateChange();
   }
 
