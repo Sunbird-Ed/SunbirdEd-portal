@@ -490,13 +490,12 @@ export class AppComponent implements OnInit, OnDestroy {
         (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value'))) {
           this.userService.getFeedData().subscribe(
             (data) => {
-              const feedData = _.get(data, 'result.response.userFeed[0]');
-              if (feedData && _.get(feedData, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
-                this.userFeed = feedData;
-                this.showUserVerificationPopup = true;
-              }
-              if (this.isLocationConfirmed) {
-                this.showUserVerificationPopup = true;
+              this.userFeed = _.get(data, 'result.response.userFeed[0]');
+              if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
+                // if location popup isn't opened on the very first time.
+                if (this.isLocationConfirmed) {
+                  this.showUserVerificationPopup = true;
+                }
               }
             },
             (error) => {
