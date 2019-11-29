@@ -545,7 +545,9 @@ const programTwoSession = {
           'value': 'Subject',
           'defaultValue': 'Class'
         },
-        'textbookList': []
+        'collectionType': 'Textbook',
+        'collectionList': [],
+        'status': ['Draft', 'Live']
       }
     },
     {
@@ -798,6 +800,42 @@ const programTwoSession = {
     }
   ],
   'actions': {
+    'showTotalContribution': {
+      'roles': [
+        1,
+        2
+      ]
+    },
+    'showMyContribution': {
+      'roles': [
+        1
+      ]
+    },
+    'showRejected': {
+      'roles': [
+        1
+      ]
+    },
+    'showUnderReview': {
+      'roles': [
+        1
+      ]
+    },
+    'showtotalUnderReview': {
+      'roles': [
+        2
+      ]
+    },
+    'showAcceptedByMe': {
+      'roles': [
+        2
+      ]
+    },
+    'showRejectedByMe': {
+      'roles': [
+        2
+      ]
+    },
     'showFilters': {
       'roles': [
         1,
@@ -808,12 +846,6 @@ const programTwoSession = {
     'addresource': {
       'roles': [
         1
-      ]
-    },
-    'showRejected': {
-      'roles': [
-        2,
-        3
       ]
     },
     'showDashboard': {

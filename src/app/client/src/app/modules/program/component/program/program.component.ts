@@ -8,28 +8,18 @@ import { tap, map } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { programSession } from './data';
 
-interface ISelectedAttributes {
-  textBookUnitIdentifier?: any;
-  lastOpenedUnit?: any;
-  framework?: string;
-  channel?: string;
-  board?: string;
-  medium?: string;
-  gradeLevel?: string;
-  subject?: string;
-  textbook?: string;
-  topic?: string;
-  questionType?: string;
-  programId?: string;
-  program?: string;
-  currentRole?: string;
-  bloomsLevel?: Array<any>;
-  topicList?: Array<any>;
-  onBoardSchool?: string;
-  selectedSchoolForReview?: string;
-  resourceIdentifier?: string;
-  hierarchyObj?: any;
-  textbookName?: any;
+
+interface ICollectionComponentInput {
+  programDetails?: any;
+  userProfile?: any;
+  extraConfig?: any;
+  config?: any;
+}
+
+interface IDynamicInput {
+  collectionComponentInput?: {
+    [key: string]: ICollectionComponentInput
+  };
 }
 
 @Component({
@@ -48,7 +38,7 @@ export class ProgramComponent implements OnInit {
   public headerComponentInput: any;
   public tabs;
   public defaultView;
-  public dynamicInputs: any;
+  public dynamicInputs: IDynamicInput = {};
   private componentMapping = {
     dashboardComponent: DashboardComponent,
     // issueCertificateComponent: IssueCertificateComponent,
@@ -96,13 +86,11 @@ export class ProgramComponent implements OnInit {
 
   initiateInputs (status) {
     this.dynamicInputs = {
-      collectionComponentInput: {
+      collectionComponentInput:  {
         programDetails: this.programDetails,
         userProfile: this.userProfile,
-        config: _.find(programSession.components, {'id': 'ng.sunbird.collection'})
-      },
-      dashboardComponentInput: {
-        // selectedAttributes: this.sele
+        config: _.find(programSession.components, {'id': 'ng.sunbird.collection'}), // TODO: change programSession to programDetails
+        entireConfig: programSession
       }
     };
   }
