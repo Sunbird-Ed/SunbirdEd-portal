@@ -21,7 +21,7 @@
       <div class="sb-field">
         <label>{{resourceService?.frmelmnts?.lbl?.state}}:</label>
           <sui-select [isSearchable]="true" class="selection" formControlName="state" [options]="allStates"
-                      labelField="name" valueField="code"
+                      labelField="name" id="states" valueField="code"
                       name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}"
                       (focusout)="clearInput($event,'state')" #stateDiv>
             <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100"
@@ -37,7 +37,7 @@
             </div>
           </div>
           <sui-select *ngIf="!showDistrictDivLoader" [isSearchable]="true" class="selection" formControlName="district"
-                      [options]="allDistricts"
+                      [options]="allDistricts" id="districts"
                       labelField="name" valueField="code" name="district"
                       placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
                       (focusout)="clearInput($event,'district')"
