@@ -79,9 +79,7 @@ export class UserLocationComponent implements OnInit {
       district: new FormControl(null, [Validators.required])
     });
     this.enableSubmitBtn = (this.userDetailsForm.status === 'VALID');
-    this.onStateChange();
     this.enableSubmitButton();
-    // this.setInteractEventData();
   }
 
   enableSubmitButton() {
@@ -103,10 +101,10 @@ export class UserLocationComponent implements OnInit {
   processDistrictLocation(district, stateData) {
     const requestData = {'filters': {'type': 'district', parentId: stateData && stateData.id || ''}};
     return this.profileService.getUserLocation(requestData).pipe(map(res => {
-      const districts = res.result.response;
+      this.allDistricts = res.result.response;
       let locationExist: any = {};
       if (district) {
-        locationExist = _.find(districts, (locations) => {
+        locationExist = _.find(this.allDistricts, (locations) => {
           return locations.name.toLowerCase() === district.toLowerCase() && locations.type === 'district';
         });
       }
@@ -170,7 +168,6 @@ export class UserLocationComponent implements OnInit {
           // update only device profile
           this.suggestionType = 'userLocation';
         } else if (!isUserLocationConfirmed) {
-          // this.setData(this.deviceProfile.ipLocation);
           this.setSelectedLocation(this.deviceProfile.ipLocation, true, true);
           // render using ip
           // update device location and user location
@@ -195,18 +192,28 @@ export class UserLocationComponent implements OnInit {
         district: mappedDistrictDetails,
         state: mappedStateDetails
       };
-      this.setData(this.processedDeviceLocation);
+      this.setStateDistrict(this.processedDeviceLocation);
       this.isUserProfileUpdateAllowed = updateUserProFile;
       this.isDeviceProfileUpdateAllowed = updateDeviceProfile;
     });
   }
 
   setData(location) {
-    this.setState(location.state);
-    this.allDistricts = null;
     this.getDistrict(location.state.id).subscribe((districts) => {
-      this.setDistrict(location.district);
+      this.setStateDistrict(location);
     });
+  }
+
+  setStateDistrict(location) {
+    if (location) {
+      if (location.state) {
+        this.setState(location.state);
+      }
+      if (location.district) {
+        this.setDistrict(location.district);
+      }
+    }
+    this.onStateChange();
   }
 
   getLocationCodes(locationToProcess) {

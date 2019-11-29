@@ -46,15 +46,14 @@
         </div>
       </div>
 
-      <div class="text-center" *ngIf="isDisplayLoader">
-        <img src="../../assets/images/ajax-loader.gif">
-      </div>
+
 
     </div>
     <div class="sb-modal-actions" *ngIf='!issueReportedSuccessfully'>
       <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="submitIssue()"
-        [disabled]="reportOtherissueForm.invalid" appTelemetryInteract
+        [disabled]="reportOtherissueForm.invalid || isDisplayLoader" appTelemetryInteract
         [telemetryInteractEdata]="raiseSupportTicketInteractEdata">
+        <img  width="12" *ngIf="isDisplayLoader" src="../../assets/images/loader.svg">
         {{resourceService.frmelmnts?.lbl?.submitIssueButton}}
       </button>
     </div>
