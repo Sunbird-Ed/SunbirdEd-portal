@@ -39,8 +39,6 @@ export class OnboardingUserPreferenceComponent implements OnInit {
 
     this.orgDetailsService.getCustodianOrg().subscribe(data => {
       this.readChannel(_.get(data, 'result.response.value'));
-    }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
