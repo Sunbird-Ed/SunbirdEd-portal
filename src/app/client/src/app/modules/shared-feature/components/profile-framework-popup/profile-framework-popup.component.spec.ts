@@ -123,6 +123,24 @@ describe('ProfileFrameworkPopupComponent', () => {
     expect(toasterService.warning).not.toHaveBeenCalled();
   });
 
+  it('should set the editMode to true if profile framework is launched from the profile page', () => {
+    component.formInput = {
+      gradeLevel: ['Class 2'],
+      medium: ['English'],
+      subject: []
+    };
+    component.ngOnInit();
+    expect(component['editMode']).toBeDefined();
+    expect(component['editMode']).toBeTruthy();
+  });
+
+  it('should set the editMode to false if profile framework is launched for a new user', () => {
+    component.formInput = {};
+    component.ngOnInit();
+    expect(component['editMode']).toBeDefined();
+    expect(component['editMode']).toBeFalsy();
+  });
+
   describe('enable/disable submit button based on required fields in form API', () => {
 
     beforeEach(() => {
