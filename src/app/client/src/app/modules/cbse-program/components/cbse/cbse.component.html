@@ -1,231 +1,231 @@
 <div *ngIf='programDetails?.userDetails' class="ui pointing secondary menu sb-bg-white" style="background-color: white;">
-  <div class="ui container">
-    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR") && !showCertificate' [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
-      (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
-    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER") && !showCertificate'
-      [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
-    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
-      [class.active]="selectedAttributes.currentRole === 'PUBLISHER' && !showDashboard" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
-    <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
-      [class.active]="(selectedAttributes.currentRole === 'PUBLISHER' && showDashboard)" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange('Dashboard')"
-      >Dashboard</a>
-    <a class="item" [class.active]="!showCertDashboard && showCertificate"
-     *ngIf='showCertificate'
-      (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange()">Issue&nbsp;Certificate</a>
-      <a class="item" [class.active]="showCertDashboard && showCertificate"
+    <div class="ui container">
+      <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR") && !showCertificate' [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
+        (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
+      <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER") && !showCertificate'
+        [class.active]="selectedAttributes.currentRole === 'REVIEWER'" (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
+      <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
+        [class.active]="selectedAttributes.currentRole === 'PUBLISHER' && !showDashboard" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
+      <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
+        [class.active]="(selectedAttributes.currentRole === 'PUBLISHER' && showDashboard)" (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange('Dashboard')"
+        >Dashboard</a>
+      <a class="item" [class.active]="!showCertDashboard && showCertificate"
        *ngIf='showCertificate'
-      (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange('certificatedashboard')">Certificate Dashboard</a>
-  </div>
-</div>
-<div *ngIf="showCertificate">
-  <div *ngIf='!showCertDashboard && (programDetails?.userDetails?.roles.includes("CERTIFICATE_ISSUER"))'
-    class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
-    <div class="ui mt-30 container w-300 sb-box-container" [appTelemetryImpression]="telemetryImpression">
-      <!-- <h4>SELECT TYPE</h4> -->
-      <div class="mt-30">
-        <sui-select class="selection" [placeholder]="'Select Certificate Type'" [isSearchable]=false [(ngModel)]="selectedOption">
-          <sui-select-option *ngFor="let option of typeOptions" [value]="option.value">
-          </sui-select-option>
-        </sui-select>
-      </div>
-      <div class="row" *ngIf="selectedOption">
-        <div> Certificate Preview</div>
-        <div class="ui container">
-          <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best School Certificate'"style="padding: 0px;width: 100%;height: auto;margin: 0;text-align: center;">
-            <tr>
-              <td class="sb-certificate-table" style="width: 100%;height: auto;position: relative;background: #fff;">
-                <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" style="width: 65%;height: auto;position: inherit;z-index: 2;padding: 96px 0px;box-sizing: border-box;margin: 90px 0 0 0;left: 0px;top: 0px;"/>
-                <img src="assets/images/certificate-frame-blue.svg" class="certificate-frame" style="width: 100%;height: auto;position: absolute;z-index: 2;box-sizing: border-box;left: 0px;top: 0px;"/>
-                <div class="sb-certificate-container certDiv" style="position: absolute;z-index: 2;left: 0px;top: 80px;">
-                  <table width="100%" border="0" class="certificate-table-area" style="text-align: center;width: 82%;margin: 0 auto;">
-                    <tr class="sb-certificate-header">
-                      <td colspan="3">
-                        <div class="state-symbol">
-                          <img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo" style="margin-top:16px;" height="120" alt="Government of Gujarat">
-                        </div>
-                        <p style="color:#333333;font-size: 18px;
-            line-height: 1.4;width: 75%;margin: 8px auto;">Government of Gujarat</p>
-                        <h1 style="margin: 0px 0 40px 0;color: #024f9d;font-weight: bold;font-size: 48px;line-height: 48px;font-family: 'july_seventhregular';">Best School Award</h1>
-                        <div class="certificate-details" style="color: #333333;font-size: 20px;line-height: 40px;text-align: center;width: 75%;margin: 0 auto;min-height: 128px;">Awarded to <br>
-                          <strong>Thingamajig Kadigan</strong><br>
-                          <!--<hr width="360"> -->
-                          in the month of <strong>November 2019</strong></div>
-                      </td>
-                    </tr>
-                    <tr class="sb-certificate-footer">
-                      <td class="country-symbol" style="text-align: left;color: #999999;vertical-align: bottom;padding-top:64px;width:33.3333%;">
-                        <img src="assets/images/DIKSHA.png" width="128" class="sb-certificatePage-logo"/>
-                        <p style="font-size: 12px;margin-top: 5px;"></p>
-                      </td>
-                      <td class="state-sign" style="vertical-align: bottom;padding-top:64px;width:33.3333%;"> <!-- $signatory0Image -->
-                        <img src="assets/images/signature-523237__340.jpg" height="80" class="sb-certificatePage-logo"/>
-                        <div style="width: 75%;margin: 8px auto;height: 1px;background: #999;" class="sign-line"></div>
-                        <p style="font-family: 'noto_sansitalic'; font-style: italic; font-size: 14px;" class="italic">Director of SCERT</p>
-                      </td>
-                      <td style="vertical-align: bottom;padding-top:64px;width:33.3333%;text-align: right;" class="certificate-qr-code">
-                        <img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
-                        <p style="color: #333333;font-size: 14px;line-height: 18px;margin-top: 5px">Scan to Verify Certificate</p>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <!--<div class="sb-certificate-bg"></div> -->
-              </td>
-            </tr>
-          </table>
-          <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best Student Certificate'"style="padding: 0px;width: 100%;height: auto;margin: 0;text-align: center;">
-            <tr>
-              <td class="sb-certificate-table" style="width: 100%;height: auto;position: relative;background: #fff;">
-                <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" style="width: 65%;height: auto;position: inherit;z-index: 2;padding: 96px 0px;box-sizing: border-box;margin: 90px 0 0 0;left: 0px;top: 0px;"/>
-                <img src="assets/images/certificate-frame.svg" class="certificate-frame" style="width: 100%;height: auto;position: absolute;z-index: 2;box-sizing: border-box;left: 0px;top: 0px;"/>
-                <div class="sb-certificate-container certDiv" style="position: absolute;z-index: 2;left: 0px;top: 80px;">
-                  <table width="100%" border="0" class="certificate-table-area" style="text-align: center;width: 82%;margin: 0 auto;">
-                    <tr class="sb-certificate-header">
-                      <td colspan="3">
-                        <div class="state-symbol">
-                          <img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo" style="margin-top:16px;" height="120" alt="Government of Gujarat">
-                        </div>
-                        <p style="color:#333333;font-size: 18px;
-            line-height: 1.4;width: 75%;margin: 8px auto;">Government of Gujarat</p>
-                        <h1 style="margin: 0px 0 40px 0;color: #024f9d;font-weight: bold;font-size: 48px;line-height: 48px;font-family: 'july_seventhregular';">Best Student Award</h1>
-                        <div class="certificate-details" style="color: #333333;font-size: 20px;line-height: 40px;text-align: center;width: 75%;margin: 0 auto;min-height: 128px;">Awarded to <br>
-                          <strong>Thingamajig Kadigan</strong><br>
-                          <!--<hr width="360"> -->
-                          in the month of <strong>November 2019</strong></div>
-                      </td>
-                    </tr>
-                    <tr class="sb-certificate-footer">
-                      <td class="country-symbol" style="text-align: left;color: #999999;vertical-align: bottom;padding-top:64px;width:33.3333%;">
-                        <img src="assets/images/DIKSHA.png" width="128" class="sb-certificatePage-logo"/>
-                        <p style="font-size: 12px;margin-top: 5px;"></p>
-                      </td>
-                      <td class="state-sign" style="vertical-align: bottom;padding-top:64px;width:33.3333%;"> <!-- $signatory0Image -->
-                        <img src="assets/images/signature-523237__340.jpg" height="80" class="sb-certificatePage-logo"/>
-                        <div style="width: 75%;margin: 8px auto;height: 1px;background: #999;" class="sign-line"></div>
-                        <p style="font-family: 'noto_sansitalic'; font-style: italic; font-size: 14px;" class="italic">Director of SCERT</p>
-                      </td>
-                      <td style="vertical-align: bottom;padding-top:64px;width:33.3333%;text-align: right;" class="certificate-qr-code">
-                        <img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
-                        <p style="color: #333333;font-size: 14px;line-height: 18px;margin-top: 5px">Scan to Verify Certificate</p>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-                <!--<div class="sb-certificate-bg"></div> -->
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div>
-        <button appTelemetryInteract [disabled]="!selectedOption" [telemetryInteractEdata]="telemetryInteract"
-          class="sb-btn sb-btn-sm sb-btn-primary btn-block" (click)="issueCertificate()">Generate</button>
-      </div>
+        (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange()">Issue&nbsp;Certificate</a>
+        <a class="item" [class.active]="showCertDashboard && showCertificate"
+         *ngIf='showCertificate'
+        (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange('certificatedashboard')">Certificate Dashboard</a>
     </div>
   </div>
-
-  <csv-upload [certType]="selectedOption" *ngIf="showModal"></csv-upload>
-
-  <div *ngIf="showCertDashboard && (programDetails?.userDetails?.roles.includes('CERTIFICATE_ISSUER'))"
-    class="ui mt-30 container w-300 sb-box-container">
-    <app-certificate-dashboard></app-certificate-dashboard>
-  </div>
-</div>
-
-<div *ngIf="!showCertificate">
-  <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
-
-      <div *ngIf="stages[currentStage] === 'chooseClass'">
-        <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
-          (selectedClassSubjectEvent)="selectedClassSubjectHandler($event)"></app-select-textbook>
+  <div *ngIf="showCertificate">
+    <div *ngIf='!showCertDashboard && (programDetails?.userDetails?.roles.includes("CERTIFICATE_ISSUER"))'
+      class="ui segment no-bg m-0 w-300" style="text-align: center; margin-top:2px !important;">
+      <div class="ui mt-30 container w-300 sb-box-container" [appTelemetryImpression]="telemetryImpression">
+        <!-- <h4>SELECT TYPE</h4> -->
+        <div class="mt-30">
+          <sui-select class="selection" [placeholder]="'Select Certificate Type'" [isSearchable]=false [(ngModel)]="selectedOption">
+            <sui-select-option *ngFor="let option of typeOptions" [value]="option.value">
+            </sui-select-option>
+          </sui-select>
+        </div>
+        <div class="row" *ngIf="selectedOption">
+          <div> Certificate Preview</div>
+          <div class="ui container">
+            <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best School Certificate'"style="padding: 0px;width: 100%;height: auto;margin: 0;text-align: center;">
+              <tr>
+                <td class="sb-certificate-table" style="width: 100%;height: auto;position: relative;background: #fff;">
+                  <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" style="width: 65%;height: auto;position: inherit;z-index: 2;padding: 96px 0px;box-sizing: border-box;margin: 90px 0 0 0;left: 0px;top: 0px;"/>
+                  <img src="assets/images/certificate-frame-blue.svg" class="certificate-frame" style="width: 100%;height: auto;position: absolute;z-index: 2;box-sizing: border-box;left: 0px;top: 0px;"/>
+                  <div class="sb-certificate-container certDiv" style="position: absolute;z-index: 2;left: 0px;top: 80px;">
+                    <table width="100%" border="0" class="certificate-table-area" style="text-align: center;width: 82%;margin: 0 auto;">
+                      <tr class="sb-certificate-header">
+                        <td colspan="3">
+                          <div class="state-symbol">
+                            <img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo" style="margin-top:16px;" height="120" alt="Government of Gujarat">
+                          </div>
+                          <p style="color:#333333;font-size: 18px;
+              line-height: 1.4;width: 75%;margin: 8px auto;">Government of Gujarat</p>
+                          <h1 style="margin: 0px 0 40px 0;color: #024f9d;font-weight: bold;font-size: 48px;line-height: 48px;font-family: 'july_seventhregular';">Best School Award</h1>
+                          <div class="certificate-details" style="color: #333333;font-size: 20px;line-height: 40px;text-align: center;width: 75%;margin: 0 auto;min-height: 128px;">Awarded to <br>
+                            <strong>Thingamajig Kadigan</strong><br>
+                            <!--<hr width="360"> -->
+                            in the month of <strong>November 2019</strong></div>
+                        </td>
+                      </tr>
+                      <tr class="sb-certificate-footer">
+                        <td class="country-symbol" style="text-align: left;color: #999999;vertical-align: bottom;padding-top:64px;width:33.3333%;">
+                          <img src="assets/images/DIKSHA.png" width="128" class="sb-certificatePage-logo"/>
+                          <p style="font-size: 12px;margin-top: 5px;"></p>
+                        </td>
+                        <td class="state-sign" style="vertical-align: bottom;padding-top:64px;width:33.3333%;"> <!-- $signatory0Image -->
+                          <img src="assets/images/signature-523237__340.jpg" height="80" class="sb-certificatePage-logo"/>
+                          <div style="width: 75%;margin: 8px auto;height: 1px;background: #999;" class="sign-line"></div>
+                          <p style="font-family: 'noto_sansitalic'; font-style: italic; font-size: 14px;" class="italic">Director of SCERT</p>
+                        </td>
+                        <td style="vertical-align: bottom;padding-top:64px;width:33.3333%;text-align: right;" class="certificate-qr-code">
+                          <img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
+                          <p style="color: #333333;font-size: 14px;line-height: 18px;margin-top: 5px">Scan to Verify Certificate</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <!--<div class="sb-certificate-bg"></div> -->
+                </td>
+              </tr>
+            </table>
+            <table class="sb-certificate-table-ct" *ngIf="selectedOption === 'Best Student Certificate'"style="padding: 0px;width: 100%;height: auto;margin: 0;text-align: center;">
+              <tr>
+                <td class="sb-certificate-table" style="width: 100%;height: auto;position: relative;background: #fff;">
+                  <img src="assets/images/gujarat-state-outline.svg" class="state-outline-img" style="width: 65%;height: auto;position: inherit;z-index: 2;padding: 96px 0px;box-sizing: border-box;margin: 90px 0 0 0;left: 0px;top: 0px;"/>
+                  <img src="assets/images/certificate-frame.svg" class="certificate-frame" style="width: 100%;height: auto;position: absolute;z-index: 2;box-sizing: border-box;left: 0px;top: 0px;"/>
+                  <div class="sb-certificate-container certDiv" style="position: absolute;z-index: 2;left: 0px;top: 80px;">
+                    <table width="100%" border="0" class="certificate-table-area" style="text-align: center;width: 82%;margin: 0 auto;">
+                      <tr class="sb-certificate-header">
+                        <td colspan="3">
+                          <div class="state-symbol">
+                            <img src="assets/images/gujarat-state-logo.png" class="sb-certificatePage-logo" style="margin-top:16px;" height="120" alt="Government of Gujarat">
+                          </div>
+                          <p style="color:#333333;font-size: 18px;
+              line-height: 1.4;width: 75%;margin: 8px auto;">Government of Gujarat</p>
+                          <h1 style="margin: 0px 0 40px 0;color: #024f9d;font-weight: bold;font-size: 48px;line-height: 48px;font-family: 'july_seventhregular';">Best Student Award</h1>
+                          <div class="certificate-details" style="color: #333333;font-size: 20px;line-height: 40px;text-align: center;width: 75%;margin: 0 auto;min-height: 128px;">Awarded to <br>
+                            <strong>Thingamajig Kadigan</strong><br>
+                            <!--<hr width="360"> -->
+                            in the month of <strong>November 2019</strong></div>
+                        </td>
+                      </tr>
+                      <tr class="sb-certificate-footer">
+                        <td class="country-symbol" style="text-align: left;color: #999999;vertical-align: bottom;padding-top:64px;width:33.3333%;">
+                          <img src="assets/images/DIKSHA.png" width="128" class="sb-certificatePage-logo"/>
+                          <p style="font-size: 12px;margin-top: 5px;"></p>
+                        </td>
+                        <td class="state-sign" style="vertical-align: bottom;padding-top:64px;width:33.3333%;"> <!-- $signatory0Image -->
+                          <img src="assets/images/signature-523237__340.jpg" height="80" class="sb-certificatePage-logo"/>
+                          <div style="width: 75%;margin: 8px auto;height: 1px;background: #999;" class="sign-line"></div>
+                          <p style="font-family: 'noto_sansitalic'; font-style: italic; font-size: 14px;" class="italic">Director of SCERT</p>
+                        </td>
+                        <td style="vertical-align: bottom;padding-top:64px;width:33.3333%;text-align: right;" class="certificate-qr-code">
+                          <img src="assets/images/sb-qr-code.svg" width="60" class="sb-certificate-qrcode" />
+                          <p style="color: #333333;font-size: 14px;line-height: 18px;margin-top: 5px">Scan to Verify Certificate</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <!--<div class="sb-certificate-bg"></div> -->
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <button appTelemetryInteract [disabled]="!selectedOption" [telemetryInteractEdata]="telemetryInteract"
+            class="sb-btn sb-btn-sm sb-btn-primary btn-block" (click)="issueCertificate()">Generate</button>
+        </div>
       </div>
-
-      <div class="ui container" *ngIf="stages[currentStage] === 'chooseTextbook' || stages[currentStage] === 'topicList' ">
-          <div class="sb-pageSection">
-            <div class="sb-pageSection-header d-flex flex-jc-space-between">
-              <div>
-                  <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for </span>
-                  <span
-                    class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
-                  <span
-                    class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.subject}}</span>
-                  <span *ngIf="stages[currentStage] === 'topicList' || stages[currentStage] === 'createQuestion'"    
-                    class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.textbookName}}</span>
+    </div>
+  
+    <csv-upload [certType]="selectedOption" *ngIf="showModal"></csv-upload>
+  
+    <div *ngIf="showCertDashboard && (programDetails?.userDetails?.roles.includes('CERTIFICATE_ISSUER'))"
+      class="ui mt-30 container w-300 sb-box-container">
+      <app-certificate-dashboard></app-certificate-dashboard>
+    </div>
+  </div>
+  
+  <div *ngIf="!showCertificate">
+    <div *ngIf='programDetails?.userDetails' class="ui segment no-bg m-0 w-300" style="margin-top:2px !important;">
+  
+        <div *ngIf="stages[currentStage] === 'chooseClass' && !showDashboard">
+          <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+            (selectedClassSubjectEvent)="selectedClassSubjectHandler($event)"></app-select-textbook>
+        </div>
+        <div *ngIf="stages[currentStage] === 'chooseClass' && showDashboard">
+            <app-dashboard [selectedAttributes]="selectedAttributes"></app-dashboard>
+          </div>
+  
+        <div class="ui container" *ngIf="stages[currentStage] === 'chooseTextbook' || stages[currentStage] === 'topicList' ">
+            <div class="sb-pageSection">
+              <div class="sb-pageSection-header d-flex flex-jc-space-between">
+                <div>
+                    <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for </span>
+                    <span
+                      class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
+                    <span
+                      class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.subject}}</span>
+                    <span *ngIf="stages[currentStage] === 'topicList' || stages[currentStage] === 'createQuestion'"    
+                      class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.textbookName}}</span>
+                </div>
+                <div *ngIf="stages[currentStage] === 'topicList' && role.currentRole === 'REVIEWER'">
+                  <div *ngFor="let field of formFieldOptions">
+                      <div *ngIf="field.inputType ==='select' && field.code === 'school'" class="field d-flex flex-jc-center flex-ai-center">
+                        <label class="mr-8 mb-0">Select {{field.label}}</label>
+                        <div class="field">
+                          <sui-select [isSearchable]="true" id={{field.code}} name={{field.code}} class="selection"
+                            [(ngModel)]="selectedSchoolForReview" labelField="name" valueField="name"
+                            [options]="field.range" #select>
+                            <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option"></sui-select-option>
+                          </sui-select>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <button (click)="navigate('prev')"
+                appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
               </div>
-              <div *ngIf="stages[currentStage] === 'topicList' && role.currentRole === 'REVIEWER'">
-                <div *ngFor="let field of formFieldOptions">
-                    <div *ngIf="field.inputType ==='select' && field.code === 'school'" class="field d-flex flex-jc-center flex-ai-center">
-                      <label class="mr-8 mb-0">Select {{field.label}}</label>
-                      <div class="field">
-                        <sui-select [isSearchable]="true" id={{field.code}} name={{field.code}} class="selection"
-                          [(ngModel)]="selectedSchoolForReview" labelField="name" valueField="name"
-                          [options]="field.range" #select>
-                          <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option"></sui-select-option>
-                        </sui-select>
+            </div>
+            <div *ngIf="stages[currentStage] === 'chooseTextbook'">
+                <app-textbook-list [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+                  (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
+              </div>
+              <div *ngIf="stages[currentStage] === 'topicList'">
+                  <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [selectedSchool]="selectedSchoolForReview" [role]="role"
+                  (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
+              </div>
+          </div>
+  
+  
+          <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
+              <div class="sb-pageSection">
+                  <div class="sb-pageSection-header ui grid">
+  
+                    <div class="three wide column">
+                        <div>
+                            <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for</span>
+                            <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
+                          </div>
+                    </div>
+                    <div class="nine wide column p-0">
+                      <div class="d-flex flex-ai-end">
+                          <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole === 'REVIEWER' && selectedSchoolForReview !== undefined"
+                          class="field d-flex flex-jc-center flex-ai-center">
+                            <span><b>Selected School:</b> <span style="font-style: italic">{{selectedSchoolForReview}}</span></span>
+                          </div>
+                          <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR'"
+                          class="field d-flex flex-ai-center flex-basis-1">
+                          <div class="sb-field-group w-50">
+                              <label>Practice Set Name</label>
+                              <div class="sb-field m-0">
+                                  <input autofocus="" [(ngModel)]='resourceName' (keyup)="onResourceNameChange($event)" class="sb-form-control" type="text" placeholder="Name">
+                              </div>
+                          </div>
+                          </div>
+                          <div class="d-flex ml-auto">
+                              <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
+                              appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                              (click)="sendResourceName();questionList.updateQuestions() ">Update</button>
+                              <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && !selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
+                              appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                              (click)="sendResourceName(); questionList.publishQuestions()">Publish</button>
+                              <button *ngIf="!isPreviewShown" (click)="navigate('prev')"
+                              appTelemetryInteract  [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
+                              class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
+                            </div>
                       </div>
                     </div>
                   </div>
               </div>
-              <button (click)="navigate('prev')"
-              appTelemetryInteract [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
-              class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
-            </div>
+            <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role" [resourceName]="resourceNameInput" (changeStage)="navigate($event)" (publishButtonStatus)="publishButtonStatusHandler($event)"></app-question-list>
           </div>
-          <div *ngIf="stages[currentStage] === 'chooseTextbook'">
-              <app-textbook-list [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
-                (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
-            </div>
-            <div *ngIf="stages[currentStage] === 'topicList' && !showDashboard">
-                <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes" [selectedSchool]="selectedSchoolForReview" [role]="role"
-                (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
-            </div>
-            <div *ngIf="stages[currentStage] === 'topicList' && showDashboard">    
-              <app-dashboard [selectedAttributes]="selectedAttributes"></app-dashboard>    
-          </div>
-        </div>
-
-
-        <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
-            <div class="sb-pageSection">
-                <div class="sb-pageSection-header ui grid">
-
-                  <div class="three wide column">
-                      <div>
-                          <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for</span>
-                          <span class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
-                        </div>
-                  </div>
-                  <div class="nine wide column p-0">
-                    <div class="d-flex flex-ai-end">
-                        <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole === 'REVIEWER' && selectedSchoolForReview !== undefined"
-                        class="field d-flex flex-jc-center flex-ai-center">
-                          <span><b>Selected School:</b> <span style="font-style: italic">{{selectedSchoolForReview}}</span></span>
-                        </div>
-                        <div *ngIf="stages[currentStage] === 'createQuestion' && role.currentRole != 'REVIEWER' && role.currentRole != 'CONTRIBUTOR'"
-                        class="field d-flex flex-ai-center flex-basis-1">
-                        <div class="sb-field-group w-50">
-                            <label>Practice Set Name</label>
-                            <div class="sb-field m-0">
-                                <input autofocus="" [(ngModel)]='resourceName' (keyup)="onResourceNameChange($event)" class="sb-form-control" type="text" placeholder="Name">
-                            </div>
-                        </div>
-                        </div>
-                        <div class="d-flex ml-auto">
-                            <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
-                            appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
-                            (click)="sendResourceName();questionList.updateQuestions() ">Update</button>
-                            <button *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && !selectedAttributes.resourceIdentifier"  class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress"
-                            appTelemetryInteract [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
-                            (click)="sendResourceName(); questionList.publishQuestions()">Publish</button>
-                            <button *ngIf="!isPreviewShown" (click)="navigate('prev')"
-                            appTelemetryInteract  [telemetryInteractEdata]="{id:'back_btn',type:'click',pageid:stages[currentStage].toLowerCase()}"
-                            class="sb-btn sb-btn-normal sb-btn-error">Back <i class="chevron circle left icon"></i></button>
-                          </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-          <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)" [selectedAttributes]="selectedAttributes" [role]="role" [resourceName]="resourceNameInput" (changeStage)="navigate($event)" (publishButtonStatus)="publishButtonStatusHandler($event)"></app-question-list>
-        </div>
+    </div>
   </div>
-</div>
