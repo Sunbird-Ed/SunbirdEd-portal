@@ -35,12 +35,17 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     this.tenantService.tenantData$.subscribe(({tenantData}) => {
       this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
       this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
-      this.readChannel();
+    });
+
+    this.orgDetailsService.getCustodianOrg().subscribe(data => {
+      this.readChannel(_.get(data, 'result.response.value'));
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
-  readChannel() {
-    this.channelService.getFrameWork(_.get(this.orgDetailsService, 'orgDetails.hashTagId')).subscribe(data => {
+  readChannel(custodianOrgId) {
+    this.channelService.getFrameWork(custodianOrgId).subscribe(data => {
       this.boardOption = _.get(data, 'result.channel.frameworks');
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);

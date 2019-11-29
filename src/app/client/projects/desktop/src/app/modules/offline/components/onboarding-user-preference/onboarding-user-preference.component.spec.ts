@@ -70,14 +70,14 @@ describe('OnboardingUserPreferenceComponent', () => {
 
   it('should call readChannel and get board option', () => {
     spyOn(component.channelService, 'getFrameWork').and.returnValue(observableOf(onboarding_user_preference_test.readChannel));
-    component.readChannel();
+    component.readChannel('01285019302823526477');
     expect(component.boardOption).toBeDefined();
   });
 
   it('should call readChannel and get error', () => {
     spyOn(component.channelService, 'getFrameWork').and.returnValue(throwError(onboarding_user_preference_test.readChannel_error));
     spyOn(component.toasterService, 'error').and.returnValue(throwError(resourceBundle.messages.emsg.m0005));
-    component.readChannel();
+    component.readChannel('01285019302823526477');
     expect(component.toasterService.error).toHaveBeenCalled();
   });
 
