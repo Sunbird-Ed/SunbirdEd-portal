@@ -109,9 +109,6 @@ export class UserLocationComponent implements OnInit {
         });
       }
       return locationExist;
-    }, err => {
-      this.closeModal();
-      this.toasterService.error(this.resourceService.messages.emsg.m0017);
     }));
   }
 
@@ -144,7 +141,6 @@ export class UserLocationComponent implements OnInit {
       const userProfileData = this.userService.userProfile;
       const isUserLocationConfirmed = userProfileData && userProfileData.userLocations &&
         Array.isArray(userProfileData.userLocations) && userProfileData.userLocations.length >= 1;
-
       if (!isUserLocationConfirmed && this.deviceProfile.userDeclaredLocation) {
         // render using userDeclaredLocation
         // update user profile only
@@ -184,7 +180,7 @@ export class UserLocationComponent implements OnInit {
     }
   }
 
-  setSelectedLocation(location, updateUserProFile, updateDeviceProfile) {
+  private setSelectedLocation(location, updateUserProFile, updateDeviceProfile) {
     location = location ? location : {'state': '', 'district': ''};
     const mappedStateDetails = this.processStateLocation(location.state);
     this.getLocationCodes(location).subscribe((mappedDistrictDetails) => {
@@ -198,12 +194,14 @@ export class UserLocationComponent implements OnInit {
     });
   }
 
-  setData(location) {
+  // private not to do completed
+  private setData(location) {
     this.getDistrict(location.state.id).subscribe((districts) => {
       this.setStateDistrict(location);
     });
   }
 
+  // completed
   setStateDistrict(location) {
     if (location) {
       if (location.state) {
@@ -221,14 +219,15 @@ export class UserLocationComponent implements OnInit {
     return this.processDistrictLocation(locationToProcess.district, mappedStateDetails);
   }
 
+  // completed
   getState() {
     const requestData = {'filters': {'type': 'state'}};
     this.profileService.getUserLocation(requestData).subscribe((res) => {
-      this.allStates = res.result.response;
+      this.allStates = _.get(res, 'result.response');
       this.getSelectionStrategy();
     }, err => {
       this.closeModal();
-      this.toasterService.error(this.resourceService.messages.emsg.m0016);
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0016'));
     });
   }
 
@@ -251,15 +250,19 @@ export class UserLocationComponent implements OnInit {
       });
   }
 
+  // completed
   getDistrict(stateId) {
     const requestData = {'filters': {'type': 'district', parentId: stateId}};
+    console.log('aa raha hu');
     return this.profileService.getUserLocation(requestData).pipe(map(res => {
       this.showDistrictDivLoader = false;
-      this.allDistricts = res.result.response;
-      return res.result.response;
+      this.allDistricts = _.get(res, 'result.response');
+      console.log('this.allDistricts', this.allDistricts);
+      return _.get(res, 'result.response');
     }));
   }
 
+  // cannot do useless
   clearInput(event, formControlName) {
     let value = '';
     if (event.target.value) {
@@ -277,11 +280,13 @@ export class UserLocationComponent implements OnInit {
     event.target.value = value;
   }
 
+  // completed
   closeModal() {
     this.userLocationModal.deny();
     this.close.emit();
   }
 
+  // completed
   updateUserLocation() {
     const locationCodes = [];
     const locationDetails: any = {};
