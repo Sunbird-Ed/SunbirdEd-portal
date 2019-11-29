@@ -111,6 +111,7 @@ describe('SignUpComponent', () => {
     const password = component.signUpForm.controls['password'];
     password.setValue('');
     errors = password.errors || {};
+    expect(component.passwordError).not.toBeNull();
     expect(errors['required']).toBeTruthy();
     expect(password.valid).toBeFalsy();
     expect(password.touched).toBeFalsy();
@@ -123,6 +124,7 @@ describe('SignUpComponent', () => {
     const password = component.signUpForm.controls['password'];
     password.setValue('a');
     errors = password.errors || {};
+    expect(component.passwordError).not.toBeNull();
     expect(errors).toBeTruthy();
     expect(password.valid).toBeFalsy();
     expect(component.disableSubmitBtn).toBeTruthy();
@@ -134,6 +136,7 @@ describe('SignUpComponent', () => {
     const password = component.signUpForm.controls['password'];
     password.setValue('aA');
     errors = password.errors || {};
+    expect(component.passwordError).not.toBeNull();
     expect(errors).toBeTruthy();
     expect(password.valid).toBeFalsy();
     expect(component.disableSubmitBtn).toBeTruthy();
@@ -145,6 +148,7 @@ describe('SignUpComponent', () => {
     const password = component.signUpForm.controls['password'];
     password.setValue('aA1');
     errors = password.errors || {};
+    expect(component.passwordError).not.toBeNull();
     expect(errors).toBeTruthy();
     expect(password.valid).toBeFalsy();
     expect(component.disableSubmitBtn).toBeTruthy();
@@ -156,6 +160,7 @@ describe('SignUpComponent', () => {
     const password = component.signUpForm.controls['password'];
     password.setValue('aA1@');
     errors = password.errors || {};
+    expect(component.passwordError).not.toBeNull();
     expect(errors).toBeTruthy();
     expect(password.valid).toBeFalsy();
     expect(component.disableSubmitBtn).toBeTruthy();
