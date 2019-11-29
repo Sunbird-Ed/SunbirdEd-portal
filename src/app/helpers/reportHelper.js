@@ -35,57 +35,89 @@ function azureBlobStream() {
     return function (req, res, next) {
         let container = envHelper.sunbird_azure_report_container_name;
         let fileToGet = req.params.slug + '/' + req.params.filename;
-        blobService.getBlobToText(container, fileToGet, function (error, text) {
-            if (error && error.statusCode === 404) {
-                console.log('Error with status code 404 - ', error);
-                res.status(404).send({
-                    'id': 'api.report',
-                    'ver': '1.0',
-                    'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-                    'params': {
-                        'resmsgid': uuidv1(),
-                        'msgid': null,
-                        'status': 'failed',
-                        'err': 'CLIENT_ERROR',
-                        'errmsg': 'Blob not found'
-                    },
-                    'responseCode': 'CLIENT_ERROR',
-                    'result': {}
-                });
-            } else if (error) {
-                console.log('Error without status code 404 - ', error);
-                res.status(500).send({
-                    'id': 'api.report',
-                    'ver': '1.0',
-                    'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-                    'params': {
-                        'resmsgid': uuidv1(),
-                        'msgid': null,
-                        'status': 'failed',
-                        'err': 'SERVER_ERROR',
-                        'errmsg': 'Failed to display blob'
-                    },
-                    'responseCode': 'SERVER_ERROR',
-                    'result': {}
-                });
-            } else {
-                try { text = JSON.parse(text); } catch (e) { }
-                res.status(200).send({
-                    'id': 'api.report',
-                    'ver': '1.0',
-                    'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
-                    'params': {
-                        'resmsgid': uuidv1(),
-                        'msgid': null,
-                        'status': 'success',
-                        'err': null,
-                        'errmsg': null
-                    },
-                    'responseCode': 'OK',
-                    'result': text
-                });
-            }
-        });
+        if (fileToGet.includes('.zip')) {
+            var startDate = new Date();
+            var expiryDate = new Date(startDate);
+            expiryDate.setMinutes(startDate.getMinutes() + 3600);
+            startDate.setMinutes(startDate.getMinutes() - 3600);
+            var sharedAccessPolicy = {
+                AccessPolicy: {
+                    Permissions: azure.BlobUtilities.SharedAccessPermissions.READ,
+                    Start: startDate,
+                    Expiry: expiryDate
+                }
+            };
+            var token = blobService.generateSharedAccessSignature(container, fileToGet, sharedAccessPolicy);
+            var sasUrl = blobService.getUrl(container, fileToGet, token);
+            res.status(200).send({
+                'id': 'api.report',
+                'ver': '1.0',
+                'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+                'params': {
+                    'resmsgid': uuidv1(),
+                    'msgid': null,
+                    'status': 'success',
+                    'err': null,
+                    'errmsg': null
+                },
+                'responseCode': 'OK',
+                'result': {
+                    'signedUrl': sasUrl
+                }
+            });
+        } else {
+            blobService.getBlobToText(container, fileToGet, function (error, text) {
+                if (error && error.statusCode === 404) {
+                    console.log('Error with status code 404 - ', error);
+                    res.status(404).send({
+                        'id': 'api.report',
+                        'ver': '1.0',
+                        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+                        'params': {
+                            'resmsgid': uuidv1(),
+                            'msgid': null,
+                            'status': 'failed',
+                            'err': 'CLIENT_ERROR',
+                            'errmsg': 'Blob not found'
+                        },
+                        'responseCode': 'CLIENT_ERROR',
+                        'result': {}
+                    });
+                } else if (error) {
+                    console.log('Error without status code 404 - ', error);
+                    res.status(500).send({
+                        'id': 'api.report',
+                        'ver': '1.0',
+                        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+                        'params': {
+                            'resmsgid': uuidv1(),
+                            'msgid': null,
+                            'status': 'failed',
+                            'err': 'SERVER_ERROR',
+                            'errmsg': 'Failed to display blob'
+                        },
+                        'responseCode': 'SERVER_ERROR',
+                        'result': {}
+                    });
+                } else {
+                    try { text = JSON.parse(text); } catch (e) { }
+                    res.status(200).send({
+                        'id': 'api.report',
+                        'ver': '1.0',
+                        'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
+                        'params': {
+                            'resmsgid': uuidv1(),
+                            'msgid': null,
+                            'status': 'success',
+                            'err': null,
+                            'errmsg': null
+                        },
+                        'responseCode': 'OK',
+                        'result': text
+                    });
+                }
+            });
+        }
     }
 }
 
