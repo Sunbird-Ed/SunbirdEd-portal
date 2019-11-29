@@ -1,9 +1,11 @@
+import { ResourceService } from '@sunbird/shared';
 import { Component, HostListener, AfterViewInit, OnInit } from '@angular/core';
 
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import mediumZoom from 'medium-zoom';
 import * as html2pdf from 'html2pdf.js';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-offline-help-center',
@@ -14,8 +16,9 @@ import * as html2pdf from 'html2pdf.js';
 export class OfflineHelpCenterComponent implements AfterViewInit, OnInit {
   images: any;
   activeTab: any;
+  instance: string;
 
-  constructor() { }
+  constructor(public resourceService: ResourceService) { }
   isShow: boolean;
   topPosToStartShowing = 100;
 
@@ -108,6 +111,7 @@ export class OfflineHelpCenterComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance);
     /* download animation */
     const downloadButton = document.querySelector('.sb-btn-download');
     if (downloadButton) {
