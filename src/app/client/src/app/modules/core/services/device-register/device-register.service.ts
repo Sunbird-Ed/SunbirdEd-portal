@@ -69,7 +69,6 @@ export class DeviceRegisterService  {
     if (this.deviceProfile) {
       return of(this.deviceProfile);
     }
-    this.setDeviceId();
     return this.fetchDeviceProfile().pipe(map(deviceProfile => {
       this.deviceProfile = _.get(deviceProfile, 'result');
       return this.deviceProfile;
