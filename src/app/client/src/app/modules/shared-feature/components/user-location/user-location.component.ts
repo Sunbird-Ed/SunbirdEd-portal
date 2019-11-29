@@ -191,6 +191,9 @@ export class UserLocationComponent implements OnInit {
       this.setStateDistrict(this.processedDeviceLocation);
       this.isUserProfileUpdateAllowed = updateUserProFile;
       this.isDeviceProfileUpdateAllowed = updateDeviceProfile;
+    }, () => {
+      this.closeModal();
+      this.toasterService.error(this.resourceService.messages.emsg.m0017);
     });
   }
 
