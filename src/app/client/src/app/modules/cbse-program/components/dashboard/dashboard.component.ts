@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
   textBookChapters: Array<any>;
   reports: Array<any>;
   selectedReport: string;
-  headers;
+  headers: Array<any> = [];
   headersTooltip: Array<any> = [];
   showLoader = false;
   selectedCategory: string;
@@ -253,7 +253,7 @@ export class DashboardComponent implements OnInit {
   }
 
   refreshReport() {
-    (this.selectedReport === this.reports[2]) ?
+    (this.selectedReport === this.reports[2].name) ?
     this.generateProgramLevelData(this.selectedReport) : this.getCollectionHierarchy(this.selectedAttributes.textbook);
   }
 
@@ -437,8 +437,25 @@ export class DashboardComponent implements OnInit {
                                 { name: 'Published', tip: 'No. of questions published by publisher' }];
     } else if (report === this.reports[1].name) {
       this.headers = [{ tip: 'No. of resource (no. of published questions)' }];
-    } else {
-      this.headers = [{ tip: 'No. of TextbookUnits present in level' }, { tip: 'No. of contentTypes present in textbook' }];
+    } else if (report === this.reports[2].name) {
+      const levelHeaders = [{
+        name: 'L1', tip: 'Count of level 1 textbook units (Chapter)'
+      }, {
+        name: 'L2', tip: 'Count of level 2 textbook units (Topics)'
+      }, {
+        name: 'L3', tip: 'Count of level 3 textbook units (Sub-topics)'
+      }, {
+        name: 'L4', tip: 'Count of level 4 textbook units'
+      }, {
+        name: 'L5', tip: 'Count of level 5 textbook units'
+      }];
+      _.forEach(this.UnitLevels, (v, i) => {
+        this.headers[i] = levelHeaders[i];
+      });
+      _.forEach(this.contentTypes, (v, i) => {
+         this.headers[this.UnitLevels.length + i] = {name: v, tip: `Number of ${v} Set`};
+      });
+      // this.headers = [{ tip: 'No. of TextbookUnits present in each level' }, { tip: 'No. of contents present in each contentType' }];
     }
   }
 
@@ -493,7 +510,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onSelectTextbook(book) {
-    this.selectedReport = this.reports[0].name;
+    this.selectedReport = this.reports[1].name;
     this.selectedAttributes.textbook = book.identifier;
     this.selectedTextbook = book['Textbook Name'];
     this.getCollectionHierarchy(book.identifier);

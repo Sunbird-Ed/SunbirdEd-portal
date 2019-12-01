@@ -11,17 +11,17 @@
   </div>
   <label *ngIf= "(selectedReport === 'Program Level Report Status')" class="mr-8 mb-0">Report: </label>
   <div class="sb-label sb-label-table sb-label-gray-0" *ngIf= "(selectedReport === 'Program Level Report Status')"> {{selectedReport}}</div>
-  <button class="download-btn sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-right-icon-btn"
+  <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-left-icon-btn"
     (click)="refreshReport()"><i class="refresh icon"></i>Refresh</button>
-  <button class="download-btn sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-right-icon-btn"
+  <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-left-icon-btn"
     (click)="downloadReport()"><i class="download icon"></i>Download Report</button>
 
 </div>
 
 
 <div *ngIf="selectedReport === 'Question Bank Status' && !showLoader">
-  <table class="sb-table sb-table sb-table-hover " id='questionBank'>
-    <thead class="sb-table-header heading-large">
+  <table class="sb-table sb-table-striped sb-table-hover " id='questionBank'>
+    <thead class="sb-table-header sb-table-thead-gray">
       <tr>
         <th rowspan="2" class="topicSection"> Topic Name </th>
 
@@ -42,7 +42,7 @@
       </tr>
 
     </thead>
-    <tbody class="sb-table-body body-large" >
+    <tbody class="sb-table-body" >
       <tr *ngFor="let chapter of tableData">
         <td>{{chapter['Topic Name']}}</td>
         <td>{{chapter['Up For Review']}}</td>
@@ -56,8 +56,8 @@
 
 
 <div *ngIf="selectedReport === 'Textbook Status' && !showLoader">
-  <table class="sb-table sb-table sb-table-hover sb-table-sortable" id='TextbookStatus'>
-    <thead class="sb-table-header heading-large">
+  <table class="sb-table sb-table-striped sb-table-hover sb-table-sortable" id='TextbookStatus'>
+    <thead class="sb-table-header sb-table-thead-gray">
       <tr>
         <th> Topic Name </th>
         <th attr.data-tooltip="{{headers[0].tip}}" *ngFor="let type of questionType"> {{questionTypeName[type]}}
@@ -65,7 +65,7 @@
 
       </tr>
     </thead>
-    <tbody class="sb-table-body body-large" >
+    <tbody class="sb-table-body" >
       <tr *ngFor="let chapter of tableData">
         <td>{{chapter['Topic Name']}}</td>
         <td>{{chapter[questionTypeName[questionType[0]]] ? 1 : 0}}({{chapter[questionTypeName[questionType[0]]]}})</td>
@@ -79,19 +79,17 @@
 </div>
 
 
-<div *ngIf="selectedReport === 'Program Level Report Status' && !showLoader">
-    <table class="sb-table sb-table sb-table-hover sb-table-sortable" id='ProgramLevelReportStatus'>
-      <thead class="sb-table-header heading-large">
+<div *ngIf="selectedReport === 'Program Level Report Status' && !showLoader" style="width: 100%; overflow-x: auto;">
+    <table class="sb-table sb-table-striped sb-table-hover sb-table-sortable" id='ProgramLevelReportStatus'>
+      <thead class="sb-table-header sb-table-thead-gray">
         <tr>
           <th id="textbookName"> Textbook Name </th>
-          <th attr.data-tooltip="{{headers[0].tip}}" *ngFor="let level of UnitLevels"> {{level}}
+          <th *ngFor="let label of headers" suiPopup popupHeader="{{label.tip}}"> {{label.name}}
           </th>
-          <th attr.data-tooltip="{{headers[1].tip}}" *ngFor="let type of contentTypes"> {{type}}
-            </th>
         </tr>
       </thead>
       
-      <tbody class="sb-table-body body-large" >
+      <tbody class="sb-table-body" >
         <tr *ngFor="let count of tableData" (click)="onSelectTextbook(count)">
           <td>         
       <div class="sb-card sb-card-qr" tabindex="0">
