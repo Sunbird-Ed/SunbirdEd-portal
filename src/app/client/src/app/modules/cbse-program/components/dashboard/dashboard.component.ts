@@ -248,7 +248,6 @@ export class DashboardComponent implements OnInit {
       });
 
       this.generateTableData(this.selectedReport);
-      // this.initializeDataTable(this.selectedReport);
     });
   }
 
@@ -269,7 +268,7 @@ export class DashboardComponent implements OnInit {
       decimalSeparator: '.',
       showLabels: true,
       showTitle: true,
-      title: `Texbook: ${this.selectedAttributes.textbookName ? this.selectedAttributes.textbookName : ''}, ${optional ? optional : ''}`,
+      title: `Texbook: ${this.selectedTextbook ? this.selectedTextbook : ''}, ${optional ? optional : ''}`,
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,
@@ -430,6 +429,7 @@ export class DashboardComponent implements OnInit {
   }
 
   generateHeaderDetails(report) {
+    this.headers = [];
     if (report === this.reports[0].name) {
       this.headers = [{ name: 'Up For Review', tip: 'No. of questions pending for review' },
                         { name: 'Rejected', tip: 'No. of questions rejected by reviewer' },
@@ -455,7 +455,6 @@ export class DashboardComponent implements OnInit {
       _.forEach(this.contentTypes, (v, i) => {
          this.headers[this.UnitLevels.length + i] = {name: v, tip: `Number of ${v} Set`};
       });
-      // this.headers = [{ tip: 'No. of TextbookUnits present in each level' }, { tip: 'No. of contents present in each contentType' }];
     }
   }
 
@@ -497,7 +496,21 @@ export class DashboardComponent implements OnInit {
       this.tableData = Tdata;
       this.initializeDataTable(report);
     } else if (report === this.reports[2].name) {
-      this.tableData = this.programLevelData;
+      this.tableData = _.map(this.programLevelData, (obj) => {
+        let result = obj;
+       if (result.level) {
+        result = {...result, ...result.level};
+        delete result.level;
+       }
+       if (result.content) {
+        result = {...result, ...result.content};
+        delete result.content;
+       }
+       _.forEach([...this.UnitLevels, ...this.contentTypes], (val) => {
+        result[val] ? (result[val] = result[val]) : (result[val] = 0) ;
+       });
+       return result;
+      });
       this.initializeDataTable(report);
     }
   }

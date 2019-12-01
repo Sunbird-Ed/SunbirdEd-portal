@@ -104,8 +104,8 @@
           </div>
         </div>
             </td>
-            <td *ngFor="let level of UnitLevels">{{count.level[level] ? count.level[level] : 0}}</td>
-            <td *ngFor="let content of contentTypes">{{count.content[content] ? count.content[content] : 0}}</td>
+            <td *ngFor="let level of UnitLevels">{{count[level] ? count[level] : 0}}</td>
+            <td *ngFor="let content of contentTypes">{{count[content] ? count[content] : 0}}</td>
         </tr>
       </tbody>
     </table>

@@ -139,11 +139,11 @@
           <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
             (selectedClassSubjectEvent)="selectedClassSubjectHandler($event)"></app-select-textbook>
         </div>
-        <div *ngIf="stages[currentStage] === 'chooseClass' && showDashboard">
+        <div *ngIf="showDashboard">
             <app-dashboard [selectedAttributes]="selectedAttributes"></app-dashboard>
           </div>
   
-        <div class="ui container" *ngIf="stages[currentStage] === 'chooseTextbook' || stages[currentStage] === 'topicList' ">
+        <div class="ui container" *ngIf="(stages[currentStage] === 'chooseTextbook' || stages[currentStage] === 'topicList') && !showDashboard ">
             <div class="sb-pageSection">
               <div class="sb-pageSection-header d-flex flex-jc-space-between">
                 <div>
@@ -185,7 +185,7 @@
           </div>
   
   
-          <div class="ui container" *ngIf="stages[currentStage] === 'createQuestion'">
+          <div class="ui container" *ngIf="(stages[currentStage] === 'createQuestion') && !showDashboard">
               <div class="sb-pageSection">
                   <div class="sb-pageSection-header ui grid">
   
