@@ -2,11 +2,13 @@ import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angu
 import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
+import * as _ from 'lodash-es';
 import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
 import { forkJoin, throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash-es';
+import { IChapterListComponentInput } from '../../interfaces';
+
 
 @Component({
   selector: 'app-chapter-list',
@@ -15,7 +17,7 @@ import * as _ from 'lodash-es';
 })
 export class ChapterListComponent implements OnInit, OnChanges {
 
-  @Input() chapterListComponentInput: any;
+  @Input() chapterListComponentInput: IChapterListComponentInput;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
 
   public selectedAttributes: any;
@@ -34,6 +36,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public unitIdentifier;
   public collection: any;
   private labels: Array<string>;
+  private actions: any;
 
 
   telemetryImpression = {};
@@ -50,11 +53,13 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] :
     (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted', 'Published'] : ['Total', 'Created by me', 'Needs attention'];
   }
+
   ngOnInit() {
 
     this.selectedAttributes = _.get(this.chapterListComponentInput, 'selectedAttributes');
     this.role = _.get(this.chapterListComponentInput, 'role');
     this.collection  = _.get(this.chapterListComponentInput, 'collection');
+    this.actions = _.get(this.chapterListComponentInput, 'entireConfig.actions');
     /**
      * @description : this will fetch question Category configuration based on currently active route
      */

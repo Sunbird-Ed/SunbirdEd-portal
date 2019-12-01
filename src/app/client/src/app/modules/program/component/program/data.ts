@@ -821,7 +821,7 @@ const programTwoSession = {
         1
       ]
     },
-    'showtotalUnderReview': {
+    'showTotalUnderReview': {
       'roles': [
         2
       ]
