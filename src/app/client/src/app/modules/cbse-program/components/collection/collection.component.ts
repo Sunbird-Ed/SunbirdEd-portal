@@ -1,48 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
 import { PublicDataService, ContentService } from '@sunbird/core';
-
 import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CbseProgramService } from '../../services';
+import { ISelectedAttributes, IChapterListComponentInput } from '../../interfaces';
 
-interface ISelectedAttributes { // TODO: remove any 'textbook' reference
-  textBookUnitIdentifier?: any;
-  collectionUnitIdentifier?: any;
-  lastOpenedUnit?: any;
-  framework?: string;
-  channel?: string;
-  board?: string;
-  medium?: string;
-  gradeLevel?: string;
-  subject?: string;
-  textbook?: string;
-  collection?: string;
-  topic?: string;
-  questionType?: string;
-  programId?: string;
-  program?: string;
-  currentRole?: string;
-  bloomsLevel?: Array<any>;
-  topicList?: Array<any>;
-  onBoardSchool?: string;
-  selectedSchoolForReview?: string;
-  resourceIdentifier?: string;
-  hierarchyObj?: any;
-  textbookName?: any;
-  collectionName?: any;
-  collectionType?: any;
-  collectionStatus?: any;
-}
-
-interface IChapterListComponentInput {
-  config?: any;
-  selectedAttributes?: any;
-  role?: any;
-  collection?: any;
-  entireConfig?: any;
-}
 
 @Component({
   selector: 'app-collection',
@@ -88,6 +52,8 @@ export class CollectionComponent implements OnInit {
       collectionStatus: _.get(this.collectionComponentConfig, 'status')
     };
     this.searchCollection();
+    const getCurrentRoleId = _.find(this.entireConfig.roles, {'name': this.selectedAttributes.currentRole});
+    this.selectedAttributes.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
     this.role.currentRole = this.selectedAttributes.currentRole;
   }
 

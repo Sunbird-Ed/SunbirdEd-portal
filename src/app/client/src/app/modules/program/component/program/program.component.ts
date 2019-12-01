@@ -12,14 +12,18 @@ import { programSession } from './data';
 interface ICollectionComponentInput {
   programDetails?: any;
   userProfile?: any;
-  extraConfig?: any;
+  entireConfig?: any;
   config?: any;
 }
 
+// interface IDynamicInput {
+//   collectionComponentInput?: undefined | {
+//     [key: string]: ICollectionComponentInput
+//   };
+// }
+
 interface IDynamicInput {
-  collectionComponentInput?: {
-    [key: string]: ICollectionComponentInput
-  };
+  collectionComponentInput?: ICollectionComponentInput;
 }
 
 @Component({
@@ -38,7 +42,7 @@ export class ProgramComponent implements OnInit {
   public headerComponentInput: any;
   public tabs;
   public defaultView;
-  public dynamicInputs: IDynamicInput = {};
+  public dynamicInputs: IDynamicInput;
   private componentMapping = {
     dashboardComponent: DashboardComponent,
     // issueCertificateComponent: IssueCertificateComponent,
@@ -85,6 +89,7 @@ export class ProgramComponent implements OnInit {
   }
 
   initiateInputs (status) {
+
     this.dynamicInputs = {
       collectionComponentInput:  {
         programDetails: this.programDetails,

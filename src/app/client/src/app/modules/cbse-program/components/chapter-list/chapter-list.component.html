@@ -1,141 +1,157 @@
-
-<div *ngIf='!showLoader && !showError' class="ui container sb-chapter-list" [appTelemetryImpression]="telemetryImpression">
+<div *ngIf='!showLoader && !showError' class="ui container sb-chapter-list"
+  [appTelemetryImpression]="telemetryImpression">
   <div class="mt-16" *ngIf="collectionHierarchy.length && !showContentUploader">
-      <div class="sb-cbse-homepage-container">
+    <div class="sb-cbse-homepage-container">
 
-          <!-- Header Section -->
-          <div class="sb-pageSection-header">
-            <div class="ui container d-flex pt-24 pb-16">
-                <div class="d-flex mr-auto flex-ai-center">
-                    <img [src]="collection.image" alt="Book" title="Book" style="max-width: 48px;">
-                    <div class="textbook-details ml-8">
-                      <label class="d-block fs-1 mb-0">{{collection.subject}}</label>
-                      <label class="d-block fs-0-92 font-weight-normal">{{collection.gradeLevel}}</label>
-                    </div>
-                  </div>
-
-                  <div class="sb-textbook-allchapters mr-24">
-                    <label class="fs-0-92 font-weight-normal">Select Chapters</label>
-                    <sui-select class="selection w-100" placeholder="All Chapters"  [isSearchable]=true
-                      labelField="name" valueField="identifier" [(ngModel)]="selectdChapterOption"  (selectedOptionChange)="onSelectChapterChange()"
-                      [options]="levelOneChapterList" #selectdChapter >
-                        <sui-select-option *ngFor="let option of selectdChapter.filteredOptions" [value]="option">
-                        </sui-select-option>
-                    </sui-select>
-                  </div>
-
-                  <div class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap ml-16">
-                    <dl class="sb-meta-data">
-                      <dt>{{countData['total']}}</dt>
-                      <dd>Total Contribution</dd>
-                    </dl>
-                    <dl class="sb-meta-data">
-                      <dt>{{countData['mycontribution']}}</dt>
-                      <dd>My Contribution</dd>
-                    </dl>
-                    <dl class="sb-meta-data">
-                        <dt>{{countData['reject']}}</dt>
-                      <dd>Rejected</dd>
-                    </dl>
-                    <dl class="sb-meta-data">
-                        <dt>{{countData['review']}}</dt>
-                      <dd>Under Review</dd>
-                    </dl>
-                  </div>
-            </div>
-
-
-          </div>
-
-          <!-- Accordion Section -->
-          <div class="ui container sb-textbook-details-container mb-24">
-
-            <div class="sb-chapterlist">
-              <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
-                <app-recursive-tree [textbookChapters]="collectionHierarchy" [selectedChapter]="selectdChapterOption"
-                (resourceTemplate)="showResourceTemplate($event)"></app-recursive-tree>
-              </sui-accordion>
+      <!-- Header Section -->
+      <div class="sb-pageSection-header">
+        <div class="ui container d-flex pt-24 pb-16">
+          <div class="d-flex mr-auto flex-ai-center">
+            <img [src]="collection.image" alt="Book" title="Book" style="max-width: 48px;">
+            <div class="textbook-details ml-8">
+              <label class="d-block fs-1 mb-0">{{collection.subject}}</label>
+              <label class="d-block fs-0-92 font-weight-normal">{{collection.gradeLevel}}</label>
             </div>
           </div>
 
-          <app-resource-template *ngIf='showResourceTemplatePopup' (templateSelection)="handleTemplateSelection($event)"></app-resource-template>
+          <div class="sb-textbook-allchapters mr-24">
+            <label class="fs-0-92 font-weight-normal">Select Chapters</label>
+            <sui-select class="selection w-100" placeholder="All Chapters" [isSearchable]=true labelField="name"
+              valueField="identifier" [(ngModel)]="selectdChapterOption"
+              (selectedOptionChange)="onSelectChapterChange()" [options]="levelOneChapterList" #selectdChapter>
+              <sui-select-option *ngFor="let option of selectdChapter.filteredOptions" [value]="option">
+              </sui-select-option>
+            </sui-select>
+          </div>
 
-          <!-- Move to Modal Section -->
-          <sui-modal *ngIf="showLargeModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-            class="sb-modal" appBodyScroll (dismissed)="showLargeModal = !showLargeModal" #modal>
-            <div class="sb-modal-header">
-              Move to
-            </div>
-            <!-- Selection of Layout in modal -->
-            <div class="sb-modal-content sb-chapterlist-modal">
+          <div class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap ml-16">
+            <dl *ngIf="actions.showTotalContribution.roles.includes(selectedAttributes.currentRoleId)"
+              class="sb-meta-data">
+              <dt>{{countData['total']}}</dt>
+              <dd>Total Contribution</dd>
+            </dl>
+            <dl *ngIf="actions.showMyContribution.roles.includes(selectedAttributes.currentRoleId)"
+              class="sb-meta-data">
+              <dt>{{countData['mycontribution']}}</dt>
+              <dd>My Contribution</dd>
+            </dl>
+            <dl *ngIf="actions.showRejected.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+              <dt>{{countData['reject']}}</dt>
+              <dd>Rejected</dd>
+            </dl>
+            <dl *ngIf="actions.showUnderReview.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+              <dt>{{countData['review']}}</dt>
+              <dd>Under Review</dd>
+            </dl>
+            <dl *ngIf="actions.showTotalUnderReview.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+              <dt>{{countData['review']}}</dt>
+              <dd>Total Under Review</dd>
+            </dl>
+            <dl *ngIf="actions.showAcceptedByMe.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+              <dt>{{countData['review']}}</dt>
+              <dd>Accepted by me</dd>
+            </dl>
+            <dl *ngIf="actions.showRejectedByMe.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+              <dt>{{countData['review']}}</dt>
+              <dd>Rejected by me</dd>
+            </dl>
+          </div>
+        </div>
 
-              <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
-                <sui-accordion-panel [isOpen]="true">
-                  <div title class="sb-accordion-title d-flex flex-ai-center">
-                    <i class="chevron down icon mr-16"></i>
+
+      </div>
+
+      <!-- Accordion Section -->
+      <div class="ui container sb-textbook-details-container mb-24">
+
+        <div class="sb-chapterlist">
+          <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
+            <app-recursive-tree [textbookChapters]="collectionHierarchy" [selectedChapter]="selectdChapterOption"
+              (resourceTemplate)="showResourceTemplate($event)"></app-recursive-tree>
+          </sui-accordion>
+        </div>
+      </div>
+
+      <app-resource-template *ngIf='showResourceTemplatePopup' (templateSelection)="handleTemplateSelection($event)">
+      </app-resource-template>
+
+      <!-- Move to Modal Section -->
+      <sui-modal *ngIf="showLargeModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+        [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showLargeModal = !showLargeModal" #modal>
+        <div class="sb-modal-header">
+          Move to
+        </div>
+        <!-- Selection of Layout in modal -->
+        <div class="sb-modal-content sb-chapterlist-modal">
+
+          <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
+            <sui-accordion-panel [isOpen]="true">
+              <div title class="sb-accordion-title d-flex flex-ai-center">
+                <i class="chevron down icon mr-16"></i>
+                <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                  <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                    <input type="radio" id="radio1" name="example">
+                    <label for="radio1">Chapter 1</label>
+                  </div>
+                </div>
+              </div>
+              <div content>
+                <div class="chapter-lists level1">
+                  <div class="chapter-lists--item">
                     <div class="item d-flex flex-ai-center cursor-pointer width-100">
                       <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                        <input type="radio" id="radio1" name="example">
-                        <label for="radio1">Chapter 1</label>
+                        <input type="radio" id="radio1.1" name="example">
+                        <label for="radio1.1">Chapter 1.1</label>
                       </div>
                     </div>
                   </div>
-                  <div content>
-                    <div class="chapter-lists level1">
-                      <div class="chapter-lists--item">
-                        <div class="item d-flex flex-ai-center cursor-pointer width-100">
-                          <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                            <input type="radio" id="radio1.1" name="example">
-                            <label for="radio1.1">Chapter 1.1</label>
-                          </div>
-                        </div>
-                      </div>
 
-                      <div class="chapter-lists--item">
-                        <div class="item d-flex flex-ai-center cursor-pointer width-100">
-                          <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                            <input type="radio" id="radio1.0" name="example">
-                            <label for="radio1.0">Chapter 1.0</label>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="chapter-lists--item">
-                        <div class="item d-flex flex-ai-center cursor-pointer width-100">
-                          <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                            <input type="radio" id="radio1.1.1" name="example">
-                            <label for="radio1.1.1">Chapter 1.1.1</label>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="chapter-lists--item">
-                        <div class="item d-flex flex-ai-center cursor-pointer width-100">
-                          <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                            <input type="radio" id="radio1.1.1.1" name="example">
-                            <label for="radio1.1.1.1">Chapter 1.1.1.1</label>
-                          </div>
-                        </div>
+                  <div class="chapter-lists--item">
+                    <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                      <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                        <input type="radio" id="radio1.0" name="example">
+                        <label for="radio1.0">Chapter 1.0</label>
                       </div>
                     </div>
                   </div>
-                </sui-accordion-panel>
 
-              </sui-accordion>
-            </div>
+                  <div class="chapter-lists--item">
+                    <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                      <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                        <input type="radio" id="radio1.1.1" name="example">
+                        <label for="radio1.1.1">Chapter 1.1.1</label>
+                      </div>
+                    </div>
+                  </div>
 
-            <!-- Selection of Question in modal -->
+                  <div class="chapter-lists--item">
+                    <div class="item d-flex flex-ai-center cursor-pointer width-100">
+                      <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                        <input type="radio" id="radio1.1.1.1" name="example">
+                        <label for="radio1.1.1.1">Chapter 1.1.1.1</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </sui-accordion-panel>
 
-            <div class="sb-modal-actions">
-              <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLargeModal = !showLargeModal">
-                Move
-              </button>
-            </div>
-          </sui-modal>
-      </div>
+          </sui-accordion>
+        </div>
+
+        <!-- Selection of Question in modal -->
+
+        <div class="sb-modal-actions">
+          <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLargeModal = !showLargeModal">
+            Move
+          </button>
+        </div>
+      </sui-modal>
+    </div>
   </div>
   <div class="twelve wide column" *ngIf="showContentUploader">
-      <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier" [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader>
+    <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier"
+      [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader>
   </div>
   <div class="twelve wide column" *ngIf="!collectionHierarchy.length">
     <app-no-result></app-no-result>
