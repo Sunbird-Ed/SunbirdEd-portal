@@ -373,7 +373,7 @@ export class DashboardComponent implements OnInit {
             'objectType': 'content',
             'board': this.selectedAttributes.board,
             'framework': this.selectedAttributes.framework,
-            'medium': this.selectedAttributes.medium,
+            'medium': this.selectedAttributes.mediumArray,
             'programId': this.selectedAttributes.programId,
             'status': ['Draft', 'Live'],
             'contentType': 'TextBook'
@@ -409,7 +409,8 @@ export class DashboardComponent implements OnInit {
             book['Textbook Name'] = this.textbookList[i].name;
             book['Subject'] = this.textbookList[i].subject;
             book['Grade'] = this.textbookList[i].gradeLevel[0];
-            book['identifier'] = this.textbookList[i].identifier;
+            book['Identifier'] = this.textbookList[i].identifier;
+            book['Medium'] = this.textbookList[i].medium;
             i ++;
             return book;
         });
@@ -524,9 +525,10 @@ export class DashboardComponent implements OnInit {
 
   onSelectTextbook(book) {
     this.selectedReport = this.reports[1].name;
-    this.selectedAttributes.textbook = book.identifier;
+    this.selectedAttributes.textbook = book.Identifier;
+    this.selectedAttributes.medium = book.Medium;
     this.selectedTextbook = book['Textbook Name'];
-    this.getCollectionHierarchy(book.identifier);
+    this.getCollectionHierarchy(book.Identifier);
   }
 
   initializeDataTable(report) {
