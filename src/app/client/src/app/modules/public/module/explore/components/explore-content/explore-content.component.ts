@@ -277,6 +277,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     exportOfflineContent(contentId) {
         this.contentManagerService.exportContent(contentId).subscribe(data => {
             this.showExportLoader = false;
+      this.toasterService.success(this.resourceService.messages.fmsg.m0098);
         }, error => {
             this.showExportLoader = false;
             if (error.error.responseCode !== 'NO_DEST_FOLDER') {
