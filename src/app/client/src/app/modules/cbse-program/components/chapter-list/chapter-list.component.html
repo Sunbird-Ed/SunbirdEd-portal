@@ -17,7 +17,7 @@
           <div class="sb-textbook-allchapters mr-24">
             <label class="fs-0-92 font-weight-normal">Select Chapters</label>
             <sui-select class="selection w-100" placeholder="All Chapters" [isSearchable]=true labelField="name"
-              valueField="identifier" [(ngModel)]="selectdChapterOption"
+              valueField="identifier" [(ngModel)]="selectedChapterOption"
               (selectedOptionChange)="onSelectChapterChange()" [options]="levelOneChapterList" #selectdChapter>
               <sui-select-option *ngFor="let option of selectdChapter.filteredOptions" [value]="option">
               </sui-select-option>
@@ -63,7 +63,6 @@
 
       <!-- Accordion Section -->
       <div class="ui container sb-textbook-details-container mb-24">
-
         <div class="sb-chapterlist">
           <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
             <app-recursive-tree [textbookChapters]="collectionHierarchy" [selectedChapter]="selectdChapterOption"
