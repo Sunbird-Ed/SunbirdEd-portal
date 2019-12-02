@@ -11,6 +11,7 @@ interface ISelectedAttributes {
     framework?: string;
     channel?: string;
     board?: string;
+    mediumArray?: Array<any>; // To fetch all textbooks of mutiple medium
     medium?: string;
     gradeLevel?: string;
     subject?: string;
@@ -72,7 +73,7 @@ export class CbseComponent implements OnInit, OnDestroy {
       framework: _.get(this.programDetails, 'config.scope.framework'),
       channel: _.get(this.programDetails, 'config.scope.channel'),
       board: _.get(this.programDetails, 'config.scope.board[0]'),
-      medium: _.get(this.programDetails, 'config.scope.medium[0]'),
+      mediumArray: _.get(this.programDetails, 'config.scope.medium'),
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
       programId: _.get(this.programDetails, 'programId'),
       //programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1',
