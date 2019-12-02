@@ -6,18 +6,20 @@ import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
 })
 export class PlayerComponent implements AfterViewInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
-  @Output() contentProgressEvent = new EventEmitter<any>();
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
+  @Input() contentProgressEvents$: Subject<any>;
+
   buildNumber: string;
   @Input() playerOption: any;
   contentRatingModal = false;
@@ -138,8 +140,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     const eid = event.detail.telemetryData.eid;
     if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(event);
-      this.contentProgressEvent.emit(event);
-
+      this.contentProgressEvents$.next(event);
     } else if (eid && (eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }

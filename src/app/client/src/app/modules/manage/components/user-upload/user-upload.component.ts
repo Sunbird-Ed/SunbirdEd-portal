@@ -136,7 +136,7 @@ export class UserUploadComponent {
       { instructions: this.resourceService.frmelmnts.instn.t0102 },
       { instructions: this.resourceService.frmelmnts.instn.t0103 },
       { instructions: this.resourceService.frmelmnts.instn.t0104 },
-      { instructions: this.resourceService.frmelmnts.instn.t0105 }
+      // { instructions: this.resourceService.frmelmnts.instn.t0105 }
       ];
     this.showLoader = false;
     this.setInteractEventData();
