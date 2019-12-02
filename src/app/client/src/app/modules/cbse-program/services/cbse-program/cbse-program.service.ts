@@ -94,7 +94,7 @@ export class CbseProgramService {
                 map(res => {
                   return this.getQuestionPluginConfig(res, questionSetConfigCdata, collections, role);
                 }),
-                catchError(err => of (err))
+                catchError(err => of(err))
               );
             }));
           } else {
@@ -130,7 +130,7 @@ export class CbseProgramService {
         env: 'cbse_program'
       },
       edata: {
-        err: err.status.toString(),
+        err: _.toString(err.status),
         errtype: 'SYSTEM',
         stacktrace: _.get(err, 'error.params.errmsg') || errorInfo.errorMsg
       }
