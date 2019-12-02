@@ -10,6 +10,7 @@
       <div class="chapter-lists level1" *ngIf="textbook.leaf">
         <div class="chapter-lists--item" *ngFor="let content of textbook.leaf; let i=index">
           <span class="item-name"> {{content.name}}</span>
+          <span class="item-status mr-24">{{content.creator}}</span>
           <span class="item-status mr-24">
             <span class="sb-label sb-label-table sb-label-success-0">{{content.status}}</span>
           </span>
