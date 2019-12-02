@@ -1,15 +1,16 @@
 import { SuiModule } from 'ng2-semantic-ui';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { SignupComponent } from './signup.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { SignupService } from './../../services';
-import { CoreModule } from '@sunbird/core';
+import { CoreModule, TenantService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -20,6 +21,29 @@ const fakeActivatedRoute = {
       }
     }
   }
+};
+
+const resourceBundle = {
+  'frmelmnts': {
+    'instn': {
+      't0015': 'Upload Organization',
+      't0016': 'Upload User'
+    },
+    'lbl': {
+      'chkuploadsts': 'Check Status',
+      'passwd': 'Password must contain a minimum of 8 characters including numerals, '
+      + 'lower and upper case alphabets and special characters.'
+    },
+  },
+  'messages': {
+    'smsg': {},
+    'fmsg': {
+      'm0001': 'api failed, please try again',
+      'm0004': 'api failed, please try again'
+    }
+  },
+  languageSelected$: of({value: ''}),
+  getResource() { }
 };
 
 describe('SignUpComponent', () => {
@@ -36,7 +60,9 @@ describe('SignUpComponent', () => {
       declarations: [ SignupComponent ],
       providers: [FormBuilder, ResourceService, SignupService,
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ResourceService, useValue: resourceBundle },
+        {provide : TenantService, useValue: { tenantData$: of('')}}],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -104,67 +130,66 @@ describe('SignUpComponent', () => {
     expect(component.onPhoneChange).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBeTruthy();
   });
-  it('should show required lowercase validation error message for password', () => {
-    spyOn(component, 'onPasswordChange');
-    component.ngOnInit();
+  it('should show required lowercase validation error message for password', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
     let errors = {};
     const password = component.signUpForm.controls['password'];
     password.setValue('');
+    tick(200);
     errors = password.errors || {};
-    expect(component.passwordError).not.toBeNull();
-    expect(errors['required']).toBeTruthy();
-    expect(password.valid).toBeFalsy();
-    expect(password.touched).toBeFalsy();
-    expect(component.disableSubmitBtn).toBeTruthy();
-  });
-  it('should show required uppercase validation error message for password', () => {
-    spyOn(component, 'onPasswordChange');
-    component.ngOnInit();
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    + 'lower and upper case alphabets and special characters.');
+  }));
+  it('should show required uppercase validation error message for password', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
     let errors = {};
     const password = component.signUpForm.controls['password'];
     password.setValue('a');
+    tick(200);
     errors = password.errors || {};
-    expect(component.passwordError).not.toBeNull();
-    expect(errors).toBeTruthy();
-    expect(password.valid).toBeFalsy();
-    expect(component.disableSubmitBtn).toBeTruthy();
-  });
-  it('should show required digit validation error message for password', () => {
-    spyOn(component, 'onPasswordChange');
-    component.ngOnInit();
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    + 'lower and upper case alphabets and special characters.');
+  }));
+  it('should show required digit validation error message for password', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
     let errors = {};
     const password = component.signUpForm.controls['password'];
     password.setValue('aA');
+    tick(200);
     errors = password.errors || {};
-    expect(component.passwordError).not.toBeNull();
-    expect(errors).toBeTruthy();
-    expect(password.valid).toBeFalsy();
-    expect(component.disableSubmitBtn).toBeTruthy();
-  });
-  it('should show required special character validation error message for password', () => {
-    spyOn(component, 'onPasswordChange');
-    component.ngOnInit();
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    + 'lower and upper case alphabets and special characters.');
+  }));
+  it('should show required special character validation error message for password', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
     let errors = {};
     const password = component.signUpForm.controls['password'];
     password.setValue('aA1');
+    tick(200);
     errors = password.errors || {};
-    expect(component.passwordError).not.toBeNull();
-    expect(errors).toBeTruthy();
-    expect(password.valid).toBeFalsy();
-    expect(component.disableSubmitBtn).toBeTruthy();
-  });
-  it('should show required at least 8 characters validation error message for password', () => {
-    spyOn(component, 'onPasswordChange');
-    component.ngOnInit();
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    + 'lower and upper case alphabets and special characters.');
+  }));
+  it('should show required at least 8 characters validation error message for password', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
     let errors = {};
     const password = component.signUpForm.controls['password'];
     password.setValue('aA1@');
+    tick(200);
     errors = password.errors || {};
-    expect(component.passwordError).not.toBeNull();
-    expect(errors).toBeTruthy();
-    expect(password.valid).toBeFalsy();
-    expect(component.disableSubmitBtn).toBeTruthy();
-  });
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    + 'lower and upper case alphabets and special characters.');
+  }));
   it('should call onEmailChange method', () => {
     spyOn(component, 'onEmailChange');
      spyOn(component, 'enableSignUpSubmitButton');
