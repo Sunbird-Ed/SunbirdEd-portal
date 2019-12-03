@@ -57,15 +57,13 @@
             </dl>
           </div>
         </div>
-
-
       </div>
 
       <!-- Accordion Section -->
       <div class="ui container sb-textbook-details-container mb-24">
         <div class="sb-chapterlist">
           <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
-            <app-recursive-tree [textbookChapters]="collectionHierarchy" [selectedChapter]="selectdChapterOption"
+            <app-recursive-tree [collectionUnits]="collectionHierarchy" [selectedChapter]="selectedChapterOption"
               (resourceTemplate)="showResourceTemplate($event)"></app-recursive-tree>
           </sui-accordion>
         </div>
@@ -149,8 +147,11 @@
     </div>
   </div>
   <div class="twelve wide column" *ngIf="showContentUploader">
-    <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier"
-      [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader>
+    <!-- <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier"
+      [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader> -->
+
+      <ndc-dynamic [ndcDynamicComponent]="creationComponent" [ndcDynamicInputs]="dynamicInputs" [ndcDynamicOutputs]="dynamicOutputs"></ndc-dynamic>
+
   </div>
   <div class="twelve wide column" *ngIf="!collectionHierarchy.length">
     <app-no-result></app-no-result>

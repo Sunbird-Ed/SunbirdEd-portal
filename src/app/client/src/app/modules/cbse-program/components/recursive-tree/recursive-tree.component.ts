@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class RecursiveTreeComponent implements OnInit {
 
-  @Input() textbookChapters;
+  @Input() collectionUnits;
   @Input() selectedChapter;
   @Output() emitselectedChapter = new EventEmitter<any>();
   @Output() resourceTemplate = new EventEmitter<any>();

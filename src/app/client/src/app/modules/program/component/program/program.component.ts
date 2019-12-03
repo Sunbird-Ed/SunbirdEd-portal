@@ -7,20 +7,7 @@ import { Subject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { programSession } from './data';
-
-
-interface ICollectionComponentInput {
-  programDetails?: any;
-  userProfile?: any;
-  entireConfig?: any;
-  config?: any;
-}
-
-// interface IDynamicInput {
-//   collectionComponentInput?: undefined | {
-//     [key: string]: ICollectionComponentInput
-//   };
-// }
+import { ICollectionComponentInput } from '../../../cbse-program/interfaces';
 
 interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;
