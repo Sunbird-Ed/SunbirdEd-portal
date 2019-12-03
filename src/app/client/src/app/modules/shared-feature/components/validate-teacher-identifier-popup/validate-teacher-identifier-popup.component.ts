@@ -29,6 +29,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   showStateDropdown: boolean;
   telemetryCdata: Array<{}> = [];
   telemetryInteractObject: IInteractEventObject;
+  failTelemetryEdata: any;
   constructor(
     public userService: UserService,
     public resourceService: ResourceService,
@@ -106,6 +107,12 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   }
 
   setTelemetryData() {
+    this.failTelemetryEdata = {
+      id: this.extIdVerified ? 'user-identifier-verified' : 'user-identifier-failed',
+      type: 'click',
+      pageid: 'user-verification-popup'
+
+    };
     this.telemetryCdata = [
       {
         id: 'user:state:teacherId',
