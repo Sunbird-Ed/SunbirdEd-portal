@@ -7,8 +7,13 @@ import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
 import { forkJoin, throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IChapterListComponentInput } from '../../interfaces';
-import { ContentUploaderComponent } from '../../../cbse-program';
+import { IChapterListComponentInput , ISelectedAttributes, IContentUploadComponentInput} from '../../interfaces';
+import { QuestionListComponent } from '../../../cbse-program/components/question-list/question-list.component';
+import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
+
+interface IDynamicInput {
+  contentUploadComponentInput?: IContentUploadComponentInput;
+}
 
 @Component({
   selector: 'app-chapter-list',
@@ -20,7 +25,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   @Input() chapterListComponentInput: IChapterListComponentInput;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
 
-  public selectedAttributes: any;
+  public selectedAttributes: ISelectedAttributes;
   public role: any;
   public textBookChapters: Array<any> = [];
   private questionType: Array<any> = [];
@@ -38,9 +43,14 @@ export class ChapterListComponent implements OnInit, OnChanges {
   private labels: Array<string>;
   private actions: any;
   private componentMapping = {
-    uploadComponent: ContentUploaderComponent
+    ExplanationResource: ContentUploaderComponent,
+    ExperientialResource: ContentUploaderComponent,
+    PracticeQuestionSet: QuestionListComponent,
+    CuriosityQuestionSet: QuestionListComponent,
   };
-  public component;
+  public dynamicInputs: IDynamicInput;
+  public dynamicOutputs: any;
+  public creationComponent;
 
   telemetryImpression = {};
   public collectionData;
@@ -98,11 +108,29 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
     // clearing the selected questionId when user comes back from question list
     delete this.selectedAttributes['questionList'];
+
+    this.dynamicOutputs = {
+      uploadedContentMeta: (contentMeta) => {
+        console.log(contentMeta);
+      }
+    };
   }
+
+
   ngOnChanges(changed: any) {
     this.selectedAttributes = _.get(this.chapterListComponentInput, 'selectedAttributes');
     this.role = _.get(this.chapterListComponentInput, 'role');
     this.labelsHandler();
+  }
+
+  public initiateInputs() {
+    this.dynamicInputs = {
+      contentUploadComponentInput: {
+        selectedAttributes: this.selectedAttributes,
+        unitIdentifier: this.unitIdentifier,
+        templateDetails: this.templateDetails
+      }
+    };
   }
 
   public getCollectionHierarchy(identifier: string, unitIdentifier: string) {
@@ -191,6 +219,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
       this.showContentUploader = true;
       this.templateDetails = event.templateDetails;
     }
+    this.initiateInputs();
+    this.creationComponent = this.componentMapping[event.template];
   }
 
   showResourceTemplate(event) {

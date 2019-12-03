@@ -6,6 +6,7 @@ import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
 import { catchError, map } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
+import { ISelectedAttributes, IContentUploadComponentInput} from '../../interfaces';
 
 @Component({
   selector: 'app-content-uploader',
@@ -16,10 +17,11 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   @ViewChild('modal') modal;
   @ViewChild('fineUploaderUI') fineUploaderUI: ElementRef;
   @ViewChild('qq-upload-actions') actionButtons: ElementRef;
-  @Input() selectedAttributes: any;
-  @Input() templateDetails: any;
-  @Input() unitIdentifier: any;
-  @Output() contentMetaData = new EventEmitter<any>();
+  @Input() contentUploadComponentInput: IContentUploadComponentInput;
+  public selectedAttributes: ISelectedAttributes;
+  public templateDetails: any;
+  public unitIdentifier: any;
+  @Output() uploadedContentMeta = new EventEmitter<any>();
   public playerConfig;
   public showPreview = false;
   uploader;
@@ -31,6 +33,10 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     public playerService: PlayerService, public configService: ConfigService) { }
 
   ngOnInit() {
+    this.selectedAttributes  = _.get(this.contentUploadComponentInput, 'selectedAttributes');
+    this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
+    this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
+
     this.uploader = new FineUploader({
       element: document.getElementById('upload-content-div'),
       template: 'qq-template-validation',
@@ -196,7 +202,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       return throwError(err);
     })).subscribe(res => {
       this.getUploadedContentMeta(contentId);
-      this.contentMetaData.emit({
+      this.uploadedContentMeta.emit({
         contentId: contentId
       });
     });
@@ -272,7 +278,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     let hostName = this.getHostName(url);
     if (hostName) {
       for (const domain of domainList) {
-        if (hostName[2] === domain || (hostName[1] + hostName[2]) === domain) { 
+        if (hostName[2] === domain || (hostName[1] + hostName[2]) === domain) {
           // the whitelisted domain can be either youtube.com or www.youtube.com
           isWhitelistedURL = true;
           break;

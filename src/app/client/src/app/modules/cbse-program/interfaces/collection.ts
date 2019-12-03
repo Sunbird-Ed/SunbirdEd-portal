@@ -27,3 +27,10 @@ export interface ISelectedAttributes { // TODO: remove any 'textbook' reference
   collectionType?: any;
   collectionStatus?: any;
 }
+
+export interface ICollectionComponentInput {
+  programDetails?: any;
+  userProfile?: any;
+  entireConfig?: any;
+  config?: any;
+}
