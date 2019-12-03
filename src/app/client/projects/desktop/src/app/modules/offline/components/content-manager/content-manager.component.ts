@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { timer, Subject, combineLatest } from 'rxjs';
-import { switchMap, map, filter, mergeMap } from 'rxjs/operators';
+import { switchMap, map, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ContentManagerService, ElectronDialogService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -46,12 +46,7 @@ export class ContentManagerComponent implements OnInit {
 
   getList() {
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
-      .pipe(mergeMap(() => {
-        if (this.isOpen) {
-         return this.contentManagerService.getContentList();
-        }
-        return [];
-      }),
+      .pipe(filter(() => this.isOpen === true), switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
           this.callContentList = false;
           let completedCount = 0;
