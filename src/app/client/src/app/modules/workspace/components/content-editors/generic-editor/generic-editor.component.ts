@@ -3,7 +3,7 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ToasterService, ConfigService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
-import { UserService, TenantService } from '@sunbird/core';
+import { UserService, TenantService, FrameworkService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
@@ -32,12 +32,13 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public contentDetails: any;
   public videoMaxSize: any;
+  public defaultLicense: any;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
     private configService: ConfigService, private editorService: EditorService, private toasterService: ToasterService,
-    private resourceService: ResourceService) {
+    private resourceService: ResourceService, private frameworkService: FrameworkService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
@@ -53,12 +54,14 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
+    this.frameworkService.initialize();
     this.getDetails().pipe(first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
         this.ownershipType = data.ownershipType;
+        this.defaultLicense = _.get(data, 'defaultLicense');
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -86,14 +89,14 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.channelData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], defaultLicense: _.get(data[4], 'defaultLicense') })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType()).
+      this.editorService.getOwnershipType(), this.frameworkService.channelData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], defaultLicense: _.get(data[3], 'defaultLicense') })));
     }
   }
   private lockContent () {
@@ -173,6 +176,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
+      defaultLicense: this.defaultLicense,
       env: 'generic-editor',
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,

@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '
 import * as _ from 'lodash-es';
 import * as iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse } from '@sunbird/shared';
-import { UserService, TenantService } from '@sunbird/core';
+import { UserService, TenantService, FrameworkService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
@@ -33,6 +33,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public videoMaxSize: any;
+  public defaultLicense: any;
 
   /**
   * Default method of class ContentEditorComponent
@@ -41,7 +42,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     private editorService: EditorService, private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private userService: UserService, private _zone: NgZone, private renderer: Renderer2,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
-    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService
+    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService,
+    private frameworkService: FrameworkService
   ) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
@@ -56,12 +58,14 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
+    this.frameworkService.initialize();
     this.getDetails().pipe( first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
         this.ownershipType = data.ownershipType;
+        this.defaultLicense = _.get(data, 'defaultLicense');
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -89,14 +93,14 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.channelData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], defaultLicense: _.get(data[4], 'defaultLicense') })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType()).
+      this.editorService.getOwnershipType(), this.frameworkService.channelData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2] })));
+        collectionDetails: data[1], ownershipType: data[2], defaultLicense: _.get(data[3], 'defaultLicense') })));
     }
   }
   lockContent () {
@@ -194,6 +198,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
+      defaultLicense: this.defaultLicense,
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff
