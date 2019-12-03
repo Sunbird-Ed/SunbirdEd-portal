@@ -69,7 +69,11 @@ export class OfflineReportIssuesComponent implements OnInit {
       this.issueReportedSuccessfully = !this.issueReportedSuccessfully;
     }, (error) => {
       this.isDisplayLoader = false;
-      this.toasterService.error(this.resourceService.frmelmnts.lbl.errorWhileGeneratingTicket);
+      if (error['error']['params']['err'] === 'NETWORK_UNAVAILABLE') {
+        this.toasterService.error(this.resourceService.messages.emsg.m0023);
+      } else {
+        this.toasterService.error(this.resourceService.frmelmnts.lbl.errorWhileGeneratingTicket);
+      }
     });
   }
   setTelemetryData() {
