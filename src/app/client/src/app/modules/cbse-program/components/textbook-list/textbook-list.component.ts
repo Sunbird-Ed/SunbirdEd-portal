@@ -37,7 +37,7 @@ export class TextbookListComponent implements OnInit {
             'framework': this.selectedAttributes.framework,
             'gradeLevel': this.selectedAttributes.gradeLevel,
             'subject': this.selectedAttributes.subject,
-            'medium': this.selectedAttributes.medium,
+            'medium': this.selectedAttributes.mediumArray,
             'programId': this.selectedAttributes.programId,
             'status': ['Draft', 'Live'],
             'contentType': 'TextBook'
@@ -91,6 +91,7 @@ export class TextbookListComponent implements OnInit {
     console.log(event);
 
     this.selectedTextbookEvent.emit(event.data);
+    this.selectedAttributes.medium = event.data.medium;
   }
   private setTelemetryImpression() {
     this.telemetryImpression = {
