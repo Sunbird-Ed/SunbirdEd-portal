@@ -46,7 +46,7 @@ export class ContentManagerComponent implements OnInit {
 
   getList() {
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
-      .pipe(filter(() => this.isOpen === true), switchMap(() => this.contentManagerService.getContentList()),
+      .pipe(filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
           this.callContentList = false;
           let completedCount = 0;
