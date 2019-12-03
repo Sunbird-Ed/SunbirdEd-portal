@@ -39,7 +39,6 @@ export class ContentManagerComponent implements OnInit {
     public router: Router) {
     this.getList();
     document.addEventListener('content:import', (event) => {
-      console.log('------------import event----------', event);
       this.isOpen = true;
       this.apiCallSubject.next();
     });
@@ -47,7 +46,7 @@ export class ContentManagerComponent implements OnInit {
 
   getList() {
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
-      .pipe(switchMap(() => this.contentManagerService.getContentList()),
+      .pipe(filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
           this.callContentList = false;
           let completedCount = 0;
