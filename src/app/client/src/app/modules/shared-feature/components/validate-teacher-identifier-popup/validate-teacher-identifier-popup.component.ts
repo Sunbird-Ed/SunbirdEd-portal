@@ -30,6 +30,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   telemetryCdata: Array<{}> = [];
   telemetryInteractObject: IInteractEventObject;
   failTelemetryEdata: any;
+  pageId: string;
   constructor(
     public userService: UserService,
     public resourceService: ResourceService,
@@ -37,6 +38,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
 
   ngOnInit() {
     this.userId = this.userService.userid;
+    this.pageId = 'user-verification-popup';
     this.processUserFeedData();
     this.initializeFormField();
   }
@@ -71,8 +73,8 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
     if (action === 'accept') {
       const channelValue = _.get(this.userFeedData, 'data.prospectChannels').length > 1 ?
         this.userDetailsForm.get('state').value : _.get(this.userFeedData, 'data.prospectChannels[0]');
-        req.request['channel'] = channelValue;
-        req.request['userExtId'] = this.userDetailsForm.get('extId').value;
+      req.request['channel'] = channelValue;
+      req.request['userExtId'] = this.userDetailsForm.get('extId').value;
     }
 
     this.userService.userMigrate(req).subscribe((data) => {
@@ -99,7 +101,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
 
   closeModal() {
     this.createValidateModal.deny();
-    this.close.emit();
+      this.close.emit();
   }
 
   navigateToValidateId() {
@@ -110,7 +112,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
     this.failTelemetryEdata = {
       id: this.extIdVerified ? 'user-identifier-verified' : 'user-identifier-failed',
       type: 'click',
-      pageid: 'user-verification-popup'
+      pageid: this.pageId
 
     };
     this.telemetryCdata = [

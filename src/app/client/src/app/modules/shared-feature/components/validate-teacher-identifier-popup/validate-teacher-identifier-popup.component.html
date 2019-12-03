@@ -51,18 +51,18 @@
 <!--action buttons-->
 
   <div class="sb-modal-actions">
-    <div appTelemetryInteract [telemetryInteractEdata]="{id:'reject-user-identifier' , type:'click' , pageid:'user-verification-popup' }"
-    [telemetryInteractCdata]="telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" class="action-btns" *ngIf="!processValidation">
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="verifyExtId('reject'); closeModal()">
+    <div class="action-btns" *ngIf="!processValidation">
+      <button appTelemetryInteract [telemetryInteractEdata]="{id:'reject-user-identifier' , type:'click' , pageid: pageId }"
+      [telemetryInteractCdata]="telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="verifyExtId('reject'); closeModal()">
         {{resourceService?.frmelmnts?.btn?.no}}
       </button>
-      <button appTelemetryInteract [telemetryInteractEdata]="{id:'yes-click' , type:'click' , pageid:'user-verification-popup' }"
+      <button appTelemetryInteract [telemetryInteractEdata]="{id:'yes-click' , type:'click' , pageid: pageId }"
       [telemetryInteractCdata]="telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" 
       type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="navigateToValidateId()">
         {{resourceService?.frmelmnts?.btn?.yes}}
       </button>
     </div>
-    <button appTelemetryInteract [telemetryInteractEdata]="{id:'submit-user-identifier' , type:'click' , pageid:'user-verification-popup' }"
+    <button appTelemetryInteract [telemetryInteractEdata]="{id:'submit-user-identifier' , type:'click' , pageid: pageId }"
     [telemetryInteractCdata]="telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" [disabled]="!enableSubmitButton" *ngIf="processValidation && !(extIdVerified || extIdFailed)" type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="verifyExtId('accept')" >
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
