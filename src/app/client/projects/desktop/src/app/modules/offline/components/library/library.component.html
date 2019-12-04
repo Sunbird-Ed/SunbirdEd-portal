@@ -12,7 +12,7 @@
         <section class="mb-16" *ngFor="let section of pageSections; let index=index;">
 
             <!-- START OF RECENTLY VIEWED CONTENT-->
-            <section *ngIf="index === 0 && section?.name === 'Recently Added Content'">
+            <section *ngIf="index === 0 && section?.name === 'Recently Added'">
                 <div class="header">
                     <h3 class="title">
                         {{resourceService?.frmelmnts?.lbl?.recentlyAdded}}
@@ -32,11 +32,9 @@
                 </ngx-slick>
             </section>
             <!-- END OF RECENTLY VIEWED CONTENT-->
-
-            <sb-library-cards-grid *ngIf="index !== 0" [title]="section?.name" [contentList]="section?.contents"
+            <sb-library-cards-grid *ngIf="index > 0" [title]="section?.name" [contentList]="section?.contents"
                 [type]="'infinite_card_grid'" (cardClick)="playContent($event)">
             </sb-library-cards-grid>
-
         </section>
     </div>
 </div>

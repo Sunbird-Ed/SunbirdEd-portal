@@ -6,6 +6,17 @@ import { OrgDetailsService, FrameworkService, ChannelService } from '@sunbird/co
 import { ResourceService } from '@sunbird/shared';
 import { OnboardingService } from '../../services';
 
+interface IFilters {
+    board: string[];
+    medium?: string[];
+    gradeLevel?: string[];
+}
+
+interface IFilterChange {
+    filters: IFilters;
+    channelId: string;
+}
+
 @Component({
     selector: 'app-library-filters',
     templateUrl: './library-filters.component.html',
@@ -17,18 +28,19 @@ export class LibraryFiltersComponent implements OnInit {
     selectedMediumIndex: number[] = [];
     selectedClassIndex: number[] = [];
 
-    boards: Array<any> = [];
-    mediums: Array<any> = [];
-    classes: Array<any> = [];
+    boards: any[] = [];
+    mediums: any[] = [];
+    classes: any[] = [];
 
     mediumLayout: LibraryFiltersLayout = LibraryFiltersLayout.SQUARE;
     classLayout: LibraryFiltersLayout = LibraryFiltersLayout.ROUND;
 
     frameworkCategories: any;
     userDetails: any;
+    hashTagId: string;
 
     @Input() selectedFilters;
-    @Output() filterChange: EventEmitter<any> = new EventEmitter();
+    @Output() filterChange: EventEmitter<IFilterChange> = new EventEmitter();
 
     constructor(
         public resourceService: ResourceService,
@@ -39,18 +51,21 @@ export class LibraryFiltersComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.userDetails = this.onboardingService.userData;
-        this.setBoard();
+        this.orgDetailsService.getCustodianOrg().subscribe(data => {
+            this.hashTagId = _.get(data, 'result.response.value');
+            this.userDetails = this.onboardingService.userData;
+            this.setBoard();
+        });
     }
 
     setBoard() {
-        this.channelService.getFrameWork(_.get(this.orgDetailsService, 'orgDetails.hashTagId')).subscribe(orgDetails => {
+        this.channelService.getFrameWork(this.hashTagId).subscribe(orgDetails => {
             this.boards = _.get(orgDetails, 'result.channel.frameworks');
 
             if (this.boards) {
 
-                if (this.selectedFilters && this.selectedFilters.board) {
-                    this.selectedBoard = this.boards.find((board) => board.name === this.selectedFilters.board);
+                if (this.selectedFilters && this.selectedFilters.board && this.selectedFilters.board[0]) {
+                    this.selectedBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
                 } else {
                     this.selectedBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
                 }
@@ -60,7 +75,7 @@ export class LibraryFiltersComponent implements OnInit {
                 this.frameworkService.getFrameworkCategories(_.get(this.selectedBoard, 'identifier')).subscribe((res) => {
                     if (res && _.get(res, 'result.framework.categories')) {
                         this.frameworkCategories = _.get(res, 'result.framework.categories');
-                        if (this.selectedFilters.board) {
+                        if (this.selectedFilters && this.selectedFilters.board && this.selectedFilters.board[0]) {
                             this.setFilters(false);
                         } else {
                             this.setFilters(true);
@@ -74,46 +89,42 @@ export class LibraryFiltersComponent implements OnInit {
     setFilters(showDefault?) {
         this.resetFilters();
         const framework = this.userDetails.framework;
-        const filters: any = {
-            board: this.selectedBoard.name
-        };
+
         this.frameworkCategories.forEach(element => {
             switch (element.code) {
                 case 'medium':
                     this.mediums = element.terms.map(medium => medium.name);
 
                     let mediumIndex;
-                    if (this.selectedFilters.medium) {
-                        mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium);
+                    if (this.selectedFilters && this.selectedFilters.medium && this.selectedFilters.medium[0]) {
+                        mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
                     } else if (showDefault) {
                         mediumIndex = this.mediums.findIndex(medium => framework.medium.includes(medium));
                     }
 
                     if (_.isNumber(mediumIndex)) {
                         this.selectedMediumIndex.push(mediumIndex);
-                        filters.medium = this.mediums[this.selectedMediumIndex[0]];
                     }
                     break;
                 case 'gradeLevel':
                     this.classes = element.terms.map(gradeLevel => gradeLevel.name);
                     let classIndex;
 
-                    if (this.selectedFilters.gradeLevel) {
+                    if (this.selectedFilters && this.selectedFilters.gradeLevel && this.selectedFilters.gradeLevel[0]) {
                         classIndex = this.classes.findIndex((classElement) =>
-                            classElement === this.selectedFilters.gradeLevel);
+                            classElement === this.selectedFilters.gradeLevel[0]);
                     } else if (showDefault) {
                         classIndex = this.classes.findIndex(value => framework.gradeLevel.includes(value));
                     }
 
                     if (_.isNumber(classIndex)) {
                         this.selectedClassIndex.push(classIndex);
-                        filters.gradeLevel = this.classes[this.selectedClassIndex[0]];
                     }
                     break;
             }
         });
 
-        this.filterChange.emit(filters);
+        this.triggerFilterChangeEvent();
     }
 
     onBoardChange(option) {
@@ -144,24 +155,32 @@ export class LibraryFiltersComponent implements OnInit {
             this.selectedClassIndex = [event.data.index];
         }
 
-        this.filterChange.emit(this.getSelectedFilters());
+        this.triggerFilterChangeEvent();
     }
 
     getSelectedFilters() {
         const filters: any = {};
-        filters.board = this.selectedBoard.name;
+        filters.board = [this.selectedBoard.name];
 
         if (this.selectedMediumIndex.length) {
             filters.appliedFilters = true;
-            filters.medium = this.mediums[this.selectedMediumIndex[0]];
+            filters.medium = [this.mediums[this.selectedMediumIndex[0]]];
         }
 
         if (this.selectedClassIndex.length) {
             filters.appliedFilters = true;
-            filters.gradeLevel = this.classes[this.selectedClassIndex[0]];
+            filters.gradeLevel = [this.classes[this.selectedClassIndex[0]]];
         }
 
         return filters;
+    }
+
+    triggerFilterChangeEvent() {
+        const data: IFilterChange = {
+            filters: this.getSelectedFilters(),
+            channelId: this.hashTagId
+        };
+        this.filterChange.emit(data);
     }
 }
 

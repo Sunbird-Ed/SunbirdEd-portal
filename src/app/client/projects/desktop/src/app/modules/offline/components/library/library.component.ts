@@ -1,14 +1,16 @@
+import { element } from 'protractor';
 import { Component, OnInit, EventEmitter, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { combineLatest, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
+import { combineLatest, Subject, of } from 'rxjs';
+import { mergeMap, tap, catchError } from 'rxjs/operators';
 
 import * as _ from 'lodash-es';
 import {
     ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage,
     BrowserCacheTtlService
 } from '@sunbird/shared';
-import { PageApiService } from '@sunbird/core';
+import { PageApiService, SearchService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { PublicPlayerService } from '@sunbird/public';
 
@@ -27,6 +29,8 @@ export class LibraryComponent implements OnInit {
     organisationId: string;
     public carouselMasterData: Array<ICaraouselData> = [];
     public pageSections: Array<ICaraouselData> = [];
+
+    public sections: Array<any> = [];
     public initFilters = false;
     public userDetails: any = {};
     public selectedFilters: any;
@@ -35,6 +39,7 @@ export class LibraryComponent implements OnInit {
     public unsubscribe$ = new Subject<void>();
 
     public noResultMessage: INoResultMessage;
+    public recentlyAddedContents = [];
 
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
 
@@ -55,12 +60,12 @@ export class LibraryComponent implements OnInit {
         private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService,
         private publicPlayerService: PublicPlayerService,
+        public searchService: SearchService
     ) { }
 
     ngOnInit() {
         this.getSelectedFilters();
         this.setNoResultMessage();
-        this.fetchContentOnParamChange();
     }
 
     getSelectedFilters() {
@@ -74,14 +79,12 @@ export class LibraryComponent implements OnInit {
 
 
     onFilterChange(event) {
-        this.dataDrivenFilters = _.cloneDeep(event);
-        // this.hashTagId = data.hashTagId;
-        // this.queryParams = data.filters;
-        // this.fetchContentOnParamChange();
-        console.log('event', event);
+        this.showLoader = true;
+        this.dataDrivenFilters = _.cloneDeep(event.filters);
         this.resetSections();
-        this.fetchPageData();
-        this.publicPlayerService.libraryFilters = event;
+        this.fetchContents();
+        this.publicPlayerService.libraryFilters = event.filters;
+        this.hashTagId = event.channelId;
     }
 
     resetSections() {
@@ -89,72 +92,88 @@ export class LibraryComponent implements OnInit {
         this.pageSections = [];
     }
 
-    private fetchContentOnParamChange() {
-        combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
-            takeUntil(this.unsubscribe$))
-            .subscribe((result) => {
-                this.showLoader = true;
-                this.queryParams = { ...result[1] };
-                this.carouselMasterData = [];
-                this.pageSections = [];
-                this.fetchPageData();
-            });
-    }
-
-    private fetchPageData() {
-        const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
-            if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
-                return false;
-            }
-            return value.length;
-        });
-        const softConstraintData = {
+    constructSearchRequest(addFilters) {
+        let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
+        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+        const softConstraintData: any = {
             filters: {
-                channel: this.hashTagId,
-                board: [this.dataDrivenFilters.board]
+                channel: this.hashTagId
             },
             softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
             mode: 'soft'
         };
-        const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
+        if (this.dataDrivenFilters.board) {
+            softConstraintData.board = this.dataDrivenFilters.board;
+        }
+        const facets = ['board', 'medium', 'gradeLevel', 'subject'];
+        const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.dataDrivenFilters, 'appliedFilters'),
             softConstraintData);
         const option = {
-            organisationId: this.organisationId,
-            source: 'web',
-            name: 'Explore',
-            filters: _.get(this.queryParams, 'appliedFilters') ? filters : _.get(manipulatedData, 'filters'),
+            filters: {},
             mode: _.get(manipulatedData, 'mode'),
-            exists: [],
-            params: this.configService.appConfig.ExplorePage.contentApiQueryParams
+            facets: facets,
+            params: this.configService.appConfig.ExplorePage.contentApiQueryParams,
         };
-        if (_.get(manipulatedData, 'filters')) {
+        if (addFilters) {
+            option.filters = _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters;
+        }
+        option.filters['contentType'] = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+        if (manipulatedData.filters) {
             option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
         }
-        this.pageApiService.getPageData(option)
-            .subscribe(data => {
-                this.showLoader = false;
-                this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
-                if (!this.carouselMasterData.length) {
-                    return; // no page section
-                }
+        return option;
+    }
 
-                if (this.carouselMasterData.length >= 2) {
-                    this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-                } else if (this.carouselMasterData.length >= 1) {
-                    this.pageSections = [this.carouselMasterData[0]];
+    fetchContents() {
+        const isBrowse = Boolean(this.router.url.includes('browse'));
+
+        // First call - Search content with selected filters and API should call always.
+        // Second call - Search content without selected filters and API should not call in browse page
+        combineLatest(this.searchContent(true, false), this.searchContent(false, isBrowse)).subscribe(
+            ([response1, response2]) => {
+                if (response1) {
+                    this.showLoader = false;
+                    const filteredContents = _.omit(_.groupBy(response1['result'].content, 'subject'), ['undefined']);
+                    this.sections = [];
+
+                    if (response2) {
+                        this.sections.push({
+                            contents: _.orderBy(_.get(response2, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
+                            name: 'Recently Added'
+                        });
+                    }
+
+                    for (const section in filteredContents) {
+                        if (section) {
+                            this.sections.push({
+                                name: section,
+                                contents: filteredContents[section]
+                            });
+                        }
+                    }
+                    this.carouselMasterData = this.prepareCarouselData(this.sections);
+                    if (!this.carouselMasterData.length) {
+                        return; // no page section
+                    }
+                    if (this.carouselMasterData.length >= 2) {
+                        this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+                    } else if (this.carouselMasterData.length >= 1) {
+                        this.pageSections = [this.carouselMasterData[0]];
+                    }
+                } else {
+                    this.showLoader = false;
+                    this.carouselMasterData = [];
+                    this.pageSections = [];
+                    this.toasterService.error(this.resourceService.messages.fmsg.m0004);
                 }
-            }, err => {
-                this.showLoader = false;
-                this.carouselMasterData = [];
-                this.pageSections = [];
-                this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-            });
+            }
+        );
     }
 
     private prepareCarouselData(sections = []) {
-        const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.ExplorePage;
+        const { constantData, metaData, dynamicFields } = this.configService.appConfig.ExplorePage;
         const carouselData = _.reduce(sections, (collector, element) => {
-            const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
+            const contents = _.get(element, 'contents') || [];
             element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
             if (element.contents && element.contents.length) {
                 element.contents.forEach((item) => {
@@ -181,24 +200,26 @@ export class LibraryComponent implements OnInit {
         }
     }
 
-    onViewAllClick(event) {
-        const section = _.cloneDeep(this.carouselMasterData[0]);
-        const searchQuery = JSON.parse(section.searchQuery);
-        const softConstraintsFilter = {
-            board: [this.dataDrivenFilters.board],
-            channel: this.hashTagId,
-        };
-        if (_.includes(this.router.url, 'browse')) {
-            searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
-            searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
-            searchQuery.request.filters.exists = searchQuery.request.exists;
+    searchContent(addFilter: boolean, shouldCallAPI) {
+        if (shouldCallAPI) {
+            return of(undefined);
         }
-        this.cacheService.set('viewAllQuery', searchQuery.request.filters);
-        this.cacheService.set('pageSection', section, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-        const queryParams = { ...searchQuery.request.filters, ...this.queryParams };
-        const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + section.name.replace(/\s/g, '-');
-        this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
+        const option = this.constructSearchRequest(addFilter);
+        return this.searchService.contentSearch(option).pipe(
+            tap(data => {
+            }), catchError(error => {
+                return of(undefined);
+            }));
+    }
 
+    onViewAllClick(event) {
+        const queryParams = {
+            channel: this.hashTagId
+        };
+
+        this.router.navigate(['view-all'], {
+            queryParams: queryParams
+        });
     }
 
     public playContent(event) {
