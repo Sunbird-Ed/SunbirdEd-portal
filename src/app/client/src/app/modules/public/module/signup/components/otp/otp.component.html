@@ -7,7 +7,7 @@
 
 
 <div class="grey text text-center otp-label">
-  <span *ngIf="emailAddress">{{resourceService.frmelmnts.lbl.OTPhasbeensentToEmail}}:<br>vinod kumar@zool.in </span>
+  <span *ngIf="emailAddress">{{resourceService.frmelmnts.lbl.OTPhasbeensentToEmail}}:<br>{{emailAddress}} </span>
   <span *ngIf="phoneNumber">{{resourceService.frmelmnts.lbl.OTPhasbeensentToPhone}}:<br>{{phoneNumber}} </span>
 </div>
 <div class="grey text text-center mt-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
