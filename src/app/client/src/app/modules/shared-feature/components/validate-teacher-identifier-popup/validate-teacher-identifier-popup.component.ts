@@ -29,8 +29,8 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   showStateDropdown: boolean;
   telemetryCdata: Array<{}> = [];
   telemetryInteractObject: IInteractEventObject;
-  failTelemetryEdata: any;
-  pageId: string;
+  closeInteractEdata: any;
+  pageId = 'user-verification-popup';
   constructor(
     public userService: UserService,
     public resourceService: ResourceService,
@@ -38,7 +38,6 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
 
   ngOnInit() {
     this.userId = this.userService.userid;
-    this.pageId = 'user-verification-popup';
     this.processUserFeedData();
     this.initializeFormField();
   }
@@ -109,8 +108,8 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   }
 
   setTelemetryData() {
-    this.failTelemetryEdata = {
-      id: this.extIdVerified ? 'user-identifier-verified' : 'user-identifier-failed',
+    this.closeInteractEdata = {
+      id: this.extIdVerified ? 'ext-user-verify-success' : 'ext-user-verify-fail',
       type: 'click',
       pageid: this.pageId
 
