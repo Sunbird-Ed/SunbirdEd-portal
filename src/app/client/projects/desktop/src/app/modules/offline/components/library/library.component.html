@@ -26,7 +26,7 @@
                     (afterChange)="afterChange($event)">
                     <div ngxSlickItem *ngFor="let content of section?.contents" class="sbcardwidth slide mr-16">
                         <sb-library-card [content]="content" [type]="'recently_viewed'"
-                            [cardImg]="content?.cardImg || 'assets/images/book.png' | cdnprefixurl"
+                            [cardImg]="content?.cardImg || 'assets/images/book.png'"
                             (click)="playContent({event: $event, data: content})"></sb-library-card>
                     </div>
                 </ngx-slick>
