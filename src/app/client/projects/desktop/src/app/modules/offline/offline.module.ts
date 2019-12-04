@@ -1,6 +1,6 @@
 import { ExploreModule } from './../../../../../../src/app/modules/public/module/explore/explore.module';
 import { ContentManagerService } from './services';
-import { SuiModalModule, SuiProgressModule, SuiAccordionModule, SuiTabsModule, SuiSelectModule } from 'ng2-semantic-ui';
+import { SuiModalModule, SuiProgressModule, SuiAccordionModule, SuiTabsModule, SuiSelectModule, SuiDimmerModule } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
   BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
-  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
+  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent, DesktopViewAllComponent,
   OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
   OnboardingLocationComponent, OnboardingUserPreferenceComponent
 } from './components';
@@ -22,6 +22,9 @@ import { SlickModule } from 'ngx-slick';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { DesktopExploreContentComponent } from './components/desktop-explore-content/desktop-explore-content.component';
+import { NgInviewModule } from 'angular-inport';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 
 @NgModule({
   imports: [
@@ -43,7 +46,10 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     OrderModule,
     SlickModule,
     ReactiveFormsModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    SuiDimmerModule,
+    NgInviewModule,
+    SharedFeatureModule
   ],
   providers: [DeviceDetectorService, ContentManagerService],
   declarations: [ContentImportHeaderComponent, WatchVideoComponent,
@@ -56,6 +62,8 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     OfflineFaqComponent,
     OfflineReportIssuesComponent,
     OfflineHelpVideosComponent,
+    DesktopExploreContentComponent,
+    DesktopViewAllComponent,
     OnboardingComponent,
     OnboardingLocationComponent,
     OnboardingUserPreferenceComponent,

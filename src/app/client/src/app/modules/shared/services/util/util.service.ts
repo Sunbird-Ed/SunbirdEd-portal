@@ -38,7 +38,11 @@ export class UtilService {
       subTopic: this.getTopicSubTopic('subTopic', data.topic),
       metaData: {},
       completionPercentage: data.completionPercentage || 0,
-      mimeTypesCount: data.mimeTypesCount || 0
+      mimeTypesCount: data.mimeTypesCount || 0,
+      cardImg: data.appIcon || data.courseLogoUrl || 'assets/images/book.png',
+      resourceType: data.resourceType,
+      badgeAssertions: data.badgeAssertions,
+      organisation: data.organisation
     };
 
     // this customization is done for enrolled courses

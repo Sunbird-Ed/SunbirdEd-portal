@@ -11,10 +11,8 @@
   .header {
     display: flex;
     flex-direction: row;
-    margin: 15px 0;
-    padding: 10px 0;
+    margin: 16px 0;
     .title {
-      font-family: inherit;
       text-overflow: ellipsis;
       overflow: hidden;
       flex: 1;
@@ -38,6 +36,11 @@
     .item {
       padding: 0 15px;
       box-sizing: border-box;
+      @include respond-below(sm) {
+        flex: 0 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 15px;
+      }
       &.show-3 {
         flex: 0 0 33.33%;
         max-width: 33.33%;
@@ -53,17 +56,19 @@
       }
     }
   }
-  @media (max-width: 768px) {
-    .cards-container {
-      .item {
-        flex: 0 100% !important;
-        max-width: 100% !important;
-        margin-bottom: 15px;
-      }
-    }
+  .slick-prev {
+    left: -16px !important;
+  }
+  .slick-next {
+    right: -16px !important;
   }
 }
+/* sb-card styles getting overriden by _cards.scss */
+::ng-deep .sb-card:hover {
+  transform: none !important;
+}
 
-.MB-16 {
-    margin-bottom: 16px
+.sbcardwidth {
+  width: 292px !important;
+  padding: 8px 0px;
 }
