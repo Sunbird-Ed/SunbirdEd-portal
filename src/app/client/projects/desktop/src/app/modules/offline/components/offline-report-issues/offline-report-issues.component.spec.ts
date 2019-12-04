@@ -45,10 +45,10 @@ describe('OfflineReportIssuesComponent', () => {
         }
       }
     },
-    apiData ={
-      email: 'santoh@gmail.com',
-      description: 'fdsfsdf'
-    };
+      apiData = {
+        email: 'santoh@gmail.com',
+        description: 'fdsfsdf'
+      };
     TestBed.configureTestingModule({
       declarations: [OfflineReportIssuesComponent],
       imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot()],
