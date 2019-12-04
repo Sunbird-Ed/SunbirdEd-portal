@@ -135,11 +135,11 @@ describe('SignUpComponent', () => {
     component.initializeFormFields();
     let errors = {};
     const password = component.signUpForm.controls['password'];
-    password.setValue('');
+    password.setValue('UG');
     tick(200);
     errors = password.errors || {};
     expect(component.onPasswordChange).toHaveBeenCalled();
-    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
     + 'lower and upper case alphabets and special characters.');
   }));
   it('should show required uppercase validation error message for password', fakeAsync(() => {
@@ -151,7 +151,7 @@ describe('SignUpComponent', () => {
     tick(200);
     errors = password.errors || {};
     expect(component.onPasswordChange).toHaveBeenCalled();
-    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
     + 'lower and upper case alphabets and special characters.');
   }));
   it('should show required digit validation error message for password', fakeAsync(() => {
@@ -163,7 +163,7 @@ describe('SignUpComponent', () => {
     tick(200);
     errors = password.errors || {};
     expect(component.onPasswordChange).toHaveBeenCalled();
-    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
     + 'lower and upper case alphabets and special characters.');
   }));
   it('should show required special character validation error message for password', fakeAsync(() => {
@@ -175,7 +175,7 @@ describe('SignUpComponent', () => {
     tick(200);
     errors = password.errors || {};
     expect(component.onPasswordChange).toHaveBeenCalled();
-    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
     + 'lower and upper case alphabets and special characters.');
   }));
   it('should show required at least 8 characters validation error message for password', fakeAsync(() => {
@@ -187,7 +187,7 @@ describe('SignUpComponent', () => {
     tick(200);
     errors = password.errors || {};
     expect(component.onPasswordChange).toHaveBeenCalled();
-    expect(component.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
     + 'lower and upper case alphabets and special characters.');
   }));
   it('should call onEmailChange method', () => {
