@@ -63,8 +63,7 @@ export class LibraryFiltersComponent implements OnInit {
             this.boards = _.get(orgDetails, 'result.channel.frameworks');
 
             if (this.boards) {
-
-                if (this.selectedFilters && this.selectedFilters.board && this.selectedFilters.board[0]) {
+                if (_.get(this.selectedFilters, 'board[0]')) {
                     this.selectedBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
                 } else {
                     this.selectedBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
@@ -96,7 +95,7 @@ export class LibraryFiltersComponent implements OnInit {
                     this.mediums = element.terms.map(medium => medium.name);
 
                     let mediumIndex;
-                    if (this.selectedFilters && this.selectedFilters.medium && this.selectedFilters.medium[0]) {
+                    if (_.get(this.selectedFilters, 'medium[0]')) {
                         mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
                     } else if (showDefault) {
                         mediumIndex = this.mediums.findIndex(medium => framework.medium.includes(medium));
@@ -110,7 +109,7 @@ export class LibraryFiltersComponent implements OnInit {
                     this.classes = element.terms.map(gradeLevel => gradeLevel.name);
                     let classIndex;
 
-                    if (this.selectedFilters && this.selectedFilters.gradeLevel && this.selectedFilters.gradeLevel[0]) {
+                    if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
                         classIndex = this.classes.findIndex((classElement) =>
                             classElement === this.selectedFilters.gradeLevel[0]);
                     } else if (showDefault) {
