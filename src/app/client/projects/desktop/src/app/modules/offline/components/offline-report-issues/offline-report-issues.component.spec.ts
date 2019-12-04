@@ -136,7 +136,7 @@ describe('OfflineReportIssuesComponent', () => {
     expect(component.raiseSupportTicketInteractEdata).toBeDefined();
     expect(component.toasterService.error(resourceServiceStub.frmelmnts.lbl.errorWhileGeneratingTicket));
   });
-  fit('should throw network error an when unable raise ticket ', () => {
+  it('should throw network error an when unable raise ticket ', () => {
     const offlineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     spyOn(offlineReportIssuesService, 'reportOtherIssue').and.returnValue(of('false'));
     spyOn(component.toasterService, 'error').and.returnValue(throwError(resourceServiceStub.frmelmnts.lbl.errorWhileGeneratingTicket));
@@ -153,7 +153,7 @@ describe('OfflineReportIssuesComponent', () => {
     });
 
   });
-  fit('should throw fresh desk error an when unable raise ticket ', () => {
+  it('should throw fresh desk error an when unable raise ticket ', () => {
     const offlineReportIssuesService = TestBed.get(OfflineReportIssuesService);
     spyOn(offlineReportIssuesService, 'reportOtherIssue').and.returnValue(of('false'));
     spyOn(component, 'setTelemetryData').and.callThrough();
