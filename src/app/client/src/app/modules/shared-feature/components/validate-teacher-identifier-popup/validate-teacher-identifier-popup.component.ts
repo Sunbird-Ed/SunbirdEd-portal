@@ -99,8 +99,11 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   }
 
   closeModal() {
+    if (this.extIdVerified) {
+      this.userService.getUserProfile();
+    }
     this.createValidateModal.deny();
-      this.close.emit();
+    this.close.emit();
   }
 
   navigateToValidateId() {
