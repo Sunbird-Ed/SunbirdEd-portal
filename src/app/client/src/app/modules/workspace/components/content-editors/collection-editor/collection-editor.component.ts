@@ -207,6 +207,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
+      defaultLicense: this.frameworkService.getDefaultLicense(),
       framework: this.routeParams.framework,
       resource_framework: this.resource_framework,
       env: this.routeParams.type.toLowerCase(),
