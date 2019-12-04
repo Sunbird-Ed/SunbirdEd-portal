@@ -39,7 +39,6 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public collectionDetails: any;
   public ownershipType: Array<string>;
   public queryParams: object;
-  public defaultLicense: any;
   resource_framework: string;
   /**
   * Default method of classs CollectionEditorComponent
@@ -74,7 +73,6 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         }
         this.resource_framework = data.resource_framework['defaultFramework'].code;
         this.ownershipType = data.ownershipType;
-        this.defaultLicense = _.get(data, 'defaultLicense');
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -101,16 +99,14 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$, this.frameworkService.channelData$).
+      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata ,
-        defaultLicense: _.get(data[5], 'defaultLicense')})));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$, this.frameworkService.channelData$).
+      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata,
-        defaultLicense: _.get(data[4], 'defaultLicense') })));
+        collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
     }
   }
   lockContent () {
@@ -211,7 +207,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
-      defaultLicense: this.defaultLicense,
+      defaultLicense: this.frameworkService.getDefaultLicense(),
       framework: this.routeParams.framework,
       resource_framework: this.resource_framework,
       env: this.routeParams.type.toLowerCase(),

@@ -32,7 +32,6 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public contentDetails: any;
   public videoMaxSize: any;
-  public defaultLicense: any;
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
@@ -54,14 +53,12 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.disableBrowserBackButton();
-    this.frameworkService.initialize();
     this.getDetails().pipe(first(),
       tap(data => {
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
         this.ownershipType = data.ownershipType;
-        this.defaultLicense = _.get(data, 'defaultLicense');
         this.showLoader = false;
         this.initEditor();
         this.setWindowContext();
@@ -89,14 +86,14 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.channelData$).
+      this.editorService.getOwnershipType(), this.lockContent()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], defaultLicense: _.get(data[4], 'defaultLicense') })));
+        collectionDetails: data[1], ownershipType: data[2] })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.frameworkService.channelData$).
+      this.editorService.getOwnershipType()).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
-        collectionDetails: data[1], ownershipType: data[2], defaultLicense: _.get(data[3], 'defaultLicense') })));
+        collectionDetails: data[1], ownershipType: data[2] })));
     }
   }
   private lockContent () {
@@ -176,7 +173,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
-      defaultLicense: this.defaultLicense,
+      defaultLicense: this.frameworkService.getDefaultLicense(),
       env: 'generic-editor',
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,
