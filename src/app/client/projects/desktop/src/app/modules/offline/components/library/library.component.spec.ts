@@ -4,7 +4,8 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule } from '@angular/router';
 import {
-    ResourceService, ToasterService, BrowserCacheTtlService, NavigationHelperService, ConfigService, UtilService
+    ResourceService, ToasterService, BrowserCacheTtlService, NavigationHelperService,
+    ConfigService, UtilService
 } from '@sunbird/shared';
 import { TenantService, OrgDetailsService } from '@sunbird/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,7 +21,6 @@ import { of as observableOf, throwError } from 'rxjs';
 describe('LibraryComponent', () => {
     let component: LibraryComponent;
     let fixture: ComponentFixture<LibraryComponent>;
-
     const resourceBundle = {
         messages: {
             fmsg: {
@@ -28,7 +28,6 @@ describe('LibraryComponent', () => {
             }
         }
     };
-
     class FakeActivatedRoute {
         snapshot = {
             data: {
@@ -70,15 +69,6 @@ describe('LibraryComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(LibraryComponent);
         component = fixture.componentInstance;
-        // orgDetailsService = TestBed.get(OrgDetailsService);
-        // sendOrgDetails = true;
-        // spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
-        //     if (sendOrgDetails) {
-        //         return of({ hashTagId: '123' });
-        //     }
-        //     return throwError({});
-        // });
-
         fixture.detectChanges();
     });
 
