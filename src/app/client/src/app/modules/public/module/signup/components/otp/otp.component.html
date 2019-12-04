@@ -25,7 +25,7 @@
       *ngIf="!disableResendButton" class="sb-btn sb-btn-normal button sb-btn-outline-primary mr-8 w-50" tabindex="0"
       [ngClass]="{'grey': disableResendButton}" (click)="resendOTP(); disableResendButton = true;"> {{resourceService.frmelmnts.lbl.resendOTP}}</button>
       <button  appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-       class="sb-btn sb-btn-normal button w-50" [ngClass]="{'sb-btn-gray disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="0"  (click)="verifyOTP()"> {{ resourceService.frmelmnts.lbl.submit }} </button>
+       class="ui button w-50" [ngClass]="{'grey':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="0"  (click)="verifyOTP()"> {{ resourceService.frmelmnts.lbl.submit }} </button>
     </div>
 </form>
 <!-- <div appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata" *ngIf="!disableResendButton" [ngClass]="{'grey': disableResendButton}" (click)="resendOTP(); disableResendButton = true;" class="fs-1 text-center blue text mb-50 cursor-pointer"

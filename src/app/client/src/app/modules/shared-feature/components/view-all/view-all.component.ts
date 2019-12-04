@@ -459,6 +459,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   exportOfflineContent(contentId) {
     this.contentManagerService.exportContent(contentId).subscribe(data => {
       this.showExportLoader = false;
+      this.toasterService.success(this.resourceService.messages.smsg.m0059);
     }, error => {
       this.showExportLoader = false;
       if (error.error.responseCode !== 'NO_DEST_FOLDER') {
