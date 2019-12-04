@@ -1,17 +1,13 @@
-import { element } from 'protractor';
 import { Component, OnInit, EventEmitter, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { takeUntil, filter } from 'rxjs/operators';
 import { combineLatest, Subject, of } from 'rxjs';
-import { mergeMap, tap, catchError } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 
 import * as _ from 'lodash-es';
 import {
     ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage,
-    BrowserCacheTtlService
 } from '@sunbird/shared';
-import { PageApiService, SearchService } from '@sunbird/core';
-import { CacheService } from 'ng2-cache-service';
+import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 
 @Component({
@@ -52,13 +48,10 @@ export class LibraryComponent implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private pageApiService: PageApiService,
         private utilService: UtilService,
         private toasterService: ToasterService,
         private configService: ConfigService,
         private resourceService: ResourceService,
-        private cacheService: CacheService,
-        private browserCacheTtlService: BrowserCacheTtlService,
         private publicPlayerService: PublicPlayerService,
         public searchService: SearchService
     ) { }
