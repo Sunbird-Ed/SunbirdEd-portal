@@ -49,7 +49,7 @@
                 <i class=" icon">+91-</i>
               </div>
             </div>
-            <label class="ui basic label pt-0 infotext" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors) || passwordError !== '')}">{{resourceService.frmelmnts.lbl.passwd}}</label>
+            <label class="ui basic label pt-0 infotext" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors && signUpForm.controls['password'].errors.passwordError))}">{{resourceService.frmelmnts.lbl.passwd}}</label>
             <div class="required field mb-20">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.password.touched && signUpForm.controls['password'].errors)">{{resourceService.frmelmnts.lbl.password}}</label>
               <div class="ui icon input">

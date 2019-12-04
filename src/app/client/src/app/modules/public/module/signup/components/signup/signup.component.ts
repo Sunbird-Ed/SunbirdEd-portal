@@ -36,8 +36,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   submitInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}>;
   instance: string;
-  passwordError = '';
-
+  
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
@@ -125,38 +124,38 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       contactType: new FormControl('phone'),
       uniqueContact: new FormControl(null, [Validators.required])
     }, {
-        validator: (formControl) => {
-          const passCtrl = formControl.controls.password;
-          const conPassCtrl = formControl.controls.confirmPassword;
-          const nameCtrl = formControl.controls.name;
-          if (_.trim(nameCtrl.value) === '') { nameCtrl.setErrors({ required: true }); }
-          if (_.trim(passCtrl.value) === '') { passCtrl.setErrors({ required: true }); }
-          if (_.trim(conPassCtrl.value) === '') { conPassCtrl.setErrors({ required: true }); }
-          if (passCtrl.value !== conPassCtrl.value) {
-            conPassCtrl.setErrors({ validatePasswordConfirmation: true });
-          } else { conPassCtrl.setErrors(null); }
-          return null;
-        }
-      });
+      validator: (formControl) => {
+        const passCtrl = formControl.controls.password;
+        const conPassCtrl = formControl.controls.confirmPassword;
+        const nameCtrl = formControl.controls.name;
+        this.onPasswordChange(passCtrl);
+        if (_.trim(nameCtrl.value) === '') { nameCtrl.setErrors({ required: true }); }
+        if (_.trim(passCtrl.value) === '') { passCtrl.setErrors({ required: true }); }
+        if (_.trim(conPassCtrl.value) === '') { conPassCtrl.setErrors({ required: true }); }
+        if (passCtrl.value !== conPassCtrl.value) {
+          conPassCtrl.setErrors({ validatePasswordConfirmation: true });
+        } else { conPassCtrl.setErrors(null); }
+        return null;
+      }
+    });
     this.onContactTypeValueChanges();
     this.enableSignUpSubmitButton();
     this.onPhoneChange();
-    this.onPasswordChange();
   }
 
-  onPasswordChange(): void {
-    this.signUpForm.get('password').valueChanges.subscribe(val => {
-      const lwcsRegex = new RegExp('^(?=.*[a-z])');
-      const upcsRegex = new RegExp('^(?=.*[A-Z])');
-      const charRegex = new RegExp('^(?=.{8,})');
-      const numRegex = new RegExp('^(?=.*[0-9])');
-      const specRegex = new RegExp('^[^<>{}\'\"/|;:.\ ,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
-      if (!charRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)) {
-        this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
-      } else {
-        this.passwordError = '';
-      }
-    });
+  onPasswordChange(passCtrl: FormControl): void {
+    const val = _.get(passCtrl, 'value');
+    const lwcsRegex = new RegExp('^(?=.*[a-z])');
+    const upcsRegex = new RegExp('^(?=.*[A-Z])');
+    const charRegex = new RegExp('^(?=.{8,})');
+    const numRegex = new RegExp('^(?=.*[0-9])');
+    const specRegex = new RegExp('^[^<>{}\'\"/|;:.\ ,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
+    if (!charRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)) {
+      const passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
+      passCtrl.setErrors({ passwordError });
+    } else {
+      passCtrl.setErrors(null);
+    }
   }
 
   onContactTypeValueChanges(): void {
@@ -277,7 +276,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       (err) => {
         const failedgenerateOTPMessage = (_.get(err, 'error.params.status') && err.error.params.status === 'PHONE_ALREADY_IN_USE') ||
           (_.get(err, 'error.params.status') &&
-          err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
+            err.error.params.status === 'EMAIL_IN_USE') ? err.error.params.errmsg : this.resourceService.messages.fmsg.m0085;
         this.toasterService.error(failedgenerateOTPMessage);
         this.resetGoogleCaptcha();
         this.disableSubmitBtn = false;
