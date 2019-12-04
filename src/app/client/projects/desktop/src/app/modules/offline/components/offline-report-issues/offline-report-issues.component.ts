@@ -23,7 +23,7 @@ export class OfflineReportIssuesComponent implements OnInit {
   onClickReportOtherIssueInteractEdata: IInteractEventEdata;
   constructor(
     private formBuilder: FormBuilder,
-    private offlineReportIssuesService: OfflineReportIssuesService,
+    public offlineReportIssuesService: OfflineReportIssuesService,
     public resourceService: ResourceService,
     public toasterService: ToasterService,
     public activatedRoute: ActivatedRoute,
