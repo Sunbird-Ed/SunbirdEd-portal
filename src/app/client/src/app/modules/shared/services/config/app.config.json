@@ -315,7 +315,8 @@
   },
   "PublicPlayer": {
     "contentApiQueryParams": {
-      "orgdetails": "orgName,email"
+      "orgdetails": "orgName,email",
+      "licenseDetails": "name,description,url"
     }
   },
   "ContentPlayer": {
