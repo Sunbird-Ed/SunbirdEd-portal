@@ -29,6 +29,8 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   showStateDropdown: boolean;
   telemetryCdata: Array<{}> = [];
   telemetryInteractObject: IInteractEventObject;
+  closeInteractEdata: any;
+  pageId = 'user-verification-popup';
   constructor(
     public userService: UserService,
     public resourceService: ResourceService,
@@ -70,8 +72,8 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
     if (action === 'accept') {
       const channelValue = _.get(this.userFeedData, 'data.prospectChannels').length > 1 ?
         this.userDetailsForm.get('state').value : _.get(this.userFeedData, 'data.prospectChannels[0]');
-        req.request['channel'] = channelValue;
-        req.request['userExtId'] = this.userDetailsForm.get('extId').value;
+      req.request['channel'] = channelValue;
+      req.request['userExtId'] = this.userDetailsForm.get('extId').value;
     }
 
     this.userService.userMigrate(req).subscribe((data) => {
@@ -98,7 +100,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
 
   closeModal() {
     this.createValidateModal.deny();
-    this.close.emit();
+      this.close.emit();
   }
 
   navigateToValidateId() {
@@ -106,6 +108,12 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   }
 
   setTelemetryData() {
+    this.closeInteractEdata = {
+      id: this.extIdVerified ? 'ext-user-verify-success' : 'ext-user-verify-fail',
+      type: 'click',
+      pageid: this.pageId
+
+    };
     this.telemetryCdata = [
       {
         id: 'user:state:teacherId',
