@@ -115,7 +115,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       },
       'contentId': '',
       'sid': this.userService.sessionId,
-      'uid': this.userService.userid,
+      'uid': this.questionMetaData.data.identifier || this.userService.userid,
       'timeDiff': this.userService.getServerTimeDiff,
       'contextRollup': {},
       'channel': this.userService.channel,
