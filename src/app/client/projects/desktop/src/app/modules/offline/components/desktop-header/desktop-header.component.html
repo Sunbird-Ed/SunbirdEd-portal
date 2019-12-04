@@ -36,7 +36,7 @@
                                 placeholder="{{resourceService?.frmelmnts?.lbl?.searchContent}}&lrm;"
                                 [(ngModel)]="queryParam.key" (keyup.enter)="onEnter(queryParam.key)" />
 
-                            <i class="icon-svg icon-svg--xxs icon-close hide hidden" (click)="clearSearchQuery()"
+                            <i class="icon-svg icon-svg--xxs icon-close" *ngIf="queryParam?.key?.length" (click)="clearSearchQuery()"
                                 appTelemetryInteract [telemetryInteractEdata]="clearSearchInteractEdata">
                                 <svg class="icon icon-svg--primary">
                                     <use xlink:href="assets/images/sprite.svg#close-button"></use>
@@ -76,15 +76,14 @@
 </div>
 <!-- header component ends -->
 
-<!-- menu bar with langugage selection component -->
+<!-- menu bar with language selection component -->
 <div class="sb-menubar sb-bg-color-primary-100">
     <div class="ui container d-flex flex-ai-center flex-jc-space-between">
         <!-- menu component -->
-        <div class="sb-menubar">
-            <div class="d-flex flex-ai-center flex-jc-space-between">
+            <div class="w-100 d-flex flex-ai-center flex-jc-space-between">
 
                 <div class="d-flex sb-offline-menu-container flex-ai-center">
-                    <a [routerLink]="'/'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                    <a [routerLink]="'/'" [ngClass]="(router.isActive('/', false) && !(router.isActive('/browse', false) || router.isActive('/help-center', false)) ) ? 'active': ''">
                         <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
                     </a>
                     <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
@@ -99,14 +98,13 @@
 
                 <!-- language component -->
                 <div class="sb-field mb-0">
-                    <app-language-dropdown [languageRange]="availableLanguages" *ngIf="availableLanguages">
+                    <app-language-dropdown [languageRange]="availableLanguages"
+                        *ngIf="availableLanguages">
                     </app-language-dropdown>
-                    <!--class="computer only ml-auto"-->
                 </div>
                 <!-- language component ends-->
 
             </div>
-        </div>
         <!-- menu component ends -->
 
     </div>

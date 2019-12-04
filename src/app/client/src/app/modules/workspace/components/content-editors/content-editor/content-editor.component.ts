@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, NgZone, Renderer2, OnDestroy } from '
 import * as _ from 'lodash-es';
 import * as iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, IUserProfile, ServerResponse } from '@sunbird/shared';
-import { UserService, TenantService } from '@sunbird/core';
+import { UserService, TenantService, FrameworkService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../../services/editors/editor.service';
 import { environment } from '@sunbird/environment';
@@ -41,7 +41,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     private editorService: EditorService, private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private userService: UserService, private _zone: NgZone, private renderer: Renderer2,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
-    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService
+    private navigationHelperService: NavigationHelperService, private workspaceService: WorkSpaceService,
+    private frameworkService: FrameworkService
   ) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
@@ -194,6 +195,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
       contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
+      defaultLicense: this.frameworkService.getDefaultLicense(),
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff

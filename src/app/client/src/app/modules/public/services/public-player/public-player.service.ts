@@ -24,6 +24,7 @@ export class PublicPlayerService {
   collectionData: ContentData;
   previewCdnUrl: string;
   sessionId;
+  private _libraryFilters: any = {};
 
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
@@ -195,5 +196,14 @@ export class PublicPlayerService {
     }
     return content;
   }
+
+
+    get libraryFilters() {
+        return this._libraryFilters;
+    }
+
+    set libraryFilters(filters) {
+        this._libraryFilters = filters;
+    }
 
 }
