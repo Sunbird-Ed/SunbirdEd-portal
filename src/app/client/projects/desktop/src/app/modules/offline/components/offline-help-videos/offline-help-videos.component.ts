@@ -98,9 +98,5 @@ export class OfflineHelpVideosComponent implements OnInit {
     };
   }
 
-  onWindowResize(event) {
-      this.aspectRatioHeight = event.target.document.querySelector('#help-video-aspect-ratio').offsetHeight;
-      this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
-  }
 
 }
