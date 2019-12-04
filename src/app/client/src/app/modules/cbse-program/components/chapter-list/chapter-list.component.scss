@@ -6,6 +6,8 @@
     }
 }
 
+
+
 .sb-table .sb-table-header.heading-large tr th {
     text-align: center;
 }
@@ -56,6 +58,11 @@
 
 }
 
+.sb-chapterlist .ui.accordion {
+  background: transparent;
+}
+
+
 .template-items {
   .selected-icon {
     display: none;
@@ -93,7 +100,7 @@
   .chapter-dotted-menu {
     padding-bottom: 6px;
   }
-  
+
   i.circle.icon {
     height: auto;
   }
