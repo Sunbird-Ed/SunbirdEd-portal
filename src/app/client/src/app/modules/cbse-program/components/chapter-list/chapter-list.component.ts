@@ -111,7 +111,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
     this.dynamicOutputs = {
       uploadedContentMeta: (contentMeta) => {
-        console.log(contentMeta);
+        this.uploadHandler(contentMeta);
       }
     };
   }
