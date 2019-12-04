@@ -64,7 +64,7 @@
         <div class="sb-chapterlist">
           <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
             <app-recursive-tree [collectionUnits]="collectionHierarchy" [selectedChapter]="selectedChapterOption"
-              (resourceTemplate)="showResourceTemplate($event)"></app-recursive-tree>
+              (nodeMeta)="showResourceTemplate($event)"></app-recursive-tree>
           </sui-accordion>
         </div>
       </div>
