@@ -24,8 +24,7 @@ export const responseSample = {
             audience: ['Learner'],
             board: 'NCERT',
             channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
-            childNodes: ['do_1127639059664650241140', 'do_1127639059664650241141', 'do_1127639059664486401136',
-                'do_1127639059664568321137', 'do_1127639059664568321139', 'do_1127639059664568321138'],
+            childNodes: ['do_1127639059664650241140', 'do_1127639059664650241141', 'do_1127639059664486401136', 'do_1127639059664568321137', 'do_1127639059664568321139', 'do_1127639059664568321138'],
             children: [
                 {
                     code: 'do_1127639059664486401136',
@@ -84,7 +83,7 @@ export const responseSample = {
                     topic: ['Topic 1 child'],
                     versionKey: '1558093990046',
                     visibility: 'Parent',
-                    children: [{ name: 'Question Bank', identifier: 'do_1127639059664568321138' }]
+                    children: [{name: 'Question Bank', identifier: 'do_1127639059664568321138'}]
                 }
             ],
             code: 'org.sunbird.L9HqTc',

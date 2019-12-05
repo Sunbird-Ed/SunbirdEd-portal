@@ -1,28 +1,35 @@
 .sb-table .sb-table-body td {
-    padding: 16px 24px;
-    text-align: center;
-    &:first-child {
-        text-align: left;
-    }
+  padding: 16px 24px;
+  text-align: center;
+  &:first-child {
+      text-align: left;
+  }
 }
 
+
+.panel-container {
+  margin-bottom: 10px;
+  background: #fff;
+}
 
 
 .sb-table .sb-table-header.heading-large tr th {
-    text-align: center;
+  text-align: center;
 }
 
-::ng-deep {
-    .ui.styled.accordion.sb-accordion .active.title {
-        i.icon {
-            transform: rotate(180deg);
-            -webkit-transform: rotate(180deg);
-        }
-    }
 
-}
+  ::ng-deep {
+      .ui.styled.accordion.sb-accordion .active.title {
+          i.icon {
+              transform: rotate(180deg);
+              -webkit-transform: rotate(180deg);
+          }
+      }
 
-@import "variables";
+  }
+
+
+  @import "variables";
 
 //Chapterlist Accordion Section
 .chapter-lists {
@@ -57,11 +64,6 @@
   }
 
 }
-
-.sb-chapterlist .ui.accordion {
-  background: transparent;
-}
-
 
 .template-items {
   .selected-icon {

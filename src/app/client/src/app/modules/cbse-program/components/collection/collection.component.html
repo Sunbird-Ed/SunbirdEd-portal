@@ -1,0 +1,16 @@
+
+<div *ngIf='!showLoader && !collection'>
+  <div  *ngIf="objectKey(collectionList).length" class="ui container">
+    <div *ngFor="let key of objectKey(collectionList)">
+      <sb-library-cards-grid [title]="key"  appTelemetryInteract [contentList]="collectionList[key]" [telemetryInteractEdata]="telemetryInteract" (cardClick)="collectionClickHandler($event)"></sb-library-cards-grid>
+        <!-- <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="telemetryInteract" [data]="content" appTelemetryInteract [telemetryInteractEdata]="telemetryInteract" (clickEvent)="showTopics($event)"></app-card> -->
+    </div>
+  </div>
+  <div  *ngIf="!objectKey(collectionList).length">
+    <app-no-result [data]="{ message: 'messages.stmsg.m0006'}"></app-no-result>
+  </div>
+</div>
+
+<div *ngIf="collection">
+  <app-chapter-list [chapterListComponentInput]="chapterListComponentInput" (selectedQuestionTypeTopic)="selectedQuestionTypeTopic"></app-chapter-list>
+</div>

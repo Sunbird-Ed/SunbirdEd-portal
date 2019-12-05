@@ -1,0 +1,38 @@
+<div class="panel-container" *ngFor="let collection of collectionUnits; let i = index">
+  <sui-accordion-panel [isOpen]=" i === 0 ? true : false">
+    <div title class="sb-accordion-title d-flex flex-ai-center">
+      <i class="chevron down icon mr-16"></i>
+      {{collection.name}} ( {{collection.topic}} )
+      <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
+        (click)="showModal = false; createResource($event, collection)"><i class="add icon"></i>ADD</button>
+    </div>
+    <div content>
+      <div class="chapter-lists level1" *ngIf="collection.leaf">
+        <div class="chapter-lists--item" *ngFor="let content of collection.leaf; let i=index">
+          <span class="item-name"> {{content.name}}</span>
+          <span class="item-status mr-24">{{content.creator}}</span>
+          <span class="item-status mr-24">
+            <span class="sb-label sb-label-table sb-label-success-0">{{content.status}}</span>
+          </span>
+          <span class="item-link mr-16"><button type="button"
+              class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
+          <div class="item relative position">
+            <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
+              <div class="px-8 w-auto"><span class="sb-dotmenu"></span></div>
+              <div class="menu" suiDropdownMenu>
+                <div class="item">Preview</div>
+                <div class="item" (click)="showLargeModal = !showLargeModal">Move</div>
+
+                <div class="item" (click)="deleteResource($event, content, collection)">Delete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sb-chapterlist-child" *ngIf="collection.children">
+        <app-recursive-tree [collectionUnits]="collection.children" [selectedChapter]="selectedChapter"
+            (nodeMeta)="nodeMetaEmitter($event)"></app-recursive-tree>
+      </div>
+    </div>
+  </sui-accordion-panel>
+</div>
