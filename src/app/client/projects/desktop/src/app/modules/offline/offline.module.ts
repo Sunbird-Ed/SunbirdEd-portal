@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
     BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
-    LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent, DesktopViewAllComponent,
+    LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
     OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
     OnboardingLocationComponent, OnboardingUserPreferenceComponent
 } from './components';
@@ -68,7 +68,6 @@ import { DesktopProminentFilterComponent } from './desktop-prominent-filter/desk
         OfflineReportIssuesComponent,
         OfflineHelpVideosComponent,
         DesktopExploreContentComponent,
-        DesktopViewAllComponent,
         OnboardingComponent,
         OnboardingLocationComponent,
         OnboardingUserPreferenceComponent,
