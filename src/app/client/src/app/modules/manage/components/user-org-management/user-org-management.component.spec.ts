@@ -5,7 +5,7 @@ import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ActivatedRoute } from '@angular/router';
-import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
+import { ResourceService, SharedModule, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserOrgManagementComponent } from './user-org-management.component';
@@ -18,6 +18,9 @@ const fakeActivatedRoute = {
       telemetry: {
         env: 'admin-dashboard', pageid: 'manage-page', type: 'view'
       }
+    },
+    routeConfig: {
+      path: 'manage'
     }
   }
 };
@@ -45,6 +48,7 @@ describe('UserOrgManagementComponent', () => {
         ManageService,
         ResourceService,
         ToasterService,
+        NavigationHelperService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ]
     }).compileComponents();
