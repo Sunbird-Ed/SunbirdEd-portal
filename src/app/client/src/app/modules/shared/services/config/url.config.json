@@ -187,7 +187,9 @@
       "READ_FAQ": "faqs/v1/read",
       "CREATE_USER": "desktop/user/v1/create",
       "READ_USER": "desktop/user/v1/read",
-      "LOCATION_SAVE": "data/v1/location/save"
+      "LOCATION_SAVE": "data/v1/location/save",
+      "LOCATION_READ": "data/v1/location/read"
+
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",

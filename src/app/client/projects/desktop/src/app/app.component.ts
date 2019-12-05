@@ -170,8 +170,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * returns telemetry context based on user loggedIn
    */
   private getTelemetryContext(): ITelemetryContext {
-    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
-    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+      const version = (<HTMLInputElement>document.getElementById('buildNumber')).value;
       const anonymousTelemetryContextData = {
         userOrgDetails: {
         userId: 'anonymous',

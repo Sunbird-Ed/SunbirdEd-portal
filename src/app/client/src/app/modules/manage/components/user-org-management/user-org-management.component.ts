@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
+import { NavigationHelperService } from '@sunbird/shared';
+import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import * as $ from 'jquery';
@@ -12,17 +15,17 @@ import * as moment from 'moment';
     templateUrl: 'user-org-management.component.html',
     styleUrls: ['user-org-management.component.scss']
 })
-export class UserOrgManagementComponent {
+export class UserOrgManagementComponent implements OnInit, AfterViewInit {
 
   public showModal = false;
   public userService: UserService;
-  public userProfile: any;
+  public userProfile;
   public geoData: any = {
     'districts': 0,
     'blocks': 0,
     'schools': 0
   };
-  public uploadedDetails: any = {
+  public uploadedDetails = {
     'total_uploaded': 0,
     'accounts_validated': 0,
     'accounts_rejected': 0,
@@ -30,36 +33,45 @@ export class UserOrgManagementComponent {
     'duplicate_account': 0,
     'accounts_unclaimed': 0
   };
-  public geoSummary: any;
-  public validatedUser: any = {
+  public geoSummary;
+  public validatedUser = {
     'districts': 0,
     'blocks': 0,
     'schools': 0,
     'teachers': 0
   };
-  public validatedUserSummary: any;
+  public validatedUserSummary;
   public manageService: ManageService;
   public slug: any = (<HTMLInputElement>document.getElementById('defaultTenant'));
-  public geoJSON: any = 'geo-summary.json';
-  public geoCSV: any = 'geo-detail.csv';
-  public geoDetail: any = 'geo-summary-district.json';
-  public userJSON: any = 'user-summary.json';
-  public userCSV: any = 'user-detail.csv';
-  public userSummary: any = 'validated-user-summary.json';
-  public userDetail: any = 'validated-user-summary-district.json';
-  public userZip: any = 'validated-user-detail.zip';
+  public geoJSON = 'geo-summary.json';
+  public geoCSV = 'geo-detail.csv';
+  public geoDetail = 'geo-summary-district.json';
+  public userJSON = 'user-summary.json';
+  public userCSV = 'user-detail.csv';
+  public userSummary = 'validated-user-summary.json';
+  public userDetail = 'validated-user-summary-district.json';
+  public userZip = 'validated-user-detail.zip';
   public geoButtonText = 'View Details';
   public teachersButtonText = 'View Details';
-  public GeoTableId: any = 'GeoDetailsTable';
-  public geoTableHeader: any = ['Serial No.', 'Districts', 'Blocks', 'Schools'];
-  public geoTabledata: any = [];
-  public userTableId: any = 'ValidatedUserDetailsTable';
-  public userTableHeader: any = ['Serial No.', 'Districts', 'Blocks', 'Schools', 'Regd. Teachers'];
-  public userTabledata: any = [];
+  public GeoTableId = 'GeoDetailsTable';
+  public geoTableHeader = ['Serial No.', 'Districts', 'Blocks', 'Schools'];
+  public geoTabledata = [];
+  public userTableId = 'ValidatedUserDetailsTable';
+  public userTableHeader = ['Serial No.', 'Districts', 'Blocks', 'Schools', 'Regd. Teachers'];
+  public userTabledata = [];
+  public activatedRoute: ActivatedRoute;
+  public telemetryImpression: IImpressionEventInput;
+  public geoViewInteractEdata: IInteractEventEdata;
+  public geoDownloadInteractEdata: IInteractEventEdata;
+  public userViewInteractEdata: IInteractEventEdata;
+  public userDownloadInteractEdata: IInteractEventEdata;
+  public teacherDetailsInteractEdata: IInteractEventEdata;
 
-  constructor(userService: UserService, manageService: ManageService) {
+  constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
+    userService: UserService, manageService: ManageService) {
     this.userService = userService;
     this.manageService = manageService;
+    this.activatedRoute = activatedRoute;
     if (this.slug) {
       this.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
     } else {
@@ -80,6 +92,47 @@ export class UserOrgManagementComponent {
         this.getGeoDetail();
         this.getUserDetail();
       }
+    });
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: '/' + this.activatedRoute.snapshot.routeConfig.path,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+      this.geoViewInteractEdata = {
+        id: 'geo-details',
+        type: 'view',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.geoDownloadInteractEdata = {
+        id: 'geo-details',
+        type: 'download',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.userViewInteractEdata = {
+        id: 'teacher-details',
+        type: 'view',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.userDownloadInteractEdata = {
+        id: 'teacher-details',
+        type: 'download',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.teacherDetailsInteractEdata = {
+        id: 'account-details',
+        type: 'download',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
     });
   }
 
@@ -106,7 +159,6 @@ export class UserOrgManagementComponent {
   public getGeoJSON() {
     this.manageService.getData(this.slug, this.geoJSON).subscribe(
       data => {
-        console.log('dataaaaaaaaaaa', data);
         const result = JSON.parse(JSON.stringify(data.result));
         this.geoData = {
           'districts': result['districts'] ? result['districts'] : 0,

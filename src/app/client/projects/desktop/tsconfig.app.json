@@ -72,6 +72,12 @@
       ],
       "@sunbird/offline": [
         "projects/desktop/src/app/modules/offline"
+      ],
+      "@sunbird/user-profile": [
+        "projects/desktop/src/app/modules/user-profile"
+      ],
+      "@sunbird/content-consumption": [
+        "projects/desktop/src/app/modules/content-consumption"
       ]
     }
   },
