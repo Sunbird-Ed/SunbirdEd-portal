@@ -22,7 +22,7 @@ export const response = {
     userData: {
         'framework': {
             'id': '505c7c48ac6dc1edc9b08f21db5a571d',
-            'board': 'State (Test 1)',
+            'board': 'State test 2',
             'medium': ['English'],
             'gradeLevel': ['Class 4', 'Class 6']
         },
@@ -144,9 +144,9 @@ export const response = {
                             'identifier': 'ka_k-12_topic_1a94dc890ceb6b19695bf72108cbb64d1e2ba89b',
                             'code': '1a94dc890ceb6b19695bf72108cbb64d1e2ba89b',
                             'translations': null,
-                            'name': 'Surface Area and Volumes',
-                            'description': 'Surface Area and Volumes',
-                            'category': 'topic',
+                            'name': 'English',
+                            'description': 'English',
+                            'category': 'medium',
                             'status': 'Live'
                         }]
                     }],
@@ -163,9 +163,9 @@ export const response = {
                             'identifier': 'ka_k-12_topic_1a94dc890ceb6b19695bf72108cbb64d1e2ba89b',
                             'code': '1a94dc890ceb6b19695bf72108cbb64d1e2ba89b',
                             'translations': null,
-                            'name': 'Surface Area and Volumes',
-                            'description': 'Surface Area and Volumes',
-                            'category': 'topic',
+                            'name': 'Class 5',
+                            'description': 'class 5',
+                            'category': 'gradeLevel',
                             'status': 'Live'
                         }]
                     }],

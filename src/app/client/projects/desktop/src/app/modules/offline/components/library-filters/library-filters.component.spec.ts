@@ -69,7 +69,7 @@ describe('LibraryFiltersComponent', () => {
         expect(component.setBoard).toHaveBeenCalled();
     });
 
-    it('should call setBoard', () => {
+    it('should call setBoard and call setfilters with false', () => {
         const channelService = TestBed.get(ChannelService);
         component.userDetails = response.userData;
         component.selectedFilters = { 'board': ['State Test 1'] };
@@ -79,7 +79,43 @@ describe('LibraryFiltersComponent', () => {
         component.setBoard();
         expect(component.boards).toEqual(response.channelData.result.channel.frameworks);
         expect(component.frameworkCategories).toEqual(response.frameWorkData.result.framework.categories);
-        expect(component.setFilters).toHaveBeenCalled();
+        expect(component.setFilters).toHaveBeenCalledWith(false);
+    });
+
+    it('should call setBoard and call setfilters with true', () => {
+        const channelService = TestBed.get(ChannelService);
+        component.userDetails = response.userData;
+        component.selectedFilters = { 'board': [] };
+        spyOn(channelService, 'getFrameWork').and.returnValue(observableOf(response.channelData));
+        spyOn(component.frameworkService, 'getFrameworkCategories').and.returnValue(observableOf(response.frameWorkData));
+        spyOn(component, 'setFilters');
+        component.setBoard();
+        expect(component.setFilters).toHaveBeenCalledWith(true);
+    });
+
+    it('should call setFilters', () => {
+        component.userDetails = response.userData;
+        component.selectedFilters = { 'medium': ['English'], 'gradeLevel': ['Class 5']};
+        spyOn(component, 'resetFilters');
+        spyOn(component, 'triggerFilterChangeEvent');
+        component.frameworkCategories = response.frameWorkData.result.framework.categories;
+        component.setFilters();
+        expect(component.resetFilters).toHaveBeenCalled();
+        expect(component.mediums).toBeDefined();
+        expect(component.classes).toBeDefined();
+        expect(component.triggerFilterChangeEvent).toHaveBeenCalledWith();
+    });
+
+    it('should call setFilters with true', () => {
+        component.userDetails = response.userData;
+        spyOn(component, 'resetFilters');
+        spyOn(component, 'triggerFilterChangeEvent');
+        component.frameworkCategories = response.frameWorkData.result.framework.categories;
+        component.setFilters(true);
+        expect(component.resetFilters).toHaveBeenCalled();
+        expect(component.mediums).toBeDefined();
+        expect(component.classes).toBeDefined();
+        expect(component.triggerFilterChangeEvent).toHaveBeenCalledWith();
     });
 
     it('should call onBoardChange', () => {
