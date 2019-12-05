@@ -41,6 +41,7 @@ export class OnboardingLocationComponent implements OnInit {
       this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
       this.getAllStates();
       this.setTelemetryData();
+      this.isLocationSaved();
     });
   }
 
@@ -83,7 +84,6 @@ export class OnboardingLocationComponent implements OnInit {
     this.onboardingService.saveLocation(requestParams).subscribe(() => {
       this.disableContinueBtn = false;
       this.locationSaved.emit('SUCCESS');
-      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0057') || 'SUCCESS');
     }, error => {
       this.disableContinueBtn = false;
       this.locationSaved.emit('ERROR');
@@ -96,7 +96,7 @@ export class OnboardingLocationComponent implements OnInit {
       context: { env: 'offline' },
       edata: {
         type: 'view',
-        pageid: 'onboarding_location_setting',
+        pageid: 'onboarding_location',
         uri: this.router.url
       }
     };
@@ -104,7 +104,7 @@ export class OnboardingLocationComponent implements OnInit {
     this.telemetryInteractEdata = {
       id: 'onboarding_location',
       type: 'click',
-      pageid: 'onboarding_location_setting'
+      pageid: 'onboarding_location'
     };
   }
   getUserCurrentLocation() {
@@ -124,6 +124,13 @@ export class OnboardingLocationComponent implements OnInit {
   checkConnection() {
     this.connectionService.monitor().subscribe(isConnected => {
       this.isConnected = isConnected;
+    });
+  }
+  isLocationSaved() {
+    this.onboardingService.getLocation().subscribe(data => {
+      this.locationSaved.emit('SUCCESS');
+    }, err => {
+      this.locationSaved.emit('ERROR');
     });
   }
 

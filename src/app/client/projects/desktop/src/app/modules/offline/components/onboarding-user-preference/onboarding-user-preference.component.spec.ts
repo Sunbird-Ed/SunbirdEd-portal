@@ -134,9 +134,7 @@ describe('OnboardingUserPreferenceComponent', () => {
   it('should call saveUserData and get success', () => {
     spyOn(component.onboardingService, 'saveUserPreference').and.returnValue(observableOf(onboarding_user_preference_test.user_save));
     spyOn(component, 'getUserData');
-    spyOn(component.toasterService, 'success').and.returnValue(observableOf(resourceBundle.messages.smsg.m0058));
     component.saveUserData();
-    expect(component.toasterService.success).toHaveBeenCalled();
     expect(component.getUserData).toHaveBeenCalled();
   });
 
