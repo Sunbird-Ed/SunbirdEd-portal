@@ -45,9 +45,9 @@ export class LibraryFiltersComponent implements OnInit {
     constructor(
         public resourceService: ResourceService,
         public frameworkService: FrameworkService,
-        private orgDetailsService: OrgDetailsService,
-        private channelService: ChannelService,
-        private onboardingService: OnboardingService
+        public orgDetailsService: OrgDetailsService,
+        public channelService: ChannelService,
+        public onboardingService: OnboardingService
     ) { }
 
     ngOnInit() {
