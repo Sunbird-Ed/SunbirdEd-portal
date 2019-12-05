@@ -1,14 +1,15 @@
 import { Component, OnInit, EventEmitter, HostListener } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { combineLatest, Subject, of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
-
+import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+
 import {
-    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage,
+    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage, NavigationHelperService
 } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { ConnectionService } from '../../services';
 
 @Component({
@@ -39,8 +40,14 @@ export class LibraryComponent implements OnInit {
     public recentlyAddedContents = [];
 
     isConnected = navigator.onLine;
-
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
+
+    /* Telemetry */
+    public viewAllInteractEdata: IInteractEventEdata;
+    public cardInteractEdata: IInteractEventEdata;
+    public telemetryImpression: IImpressionEventInput;
+    public cardInteractObject: any;
+    public cardInteractCdata: any;
 
     @HostListener('window:scroll', []) onScroll(): void {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -57,16 +64,23 @@ export class LibraryComponent implements OnInit {
         private resourceService: ResourceService,
         private publicPlayerService: PublicPlayerService,
         public searchService: SearchService,
-        private connectionService: ConnectionService
+        private connectionService: ConnectionService,
+        public navigationHelperService: NavigationHelperService
     ) { }
 
     ngOnInit() {
         this.getSelectedFilters();
         this.setNoResultMessage();
+        this.setTelemetryData();
 
         this.connectionService.monitor().subscribe(isConnected => {
             this.isConnected = isConnected;
         });
+
+        this.router.events.pipe(
+            filter((event) => event instanceof NavigationStart),
+            takeUntil(this.unsubscribe$))
+            .subscribe(x => { this.prepareVisits(); });
     }
 
     getSelectedFilters() {
@@ -77,7 +91,6 @@ export class LibraryComponent implements OnInit {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
-
 
     onFilterChange(event) {
         this.showLoader = true;
@@ -231,9 +244,47 @@ export class LibraryComponent implements OnInit {
         }
     }
 
+    setTelemetryData() {
+        this.telemetryImpression = {
+            context: {
+                env: this.activatedRoute.snapshot.data.telemetry.env
+            },
+            edata: {
+                type: this.activatedRoute.snapshot.data.telemetry.type,
+                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                uri: this.router.url,
+                subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+                duration: this.navigationHelperService.getPageLoadTime()
+            }
+        };
+        this.viewAllInteractEdata = {
+            id: `view-all-button`,
+            type: 'click',
+            pageid: 'library'
+        };
 
-    // To Handle in-view logs
-    afterChange(event) {
-        // console.log('AfterChange', event);
+        this.cardInteractEdata = {
+            id: 'content-card',
+            type: 'click',
+            pageid: this.router.url.split('/')[1] || 'library'
+        };
+    }
+
+    prepareVisits() {
+        const visits = [];
+        _.map(this.sections, section => {
+            _.forEach(section.contents, (content, index) => {
+                visits.push({
+                    objid: content.metaData.identifier,
+                    objtype: content.metaData.contentType,
+                    index: index,
+                    section: section.name,
+                });
+            });
+        });
+
+        this.telemetryImpression.edata.visits = visits;
+        this.telemetryImpression.edata.subtype = 'pageexit';
+        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
 }

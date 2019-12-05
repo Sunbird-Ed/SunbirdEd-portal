@@ -1,17 +1,19 @@
+import { combineLatest, Subject } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
+import * as _ from 'lodash-es';
+import { takeUntil, map, debounceTime, delay, filter } from 'rxjs/operators';
+
 import {
     ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ILoaderMessage, UtilService, PaginationService
+    ILoaderMessage, UtilService, PaginationService, NavigationHelperService
 } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
-import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash-es';
 import { PublicPlayerService } from '@sunbird/public';
 import { Location } from '@angular/common';
-import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
+import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { ConnectionService } from '../../services';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 
 
 @Component({
@@ -22,7 +24,6 @@ import { ConnectionService } from '../../services';
 export class DesktopExploreContentComponent implements OnInit, OnDestroy {
 
     public showLoader = true;
-    public baseUrl: string;
     public noResultMessage: INoResultMessage;
     public filterType: string;
     public queryParams: any;
@@ -30,9 +31,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     public initFilters = false;
     public loaderMessage: ILoaderMessage;
     public showFilters = false;
-    public sections: any[] = [];
     public hashTagId: string;
-    public dataDrivenFilterEvent = new EventEmitter();
     public dataDrivenFilters: any = {};
     public facets: string[];
     public contentList = [];
@@ -40,6 +39,11 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
 
     public paginationDetails: IPagination;
     public isConnected = navigator.onLine;
+
+    backButtonInteractEdata: IInteractEventEdata;
+    filterByButtonInteractEdata: IInteractEventEdata;
+    cardInteractEdata: IInteractEventEdata;
+    telemetryImpression: IImpressionEventInput;
 
     constructor(
         public router: Router,
@@ -54,12 +58,14 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         public orgDetailsService: OrgDetailsService,
         public frameworkService: FrameworkService,
         public paginationService: PaginationService,
-        private connectionService: ConnectionService
+        private connectionService: ConnectionService,
+        public navigationHelperService: NavigationHelperService
     ) {
         this.filterType = this.configService.appConfig.explore.filterType;
     }
 
     ngOnInit() {
+        this.setTelemetryData();
         this.connectionService.monitor().subscribe(isConnected => {
             this.isConnected = isConnected;
         });
@@ -77,12 +83,17 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
                 this.router.navigate(['']);
             });
         }
+
+        this.router.events.pipe(
+            filter((event) => event instanceof NavigationStart),
+            takeUntil(this.unsubscribe$))
+            .subscribe(element => { this.prepareVisits(); });
     }
 
     fetchRecentlyAddedContent() {
         const softConstraintData: any = {
             filters: {
-                channel: this.activatedRoute.snapshot.queryParams.channel,
+                channel: this.hashTagId,
                 contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource']
             },
             softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
@@ -224,7 +235,13 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     }
 
     goBack() {
-        this.location.back();
+        if (_.includes(this.router.url, 'browse')) {
+            this.router.navigate(['/browse']);
+        } else {
+            this.router.navigate(['']);
+        }
+
+        this.utilService.clearSearchQuery();
     }
 
     public playContent(event) {
@@ -252,5 +269,51 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
                 'messageText': 'messages.stmsg.m0006'
             };
         }
+    }
+
+    setTelemetryData() {
+        this.telemetryImpression = {
+            context: {
+                env: this.activatedRoute.snapshot.data.telemetry.env
+            },
+            edata: {
+                type: this.activatedRoute.snapshot.data.telemetry.type,
+                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                uri: this.router.url,
+                subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+                duration: this.navigationHelperService.getPageLoadTime()
+            }
+        };
+        this.backButtonInteractEdata = {
+            id: 'back-button',
+            type: 'click',
+            pageid: this.router.url.split('/')[1] === 'view-all' ? 'view-all' : 'search'
+        };
+
+        this.filterByButtonInteractEdata = {
+            id: 'filter-by-button',
+            type: 'click',
+            pageid: 'search'
+        };
+        this.cardInteractEdata = {
+            id: 'content-card',
+            type: 'click',
+            pageid: this.router.url.split('/')[1] === 'view-all' ? 'view-all' : 'search'
+        };
+    }
+
+    prepareVisits() {
+        const visits = [];
+        _.forEach(this.contentList, (content, index) => {
+            visits.push({
+                objid: content.metaData.identifier,
+                objtype: content.metaData.contentType,
+                index: index,
+            });
+        });
+
+        this.telemetryImpression.edata.visits = visits;
+        this.telemetryImpression.edata.subtype = 'pageexit';
+        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
 }

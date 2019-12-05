@@ -7,7 +7,6 @@
         <!-- header component starts-->
 
         <div class="sbheader sbheader--offline">
-
             <div class="sbheader__branding sbheader--offline__branding">
                 <div class="logo" (click)="navigateToHome()" appTelemetryInteract
                     [telemetryInteractEdata]="homeInteractEdata">
@@ -36,8 +35,9 @@
                                 placeholder="{{resourceService?.frmelmnts?.lbl?.searchContent}}&lrm;"
                                 [(ngModel)]="queryParam.key" (keyup.enter)="onEnter(queryParam.key)" />
 
-                            <i class="icon-svg icon-svg--xxs icon-close" *ngIf="queryParam?.key?.length" (click)="clearSearchQuery()"
-                                appTelemetryInteract [telemetryInteractEdata]="clearSearchInteractEdata">
+                            <i class="icon-svg icon-svg--xxs icon-close" *ngIf="queryParam?.key?.length"
+                                (click)="clearSearchQuery()" appTelemetryInteract
+                                [telemetryInteractEdata]="clearSearchInteractEdata">
                                 <svg class="icon icon-svg--primary">
                                     <use xlink:href="assets/images/sprite.svg#close-button"></use>
                                 </svg>
@@ -53,7 +53,6 @@
                             </i>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -70,7 +69,6 @@
                     [telemetryInteractEdata]="contentImportInteractEdata"
                     class="sb-btn sb-btn-normal sb-btn-outline-tertiary">{{resourceService?.frmelmnts?.lbl?.uploadContent}}</button>
             </div>
-
         </div>
     </div>
 </div>
@@ -80,33 +78,32 @@
 <div class="sb-menubar sb-bg-color-primary-100">
     <div class="ui container d-flex flex-ai-center flex-jc-space-between">
         <!-- menu component -->
-            <div class="w-100 d-flex flex-ai-center flex-jc-space-between">
+        <div class="w-100 d-flex flex-ai-center flex-jc-space-between">
 
-                <div class="d-flex sb-offline-menu-container flex-ai-center">
-                    <a [routerLink]="'/'" [ngClass]="(router.isActive('/', false) && !(router.isActive('/browse', false) || router.isActive('/help-center', false)) ) ? 'active': ''">
-                        <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
-                    </a>
-                    <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
-                        [telemetryInteractEdata]="browseEdata">
-                        <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
-                    </a>
-                    <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract
-                        [telemetryInteractEdata]="helpCenterEdata">
-                        <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
-                    </a>
-                </div>
-
-                <!-- language component -->
-                <div class="sb-field mb-0">
-                    <app-language-dropdown [languageRange]="availableLanguages"
-                        *ngIf="availableLanguages">
-                    </app-language-dropdown>
-                </div>
-                <!-- language component ends-->
-
+            <div class="d-flex sb-offline-menu-container flex-ai-center">
+                <a [routerLink]="'/'"
+                    [ngClass]="(router.isActive('/', false) && !(router.isActive('/browse', false) || router.isActive('/help-center', false)) ) ? 'active': ''"
+                    appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+                    <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
+                </a>
+                <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
+                    [telemetryInteractEdata]="browseEdata">
+                    <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
+                </a>
+                <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract
+                    [telemetryInteractEdata]="helpCenterEdata">
+                    <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
+                </a>
             </div>
-        <!-- menu component ends -->
 
+            <!-- language component -->
+            <div class="sb-field mb-0">
+                <app-language-dropdown [languageRange]="availableLanguages" *ngIf="availableLanguages">
+                </app-language-dropdown>
+            </div>
+            <!-- language component ends-->
+        </div>
+        <!-- menu component ends -->
     </div>
 </div>
 <!-- menu bar with language selection component ends -->
