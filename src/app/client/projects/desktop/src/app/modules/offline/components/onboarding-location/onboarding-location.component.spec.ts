@@ -83,12 +83,10 @@ describe('OnboardingLocationComponent', () => {
   it('should call saveLocation (successful) in onboarding service', () => {
     spyOn(component.onboardingService, 'saveLocation').and.returnValue(observableOf(onboarding_location_test.saveLocation));
     spyOn(component.locationSaved, 'emit').and.returnValue(observableOf('SUCCESS'));
-    spyOn(component.toasterService, 'success').and.returnValue(observableOf(onboarding_location_test.resourceBundle.messages.smsg.m0057));
     component.handleSubmitButton();
     expect(component.onboardingService.saveLocation).toHaveBeenCalled();
     expect(component.disableContinueBtn).toBeFalsy();
     expect(component.locationSaved.emit).toHaveBeenCalled();
-    expect(component.toasterService.success).toHaveBeenCalled();
   });
 
   it('should call saveLocation (error) in onboarding service', () => {
@@ -122,6 +120,22 @@ describe('OnboardingLocationComponent', () => {
       expect(location).toEqual(onboarding_location_test.deviceLocation);
       expect(component.onboardingService.searchLocation).toHaveBeenCalled();
     });
+  });
+
+  it('should call getLocation  in onboarding service', () => {
+    spyOn(component.onboardingService, 'getLocation').and.returnValue(observableOf(onboarding_location_test.location_read_success));
+    spyOn(component.locationSaved, 'emit').and.returnValue(observableOf('SUCCESS'));
+    component.isLocationSaved();
+    expect(component.onboardingService.getLocation).toHaveBeenCalled();
+    expect(component.locationSaved.emit).toHaveBeenCalled();
+  });
+
+  it('should call getLocation (error) in onboarding service', () => {
+    spyOn(component.onboardingService, 'getLocation').and.returnValue(observableOf(onboarding_location_test.location_read_success));
+    spyOn(component.locationSaved, 'emit').and.returnValue(observableOf('ERROR'));
+    component.isLocationSaved();
+    expect(component.onboardingService.getLocation).toHaveBeenCalled();
+    expect(component.locationSaved.emit).toHaveBeenCalled();
   });
 
 });

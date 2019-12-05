@@ -1,7 +1,7 @@
 <sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" [isClosable]="'false'" #modal [mustScroll]="'true'">
   <div class="signup-background">
     <div class="ui raised shadow container segment">
-      <div class="d-flex flex-jc-center mb-30">
+      <div class="d-flex flex-jc-center mb-24">
         <img class="image centered" alt={{tenantName}} height="56" src="{{logo}}">
       </div>
       <div class="width-300 mx-auto">
@@ -49,7 +49,7 @@
                 <i class=" icon">+91-</i>
               </div>
             </div>
-            <label class="ui basic label pt-0 infotext" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors) || passwordError !== '')}">{{resourceService.frmelmnts.lbl.passwd}}</label>
+            <label class="ui basic label pt-0 infotext" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{resourceService.frmelmnts.lbl.passwd}}</label>
             <div class="required field mb-20">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.password.touched && signUpForm.controls['password'].errors)">{{resourceService.frmelmnts.lbl.password}}</label>
               <div class="ui icon input">
@@ -74,7 +74,7 @@
             (click)="captchaRef.execute();">{{resourceService.frmelmnts.lbl.signUp}}</button>
           <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
         </div>
-        <div class="mt-40" *ngIf="!showSignUpForm">
+        <div *ngIf="!showSignUpForm">
           <app-otp [signUpdata]="signUpForm" (redirectToParent)="showParentForm($event)"></app-otp>
         </div>
       </div>
