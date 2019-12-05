@@ -29,22 +29,22 @@
           </sui-select>
         </div>
         <div class="sb-field">
-          <label class="required">{{labels.fieldLabel}}</label>
+          <label class="required">{{labels?.fieldLabel}}</label>
           <input #extIdInputField type="text" required name="extId"
           placeholder="For example, ER12345" class="sb-form-control" formControlName="extId"/>
           <span *ngIf="showError" class="sb-color-error fxsmall mt-8">
-            {{labels.incorrectIDLabel}}
+            {{labels?.incorrectIDLabel}}
           </span>
         </div>
       </div>
     </form>
       <!-- Success / error field  -->
     <div *ngIf="extIdVerified" class="text-center my-24">
-      {{labels.verificationSuccessfulLabel}}
+      {{labels?.verificationSuccessfulLabel}}
     </div>
 
     <div *ngIf="extIdFailed" class="text-center my-24">
-      {{labels.verficationFailureLabel}}
+      {{labels?.verficationFailureLabel}}
     </div>
   </div>
 <!--modal content-->
