@@ -208,3 +208,13 @@ input[type=number]::-webkit-inner-spin-button {
         cursor: pointer;
       }
   }
+
+.ui.form .field > label.infotext{
+    font-size: $font-size-xs !important;
+    color: $gray-200;
+    &:focus, &:hover{
+        outline: none;
+        border: 1px solid transparent !important;
+    }
+}
+ 
