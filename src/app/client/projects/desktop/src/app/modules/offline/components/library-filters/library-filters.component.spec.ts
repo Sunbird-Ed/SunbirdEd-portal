@@ -14,7 +14,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FrameworkService } from 'src/app/modules/core';
 
-describe('LibraryFiltersComponent', () => {
+xdescribe('LibraryFiltersComponent', () => {
     let component: LibraryFiltersComponent;
     let fixture: ComponentFixture<LibraryFiltersComponent>;
     let orgDetailsService, sendOrgDetails, frameworkService;
