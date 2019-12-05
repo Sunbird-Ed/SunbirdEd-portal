@@ -58,12 +58,9 @@ describe('LibraryFiltersComponent', () => {
     });
 
     it('should call ngOnInit', () => {
-        // component.onboardingService.userData = response.userData;
-
         const onboardingService = TestBed.get(OnboardingService);
         const orgDetailsService = TestBed.get(OrgDetailsService);
         onboardingService.userData = response.userData;
-
         spyOn(orgDetailsService, 'getCustodianOrg').and.returnValue(observableOf(response.cutodianOrgData));
         spyOn(component, 'setBoard');
         component.ngOnInit();

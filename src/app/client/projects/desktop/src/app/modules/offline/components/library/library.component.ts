@@ -49,7 +49,7 @@ export class LibraryComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private utilService: UtilService,
-        public toasterService: ToasterService,
+        private toasterService: ToasterService,
         private configService: ConfigService,
         private resourceService: ResourceService,
         private publicPlayerService: PublicPlayerService,

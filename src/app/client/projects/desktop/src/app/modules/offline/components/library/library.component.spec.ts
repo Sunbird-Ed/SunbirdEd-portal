@@ -126,11 +126,12 @@ describe('LibraryComponent', () => {
 
     it('should call fetchContents and return undefined', () => {
         spyOn(component, 'searchContent').and.returnValue(observableOf(undefined));
-        spyOn(component.toasterService, 'error').and.returnValue(throwError(resourceBundle.messages.fmsg.m0004));
+        const toasterService = TestBed.get(ToasterService);
+        spyOn(toasterService, 'error').and.returnValue(throwError(resourceBundle.messages.fmsg.m0004));
         component.fetchContents();
         expect(component.showLoader).toBeFalsy();
         expect(component.carouselMasterData).toEqual([]);
         expect(component.pageSections).toEqual([]);
-        expect(component.toasterService.error).toHaveBeenCalled();
+        expect(toasterService.error).toHaveBeenCalled();
     });
 });
