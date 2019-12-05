@@ -133,7 +133,6 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     };
 
     this.onboardingService.saveUserPreference(requestData).subscribe(data => {
-      this.toasterService.success(this.resourceService.messages.smsg.m0058);
       this.getUserData();
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0022);
@@ -154,7 +153,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     return {
       id: 'onboarding_user-preference',
       type: 'click',
-      pageid: 'onboarding_user_preference_setting',
+      pageid: 'onboarding_user_preference',
       extra: {
         'framework': {
           'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),

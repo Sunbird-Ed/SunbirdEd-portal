@@ -54,4 +54,14 @@ export class OnboardingService {
     };
     return this.publicDataService.post(options);
   }
+  getLocation() {
+    const options = {
+      url: this.configService.urlConFig.URLS.OFFLINE.LOCATION_READ
+    };
+    return this.publicDataService.get(options).pipe(map((response: ServerResponse) => {
+        return response;
+      }), catchError(err => {
+        return throwError(err);
+      }));
+  }
 }
