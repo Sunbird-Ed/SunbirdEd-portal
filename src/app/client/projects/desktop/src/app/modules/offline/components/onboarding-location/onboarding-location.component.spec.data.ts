@@ -153,7 +153,38 @@ export const onboarding_location_test = {
           'district': 'test_district_1'
         }
       }
+    },
+  location_read_error : {
+    'id': 'api.location.read',
+    'ver': '1.0',
+    'ts': '2019-12-05T06:50:26.429Z',
+    'params': {
+        'resmsgid': '5a2ace60-6d49-4f72-8f4c-1dd8b5aaa562',
+        'msgid': '0c18f83a-caa7-413d-b868-813595783903',
+        'status': 'failed',
+        'err': 'ERR_DATA_NOT_FOUND',
+        'errmsg': 'Data not found'
+    },
+    'responseCode': 'RESOURCE_NOT_FOUND',
+    'result': {}
+  },
+  location_read_success: {
+    'result': {
+      'state': {
+        'code': 'FT_State_Code-1544604001076',
+        'name': 'state_location_nameJMRUXuUbT6',
+        'id': 'bd47e788-e92e-4d12-9f26-b9eb9a4b70a5',
+        'type': 'state'
+      },
+      'city': {
+        'code': 'FT_District_Code-1544603939757',
+        'name': 'state_location_nameFniQB7lOZt',
+        'id': '8f3f79e8-a52f-42bb-a1f8-af6b3f0e57d8',
+        'type': 'district',
+        'parentId': 'bd47e788-e92e-4d12-9f26-b9eb9a4b70a5'
+      }
     }
+  }
 };
 
 

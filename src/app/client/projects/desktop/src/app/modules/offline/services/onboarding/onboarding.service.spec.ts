@@ -74,5 +74,30 @@ describe('OnboardingService', () => {
     });
   });
 
+  it('should get Location ', () => {
+    const service: OnboardingService = TestBed.get(OnboardingService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.returnValue(observableOf(onboarding_location_test.location_read_success));
+    service.getLocation();
+    expect(service).toBeTruthy();
+    expect(publicDataService.get).toHaveBeenCalled();
+    publicDataService.get().subscribe(data => {
+      expect(data).toEqual(onboarding_location_test.location_read_success);
+    });
+  });
+
+  it('should get Location (ERROR)', () => {
+    const service: OnboardingService = TestBed.get(OnboardingService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.returnValue(observableThrowError(onboarding_location_test.location_read_error));
+    service.getLocation();
+    expect(service).toBeTruthy();
+    expect(publicDataService.get).toHaveBeenCalled();
+    publicDataService.get().subscribe(data => {
+    }, err => {
+      expect(err).toEqual(onboarding_location_test.location_read_error);
+    });
+  });
+
 
 });
