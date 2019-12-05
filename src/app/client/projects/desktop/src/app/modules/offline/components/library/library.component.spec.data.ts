@@ -1,7 +1,7 @@
 export const response = {
     onFilterChangeEvent: {
         'filters': {
-            'board': ['State (Karnataka)'],
+            'board': ['State (Test 1)'],
             'appliedFilters': true,
             'medium': ['English'],
             'gradeLevel': ['Class 4']
@@ -59,7 +59,7 @@ export const response = {
                 'subject': 'Mathematics',
                 'channel': '01248978648941363234',
                 'downloadUrl': 'do_31280197775324774412235/addition_with_carry_over_-_english360p.mp4',
-                'organisation': ['Karnataka'],
+                'organisation': ['Test 1'],
                 'language': ['English'],
                 'mimeType': 'video/mp4',
                 'variants': null,
@@ -97,7 +97,7 @@ export const response = {
                 'lastUpdatedOn': '2019-07-18T05:40:47.259+0000',
                 'SYS_INTERNAL_LAST_UPDATED_ON': '2019-07-10T06:50:42.639+0000',
                 'dialcodeRequired': 'No',
-                'owner': 'Karnataka',
+                'owner': 'Test 1',
                 'createdFor': ['01248978648941363234'],
                 'creator': 'DSERT eContent',
                 'lastStatusChangedOn': '2019-07-18T05:40:47.249+0000',
@@ -112,7 +112,7 @@ export const response = {
                 'compatibilityLevel': 1,
                 'contributors': 'Akshara Foundation, Bengaluru',
                 'ownedBy': '01248978648941363234',
-                'board': 'State (Karnataka)',
+                'board': 'State (Test 1)',
                 'resourceType': 'Learn',
                 'baseDir': 'content/do_31280197775324774412235',
                 'desktopAppMetadata': {

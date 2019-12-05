@@ -22,7 +22,7 @@ export const response = {
     userData: {
         'framework': {
             'id': '505c7c48ac6dc1edc9b08f21db5a571d',
-            'board': 'State (Karnataka)',
+            'board': 'State (Test 1)',
             'medium': ['English'],
             'gradeLevel': ['Class 4', 'Class 6']
         },
@@ -115,8 +115,8 @@ export const response = {
             'framework': {
                 'identifier': 'ka_k-12',
                 'code': 'ka_k-12',
-                'name': 'State (Karnataka)',
-                'description': 'State (Karnataka)',
+                'name': 'State (Test 1)',
+                'description': 'State (Test 1)',
                 'categories': [{
                     'identifier': 'ka_k-12_board',
                     'code': 'board',
