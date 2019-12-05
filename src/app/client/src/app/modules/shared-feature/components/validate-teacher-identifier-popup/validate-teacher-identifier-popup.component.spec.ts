@@ -41,6 +41,7 @@ describe('ValidateTeacherIdentifierPopupComponent', () => {
     fixture = TestBed.createComponent(ValidateTeacherIdentifierPopupComponent);
     component = fixture.componentInstance;
     component.userFeedData = mockUserData.feedSuccessResponse.result.response.userFeed[0];
+    component.labels = mockUserData.formReadResponse.result.form.data.fields[0].range[0];
     fixture.detectChanges();
   });
 

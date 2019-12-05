@@ -8,7 +8,7 @@ import {
 import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
-  SessionExpiryInterceptor
+  SessionExpiryInterceptor, FormService
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
@@ -91,6 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
   userFeed: any;
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
+  labels = {};
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -98,6 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
+    public formService: FormService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     private shepherdService: ShepherdService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
@@ -492,6 +494,16 @@ export class AppComponent implements OnInit, OnDestroy {
             (data) => {
               this.userFeed = _.get(data, 'result.response.userFeed[0]');
               if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
+                const formReadInputParams = {
+                  formType: 'user',
+                  formAction: 'onboarding',
+                  contentType: 'externalIdVerification'
+                };
+                this.formService.getFormConfig(formReadInputParams).subscribe(
+                  (formResponsedata) => {
+                    this.labels = _.get(formResponsedata[0], ('range[0]'));
+                  }
+                );
                 // if location popup isn't opened on the very first time.
                 if (this.isLocationConfirmed) {
                   this.showUserVerificationPopup = true;

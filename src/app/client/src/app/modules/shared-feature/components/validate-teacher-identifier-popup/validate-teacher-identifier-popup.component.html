@@ -6,7 +6,8 @@
     class="sb-modal " 
     [ngClass]="{'sb-error': extIdFailed, 'sb-success' : extIdVerified }" 
     #createValidateModal
-    *ngIf="!isOffline">
+    *ngIf="!isOffline"
+    [appTelemetryImpression]="telemetryImpressionData">
     
   <!--Header-->
   <div class="sb-modal-header">
@@ -17,7 +18,7 @@
   <!--modal content-->
   <div class="sb-modal-content">
     <div *ngIf="!processValidation">
-      {{resourceService?.frmelmnts?.lbl?.govtSchoolTeacher}}  
+      {{labels.headerLabel}}  
     </div>
     <form class="sb-form" [formGroup]="userDetailsForm">
       <div *ngIf="processValidation && !(extIdVerified || extIdFailed)" class="sb-field-group mb-16 text-left">
@@ -28,22 +29,22 @@
           </sui-select>
         </div>
         <div class="sb-field">
-          <label class="required">{{resourceService?.frmelmnts?.lbl?.enterTeacherId}}</label>
+          <label class="required">{{labels.fieldLabel}}</label>
           <input #extIdInputField type="text" required name="extId"
           placeholder="For example, ER12345" class="sb-form-control" formControlName="extId"/>
           <span *ngIf="showError" class="sb-color-error fxsmall mt-8">
-            {{resourceService?.frmelmnts?.lbl?.incorrectTeacherId}}
+            {{labels.incorrectIDLabel}}
           </span>
         </div>
       </div>
     </form>
       <!-- Success / error field  -->
     <div *ngIf="extIdVerified" class="text-center my-24">
-      {{resourceService?.frmelmnts?.lbl?.teacherIdVerified}}
+      {{labels.verificationSuccessfulLabel}}
     </div>
 
     <div *ngIf="extIdFailed" class="text-center my-24">
-      {{resourceService?.frmelmnts?.lbl?.teacherIDnotVerified}}
+      {{labels.verficationFailureLabel}}
     </div>
   </div>
 <!--modal content-->
