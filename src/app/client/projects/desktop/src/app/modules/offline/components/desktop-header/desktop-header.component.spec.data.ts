@@ -1,0 +1,43 @@
+export const response = {
+    orgData: {
+        'err': null,
+        'orgDetails': {
+            'dateTime': null,
+            'preferredLanguage': null,
+            'approvedBy': null,
+            'channel': 'ROOT_ORG',
+            'description': 'National Teacher Platform',
+            'updatedDate': '2017-08-25 06:56:00:887+0000',
+            'addressId': null,
+            'provider': null,
+            'locationId': null,
+            'orgCode': 'ntp',
+            'theme': null,
+            'id': 'ORG_001',
+            'communityId': null,
+            'isApproved': null,
+            'email': null,
+            'slug': 'ntp',
+            'identifier': 'ORG_001',
+            'thumbnail': null,
+            'orgName': 'NTP',
+            'updatedBy': 'user1',
+            'locationIds': [],
+            'externalId': null,
+            'isRootOrg': true,
+            'rootOrgId': null,
+            'approvedDate': null,
+            'imgUrl': null,
+            'homeUrl': null,
+            'orgTypeId': null,
+            'isDefault': true,
+            'contactDetail': null,
+            'createdDate': null,
+            'createdBy': null,
+            'parentOrgId': null,
+            'hashTagId': '505c7c48ac6dc1edc9b08f21db5a571d',
+            'noOfMembers': 1,
+            'status': 1
+        }
+    }
+};
