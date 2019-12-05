@@ -9,6 +9,7 @@ import {
 } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
+import { ConnectionService } from '../../services';
 
 @Component({
     selector: 'app-library',
@@ -37,6 +38,8 @@ export class LibraryComponent implements OnInit {
     public noResultMessage: INoResultMessage;
     public recentlyAddedContents = [];
 
+    isConnected = navigator.onLine;
+
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
 
     @HostListener('window:scroll', []) onScroll(): void {
@@ -47,18 +50,23 @@ export class LibraryComponent implements OnInit {
     }
     constructor(
         private activatedRoute: ActivatedRoute,
-        private router: Router,
+        public router: Router,
         private utilService: UtilService,
         private toasterService: ToasterService,
         private configService: ConfigService,
         private resourceService: ResourceService,
         private publicPlayerService: PublicPlayerService,
-        public searchService: SearchService
+        public searchService: SearchService,
+        private connectionService: ConnectionService
     ) { }
 
     ngOnInit() {
         this.getSelectedFilters();
         this.setNoResultMessage();
+
+        this.connectionService.monitor().subscribe(isConnected => {
+            this.isConnected = isConnected;
+        });
     }
 
     getSelectedFilters() {
@@ -110,7 +118,7 @@ export class LibraryComponent implements OnInit {
         if (addFilters) {
             option.filters = _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters;
         }
-        option.filters['contentType'] = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+        option.filters['contentType'] = filters.contentType || ['TextBook'];
         if (manipulatedData.filters) {
             option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
         }
