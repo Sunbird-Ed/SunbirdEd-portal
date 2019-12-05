@@ -6,12 +6,13 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ResourceService, ConfigService, BrowserCacheTtlService, ToasterService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-import { OrgDetailsService, TenantService } from '@sunbird/core';
+import { OrgDetailsService, TenantService, ChannelService } from '@sunbird/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { response } from './library-filters.component.spec.data';
 import { of as observableOf } from 'rxjs';
+import { OnboardingService } from '../../services';
 
 
 describe('LibraryFiltersComponent', () => {
@@ -42,7 +43,9 @@ describe('LibraryFiltersComponent', () => {
                 CacheService,
                 BrowserCacheTtlService,
                 TenantService,
-                ToasterService
+                ToasterService,
+                OnboardingService,
+                ChannelService
             ],
             schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents();
@@ -55,8 +58,13 @@ describe('LibraryFiltersComponent', () => {
     });
 
     it('should call ngOnInit', () => {
-        component.onboardingService.userData = response.userData;
-        spyOn(component.orgDetailsService, 'getCustodianOrg').and.returnValue(observableOf(response.cutodianOrgData));
+        // component.onboardingService.userData = response.userData;
+
+        const onboardingService = TestBed.get(OnboardingService);
+        const orgDetailsService = TestBed.get(OrgDetailsService);
+        onboardingService.userData = response.userData;
+
+        spyOn(orgDetailsService, 'getCustodianOrg').and.returnValue(observableOf(response.cutodianOrgData));
         spyOn(component, 'setBoard');
         component.ngOnInit();
         expect(component.hashTagId).toEqual('01285019302823526477');
@@ -65,9 +73,10 @@ describe('LibraryFiltersComponent', () => {
     });
 
     it('should call setBoard', () => {
+        const channelService = TestBed.get(ChannelService);
         component.userDetails = response.userData;
         component.selectedFilters = { 'board': ['State Test 1'] };
-        spyOn(component.channelService, 'getFrameWork').and.returnValue(observableOf(response.channelData));
+        spyOn(channelService, 'getFrameWork').and.returnValue(observableOf(response.channelData));
         spyOn(component.frameworkService, 'getFrameworkCategories').and.returnValue(observableOf(response.frameWorkData));
         spyOn(component, 'setFilters');
         component.setBoard();
