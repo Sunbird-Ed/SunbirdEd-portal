@@ -51,6 +51,7 @@ describe('OfflineHelpVideosComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OfflineHelpVideosComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should call setVideoHeight method', () => {
