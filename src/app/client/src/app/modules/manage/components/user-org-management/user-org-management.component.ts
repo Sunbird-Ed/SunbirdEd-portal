@@ -108,7 +108,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
-      console.log(this.telemetryImpression);
       this.geoViewInteractEdata = {
         id: 'geo-details-view',
         type: 'click',
