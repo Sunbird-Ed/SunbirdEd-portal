@@ -1,6 +1,9 @@
 import { ExploreModule } from './../../../../../../src/app/modules/public/module/explore/explore.module';
 import { ContentManagerService } from './services';
-import { SuiModalModule, SuiProgressModule, SuiAccordionModule, SuiTabsModule, SuiSelectModule, SuiDimmerModule } from 'ng2-semantic-ui';
+import {
+    SuiModalModule, SuiProgressModule, SuiAccordionModule,
+    SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule
+} from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
@@ -9,11 +12,11 @@ import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
-  BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
-  LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent, DesktopViewAllComponent,
-  OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
-  OnboardingLocationComponent, OnboardingUserPreferenceComponent
+    ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
+    BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
+    LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent, DesktopViewAllComponent,
+    OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
+    OnboardingLocationComponent, OnboardingUserPreferenceComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -25,58 +28,61 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { DesktopExploreContentComponent } from './components/desktop-explore-content/desktop-explore-content.component';
 import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { DesktopProminentFilterComponent } from './desktop-prominent-filter/desktop-prominent-filter.component';
 
 @NgModule({
-  imports: [
-    CommonConsumptionModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    FormsModule,
-    CoreModule,
-    SharedModule,
-    OfflineRoutingModule,
-    SuiModalModule,
-    SuiProgressModule,
-    SuiSelectModule,
-    WebExtensionModule,
-    ExploreModule,
-    FileSizeModule,
-    SuiAccordionModule,
-    SuiTabsModule,
-    OrderModule,
-    SlickModule,
-    ReactiveFormsModule,
-    CommonConsumptionModule,
-    SuiDimmerModule,
-    NgInviewModule,
-    SharedFeatureModule
-  ],
-  providers: [DeviceDetectorService, ContentManagerService],
-  declarations: [ContentImportHeaderComponent, WatchVideoComponent,
-    BrowseComponent, WatchVideoComponent, ContentImportHeaderComponent, BrowseComponent,
-    NetworkStatusComponent, WatchVideoComponent, ContentManagerComponent, OfflineHelpCenterComponent,
-    DesktopAppUpdateComponent,
-    LibraryComponent,
-    DesktopHeaderComponent,
-    LibraryFiltersComponent,
-    OfflineFaqComponent,
-    OfflineReportIssuesComponent,
-    OfflineHelpVideosComponent,
-    DesktopExploreContentComponent,
-    DesktopViewAllComponent,
-    OnboardingComponent,
-    OnboardingLocationComponent,
-    OnboardingUserPreferenceComponent,
-  ],
-  entryComponents: [
-    ContentImportHeaderComponent,
-    BrowseComponent,
-    NetworkStatusComponent,
-    ContentManagerComponent,
-    WatchVideoComponent,
-    ContentImportHeaderComponent,
-  ],
-  exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
-    OnboardingLocationComponent]
+    imports: [
+        CommonConsumptionModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        FormsModule,
+        CoreModule,
+        SharedModule,
+        OfflineRoutingModule,
+        SuiModalModule,
+        SuiProgressModule,
+        SuiSelectModule,
+        WebExtensionModule,
+        ExploreModule,
+        FileSizeModule,
+        SuiAccordionModule,
+        SuiTabsModule,
+        OrderModule,
+        SlickModule,
+        ReactiveFormsModule,
+        CommonConsumptionModule,
+        SuiDimmerModule,
+        NgInviewModule,
+        SharedFeatureModule,
+        SuiCollapseModule
+    ],
+    providers: [DeviceDetectorService, ContentManagerService],
+    declarations: [ContentImportHeaderComponent, WatchVideoComponent,
+        BrowseComponent, WatchVideoComponent, ContentImportHeaderComponent, BrowseComponent,
+        NetworkStatusComponent, WatchVideoComponent, ContentManagerComponent, OfflineHelpCenterComponent,
+        DesktopAppUpdateComponent,
+        LibraryComponent,
+        DesktopHeaderComponent,
+        LibraryFiltersComponent,
+        OfflineFaqComponent,
+        OfflineReportIssuesComponent,
+        OfflineHelpVideosComponent,
+        DesktopExploreContentComponent,
+        DesktopViewAllComponent,
+        OnboardingComponent,
+        OnboardingLocationComponent,
+        OnboardingUserPreferenceComponent,
+        DesktopProminentFilterComponent,
+    ],
+    entryComponents: [
+        ContentImportHeaderComponent,
+        BrowseComponent,
+        NetworkStatusComponent,
+        ContentManagerComponent,
+        WatchVideoComponent,
+        ContentImportHeaderComponent,
+    ],
+    exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
+        OnboardingLocationComponent]
 })
 export class OfflineModule { }
