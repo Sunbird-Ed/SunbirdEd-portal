@@ -16,7 +16,7 @@ const fakeActivatedRoute = {
   snapshot: {
     data: {
       telemetry: {
-        env: 'admin-dashboard', pageid: 'manage-page', type: 'view'
+        env: 'admin-dashboard', pageid: 'admin-manage-page', type: 'view'
       }
     },
     routeConfig: {

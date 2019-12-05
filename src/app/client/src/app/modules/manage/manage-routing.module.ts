@@ -6,7 +6,7 @@ import { UserUploadComponent } from './components/user-upload/user-upload.compon
 const routes: Routes = [
   {path: 'manage', component: UserOrgManagementComponent, data: {
     telemetry: {
-      env: 'admin-dashboard', pageid: 'manage-page', type: 'view'
+      env: 'admin-dashboard', pageid: 'admin-manage-page', type: 'view'
     }
   }},
   {path: 'user-upload', component: UserUploadComponent}

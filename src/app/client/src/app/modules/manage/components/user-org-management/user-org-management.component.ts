@@ -109,28 +109,28 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         }
       };
       this.geoViewInteractEdata = {
-        id: 'geo-details-view',
-        type: 'click',
+        id: 'geo-details',
+        type: 'view',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       };
       this.geoDownloadInteractEdata = {
-        id: 'geo-data-download',
-        type: 'click',
+        id: 'geo-details',
+        type: 'download',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       };
       this.userViewInteractEdata = {
-        id: 'teacher-details-view',
-        type: 'click',
+        id: 'teacher-details',
+        type: 'view',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       };
       this.userDownloadInteractEdata = {
-        id: 'teacher-data-download',
-        type: 'click',
+        id: 'teacher-details',
+        type: 'download',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       };
       this.teacherDetailsInteractEdata = {
-        id: 'account-details-download',
-        type: 'click',
+        id: 'account-details',
+        type: 'download',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       };
     });
