@@ -6,7 +6,7 @@ export const response = {
             'preferredLanguage': null,
             'approvedBy': null,
             'channel': 'ROOT_ORG',
-            'description': 'National Teacher Platform',
+            'description': 'Test',
             'updatedDate': '2017-08-25 06:56:00:887+0000',
             'addressId': null,
             'provider': null,
@@ -35,7 +35,7 @@ export const response = {
             'createdDate': null,
             'createdBy': null,
             'parentOrgId': null,
-            'hashTagId': '505c7c48ac6dc1edc9b08f21db5a571d',
+            'hashTagId': '1234',
             'noOfMembers': 1,
             'status': 1
         }
