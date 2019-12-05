@@ -96,7 +96,7 @@ export class OnboardingLocationComponent implements OnInit {
       context: { env: 'offline' },
       edata: {
         type: 'view',
-        pageid: 'onboarding_location_setting',
+        pageid: 'onboarding_location',
         uri: this.router.url
       }
     };
@@ -104,7 +104,7 @@ export class OnboardingLocationComponent implements OnInit {
     this.telemetryInteractEdata = {
       id: 'onboarding_location',
       type: 'click',
-      pageid: 'onboarding_location_setting'
+      pageid: 'onboarding_location'
     };
   }
   getUserCurrentLocation() {

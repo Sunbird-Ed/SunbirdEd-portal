@@ -11,7 +11,7 @@ import { UserService, PermissionService, CoursesService, TenantService, OrgDetai
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
-import { first, filter, mergeMap, tap, map, skipWhile, startWith, catchError, delay } from 'rxjs/operators';
+import { first, filter, mergeMap, tap, map, skipWhile, startWith, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
@@ -129,7 +129,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.telemetryService.initialize(this.getTelemetryContext());
         this.navigationHelperService.initialize();
         _.isEmpty(data[1]) ? this.showOnboardingPopup = true : this.initializeTourTravel();
-        this.onboardingService.onboardCompletion.pipe(delay(500)).subscribe(event => {
+        this.onboardingService.onboardCompletion.subscribe(event => {
           event !== 'SUCCESS' ? this.showOnboardingPopup = true : this.initializeTourTravel();
         });
         this.tenantService.getTenantInfo(this.slug);
