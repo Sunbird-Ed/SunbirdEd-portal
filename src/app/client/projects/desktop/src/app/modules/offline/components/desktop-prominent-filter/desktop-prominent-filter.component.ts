@@ -8,7 +8,6 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import {
     ConfigService, ResourceService, Framework, ToasterService, UtilService,
 } from '@sunbird/shared';
-import { environment } from '@sunbird/environment';
 import { FrameworkService, FormService, PermissionService, OrgDetailsService } from '@sunbird/core';
 @Component({
     selector: 'app-desktop-prominent-filter',
@@ -18,16 +17,12 @@ import { FrameworkService, FormService, PermissionService, OrgDetailsService } f
 export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
 
     @Input() filterEnv: string;
-    @Input() accordionDefaultOpen: boolean;
-    @Input() isShowFilterLabel: boolean;
     @Input() hashTagId = '';
     @Input() ignoreQuery = [];
-    @Input() showSearchedParam = true;
     @Input() pageId: string;
     @Input() frameworkName: string;
     @Input() formAction: string;
 
-    @Output() filters = new EventEmitter();
     @Output() prominentFilter = new EventEmitter();
     @Output() filterChange: EventEmitter<any> = new EventEmitter();
 
@@ -41,19 +36,13 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
     public queryParams: any;
     public showFilters = false;
     public formInputData: any;
-    userRoles = [];
     refresh = true;
-    isShowFilterPlaceholder = true;
-    contentTypes: any;
-    frameworkDataSubscription: Subscription;
     resourceDataSubscription: Subscription;
     isFiltered = true;
 
     public resetFilterInteractEdata: IInteractEventEdata;
     applyFilterInteractEdata: IInteractEventEdata;
     private selectedLanguage: string;
-
-    isOffline: boolean = environment.isOffline;
 
     constructor(
         public resourceService: ResourceService,
@@ -76,7 +65,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
         this.resourceDataSubscription = this.resourceService.languageSelected$
             .subscribe(item => {
                 this.selectedLanguage = item.value;
-                if (this.formFieldProperties && this.formFieldProperties.length > 0) {
+                if (this.formFieldProperties && this.formFieldProperties.length) {
                     _.forEach(this.formFieldProperties, (data, index) => {
                         this.formFieldProperties[index] = this.utilService.translateLabel(data, this.selectedLanguage);
                         this.formFieldProperties[index].range = this.utilService.translateValues(data.range, this.selectedLanguage);
@@ -164,12 +153,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
         return this.frameworkService.frameworkData$.pipe(filter((frameworkDetails: any) => {
             if (!frameworkDetails.err) {
                 const framework = this.frameworkName ? this.frameworkName : 'defaultFramework';
-                const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
-                if (frameworkData) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return Boolean(_.get(frameworkDetails.frameworkdata, framework));
             }
             return true;
         }), first(),
@@ -187,13 +171,14 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
                 }
             }));
     }
+
     private subscribeToQueryParams() {
         this.activatedRoute.queryParams.subscribe((params) => {
             this.formInputData = {};
             _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
             this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
                 this.formFieldProperties, 'en', this.selectedLanguage);
-            if (this.formInputData.channel && this.formFieldProperties) { // To manuplulate channel data from identifier to name
+            if (this.formInputData.channel && this.formFieldProperties) { // To manipulate channel data from identifier to name
                 const channel = [];
                 _.forEach(this.formInputData.channel, (value, key) => {
                     const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
@@ -227,14 +212,10 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
         this.hardRefreshFilter();
         this.setFilterInteractData();
     }
+
     selectedValue(event, code) {
         this.formInputData[code] = event;
     }
-
-    /**
-   * To check filterType.
-   */
-    isObject(val) { return typeof val === 'object'; }
 
     applyFilters() {
         this.formInputData = this.utilService.convertSelectedOption(
@@ -258,8 +239,6 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
             if (!_.isEmpty(filters)) {
                 data.filters = filters;
                 data.filters.appliedFilters = true;
-                // this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: data });
-                console.log('queryParam', data);
                 this.filterChange.emit(data);
             }
         }
@@ -276,14 +255,6 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
         return channel;
     }
 
-    public handleTopicChange(topicsSelected) {
-        this.formInputData['topic'] = [];
-        _.forEach(topicsSelected, (value, index) => {
-            this.formInputData['topic'].push(value.name);
-        });
-        this.cdr.detectChanges();
-    }
-
     private hardRefreshFilter() {
         this.refresh = false;
         this.cdr.detectChanges();
@@ -298,9 +269,6 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.frameworkDataSubscription) {
-            this.frameworkDataSubscription.unsubscribe();
-        }
         if (this.resourceDataSubscription) {
             this.resourceDataSubscription.unsubscribe();
         }

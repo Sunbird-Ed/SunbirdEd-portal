@@ -10,7 +10,7 @@ import {
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { ConnectionService } from '../../services';
+import { ConnectionService, ContentManagerService } from '../../services';
 
 @Component({
     selector: 'app-library',
@@ -66,7 +66,8 @@ export class LibraryComponent implements OnInit {
         public searchService: SearchService,
         private connectionService: ConnectionService,
         public navigationHelperService: NavigationHelperService,
-        public telemetryService: TelemetryService
+        public telemetryService: TelemetryService,
+        public contentManagerService: ContentManagerService
     ) { }
 
     ngOnInit() {
@@ -77,6 +78,13 @@ export class LibraryComponent implements OnInit {
         this.connectionService.monitor().subscribe(isConnected => {
             this.isConnected = isConnected;
         });
+
+        this.contentManagerService.completeEvent.pipe(
+            takeUntil(this.unsubscribe$)).subscribe((data) => {
+                if (this.router.url === '/') {
+                    this.fetchContents();
+                }
+            });
 
         this.router.events.pipe(
             filter((event) => event instanceof NavigationStart),
