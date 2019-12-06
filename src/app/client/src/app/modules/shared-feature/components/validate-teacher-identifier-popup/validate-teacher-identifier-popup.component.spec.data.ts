@@ -102,5 +102,47 @@ export const mockUserData = {
         },
         'responseCode': 'CLIENT_ERROR',
         'result': {}
+    },
+    formReadResponse: {
+        'id': 'api.form.read',
+        'params': {
+            'resmsgid': '4e825699-1471-4353-ad83-1805946a57c5',
+            'msgid': 'cae4c242-369e-498a-a496-84bd99d2f4fe',
+            'status': 'successful'
+        },
+        'responseCode': 'OK',
+        'result': {
+            'form': {
+                'type': 'user',
+                'subtype': 'externalidverification',
+                'action': 'onboarding',
+                'component': '*',
+                'framework': '*',
+                'data': {
+                    'templateName': 'defaultTemplate',
+                    'action': 'onboarding',
+                    'fields': [
+                        {
+                            'code': 'externalIdVerificationLabels',
+                            'name': 'externalIdVerification',
+                            'range': [
+                                {
+                                    'headerLabel': 'Are you a government school teacher ?',
+                                    'fieldLabel': 'Enter your teacher ID for verification',
+                                    'incorrectIDLabel': 'The ID entered is incorrect. Enter the ID again',
+                                    'verficationFailureLabel': 'Could not verify teacher profile as the ID entered is incorrect',
+                                    'verificationSuccessfulLabel': 'Techer profile verified successfully'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                'created_on': '2019-12-04T13:08:45.998Z',
+                'last_modified_on': null,
+                'rootOrgId': '*'
+            }
+        },
+        'ts': '2019-12-05T11:14:35.561Z',
+        'ver': '1.0'
     }
 };

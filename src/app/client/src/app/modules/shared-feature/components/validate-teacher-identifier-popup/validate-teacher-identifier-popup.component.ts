@@ -1,4 +1,4 @@
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventObject, IImpressionEventInput } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { UserService } from '@sunbird/core';
@@ -6,6 +6,7 @@ import { environment } from '@sunbird/environment';
 import { ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-validate-teacher-identifier-popup',
@@ -14,6 +15,7 @@ import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 })
 export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   @Input() userFeedData: {};
+  @Input() labels: {};
   @Output() close = new EventEmitter<any>();
   @ViewChild('createValidateModal') createValidateModal;
   userDetailsForm: FormGroup;
@@ -29,14 +31,17 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   showStateDropdown: boolean;
   telemetryCdata: Array<{}> = [];
   telemetryInteractObject: IInteractEventObject;
+  telemetryImpressionData: IImpressionEventInput;
   closeInteractEdata: any;
   pageId = 'user-verification-popup';
   constructor(
     public userService: UserService,
     public resourceService: ResourceService,
-    public toasterService: ToasterService) { }
+    public toasterService: ToasterService,
+    public router: Router) { }
 
   ngOnInit() {
+    this.setTelemetryData();
     this.userId = this.userService.userid;
     this.processUserFeedData();
     this.initializeFormField();
@@ -50,7 +55,6 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
       this.userDetailsForm.addControl('state', new FormControl('', Validators.required));
     }
     this.handleSubmitButton();
-    this.setTelemetryData();
   }
 
   handleSubmitButton() {
@@ -99,8 +103,11 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
   }
 
   closeModal() {
+    if (this.extIdVerified) {
+      this.userService.getUserProfile();
+    }
     this.createValidateModal.deny();
-      this.close.emit();
+    this.close.emit();
   }
 
   navigateToValidateId() {
@@ -129,6 +136,18 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
       id: this.userService.userid,
       type: 'User',
       ver: '1.0'
+    };
+
+    this.telemetryImpressionData = {
+      context: {
+        env: 'user-verification',
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        type: 'view',
+        pageid: this.pageId,
+        uri: this.router.url
+      }
     };
   }
 

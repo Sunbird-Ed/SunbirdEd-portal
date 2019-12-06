@@ -23,12 +23,12 @@
             </dl>
            <div class="ml-auto" *ngIf="geoSummary && geoSummary.length">
               <button class="sb-btn sb-btn-normal" [ngClass]="(geoButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" (click)="geoTableView()" appTelemetryInteract [telemetryInteractEdata]="geoViewInteractEdata">{{geoButtonText}}</button>
-             <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadCSVFile(geoCSV)" appTelemetryInteract [telemetryInteractEdata]="geoDownloadInteractEdata"> Download </button>
+              <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadCSVFile(geoCSV)" appTelemetryInteract [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
            </div>
           </div>
         </div>
       </div>
-     <div class="sb-manage-table-section" *ngIf="geoButtonText == 'View Less'">
+      <div class="sb-manage-table-section" *ngIf="geoButtonText === resourceService.frmelmnts.btn.viewless">
         <div class="ui container">
             <div class="sb-table-responsive">
                 <div class="sb-table-container">
@@ -70,12 +70,12 @@
                 </dl>
              <div class="ml-auto" *ngIf="validatedUserSummary && validatedUserSummary.length" >
                 <button class="sb-btn sb-btn-normal" [ngClass]="(teachersButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" (click)="teachersTableView()" appTelemetryInteract [telemetryInteractEdata]="userViewInteractEdata">{{teachersButtonText}}</button>
-                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadZipFile(userZip)" appTelemetryInteract [telemetryInteractEdata]="userDownloadInteractEdata">Download</button>
+                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadZipFile(userZip)" appTelemetryInteract [telemetryInteractEdata]="userDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
              </div>
             </div>
           </div>
         </div>
-        <div class="sb-manage-table-section" *ngIf="teachersButtonText == 'View Less'">
+        <div class="sb-manage-table-section" *ngIf="teachersButtonText === resourceService.frmelmnts.btn.viewless">
            <div class="ui container">
                <div class="sb-table-responsive">
                    <div class="sb-table-container">
@@ -133,7 +133,7 @@
         (uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0) ||
         (uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0) "
         class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(userCSV)" 
-        appTelemetryInteract [telemetryInteractEdata]="teacherDetailsInteractEdata">Download</button>
+        appTelemetryInteract [telemetryInteractEdata]="teacherDetailsInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
       </div>
   
     <app-user-upload *ngIf="showModal"></app-user-upload>
