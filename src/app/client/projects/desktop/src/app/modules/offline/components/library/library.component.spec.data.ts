@@ -11,7 +11,7 @@ export const response = {
     constructSearchRequestWithFilter: {
         'filters': {
             'channel': '01285019302823526477',
-            'contentType': ['Collection', 'TextBook', 'LessonPlan', 'Resource']
+            'contentType': ['TextBook']
         },
         'mode': 'soft',
         'facets': ['board', 'medium', 'gradeLevel', 'subject'],
@@ -26,7 +26,7 @@ export const response = {
     },
     constructSearchRequestWithOutFilter: {
         'filters': {
-            'contentType': ['Collection', 'TextBook', 'LessonPlan', 'Resource']
+            'contentType': ['TextBook']
         },
         'mode': 'soft',
         'facets': ['board', 'medium', 'gradeLevel', 'subject'],
