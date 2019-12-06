@@ -25,6 +25,24 @@ const fakeActivatedRoute = {
   }
 };
 
+const resourceMockData = {
+  frmelmnts: {
+    btn: {
+      viewdetails: 'View Details',
+      viewless: 'View less'
+    },
+    lbl: {
+      admindshheader: {
+        index: 'Serial No.',
+        districts: 'Districts',
+        blocks: 'Blocks',
+        schools: 'Schools',
+        teachers: 'Regd. Teachers'
+      }
+    }
+  }
+};
+
 describe('UserOrgManagementComponent', () => {
 
   let component: UserOrgManagementComponent;
@@ -46,10 +64,10 @@ describe('UserOrgManagementComponent', () => {
       providers: [
         UserService,
         ManageService,
-        ResourceService,
         ToasterService,
         NavigationHelperService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ResourceService, useValue: resourceMockData }
       ]
     }).compileComponents();
   }));
@@ -103,16 +121,6 @@ describe('UserOrgManagementComponent', () => {
   it('value of variable userZip should be validated-user-detail.zip', () => {
     const userZip = component.userZip;
     expect(userZip).toEqual('validated-user-detail.zip');
-  });
-
-  it('value of variable geoButtonText should be View Details', () => {
-    const geoButtonText = component.geoButtonText;
-    expect(geoButtonText).toEqual('View Details');
-  });
-
-  it('value of variable teachersButtonText should be View Details', () => {
-    const teachersButtonText = component.teachersButtonText;
-    expect(teachersButtonText).toEqual('View Details');
   });
 
   it('value of variable GeoTableId should be GeoDetailsTable', () => {
