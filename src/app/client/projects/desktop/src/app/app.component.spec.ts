@@ -78,7 +78,7 @@ describe('AppComponent', () => {
     spyOn(Fingerprint2, 'constructor').and.returnValue({get: () => {}});
     spyOn(document, 'getElementById').and.callFake((id) => {
       if (id === 'buildNumber') {
-        return { value: '1.1.12.0' };
+        return { value: '1.0.2' };
       }
       if (id === 'deviceId') {
         return { value: 'device' };
@@ -188,5 +188,11 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.instance = 'preprod';
     component.initializeShepherdData();
     expect(component.shepherdData[0].options.text[0]).toContain(component.instance.toUpperCase());
+  });
+
+  it('should check the build Number', () => {
+    const buildNumber = document.getElementById('buildNumber');
+    expect(document.getElementById).toHaveBeenCalled();
+    expect(buildNumber['value']).toEqual('1.0.2');
   });
 });
