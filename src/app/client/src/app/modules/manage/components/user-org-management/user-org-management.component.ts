@@ -55,10 +55,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public userDetail = 'validated-user-summary-district.json';
   public userZip = 'validated-user-detail.zip';
   public GeoTableId = 'GeoDetailsTable';
-  public geoTableHeader = ['Serial No.', 'Districts', 'Blocks', 'Schools'];
+  public geoTableHeader;
   public geoTabledata = [];
   public userTableId = 'ValidatedUserDetailsTable';
-  public userTableHeader = ['Serial No.', 'Districts', 'Blocks', 'Schools', 'Regd. Teachers'];
+  public userTableHeader;
   public userTabledata = [];
   public activatedRoute: ActivatedRoute;
   public resourceService: ResourceService;
@@ -85,6 +85,17 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
+    this.geoTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
+      this.resourceService.frmelmnts.lbl.admindshheader.districts,
+      this.resourceService.frmelmnts.lbl.admindshheader.blocks,
+      this.resourceService.frmelmnts.lbl.admindshheader.schools
+    ];
+    this.userTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
+      this.resourceService.frmelmnts.lbl.admindshheader.districts,
+      this.resourceService.frmelmnts.lbl.admindshheader.blocks,
+      this.resourceService.frmelmnts.lbl.admindshheader.schools,
+      this.resourceService.frmelmnts.lbl.admindshheader.teachers
+    ];
     this.userService.userData$.pipe(first()).subscribe(async (user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
