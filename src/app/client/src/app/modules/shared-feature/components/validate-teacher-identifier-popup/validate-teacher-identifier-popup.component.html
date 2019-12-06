@@ -11,14 +11,14 @@
     
   <!--Header-->
   <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.userVarification}}
+    {{labels?.popupHeaderLabel}}
   </div>
   <!--/Header-->
 
   <!--modal content-->
   <div class="sb-modal-content">
     <div *ngIf="!processValidation">
-      {{labels.headerLabel}}  
+      {{labels?.headerLabel}}  
     </div>
     <form class="sb-form" [formGroup]="userDetailsForm">
       <div *ngIf="processValidation && !(extIdVerified || extIdFailed)" class="sb-field-group mb-16 text-left">
