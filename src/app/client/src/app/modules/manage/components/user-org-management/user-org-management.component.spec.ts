@@ -105,16 +105,6 @@ describe('UserOrgManagementComponent', () => {
     expect(userZip).toEqual('validated-user-detail.zip');
   });
 
-  it('value of variable geoButtonText should be View Details', () => {
-    const geoButtonText = component.geoButtonText;
-    expect(geoButtonText).toEqual('View Details');
-  });
-
-  it('value of variable teachersButtonText should be View Details', () => {
-    const teachersButtonText = component.teachersButtonText;
-    expect(teachersButtonText).toEqual('View Details');
-  });
-
   it('value of variable GeoTableId should be GeoDetailsTable', () => {
     const GeoTableId = component.GeoTableId;
     expect(GeoTableId).toEqual('GeoDetailsTable');
