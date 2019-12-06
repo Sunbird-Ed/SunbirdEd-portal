@@ -1091,7 +1091,8 @@
     "explore-course": "explore-course",
     "framework-code": "framework-code",
     "courses": "courses",
-    "organization": "organization"
+    "organization": "organization",
+    "externalIdVerification": "externalIdVerification"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

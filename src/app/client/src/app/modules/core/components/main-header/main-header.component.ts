@@ -88,7 +88,7 @@ export class MainHeaderComponent implements OnInit {
   }
   ngOnInit() {
     if (this.userService.loggedIn) {
-      this.userService.userData$.pipe(first()).subscribe((user: any) => {
+      this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
