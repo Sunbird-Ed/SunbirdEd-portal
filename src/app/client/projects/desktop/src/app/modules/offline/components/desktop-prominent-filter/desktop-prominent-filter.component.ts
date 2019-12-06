@@ -17,7 +17,6 @@ import { FrameworkService, FormService, PermissionService, OrgDetailsService } f
 })
 export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
 
-    multiSelect1: any;
     @Input() filterEnv: string;
     @Input() accordionDefaultOpen: boolean;
     @Input() isShowFilterLabel: boolean;

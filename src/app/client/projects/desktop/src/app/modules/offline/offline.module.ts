@@ -16,7 +16,7 @@ import {
     BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
     LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
     OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
-    OnboardingLocationComponent, OnboardingUserPreferenceComponent
+    OnboardingLocationComponent, OnboardingUserPreferenceComponent, DesktopProminentFilterComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -28,7 +28,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { DesktopExploreContentComponent } from './components/desktop-explore-content/desktop-explore-content.component';
 import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { DesktopProminentFilterComponent } from './desktop-prominent-filter/desktop-prominent-filter.component';
 
 @NgModule({
     imports: [

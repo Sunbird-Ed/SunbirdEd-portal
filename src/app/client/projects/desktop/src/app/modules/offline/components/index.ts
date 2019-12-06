@@ -15,3 +15,4 @@ export * from './desktop-explore-content/desktop-explore-content.component';
 export * from './onboarding/onboarding.component';
 export * from './onboarding-location/onboarding-location.component';
 export * from './onboarding-user-preference/onboarding-user-preference.component';
+export * from './desktop-prominent-filter/desktop-prominent-filter.component';
