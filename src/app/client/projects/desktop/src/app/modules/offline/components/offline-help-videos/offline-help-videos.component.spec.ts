@@ -54,11 +54,6 @@ describe('OfflineHelpVideosComponent', () => {
     fixture.detectChanges();
   });
 
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should call setVideoHeight method', () => {
     component.instance = resourceServiceStub.instance;
     spyOn(component, 'setVideoHeight');
@@ -71,16 +66,18 @@ describe('OfflineHelpVideosComponent', () => {
   });
 
   it('should changeVideoAttributes value', () => {
-    const data = component.slideData[1];
+    const name = (resourceServiceStub.frmelmnts.instn.t0094).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
+      const data = {
+      id: 'add-content-online',
+      name: name,
+      thumbnail: 'assets/images/play-icon.svg',
+      url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_connected_to_the_Internet.mp4'};
     component.changeVideoAttributes(data);
+    fixture.detectChanges();
+    const value = fixture.debugElement.query(By.css('.help-video__player__title')).nativeElement.innerText;
     expect(component.activeVideoObject).toBeDefined();
-    expect(component.activeVideoObject.id).toEqual('find-content-offline');
-  });
-
-  it('should changeVideoAttributes value', () => {
-    const data = (resourceServiceStub.frmelmnts.instn.t0094).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
-    const value = fixture.debugElement.query(By.css('h6')).nativeElement.innerText;
-    expect(value).toContain(data);
+    expect(component.activeVideoObject.id).toEqual('add-content-online');
+    expect(value).toContain(data.name);
   });
 
   it('should emit an event' , () => {
@@ -88,5 +85,7 @@ describe('OfflineHelpVideosComponent', () => {
     component.closeModal();
     expect(component.closeVideoModal.emit).toHaveBeenCalled();
   });
+
+
 
 });
