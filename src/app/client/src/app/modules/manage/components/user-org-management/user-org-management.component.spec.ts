@@ -25,6 +25,24 @@ const fakeActivatedRoute = {
   }
 };
 
+const resourceMockData = {
+  frmelmnts: {
+    btn: {
+      viewdetails: 'View Details',
+      viewless: 'View less'
+    },
+    lbl: {
+      admindshheader: {
+        index: 'Serial No.',
+        districts: 'Districts',
+        blocks: 'Blocks',
+        schools: 'Schools',
+        teachers: 'Regd. Teachers'
+      }
+    }
+  }
+};
+
 describe('UserOrgManagementComponent', () => {
 
   let component: UserOrgManagementComponent;
@@ -46,10 +64,10 @@ describe('UserOrgManagementComponent', () => {
       providers: [
         UserService,
         ManageService,
-        ResourceService,
         ToasterService,
         NavigationHelperService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ResourceService, useValue: resourceMockData }
       ]
     }).compileComponents();
   }));
