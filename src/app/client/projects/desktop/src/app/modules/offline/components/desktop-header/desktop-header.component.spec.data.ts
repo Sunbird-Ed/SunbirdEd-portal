@@ -1,0 +1,43 @@
+export const response = {
+    orgData: {
+        'err': null,
+        'orgDetails': {
+            'dateTime': null,
+            'preferredLanguage': null,
+            'approvedBy': null,
+            'channel': 'ROOT_ORG',
+            'description': 'Test',
+            'updatedDate': '2017-08-25 06:56:00:887+0000',
+            'addressId': null,
+            'provider': null,
+            'locationId': null,
+            'orgCode': 'ABC',
+            'theme': null,
+            'id': 'ORG_001',
+            'communityId': null,
+            'isApproved': null,
+            'email': null,
+            'slug': 'ABC',
+            'identifier': 'ORG_001',
+            'thumbnail': null,
+            'orgName': 'ABC',
+            'updatedBy': 'user1',
+            'locationIds': [],
+            'externalId': null,
+            'isRootOrg': true,
+            'rootOrgId': null,
+            'approvedDate': null,
+            'imgUrl': null,
+            'homeUrl': null,
+            'orgTypeId': null,
+            'isDefault': true,
+            'contactDetail': null,
+            'createdDate': null,
+            'createdBy': null,
+            'parentOrgId': null,
+            'hashTagId': '1234',
+            'noOfMembers': 1,
+            'status': 1
+        }
+    }
+};
