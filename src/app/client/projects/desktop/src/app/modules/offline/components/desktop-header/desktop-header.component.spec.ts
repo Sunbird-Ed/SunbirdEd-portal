@@ -17,7 +17,7 @@ describe('DesktopHeaderComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [DesktopHeaderComponent, NetworkStatusComponent],
-            imports: [SharedModule, CommonConsumptionModule, FormsModule, RouterModule.forRoot([]), CoreModule],
+            imports: [SharedModule.forRoot(), CommonConsumptionModule, FormsModule, RouterModule.forRoot([]), CoreModule],
             providers: [ConfigService, ResourceService, ElectronDialogService, TenantService, FormService, OrgDetailsService,
                 BrowserCacheTtlService, TelemetryService]
         }).compileComponents();

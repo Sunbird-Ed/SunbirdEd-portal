@@ -34,7 +34,7 @@ describe('LibraryFiltersComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [LibraryFiltersComponent],
-            imports: [CommonConsumptionModule, TelemetryModule, SuiModule, HttpClientModule, RouterModule.forRoot([])],
+            imports: [CommonConsumptionModule, TelemetryModule.forRoot(), SuiModule, HttpClientModule, RouterModule.forRoot([])],
             providers: [
                 { provide: ResourceService, useValue: resourceBundle },
                 CacheService,

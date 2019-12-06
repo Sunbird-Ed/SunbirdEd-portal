@@ -44,7 +44,7 @@ describe('LibraryComponent', () => {
             ],
             imports: [
                 CommonConsumptionModule,
-                TelemetryModule,
+                TelemetryModule.forRoot(),
                 RouterModule.forRoot([]),
                 HttpClientModule,
                 SuiModule,

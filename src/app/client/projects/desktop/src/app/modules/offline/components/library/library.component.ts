@@ -1,15 +1,16 @@
 import { Component, OnInit, EventEmitter, HostListener } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { combineLatest, Subject, of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
-
+import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+
 import {
-    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage,
+    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage, NavigationHelperService
 } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
-import { ConnectionService } from '../../services';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { ConnectionService, ContentManagerService } from '../../services';
 
 @Component({
     selector: 'app-library',
@@ -39,8 +40,14 @@ export class LibraryComponent implements OnInit {
     public recentlyAddedContents = [];
 
     isConnected = navigator.onLine;
-
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
+
+    /* Telemetry */
+    public viewAllInteractEdata: IInteractEventEdata;
+    public cardInteractEdata: IInteractEventEdata;
+    public telemetryImpression: IImpressionEventInput;
+    public cardInteractObject: any;
+    public cardInteractCdata: any;
 
     @HostListener('window:scroll', []) onScroll(): void {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -57,16 +64,32 @@ export class LibraryComponent implements OnInit {
         private resourceService: ResourceService,
         private publicPlayerService: PublicPlayerService,
         public searchService: SearchService,
-        private connectionService: ConnectionService
+        private connectionService: ConnectionService,
+        public navigationHelperService: NavigationHelperService,
+        public telemetryService: TelemetryService,
+        public contentManagerService: ContentManagerService
     ) { }
 
     ngOnInit() {
         this.getSelectedFilters();
         this.setNoResultMessage();
+        this.setTelemetryData();
 
         this.connectionService.monitor().subscribe(isConnected => {
             this.isConnected = isConnected;
         });
+
+        this.contentManagerService.completeEvent.pipe(
+            takeUntil(this.unsubscribe$)).subscribe((data) => {
+                if (this.router.url === '/') {
+                    this.fetchContents();
+                }
+            });
+
+        this.router.events.pipe(
+            filter((event) => event instanceof NavigationStart),
+            takeUntil(this.unsubscribe$))
+            .subscribe(x => { this.prepareVisits(); });
     }
 
     getSelectedFilters() {
@@ -77,7 +100,6 @@ export class LibraryComponent implements OnInit {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
-
 
     onFilterChange(event) {
         this.showLoader = true;
@@ -223,17 +245,93 @@ export class LibraryComponent implements OnInit {
         });
     }
 
-    public playContent(event) {
+    public playContent(event: any) {
         if (_.includes(this.router.url, 'browse')) {
             this.publicPlayerService.playContentForOfflineBrowse(event);
         } else {
             this.publicPlayerService.playContent(event);
         }
+
+        if (event.data) {
+            this.logTelemetry(event.data);
+        }
     }
 
 
-    // To Handle in-view logs
-    afterChange(event) {
-        // console.log('AfterChange', event);
+    setTelemetryData() {
+        this.telemetryImpression = {
+            context: {
+                env: this.activatedRoute.snapshot.data.telemetry.env
+            },
+            edata: {
+                type: this.activatedRoute.snapshot.data.telemetry.type,
+                pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+                uri: this.router.url,
+                subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+                duration: this.navigationHelperService.getPageLoadTime()
+            }
+        };
+        this.viewAllInteractEdata = {
+            id: `view-all-button`,
+            type: 'click',
+            pageid: 'library'
+        };
+
+        this.cardInteractEdata = {
+            id: 'content-card',
+            type: 'click',
+            pageid: this.router.url.split('/')[1] || 'library'
+        };
+    }
+
+    prepareVisits() {
+        const visits = [];
+        _.map(this.sections, section => {
+            _.forEach(section.contents, (content, index) => {
+                visits.push({
+                    objid: content.metaData.identifier,
+                    objtype: content.metaData.contentType,
+                    index: index,
+                    section: section.name,
+                });
+            });
+        });
+
+        this.telemetryImpression.edata.visits = visits;
+        this.telemetryImpression.edata.subtype = 'pageexit';
+        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+
+    logTelemetry(content) {
+        const telemetryInteractCdata = [{
+            id: content.metaData.identifier || content.metaData.courseId,
+            type: content.metaData.contentType
+        }];
+        const telemetryInteractObject = {
+            id: content.metaData.identifier || content.metaData.courseId,
+            type: content.metaData.contentType || 'Course',
+            ver: content.metaData.pkgVersion ? content.metaData.pkgVersion.toString() : '1.0'
+        };
+
+        if (this.cardInteractEdata) {
+            const appTelemetryInteractData: any = {
+                context: {
+                    env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+                        _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+                        _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
+                    cdata: telemetryInteractCdata || [],
+                },
+                edata: this.cardInteractEdata
+            };
+
+            if (telemetryInteractObject) {
+                if (telemetryInteractObject.ver) {
+                    telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+                        _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+                }
+                appTelemetryInteractData.object = telemetryInteractObject;
+            }
+            this.telemetryService.interact(appTelemetryInteractData);
+        }
     }
 }

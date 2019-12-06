@@ -12,7 +12,7 @@ export * from './desktop-header/desktop-header.component';
 export * from './library/library.component';
 export * from './library-filters/library-filters.component';
 export * from './desktop-explore-content/desktop-explore-content.component';
-export * from './desktop-view-all/desktop-view-all.component';
 export * from './onboarding/onboarding.component';
 export * from './onboarding-location/onboarding-location.component';
 export * from './onboarding-user-preference/onboarding-user-preference.component';
+export * from './desktop-prominent-filter/desktop-prominent-filter.component';
