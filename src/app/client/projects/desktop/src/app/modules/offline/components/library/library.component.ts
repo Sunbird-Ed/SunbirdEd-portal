@@ -9,7 +9,7 @@ import {
 } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
-import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ConnectionService } from '../../services';
 
 @Component({
@@ -65,7 +65,8 @@ export class LibraryComponent implements OnInit {
         private publicPlayerService: PublicPlayerService,
         public searchService: SearchService,
         private connectionService: ConnectionService,
-        public navigationHelperService: NavigationHelperService
+        public navigationHelperService: NavigationHelperService,
+        public telemetryService: TelemetryService
     ) { }
 
     ngOnInit() {
@@ -236,13 +237,18 @@ export class LibraryComponent implements OnInit {
         });
     }
 
-    public playContent(event) {
+    public playContent(event: any) {
         if (_.includes(this.router.url, 'browse')) {
             this.publicPlayerService.playContentForOfflineBrowse(event);
         } else {
             this.publicPlayerService.playContent(event);
         }
+
+        if (event.data) {
+            this.logTelemetry(event.data);
+        }
     }
+
 
     setTelemetryData() {
         this.telemetryImpression = {
@@ -286,5 +292,38 @@ export class LibraryComponent implements OnInit {
         this.telemetryImpression.edata.visits = visits;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+
+    logTelemetry(content) {
+        const telemetryInteractCdata = [{
+            id: content.metaData.identifier || content.metaData.courseId,
+            type: content.metaData.contentType
+        }];
+        const telemetryInteractObject = {
+            id: content.metaData.identifier || content.metaData.courseId,
+            type: content.metaData.contentType || 'Course',
+            ver: content.metaData.pkgVersion ? content.metaData.pkgVersion.toString() : '1.0'
+        };
+
+        if (this.cardInteractEdata) {
+            const appTelemetryInteractData: any = {
+                context: {
+                    env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+                        _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+                        _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
+                    cdata: telemetryInteractCdata || [],
+                },
+                edata: this.cardInteractEdata
+            };
+
+            if (telemetryInteractObject) {
+                if (telemetryInteractObject.ver) {
+                    telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+                        _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+                }
+                appTelemetryInteractData.object = telemetryInteractObject;
+            }
+            this.telemetryService.interact(appTelemetryInteractData);
+        }
     }
 }

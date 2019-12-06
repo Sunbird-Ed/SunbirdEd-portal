@@ -171,7 +171,7 @@ export class DesktopHeaderComponent implements OnInit {
     this.contentImportInteractEdata = {
       id: 'content-import-button',
       type: 'click',
-      pageid: 'library'
+      pageid: 'explore'
     };
     this.myLibraryMenuInteractEdata = {
       id: 'myLibrary-tab',

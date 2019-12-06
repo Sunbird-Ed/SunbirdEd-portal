@@ -8,11 +8,11 @@
             </button>
             <button *ngIf="!router?.url?.includes('view-all')" type="button" appTelemetryInteract
                 [telemetryInteractEdata]="filterByButtonInteractEdata"
-                class="sb-btn sb-btn-outline-primary sb-btn-normal font-weight-bold"
+                class="sb-btn sb-btn-outline-primary sb-btn-normal font-weight-bold" [class.active]="showFilters"
                 (click)="showFilters = !showFilters">
                 <i class="icon-svg icon-svg--xxs icon-play">
                     <svg class="icon icon-svg--primary">
-                        <use xlink:href="assets/images/sprite.svg#play"></use>
+                        <use xlink:href="assets/images/sprite.svg#filter"></use>
                     </svg>
                 </i> {{resourceService?.frmelmnts?.lbl?.filterby}}
             </button>
@@ -40,15 +40,7 @@
         </div>
     </div>
     <div class="content-grid mt-24">
-        <div class="twelve wide column" *ngIf="contentList.length">
-            <div class="masonry-grid dynamic-section-card">
-                <div class="masonry-item card-width" *ngFor="let content of contentList;let i = index;">
-                    <sb-library-card [content]="content" [type]="'desktop_textbook'"
-                        [cardImg]="content?.cardImg || 'assets/images/book.png'"
-                        (click)="playContent({event: $event, data: content})"></sb-library-card>
-                </div>
-            </div>
-        </div>
+        <ng-container *ngTemplateOutlet="cardContainerTemplate"></ng-container>
     </div>
 </div>
 
@@ -62,19 +54,8 @@
         </div>
     </div>
     <div class="content-grid mt-24">
-        <div class="twelve wide column">
-            <div class="masonry-grid dynamic-section-card">
-                <div class="masonry-item card-width" *ngFor="let content of contentList;let i = index;">
-                    <sb-library-card [content]="content" [type]="'desktop_textbook'"
-                        [cardImg]="content?.cardImg || 'assets/images/book.png'"
-                        (click)="playContent({event: $event, data: content})" appTelemetryInteract
-                        [telemetryInteractEdata]="cardInteractEdata"
-                        [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
-                        [telemetryInteractCdata]="[{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType}]">
-                    </sb-library-card>
-                </div>
-            </div>
-        </div>
+        <ng-container *ngTemplateOutlet="cardContainerTemplate"></ng-container>
+
         <div class="twelve wide column right aligned py-0"
             *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && (router.url.includes('browse'))">
             <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails?.pages?.length">
@@ -106,3 +87,19 @@
         </div>
     </div>
 </div>
+
+
+<ng-template #cardContainerTemplate>
+    <div class="twelve wide column" *ngIf="contentList.length">
+        <div class="masonry-grid dynamic-section-card">
+            <div class="masonry-item card-width" *ngFor="let content of contentList;let i = index;">
+                <sb-library-card [content]="content" [type]="'desktop_textbook'" appTelemetryInteract
+                    [telemetryInteractEdata]="cardInteractEdata"
+                    [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
+                    [telemetryInteractCdata]="[{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType}]"
+                    [cardImg]="content?.cardImg || 'assets/images/book.png'"
+                    (click)="playContent({event: $event, data: content})"></sb-library-card>
+            </div>
+        </div>
+    </div>
+</ng-template>

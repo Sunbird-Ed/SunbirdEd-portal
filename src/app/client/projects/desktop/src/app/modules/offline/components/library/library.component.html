@@ -30,10 +30,7 @@
                         <div ngxSlickItem *ngFor="let content of section?.contents" class="sbcardwidth slide mr-16">
                             <sb-library-card [content]="content" [type]="'recently_viewed'"
                                 [cardImg]="content?.cardImg || 'assets/images/book.png'"
-                                (click)="playContent({event: $event, data: content})" appTelemetryInteract
-                                [telemetryInteractEdata]="cardInteractEdata"
-                                [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
-                                [telemetryInteractCdata]="[{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType}]">
+                                (click)="playContent({event: $event, data: content})">
                             </sb-library-card>
                         </div>
                     </ngx-slick>
