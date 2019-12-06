@@ -136,7 +136,6 @@ export class PageSectionComponent implements OnInit, OnDestroy {
     const contentType = _.get(content, 'contentType') || _.get(content, 'metaData.contentType');
     if (_.lowerCase(contentType) === 'course') {
       rollup['l1'] = _.get(content, 'metaData.courseId') || _.get(content, 'metaData.identifier');
-      rollup['l2'] = _.get(content, 'metadata.batchId');
     }
     return rollup;
   }
