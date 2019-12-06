@@ -91,7 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
   userFeed: any;
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
-  labels = {};
+  labels: {};
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
