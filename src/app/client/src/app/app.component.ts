@@ -169,7 +169,15 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  isLocationStatusRequired() {
+    const url = this.router.url;
+    return !!(_.includes(url, 'signup') || _.includes(url, 'recover'));
+  }
+
   checkLocationStatus() {
+    if (this.isLocationStatusRequired()) {
+      return;
+    }
     this.usersProfile = this.userService.userProfile;
     const deviceRegister = this.deviceRegisterService.getDeviceProfile();
     const custodianOrgDetails = this.orgDetailsService.getCustodianOrgDetails();
