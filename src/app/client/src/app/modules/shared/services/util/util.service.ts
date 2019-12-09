@@ -6,6 +6,9 @@ import { Subject, Observable } from 'rxjs';
 export class UtilService {
   static singletonInstance: UtilService;
   public showAppPopUp = false;
+  private searchQuery = new Subject<any>();
+  public searchQuery$ = this.searchQuery.asObservable();
+
   constructor() {
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
@@ -184,5 +187,9 @@ export class UtilService {
       return (content['downloadStatus'] === status);
     }
     return false;
+  }
+
+  clearSearchQuery() {
+      this.searchQuery.next();
   }
 }

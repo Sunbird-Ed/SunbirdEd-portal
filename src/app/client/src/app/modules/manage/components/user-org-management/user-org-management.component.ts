@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
+import { ResourceService } from '../../../shared/services/resource/resource.service';
 import { NavigationHelperService } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
@@ -41,6 +42,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     'teachers': 0
   };
   public validatedUserSummary;
+  public geoButtonText;
+  public teachersButtonText;
   public manageService: ManageService;
   public slug: any = (<HTMLInputElement>document.getElementById('defaultTenant'));
   public geoJSON = 'geo-summary.json';
@@ -51,15 +54,14 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public userSummary = 'validated-user-summary.json';
   public userDetail = 'validated-user-summary-district.json';
   public userZip = 'validated-user-detail.zip';
-  public geoButtonText = 'View Details';
-  public teachersButtonText = 'View Details';
   public GeoTableId = 'GeoDetailsTable';
-  public geoTableHeader = ['Serial No.', 'Districts', 'Blocks', 'Schools'];
+  public geoTableHeader;
   public geoTabledata = [];
   public userTableId = 'ValidatedUserDetailsTable';
-  public userTableHeader = ['Serial No.', 'Districts', 'Blocks', 'Schools', 'Regd. Teachers'];
+  public userTableHeader;
   public userTabledata = [];
   public activatedRoute: ActivatedRoute;
+  public resourceService: ResourceService;
   public telemetryImpression: IImpressionEventInput;
   public geoViewInteractEdata: IInteractEventEdata;
   public geoDownloadInteractEdata: IInteractEventEdata;
@@ -68,10 +70,11 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public teacherDetailsInteractEdata: IInteractEventEdata;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    userService: UserService, manageService: ManageService) {
+    userService: UserService, manageService: ManageService, resourceService: ResourceService) {
     this.userService = userService;
     this.manageService = manageService;
     this.activatedRoute = activatedRoute;
+    this.resourceService = resourceService;
     if (this.slug) {
       this.slug = (<HTMLInputElement>document.getElementById('defaultTenant')).value;
     } else {
@@ -80,6 +83,19 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
+    this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
+    this.geoTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
+      this.resourceService.frmelmnts.lbl.admindshheader.districts,
+      this.resourceService.frmelmnts.lbl.admindshheader.blocks,
+      this.resourceService.frmelmnts.lbl.admindshheader.schools
+    ];
+    this.userTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
+      this.resourceService.frmelmnts.lbl.admindshheader.districts,
+      this.resourceService.frmelmnts.lbl.admindshheader.blocks,
+      this.resourceService.frmelmnts.lbl.admindshheader.schools,
+      this.resourceService.frmelmnts.lbl.admindshheader.teachers
+    ];
     this.userService.userData$.pipe(first()).subscribe(async (user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
@@ -236,8 +252,9 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
 }
 
   public geoTableView() {
-    if (this.geoButtonText === 'View Details') {
-      this.geoButtonText = 'View Less';
+    this.geoTabledata = [];
+    if (this.geoButtonText === this.resourceService.frmelmnts.btn.viewdetails) {
+      this.geoButtonText = this.resourceService.frmelmnts.btn.viewless;
       for (let i = 0; i < this.geoSummary.length; i++) {
         this.geoTabledata.push([
           this.geoSummary[i].index, this.geoSummary[i].districtName,
@@ -248,7 +265,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         }
       }
     } else {
-      this.geoButtonText = 'View Details';
+      this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     }
   }
 
@@ -275,8 +292,9 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
 }
 
   public teachersTableView() {
-    if (this.teachersButtonText === 'View Details') {
-      this.teachersButtonText = 'View Less';
+    this.userTabledata = [];
+    if (this.teachersButtonText === this.resourceService.frmelmnts.btn.viewdetails) {
+      this.teachersButtonText = this.resourceService.frmelmnts.btn.viewless;
       for (let i = 0; i < this.validatedUserSummary.length; i++) {
         this.userTabledata.push([
           this.validatedUserSummary[i].index, this.validatedUserSummary[i].districtName,
@@ -288,7 +306,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         }
       }
     } else {
-      this.teachersButtonText = 'View Details';
+      this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     }
   }
 
