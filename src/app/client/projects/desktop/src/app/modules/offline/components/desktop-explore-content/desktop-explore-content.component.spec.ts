@@ -42,7 +42,7 @@ describe('DesktopExploreContentComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DesktopExploreContentComponent],
       imports: [
-        CommonConsumptionModule, TelemetryModule, RouterModule.forRoot([]), HttpClientTestingModule,
+        CommonConsumptionModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), HttpClientTestingModule,
         CoreModule, SharedModule.forRoot(),
       ],
       providers: [{ provide: ActivatedRoute, useClass: FakeActivatedRoute }, ToasterService, ConnectionService,
