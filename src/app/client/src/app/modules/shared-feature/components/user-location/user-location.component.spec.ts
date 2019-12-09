@@ -117,4 +117,25 @@ describe('UserLocationComponent', () => {
     expect(component.onStateChange).toHaveBeenCalled();
   });
 
+  it('should get telemetry data when nothing changed', () => {
+    const data = component.getTelemetryData('');
+    expect(data).toEqual(userLocationMockData.telemetryData);
+  });
+
+  it('should get telemetry data when state changed', () => {
+    const data = component.getTelemetryData('state-changed');
+    expect(data).toEqual(userLocationMockData.stateChanged);
+  });
+
+  it('should get telemetry data when dist changed', () => {
+    const data = component.getTelemetryData('dist-changed');
+    expect(data).toEqual(userLocationMockData.districtChanged);
+  });
+
+  it('should get telemetry data when both changed', () => {
+    const data = component.getTelemetryData('state-changed-dist-changed');
+    expect(data).toEqual(userLocationMockData.bothChanged);
+  });
+
+
 });

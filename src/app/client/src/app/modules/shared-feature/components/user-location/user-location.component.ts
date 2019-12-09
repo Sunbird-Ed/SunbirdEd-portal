@@ -342,7 +342,6 @@ export class UserLocationComponent implements OnInit {
       if (telemetryInteractCdata) {
         appTelemetryInteractData.object = telemetryInteractCdata;
       }
-      console.log(appTelemetryInteractData);
       this.telemetryService.interact(appTelemetryInteractData);
     }
   }
@@ -405,7 +404,6 @@ export class UserLocationComponent implements OnInit {
         message: msg
       }
     };
-    console.log(event);
     this.telemetryService.log(event);
   }
 

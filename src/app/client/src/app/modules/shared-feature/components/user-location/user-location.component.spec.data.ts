@@ -11,5 +11,49 @@ export const userLocationMockData = {
     id: 'cde02789-5803-424b-a3f5-10db347280e9',
     type: 'district',
     parentId: '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
-  }]
+  }],
+  telemetryData: {
+    locationIntractEdata: {
+      id: 'submit-clicked',
+      type: 'location-unchanged',
+      subtype: ''
+    },
+    telemetryCdata: [
+      {id: 'user:state:districtConfimation', type: 'Feature'},
+      {id: 'SC-1373', type: 'Task'}
+    ]
+  },
+  stateChanged: {
+    locationIntractEdata: {
+      id: 'submit-clicked',
+      type: 'location-changed',
+      subtype: 'state-changed'
+    },
+    telemetryCdata: [
+      {id: 'user:state:districtConfimation', type: 'Feature'},
+      {id: 'SC-1373', type: 'Task'}
+    ]
+  },
+  districtChanged: {
+    locationIntractEdata: {
+      id: 'submit-clicked',
+      type: 'location-changed',
+      subtype: 'dist-changed'
+    },
+    telemetryCdata: [
+      {id: 'user:state:districtConfimation', type: 'Feature'},
+      {id: 'SC-1373', type: 'Task'}
+    ]
+  },
+  bothChanged: {
+    locationIntractEdata: {
+      id: 'submit-clicked',
+      type: 'location-changed',
+      subtype: 'state-changed-dist-changed'
+    },
+    telemetryCdata: [
+      {id: 'user:state:districtConfimation', type: 'Feature'},
+      {id: 'SC-1373', type: 'Task'}
+    ]
+  },
 };
