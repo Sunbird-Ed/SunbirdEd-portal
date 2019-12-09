@@ -1,0 +1,47 @@
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+[size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showLargeModal = !showLargeModal" #modal>
+<div class="sb-modal-header">
+  Move to
+</div>
+<!-- Selection of Layout in modal -->
+<div class="sb-modal-content sb-chapterlist-modal">
+
+  <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
+    <div *ngFor="let mainUnit of collectionUnits">
+    <sui-accordion-panel [isOpen]="true">
+      <div title class="sb-accordion-title d-flex flex-ai-center">
+        <i class="chevron down icon mr-16"></i>
+        <div class="item d-flex flex-ai-center cursor-pointer width-100">
+          <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+            <input type="radio" id="{{mainUnit.identifier}}" value="{{mainUnit.identifier}}" name="mainUnit" [(ngModel)]="unitSelected">
+            <label for="{{mainUnit.identifier}}">{{mainUnit.name}}</label>
+          </div>
+        </div>
+      </div>
+      <div content *ngFor="let childUnit of mainUnit.children">
+        <div class="chapter-lists level1">
+          <div class="chapter-lists--item">
+            <div class="item d-flex flex-ai-center cursor-pointer width-100">
+              <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
+                <input type="radio" id="{{childUnit.identifier}}" value="{{childUnit.identifier}}" name="childUnit" [(ngModel)]="unitSelected">
+                <label for="{{childUnit.identifier}}">{{childUnit.name}}</label>
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+      </div>
+    </sui-accordion-panel>
+    </div>
+  </sui-accordion>
+</div>
+
+<!-- Selection of Question in modal -->
+
+<div class="sb-modal-actions">
+  <button id="moveResource" class="sb-btn sb-btn-normal sb-btn-primary" (click)="moveResource()">
+    Move
+  </button>
+</div>
+</sui-modal>

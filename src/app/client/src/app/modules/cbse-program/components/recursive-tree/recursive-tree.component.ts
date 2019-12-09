@@ -9,43 +9,47 @@ export class RecursiveTreeComponent implements OnInit {
 
   @Input() collectionUnits;
   @Input() selectedChapter;
-  @Output() emitSelectedNode = new EventEmitter<any>();
-  @Output() nodeMeta = new EventEmitter<any>();
+  @Output() emitselectedChapter = new EventEmitter<any>();
+  @Output() resourceTemplate = new EventEmitter<any>();
   public showModal = false;
   public unitIdentifier;
   constructor() { }
 
   ngOnInit() {
-    console.log(this.collectionUnits);
   }
 
-  nodeMetaEmitter(event) {
-    this.nodeMeta.emit({
+  showResourceTemplateEvent(event) {
+    this.resourceTemplate.emit({
       action: event.action,
       showPopup: event.action === 'add' ? true : false,
-      collection: event.collection,
-      content: event.content
-      // unitIdentifier: event.unitIdentifier,
-      // contentId: event.contentId
+      unitIdentifier: event.unitIdentifier,
+      contentId: event.contentId
     });
   }
 
-  createResource(e, collection) {
+  crateResource(e, unitIdentifier) {
     e.stopPropagation();
     this.showModal = true;
-    this.nodeMeta.emit({
+    this.resourceTemplate.emit({
       action: 'add',
       showPopup: this.showModal,
-      collection: collection
+      unitIdentifier: unitIdentifier
     });
   }
 
-  deleteResource(e, content, collection) {
-    this.nodeMeta.emit({
+  deleteResource(e, contentId, unitIdentifier) {
+    this.resourceTemplate.emit({
       action: 'delete',
-      content: content,
-      collection: collection,
-      showPopup: null,
+      contentId: contentId,
+      unitIdentifier: unitIdentifier
+    });
+  }
+
+  moveResource(e, contentId, unitIdentifier) {
+    this.resourceTemplate.emit({
+      action: 'beforeMove',
+      contentId: contentId,
+      unitIdentifier: unitIdentifier
     });
   }
 }

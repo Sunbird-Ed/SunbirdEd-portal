@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -40,7 +40,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public templateDetails;
   public unitIdentifier;
   public collection: any;
-  // private labels: Array<string>;
+  contentId: string;
+  prevUnitSelect: string;
+  private labels: Array<string>;
   private actions: any;
   private componentMapping = {
     ExplanationResource: ContentUploaderComponent,
@@ -56,11 +58,16 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public collectionData;
   showLoader = true;
   showError = false;
+  showLargeModal;
   public questionPattern: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService,
     public telemetryService: TelemetryService, private cbseService: CbseProgramService,
-    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef) {
+    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute) {
+  }
+  private labelsHandler() {
+    this.labels = (this.role.currentRole === 'REVIEWER') ? ['Up for Review', 'Accepted'] :
+    (this.role.currentRole === 'PUBLISHER') ? ['Total', 'Accepted', 'Published'] : ['Total', 'Created by me', 'Needs attention'];
   }
 
   ngOnInit() {
@@ -72,7 +79,20 @@ export class ChapterListComponent implements OnInit, OnChanges {
     /**
      * @description : this will fetch question Category configuration based on currently active route
      */
+    this.activeRoute.data
+      .subscribe((routerData) => {
+        this.questionType = routerData.config.question_categories;
+        routerData.config.question_categories.map(category => {
+          if (category !== 'mcq') {
+            this.questionPattern.push('reference');
+          } else {
+            this.questionPattern.push('mcq');
+          }
+        });
+      });
 
+
+    this.labelsHandler();
     this.telemetryImpression = {
       context: {
         env: 'cbse_program'
@@ -87,7 +107,6 @@ export class ChapterListComponent implements OnInit, OnChanges {
       identifier: 'all',
       name: 'All Chapters'
     });
-
     this.selectedChapterOption = 'all';
     this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
     // clearing the selected questionId when user comes back from question list
@@ -95,7 +114,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
     this.dynamicOutputs = {
       uploadedContentMeta: (contentMeta) => {
-        this.uploadHandler(contentMeta);
+        console.log(contentMeta);
       }
     };
   }
@@ -104,6 +123,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   ngOnChanges(changed: any) {
     this.selectedAttributes = _.get(this.chapterListComponentInput, 'selectedAttributes');
     this.role = _.get(this.chapterListComponentInput, 'role');
+    this.labelsHandler();
   }
 
   public initiateInputs() {
@@ -177,8 +197,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
           contentType: child.contentType,
           topic: child.topic,
           status: child.status,
-          creator: child.creator,
-          parentId: child.parent || null
+          creator: child.creator
         };
         const treeUnit = self.getUnitWithChildren(child, collectionId);
         const treeChildren = treeUnit && treeUnit.filter(item => item.contentType === 'TextBookUnit');
@@ -208,10 +227,20 @@ export class ChapterListComponent implements OnInit, OnChanges {
   }
 
   showResourceTemplate(event) {
-    this.unitIdentifier = event.collection.identifier;
+    this.unitIdentifier = event.unitIdentifier;
     switch (event.action) {
       case 'delete':
-        this.removeResourceToHierarchy(event.content.identifier, this.unitIdentifier);
+        this.removeResourceToHierarchy(event.contentId, event.unitIdentifier);
+        break;
+        case 'beforeMove':
+        this.showLargeModal = true;
+        this.contentId = event.contentId;
+        this.prevUnitSelect = event.unitIdentifier;
+        break;
+        case 'afterMove':
+        this.showLargeModal = false;
+        this.unitIdentifier = '';
+        this.contentId = ''; // Clearing selected unit/content details
         break;
       default:
           this.showResourceTemplatePopup = event.showPopup;
@@ -268,7 +297,6 @@ export class ChapterListComponent implements OnInit, OnChanges {
       return throwError('');
     })).subscribe(res => {
       console.log('result ', res);
-      this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
     });
   }
 
