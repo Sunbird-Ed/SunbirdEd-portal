@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AllDownloadsComponent } from './all-downloads.component';
+import { InfoCardComponent } from './info-card.component';
 
-describe('AllDownloadsComponent', () => {
-  let component: AllDownloadsComponent;
-  let fixture: ComponentFixture<AllDownloadsComponent>;
+xdescribe('InfoCardComponent', () => {
+  let component: InfoCardComponent;
+  let fixture: ComponentFixture<InfoCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AllDownloadsComponent ]
+      declarations: [ InfoCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AllDownloadsComponent);
+    fixture = TestBed.createComponent(InfoCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
