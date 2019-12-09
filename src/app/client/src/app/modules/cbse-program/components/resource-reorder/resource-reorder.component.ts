@@ -13,7 +13,7 @@ export class ResourceReorderComponent implements OnInit {
   @Input() contentId;
   @Input() selectedAttributes;
   @Input() prevUnitSelect;
-  @Output() afterMoveEvent = new EventEmitter<any>();
+  @Output() moveEvent = new EventEmitter<any>();
 
   constructor(private collectionHierarchyService: CollectionHierarchyService, public toasterService: ToasterService) { }
 
@@ -26,12 +26,24 @@ export class ResourceReorderComponent implements OnInit {
      this.collectionHierarchyService.removeResourceToHierarchy(this.selectedAttributes.collection, this.prevUnitSelect, this.contentId)
       .subscribe((res) => {
         this.toasterService.success('The Selected Resource is Successfuly Moved');
-        this.afterMoveEvent.emit({
+        this.moveEvent.emit({
           action: 'afterMove',
           contentId: this.contentId,
-          unitIdentifier: this.unitSelected
+          collection: {
+            identifier: this.unitSelected
+          }
         });
       });
+    });
+  }
+
+  cancelMove() {
+    this.moveEvent.emit({
+      action: 'cancelMove',
+      contentId: '',
+      collection: {
+        identifier: ''
+      }
     });
   }
 }

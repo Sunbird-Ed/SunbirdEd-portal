@@ -64,7 +64,7 @@
         <div class="sb-chapterlist">
           <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
             <app-recursive-tree [collectionUnits]="collectionHierarchy" [selectedChapter]="selectedChapterOption"
-              (resourceTemplate)="showResourceTemplate($event)"></app-recursive-tree>
+              (nodeMeta)="showResourceTemplate($event)"></app-recursive-tree>
           </sui-accordion>
         </div>
       </div>
@@ -75,7 +75,7 @@
       <!-- Move to Modal Section -->
       <div *ngIf="showLargeModal">
       <app-resource-reorder [collectionUnits]="collectionHierarchy" [contentId]="contentId" [selectedAttributes]="selectedAttributes" [prevUnitSelect]="prevUnitSelect"
-      (afterMoveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
+      (moveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
       </div>
         </div>
     </div>

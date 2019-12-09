@@ -1,10 +1,10 @@
-<div *ngFor="let collection of collectionUnits; let i = index">
+<div class="panel-container" *ngFor="let collection of collectionUnits; let i = index">
     <sui-accordion-panel [isOpen]=" i === 0 ? true : false">
       <div title class="sb-accordion-title d-flex flex-ai-center">
         <i class="chevron down icon mr-16"></i>
         {{collection.name}} ( {{collection.topic}} )
         <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
-          (click)="showModal = false; crateResource($event, collection.identifier)"><i class="add icon"></i>ADD</button>
+          (click)="showModal = false; createResource($event, collection)"><i class="add icon"></i>ADD</button>
       </div>
       <div content>
         <div class="chapter-lists level1" *ngIf="collection.leaf">
@@ -23,7 +23,7 @@
                   <div class="item">Preview</div>
                   <div class="item" (click)="moveResource($event, content.identifier, collection.identifier)">Move</div>
   
-                  <div class="item" (click)="deleteResource($event, content.identifier, collection.identifier)">Delete</div>
+                  <div class="item" (click)="deleteResource($event, content, collection)">Delete</div>
                 </div>
               </div>
             </div>
@@ -31,9 +31,8 @@
         </div>
         <div class="sb-chapterlist-child" *ngIf="collection.children">
           <app-recursive-tree [collectionUnits]="collection.children" [selectedChapter]="selectedChapter"
-              (resourceTemplate)="showResourceTemplateEvent($event)"></app-recursive-tree>
+              (nodeMeta)="nodeMetaEmitter($event)"></app-recursive-tree>
         </div>
       </div>
     </sui-accordion-panel>
   </div>
-  
