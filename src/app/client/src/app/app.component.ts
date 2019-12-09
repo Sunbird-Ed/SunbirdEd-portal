@@ -169,6 +169,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * 
+   */
   checkLocationStatus() {
     this.usersProfile = this.userService.userProfile;
     const deviceRegister = this.deviceRegisterService.getDeviceProfile();
