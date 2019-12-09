@@ -17,7 +17,8 @@ import {
     LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
     OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
     OnboardingLocationComponent, OnboardingUserPreferenceComponent, DesktopProminentFilterComponent,
-    LoadContentComponent, NoContentComponent, ConnectionStatusComponent
+    LoadContentComponent, NoContentComponent, ConnectionStatusComponent,
+    AllDownloadsComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -75,6 +76,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         ConnectionStatusComponent,
         NoContentComponent,
         LoadContentComponent,
+        AllDownloadsComponent,
     ],
     entryComponents: [
         ContentImportHeaderComponent,
