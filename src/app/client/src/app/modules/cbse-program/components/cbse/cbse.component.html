@@ -55,7 +55,7 @@
     </div>
   </div>
 </div> -->
-<!-- 
+<!--
 <div class="d-flex sb-bg-color-gray-0 practical-header">
   <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
     <div class="font-weight-bold fs-1" *ngIf="!showTextArea">
@@ -243,9 +243,9 @@
           (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
       </div>
       <div *ngIf="stages[currentStage] === 'topicList' && !showDashboard">
-        <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
+        <!-- <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
           [selectedSchool]="selectedSchoolForReview" [role]="role"
-          (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list>
+          (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list> -->
       </div>
       <div *ngIf="stages[currentStage] === 'topicList' && showDashboard">
         <app-dashboard [selectedAttributes]="selectedAttributes"></app-dashboard>
