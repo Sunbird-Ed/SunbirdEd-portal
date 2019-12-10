@@ -78,7 +78,6 @@
     </div>
 </div>
 
-
 <div class="ui container mt-20" *ngIf="router?.url?.includes('browse') && !isConnected">
     <div class="d-flex flex-ai-center flex-jc-center offline-page-content mt-32">
         <div class="text-center">
@@ -89,49 +88,36 @@
     </div>
 </div>
 
-
 <ng-template #cardContainerTemplate>
-    <div class="twelve wide column" *ngIf="contentList.length">
-        <div class="masonry-grid dynamic-section-card">
-            <div class="masonry-item card-width" *ngFor="let content of contentList;let i = index;">
-                <sb-library-card [content]="content" [type]="'desktop_textbook'" appTelemetryInteract
-                    [telemetryInteractEdata]="cardInteractEdata"
-                    [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
-                    [telemetryInteractCdata]="[{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType}]"
-                    [cardImg]="content?.cardImg || 'assets/images/book.png'"
-                    [hover-template]="hoverTemplate">
-                
-                    <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
-                        <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
-                            (hoverActionClick)="hoverActionClicked($event)">
-                        </sb-card-hover>
-                    </ng-template>
-                
-                
-                </sb-library-card>
+  <div class="twelve wide column" *ngIf="contentList.length">
+    <div class="masonry-grid dynamic-section-card">
+      <div class="masonry-item card-width" *ngFor="let content of contentList;let i = index;">
+        <sb-library-card [content]="content" [type]="'desktop_textbook'" appTelemetryInteract
+          [telemetryInteractEdata]="cardInteractEdata"
+          [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
+          [telemetryInteractCdata]="[{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType}]"
+          [cardImg]="content?.cardImg || 'assets/images/book.png'" [hover-template]="hoverTemplate">
 
+          <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
+            <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
+              (hoverActionClick)="hoverActionClicked($event)">
+            </sb-card-hover>
+          </ng-template>
 
-                    <!-- <sb-library-card [content]="content" [type]="'recently_viewed'"
-                                [cardImg]="content?.cardImg || 'assets/images/book.png'" [hover-template]="hoverTemplate">
-                                <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
-                                    <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
-                                        (hoverActionClick)="hoverActionClicked($event)">
-                                    </sb-card-hover>
-                                </ng-template>
-                            </sb-library-card> -->
-            </div>
-        </div>
+        </sb-library-card>
+      </div>
     </div>
+  </div>
 </ng-template>
 
 <sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
-    <div class="ui active centered inline loader"></div>
-    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
-    </h6>
+  <div class="ui active centered inline loader"></div>
+  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
+  </h6>
 </sui-dimmer>
 
 <sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
-    <div class="ui active centered inline loader"></div>
-    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
-    </h6>
+  <div class="ui active centered inline loader"></div>
+  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
+  </h6>
 </sui-dimmer>

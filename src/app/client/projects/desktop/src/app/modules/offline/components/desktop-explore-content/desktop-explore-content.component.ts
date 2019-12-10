@@ -76,13 +76,6 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
             this.isConnected = isConnected;
         });
 
-        // this.contentManagerService.completeEvent.pipe(
-        //     takeUntil(this.unsubscribe$)).subscribe((data) => {
-        //         if (this.router.url === '/') {
-        //             this.fetchContents();
-        //         }
-        //     });
-
         this.contentManagerService.downloadListEvent.pipe(
             takeUntil(this.unsubscribe$)).subscribe((data) => {
                 this.updateCardData(data);
