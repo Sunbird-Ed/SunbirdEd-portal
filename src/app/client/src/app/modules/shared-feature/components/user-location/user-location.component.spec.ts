@@ -133,7 +133,7 @@ describe('UserLocationComponent', () => {
   });
 
   it('should get telemetry data when both changed', () => {
-    const data = component.getTelemetryData('state-changed-dist-changed');
+    const data = component.getTelemetryData('state-dist-changed');
     expect(data).toEqual(userLocationMockData.bothChanged);
   });
 

@@ -304,7 +304,11 @@ export class UserLocationComponent implements OnInit {
       changeType = changeType + 'state-changed';
     }
     if (districtData.name !== _.get(this.suggestedLocation, 'district.name')) {
-      changeType = changeType + 'dist-changed';
+      if (_.includes(changeType, 'state-changed')) {
+        changeType = 'state-dist-changed';
+      } else {
+        changeType = changeType + 'dist-changed';
+      }
     }
     const telemetryData = this.getTelemetryData(changeType);
     this.generateInteractEvent(telemetryData);

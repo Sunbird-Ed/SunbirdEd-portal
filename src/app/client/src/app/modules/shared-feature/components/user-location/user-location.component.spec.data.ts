@@ -49,7 +49,7 @@ export const userLocationMockData = {
     locationIntractEdata: {
       id: 'submit-clicked',
       type: 'location-changed',
-      subtype: 'state-changed-dist-changed'
+      subtype: 'state-dist-changed'
     },
     telemetryCdata: [
       {id: 'user:state:districtConfimation', type: 'Feature'},
