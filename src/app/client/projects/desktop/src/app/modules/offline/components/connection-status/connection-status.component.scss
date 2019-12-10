@@ -1,0 +1,11 @@
+.status-container{
+    width: 100%;
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.12);
+    &__title{
+        color:var(--gray-800);
+    }
+    &__para{
+        color:var(--gray-400);
+        font-size: 0.875rem;
+    }
+}
