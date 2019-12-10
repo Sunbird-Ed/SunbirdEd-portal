@@ -1,3 +1,30 @@
-<p>
-  update-location works!
-</p>
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll  #modal>
+  <div class="sb-modal-header">
+      Your Location
+  </div>
+  <div class="sb-modal-content o-y-visible">
+      <form class="sb-form">
+          <p class="mb-8">Your location details helps us to suggest content that is useful to you. Is the location given correct? if not, select your correct location and click Submit</p>
+        <div class="sb-field">
+          <label>State :</label>
+            <sui-select class="selection" name="state" labelField="name" placeholder="Select State">
+              <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
+            </sui-select>
+        </div>
+        <div class="sb-fielgroup">
+          <label>District:</label>
+          <div class="sb-field">
+            <sui-select class="selection" name="district" labelField="name" placeholder="Select district">
+              <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+            </sui-select>
+          </div>
+        </div>
+      </form>
+    </div>
+  <div class="sb-modal-actions">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary">
+      Submit
+    </button>
+  </div>
+  </sui-modal>

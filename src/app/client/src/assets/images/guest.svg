@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="104px" height="104px" viewBox="0 0 104 104" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 59.1 (101010) - https://sketch.com -->
+    <title>E8378E70-CD46-428C-ABF6-AAEA56C3DB88</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <circle id="path-1" cx="46" cy="46" r="46"></circle>
+        <filter x="-9.8%" y="-9.8%" width="119.6%" height="119.6%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.381000906 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <circle id="path-3" cx="40" cy="40" r="40"></circle>
+    </defs>
+    <g id="Offline-Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="DIKSHA-Desktop---Guest-Profile" transform="translate(-588.000000, -163.000000)">
+            <g id="Group-3" transform="translate(594.000000, 169.000000)">
+                <g id="Oval-2">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <circle stroke="#FFFFFF" stroke-width="6" stroke-linejoin="square" fill="#FFFFFF" fill-rule="evenodd" cx="46" cy="46" r="43"></circle>
+                </g>
+                <g id="Group-4" transform="translate(6.000000, 6.000000)">
+                    <mask id="mask-4" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <use id="Mask" fill="#FFFFFF" xlink:href="#path-3"></use>
+                    <g mask="url(#mask-4)" fill="#D8D8D8">
+                        <g transform="translate(7.000000, 5.000000)">
+                            <circle id="Oval" cx="33" cy="17" r="17"></circle>
+                            <path d="M67.0003236,69.5 C67.0003236,50.9984609 52.0015391,36 33.5,36 C14.9984609,36 -1.3500312e-13,50.9984609 -1.3500312e-13,69.5 C7.52461097,88.5569145 55.3064989,93.1566964 67.0003236,69.5 Z" id="Oval-Copy"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
