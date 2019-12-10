@@ -70,7 +70,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.isBrowse = Boolean(this.router.url.includes('browse'));
+        this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
         this.setTelemetryData();
         this.connectionService.monitor().subscribe(isConnected => {
             this.isConnected = isConnected;
@@ -258,7 +258,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         if (page < 1 || page > this.paginationDetails.totalPages) {
             return;
         }
-        const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+        const url = _.replace(_.split(this.router.url, '?')[0], /[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
         window.scroll({
             top: 0,
@@ -312,7 +312,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.backButtonInteractEdata = {
             id: 'back-button',
             type: 'click',
-            pageid: this.router.url.split('/')[1] === 'view-all' ? 'view-all' : 'search'
+            pageid: _.split(this.router.url, '/')[1] === 'view-all' ? 'view-all' : 'search'
         };
 
         this.filterByButtonInteractEdata = {
@@ -343,7 +343,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
             edata: {
                 id: actionId,
                 type: 'click',
-                pageid: this.router.url.split('/')[1] || 'library'
+                pageid: _.split(this.router.url, '/')[1] || 'library'
             }
         };
 
