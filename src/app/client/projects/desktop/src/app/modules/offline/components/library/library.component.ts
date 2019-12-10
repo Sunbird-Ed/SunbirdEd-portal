@@ -41,6 +41,10 @@ export class LibraryComponent implements OnInit {
 
     isConnected = navigator.onLine;
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
+    isBrowse = false;
+    showExportLoader = false;
+    showDownloadLoader = false;
+    contentName: string;
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -71,6 +75,7 @@ export class LibraryComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.isBrowse = Boolean(this.router.url.includes('browse'));
         this.getSelectedFilters();
         this.setNoResultMessage();
         this.setTelemetryData();
@@ -84,6 +89,11 @@ export class LibraryComponent implements OnInit {
                 if (this.router.url === '/') {
                     this.fetchContents();
                 }
+            });
+
+        this.contentManagerService.downloadListEvent.pipe(
+            takeUntil(this.unsubscribe$)).subscribe((data) => {
+                this.updateCardData(data);
             });
 
         this.router.events.pipe(
@@ -148,11 +158,9 @@ export class LibraryComponent implements OnInit {
     }
 
     fetchContents() {
-        const isBrowse = Boolean(this.router.url.includes('browse'));
-
         // First call - Search content with selected filters and API should call always.
         // Second call - Search content without selected filters and API should not call in browse page
-        combineLatest(this.searchContent(true, false), this.searchContent(false, isBrowse)).subscribe(
+        combineLatest(this.searchContent(true, false), this.searchContent(false, this.isBrowse)).subscribe(
             ([response1, response2]) => {
                 if (response1) {
                     this.showLoader = false;
@@ -174,7 +182,9 @@ export class LibraryComponent implements OnInit {
                             });
                         }
                     }
+
                     this.carouselMasterData = this.prepareCarouselData(this.sections);
+
                     if (!this.carouselMasterData.length) {
                         return; // no page section
                     }
@@ -183,6 +193,7 @@ export class LibraryComponent implements OnInit {
                     } else if (this.carouselMasterData.length >= 1) {
                         this.pageSections = [this.carouselMasterData[0]];
                     }
+                    this.addHoverData();
                 } else {
                     this.showLoader = false;
                     this.carouselMasterData = [];
@@ -191,6 +202,31 @@ export class LibraryComponent implements OnInit {
                 }
             }
         );
+    }
+
+    addHoverData() {
+        _.each(this.pageSections, (pageSection) => {
+            _.each(pageSection.contents, (value) => {
+                value['hoverData'] = {
+                    'note': this.isBrowse && _.get(value, 'downloadStatus') ===
+                        'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
+                    'actions': [
+                        {
+                            'type': this.isBrowse ? 'download' : 'save',
+                            'label': this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
+                                this.resourceService.frmelmnts.btn.download :
+                                this.resourceService.frmelmnts.lbl.saveToPenDrive,
+                            'disabled': this.isBrowse && (_.get(value, 'downloadStatus') === 'DOWNLOADED' ||
+                                _.get(value, 'downloadStatus') === 'DOWNLOADING') ? true : false
+                        },
+                        {
+                            'type': 'open',
+                            'label': this.resourceService.frmelmnts.lbl.open
+                        }
+                    ]
+                };
+            });
+        });
     }
 
     private prepareCarouselData(sections = []) {
@@ -244,19 +280,6 @@ export class LibraryComponent implements OnInit {
             queryParams: queryParams
         });
     }
-
-    public playContent(event: any) {
-        if (_.includes(this.router.url, 'browse')) {
-            this.publicPlayerService.playContentForOfflineBrowse(event);
-        } else {
-            this.publicPlayerService.playContent(event);
-        }
-
-        if (event.data) {
-            this.logTelemetry(event.data);
-        }
-    }
-
 
     setTelemetryData() {
         this.telemetryImpression = {
@@ -333,5 +356,73 @@ export class LibraryComponent implements OnInit {
             }
             this.telemetryService.interact(appTelemetryInteractData);
         }
+    }
+
+    hoverActionClicked(event) {
+        event['data'] = event.content;
+        this.contentName = event.content.name;
+        switch (event.hover.type.toUpperCase()) {
+            case 'OPEN':
+                this.playContent(event);
+                break;
+            case 'DOWNLOAD':
+                this.showDownloadLoader = true;
+                this.downloadContent(_.get(event, 'content.metaData.identifier'));
+                break;
+            case 'SAVE':
+                this.showExportLoader = true;
+                this.exportContent(_.get(event, 'content.metaData.identifier'));
+                break;
+        }
+    }
+
+    playContent(event: any) {
+        if (this.isBrowse) {
+            this.publicPlayerService.playContentForOfflineBrowse(event);
+        } else {
+            this.publicPlayerService.playContent(event);
+        }
+
+        if (event.data) {
+            this.logTelemetry(event.data);
+        }
+    }
+
+    downloadContent(contentId) {
+        this.contentManagerService.downloadContentId = contentId;
+        this.contentManagerService.startDownload({}).subscribe(data => {
+            this.contentManagerService.downloadContentId = '';
+            this.showDownloadLoader = false;
+        }, error => {
+            this.contentManagerService.downloadContentId = '';
+            this.showDownloadLoader = false;
+            _.each(this.pageSections, (pageSection) => {
+                _.each(pageSection.contents, (pageData) => {
+                    pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+                });
+            });
+            this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        });
+    }
+
+    exportContent(contentId) {
+        this.contentManagerService.exportContent(contentId).subscribe(data => {
+            this.showExportLoader = false;
+            this.toasterService.success(this.resourceService.messages.smsg.m0059);
+        }, error => {
+            this.showExportLoader = false;
+            if (_.get(error, 'error.responseCode') !== 'NO_DEST_FOLDER') {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+            }
+        });
+    }
+
+    updateCardData(downloadListdata) {
+        _.each(this.pageSections, (pageSection) => {
+            _.each(pageSection.contents, (pageData) => {
+                this.publicPlayerService.updateDownloadStatus(downloadListdata, pageData);
+            });
+        });
+        this.addHoverData();
     }
 }
