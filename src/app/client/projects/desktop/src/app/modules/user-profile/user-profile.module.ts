@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { UserProfileRoutingModule } from './user-profile-routing.module';
 import { ProfilePageComponent, AboutUsComponent, UpdateContentPreferenceComponent, UpdateLocationComponent } from './components';
-
+import { SuiModalModule } from 'ng2-semantic-ui';
 @NgModule({
   declarations: [
     ProfilePageComponent,
@@ -13,7 +13,8 @@ import { ProfilePageComponent, AboutUsComponent, UpdateContentPreferenceComponen
   ],
   imports: [
     CommonModule,
-    UserProfileRoutingModule
-  ]
+    UserProfileRoutingModule,
+    SuiModalModule,
+  ],
 })
 export class UserProfileModule { }
