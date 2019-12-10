@@ -51,7 +51,8 @@ const generateAndAddCertificates = (req) => {
 
     async.eachOfLimit(_.get(rspObj, 'jsonObj'), BATCH_SIZE, (data, key, cb) => {
         const name = _.get(data, 'Name');
-        async.waterfall([async.constant({ name, rspObj }), generateCertificateApiCall, addCertificateApiCall,
+        const extId = _.get(data, 'school external id');
+        async.waterfall([async.constant({ name, extId, rspObj }), generateCertificateApiCall, addCertificateApiCall,
             downloadCertificateApiCall, downloadCertificate], (err, result) => {
                 if (!result && err) {
                     failureRecords.push({ name: data, status: 'failed', index: key });
@@ -214,7 +215,7 @@ const addCertificateApiCall = (input, generateCertApiResponse, callback) => {
         },
         body: {
             params: {},
-            request: certAddRequestBody(apiResponseObj)
+            request: certAddRequestBody(apiResponseObj,input)
         },
         json: true
     }
