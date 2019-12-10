@@ -48,4 +48,14 @@ export class RecursiveTreeComponent implements OnInit {
       showPopup: null,
     });
   }
+
+  moveResource(e, content, unitIdentifier) {
+    this.nodeMeta.emit({
+      action: 'beforeMove',
+      content: content,
+      collection: {
+        identifier: unitIdentifier
+      }
+    });
+  }
 }
