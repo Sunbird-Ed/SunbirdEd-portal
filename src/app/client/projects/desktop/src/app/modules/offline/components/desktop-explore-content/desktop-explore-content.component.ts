@@ -13,7 +13,7 @@ import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { ConnectionService, ContentManagerService } from '../../services';
-import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 
 
 @Component({
@@ -46,7 +46,6 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
 
     backButtonInteractEdata: IInteractEventEdata;
     filterByButtonInteractEdata: IInteractEventEdata;
-    cardInteractEdata: IInteractEventEdata;
     telemetryImpression: IImpressionEventInput;
 
     constructor(
@@ -64,7 +63,8 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         public frameworkService: FrameworkService,
         public paginationService: PaginationService,
         private connectionService: ConnectionService,
-        public navigationHelperService: NavigationHelperService
+        public navigationHelperService: NavigationHelperService,
+        public telemetryService: TelemetryService,
     ) {
         this.filterType = this.configService.appConfig.explore.filterType;
     }
@@ -320,11 +320,41 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
             type: 'click',
             pageid: 'search'
         };
-        this.cardInteractEdata = {
-            id: 'content-card',
-            type: 'click',
-            pageid: this.router.url.split('/')[1] === 'view-all' ? 'view-all' : 'search'
+    }
+
+    logTelemetry(content, actionId) {
+        const telemetryInteractCdata = [{
+            id: content.metaData.identifier || content.metaData.courseId,
+            type: content.metaData.contentType
+        }];
+        const telemetryInteractObject = {
+            id: content.metaData.identifier || content.metaData.courseId,
+            type: content.metaData.contentType || 'Course',
+            ver: content.metaData.pkgVersion ? content.metaData.pkgVersion.toString() : '1.0'
         };
+
+        const appTelemetryInteractData: any = {
+            context: {
+                env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+                    _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+                    _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
+                cdata: telemetryInteractCdata || [],
+            },
+            edata: {
+                id: actionId,
+                type: 'click',
+                pageid: this.router.url.split('/')[1] || 'library'
+            }
+        };
+
+        if (telemetryInteractObject) {
+            if (telemetryInteractObject.ver) {
+                telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+                    _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+            }
+            appTelemetryInteractData.object = telemetryInteractObject;
+        }
+        this.telemetryService.interact(appTelemetryInteractData);
     }
 
     prepareVisits() {
@@ -348,14 +378,17 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         switch (event.hover.type.toUpperCase()) {
             case 'OPEN':
                 this.playContent(event);
+                this.logTelemetry(event.data, 'play-content');
                 break;
             case 'DOWNLOAD':
                 this.showDownloadLoader = true;
                 this.downloadContent(_.get(event, 'content.metaData.identifier'));
+                this.logTelemetry(event.data, 'download-content');
                 break;
             case 'SAVE':
                 this.showExportLoader = true;
                 this.exportContent(_.get(event, 'content.metaData.identifier'));
+                this.logTelemetry(event.data, 'export-content');
                 break;
         }
     }

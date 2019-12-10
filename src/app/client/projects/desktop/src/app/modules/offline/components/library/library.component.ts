@@ -48,7 +48,6 @@ export class LibraryComponent implements OnInit {
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
-    public cardInteractEdata: IInteractEventEdata;
     public telemetryImpression: IImpressionEventInput;
     public cardInteractObject: any;
     public cardInteractCdata: any;
@@ -299,12 +298,6 @@ export class LibraryComponent implements OnInit {
             type: 'click',
             pageid: 'library'
         };
-
-        this.cardInteractEdata = {
-            id: 'content-card',
-            type: 'click',
-            pageid: this.router.url.split('/')[1] || 'library'
-        };
     }
 
     prepareVisits() {
@@ -325,7 +318,7 @@ export class LibraryComponent implements OnInit {
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
 
-    logTelemetry(content) {
+    logTelemetry(content, actionId) {
         const telemetryInteractCdata = [{
             id: content.metaData.identifier || content.metaData.courseId,
             type: content.metaData.contentType
@@ -336,26 +329,28 @@ export class LibraryComponent implements OnInit {
             ver: content.metaData.pkgVersion ? content.metaData.pkgVersion.toString() : '1.0'
         };
 
-        if (this.cardInteractEdata) {
-            const appTelemetryInteractData: any = {
-                context: {
-                    env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
-                        _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
-                        _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
-                    cdata: telemetryInteractCdata || [],
-                },
-                edata: this.cardInteractEdata
-            };
-
-            if (telemetryInteractObject) {
-                if (telemetryInteractObject.ver) {
-                    telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
-                        _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
-                }
-                appTelemetryInteractData.object = telemetryInteractObject;
+        const appTelemetryInteractData: any = {
+            context: {
+                env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+                    _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+                    _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
+                cdata: telemetryInteractCdata || [],
+            },
+            edata: {
+                id: actionId,
+                type: 'click',
+                pageid: this.router.url.split('/')[1] || 'library'
             }
-            this.telemetryService.interact(appTelemetryInteractData);
+        };
+
+        if (telemetryInteractObject) {
+            if (telemetryInteractObject.ver) {
+                telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+                    _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+            }
+            appTelemetryInteractData.object = telemetryInteractObject;
         }
+        this.telemetryService.interact(appTelemetryInteractData);
     }
 
     hoverActionClicked(event) {
@@ -364,14 +359,17 @@ export class LibraryComponent implements OnInit {
         switch (event.hover.type.toUpperCase()) {
             case 'OPEN':
                 this.playContent(event);
+                this.logTelemetry(event.data, 'play-content');
                 break;
             case 'DOWNLOAD':
                 this.showDownloadLoader = true;
                 this.downloadContent(_.get(event, 'content.metaData.identifier'));
+                this.logTelemetry(event.data, 'download-content');
                 break;
             case 'SAVE':
                 this.showExportLoader = true;
                 this.exportContent(_.get(event, 'content.metaData.identifier'));
+                this.logTelemetry(event.data, 'export-content');
                 break;
         }
     }
@@ -381,10 +379,6 @@ export class LibraryComponent implements OnInit {
             this.publicPlayerService.playContentForOfflineBrowse(event);
         } else {
             this.publicPlayerService.playContent(event);
-        }
-
-        if (event.data) {
-            this.logTelemetry(event.data);
         }
     }
 

@@ -92,18 +92,13 @@
   <div class="twelve wide column" *ngIf="contentList.length">
     <div class="masonry-grid dynamic-section-card">
       <div class="masonry-item card-width" *ngFor="let content of contentList;let i = index;">
-        <sb-library-card [content]="content" [type]="'desktop_textbook'" appTelemetryInteract
-          [telemetryInteractEdata]="cardInteractEdata"
-          [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
-          [telemetryInteractCdata]="[{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType}]"
+        <sb-library-card [content]="content" [type]="'desktop_textbook'"
           [cardImg]="content?.cardImg || 'assets/images/book.png'" [hover-template]="hoverTemplate">
-
           <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
             <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
               (hoverActionClick)="hoverActionClicked($event)">
             </sb-card-hover>
           </ng-template>
-
         </sb-library-card>
       </div>
     </div>
