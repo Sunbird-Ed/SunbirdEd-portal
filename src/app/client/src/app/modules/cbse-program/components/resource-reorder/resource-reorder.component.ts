@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ConfigService, ToasterService } from '@sunbird/shared';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 
@@ -14,6 +14,7 @@ export class ResourceReorderComponent implements OnInit {
   @Input() selectedAttributes;
   @Input() prevUnitSelect;
   @Output() moveEvent = new EventEmitter<any>();
+  @ViewChild('modal') modal;
 
   constructor(private collectionHierarchyService: CollectionHierarchyService, public toasterService: ToasterService) { }
 
@@ -33,6 +34,7 @@ export class ResourceReorderComponent implements OnInit {
             identifier: this.unitSelected
           }
         });
+        this.modal.deny();
       });
     });
   }

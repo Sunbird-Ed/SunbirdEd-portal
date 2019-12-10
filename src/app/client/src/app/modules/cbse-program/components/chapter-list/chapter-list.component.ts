@@ -218,16 +218,19 @@ export class ChapterListComponent implements OnInit, OnChanges {
          break;
       case 'beforeMove':
           this.showLargeModal = true;
-          this.contentId = event.contentId;
-          this.prevUnitSelect = event.unitIdentifier;
+          this.contentId = event.content;
+          this.prevUnitSelect = event.collection.identifier;
           break;
       case 'afterMove':
           this.showLargeModal = false;
           this.unitIdentifier = '';
           this.contentId = ''; // Clearing selected unit/content details
+          this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
           break;
       case 'cancelMove':
           this.showLargeModal = false;
+          this.unitIdentifier = '';
+          this.contentId = ''; // Clearing selected unit/content details
           break;
       default:
           this.showResourceTemplatePopup = event.showPopup;

@@ -46,7 +46,7 @@ export class CollectionHierarchyService {
     return this.actionService.patch(req).pipe(map((data) => {
       return data.result;
     }), catchError(err => {
-        const errInfo = { errorMsg: 'Adding Resource To Selected-Unit Failed' };
+        const errInfo = { errorMsg: 'Adding Resource To Selected-Unit Failed, Please Try Again' };
         return throwError(this.apiErrorHandling(err, errInfo));
     }));
   }
