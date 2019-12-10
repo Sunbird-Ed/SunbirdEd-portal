@@ -117,7 +117,7 @@ describe('UserLocationComponent', () => {
     expect(component.onStateChange).toHaveBeenCalled();
   });
 
-  it('should get telemetry data when nothing changed', () => {
+  it('should get telemetry data when nothing state and district not changed', () => {
     const data = component.getTelemetryData('');
     expect(data).toEqual(userLocationMockData.telemetryData);
   });
