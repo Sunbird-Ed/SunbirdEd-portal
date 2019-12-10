@@ -152,6 +152,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
         // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
         // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
+        this.mediaArr = this.questionMetaData.data.media || [];
       } else {
         this.questionMetaForm.reset();
       }

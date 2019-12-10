@@ -36,7 +36,7 @@ export class CbseProgramService {
   getQuestionPluginConfig(res, questionSetConfigCdata, collections, role) {
     const question = _.cloneDeep(questionObject);
     const questionConfigCdata: any = {};
-    question.id = UUID.UUID();
+    question.id = res.result.assessment_item.identifier || UUID.UUID();
     questionConfigCdata.question = _.get(res, 'result.assessment_item.body');
     const media = _.map(_.get(res, 'result.assessment_item.media'), (mediaObj) => {
       delete mediaObj.baseUrl;

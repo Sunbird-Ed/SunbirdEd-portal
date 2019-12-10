@@ -1,25 +1,29 @@
 <div class="selectionField d-flex flex-jc-center flex-ai-center">
-  <label class="mr-8 mb-0">Select Report: </label>
-  <div class="field">
+    <label *ngIf= "!(selectedReport === 'Program Level Report Status')" class="mr-8 mb-0" >Textbook: </label>
+    <div class="sb-label sb-label-table sb-label-gray-0" *ngIf= "!(selectedReport === 'Program Level Report Status')" style="margin-right: 12px;"> {{selectedTextbook}} </div>
+  <label *ngIf= "!(selectedReport === 'Program Level Report Status')" class="mr-8 mb-0">Select Report: </label>
+  <div *ngIf= "!(selectedReport === 'Program Level Report Status')" class="field">
     <sui-select [isSearchable]="true" id=reportSelection name=reportSelection class="selection"
       [(ngModel)]="selectedReport" labelField="name" valueField="name" [options]="reports" #select>
       <sui-select-option *ngFor="let report of reports" [value]="report" (click)="onReportChange(report.name)">
       </sui-select-option>
     </sui-select>
   </div>
-  <button class="download-btn sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-right-icon-btn"
+  <label *ngIf= "(selectedReport === 'Program Level Report Status')" class="mr-8 mb-0">Report: </label>
+  <div class="sb-label sb-label-table sb-label-gray-0" *ngIf= "(selectedReport === 'Program Level Report Status')"> {{selectedReport}}</div>
+  <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-left-icon-btn"
     (click)="refreshReport()"><i class="refresh icon"></i>Refresh</button>
-  <button class="download-btn sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-right-icon-btn"
+  <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-left-icon-btn"
     (click)="downloadReport()"><i class="download icon"></i>Download Report</button>
 
 </div>
 
 
 <div *ngIf="selectedReport === 'Question Bank Status' && !showLoader">
-  <table class="sb-table sb-table sb-table-hover " id='questionBank'>
-    <thead class="sb-table-header heading-large">
+  <table class="sb-table sb-table-striped sb-table-hover " id='questionBank'>
+    <thead class="sb-table-header sb-table-thead-gray">
       <tr>
-        <th rowspan="2" class="topicSection"> {{firstcolumnHeader}} </th>
+        <th rowspan="2" class="topicSection"> Topic Name </th>
 
         <th colspan="5">
           <span class="ui dropdown sb-table-dropdown d-inline-flex" suiDropdown>
@@ -34,11 +38,11 @@
       </tr>
 
       <tr>
-        <th *ngFor="let label of statusLabel" attr.data-tooltip="{{label.tip}}">{{label.name}}</th>
+        <th *ngFor="let label of headers" attr.data-tooltip="{{label.tip}}">{{label.name}}</th>
       </tr>
 
     </thead>
-    <tbody class="sb-table-body body-large" >
+    <tbody class="sb-table-body" >
       <tr *ngFor="let chapter of tableData">
         <td>{{chapter['Topic Name']}}</td>
         <td>{{chapter['Up For Review']}}</td>
@@ -52,16 +56,16 @@
 
 
 <div *ngIf="selectedReport === 'Textbook Status' && !showLoader">
-  <table class="sb-table sb-table sb-table-hover sb-table-sortable" id='TextbookStatus'>
-    <thead class="sb-table-header heading-large">
+  <table class="sb-table sb-table-striped sb-table-hover sb-table-sortable" id='TextbookStatus'>
+    <thead class="sb-table-header sb-table-thead-gray">
       <tr>
-        <th> {{firstcolumnHeader}} </th>
-        <th attr.data-tooltip="{{headersTooltip[0].tip}}" *ngFor="let type of questionType"> {{questionTypeName[type]}}
+        <th> Topic Name </th>
+        <th attr.data-tooltip="{{headers[0].tip}}" *ngFor="let type of questionType"> {{questionTypeName[type]}}
         </th>
 
       </tr>
     </thead>
-    <tbody class="sb-table-body body-large" >
+    <tbody class="sb-table-body" >
       <tr *ngFor="let chapter of tableData">
         <td>{{chapter['Topic Name']}}</td>
         <td>{{chapter[questionTypeName[questionType[0]]] ? 1 : 0}}({{chapter[questionTypeName[questionType[0]]]}})</td>
@@ -73,6 +77,39 @@
     </tbody>
   </table>
 </div>
+
+
+<div *ngIf="selectedReport === 'Program Level Report Status' && !showLoader" style="width: 100%; overflow-x: auto;">
+    <table class="sb-table sb-table-striped sb-table-hover sb-table-sortable" id='ProgramLevelReportStatus'>
+      <thead class="sb-table-header sb-table-thead-gray">
+        <tr>
+          <th id="textbookName"> Textbook Name </th>
+          <th *ngFor="let label of headers" suiPopup popupHeader="{{label.tip}}"> {{label.name}}
+          </th>
+        </tr>
+      </thead>
+      
+      <tbody class="sb-table-body" >
+        <tr *ngFor="let count of tableData" (click)="onSelectTextbook(count)">
+          <td>         
+      <div class="sb-card sb-card-qr" tabindex="0">
+          <div class="sb-card-body">
+              <div class="sb-media">
+                  <img src="assets/images/book.png" alt="" class="sb-media-object mr-15">
+                  <div class="sb-media-body">
+                      <h6 class="media-heading">{{count['Textbook Name']}}</h6>
+                      <p class="media-description">Class: {{count['Grade']}} <br>Subject: {{count['Subject']}} <br>Medium: {{count['Medium']}}</p>
+                  </div>
+                  </div> 
+          </div>
+        </div>
+            </td>
+            <td *ngFor="let level of UnitLevels">{{count[level] ? count[level] : 0}}</td>
+            <td *ngFor="let content of contentTypes">{{count[content] ? count[content] : 0}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 <br>
 <app-loader *ngIf='showLoader'></app-loader>
