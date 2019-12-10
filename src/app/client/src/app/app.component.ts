@@ -175,7 +175,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   checkLocationStatus() {
-    // should not show location popup for sign up and recover routes
+    // should not show location popup for sign up and recover route
     if (this.isLocationStatusRequired()) {
       return;
     }
