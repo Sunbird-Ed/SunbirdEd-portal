@@ -64,7 +64,7 @@ export class LibraryComponent implements OnInit {
         private utilService: UtilService,
         private toasterService: ToasterService,
         private configService: ConfigService,
-        private resourceService: ResourceService,
+        public resourceService: ResourceService,
         private publicPlayerService: PublicPlayerService,
         public searchService: SearchService,
         private connectionService: ConnectionService,
