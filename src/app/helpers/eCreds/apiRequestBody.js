@@ -5,11 +5,24 @@ const fs = require('fs');
 const path = require('path');
 const config = fs.readFileSync(path.join(__dirname,'./config.json'), {encoding: 'utf-8'});
 const baseUrl = envHelper.sunbird_environment_base_url;
-
-const certAddRequestBody = (response) => {
+const key = envHelper.sunbird_cert_key;
+const certAddRequestBody = (response,input) => {
+    let related = {
+        "type": ""
+    };
+    if (_.get(input, 'rspObj.certType') === 'Best School Certificate') {
+        related['type'] = 'best-school';
+        related['best-school']='best-school';
+        related['key1']=_.get(input, 'extId');
+    } else {
+        related['type'] = 'best-student';
+        related['best-student']='best-student';
+        related['key1']=_.get(input, 'extId');
+    }
     const request = _.pick(response, ['id', 'accessCode', 'jsonData', 'pdfUrl']);
     request['userId'] = _.get(response, 'recipientId');
     request['recipientType'] = 'individual';
+    request['related'] = related;
     return request;
 }
 
@@ -19,7 +32,7 @@ const certGenerateRequestBody = (input) => {
     let signatoryList = [];
     let signatory = {};
     if (_.get(input, 'rspObj.certType') === 'Best School Certificate') {
-        template = "https://sunbirddev.blob.core.windows.net/e-credentials/certificate_school.zip";
+        template = "https://sunbirddev.blob.core.windows.net/certtemplate/cert_school1651.zip";
         issuer = {
             "name": "Gujarat Council of Educational Research and Training",
             "url": "https://gcert.gujarat.gov.in/gcert/"
@@ -32,7 +45,7 @@ const certGenerateRequestBody = (input) => {
         }
         signatoryList.push(signatory);
     } else {
-        template = "https://sunbirddev.blob.core.windows.net/e-credentials/cert_student_award.zip";
+        template = "https://sunbirddev.blob.core.windows.net/certtemplate/cert_student1619.zip";
         issuer = {
             "name": "Gujarat Council of Educational Research and Training",
             "url": "https://gcert.gujarat.gov.in/gcert/"
@@ -63,6 +76,9 @@ const certGenerateRequestBody = (input) => {
             "criteria": {
                 "narrative": "course completion certificate"
             },
+            // "keys":{
+            //     "id": key
+            // },
             "basePath": baseUrl+"/public/certs" 
         }
     }
