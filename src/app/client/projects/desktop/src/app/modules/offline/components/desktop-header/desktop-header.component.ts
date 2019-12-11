@@ -137,7 +137,7 @@ export class DesktopHeaderComponent implements OnInit {
 
   routeToOffline() {
     if (_.includes(this.router.url, 'browse')) {
-      this.router.navigate(['browse', 1], { queryParams: this.queryParam });
+      this.router.navigate(['browse/search', 1], { queryParams: this.queryParam });
     } else {
       this.router.navigate(['search'], { queryParams: this.queryParam });
     }
