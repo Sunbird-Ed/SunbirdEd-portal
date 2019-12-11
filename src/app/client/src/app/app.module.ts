@@ -18,6 +18,8 @@ import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
 import { OrgManagementService } from './modules/org-management/services/org-management/org-management.service';
+import { CertificateModule } from './modules/certificate/certificate.module';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -34,6 +36,7 @@ import { OrgManagementService } from './modules/org-management/services/org-mana
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
+    CertificateModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],

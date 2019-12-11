@@ -4,7 +4,7 @@ import { CertificateDetailsComponent } from './components';
 
 const routes: Routes = [
   {
-    path: ':uuid', component: CertificateDetailsComponent,
+    path: 'public/certs/:uuid', component: CertificateDetailsComponent,
     data: {
       telemetry: {
         env: 'programs-certs', pageid: 'certificate-details', type: 'view'
