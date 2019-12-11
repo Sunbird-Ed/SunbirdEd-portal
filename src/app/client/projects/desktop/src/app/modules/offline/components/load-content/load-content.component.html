@@ -1,43 +1,26 @@
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
-class="sb-modal" appBodyScroll  #modal>
-<div class="sb-modal-header font-weight-normal">Load Content from</div>
+class="sb-modal" appBodyScroll  #modal (dismissed)="closeModal()">
+<div class="sb-modal-header font-weight-normal">{{resourceService?.frmelmnts?.lbl?.loadContentFrom}}</div>
 <div class="sb-modal-content">
-  <div class="p-8">
-    <div class="sb-radio-btn-checkbox sb-radio-btn-secondary pb-24 disable-color">
-      <div class="d-flex">
-      <input type="radio" id="offline" name="example" disabled="disabled">
-          <label for="offline">Online Library</label>
-          <button type="button" class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal show-mode">
-           <span class="show-mode__offline-circle"></span>You are offline</button>
-      </div>
-      <div class="fs-0-92 pl-24">This imports/ downloads contents from DIKSHA Online Library when if you are connected to Internet</div>
-    </div>
-    <div class="sb-radio-btn-checkbox sb-radio-btn-secondary">
-      <input type="radio" id="radio2" name="example2" checked>
-      <label class="font-weight-bold" for="radio2">Pendrive or External Drives</label>
-      <div class="fs-0-92 pl-24">This adds contents from you pendrive/ external device connected to DIKSHA app.</div>
-    </div>
-  </div>
-  <div class="p-8">
-      <div class="sb-radio-btn-checkbox sb-radio-btn-secondary pb-24">
+    <div class="p-8">
+        <div class="sb-radio-btn-checkbox sb-radio-btn-secondary pb-24" [ngClass]="{'disable-color': !isConnected}">
           <div class="d-flex">
-          <input type="radio" id="radio3" name="example3" checked>       
-              <label class="font-weight-bold" for="radio3">Online Library</label>
-              <button type="button" class="d-flex sb-btn sb-btn-outline-secondary sb-btn-normal show-mode">
-              <span class="show-mode__online-circle"></span>You are online</button>
+          <input type="radio" id="online" name="example"  [disabled]="!isConnected" [checked]="isConnected"  (change)="onChange('browse')">
+              <label for="online" [ngClass]="{'font-weight-bold': !addImportFontWeight}" id="browse">{{resourceService?.frmelmnts?.lbl?.library}}</label>
+              <button type="button" class="d-flex sb-btn sb-btn-normal show-mode cursor-default" [ngClass]="{'sb-btn-outline-secondary':isConnected, 'sb-btn-outline-tertiary': !isConnected}">
+               <span [ngClass]="{'show-mode__offline-circle': !isConnected, 'show-mode__online-circle': isConnected}"></span>{{onlineMsg}}</button>
           </div>
-          <div class="fs-0-92 pl-24">
-            This imports/ downloads contents from DIKSHA Online Library when if you are connected to Internet</div>
+          <div class="fs-0-92 pl-24">{{resourceService?.messages?.stmsg?.m0031}}</div>
         </div>
-    <div class="sb-radio-btn-checkbox sb-radio-btn-secondary">
-      <input type="radio" id="radio4" name="example4">
-      <label class="font-weight-bold" for="radio4">Pendrive or External Drives</label>
-      <div class="fs-0-92 pl-24">This adds contents from you pendrive/ external device connected to DIKSHA app.</div>
-    </div>
-  </div>
+        <div class="sb-radio-btn-checkbox sb-radio-btn-secondary">
+          <input type="radio" id="offline" name="example2" [checked]="!isConnected"  (change)="onChange('import')">
+          <label for="offline" id="import" [ngClass]="{'font-weight-bold': addImportFontWeight}" >{{resourceService?.frmelmnts?.lbl?.drive}}</label>
+          <div class="fs-0-92 pl-24">{{resourceService?.messages?.stmsg?.m0036 | interpolate:'{instance}': instance}}</div>
+        </div>
+      </div>
 </div>
 <div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-primary">Continue</button>
-  <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal">Cancel</button>
+  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="handleModalData()">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+  <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="closeModal()">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
 </div>
 </sui-modal>

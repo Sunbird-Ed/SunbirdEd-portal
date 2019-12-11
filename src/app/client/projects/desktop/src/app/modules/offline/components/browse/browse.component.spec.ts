@@ -10,7 +10,7 @@ import { ExploreModule } from '../../../../../../../../src/app/modules/public/mo
 
 
 
-describe('BrowseComponent', () => {
+xdescribe('BrowseComponent', () => {
   let component: BrowseComponent;
   let fixture: ComponentFixture<BrowseComponent>;
   let connectionService: ConnectionService;
