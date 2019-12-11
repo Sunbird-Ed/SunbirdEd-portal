@@ -5,8 +5,8 @@
     </div>
     <div class="fs-1 status-container__title">{{resourceService?.frmelmnts?.lbl?.offline}}</div>
     <div class="mt-8 text-center status-container__para">{{resourceService?.frmelmnts?.lbl?.import}}</div>
-    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mt-16" (click)="handleImport()">
-    Load Content
+    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mt-16" (click)="openImportContentDialog()">
+    {{resourceService?.frmelmnts?.btn?.loadContent}}
    </button>   
   </div>
 </div>
@@ -19,7 +19,7 @@
     <div class="fs-1 status-container__title">{{resourceService?.frmelmnts?.lbl?.online}}</div>
     <div class="mt-8 text-center status-container__para">{{resourceService?.frmelmnts.lbl.downloadBooks}}</div>
     <button type="button" class="sb-btn sb-btn-outline-secondary sb-btn-normal mt-16" [routerLink]="'browse'" *ngIf="!router.url.includes('browse')">
-     Browse Online
+     {{resourceService?.frmelmnts?.btn?.browse}}
    </button>   
   </div>
 </div>

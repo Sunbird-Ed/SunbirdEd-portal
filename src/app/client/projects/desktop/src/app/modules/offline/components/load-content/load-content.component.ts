@@ -12,7 +12,7 @@ import * as _ from 'lodash-es';
 })
 export class LoadContentComponent implements OnInit {
   @ViewChild('modal') modal;
-  isConnected = navigator.onLine;
+  isConnected;
   selectedValue;
   @Output() close = new EventEmitter();
   onlineMsg: string;
@@ -22,43 +22,42 @@ export class LoadContentComponent implements OnInit {
     public router: Router,
     private connectionService: ConnectionService,
     public resourceService: ResourceService,
-    public electronDialogService: ElectronDialogService
+    private electronDialogService: ElectronDialogService
   ) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
-    this.msgToShow();
-    this.addCss();
     this.connectionService.monitor().subscribe(isConnected => {
       this.isConnected = isConnected;
-      this.msgToShow();
-      this.addCss();
+      this.radioBtnToBeChecked();
+      this.addFontWeight();
     });
   }
 
-  handleImport() {
+  openImportContentDialog() {
     this.electronDialogService.showContentImportDialog();
   }
 
   onChange(event) {
     this.selectedValue = event;
     event === 'import' ? document.getElementById('online')['checked'] = false : document.getElementById('offline')['checked'] = false;
-    this.addCss();
+    this.addFontWeight();
   }
 
-  msgToShow() {
+  radioBtnToBeChecked() {
     this.isConnected ? this.selectedValue = 'browse' : this.selectedValue = 'import';
-
   }
+
   closeModal() {
     this.close.emit();
     this.modal.deny();
   }
-  handleModalData() {
-    this.selectedValue === 'browse' ? this.router.navigate(['/browse']) : this.handleImport();
+
+  navigate() {
+    this.selectedValue === 'browse' ? this.router.navigate(['/browse']) : this.openImportContentDialog();
     this.modal.deny();
   }
-  addCss() {
+  addFontWeight() {
     this.selectedValue === 'import' ? this.addImportFontWeight = true : this.addImportFontWeight = false;
   }
 }

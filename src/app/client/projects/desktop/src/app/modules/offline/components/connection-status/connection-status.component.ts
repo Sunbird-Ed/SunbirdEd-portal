@@ -9,11 +9,11 @@ import { ElectronDialogService } from './../../services';
   styleUrls: ['./connection-status.component.scss']
 })
 export class ConnectionStatusComponent implements OnInit {
-  isConnected = navigator.onLine;
+  isConnected;
 
    constructor(private connectionService: ConnectionService,
     public resourceService: ResourceService,
-    public electronDialogService: ElectronDialogService,
+    private electronDialogService: ElectronDialogService,
     public router: Router) { }
 
    ngOnInit() {
@@ -22,7 +22,7 @@ export class ConnectionStatusComponent implements OnInit {
     });
   }
 
-  handleImport() {
+  openImportContentDialog() {
     this.electronDialogService.showContentImportDialog();
   }
 

@@ -9,20 +9,19 @@ import { ElectronDialogService } from './../../services';
   styleUrls: ['./no-content.component.scss']
 })
 export class NoContentComponent implements OnInit {
-  isConnected = navigator.onLine;
+  isConnected;
   showModal = false;
 
   constructor(
     public router: Router,
     public connectionService: ConnectionService,
     public resourceService: ResourceService,
-    public electronDialogService: ElectronDialogService
+    private electronDialogService: ElectronDialogService
   ) {}
 
   ngOnInit() {
-    this.checkConnectionStatus();
-    this.connectionService.monitor().subscribe(isConnected => {
 
+    this.connectionService.monitor().subscribe(isConnected => {
       this.isConnected = isConnected;
       this.checkConnectionStatus();
     });
@@ -32,7 +31,7 @@ export class NoContentComponent implements OnInit {
     this.isConnected = !this.isConnected && this.router.url.includes('browse');
   }
 
-  handleImport() {
+  openImportContentDialog() {
     this.electronDialogService.showContentImportDialog();
   }
 
