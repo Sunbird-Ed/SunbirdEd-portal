@@ -3,7 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { UserProfileRoutingModule } from './user-profile-routing.module';
 import { ProfilePageComponent, AboutUsComponent, UpdateContentPreferenceComponent, UpdateLocationComponent } from './components';
-import { SuiModalModule } from 'ng2-semantic-ui';
+import {
+  SuiModalModule, SuiProgressModule, SuiAccordionModule,
+  SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule
+} from 'ng2-semantic-ui';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from '@sunbird/shared';
 @NgModule({
   declarations: [
     ProfilePageComponent,
@@ -13,8 +18,17 @@ import { SuiModalModule } from 'ng2-semantic-ui';
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    SharedModule,
     UserProfileRoutingModule,
     SuiModalModule,
+    SuiProgressModule,
+    SuiAccordionModule,
+    SuiTabsModule,
+    SuiSelectModule,
+    SuiDimmerModule,
+    SuiCollapseModule
+
   ],
 })
 export class UserProfileModule { }

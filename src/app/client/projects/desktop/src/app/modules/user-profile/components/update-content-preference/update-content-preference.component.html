@@ -1,46 +1,49 @@
-  
-  <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll  #modal>
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
+  appBodyScroll #modal (dismissed)="closeModal()">
   <div class="sb-modal-header">
-      To discover content relevant to you, update the following details:
+    {{resourceService.frmelmnts?.lbl?.updatePreferenceHeader}} :
   </div>
   <div class="sb-modal-content o-y-visible">
-      <form class="sb-form">
+    <form class="sb-form">
+      <div class="sb-field">
+        <label>{{resourceService.frmelmnts?.lbl?.Board}} :</label>
+        <sui-select class="selection" name="state" labelField="name"
+          placeholder="{{resourceService.frmelmnts?.lbl?.selectBoard}}">
+          <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
+        </sui-select>
+      </div>
+      <div class="sb-fielgroup">
+        <label>{{resourceService.frmelmnts?.lbl?.Medium}} :</label>
         <div class="sb-field">
-          <label>Board :</label>
-            <sui-select class="selection" name="state" labelField="name" placeholder="Select State">
-              <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
-            </sui-select>
+          <sui-multi-select class="selection" name="district" labelField="name"
+            placeholder="{{resourceService.frmelmnts?.lbl?.selectMedium}}">
+            <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+          </sui-multi-select>
         </div>
-        <div class="sb-fielgroup">
-          <label>Medium:</label>
-          <div class="sb-field">
-            <sui-multi-select class="selection" name="district" labelField="name" placeholder="Select district">
-              <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
-            </sui-multi-select>
-          </div>
+      </div>
+      <div class="sb-fielgroup">
+        <label>{{resourceService.frmelmnts?.lbl?.Classes}} :</label>
+        <div class="sb-field">
+          <sui-select class="selection" name="district" labelField="name"
+            placeholder="{{resourceService.frmelmnts?.lbl?.selectClasses}}">
+            <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+          </sui-select>
         </div>
-        <div class="sb-fielgroup">
-            <label>Class:</label>
-            <div class="sb-field">
-              <sui-select class="selection" name="district" labelField="name" placeholder="Select district">
-                <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
-              </sui-select>
-            </div>
-          </div>
-          <div class="sb-fielgroup">
-              <label>Subject:</label>
-              <div class="sb-field">
-                <sui-select class="selection" name="district" labelField="name" placeholder="Select district">
-                  <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
-                </sui-select>
-              </div>
-            </div>
-      </form>
-    </div>
+      </div>
+      <div class="sb-fielgroup">
+        <label>{{resourceService.frmelmnts?.lbl?.Subjects}} :</label>
+        <div class="sb-field">
+          <sui-select class="selection" name="district" labelField="name"
+            placeholder="{{resourceService.frmelmnts?.lbl?.selectSubjects}}">
+            <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+          </sui-select>
+        </div>
+      </div>
+    </form>
+  </div>
   <div class="sb-modal-actions">
     <button type="submit" class="sb-btn sb-btn-normal sb-btn-disabled">
-      Submit
+      {{resourceService.frmelmnts?.btn?.submit}}
     </button>
   </div>
-  </sui-modal>
+</sui-modal>

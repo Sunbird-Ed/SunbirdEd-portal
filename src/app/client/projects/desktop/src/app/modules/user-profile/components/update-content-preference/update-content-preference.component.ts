@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-update-content-preference',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpdateContentPreferenceComponent implements OnInit {
 
-  constructor() { }
-
+  @Output() dismissed = new EventEmitter<any>();
+  constructor(
+    public resourceService: ResourceService,
+  ) { }
   ngOnInit() {
   }
-
+  closeModal() {
+    this.dismissed.emit();
+  }
 }
