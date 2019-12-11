@@ -56,6 +56,7 @@ export class LibraryComponent implements OnInit {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
             && this.pageSections.length < this.carouselMasterData.length) {
             this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+            this.addHoverData();
         }
     }
     constructor(
