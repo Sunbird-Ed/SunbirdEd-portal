@@ -6,20 +6,20 @@ import {
   ElementRef,
   Renderer2,
   AfterViewInit
-} from "@angular/core";
-import { ResourceService, ConfigService } from "@sunbird/shared";
-import { environment } from "@sunbird/environment";
-import { Router, ActivatedRoute } from "@angular/router";
-import { IInteractEventEdata } from "@sunbird/telemetry";
-import { combineLatest as observableCombineLatest } from "rxjs";
-import * as _ from "lodash-es";
+} from '@angular/core';
+import { ResourceService, ConfigService } from '@sunbird/shared';
+import { environment } from '@sunbird/environment';
+import { Router, ActivatedRoute } from '@angular/router';
+import { IInteractEventEdata } from '@sunbird/telemetry';
+import { combineLatest as observableCombineLatest } from 'rxjs';
+import * as _ from 'lodash-es';
 
 @Component({
-  selector: "app-footer",
-  templateUrl: "./main-footer.component.html"
+  selector: 'app-footer',
+  templateUrl: './main-footer.component.html'
 })
 export class MainFooterComponent implements OnInit, AfterViewInit {
-  @ViewChild("footerFix") footerFix: ElementRef;
+  @ViewChild('footerFix') footerFix: ElementRef;
   /**
    * reference of resourceService service.
    */
@@ -47,7 +47,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
     this.resourceService = resourceService;
     if (this.isOffline) {
       this.deviceId = (<HTMLInputElement>(
-        document.getElementById("deviceId")
+        document.getElementById('deviceId')
       )).value;
     }
   }
@@ -58,10 +58,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.bodyPaddingBottom = this.footerFix.nativeElement.offsetHeight + "px";
+      this.bodyPaddingBottom = this.footerFix.nativeElement.offsetHeight + 'px';
       this.renderer.setStyle(
         document.body,
-        "padding-bottom",
+        'padding-bottom',
         this.bodyPaddingBottom
       );
     }, 500);
@@ -71,7 +71,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
     const sendUtmParams = _.get(
       this.activatedRoute,
-      "firstChild.firstChild.snapshot.data.sendUtmParams"
+      'firstChild.firstChild.snapshot.data.sendUtmParams'
     );
     if (sendUtmParams) {
       observableCombineLatest(
@@ -83,16 +83,16 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       ).subscribe(params => {
         const slug = _.get(
           this.activatedRoute,
-          "snapshot.firstChild.firstChild.params.slug"
+          'snapshot.firstChild.firstChild.params.slug'
         );
-        const utm_source = slug ? `diksha-${slug}` : "diksha";
+        const utm_source = slug ? 'diksha-${slug}' : 'diksha';
         if (params.dialCode) {
-          const source = params.source || "search";
+          const source = params.source || 'search';
           applink = `${applink}&utm_source=${utm_source}&utm_medium=${source}&utm_campaign=dial&utm_term=${params.dialCode}`;
         } else {
           applink = `${applink}&utm_source=${utm_source}&utm_medium=get&utm_campaign=redirection`;
         }
-        this.redirect(applink.replace(/\s+/g, ""));
+        this.redirect(applink.replace(/\s+/g, ''));
       });
     } else {
       this.redirect(applink);
@@ -106,8 +106,8 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   setTelemetryInteractEdata(type): IInteractEventEdata {
     return {
       id: type,
-      type: "click",
-      pageid: "footer"
+      type: 'click',
+      pageid: 'footer'
     };
   }
 }
