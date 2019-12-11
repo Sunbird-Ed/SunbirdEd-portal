@@ -15,8 +15,8 @@
     <p class="d-block">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
   </div>
 </div> -->
-    <extension-point [name]="'content-manager'" *ngIf="isOffline"></extension-point>
-<footer class="footer" *ngIf="showFooter">
+<extension-point [name]="'content-manager'" *ngIf="isOffline"></extension-point>
+<footer class="footer" *ngIf="showFooter" #footerFix>
 
   <div class="ui container" *ngIf="!isOffline">
     <div class="ui grid stackable">
@@ -51,7 +51,8 @@
           </div>
           <!-- <label class="d-block pb-10">{{resourceService.frmelmnts?.lbl?.download}}
             {{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label> -->
-            <label class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
+          <label
+            class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
           <a class="d-block app-download" (click)="redirectToDikshaApp()">
             <img class="playStore-img" src="/assets/images/google_playstore.png"
               alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">

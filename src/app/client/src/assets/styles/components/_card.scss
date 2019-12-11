@@ -8,6 +8,7 @@
   border-radius: $sb-card-border-radius;
   cursor: pointer;
   overflow: hidden;
+  position: relative;
   margin-top: $sb-card-hover-movement;
   transition: box-shadow .3s ease-out, transform .3s ease-out, opacity .2s ease-out;
   transition-delay: .1s;
