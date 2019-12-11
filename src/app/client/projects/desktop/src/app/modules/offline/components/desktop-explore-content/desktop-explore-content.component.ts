@@ -12,8 +12,8 @@ import { PublicPlayerService } from '@sunbird/public';
 import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
-import { ConnectionService } from '../../services';
-import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { ConnectionService, ContentManagerService } from '../../services';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 
 
 @Component({
@@ -39,13 +39,17 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
 
     public paginationDetails: IPagination;
     public isConnected = navigator.onLine;
+    isBrowse = false;
+    showExportLoader = false;
+    showDownloadLoader = false;
+    contentName: string;
 
     backButtonInteractEdata: IInteractEventEdata;
     filterByButtonInteractEdata: IInteractEventEdata;
-    cardInteractEdata: IInteractEventEdata;
     telemetryImpression: IImpressionEventInput;
 
     constructor(
+        public contentManagerService: ContentManagerService,
         public router: Router,
         public searchService: SearchService,
         public activatedRoute: ActivatedRoute,
@@ -59,16 +63,23 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         public frameworkService: FrameworkService,
         public paginationService: PaginationService,
         private connectionService: ConnectionService,
-        public navigationHelperService: NavigationHelperService
+        public navigationHelperService: NavigationHelperService,
+        public telemetryService: TelemetryService,
     ) {
         this.filterType = this.configService.appConfig.explore.filterType;
     }
 
     ngOnInit() {
+        this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
         this.setTelemetryData();
         this.connectionService.monitor().subscribe(isConnected => {
             this.isConnected = isConnected;
         });
+
+        this.contentManagerService.downloadListEvent.pipe(
+            takeUntil(this.unsubscribe$)).subscribe((data) => {
+                this.updateCardData(data);
+            });
 
         if (_.includes(this.router.url, 'view-all')) {
             this.isViewAll = true;
@@ -157,7 +168,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
                 const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
                 this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
-                console.log('contentList', this.contentList);
+                this.addHoverData();
             }, err => {
                 this.showLoader = false;
                 this.contentList = [];
@@ -165,6 +176,29 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
                 this.toasterService.error(this.resourceService.messages.fmsg.m0051);
             });
+    }
+
+    addHoverData() {
+        _.each(this.contentList, (value) => {
+            value['hoverData'] = {
+                'note': this.isBrowse && _.get(value, 'downloadStatus') ===
+                    'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
+                'actions': [
+                    {
+                        'type': this.isBrowse ? 'download' : 'save',
+                        'label': this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
+                            this.resourceService.frmelmnts.btn.download :
+                            this.resourceService.frmelmnts.lbl.saveToPenDrive,
+                        'disabled': this.isBrowse && (_.get(value, 'downloadStatus') === 'DOWNLOADED' ||
+                            _.get(value, 'downloadStatus') === 'DOWNLOADING') ? true : false
+                    },
+                    {
+                        'type': 'open',
+                        'label': this.resourceService.frmelmnts.lbl.open
+                    }
+                ]
+            };
+        });
     }
 
     constructSearchRequest() {
@@ -205,7 +239,6 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
                 option.params.framework = _.get(channelData, 'channelData.defaultFramework');
             }
         });
-        console.log('option', option);
 
         return option;
     }
@@ -225,7 +258,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         if (page < 1 || page > this.paginationDetails.totalPages) {
             return;
         }
-        const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
+        const url = _.replace(_.split(this.router.url, '?')[0], /[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
         window.scroll({
             top: 0,
@@ -242,14 +275,6 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         }
 
         this.utilService.clearSearchQuery();
-    }
-
-    public playContent(event) {
-        if (_.includes(this.router.url, 'browse')) {
-            this.publicPlayerService.playContentForOfflineBrowse(event);
-        } else {
-            this.publicPlayerService.playContent(event);
-        }
     }
 
     ngOnDestroy() {
@@ -287,7 +312,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.backButtonInteractEdata = {
             id: 'back-button',
             type: 'click',
-            pageid: this.router.url.split('/')[1] === 'view-all' ? 'view-all' : 'search'
+            pageid: _.split(this.router.url, '/')[1] === 'view-all' ? 'view-all' : 'search'
         };
 
         this.filterByButtonInteractEdata = {
@@ -295,11 +320,41 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
             type: 'click',
             pageid: 'search'
         };
-        this.cardInteractEdata = {
-            id: 'content-card',
-            type: 'click',
-            pageid: this.router.url.split('/')[1] === 'view-all' ? 'view-all' : 'search'
+    }
+
+    logTelemetry(content, actionId) {
+        const telemetryInteractCdata = [{
+            id: content.metaData.identifier || content.metaData.courseId,
+            type: content.metaData.contentType
+        }];
+        const telemetryInteractObject = {
+            id: content.metaData.identifier || content.metaData.courseId,
+            type: content.metaData.contentType || 'Course',
+            ver: content.metaData.pkgVersion ? content.metaData.pkgVersion.toString() : '1.0'
         };
+
+        const appTelemetryInteractData: any = {
+            context: {
+                env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+                    _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+                    _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
+                cdata: telemetryInteractCdata || [],
+            },
+            edata: {
+                id: actionId,
+                type: 'click',
+                pageid: _.split(this.router.url, '/')[1] || 'library'
+            }
+        };
+
+        if (telemetryInteractObject) {
+            if (telemetryInteractObject.ver) {
+                telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+                    _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+            }
+            appTelemetryInteractData.object = telemetryInteractObject;
+        }
+        this.telemetryService.interact(appTelemetryInteractData);
     }
 
     prepareVisits() {
@@ -315,5 +370,68 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.telemetryImpression.edata.visits = visits;
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+
+    hoverActionClicked(event) {
+        event['data'] = event.content;
+        this.contentName = event.content.name;
+        switch (event.hover.type.toUpperCase()) {
+            case 'OPEN':
+                this.playContent(event);
+                this.logTelemetry(event.data, 'play-content');
+                break;
+            case 'DOWNLOAD':
+                this.showDownloadLoader = true;
+                this.downloadContent(_.get(event, 'content.metaData.identifier'));
+                this.logTelemetry(event.data, 'download-content');
+                break;
+            case 'SAVE':
+                this.showExportLoader = true;
+                this.exportContent(_.get(event, 'content.metaData.identifier'));
+                this.logTelemetry(event.data, 'export-content');
+                break;
+        }
+    }
+
+    playContent(event) {
+        if (this.isBrowse) {
+            this.publicPlayerService.playContentForOfflineBrowse(event);
+        } else {
+            this.publicPlayerService.playContent(event);
+        }
+    }
+
+    downloadContent(contentId) {
+        this.contentManagerService.downloadContentId = contentId;
+        this.contentManagerService.startDownload({}).subscribe(data => {
+            this.showDownloadLoader = false;
+            this.contentManagerService.downloadContentId = '';
+        }, error => {
+            this.contentManagerService.downloadContentId = '';
+            this.showDownloadLoader = false;
+            _.each(this.contentList, (contents) => {
+                contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+            });
+            this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        });
+    }
+
+    exportContent(contentId) {
+        this.contentManagerService.exportContent(contentId).subscribe(data => {
+            this.showExportLoader = false;
+            this.toasterService.success(this.resourceService.messages.smsg.m0059);
+        }, error => {
+            this.showExportLoader = false;
+            if (error.error.responseCode !== 'NO_DEST_FOLDER') {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+            }
+        });
+    }
+
+    updateCardData(downloadListdata) {
+        _.each(this.contentList, (contents) => {
+            this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
+        });
+        this.addHoverData();
     }
 }

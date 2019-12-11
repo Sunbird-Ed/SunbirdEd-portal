@@ -9,6 +9,8 @@ import {
 } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     ProfilePageComponent,
@@ -19,6 +21,7 @@ import { SharedModule } from '@sunbird/shared';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     UserProfileRoutingModule,
     SuiModalModule,

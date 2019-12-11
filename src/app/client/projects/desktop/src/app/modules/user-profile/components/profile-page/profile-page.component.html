@@ -20,7 +20,7 @@
         (click)="openModal('LOCATION')">{{resourceService.frmelmnts?.btn?.edit}}</button>
     </div>
   </section>
-  <app-update-location *ngIf="locationComponent === 'LOCATION'" [userLocationData]="userData['location']['state']"
+  <app-update-location *ngIf="locationComponent === 'LOCATION'" [userLocationData]="userData['location']"
     (dismissed)="handleDismissEvent($event)"></app-update-location>
 
   <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 sb-profile-page__profile-bg">
@@ -53,7 +53,7 @@
     </div>
   </section>
 
-  <app-update-content-preference *ngIf="locationComponent === 'CONTENTPREFERENCE'" (dismissed)="handleDismissEvent($event)">
+  <app-update-content-preference *ngIf="locationComponent === 'CONTENTPREFERENCE'" [userLocationData]="userData['framework']" (dismissed)="handleDismissEvent($event)">
   </app-update-content-preference>
 
 </div>

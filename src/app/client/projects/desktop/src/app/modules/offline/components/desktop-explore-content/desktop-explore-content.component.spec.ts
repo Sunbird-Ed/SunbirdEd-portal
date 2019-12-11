@@ -13,7 +13,7 @@ import { of as observableOf, throwError } from 'rxjs';
 import { PublicPlayerService } from '@sunbird/public';
 
 
-xdescribe('DesktopExploreContentComponent', () => {
+describe('DesktopExploreContentComponent', () => {
   let component: DesktopExploreContentComponent;
   let fixture: ComponentFixture<DesktopExploreContentComponent>;
   const resourceBundle = {
@@ -34,10 +34,6 @@ xdescribe('DesktopExploreContentComponent', () => {
     };
   }
 
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-  }
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DesktopExploreContentComponent],
@@ -46,7 +42,7 @@ xdescribe('DesktopExploreContentComponent', () => {
         CoreModule, SharedModule.forRoot(),
       ],
       providers: [{ provide: ActivatedRoute, useClass: FakeActivatedRoute }, ToasterService, ConnectionService,
-      { provide: ResourceService, useValue: resourceBundle }, { provide: Router, useClass: RouterStub }, PublicPlayerService],
+      { provide: ResourceService, useValue: resourceBundle }, PublicPlayerService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -54,12 +50,14 @@ xdescribe('DesktopExploreContentComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DesktopExploreContentComponent);
     component = fixture.componentInstance;
+    const router = TestBed.get(Router);
+    spyOn(router.events, 'pipe').and.returnValue(observableOf());
     fixture.detectChanges();
   });
 
   it('should call ngOnInit for view all page', () => {
     const router = TestBed.get(Router);
-    router.url = 'view-all';
+    spyOnProperty(router, 'url', 'get').and.returnValue('view-all');
     const connectionService = TestBed.get(ConnectionService);
     spyOn(component, 'fetchRecentlyAddedContent');
     spyOn(connectionService, 'monitor').and.returnValue(observableOf(true));
@@ -79,6 +77,7 @@ xdescribe('DesktopExploreContentComponent', () => {
 
   it('should call ngOnInit for search page, get organization error', () => {
     const router = TestBed.get(Router);
+    spyOn(router, 'navigate');
     const connectionService = TestBed.get(ConnectionService);
     spyOn(component, 'fetchRecentlyAddedContent');
     spyOn(connectionService, 'monitor').and.returnValue(observableOf(true));
@@ -89,21 +88,24 @@ xdescribe('DesktopExploreContentComponent', () => {
   });
 
   it('should call goBack', () => {
-    spyOn(component.location, 'back');
+    const router = TestBed.get(Router);
+    spyOnProperty(router, 'url', 'get').and.returnValue('browse');
+    spyOn(component.utilService, 'clearSearchQuery');
+    spyOn(router, 'navigate');
     component.goBack();
-    expect(component.location.back).toHaveBeenCalled();
+    expect(component.utilService.clearSearchQuery).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/browse']);
   });
 
   it('should call playContent when online', () => {
-    const router = TestBed.get(Router);
-    router.url = 'browse';
+    component.isBrowse = true;
     const publicPlayerService = TestBed.get(PublicPlayerService);
     spyOn(publicPlayerService, 'playContentForOfflineBrowse');
     component.playContent('test');
     expect(publicPlayerService.playContentForOfflineBrowse).toHaveBeenCalledWith('test');
   });
 
-  it('should call playContent when online', () => {
+  it('should call playContent when offline', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
     spyOn(publicPlayerService, 'playContent');
     component.playContent('test');
@@ -112,11 +114,9 @@ xdescribe('DesktopExploreContentComponent', () => {
 
   it('should call getFilters when in browse page', () => {
     const router = TestBed.get(Router);
-    router.url = 'browse';
+    spyOnProperty(router, 'url', 'get').and.returnValue('browse');
     component.getFilters(response.filtersData);
     expect(component.facets).toEqual(['board', 'medium', 'gradeLevel', 'subject', 'contentType']);
     expect(component.dataDrivenFilters).toEqual(response.filtersData);
   });
-
-
 });

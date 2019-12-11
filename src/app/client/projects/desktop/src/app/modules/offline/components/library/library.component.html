@@ -29,17 +29,33 @@
                     <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
                         <div ngxSlickItem *ngFor="let content of section?.contents" class="sbcardwidth slide mr-16">
                             <sb-library-card [content]="content" [type]="'recently_viewed'"
-                                [cardImg]="content?.cardImg || 'assets/images/book.png'"
-                                (click)="playContent({event: $event, data: content})">
+                                [cardImg]="content?.cardImg || 'assets/images/book.png'" [hover-template]="hoverTemplate">
+                                <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
+                                    <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
+                                        (hoverActionClick)="hoverActionClicked($event)">
+                                    </sb-card-hover>
+                                </ng-template>
                             </sb-library-card>
                         </div>
                     </ngx-slick>
                 </section>
                 <!-- END OF RECENTLY VIEWED CONTENT-->
-                <sb-library-cards-grid *ngIf="index > 0" [title]="section?.name" [contentList]="section?.contents"
-                    [type]="'infinite_card_grid'" (cardClick)="playContent($event)">
+                <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [title]="section?.name" [contentList]="section?.contents"
+                    [type]="'infinite_card_grid_with_hover'" (hoverActionClick)="hoverActionClicked($event)">
                 </sb-library-cards-grid>
             </section>
         </div>
     </div>
 </div>
+
+<sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
+    <div class="ui active centered inline loader"></div>
+    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
+    </h6>
+</sui-dimmer>
+
+<sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
+    <div class="ui active centered inline loader"></div>
+    <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
+    </h6>
+</sui-dimmer>

@@ -3,13 +3,15 @@
   <div class="sb-modal-header">
     {{resourceService.frmelmnts?.lbl?.yourLocation}}
   </div>
+
+
   <div class="sb-modal-content o-y-visible">
     <div class="sb-form">
       <p class="mb-8">{{resourceService.frmelmnts?.lbl?.yourLocationHeader}} </p>
       <div class="sb-field">
         <label>{{resourceService.frmelmnts?.lbl?.State}} :</label>
         <sui-select class="selection" labelField="name" [isSearchable]="true" [(ngModel)]="selectedState"
-          (ngModelChange)="onStateChanges(selectedState)" placeholder="{{resourceService.frmelmnts?.lbl?.selectState}}"
+          (ngModelChange)="onStateChanges()" placeholder="{{resourceService.frmelmnts?.lbl?.selectState}}"
           [options]="stateList" #states>
           <sui-select-option *ngFor="let state of states.filteredOptions" [value]="state">
           </sui-select-option>
@@ -32,4 +34,5 @@
       {{resourceService.frmelmnts?.btn?.submit}}
     </button>
   </div>
+
 </sui-modal>
