@@ -2,7 +2,12 @@
 @import "mixins/mixins";
 :host {
   .page {
-    background-color: #e5edf5;
+    background: rgba(0, 0, 0, 0.6);
+
+    h6 {
+      color: #F3F7FA;
+      font-weight: normal;
+    }
   }
   .page-container {
     margin: 16px 32px;
@@ -71,4 +76,11 @@
 .sbcardwidth {
   width: 292px !important;
   padding: 8px 0px;
+}
+
+.ui.dimmer .ui.loader:before {
+  border-color: rgba(255,255,255,0.01);
+}
+.ui.dimmer .ui.loader:after {
+  border-color: var(--primary-200) transparent transparent;
 }

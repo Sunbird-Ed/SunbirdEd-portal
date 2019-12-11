@@ -41,10 +41,13 @@ export class LibraryComponent implements OnInit {
 
     isConnected = navigator.onLine;
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
+    isBrowse = false;
+    showExportLoader = false;
+    showDownloadLoader = false;
+    contentName: string;
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
-    public cardInteractEdata: IInteractEventEdata;
     public telemetryImpression: IImpressionEventInput;
     public cardInteractObject: any;
     public cardInteractCdata: any;
@@ -61,7 +64,7 @@ export class LibraryComponent implements OnInit {
         private utilService: UtilService,
         private toasterService: ToasterService,
         private configService: ConfigService,
-        private resourceService: ResourceService,
+        public resourceService: ResourceService,
         private publicPlayerService: PublicPlayerService,
         public searchService: SearchService,
         private connectionService: ConnectionService,
@@ -71,6 +74,7 @@ export class LibraryComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.isBrowse = Boolean(this.router.url.includes('browse'));
         this.getSelectedFilters();
         this.setNoResultMessage();
         this.setTelemetryData();
@@ -84,6 +88,11 @@ export class LibraryComponent implements OnInit {
                 if (this.router.url === '/') {
                     this.fetchContents();
                 }
+            });
+
+        this.contentManagerService.downloadListEvent.pipe(
+            takeUntil(this.unsubscribe$)).subscribe((data) => {
+                this.updateCardData(data);
             });
 
         this.router.events.pipe(
@@ -148,11 +157,9 @@ export class LibraryComponent implements OnInit {
     }
 
     fetchContents() {
-        const isBrowse = Boolean(this.router.url.includes('browse'));
-
         // First call - Search content with selected filters and API should call always.
         // Second call - Search content without selected filters and API should not call in browse page
-        combineLatest(this.searchContent(true, false), this.searchContent(false, isBrowse)).subscribe(
+        combineLatest(this.searchContent(true, false), this.searchContent(false, this.isBrowse)).subscribe(
             ([response1, response2]) => {
                 if (response1) {
                     this.showLoader = false;
@@ -174,7 +181,9 @@ export class LibraryComponent implements OnInit {
                             });
                         }
                     }
+
                     this.carouselMasterData = this.prepareCarouselData(this.sections);
+
                     if (!this.carouselMasterData.length) {
                         return; // no page section
                     }
@@ -183,6 +192,7 @@ export class LibraryComponent implements OnInit {
                     } else if (this.carouselMasterData.length >= 1) {
                         this.pageSections = [this.carouselMasterData[0]];
                     }
+                    this.addHoverData();
                 } else {
                     this.showLoader = false;
                     this.carouselMasterData = [];
@@ -191,6 +201,31 @@ export class LibraryComponent implements OnInit {
                 }
             }
         );
+    }
+
+    addHoverData() {
+        _.each(this.pageSections, (pageSection) => {
+            _.each(pageSection.contents, (value) => {
+                value['hoverData'] = {
+                    'note': this.isBrowse && _.get(value, 'downloadStatus') ===
+                        'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
+                    'actions': [
+                        {
+                            'type': this.isBrowse ? 'download' : 'save',
+                            'label': this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
+                                this.resourceService.frmelmnts.btn.download :
+                                this.resourceService.frmelmnts.lbl.saveToPenDrive,
+                            'disabled': this.isBrowse && (_.get(value, 'downloadStatus') === 'DOWNLOADED' ||
+                                _.get(value, 'downloadStatus') === 'DOWNLOADING') ? true : false
+                        },
+                        {
+                            'type': 'open',
+                            'label': this.resourceService.frmelmnts.lbl.open
+                        }
+                    ]
+                };
+            });
+        });
     }
 
     private prepareCarouselData(sections = []) {
@@ -245,19 +280,6 @@ export class LibraryComponent implements OnInit {
         });
     }
 
-    public playContent(event: any) {
-        if (_.includes(this.router.url, 'browse')) {
-            this.publicPlayerService.playContentForOfflineBrowse(event);
-        } else {
-            this.publicPlayerService.playContent(event);
-        }
-
-        if (event.data) {
-            this.logTelemetry(event.data);
-        }
-    }
-
-
     setTelemetryData() {
         this.telemetryImpression = {
             context: {
@@ -275,12 +297,6 @@ export class LibraryComponent implements OnInit {
             id: `view-all-button`,
             type: 'click',
             pageid: 'library'
-        };
-
-        this.cardInteractEdata = {
-            id: 'content-card',
-            type: 'click',
-            pageid: this.router.url.split('/')[1] || 'library'
         };
     }
 
@@ -302,7 +318,7 @@ export class LibraryComponent implements OnInit {
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
 
-    logTelemetry(content) {
+    logTelemetry(content, actionId) {
         const telemetryInteractCdata = [{
             id: content.metaData.identifier || content.metaData.courseId,
             type: content.metaData.contentType
@@ -313,25 +329,94 @@ export class LibraryComponent implements OnInit {
             ver: content.metaData.pkgVersion ? content.metaData.pkgVersion.toString() : '1.0'
         };
 
-        if (this.cardInteractEdata) {
-            const appTelemetryInteractData: any = {
-                context: {
-                    env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
-                        _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
-                        _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
-                    cdata: telemetryInteractCdata || [],
-                },
-                edata: this.cardInteractEdata
-            };
-
-            if (telemetryInteractObject) {
-                if (telemetryInteractObject.ver) {
-                    telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
-                        _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
-                }
-                appTelemetryInteractData.object = telemetryInteractObject;
+        const appTelemetryInteractData: any = {
+            context: {
+                env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+                    _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+                    _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
+                cdata: telemetryInteractCdata || [],
+            },
+            edata: {
+                id: actionId,
+                type: 'click',
+                pageid: this.router.url.split('/')[1] || 'library'
             }
-            this.telemetryService.interact(appTelemetryInteractData);
+        };
+
+        if (telemetryInteractObject) {
+            if (telemetryInteractObject.ver) {
+                telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+                    _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+            }
+            appTelemetryInteractData.object = telemetryInteractObject;
         }
+        this.telemetryService.interact(appTelemetryInteractData);
+    }
+
+    hoverActionClicked(event) {
+        event['data'] = event.content;
+        this.contentName = event.content.name;
+        switch (event.hover.type.toUpperCase()) {
+            case 'OPEN':
+                this.playContent(event);
+                this.logTelemetry(event.data, 'play-content');
+                break;
+            case 'DOWNLOAD':
+                this.showDownloadLoader = true;
+                this.downloadContent(_.get(event, 'content.metaData.identifier'));
+                this.logTelemetry(event.data, 'download-content');
+                break;
+            case 'SAVE':
+                this.showExportLoader = true;
+                this.exportContent(_.get(event, 'content.metaData.identifier'));
+                this.logTelemetry(event.data, 'export-content');
+                break;
+        }
+    }
+
+    playContent(event: any) {
+        if (this.isBrowse) {
+            this.publicPlayerService.playContentForOfflineBrowse(event);
+        } else {
+            this.publicPlayerService.playContent(event);
+        }
+    }
+
+    downloadContent(contentId) {
+        this.contentManagerService.downloadContentId = contentId;
+        this.contentManagerService.startDownload({}).subscribe(data => {
+            this.contentManagerService.downloadContentId = '';
+            this.showDownloadLoader = false;
+        }, error => {
+            this.contentManagerService.downloadContentId = '';
+            this.showDownloadLoader = false;
+            _.each(this.pageSections, (pageSection) => {
+                _.each(pageSection.contents, (pageData) => {
+                    pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+                });
+            });
+            this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        });
+    }
+
+    exportContent(contentId) {
+        this.contentManagerService.exportContent(contentId).subscribe(data => {
+            this.showExportLoader = false;
+            this.toasterService.success(this.resourceService.messages.smsg.m0059);
+        }, error => {
+            this.showExportLoader = false;
+            if (_.get(error, 'error.responseCode') !== 'NO_DEST_FOLDER') {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+            }
+        });
+    }
+
+    updateCardData(downloadListdata) {
+        _.each(this.pageSections, (pageSection) => {
+            _.each(pageSection.contents, (pageData) => {
+                this.publicPlayerService.updateDownloadStatus(downloadListdata, pageData);
+            });
+        });
+        this.addHoverData();
     }
 }
