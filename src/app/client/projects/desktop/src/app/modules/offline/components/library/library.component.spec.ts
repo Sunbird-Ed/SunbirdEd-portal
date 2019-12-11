@@ -5,7 +5,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule } from '@angular/router';
 import {
     ResourceService, ToasterService, BrowserCacheTtlService, NavigationHelperService,
-    ConfigService, UtilService
+    ConfigService, UtilService, SharedModule
 } from '@sunbird/shared';
 import { TenantService, OrgDetailsService } from '@sunbird/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,6 +26,18 @@ describe('LibraryComponent', () => {
             fmsg: {
                 m0004: 'Fetching data failed, please try again later...'
             }
+        },
+        frmelmnts: {
+            lbl: {
+                allDownloads: 'all Downloads will be automatically added to',
+                exportingContent: 'Copying {contentName}...',
+                downloadingContent: 'Preparing to download {contentName}...',
+                recentlyAdded: 'Recently Added',
+                viewall: 'View All'
+            },
+            btn: {
+                myLibrary: 'My Downloads'
+            }
         }
     };
     class FakeActivatedRoute {
@@ -45,6 +57,7 @@ describe('LibraryComponent', () => {
             imports: [
                 CommonConsumptionModule,
                 TelemetryModule.forRoot(),
+                SharedModule.forRoot(),
                 RouterModule.forRoot([]),
                 HttpClientModule,
                 SuiModule,
