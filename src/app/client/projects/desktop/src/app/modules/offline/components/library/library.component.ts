@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { combineLatest, Subject, of } from 'rxjs';
 import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { ConnectionService, ContentManagerService } from '../../services';
     templateUrl: './library.component.html',
     styleUrls: ['./library.component.scss']
 })
-export class LibraryComponent implements OnInit {
+export class LibraryComponent implements OnInit, OnDestroy {
 
     public showLoader = true;
     public queryParams: any;
