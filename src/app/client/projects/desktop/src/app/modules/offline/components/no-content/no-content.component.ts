@@ -39,8 +39,5 @@ export class NoContentComponent implements OnInit {
   handleModal() {
     this.showModal = !this.showModal;
   }
-  closeModal() {
-    this.showModal = !this.showModal;
-  }
 
 }

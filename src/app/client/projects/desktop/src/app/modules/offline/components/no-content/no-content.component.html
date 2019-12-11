@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<app-load-content *ngIf="showModal" (close)="closeModal()"></app-load-content>
+<app-load-content *ngIf="showModal" (close)="handleModal()"></app-load-content>
 
 <div class="no-content-container  d-flex flex-jc-center p-24" *ngIf="isConnected">
     <div class="d-flex flex-dc flex-jc-center flex-ai-center">
