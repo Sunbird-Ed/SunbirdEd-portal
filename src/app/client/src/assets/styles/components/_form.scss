@@ -1,3 +1,45 @@
+/* sb-field */
+$sb-field-margin-bottom: calculateRem(8px);
+$sb-field-disabled-background: $gray-0;
+$sb-field-disabled-border: $input-border-width solid $gray-0;
+$sb-field-disabled-opacity: 0.45;
+
+/* sb-input */
+$sb-input-background-color: $white-color;
+$sb-input-font-size: calculateRem(13px);
+$sb-input-line-height: calculateRem(21px);
+$sb-input-padding: calculateRem(9px);
+$sb-input-color: var(--gray-800);
+$sb-input-border-radius: calculateRem(3px);
+$sb-input-border-normal: $input-border-width solid $gray-200;
+$sb-input-border-focus: $input-border-width solid $primary-600;
+$sb-input-border-hover: $input-border-width solid $primary-300;
+$sb-input-border-error: $input-border-width solid $red-400;
+$sb-input-border-success: $input-border-width solid $secondary-200;
+
+/* sb-input label and text */
+$sb-error-text: $red-400;
+$sb-success-text: $secondary-200;
+$sb-label-font-size: calculateRem(13px);
+// Dropdown
+$sb-dropdown-border-color: $gray-200;
+$sb-dropdown-border-focus: $primary-600;
+$sb-dropdown-border-hover: $primary-300;
+$sb-dropdown-min-height: calculateRem(39px);
+$sb-dropdown-border-radius: calculateRem(3px);
+$sb-dropdown-border: $input-border-width solid $sb-dropdown-border-color;
+$sb-dropdown-active-item: $gray-800;
+$sb-multi-select-dropdown-icon-font-size: calculateRem(20px);
+$sb-dropdown-label-font-size: calculateRem(12px);
+$sb-selection-dropdown-min-height: calculateRem(32px);
+$sb-selection-dropdown-padding: calculateRem(4px) calculateRem(8px);
+$sb-multiple-dropdown-label-font-size: $font-size-sm;
+$sb-multiple-dropdown-label-margin-right: calculateRem(4px);
+$sb-multiple-dropdown-text-margin: calculateRem(3px) 0 calculateRem(3px)
+  calculateRem(10px);
+$sb-multiple-dropdown-text-font-size: $font-size-sm;
+$sb-selection-line-height: calculateRem(18px);
+
 /* form element styles */
 
 #{$all-text-inputs} {
@@ -173,7 +215,7 @@ label {
   display: flex;
   margin-bottom: $base-block-space * 1;
   font-size: $sb-label-font-size;
-  font-weight: bold;
+  font-weight: normal;
   align-items: flex-start;
   justify-content: center;
 }

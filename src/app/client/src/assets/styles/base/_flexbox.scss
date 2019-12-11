@@ -1,3 +1,8 @@
+.flex-ai-jc-center{
+@extend .d-flex;
+@extend .flex-jc-center;
+@extend .flex-ai-center;
+}
 .flex-jc-center {
   justify-content: center !important;
 }

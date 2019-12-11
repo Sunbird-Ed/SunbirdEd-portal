@@ -13,8 +13,8 @@
 
     <!--Header-->
     <div class="sb-modal-header" [ngSwitch]="contactType">
-      <span *ngSwitchCase="'email'" class="fs-1-286">{{resourceService?.frmelmnts?.lbl?.updateEmailId}}</span>
-      <span *ngSwitchCase="'phone'" class="fs-1-286">{{resourceService?.frmelmnts?.lbl?.updatePhoneNo}}</span>
+      <span *ngSwitchCase="'email'">{{resourceService?.frmelmnts?.lbl?.updateEmailId}}</span>
+      <span *ngSwitchCase="'phone'">{{resourceService?.frmelmnts?.lbl?.updatePhoneNo}}</span>
     </div>
     <!--/Header-->
 
