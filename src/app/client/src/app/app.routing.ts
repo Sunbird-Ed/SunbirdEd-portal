@@ -14,9 +14,9 @@ const appRoutes: Routes = [
   {
     path: 'workspace/program', loadChildren: 'app/modules/program/program.module#ProgramModule'
   },
-  {
-    path: 'public/certs', loadChildren: 'app/modules/certificate/certificate.module#CertificateModule'
-  },
+  // {
+  //   path: 'public/certs', loadChildren: 'app/modules/certificate/certificate.module#CertificateModule'
+  // },
   // {
   //   path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
   // },

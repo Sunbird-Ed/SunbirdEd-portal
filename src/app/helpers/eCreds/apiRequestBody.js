@@ -12,16 +12,17 @@ const certAddRequestBody = (response,input) => {
     };
     if (_.get(input, 'rspObj.certType') === 'Best School Certificate') {
         related['type'] = 'best-school';
-        related['best-school']='best-school';
-        related['key1']=_.get(input, 'extId');
+        related['best-school']='best-school'; //TODO to ask krishna how to update the org_ext_id
+        related['school_extID']=_.get(input, 'extId');
+        request['recipientType'] = 'entity';
     } else {
         related['type'] = 'best-student';
         related['best-student']='best-student';
-        related['key1']=_.get(input, 'extId');
+        related['student_school_extID']=_.get(input, 'extId'); // Need to discuss on this with krishan
+        request['recipientType'] = 'individual';
     }
     const request = _.pick(response, ['id', 'accessCode', 'jsonData', 'pdfUrl']);
     request['userId'] = _.get(response, 'recipientId');
-    request['recipientType'] = 'individual';
     request['related'] = related;
     return request;
 }
@@ -66,17 +67,17 @@ const certGenerateRequestBody = (input) => {
             "data": [
                 {
                     "recipientName": _.get(input, 'name'),
-                    "recipientId": "874ed8a5-782e-4f6c-8f36-e0288455901e"
+                    "recipientId": _.get(input, 'extId')
                 }
             ],
             "name": _.get(input, 'rspObj.certType'),
-            "tag": "0125450863553740809",
+            "tag": "0125450863553740809",// TODO org id of the user who is creating the Cert 
             "issuer": issuer,
             "signatoryList": signatoryList,
             "criteria": {
                 "narrative": "course completion certificate"
             },
-            // "keys":{
+            // "keys":{  // use the 1st element in the signed keys from the orgSearch api call
             //     "id": key
             // },
             "basePath": baseUrl+"/public/certs" 
