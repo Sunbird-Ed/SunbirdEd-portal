@@ -86,6 +86,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         ContentImportHeaderComponent,
     ],
     exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
-        OnboardingLocationComponent]
+        OnboardingLocationComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent]
 })
 export class OfflineModule { }

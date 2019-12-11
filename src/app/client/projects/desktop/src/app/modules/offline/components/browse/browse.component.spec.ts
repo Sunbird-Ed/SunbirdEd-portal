@@ -7,6 +7,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER  } from '@sunbird/telemetry';
 import { BrowseComponent } from './browse.component';
 import { ExploreModule } from '../../../../../../../../src/app/modules/public/module/explore';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 
@@ -32,7 +33,8 @@ describe('BrowseComponent', () => {
       declarations: [BrowseComponent],
       imports: [ExploreModule, HttpClientTestingModule, SharedModule.forRoot()],
       providers: [{ provide: ActivatedRoute, useClass: FakeActivatedRoute }, ConnectionService,
-        { provide: Router, useClass: RouterStub }, TelemetryService]
+        { provide: Router, useClass: RouterStub }, TelemetryService],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -47,8 +49,8 @@ describe('BrowseComponent', () => {
   it('To check connection status ', () => {
     expect(component).toBeTruthy();
     expect(component.isConnected).toBeTruthy();
-
   });
+
   it('to make connection status false', () => {
     expect(component).toBeTruthy();
     const mockConnectionStatus = false;

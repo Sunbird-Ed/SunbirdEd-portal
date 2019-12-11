@@ -31,3 +31,14 @@
     margin-right: 4px;
   }
 }
+.sb-modal{
+  .disable-color{
+    color: var(--gray-400);
+    opacity: 0.5;
+  }
+
+  .sb-label-status:before {
+      transform: none !important;
+      border-radius: 10px !important;
+    }
+}
