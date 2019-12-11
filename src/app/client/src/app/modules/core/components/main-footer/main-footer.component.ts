@@ -85,7 +85,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
           this.activatedRoute,
           'snapshot.firstChild.firstChild.params.slug'
         );
-        const utm_source = slug ? 'diksha-${slug}' : 'diksha';
+        const utm_source = slug ? `diksha-${slug}` : 'diksha';
         if (params.dialCode) {
           const source = params.source || 'search';
           applink = `${applink}&utm_source=${utm_source}&utm_medium=${source}&utm_campaign=dial&utm_term=${params.dialCode}`;
