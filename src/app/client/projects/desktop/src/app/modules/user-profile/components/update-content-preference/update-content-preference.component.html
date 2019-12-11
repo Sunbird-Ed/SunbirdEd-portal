@@ -1,3 +1,46 @@
-<p>
-  update-content-preference works!
-</p>
+  
+  <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll  #modal>
+  <div class="sb-modal-header">
+      To discover content relevant to you, update the following details:
+  </div>
+  <div class="sb-modal-content o-y-visible">
+      <form class="sb-form">
+        <div class="sb-field">
+          <label>Board :</label>
+            <sui-select class="selection" name="state" labelField="name" placeholder="Select State">
+              <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
+            </sui-select>
+        </div>
+        <div class="sb-fielgroup">
+          <label>Medium:</label>
+          <div class="sb-field">
+            <sui-multi-select class="selection" name="district" labelField="name" placeholder="Select district">
+              <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+            </sui-multi-select>
+          </div>
+        </div>
+        <div class="sb-fielgroup">
+            <label>Class:</label>
+            <div class="sb-field">
+              <sui-select class="selection" name="district" labelField="name" placeholder="Select district">
+                <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+              </sui-select>
+            </div>
+          </div>
+          <div class="sb-fielgroup">
+              <label>Subject:</label>
+              <div class="sb-field">
+                <sui-select class="selection" name="district" labelField="name" placeholder="Select district">
+                  <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+                </sui-select>
+              </div>
+            </div>
+      </form>
+    </div>
+  <div class="sb-modal-actions">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-disabled">
+      Submit
+    </button>
+  </div>
+  </sui-modal>

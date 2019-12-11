@@ -45,7 +45,8 @@ export class UtilService {
       cardImg: data.appIcon || data.courseLogoUrl || 'assets/images/book.png',
       resourceType: data.resourceType,
       badgeAssertions: data.badgeAssertions,
-      organisation: data.organisation
+      organisation: data.organisation,
+      hoverData: data.hoverData
     };
 
     // this customization is done for enrolled courses
