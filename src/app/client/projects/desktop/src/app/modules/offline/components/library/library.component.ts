@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, HostListener } from '@angular/core';
+import { Component, OnInit, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { combineLatest, Subject, of } from 'rxjs';
 import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { ConnectionService, ContentManagerService } from '../../services';
     templateUrl: './library.component.html',
     styleUrls: ['./library.component.scss']
 })
-export class LibraryComponent implements OnInit {
+export class LibraryComponent implements OnInit, OnDestroy {
 
     public showLoader = true;
     public queryParams: any;
@@ -45,6 +45,7 @@ export class LibraryComponent implements OnInit {
     showExportLoader = false;
     showDownloadLoader = false;
     contentName: string;
+    infoData;
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -56,6 +57,7 @@ export class LibraryComponent implements OnInit {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
             && this.pageSections.length < this.carouselMasterData.length) {
             this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+            this.addHoverData();
         }
     }
     constructor(
@@ -75,6 +77,7 @@ export class LibraryComponent implements OnInit {
 
     ngOnInit() {
         this.isBrowse = Boolean(this.router.url.includes('browse'));
+        this.infoData = {msg: this.resourceService.frmelmnts.lbl.allDownloads, linkName: this.resourceService.frmelmnts.btn.myLibrary};
         this.getSelectedFilters();
         this.setNoResultMessage();
         this.setTelemetryData();
@@ -418,5 +421,9 @@ export class LibraryComponent implements OnInit {
             });
         });
         this.addHoverData();
+    }
+
+    navigateToMyDownloads() {
+        this.router.navigate(['/']);
     }
 }

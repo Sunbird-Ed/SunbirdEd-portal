@@ -3,7 +3,7 @@
     <div class="info-container__icon">
       <img src="../../assets/images/offline-icon.svg" width="22px" height="22px">
     </div>
-    <div class="fs-0-785 ml-8">{{resourceService?.frmelmnts?.lbl?.allDownloads}}
-      <a href="#" class="info-container__label font-weight-bold">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a></div>
+    <div class="fs-0-785 ml-8">{{text?.msg}}
+      <a href="#" class="info-container__label font-weight-bold" (click)="handleRoute()">{{text?.linkName}}</a></div>
   </div>
 </div>

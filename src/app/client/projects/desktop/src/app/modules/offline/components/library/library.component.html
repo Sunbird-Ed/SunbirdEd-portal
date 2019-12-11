@@ -48,7 +48,7 @@
             </div>
             <div class="three wide column" *ngIf="carouselMasterData.length > 0">
                     <app-connection-status></app-connection-status>
-                    <app-info-card></app-info-card>
+                    <app-info-card [text]="infoData" (navigate)="navigateToMyDownloads()"></app-info-card>
             </div>
               </div>
           

@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ConnectionService } from '../../services';
 import { ElectronDialogService } from './../../services';
 
@@ -13,7 +13,7 @@ export class InfoCardComponent implements OnInit {
 
   @Input() text: any;
   isConnected = navigator.onLine;
-
+  @Output() navigate = new EventEmitter();
   constructor(private connectionService: ConnectionService,
     public resourceService: ResourceService,
     public electronDialogService: ElectronDialogService,
@@ -29,6 +29,9 @@ export class InfoCardComponent implements OnInit {
 
   checkConnectionStatus() {
     this.isConnected = this.isConnected && this.router.url.includes('browse');
+  }
+  handleRoute() {
+    this.navigate.emit();
   }
 
 
