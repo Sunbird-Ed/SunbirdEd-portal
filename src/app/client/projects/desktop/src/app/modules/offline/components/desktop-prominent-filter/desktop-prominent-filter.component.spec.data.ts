@@ -248,7 +248,3 @@ export const frameworkDetails = {
         }
     }
 };
-
-export const defaultFrameworkDetails = {
-
-}
