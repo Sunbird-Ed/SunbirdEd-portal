@@ -2,9 +2,6 @@
     <app-library-filters (filterChange)="onFilterChange($event)" [selectedFilters]="selectedFilters">
     </app-library-filters>
     <div *ngIf="(router.url.includes('browse') && isConnected) || !router.url.includes('browse')">
-            <div class="twelve wide column" *ngIf="showLoader">
-                    <app-loader [data]='loaderMessage'></app-loader>
-                </div>
         <div class="ui container">
 
                 <div class="twelve wide column" *ngIf="carouselMasterData.length === 0 && !showLoader">
