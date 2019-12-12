@@ -72,12 +72,15 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
         this.setTelemetryData();
-        this.connectionService.monitor().subscribe(isConnected => {
-            this.isConnected = isConnected;
-        });
+        this.connectionService.monitor()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(isConnected => {
+                this.isConnected = isConnected;
+            });
 
-        this.contentManagerService.downloadListEvent.pipe(
-            takeUntil(this.unsubscribe$)).subscribe((data) => {
+        this.contentManagerService.downloadListEvent
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((data) => {
                 this.updateCardData(data);
             });
 
@@ -122,6 +125,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         };
 
         this.searchService.contentSearch(option)
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(response => {
                 this.showLoader = false;
                 const orderedContents = _.orderBy(_.get(response, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']);
@@ -162,6 +166,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     private fetchContents() {
         this.constructSearchRequest();
         this.searchService.contentSearch(this.constructSearchRequest())
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(data => {
                 this.showLoader = false;
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
@@ -234,11 +239,13 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
             option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
         }
 
-        this.frameworkService.channelData$.subscribe((channelData) => {
-            if (!channelData.err) {
-                option.params.framework = _.get(channelData, 'channelData.defaultFramework');
-            }
-        });
+        this.frameworkService.channelData$
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((channelData) => {
+                if (!channelData.err) {
+                    option.params.framework = _.get(channelData, 'channelData.defaultFramework');
+                }
+            });
 
         return option;
     }
@@ -403,29 +410,33 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
 
     downloadContent(contentId) {
         this.contentManagerService.downloadContentId = contentId;
-        this.contentManagerService.startDownload({}).subscribe(data => {
-            this.showDownloadLoader = false;
-            this.contentManagerService.downloadContentId = '';
-        }, error => {
-            this.contentManagerService.downloadContentId = '';
-            this.showDownloadLoader = false;
-            _.each(this.contentList, (contents) => {
-                contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+        this.contentManagerService.startDownload({})
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(data => {
+                this.showDownloadLoader = false;
+                this.contentManagerService.downloadContentId = '';
+            }, error => {
+                this.contentManagerService.downloadContentId = '';
+                this.showDownloadLoader = false;
+                _.each(this.contentList, (contents) => {
+                    contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+                });
+                this.toasterService.error(this.resourceService.messages.fmsg.m0090);
             });
-            this.toasterService.error(this.resourceService.messages.fmsg.m0090);
-        });
     }
 
     exportContent(contentId) {
-        this.contentManagerService.exportContent(contentId).subscribe(data => {
-            this.showExportLoader = false;
-            this.toasterService.success(this.resourceService.messages.smsg.m0059);
-        }, error => {
-            this.showExportLoader = false;
-            if (error.error.responseCode !== 'NO_DEST_FOLDER') {
-                this.toasterService.error(this.resourceService.messages.fmsg.m0091);
-            }
-        });
+        this.contentManagerService.exportContent(contentId)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(data => {
+                this.showExportLoader = false;
+                this.toasterService.success(this.resourceService.messages.smsg.m0059);
+            }, error => {
+                this.showExportLoader = false;
+                if (error.error.responseCode !== 'NO_DEST_FOLDER') {
+                    this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+                }
+            });
     }
 
     updateCardData(downloadListdata) {

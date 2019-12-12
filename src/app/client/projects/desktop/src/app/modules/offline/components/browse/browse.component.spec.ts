@@ -4,61 +4,61 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService, BrowserCacheTtlService, ToasterService, ResourceService, SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER  } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { BrowseComponent } from './browse.component';
 import { ExploreModule } from '../../../../../../../../src/app/modules/public/module/explore';
+import { LibraryComponent } from '../library/library.component';
+import { OfflineModule } from '../../offline.module';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 
 
 describe('BrowseComponent', () => {
-  let component: BrowseComponent;
-  let fixture: ComponentFixture<BrowseComponent>;
-  let connectionService: ConnectionService;
+    let component: BrowseComponent;
+    let fixture: ComponentFixture<BrowseComponent>;
+    let connectionService: ConnectionService;
 
-  class RouterStub {
-    navigate = jasmine.createSpy('navigate');
-    url = jasmine.createSpy('url');
-  }
-  class FakeActivatedRoute {
-    snapshot = {
-      params: {slug: 'ap'},
-      data: {
-        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
-      }
-    };
-  }
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [BrowseComponent],
-      imports: [ExploreModule, HttpClientTestingModule, SharedModule.forRoot()],
-      providers: [{ provide: ActivatedRoute, useClass: FakeActivatedRoute }, ConnectionService,
-        { provide: Router, useClass: RouterStub }, TelemetryService]
-    })
-      .compileComponents();
-  }));
+    class RouterStub {
+        navigate = jasmine.createSpy('navigate');
+        url = jasmine.createSpy('url');
+    }
+    class FakeActivatedRoute {
+        snapshot = {
+            params: { slug: 'ap' },
+            data: {
+                telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate' }
+            }
+        };
+    }
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [BrowseComponent],
+            imports: [HttpClientTestingModule, SharedModule.forRoot()],
+            providers: [ConnectionService, ResourceService],
+            schemas: [NO_ERRORS_SCHEMA]
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(BrowseComponent);
-    component = fixture.componentInstance;
-    connectionService = TestBed.get(ConnectionService);
-    fixture.detectChanges();
-  });
-
-  it('To check connection status ', () => {
-    expect(component).toBeTruthy();
-    expect(component.isConnected).toBeTruthy();
-
-  });
-  it('to make connection status false', () => {
-    expect(component).toBeTruthy();
-    const mockConnectionStatus = false;
-    const mockObservable = observableOf(mockConnectionStatus);
-    const spy = spyOn(connectionService, 'monitor').and.returnValue(mockObservable);
-    connectionService.monitor().subscribe(connectionMonitor => {
-      expect(connectionMonitor).toBe(mockConnectionStatus);
+    beforeEach(() => {
+        fixture = TestBed.createComponent(BrowseComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
     });
-    component.ngOnInit();
-    component.isConnected = mockConnectionStatus;
-    expect(component.isConnected).toBeFalsy();
-  });
+
+    it('To check connection status ', () => {
+        connectionService = TestBed.get(ConnectionService);
+        spyOn(connectionService, 'monitor').and.returnValue(observableOf(true));
+        expect(component).toBeTruthy();
+        expect(component.isConnected).toBeTruthy();
+
+    });
+    it('to make connection status false', () => {
+        connectionService = TestBed.get(ConnectionService);
+        spyOn(connectionService, 'monitor').and.returnValue(observableOf(false));
+        connectionService.monitor().subscribe(connectionMonitor => {
+            expect(connectionMonitor).toBe(false);
+        });
+        component.ngOnInit();
+        expect(component.isConnected).toBeFalsy();
+    });
 });

@@ -17,6 +17,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { response } from './library.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of as observableOf, throwError } from 'rxjs';
+import { SharedModule } from '@sunbird/shared';
+import { ConnectionService } from '../../services';
 
 describe('LibraryComponent', () => {
     let component: LibraryComponent;
@@ -25,6 +27,16 @@ describe('LibraryComponent', () => {
         messages: {
             fmsg: {
                 m0004: 'Fetching data failed, please try again later...'
+            }
+        },
+        frmelmnts: {
+            lbl: {
+                goToMyDownloads: 'Goto My Downloads',
+                saveToPenDrive: 'Save to Pen drive',
+                open: 'Open'
+            },
+            btn: {
+                download: 'Download'
             }
         }
     };
@@ -49,7 +61,8 @@ describe('LibraryComponent', () => {
                 HttpClientModule,
                 SuiModule,
                 SlickModule,
-                FormsModule
+                FormsModule,
+                SharedModule.forRoot()
             ],
             providers: [
                 { provide: ActivatedRoute, useClass: FakeActivatedRoute },
@@ -60,6 +73,7 @@ describe('LibraryComponent', () => {
                 BrowserCacheTtlService,
                 UtilService,
                 ToasterService,
+                ConnectionService,
                 { provide: ResourceService, useValue: resourceBundle },
                 OrgDetailsService],
             schemas: [NO_ERRORS_SCHEMA]
@@ -69,6 +83,8 @@ describe('LibraryComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(LibraryComponent);
         component = fixture.componentInstance;
+        const connectionService = TestBed.get(ConnectionService);
+        spyOn(connectionService, 'monitor').and.returnValue(observableOf(true));
         fixture.detectChanges();
     });
 

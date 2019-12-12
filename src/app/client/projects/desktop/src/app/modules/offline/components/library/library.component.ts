@@ -74,30 +74,33 @@ export class LibraryComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.isBrowse = Boolean(this.router.url.includes('browse'));
+        this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
         this.getSelectedFilters();
         this.setNoResultMessage();
         this.setTelemetryData();
 
-        this.connectionService.monitor().subscribe(isConnected => {
-            this.isConnected = isConnected;
-        });
+        this.connectionService.monitor()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(isConnected => {
+                this.isConnected = isConnected;
+            });
 
-        this.contentManagerService.completeEvent.pipe(
-            takeUntil(this.unsubscribe$)).subscribe((data) => {
+        this.contentManagerService.completeEvent
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((data) => {
                 if (this.router.url === '/') {
                     this.fetchContents();
                 }
             });
 
-        this.contentManagerService.downloadListEvent.pipe(
-            takeUntil(this.unsubscribe$)).subscribe((data) => {
+        this.contentManagerService.downloadListEvent
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((data) => {
                 this.updateCardData(data);
             });
 
-        this.router.events.pipe(
-            filter((event) => event instanceof NavigationStart),
-            takeUntil(this.unsubscribe$))
+        this.router.events
+            .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
             .subscribe(x => { this.prepareVisits(); });
     }
 
@@ -159,48 +162,50 @@ export class LibraryComponent implements OnInit {
     fetchContents() {
         // First call - Search content with selected filters and API should call always.
         // Second call - Search content without selected filters and API should not call in browse page
-        combineLatest(this.searchContent(true, false), this.searchContent(false, this.isBrowse)).subscribe(
-            ([response1, response2]) => {
-                if (response1) {
-                    this.showLoader = false;
-                    const filteredContents = _.omit(_.groupBy(response1['result'].content, 'subject'), ['undefined']);
-                    this.sections = [];
+        combineLatest(this.searchContent(true, false), this.searchContent(false, this.isBrowse))
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(
+                ([response1, response2]) => {
+                    if (response1) {
+                        this.showLoader = false;
+                        const filteredContents = _.omit(_.groupBy(response1['result'].content, 'subject'), ['undefined']);
+                        this.sections = [];
 
-                    if (response2) {
-                        this.sections.push({
-                            contents: _.orderBy(_.get(response2, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
-                            name: 'Recently Added'
-                        });
-                    }
-
-                    for (const section in filteredContents) {
-                        if (section) {
+                        if (response2) {
                             this.sections.push({
-                                name: section,
-                                contents: filteredContents[section]
+                                contents: _.orderBy(_.get(response2, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
+                                name: 'Recently Added'
                             });
                         }
-                    }
 
-                    this.carouselMasterData = this.prepareCarouselData(this.sections);
+                        for (const section in filteredContents) {
+                            if (section) {
+                                this.sections.push({
+                                    name: section,
+                                    contents: filteredContents[section]
+                                });
+                            }
+                        }
 
-                    if (!this.carouselMasterData.length) {
-                        return; // no page section
+                        this.carouselMasterData = this.prepareCarouselData(this.sections);
+
+                        if (!this.carouselMasterData.length) {
+                            return; // no page section
+                        }
+                        if (this.carouselMasterData.length >= 2) {
+                            this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+                        } else if (this.carouselMasterData.length >= 1) {
+                            this.pageSections = [this.carouselMasterData[0]];
+                        }
+                        this.addHoverData();
+                    } else {
+                        this.showLoader = false;
+                        this.carouselMasterData = [];
+                        this.pageSections = [];
+                        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
                     }
-                    if (this.carouselMasterData.length >= 2) {
-                        this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-                    } else if (this.carouselMasterData.length >= 1) {
-                        this.pageSections = [this.carouselMasterData[0]];
-                    }
-                    this.addHoverData();
-                } else {
-                    this.showLoader = false;
-                    this.carouselMasterData = [];
-                    this.pageSections = [];
-                    this.toasterService.error(this.resourceService.messages.fmsg.m0004);
                 }
-            }
-        );
+            );
     }
 
     addHoverData() {
@@ -245,7 +250,7 @@ export class LibraryComponent implements OnInit {
     }
 
     private setNoResultMessage() {
-        if (!(this.router.url.includes('/browse'))) {
+        if (!(_.includes(this.router.url, 'browse'))) {
             this.noResultMessage = {
                 message: 'messages.stmsg.m0007',
                 messageText: 'messages.stmsg.m0133'
@@ -384,31 +389,35 @@ export class LibraryComponent implements OnInit {
 
     downloadContent(contentId) {
         this.contentManagerService.downloadContentId = contentId;
-        this.contentManagerService.startDownload({}).subscribe(data => {
-            this.contentManagerService.downloadContentId = '';
-            this.showDownloadLoader = false;
-        }, error => {
-            this.contentManagerService.downloadContentId = '';
-            this.showDownloadLoader = false;
-            _.each(this.pageSections, (pageSection) => {
-                _.each(pageSection.contents, (pageData) => {
-                    pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+        this.contentManagerService.startDownload({})
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(data => {
+                this.contentManagerService.downloadContentId = '';
+                this.showDownloadLoader = false;
+            }, error => {
+                this.contentManagerService.downloadContentId = '';
+                this.showDownloadLoader = false;
+                _.each(this.pageSections, (pageSection) => {
+                    _.each(pageSection.contents, (pageData) => {
+                        pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+                    });
                 });
+                this.toasterService.error(this.resourceService.messages.fmsg.m0090);
             });
-            this.toasterService.error(this.resourceService.messages.fmsg.m0090);
-        });
     }
 
     exportContent(contentId) {
-        this.contentManagerService.exportContent(contentId).subscribe(data => {
-            this.showExportLoader = false;
-            this.toasterService.success(this.resourceService.messages.smsg.m0059);
-        }, error => {
-            this.showExportLoader = false;
-            if (_.get(error, 'error.responseCode') !== 'NO_DEST_FOLDER') {
-                this.toasterService.error(this.resourceService.messages.fmsg.m0091);
-            }
-        });
+        this.contentManagerService.exportContent(contentId)
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(data => {
+                this.showExportLoader = false;
+                this.toasterService.success(this.resourceService.messages.smsg.m0059);
+            }, error => {
+                this.showExportLoader = false;
+                if (_.get(error, 'error.responseCode') !== 'NO_DEST_FOLDER') {
+                    this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+                }
+            });
     }
 
     updateCardData(downloadListdata) {
