@@ -71,9 +71,6 @@ export class UpdateContentPreferenceComponent implements OnInit {
     });
   }
   onMediumChange() {
-    console.log(this.frameworkCategories, 'this.frameworkCategories');
-    console.log(this.contentPreferenceForm.value.medium, 'this.frameworkCategories');
-
     this.classOption = [];
     this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
   }

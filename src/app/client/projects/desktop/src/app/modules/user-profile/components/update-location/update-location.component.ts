@@ -37,6 +37,7 @@ export class UpdateLocationComponent implements OnInit {
       .subscribe(data => {
         this.stateList = _.get(data, 'result.response');
       });
+      this.onStateChanges();
   }
 
   onStateChanges() {
