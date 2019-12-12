@@ -60,7 +60,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.boardOption = _.get(data, 'result.channel.frameworks');
         this.contentPreferenceForm.controls['board'].setValue(_.find(this.boardOption, { name: this.userLocationData['board'] }));
-        this.onBoardChange();
+        // this.onBoardChange();
       }, err => {
       });
   }
@@ -68,6 +68,9 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     this.mediumOption = [];
     this.classOption = [];
     this.subjectsOption = [];
+    this.contentPreferenceForm.controls['medium'].setValue('');
+    this.contentPreferenceForm.controls['class'].setValue('');
+    this.contentPreferenceForm.controls['subjects'].setValue('');
     if (this.contentPreferenceForm.value.board) {
       this.frameworkService.getFrameworkCategories(_.get(this.contentPreferenceForm.value.board, 'identifier'))
         .pipe(takeUntil(this.unsubscribe$))
@@ -78,9 +81,9 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
               return element.code === 'board';
             });
             this.mediumOption = this.userService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
-
+            if (this.contentPreferenceForm.value.board.name === this.userLocationData['board']) {
             this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.userLocationData['medium']));
-
+            }
             this.onMediumChange();
 
           }
@@ -103,19 +106,26 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   }
   onMediumChange() {
     this.classOption = [];
+    this.contentPreferenceForm.controls['class'].setValue('');
+    this.contentPreferenceForm.controls['subjects'].setValue('');
     if (this.contentPreferenceForm.value.medium) {
     this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
 
-      this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.userLocationData['gradeLevel']));
+      if (this.contentPreferenceForm.value.board.name === this.userLocationData['board']) {
 
+        this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.userLocationData['gradeLevel']));
+      }
       this.onClassChange();
     }
-
   }
 
   onClassChange() {
+    if (this.contentPreferenceForm.value.class) {
     this.subjectsOption = this.userService.getAssociationData(this.contentPreferenceForm.value.class, 'subject', this.frameworkCategories);
-
+    if (this.contentPreferenceForm.value.board.name === this.userLocationData['board']) {
+      this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.userLocationData['gradeLevel']));
+    }
+    }
   }
 
   updateUserPreferenece() {
