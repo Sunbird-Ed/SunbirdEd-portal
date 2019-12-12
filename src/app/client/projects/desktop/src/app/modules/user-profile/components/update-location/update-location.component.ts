@@ -1,20 +1,23 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy } from '@angular/core';
 import { OnboardingService } from '../../../offline/services/onboarding/onboarding.service';
 import * as _ from 'lodash-es';
 import { ResourceService, ToasterService } from '@sunbird/shared';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-update-location',
   templateUrl: './update-location.component.html',
   styleUrls: ['./update-location.component.scss']
 })
-export class UpdateLocationComponent implements OnInit {
+export class UpdateLocationComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   stateList = [];
   districtList = [];
   selectedState: any;
   selectedDistrict: any;
   @Output() dismissed = new EventEmitter<any>();
+  public unsubscribe$ = new Subject<void>();
   @Input() userLocationData;
   constructor(
     public userService: OnboardingService,
@@ -34,6 +37,7 @@ export class UpdateLocationComponent implements OnInit {
 
   getAllStates() {
     this.userService.searchLocation({ type: 'state' })
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.stateList = _.get(data, 'result.response');
         this.selectedState = _.find(this.stateList, { name: this.selectedState['name'] });
@@ -43,6 +47,7 @@ export class UpdateLocationComponent implements OnInit {
 
   onStateChanges() {
     this.userService.searchLocation({ type: 'district', parentId: this.selectedState.id })
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.districtList = _.get(data, 'result.response');
         this.selectedDistrict = _.find(this.districtList, { name: this.selectedDistrict['name'] });
@@ -55,12 +60,18 @@ export class UpdateLocationComponent implements OnInit {
         city: this.selectedDistrict,
       }
     };
-    this.userService.saveLocation(requestParams).subscribe(() => {
-      this.closeModal('SUCCESS');
-      this.toasterService.success(this.resourceService.messages.smsg.m0060);
-    }, error => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0024);
-      this.closeModal('ERROR');
-    });
+    this.userService.saveLocation(requestParams)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.closeModal('SUCCESS');
+        this.toasterService.success(this.resourceService.messages.smsg.m0060);
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0024);
+        this.closeModal('ERROR');
+      });
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

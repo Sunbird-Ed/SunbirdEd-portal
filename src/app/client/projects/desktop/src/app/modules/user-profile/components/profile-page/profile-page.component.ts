@@ -1,15 +1,18 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { OnboardingService } from '../../../offline/services/onboarding/onboarding.service';
 import { ResourceService } from '@sunbird/shared';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
   selectedComponent: any;
   userData: any;
   @Output() userLocationData = new EventEmitter<any>();
+  public unsubscribe$ = new Subject<void>();
 
   constructor(
     public userService: OnboardingService,
@@ -19,9 +22,11 @@ export class ProfilePageComponent implements OnInit {
     this.getUserDate();
   }
   getUserDate() {
-    this.userService.getUser().subscribe(result => {
-      this.userData = result;
-    });
+    this.userService.getUser()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(result => {
+        this.userData = result;
+      });
   }
 
   openModal(componentName) {
@@ -32,5 +37,9 @@ export class ProfilePageComponent implements OnInit {
     if (eventStatus === 'SUCCESS') {
       this.getUserDate();
     }
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
