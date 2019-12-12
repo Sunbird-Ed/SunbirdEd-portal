@@ -104,7 +104,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   onMediumChange() {
     this.classOption = [];
     if (this.contentPreferenceForm.value.medium) {
-      this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
+    this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
 
       this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.userLocationData['gradeLevel']));
 
