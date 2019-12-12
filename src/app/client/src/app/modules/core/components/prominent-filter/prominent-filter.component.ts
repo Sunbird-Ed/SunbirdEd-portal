@@ -159,8 +159,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     }
 
     getFormatedFilterDetails() {
-        const formAction = this.formAction ? this.formAction : 'search';
-        return this.fetchFrameWorkDetails().pipe(
+            return this.fetchFrameWorkDetails().pipe(
             mergeMap((frameworkDetails: any) => {
                 this.categoryMasterList = frameworkDetails.categoryMasterList;
                 this.framework = frameworkDetails.code;
@@ -276,7 +275,8 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     isObject(val) { return typeof val === 'object'; }
 
     applyFilters() {
-        this.formInputData = this.utilService.convertSelectedOption(this.formInputData, this.formFieldProperties, this.selectedLanguage, 'en');
+        this.formInputData = this.utilService.convertSelectedOption(
+            this.formInputData, this.formFieldProperties, this.selectedLanguage, 'en');
         if (_.isEqual(this.formInputData, this.queryParams)) {
             this.isFiltered = true;
         } else {
