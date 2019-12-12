@@ -4,25 +4,23 @@ class="sb-modal" appBodyScroll  #modal (dismissed)="closeModal()">
 <div class="sb-modal-header font-weight-normal">{{resourceService?.frmelmnts?.lbl?.loadContentFrom}}</div>
 <div class="sb-modal-content">
     <div class="p-8">
-      <div class="sb-radio-btn-checkbox sb-radio-btn-secondary pb-20" [ngClass]="{'disable-color': !isConnected}">
-        <div class="d-flex">
+      <div class="d-flex flex-dc sb-radio-btn-checkbox sb-radio-btn-secondary m-0 mb-8" [ngClass]="{'disable-color': !isConnected}">
+        <div class="d-flex flex-ai-center">
           <input type="radio" id="online" name="example" [disabled]="!isConnected" [checked]="isConnected"  (change)="onChange('browse')">
-          <label for="online" [ngClass]="{'font-weight-bold': !addImportFontWeight}" id="browse">{{resourceService?.frmelmnts?.lbl?.library}}</label>
-          <div class="sb-label-status sb-label-status-error" *ngIf="!isConnected">
-              <span class="sb-label-status-indicator sb-label-status-indicator-error"></span>{{resourceService?.frmelmnts?.lbl?.offline}}
-            </div>
-          <div class="sb-label-status sb-label-status-success" *ngIf="isConnected">
-              <span class="sb-label-status-indicator sb-label-status-indicator-success"></span>{{resourceService?.frmelmnts?.lbl?.online}}
-            </div>
+          <label for="online" class="mb-0" [ngClass]="{'font-weight-bold': !addImportFontWeight}" id="browse">{{resourceService?.frmelmnts?.lbl?.library}}</label>
+
+          <div class="sb-label sb-label-table sb-label-error-0 ml-12"  *ngIf="!isConnected"><span class="sb-live-error mr-8"></span>{{resourceService?.frmelmnts?.lbl?.offline}}</div>
+          <div class="sb-label sb-label-table sb-label-success-0 ml-12"  *ngIf="isConnected"><span class="sb-live mr-8"></span>{{resourceService?.frmelmnts?.lbl?.online}}</div>
+
         </div>
-        <div class="fs-0-92">{{resourceService?.messages?.stmsg?.m0031 | interpolate:'{instance}': instance}}</div>
+        <div class="sb-radio-title fs-0-92 ">{{resourceService?.messages?.stmsg?.m0031 | interpolate:'{instance}': instance}}</div>
       </div>
-      <div class="sb-radio-btn-checkbox sb-radio-btn-secondary">
-        <div class="d-flex">
+      <div class="d-flex flex-dc sb-radio-btn-checkbox sb-radio-btn-secondary">
+        <div class="d-flex flex-ai-center">
           <input type="radio" id="offline" name="example2" [checked]="!isConnected"  (change)="onChange('import')">
-          <label class="font-weight-bold" id="" for="offline" [ngClass]="{'font-weight-bold': addImportFontWeight}">{{resourceService?.frmelmnts?.lbl?.drive}}</label>
+          <label class="font-weight-bold mb-0" id="" for="offline" [ngClass]="{'font-weight-bold': addImportFontWeight}">{{resourceService?.frmelmnts?.lbl?.drive}}</label>
         </div>
-        <div class="fs-0-92">{{resourceService?.messages?.stmsg?.m0036 | interpolate:'{instance}': instance}}</div>
+        <div class="sb-radio-title  fs-0-92 ">{{resourceService?.messages?.stmsg?.m0036 | interpolate:'{instance}': instance}}</div>
       </div>
     </div>
   </div>
