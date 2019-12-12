@@ -1,0 +1,20 @@
+@import "variables";
+@import "mixins/mixins";
+:host {
+  .onoff-status {
+    margin: 0px ($base-block-space * 3);
+    font-size: $font-size-xs;
+    span {
+      padding: ($base-block-space / 2) ($base-block-space + 4);
+      border-radius: 16px;
+      display: block;
+      color: var(--white);
+    }
+    .online {
+      background: var(--secondary-400);
+    }
+    .offline {
+      background: var(--tertiary-400);
+    }
+  }
+}

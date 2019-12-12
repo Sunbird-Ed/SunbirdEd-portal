@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import { first, takeUntil } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export interface ILanguage {
     './desktop-header-search.component.scss'
   ]
 })
-export class DesktopHeaderComponent implements OnInit {
+export class DesktopHeaderComponent implements OnInit, OnDestroy {
   appLanguage: ILanguage;
   availableLanguages: ILanguage[];
   public unsubscribe$ = new Subject<void>();
@@ -69,19 +69,22 @@ export class DesktopHeaderComponent implements OnInit {
     this.setInteractData();
     this.getTenantInfo();
 
-    this.utilService.searchQuery$.pipe(
-      takeUntil(this.unsubscribe$)).subscribe(() => this.clearSearchQuery());
+    this.utilService.searchQuery$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.clearSearchQuery());
   }
 
   getTenantInfo() {
-    this.tenantService.tenantData$.subscribe(({ tenantData }) => {
-      if (tenantData) {
-        this.tenantInfo.logo = tenantData.logo ? tenantData.logo : undefined;
-        this.tenantInfo.titleName = tenantData.titleName
-          ? tenantData.titleName.toUpperCase()
-          : undefined;
-      }
-    });
+    this.tenantService.tenantData$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(({ tenantData }) => {
+        if (tenantData) {
+          this.tenantInfo.logo = tenantData.logo ? tenantData.logo : undefined;
+          this.tenantInfo.titleName = tenantData.titleName
+            ? tenantData.titleName.toUpperCase()
+            : undefined;
+        }
+      });
   }
 
   navigateToHome() {
@@ -102,6 +105,7 @@ export class DesktopHeaderComponent implements OnInit {
       };
       this.formService
         .getFormConfig(formServiceInputParams, channelId)
+        .pipe(takeUntil(this.unsubscribe$))
         .subscribe(
           (data: any) => {
             this.availableLanguages = data[0].range;

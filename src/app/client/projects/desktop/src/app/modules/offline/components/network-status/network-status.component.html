@@ -1,0 +1,18 @@
+<div class="onoff-status">
+    <span class="online" *ngIf="isConnected">
+        <i class="icon-svg icon-svg--xxs icon-wifi">
+            <svg class="icon icon-svg--white">
+                <use xlink:href="assets/images/sprite.svg#wifi"></use>
+            </svg>
+        </i>
+        {{resourceService.frmelmnts?.lbl?.online}}
+    </span>
+    <span class="offline" *ngIf="!isConnected">
+        <i class="icon-svg icon-svg--xxs icon-wifi">
+            <svg class="icon icon-svg--white">
+                <use xlink:href="assets/images/sprite.svg#wifi"></use>
+            </svg>
+        </i>
+        {{resourceService.frmelmnts?.lbl?.offline}}
+    </span>
+</div>
