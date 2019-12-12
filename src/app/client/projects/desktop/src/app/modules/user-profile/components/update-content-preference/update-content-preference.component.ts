@@ -61,45 +61,47 @@ export class UpdateContentPreferenceComponent implements OnInit {
     this.mediumOption = [];
     this.classOption = [];
     this.subjectsOption = [];
-    this.contentPreferenceForm.controls['medium'].setValue('');
-    this.contentPreferenceForm.controls['class'].setValue('');
+    if (this.contentPreferenceForm.value.board) {
+      this.frameworkService.getFrameworkCategories(_.get(this.contentPreferenceForm.value.board, 'identifier')).subscribe((data) => {
+        if (data && _.get(data, 'result.framework.categories')) {
+          this.frameworkCategories = _.get(data, 'result.framework.categories');
+          const board = _.find(this.frameworkCategories, (element) => {
+            return element.code === 'board';
+          });
+          this.mediumOption = this.userService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
 
-    this.frameworkService.getFrameworkCategories(_.get(this.contentPreferenceForm.value.board, 'identifier')).subscribe((data) => {
-      if (data && _.get(data, 'result.framework.categories')) {
-        this.frameworkCategories = _.get(data, 'result.framework.categories');
-        const board = _.find(this.frameworkCategories, (element) => {
-          return element.code === 'board';
-        });
-        this.mediumOption = this.userService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
-        const array = [];
-        // tslint:disable-next-line: no-shadowed-variable
-        _.forEach(this.userLocationData['medium'], (data) => {
-          const filter = this.getSelecteddata(this.mediumOption, data);
-          array.push(filter);
-        });
-        this.contentPreferenceForm.controls['medium'].setValue(array);
+          this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.userLocationData['medium']));
 
-        this.onMediumChange();
+          this.onMediumChange();
 
-      }
-    }, err => {
+        }
+      }, err => {
+      });
+    }
+
+  }
+  filterContent(filterArray, content) {
+    const array = [];
+    // tslint:disable-next-line: no-shadowed-variable
+    _.forEach(content, (data) => {
+      const filter = this.getSelecteddata(filterArray, data);
+      array.push(filter);
     });
+    return array;
   }
   getSelecteddata(filterArray, content) {
     return _.find(filterArray, { name: content });
   }
   onMediumChange() {
     this.classOption = [];
+    if (this.contentPreferenceForm.value.medium) {
     this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
-    const array = [];
-    // tslint:disable-next-line: no-shadowed-variable
-    _.forEach(this.userLocationData['gradeLevel'], (data) => {
-      const filter = this.getSelecteddata(this.classOption, data);
-      array.push(filter);
-    });
-    this.contentPreferenceForm.controls['class'].setValue(array);
 
-    this.onClassChange();
+      this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.userLocationData['gradeLevel']));
+
+      this.onClassChange();
+    }
+
   }
 
   onClassChange() {
