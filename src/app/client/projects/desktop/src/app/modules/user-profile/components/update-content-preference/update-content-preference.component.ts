@@ -61,6 +61,9 @@ export class UpdateContentPreferenceComponent implements OnInit {
     this.mediumOption = [];
     this.classOption = [];
     this.subjectsOption = [];
+    this.contentPreferenceForm.controls['medium'].setValue('');
+    this.contentPreferenceForm.controls['class'].setValue('');
+
     this.frameworkService.getFrameworkCategories(_.get(this.contentPreferenceForm.value.board, 'identifier')).subscribe((data) => {
       if (data && _.get(data, 'result.framework.categories')) {
         this.frameworkCategories = _.get(data, 'result.framework.categories');
@@ -68,14 +71,35 @@ export class UpdateContentPreferenceComponent implements OnInit {
           return element.code === 'board';
         });
         this.mediumOption = this.userService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
-      this.contentPreferenceForm.controls['medium'].setValue(_.find(this.mediumOption, { name: this.userLocationData['medium'] }));
+        const array = [];
+        // tslint:disable-next-line: no-shadowed-variable
+        _.forEach(this.userLocationData['medium'], (data) => {
+          const filter = this.getSelecteddata(this.mediumOption, data);
+          array.push(filter);
+        });
+        this.contentPreferenceForm.controls['medium'].setValue(array);
+
+        this.onMediumChange();
+
       }
     }, err => {
     });
   }
+  getSelecteddata(filterArray, content) {
+    return _.find(filterArray, { name: content });
+  }
   onMediumChange() {
     this.classOption = [];
     this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
+    const array = [];
+    // tslint:disable-next-line: no-shadowed-variable
+    _.forEach(this.userLocationData['gradeLevel'], (data) => {
+      const filter = this.getSelecteddata(this.classOption, data);
+      array.push(filter);
+    });
+    this.contentPreferenceForm.controls['class'].setValue(array);
+
+    this.onClassChange();
   }
 
   onClassChange() {
