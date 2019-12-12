@@ -36,14 +36,16 @@ export class UpdateLocationComponent implements OnInit {
     this.userService.searchLocation({ type: 'state' })
       .subscribe(data => {
         this.stateList = _.get(data, 'result.response');
+        this.selectedState = _.find(this.stateList, { name: this.selectedState['name'] });
       });
-      this.onStateChanges();
+    this.onStateChanges();
   }
 
   onStateChanges() {
     this.userService.searchLocation({ type: 'district', parentId: this.selectedState.id })
       .subscribe(data => {
         this.districtList = _.get(data, 'result.response');
+        this.selectedDistrict = _.find(this.districtList, { name: this.selectedDistrict['name'] });
       });
   }
   updateUserLocation() {

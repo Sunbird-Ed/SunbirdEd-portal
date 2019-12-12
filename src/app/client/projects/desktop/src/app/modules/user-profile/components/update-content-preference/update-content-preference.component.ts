@@ -52,6 +52,8 @@ export class UpdateContentPreferenceComponent implements OnInit {
   readChannel(custodianOrgId) {
     this.channelService.getFrameWork(custodianOrgId).subscribe(data => {
       this.boardOption = _.get(data, 'result.channel.frameworks');
+      this.contentPreferenceForm.controls['board'].setValue(_.find(this.boardOption, { name: this.userLocationData['board'] }));
+      this.onBoardChange();
     }, err => {
     });
   }
@@ -66,6 +68,7 @@ export class UpdateContentPreferenceComponent implements OnInit {
           return element.code === 'board';
         });
         this.mediumOption = this.userService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
+      this.contentPreferenceForm.controls['medium'].setValue(_.find(this.mediumOption, { name: this.userLocationData['medium'] }));
       }
     }, err => {
     });
