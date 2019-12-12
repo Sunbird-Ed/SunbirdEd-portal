@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,7 +10,8 @@ import * as _ from 'lodash-es';
   selector: 'app-footer',
   templateUrl: './main-footer.component.html'
 })
-export class MainFooterComponent implements OnInit {
+export class MainFooterComponent implements OnInit, AfterViewInit {
+  @ViewChild('footerFix') footerFix: ElementRef;
   /**
    * reference of resourceService service.
    */
@@ -27,14 +28,26 @@ export class MainFooterComponent implements OnInit {
   isOffline: boolean = environment.isOffline;
   instance: string;
   deviceId;
+  bodyPaddingBottom: string;
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
-    public configService: ConfigService) {
+    public configService: ConfigService, private renderer: Renderer2) {
     this.resourceService = resourceService;
     if (this.isOffline) {this.deviceId =  (<HTMLInputElement>document.getElementById('deviceId')).value; }
   }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.bodyPaddingBottom = this.footerFix.nativeElement.offsetHeight + 'px';
+      this.renderer.setStyle(
+        document.body,
+        'padding-bottom',
+        this.bodyPaddingBottom
+      );
+    }, 500);
   }
 
   redirectToDikshaApp () {

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription, of, throwError } from 'rxjs';
-import { first, mergeMap, map, catchError, filter } from 'rxjs/operators';
+import { Subscription, of, throwError, Observable, Subject } from 'rxjs';
+import { first, mergeMap, map, catchError, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -36,13 +36,13 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
     public queryParams: any;
     public showFilters = false;
     public formInputData: any;
+    public unsubscribe$ = new Subject<void>();
     refresh = true;
-    resourceDataSubscription: Subscription;
     isFiltered = true;
 
     public resetFilterInteractEdata: IInteractEventEdata;
-    applyFilterInteractEdata: IInteractEventEdata;
-    private selectedLanguage: string;
+    public applyFilterInteractEdata: IInteractEventEdata;
+    public selectedLanguage: string;
 
     constructor(
         public resourceService: ResourceService,
@@ -62,7 +62,8 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.resourceDataSubscription = this.resourceService.languageSelected$
+        this.resourceService.languageSelected$
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe(item => {
                 this.selectedLanguage = item.value;
                 if (this.formFieldProperties && this.formFieldProperties.length) {
@@ -74,16 +75,17 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
                     this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
                         this.formFieldProperties, 'en', this.selectedLanguage);
                 }
-            }
-            );
+            });
         this.frameworkService.initialize(this.frameworkName, this.hashTagId);
-        this.getFormatedFilterDetails().subscribe((formFieldProperties) => {
-            this.formFieldProperties = formFieldProperties;
-            this.prominentFilter.emit(formFieldProperties);
-            this.subscribeToQueryParams();
-        }, (err) => {
-            this.prominentFilter.emit([]);
-        });
+        this.getFormatedFilterDetails()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((formFieldProperties) => {
+                this.formFieldProperties = formFieldProperties;
+                this.prominentFilter.emit(formFieldProperties);
+                this.subscribeToQueryParams();
+            }, (err) => {
+                this.prominentFilter.emit([]);
+            });
         this.setFilterInteractData();
     }
 
@@ -107,7 +109,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
         }, 5);
     }
 
-    getFormatedFilterDetails() {
+    getFormatedFilterDetails(): Observable<any> {
         return this.fetchFrameWorkDetails().pipe(
             mergeMap((frameworkDetails: any) => {
                 this.categoryMasterList = frameworkDetails.categoryMasterList;
@@ -173,23 +175,25 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
     }
 
     private subscribeToQueryParams() {
-        this.activatedRoute.queryParams.subscribe((params) => {
-            this.formInputData = {};
-            _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
-            this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
-                this.formFieldProperties, 'en', this.selectedLanguage);
-            if (this.formInputData.channel && this.formFieldProperties) { // To manipulate channel data from identifier to name
-                const channel = [];
-                _.forEach(this.formInputData.channel, (value, key) => {
-                    const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
-                    const range = _.find(orgDetails['range'], { 'identifier': value });
-                    channel.push(range['name']);
-                });
-                this.formInputData['channel'] = channel;
-            }
-            this.showFilters = true;
-            this.hardRefreshFilter();
-        });
+        this.activatedRoute.queryParams
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((params) => {
+                this.formInputData = {};
+                _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
+                this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
+                    this.formFieldProperties, 'en', this.selectedLanguage);
+                if (this.formInputData.channel && this.formFieldProperties) { // To manipulate channel data from identifier to name
+                    const channel = [];
+                    _.forEach(this.formInputData.channel, (value, key) => {
+                        const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
+                        const range = _.find(orgDetails['range'], { 'identifier': value });
+                        channel.push(range['name']);
+                    });
+                    this.formInputData['channel'] = channel;
+                }
+                this.showFilters = true;
+                this.hardRefreshFilter();
+            });
     }
 
     private getFormDetails() {
@@ -269,9 +273,8 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.resourceDataSubscription) {
-            this.resourceDataSubscription.unsubscribe();
-        }
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }
 
