@@ -21,7 +21,7 @@
                 <i class="large bars icon link primary-color mobile only" (click)="showSideBar()" tabindex="0"></i>
                 <!--/Hamburger Icon-->
                 <!--Main Menu-->
-                <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
+                <app-main-menu class="d-flex computer only ml-auto" [showContributeTab]="true"></app-main-menu>
                 <!--/Main Menu-->
                 <!--Avtar Dropdown-->
                 <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn && !isOffline"
