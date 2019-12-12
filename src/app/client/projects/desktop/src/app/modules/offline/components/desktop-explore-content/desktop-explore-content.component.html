@@ -1,5 +1,5 @@
 <div class="sb-bg-color-white">
-    <div class="ui container py-8">
+    <div class="ui container px-0 py-8">
         <div class="d-flex flex-jc-space-between sb-back-btn-bar">
             <button type="button" appTelemetryInteract [telemetryInteractEdata]="backButtonInteractEdata"
                 (click)="goBack()"
@@ -35,12 +35,12 @@
 
 <!-- For View All-->
 <div class="ui container" *ngIf="isViewAll && !showLoader" [appTelemetryImpression]="telemetryImpression">
-    <div class="sb-pageSection mt-24">
+    <div class="sb-pageSection mx-0 mt-24">
         <div class="sb-pageSection-header">
             <h4 class="sb-pageSection-title m-0 mr-5">{{resourceService?.frmelmnts?.lbl?.recentlyAdded}}</h4>
         </div>
     </div>
-    <div class="content-grid mt-24">
+    <div class="content-grid m-0 mt-24">
         <ng-container *ngTemplateOutlet="cardContainerTemplate"></ng-container>
     </div>
 </div>
@@ -48,13 +48,13 @@
 <!-- For Search Results-->
 <div class="ui container" *ngIf="!isViewAll && !showLoader && contentList?.length"
     [appTelemetryImpression]="telemetryImpression" [hidden]="router?.url?.includes('browse') && !isConnected">
-    <div class="sb-pageSection mt-24">
+    <div class="sb-pageSection mx-0 mt-24">
         <div class="sb-pageSection-header">
             <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsForwithCount |
             interpolate:'{count}':contentList?.length | interpolate:'{searchString}':this.queryParams.key"></h4>
         </div>
     </div>
-    <div class="content-grid mt-24">
+    <div class="content-grid m-0 mt-24">
         <ng-container *ngTemplateOutlet="cardContainerTemplate"></ng-container>
 
         <div class="twelve wide column right aligned py-0"

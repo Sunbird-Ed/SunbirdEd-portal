@@ -16,7 +16,7 @@
   </div>
 </div> -->
     <extension-point [name]="'content-manager'" *ngIf="isOffline"></extension-point>
-<footer class="footer" *ngIf="showFooter">
+<footer class="footer" *ngIf="showFooter" #footerFix>
 
   <div class="ui container" *ngIf="!isOffline">
     <div class="ui grid stackable">

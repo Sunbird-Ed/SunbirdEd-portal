@@ -1,8 +1,7 @@
 <div [appTelemetryImpression]="telemetryImpression">
     <app-library-filters (filterChange)="onFilterChange($event)" [selectedFilters]="selectedFilters">
     </app-library-filters>
-    <div class="sb-bg-color-primary-100"
-        *ngIf="(router.url.includes('browse') && isConnected) || !router.url.includes('browse')">
+    <div *ngIf="(router.url.includes('browse') && isConnected) || !router.url.includes('browse')">
         <div class="ui container">
 
             <div class="twelve wide column" *ngIf="showLoader">
@@ -29,7 +28,8 @@
                     <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
                         <div ngxSlickItem *ngFor="let content of section?.contents" class="sbcardwidth slide mr-16">
                             <sb-library-card [content]="content" [type]="'recently_viewed'"
-                                [cardImg]="content?.cardImg || 'assets/images/book.png'" [hover-template]="hoverTemplate">
+                                [cardImg]="content?.cardImg || 'assets/images/book.png'"
+                                [hover-template]="hoverTemplate">
                                 <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
                                     <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
                                         (hoverActionClick)="hoverActionClicked($event)">
@@ -40,8 +40,9 @@
                     </ngx-slick>
                 </section>
                 <!-- END OF RECENTLY VIEWED CONTENT-->
-                <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [title]="section?.name" [contentList]="section?.contents"
-                    [type]="'infinite_card_grid_with_hover'" (hoverActionClick)="hoverActionClicked($event)">
+                <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [title]="section?.name"
+                    [contentList]="section?.contents" [type]="'infinite_card_grid_with_hover'"
+                    (hoverActionClick)="hoverActionClicked($event)">
                 </sb-library-cards-grid>
             </section>
         </div>
