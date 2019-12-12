@@ -1,5 +1,5 @@
 import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UserService, PermissionService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -54,10 +54,15 @@ export class MainMenuComponent implements OnInit {
   helpCenterEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
+  contributeMenuEdata: IInteractEventEdata;
   exploreRoutingUrl: string;
   showExploreHeader = false;
   helpLinkVisibility: string;
   isOffline: boolean = environment.isOffline;
+  /**
+   * shows/hides contribute tab
+   */
+  @Input() showContributeTab: boolean;
 
   signInIntractEdata: IInteractEventEdata;
   slug: string;
@@ -130,6 +135,11 @@ export class MainMenuComponent implements OnInit {
       id: 'help-menu-tab',
       type: 'click',
       pageid: 'help'
+    };
+    this.contributeMenuEdata = {
+      id: 'contribute-tab',
+      type: 'click',
+      pageid: 'contribute'
     };
     this.signInIntractEdata = {
       id: ' signin-tab',
