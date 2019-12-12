@@ -55,6 +55,7 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
   border: $sb-card-border;
   border-radius: $sb-card-border-radius;
   cursor: pointer;
+  position: relative;
   overflow: hidden;
   margin-top: $sb-card-hover-movement;
   transition: box-shadow 0.3s ease-out, transform 0.3s ease-out,
