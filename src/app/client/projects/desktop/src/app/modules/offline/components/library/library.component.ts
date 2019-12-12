@@ -45,6 +45,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     showExportLoader = false;
     showDownloadLoader = false;
     contentName: string;
+    infoData;
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -75,7 +76,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
+        this.isBrowse = Boolean(this.router.url.includes('browse'));
+        this.infoData = {msg: this.resourceService.frmelmnts.lbl.allDownloads, linkName: this.resourceService.frmelmnts.btn.myLibrary};
         this.getSelectedFilters();
         this.setNoResultMessage();
         this.setTelemetryData();
@@ -428,5 +430,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
             });
         });
         this.addHoverData();
+    }
+
+    navigateToMyDownloads() {
+        this.router.navigate(['/']);
     }
 }
