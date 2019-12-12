@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { OnboardingService } from '../../../offline/services/onboarding/onboarding.service';
 import * as _ from 'lodash-es';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-update-location',
@@ -19,6 +19,7 @@ export class UpdateLocationComponent implements OnInit {
   constructor(
     public userService: OnboardingService,
     public resourceService: ResourceService,
+    public toasterService: ToasterService,
   ) { }
   ngOnInit() {
     this.selectedState = this.userLocationData.state;
@@ -53,8 +54,9 @@ export class UpdateLocationComponent implements OnInit {
     };
     this.userService.saveLocation(requestParams).subscribe(() => {
       this.closeModal('SUCCESS');
-
+      this.toasterService.success(this.resourceService.messages.smsg.m0060);
     }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0024);
       this.closeModal('ERROR');
     });
   }
