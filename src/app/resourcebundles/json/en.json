@@ -47,6 +47,23 @@
                 "onlineOnly": "Online only",
                 "manageuser": "Manage User",
                 "mycourses": "My Courses",
+                "profile": {
+                    "State": "State",
+                    "selectState": "Select State",
+                    "District": "District",
+                    "selectDistrict": "Select District ",
+                    "Board": "Board",
+                    "selectBoard": "Select Board ",
+                    "Medium": "Medium",
+                    "selectMedium": "Select Medium ",
+                    "Subjects": "Subjects",
+                    "selectSubjects": "Select Subjects ",
+                    "Classes": "Classes",
+                    "selectClasses": "Select Classes ",
+                    "updatePreferenceHeader": "To discover content relevant to you, update the following details ",
+                    "yourLocation": "Your Location",
+                    "yourLocationHeader": "Your location details helps us to suggest content that is useful to you. Is the location given correct? if not, select your correct location and click Submit"
+                },
                 "browse": "Browse",
                 "admindshheader": {
                     "index": "Serial No.",
@@ -565,6 +582,10 @@
                 "canceling": "Canceling",
                 "canceled": "Canceled",
                 "completed": "Completed",
+                "profile": {
+                    "edit": "Edit",
+                    "submit": "Submit"
+                },
                 "takeTour": "Take Tour",
                 "yes": "Yes",
                 "yesiamsure": "Issue Badge",
@@ -737,9 +758,7 @@
                 "m0020": "Updating user failed. Try again later",
                 "m0021": "Unable to save location. please try again after some time.",
                 "m0022": "Unable to save user preference. please try again after some time.",
-                "m0023": "Unable to raise a ticket because you're not connected to the internet.",
-                "m0024": "Error while updating location.",
-                "m0025": "Error while updating content preferences."
+                "m0023": "Unable to raise a ticket because you're not connected to the internet."
             },
             "fmsg": {
                 "m0001": "Fetching enroled courses failed, please try again later...",
@@ -856,8 +875,6 @@
                 "m0056": "You should be online to update the content",
                 "moo41": "Announcement cancelled successfully...",
                 "m0059": "Content successfully copied",
-                "m0060": "Location updated successfully",
-                "m0061": "Content preferences updated successfully",
                 "m0051": "Content successfully added to your library",
                 "m0052": "Exporting content successful",
                 "m0054": "{UploadedContentLength} content(s) uploaded successfully",
@@ -964,26 +981,9 @@
                 "publish": "Publish",
                 "requestChanges": "Request changes",
                 "startcreating": "Start creating",
-                "login": "Login",
-                "edit": "Edit",
-                "submit": "Submit"
+                "login": "Login"
             },
             "lbl": {
-                "State": "State",
-                "selectState": "Select State",
-                "District": "District",
-                "selectDistrict": "Select District ",
-                "Board": "Board",
-                "selectBoard": "Select Board ",
-                "Medium": "Medium",
-                "selectMedium": "Select Medium ",
-                "Subjects": "Subjects",
-                "selectSubjects": "Select Subjects ",
-                "Classes": "Classes",
-                "selectClasses": "Select Classes ",
-                "updatePreferenceHeader": "To discover content relevant to you, update the following details ",
-                "yourLocation": "Your Location",
-                "yourLocationHeader": "Your location details helps us to suggest content that is useful to you. Is the location given correct? if not, select your correct location and click Submit",
                 "Name": "Name",
                 "email": "Email Address",
                 "contact": "Contact",
@@ -1168,6 +1168,17 @@
                 "m0125": "Start creating Resource, Book, Course, Collection or Upload. You have no work-in-progress draft at the moment",
                 "m0126": "Start creating Resource, Book, Course, Collection or Upload"
             },
+            "smsg": {
+                "m0060": "Location updated successfully",
+                "m0061": "Content preferences updated successfully",
+                "m0004": "Content published successfully...",
+                "m0005": "Content rejected successfully...",
+                "m0006": "Content deleted successfully...",
+                "m0007": "Flag accepted successfully...",
+                "m0008": "Flag discarded successfully...",
+                "m0033": "Batch created successfully...",
+                "m0034": "Batch updated successfully..."
+            },
             "emsg": {
                 "m0004": "Cannot preview now. Try again later",
                 "m0005": "Something went wrong, please try in some time....",
@@ -1175,7 +1186,9 @@
                 "m0011": "Fetching review comments failed",
                 "m0010": "Creating review comments failed",
                 "m0012": "Something went wrong while saving your preferences. Please go to your profile to save your preferences",
-                "m0013": "You don't have permission to edit this content"
+                "m0013": "You don't have permission to edit this content",
+                "m0024": "Error while updating location.",
+                "m0025": "Error while updating content preferences."
             },
             "imsg": {
                 "m0020": "location is removed sucessfully.",
@@ -1213,15 +1226,6 @@
                 "m0083": "Fetching flagged review content failed, please try again later...",
                 "m0084": "Fetching collaborating content failed, please try again later...",
                 "m0085": "Fetching CSV failed, please try again later..."
-            },
-            "smsg": {
-                "m0004": "Content published successfully...",
-                "m0005": "Content rejected successfully...",
-                "m0006": "Content deleted successfully...",
-                "m0007": "Flag accepted successfully...",
-                "m0008": "Flag discarded successfully...",
-                "m0033": "Batch created successfully...",
-                "m0034": "Batch updated successfully..."
             }
         }
     }

@@ -8,19 +8,19 @@
     </div>
     <div class="ui container relative text-center">
       <div class="mb-8 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-        <div class="fmedium sb-profile-page__location-label">{{resourceService.frmelmnts?.lbl?.State}} :</div>
+        <div class="fmedium sb-profile-page__location-label">{{resourceService.frmelmnts?.lbl?.profile.State}} :</div>
         <div class="fmedium ml-4">
           {{userData['location']['state']['name']}} </div>
       </div>
       <div class="mb-8 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-        <div class="fmedium sb-profile-page__location-label">{{resourceService.frmelmnts?.lbl?.District}} :</div>
+        <div class="fmedium sb-profile-page__location-label">{{resourceService.frmelmnts?.lbl?.profile.District}} :</div>
         <div class="fmedium ml-4"> {{userData['location']['city']['name']}} </div>
       </div>
       <button type="button" class="sb-btn sb-btn-primary sb-btn-xs sb-profile-page__right-aligned-button"
-        (click)="openModal('LOCATION')">{{resourceService.frmelmnts?.btn?.edit}}</button>
+        (click)="openModal('LOCATION')">{{resourceService.frmelmnts?.btn?.profile.edit}}</button>
     </div>
   </section>
-  <app-update-location *ngIf="locationComponent === 'LOCATION'" [userLocationData]="userData['location']"
+  <app-update-location *ngIf="selectedComponent === 'LOCATION'" [userLocationData]="userData['location']"
     (dismissed)="handleDismissEvent($event)"></app-update-location>
 
   <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 sb-profile-page__profile-bg">
@@ -28,20 +28,20 @@
       <div class="d-flex flex-jc-center relative">
         <div class="max-w-400 text-center">
           <div class="mb-16 d-flex flex-jc-center sb-profile-page__category">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts?.lbl?.Board}} :</span>
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts?.lbl?.profile.Board}} :</span>
             <span class="fmedium font-weight-bold pl-4">{{userData['framework']['board']}}</span>
           </div>
           <div class="mb-16 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts?.lbl?.Medium}} :</span>
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts?.lbl?.profile.Medium}} :</span>
             <span class="fmedium font-weight-bold pl-4"> <span
                 *ngFor="let medium of userData['framework']['medium']">{{medium}} </span> </span>
           </div>
           <div class="mb-16 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts?.lbl?.Subjects}} :</span>
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts?.lbl?.profile.Subjects}} :</span>
             <span class="fmedium font-weight-bold pl-4">English, Mathematics, Tamil </span>
           </div>
           <div class="mb-16 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-            <span class="fmedium white-space-nowrap"> {{resourceService.frmelmnts?.lbl?.Classes}} :</span>
+            <span class="fmedium white-space-nowrap"> {{resourceService.frmelmnts?.lbl?.profile.Classes}} :</span>
             <span class="fmedium font-weight-bold pl-4">
               <span *ngFor="let class of userData['framework']['gradeLevel']">{{class}} </span>
             </span>
@@ -53,7 +53,7 @@
     </div>
   </section>
 
-  <app-update-content-preference *ngIf="locationComponent === 'CONTENTPREFERENCE'" [userLocationData]="userData['framework']" (dismissed)="handleDismissEvent($event)">
+  <app-update-content-preference *ngIf="selectedComponent === 'CONTENTPREFERENCE'" [userLocationData]="userData['framework']" (dismissed)="handleDismissEvent($event)">
   </app-update-content-preference>
 
 </div>

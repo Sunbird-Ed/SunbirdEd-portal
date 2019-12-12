@@ -25,12 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     UserProfileRoutingModule,
     SuiModalModule,
-    SuiProgressModule,
-    SuiAccordionModule,
-    SuiTabsModule,
     SuiSelectModule,
-    SuiDimmerModule,
-    SuiCollapseModule
 
   ],
 })

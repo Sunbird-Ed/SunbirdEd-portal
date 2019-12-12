@@ -7,7 +7,7 @@ import { ResourceService } from '@sunbird/shared';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit {
-  locationComponent: any;
+  selectedComponent: any;
   userData: any;
   @Output() userLocationData = new EventEmitter<any>();
 
@@ -25,10 +25,10 @@ export class ProfilePageComponent implements OnInit {
   }
 
   openModal(componentName) {
-    this.locationComponent = componentName;
+    this.selectedComponent = componentName;
   }
   handleDismissEvent(eventStatus) {
-    this.locationComponent = '';
+    this.selectedComponent = '';
     if (eventStatus === 'SUCCESS') {
       this.getUserDate();
     }
