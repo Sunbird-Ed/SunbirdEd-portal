@@ -10,20 +10,27 @@ const certAddRequestBody = (response,input) => {
     let related = {
         "type": ""
     };
+    const request = _.pick(response, ['id', 'accessCode', 'jsonData', 'pdfUrl']);
+    let recipient = {
+        "name":_.get(input, 'name'),
+        "id": _.get(input, 'name') + _.get(input, 'extId'),
+        "type":""
+    }
     if (_.get(input, 'rspObj.certType') === 'Best School Certificate') {
         related['type'] = 'best-school';
-        related['best-school']='best-school'; //TODO to ask krishna how to update the org_ext_id
-        related['school_extID']=_.get(input, 'extId');
+        related['extId']=_.get(input, 'extId');
+        recipient['type'] = 'entity';
         request['recipientType'] = 'entity';
     } else {
         related['type'] = 'best-student';
-        related['best-student']='best-student';
-        related['student_school_extID']=_.get(input, 'extId'); // Need to discuss on this with krishan
+        related['extId']=_.get(input, 'extId');
+        recipient['type'] = 'individual';
         request['recipientType'] = 'individual';
     }
-    const request = _.pick(response, ['id', 'accessCode', 'jsonData', 'pdfUrl']);
     request['userId'] = _.get(response, 'recipientId');
     request['related'] = related;
+    request['recipient'] = recipient;
+    //console.log("Add Cert Request obj--->", JSON.stringify(request));
     return request;
 }
 
@@ -59,7 +66,7 @@ const certGenerateRequestBody = (input) => {
         }
         signatoryList.push(signatory);
     }
-    return {
+    var cert = {
         certificate: {
             "htmlTemplate": template,
             "courseName": "new course may23",
@@ -67,7 +74,7 @@ const certGenerateRequestBody = (input) => {
             "data": [
                 {
                     "recipientName": _.get(input, 'name'),
-                    "recipientId": _.get(input, 'extId')
+                    "recipientId": _.get(input, 'name') + _.get(input, 'extId')
                 }
             ],
             "name": _.get(input, 'rspObj.certType'),
@@ -83,6 +90,14 @@ const certGenerateRequestBody = (input) => {
             "basePath": baseUrl+"/public/certs" 
         }
     }
+    var certKey = _.get(input,'rspObj.userDetails.certKey')
+    if(certKey && certKey !== 'undefined'){
+        cert['certificate']['keys']= {
+            'id': certKey
+        }
+    }
+    //console.log("Generate Cert Request obj--->", JSON.stringify(cert));
+    return cert;
 }
 
 module.exports = { certAddRequestBody, certGenerateRequestBody }

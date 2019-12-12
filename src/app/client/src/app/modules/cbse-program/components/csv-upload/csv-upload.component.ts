@@ -3,9 +3,9 @@ import { ResourceService, ToasterService, ServerResponse, ConfigService, Navigat
 import { OrgManagementService } from '../../../org-management/services/org-management/org-management.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
-import { UserService } from '@sunbird/core';
-import { takeUntil, first } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { UserService, OrgDetailsService } from '@sunbird/core';
+import { takeUntil, first, tap, mergeMap } from 'rxjs/operators';
+import { Subject, forkJoin, combineLatest } from 'rxjs';
 import * as _ from 'lodash-es';
 import { CbseProgramService } from '../../services/cbse-program/cbse-program.service';
 import { CbseComponent } from '../cbse/cbse.component';
@@ -15,21 +15,21 @@ import { CbseComponent } from '../cbse/cbse.component';
  * This component also creates a unique process id on success upload of csv file
  */
 @Component({
-    moduleId: module.id,
-    selector: 'csv-upload',
-    templateUrl: 'csv-upload.component.html',
-    styleUrls: ['csv-upload.component.scss']
+  moduleId: module.id,
+  selector: 'csv-upload',
+  templateUrl: 'csv-upload.component.html',
+  styleUrls: ['csv-upload.component.scss']
 })
-export class CsvUploadComponent {
+export class CsvUploadComponent implements OnInit {
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
   @Input() certType: string;
   /**
   *Element Ref  for copyLinkButton;
   */
- @ViewChild('copyErrorData') copyErrorButton: ElementRef;
- public userId: any;
- public rootOrgId: any;
+  @ViewChild('copyErrorData') copyErrorButton: ElementRef;
+  public userId: any;
+  public rootOrgId: any;
   /**
 * reference of config service.
 */
@@ -65,9 +65,9 @@ export class CsvUploadComponent {
 * To show/hide loader
 */
   showLoader: boolean;
-   /**
-   * To show / hide modal
-   */
+  /**
+  * To show / hide modal
+  */
   modalName = 'upload';
   /**
    * Upload org form name
@@ -77,17 +77,16 @@ export class CsvUploadComponent {
  * Contains reference of FormBuilder
  */
   sbFormBuilder: FormBuilder;
-   /**
- * error object
- */
+  /**
+* error object
+*/
   errors: [];
   /**
  * error object
  */
-error: '';
-file: any;
-activateUpload = false;
-
+  error: '';
+  file: any;
+  activateUpload = false;
   /**
    * To call resource service which helps to use language constant
    */
@@ -108,6 +107,7 @@ activateUpload = false;
   downloadCSVInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   public unsubscribe$ = new Subject<void>();
+  private certKeys: any;
   /**
 * Constructor to create injected service(s) object
 *
@@ -125,7 +125,7 @@ activateUpload = false;
   constructor(cbseComponent: CbseComponent, cbseProgramService: CbseProgramService, orgManagementService: OrgManagementService, config: ConfigService,
     formBuilder: FormBuilder, toasterService: ToasterService,
     resourceService: ResourceService, userService: UserService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService) {
     this.cbseComponent = cbseComponent;
     this.resourceService = resourceService;
     this.sbFormBuilder = formBuilder;
@@ -140,12 +140,23 @@ activateUpload = false;
  * also defines array of instructions to be displayed
  */
   ngOnInit() {
-    this.userService.userData$.pipe(first()).subscribe(user => {
-      if (user && user.userProfile) {
-        this.userId = user.userProfile.userId;
-        this.rootOrgId = user.userProfile.rootOrgId;
-      }
-    });
+    this.userService.userData$.pipe(
+      tap(user => {
+        if (user && user.userProfile) {
+          this.userId = user.userProfile.userId;
+          this.rootOrgId = user.userProfile.rootOrgId;
+        }
+      }),
+      mergeMap(userData => {
+        return this.orgDetailsService.getOrgDetails(_.get(userData, 'rootOrg.slug')).pipe(
+          tap(orgDetails => {
+            if (orgDetails){
+              this.certKeys = _.get(orgDetails, 'keys.signKeys[0]');
+            }
+          })
+        );
+      })
+    ).subscribe()
     console.log(this.certType);
     console.log(this.userId);
     console.log(this.rootOrgId);
@@ -155,17 +166,12 @@ activateUpload = false;
       organisationId: ['', null]
     });
     this.userUploadInstructions = [
-      { instructions: 'Enter the school name or the student name (depending on the certificate type) in the "Name" column'},
-      { instructions: 'Enter School External ID. This is the unique ID provided by the state.'},
-      { instructions: 'Enter only one name and ID per row'},
-      { instructions: 'Maximum records per file is 200'},
-      { instructions: 'Save the file as .csv '},
-      // // { instructions: this.resourceService.frmelmnts.instn.t0101 },
-      // { instructions: this.resourceService.frmelmnts.instn.t0102 },
-      // { instructions: this.resourceService.frmelmnts.instn.t0103 },
-      // { instructions: this.resourceService.frmelmnts.instn.t0104 },
-      // { instructions: this.resourceService.frmelmnts.instn.t0105 }
-      ];
+      { instructions: 'Enter the school name or the student name (depending on the certificate type) in the "Name" column' },
+      { instructions: 'Enter School External ID. This is the unique ID provided by the state.' },
+      { instructions: 'Enter only one name and ID per row' },
+      { instructions: 'Maximum records per file is 200' },
+      { instructions: 'Save the file as .csv ' },
+    ];
     this.showLoader = false;
     this.setInteractEventData();
   }
@@ -197,49 +203,28 @@ activateUpload = false;
     const data = this.uploadUserForm.value;
     if (file && file.name.match(/.(csv)$/i)) {
       this.showLoader = true;
-      this.cbseProgramService.postCertData(file, this.certType, this.userId, this.rootOrgId)
-      .subscribe(
-        data => {
-          console.log(data);
-          this.showLoader = false;
-          this.toasterService.success('File uploaded successfully');
-          this.modal.deny();
-          this.cbseComponent.selectedOption = '';
-        },
-        err => {
-          console.log(err);
-          this.showLoader = false;
-          const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') : this.resourceService.messages.fmsg.m0051;
-          this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
-          this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
-          this.modalName = 'error';
-          this.cbseComponent.selectedOption = '';
-        },
-        () => {
-          console.log('Finally...');
-        }
-      );
-      // const formData = new FormData();
-      // formData.append('user', file);
-      // const fd = formData;
-      // this.fileName = file.name;
-      // this.orgManagementService.bulkUserUpload(fd).pipe(
-      //   takeUntil(this.unsubscribe$))
-      //   .subscribe(
-      //     (apiResponse: ServerResponse) => {
-      //       this.showLoader = false;
-      //       this.processId = apiResponse.result.processId;
-      //       this.toasterService.success(this.resourceService.messages.smsg.m0030);
-      //       this.modal.deny();
-      //     },
-      //     err => {
-      //       this.showLoader = false;
-      //       const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
-      //       this.resourceService.messages.fmsg.m0051;
-      //       this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
-      //       this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
-      //       this.modalName = 'error';
-      //     });
+      this.cbseProgramService.postCertData(file, this.certType, this.userId, this.rootOrgId, this.certKeys)
+        .subscribe(
+          data => {
+            console.log(data);
+            this.showLoader = false;
+            this.toasterService.success('File uploaded successfully');
+            this.modal.deny();
+            this.cbseComponent.selectedOption = '';
+          },
+          err => {
+            console.log(err);
+            this.showLoader = false;
+            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') : this.resourceService.messages.fmsg.m0051;
+            this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
+            this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
+            this.modalName = 'error';
+            this.cbseComponent.selectedOption = '';
+          },
+          () => {
+            console.log('Finally...');
+          }
+        );
     } else if (file && !(file.name.match(/.(csv)$/i))) {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.stmsg.m0080);

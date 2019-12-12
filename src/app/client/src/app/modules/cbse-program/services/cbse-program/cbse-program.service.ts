@@ -17,12 +17,13 @@ export class CbseProgramService {
   constructor(private httpClient: HttpClient, private configService: ConfigService, public actionService: ActionService,
     public toasterService: ToasterService, public telemetryService: TelemetryService) { }
 
-  public postCertData(file: any, certType: any, userId: any, rootOrgId: any): Observable<any> {
+  public postCertData(file: any, certType: any, userId: any, rootOrgId: any, certKeys): Observable<any> {
     let formData = new FormData();
     formData.append('users', file);
     formData.append('cert-type', certType);
     formData.append('userId', userId);
     formData.append('rootOrgId', rootOrgId);
+    formData.append('certKey', certKeys);
     return this.httpClient.post('/certificate/user/upload', formData);
   }
 
