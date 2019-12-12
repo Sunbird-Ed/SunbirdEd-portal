@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectionService } from './../../services/connection-service/connection.service';
 import { ActivatedRoute } from '@angular/router';
-import {ResourceService} from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -12,20 +14,22 @@ import {ResourceService} from '@sunbird/shared';
 export class BrowseComponent implements OnInit {
 
   isConnected = navigator.onLine;
+  public unsubscribe$ = new Subject<void>();
 
-    /**
-   * reference of resourceService service.
-   */
-  public resourceService: ResourceService;
-
-  constructor(private connectionService: ConnectionService, resourceService: ResourceService) {
-    this.resourceService = resourceService;
+  constructor(private connectionService: ConnectionService, public resourceService: ResourceService) {
   }
 
   ngOnInit() {
-    this.connectionService.monitor().subscribe(isConnected => {
-      this.isConnected = isConnected;
-    });
+    this.connectionService.monitor()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }
