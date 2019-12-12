@@ -21,7 +21,6 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
     @Input() ignoreQuery = [];
     @Input() pageId: string;
     @Input() frameworkName: string;
-    @Input() formAction: string;
 
     @Output() prominentFilter = new EventEmitter();
     @Output() filterChange: EventEmitter<any> = new EventEmitter();
@@ -82,7 +81,6 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
             .subscribe((formFieldProperties) => {
                 this.formFieldProperties = formFieldProperties;
                 this.prominentFilter.emit(formFieldProperties);
-                this.subscribeToQueryParams();
             }, (err) => {
                 this.prominentFilter.emit([]);
             });
@@ -174,32 +172,10 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
             }));
     }
 
-    private subscribeToQueryParams() {
-        this.activatedRoute.queryParams
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((params) => {
-                this.formInputData = {};
-                _.forIn(params, (value, key) => this.formInputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
-                this.formInputData = this.utilService.convertSelectedOption(this.formInputData,
-                    this.formFieldProperties, 'en', this.selectedLanguage);
-                if (this.formInputData.channel && this.formFieldProperties) { // To manipulate channel data from identifier to name
-                    const channel = [];
-                    _.forEach(this.formInputData.channel, (value, key) => {
-                        const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
-                        const range = _.find(orgDetails['range'], { 'identifier': value });
-                        channel.push(range['name']);
-                    });
-                    this.formInputData['channel'] = channel;
-                }
-                this.showFilters = true;
-                this.hardRefreshFilter();
-            });
-    }
-
     private getFormDetails() {
         const formServiceInputParams = {
             formType: 'content',
-            formAction: this.formAction ? this.formAction : 'search',
+            formAction: 'search',
             contentType: this.filterEnv,
             framework: this.framework
         };
