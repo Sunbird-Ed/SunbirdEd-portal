@@ -1,4 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import { ConnectionService } from '../../services';
 import { ElectronDialogService } from './../../services';
 import { ResourceService } from '@sunbird/shared';
@@ -10,7 +12,7 @@ import * as _ from 'lodash-es';
   templateUrl: './load-content.component.html',
   styleUrls: ['./load-content.component.scss']
 })
-export class LoadContentComponent implements OnInit {
+export class LoadContentComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   isConnected;
   selectedValue;
@@ -18,6 +20,8 @@ export class LoadContentComponent implements OnInit {
   onlineMsg: string;
   addImportFontWeight;
   instance: string;
+  public unsubscribe$ = new Subject<void>();
+
   constructor(
     public router: Router,
     private connectionService: ConnectionService,
@@ -27,7 +31,7 @@ export class LoadContentComponent implements OnInit {
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
-    this.connectionService.monitor().subscribe(isConnected => {
+    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
       this.radioBtnToBeChecked();
       this.addFontWeight();
@@ -45,7 +49,7 @@ export class LoadContentComponent implements OnInit {
   }
 
   radioBtnToBeChecked() {
-    this.isConnected ? this.selectedValue = 'browse' : this.selectedValue = 'import';
+    this.selectedValue = this.isConnected ? 'browse' : 'import';
   }
 
   closeModal() {
@@ -58,6 +62,10 @@ export class LoadContentComponent implements OnInit {
     this.modal.deny();
   }
   addFontWeight() {
-    this.selectedValue === 'import' ? this.addImportFontWeight = true : this.addImportFontWeight = false;
+    this.addImportFontWeight =  this.selectedValue === 'import' ? true : false;
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

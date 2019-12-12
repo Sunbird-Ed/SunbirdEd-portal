@@ -1,4 +1,4 @@
-<div class="no-content-container d-flex flex-jc-center p-24" *ngIf="!isConnected">
+<div class="no-content-container d-flex flex-jc-center p-24" *ngIf="!isBrowsePage()">
   <div class="d-flex flex-dc flex-jc-center flex-ai-center">
     <div>
       <img src="../../../../../assets/images/no-text.svg" width="101px" height="124px">
@@ -11,7 +11,7 @@
 
 <app-load-content *ngIf="showModal" (close)="handleModal()"></app-load-content>
 
-<div class="no-content-container  d-flex flex-jc-center p-24" *ngIf="isConnected">
+<div class="no-content-container  d-flex flex-jc-center p-24" *ngIf="!isConnected && isBrowsePage()">
     <div class="d-flex flex-dc flex-jc-center flex-ai-center">
       <div>
         <img src="../../../../../assets/images/offline-icon.svg" width="90px" height="90px">
