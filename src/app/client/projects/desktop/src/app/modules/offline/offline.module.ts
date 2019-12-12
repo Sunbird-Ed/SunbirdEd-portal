@@ -12,7 +12,7 @@ import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    ContentImportHeaderComponent, WatchVideoComponent, NetworkStatusComponent,
+    ContentImportHeaderComponent, WatchVideoComponent,
     BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
     LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
     OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
@@ -59,7 +59,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     providers: [DeviceDetectorService, ContentManagerService],
     declarations: [ContentImportHeaderComponent, WatchVideoComponent,
         BrowseComponent, WatchVideoComponent, ContentImportHeaderComponent, BrowseComponent,
-        NetworkStatusComponent, WatchVideoComponent, ContentManagerComponent, OfflineHelpCenterComponent,
+        WatchVideoComponent, ContentManagerComponent, OfflineHelpCenterComponent,
         DesktopAppUpdateComponent,
         LibraryComponent,
         DesktopHeaderComponent,
@@ -80,12 +80,11 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     entryComponents: [
         ContentImportHeaderComponent,
         BrowseComponent,
-        NetworkStatusComponent,
         ContentManagerComponent,
         WatchVideoComponent,
         ContentImportHeaderComponent,
     ],
     exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
-        OnboardingLocationComponent]
+        OnboardingLocationComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent]
 })
 export class OfflineModule { }
