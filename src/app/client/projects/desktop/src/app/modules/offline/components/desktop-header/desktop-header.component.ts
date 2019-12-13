@@ -177,10 +177,10 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     this.contentImportInteractEdata = {
       id: 'content-import-button',
       type: 'click',
-      pageid: 'explore'
+      pageid: this.router.url.split('/')[1] || 'library'
     };
     this.myLibraryMenuInteractEdata = {
-      id: 'myLibrary-tab',
+      id: 'my-downloads-tab',
       type: 'click',
       pageid: 'library'
     };
@@ -193,22 +193,22 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     this.enterDialCodeInteractEdata = {
       id: 'click-dial-code',
       type: 'click',
-      pageid: 'explore'
+      pageid: this.router.url.split('/')[1] || 'library'
     };
     this.takeTourInteractEdata = {
       id: 'take-tour-button',
       type: 'click',
-      pageid: 'explore'
+      pageid: this.router.url.split('/')[1] || 'library'
     };
     this.clearSearchInteractEdata = {
       id: 'clear-search-button',
       type: 'click',
-      pageid: 'explore'
+      pageid: this.router.url.split('/')[1] || 'library'
     };
     this.homeInteractEdata = {
       id: 'tenant-logo',
       type: 'click',
-      pageid: 'explore'
+      pageid: this.router.url.split('/')[1] || 'library'
     };
   }
 
