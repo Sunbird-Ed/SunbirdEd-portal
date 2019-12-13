@@ -130,6 +130,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.showLoader = false;
         const orderedContents = _.orderBy(_.get(response, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']);
         this.contentList = this.formatSearchResults(orderedContents);
+        this.addHoverData();
       }, error => {
         this.setNoResultMessage();
       });

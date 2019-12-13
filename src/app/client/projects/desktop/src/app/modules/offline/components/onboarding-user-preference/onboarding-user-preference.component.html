@@ -1,4 +1,4 @@
-<div class="loginform__content">
+<div class="loginform__content" [appTelemetryImpression]="telemetryImpression">
   <div class="loginform__content__header">
     <img src="{{tenantInfo.logo}}" alt="{{tenantInfo.titleName}}">
   </div>
@@ -42,8 +42,7 @@
     <div class="circle update"></div>
     <div class="circle active"></div>
   </div>
-  <button (click)="saveUserData()" type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm"
-    appTelemetryInteract [telemetryInteractEdata]="setTelemetryData()">
+  <button (click)="saveUserData()" type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm">
     {{submitLabel}}
     <span class='arrow-icon'></span></button>
 </div>
