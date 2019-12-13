@@ -163,7 +163,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
         pageid: 'onboarding_user_preference',
         uri: this.router.url
       }
-    }
+    };
   }
 
   setTelemetryInteract () {
