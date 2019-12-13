@@ -1,10 +1,12 @@
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConnectionService } from '../../services';
 import { ElectronDialogService } from './../../services';
+import * as _ from 'lodash-es';
+import { TelemetryService } from '@sunbird/telemetry';
 @Component({
   selector: 'app-no-content',
   templateUrl: './no-content.component.html',
@@ -19,7 +21,9 @@ export class NoContentComponent implements OnInit, OnDestroy {
     public router: Router,
     public connectionService: ConnectionService,
     public resourceService: ResourceService,
-    private electronDialogService: ElectronDialogService
+    private electronDialogService: ElectronDialogService,
+    public activatedRoute: ActivatedRoute,
+    public telemetryService: TelemetryService
   ) {}
 
   ngOnInit() {
@@ -30,11 +34,12 @@ export class NoContentComponent implements OnInit, OnDestroy {
   }
 
   isBrowsePage() {
-    return  this.router.url.includes('browse');
+    return  _.includes(this.router.url, 'browse');
   }
 
   openImportContentDialog() {
     this.electronDialogService.showContentImportDialog();
+    this.addInteractEvent();
   }
 
   handleModal() {
@@ -44,6 +49,29 @@ export class NoContentComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  setTelemetryData () {
+    return {
+      id: 'load-content',
+      type: 'click',
+      pageid:  _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid')
+    };
+  }
+
+  addInteractEvent() {
+    const interactData = {
+      context: {
+        env: 'browse-online',
+        cdata: []
+      },
+      edata: {
+        id: 'load-content',
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid')
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
 }

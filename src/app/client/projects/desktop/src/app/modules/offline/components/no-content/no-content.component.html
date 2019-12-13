@@ -4,7 +4,10 @@
       <img src="../../../../../assets/images/no-text.svg" width="101px" height="124px">
     </div>
     <div class="mt-8">{{resourceService?.messages?.stmsg?.m0030}}</div>
-    <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mt-16 mb-8"(click)="handleModal()">{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
+    <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mt-16 mb-8"(click)="handleModal()"
+      appTelemetryInteract [telemetryInteractEdata]="setTelemetryData()">
+      {{resourceService?.frmelmnts?.btn?.loadContent}}
+  </button>
     <div class="fs-0-785">{{resourceService?.messages?.imsg?.m0050}}</div>
   </div>
 </div>

@@ -54,7 +54,7 @@ const routes: Routes = [
     {
         path: '', component: LibraryComponent, data: {
             telemetry: {
-                env: 'offline', pageid: 'library', type: 'view'
+                env: 'library', pageid: 'library', type: 'view'
             },
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
         }
