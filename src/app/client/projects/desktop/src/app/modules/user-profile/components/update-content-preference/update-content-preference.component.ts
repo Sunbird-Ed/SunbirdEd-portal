@@ -81,7 +81,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
             });
             this.mediumOption = this.userService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
             if (this.contentPreferenceForm.value.board.name === this.userPreferenceData['board']) {
-            this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.userPreferenceData['medium']));
+          this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.userPreferenceData['medium']));
             }
 
           }
