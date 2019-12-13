@@ -49,7 +49,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
         cdata: []
       },
       edata: {
-        id: 'navigate-' + this.text['linkName'],
+        id: 'navigate-' + _.kebabCase(_.get(this.text, 'linkName')),
         type: 'click',
         pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid')
       }
