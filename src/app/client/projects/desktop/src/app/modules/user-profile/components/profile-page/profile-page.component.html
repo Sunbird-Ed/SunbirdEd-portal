@@ -53,7 +53,7 @@
     </div>
   </section>
 
-  <app-update-content-preference *ngIf="selectedComponent === 'CONTENTPREFERENCE'" [userLocationData]="userData['framework']" (dismissed)="handleDismissEvent($event)">
+  <app-update-content-preference *ngIf="selectedComponent === 'CONTENTPREFERENCE'" [userPreferenceData]="userData['framework']" (dismissed)="handleDismissEvent($event)">
   </app-update-content-preference>
 
 </div>

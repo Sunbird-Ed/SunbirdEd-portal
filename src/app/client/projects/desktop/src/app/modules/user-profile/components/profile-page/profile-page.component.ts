@@ -12,6 +12,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   selectedComponent: any;
   userData: any;
   @Output() userLocationData = new EventEmitter<any>();
+  @Output() userPreferenceData = new EventEmitter<any>();
   public unsubscribe$ = new Subject<void>();
 
   constructor(
