@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DesktopHeaderComponent } from './desktop-header.component';
-import { NetworkStatusComponent } from '../network-status/network-status.component';
 import { FormService, TenantService, CoreModule, OrgDetailsService } from '@sunbird/core';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +15,7 @@ describe('DesktopHeaderComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [DesktopHeaderComponent, NetworkStatusComponent],
+            declarations: [DesktopHeaderComponent],
             imports: [SharedModule.forRoot(), CommonConsumptionModule, FormsModule, RouterModule.forRoot([]), CoreModule],
             providers: [ConfigService, ResourceService, ElectronDialogService, TenantService, FormService, OrgDetailsService,
                 BrowserCacheTtlService, TelemetryService]

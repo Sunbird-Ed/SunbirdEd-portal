@@ -33,7 +33,12 @@ describe('LibraryComponent', () => {
       lbl: {
         goToMyDownloads: 'Goto My Downloads',
         saveToPenDrive: 'Save to Pen drive',
-        open: 'Open'
+        open: 'Open',
+        allDownloads: 'all Downloads will be automatically added to',
+        exportingContent: 'Copying {contentName}...',
+        downloadingContent: 'Preparing to download {contentName}...',
+        recentlyAdded: 'Recently Added',
+        viewall: 'View All'
       },
       btn: {
         download: 'Download'

@@ -45,8 +45,8 @@ describe('BrowseComponent', () => {
     spyOn(connectionService, 'monitor').and.returnValue(observableOf(true));
     expect(component).toBeTruthy();
     expect(component.isConnected).toBeTruthy();
-
   });
+
   it('to make connection status false', () => {
     connectionService = TestBed.get(ConnectionService);
     spyOn(connectionService, 'monitor').and.returnValue(observableOf(false));
