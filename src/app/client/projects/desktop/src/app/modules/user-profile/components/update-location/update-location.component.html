@@ -30,7 +30,8 @@
     </div>
   </div>
   <div class="sb-modal-actions">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="updateUserLocation()">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="updateUserLocation()"
+    appTelemetryInteract [telemetryInteractEdata]="onClickSubmit" >
       {{resourceService.frmelmnts?.btn?.submit}}
     </button>
   </div>

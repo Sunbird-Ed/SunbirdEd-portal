@@ -7,6 +7,7 @@ import { OnboardingService } from '../../../offline/services/onboarding/onboardi
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-update-content-preference',
@@ -31,6 +32,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     public channelService: ChannelService,
     public frameworkService: FrameworkService,
     public toasterService: ToasterService,
+    public activatedRoute: ActivatedRoute
   ) { }
   ngOnInit() {
     this.createContentPreferenceForm();
@@ -138,6 +140,22 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   }
   closeModal() {
     this.dismissed.emit();
+  }
+    setTelemetryData () {
+      return {
+      id: 'updating_user-preference',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+      extra: {
+        'framework': {
+          'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),
+          'board': this.contentPreferenceForm.value.board,
+          'medium': this.contentPreferenceForm.value.medium,
+          'gradeLevel': this.contentPreferenceForm.value.class,
+          'subjects': this.contentPreferenceForm.value.subjects
+        }
+      }
+    };
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

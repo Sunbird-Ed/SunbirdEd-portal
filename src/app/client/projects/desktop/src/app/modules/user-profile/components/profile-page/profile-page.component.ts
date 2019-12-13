@@ -3,6 +3,8 @@ import { OnboardingService } from '../../../offline/services/onboarding/onboardi
 import { ResourceService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { IInteractEventEdata } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-profile-page',
   templateUrl: './profile-page.component.html',
@@ -11,6 +13,8 @@ import { takeUntil } from 'rxjs/operators';
 export class ProfilePageComponent implements OnInit, OnDestroy {
   selectedComponent: any;
   userData: any;
+  onClicklocationEditInteractEdata: IInteractEventEdata;
+  onClickContentPreferencesEditInteractEdata: IInteractEventEdata;
   @Output() userLocationData = new EventEmitter<any>();
   @Output() userPreferenceData = new EventEmitter<any>();
   public unsubscribe$ = new Subject<void>();
@@ -18,11 +22,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   constructor(
     public userService: OnboardingService,
     public resourceService: ResourceService,
+    public activatedRoute: ActivatedRoute
   ) { }
   ngOnInit() {
-    this.getUserDate();
+    this.getUserData();
+    this.setTelemetryData();
   }
-  getUserDate() {
+  getUserData() {
     this.userService.getUser()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(result => {
@@ -36,8 +42,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   handleDismissEvent(eventStatus) {
     this.selectedComponent = '';
     if (eventStatus === 'SUCCESS') {
-      this.getUserDate();
+      this.getUserData();
     }
+  }
+  setTelemetryData () {
+    this.onClicklocationEditInteractEdata = {
+      id: 'edit_location',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.onClickContentPreferencesEditInteractEdata = {
+      id: 'edit_content_preferences',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

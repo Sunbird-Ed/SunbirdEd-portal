@@ -17,6 +17,7 @@
         <div class="fmedium ml-4"> {{userData['location']['city']['name']}} </div>
       </div>
       <button type="button" class="sb-btn sb-btn-primary sb-btn-xs sb-profile-page__right-aligned-button"
+      appTelemetryInteract [telemetryInteractEdata]="onClicklocationEditInteractEdata"
         (click)="openModal('LOCATION')">{{resourceService.frmelmnts?.btn?.profile.edit}}</button>
     </div>
   </section>
@@ -47,6 +48,7 @@
             </span>
           </div>
           <button type="button" class="sb-btn sb-btn-primary sb-btn-xs sb-profile-page__right-aligned-button"
+          appTelemetryInteract [telemetryInteractEdata]="onClickContentPreferencesEditInteractEdata"
             (click)="openModal('CONTENTPREFERENCE')">{{resourceService.frmelmnts?.btn?.edit}}</button>
         </div>
       </div>
