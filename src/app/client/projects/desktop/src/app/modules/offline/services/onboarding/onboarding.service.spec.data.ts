@@ -63,5 +63,29 @@ export const onboarding = {
                 }
               }
             }
+    },
+
+     frameworkCategories : [
+       {
+      'identifier': 'as_k-12_topic_science_l1con_90',
+      'code': 'science_l1Con_90',
+      'translations': '{\'as\':\'পোহৰ\'}',
+      'name': 'Light',
+      'description': 'Light',
+      'category': 'topic',
+      'status': 'Live',
+      'associations': [
+        {
+            'identifier': 'as_k-12_topic_science_l1con_90',
+            'code': 'science_l1Con_90',
+            'translations': '{\'as\':\'পোহৰ\'}',
+            'name': 'Light',
+            'description': 'Light',
+            'category': 'topic',
+            'status': 'Live'
+        },
+      ]
     }
+    ],
+    category: 'gradeLevel'
 };
