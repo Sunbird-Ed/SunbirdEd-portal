@@ -368,7 +368,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             this.toasterService.error(this.resourceService.messages.stmsg.m0141);
           }
         })
-      )
+      );
   }
 
   /**
@@ -388,12 +388,12 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         } else {
           this.toasterService.error(this.resourceService.messages.stmsg.m0141);
         }
-      }))
+      }));
   }
 
   /**
    * method to download assessment/course progress report
-   * @param downloadAssessmentReport 
+   * @param downloadAssessmentReport
    */
   downloadReport(downloadAssessmentReport: boolean) {
     of(downloadAssessmentReport)
@@ -405,7 +405,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.setInteractEventData();
       }, err => {
         this.toasterService.error(this.resourceService.messages.imsg.m0045);
-      })
+      });
   }
 
   navigateToPage(page: number): undefined | void {
