@@ -1,4 +1,4 @@
-import { TelemetryService } from '@sunbird/telemetry';
+import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { OnboardingService } from './../../services';
