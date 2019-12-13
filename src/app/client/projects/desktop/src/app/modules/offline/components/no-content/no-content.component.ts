@@ -55,7 +55,7 @@ export class NoContentComponent implements OnInit, OnDestroy {
     return {
       id: 'load-content',
       type: 'click',
-      pageid:  _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid')
+      pageid:  _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'library'
     };
   }
 
@@ -68,7 +68,7 @@ export class NoContentComponent implements OnInit, OnDestroy {
       edata: {
         id: 'load-content',
         type: 'click',
-        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid')
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'library'
       }
     };
     this.telemetryService.interact(interactData);
