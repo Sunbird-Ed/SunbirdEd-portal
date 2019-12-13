@@ -14,6 +14,9 @@ const appRoutes: Routes = [
   {
     path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
   },
+  {
+    path: 'contribute', loadChildren: 'app/modules/contribute/contribute.module#ContributeModule'
+  },
   // {
   //   path: 'home', loadChildren: 'app/modules/home/home.module#HomeModule'
   // },

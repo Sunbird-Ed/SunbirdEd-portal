@@ -468,7 +468,7 @@ a.sb-btn {
     padding: ($base-block-space * 1) ($base-block-space * 2)
       ($base-block-space * 1) ($base-block-space * 1);
     i.icon {
-      margin-right: $base-block-space;
+      margin-right: ($base-block-space / 2);
     }
   }
 }
@@ -485,7 +485,7 @@ a.sb-btn {
     padding: ($base-block-space * 1) ($base-block-space * 2)
       ($base-block-space * 1) ($base-block-space * 1);
     i.icon {
-      margin-left: $base-block-space;
+      margin-left: ($base-block-space / 2);
     }
   }
 }
