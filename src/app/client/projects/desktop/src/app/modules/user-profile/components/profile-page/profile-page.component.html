@@ -1,49 +1,59 @@
-<div class="sb-profile-page">
-    <section class="py-24 d-flex flex-ai-center flex-dc">
-      <div class="ui container  text-center">
-        <div class="sb-profile-page__avatar">
-          <img src="assets/images/guest.svg" alt="guest" class="w-100">
-        </div>
-        <div class="fs-2-5 font-weight-bold mb-24">Guest </div>
+<div class="sb-profile-page" *ngIf="userData">
+  <section class="py-24 d-flex flex-ai-center flex-dc">
+    <div class="ui container  text-center">
+      <div class="sb-profile-page__avatar">
+        <img src="assets/images/guest.svg" alt="guest" class="w-100">
       </div>
-      <div class="ui container relative text-center">
-        <div class="mb-8 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-          <div class="fmedium sb-profile-page__location-label">State :</div>
-          <div class="fmedium ml-4">
-            Karnataka </div>
-        </div>
-        <div class="mb-8 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-          <div class="fmedium sb-profile-page__location-label">District :</div>
-          <div class="fmedium ml-4"> Bangalore </div>
-        </div>
-        <button type="button" class="sb-btn sb-btn-primary sb-btn-xs sb-profile-page__right-aligned-button">Edit</button>
+      <div class="fs-2-5 font-weight-bold mb-24">{{userData['name']}} </div>
+    </div>
+    <div class="ui container relative text-center">
+      <div class="mb-8 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
+        <div class="fmedium sb-profile-page__location-label">{{resourceService.frmelmnts?.lbl?.profile.State}} :</div>
+        <div class="fmedium ml-4">
+          {{userData['location']['state']['name']}} </div>
       </div>
-    </section>
-  
-    <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 sb-profile-page__profile-bg">
-      <div class="ui container">
-        <div class="d-flex flex-jc-center relative">
-          <div class="max-w-400 text-center">
-            <div class="mb-16 d-flex flex-jc-center sb-profile-page__category">
-              <span class="fmedium white-space-nowrap">Board :</span>
-              <span class="fmedium font-weight-bold pl-4">State Board Tamil Nadu</span>
-            </div>
-            <div class="mb-16 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-              <span class="fmedium white-space-nowrap">Medium :</span>
-              <span class="fmedium font-weight-bold pl-4">English, Tamil </span>
-            </div>
-            <div class="mb-16 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-              <span class="fmedium white-space-nowrap">Subjects :</span>
-              <span class="fmedium font-weight-bold pl-4">English, Mathematics, Tamil </span>
-            </div>
-            <div class="mb-16 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
-              <span class="fmedium white-space-nowrap">Classes :</span>
-              <span class="fmedium font-weight-bold pl-4">Class 6, Class 7, Class 8 </span>
-            </div>
-            <button type="button" class="sb-btn sb-btn-primary sb-btn-xs sb-profile-page__right-aligned-button">Edit</button>
+      <div class="mb-8 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
+        <div class="fmedium sb-profile-page__location-label">{{resourceService.frmelmnts?.lbl?.profile.District}} :</div>
+        <div class="fmedium ml-4"> {{userData['location']['city']['name']}} </div>
+      </div>
+      <button type="button" class="sb-btn sb-btn-primary sb-btn-xs sb-profile-page__right-aligned-button"
+        (click)="openModal('LOCATION')">{{resourceService.frmelmnts?.btn?.profile.edit}}</button>
+    </div>
+  </section>
+  <app-update-location *ngIf="selectedComponent === 'LOCATION'" [userLocationData]="userData['location']"
+    (dismissed)="handleDismissEvent($event)"></app-update-location>
+
+  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 sb-profile-page__profile-bg">
+    <div class="ui container">
+      <div class="d-flex flex-jc-center relative">
+        <div class="max-w-400 text-center">
+          <div class="mb-16 d-flex flex-jc-center sb-profile-page__category">
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts?.lbl?.profile.Board}} :</span>
+            <span class="fmedium font-weight-bold pl-4">{{userData['framework']['board']}}</span>
           </div>
+          <div class="mb-16 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts?.lbl?.profile.Medium}} :</span>
+            <span class="fmedium font-weight-bold pl-4"> <span
+                *ngFor="let medium of userData['framework']['medium']">{{medium}} </span> </span>
+          </div>
+          <div class="mb-16 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
+            <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts?.lbl?.profile.Subjects}} :</span>
+            <span class="fmedium font-weight-bold pl-4">English, Mathematics, Tamil </span>
+          </div>
+          <div class="mb-16 d-flex flex-jc-center sb-profile-page__m-responsive-flex-dc">
+            <span class="fmedium white-space-nowrap"> {{resourceService.frmelmnts?.lbl?.profile.Classes}} :</span>
+            <span class="fmedium font-weight-bold pl-4">
+              <span *ngFor="let class of userData['framework']['gradeLevel']">{{class}} </span>
+            </span>
+          </div>
+          <button type="button" class="sb-btn sb-btn-primary sb-btn-xs sb-profile-page__right-aligned-button"
+            (click)="openModal('CONTENTPREFERENCE')">{{resourceService.frmelmnts?.btn?.edit}}</button>
         </div>
       </div>
-    </section>
-  </div>
-  
+    </div>
+  </section>
+
+  <app-update-content-preference *ngIf="selectedComponent === 'CONTENTPREFERENCE'" [userPreferenceData]="userData['framework']" (dismissed)="handleDismissEvent($event)">
+  </app-update-content-preference>
+
+</div>
