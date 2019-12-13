@@ -300,10 +300,10 @@ export class UserLocationComponent implements OnInit {
         return districts.code === locationDetails.districtCode;
       });
     }
-    if (stateData.name !== _.get(this.suggestedLocation, 'state.name')) {
+    if (_.get(stateData, 'name') !== _.get(this.suggestedLocation, 'state.name')) {
       changeType = changeType + 'state-changed';
     }
-    if (districtData.name !== _.get(this.suggestedLocation, 'district.name')) {
+    if (_.get(districtData, 'name') !== _.get(this.suggestedLocation, 'district.name')) {
       if (_.includes(changeType, 'state-changed')) {
         changeType = 'state-dist-changed';
       } else {

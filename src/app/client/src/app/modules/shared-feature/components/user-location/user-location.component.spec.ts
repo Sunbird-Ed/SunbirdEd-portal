@@ -16,6 +16,8 @@ import {CacheService} from 'ng2-cache-service';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {RouterTestingModule} from '@angular/router/testing';
 import {userLocationMockData} from './user-location.component.spec.data';
+import {of as observableOf, throwError as observableThrowError} from 'rxjs';
+import {TenantService, UserService} from '@sunbird/core';
 
 
 describe('UserLocationComponent', () => {
@@ -27,8 +29,11 @@ describe('UserLocationComponent', () => {
     TestBed.configureTestingModule({
       imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [UserLocationComponent],
-      providers: [ResourceService, ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService,
-        NavigationHelperService, DeviceDetectorService]
+      providers: [
+        {provide: ResourceService, useValue: userLocationMockData.resourceBundle},
+        ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService,
+        NavigationHelperService, DeviceDetectorService
+      ]
     })
       .compileComponents();
   }));
@@ -135,6 +140,156 @@ describe('UserLocationComponent', () => {
   it('should get telemetry data when both changed', () => {
     const data = component.getTelemetryData('state-dist-changed');
     expect(data).toEqual(userLocationMockData.bothChanged);
+  });
+
+  it('should close location modal by emitting event', () => {
+    spyOn(component.close, 'emit');
+    spyOn(component.userLocationModal, 'deny');
+    component.closeModal();
+    expect(component.close.emit).toHaveBeenCalled();
+  });
+
+
+  it('should call to update user location and device location', () => {
+    component.allStates = userLocationMockData.stateList;
+    component.allDistricts = userLocationMockData.districtList;
+    component.setStateDistrict(userLocationMockData.suggestedLocation);
+    spyOn(component, 'updateLocation');
+    component.updateUserLocation();
+    expect(component.updateLocation).toHaveBeenCalledWith({locationCodes: ['2', '2907']},
+      userLocationMockData.suggestedLocation);
+  });
+
+
+  it('should not get state data and close modal', () => {
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(component, 'closeModal');
+    spyOn(toasterService, 'error');
+    spyOn(profileService, 'getUserLocation').and.callFake(() =>
+      observableThrowError(userLocationMockData.serverError));
+    component.getState();
+    expect(component.closeModal).toHaveBeenCalled();
+    expect(toasterService.error).toHaveBeenCalledWith(userLocationMockData.resourceBundle.messages.emsg.m0016);
+  });
+
+
+  it('should get state data and call get selection strategy', () => {
+    const profileService = TestBed.get(ProfileService);
+    spyOn(component, 'getSelectionStrategy');
+    spyOn(component, 'closeModal');
+    spyOn(profileService, 'getUserLocation').and.callFake(() =>
+      observableOf(userLocationMockData.stateResponse));
+    component.getState();
+    expect(component.getSelectionStrategy).toHaveBeenCalled();
+    expect(component.allStates).toEqual(userLocationMockData.stateResponse.result.response);
+  });
+
+
+  it('should get district data', () => {
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'getUserLocation').and.callFake(() =>
+      observableOf(userLocationMockData.districtResponse));
+    component.getDistrict('stateId').subscribe((res) => {
+      expect(component.showDistrictDivLoader).toEqual(false);
+      expect(component.allDistricts).toEqual(userLocationMockData.districtResponse.result.response);
+    });
+  });
+
+
+  it('should set state input', () => {
+    const eventObj = {...userLocationMockData.eventObject};
+    component.clearInput(eventObj, 'state');
+    expect(eventObj.target.value).toEqual('');
+  });
+
+  it('should set district input', () => {
+    const eventObj = {...userLocationMockData.eventObject};
+    component.clearInput(userLocationMockData.eventObject, 'district');
+    expect(eventObj.target.value).toEqual('');
+  });
+
+  // user not logged in and userdeclared location not present
+  it('should set populate from ip location', () => {
+    component.deviceProfile = {
+      ipLocation: userLocationMockData.mockLocation
+    };
+    component.allStates = userLocationMockData.stateList;
+    const userService = TestBed.get(UserService);
+    const profileService = TestBed.get(ProfileService);
+    spyOnProperty(userService, 'loggedIn').and.returnValue(false);
+    spyOn(profileService, 'getUserLocation').and.callFake(() =>
+      observableOf(userLocationMockData.districtResponse));
+    component.getSelectionStrategy();
+    expect(component.suggestionType).toEqual('ipLocation');
+    expect(component.isUserProfileUpdateAllowed).toEqual(false);
+    expect(component.isDeviceProfileUpdateAllowed).toEqual(true);
+    expect(component.selectedState).toEqual(userLocationMockData.stateList[0]);
+    expect(component.selectedDistrict).toEqual(userLocationMockData.districtList[0]);
+  });
+
+  // user logged in and user declared device location present user profile location not present
+  it('should set populate from userDeclared location', () => {
+    component.deviceProfile = {
+      ipLocation: userLocationMockData.mockLocation,
+      userDeclaredLocation: userLocationMockData.mockLocation
+    };
+    component.allStates = userLocationMockData.stateList;
+    const userService = TestBed.get(UserService);
+    const profileService = TestBed.get(ProfileService);
+    spyOnProperty(userService, 'loggedIn').and.returnValue(true);
+    spyOnProperty(userService, 'userProfile').and.returnValue({userLocations: []});
+    spyOn(profileService, 'getUserLocation').and.callFake(() =>
+      observableOf(userLocationMockData.districtResponse));
+    component.getSelectionStrategy();
+    expect(component.suggestionType).toEqual('userDeclared');
+    expect(component.isUserProfileUpdateAllowed).toEqual(true);
+    expect(component.isDeviceProfileUpdateAllowed).toEqual(false);
+    expect(component.selectedState).toEqual(userLocationMockData.stateList[0]);
+    expect(component.selectedDistrict).toEqual(userLocationMockData.districtList[0]);
+  });
+  // user logged in and user declared device location not present user profile location is present
+  it('should set populate from userLocation location', () => {
+    component.deviceProfile = {
+      ipLocation: userLocationMockData.mockLocation
+    };
+    component.allStates = userLocationMockData.stateList;
+    const userService = TestBed.get(UserService);
+    const profileService = TestBed.get(ProfileService);
+    spyOnProperty(userService, 'loggedIn').and.returnValue(true);
+    spyOnProperty(userService, 'userProfile').and.returnValue({
+      userLocations: [userLocationMockData.districtList[0], userLocationMockData.stateList[0]]
+    });
+    spyOn(profileService, 'getUserLocation').and.callFake(() =>
+      observableOf(userLocationMockData.districtResponse));
+    component.getSelectionStrategy();
+    expect(component.suggestionType).toEqual('userLocation');
+    expect(component.isUserProfileUpdateAllowed).toEqual(false);
+    expect(component.isDeviceProfileUpdateAllowed).toEqual(true);
+    expect(component.selectedState).toEqual(userLocationMockData.stateList[0]);
+    expect(component.selectedDistrict).toEqual(userLocationMockData.districtList[0]);
+  });
+
+  // user logged in and user declared device location not present user profile location not is present
+  it('should set populate from ipLocation location', () => {
+    component.deviceProfile = {
+      ipLocation: userLocationMockData.mockLocation
+    };
+    component.allStates = userLocationMockData.stateList;
+    const userService = TestBed.get(UserService);
+    const profileService = TestBed.get(ProfileService);
+    spyOnProperty(userService, 'loggedIn').and.returnValue(true);
+    spyOnProperty(userService, 'userProfile').and.returnValue({
+      userLocations: []
+    });
+    spyOn(profileService, 'getUserLocation').and.callFake(() =>
+      observableOf(userLocationMockData.districtResponse));
+    component.getSelectionStrategy();
+    expect(component.suggestionType).toEqual('ipLocation');
+    expect(component.isUserProfileUpdateAllowed).toEqual(true);
+    expect(component.isDeviceProfileUpdateAllowed).toEqual(true);
+    expect(component.selectedState).toEqual(userLocationMockData.stateList[0]);
+    expect(component.selectedDistrict).toEqual(userLocationMockData.districtList[0]);
   });
 
 
