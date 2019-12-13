@@ -15,7 +15,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 export class ContentManagerComponent implements OnInit {
 
   contentResponse: any;
-  isOpen = false;
+  isOpen = true;
   callContentList = false;
   callContentListTimer = false;
   contentStatusObject = {};
@@ -81,6 +81,32 @@ export class ContentManagerComponent implements OnInit {
     });
   }
 
+  contentManagerActions(type: string, action: string, contentId: string) {
+    switch (`${action.toUpperCase()}_${type.toUpperCase()}`) {
+      case 'PAUSE_IMPORT':
+        this.pauseImportContent(contentId);
+        break;
+      case 'RESUME_IMPORT':
+        this.resumeImportContent(contentId);
+        break;
+      case 'CANCEL_IMPORT':
+        this.cancelImportContent(contentId);
+        break;
+      case 'PAUSE_DOWNLOAD':
+        this.pauseDownloadContent(contentId);
+        break;
+      case 'RESUME_DOWNLOAD':
+        this.resumeDownloadContent(contentId);
+        break;
+      case 'CANCEL_DOWNLOAD':
+        this.cancelDownloadContent(contentId);
+        break;
+      case 'RETRY_DOWNLOAD':
+        this.retryDownloadContent(contentId);
+        break;
+    }
+  }
+
   updateLocalStatus(contentData, currentStatus) {
     this.contentStatusObject[contentData.id] = {
       currentStatus: currentStatus,
@@ -103,6 +129,22 @@ export class ContentManagerComponent implements OnInit {
         _this.apiCallSubject.next();
       }
     });
+  }
+
+  cancelDownloadContent(contentId) {
+    this.contentManagerService.cancelDownloadContent(contentId).subscribe(this.getSubscription(contentId));
+  }
+
+  pauseDownloadContent(contentId) {
+    this.contentManagerService.pauseDownloadContent(contentId).subscribe(this.getSubscription(contentId));
+  }
+
+  resumeDownloadContent(contentId) {
+    this.contentManagerService.resumeDownloadContent(contentId).subscribe(this.getSubscription(contentId));
+  }
+
+  retryDownloadContent(contentId) {
+    this.contentManagerService.resumeDownloadContent(contentId).subscribe(this.getSubscription(contentId));
   }
 
   cancelImportContent(contentId) {

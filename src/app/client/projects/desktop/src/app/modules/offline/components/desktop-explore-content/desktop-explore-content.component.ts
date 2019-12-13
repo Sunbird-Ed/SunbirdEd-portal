@@ -190,7 +190,8 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
                             this.resourceService.frmelmnts.btn.download :
                             this.resourceService.frmelmnts.lbl.saveToPenDrive,
                         'disabled': this.isBrowse && (_.get(value, 'downloadStatus') === 'DOWNLOADED' ||
-                            _.get(value, 'downloadStatus') === 'DOWNLOADING') ? true : false
+                            _.get(value, 'downloadStatus') === 'DOWNLOADING' ||
+                            _.get(value, 'downloadStatus') === 'PAUSED') ? true : false
                     },
                     {
                         'type': 'open',
