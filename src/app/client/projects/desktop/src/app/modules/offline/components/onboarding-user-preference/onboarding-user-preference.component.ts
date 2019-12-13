@@ -1,3 +1,5 @@
+import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { OnboardingService } from './../../services';
 import { OrgDetailsService, ChannelService, FrameworkService, TenantService } from '@sunbird/core';
@@ -24,12 +26,15 @@ export class OnboardingUserPreferenceComponent implements OnInit {
   disableContinueBtn = true;
   tenantInfo: any = {};
   @Output() userPreferenceSaved = new EventEmitter();
+  public telemetryImpression: IImpressionEventInput;
   submitLabel = _.upperCase(this.resourceService.frmelmnts.lbl.submit);
 
   constructor(public onboardingService: OnboardingService,
     public orgDetailsService: OrgDetailsService, public channelService: ChannelService,
     public frameworkService: FrameworkService, public tenantService: TenantService,
-    public resourceService: ResourceService, public toasterService: ToasterService) { }
+    public resourceService: ResourceService, public toasterService: ToasterService,
+    public telemetryService: TelemetryService, public activatedRoute: ActivatedRoute,
+    public router: Router) { }
 
   ngOnInit() {
     this.tenantService.tenantData$.subscribe(({tenantData}) => {
@@ -89,6 +94,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
   }
 
   saveUserData() {
+    this.setTelemetryInteract();
     const requestData = {
       'request': {
         'framework': {
@@ -117,19 +123,37 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     });
   }
 
-  setTelemetryData () {
-    return {
-      id: 'onboarding_user-preference',
-      type: 'click',
-      pageid: 'onboarding_user_preference',
-      extra: {
-        'framework': {
-          'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),
-          'board': _.get(this.selectedBoard, 'name'),
-          'medium': _.map(this.selectedMedium, 'name'),
-          'gradeLevel': _.map(this.selectedClass, 'name')
+  setTelemetryImpression() {
+    this.telemetryImpression = {
+      context: { env: 'onboarding' },
+      edata: {
+        type: 'view',
+        pageid: 'onboarding_user_preference',
+        uri: this.router.url
+      }
+    };
+  }
+
+  setTelemetryInteract () {
+    const interactData = {
+      context: {
+        env: 'onboarding',
+        cdata: []
+      },
+      edata: {
+        id: 'onboarding_user_preference',
+        type: 'click',
+        pageid: 'onboarding_user_preference',
+        extra: {
+          'framework': {
+            'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),
+            'board': _.get(this.selectedBoard, 'name'),
+            'medium': _.map(this.selectedMedium, 'name'),
+            'gradeLevel': _.map(this.selectedClass, 'name')
+          }
         }
       }
     };
+      this.telemetryService.interact(interactData);
   }
 }

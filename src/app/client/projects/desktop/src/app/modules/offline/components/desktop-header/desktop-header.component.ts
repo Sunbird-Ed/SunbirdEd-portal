@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import { first, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 
 import { OrgDetailsService, FormService, TenantService } from '@sunbird/core';
 import { ConfigService, ResourceService, UtilService } from '@sunbird/shared';
-import { IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { ElectronDialogService } from '../../services';
 
 export interface ILanguage {
@@ -56,7 +56,9 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService,
     public electronDialogService: ElectronDialogService,
     public tenantService: TenantService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    public activatedRoute: ActivatedRoute,
+    public telemetryService: TelemetryService,
   ) { }
 
   ngOnInit() {
@@ -187,11 +189,7 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'browse'
     };
-    this.helpCenterEdata = {
-      id: 'help-center-tab',
-      type: 'click',
-      pageid: 'help-center'
-    };
+
     this.enterDialCodeInteractEdata = {
       id: 'click-dial-code',
       type: 'click',
@@ -212,6 +210,21 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: this.router.url.split('/')[1] || 'library'
     };
+  }
+
+  setInteractDataForHelp(event) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'help',
+        cdata: []
+      },
+      edata: {
+        id: event.id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'help'
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
   ngOnDestroy() {
