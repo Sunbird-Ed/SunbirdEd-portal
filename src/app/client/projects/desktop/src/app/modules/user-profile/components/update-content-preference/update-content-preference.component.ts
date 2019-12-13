@@ -60,7 +60,6 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.boardOption = _.get(data, 'result.channel.frameworks');
         this.contentPreferenceForm.controls['board'].setValue(_.find(this.boardOption, { name: this.userLocationData['board'] }));
-        // this.onBoardChange();
       }, err => {
       });
   }
@@ -84,7 +83,6 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
             if (this.contentPreferenceForm.value.board.name === this.userLocationData['board']) {
             this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.userLocationData['medium']));
             }
-            this.onMediumChange();
 
           }
         }, err => {
@@ -115,7 +113,6 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
 
         this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.userLocationData['gradeLevel']));
       }
-      this.onClassChange();
     }
   }
 
