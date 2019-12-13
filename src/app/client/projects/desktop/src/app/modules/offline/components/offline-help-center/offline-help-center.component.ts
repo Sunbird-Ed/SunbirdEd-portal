@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import { Component, HostListener, AfterViewInit, OnInit } from '@angular/core';
 
@@ -18,7 +19,8 @@ export class OfflineHelpCenterComponent implements AfterViewInit, OnInit {
   activeTab: any;
   instance: string;
 
-  constructor(public resourceService: ResourceService) { }
+  constructor(public resourceService: ResourceService,
+    public router: Router) { }
   isShow: boolean;
   topPosToStartShowing = 100;
 
@@ -143,5 +145,15 @@ export class OfflineHelpCenterComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     // mediumZoom('[data-zoomable]');
+  }
+  setTelemetryImpression() {
+    return {
+      context: { env: 'help' },
+      edata: {
+        type: 'view',
+        pageid: 'help',
+        uri: this.router.url
+      }
+    };
   }
 }
