@@ -1,6 +1,6 @@
 import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
 import { Component, OnInit, Input } from '@angular/core';
-import { UserService, PermissionService } from '../../services';
+import { UserService, PermissionService, ProgramsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
@@ -62,15 +62,15 @@ export class MainMenuComponent implements OnInit {
   /**
    * shows/hides contribute tab
    */
-  @Input() showContributeTab: boolean;
 
   signInIntractEdata: IInteractEventEdata;
   slug: string;
+  showContributeTab: boolean = true;
   /*
   * constructor
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router, public activatedRoute: ActivatedRoute,
-    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService) {
+    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService, private programsService: ProgramsService) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.permissionService = permissionService;

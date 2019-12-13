@@ -7,9 +7,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListAllProgramsComponent implements OnInit {
 
+  sbcards = [];
   constructor() { }
 
   ngOnInit() {
+    this.sbcards = [{
+      title: 'okay',
+      subject: 'test'
+    },
+    {
+      title: 'okay',
+      subject: 'test'
+    }, {
+      title: 'okay',
+      subject: 'test'
+    }]
   }
 
 }
