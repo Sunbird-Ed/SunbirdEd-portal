@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import { Component, HostListener, AfterViewInit, OnInit } from '@angular/core';
 
@@ -20,6 +20,7 @@ export class OfflineHelpCenterComponent implements AfterViewInit, OnInit {
   instance: string;
 
   constructor(public resourceService: ResourceService,
+    public activatedRoute: ActivatedRoute,
     public router: Router) { }
   isShow: boolean;
   topPosToStartShowing = 100;
@@ -148,7 +149,7 @@ export class OfflineHelpCenterComponent implements AfterViewInit, OnInit {
   }
   setTelemetryImpression() {
     return {
-      context: { env: 'help' },
+      context: { env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'help' },
       edata: {
         type: 'view',
         pageid: 'help',

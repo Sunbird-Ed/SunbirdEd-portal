@@ -215,7 +215,7 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
   setInteractDataForHelp(event) {
     const interactData = {
       context: {
-        env: event.env,
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'help',
         cdata: []
       },
       edata: {
