@@ -5,7 +5,7 @@ const routes: Routes = [
     {
         path: 'browse', component: BrowseComponent, data: {
             telemetry: {
-                env: 'offline', pageid: 'browse', type: 'view'
+                env: 'browse', pageid: 'browse', type: 'view'
             },
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
         }

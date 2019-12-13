@@ -62,7 +62,7 @@ export class NoContentComponent implements OnInit, OnDestroy {
   addInteractEvent() {
     const interactData = {
       context: {
-        env: 'browse-online',
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'browse',
         cdata: []
       },
       edata: {
