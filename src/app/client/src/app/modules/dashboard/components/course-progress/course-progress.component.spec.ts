@@ -168,7 +168,7 @@ describe('CourseProgressComponent', () => {
       fixture.detectChanges();
       spyOn(courseService, 'downloadDashboardData')
         .and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
-      component.downloadReport();
+      component.downloadReport(true);
       expect(component.showDownloadModal).toEqual(false);
     }));
 
@@ -178,7 +178,7 @@ describe('CourseProgressComponent', () => {
       fixture.detectChanges();
       spyOn(courseService, 'downloadDashboardData').and.callFake(() => observableThrowError({}));
       spyOn(toasterService, 'error').and.callThrough();
-      component.downloadReport();
+      component.downloadReport(true);
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.imsg.m0045 );
     }));
 
