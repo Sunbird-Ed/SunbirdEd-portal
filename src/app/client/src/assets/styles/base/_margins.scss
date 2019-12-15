@@ -242,6 +242,9 @@
   .mr-20 {
     @include margin(null null null 20px);
   }
+  .mr-24 {
+    @include margin(null null null 24px);
+  }
   .mr-32 {
     @include margin(null null null 32px);
   }

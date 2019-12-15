@@ -167,6 +167,13 @@
       box-shadow: 0 2px 8px 0 rgba(123, 134, 244, 0.31);
       border: 0.5px solid rgba(208, 208, 208, 0.48);
     }
+
+    &.active {
+      .content-title {
+        font-weight: 700;
+      }      
+    }
+
   }
   
   .ui.error.reject {
