@@ -339,7 +339,7 @@ export const mockUserData = {
       'totalItems': 72, 'currentPage': 3, 'pageSize': 9, 'totalPages': 8,
       'startPage': 1, 'endPage': 8, 'startIndex': 1, 'endIndex': 72, 'pages': [1, 2, 3, 4, 5]
    },
-   courseProgressMockData: {
+   assessmentReportDownloadMock: {
       'id': 'api.dashboard.progress.course.export',
       'ver': 'v1',
       'ts': '2019-12-15 11:04:47:660+0000',
@@ -354,10 +354,24 @@ export const mockUserData = {
       'result': {
          'duration': '300',
          'reports': {
-            'assessmentReportUrl': 'https://sunbirddev.blob.core.windows.net/reports/course-progress-reports/report-0129124888681185280.csv?sv=2017-04-17&se=2019-12-15T11%3A09%3A47Z&sr=b&sp=r&sig=/2w9v4mCgSbZVxP17gNu9pAlgC2ebnvUToYNGTzocEU%3D'
+            'assessmentReportUrl': 'https://sunbirddev.blob.core.windows.net/reports/course-progress-reports/report-0129124888681185280.csv'
          },
-         'signedUrl': 'https://sunbirddev.blob.core.windows.net/reports/course-progress-reports/report-0129124888681185280.csv?sv=2017-04-17&se=2019-12-15T11%3A09%3A47Z&sr=b&sp=r&sig=/2w9v4mCgSbZVxP17gNu9pAlgC2ebnvUToYNGTzocEU%3D'
+         'signedUrl': 'https://sunbirddev.blob.core.windows.net/reports/course-progress-reports/report-0129124888681185280.csv'
       }
-   }
+   },
+   courseProgressReportMock: {
+      'id': 'api.report',
+      'ver': '1.0',
+      'ts': '2019-12-15 18:04:10:044+0530',
+      'params': {
+        'resmsgid': '3162ead0-1f37-11ea-b579-797b959e71b5',
+        'msgid': null,
+        'status': 'success',
+        'err': null,
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': 'External ID\n,8454cb21-3ce9-4e30-85b5-fade097880d8\n,bacacc74-f828-403c-987a-333550c204db\n'
+    }
 
 };

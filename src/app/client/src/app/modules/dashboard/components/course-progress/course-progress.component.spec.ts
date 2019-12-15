@@ -211,17 +211,20 @@ describe('CourseProgressComponent', () => {
     }));
 
 
-  it('should download course progress report on click of progress report', () => {
+  it('should download course progress report on click of progress report', fakeAsync(() => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
     const usageService = TestBed.get(UsageService);
-    spyOn(usageService, 'getData');
+    spyOn(usageService, 'getData').and.returnValue(observableOf(testData.mockUserData.courseProgressReportMock));
     spyOn<any>(component, 'downloadCourseProgressReport').and.callThrough();
+    spyOn(document, 'createElement').and.callThrough();
     component.downloadReport(false);
+    tick(10);
     expect(component['downloadCourseProgressReport']).toHaveBeenCalled();
+    expect(document.createElement).toHaveBeenCalledWith('a');
     expect(usageService.getData).toHaveBeenCalledWith('/courseProgress/course-progress-reports/report-0124963192947507200.csv');
-  });
+  }));
 
-  it('should show toaster error message when download course progress report fails', inject( [ToasterService], (toasterService) => {
+  it('should show toaster error message when download course progress report fails', inject([ToasterService], (toasterService) => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
     const usageService = TestBed.get(UsageService);
     spyOn(usageService, 'getData').and.returnValue(observableThrowError(''));
@@ -231,11 +234,11 @@ describe('CourseProgressComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   }));
 
-  it('should download assessment report on click of score report', fakeAsync( inject([ToasterService], (toasterService) => {
+  it('should download assessment report on click of score report', fakeAsync(inject([ToasterService], (toasterService) => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
     const courseProgressService = TestBed.get(CourseProgressService);
     spyOn(toasterService, 'error');
-    spyOn(courseProgressService, 'downloadDashboardData').and.returnValue(observableOf(testData.mockUserData.courseProgressMockData));
+    spyOn(courseProgressService, 'downloadDashboardData').and.returnValue(observableOf(testData.mockUserData.assessmentReportDownloadMock));
     spyOn<any>(component, 'downloadAssessmentReport').and.callThrough();
     spyOn(window, 'open');
     component.downloadReport(true);
@@ -244,6 +247,7 @@ describe('CourseProgressComponent', () => {
     expect(courseProgressService['downloadDashboardData']).toHaveBeenCalledWith({
       batchIdentifier: '0124963192947507200'
     });
-    expect(window.open).toHaveBeenCalledWith(testData.mockUserData.courseProgressMockData.result.reports.assessmentReportUrl, '_blank');
+    expect(window.open).toHaveBeenCalledWith(testData.mockUserData.assessmentReportDownloadMock.result.reports.assessmentReportUrl,
+      '_blank');
   })));
 });
