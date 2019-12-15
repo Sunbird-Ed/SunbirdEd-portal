@@ -1,4 +1,4 @@
-import { combineLatest, Subscription, Observable, Subject, of, iif } from 'rxjs';
+import { combineLatest, Subscription, Observable, Subject, of } from 'rxjs';
 
 import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay, tap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
@@ -374,7 +374,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
    * method to download assessment score reports
    */
-  private downloadAsssessmentReport() {
+  private downloadAssessmentReport() {
     const option = {
       batchIdentifier: this.queryParams.batchIdentifier,
     };
@@ -398,12 +398,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   downloadReport(downloadAssessmentReport: boolean) {
     of(downloadAssessmentReport)
       .pipe(
-        switchMap((flag: boolean) => iif(() => flag, this.downloadAsssessmentReport(), this.downloadCourseProgressReport())),
+        switchMap((flag: boolean) => flag ? this.downloadAssessmentReport() : this.downloadCourseProgressReport()),
         takeUntil(this.unsubscribe)
       )
-      .subscribe(res => {
-        this.setInteractEventData();
-      }, err => {
+      .subscribe(res => {}, err => {
         this.toasterService.error(this.resourceService.messages.imsg.m0045);
       });
   }

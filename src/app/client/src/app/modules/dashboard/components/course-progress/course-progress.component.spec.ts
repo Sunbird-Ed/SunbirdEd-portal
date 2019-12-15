@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -39,26 +39,26 @@ describe('CourseProgressComponent', () => {
       'imsg': {
         'm0022': 'Stats for last 7 days',
         'm0044': 'Download failed!',
-        'm0043' : 'Your profile does not have a valid email ID.Please update your email ID',
+        'm0043': 'Your profile does not have a valid email ID.Please update your email ID',
         'm0045': 'Download has failed. Please try again after sometime'
       },
-      'stmsg' : {
-       'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
-       'm0141': 'Data unavailable to generate Score Report'
+      'stmsg': {
+        'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
+        'm0141': 'Data unavailable to generate Score Report'
       }
     },
     'frmelmnts': {
-      'instn' : {
-        't0056' : 'Please try again..'
+      'instn': {
+        't0056': 'Please try again..'
       }
     }
   };
 
   const fakeActivatedRoute = {
-    'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181'}),
-    'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d'}),
+    'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' }),
+    'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
     snapshot: {
-     'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181'},
+      'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' },
       data: {
         telemetry: {
           env: 'course', pageid: 'course-stats', type: 'view',
@@ -210,4 +210,19 @@ describe('CourseProgressComponent', () => {
       fixture.detectChanges();
       expect(route.navigate).toHaveBeenCalledWith([], { queryParams: component.queryParams });
     }));
+
+
+  it('should download course progress report on click of progress report', () => {
+    spyOn<any>(component, 'downloadCourseProgressReport');
+    component.downloadReport(false);
+    expect(component['downloadCourseProgressReport']).toHaveBeenCalled();
+  });
+
+  it('should download assessment report on click of score report', () => {
+    spyOn<any>(component, 'downloadAssessmentReport');
+    component.downloadReport(true);
+    expect(component['downloadAssessmentReport']).toHaveBeenCalled();
+  });
+
+
 });
