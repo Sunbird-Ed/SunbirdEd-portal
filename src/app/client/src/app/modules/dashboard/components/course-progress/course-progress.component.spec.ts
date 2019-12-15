@@ -1,5 +1,4 @@
-
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { DashboardModule } from '@sunbird/dashboard';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -18,7 +17,7 @@ import {
   ToasterService, ServerResponse
 } from '@sunbird/shared';
 import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
-import { CourseProgressService } from './../../services';
+import { CourseProgressService, UsageService } from './../../services';
 import { FormsModule } from '@angular/forms';
 import * as testData from './course-progress.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
@@ -71,9 +70,9 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule, DashboardModule,  TelemetryModule.forRoot()],
+        CoreModule, DashboardModule, TelemetryModule.forRoot()],
       declarations: [],
-      providers: [CourseProgressService,
+      providers: [CourseProgressService, UsageService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -179,7 +178,7 @@ describe('CourseProgressComponent', () => {
       spyOn(courseService, 'downloadDashboardData').and.callFake(() => observableThrowError({}));
       spyOn(toasterService, 'error').and.callThrough();
       component.downloadReport(true);
-      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.imsg.m0045 );
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.imsg.m0045);
     }));
 
   it('should unsubscribe to userData observable', () => {
@@ -191,7 +190,7 @@ describe('CourseProgressComponent', () => {
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
-    component.queryParams = { batchIdentifier: '0124963192947507200'};
+    component.queryParams = { batchIdentifier: '0124963192947507200' };
     component.ngOnInit();
     spyOn(component.unsubscribe, 'complete');
     component.ngOnDestroy();
@@ -199,7 +198,7 @@ describe('CourseProgressComponent', () => {
   });
   it('should call setpage method and set proper page number', inject([Router, UserService, CourseProgressService],
     (route, userService, courseService) => {
-      component.queryParams = { batchIdentifier: '0124963192947507200'};
+      component.queryParams = { batchIdentifier: '0124963192947507200' };
       component.pager = testData.mockUserData.pager;
       component.pager.totalPages = 8;
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
@@ -213,16 +212,38 @@ describe('CourseProgressComponent', () => {
 
 
   it('should download course progress report on click of progress report', () => {
-    spyOn<any>(component, 'downloadCourseProgressReport');
+    component.queryParams = { batchIdentifier: '0124963192947507200' };
+    const usageService = TestBed.get(UsageService);
+    spyOn(usageService, 'getData');
+    spyOn<any>(component, 'downloadCourseProgressReport').and.callThrough();
     component.downloadReport(false);
     expect(component['downloadCourseProgressReport']).toHaveBeenCalled();
+    expect(usageService.getData).toHaveBeenCalledWith('/courseProgress/course-progress-reports/report-0124963192947507200.csv');
   });
 
-  it('should download assessment report on click of score report', () => {
-    spyOn<any>(component, 'downloadAssessmentReport');
+  it('should show toaster error message when download course progress report fails', inject( [ToasterService], (toasterService) => {
+    component.queryParams = { batchIdentifier: '0124963192947507200' };
+    const usageService = TestBed.get(UsageService);
+    spyOn(usageService, 'getData').and.returnValue(observableThrowError(''));
+    spyOn(toasterService, 'error');
+    spyOn<any>(component, 'downloadCourseProgressReport').and.callThrough();
+    component.downloadReport(false);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
+
+  it('should download assessment report on click of score report', fakeAsync( inject([ToasterService], (toasterService) => {
+    component.queryParams = { batchIdentifier: '0124963192947507200' };
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(toasterService, 'error');
+    spyOn(courseProgressService, 'downloadDashboardData').and.returnValue(observableOf(testData.mockUserData.courseProgressMockData));
+    spyOn<any>(component, 'downloadAssessmentReport').and.callThrough();
+    spyOn(window, 'open');
     component.downloadReport(true);
+    tick(10);
     expect(component['downloadAssessmentReport']).toHaveBeenCalled();
-  });
-
-
+    expect(courseProgressService['downloadDashboardData']).toHaveBeenCalledWith({
+      batchIdentifier: '0124963192947507200'
+    });
+    expect(window.open).toHaveBeenCalledWith(testData.mockUserData.courseProgressMockData.result.reports.assessmentReportUrl, '_blank');
+  })));
 });
