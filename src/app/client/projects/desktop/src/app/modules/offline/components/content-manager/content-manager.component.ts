@@ -75,31 +75,32 @@ export class ContentManagerComponent implements OnInit {
         });
   }
 
-  contentManagerActions(type: string, action: string, contentId: string) {
+  contentManagerActions(type: string, action: string, id: string) {
+    // Unique download/import Id
     switch (`${action.toUpperCase()}_${type.toUpperCase()}`) {
       case 'PAUSE_IMPORT':
-        this.pauseImportContent(contentId);
+        this.pauseImportContent(id);
         break;
       case 'RESUME_IMPORT':
-        this.resumeImportContent(contentId);
+        this.resumeImportContent(id);
         break;
       case 'CANCEL_IMPORT':
-        this.cancelImportContent(contentId);
+        this.cancelImportContent(id);
         break;
       case 'RETRY_IMPORT':
-        this.retryImportContent(contentId);
+        this.retryImportContent(id);
         break;
       case 'PAUSE_DOWNLOAD':
-        this.pauseDownloadContent(contentId);
+        this.pauseDownloadContent(id);
         break;
       case 'RESUME_DOWNLOAD':
-        this.resumeDownloadContent(contentId);
+        this.resumeDownloadContent(id);
         break;
       case 'CANCEL_DOWNLOAD':
-        this.cancelDownloadContent(contentId);
+        this.cancelDownloadContent(id);
         break;
       case 'RETRY_DOWNLOAD':
-        this.retryDownloadContent(contentId);
+        this.retryDownloadContent(id);
         break;
     }
   }
@@ -113,55 +114,55 @@ export class ContentManagerComponent implements OnInit {
     data.status = currentStatus;
   }
 
-  private getSubscription(contentId) {
+  private getSubscription(id) {
     const _this = this;
     return ({
       next(apiResponse: any) {
-        _this.deleteLocalContentStatus(contentId);
+        _this.deleteLocalContentStatus(id);
         _this.apiCallSubject.next();
       },
       error(err) {
-        _this.deleteLocalContentStatus(contentId);
+        _this.deleteLocalContentStatus(id);
         _this.toasterService.error(_this.resourceService.messages.fmsg.m0097);
         _this.apiCallSubject.next();
       }
     });
   }
 
-  cancelDownloadContent(contentId) {
-    this.contentManagerService.cancelDownloadContent(contentId).subscribe(this.getSubscription(contentId));
+  cancelDownloadContent(id) {
+    this.contentManagerService.cancelDownloadContent(id).subscribe(this.getSubscription(id));
   }
 
-  pauseDownloadContent(contentId) {
-    this.contentManagerService.pauseDownloadContent(contentId).subscribe(this.getSubscription(contentId));
+  pauseDownloadContent(id) {
+    this.contentManagerService.pauseDownloadContent(id).subscribe(this.getSubscription(id));
   }
 
-  resumeDownloadContent(contentId) {
-    this.contentManagerService.resumeDownloadContent(contentId).subscribe(this.getSubscription(contentId));
+  resumeDownloadContent(id) {
+    this.contentManagerService.resumeDownloadContent(id).subscribe(this.getSubscription(id));
   }
 
-  retryDownloadContent(contentId) {
-    this.contentManagerService.resumeDownloadContent(contentId).subscribe(this.getSubscription(contentId));
+  retryDownloadContent(id) {
+    this.contentManagerService.resumeDownloadContent(id).subscribe(this.getSubscription(id));
   }
 
-  cancelImportContent(contentId) {
-    this.contentManagerService.cancelImportContent(contentId).subscribe(this.getSubscription(contentId));
+  cancelImportContent(id) {
+    this.contentManagerService.cancelImportContent(id).subscribe(this.getSubscription(id));
   }
 
-  pauseImportContent(contentId) {
-    this.contentManagerService.pauseImportContent(contentId).subscribe(this.getSubscription(contentId));
+  pauseImportContent(id) {
+    this.contentManagerService.pauseImportContent(id).subscribe(this.getSubscription(id));
   }
 
-  resumeImportContent(contentId) {
-    this.contentManagerService.resumeImportContent(contentId).subscribe(this.getSubscription(contentId));
+  resumeImportContent(id) {
+    this.contentManagerService.resumeImportContent(id).subscribe(this.getSubscription(id));
   }
 
-  retryImportContent(contentId) {
-    this.contentManagerService.retryImportContent(contentId).subscribe(this.getSubscription(contentId));
+  retryImportContent(id) {
+    this.contentManagerService.retryImportContent(id).subscribe(this.getSubscription(id));
   }
 
-  deleteLocalContentStatus(contentId) {
-    delete this.contentStatusObject[contentId];
+  deleteLocalContentStatus(id) {
+    delete this.contentStatusObject[id];
   }
 
   getContentPercentage(progressSize, totalSize) {
