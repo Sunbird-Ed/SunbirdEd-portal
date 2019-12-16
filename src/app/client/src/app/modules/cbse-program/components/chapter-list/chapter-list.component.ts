@@ -35,7 +35,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   private questionType: Array<any> = [];
   private textBookMeta: any;
   public hierarchyObj = {};
-  public collectionHierarchy;
+  public collectionHierarchy = [];
   public countData: Array<any> = [];
   public levelOneChapterList: Array<any> = [];
   public selectedChapterOption: any = {};
