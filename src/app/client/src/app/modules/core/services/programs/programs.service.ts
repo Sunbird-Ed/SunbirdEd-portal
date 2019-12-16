@@ -1,4 +1,4 @@
-import { mergeMap, catchError, tap } from 'rxjs/operators';
+import { mergeMap, catchError, tap, retry } from 'rxjs/operators';
 import { OrgDetailsService } from './../org-details/org-details.service';
 import { FrameworkService } from './../framework/framework.service';
 import { ExtPluginService } from './../ext-plugin/ext-plugin.service';
@@ -20,10 +20,11 @@ export class ProgramsService {
     return combineLatest([this.userService.userData$, this.orgDetailsService.getCustodianOrgDetails()])
       .pipe(
         mergeMap(([userData, custodianOrgDetails]) => {
-          return iif(() => (_.get(userData, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrgDetails, 'result.response.value') && !_.get(userData, 'stateValidated')),
+          return iif(() => (_.get(userData, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrgDetails, 'result.response.value') || !_.get(userData, 'stateValidated')),
             of(false),
             this.getProgramsList())
         }),
+        retry(1),
         catchError(err => {
           return of(false);
         })
