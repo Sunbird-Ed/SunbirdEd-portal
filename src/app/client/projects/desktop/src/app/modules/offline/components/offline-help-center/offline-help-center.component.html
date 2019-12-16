@@ -1,4 +1,4 @@
-<div class="sbpage-title sb-bg-color-white">
+<div class="sbpage-title sb-bg-color-white" [appTelemetryImpression]="setTelemetryImpression()">
     <div class="ui container">
         <h1>{{resourceService?.frmelmnts?.lbl?.learn_more | interpolate:'{instance}': instance}}</h1>
     </div>
