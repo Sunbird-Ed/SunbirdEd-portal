@@ -2,22 +2,32 @@
   <div class="sb-pageSection-header">
   </div>
   <div class="sb-pageSection-content">
-    <div class="sbgrid sbgrid--grid-carousel">
-      <div class="sbcard sbcard--resource sbcard--course" *ngFor="let sbcard of sbcards">
-        <div class="sbcard__main_area">
-          <div class="sbcard__img mr-8"><img src="assets/images/programs_default.png" alt="" title="" /></div>
-          <div class="sbcard__info">
-            <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two sb-color-primary font-weight-bold">{{sbcard.title}}</h4>
-            <div class="sbcard__meta1"><span>{{sbcard.subject}}</span>
+    <div class="sbgrid sbgrid--grid-carousel" *ngIf="(programsList$ | async ) as programsList else loading">
+      <ng-container *ngIf="programsList && programsList.length else noResult">
+        <div class="sbcard sbcard--resource sbcard--course" *ngFor="let program of programsList">
+          <div class="sbcard__main_area">
+            <div class="sbcard__img mr-8"><img src="assets/images/programs_default.png" alt="" title="" /></div>
+            <div class="sbcard__info">
+              <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two sb-color-primary font-weight-bold">
+                {{program?.name}}
+              </h4>
+              <div class="sbcard__meta1"><span>{{program?.description}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="sbcard__moreinfo">
+            <div class="sbcard__meta2">
+              <div class="sbcard__medium">CBSE</div>
             </div>
           </div>
         </div>
-        <div class="sbcard__moreinfo">
-          <div class="sbcard__meta2">
-            <div class="sbcard__medium">CBSE</div>
-          </div>
-        </div>
-      </div>
+      </ng-container>
+      <ng-template #noResult>
+        <app-no-result [data]="{messageText: 'no result found'}"></app-no-result>
+      </ng-template>
     </div>
+    <ng-template #loading>
+      <app-loader></app-loader>
+    </ng-template>
   </div>
 </div>

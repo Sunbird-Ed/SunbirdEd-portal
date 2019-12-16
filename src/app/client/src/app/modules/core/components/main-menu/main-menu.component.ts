@@ -4,9 +4,10 @@ import { UserService, PermissionService, ProgramsService } from '../../services'
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { first, filter } from 'rxjs/operators';
+import { first, filter, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
+import { merge } from 'rxjs';
 declare var jQuery: any;
 
 /**
@@ -65,7 +66,7 @@ export class MainMenuComponent implements OnInit {
 
   signInIntractEdata: IInteractEventEdata;
   slug: string;
-  showContributeTab: boolean = true;
+  showContributeTab: boolean;
   /*
   * constructor
   */
@@ -88,12 +89,18 @@ export class MainMenuComponent implements OnInit {
     }
     this.setInteractData();
     this.getUrl();
-    this.userService.userData$.pipe(first()).subscribe(
-      (user: IUserData) => {
+    merge(this.programsService.enableContributeMenu().pipe(
+      tap((showTab: boolean) => {
+        this.showContributeTab = showTab;
+      })
+    ), this.userService.userData$.pipe(
+      tap((user: IUserData) => {
         if (user && !user.err) {
-          this.userProfile = user.userProfile;
+          this.userProfile = _.get(user, 'userProfile');
         }
-      });
+      }),
+      first()
+    )).subscribe()
   }
   setInteractData() {
     this.homeMenuIntractEdata = {

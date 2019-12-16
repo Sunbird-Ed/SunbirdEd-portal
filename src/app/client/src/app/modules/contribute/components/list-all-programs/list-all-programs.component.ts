@@ -1,4 +1,7 @@
+import { ResourceService } from '@sunbird/shared';
+import { IProgramsList, ProgramsService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-all-programs',
@@ -7,21 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListAllProgramsComponent implements OnInit {
 
-  sbcards = [];
-  constructor() { }
+  public programsList$: Observable<IProgramsList>;
+  constructor(private programsService: ProgramsService, public resourceService: ResourceService) { }
 
   ngOnInit() {
-    this.sbcards = [{
-      title: 'okay',
-      subject: 'test'
-    },
-    {
-      title: 'okay',
-      subject: 'test'
-    }, {
-      title: 'okay',
-      subject: 'test'
-    }]
+    this.programsList$ = this.programsService.programsList$;
   }
 
 }
