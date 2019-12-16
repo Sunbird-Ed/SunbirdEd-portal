@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { combineLatest, of, iif, Observable, BehaviorSubject, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
-import { data } from './data';
+import { mockProgramsApiResponse } from './programs.service.spec.data'
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +53,7 @@ export class ProgramsService {
    * get list of programs from ext framework Service
    */
   private getProgramsList() {
-    return of(data).pipe(
+    return of(mockProgramsApiResponse).pipe(
       map((apiResponse) => _.get(apiResponse, 'result.programs')),
       catchError(err => {
         return of([]);

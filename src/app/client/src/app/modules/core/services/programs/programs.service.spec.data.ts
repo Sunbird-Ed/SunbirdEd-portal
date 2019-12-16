@@ -1,4 +1,4 @@
-export const data = {
+export const mockProgramsApiResponse = {
     "id": "api.program.read",
     "params": {
       "resmsgid": "5c04bedb-8729-4f5a-a029-019a4e0048a7",
