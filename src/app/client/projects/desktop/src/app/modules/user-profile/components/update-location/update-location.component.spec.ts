@@ -84,6 +84,7 @@ describe('UpdateLocationComponent', () => {
   it('should call close modal', () => {
     spyOn(component, 'closeModal');
     spyOn(component.dismissed, 'emit');
+
   });
 
 
