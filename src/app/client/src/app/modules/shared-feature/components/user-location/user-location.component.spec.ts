@@ -18,6 +18,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {userLocationMockData} from './user-location.component.spec.data';
 import {of as observableOf, throwError as observableThrowError} from 'rxjs';
 import {TenantService, UserService} from '@sunbird/core';
+import { TelemetryService } from '@sunbird/telemetry';
 
 
 describe('UserLocationComponent', () => {
@@ -32,7 +33,7 @@ describe('UserLocationComponent', () => {
       providers: [
         {provide: ResourceService, useValue: userLocationMockData.resourceBundle},
         ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService,
-        NavigationHelperService, DeviceDetectorService
+        NavigationHelperService, DeviceDetectorService, TelemetryService
       ]
     })
       .compileComponents();
@@ -292,5 +293,18 @@ describe('UserLocationComponent', () => {
     expect(component.selectedDistrict).toEqual(userLocationMockData.districtList[0]);
   });
 
+  it('should call to update user location and device location when state district changed', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    component.allStates = userLocationMockData.stateList;
+    component.allDistricts = userLocationMockData.districtList;
+    component.setStateDistrict(userLocationMockData.suggestedLocation);
+    component.userDetailsForm.value.state = '22';
+    component.userDetailsForm.value.district = '33';
+    spyOn(component, 'updateLocation');
+    spyOn(telemetryService, 'interact');
+    component.updateUserLocation();
+    expect(component.updateLocation).toHaveBeenCalledWith({locationCodes: ['22', '33']},
+      userLocationMockData.suggestedLocation1);
+  });
 
 });

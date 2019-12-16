@@ -4,14 +4,29 @@ export const userLocationMockData = {
     name: 'Himachal Pradesh',
     id: '4a6d77a1-6653-4e30-9be8-93371b6b53b5',
     type: 'state'
-  }],
+  },
+    {
+      code: '22',
+      name: 'Karnataka',
+      id: '4a6d77a1-6653-4e30-9be8-93371b6b53e6',
+      type: 'state'
+    },
+  ],
   districtList: [{
     code: '2907',
     name: 'KOPPAL',
     id: 'cde02789-5803-424b-a3f5-10db347280e9',
     type: 'district',
     parentId: '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
-  }],
+  },
+    {
+      code: '33',
+      name: 'Test',
+      id: 'cde02789-5803-424b-a3f5-10db347280b5',
+      type: 'district',
+      parentId: '4a6d77a1-6653-4e30-9be8-93371b6b53e6'
+    }
+  ],
   stateResponse: {
     result: {
       response: [{
@@ -119,6 +134,21 @@ export const userLocationMockData = {
       id: 'cde02789-5803-424b-a3f5-10db347280e9',
       type: 'district',
       parentId: '4a6d77a1-6653-4e30-9be8-93371b6b53b5'
+    }
+  },
+  suggestedLocation1: {
+    state: {
+      code: '22',
+      name: 'Karnataka',
+      id: '4a6d77a1-6653-4e30-9be8-93371b6b53e6',
+      type: 'state'
+    },
+    district: {
+      code: '33',
+      name: 'Test',
+      id: 'cde02789-5803-424b-a3f5-10db347280b5',
+      type: 'district',
+      parentId: '4a6d77a1-6653-4e30-9be8-93371b6b53e6'
     }
   }
 };
