@@ -13,6 +13,15 @@ interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;
 }
 
+interface IUserParticipentDetails {
+  enrolledOn: any;
+  onBoarded: boolean;
+  onBoardingData: object;
+  programId: string;
+  roles: any;
+  userId: string
+}
+
 @Component({
   selector: 'app-program-component',
   templateUrl: './program.component.html'
@@ -39,7 +48,6 @@ export class ProgramComponent implements OnInit {
     // playerComponent: PlayerComponent
   };
 
-
   public component;
   constructor(public resourceService: ResourceService, public configService: ConfigService, public activatedRoute: ActivatedRoute,
     public extPluginService: ExtPluginService, public userService: UserService, public toasterService: ToasterService) {
@@ -49,7 +57,6 @@ export class ProgramComponent implements OnInit {
 
   ngOnInit() {
     this.userProfile = this.userService.userProfile;
-    console.log(this.userProfile);
     if (['null', null, undefined, 'undefined'].includes(this.programId)) {
       console.log('no programId found'); // TODO: need to handle this case
     }
@@ -61,11 +68,7 @@ export class ProgramComponent implements OnInit {
 
     });
     this.fetchProgramDetails().subscribe((programDetails) => {
-      if (!this.programDetails.userDetails || !this.programDetails.userDetails.onBoarded) {
-        this.showOnboardPopup = true;
-      }
-      this.handleHeader('success');
-      this.initiateInputs('success');
+      this.handleOnboarding();
     }, error => {
       // TODO: navigate to program list page
       const errorMes = typeof _.get(error, 'error.params.errmsg') === 'string' && _.get(error, 'error.params.errmsg');
@@ -75,20 +78,69 @@ export class ProgramComponent implements OnInit {
 
   }
 
-  initiateInputs (status) {
+  handleOnboarding() {
+    const checkUserParticipentData = this.programDetails.userDetails ? true : false;
+    if (checkUserParticipentData) {
+      this.showOnboardPopup = false;
+      this.handleHeader('success');
+      this.initiateInputs('success');
+    }
+    else if (_.has(programSession, 'onBoardingForm')) {
+      this.showOnboardPopup = true;
+      this.handleHeader('success');
+      this.initiateInputs('success');
+    }
+    else {
+      this.userOnbording();
+      this.showOnboardPopup = false;
+    }
+  }
 
+  userOnbording(): any {
+    const req = {
+      url: `program/v1/add/participant`,
+      data: {
+        request: {
+          programId: this.programDetails.programId,
+          userId: this.userService.userid,
+          onBoarded: true
+        }
+      }
+    };
+    this.extPluginService.post(req).subscribe((data) => {
+      this.setUserParticipentDetails(data);
+    }, error => {
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'User onbording fails');
+    });
+  }
+
+  setUserParticipentDetails(data: { [x: string]: { [x: string]: any; }; }) {
+    const userDetails: IUserParticipentDetails = {
+      enrolledOn: data['ts'],
+      onBoarded: true,
+      onBoardingData: {},
+      programId: data['result']['programId'],
+      roles: ['CONTRIBUTOR'],
+      userId: this.userService.userid
+    };
+    this.programDetails['userDetails'] = userDetails;
+    this.handleHeader('success');
+    this.initiateInputs('success');
+  }
+
+  initiateInputs(status) {
     this.dynamicInputs = {
-      collectionComponentInput:  {
+      collectionComponentInput: {
         programDetails: this.programDetails,
         userProfile: this.userProfile,
-        config: _.find(programSession.components, {'id': 'ng.sunbird.collection'}), // TODO: change programSession to programDetails
+        config: _.find(programSession.components, { 'id': 'ng.sunbird.collection' }), // TODO: change programSession to programDetails
         entireConfig: programSession
       }
     };
   }
 
   handleHeader(status) {
-    console.log(programSession);
+    // console.log(programSession);
     if (status === 'success') {
       this.headerComponentInput = {
         roles: _.get(programSession, 'roles'),
@@ -103,7 +155,7 @@ export class ProgramComponent implements OnInit {
         //   return obj.roles.includes(this.programDetails.userDetails.roles[0]);  // TODO: Have to change to current role
         // });
         // this.defaultView = _.find(programSession['header'].config.tabs, { 'index': tab.activeTab }).onClick;
-        this.defaultView = _.find(this.tabs, {'index': this.getDefaultActiveTab()});
+        this.defaultView = _.find(this.tabs, { 'index': this.getDefaultActiveTab() });
         this.component = this.componentMapping[this.defaultView.onClick];
       }
     } else {
@@ -111,13 +163,13 @@ export class ProgramComponent implements OnInit {
     }
   }
 
-  getDefaultActiveTab () {
-   const defaultView =  _.find(programSession.roles, {'name': this.programDetails.userDetails.roles[0]});
-   if (defaultView) {
-    return defaultView.defaultTab;
-   } else {
-     return 1;
-   }
+  getDefaultActiveTab() {
+    const defaultView = _.find(programSession.roles, { 'name': this.programDetails.userDetails.roles[0] });
+    if (defaultView) {
+      return defaultView.defaultTab;
+    } else {
+      return 1;
+    }
   }
 
   getAssociatedPrograms() {
@@ -156,6 +208,7 @@ export class ProgramComponent implements OnInit {
   handleOnboardEvent(event) {
     this.fetchProgramDetails().subscribe((programDetails) => {
       this.showOnboardPopup = false;
+      this.ngOnInit();
     }, error => {
       // TODO: navigate to program list page
       this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching program details failed');
