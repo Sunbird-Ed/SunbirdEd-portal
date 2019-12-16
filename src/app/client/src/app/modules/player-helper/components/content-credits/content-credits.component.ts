@@ -2,7 +2,6 @@ import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angu
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { ContentData, ContentCreditsData } from '@sunbird/shared';
-import { LocationStrategy } from '@angular/common';
 
 @Component({
   selector: 'app-content-credits',
@@ -37,16 +36,18 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   *@param {ResourceService} SearchService Reference of SearchService
   *@param {WorkSpaceService} WorkSpaceService Reference of SearchService
   */
- public url;
+showCopiedContent = false;
  instance: string;
 
-  constructor(resourceService: ResourceService, url: LocationStrategy) {
-    this.url = url;
+  constructor(resourceService: ResourceService) {
     this.resourceService = resourceService;
   }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
+    if (window.location.href.toString().includes('course')) {
+      this.showCopiedContent = true;
+    }
   }
 
   ngOnChanges() {
