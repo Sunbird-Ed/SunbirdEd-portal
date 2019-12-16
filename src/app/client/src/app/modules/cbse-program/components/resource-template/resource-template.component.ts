@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Output, Input, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
+import { ISelectedAttributes, IChapterListComponentInput, IResourceTemplateComponentInput } from '../../interfaces';
 
 @Component({
   selector: 'app-resource-template',
@@ -9,6 +10,7 @@ import * as _ from 'lodash-es';
 export class ResourceTemplateComponent implements OnInit, OnDestroy {
 
   @ViewChild('modal') private modal;
+  @Input() resourceTemplateComponentInput: IResourceTemplateComponentInput = {};
   @Output() templateSelection = new EventEmitter<any>();
   showButton = false;
   public templateList;
@@ -17,129 +19,7 @@ export class ResourceTemplateComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.templateList = [{
-      'name': 'Explanation',
-      'contentType': 'ExplanationResource',
-      'mimeType': [
-        'application/pdf'
-      ],
-      'thumbnail': '',
-      'description': 'description',
-      'marks': 5,
-      'resourceType': '',
-      'Audience': '',
-      'formConfiguration': [
-        {
-          'code': 'LearningOutcome',
-          'range': [],
-          'label': 'Learning Outcome',
-          'multiselect': true
-        },
-        {
-          'code': 'bloomslevel',
-          'range': [],
-          'label': 'Learning Level',
-          'multiselect': true
-        }
-      ],
-      'filesConfig': {
-        'accepted': 'pdf',
-        'size': '50'
-      }
-    },
-    {
-      'name': 'Experimental',
-      'contentType': 'ExperientialResource',
-      'mimeType': [
-        'video/mp4',
-        'video/webm',
-        'video/x-youtube'
-      ],
-      'thumbnail': '',
-      'description': 'description',
-      'marks': 5,
-      'resourceType': '',
-      'Audience': '',
-      'formConfiguration': [
-        {
-          'code': 'LearningOutcome',
-          'range': [],
-          'label': 'Learning Outcome',
-          'multiselect': true
-        },
-        {
-          'code': 'bloomslevel',
-          'range': [],
-          'label': 'Learning Level',
-          'multiselect': true
-        }
-      ],
-      'filesConfig': {
-        'accepted': 'mp4, webm, youtube',
-        'size': '50'
-      }
-    },
-    {
-      'name': 'Practice Sets',
-      'contentType': 'PracticeQuestionSet',
-      'mimeType': [
-        'application/vnd.ekstep.ecml-archive'
-      ],
-      'questionCategories': [
-        'vsa',
-        'sa',
-        'la',
-        'mcq'
-      ],
-      'thumbnail': '',
-      'description': 'description',
-      'marks': 5,
-      'resourceType': '',
-      'Audience': '',
-      'formConfiguration': [
-        {
-          'code': 'LearningOutcome',
-          'range': [],
-          'label': 'Learning Outcome',
-          'multiselect': true
-        },
-        {
-          'code': 'bloomslevel',
-          'range': [],
-          'label': 'Learning Level',
-          'multiselect': true
-        }
-      ]
-    },
-    {
-      'name': 'Curiosity',
-      'contentType': 'CuriosityQuestionSet',
-      'mimeType': [
-        'application/vnd.ekstep.ecml-archive'
-      ],
-      'questionCategories': [
-        'curiosity'
-      ],
-      'thumbnail': '',
-      'description': 'description',
-      'marks': 5,
-      'resourceType': '',
-      'Audience': '',
-      'formConfiguration': [
-        {
-          'code': 'LearningOutcome',
-          'range': [],
-          'label': 'Learning Outcome',
-          'multiselect': true
-        },
-        {
-          'code': 'bloomslevel',
-          'range': [],
-          'label': 'Learning Level',
-          'multiselect': true
-        }
-      ]
-    }];
+    this.templateList = _.get(this.resourceTemplateComponentInput, 'templateList');
   }
 
   handleSubmit() {

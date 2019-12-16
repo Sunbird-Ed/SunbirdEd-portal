@@ -8,6 +8,8 @@ import { tap, map } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { programSession } from './data';
 import { ICollectionComponentInput } from '../../../cbse-program/interfaces';
+import { InitialState } from '../../interfaces';
+import { ProgramStageService } from '../../services/';
 
 interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;
@@ -17,39 +19,51 @@ interface IDynamicInput {
   selector: 'app-program-component',
   templateUrl: './program.component.html'
 })
+
 export class ProgramComponent implements OnInit {
 
   public programId: string;
   public programDetails: any;
   public userProfile: any;
   public showLoader = true;
+  public showTabs = true;
   public showOnboardPopup = false;
   public programSelected = false;
   public associatedPrograms: any;
   public headerComponentInput: any;
   public tabs;
+  public showStage;
   public defaultView;
   public dynamicInputs: IDynamicInput;
+  public component;
   private componentMapping = {
     dashboardComponent: DashboardComponent,
-    // issueCertificateComponent: IssueCertificateComponent,
     collectionComponent: CollectionComponent,
-    // uploadComponent: UploadContentComponent,
-    // questionCreationComponent: QuestionCreationComponent,
-    // playerComponent: PlayerComponent
+  };
+  public state: InitialState = {
+    stages: []
+  };
+  public currentStage: any;
+
+  outputs = {
+    isCollectionSelected: (check) => {
+      this.showTabs = false;
+    }
   };
 
-
-  public component;
   constructor(public resourceService: ResourceService, public configService: ConfigService, public activatedRoute: ActivatedRoute,
-    public extPluginService: ExtPluginService, public userService: UserService, public toasterService: ToasterService) {
+    public extPluginService: ExtPluginService, public userService: UserService,
+    public toasterService: ToasterService, public programStageService: ProgramStageService) {
     this.programId = this.activatedRoute.snapshot.params.programId;
     localStorage.setItem('programId', this.programId);
   }
 
   ngOnInit() {
+    this.programStageService.getStage().subscribe(state => {
+      this.state.stages = state.stages;
+      this.changeView();
+    });
     this.userProfile = this.userService.userProfile;
-    console.log(this.userProfile);
     if (['null', null, undefined, 'undefined'].includes(this.programId)) {
       console.log('no programId found'); // TODO: need to handle this case
     }
@@ -76,7 +90,6 @@ export class ProgramComponent implements OnInit {
   }
 
   initiateInputs (status) {
-
     this.dynamicInputs = {
       collectionComponentInput:  {
         programDetails: this.programDetails,
@@ -87,29 +100,34 @@ export class ProgramComponent implements OnInit {
     };
   }
 
+
   handleHeader(status) {
-    console.log(programSession);
     if (status === 'success') {
       this.headerComponentInput = {
         roles: _.get(programSession, 'roles'),
         actions: _.get(programSession, 'actions'),
         header: _.get(programSession, 'header'),
-        userDetails: _.get(this.programDetails, 'userDetails')
+        userDetails: _.get(this.programDetails, 'userDetails'),
+        showTabs: this.showTabs
       };
       this.tabs = _.get(programSession, 'header.config.tabs');
 
       if (this.tabs) {
-        // const tab = _.find(this.tabs, (obj) => {
-        //   return obj.roles.includes(this.programDetails.userDetails.roles[0]);  // TODO: Have to change to current role
-        // });
-        // this.defaultView = _.find(programSession['header'].config.tabs, { 'index': tab.activeTab }).onClick;
         this.defaultView = _.find(this.tabs, {'index': this.getDefaultActiveTab()});
+        this.programStageService.addStage(this.defaultView.onClick);
         this.component = this.componentMapping[this.defaultView.onClick];
       }
     } else {
       console.log('program fetch failed'); // TODO: Have to change toaster
     }
   }
+
+  changeView() {
+    if (!_.isEmpty(this.state.stages)) {
+      this.currentStage  = _.last(this.state.stages).stage;
+    }
+  }
+
 
   getDefaultActiveTab () {
    const defaultView =  _.find(programSession.roles, {'name': this.programDetails.userDetails.roles[0]});

@@ -1,5 +1,5 @@
 
-<div *ngIf='!showLoader && !collection'>
+<div *ngIf="!showLoader && currentStage === 'collectionComponent'">
   <div  *ngIf="objectKey(collectionList).length" class="ui container">
     <div *ngFor="let key of objectKey(collectionList)">
       <sb-library-cards-grid [title]="key"  appTelemetryInteract [contentList]="collectionList[key]" [telemetryInteractEdata]="telemetryInteract" (cardClick)="collectionClickHandler($event)"></sb-library-cards-grid>
@@ -11,6 +11,6 @@
   </div>
 </div>
 
-<div *ngIf="collection">
+<div *ngIf="currentStage !== 'collectionComponent'">
   <app-chapter-list [chapterListComponentInput]="chapterListComponentInput" (selectedQuestionTypeTopic)="selectedQuestionTypeTopic"></app-chapter-list>
 </div>

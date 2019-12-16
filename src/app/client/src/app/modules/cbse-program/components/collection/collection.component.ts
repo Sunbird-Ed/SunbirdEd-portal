@@ -1,12 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
 import { PublicDataService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CbseProgramService } from '../../services';
+import { ProgramStageService } from '../../../program/services';
 import { ISelectedAttributes, IChapterListComponentInput } from '../../interfaces';
-
+import { InitialState } from '../../interfaces';
 
 @Component({
   selector: 'app-collection',
@@ -16,7 +17,7 @@ import { ISelectedAttributes, IChapterListComponentInput } from '../../interface
 export class CollectionComponent implements OnInit {
 
   @Input() collectionComponentInput: any;
-
+  @Output() isCollectionSelected  = new EventEmitter<any>();
   public selectedAttributes: ISelectedAttributes = {};
   public chapterListComponentInput: IChapterListComponentInput = {};
   public programDetails: any;
@@ -29,11 +30,23 @@ export class CollectionComponent implements OnInit {
   public collection;
   public role: any = {};
   showLoader = true;
+  public state: InitialState = {
+    stages: []
+  };
+  public showStage;
+  public currentStage: any;
 
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
-    private cbseService: CbseProgramService, public utilService: UtilService, public contentService: ContentService) { }
+    private cbseService: CbseProgramService, public programStageService: ProgramStageService,
+    public utilService: UtilService, public contentService: ContentService) { }
 
   ngOnInit() {
+    this.programStageService.getStage().subscribe(state => {
+      this.state.stages = state.stages;
+      this.changeView();
+    });
+
+    this.currentStage = 'collectionComponent';
     this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
     this.collectionComponentConfig = _.get(this.collectionComponentInput, 'config');
@@ -59,6 +72,11 @@ export class CollectionComponent implements OnInit {
 
   objectKey(obj) {
     return Object.keys(obj);
+  }
+  changeView() {
+    if (!_.isEmpty(this.state.stages)) {
+      this.currentStage  = _.last(this.state.stages).stage;
+    }
   }
 
   searchCollection() {
@@ -118,7 +136,6 @@ export class CollectionComponent implements OnInit {
   }
 
   collectionClickHandler(event) {
-    console.log(event);
     this.selectedAttributes.collection =  event.data.metaData.identifier;
     this.selectedAttributes.collectionName = event.data.name;
     this.collection = event.data;
@@ -129,6 +146,8 @@ export class CollectionComponent implements OnInit {
       entireConfig: this.entireConfig,
       role: this.role
     };
+    this.isCollectionSelected.emit(event.data.metaData.identifier ? true : false);
+    this.programStageService.addStage('chapterListComponent');
   }
 
 }
