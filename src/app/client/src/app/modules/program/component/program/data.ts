@@ -537,7 +537,7 @@ const programTwoSession = {
         {
           'index': 2,
           'label': 'Review',
-          'onClick': 'collectionComponent'
+          'onClick': 'dashboardComponent'
         },
         {
           'index': 3,
@@ -631,6 +631,7 @@ const programTwoSession = {
             {
               'name': 'Explanation',
               'contentType': 'ExplanationResource',
+              'onClick': 'uploadComponent',
               'mimeType': [
                 'application/pdf'
               ],
@@ -661,6 +662,7 @@ const programTwoSession = {
             {
               'name': 'Experimental',
               'contentType': 'ExperientialResource',
+              'onClick': 'uploadComponent',
               'mimeType': [
                 'video/mp4',
                 'video/webm',
@@ -693,6 +695,7 @@ const programTwoSession = {
             {
               'name': 'Practice Sets',
               'contentType': 'PracticeQuestionSet',
+              'onClick': 'practiceSetComponent',
               'mimeType': [
                 'application/vnd.ekstep.ecml-archive'
               ],

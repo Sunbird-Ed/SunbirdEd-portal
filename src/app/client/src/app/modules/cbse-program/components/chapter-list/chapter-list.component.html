@@ -1,6 +1,6 @@
 <div *ngIf='!showLoader && !showError' class="ui container sb-chapter-list"
   [appTelemetryImpression]="telemetryImpression">
-  <div class="mt-16" *ngIf="collectionHierarchy.length && !showContentUploader">
+  <div class="mt-16" *ngIf="collectionHierarchy.length && currentStage === 'chapterListComponent'">
     <div class="sb-cbse-homepage-container">
 
       <!-- Header Section -->
@@ -69,7 +69,7 @@
         </div>
       </div>
 
-      <app-resource-template *ngIf='showResourceTemplatePopup' (templateSelection)="handleTemplateSelection($event)">
+      <app-resource-template *ngIf='showResourceTemplatePopup' [resourceTemplateComponentInput]="resourceTemplateComponentInput"  (templateSelection)="handleTemplateSelection($event)">
       </app-resource-template>
 
       <!-- Move to Modal Section -->
@@ -146,15 +146,16 @@
       </sui-modal>
     </div>
   </div>
-  <div class="twelve wide column" *ngIf="showContentUploader">
+  <div class="twelve wide column" *ngIf="currentStage !== 'chapterListComponent'">
     <!-- <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier"
       [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader> -->
 
       <ndc-dynamic [ndcDynamicComponent]="creationComponent" [ndcDynamicInputs]="dynamicInputs" [ndcDynamicOutputs]="dynamicOutputs"></ndc-dynamic>
-
   </div>
   <div class="twelve wide column" *ngIf="!collectionHierarchy.length">
     <app-no-result></app-no-result>
   </div>
 </div>
-<app-loader *ngIf='showLoader && !showError'></app-loader>
+<div *ngIf='showLoader && !showError' class="ui container sb-chapter-list">
+  <app-loader ></app-loader>
+</div>
