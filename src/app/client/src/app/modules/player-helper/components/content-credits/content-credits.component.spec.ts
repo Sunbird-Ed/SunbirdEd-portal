@@ -6,6 +6,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Response } from './content-credits.component.spec.data';
 import { CacheService } from 'ng2-cache-service';
+import { LocationStrategy } from '@angular/common';
 describe('ContentCreditsComponent', () => {
   let component: ContentCreditsComponent;
   let fixture: ComponentFixture<ContentCreditsComponent>;
@@ -14,7 +15,7 @@ describe('ContentCreditsComponent', () => {
     TestBed.configureTestingModule({
       imports: [SuiModule , HttpClientTestingModule ],
       declarations: [ContentCreditsComponent, InterpolatePipe],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, LocationStrategy],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
