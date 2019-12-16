@@ -19,18 +19,12 @@ export class ContentManagerComponent implements OnInit {
   callContentList = false;
   callContentListTimer = false;
   contentStatusObject = {};
-  telemetryInteractEdata: IInteractEventEdata = {
-    id: 'content-click',
-    type: 'click',
-    pageid: 'content-manager'
-  };
   subscription: any;
-  interactData: IInteractEventEdata;
   localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming', 'pausing', 'canceling'];
   cancelId: string;
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
-  completedCount;
+  completedCount: number;
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -178,26 +172,31 @@ export class ContentManagerComponent implements OnInit {
   }
 
   getTelemetryInteractData() {
+    const pageId = _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+      _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+      _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env');
     return {
       id: this.isOpen ? 'content-manager-close' : 'content-manager-open',
       type: 'click',
-      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') ?
-        _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') : ''
+      pageid: pageId
     };
   }
 
-  setTelemetryInteractEdataData(id, percentage) {
-    this.interactData = {
+  getButtonsInteractData(id, percentage) {
+    const pageId = _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+      _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+      _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env');
+    const interactData = {
       id: id,
       type: 'click',
-      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') ?
-        _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') : ''
+      pageid: pageId
     };
 
     if (percentage) {
-      this.interactData['extra'] = {
+      interactData['extra'] = {
         percentage: percentage
       };
     }
+    return interactData;
   }
 }
