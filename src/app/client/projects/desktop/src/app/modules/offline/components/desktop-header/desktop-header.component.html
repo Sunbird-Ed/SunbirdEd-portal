@@ -9,14 +9,14 @@
         <div class="sbheader sbheader--offline">
             <div class="sbheader__branding sbheader--offline__branding">
                 <div class="logo" (click)="navigateToHome()" appTelemetryInteract
-                    [telemetryInteractEdata]="homeInteractEdata">
+                    [telemetryInteractEdata]="getTelemetryEdata('home')">
                     <img src="{{tenantInfo.logo}}" alt={{tenantInfo.titleName}}>
                 </div>
             </div>
 
             <div class="sbheader-mid-container">
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-qrcode mr-16" appTelemetryInteract
-                    [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrModal = true;"
+                    [telemetryInteractEdata]="getTelemetryEdata('enterDialCode')" (click)="showQrModal = true;"
                     title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}">
                     <span class="qrcode">
                         <i class="icon-svg icon-svg--xxs icon-qr">
@@ -36,7 +36,7 @@
 
                             <i class="icon-svg icon-svg--xxs icon-close" *ngIf="queryParam?.key?.length"
                                 (click)="clearSearchQuery()" appTelemetryInteract
-                                [telemetryInteractEdata]="clearSearchInteractEdata">
+                                [telemetryInteractEdata]="getTelemetryEdata('clearSearch')">
                                 <svg class="icon icon-svg--primary">
                                     <use xlink:href="assets/images/sprite.svg#close-button"></use>
                                 </svg>
@@ -57,7 +57,7 @@
 
             <div class="sbheader--offline__actions">
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" appTelemetryInteract
-                    [telemetryInteractEdata]="takeTourInteractEdata">
+                    [telemetryInteractEdata]="getTelemetryEdata('takeTour')">
                     <i class="icon-svg icon-svg--xxs icon-play">
                         <svg class="icon icon-svg--primary">
                             <use xlink:href="assets/images/sprite.svg#play"></use>
@@ -65,7 +65,7 @@
                     {{resourceService?.frmelmnts?.btn?.takeTour}}
                 </button>
                 <button (click)="handleImport()" appTelemetryInteract
-                    [telemetryInteractEdata]="contentImportInteractEdata"
+                    [telemetryInteractEdata]="getTelemetryEdata('contentImport')"
                     class="sb-btn sb-btn-normal sb-btn-outline-tertiary">{{resourceService?.frmelmnts?.lbl?.uploadContent}}</button>
             </div>
         </div>
@@ -82,15 +82,15 @@
             <div class="d-flex sb-offline-menu-container flex-ai-center">
                 <a [routerLink]="'/'"
                     [ngClass]="(router.isActive('/', false) && !(router.isActive('/browse', false) || router.isActive('/help-center', false)) ) ? 'active': ''"
-                    appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+                    appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('myLibrary')">
                     <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
                 </a>
                 <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
-                    [telemetryInteractEdata]="browseEdata">
+                    [telemetryInteractEdata]="getTelemetryEdata('browse')">
                     <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
                 </a>
                 <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract
-                    [telemetryInteractEdata]="helpCenterEdata">
+                    [telemetryInteractEdata]="getTelemetryEdata('helpCenter')">
                     <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
                 </a>
             </div>

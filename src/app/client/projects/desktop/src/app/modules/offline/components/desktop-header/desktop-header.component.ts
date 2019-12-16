@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import { first, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -7,7 +7,6 @@ import { Subject } from 'rxjs';
 
 import { OrgDetailsService, FormService, TenantService } from '@sunbird/core';
 import { ConfigService, ResourceService, UtilService } from '@sunbird/shared';
-import { IInteractEventEdata } from '@sunbird/telemetry';
 import { ElectronDialogService } from '../../services';
 
 export interface ILanguage {
@@ -29,15 +28,6 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
   availableLanguages: ILanguage[];
   public unsubscribe$ = new Subject<void>();
 
-  contentImportInteractEdata: IInteractEventEdata;
-  browseEdata: IInteractEventEdata;
-  helpCenterEdata: IInteractEventEdata;
-  enterDialCodeInteractEdata: IInteractEventEdata;
-  takeTourInteractEdata: IInteractEventEdata;
-  clearSearchInteractEdata: IInteractEventEdata;
-  homeInteractEdata: IInteractEventEdata;
-  myLibraryMenuInteractEdata: IInteractEventEdata;
-
   languageFormQuery = {
     formType: 'content',
     formAction: 'search',
@@ -56,7 +46,8 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService,
     public electronDialogService: ElectronDialogService,
     public tenantService: TenantService,
-    private utilService: UtilService
+    private utilService: UtilService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -66,9 +57,7 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.setInteractData();
     this.getTenantInfo();
-
     this.utilService.searchQuery$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => this.clearSearchQuery());
@@ -147,16 +136,12 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  getSearchButtonInteractEdata(key) {
-    const searchInteractEData = {
-      id: `search-button`,
-      type: 'click',
-      pageid: this.router.url.split('/')[1] || 'library'
-    };
+  getSearchButtonInteractEdata(searchKey) {
+    const searchInteractEData = this.getTelemetryEdata('search');
 
-    if (key) {
+    if (searchKey) {
       searchInteractEData['extra'] = {
-        query: key
+        query: searchKey
       };
     }
 
@@ -171,47 +156,58 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     this.electronDialogService.showContentImportDialog();
   }
 
-  setInteractData() {
-    this.contentImportInteractEdata = {
-      id: 'content-import-button',
-      type: 'click',
-      pageid: this.router.url.split('/')[1] || 'library'
+  getTelemetryEdata(key) {
+    const pageId = _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+      _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'library';
+
+    const interactData = {
+      contentImport: {
+        id: 'content-import-button',
+        type: 'click',
+        pageid: pageId
+      },
+      myLibrary: {
+        id: 'my-downloads-tab',
+        type: 'click',
+        pageid: pageId
+      },
+      browse: {
+        id: 'browse-tab',
+        type: 'click',
+        pageid: pageId
+      },
+      helpCenter: {
+        id: 'help-center-tab',
+        type: 'click',
+        pageid: pageId
+      },
+      enterDialCode: {
+        id: 'click-dial-code',
+        type: 'click',
+        pageid: pageId
+      },
+      takeTour: {
+        id: 'take-tour-button',
+        type: 'click',
+        pageid: pageId
+      },
+      clearSearch: {
+        id: 'clear-search-button',
+        type: 'click',
+        pageid: pageId
+      },
+      home: {
+        id: 'tenant-logo',
+        type: 'click',
+        pageid: pageId
+      },
+      search: {
+        id: `search-button`,
+        type: 'click',
+        pageid: pageId
+      }
     };
-    this.myLibraryMenuInteractEdata = {
-      id: 'my-downloads-tab',
-      type: 'click',
-      pageid: 'library'
-    };
-    this.browseEdata = {
-      id: 'browse-tab',
-      type: 'click',
-      pageid: 'browse'
-    };
-    this.helpCenterEdata = {
-      id: 'help-center-tab',
-      type: 'click',
-      pageid: 'help-center'
-    };
-    this.enterDialCodeInteractEdata = {
-      id: 'click-dial-code',
-      type: 'click',
-      pageid: this.router.url.split('/')[1] || 'library'
-    };
-    this.takeTourInteractEdata = {
-      id: 'take-tour-button',
-      type: 'click',
-      pageid: this.router.url.split('/')[1] || 'library'
-    };
-    this.clearSearchInteractEdata = {
-      id: 'clear-search-button',
-      type: 'click',
-      pageid: this.router.url.split('/')[1] || 'library'
-    };
-    this.homeInteractEdata = {
-      id: 'tenant-logo',
-      type: 'click',
-      pageid: this.router.url.split('/')[1] || 'library'
-    };
+    return interactData[key];
   }
 
   ngOnDestroy() {
