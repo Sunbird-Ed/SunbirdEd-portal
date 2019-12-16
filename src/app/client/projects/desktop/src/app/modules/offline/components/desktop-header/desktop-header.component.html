@@ -89,8 +89,7 @@
                     [telemetryInteractEdata]="browseEdata">
                     <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
                 </a>
-                <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract
-                    [telemetryInteractEdata]="helpCenterEdata">
+                <a routerLinkActive="active" [routerLink]="'/help-center'" (click)="setInteractDataForHelp({id: 'help-center'})" >
                     <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
                 </a>
             </div>

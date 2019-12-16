@@ -3,7 +3,6 @@
     </app-library-filters>
     <div *ngIf="(router.url.includes('browse') && isConnected) || !router.url.includes('browse')">
         <div class="ui container">
-
                 <div class="twelve wide column" *ngIf="carouselMasterData.length === 0 && !showLoader">
                         <app-no-content></app-no-content>
                     <!-- <app-no-result [data]="noResultMessage"></app-no-result> -->
@@ -11,7 +10,6 @@
                 <div class="ui stackable grid">
             <div class="nine wide column">
                     <section class="mb-16" *ngFor="let section of pageSections; let index=index;">
-
                             <!-- START OF RECENTLY VIEWED CONTENT-->
                             <section *ngIf="index === 0 && section?.name === 'Recently Added'">
                                 <div class="header">
@@ -48,19 +46,14 @@
                     <app-info-card [text]="infoData" (navigate)="navigateToMyDownloads()"></app-info-card>
             </div>
               </div>
-          
-           
         </div>
     </div>
-
 </div>
-
 <sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
     <div class="ui active centered inline loader"></div>
     <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
     </h6>
 </sui-dimmer>
-
 <sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
     <div class="ui active centered inline loader"></div>
     <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
