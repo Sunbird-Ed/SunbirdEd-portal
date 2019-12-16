@@ -94,7 +94,7 @@ export class OfflineHelpVideosComponent implements OnInit {
     return {
       id: data.id,
       type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'help'
     };
   }
 
