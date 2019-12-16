@@ -26,7 +26,7 @@ const containerName = envHelper.sunbird_azure_certificates_container_name;
 
 const validateName = (name) => name ? true : false;
 
-const validateExternalId = (schoolExtId) => schoolExtId ? true : false;
+const validateExternalId = (extId) => extId ? true : false;
 
 const convertCsvToJson = (csv) => csvjson.toObject(csv);
 
@@ -51,7 +51,7 @@ const generateAndAddCertificates = (req) => {
 
     async.eachOfLimit(_.get(rspObj, 'jsonObj'), BATCH_SIZE, (data, key, cb) => {
         const name = _.get(data, 'Name');
-        const extId = _.get(data, 'school external id');
+        const extId = _.get(data, 'external id');
         async.waterfall([async.constant({ name, extId, rspObj }), generateCertificateApiCall, addCertificateApiCall,
             downloadCertificateApiCall, downloadCertificate], (err, result) => {
                 if (!result && err) {
@@ -266,7 +266,8 @@ const validateRequestBody = (req, res, next) => {
     let userDetailsPresent = true;
     const userDetails = {
         userId: _.get(req, 'body.userId'),
-        rootOrgId: _.get(req, 'body.rootOrgId')
+        rootOrgId: _.get(req, 'body.rootOrgId'),
+        certKey:_.get(req, 'body.certKey')
     }
     var rspObj = { file, certType, userDetails };
     let err = [];
@@ -348,7 +349,7 @@ const checkForFileErrors = (jsonObj) => {
             for (var val in value) {
                 if (val.toLowerCase() === 'name') {
                     isName = validateName(value[val]);
-                } else if (val.toLowerCase() === 'school external id') {
+                } else if (val.toLowerCase() === 'external id') {
                     isExternalId = validateExternalId(value[val]);
                 }
             }
@@ -356,7 +357,7 @@ const checkForFileErrors = (jsonObj) => {
             if (!isName) {
                 error = `Row ${(Number(key) + 1)} : Name is Empty`
             } else if (!isExternalId) {
-                error = `Row ${(Number(key) + 1)} : School External ID is Empty`
+                error = `Row ${(Number(key) + 1)} : External ID is Empty`
             }
             if (error) {
                 err.push(error);
