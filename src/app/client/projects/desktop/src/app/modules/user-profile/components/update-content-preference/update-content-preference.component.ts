@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angu
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { OrgDetailsService, ChannelService, FrameworkService } from '@sunbird/core';
 
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { OnboardingService } from '../../../offline/services/onboarding/onboarding.service';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -41,10 +41,10 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
 
   createContentPreferenceForm() {
     this.contentPreferenceForm = this.formBuilder.group({
-      'board': ['', Validators.compose([Validators.required])],
-      'medium': ['', Validators.compose([Validators.required])],
-      'subjects': ['', Validators.compose([])],
-      'class': ['', Validators.compose([Validators.required])],
+      board: new FormControl(null, [Validators.required]),
+      medium: new FormControl(null, [Validators.required]),
+      class: new FormControl(null, [Validators.required]),
+      subjects: new FormControl(null, [Validators.required]),
     });
   }
 

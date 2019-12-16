@@ -29,8 +29,8 @@ export class UpdateLocationComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute
   ) { }
   ngOnInit() {
-    this.selectedState = this.userLocationData.state;
-    this.selectedDistrict = this.userLocationData.city;
+    this.selectedState = this.userLocationData ? this.userLocationData.state : '';
+    this.selectedDistrict = this.userLocationData ? this.userLocationData.city : '';
     this.getAllStates();
     this.setTelemetryData();
   }
