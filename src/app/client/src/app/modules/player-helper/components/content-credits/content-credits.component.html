@@ -1,13 +1,5 @@
-<sui-modal 
-  [mustScroll]="true" 
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'small'"
-  class="sb-modal"
-  (dismissed)="closeModal(contentCreditsModal)"
-  appBodyScroll
-  #contentCreditsModal
->
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  (dismissed)="closeModal(contentCreditsModal)" appBodyScroll #contentCreditsModal>
 
   <!--Header-->
   <div class="sb-modal-header">
@@ -18,15 +10,37 @@
   <!--Content-->
   <div class="sb-modal-content">
     <div class="ui list">
-      <!-- <div class="item mt-10" *ngIf="contentData.copyright">
+      <div class="item mt-10" *ngIf="contentData.copyright">
         <div class="header text-gray">{{resourceService.frmelmnts.lbl.copyRight}}</div>
         <div class="mt-5">{{contentData.copyright}}
-            <span *ngIf="contentData.copyrightYear">,&nbsp;{{contentData.copyrightYear}}</span>
+          <span *ngIf="contentData.copyrightYear">,&nbsp;{{contentData.copyrightYear}}</span>
         </div>
-      </div> -->
+      </div>
       <div class="item mt-10">
         <div class="header text-gray">{{resourceService?.frmelmnts?.lbl?.attributions}}</div>
         <div class="mt-5">{{contentCreditsData.attributions}}</div>
+      </div>
+      <div class="item" *ngIf="contentData && contentData.originData">
+        <div class="gray-shade mt-10">
+          {{resourceService.frmelmnts.lbl?.contentderivedfrom}}
+        </div>
+        <div class="item mt-10">
+          <div class="header text-gray">{{resourceService.frmelmnts.lbl?.contenttype}}</div>
+          <div class="mt-5">{{contentData.originData.name}}</div>
+        </div>
+        <div class="item mt-10">
+          <div class="header text-gray">{{resourceService.frmelmnts.lbl?.authorofsourcecontent}}</div>
+          <div class="mt-5">{{contentData.creator}}</div>
+        </div>
+        <div class="item mt-10">
+          <div class="header text-gray">{{resourceService.frmelmnts.lbl?.licenseTerms}}</div>
+          <div class="mt-5">{{contentData.originData.license}}</div>
+        </div>
+        <div class="item mt-10">
+          <div class="header text-gray">
+            {{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</div>
+          <div class="mt-5">{{contentData.originData.organisation[0]}}</div>
+        </div>
       </div>
     </div>
   </div>
