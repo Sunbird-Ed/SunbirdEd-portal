@@ -88,7 +88,7 @@ describe('UpdateContentPreferenceComponent', () => {
 
   });
 
-  it('should disable submit button when on chnage in board ', () => {
+  it('should disable submit button when on change in board ', () => {
     spyOn(component, 'onBoardChange');
     component.ngOnInit();
     let errors = {};
