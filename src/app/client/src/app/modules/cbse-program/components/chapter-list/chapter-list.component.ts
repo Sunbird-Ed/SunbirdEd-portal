@@ -51,6 +51,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
   };
   public resourceTemplateComponentInput: IResourceTemplateComponentInput = {};
 
+  prevUnitSelect: string;
+  contentId: string;
+  showLargeModal: boolean;
   // private labels: Array<string>;
   private actions: any;
   private componentMapping = {
@@ -149,8 +152,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
       param: { 'mode': 'edit' }
     };
     this.actionService.get(req).pipe(catchError(err => {
-      let errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo))
+      const errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }))
       .subscribe((response) => {
         this.collectionData = response.result.content;
@@ -233,8 +236,24 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.unitIdentifier = event.collection.identifier;
     switch (event.action) {
       case 'delete':
-        this.removeResourceToHierarchy(event.content.identifier, this.unitIdentifier);
-        break;
+         this.removeResourceToHierarchy(event.content.identifier, this.unitIdentifier);
+         break;
+      case 'beforeMove':
+          this.showLargeModal = true;
+          this.contentId = event.content;
+          this.prevUnitSelect = event.collection.identifier;
+          break;
+      case 'afterMove':
+          this.showLargeModal = false;
+          this.unitIdentifier = '';
+          this.contentId = ''; // Clearing selected unit/content details
+          this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
+          break;
+      case 'cancelMove':
+          this.showLargeModal = false;
+          this.unitIdentifier = '';
+          this.contentId = ''; // Clearing selected unit/content details
+          break;
       default:
           this.showResourceTemplatePopup = event.showPopup;
         break;

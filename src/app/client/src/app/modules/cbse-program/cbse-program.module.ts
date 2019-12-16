@@ -22,6 +22,8 @@ import { ResourceTemplateComponent } from './components/resource-template/resour
 import { DynamicModule } from 'ng-dynamic-component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CollectionComponent } from './components/collection/collection.component';
+import { ResourceReorderComponent } from './components/resource-reorder/resource-reorder.component';
+import { CollectionHierarchyService } from './services/collection-hierarchy/collection-hierarchy.service';
 
 
 @NgModule({
@@ -31,7 +33,7 @@ import { CollectionComponent } from './components/collection/collection.componen
     McqTemplateSelectionComponent,
     QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent,
     TextbookListComponent, DashboardComponent, RecursiveTreeComponent,
-    ContentUploaderComponent, CertificateDashboardComponent,  ResourceTemplateComponent, CollectionComponent],
+    ContentUploaderComponent, CertificateDashboardComponent,  ResourceTemplateComponent, CollectionComponent, ResourceReorderComponent],
   imports: [
     CommonModule,
     SuiTabsModule,
@@ -50,6 +52,7 @@ import { CollectionComponent } from './components/collection/collection.componen
       TextbookListComponent, DashboardComponent, RecursiveTreeComponent, ContentUploaderComponent, ResourceTemplateComponent]),
 
   ],
+  providers: [CollectionHierarchyService],
   exports: [ CbseComponent, SanitizeHtmlPipe ]
 })
 export class CbseProgramModule { }

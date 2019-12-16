@@ -73,77 +73,11 @@
       </app-resource-template>
 
       <!-- Move to Modal Section -->
-      <sui-modal *ngIf="showLargeModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-        [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showLargeModal = !showLargeModal" #modal>
-        <div class="sb-modal-header">
-          Move to
+      <div *ngIf="showLargeModal">
+      <app-resource-reorder [collectionUnits]="collectionHierarchy" [contentId]="contentId" [selectedAttributes]="selectedAttributes" [prevUnitSelect]="prevUnitSelect"
+      (moveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
+      </div>
         </div>
-        <!-- Selection of Layout in modal -->
-        <div class="sb-modal-content sb-chapterlist-modal">
-
-          <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
-            <sui-accordion-panel [isOpen]="true">
-              <div title class="sb-accordion-title d-flex flex-ai-center">
-                <i class="chevron down icon mr-16"></i>
-                <div class="item d-flex flex-ai-center cursor-pointer width-100">
-                  <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                    <input type="radio" id="radio1" name="example">
-                    <label for="radio1">Chapter 1</label>
-                  </div>
-                </div>
-              </div>
-              <div content>
-                <div class="chapter-lists level1">
-                  <div class="chapter-lists--item">
-                    <div class="item d-flex flex-ai-center cursor-pointer width-100">
-                      <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                        <input type="radio" id="radio1.1" name="example">
-                        <label for="radio1.1">Chapter 1.1</label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="chapter-lists--item">
-                    <div class="item d-flex flex-ai-center cursor-pointer width-100">
-                      <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                        <input type="radio" id="radio1.0" name="example">
-                        <label for="radio1.0">Chapter 1.0</label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="chapter-lists--item">
-                    <div class="item d-flex flex-ai-center cursor-pointer width-100">
-                      <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                        <input type="radio" id="radio1.1.1" name="example">
-                        <label for="radio1.1.1">Chapter 1.1.1</label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="chapter-lists--item">
-                    <div class="item d-flex flex-ai-center cursor-pointer width-100">
-                      <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-                        <input type="radio" id="radio1.1.1.1" name="example">
-                        <label for="radio1.1.1.1">Chapter 1.1.1.1</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </sui-accordion-panel>
-
-          </sui-accordion>
-        </div>
-
-        <!-- Selection of Question in modal -->
-
-        <div class="sb-modal-actions">
-          <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLargeModal = !showLargeModal">
-            Move
-          </button>
-        </div>
-      </sui-modal>
     </div>
   </div>
   <div class="twelve wide column" *ngIf="currentStage !== 'chapterListComponent'">
