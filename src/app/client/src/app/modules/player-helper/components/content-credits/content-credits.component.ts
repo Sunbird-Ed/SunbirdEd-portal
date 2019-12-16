@@ -41,11 +41,11 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
  instance: string;
 
   constructor(resourceService: ResourceService, url: LocationStrategy) {
+    this.url = url;
     this.resourceService = resourceService;
   }
 
   ngOnInit() {
-    this.url = this.url.path();
     this.instance = _.upperCase(this.resourceService.instance);
   }
 
