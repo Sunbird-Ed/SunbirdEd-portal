@@ -183,6 +183,7 @@
       "RESUME_IMPORT":"content/v1/import/resume",
       "CANCEL_IMPORT":"content/v1/import/cancel",
       "PAUSE_IMPORT":"content/v1/import/pause",
+      "RETRY_IMPORT":"content/v1/import/retry",
       "REPORT_OTHER_ISSUE":"help/v1/report/issue",
       "READ_FAQ": "faqs/v1/read",
       "CREATE_USER": "desktop/user/v1/create",

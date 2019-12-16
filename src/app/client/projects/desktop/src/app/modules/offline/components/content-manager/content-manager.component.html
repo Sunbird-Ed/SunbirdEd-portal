@@ -35,7 +35,7 @@
               (click)="contentManagerActions(data.addedUsing, 'Resume', data.id); updateLocalStatus(data, 'resuming');"
               [disabled]="data.status === 'resuming'  || data.status === 'resume'" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('resume', data.downloadedSize)"
-              [telemetryInteractCdata]="[{ 'type': 'import', 'id': data.id }]"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
               [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.resume}}
             </button>
@@ -45,17 +45,17 @@
               type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelId = data.id;"
               [disabled]="data.status === 'canceling'" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('cancel', data.downloadedSize)"
-              [telemetryInteractCdata]="[{ 'type': 'import', 'id': data.id }]"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
               [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.cancel}}
             </button>
 
-            <button *ngIf="data.addedUsing === 'download' && (data.status === 'failed' || data.status === 'retrying')"
+            <button *ngIf="data.status === 'failed' || data.status === 'retrying'"
               type="button" class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8"
               (click)="contentManagerActions(data.addedUsing, 'Retry', data.id); updateLocalStatus(data, 'retrying');"
               [disabled]="data.status === 'retrying'" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('retry', data.downloadedSize)"
-              [telemetryInteractCdata]="[{ 'type': 'import', 'id': data.id }]"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
               [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.retry}}
             </button>
@@ -131,13 +131,13 @@
               (click)="contentManagerActions(data.addedUsing, 'Cancel', data.id); updateLocalStatus(data, 'canceling'); cancelId = '';"
               class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" type="button" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('confirm-cancel', getContentPercentage(data.downloadedSize, data.totalSize))"
-              [telemetryInteractCdata]="[{ 'type': 'import', 'id': data.id }]"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
               [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.yes}} </button>
             <button (click)="cancelId = '';" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" type="button"
               appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('deny-cancel', getContentPercentage(data.downloadedSize, data.totalSize))"
-              [telemetryInteractCdata]="[{ 'type': 'import', 'id': data.id }]"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
               [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
               {{resourceService?.frmelmnts?.btn?.no}} </button>
           </div>

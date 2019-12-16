@@ -38,6 +38,17 @@ export class ContentManagerComponent implements OnInit {
     });
   }
 
+  ngOnInit() {
+    // Call download list initially
+    this.apiCallSubject.next();
+
+    // Call content list when clicked on add to library
+    this.contentManagerService.downloadEvent.subscribe((data) => {
+      this.isOpen = true;
+      this.apiCallSubject.next();
+    });
+  }
+
   getList() {
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
       .pipe(filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
@@ -64,17 +75,6 @@ export class ContentManagerComponent implements OnInit {
         });
   }
 
-  ngOnInit() {
-    // Call download list initially
-    this.apiCallSubject.next();
-
-    // Call content list when clicked on add to library
-    this.contentManagerService.downloadEvent.subscribe((data) => {
-      this.isOpen = true;
-      this.apiCallSubject.next();
-    });
-  }
-
   contentManagerActions(type: string, action: string, contentId: string) {
     switch (`${action.toUpperCase()}_${type.toUpperCase()}`) {
       case 'PAUSE_IMPORT':
@@ -85,6 +85,9 @@ export class ContentManagerComponent implements OnInit {
         break;
       case 'CANCEL_IMPORT':
         this.cancelImportContent(contentId);
+        break;
+      case 'RETRY_IMPORT':
+        this.retryImportContent(contentId);
         break;
       case 'PAUSE_DOWNLOAD':
         this.pauseDownloadContent(contentId);
@@ -151,6 +154,10 @@ export class ContentManagerComponent implements OnInit {
 
   resumeImportContent(contentId) {
     this.contentManagerService.resumeImportContent(contentId).subscribe(this.getSubscription(contentId));
+  }
+
+  retryImportContent(contentId) {
+    this.contentManagerService.retryImportContent(contentId).subscribe(this.getSubscription(contentId));
   }
 
   deleteLocalContentStatus(contentId) {
