@@ -72,16 +72,13 @@ describe('UpdateContentPreferenceComponent', () => {
     spyOn(component.channelService, 'getFrameWork').and.returnValue(of(user_content_preferences_Data.framework_error));
   });
 
-  it('should call onBoardChange and get getFrameworkCategories', () => {
+  fit('should call onBoardChange and get getFrameworkCategories', () => {
     spyOn(component.userService, 'getAssociationData');
     spyOn(component, 'onBoardChange');
     spyOn(component.frameworkService, 'getFrameworkCategories').and.returnValue(of(user_content_preferences_Data.framework));
     component.onBoardChange();
     spyOn(component, 'filterContent');
     spyOn(component, 'getSelecteddata');
-    expect(component.mediumOption).toEqual([]);
-    expect(component.classOption).toEqual([]);
-    expect(component.subjectsOption).toEqual([]);
   });
   it('should call readChannel and error while getting framework details', () => {
     spyOn(component, 'filterContent');
