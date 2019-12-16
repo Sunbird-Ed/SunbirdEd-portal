@@ -58,7 +58,7 @@ export interface IField {
 }
 
 export enum ICode {
-    School = "school",
+    School = 'school',
 }
 
 export interface IRange {
@@ -72,7 +72,7 @@ export interface IRange {
 }
 
 export enum IStatus {
-    Live = "Live",
+    Live = 'Live',
 }
 
 export interface IRole {

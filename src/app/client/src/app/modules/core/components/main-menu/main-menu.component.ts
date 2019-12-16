@@ -71,7 +71,8 @@ export class MainMenuComponent implements OnInit {
   * constructor
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router, public activatedRoute: ActivatedRoute,
-    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService, private programsService: ProgramsService) {
+    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService,
+    private programsService: ProgramsService) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.permissionService = permissionService;
@@ -100,7 +101,7 @@ export class MainMenuComponent implements OnInit {
         }
       }),
       first()
-    )).subscribe()
+    )).subscribe();
   }
   setInteractData() {
     this.homeMenuIntractEdata = {

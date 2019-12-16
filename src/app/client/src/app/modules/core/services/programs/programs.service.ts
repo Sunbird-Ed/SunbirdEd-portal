@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { combineLatest, of, iif, Observable, BehaviorSubject, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
-import { mockProgramsApiResponse } from './programs.service.spec.data'
+import { mockProgramsApiResponse } from './programs.service.spec.data';
 
 @Injectable({
   providedIn: 'root'
@@ -32,11 +32,12 @@ export class ProgramsService {
     return combineLatest([this.userService.userData$, this.orgDetailsService.getCustodianOrgDetails()])
       .pipe(
         mergeMap(([userData, custodianOrgDetails]) => {
-          return iif(() => _.get(userData, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrgDetails, 'result.response.value') || !_.get(userData, 'userProfile.stateValidated'),
+          return iif(() => _.get(userData, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrgDetails, 'result.response.value') ||
+            !_.get(userData, 'userProfile.stateValidated'),
             of(false),
             this.getProgramsList().pipe(
               map((programs: IProgramsList) => !_.isEmpty(programs))
-            ))
+            ));
         }),
         retry(1),
         catchError(err => {
@@ -46,7 +47,7 @@ export class ProgramsService {
         tap((showTab: boolean) => {
           this.enableContributeTab = showTab;
         })
-      )
+      );
   }
 
   /**
