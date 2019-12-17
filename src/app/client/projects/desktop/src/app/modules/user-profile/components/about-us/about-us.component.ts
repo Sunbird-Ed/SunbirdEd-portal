@@ -22,7 +22,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   }
 
   getAppInfo() {
-    this.appUpdateService.getAppLanguagesAndReleaseDate().pipe(takeUntil(this.unsubscribe$)).subscribe((response: ServerResponse) => {
+    this.appUpdateService.getAppInfo().pipe(takeUntil(this.unsubscribe$)).subscribe((response: ServerResponse) => {
       this.appInfo = _.get(response, 'result');
     });
   }

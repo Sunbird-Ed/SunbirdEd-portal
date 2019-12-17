@@ -21,7 +21,7 @@ export class AppUpdateService {
     }));
   }
 
-  getAppLanguagesAndReleaseDate (): Observable<ServerResponse> {
+  getAppInfo (): Observable<ServerResponse> {
     const requestParams = {
       url: this.configService.urlConFig.URLS.OFFLINE.APP_INFO
     };
