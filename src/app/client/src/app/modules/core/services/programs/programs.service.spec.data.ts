@@ -528,7 +528,7 @@ export const mockResponseData = {
       'response': {
         'id': 'custodianOrgId',
         'field': 'custodianOrgId',
-        'value': '0126632859575746566'
+        'value': 'ORG_001'
       }
     }
   }

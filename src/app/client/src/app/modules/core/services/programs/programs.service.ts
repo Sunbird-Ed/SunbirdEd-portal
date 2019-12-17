@@ -1,8 +1,9 @@
-import { mergeMap, catchError, tap, retry, map, skipWhile, delay } from 'rxjs/operators';
+import { IProgram } from './../../interfaces';
+import { mergeMap, catchError, tap, retry, map, skipWhile } from 'rxjs/operators';
 import { OrgDetailsService } from './../org-details/org-details.service';
 import { FrameworkService } from './../framework/framework.service';
 import { ExtPluginService } from './../ext-plugin/ext-plugin.service';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { combineLatest, of, iif, Observable, BehaviorSubject, throwError } from 'rxjs';
@@ -32,9 +33,7 @@ export class ProgramsService {
           return iif(() => _.get(userData, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrgDetails, 'result.response.value') ||
             !_.get(userData, 'userProfile.stateValidated'),
             of(false),
-            this.getProgramsList().pipe(
-              map((programs) => !_.isEmpty(programs))
-            ));
+            this.moreThanOneProgram());
         }),
         retry(1),
         catchError(err => {
@@ -45,26 +44,40 @@ export class ProgramsService {
   }
 
   /**
-   * get list of programs from ext framework Service
+   * makes api call to get list of programs from ext framework Service
    */
-  private getProgramsList() {
-    // const req = {
-    //   url: _.get(this.configService, 'urlConFig.URLS.CONTRIBUTION_PROGRAMS.SEARCH'),
-    //   data: {
-    //     request: {
-    //       channelId: 'channel'
-    //     }
-    //   }
-    // };
+  searchProgramsAPICall(): Observable<ServerResponse> {
+    const req = {
+      url: _.get(this.configService, 'urlConFig.URLS.CONTRIBUTION_PROGRAMS.SEARCH'),
+      data: {
+        request: {
+          channelId: 'channel'
+        }
+      }
+    };
+    // return this.extFrameworkService.post(req)
+    return of(mockResponseData.mockProgramsApiResponse);
+  }
 
-    return of(mockResponseData.mockProgramsApiResponse).pipe(
-      map((apiResponse) => _.get(apiResponse, 'result.programs')),
-      catchError(err => {
-        return of([]);
-      }),
-      tap((programs) => {
+  /**
+   * gets list of programs
+   */
+  private getPrograms(): Observable<IProgram[]> {
+    return this.searchProgramsAPICall().pipe(
+      map(result => _.get(result, 'result.programs')),
+      catchError(err => of([])),
+      tap(programs => {
         this._programsList$.next(programs);
       })
-    );
+    )
+  }
+
+  /**
+   * returns true if more than one programs exists else false
+   */
+  private moreThanOneProgram(): Observable<boolean> {
+    return this.getPrograms().pipe(
+      map(programs => !_.isEmpty(programs))
+    )
   }
 }

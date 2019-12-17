@@ -1,18 +1,3 @@
-export interface IPrograms {
-    id: string;
-    params: IParams;
-    responseCode: string;
-    result: IProgramsList;
-    ts: string;
-    ver: string;
-}
-
-export interface IParams {
-    resmsgid: string;
-    msgid: string;
-    status: string;
-}
-
 export interface IProgramsList {
     programs: IProgram[];
 }
@@ -44,7 +29,7 @@ export interface IOnBoardForm {
 }
 
 export interface IField {
-    code: ICode;
+    code: any;
     dataType: string;
     name: string;
     label: string;
@@ -56,25 +41,15 @@ export interface IField {
     range: Range[];
     index: number;
 }
-
-export enum ICode {
-    School = 'school',
-}
-
 export interface IRange {
     identifier: string;
     code: string;
     name: string;
     description: string;
     index: number;
-    category: ICode;
-    status: IStatus;
+    category: any;
+    status: any;
 }
-
-export enum IStatus {
-    Live = 'Live',
-}
-
 export interface IRole {
     role: string;
 }
