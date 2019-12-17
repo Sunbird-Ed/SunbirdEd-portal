@@ -18,7 +18,7 @@
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract
             [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrModal = true;"
             title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}">
-            <i class="icon-svg icon-svg--xxs icon-qr">
+            <i class="icon-svg icon-svg--xxs icon-qr mr-4">
               <svg class="icon icon-svg--primary">
                 <use xlink:href="assets/images/sprite.svg#qr-code"></use>
               </svg>
@@ -94,7 +94,8 @@
           [telemetryInteractEdata]="browseEdata">
           <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
         </a>
-        <a routerLinkActive="active" [routerLink]="'/help-center'" (click)="setInteractDataForHelp({id: 'help-center'})">
+        <a routerLinkActive="active" [routerLink]="'/help-center'"
+          (click)="setInteractDataForHelp({id: 'help-center'})">
           <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
         </a>
       </div>
