@@ -7,12 +7,16 @@ import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
 import { forkJoin, throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IChapterListComponentInput , ISelectedAttributes, IContentUploadComponentInput} from '../../interfaces';
+import { IChapterListComponentInput , ISelectedAttributes,
+  IContentUploadComponentInput, IResourceTemplateComponentInput} from '../../interfaces';
 import { QuestionListComponent } from '../../../cbse-program/components/question-list/question-list.component';
 import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
+import { ProgramStageService } from '../../../program/services';
+import { InitialState } from '../../interfaces';
 
 interface IDynamicInput {
   contentUploadComponentInput?: IContentUploadComponentInput;
+  resourceTemplateComponentInput?: IResourceTemplateComponentInput;
 }
 
 @Component({
@@ -40,6 +44,13 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public templateDetails;
   public unitIdentifier;
   public collection: any;
+  public showStage;
+  public currentStage: any;
+  public state: InitialState = {
+    stages: []
+  };
+  public resourceTemplateComponentInput: IResourceTemplateComponentInput = {};
+
   prevUnitSelect: string;
   contentId: string;
   showLargeModal: boolean;
@@ -63,11 +74,16 @@ export class ChapterListComponent implements OnInit, OnChanges {
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService,
     public telemetryService: TelemetryService, private cbseService: CbseProgramService,
-    public toasterService: ToasterService, public router: Router, public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef) {
+    public toasterService: ToasterService, public router: Router,
+    public programStageService: ProgramStageService, public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-
+    this.programStageService.getStage().subscribe(state => {
+      this.state.stages = state.stages;
+      this.changeView();
+    });
+    this.currentStage = 'chapterListComponent';
     this.selectedAttributes = _.get(this.chapterListComponentInput, 'selectedAttributes');
     this.role = _.get(this.chapterListComponentInput, 'role');
     this.collection  = _.get(this.chapterListComponentInput, 'collection');
@@ -117,6 +133,11 @@ export class ChapterListComponent implements OnInit, OnChanges {
         templateDetails: this.templateDetails
       }
     };
+  }
+  changeView() {
+    if (!_.isEmpty(this.state.stages)) {
+      this.currentStage  = _.last(this.state.stages).stage;
+    }
   }
 
   public getCollectionHierarchy(identifier: string, unitIdentifier: string) {
@@ -208,6 +229,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     }
     this.initiateInputs();
     this.creationComponent = this.componentMapping[event.template];
+    this.programStageService.addStage(event.templateDetails.onClick);
   }
 
   showResourceTemplate(event) {
@@ -236,6 +258,10 @@ export class ChapterListComponent implements OnInit, OnChanges {
           this.showResourceTemplatePopup = event.showPopup;
         break;
     }
+    this.resourceTemplateComponentInput =  {
+    templateList:  _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
+      || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue')
+    };
   }
 
   emitQuestionTypeTopic(type, topic, topicIdentifier, resourceIdentifier, resourceName) {

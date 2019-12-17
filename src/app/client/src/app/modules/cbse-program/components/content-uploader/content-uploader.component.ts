@@ -7,6 +7,7 @@ import * as _ from 'lodash-es';
 import { catchError, map } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { ISelectedAttributes, IContentUploadComponentInput} from '../../interfaces';
+import { ProgramStageService } from '../../../program/services';
 
 @Component({
   selector: 'app-content-uploader',
@@ -30,9 +31,10 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
 
   constructor(public toasterService: ToasterService, private userService: UserService,
     private publicDataService: PublicDataService, public actionService: ActionService,
-    public playerService: PlayerService, public configService: ConfigService) { }
+    public playerService: PlayerService, public configService: ConfigService, public programStageService: ProgramStageService) { }
 
   ngOnInit() {
+
     this.selectedAttributes  = _.get(this.contentUploadComponentInput, 'selectedAttributes');
     this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
@@ -228,7 +230,9 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   public closeModal(component, res?) {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
+      this.programStageService.removeLastStage();
     }
+
   }
 
   detectMimeType(fileName) {

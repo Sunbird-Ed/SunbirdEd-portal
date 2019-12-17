@@ -1,6 +1,5 @@
-<div *ngIf='!showLoader && !showError' class="sb-chapter-list"
-  [appTelemetryImpression]="telemetryImpression">
-  <div *ngIf="collectionHierarchy.length && !showContentUploader">
+<div *ngIf='!showLoader && !showError' class="sb-chapter-list" [appTelemetryImpression]="telemetryImpression">
+  <div *ngIf="collectionHierarchy.length && currentStage === 'chapterListComponent'">
     <div class="sb-cbse-homepage-container">
 
       <!-- Header Section -->
@@ -45,7 +44,8 @@
               <dt>{{countData['review']}}</dt>
               <dd>Under Review</dd>
             </dl>
-            <dl *ngIf="actions.showTotalUnderReview.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+            <dl *ngIf="actions.showTotalUnderReview.roles.includes(selectedAttributes.currentRoleId)"
+              class="sb-meta-data">
               <dt>{{countData['review']}}</dt>
               <dd>Total Under Review</dd>
             </dl>
@@ -73,28 +73,32 @@
         </div>
       </div>
 
-      <app-resource-template *ngIf='showResourceTemplatePopup' (templateSelection)="handleTemplateSelection($event)">
+      <app-resource-template *ngIf='showResourceTemplatePopup'
+        [resourceTemplateComponentInput]="resourceTemplateComponentInput"
+        (templateSelection)="handleTemplateSelection($event)">
       </app-resource-template>
 
       <!-- Move to Modal Section -->
       <div *ngIf="showLargeModal">
-      <app-resource-reorder [collectionUnits]="collectionHierarchy" [contentId]="contentId" [selectedAttributes]="selectedAttributes" [prevUnitSelect]="prevUnitSelect"
-      (moveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
+        <app-resource-reorder [collectionUnits]="collectionHierarchy" [contentId]="contentId"
+          [selectedAttributes]="selectedAttributes" [prevUnitSelect]="prevUnitSelect"
+          (moveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
       </div>
-        </div>
     </div>
-
-  <div class="twelve wide column" *ngIf="showContentUploader">
-    <!-- <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier"
-      [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader> -->
-
-      <ndc-dynamic [ndcDynamicComponent]="creationComponent" [ndcDynamicInputs]="dynamicInputs" [ndcDynamicOutputs]="dynamicOutputs"></ndc-dynamic>
-
-  </div>
-  <div class="twelve wide column" *ngIf="!collectionHierarchy.length">
-    <app-no-result></app-no-result>
   </div>
 </div>
-<div class="ui container">
-  <app-loader *ngIf='showLoader && !showError'></app-loader>
+<div class="twelve wide column sb-bg-white" *ngIf="currentStage !== 'chapterListComponent'">
+  <!-- <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier"
+      [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader> -->
+
+  <div class="">
+    <ndc-dynamic [ndcDynamicComponent]="creationComponent" [ndcDynamicInputs]="dynamicInputs"
+      [ndcDynamicOutputs]="dynamicOutputs"></ndc-dynamic>
+  </div>
+</div>
+<div class="twelve wide column" *ngIf="!collectionHierarchy.length">
+  <app-no-result></app-no-result>
+</div>
+<div *ngIf='showLoader && !showError' class="ui container sb-chapter-list">
+  <app-loader></app-loader>
 </div>
