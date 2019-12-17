@@ -1,20 +1,21 @@
-<div *ngIf='!showLoader && !showError' class="ui container sb-chapter-list"
-  [appTelemetryImpression]="telemetryImpression">
-  <div class="mt-16" *ngIf="collectionHierarchy.length && currentStage === 'chapterListComponent'">
+<div *ngIf='!showLoader && !showError' class="sb-chapter-list" [appTelemetryImpression]="telemetryImpression">
+  <div *ngIf="collectionHierarchy.length && currentStage === 'chapterListComponent'">
     <div class="sb-cbse-homepage-container">
 
       <!-- Header Section -->
       <div class="sb-pageSection-header">
-        <div class="ui container d-flex pt-24 pb-16">
+        <div class="ui container d-flex flex-ai-center chapterlist-header">
           <div class="d-flex mr-auto flex-ai-center">
-            <img [src]="collection.image" alt="Book" title="Book" style="max-width: 48px;">
+            <div class="chapterlist-header__image">
+              <img [src]="collection.image" alt="Book" title="Book">
+            </div>
             <div class="textbook-details ml-8">
               <label class="d-block fs-1 mb-0">{{collection.subject}}</label>
               <label class="d-block fs-0-92 font-weight-normal">{{collection.gradeLevel}}</label>
             </div>
           </div>
 
-          <div class="sb-textbook-allchapters mr-24">
+          <div class="sb-textbook-allchapters mr-24 sb-field">
             <label class="fs-0-92 font-weight-normal">Select Chapters</label>
             <sui-select class="selection w-100" placeholder="All Chapters" [isSearchable]=true labelField="name"
               valueField="identifier" [(ngModel)]="selectedChapterOption"
@@ -43,7 +44,8 @@
               <dt>{{countData['review']}}</dt>
               <dd>Under Review</dd>
             </dl>
-            <dl *ngIf="actions.showTotalUnderReview.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+            <dl *ngIf="actions.showTotalUnderReview.roles.includes(selectedAttributes.currentRoleId)"
+              class="sb-meta-data">
               <dt>{{countData['review']}}</dt>
               <dd>Total Under Review</dd>
             </dl>
@@ -60,36 +62,41 @@
       </div>
 
       <!-- Accordion Section -->
-      <div class="ui container sb-textbook-details-container mb-24">
-        <div class="sb-chapterlist">
-          <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
-            <app-recursive-tree [collectionUnits]="collectionHierarchy" [selectedChapter]="selectedChapterOption"
-              (nodeMeta)="showResourceTemplate($event)"></app-recursive-tree>
-          </sui-accordion>
+      <div class="sb-pageSection-content sb-bg-white py-24 px-0">
+        <div class="ui container sb-textbook-details-container mb-24">
+          <div class="sb-chapterlist">
+            <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
+              <app-recursive-tree [collectionUnits]="collectionHierarchy" [selectedChapter]="selectedChapterOption"
+                (nodeMeta)="showResourceTemplate($event)"></app-recursive-tree>
+            </sui-accordion>
+          </div>
         </div>
       </div>
 
-      <app-resource-template *ngIf='showResourceTemplatePopup' [resourceTemplateComponentInput]="resourceTemplateComponentInput"  (templateSelection)="handleTemplateSelection($event)">
+      <app-resource-template *ngIf='showResourceTemplatePopup'
+        [resourceTemplateComponentInput]="resourceTemplateComponentInput"
+        (templateSelection)="handleTemplateSelection($event)">
       </app-resource-template>
 
       <!-- Move to Modal Section -->
       <div *ngIf="showLargeModal">
-      <app-resource-reorder [collectionUnits]="collectionHierarchy" [contentId]="contentId" [selectedAttributes]="selectedAttributes" [prevUnitSelect]="prevUnitSelect"
-      (moveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
+        <app-resource-reorder [collectionUnits]="collectionHierarchy" [contentId]="contentId"
+          [selectedAttributes]="selectedAttributes" [prevUnitSelect]="prevUnitSelect"
+          (moveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
       </div>
-        </div>
     </div>
   </div>
-  <div class="twelve wide column" *ngIf="currentStage !== 'chapterListComponent'">
-    <!-- <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier"
+</div>
+<div class="twelve wide column sb-bg-white" *ngIf="currentStage !== 'chapterListComponent'">
+  <!-- <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier"
       [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader> -->
 
-      <ndc-dynamic [ndcDynamicComponent]="creationComponent" [ndcDynamicInputs]="dynamicInputs" [ndcDynamicOutputs]="dynamicOutputs"></ndc-dynamic>
-  </div>
-  <div class="twelve wide column" *ngIf="!collectionHierarchy.length">
-    <app-no-result></app-no-result>
-  </div>
+    <ndc-dynamic [ndcDynamicComponent]="creationComponent" [ndcDynamicInputs]="dynamicInputs"
+      [ndcDynamicOutputs]="dynamicOutputs"></ndc-dynamic>
+</div>
+<div class="twelve wide column" *ngIf="!collectionHierarchy.length">
+  <app-no-result></app-no-result>
 </div>
 <div *ngIf='showLoader && !showError' class="ui container sb-chapter-list">
-  <app-loader ></app-loader>
+  <app-loader></app-loader>
 </div>

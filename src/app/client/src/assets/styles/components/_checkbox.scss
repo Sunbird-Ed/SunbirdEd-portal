@@ -216,4 +216,19 @@
       right: 4px;
     }
   }
+
+  .chapter-lists--item {
+    .sb-radio-btn-checkbox label {
+      &::before, &::after {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      &::before {
+        right: 16px;
+      }
+      &::after {
+        right: 20px;
+      }
+    }
+  }
 }
