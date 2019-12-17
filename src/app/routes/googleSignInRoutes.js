@@ -150,4 +150,5 @@ const handleCreateSessionError = (error) => {
     msg: 'ERROR_CREATING_SESSION',
     error: error,
   });
+  throw error.error || error.message || error;
 };
