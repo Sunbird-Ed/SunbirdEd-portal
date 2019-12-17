@@ -37,7 +37,7 @@ export class LoadContentComponent implements OnInit, OnDestroy {
     this.instance = _.upperCase(this.resourceService.instance);
     this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
-      this.radioBtnToBeChecked();
+      this.selectedValue = this.isConnected ? 'browse' : 'import';
       this.addFontWeight();
       this.setTelemetryData();
     });
@@ -52,10 +52,6 @@ export class LoadContentComponent implements OnInit, OnDestroy {
     event === 'import' ? document.getElementById('online')['checked'] = false : document.getElementById('offline')['checked'] = false;
     this.addFontWeight();
     this.setTelemetryData();
-  }
-
-  radioBtnToBeChecked() {
-    this.selectedValue = this.isConnected ? 'browse' : 'import';
   }
 
   closeModal() {
