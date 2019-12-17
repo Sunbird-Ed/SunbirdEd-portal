@@ -186,6 +186,9 @@ export class PublicPlayerService {
     const completed = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
       return o.status === 'completed';
     });
+    const paused = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'paused';
+    });
     const compare = { resourceId: identifier };
     if (_.find([inprogress], compare) || _.find([submitted], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
@@ -193,6 +196,8 @@ export class PublicPlayerService {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
     } else if (_.find([failed], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+    } else if (_.find([paused], compare)) {
+      content['downloadStatus'] = this.resourceService.messages.stmsg.m0142;
     }
     return content;
   }

@@ -20,7 +20,7 @@ const routes: Routes = [
     {
         path: 'browse/search/:pageNumber', component: DesktopExploreContentComponent, data: {
             telemetry: {
-                env: 'offline', pageid: 'browse-search', type: 'view', subtype: 'paginate'
+                env: 'browse', pageid: 'browse-search', type: 'view', subtype: 'paginate'
             },
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
         }
@@ -29,7 +29,7 @@ const routes: Routes = [
         path: 'view-all', component: DesktopExploreContentComponent,
         data: {
             telemetry: {
-                env: 'offline', pageid: 'view-all', type: 'view', subtype: 'paginate'
+                env: 'library', pageid: 'view-all', type: 'view', subtype: 'paginate'
             },
             filterType: 'explore',
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
@@ -39,7 +39,7 @@ const routes: Routes = [
     {
         path: 'search', component: DesktopExploreContentComponent, data: {
             telemetry: {
-                env: 'offline', pageid: 'library-search', type: 'view', subtype: 'paginate'
+                env: 'library', pageid: 'library-search', type: 'view', subtype: 'paginate'
             },
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
         }
