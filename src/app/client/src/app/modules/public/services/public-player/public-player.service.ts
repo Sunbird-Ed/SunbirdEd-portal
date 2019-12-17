@@ -189,6 +189,10 @@ export class PublicPlayerService {
     const paused = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
       return o.status === 'paused';
     });
+    const canceled = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'canceled';
+    });
+
     const compare = { resourceId: identifier };
     if (_.find([inprogress], compare) || _.find([submitted], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
@@ -198,6 +202,9 @@ export class PublicPlayerService {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
     } else if (_.find([paused], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0142;
+    } else if (_.find([canceled], compare)) {
+      // Adding status to 'DOWNLOAD' for cancelled items as we need to show download button not cancelled
+      content['downloadStatus'] = this.resourceService.messages.stmsg.m0143;
     }
     return content;
   }
