@@ -51,14 +51,13 @@ describe('ProfilePageComponent', () => {
     component.ngOnInit();
     expect(component.userData).toBeDefined();
   });
-
   it('should handle openModal while calling LOCATION component', () => {
     spyOn(component, 'openModal').and.returnValue(of('LOCATION'));
+    spyOn(component, 'setLocationTelemetryData');
     component.selectedComponent = 'LOCATION';
     component.openModal(component.selectedComponent);
     expect(component.selectedComponent).toBeDefined();
   });
-
   it('should handle openModal while calling CONTENTPREFERENCE component', () => {
     spyOn(component, 'openModal').and.returnValue(of('CONTENTPREFERENCE'));
     component.selectedComponent = 'CONTENTPREFERENCE';
@@ -66,32 +65,28 @@ describe('ProfilePageComponent', () => {
     expect(component.openModal).toHaveBeenCalled();
     expect(component.selectedComponent).toBeDefined();
   });
-
   it('should handle success DismissEvent', () => {
     spyOn(component, 'handleDismissEvent').and.returnValue(of('SUCCESS'));
     component.selectedComponent = '';
     component.handleDismissEvent(component.selectedComponent);
     expect(component.selectedComponent).toBeDefined();
     spyOn(component, 'getUserData');
-
   });
   it('should handle error DismissEvent', () => {
     spyOn(component, 'handleDismissEvent').and.returnValue(of(''));
     component.selectedComponent = '';
     component.handleDismissEvent(component.selectedComponent);
     expect(component.selectedComponent).toBeDefined();
-
   });
-
   it('should open your location modal when you click edit(edit location)', () => {
     spyOn(component, 'openModal').and.returnValue(of('LOCATION'));
     const openModal: DebugElement = fixture.debugElement;
     const buttonQuerySelector = openModal.query(By.css('button.location_button'));
     const button: HTMLElement = buttonQuerySelector.nativeElement;
     button.click();
-    spyOn(component, 'setTelemetryData').and.callThrough();
-    component.setTelemetryData();
-    expect(component.setTelemetryData).toHaveBeenCalled();
+    spyOn(component, 'setLocationTelemetryData').and.callThrough();
+    component.setLocationTelemetryData();
+    expect(component.setLocationTelemetryData).toHaveBeenCalled();
     fixture.whenStable().then(() => {
       component.selectedComponent = 'LOCATION';
       component.openModal(component.selectedComponent);
@@ -104,9 +99,9 @@ describe('ProfilePageComponent', () => {
     const buttonQuerySelector = openModal.query(By.css('button.button_content_preferences'));
     const button: HTMLElement = buttonQuerySelector.nativeElement;
     button.click();
-    spyOn(component, 'setTelemetryData').and.callThrough();
-    component.setTelemetryData();
-    expect(component.setTelemetryData).toHaveBeenCalled();
+    spyOn(component, 'setContentTelemetryData').and.callThrough();
+    component.setContentTelemetryData();
+    expect(component.setContentTelemetryData).toHaveBeenCalled();
     fixture.whenStable().then(() => {
       component.selectedComponent = 'CONTENTPREFERENCE';
       component.openModal(component.selectedComponent);
