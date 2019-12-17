@@ -1,7 +1,6 @@
 import { ResourceService } from '@sunbird/shared';
-import { IProgramsList, ProgramsService } from '@sunbird/core';
+import {  ProgramsService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list-all-programs',
@@ -10,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class ListAllProgramsComponent implements OnInit {
 
-  public programsList$: Observable<IProgramsList>;
+  public programsList$;
   constructor(private programsService: ProgramsService, public resourceService: ResourceService) { }
 
   ngOnInit() {

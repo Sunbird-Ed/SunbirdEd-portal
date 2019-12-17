@@ -198,6 +198,9 @@
     "ELECTRON_DIALOG": {
       "CONTENT_IMPORT": "content/import",
       "CONTENT_EXPORT": "content/export"
+    },
+    "CONTRIBUTION_PROGRAMS":{
+      "SEARCH": "program/v1/search"
     }
   }
 }
