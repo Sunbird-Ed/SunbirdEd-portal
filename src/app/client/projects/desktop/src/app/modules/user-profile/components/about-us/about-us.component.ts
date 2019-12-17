@@ -18,28 +18,12 @@ export class AboutUsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
-    this.getAppData();
-    this.checkForAppUpdate();
-    this.getAppLanguagesAndReleaseDate();
+    this.getAppInfo();
   }
 
-  checkForAppUpdate() {
-    this.appUpdateService.checkForAppUpdate().pipe(takeUntil(this.unsubscribe$)).subscribe((response: ServerResponse) => {
-      this.appInfo['updatedData'] = _.get(response, 'result');
-    }, (error) => {
-        console.log(`Received Error while checking app update Error: ${JSON.stringify(error.error)}`);
-    });
-  }
-  getAppData() {
-    this.appInfo['buildNumber'] = <HTMLInputElement>document.getElementById('buildNumber') ?
-    (<HTMLInputElement>document.getElementById('buildNumber')).value : '';
-    this.appInfo['deviceId'] = <HTMLInputElement>document.getElementById('deviceId') ?
-    (<HTMLInputElement>document.getElementById('deviceId')).value : '';
-  }
-
-  getAppLanguagesAndReleaseDate() {
+  getAppInfo() {
     this.appUpdateService.getAppLanguagesAndReleaseDate().pipe(takeUntil(this.unsubscribe$)).subscribe((response: ServerResponse) => {
-      this.appInfo['appData'] = _.get(response, 'result');
+      this.appInfo = _.get(response, 'result');
     });
   }
 

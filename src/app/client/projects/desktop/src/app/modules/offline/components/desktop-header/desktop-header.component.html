@@ -99,8 +99,9 @@
         </a>
       </div>
 
-      <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load">
-        <i class="plus icon mr-5"></i>Load Content</button>
+      <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImport()" appTelemetryInteract
+      [telemetryInteractEdata]="contentImportInteractEdata">
+        <i class="plus icon mr-5"></i>{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
     </div>
     <!-- menu component ends -->
   </div>

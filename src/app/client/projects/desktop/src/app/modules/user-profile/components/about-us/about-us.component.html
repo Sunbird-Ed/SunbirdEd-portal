@@ -9,15 +9,15 @@
       <div class="d-flex flex-dc">
         <dl class="sb-left-content mt-8 mb-0">
             <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.versionKey}}</dt>
-            <dd class="list-value fs-0-92">{{appInfo?.buildNumber}}</dd>
+            <dd class="list-value fs-0-92">{{appInfo?.appVersion}}</dd>
         </dl>
         <dl class="sb-left-content mt-8 mb-0">
             <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.releaseDateKey}}</dt>
-            <dd class="list-value fs-0-92">{{appInfo?.appData?.releaseDate}}</dd>
+            <dd class="list-value fs-0-92">{{appInfo?.releaseDate}}</dd>
         </dl>
         <dl class="sb-left-content mt-8 mb-0">
             <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.supportedLanguages}}</dt>
-            <dd class="list-value fs-0-92">{{appInfo?.appData?.languages}}</dd>
+            <dd class="list-value fs-0-92">{{appInfo?.languages}}</dd>
         </dl>
         <dl class="sb-left-content mt-8 mb-0">
               <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.deviceId}}:</dt>
@@ -25,9 +25,9 @@
           </dl>
       </div>
       <!-- right container -->
-      <div class="ml-auto d-flex flex-dc flex-ai-end flex-as-flex-end mt-16" *ngIf="appInfo?.updatedData?.updateAvailable">
-        <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="updateApp(appInfo?.updatedData?.url)">{{resourceService?.frmelmnts?.lbl?.desktop?.update | interpolate:'{instance}': instance}}</button>
-        <a href="{{appInfo?.updatedData?.url}}" class="mt-8 text-right update-link">{{resourceService?.frmelmnts?.lbl?.desktop?.updateAvailable}} {{appInfo?.updatedData?.version}}</a>
+      <div class="ml-auto d-flex flex-dc flex-ai-end flex-as-flex-end mt-16" *ngIf="appInfo?.appUpdates">
+        <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="updateApp(appInfo?.appUpdates?.url)">{{resourceService?.frmelmnts?.lbl?.desktop?.update | interpolate:'{instance}': instance}}</button>
+        <a href="{{appInfo?.appUpdates?.url}}" class="mt-8 text-right update-link">{{resourceService?.frmelmnts?.lbl?.desktop?.updateAvailable}} {{appInfo?.appUpdates?.version}}</a>
       </div>
     </div>
   </div>
