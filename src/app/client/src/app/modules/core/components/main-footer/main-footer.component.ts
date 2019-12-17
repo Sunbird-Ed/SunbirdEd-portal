@@ -27,12 +27,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 
   isOffline: boolean = environment.isOffline;
   instance: string;
-  deviceId;
   bodyPaddingBottom: string;
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2) {
     this.resourceService = resourceService;
-    if (this.isOffline) {this.deviceId =  (<HTMLInputElement>document.getElementById('deviceId')).value; }
   }
 
   ngOnInit() {
