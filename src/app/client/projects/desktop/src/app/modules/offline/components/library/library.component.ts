@@ -223,8 +223,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
                             'label': this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
                                 this.resourceService.frmelmnts.btn.download :
                                 this.resourceService.frmelmnts.lbl.saveToPenDrive,
-                            'disabled': this.isBrowse && (_.get(value, 'downloadStatus') === 'DOWNLOADED' ||
-                                _.get(value, 'downloadStatus') === 'DOWNLOADING') ? true : false
+                            'disabled': this.isBrowse && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'],
+                                _.get(value, 'downloadStatus')) ? true : false
                         },
                         {
                             'type': 'open',
@@ -341,8 +341,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             context: {
                 env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
                     _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
-                    _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
-                cdata: telemetryInteractCdata || [],
+                    _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
             },
             edata: {
                 id: actionId,
