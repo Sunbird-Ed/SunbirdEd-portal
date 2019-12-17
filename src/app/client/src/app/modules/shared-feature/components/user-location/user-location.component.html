@@ -15,7 +15,7 @@
   <!--/Header-->
 
   <!--Content-->
-  <div class="sb-modal-content o-y-visible">
+  <div class="sb-modal-content o-y-visible" [appTelemetryImpression]="telemetryImpression">
     <form class="sb-form" [formGroup]="userDetailsForm">
         <p class="mb-8">{{resourceService?.messages?.imsg?.m0074}}</p>
       <div class="sb-field">
@@ -53,10 +53,7 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button appTelemetryInteract
-            [telemetryInteractObject]="telemetryCdata"
-            [telemetryInteractEdata]="mergeIntractEdata"
-            class="sb-btn sb-btn-normal sb-btn-primary"
+    <button class="sb-btn sb-btn-normal sb-btn-primary"
             [disabled]="!enableSubmitBtn"
             (click)="updateUserLocation()">
       {{resourceService?.frmelmnts?.btn?.submit}}
