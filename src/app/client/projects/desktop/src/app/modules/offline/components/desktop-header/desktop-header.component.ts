@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
-import { first, takeUntil } from 'rxjs/operators';
+import { first, takeUntil, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 
@@ -26,7 +26,8 @@ export interface ILanguage {
 export class DesktopHeaderComponent implements OnInit, OnDestroy {
   appLanguage: ILanguage;
   availableLanguages: ILanguage[];
-  public unsubscribe$ = new Subject<void>();
+  unsubscribe$ = new Subject<void>();
+  pageId = 'library';
 
   languageFormQuery = {
     formType: 'content',
@@ -61,6 +62,13 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     this.utilService.searchQuery$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => this.clearSearchQuery());
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.unsubscribe$))
+      .subscribe((data) => {
+        this.pageId = _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid') || 'library';
+      });
+
   }
 
   getTenantInfo() {
@@ -157,54 +165,51 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
   }
 
   getTelemetryEdata(key) {
-    const pageId = _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
-      _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'library';
-
     const interactData = {
       contentImport: {
         id: 'content-import-button',
         type: 'click',
-        pageid: pageId
+        pageid: this.pageId
       },
       myLibrary: {
         id: 'my-downloads-tab',
         type: 'click',
-        pageid: pageId
+        pageid: this.pageId
       },
       browse: {
         id: 'browse-tab',
         type: 'click',
-        pageid: pageId
+        pageid: this.pageId
       },
       helpCenter: {
         id: 'help-center-tab',
         type: 'click',
-        pageid: pageId
+        pageid: this.pageId
       },
       enterDialCode: {
         id: 'click-dial-code',
         type: 'click',
-        pageid: pageId
+        pageid: this.pageId
       },
       takeTour: {
         id: 'take-tour-button',
         type: 'click',
-        pageid: pageId
+        pageid: this.pageId
       },
       clearSearch: {
         id: 'clear-search-button',
         type: 'click',
-        pageid: pageId
+        pageid: this.pageId
       },
       home: {
         id: 'tenant-logo',
         type: 'click',
-        pageid: pageId
+        pageid: this.pageId
       },
       search: {
         id: `search-button`,
         type: 'click',
-        pageid: pageId
+        pageid: this.pageId
       }
     };
     return interactData[key];
