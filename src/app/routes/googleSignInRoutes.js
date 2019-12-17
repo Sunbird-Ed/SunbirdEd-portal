@@ -3,6 +3,8 @@ const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } =
 const telemetryHelper = require('../helpers/telemetryHelper')
 const googleDid = '2c010e13a76145d864e459f75a176171';
 const logger = require('sb_logger_util_v2')
+const utils = require('../helpers/utilityService');
+const config = require('../config/config');
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
@@ -49,9 +51,10 @@ module.exports = (app) => {
         console.log('creating new google user');
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
+        await utils.delay(config.GOOGLE_SIGN_IN_DELAY);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
-      keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res);
+      keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
       console.log('keyCloakToken fetched', JSON.stringify(keyCloakToken));
       errType = 'UNHANDLED_ERROR';
       redirectUrl = reqQuery.redirect_uri.split('?')[0];
@@ -123,6 +126,10 @@ const getErrorMessage = (error) => {
   }
 }
 const handleCreateUserError = (error) => {
+  logger.info({
+    msg: 'ERROR_CREATING_USER',
+    error: error,
+  });
   if (_.get(error, 'error.params')) {
     throw error.error.params;
   } else if (error instanceof Error) {
@@ -137,3 +144,10 @@ const handleGetUserByIdError = (error) => {
   }
   throw error.error || error.message || error;
 }
+
+const handleCreateSessionError = (error) => {
+  logger.info({
+    msg: 'ERROR_CREATING_SESSION',
+    error: error,
+  });
+};
