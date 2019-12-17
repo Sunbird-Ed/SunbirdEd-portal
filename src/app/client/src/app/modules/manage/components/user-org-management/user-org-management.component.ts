@@ -68,6 +68,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public userViewInteractEdata: IInteractEventEdata;
   public userDownloadInteractEdata: IInteractEventEdata;
   public teacherDetailsInteractEdata: IInteractEventEdata;
+  public selectFileInteractEdata: IInteractEventEdata;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
     userService: UserService, manageService: ManageService, resourceService: ResourceService) {
@@ -147,6 +148,11 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
       this.teacherDetailsInteractEdata = {
         id: 'account-details',
         type: 'download',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.selectFileInteractEdata = {
+        id: 'upload-user',
+        type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       };
     });
