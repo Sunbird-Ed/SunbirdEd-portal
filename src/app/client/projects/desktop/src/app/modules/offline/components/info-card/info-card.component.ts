@@ -45,7 +45,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
   setTelemetryData() {
     const interactData = {
       context: {
-        env: 'browse-online',
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'browse',
         cdata: []
       },
       edata: {

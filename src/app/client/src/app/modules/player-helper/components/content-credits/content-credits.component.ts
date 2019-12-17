@@ -5,7 +5,8 @@ import { ContentData, ContentCreditsData } from '@sunbird/shared';
 
 @Component({
   selector: 'app-content-credits',
-  templateUrl: './content-credits.component.html'
+  templateUrl: './content-credits.component.html',
+  styleUrls: ['./content-credits.component.scss']
 })
 export class ContentCreditsComponent implements OnInit, OnChanges {
    /**
@@ -35,12 +36,14 @@ export class ContentCreditsComponent implements OnInit, OnChanges {
   *@param {ResourceService} SearchService Reference of SearchService
   *@param {WorkSpaceService} WorkSpaceService Reference of SearchService
   */
+ instance: string;
 
   constructor(resourceService: ResourceService) {
     this.resourceService = resourceService;
   }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance);
   }
 
   ngOnChanges() {
