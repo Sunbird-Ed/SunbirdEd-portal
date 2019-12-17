@@ -190,13 +190,13 @@
       background: inherit;
   
       .active.title {
-        border: 1px solid #80A7CE;
+        border: 1px solid $primary-200;
         border-bottom: none;
         background-color: #F3F8FF;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        font-size: 12px;
+        font-size: $font-size-sm;
 
         .chevron-icon {
             background: #D9E4F2;
@@ -210,13 +210,13 @@
   
       .title {
         margin-top: $base-block-space;
-        background: #f2f2f2;
+        background: $gray-0;
         border: 1px solid $gray-100;
         border-radius: 4px;
         font-size: $font-size-sm;
 
         .chevron-icon {
-            background: #f2f2f2;
+            background: $gray-0;
             border-left: 1px solid $gray-100;
         }
 
@@ -230,7 +230,7 @@
   
       .sb-chapterlist-child {
         .active.title {
-          border-top: 1px solid #80a7ce;
+          border-top: 1px solid $primary-200;
           border-radius: 0;
   
           .chapter-status {
@@ -255,11 +255,11 @@
       }
   
       .content {
-        border: 1px solid #80A7CE;
+        border: 1px solid $primary-200;
         border-top: none;
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
-        background: white;
+        background: $white-color;
       }
 
       .chevron-icon {
@@ -270,22 +270,23 @@
         align-items: center;
         justify-content: center;
         border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
     }
 
     .chevron.down.icon {
-        height: $base-block-space*2;
+        height: auto;
     }
     
     .accordion {
         .active.title {
-            border: 1px solid #80A7CE;
+            border: 1px solid $primary-200;
             border-bottom: none;
             background-color: #F3F8FF;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
         }
   
         .content {
-          border: 1px solid #80A7CE;
+          border: 1px solid $primary-200;
           border-top: none;
         }
       }
