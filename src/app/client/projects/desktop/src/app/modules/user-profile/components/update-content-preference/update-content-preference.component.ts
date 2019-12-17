@@ -8,6 +8,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-update-content-preference',
@@ -32,7 +33,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     public channelService: ChannelService,
     public frameworkService: FrameworkService,
     public toasterService: ToasterService,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public telemetryService: TelemetryService
   ) { }
   ngOnInit() {
     this.createContentPreferenceForm();
@@ -44,7 +46,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
       board: new FormControl(null, [Validators.required]),
       medium: new FormControl(null, [Validators.required]),
       class: new FormControl(null, [Validators.required]),
-      subjects: new FormControl(null, [Validators.required]),
+      subjects: new FormControl(null, []),
     });
   }
 
@@ -128,6 +130,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   }
 
   updateUserPreferenece() {
+    this.setTelemetryData();
     this.userService.saveLocation(this.contentPreferenceForm.getRawValue())
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
@@ -141,21 +144,28 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   closeModal() {
     this.dismissed.emit();
   }
-    setTelemetryData () {
-      return {
-      id: 'updating_user-preference',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-      extra: {
-        'framework': {
-          'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),
-          'board': this.contentPreferenceForm.value.board,
-          'medium': this.contentPreferenceForm.value.medium,
-          'gradeLevel': this.contentPreferenceForm.value.class,
-          'subjects': this.contentPreferenceForm.value.subjects
+  setTelemetryData() {
+    const interactData = {
+      context: {
+        env: 'profile',
+        cdata: []
+      },
+      edata: {
+        id: 'updating_user_preference',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        extra: {
+          'framework': {
+            'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),
+            'board': this.contentPreferenceForm.value.board,
+            'medium': this.contentPreferenceForm.value.medium,
+            'gradeLevel': this.contentPreferenceForm.value.class,
+            'subjects': this.contentPreferenceForm.value.subjects
+          }
         }
       }
     };
+    this.telemetryService.interact(interactData);
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

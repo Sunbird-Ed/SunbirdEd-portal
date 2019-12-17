@@ -3,7 +3,7 @@ import { OnboardingService } from '../../../offline/services/onboarding/onboardi
 import { ResourceService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { IInteractEventEdata } from '@sunbird/telemetry';
+import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-profile-page',
@@ -13,8 +13,6 @@ import { ActivatedRoute } from '@angular/router';
 export class ProfilePageComponent implements OnInit, OnDestroy {
   selectedComponent: any;
   userData: any;
-  onClicklocationEditInteractEdata: IInteractEventEdata;
-  onClickContentPreferencesEditInteractEdata: IInteractEventEdata;
   @Output() userLocationData = new EventEmitter<any>();
   @Output() userPreferenceData = new EventEmitter<any>();
   public unsubscribe$ = new Subject<void>();
@@ -22,11 +20,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   constructor(
     public userService: OnboardingService,
     public resourceService: ResourceService,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public telemetryService: TelemetryService
   ) { }
   ngOnInit() {
     this.getUserData();
-    this.setTelemetryData();
   }
   getUserData() {
     this.userService.getUser()
@@ -38,6 +36,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   openModal(componentName) {
     this.selectedComponent = componentName;
+    if (this.selectedComponent === 'LOCATION') {
+      this.setLocationTelemetryData();
+    } else {
+      this.setContentTelemetryData();
+    }
   }
   handleDismissEvent(eventStatus) {
     this.selectedComponent = '';
@@ -45,17 +48,36 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       this.getUserData();
     }
   }
-  setTelemetryData () {
-    this.onClicklocationEditInteractEdata = {
-      id: 'edit_location',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+  setLocationTelemetryData() {
+    const editLocationdata = {
+      context: {
+        env: 'profile',
+        cdata: []
+      },
+      edata: {
+        id: 'edit_location',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
     };
-    this.onClickContentPreferencesEditInteractEdata = {
-      id: 'edit_content_preferences',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+
+    this.telemetryService.interact(editLocationdata);
+  }
+  setContentTelemetryData() {
+    const editContentPreferencesData = {
+      context: {
+        env: 'profile',
+        cdata: []
+      },
+      edata: {
+
+        id: 'edit_content_preferences',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
     };
+    this.telemetryService.interact(editContentPreferencesData);
+
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
