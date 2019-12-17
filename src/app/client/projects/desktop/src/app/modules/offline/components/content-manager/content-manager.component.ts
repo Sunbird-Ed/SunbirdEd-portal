@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { timer, Subject, combineLatest } from 'rxjs';
-import { switchMap, map, filter } from 'rxjs/operators';
+import { switchMap, map, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ContentManagerService, ElectronDialogService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-content-manager',
   templateUrl: './content-manager.component.html',
   styleUrls: ['./content-manager.component.scss']
 })
-export class ContentManagerComponent implements OnInit {
+export class ContentManagerComponent implements OnInit, OnDestroy {
 
   contentResponse: any;
   isOpen = true;
@@ -20,6 +19,7 @@ export class ContentManagerComponent implements OnInit {
   callContentListTimer = false;
   contentStatusObject = {};
   subscription: any;
+  public unsubscribe$ = new Subject<void>();
   localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming', 'pausing', 'canceling'];
   cancelId: string;
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
@@ -43,10 +43,12 @@ export class ContentManagerComponent implements OnInit {
     this.apiCallSubject.next();
 
     // Call content list when clicked on add to library
-    this.contentManagerService.downloadEvent.subscribe((data) => {
-      this.isOpen = true;
-      this.apiCallSubject.next();
-    });
+    this.contentManagerService.downloadEvent
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.isOpen = true;
+        this.apiCallSubject.next();
+      });
   }
 
   getList() {
@@ -129,36 +131,36 @@ export class ContentManagerComponent implements OnInit {
     });
   }
 
-  cancelDownloadContent(id) {
-    this.contentManagerService.cancelDownloadContent(id).subscribe(this.getSubscription(id));
-  }
-
   pauseDownloadContent(id) {
-    this.contentManagerService.pauseDownloadContent(id).subscribe(this.getSubscription(id));
+    this.contentManagerService.pauseDownloadContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
   }
 
   resumeDownloadContent(id) {
-    this.contentManagerService.resumeDownloadContent(id).subscribe(this.getSubscription(id));
+    this.contentManagerService.resumeDownloadContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
+  }
+
+  cancelDownloadContent(id) {
+    this.contentManagerService.cancelDownloadContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
   }
 
   retryDownloadContent(id) {
-    this.contentManagerService.resumeDownloadContent(id).subscribe(this.getSubscription(id));
-  }
-
-  cancelImportContent(id) {
-    this.contentManagerService.cancelImportContent(id).subscribe(this.getSubscription(id));
+    this.contentManagerService.retryDownloadContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
   }
 
   pauseImportContent(id) {
-    this.contentManagerService.pauseImportContent(id).subscribe(this.getSubscription(id));
+    this.contentManagerService.pauseImportContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
   }
 
   resumeImportContent(id) {
-    this.contentManagerService.resumeImportContent(id).subscribe(this.getSubscription(id));
+    this.contentManagerService.resumeImportContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
+  }
+
+  cancelImportContent(id) {
+    this.contentManagerService.cancelImportContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
   }
 
   retryImportContent(id) {
-    this.contentManagerService.retryImportContent(id).subscribe(this.getSubscription(id));
+    this.contentManagerService.retryImportContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
   }
 
   deleteLocalContentStatus(id) {
@@ -206,5 +208,10 @@ export class ContentManagerComponent implements OnInit {
       };
     }
     return interactData;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
