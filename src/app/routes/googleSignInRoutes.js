@@ -42,7 +42,7 @@ module.exports = (app) => {
         throw 'some of the query params are missing';
       }
       errType = 'GOOGLE_PROFILE_API';
-      googleProfile = await googleOauth.getProfile(req);
+      googleProfile = await googleOauth.getProfile(req).catch(handleGoogleProfileError);
       console.log('googleProfile fetched', JSON.stringify(googleProfile));
       errType = 'USER_FETCH_API';
       sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
@@ -148,6 +148,14 @@ const handleGetUserByIdError = (error) => {
 const handleCreateSessionError = (error) => {
   logger.info({
     msg: 'ERROR_CREATING_SESSION',
+    error: error,
+  });
+  throw error.error || error.message || error;
+};
+
+const handleGoogleProfileError = (error) => {
+  logger.info({
+    msg: 'ERROR_FETCHING_GOOGLE_PROFILE',
     error: error,
   });
   throw error.error || error.message || error;
