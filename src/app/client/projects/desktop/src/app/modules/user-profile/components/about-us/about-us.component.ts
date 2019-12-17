@@ -14,7 +14,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   appInfo = {};
   public unsubscribe$ = new Subject<void>();
 
-  constructor(public resourceService: ResourceService, public appUpdateService: AppUpdateService) {}
+  constructor(public resourceService: ResourceService, private appUpdateService: AppUpdateService) {}
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);

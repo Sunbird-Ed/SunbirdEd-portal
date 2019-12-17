@@ -25,9 +25,9 @@
           </dl>
       </div>
       <!-- right container -->
-      <div class="ml-auto d-flex flex-dc flex-ai-end flex-as-flex-end mt-16" *ngIf="appInfo?.appUpdates">
-        <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="updateApp(appInfo?.appUpdates?.url)">{{resourceService?.frmelmnts?.lbl?.desktop?.update | interpolate:'{instance}': instance}}</button>
-        <a href="{{appInfo?.appUpdates?.url}}" class="mt-8 text-right update-link">{{resourceService?.frmelmnts?.lbl?.desktop?.updateAvailable}} {{appInfo?.appUpdates?.version}}</a>
+      <div class="ml-auto d-flex flex-dc flex-ai-end flex-as-flex-end mt-16" *ngIf="appInfo?.updateInfo && appInfo?.updateInfo?.updateAvailable">
+        <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="updateApp(appInfo?.updateInfo?.url)">{{resourceService?.frmelmnts?.lbl?.desktop?.update | interpolate:'{instance}': instance}}</button>
+        <a href="{{appInfo?.updateInfo?.url}}" class="mt-8 text-right update-link">{{resourceService?.frmelmnts?.lbl?.desktop?.updateAvailable}} {{appInfo?.updateInfo?.version}}</a>
       </div>
     </div>
   </div>
