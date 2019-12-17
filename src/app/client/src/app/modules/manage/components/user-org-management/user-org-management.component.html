@@ -102,7 +102,7 @@
         <div class="sb-pageSection-content">
           <div class="d-inline-flex flex-ai-center">
             <span class="sb-label-name">Upload file with list of users:</span>
-            <div class="sb-btn sb-btn-outline-primary sb-btn-normal ml-8 sb-upload-file" (click)="openModal();"> Select file </div>
+            <div class="sb-btn sb-btn-outline-primary sb-btn-normal ml-8 sb-upload-file" (click)="openModal();" appTelemetryInteract [telemetryInteractEdata]="selectFileInteractEdata"> Select file </div>
           </div>
           <div class="pt-32">
             <div class="sb-label-name pb-8" *ngIf="uploadedDetails['total_uploaded'] && uploadedDetails['total_uploaded'] != 0">
