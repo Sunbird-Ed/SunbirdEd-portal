@@ -73,7 +73,9 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.completedCount = completedCount;
           return _.get(resp, 'result.response.contents');
         })).subscribe((apiResponse: any) => {
-          this.contentResponse = apiResponse;
+          this.contentResponse = _.filter(apiResponse, (o) => {
+            return o.status !== 'canceled';
+          });
         });
   }
 
