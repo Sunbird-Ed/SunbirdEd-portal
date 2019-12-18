@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService } from '@sunbird/core';
-import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
+import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService, ContentService } from '@sunbird/core';
+import { ConfigService, ServerResponse, ContentData, ToasterService} from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
+import { UUID } from 'angular2-uuid';
 import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
 import { forkJoin, throwError } from 'rxjs';
@@ -51,6 +52,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   };
   public resourceTemplateComponentInput: IResourceTemplateComponentInput = {};
 
+  public createdWorksheetIndentifier: any;
   prevUnitSelect: string;
   contentId: string;
   showLargeModal: boolean;
@@ -72,13 +74,14 @@ export class ChapterListComponent implements OnInit, OnChanges {
   showError = false;
   public questionPattern: Array<any> = [];
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
-    private userService: UserService, public actionService: ActionService,
+    private userService: UserService, private contentService: ContentService, public actionService: ActionService,
     public telemetryService: TelemetryService, private cbseService: CbseProgramService,
     public toasterService: ToasterService, public router: Router,
     public programStageService: ProgramStageService, public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef) {
   }
 
   ngOnInit() {
+    console.log(this.chapterListComponentInput);
     this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
@@ -130,7 +133,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
       contentUploadComponentInput: {
         selectedAttributes: this.selectedAttributes,
         unitIdentifier: this.unitIdentifier,
-        templateDetails: this.templateDetails
+        templateDetails: this.templateDetails,
+        resourceIdentifier : this.createdWorksheetIndentifier
       }
     };
   }
@@ -222,6 +226,16 @@ export class ChapterListComponent implements OnInit, OnChanges {
   }
 
   handleTemplateSelection(event) {
+    if (_.isEmpty(event) || _.isEmpty(event.template)) { return; }
+    this.createResource(event.templateDetails).subscribe((response: any) => {
+      this.createdWorksheetIndentifier = _.get(response, 'result.content_id');
+      this.linkResourceToHierarchy(this.createdWorksheetIndentifier).subscribe((res: any) => {
+          this.handleTemplateComponent(event);
+      });
+    });
+  }
+
+  handleTemplateComponent(event) {
     this.showResourceTemplatePopup = false;
     if (event.template) {
       this.showContentUploader = true;
@@ -315,6 +329,73 @@ export class ChapterListComponent implements OnInit, OnChanges {
       console.log('result ', res);
       this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
     });
+  }
+
+  private createResource(content) {
+    const option = {
+      url: this.configService.urlConFig.URLS.CONTENT.CREATE,
+      data: {
+        'request': {
+           'content': {
+              'code': UUID.UUID(),
+              'name': content.name,
+              'description': content.description,
+              'createdBy': this.userService.userid,
+              'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
+              'createdFor': [
+                 'ORG_001'
+              ],
+              'contentType': content.contentType,
+              'framework': this.selectedAttributes.framework,
+              'mimeType': content.mimeType[0],
+              'resourceType': content.resourceType,
+              'creator': this.getUserName()
+           }
+        }
+      }
+    };
+    return this.contentService.post(option).pipe(map((response) => {
+      console.log(response);
+      return response;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Resource creation failed. Please try again!' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
+  }
+
+  public linkResourceToHierarchy(contentId) {
+    const req = {
+      url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_ADD,
+      data: {
+        'request': {
+          'rootId': this.selectedAttributes.collection,
+          'unitId': this.unitIdentifier,
+          'children': [contentId]
+        }
+      }
+    };
+    return this.actionService.patch(req).pipe(map((response) => {
+      console.log(response);
+      return response;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Resource linking failed. Please try again!' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
+  }
+
+  getUserName() {
+    let userName = '';
+    if (this.userService.userProfile.firstName) {
+      userName = this.userService.userProfile.firstName;
+    }
+    if (this.userService.userProfile.lastName) {
+      userName += (' ' + this.userService.userProfile.lastName);
+    }
+    return userName;
   }
 
 }
