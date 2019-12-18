@@ -72,10 +72,10 @@ describe('UpdateContentPreferenceComponent', () => {
 
   it('should call readChannel and error while getting framework details', () => {
     spyOn(component, 'onBoardChange');
-    spyOn(component, 'filterContent');
-    spyOn(component, 'getSelecteddata');
     spyOn(component.channelService, 'getFrameWork').and.returnValue(of(user_content_preferences_Data.framework_error));
     component.onBoardChange();
+    spyOn(component, 'filterContent');
+    spyOn(component, 'getSelecteddata');
     expect(component.mediumOption).toEqual([]);
     expect(component.classOption).toEqual([]);
     expect(component.subjectsOption).toEqual([]);
@@ -119,7 +119,6 @@ describe('UpdateContentPreferenceComponent', () => {
 
   it('should disable submit button when on change in medium ', () => {
     spyOn(component, 'onMediumChange');
-    spyOn(component, 'onBoardChange');
     component.ngOnInit();
     let errors = {};
     const class_control = component.contentPreferenceForm.controls['class'];
