@@ -46,65 +46,78 @@ describe('ProfilePageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should get getUserDate', () => {
+  it('should get getUserData', () => {
     spyOn(component.userService, 'getUser').and.returnValue(of(user_profile_Data.locationData));
     component.ngOnInit();
-    expect(component.userData).toBeDefined();
+    const service: OnboardingService = TestBed.get(OnboardingService);
+    service.getUser().subscribe(data => {
+      expect(data).toBe(user_profile_Data.locationData);
+      expect(component.userData).toBeDefined();
+    }, err => {
+    });
   });
-  it('should handle openModal while calling LOCATION component', () => {
-    spyOn(component, 'openModal').and.returnValue(of('LOCATION'));
+  it('should handle openModal method while calling LOCATION component', () => {
+    spyOn(component, 'openModal').and.returnValue(of(user_profile_Data.LOCATION));
     spyOn(component, 'setLocationTelemetryData');
-    component.selectedComponent = 'LOCATION';
-    component.openModal(component.selectedComponent);
+    component.selectedComponent = user_profile_Data.LOCATION;
+    expect(component.openModal).toHaveBeenCalledWith();
+    component.openModal(user_profile_Data.LOCATION);
+    expect(component.selectedComponent).toEqual(user_profile_Data.LOCATION);
     expect(component.selectedComponent).toBeDefined();
+    component.setLocationTelemetryData();
   });
-  it('should handle openModal while calling CONTENTPREFERENCE component', () => {
-    spyOn(component, 'openModal').and.returnValue(of('CONTENTPREFERENCE'));
-    component.selectedComponent = 'CONTENTPREFERENCE';
-    component.openModal(component.selectedComponent);
+  it('should handle openModal method while calling CONTENTPREFERENCE component', () => {
+    spyOn(component, 'openModal').and.returnValue(of(user_profile_Data.CONTENTPREFERENCE));
+    component.selectedComponent = user_profile_Data.CONTENTPREFERENCE;
     expect(component.openModal).toHaveBeenCalled();
+    component.openModal(user_profile_Data.CONTENTPREFERENCE);
+    expect(component.selectedComponent).toEqual(user_profile_Data.CONTENTPREFERENCE);
     expect(component.selectedComponent).toBeDefined();
+    spyOn(component, 'setContentTelemetryData').and.callThrough();
+    component.setContentTelemetryData();
   });
   it('should handle success DismissEvent', () => {
-    spyOn(component, 'handleDismissEvent').and.returnValue(of('SUCCESS'));
+    spyOn(component, 'handleDismissEvent').and.returnValue(of(user_profile_Data.SUCCESS));
     component.selectedComponent = '';
-    component.handleDismissEvent(component.selectedComponent);
-    expect(component.selectedComponent).toBeDefined();
+    component.handleDismissEvent(user_profile_Data.SUCCESS);
+    expect(component.selectedComponent).toEqual('');
     spyOn(component, 'getUserData');
+    component.getUserData();
   });
   it('should handle error DismissEvent', () => {
     spyOn(component, 'handleDismissEvent').and.returnValue(of(''));
     component.selectedComponent = '';
-    component.handleDismissEvent(component.selectedComponent);
+    component.handleDismissEvent('');
+    expect(component.selectedComponent).toEqual('');
     expect(component.selectedComponent).toBeDefined();
   });
   it('should open your location modal when you click edit(edit location)', () => {
-    spyOn(component, 'openModal').and.returnValue(of('LOCATION'));
+    spyOn(component, 'openModal').and.returnValue(of(user_profile_Data.LOCATION));
     const openModal: DebugElement = fixture.debugElement;
     const buttonQuerySelector = openModal.query(By.css('button.location_button'));
     const button: HTMLElement = buttonQuerySelector.nativeElement;
     button.click();
     spyOn(component, 'setLocationTelemetryData').and.callThrough();
     component.setLocationTelemetryData();
-    expect(component.setLocationTelemetryData).toHaveBeenCalled();
     fixture.whenStable().then(() => {
-      component.selectedComponent = 'LOCATION';
-      component.openModal(component.selectedComponent);
+      component.selectedComponent = user_profile_Data.LOCATION;
+      component.openModal(user_profile_Data.LOCATION);
+      expect(component.selectedComponent).toEqual(user_profile_Data.LOCATION);
       expect(component.selectedComponent).toBeDefined();
     });
   });
-  it('should open your location modal when you click edit(edit content preferences)', () => {
-    spyOn(component, 'openModal').and.returnValue(of('CONTENTPREFERENCE'));
+  it('should open your content update modal when you click edit(edit content preferences)', () => {
+    spyOn(component, 'openModal').and.returnValue(of(user_profile_Data.CONTENTPREFERENCE));
     const openModal: DebugElement = fixture.debugElement;
     const buttonQuerySelector = openModal.query(By.css('button.button_content_preferences'));
     const button: HTMLElement = buttonQuerySelector.nativeElement;
     button.click();
     spyOn(component, 'setContentTelemetryData').and.callThrough();
     component.setContentTelemetryData();
-    expect(component.setContentTelemetryData).toHaveBeenCalled();
     fixture.whenStable().then(() => {
-      component.selectedComponent = 'CONTENTPREFERENCE';
-      component.openModal(component.selectedComponent);
+    component.selectedComponent = user_profile_Data.CONTENTPREFERENCE;
+      component.openModal(user_profile_Data.CONTENTPREFERENCE);
+      expect(component.selectedComponent).toEqual(user_profile_Data.CONTENTPREFERENCE);
       expect(component.selectedComponent).toBeDefined();
     });
   });

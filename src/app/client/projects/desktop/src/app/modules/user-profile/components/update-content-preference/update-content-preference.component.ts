@@ -147,7 +147,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   setTelemetryData() {
     const interactData = {
       context: {
-        env: 'profile',
+        env: this.activatedRoute.snapshot.data.telemetry.env,
         cdata: []
       },
       edata: {

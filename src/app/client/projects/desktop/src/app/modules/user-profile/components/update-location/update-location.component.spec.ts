@@ -52,16 +52,19 @@ describe('UpdateLocationComponent', () => {
     spyOn(component, 'getAllStates');
     component.ngOnInit();
     spyOn(component, 'onStateChanges');
+    expect(component.getAllStates).toHaveBeenCalled();
   });
 
   it('should call searchLocation (to get states) in onboarding service', () => {
     const userService = TestBed.get(OnboardingService);
     spyOn(component, 'getAllStates');
     spyOn(userService, 'searchLocation').and.returnValue(of(location_Data.success_state_details));
+    component.getAllStates();
     userService.searchLocation(location_Data.get_state_details_api_body).subscribe(data => {
       expect(data).toBe(location_Data.success_state_details);
+      expect(component.stateList).toHaveBeenCalledWith(location_Data.success_state_details.result.response);
       expect(component.selectedState).toBeDefined();
-      expect(component.stateList).toBeDefined();
+
     }, error => {
 
     });
@@ -74,19 +77,24 @@ describe('UpdateLocationComponent', () => {
     spyOn(userService, 'searchLocation').and.returnValue(of(location_Data.success_districts_details));
     userService.searchLocation(location_Data.get_district_details_api_body).subscribe(data => {
       expect(data).toBe(location_Data.success_districts_details);
-      expect(component.selectedDistrict).toBeDefined();
       expect(component.districtList).toBeDefined();
+      expect(component.selectedDistrict).toBeDefined();
     }, error => {
 
     });
   });
 
-  it('should call close modal', () => {
-    spyOn(component, 'closeModal');
-    spyOn(component.dismissed, 'emit');
+  it('should call close modal in success updating content', () => {
+    spyOn(component.dismissed, 'emit').and.returnValue('SUCCESS');
+    component.closeModal('SUCCESS');
+    expect(component.dismissed.emit).toHaveBeenCalledWith('SUCCESS');
   });
 
-
+  it('should call close modal error while  updating content', () => {
+    spyOn(component.dismissed, 'emit').and.returnValue('ERROR');
+    component.closeModal('ERROR');
+    expect(component.dismissed.emit).toHaveBeenCalledWith('ERROR');
+  });
 
   it('should call saveLocation (successful) in onboarding service', () => {
     spyOn(component, 'updateUserLocation');

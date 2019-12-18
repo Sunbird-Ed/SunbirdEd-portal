@@ -51,7 +51,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   setLocationTelemetryData() {
     const editLocationdata = {
       context: {
-        env: 'profile',
+        env: this.activatedRoute.snapshot.data.telemetry.env,
         cdata: []
       },
       edata: {
@@ -66,7 +66,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   setContentTelemetryData() {
     const editContentPreferencesData = {
       context: {
-        env: 'profile',
+        env: this.activatedRoute.snapshot.data.telemetry.env,
         cdata: []
       },
       edata: {

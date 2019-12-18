@@ -45,5 +45,8 @@ export const user_profile_Data = {
                 }
             }
         }
-    }
+    },
+    LOCATION: 'LOCATION',
+    SUCCESS: 'SUCCESS',
+    CONTENTPREFERENCE: 'CONTENTPREFERENCE'
 };

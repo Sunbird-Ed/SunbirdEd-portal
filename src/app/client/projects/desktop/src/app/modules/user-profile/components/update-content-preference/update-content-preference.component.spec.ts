@@ -59,6 +59,8 @@ describe('UpdateContentPreferenceComponent', () => {
   it('should call getCustodianOrg', () => {
     spyOn(component.orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of(user_content_preferences_Data.custodianOrgId));
     spyOn(component, 'readChannel');
+    component.getCustodianOrg();
+    expect(component.readChannel).toHaveBeenCalled();
   });
 
   it('should call readChannel and success while getting framework details', () => {
@@ -69,26 +71,29 @@ describe('UpdateContentPreferenceComponent', () => {
   });
 
   it('should call readChannel and error while getting framework details', () => {
-    spyOn(component.channelService, 'getFrameWork').and.returnValue(of(user_content_preferences_Data.framework_error));
-  });
-
-  it('should call onBoardChange and get getFrameworkCategories', () => {
-    spyOn(component.userService, 'getAssociationData');
     spyOn(component, 'onBoardChange');
-    spyOn(component.frameworkService, 'getFrameworkCategories').and.returnValue(of(user_content_preferences_Data.framework));
-    component.onBoardChange();
     spyOn(component, 'filterContent');
     spyOn(component, 'getSelecteddata');
+    spyOn(component.channelService, 'getFrameWork').and.returnValue(of(user_content_preferences_Data.framework_error));
+    component.onBoardChange();
     expect(component.mediumOption).toEqual([]);
     expect(component.classOption).toEqual([]);
     expect(component.subjectsOption).toEqual([]);
   });
-  it('should call readChannel and error while getting framework details', () => {
-    spyOn(component, 'filterContent');
 
+  it('should call onBoardChange and get getFrameworkCategories', () => {
+    spyOn(component, 'onBoardChange');
+    spyOn(component.frameworkService, 'getFrameworkCategories').and.returnValue(of(user_content_preferences_Data.framework));
+    spyOn(component, 'filterContent');
+    spyOn(component, 'getSelecteddata');
+    component.onBoardChange();
+    spyOn(component.userService, 'getAssociationData');
+    expect(component.mediumOption).toEqual([]);
+    expect(component.classOption).toEqual([]);
+    expect(component.subjectsOption).toEqual([]);
   });
 
-  it('should disable submit button when on chnage in board ', () => {
+  it('should disable submit button when on change in board ', () => {
     spyOn(component, 'onBoardChange');
     component.ngOnInit();
     let errors = {};
@@ -97,6 +102,9 @@ describe('UpdateContentPreferenceComponent', () => {
     errors = medium_control.errors || {};
     expect(errors['required']).toBeTruthy();
     expect(component.contentPreferenceForm.invalid).toBeTruthy();
+    expect(component.mediumOption).toEqual([]);
+    expect(component.classOption).toEqual([]);
+    expect(component.subjectsOption).toEqual([]);
   });
 
   it('should call onMediumChange and filter data', () => {
@@ -105,9 +113,11 @@ describe('UpdateContentPreferenceComponent', () => {
     component.onMediumChange();
     spyOn(component, 'filterContent');
     spyOn(component, 'getSelecteddata');
+    expect(component.classOption).toEqual([]);
+    expect(component.subjectsOption).toEqual([]);
   });
 
-  it('should disable submit button when on chnage in medium ', () => {
+  it('should disable submit button when on change in medium ', () => {
     spyOn(component, 'onMediumChange');
     spyOn(component, 'onBoardChange');
     component.ngOnInit();
@@ -117,6 +127,8 @@ describe('UpdateContentPreferenceComponent', () => {
     errors = class_control.errors || {};
     expect(errors['required']).toBeTruthy();
     expect(component.contentPreferenceForm.invalid).toBeTruthy();
+    expect(component.classOption).toEqual([]);
+    expect(component.subjectsOption).toEqual([]);
   });
 
 
@@ -128,7 +140,7 @@ describe('UpdateContentPreferenceComponent', () => {
     spyOn(component, 'getSelecteddata');
   });
 
-  it('should disable submit button when on chnage in class ', () => {
+  it('should disable submit button when on change in class ', () => {
     spyOn(component, 'onMediumChange');
     spyOn(component, 'onBoardChange');
     spyOn(component, 'onClassChange');
@@ -142,15 +154,11 @@ describe('UpdateContentPreferenceComponent', () => {
   });
 
   it('should call close modal', () => {
-    spyOn(component, 'closeModal');
-    spyOn(component.dismissed, 'emit');
+    spyOn(component.dismissed, 'emit').and.returnValue('');
+    component.closeModal();
+    expect(component.dismissed.emit).toHaveBeenCalledWith();
+  });
 
-  });
-  it('should call close modal', () => {
-    spyOn(component, 'setTelemetryData').and.callThrough();
-    component.setTelemetryData();
-    expect(component.setTelemetryData).toHaveBeenCalled();
-  });
   it('should call update contenet preferences (success) in onboarding service', () => {
     const userService = TestBed.get(OnboardingService);
     spyOn(component, 'updateUserPreferenece');
@@ -162,7 +170,7 @@ describe('UpdateContentPreferenceComponent', () => {
     }, error => {
 
     });
-
+    spyOn(component, 'telemetryService');
     spyOn(component, 'setTelemetryData').and.callThrough();
     component.setTelemetryData();
     expect(component.setTelemetryData).toHaveBeenCalled();
@@ -179,7 +187,7 @@ describe('UpdateContentPreferenceComponent', () => {
       spyOn(component.toasterService, 'error').and.returnValue(of(user_content_preferences_Data.resourceBundle.messages.emsg.m0025));
       expect(component.toasterService.error(user_content_preferences_Data.resourceBundle.messages.emsg.m0025));
     });
-
+    spyOn(component, 'telemetryService');
     spyOn(component, 'setTelemetryData').and.callThrough();
     component.setTelemetryData();
     expect(component.setTelemetryData).toHaveBeenCalled();
