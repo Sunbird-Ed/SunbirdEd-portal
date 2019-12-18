@@ -52,7 +52,7 @@ describe('ProfilePageComponent', () => {
     const service: OnboardingService = TestBed.get(OnboardingService);
     service.getUser().subscribe(data => {
       expect(data).toBe(user_profile_Data.locationData);
-      expect(component.userData).toBeDefined();
+      expect(component.userData).toHaveBeenCalledWith(user_profile_Data.locationData);
     });
   });
   it('should handle openModal method while calling LOCATION component', () => {
