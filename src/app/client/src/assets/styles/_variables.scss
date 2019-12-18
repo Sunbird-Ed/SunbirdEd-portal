@@ -26,6 +26,7 @@
   --orange: #e55a28;
   --red: #ff4558;
   --white: #ffffff;
+  --black: #000000;
   --indigo: #6610f2;
   --purple: #6f42c1;
   --pink: #e83e8c;
@@ -151,7 +152,7 @@ $red-100: var(--red-100); // buttong bg, toast
 $red-400: var(--red-400); // icon color, lable, notification
 
 // input border width
-$input-border-width: 1px;
+$input-border-width: 0.0625rem;
 
 // Status Colors
 $info-color: $primary-400;
@@ -212,7 +213,6 @@ $block-padding-y: ($base-block-space * 1) ($base-block-space * 1); // top bottom
 $block-margin-xl-minus: -($base-block-space * 2); // minus margin 16px left
 $block-margin-xr-minus: -($base-block-space * 2); // minus margin 16px right
 $block-margin-xr-minus: -($base-block-space * 2) - ($base-block-space * 2); // minus margin 16px left & right
-// width heights
 $base-btn-xs-height: ($base-block-space * 3);
 $base-btn-normal-height: ($base-block-space * 4);
 $base-btn-sm-height: ($base-block-space * 5);
@@ -222,6 +222,14 @@ $base-btn-fluid: 100%;
 // modal component
 $sb-modal-header-bg: $primary-400;
 $sb-modal-header-color: $white-color;
+$sb-modal-header-padding: $base-block-space ($base-block-space * 2);
+$sb-modal-header-height: ($base-block-space * 5);
+$sb-modal-fs-header-height: ($base-block-space * 7);
+$sb-modal-header-line-height: ($base-block-space * 3);
+$sb-modal-fs-header-line-height: ($h5-font-size * 1.61803398875);
+$sb-modal-content-padding: $block-padding-xy;
+$sb-modal-actions-bg: $white-color;
+$sb-modal-actions-padding: ($base-block-space) ($base-block-space * 1);
 $sb-modal-header-padding: ($base-block-space * 1) ($base-block-space * 2);
 $sb-modal-header-height: ($base-block-space * 5);
 $sb-modal-fs-header-height: ($base-block-space * 7);
@@ -237,6 +245,7 @@ $sb-modal-header-fsize: $h5-font-size;
 $sb-modal-small-width: 480px;
 $sb-modal-normal-width: 720px;
 $sb-modal-large-width: 900px;
+$sb-modal-corner-radius: $base-block-space; 
 $sb-modal-corner-radius: 8px;
 //button component
 
@@ -275,7 +284,9 @@ $sb-error-text: $red-400;
 $sb-success-text: $secondary-200;
 $sb-label-font-size: 0.8571rem;
 
-// Buttons
+//accordions
+$sb-content-manager-border: 0.0625rem solid $gray-100;
+$sb-download-text-max-width: 18em;
 
 // Dashed Buttons
 $sb-btn-dashed-border: 0.5 solid $primary-color;
@@ -283,6 +294,7 @@ $sb-btn-dashed-background-color: $white-color;
 $sb-btn-dashed-color: $primary-400;
 
 // Button groups
+$sb-btn-group-border-width: 0.0625rem;
 $sb-btn-group-border-width: 1px;
 $sb-btn-group-border-color: $gray-100;
 $sb-btn-group-btn-background: $white-color;
@@ -324,9 +336,6 @@ $sb-radio-btn-label-color: $gray-200;
 $sb-radio-btn-backgroud-before-checked: $white-color;
 $sb-radio-btn-backgroud-after-checked: $primary-300;
 
-//accordions
-$sb-content-manager-border: 1px solid $gray-100;
-$sb-download-text-max-width: 18em;
 
 // Checkbox
 $sb-checkbox-primary-background: $primary-color;

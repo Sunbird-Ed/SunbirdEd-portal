@@ -13,8 +13,8 @@
 
 
 // base structure
-@import "./variables";
 @import "./mixins/mixins";
+@import "./variables";
 @import "./base/base";
 @import "./layout/layout";
 @import "./semantic/semantic-overrides";
