@@ -2,7 +2,7 @@ import { ExploreModule } from './../../../../../../src/app/modules/public/module
 import { ContentManagerService } from './services';
 import {
     SuiModalModule, SuiProgressModule, SuiAccordionModule,
-    SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule
+    SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
 } from 'ng2-semantic-ui';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -54,7 +54,8 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         SuiDimmerModule,
         NgInviewModule,
         SharedFeatureModule,
-        SuiCollapseModule
+        SuiCollapseModule,
+        SuiDropdownModule
     ],
     providers: [DeviceDetectorService, ContentManagerService],
     declarations: [ContentImportHeaderComponent, WatchVideoComponent,
@@ -86,6 +87,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         ContentImportHeaderComponent,
     ],
     exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
-        OnboardingLocationComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent]
+        OnboardingLocationComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent, ProfileDropdownComponent]
 })
 export class OfflineModule { }
