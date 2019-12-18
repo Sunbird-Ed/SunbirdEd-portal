@@ -27,7 +27,6 @@ export const Response = {
             }
           },
           'mimeType': 'application/vnd.ekstep.plugin-archive',
-          'pkgVersion': 3,
           'objectType': 'Content',
           'gradeLevel': [
             'Grade 1'

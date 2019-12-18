@@ -14,7 +14,7 @@ export interface ICard {
     progress?: number;
     contentType?: string;
     hoverData?: object;
-    pkgVersion?: string;
+    pkgVersion?: number;
     ribbon?: {
         right?: { class: string, name: string }
         left?: { class: string, name: string , image: string }
