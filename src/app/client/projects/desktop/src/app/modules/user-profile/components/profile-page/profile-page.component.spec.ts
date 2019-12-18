@@ -53,7 +53,6 @@ describe('ProfilePageComponent', () => {
     service.getUser().subscribe(data => {
       expect(data).toBe(user_profile_Data.locationData);
       expect(component.userData).toBeDefined();
-    }, err => {
     });
   });
   it('should handle openModal method while calling LOCATION component', () => {
@@ -75,14 +74,12 @@ describe('ProfilePageComponent', () => {
     component.setContentTelemetryData();
   });
   it('should handle success DismissEvent', () => {
-    component.selectedComponent = '';
     component.handleDismissEvent(user_profile_Data.SUCCESS);
     expect(component.selectedComponent).toEqual('');
     spyOn(component, 'getUserData');
     component.getUserData();
   });
   it('should handle error DismissEvent', () => {
-    component.selectedComponent = '';
     component.handleDismissEvent('');
     expect(component.selectedComponent).toEqual('');
     expect(component.selectedComponent).toBeDefined();

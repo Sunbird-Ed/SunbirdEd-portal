@@ -64,8 +64,6 @@ describe('UpdateLocationComponent', () => {
       expect(component.stateList).toHaveBeenCalledWith(location_Data.success_state_details.result.response);
       expect(component.selectedState).toBeDefined();
 
-    }, error => {
-
     });
 
   });
@@ -78,9 +76,8 @@ describe('UpdateLocationComponent', () => {
       expect(data).toBe(location_Data.success_districts_details);
       expect(component.districtList).toHaveBeenCalledWith(location_Data.success_districts_details.result.response);
       expect(component.selectedDistrict).toBeDefined();
-    }, error => {
-
-    });
+    },
+    );
   });
 
   it('should call close modal in success updating content', () => {
@@ -106,8 +103,6 @@ describe('UpdateLocationComponent', () => {
       component.closeModal('SUCCESS');
     expect(component.dismissed.emit).toHaveBeenCalledWith('SUCCESS');
       expect(component.toasterService.success).toHaveBeenCalledWith(location_Data.resourceBundle.messages.smsg.m0060);
-
-    }, error => {
 
     });
     spyOn(component, 'setTelemetryData').and.callThrough();

@@ -66,8 +66,7 @@ describe('UpdateContentPreferenceComponent', () => {
   it('should call readChannel and success while getting framework details', () => {
     spyOn(component.channelService, 'getFrameWork').and.returnValue(of(user_content_preferences_Data.readChannel));
     component.readChannel('01285019302823526477');
-    expect(component.boardOption).toBeDefined();
-    spyOn(component, 'onBoardChange');
+    expect(component.boardOption).toEqual(user_content_preferences_Data.readChannel.result.channel.frameworks);
   });
 
   it('should call readChannel and error while getting framework details', () => {
@@ -131,12 +130,10 @@ describe('UpdateContentPreferenceComponent', () => {
   });
 
 
-  it('should call onClassChange and filter data', () => {
-    spyOn(component.userService, 'getAssociationData');
-    spyOn(component, 'onClassChange');
-    component.onClassChange();
-    spyOn(component, 'filterContent');
-    spyOn(component, 'getSelecteddata');
+  it('should call onClassChange', () => {
+    spyOn(component.userService, 'getAssociationData').and.returnValue(user_content_preferences_Data.update_content_api_body.subjects);
+   component.onClassChange();
+    expect(component.subjectsOption).toEqual(user_content_preferences_Data.update_content_api_body.subjects);
   });
 
   it('should disable submit button when on change in class ', () => {
@@ -166,8 +163,6 @@ describe('UpdateContentPreferenceComponent', () => {
       expect(data).toBe(user_content_preferences_Data.success_update_preferences);
       spyOn(component.toasterService, 'success').and.returnValue(of(user_content_preferences_Data.resourceBundle.messages.smsg.m0061));
       expect(component.toasterService.error(user_content_preferences_Data.resourceBundle.messages.smsg.m0061));
-    }, error => {
-
     });
     spyOn(component, 'telemetryService');
     spyOn(component, 'setTelemetryData').and.callThrough();
