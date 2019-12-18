@@ -16,7 +16,7 @@ a.sb-btn {
   align-items: center;
   flex-wrap: wrap;
 }
-// base button styles
+
 .sb-btn {
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
@@ -27,7 +27,7 @@ a.sb-btn {
   color: $white-color;
   cursor: pointer;
   min-width: ($base-block-space * 8);
-  @include border-radius(3px);
+  @include border-radius(0.125rem);
   position: relative;
   line-height: 1.15;
   text: {
@@ -36,18 +36,6 @@ a.sb-btn {
   }
   &:hover {
     opacity: 1;
-  }
-  &-disabled,
-  &-disabled:hover,
-  &:disabled,
-  &:disabled:hover {
-    background-color: $gray-100;
-    color: $gray-200;
-    border: 1px solid $gray-100;
-    cursor: default;
-  }
-  & + .sb-btn {
-    //margin:0 $base-block-space 0 0;
   }
   &:after {
     content: "";
@@ -65,391 +53,159 @@ a.sb-btn {
   &.flat {
     border-radius: 0;
   }
-  // button sizes
-  &-xs,
-  &-normal,
-  &-sm,
-  &-md,
-  &-full {
-    padding: ($base-block-space * 1) ($base-block-space * 2);
-  }
-  &-xs {
-    height: ($base-block-space * 3);
-    padding: ($base-block-space * 0) ($base-block-space * 1);
-    font-size: $font-size-sm;
-  }
-  //primary button style
-  &-normal {
-    height: ($base-block-space * 4);
-    font-size: $font-size-sm;
-  }
-  &-sm {
-    height: ($base-block-space * 5);
-    font-size: $font-size-normal;
-  }
-  &-md {
-    height: ($base-block-space * 6);
-    font-size: $font-size-md;
-  }
-  &-lg {
-    height: ($base-block-space * 7);
-    padding: ($base-block-space * 2) ($base-block-space * 3);
-    font-size: $font-size-lg;
-  }
-  &-full {
-    width: 100%;
-  }
+}
+// Create button color classess from the below list
+// btnname basecolor hovercolor outlinecolor
+$btns: "gray" var(--gray-200) var(--gray-400) var(--gray-100),
+  "primary" var(--primary-400) var(--primary-800) var(--primary-100),
+  "secondary" var(--secondary-200) var(--secondary-400) var(--secondary-0),
+  "tertiary" var(--tertiary-100) var(--tertiary-400) var(--tertiary-0),
+  "red" var(--red-100) var(--red-400) var(--red-0),
+  "info" var(--primary-400) var(--primary-800) var(--primary-100),
+  "success" var(--secondary-200) var(--secondary-400) var(--secondary-100),
+  "warning" var(--tertiary-100) var(--tertiary-400) var(--tertiary-0),
+  "error" var(--red-100) var(--red-400) var(--red-0);
+@each $btn in $btns {
+  $btntypes: btn btn-outline btn-dashed btn-link btn-square;
 
-  // default colored btns
-  &-primary,
-  &-info,
-  &-secondary,
-  &-success,
-  &-tertiary,
-  &-error {
-    &:hover,
-    &:active,
-    &.active {
-      color: $white;
-      border: 1px solid transparent;
-    }
-  }
-  &-white {
-    box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.2);
-    border: 0px solid #ddd;
-  }
-  &-primary,
-  &-info {
-    @include btn-theme($primary-color);
-    &:hover,
-    &:active,
-    &.active {
-      background: $primary-800;
-    }
-  }
-  &-secondary,
-  &-success {
-    @include btn-theme($secondary-200);
-    &:hover,
-    &:active,
-    &.active {
-      background: $secondary-400;
-    }
-  }
-  &-tertiary,
-  &-warning {
-    @include btn-theme($tertiary-100);
-    &:hover,
-    &:active,
-    &.active {
-      background: $tertiary-400;
-    }
-  }
-  &-success {
-    @include btn-theme($success-color);
-    &:hover,
-    &:active,
-    &.active {
-      background: $secondary-400;
-    }
-  }
-  &-info {
-    @include btn-theme($info-color);
-    &:hover,
-    &:active,
-    &.active {
-      background: $primary-800;
-    }
-  }
-  &-warning {
-    @include btn-theme($warning-color);
-    &:hover,
-    &:active,
-    &.active {
-      background: $tertiary-400;
-    }
-  }
-  &-error {
-    @include btn-theme($danger-color);
-    &:hover,
-    &:active,
-    &.active {
-      background: $red-400;
-    }
-  }
-  &-gray {
-    @include btn-theme($gray-200);
-    &:hover,
-    &:active,
-    &.active {
-      background: $gray-400;
-    }
-  }
-
-  // default outline colored btns
-  &-outline-primary,
-  &-outline-info {
-    @include btn-theme-bgwhite($primary-color);
-    &:hover,
-    &:active,
-    &.active {
-      background: $primary-100;
-      color: $primary-800;
-      border-color: $primary-800;
-    }
-  }
-  &-outline-secondary,
-  &-outline-success {
-    @include btn-theme-bgwhite($secondary-200);
-    color: $secondary-100;
-    border-color: $secondary-100;
-    &:hover,
-    &:active,
-    &.active {
-      background: $secondary-0;
-      color: $secondary-400;
-      border-color: $secondary-400;
-    }
-  }
-  &-outline-tertiary,
-  &-outline-warning {
-    @include btn-theme-bgwhite($tertiary-color);
-    color: $tertiary-100;
-    border-color: $tertiary-100;
-    &:hover,
-    &:active,
-    &.active {
-      background: $tertiary-0;
-      color: $tertiary-400;
-      border-color: $tertiary-400;
-    }
-  }
-  &-outline-error {
-    @include btn-theme-bgwhite($red-400);
-    color: $red-100;
-    border-color: $red-100;
-    &:hover,
-    &:active,
-    &.active {
-      background: $red-0;
-      color: $red-400;
-      border-color: $red-400;
-    }
-  }
-  &-outline-gray {
-    @include btn-theme-bgwhite($gray-800);
-    color: $gray-300;
-    border-color: $gray-300;
-    &:hover,
-    &:active,
-    &.active {
-      background: $gray-0;
-      color: $gray-800;
-      border-color: $gray-800;
-    }
-  }
-  &-outline-white {
-    @include btn-theme-bgwhite($white);
-    color: $primary-800;
-    border-color: $white;
-    &:hover,
-    &:active,
-    &.active {
-      background: $gray-0;
-      color: $primary-800;
-      border-color: $white;
-    }
-  }
-
-  // button links colored
-  &-link-primary,
-  &-link-info,
-  &-link-secondary,
-  &-link-success,
-  &-link-tertiary,
-  &-link-warning,
-  &-link-error,
-  &-link-gray {
-    background: none;
-    border: 0px;
-  }
-  &-link-primary,
-  &-link-info {
-    @include btn-theme-links($primary-color);
-    &:hover,
-    &:active,
-    &.active {
-      background: $primary-100;
-    }
-  }
-  &-link-secondary,
-  &-link-success {
-    @include btn-theme-links($secondary-200);
-    &:hover,
-    &:active,
-    &.active {
-      background: $secondary-0;
-    }
-  }
-  &-link-tertiary,
-  &-link-warning {
-    @include btn-theme-links($tertiary-color);
-    &:hover,
-    &:active,
-    &.active {
-      background: $tertiary-0;
-      border: 0px;
-    }
-  }
-  &-link-error {
-    @include btn-theme-links($red-400);
-    &:hover,
-    &:active,
-    &.active {
-      background: $red-0;
-    }
-  }
-  &-link-gray {
-    @include btn-theme-links($gray-800);
-    &:hover,
-    &:active,
-    &.active {
-      background: $gray-0;
-    }
-  }
-
-  // button link
-  &-link {
-    background: none;
-    border: 0;
-    &:hover {
-      // font-weight: $font-weight-bold;
-    }
-  }
-  //dashed buttons
-  &-dashed {
-    border-style: dashed;
-    border-width: 1px;
-  }
-  &-dashed-primary,
-  &-dashed-info {
-    background-color: $sb-btn-dashed-background-color;
-    border-color: $primary-400;
-    color: $sb-btn-dashed-color;
-    &:hover,
-    &:active,
-    &.active {
-      background-color: $primary-0;
-    }
-  }
-  // disabled button
-  &-disabled,
-  &-primary[disabled],
-  &-secondary[disabled],
-  &-tertiary[disabled],
-  &-info[disabled],
-  &-success[disabled],
-  &-warning[disabled],
-  &-error[disabled] {
-    background-color: $gray-100;
-    border: 1px solid $gray-100;
-    color: $gray-200;
-    cursor: default;
-  }
-  &-outline-disabled,
-  &-outline-primary[disabled],
-  &-outline-secondary[disabled],
-  &-outline-tertiary[disabled],
-  &-outline-info[disabled],
-  &-outline-success[disabled],
-  &-outline-warning[disabled],
-  &-outline-error[disabled],
-  &-outline-gray[disabled] {
-    background-color: $white;
-    border: 1px solid $gray-100;
-    color: $gray-100;
-    cursor: default;
-    font-weight: normal;
-  }
-  //download button animation
-  &-download {
-    transition: all 1.2s ease-in-out;
-    i::after {
-      content: "\f019";
-      font-size: 13px;
-      color: #fff;
-    }
-    &:hover {
-      animation: pulse 0.2s 2 both;
-    }
-    &.loading {
-      i {
-        animation: loading 2s infinite linear;
-        &::after {
-          content: "\f1ce";
+  @each $btntype in $btntypes {
+    .sb-#{nth($btntype, 1)}-#{nth($btn, 1)} {
+      @if $btntype == btn {
+        background-color: #{nth($btn, 2)};
+        border-color: #{nth($btn, 2)};
+        color: #fff;
+        &:hover,
+        &:active,
+        &.active {
+          background-color: #{nth($btn, 3)};
+          border: 1px solid transparent;
+        }
+      } @else if $btntype == btn-outline {
+        background-color: #fff;
+        color: #{nth($btn, 2)};
+        border-color: #{nth($btn, 2)};
+        &:hover,
+        &:active,
+        &.active {
+          color: #{nth($btn, 3)};
+          background-color: #{nth($btn, 4)};
+        }
+      } @else if $btntype == btn-link {
+        background: none;
+        border: 0px;
+        color: #{nth($btn, 2)};
+        &:hover,
+        &:active,
+        &.active {
+          background-color: #{nth($btn, 4)};
+        }
+      } @else if $btntype == btn-dashed {
+        border-style: dashed;
+        border-width: 1px;
+        background-color: #fff;
+        border-color: #{nth($btn, 2)};
+        color: #{nth($btn, 2)};
+        &:hover,
+        &:active,
+        &.active {
+          background-color: #{nth($btn, 4)};
         }
       }
     }
-    &.success {
-      i::after {
-        content: "\f00c";
-        color: transparent;
-        animation: change-icon 1s 0.6s linear both;
+  }
+}
+// Create button sizes classess from the below list
+// class height padding fontsize width
+$btnsizes: "xs" 1.5rem "0.25rem 1rem" 0.75rem null,
+  "normal" 2rem "0.5rem 1rem" 0.75rem null, "sm" 2.5rem "0.5rem 1rem" 1rem null,
+  "md" 3rem "0.5rem 1rem" 1remrem null, "lg" 3.5rem "1rem 1.5rem" 1.25rem null,
+  "full" 1.5rem "0.5rem 1rem" 1.25rem 100%;
+@each $btn in $btnsizes {
+  .sb-btn-#{nth($btn, 1)} {
+    height: #{nth($btn, 2)};
+    padding: #{nth($btn, 3)};
+    font-size: #{nth($btn, 4)};
+    width: #{nth($btn, 5)};
+  }
+}
+// Create button square classess from the below list
+// class height width fontsize padding
+$btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
+  "sm" 3rem 3rem 0.75rem null, "md" 4rem 4rem 1rem null,
+  "lg" 8rem 8rem 1.25rem null;
+@each $btn in $btnSquaresizes {
+  .sb-btn-square {
+    &.sb-btn-#{nth($btn, 1)} {
+      height: #{nth($btn, 2)};
+      width: #{nth($btn, 3)};
+      font-size: #{nth($btn, 4)};
+      //width: #{nth($btn, 5)};
+      i.icon {
+        margin: 0 0 0 0;
+        font-size: 2em;
+      }
+      span {
+        margin: 0.5rem 0 0 0;
       }
     }
   }
-  //Button icons with title - Square
-  &-square {
-    &.sb-btn {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      font-size: $font-size-sm;
-      padding: $base-block-space;
-      i.icon {
-        margin: 0 0 0 0;
-      }
-      span {
-        margin: $base-block-space 0 0 0;
-      }
-    }
-    &.sb-btn-sm {
-      height: $base-block-space * 6;
-      width: $base-block-space * 6;
-      font-size: $font-size-xs;
-      i.icon {
-        font-size: 18px;
-      }
-    }
-    &.sb-btn-normal {
-      height: $base-block-space * 8;
-      width: $base-block-space * 8;
-      i.icon {
-        font-size: 18px;
-      }
-    }
+}
+.sb-btn-radius {
+  border-radius: 2rem;
+}
+.sb-btn-square {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 0.75rem;
+  padding: 0.5rem;
+}
+.sb-btn-disabled {
+  background-color: var(--gray-100);
+  border: 1px solid var(--gray-100);
+  color: var(--gray-200);
+  cursor: default;
+}
+.sb-btn-outline-disabled {
+  background-color: var(--white);
+  border: 1px solid var(--gray-100);
+  color: var(--gray-200);
+  cursor: default;
+  font-weight: normal;
+}
+// button link
+.sb-btn-link {
+  background: none;
+  border: 0;
+  &:hover {
+    // font-weight: $font-weight-bold;
+  }
+}
 
-    &.sb-btn-lg {
-      height: 128px;
-      width: 128px;
-      font-size: $font-size-base;
-      i.icon {
-        font-size: $font-size-lg;
+.sb-btn-download {
+  transition: all 1.2s ease-in-out;
+  i::after {
+    content: "\f019";
+    font-size: 13px;
+    color: #fff;
+  }
+  &:hover {
+    animation: pulse 0.2s 2 both;
+  }
+  &.loading {
+    i {
+      animation: loading 2s infinite linear;
+      &::after {
+        content: "\f1ce";
       }
     }
-
-    &.sb-btn-xs {
-      padding: 4px;
-      height: $base-block-space * 4;
-      min-width: $base-block-space * 4;
-      font-size: $font-size-xs;
-      i.icon {
-        font-size: $font-size-xs;
-      }
-      span {
-        margin: 4px 0 0 0;
-      }
+  }
+  &.success {
+    i::after {
+      content: "\f00c";
+      color: transparent;
+      animation: change-icon 1s 0.6s linear both;
     }
   }
 }
@@ -497,7 +253,6 @@ a.sb-btn {
   padding: ($base-block-space * 0) ($base-block-space * 1)
     ($base-block-space * 0) ($base-block-space * 1);
 }
-
 //Buttons toggle
 .ui.toggle.checkbox.sb-toggle {
   min-height: ($base-block-space * 3);
@@ -575,7 +330,7 @@ a.sb-btn {
     box-shadow: none;
   }
   input:checked ~ label:after {
-    left: (($base-block-space * 5) + 1);
+    left: calculateRem(41px);
     box-shadow: none;
   }
 }

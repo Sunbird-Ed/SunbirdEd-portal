@@ -4,7 +4,7 @@ $mValues: 0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 52, 56, 60, 64, 68, 72, 76, 80,
   $baseMvalue: 0.0625 * $value + rem;
   /* Margin in all direction */
   .m-#{$value} {
-    @include margin($baseMvalue);
+    @include margin($baseMvalue); 
   }
   /* Margin in top direction */
   .mt-#{$value} {
@@ -59,19 +59,19 @@ $mValues: 0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 52, 56, 60, 64, 68, 72, 76, 80,
   @include margin(null null null auto);
   html[dir="rtl"] & {
     @include margin(null auto null null);
-    margin-left: inherit !important;
+    margin-left: 0 !important;
   }
 }
 .mr-auto {
   @include margin(null auto null null);
   html[dir="rtl"] & {
     @include margin(null null null auto);
-    margin-right: inherit !important;
+    margin-right: 0 !important;
   }
 }
 /* Negative margins */
 @media screen and (min-width: 768px) {
   .mx--20 {
-    margin: 0 calculateRem(-20px);
+    margin: 0 calculateRem(-20px) !important;
   }
 }
