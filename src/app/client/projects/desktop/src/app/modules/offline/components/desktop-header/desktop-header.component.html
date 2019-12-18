@@ -8,17 +8,16 @@
       <div class="sbheader sbheader--offline">
         <div class="sbheader__branding sbheader--offline__branding">
           <div class="logo" (click)="navigateToHome()" appTelemetryInteract
-            [telemetryInteractEdata]="homeInteractEdata">
-            <!-- <img src="{{tenantInfo.logo}}" alt={{tenantInfo.titleName}}> -->
-            <img src="assets/images/sunbird_logo.png" alt="sunbird" title="sunbird">
+            [telemetryInteractEdata]="getTelemetryEdata('home')">
+            <img src="{{tenantInfo.logo}}" alt={{tenantInfo.titleName}}>
           </div>
         </div>
 
         <div class="sbheader-mid-container">
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract
-            [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrModal = true;"
+            [telemetryInteractEdata]="getTelemetryEdata('enterDialCode')" (click)="showQrModal = true;"
             title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}">
-            <i class="icon-svg icon-svg--xxs icon-qr">
+            <i class="icon-svg icon-svg--xxs icon-qr mr-4">
               <svg class="icon icon-svg--primary">
                 <use xlink:href="assets/images/sprite.svg#qr-code"></use>
               </svg>
@@ -32,13 +31,13 @@
                   placeholder="{{resourceService?.frmelmnts?.lbl?.searchContent}}&lrm;" [(ngModel)]="queryParam.key"
                   (keyup.enter)="onEnter(queryParam.key)" />
 
-                <!-- <i class="icon-svg icon-svg--xxs icon-close" *ngIf="queryParam?.key?.length"
-                                            (click)="clearSearchQuery()" appTelemetryInteract
-                                            [telemetryInteractEdata]="clearSearchInteractEdata">
-                                            <svg class="icon icon-svg--primary">
-                                                <use xlink:href="assets/images/sprite.svg#close-button"></use>
-                                            </svg>
-                                        </i> -->
+                <i class="icon-svg icon-svg--xxs icon-close" *ngIf="queryParam?.key?.length"
+                  (click)="clearSearchQuery()" appTelemetryInteract
+                  [telemetryInteractEdata]="getTelemetryEdata('clearSearch')">
+                  <svg class="icon icon-svg--primary">
+                    <use xlink:href="assets/images/sprite.svg#close-button"></use>
+                  </svg>
+                </i>
               </div>
               <div class="sbsearchbox__input-action" appTelemetryInteract
                 [telemetryInteractEdata]="getSearchButtonInteractEdata(queryParam.key)"
@@ -54,7 +53,6 @@
         </div>
 
         <div class="sbheader--offline__actions">
-
           <!-- language component -->
           <div class="sb-field mb-0">
             <app-language-dropdown [languageRange]="availableLanguages" *ngIf="availableLanguages">
@@ -64,18 +62,6 @@
 
           <div class="ml-16 cursor-pointer">
             <img src="assets/images/Profile.svg" width="40px" height="40px"></div>
-
-          <!-- <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" appTelemetryInteract
-                                [telemetryInteractEdata]="takeTourInteractEdata">
-                                <i class="icon-svg icon-svg--xxs icon-play">
-                                    <svg class="icon icon-svg--primary">
-                                        <use xlink:href="assets/images/sprite.svg#play"></use>
-                                    </svg></i>
-                                {{resourceService?.frmelmnts?.btn?.takeTour}}
-                            </button>
-                            <button (click)="handleImport()" appTelemetryInteract
-                                [telemetryInteractEdata]="contentImportInteractEdata"
-                                class="sb-btn sb-btn-normal sb-btn-outline-tertiary">{{resourceService?.frmelmnts?.lbl?.uploadContent}}</button> -->
         </div>
       </div>
     </div>
@@ -87,20 +73,22 @@
       <div class="d-flex sb-offline-menu-container flex-ai-end">
         <a [routerLink]="'/'"
           [ngClass]="(router.isActive('/', false) && !(router.isActive('/browse', false) || router.isActive('/help-center', false)) ) ? 'active': ''"
-          appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+          appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('myLibrary')">
           <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
         </a>
         <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
-          [telemetryInteractEdata]="browseEdata">
+          [telemetryInteractEdata]="getTelemetryEdata('browse')">
           <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
         </a>
-        <a routerLinkActive="active" [routerLink]="'/help-center'" (click)="setInteractDataForHelp({id: 'help-center'})">
+        <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract
+          [telemetryInteractEdata]="getTelemetryEdata('helpCenter')">
           <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
         </a>
       </div>
 
-      <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load">
-        <i class="plus icon mr-5"></i>Load Content</button>
+      <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImport()"
+        appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('contentImport')">
+        <i class="plus icon mr-5"></i>{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
     </div>
     <!-- menu component ends -->
   </div>

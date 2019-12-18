@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { UserProfileRoutingModule } from './user-profile-routing.module';
 import { ProfilePageComponent, AboutUsComponent, UpdateContentPreferenceComponent, UpdateLocationComponent } from './components';
 import {
-  SuiModalModule,
- SuiSelectModule
+  SuiModalModule, SuiSelectModule
 } from 'ng2-semantic-ui';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { FormsModule } from '@angular/forms';

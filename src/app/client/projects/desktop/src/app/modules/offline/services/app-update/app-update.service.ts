@@ -20,4 +20,15 @@ export class AppUpdateService {
       return observableThrowError(err);
     }));
   }
+
+  getAppInfo (): Observable<ServerResponse> {
+    const requestParams = {
+      url: this.configService.urlConFig.URLS.OFFLINE.APP_INFO
+    };
+    return this.publicDataService.get(requestParams).pipe(map((response: ServerResponse) => {
+      return response;
+    }), catchError(err => {
+      return observableThrowError(err);
+    }));
+  }
 }

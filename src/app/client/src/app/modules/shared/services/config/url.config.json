@@ -183,13 +183,18 @@
       "RESUME_IMPORT":"content/v1/import/resume",
       "CANCEL_IMPORT":"content/v1/import/cancel",
       "PAUSE_IMPORT":"content/v1/import/pause",
+      "RETRY_IMPORT":"content/v1/import/retry",
       "REPORT_OTHER_ISSUE":"help/v1/report/issue",
       "READ_FAQ": "faqs/v1/read",
       "CREATE_USER": "desktop/user/v1/create",
       "READ_USER": "desktop/user/v1/read",
       "LOCATION_SAVE": "data/v1/location/save",
-      "LOCATION_READ": "data/v1/location/read"
-
+      "LOCATION_READ": "data/v1/location/read",
+      "APP_INFO": "app/v1/info",
+      "RESUME_DOWNLOAD":"content/v1/download/resume",
+      "CANCEL_DOWNLOAD":"content/v1/download/cancel",
+      "PAUSE_DOWNLOAD":"content/v1/download/pause",
+      "RETRY_DOWNLOAD":"content/v1/download/retry"    
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
