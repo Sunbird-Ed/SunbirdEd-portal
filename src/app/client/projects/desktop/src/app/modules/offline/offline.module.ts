@@ -17,7 +17,8 @@ import {
     LibraryComponent, DesktopHeaderComponent, LibraryFiltersComponent,
     OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
     OnboardingLocationComponent, OnboardingUserPreferenceComponent, DesktopProminentFilterComponent,
-    LoadContentComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent
+    LoadContentComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent,
+    ProfileDropdownComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -29,7 +30,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { DesktopExploreContentComponent } from './components/desktop-explore-content/desktop-explore-content.component';
 import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-
 @NgModule({
     imports: [
         CommonConsumptionModule,
@@ -76,6 +76,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         NoContentComponent,
         LoadContentComponent,
         InfoCardComponent,
+        ProfileDropdownComponent,
     ],
     entryComponents: [
         ContentImportHeaderComponent,
