@@ -1188,6 +1188,10 @@ ul.subList-padding {
 .ui.multiple.dropdown > .text {
   white-space: nowrap;
 }
+.ui.multiple.dropdown > .default  {
+  white-space: nowrap;
+  margin: 0.1875rem 0 0.1875rem 0 !important;
+}
 .filtercolumn.ui.grid > .column:not(.row) {
   padding-left: 1.7em;
 }

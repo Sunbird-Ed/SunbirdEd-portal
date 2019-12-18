@@ -127,7 +127,8 @@ $sb-selection-line-height: calculateRem(18px);
   font-size: $sb-input-font-size;
   line-height: $sb-input-line-height;
   max-width: 100%;
-  padding: calculateRem(7px) calculateRem(8px);
+  padding: calculateRem(4px) calculateRem(8px);
+
   position: relative;
   width: 100%;
   min-height: ($base-block-space * 4);
