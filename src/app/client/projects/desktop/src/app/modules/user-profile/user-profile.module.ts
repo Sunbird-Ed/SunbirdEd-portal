@@ -7,7 +7,7 @@ import { ProfilePageComponent, AboutUsComponent, UpdateContentPreferenceComponen
 import {
   SuiModalModule, SuiSelectModule
 } from 'ng2-semantic-ui';
-import { TelemetryModule } from '@sunbird/telemetry';
+// import { TelemetryModule } from '@sunbird/telemetry';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { ReactiveFormsModule } from '@angular/forms';
