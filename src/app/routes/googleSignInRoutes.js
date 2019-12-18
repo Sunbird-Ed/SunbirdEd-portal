@@ -4,7 +4,8 @@ const telemetryHelper = require('../helpers/telemetryHelper')
 const googleDid = '2c010e13a76145d864e459f75a176171';
 const logger = require('sb_logger_util_v2')
 const utils = require('../helpers/utilityService');
-const config = require('../config/config');
+const GOOGLE_SIGN_IN_DELAY = 2000;
+
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
@@ -51,7 +52,7 @@ module.exports = (app) => {
         console.log('creating new google user');
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
-        await utils.delay(config.GOOGLE_SIGN_IN_DELAY);
+        await utils.delay(GOOGLE_SIGN_IN_DELAY);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
@@ -69,7 +70,7 @@ module.exports = (app) => {
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      logger.error({msg:'google sign in failed', error, additionalInfo: {errType, googleProfile, sunbirdProfile, newUserDetails, redirectUrl}})
+      logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, sunbirdProfile, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
       console.log('redirecting to ', redirectUrl);
