@@ -1,8 +1,9 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { UserProfileRoutingModule } from './user-profile-routing.module';
-import { ProfilePageComponent, AboutUsComponent, UpdateContentPreferenceComponent, UpdateLocationComponent } from './components';
+import { ProfilePageComponent, AboutUsComponent, UpdateContentPreferenceComponent, UpdateLocationComponent} from './components';
 import {
   SuiModalModule, SuiSelectModule
 } from 'ng2-semantic-ui';
@@ -28,6 +29,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     SuiSelectModule,
     TelemetryModule
 
-  ],
+  ]
 })
 export class UserProfileModule { }
