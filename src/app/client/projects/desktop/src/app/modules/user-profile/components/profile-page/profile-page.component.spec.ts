@@ -57,7 +57,6 @@ describe('ProfilePageComponent', () => {
     });
   });
   it('should handle openModal method while calling LOCATION component', () => {
-    spyOn(component, 'openModal').and.returnValue(of(user_profile_Data.LOCATION));
     spyOn(component, 'setLocationTelemetryData');
     component.selectedComponent = user_profile_Data.LOCATION;
     expect(component.openModal).toHaveBeenCalledWith();
@@ -67,7 +66,6 @@ describe('ProfilePageComponent', () => {
     component.setLocationTelemetryData();
   });
   it('should handle openModal method while calling CONTENTPREFERENCE component', () => {
-    spyOn(component, 'openModal').and.returnValue(of(user_profile_Data.CONTENTPREFERENCE));
     component.selectedComponent = user_profile_Data.CONTENTPREFERENCE;
     expect(component.openModal).toHaveBeenCalled();
     component.openModal(user_profile_Data.CONTENTPREFERENCE);
@@ -77,7 +75,6 @@ describe('ProfilePageComponent', () => {
     component.setContentTelemetryData();
   });
   it('should handle success DismissEvent', () => {
-    spyOn(component, 'handleDismissEvent').and.returnValue(of(user_profile_Data.SUCCESS));
     component.selectedComponent = '';
     component.handleDismissEvent(user_profile_Data.SUCCESS);
     expect(component.selectedComponent).toEqual('');
@@ -85,14 +82,12 @@ describe('ProfilePageComponent', () => {
     component.getUserData();
   });
   it('should handle error DismissEvent', () => {
-    spyOn(component, 'handleDismissEvent').and.returnValue(of(''));
     component.selectedComponent = '';
     component.handleDismissEvent('');
     expect(component.selectedComponent).toEqual('');
     expect(component.selectedComponent).toBeDefined();
   });
   it('should open your location modal when you click edit(edit location)', () => {
-    spyOn(component, 'openModal').and.returnValue(of(user_profile_Data.LOCATION));
     const openModal: DebugElement = fixture.debugElement;
     const buttonQuerySelector = openModal.query(By.css('button.location_button'));
     const button: HTMLElement = buttonQuerySelector.nativeElement;
@@ -107,7 +102,6 @@ describe('ProfilePageComponent', () => {
     });
   });
   it('should open your content update modal when you click edit(edit content preferences)', () => {
-    spyOn(component, 'openModal').and.returnValue(of(user_profile_Data.CONTENTPREFERENCE));
     const openModal: DebugElement = fixture.debugElement;
     const buttonQuerySelector = openModal.query(By.css('button.button_content_preferences'));
     const button: HTMLElement = buttonQuerySelector.nativeElement;
