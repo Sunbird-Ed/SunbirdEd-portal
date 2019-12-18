@@ -8,19 +8,25 @@ import { UUID } from 'angular2-uuid';
 import { of, forkJoin, throwError } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CbseProgramService } from '../../services';
+import { ISelectedAttributes, IContentUploadComponentInput} from '../../interfaces';
+
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.component.html',
   styleUrls: ['./question-list.component.scss']
 })
 export class QuestionListComponent implements OnInit, OnChanges {
-  @Input() selectedAttributes: any;
-  @Input() role: any;
   @Input() resourceName: any;
-  @Input() templateDetails: any;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
+  @Output() uploadedContentMeta = new EventEmitter<any>();
 
+  @Input() contentUploadComponentInput: IContentUploadComponentInput;
+  public selectedAttributes: ISelectedAttributes;
+  public templateDetails: any;
+  public unitIdentifier: any;
+  public resourceIdentifier: any;
+  public role: any = {};
   public questionList = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
@@ -49,9 +55,14 @@ export class QuestionListComponent implements OnInit, OnChanges {
     public contentService: ContentService) {
   }
   ngOnChanges(changedProps: any) {
+    this.selectedAttributes  = _.get(this.contentUploadComponentInput, 'selectedAttributes');
+    this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
+    this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
+    this.resourceIdentifier  = _.get(this.contentUploadComponentInput, 'resourceIdentifier');
+    this.selectedAttributes.questionType = this.templateDetails.questionType;
     if (this.enableRoleChange) {
       this.initialized = false; // it should be false before fetch
-      if(this.selectedAttributes.questionType) {
+      if (this.selectedAttributes.questionType) {
         this.fetchQuestionWithRole();
       }
     }
@@ -62,7 +73,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit() {
-    console.log('changes detected in question list', this.role);
+    console.log('changes detected in question list', this.selectedAttributes.currentRole);
+    this.role.currentRole = this.selectedAttributes.currentRole;
     if (this.selectedAttributes.questionType) {
       this.fetchQuestionWithRole();
     } else {
@@ -516,5 +528,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
   public dismissPublishModal() {
     setTimeout(() => this.changeStage.emit('prev'), 0);
+  }
+
+  deleteQuestion(index, identifier) {
+    console.log(index)
+    console.log(identifier)
+    const selectedQuestions = _.filter(this.questionList, (question) => question.identifier === identifier);
+    console.log(this.questionList[index])
+    console.log(selectedQuestions)
   }
 }

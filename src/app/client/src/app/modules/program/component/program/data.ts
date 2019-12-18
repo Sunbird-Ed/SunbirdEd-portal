@@ -705,6 +705,7 @@ const programTwoSession = {
                 'la',
                 'mcq'
               ],
+              'questionType': 'vsa',
               'thumbnail': '',
               'description': 'description',
               'marks': 5,

@@ -26,6 +26,8 @@ export interface ISelectedAttributes { // TODO: remove any 'textbook' reference
   collectionName?: any;
   collectionType?: any;
   collectionStatus?: any;
+  questionList?: Array<any>;
+  showMode?: string;
 }
 
 export interface ICollectionComponentInput {
