@@ -362,7 +362,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
     hoverActionClicked(event) {
         event['data'] = event.content;
-        this.contentName = event.content.name;
+        this.contentName = _.get(event, 'content.name');
+        const items = [{
+            id: _.get(event, 'data.metaData.identifier'),
+            type: _.get(event, 'data.contentType'),
+            ver: _.toString(_.get(event, 'data.pkgVersion')),
+        }];
         switch (event.hover.type.toUpperCase()) {
             case 'OPEN':
                 this.playContent(event);
@@ -370,11 +375,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 break;
             case 'DOWNLOAD':
                 this.showDownloadLoader = true;
-                this.downloadContent(_.get(event, 'content.metaData.identifier'));
+                this.downloadContent(_.get(event, 'content.metaData.identifier'), items);
                 this.logTelemetry(event.data, 'download-content');
                 break;
             case 'SAVE':
                 this.showExportLoader = true;
+                // Generate telemetry share event for export
+                this.contentManagerService.generateShareEvent(_.get(event, 'content.metaData.identifier'), items, 'Export');
                 this.exportContent(_.get(event, 'content.metaData.identifier'));
                 this.logTelemetry(event.data, 'export-content');
                 break;
@@ -389,11 +396,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
         }
     }
 
-    downloadContent(contentId) {
+    downloadContent(contentId, items) {
         this.contentManagerService.downloadContentId = contentId;
         this.contentManagerService.startDownload({})
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(data => {
+                // Generate telemetry share event for download
+                this.contentManagerService.generateShareEvent(_.get(data, 'result.downloadId'), items, 'Download');
                 this.contentManagerService.downloadContentId = '';
                 this.showDownloadLoader = false;
             }, error => {

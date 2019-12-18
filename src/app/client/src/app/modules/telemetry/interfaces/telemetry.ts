@@ -190,6 +190,7 @@ export interface IFeedBackEventInput {
 export interface IShareEventInput {
   'context': {
     'env': string;
+    'cdata'?: Array<object>;
   };
   'object'?: {
     'id': string;

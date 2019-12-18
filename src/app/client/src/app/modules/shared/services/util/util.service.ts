@@ -46,7 +46,8 @@ export class UtilService {
       resourceType: data.resourceType,
       badgeAssertions: data.badgeAssertions,
       organisation: data.organisation,
-      hoverData: data.hoverData
+      hoverData: data.hoverData,
+      pkgVersion: data.pkgVersion
     };
 
     // this customization is done for enrolled courses

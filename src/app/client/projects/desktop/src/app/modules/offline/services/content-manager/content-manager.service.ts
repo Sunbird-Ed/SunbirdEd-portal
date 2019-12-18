@@ -5,6 +5,8 @@ import { PublicDataService } from '@sunbird/core';
 import { throwError as observableThrowError } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+import { TelemetryService } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,8 @@ export class ContentManagerService {
 
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
-    private electronDialogService: ElectronDialogService) { }
+    private electronDialogService: ElectronDialogService, public activatedRoute: ActivatedRoute,
+    public telemetryService: TelemetryService) { }
 
   getContentList() {
     const downloadListOptions = {
@@ -148,5 +151,39 @@ export class ContentManagerService {
     };
     return this.publicDataService.post(options);
   }
+
+  private constructShareTelemetryEvent(shareData) {
+    const appTelemetryShare = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+          _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+          _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env'),
+        cdata: _.get(shareData, 'cdata') || [],
+      },
+      edata: _.get(shareData, 'edata')
+    };
+
+    if (_.get(shareData, 'object')) {
+      appTelemetryShare['object'] = _.get(shareData, 'object');
+    }
+    return appTelemetryShare;
+  }
+
+  generateShareEvent(id: string, items: Array<object>, type: string) {
+    const requestData = {
+      cdata: [{
+        id: id || '',
+        type: type,
+      }],
+      edata: {
+        dir: type === 'Export' ? 'Out' : 'In',
+        type: 'File',
+        items: items
+      }
+    };
+    const shareEvent = this.constructShareTelemetryEvent(requestData);
+    this.telemetryService.share(shareEvent);
+  }
+
 
 }
