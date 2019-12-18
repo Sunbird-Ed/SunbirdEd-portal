@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileDropdownComponent } from './profile-dropdown.component';
 
-xdescribe('ProfileDropdownComponent', () => {
+describe('ProfileDropdownComponent', () => {
   let component: ProfileDropdownComponent;
   let fixture: ComponentFixture<ProfileDropdownComponent>;
 
