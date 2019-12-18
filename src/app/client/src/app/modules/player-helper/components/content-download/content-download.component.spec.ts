@@ -29,7 +29,7 @@ describe('ContentDownloadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ContentDownloadComponent ],
-      imports: [TelemetryModule, HttpClientModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [TelemetryModule.forRoot(), HttpClientModule, RouterTestingModule, HttpClientTestingModule],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService,
         ToasterService, NavigationHelperService,
         { provide: Router, useValue: RouterStub },
