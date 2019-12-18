@@ -57,7 +57,6 @@ describe('UpdateLocationComponent', () => {
 
   it('should call searchLocation (to get states) in onboarding service', () => {
     const userService = TestBed.get(OnboardingService);
-    spyOn(component, 'getAllStates');
     spyOn(userService, 'searchLocation').and.returnValue(of(location_Data.success_state_details));
     component.getAllStates();
     userService.searchLocation(location_Data.get_state_details_api_body).subscribe(data => {
@@ -72,12 +71,12 @@ describe('UpdateLocationComponent', () => {
   });
 
   it('should call searchLocation (to get districts) in onboarding service', () => {
-    spyOn(component, 'onStateChanges');
     const userService = TestBed.get(OnboardingService);
     spyOn(userService, 'searchLocation').and.returnValue(of(location_Data.success_districts_details));
+    component.onStateChanges();
     userService.searchLocation(location_Data.get_district_details_api_body).subscribe(data => {
       expect(data).toBe(location_Data.success_districts_details);
-      expect(component.districtList).toBeDefined();
+      expect(component.districtList).toHaveBeenCalledWith(location_Data.success_districts_details.result.response);
       expect(component.selectedDistrict).toBeDefined();
     }, error => {
 
@@ -105,7 +104,9 @@ describe('UpdateLocationComponent', () => {
       spyOn(component.toasterService, 'success').and.returnValue(of(location_Data.resourceBundle.messages.smsg.m0060));
       spyOn(component.dismissed, 'emit').and.returnValue(of('SUCCESS'));
       component.closeModal('SUCCESS');
-      expect(component.toasterService.success(location_Data.resourceBundle.messages.smsg.m0060));
+    expect(component.dismissed.emit).toHaveBeenCalledWith('SUCCESS');
+      expect(component.toasterService.success).toHaveBeenCalledWith(location_Data.resourceBundle.messages.smsg.m0060);
+
     }, error => {
 
     });
