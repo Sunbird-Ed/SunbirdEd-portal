@@ -31,11 +31,11 @@
     }
   }
   .sb-success-text {
-    margin: ($base-block-space + 4) auto ($base-block-space * 3);
+    margin: calculateRem(12px) auto ($base-block-space * 3);
     color: var(--primary-400);
   }
   .sb-success-para {
-    margin: ($base-block-space + 4) auto ($base-block-space * 5);
+    margin: calculateRem(12px) auto ($base-block-space * 5);
     opacity: 0.8;
   }
 }

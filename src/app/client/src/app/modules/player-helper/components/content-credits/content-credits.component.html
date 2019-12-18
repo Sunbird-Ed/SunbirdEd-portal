@@ -28,6 +28,28 @@
         <div class="header text-gray">{{resourceService?.frmelmnts?.lbl?.attributions}}</div>
         <div class="mt-5">{{contentCreditsData.attributions}}</div>
       </div>
+      <div class="item" *ngIf="contentData && contentData.originData && (contentData['contentType'] === 'Course')">
+          <div class="gray-shade mt-10">
+            {{resourceService.frmelmnts.lbl?.contentcopiedtitle}}
+          </div>
+          <div class="item mt-10">
+            <div class="header text-gray">{{resourceService.frmelmnts.lbl?.contenttype}}</div>
+            <div class="mt-5">{{contentData.originData.name}}</div>
+          </div>
+          <div class="item mt-10">
+            <div class="header text-gray">{{resourceService.frmelmnts.lbl?.authorofsourcecontent}}</div>
+            <div class="mt-5">{{contentData.creator}}</div>
+          </div>
+          <div class="item mt-10">
+            <div class="header text-gray">{{resourceService.frmelmnts.lbl?.licenseTerms}}</div>
+            <div class="mt-5">{{contentData.originData.license}}</div>
+          </div>
+          <div class="item mt-10">
+            <div class="header text-gray">
+              {{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</div>
+            <div class="mt-5">{{contentData.originData.organisation[0]}}</div>
+          </div>
+        </div>
     </div>
   </div>
   <!--/Content-->
