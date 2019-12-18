@@ -32,11 +32,9 @@ describe('DesktopHeaderComponent', () => {
         const orgDetailsService = TestBed.get(OrgDetailsService);
         orgDetailsService._orgDetails$.next({ err: null, orgDetails: response.orgData.orgDetails });
         spyOn(component, 'getLanguage');
-        spyOn(component, 'setInteractData');
         spyOn(component, 'getTenantInfo');
         component.ngOnInit();
         expect(component.getLanguage).toHaveBeenCalledWith(response.orgData.orgDetails.hashTagId);
-        expect(component.setInteractData).toHaveBeenCalled();
         expect(component.getTenantInfo).toHaveBeenCalled();
     });
 

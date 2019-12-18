@@ -39,3 +39,10 @@ $pValues: 0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 52, 56, 60, 64, 68, 72, 76, 80,
     }
   }
 }
+
+/* Negative paddings */
+@media screen and (min-width: 768px) {
+  .px--20 {
+    padding: 0 calculateRem(-20px);
+  }
+}

@@ -77,4 +77,67 @@ describe('ContentManagerService', () => {
     });
   });
 
+  it('should call resumeImportContent', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
+    const apiRes = service.resumeImportContent('do_312522408518803456214665');
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
+
+  it('should call cancelImportContent', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
+    const apiRes = service.cancelImportContent('do_312522408518803456214665');
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
+
+  it('should call pauseImportContent', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
+    const apiRes = service.pauseImportContent('do_312522408518803456214665');
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
+
+  it('should call retryImportContent', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
+    const apiRes = service.retryImportContent('do_312522408518803456214665');
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
+
+  it('should call resumeDownloadContent', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
+    const apiRes = service.resumeDownloadContent('do_312522408518803456214665');
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
+
+  it('should call cancelDownloadContent', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
+    const apiRes = service.cancelDownloadContent('do_312522408518803456214665');
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
+
+  it('should call pauseDownloadContent', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
+    const apiRes = service.pauseDownloadContent('do_312522408518803456214665');
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
+
+  it('should call retryDownloadContent', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
+    const apiRes = service.retryDownloadContent('do_312522408518803456214665');
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
 });

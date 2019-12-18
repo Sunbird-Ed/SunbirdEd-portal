@@ -130,6 +130,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.showLoader = false;
         const orderedContents = _.orderBy(_.get(response, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']);
         this.contentList = this.formatSearchResults(orderedContents);
+        this.addHoverData();
       }, error => {
         this.setNoResultMessage();
       });
@@ -194,8 +195,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
             'label': this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
               this.resourceService.frmelmnts.btn.download :
               this.resourceService.frmelmnts.lbl.saveToPenDrive,
-            'disabled': this.isBrowse && (_.get(value, 'downloadStatus') === 'DOWNLOADED' ||
-              _.get(value, 'downloadStatus') === 'DOWNLOADING') ? true : false
+            'disabled': this.isBrowse && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], _.get(value, 'downloadStatus')) ? true : false
           },
           {
             'type': 'open',

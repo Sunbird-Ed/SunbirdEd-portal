@@ -99,5 +99,10 @@ describe('OnboardingService', () => {
     });
   });
 
+  it('should get content filter data ', () => {
+    const service: OnboardingService = TestBed.get(OnboardingService);
+    spyOn(service, 'getAssociationData');
+    service.getAssociationData(onboarding.frameworkCategories, onboarding.category, onboarding.frameworkCategories);
+  });
 
 });

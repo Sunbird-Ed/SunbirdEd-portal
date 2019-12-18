@@ -4,8 +4,9 @@ import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@
 import { ConnectionService } from '../../services';
 import { ElectronDialogService } from './../../services';
 import { ResourceService } from '@sunbird/shared';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-load-content',
@@ -21,20 +22,24 @@ export class LoadContentComponent implements OnInit, OnDestroy {
   addImportFontWeight;
   instance: string;
   public unsubscribe$ = new Subject<void>();
+  cancelTelemetryInteractEdata: IInteractEventEdata;
+  continueTelemetryInteractEdata: IInteractEventEdata;
 
   constructor(
     public router: Router,
     private connectionService: ConnectionService,
     public resourceService: ResourceService,
-    private electronDialogService: ElectronDialogService
+    private electronDialogService: ElectronDialogService,
+    public activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
     this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
-      this.radioBtnToBeChecked();
+      this.selectedValue = this.isConnected ? 'browse' : 'import';
       this.addFontWeight();
+      this.setTelemetryData();
     });
   }
 
@@ -46,10 +51,7 @@ export class LoadContentComponent implements OnInit, OnDestroy {
     this.selectedValue = event;
     event === 'import' ? document.getElementById('online')['checked'] = false : document.getElementById('offline')['checked'] = false;
     this.addFontWeight();
-  }
-
-  radioBtnToBeChecked() {
-    this.selectedValue = this.isConnected ? 'browse' : 'import';
+    this.setTelemetryData();
   }
 
   closeModal() {
@@ -64,6 +66,20 @@ export class LoadContentComponent implements OnInit, OnDestroy {
   addFontWeight() {
     this.addImportFontWeight =  this.selectedValue === 'import' ? true : false;
   }
+
+  setTelemetryData() {
+    this.cancelTelemetryInteractEdata = {
+      id: 'cancel-load-content',
+      type: 'click',
+      pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid')
+    };
+    this.continueTelemetryInteractEdata = {
+      id: 'load-content-from-' + this.selectedValue,
+      type: 'click',
+      pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid')
+    };
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
