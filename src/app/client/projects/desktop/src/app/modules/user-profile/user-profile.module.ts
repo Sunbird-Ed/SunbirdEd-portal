@@ -27,6 +27,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     SuiModalModule,
     SuiSelectModule,
     TelemetryModule
+
   ]
 })
 export class UserProfileModule { }
