@@ -79,7 +79,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
     return {
       id: type,
       type: 'click',
-      pageid: 'footer'
+      pageid: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid')
     };
   }
 
