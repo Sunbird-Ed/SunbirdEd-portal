@@ -17,7 +17,7 @@
           <button class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract
             [telemetryInteractEdata]="getTelemetryEdata('enterDialCode')" (click)="showQrModal = true;"
             title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}">
-            <i class="icon-svg icon-svg--xxs icon-qr">
+            <i class="icon-svg icon-svg--xxs icon-qr mr-4">
               <svg class="icon icon-svg--primary">
                 <use xlink:href="assets/images/sprite.svg#qr-code"></use>
               </svg>
@@ -86,8 +86,8 @@
         </a>
       </div>
 
-      <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImport()" appTelemetryInteract
-      [telemetryInteractEdata]="getTelemetryEdata('contentImport')">
+      <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImport()"
+        appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('contentImport')">
         <i class="plus icon mr-5"></i>{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
     </div>
     <!-- menu component ends -->
