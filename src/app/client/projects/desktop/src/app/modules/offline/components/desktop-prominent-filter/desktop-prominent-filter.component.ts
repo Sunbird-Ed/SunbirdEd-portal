@@ -187,11 +187,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
         } else {
             this.formInputData = {};
         }
-        if (this.formFieldProperties) {
-            this.prominentFilter.emit(this.formFieldProperties);
-        } else {
-            this.prominentFilter.emit([]);
-        }
+        this.filterChange.emit([]);
         this.hardRefreshFilter();
         this.setFilterInteractData();
     }

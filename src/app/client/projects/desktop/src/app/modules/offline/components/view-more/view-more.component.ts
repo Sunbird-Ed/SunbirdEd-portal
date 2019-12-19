@@ -108,8 +108,8 @@ export class ViewMoreComponent implements OnInit {
   }
 
   fetchRecentlyAddedContent(addFilter) {
-    const option = this.apiQuery;
-    if (addFilter && this.dataDrivenFilters.appliedFilters) {
+    const option = _.cloneDeep(this.apiQuery);
+    if (addFilter && _.get(this.dataDrivenFilters, 'appliedFilters')) {
       option.filters = _.omit(this.dataDrivenFilters, ['appliedFilters']);
     }
 
@@ -144,7 +144,7 @@ export class ViewMoreComponent implements OnInit {
   }
 
   fetchContents(addFilter) {
-    const option = this.apiQuery;
+    const option = _.cloneDeep(this.apiQuery);
     option.params.online = Boolean(this.isBrowse);
 
     if (this.isBrowse) {
@@ -152,7 +152,7 @@ export class ViewMoreComponent implements OnInit {
       option.pageNumber = _.get(this.paginationDetails, 'currentPage');
     }
 
-    if (addFilter && this.dataDrivenFilters.appliedFilters) {
+    if (addFilter && _.get(this.dataDrivenFilters, 'appliedFilters')) {
       option.filters = _.omit(this.dataDrivenFilters, ['appliedFilters']);
     }
 
