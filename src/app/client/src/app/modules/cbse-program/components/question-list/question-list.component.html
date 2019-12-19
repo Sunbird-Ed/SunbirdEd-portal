@@ -1,12 +1,14 @@
 <div>
-  <sui-modal *ngIf="!programContext.questionType" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-    appBodyScroll (dismissed)="programContext.questionType; dismissPublishModal();" #modal>
+  <sui-modal *ngIf="!programContext.questionType" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+    [size]="'small'" class="sb-modal" appBodyScroll
+    (dismissed)="programContext.questionType; dismissPublishModal();" #modal>
     <div class="sb-modal-header">
       Select Question Category
     </div>
     <div class="sb-modal-content">
       <ul>
-        <li (click)="selectQuestionCategory(contentType)" *ngFor="let contentType of templateDetails.questionCategories">
+        <li (click)="selectQuestionCategory(contentType)"
+          *ngFor="let contentType of templateDetails.questionCategories">
           {{contentType}}
         </li>
       </ul>
@@ -15,36 +17,73 @@
 </div>
 
 
-<div *ngIf="programContext?.questionType" class="ui twelve column grid p-0 m-0">
-  <div class="three wide column p-0 pr-16">
-    <div class="ui questionsMenu">
-        <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
-          <div class="sb-checkbox sb-checkbox-primary">
-            <input type="checkbox" [(ngModel)]="selectedAll" appTelemetryInteract [telemetryInteractEdata]="{id:'select_all_questions',type:'click',pageid:'questionlist'}"
+<!-- Untitled Practice Set Section with text field -->
+<!-- <div class="d-flex sb-bg-color-gray-0 practical-header">
+    <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
+      <div class="font-weight-bold fs-1-143" *ngIf="!showTextArea">
+        Untiled Practice Set <span class="fs-0-785 pl-8"><a class="cursor-pointer" (click)="showTextArea=!showTextArea">Edit</a></span>
+        <div class="fs-0-785 pt-8">License: CC BY 4.0</div>
+      </div>
+      <div class="sb-field-group textbook-edit" *ngIf="showTextArea">
+        <div class="sb-field relative">
+          <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
+          <span class="characters-left">200 Characters left</span>
+        </div>
+      </div>
+      <div class='practical-sb-buttons'>
+        <button class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" (click)="showTextArea=!showTextArea">Save</button>
+        <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
+        <button class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="showTextArea=!showTextArea">Submit</button>
+      </div>
+    </div>
+  </div>  -->
+
+<div class="ui container">
+  <div *ngIf="programContext?.questionType" class="ui twelve column grid m-0">
+    <div class="three wide column p-0">
+
+      <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
+        <div class="sb-checkbox sb-checkbox-primary">
+          <input type="checkbox" [(ngModel)]="selectedAll" appTelemetryInteract
+            [telemetryInteractEdata]="{id:'select_all_questions',type:'click',pageid:'questionlist'}"
             (change)="selectAll();">
-            <label for="check1">Select All</label>
-          </div>
+          <label for="check1">Select All</label>
         </div>
-      <div class="ui vertical segments" style="max-height:50vh;overflow-y:auto;">
+      </div>
 
-        <!-- Question list new design -->
+      <!-- Question list Section to be implemented -->
 
-        <!-- <div class="questionTab ui header aligned segment p-16 cursor-pointer active">
-          <div class="item d-flex flex-ai-center">
-          <span class="sb-status-label sb-bg-success sb-shape-circle mr-16"></span>
+      <div class="d-flex width-100 flex-jc-center mt-24">
+        <button *ngIf="role.currentRole === 'CONTRIBUTOR'"
+          [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
+          appTelemetryInteract
+          [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:programContext.questionType.toUpperCase(),topic:programContext.topic}}"
+          class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn"><i class="add icon"></i>Add new Question</button>
+      </div>
+
+
+      <div class="question-list">
+
+        <!-- <div class="question-list__item active d-flex flex-ai-center p-16 cursor-pointer active">
           <label class="mb-0 mr-auto" for="check1"> Multiple Choice 1</label>
-          <i class="info circle sb-color-warning fs-1 icon mr-16"></i>
-          <i class="trash alternate outline icon"></i>
-          <i class="expand arrows alternate icon ml-16"></i>
-          </div>
+          <i class="info circle sb-color-warning fs-1 icon"></i>
+          <i class="trash alternate outline icon ml-24"></i>
+          <i class="move icon ml-16 sb-color-primary ml-24"></i>
         </div>
-        <div class="questionTab ui header aligned segment p-16 cursor-pointer">
-          <div class="item d-flex flex-ai-center">
-          <span class="sb-status-label sb-bg-warning sb-shape-circle mr-16"></span>
+        <div class="question-list__item d-flex flex-ai-center p-16 cursor-pointer">
           <label class="mb-0 mr-auto" for="check1"> Multiple Choice 2</label>
-          <i class="trash alternate outline icon"></i>
-          <i class="expand arrows alternate icon ml-16"></i>
-          </div>
+          <i class="trash alternate outline icon ml-24"></i>
+          <i class="move icon ml-16 sb-color-primary ml-24"></i>
+        </div>
+        <div class="question-list__item d-flex flex-ai-center p-16 cursor-pointer">
+          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 3</label>
+          <i class="trash alternate outline icon ml-24"></i>
+          <i class="move icon ml-16 sb-color-primary ml-24"></i>
+        </div>
+        <div class="question-list__item d-flex flex-ai-center p-16 cursor-pointer">
+          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 4</label>
+          <i class="trash alternate outline icon ml-24"></i>
+          <i class="move icon ml-16 sb-color-primary ml-24"></i>
         </div> -->
 
         <div class="questionTab ui center tertiary header aligned segment p-8 cursor-pointer"
@@ -55,7 +94,8 @@
           <div class="item d-flex flex-ai-center">
             <ng-container *ngIf="role.currentRole === 'PUBLISHER' else nonPublisher">
               <div class="sb-checkbox sb-checkbox-primary">
-                <input class="checking" [(ngModel)]="question.isSelected" (change)="checkIfAllSelected(question);" (click)="$event.stopPropagation()" type="checkbox">
+                <input class="checking" [(ngModel)]="question.isSelected" (change)="checkIfAllSelected(question);"
+                  (click)="$event.stopPropagation()" type="checkbox">
                 <label for="check1" class="mb-0"> Question {{i + 1}}</label>
               </div>
             </ng-container>
@@ -68,54 +108,49 @@
             <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto"
               *ngIf="question.status === 'Draft' || question.status === 'Review'"></span>
             <!-- <span class="sb-status-label sb-bg-success sb-shape-circle ml-auto"
-              *ngIf="question.status === 'Live'"></span> -->
+                *ngIf="question.status === 'Live'"></span> -->
             <span class="sb-status-label sb-bg-error sb-shape-circle ml-auto"
               *ngIf="question.status === 'Reject'"></span>
           </div>
         </div>
       </div>
-      <button *ngIf="role.currentRole === 'CONTRIBUTOR'" [disabled]="questionMetaData && questionMetaData.mode === 'create'"
-        (click)="createNewQuestion()" appTelemetryInteract
-        [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:programContext.questionType.toUpperCase(),topic:programContext.topic}}"
-        class="sb-btn sb-btn-primary sb-btn-normal width-100">Create</button>
-    </div>
-  </div>
 
-  <div class="nine wide column bg-white p-0">
-    <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create' && role.currentRole === 'CONTRIBUTOR'"
-      class="ui segment">No Question - Click
-      Create</div>
-    <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review
     </div>
-    <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
-      <div *ngIf="programContext.questionType === 'mcq'" class="ui segment">
-          <div [hidden]="showLoader">
-        <app-mcq-creation [programContext]="programContext" [questionMetaData]="questionMetaData" [questionSelectionStatus]="questionSelectionStatus"
-        [role]="role" (questionStatus)="questionStatusHandler($event)" (questionQueueStatus)="questionQueueStatusHandler($event)"></app-mcq-creation>
-          </div>
+
+    <div class="nine wide column bg-white pl-40 p-0 ckeditor-container">
+      <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create' && role.currentRole === 'CONTRIBUTOR'"
+        class="ui segment">No Question - Click
+        Create</div>
+      <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review
       </div>
-      <div *ngIf="programContext.questionType !== 'mcq'" class="ui segment">
-        <div [hidden]="showLoader">
-        <app-question-creation [programContext]="programContext" [questionMetaData]="questionMetaData" [questionSelectionStatus]="questionSelectionStatus"
-          [role]="role" (questionStatus)="questionStatusHandler($event)" (questionQueueStatus)="questionQueueStatusHandler($event)">
-        </app-question-creation>
+      <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
+        <div *ngIf="programContext.questionType === 'mcq'" class="ui segment">
+          <div [hidden]="showLoader">
+            <app-mcq-creation [programContext]="programContext" [questionMetaData]="questionMetaData"
+              [questionSelectionStatus]="questionSelectionStatus" [role]="role"
+              (questionStatus)="questionStatusHandler($event)"
+              (questionQueueStatus)="questionQueueStatusHandler($event)">
+            </app-mcq-creation>
+          </div>
+        </div>
+        <div *ngIf="programContext.questionType !== 'mcq'" class="ui segment">
+          <div [hidden]="showLoader">
+            <app-question-creation [programContext]="programContext" [questionMetaData]="questionMetaData"
+              [questionSelectionStatus]="questionSelectionStatus" [role]="role"
+              (questionStatus)="questionStatusHandler($event)"
+              (questionQueueStatus)="questionQueueStatusHandler($event)">
+            </app-question-creation>
+          </div>
         </div>
       </div>
+      <app-loader *ngIf='showLoader'></app-loader>
     </div>
-    <app-loader *ngIf='showLoader'></app-loader>
   </div>
+
 </div>
 
-<sui-modal
-  *ngIf="showSuccessModal"
-  [mustScroll]="true"
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'small'"
-  class="sb-modal"
-  appBodyScroll
-  (dismissed)="showSuccessModal = !showSuccessModal; dismissPublishModal();"
-  #modal>
+<sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+  class="sb-modal" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal; dismissPublishModal();" #modal>
   <div class="sb-modal-header">
     Practice Set Successfully Published
   </div>
@@ -130,8 +165,9 @@
   </div>
 
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showSuccessModal = !showSuccessModal; dismissPublishModal();">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="showSuccessModal = !showSuccessModal; dismissPublishModal();">
       Close
     </button>
   </div>
-  </sui-modal>
+</sui-modal>
