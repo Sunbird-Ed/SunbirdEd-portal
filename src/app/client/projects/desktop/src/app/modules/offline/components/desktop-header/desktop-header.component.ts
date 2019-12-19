@@ -214,7 +214,9 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     };
     return interactData[key];
   }
-
+  checkRouter() {
+    return _.isEqual(this.router.url, '/');
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

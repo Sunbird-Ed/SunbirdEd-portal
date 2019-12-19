@@ -20,9 +20,7 @@ export class ProfileDropdownComponent implements OnInit {
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
   }
-  navigateTo() {
-    this.router.navigate(['/profile']);
-  }
+
   setTelemetry() {
     const interactData = {
       context: {

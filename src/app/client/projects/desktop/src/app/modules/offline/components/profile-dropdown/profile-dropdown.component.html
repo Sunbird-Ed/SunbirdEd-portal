@@ -3,7 +3,7 @@ tabindex="0">
 <div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header">
     <img src="assets/images/Profile.svg" width="40px" height="40px">
     <div class="menu" suiDropdownMenu>
-        <div class="item headerDropdownProfile" (click)="navigateTo()">
+        <div class="item headerDropdownProfile cursor-pointer" [routerLink]="'/profile'">
           {{resourceService?.frmelmnts?.lnk?.profile}}
         </div>
         <div class="ui divider"></div>

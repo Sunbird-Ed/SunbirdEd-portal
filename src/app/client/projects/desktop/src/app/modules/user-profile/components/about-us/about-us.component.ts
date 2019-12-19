@@ -18,7 +18,6 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   public telemetryImpression: IImpressionEventInput;
   public telemetryInteractButtonEData: IInteractEventEdata;
   public telemetryInteractEData: IInteractEventEdata;
-  pageId =  'about-us';
   constructor(public resourceService: ResourceService, private appUpdateService: AppUpdateService,
     private router: Router, public activatedRoute: ActivatedRoute) {}
 
@@ -44,17 +43,17 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   }
   setTelemetryData () {
     this.telemetryImpression = {
-      context: { env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || this.pageId},
+      context: { env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'about-us'},
       edata: {
         type: 'view',
-        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || this.pageId,
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'about-us',
         uri: this.router.url
       }
     };
     this.telemetryInteractButtonEData = {
       id: 'update-app-btn',
       type: 'click',
-      pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || this.pageId,
+      pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'about-us',
       extra: {
         newVersion: _.get(this.appInfo, 'updateInfo.version')
       }
@@ -62,7 +61,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
     this.telemetryInteractEData = {
       id: 'update-app-link',
       type: 'click',
-      pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || this.pageId,
+      pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'about-us',
       extra: {
         newVersion: _.get(this.appInfo, 'updateInfo.version')
       }

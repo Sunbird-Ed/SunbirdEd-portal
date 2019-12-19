@@ -71,8 +71,7 @@
     <!-- menu component -->
     <div class="ui container d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
       <div class="d-flex sb-offline-menu-container flex-ai-end">
-        <a [routerLink]="'/'"
-          [ngClass]="(router.isActive('/', false) && !(router.isActive('/browse', false) || router.isActive('/help-center', false) || router.isActive('/about-us', false) || router.isActive('/profile', false)) ) ? 'active': ''"
+        <a [routerLink]="'/'" [ngClass]="{'active': checkRouter()}"
           appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('myLibrary')">
           <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
         </a>
