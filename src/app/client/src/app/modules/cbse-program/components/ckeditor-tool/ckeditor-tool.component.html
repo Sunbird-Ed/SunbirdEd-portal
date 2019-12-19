@@ -98,7 +98,8 @@
         <div class="sb-grid-layout image">
           <div class="sb-video-content" *ngFor="let data of myAssets">
             <div class="sb-image-section relative position">
-              <div class="overlay-image"><i class="play circle icon"></i></div>
+              <!-- Overlay play icon should be integrated for video -->
+              <!-- <div class="overlay-image"><i class="play circle icon"></i></div> -->
               <img (click)="addImageInEditor(data.downloadUrl, data.identifier)" [src]="data.downloadUrl">
             </div>
           </div>

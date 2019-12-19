@@ -1,5 +1,4 @@
 @import "variables";
-
 .questionTab.button{
   border-bottom: 1px solid #cecece;
 }
@@ -40,18 +39,16 @@ i.icon.trash {
   border-left: 1px solid rgba(2, 79, 157,0.09);
 }
 
+
 .practical-header {
   height: ($base-block-space * 11 + 10);
   background: rgba(41, 114, 164, 0.05);
   &__content {
-    // margin: 0 ($base-block-space * 8 - 4);
-    // width: 100%;
+
     .practical-sb-buttons {
       .sb-btn-file {
         border-top: 1px solid var(--primary-200);
-        /* #7AB4EE;*/
         border-bottom: 1px solid var(--primary-200);
-        /* #7AB4EE;*/
         border-left: 1px solid #ddd;
         border-right: 1px solid #ddd;
         background: #E0F1FD;
@@ -59,9 +56,16 @@ i.icon.trash {
       }
       .sb-btn-submit {
         background: var(--primary-200);
-        /*#07BC81 */
         opacity: 50%;
         color: var(--white);
+      }
+    }
+  }
+
+  .practice-set {
+    &__status {
+      a {
+        text-decoration: underline;
       }
     }
   }
