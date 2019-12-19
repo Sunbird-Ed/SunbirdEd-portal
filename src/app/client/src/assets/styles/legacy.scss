@@ -1743,6 +1743,11 @@ i.edit.icon.editIcon-fontSize {
   &:hover {
     background-color: #edf4f9;
   }
+  html[dir="rtl"] &{
+    .dropdown.icon{
+      margin: 0 ($base-block-space) 0 0;
+    }
+  }
 }
 .batchCardAlign {
   padding: 10px 15px;
