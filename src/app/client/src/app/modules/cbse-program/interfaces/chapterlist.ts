@@ -3,5 +3,5 @@ export interface IChapterListComponentInput {
   sessionContext?: any;
   role?: string;
   collection?: any;
-  entireConfig?: any;
+  programContext?: any;
 }

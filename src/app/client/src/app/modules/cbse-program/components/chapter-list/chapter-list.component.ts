@@ -90,8 +90,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.sessionContext = _.get(this.chapterListComponentInput, 'sessionContext');
     this.role = _.get(this.chapterListComponentInput, 'role');
     this.collection  = _.get(this.chapterListComponentInput, 'collection');
-    this.actions = _.get(this.chapterListComponentInput, 'entireConfig.config.actions');
-    this.sharedContext = _.get(this.chapterListComponentInput, 'entireConfig.config.sharedContext');
+    this.actions = _.get(this.chapterListComponentInput, 'programContext.config.actions');
+    this.sharedContext = _.get(this.chapterListComponentInput, 'programContext.config.sharedContext');
     /**
      * @description : this will fetch question Category configuration based on currently active route
      */

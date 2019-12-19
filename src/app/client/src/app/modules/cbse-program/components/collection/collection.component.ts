@@ -25,7 +25,7 @@ export class CollectionComponent implements OnInit {
 
   public programSession: any; // TODO: change to just programDetails after creating new program
   public collectionComponentConfig: any;
-  public entireConfig: any;
+  public programContext: any;
   public collectionList: Array<any>;
   public collection;
   public role: any = {};
@@ -50,7 +50,7 @@ export class CollectionComponent implements OnInit {
     this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
     this.collectionComponentConfig = _.get(this.collectionComponentInput, 'config');
-    this.entireConfig = _.get(this.collectionComponentInput, 'entireConfig');
+    this.programContext = _.get(this.collectionComponentInput, 'programContext');
     this.sessionContext = {
       currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
       framework: _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'framework'}).defaultValue,
@@ -65,7 +65,7 @@ export class CollectionComponent implements OnInit {
       collectionStatus: _.get(this.collectionComponentConfig, 'status')
     };
     this.searchCollection();
-    const getCurrentRoleId = _.find(this.entireConfig.config.roles, {'name': this.sessionContext.currentRole});
+    const getCurrentRoleId = _.find(this.programContext.config.roles, {'name': this.sessionContext.currentRole});
     this.sessionContext.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
     this.role.currentRole = this.sessionContext.currentRole;
   }
@@ -142,8 +142,8 @@ export class CollectionComponent implements OnInit {
     this.chapterListComponentInput = {
       sessionContext: this.sessionContext,
       collection: this.collection,
-      config: _.find(this.entireConfig.config.components, {'id': 'ng.sunbird.chapterList'}),
-      entireConfig: this.entireConfig,
+      config: _.find(this.programContext.config.components, {'id': 'ng.sunbird.chapterList'}),
+      programContext: this.programContext,
       role: this.role
     };
     this.isCollectionSelected.emit(event.data.metaData.identifier ? true : false);

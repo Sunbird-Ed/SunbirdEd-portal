@@ -1,4 +1,4 @@
 export interface IResourceTemplateComponentInput {
-  entireConfig?: any;
+  programContext?: any;
   templateList?: any;
 }
