@@ -6,12 +6,12 @@
   <div class="sb-modal-content">
     <div class="twelve wide column">
       <div class="ui grid flex-jc-center m-0">
-        <div class="three wide column p-8"  *ngFor="let template of templateList" (click)="showButton=true; templateSelected = template.contentType" >
-          <div class="ui card text-center common-contribution-card" [ngClass]="{'active': templateSelected === template.contentType}">
+        <div class="three wide column p-8"  *ngFor="let template of templateList" (click)="showButton=true; templateSelected = template.metadata.contentType" >
+          <div class="ui card text-center common-contribution-card" [ngClass]="{'active': templateSelected === template.metadata.contentType}">
             <div class="content">
               <i class="check circle icon"></i>
               <img class="mt-16" src="assets/images/book.png" rel="placeholder">
-              <div class="content-title py-16">{{template.name}}</div>
+              <div class="content-title py-16">{{template.label}}</div>
             </div>
           </div>
         </div>

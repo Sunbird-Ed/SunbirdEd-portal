@@ -9,7 +9,7 @@ import { ContentUploaderComponent } from '../content-uploader/content-uploader.c
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
 
 
-interface ISelectedAttributes {
+interface IProgramContext {
     textBookUnitIdentifier?: any;
     lastOpenedUnit?: any;
     framework?: string;
@@ -50,7 +50,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   public showLoader: boolean = false;
   public showDashboard: boolean = false;
   public publishInProgress = false;
-  public selectedAttributes: ISelectedAttributes = {};
+  public programContext: IProgramContext = {};
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion', 'uploadContent', 'certificate'];
   public currentStage = 0;
   public role: any = {};
@@ -90,7 +90,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
-    this.selectedAttributes = {
+    this.programContext = {
       currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
       framework: _.get(this.programDetails, 'config.scope.framework'),
       channel: _.get(this.programDetails, 'config.scope.channel'),
@@ -101,10 +101,10 @@ export class CbseComponent implements OnInit, OnDestroy {
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
-    this.role.currentRole = this.selectedAttributes.currentRole;
+    this.role.currentRole = this.programContext.currentRole;
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
     this.fetchFrameWorkDetails();
-    this.selectedAttributes.lastOpenedUnit = 0;
+    this.programContext.lastOpenedUnit = 0;
     this.slug = _.get(this.userProfile, 'rootOrg.slug') || (<HTMLInputElement>document.getElementById('defaultTenant')).value;
     if (_.includes(_.get(this.programDetails, 'userDetails.roles'), 'CERTIFICATE_ISSUER')) {
       this.showCertificate = true;
@@ -125,7 +125,7 @@ export class CbseComponent implements OnInit, OnDestroy {
         this.selectedComponent = this.creationComponentsList[event.templateDetails];
         this.inputs = {
           questionMetaData: this.contentData,
-          selectedAttributes: this.selectedAttributes
+          programContext: this.programContext
         };
       }
     };
@@ -134,14 +134,14 @@ export class CbseComponent implements OnInit, OnDestroy {
 
 
   public selectedClassSubjectHandler(event) {
-    this.selectedAttributes.gradeLevel =  event.gradeLevel;
-    this.selectedAttributes.subject =  event.subject;
+    this.programContext.gradeLevel =  event.gradeLevel;
+    this.programContext.subject =  event.subject;
     this.navigate('next');
   }
 
   public selectedTextbookHandler(event) {
-    this.selectedAttributes.textbook =  event.metaData.identifier;
-    this.selectedAttributes.textbookName = event.name;
+    this.programContext.textbook =  event.metaData.identifier;
+    this.programContext.textbookName = event.name;
     this.navigate('next');
   }
   public publishButtonStatusHandler(event) {
@@ -149,18 +149,18 @@ export class CbseComponent implements OnInit, OnDestroy {
   }
 
   public selectedQuestionTypeTopic(event) {
-    this.selectedAttributes.topic =  event.topic;
-    this.selectedAttributes.questionType =  event.questionType;
-    this.selectedAttributes.textBookUnitIdentifier =  event.textBookUnitIdentifier;
-    this.selectedAttributes.resourceIdentifier =  event.resourceIdentifier;
-    this.selectedAttributes.lastOpenedUnit = event.textBookUnitIdentifier;
+    this.programContext.topic =  event.topic;
+    this.programContext.questionType =  event.questionType;
+    this.programContext.textBookUnitIdentifier =  event.textBookUnitIdentifier;
+    this.programContext.resourceIdentifier =  event.resourceIdentifier;
+    this.programContext.lastOpenedUnit = event.textBookUnitIdentifier;
     // tslint:disable-next-line:max-line-length
-    this.resourceName = event.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`;
+    this.resourceName = event.resourceName || `${this.questionTypeName[this.programContext.questionType]} - ${this.programContext.topic}`;
     this.navigate('next');
   }
 
   handleRoleChange(component?: string) {
-    this.role = Object.assign({}, {currentRole : this.selectedAttributes.currentRole});
+    this.role = Object.assign({}, {currentRole : this.programContext.currentRole});
     this.showDashboard = (component === 'Dashboard');
     if (component === 'certificatedashboard') {
       this.showCertDashboard = true;
@@ -170,11 +170,11 @@ export class CbseComponent implements OnInit, OnDestroy {
     }
   }
   public fetchFrameWorkDetails() {
-    this.frameworkService.initialize(this.selectedAttributes.framework);
+    this.frameworkService.initialize(this.programContext.framework);
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
       if (frameworkDetails && !frameworkDetails.err) {
-        const frameworkData = frameworkDetails.frameworkdata[this.selectedAttributes.framework].categories;
-        this.selectedAttributes.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
+        const frameworkData = frameworkDetails.frameworkdata[this.programContext.framework].categories;
+        this.programContext.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
       }
     });
   }
@@ -214,7 +214,7 @@ export class CbseComponent implements OnInit, OnDestroy {
 
   setLastOpenedTopic(step, currentStage) {
     if (currentStage === 2 && step === 'prev') {
-      this.selectedAttributes.lastOpenedUnit = 0;
+      this.programContext.lastOpenedUnit = 0;
     }
   }
   selectedTemplatehandler(event) {
@@ -222,16 +222,16 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.selectedComponent = this.creationComponentsList[event.template.contentType];
     if (_.includes(event.template.mimeType, 'application/vnd.ekstep.ecml-archive')) {
       this.inputs = {
-        selectedAttributes: this.selectedAttributes,
+        programContext: this.programContext,
         role: {
-          currentRole: this.selectedAttributes.currentRole
+          currentRole: this.programContext.currentRole
         },
         resourceName: this.resourceName,
         templateDetails: this.templateDetails
       }
     } else {
       this.inputs = {
-        selectedAttributes: this.selectedAttributes,
+        programContext: this.programContext,
         templateDetails: this.templateDetails
       };
     }

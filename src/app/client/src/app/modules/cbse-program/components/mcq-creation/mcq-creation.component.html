@@ -134,12 +134,12 @@
         <div class="ui container msg-box">
           <div class="msg-box__content">
               <div class="fs-0-92 msg-box__content__label">Under Review</div>
-               <div class="fs-0-92 msg-box__content__label">Published</div> 
+               <div class="fs-0-92 msg-box__content__label">Published</div>
                <div class="msg-box__content__error-msg font-weight-normal fs-0-92">Rejected with comment: "go fish yourself"</div>
                <div class="container msg-box__content__blank-box"></div>
           </div>
           </div>
-        
+
           <form class='ui container licence-form'>
             <div class='licence-form__content'>
               <div class="d-flex licence-form__content__fields">
@@ -150,7 +150,7 @@
                     </sui-select-option>
                   </sui-select>
                 </div>
-        
+
                 <div class="sb-field space-btn-field">
                   <label for="level">Learning Level</label>
                   <sui-select class="selection" labelField="name" name="level" [(ngModel)]="selectLevel" placeholder="select">
@@ -159,13 +159,13 @@
                   </sui-select>
                 </div>
               </div>
-        
+
               <div class="d-flex licence-form__content__fields">
                 <div class="sb-field">
                   <label for="author">Authors</label>
                   <input type="email" name="author" class="sb-form-control" placeholder="Type Author's Name">
                 </div>
-        
+
                 <div class="sb-field space-btn-field">
                   <label for="license">License</label>
                   <sui-select class="selection" labelField="name" name="license" [(ngModel)]="selectLicence" placeholder="select">
@@ -175,7 +175,7 @@
                 </div>
               </div>
             </div>
-        
+
             <p class="paragraph fs-0-785">
               “By creating content on SunbirdEd, you consent to publish it under the Creative Commons License Framework
               <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
@@ -187,7 +187,7 @@
   </form>
 </div>
 
-<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes">
+<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [programContext]="programContext">
 </app-question-preview>
 
 <app-mcq-template-selection *ngIf='showTemplatePopup' style="z-index: 1000"

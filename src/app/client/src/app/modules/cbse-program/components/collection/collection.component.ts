@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CbseProgramService } from '../../services';
 import { ProgramStageService } from '../../../program/services';
-import { ISelectedAttributes, IChapterListComponentInput } from '../../interfaces';
+import { IProgramContext, IChapterListComponentInput } from '../../interfaces';
 import { InitialState } from '../../interfaces';
 
 @Component({
@@ -18,7 +18,7 @@ export class CollectionComponent implements OnInit {
 
   @Input() collectionComponentInput: any;
   @Output() isCollectionSelected  = new EventEmitter<any>();
-  public selectedAttributes: ISelectedAttributes = {};
+  public programContext: IProgramContext = {};
   public chapterListComponentInput: IChapterListComponentInput = {};
   public programDetails: any;
   public userProfile: any;
@@ -51,7 +51,7 @@ export class CollectionComponent implements OnInit {
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
     this.collectionComponentConfig = _.get(this.collectionComponentInput, 'config');
     this.entireConfig = _.get(this.collectionComponentInput, 'entireConfig');
-    this.selectedAttributes = {
+    this.programContext = {
       currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
       framework: _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'framework'}).defaultValue,
       channel: _.get(this.programDetails, 'config.scope.channel'),
@@ -65,9 +65,9 @@ export class CollectionComponent implements OnInit {
       collectionStatus: _.get(this.collectionComponentConfig, 'status')
     };
     this.searchCollection();
-    const getCurrentRoleId = _.find(this.entireConfig.roles, {'name': this.selectedAttributes.currentRole});
-    this.selectedAttributes.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
-    this.role.currentRole = this.selectedAttributes.currentRole;
+    const getCurrentRoleId = _.find(this.entireConfig.config.roles, {'name': this.programContext.currentRole});
+    this.programContext.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
+    this.role.currentRole = this.programContext.currentRole;
   }
 
   objectKey(obj) {
@@ -86,14 +86,14 @@ export class CollectionComponent implements OnInit {
         'request': {
           'filters': {
             'objectType': 'content',
-            'board': this.selectedAttributes.board,
-            'framework': this.selectedAttributes.framework,
+            'board': this.programContext.board,
+            'framework': this.programContext.framework,
             // 'gradeLevel': 'Kindergarten',
             // 'subject': 'Hindi',
-            'medium': this.selectedAttributes.medium,
-            'programId': this.selectedAttributes.programId,
-            'status': this.selectedAttributes.collectionStatus || ['Draft', 'Live'],
-            'contentType': this.selectedAttributes.collectionType || 'Textbook'
+            'medium': this.programContext.medium,
+            'programId': this.programContext.programId,
+            'status': this.programContext.collectionStatus || ['Draft', 'Live'],
+            'contentType': this.programContext.collectionType || 'Textbook'
           }
         }
       }
@@ -136,13 +136,13 @@ export class CollectionComponent implements OnInit {
   }
 
   collectionClickHandler(event) {
-    this.selectedAttributes.collection =  event.data.metaData.identifier;
-    this.selectedAttributes.collectionName = event.data.name;
+    this.programContext.collection =  event.data.metaData.identifier;
+    this.programContext.collectionName = event.data.name;
     this.collection = event.data;
     this.chapterListComponentInput = {
-      selectedAttributes: this.selectedAttributes,
+      programContext: this.programContext,
       collection: this.collection,
-      config: _.find(this.entireConfig.components, {'id': 'ng.sunbird.chapterList'}),
+      config: _.find(this.entireConfig.config.components, {'id': 'ng.sunbird.chapterList'}),
       entireConfig: this.entireConfig,
       role: this.role
     };

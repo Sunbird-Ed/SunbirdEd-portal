@@ -1,4 +1,4 @@
-export interface ISelectedAttributes { // TODO: remove any 'textbook' reference
+export interface IProgramContext { // TODO: remove any 'textbook' reference
   textBookUnitIdentifier?: any;
   collectionUnitIdentifier?: any;
   lastOpenedUnit?: any;

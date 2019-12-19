@@ -2,7 +2,7 @@ export const role = {
     currentRole: 'CONTRIBUTOR'
 };
 
-export const selectedAttributes = {
+export const programContext = {
     bloomsLevel: undefined,
     board: 'NCERT',
     channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
