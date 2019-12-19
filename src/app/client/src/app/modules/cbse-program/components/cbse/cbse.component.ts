@@ -7,31 +7,7 @@ import {Subject} from 'rxjs';
 import { QuestionListComponent  } from '../question-list/question-list.component';
 import { ContentUploaderComponent } from '../content-uploader/content-uploader.component';
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
-
-
-interface ISessionContext {
-    textBookUnitIdentifier?: any;
-    lastOpenedUnit?: any;
-    framework?: string;
-    channel?: string;
-    board?: string;
-    medium?: string;
-    gradeLevel?: string;
-    subject?: string;
-    textbook?: string;
-    topic?: string;
-    questionType?: string;
-    programId?: string;
-    program?: string;
-    currentRole?: string;
-    bloomsLevel?: Array<any>;
-    topicList?: Array<any>;
-    onBoardSchool?: string;
-    selectedSchoolForReview?: string;
-    resourceIdentifier?: string;
-    hierarchyObj?: any;
-    textbookName?: any;
-}
+import { ISessionContext } from '../../interfaces';
 
 @Component({
   selector: 'app-cbse',

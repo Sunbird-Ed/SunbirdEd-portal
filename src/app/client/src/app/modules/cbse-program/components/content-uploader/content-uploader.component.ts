@@ -57,7 +57,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.sessionContext  = _.get(this.contentUploadComponentInput, 'sessionContext');
     this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
-    this.actions = _.get(this.contentUploadComponentInput, 'entireConfig.actions');
+    this.actions = _.get(this.contentUploadComponentInput, 'programContext.actions');
     this.handleActionButtons();
   }
 
@@ -258,7 +258,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   manageFormConfiguration() {
     this.showForm = true;
     // tslint:disable-next-line:max-line-length
-    const compConfiguration = _.find(_.get(this.contentUploadComponentInput, 'entireConfig.components'), {compId: 'uploadContentComponent'});
+    const compConfiguration = _.find(_.get(this.contentUploadComponentInput, 'programContext.components'), {compId: 'uploadContentComponent'});
     this.formConfiguration = compConfiguration.config.formConfiguration;
     this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
     this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});

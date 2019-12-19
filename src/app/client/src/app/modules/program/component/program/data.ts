@@ -966,6 +966,7 @@ const programThirdSession = {
   'config': {
     '_comments': '',
     'loginReqired': true,
+    'framework': 'NCFCOPY',
     'roles': [
       {
         'id': 1,

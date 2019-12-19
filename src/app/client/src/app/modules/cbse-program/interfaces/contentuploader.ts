@@ -7,6 +7,6 @@ export interface IContentUploadComponentInput {
   selectedSharedContext?: any;
   contentIdentifier?: string;
   templateDetails?: any;
-  entireConfig?: any;
+  programContext?: any;
   action?: string;
 }
