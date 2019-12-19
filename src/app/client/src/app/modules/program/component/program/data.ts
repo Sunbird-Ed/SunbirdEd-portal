@@ -1244,16 +1244,53 @@ const programThirdSession = {
           },
           'formConfiguration': [
             {
-              'code': 'LearningOutcome',
-              'range': [],
+              'code': 'learningOutcome',
+              'dataType': 'list',
+              'description': 'Learning Outcomes For The Content',
+              'editable': true,
+              'inputType': 'multiselect',
               'label': 'Learning Outcome',
-              'multiselect': false
+              'name': 'LearningOutcome',
+              'placeholder': 'Select Learning Outcomes',
+              'required': false,
+              'visible': true
             },
             {
               'code': 'bloomslevel',
-              'range': [],
+              'dataType': 'list',
+              'description': 'Learning Level For The Content',
+              'editable': true,
+              'inputType': 'select',
               'label': 'Learning Level',
-              'multiselect': true
+              'name': 'LearningLevel',
+              'placeholder': 'Select Learning Levels',
+              'required': true,
+              'visible': true,
+              'deafultValue': ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create']
+            },
+            {
+              'code': 'creator',
+              'dataType': 'text',
+              'description': 'Enter The Author Name',
+              'editable': true,
+              'inputType': 'text',
+              'label': 'Author',
+              'name': 'Author',
+              'placeholder': 'Enter Author Name',
+              'required': true,
+              'visible': true
+            },
+            {
+              'code': 'license',
+              'dataType': 'list',
+              'description': 'License For The Content',
+              'editable': true,
+              'inputType': 'select',
+              'label': 'License',
+              'name': 'License',
+              'placeholder': 'Select License',
+              'required': true,
+              'visible': true
             }
           ]
         }
@@ -1363,6 +1400,26 @@ const programThirdSession = {
       'showCert': {
         'roles': [
           4
+        ]
+      },
+      'showChangeFile': {
+        'roles': [
+          1
+        ]
+      },
+      'showRequestChanges': {
+        'roles': [
+          2
+        ]
+      },
+      'showAccept': {
+        'roles': [
+          2
+        ]
+      },
+      'showSubmit': {
+        'roles': [
+          1
         ]
       }
     },

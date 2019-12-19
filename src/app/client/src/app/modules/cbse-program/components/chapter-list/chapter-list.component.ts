@@ -3,6 +3,7 @@ import { PublicDataService, UserService, CollectionHierarchyAPI, ActionService }
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
+import { UUID } from 'angular2-uuid';
 import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
 import { forkJoin, throwError } from 'rxjs';
@@ -128,13 +129,15 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.role = _.get(this.chapterListComponentInput, 'role');
   }
 
-  public initiateInputs() {
+  public initiateInputs(action?) {
     this.dynamicInputs = {
       contentUploadComponentInput: {
         programContext: this.programContext,
         unitIdentifier: this.unitIdentifier,
         templateDetails: this.templateDetails,
-        selectedSharedContext: this.selectedSharedContext
+        selectedSharedContext: this.selectedSharedContext,
+        contentIdentifier: this.contentId,
+        action: action
       },
       practiceQuestionSetComponentInput: {
         programContext: this.programContext,
@@ -238,11 +241,53 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.showResourceTemplatePopup = false;
     if (event.template) {
       this.templateDetails = event.templateDetails;
+      let creator = this.userService.userProfile.firstName;
+      if (!_.isEmpty(this.userService.userProfile.lastName)) {
+        creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+      }
+      const option = {
+        url: `content/v3/create`,
+        data: {
+          request: {
+            content: {
+              'name': this.templateDetails.metadata.name,
+              'code': UUID.UUID(),
+              'mimeType': this.templateDetails.mimeType[0],
+              'createdBy': this.userService.userid,
+              'contentType': this.templateDetails.metadata.contentType,
+              'resourceType': this.templateDetails.metadata.resourceType || 'Learn',
+              'creator': creator,
+              'framework': this.programContext.framework,
+              'organisation': this.programContext.onBoardSchool ? [this.programContext.onBoardSchool] : []
+            }
+          }
+        }
+      };
+      this.actionService.post(option).pipe(map(res => res.result), catchError(err => {
+        const errInfo = { errorMsg: 'Unable to create contentId, Please Try Again' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }))
+      .subscribe(result => {
+        this.addResourceToHierarchy(result.node_id);
+        this.contentId = result.node_id;
+        this.componentLoadHandler('creation', this.componentMapping[event.template], event.templateDetails.onClick);
+      });
     }
-    this.initiateInputs();
-    this.creationComponent = this.componentMapping[event.template];
-    this.programStageService.addStage(event.templateDetails.onClick);
   }
+
+  handlePreview(event) {
+    const templateList = _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
+    || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue');
+    this.templateDetails = _.find(templateList, {contentType: event.content.contentType});
+    this.componentLoadHandler('preview', this.componentMapping[event.content.contentType], this.templateDetails.onClick);
+  }
+
+  componentLoadHandler(action, component, componentName) {
+    this.initiateInputs(action);
+    this.creationComponent = component;
+    this.programStageService.addStage(componentName);
+  }
+
 
   showResourceTemplate(event) {
     this.unitIdentifier = event.collection.identifier;
@@ -253,7 +298,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
          break;
       case 'beforeMove':
           this.showLargeModal = true;
-          this.contentId = event.content;
+          this.contentId = event.content.identifier;
           this.prevUnitSelect = event.collection.identifier;
           break;
       case 'afterMove':
@@ -266,6 +311,10 @@ export class ChapterListComponent implements OnInit, OnChanges {
           this.showLargeModal = false;
           this.unitIdentifier = '';
           this.contentId = ''; // Clearing selected unit/content details
+          break;
+      case 'preview':
+          this.contentId = event.content.identifier;
+          this.handlePreview(event);
           break;
       default:
           this.showResourceTemplatePopup = event.showPopup;
@@ -289,7 +338,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
   uploadHandler(event) {
     if (event.contentId) {
-      this.addResourceToHierarchy(event.contentId);
+      // this.addResourceToHierarchy(event.contentId);
     }
   }
 
