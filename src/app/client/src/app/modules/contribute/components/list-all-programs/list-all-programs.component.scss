@@ -57,6 +57,14 @@
       font-size: 12px;
       display: inline-flex;
       align-items: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* autoprefixer: off */
+      -webkit-box-orient: vertical;
+      /* autoprefixer: on */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+  
     }
     &__moreinfo {
       border-top: 1px solid #e9e5e5;

@@ -17,7 +17,9 @@
 .sb-color-gray {
     color: $gray-800;
 }
-
+.sb-color-white {
+    color: $white;
+}
 // bg colors
 .sb-workspace-bg {
     background-image: linear-gradient(to left, $primary-0, $primary-0 50%, $primary-0 65%, $white 75%);
