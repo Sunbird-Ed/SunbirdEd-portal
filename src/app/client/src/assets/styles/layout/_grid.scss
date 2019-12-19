@@ -1,0 +1,122 @@
+// no IE support!
+$grid_gutter: 16px;
+$screen_viewport_xs: 0;
+$screen_viewport_sm: 480px;
+$screen_viewport_md: 768px;
+$screen_viewport_lg: 992px;
+$screen_viewport_xl: 1280px;
+$screen_viewport_xxl: 1600px;
+$screen_viewport_xxxl: 1920px;
+
+// Grid array (used for generating the grid)
+$grid_arr: (
+  (xs, $screen_viewport_xs),
+  (sm, $screen_viewport_sm),
+  (md, $screen_viewport_md),
+  (lg, $screen_viewport_lg),
+  (xl, $screen_viewport_xl),
+  (xxl, $screen_viewport_xxl),
+  (xxxl, $screen_viewport_xxxl)
+);
+
+// Grid template creation
+.sb-g {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  //grid-template-columns: repeat(auto-fill, minmax(292px, 292px));
+  grid-column-gap: $grid_gutter;
+}
+
+@each $label, $breakpoint, $width in $grid_arr {
+  @media (min-width: #{$breakpoint}) {
+    @for $i from 1 through 12 {
+      @for $y from 1 through 12 {
+        // Differs from bootstrap from the point that it specifies the index of a column to start
+        // example: col-start-6 col-4 (start at col 6 columns and occupy 4 columns
+        .sb-g-col-start-#{$label}-#{$y}.sb-g-col-#{$label}-#{$i} {
+          grid-column: #{$y} / span #{$i};
+        }
+      }
+
+      // as in bootstrap
+      .sb-g-col-#{$label}-#{$i} {
+        grid-column-start: span #{$i};
+      }
+    }
+    // .container {
+    //   // width: calc(#{$breakpoint} - #{$grid_gutter});
+    //   width:90%;
+    //   margin: 0 auto;
+    // }
+  }
+}
+
+// from now on, dummy code for fanciness
+// .row {
+//   background: black;
+//   color: red;
+//   margin-bottom: 10px;
+// }
+
+// div[class*="col-"] {
+//   height: 50px;
+//   background: red;
+//   color: black;
+// }
+
+//grid columns
+$columns: 12;
+@for $i from 1 through $columns {
+  $colsizes: xs sm md lg xl xxl xxxl;
+  .dsb-g-col-#{$i} {
+    grid-column: span $i;
+  }
+  @each $colsize in $colsizes {
+    .dsb-g-col-#{nth($colsize, 1)}-#{$i} {
+      grid-column: span $i;
+    }
+  }
+  .dsb-g-col-offset-#{$i} {
+    margin-left: (100% / $columns) * $i;
+  }
+}
+
+//flex columns
+$columns: 12;
+@for $i from 1 through $columns {
+  .dsb-fx-col-#{$i} {
+    flex: 0 0 100% / $columns * $i;
+  }
+  .dsb-fx-col-offset-#{$i} {
+    margin-left: 100% / $columns * $i;
+  }
+}
+
+// two column layout
+.sb-two-column {
+  display: grid;
+  grid-template-columns: repeat(12, [col-start] 1fr);
+  grid-gap: calculateRem(16px);
+
+  .sb-column {
+    grid-column: col-start / span 12;
+  }
+
+  .sb-column:nth-child(2) {
+    overflow: auto;
+  }
+
+  @include respond-above(md) {
+    //grid-template-columns: 1fr 400px;
+    grid-template-columns: repeat(12, [col-start] 1fr);
+
+    .sb-column {
+      grid-column: col-start / span 8;
+    }
+
+    .sb-column:nth-child(2) {
+      grid-column: col-start 9 / span 4;
+      overflow: auto;
+    }
+  }
+}
