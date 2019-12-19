@@ -202,7 +202,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
           'districts': result['districts'] ? result['districts'] : 0,
           'blocks': result['blocks'] ? result['blocks'] : 0,
           'schools': result['schools'] ? result['schools'] : 0,
-          'teachers': result['teachers'] ? result['teachers'] : 0
+          'teachers': result['registered'] ? result['registered'] : 0
         };
       },
       error => {
@@ -253,6 +253,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
                 }],
             'data': this.geoTabledata,
             'searching': false,
+            'lengthChange': false
         });
     }, 100);
 }
@@ -293,6 +294,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
                 }],
             'data': this.userTabledata,
             'searching': false,
+            'lengthChange': false
         });
     }, 100);
 }
