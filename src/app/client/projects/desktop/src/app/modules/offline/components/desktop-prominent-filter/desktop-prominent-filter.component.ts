@@ -187,7 +187,6 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
         } else {
             this.formInputData = {};
         }
-        // this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
         if (this.formFieldProperties) {
             this.prominentFilter.emit(this.formFieldProperties);
         } else {
