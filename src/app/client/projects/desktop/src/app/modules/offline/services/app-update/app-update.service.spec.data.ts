@@ -45,7 +45,7 @@ export const serverRes = {
       },
       'responseCode': 'OK',
       'result': {
-        'appVersion': '1.0.2',
+        'version': '1.0.2',
         'releaseDate': '',
         'deviceId': 'did1234456',
         'languages': 'English, Hindi',
@@ -69,7 +69,7 @@ export const serverRes = {
         },
         'responseCode': 'OK',
         'result': {
-          'appVersion': '1.0.2',
+          'version': '1.0.2',
           'releaseDate': '',
           'deviceId': 'did1234456',
           'languages': 'English, Hindi'

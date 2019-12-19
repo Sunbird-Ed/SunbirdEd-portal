@@ -45,7 +45,7 @@ describe('AppUpdateService', () => {
     service.getAppInfo().subscribe(data => {
       expect(data).toEqual(serverRes.appInfoSuccess);
     });
-    expect(publicDataService.get).toHaveBeenCalled();
+    expect(publicDataService.get).toHaveBeenCalledWith({url: 'app/v1/info'});
   });
 
   it('should get app info failure case', () => {
@@ -55,7 +55,7 @@ describe('AppUpdateService', () => {
     service.getAppInfo().subscribe(data => {}, err => {
       expect(err).toEqual(serverRes.appInfoFailureCase);
     });
-    expect(publicDataService.get).toHaveBeenCalled();
+    expect(publicDataService.get).toHaveBeenCalledWith({url: 'app/v1/info'});
   });
 
 
