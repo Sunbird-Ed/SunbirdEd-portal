@@ -22,27 +22,36 @@
   <div class="d-flex flex-ai-center practical-header__content ui container">
     <div class="mr-auto" *ngIf="!showTextArea">
       <div class="practice-set__label">
-        <span class="font-weight-bold fs-1-143">Untiled Practice Set</span>
-        <a class="cursor-pointer fs-0-785 ml-8" (click)="showTextArea=!showTextArea">Edit</a>
+        <span class="font-weight-bold fs-1-143">{{resourceName}}</span>
+        <a class="cursor-pointer fs-0-785 ml-8" 
+          (click)="showResourceTitleEditor()" 
+          *ngIf="role.currentRole === 'CONTRIBUTOR' && resourceStatus === 'Draft' || resourceStatus === 'Rejected'"
+        >Edit</a>
       </div>
       <div class="mt-8 practice-set__status">
-          <!-- <span class="sb-label sb-label-table sb-label-success-0">Review</span>
-          <span class="sb-label sb-label-table sb-label-warning-0">Review/Warning</span>
-          <span class="sb-label sb-label-table sb-label-error-0">Error</span> -->
-        <span class="sb-label sb-label-table sb-label-gray-100">Review</span>
+        <span class="sb-label sb-label-table sb-label-success-0"
+        [ngClass]="{ 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-error-0': resourceStatus == 'Rejected',  'sb-label-gray-100': resourceStatus == 'Review' }">{{ resourceStatus }}</span>
         <span class="cursor-pointer fs-0-785 ml-8"><i class="comment alternate outline icon sb-color-primary"></i><a>View Comments</a></span>
       </div>
     </div>
     <div class="sb-field-group textbook-edit mr-auto" *ngIf="showTextArea">
       <div class="sb-field relative">
-        <textarea rows="4" name="moretext" class="sb-form-control fs-1" placeholder="Type here..."></textarea>
-        <span class="characters-left">200 Characters left</span>
+        <textarea rows="4" name="resourceName" class="sb-form-control fs-1" #resourceTtlTextarea placeholder="Type here..." [(ngModel)]='resourceName' (keydown)="onResourceNameChange($event)" (blur)="onResourceNameBlur()">{{resourceName}}</textarea>
+        <span class="characters-left">{{resourceTitleLimit - resourceName.length}} Characters left</span>
+        <span class="sb-error-text" *ngIf="resourceName.length > resourceTitleLimit">Title should be maximum 100 characters.</span>
+        <span class="sb-error-text" *ngIf="!resourceName.length">Title required.</span>
       </div>
     </div>
     <div class='practical-sb-buttons'>
-      <button class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" (click)="showTextArea=!showTextArea">Save</button>
+      <button class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" 
+        (click)="showTextArea =!showTextArea"
+        *ngIf="resourceStatus === 'Draft' || resourceStatus === 'Rejected' "
+        >Save</button>
       <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
-      <button class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="showTextArea=!showTextArea">Submit</button>
+      <button class="sb-btn sb-btn-secondary sb-btn-normal ripple" 
+        (click)="showTextArea=!showTextArea"
+        *ngIf="resourceStatus === 'Draft' || resourceStatus === 'Rejected' "
+        >Submit</button>
     </div>
   </div>
 </div> 
@@ -63,7 +72,7 @@
       <!-- Question list Section -->
 
       <div class="d-flex width-100 flex-jc-center mt-24">
-        <button *ngIf="role.currentRole === 'CONTRIBUTOR'"
+        <button *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"
           [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
           appTelemetryInteract
           [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:programContext.questionType.toUpperCase(),topic:programContext.topic}}"
@@ -78,8 +87,8 @@
           [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'questionlist',extra:{type:'reference',identifier:question.identifier}}">
           <label class="mb-0 mr-auto" for="check1"> Question {{i + 1}}</label>
           <i class="info circle sb-color-warning fs-1 icon" *ngIf="question.status === 'Reject'"></i>
-          <i class="trash alternate outline icon ml-24" *ngIf="question.status != 'Review' && question.status != 'Live'"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24"></i>
+          <i class="trash alternate outline icon ml-24" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"></i>
+          <i class="move icon ml-16 sb-color-primary ml-24" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"></i>
         </div>
       </div>
 

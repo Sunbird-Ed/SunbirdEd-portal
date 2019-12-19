@@ -144,7 +144,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
       practiceQuestionSetComponentInput: {
         programContext: this.programContext,
         templateDetails: this.templateDetails,
-        role: this.role
+        role: this.role,
+        selectedSharedContext: this.selectedSharedContext,
+        contentIdentifier: this.contentId
       }
     };
   }
@@ -240,16 +242,6 @@ export class ChapterListComponent implements OnInit, OnChanges {
   }
 
   handleTemplateSelection(event) {
-    if (_.isEmpty(event) || _.isEmpty(event.template)) { return; }
-    this.createResource(event.templateDetails).subscribe((response: any) => {
-      this.createdWorksheetIndentifier = _.get(response, 'result.content_id');
-      this.linkResourceToHierarchy(this.createdWorksheetIndentifier).subscribe((res: any) => {
-          this.handleTemplateComponent(event);
-      });
-    });
-  }
-
-  handleTemplateComponent(event) {
     this.showResourceTemplatePopup = false;
     if (event.template) {
       this.templateDetails = event.templateDetails;
@@ -390,72 +382,4 @@ export class ChapterListComponent implements OnInit, OnChanges {
       this.getCollectionHierarchy(this.programContext.collection, undefined);
     });
   }
-
-  private createResource(content) {
-    const option = {
-      url: this.configService.urlConFig.URLS.CONTENT.CREATE,
-      data: {
-        'request': {
-           'content': {
-              'code': UUID.UUID(),
-              'name': content.name,
-              'description': content.description,
-              'createdBy': this.userService.userid,
-              'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
-              'createdFor': [
-                 'ORG_001'
-              ],
-              'contentType': content.contentType,
-              'framework': this.selectedAttributes.framework,
-              'mimeType': content.mimeType[0],
-              'resourceType': content.resourceType,
-              'creator': this.getUserName()
-           }
-        }
-      }
-    };
-    return this.contentService.post(option).pipe(map((response) => {
-      console.log(response);
-      return response;
-    }, err => {
-      console.log(err);
-    }), catchError(err => {
-      const errInfo = { errorMsg: 'Resource creation failed. Please try again!' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    }));
-  }
-
-  public linkResourceToHierarchy(contentId) {
-    const req = {
-      url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_ADD,
-      data: {
-        'request': {
-          'rootId': this.selectedAttributes.collection,
-          'unitId': this.unitIdentifier,
-          'children': [contentId]
-        }
-      }
-    };
-    return this.actionService.patch(req).pipe(map((response) => {
-      console.log(response);
-      return response;
-    }, err => {
-      console.log(err);
-    }), catchError(err => {
-      const errInfo = { errorMsg: 'Resource linking failed. Please try again!' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    }));
-  }
-
-  getUserName() {
-    let userName = '';
-    if (this.userService.userProfile.firstName) {
-      userName = this.userService.userProfile.firstName;
-    }
-    if (this.userService.userProfile.lastName) {
-      userName += (' ' + this.userService.userProfile.lastName);
-    }
-    return userName;
-  }
-
 }

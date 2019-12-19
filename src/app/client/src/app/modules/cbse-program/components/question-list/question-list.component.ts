@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Component, 
+  OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -8,7 +9,6 @@ import { UUID } from 'angular2-uuid';
 import { of, forkJoin, throwError } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CbseProgramService } from '../../services';
-import { ISelectedAttributes, IContentUploadComponentInput} from '../../interfaces';
 
 @Component({
   selector: 'app-question-list',
@@ -16,10 +16,6 @@ import { ISelectedAttributes, IContentUploadComponentInput} from '../../interfac
   styleUrls: ['./question-list.component.scss']
 })
 export class QuestionListComponent implements OnInit, OnChanges {
-  // @Input() programContext: any;
-  // @Input() role: any;
-  @Input() resourceName: any;
-  // @Input() templateDetails: any;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
   @Input() practiceQuestionSetComponentInput: any;
@@ -29,6 +25,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public questionList = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
+  public resourceDetails: any = {};
+  public resourceStatus: string;
   public questionMetaData: any;
   public refresh = true;
   public showLoader = true;
@@ -38,8 +36,12 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public publishedResourceId: any;
   public questionSelectionStatus: any;
   public existingContentVersionKey = '';
+  public resourceTitleLimit = 100;
   selectedAll: any;
   initialized: boolean;
+  public showTextArea = false;
+  public resourceName: string;
+  @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
   private questionTypeName = {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
@@ -54,14 +56,10 @@ export class QuestionListComponent implements OnInit, OnChanges {
     public contentService: ContentService) {
   }
   ngOnChanges(changedProps: any) {
-    this.selectedAttributes  = _.get(this.contentUploadComponentInput, 'selectedAttributes');
-    this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
-    this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
-    this.resourceIdentifier  = _.get(this.contentUploadComponentInput, 'resourceIdentifier');
-    this.selectedAttributes.questionType = this.templateDetails.questionType;
+    this.programContext = _.get(this.practiceQuestionSetComponentInput, 'programContext');
     if (this.enableRoleChange) {
       this.initialized = false; // it should be false before fetch
-      if(this.programContext.questionType) {
+      if (this.programContext.questionType) {
         this.fetchQuestionWithRole();
       }
     }
@@ -72,10 +70,17 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit() {
-    this.programContext = _.get(this.practiceQuestionSetComponentInput, 'programContext');
+    // console.log('changes detected in question list', this.role);
     this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
-    // console.log('changes detected in question list', this.role);
+    this.programContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
+    this.programContext.questionType = this.templateDetails.questionType;
+    this.resourceName = this.templateDetails.metadata.name;
+    this.fetchExistingResource(this.programContext.resourceIdentifier).subscribe(response => {
+      this.resourceDetails = _.get(response, 'result.content');
+      this.resourceStatus = _.get(this.resourceDetails, 'status');
+      //this.resourceStatus = 'Review';
+    });
     if (this.programContext.questionType) {
       this.fetchQuestionWithRole();
     } else {
@@ -84,6 +89,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.enableRoleChange = true;
     this.selectedAll = false;
   }
+
   private fetchQuestionWithRole() {
     (this.role.currentRole === 'REVIEWER') ? this.fetchQuestionList(true) : this.fetchQuestionList();
   }
@@ -532,10 +538,46 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   deleteQuestion(index, identifier) {
-    console.log(index)
-    console.log(identifier)
+    console.log(index);
+    console.log(identifier);
     const selectedQuestions = _.filter(this.questionList, (question) => question.identifier === identifier);
-    console.log(this.questionList[index])
-    console.log(selectedQuestions)
+    console.log(this.questionList[index]);
+    console.log(selectedQuestions);
+  }
+
+  public showResourceTitleEditor() {
+    this.showTextArea = true;
+    setTimeout(() => {
+      this.resourceTtlTextarea.nativeElement.focus();
+    }, 500);
+  }
+
+  public onResourceNameChange(event: any) {
+    const remainChar = this.resourceTitleLimit - this.resourceName.length;
+    if (remainChar <= 0 && event.keyCode !== 8) {
+      event.preventDefault();
+      return;
+    }
+    this.resourceName = this.removeSpecialChars(event.target.value);
+  }
+
+  private removeSpecialChars(text: any) {
+    if (text) {
+      const iChars = '!`~@#$^*+=[]\\\'{}|\"<>%';
+      for (let i = 0; i < text.length; i++) {
+        if (iChars.indexOf(text.charAt(i)) !== -1) {
+          this.toasterService.error(`Special character ${text.charAt(i)} is not allowed`);
+        }
+      }
+       // tslint:disable-next-line:max-line-length
+      text = text.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, '');
+      return text;
+    }
+  }
+
+  public onResourceNameBlur() {
+    if (this.resourceName.length > 0 && this.resourceName.length <= this.resourceTitleLimit) {
+      this.showTextArea = false;
+    }
   }
 }

@@ -1180,7 +1180,8 @@ const programThirdSession = {
                 },
                 'questionCategories': [
                   'vsa'
-                ]
+                ],
+                'questionType': 'vsa'
               },
               {
                 'label': 'Curiosity Sets',
