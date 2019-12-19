@@ -253,7 +253,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
                 }],
             'data': this.geoTabledata,
             'searching': false,
-            "lengthChange": false
+            'lengthChange': false
         });
     }, 100);
 }
@@ -294,7 +294,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
                 }],
             'data': this.userTabledata,
             'searching': false,
-            "lengthChange": false
+            'lengthChange': false
         });
     }, 100);
 }
