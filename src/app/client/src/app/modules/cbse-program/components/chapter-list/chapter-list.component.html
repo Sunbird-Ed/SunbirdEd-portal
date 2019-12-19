@@ -94,7 +94,7 @@
     <ndc-dynamic [ndcDynamicComponent]="creationComponent" [ndcDynamicInputs]="dynamicInputs"
       [ndcDynamicOutputs]="dynamicOutputs"></ndc-dynamic>
 </div>
-<div class="twelve wide column" *ngIf="!collectionHierarchy.length">
+<div class="twelve wide column" *ngIf="!collectionHierarchy.length && !showLoader">
   <app-no-result></app-no-result>
 </div>
 <div *ngIf='showLoader && !showError' class="ui container sb-chapter-list">
