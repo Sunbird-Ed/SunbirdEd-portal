@@ -61,7 +61,7 @@
           <!-- language component ends-->
 
           <div class="ml-16 cursor-pointer">
-            <img src="assets/images/Profile.svg" width="40px" height="40px"></div>
+            <app-profile-dropdown ></app-profile-dropdown>
         </div>
       </div>
     </div>
@@ -71,8 +71,7 @@
     <!-- menu component -->
     <div class="ui container d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
       <div class="d-flex sb-offline-menu-container flex-ai-end">
-        <a [routerLink]="'/'"
-          [ngClass]="(router.isActive('/', false) && !(router.isActive('/browse', false) || router.isActive('/help-center', false)) ) ? 'active': ''"
+        <a [routerLink]="'/'" [ngClass]="{'active': checkRouter()}"
           appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('myLibrary')">
           <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
         </a>
