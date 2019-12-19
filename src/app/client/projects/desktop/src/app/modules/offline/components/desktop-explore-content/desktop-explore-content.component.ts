@@ -1,5 +1,5 @@
 import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, map, debounceTime, delay, filter } from 'rxjs/operators';
@@ -34,7 +34,6 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   public hashTagId: string;
   public dataDrivenFilters: any = {};
   public facets: string[];
-  public contentList = [];
   public isViewAll = false;
 
   public paginationDetails: IPagination;
@@ -47,6 +46,9 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
+
+  @Input() contentList: any[] = [];
+  @Input() isOnlineContents = false;
 
   constructor(
     public contentManagerService: ContentManagerService,
