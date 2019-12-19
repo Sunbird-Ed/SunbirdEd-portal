@@ -11,7 +11,7 @@ import * as _ from 'lodash-es';
 export class SelectTextbookComponent implements OnInit {
 
   @Input() config: any;
-  @Input() programContext: any;
+  @Input() sessionContext: any;
   @Output() selectedClassSubjectEvent = new EventEmitter<any>();
   public filtersDetails: any;
   public selectedOptions: any = {};
@@ -26,8 +26,8 @@ export class SelectTextbookComponent implements OnInit {
       subject: _.map(_.get(this.config, 'scope.subject'), item => ({ name: item, code: item }))
     };
     this.selectedOptions = {
-      gradeLevel: this.programContext.gradeLevel,
-      subject: this.programContext.subject
+      gradeLevel: this.sessionContext.gradeLevel,
+      subject: this.sessionContext.subject
     };
     this.setTelemetryImpression();
     this.telemetryInteract = {

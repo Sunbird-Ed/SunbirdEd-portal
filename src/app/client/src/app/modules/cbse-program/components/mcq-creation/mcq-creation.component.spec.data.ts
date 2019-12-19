@@ -246,7 +246,7 @@ export const Response = {
         'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45',
         'location': 'Bangalore'
     },
-    programContext: {
+    sessionContext: {
         'currentRole': 'CONTRIBUTOR',
         'framework': 'NCFCOPY',
         'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',

@@ -22,7 +22,7 @@ describe('QuestionPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(QuestionPreviewComponent);
     component = fixture.componentInstance;
-    component.programContext = Response.programContext;
+    component.sessionContext = Response.sessionContext;
     component.questionMetaData = Response.questionMetaData;
     fixture.detectChanges();
   });

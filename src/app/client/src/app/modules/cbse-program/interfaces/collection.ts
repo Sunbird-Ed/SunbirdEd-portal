@@ -1,4 +1,4 @@
-export interface IProgramContext { // TODO: remove any 'textbook' reference
+export interface ISessionContext { // TODO: remove any 'textbook' reference
   textBookUnitIdentifier?: any;
   collectionUnitIdentifier?: any;
   lastOpenedUnit?: any;

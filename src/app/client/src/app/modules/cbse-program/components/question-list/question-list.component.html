@@ -1,7 +1,7 @@
 <div>
-  <sui-modal *ngIf="!programContext.questionType" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  <sui-modal *ngIf="!sessionContext.questionType" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
     [size]="'small'" class="sb-modal" appBodyScroll
-    (dismissed)="programContext.questionType; dismissPublishModal();" #modal>
+    (dismissed)="sessionContext.questionType; dismissPublishModal();" #modal>
     <div class="sb-modal-header">
       Select Question Category
     </div>
@@ -39,7 +39,7 @@
   </div>  -->
 
 <div class="ui container">
-  <div *ngIf="programContext?.questionType" class="ui twelve column grid m-0">
+  <div *ngIf="sessionContext?.questionType" class="ui twelve column grid m-0">
     <div class="three wide column p-0">
 
       <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
@@ -57,7 +57,7 @@
         <button *ngIf="role.currentRole === 'CONTRIBUTOR'"
           [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
           appTelemetryInteract
-          [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:programContext.questionType.toUpperCase(),topic:programContext.topic}}"
+          [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:sessionContext.questionType.toUpperCase(),topic:sessionContext.topic}}"
           class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn"><i class="add icon"></i>Add new Question</button>
       </div>
 
@@ -124,18 +124,18 @@
       <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review
       </div>
       <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
-        <div *ngIf="programContext.questionType === 'mcq'" class="ui segment">
+        <div *ngIf="sessionContext.questionType === 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
-            <app-mcq-creation [programContext]="programContext" [questionMetaData]="questionMetaData"
+            <app-mcq-creation [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
               [questionSelectionStatus]="questionSelectionStatus" [role]="role"
               (questionStatus)="questionStatusHandler($event)"
               (questionQueueStatus)="questionQueueStatusHandler($event)">
             </app-mcq-creation>
           </div>
         </div>
-        <div *ngIf="programContext.questionType !== 'mcq'" class="ui segment">
+        <div *ngIf="sessionContext.questionType !== 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
-            <app-question-creation [programContext]="programContext" [questionMetaData]="questionMetaData"
+            <app-question-creation [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
               [questionSelectionStatus]="questionSelectionStatus" [role]="role"
               (questionStatus)="questionStatusHandler($event)"
               (questionQueueStatus)="questionQueueStatusHandler($event)">
@@ -156,10 +156,10 @@
   </div>
   <div class="sb-modal-content">
     <p>Name : {{resourceName}} </p>
-    <p>Board : {{programContext.board}} </p>
-    <p>Medium : {{programContext.medium}} </p>
-    <p>Class : {{programContext.gradeLevel}} </p>
-    <p>Subject : {{programContext.subject}} </p>
+    <p>Board : {{sessionContext.board}} </p>
+    <p>Medium : {{sessionContext.medium}} </p>
+    <p>Class : {{sessionContext.gradeLevel}} </p>
+    <p>Subject : {{sessionContext.subject}} </p>
     <p>ResourceID : {{publishedResourceId}} </p>
     Preview Link : <a target="_blank" href="https://diksha.gov.in/play/content/{{publishedResourceId}}">Click here</a>
   </div>
