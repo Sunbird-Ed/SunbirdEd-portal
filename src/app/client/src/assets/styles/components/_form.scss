@@ -94,7 +94,7 @@ $sb-selection-line-height: calculateRem(18px);
     border-color: var(--gray-200);
     display: flex;
     align-items: center;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     .text {
       text-overflow: ellipsis;
       overflow: hidden;
@@ -127,7 +127,7 @@ $sb-selection-line-height: calculateRem(18px);
   font-size: $sb-input-font-size;
   line-height: $sb-input-line-height;
   max-width: 100%;
-  padding: calculateRem(7px) calculateRem(8px);
+  padding: calculateRem(4px) calculateRem(8px);
   position: relative;
   width: 100%;
   min-height: ($base-block-space * 4);
@@ -161,9 +161,9 @@ $sb-selection-line-height: calculateRem(18px);
   font-size: $font-size-sm;
   background: var(--white);
   border-radius: calculateRem(8px);
-  html[dir="rtl"] &{
-    right:auto;
-    left:calculateRem(8px);
+  html[dir="rtl"] & {
+    right: auto;
+    left: calculateRem(8px);
   }
 }
 
@@ -197,7 +197,7 @@ textarea {
 input[required],
 input.required {
   &:before {
-    color:var(--red);
+    color: var(--red);
     content: "*";
     position: absolute;
     margin-left: calculateRem(-15px);
@@ -281,13 +281,12 @@ select:-internal-autofill-selected {
   box-shadow: none;
 }
 
-
-.ui.search.selection.dropdown>input.search {
+.ui.search.selection.dropdown > input.search {
   padding: calculateRem(8px) calculateRem(8px);
 }
-.ui.multiple.search.dropdown>input.search {
+.ui.multiple.search.dropdown > input.search {
   padding: 0px calculateRem(8px);
-  margin:0px;
+  margin: 0px;
 }
 .sb-field .ui.multiple.search.dropdown .text {
   line-height: normal;
