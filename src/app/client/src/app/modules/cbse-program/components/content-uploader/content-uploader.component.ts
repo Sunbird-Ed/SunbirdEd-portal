@@ -6,7 +6,7 @@ import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
 import { catchError, map } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
-import { ISelectedAttributes, IContentUploadComponentInput} from '../../interfaces';
+import { IProgramContext, IContentUploadComponentInput} from '../../interfaces';
 import { ProgramStageService } from '../../../program/services';
 
 @Component({
@@ -19,9 +19,10 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   @ViewChild('fineUploaderUI') fineUploaderUI: ElementRef;
   @ViewChild('qq-upload-actions') actionButtons: ElementRef;
   @Input() contentUploadComponentInput: IContentUploadComponentInput;
-  public selectedAttributes: ISelectedAttributes;
+  public programContext: IProgramContext;
   public templateDetails: any;
   public unitIdentifier: any;
+  public selectedSharedContext: any;
   @Output() uploadedContentMeta = new EventEmitter<any>();
   public playerConfig;
   public showPreview = false;
@@ -35,10 +36,10 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    this.selectedAttributes  = _.get(this.contentUploadComponentInput, 'selectedAttributes');
+    this.programContext  = _.get(this.contentUploadComponentInput, 'programContext');
     this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
-
+    this.selectedSharedContext = _.get(this.contentUploadComponentInput, 'selectedSharedContext');
     this.uploader = new FineUploader({
       element: document.getElementById('upload-content-div'),
       template: 'qq-template-validation',
@@ -120,11 +121,11 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
             'code': UUID.UUID(),
             'mimeType': mimeType,
             'createdBy': this.userService.userid,
-            'contentType': this.templateDetails.contentType,
+            'contentType': this.templateDetails.metadata.contentType,
             'resourceType': this.templateDetails.resourceType || 'Learn',
             'creator': creator,
-            'framework': this.selectedAttributes.framework,
-            'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : []
+            'framework': this.selectedSharedContext || this.programContext.framework,
+            'organisation': this.programContext.onBoardSchool ? [this.programContext.onBoardSchool] : []
           }
         }
       }

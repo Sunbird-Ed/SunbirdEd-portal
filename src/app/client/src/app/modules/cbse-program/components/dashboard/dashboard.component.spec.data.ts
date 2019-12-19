@@ -1,5 +1,5 @@
 export const Response = {
-    selectedAttributes: {
+    programContext: {
         'currentRole': 'CONTRIBUTOR',
         'framework': 'NCFCOPY',
         'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',

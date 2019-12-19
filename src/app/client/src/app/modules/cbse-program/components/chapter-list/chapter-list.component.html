@@ -26,34 +26,34 @@
           </div>
 
           <div class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap ml-16">
-            <dl *ngIf="actions.showTotalContribution.roles.includes(selectedAttributes.currentRoleId)"
+            <dl *ngIf="actions.showTotalContribution.roles.includes(programContext.currentRoleId)"
               class="sb-meta-data">
               <dt>{{countData['total']}}</dt>
               <dd>Total Contribution</dd>
             </dl>
-            <dl *ngIf="actions.showMyContribution.roles.includes(selectedAttributes.currentRoleId)"
+            <dl *ngIf="actions.showMyContribution.roles.includes(programContext.currentRoleId)"
               class="sb-meta-data">
               <dt>{{countData['mycontribution']}}</dt>
               <dd>My Contribution</dd>
             </dl>
-            <dl *ngIf="actions.showRejected.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+            <dl *ngIf="actions.showRejected.roles.includes(programContext.currentRoleId)" class="sb-meta-data">
               <dt>{{countData['reject']}}</dt>
               <dd>Rejected</dd>
             </dl>
-            <dl *ngIf="actions.showUnderReview.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+            <dl *ngIf="actions.showUnderReview.roles.includes(programContext.currentRoleId)" class="sb-meta-data">
               <dt>{{countData['review']}}</dt>
               <dd>Under Review</dd>
             </dl>
-            <dl *ngIf="actions.showTotalUnderReview.roles.includes(selectedAttributes.currentRoleId)"
+            <dl *ngIf="actions.showTotalUnderReview.roles.includes(programContext.currentRoleId)"
               class="sb-meta-data">
               <dt>{{countData['review']}}</dt>
               <dd>Total Under Review</dd>
             </dl>
-            <dl *ngIf="actions.showAcceptedByMe.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+            <dl *ngIf="actions.showAcceptedByMe.roles.includes(programContext.currentRoleId)" class="sb-meta-data">
               <dt>{{countData['review']}}</dt>
               <dd>Accepted by me</dd>
             </dl>
-            <dl *ngIf="actions.showRejectedByMe.roles.includes(selectedAttributes.currentRoleId)" class="sb-meta-data">
+            <dl *ngIf="actions.showRejectedByMe.roles.includes(programContext.currentRoleId)" class="sb-meta-data">
               <dt>{{countData['review']}}</dt>
               <dd>Rejected by me</dd>
             </dl>
@@ -81,14 +81,14 @@
       <!-- Move to Modal Section -->
       <div *ngIf="showLargeModal">
         <app-resource-reorder [collectionUnits]="collectionHierarchy" [contentId]="contentId"
-          [selectedAttributes]="selectedAttributes" [prevUnitSelect]="prevUnitSelect"
+          [programContext]="programContext" [prevUnitSelect]="prevUnitSelect"
           (moveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
       </div>
     </div>
   </div>
 </div>
 <div class="twelve wide column sb-bg-white" *ngIf="currentStage !== 'chapterListComponent'">
-  <!-- <app-content-uploader [selectedAttributes]="selectedAttributes" [unitIdentifier]="unitIdentifier"
+  <!-- <app-content-uploader [programContext]="programContext" [unitIdentifier]="unitIdentifier"
       [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader> -->
 
     <ndc-dynamic [ndcDynamicComponent]="creationComponent" [ndcDynamicInputs]="dynamicInputs"

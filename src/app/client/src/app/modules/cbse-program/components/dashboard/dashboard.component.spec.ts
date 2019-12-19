@@ -25,7 +25,7 @@ describe('DashboardComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
-    component.selectedAttributes = Response.selectedAttributes;
+    component.programContext = Response.programContext;
     fixture.detectChanges();
   });
 

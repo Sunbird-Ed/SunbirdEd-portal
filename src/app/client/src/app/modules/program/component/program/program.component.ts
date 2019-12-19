@@ -94,7 +94,7 @@ export class ProgramComponent implements OnInit {
       collectionComponentInput:  {
         programDetails: this.programDetails,
         userProfile: this.userProfile,
-        config: _.find(programSession.components, {'id': 'ng.sunbird.collection'}), // TODO: change programSession to programDetails
+        config: _.find(programSession.config.components, {'id': 'ng.sunbird.collection'}), // TODO: change programSession to programDetails
         entireConfig: programSession
       }
     };
@@ -104,13 +104,13 @@ export class ProgramComponent implements OnInit {
   handleHeader(status) {
     if (status === 'success') {
       this.headerComponentInput = {
-        roles: _.get(programSession, 'roles'),
-        actions: _.get(programSession, 'actions'),
-        header: _.get(programSession, 'header'),
+        roles: _.get(programSession.config, 'roles'),
+        actions: _.get(programSession.config, 'actions'),
+        header: _.get(programSession.config, 'header'),
         userDetails: _.get(this.programDetails, 'userDetails'),
         showTabs: this.showTabs
       };
-      this.tabs = _.get(programSession, 'header.config.tabs');
+      this.tabs = _.get(programSession.config, 'header.config.tabs');
 
       if (this.tabs) {
         this.defaultView = _.find(this.tabs, {'index': this.getDefaultActiveTab()});
@@ -130,7 +130,7 @@ export class ProgramComponent implements OnInit {
 
 
   getDefaultActiveTab () {
-   const defaultView =  _.find(programSession.roles, {'name': this.programDetails.userDetails.roles[0]});
+   const defaultView =  _.find(programSession.config.roles, {'name': this.programDetails.userDetails.roles[0]});
    if (defaultView) {
     return defaultView.defaultTab;
    } else {

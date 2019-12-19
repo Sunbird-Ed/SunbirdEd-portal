@@ -1,6 +1,6 @@
 export interface IChapterListComponentInput {
   config?: any;
-  selectedAttributes?: any;
+  programContext?: any;
   role?: string;
   collection?: any;
   entireConfig?: any;
