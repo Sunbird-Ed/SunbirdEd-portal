@@ -14,7 +14,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
 
 
   @Input() questionMetaData: any;
-  @Input() selectedAttributes: any;
+  @Input() programContext: any;
   public playerConfig: any;
   public theme: any;
   previewInitialized: boolean;
@@ -32,9 +32,9 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     const context = this.getContext();
 
     this.playerConfig = this.setPlayerConfig(context, this.theme);
-  } else if (!this.selectedAttributes.previewQuestionData) {
+  } else if (!this.programContext.previewQuestionData) {
     this.toEcml
-    .getECMLJSON(this.selectedAttributes.questionList)
+    .getECMLJSON(this.programContext.questionList)
     .subscribe( (theme) => {
       /**
        * @param theme this contains the theme[Ecml]
@@ -48,7 +48,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     });
     } else {
     this.toEcml
-    .getECMLJSON(this.selectedAttributes.questionList, this.selectedAttributes.currentRole, this.selectedAttributes.previewQuestionData)
+    .getECMLJSON(this.programContext.questionList, this.programContext.currentRole, this.programContext.previewQuestionData)
     .subscribe( (theme) => {
       /**
        * @param theme this contains the theme[Ecml]
@@ -69,7 +69,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     if (this.previewInitialized) {
       if (this.questionMetaData && this.questionMetaData.mode !== 'create') {
         this.toEcml
-        .getECMLJSON(this.selectedAttributes.questionList)
+        .getECMLJSON(this.programContext.questionList)
         .subscribe( (theme) => {
           /**
            * @param theme this contains the theme[Ecml]
@@ -81,7 +81,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
         });
       } else {
         this.toEcml
-        .getECMLJSON(this.selectedAttributes.questionList, this.selectedAttributes.currentRole, this.selectedAttributes.previewQuestionData)
+        .getECMLJSON(this.programContext.questionList, this.programContext.currentRole, this.programContext.previewQuestionData)
         .subscribe( (theme) => {
           /**
            * @param theme this contains the theme[Ecml]

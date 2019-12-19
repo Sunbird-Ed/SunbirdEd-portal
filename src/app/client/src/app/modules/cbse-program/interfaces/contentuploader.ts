@@ -1,9 +1,12 @@
-import { ISelectedAttributes } from './index';
+import { IProgramContext } from './index';
 
 
 export interface IContentUploadComponentInput {
-  selectedAttributes?: ISelectedAttributes;
+  programContext?: IProgramContext;
   unitIdentifier?: string;
+  selectedSharedContext?: any;
+  contentIdentifier?: string;
   templateDetails?: any;
-  resourceIdentifier?: string;
+  entireConfig?: any;
+  action?: string;
 }

@@ -2,21 +2,21 @@
   style="background-color: white;">
   <div class="ui container">
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR") && !showCertificate'
-      [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
-      (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
+      [class.active]="programContext.currentRole === 'CONTRIBUTOR'"
+      (click)="programContext.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER") && !showCertificate'
-      [class.active]="selectedAttributes.currentRole === 'REVIEWER'"
-      (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
+      [class.active]="programContext.currentRole === 'REVIEWER'"
+      (click)="programContext.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
-      [class.active]="selectedAttributes.currentRole === 'PUBLISHER' && !showDashboard"
-      (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
+      [class.active]="programContext.currentRole === 'PUBLISHER' && !showDashboard"
+      (click)="programContext.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
     <a class="item" *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
-      [class.active]="(selectedAttributes.currentRole === 'PUBLISHER' && showDashboard)"
-      (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange('Dashboard')">Dashboard</a>
+      [class.active]="(programContext.currentRole === 'PUBLISHER' && showDashboard)"
+      (click)="programContext.currentRole = 'PUBLISHER';handleRoleChange('Dashboard')">Dashboard</a>
     <a class="item" [class.active]="!showCertDashboard && showCertificate" *ngIf='showCertificate'
-      (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange()">Issue&nbsp;Certificate</a>
+      (click)="programContext.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange()">Issue&nbsp;Certificate</a>
     <a class="item" [class.active]="showCertDashboard && showCertificate" *ngIf='showCertificate'
-      (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange('certificatedashboard')">Certificate
+      (click)="programContext.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange('certificatedashboard')">Certificate
       Dashboard</a>
   </div>
 </div>
@@ -30,24 +30,24 @@
     <div class="practical-appbar__content ui container d-flex flex-ai-center">
       <a class="practical-appbar__item"
         *ngIf='programDetails?.userDetails?.roles.includes("CONTRIBUTOR") && !showCertificate'
-        [class.active]="selectedAttributes.currentRole === 'CONTRIBUTOR'"
-        (click)="selectedAttributes.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
+        [class.active]="programContext.currentRole === 'CONTRIBUTOR'"
+        (click)="programContext.currentRole = 'CONTRIBUTOR';handleRoleChange()">Contribute</a>
       <a class="practical-appbar__item"
         *ngIf='programDetails?.userDetails?.roles.includes("REVIEWER") && !showCertificate'
-        [class.active]="selectedAttributes.currentRole === 'REVIEWER'"
-        (click)="selectedAttributes.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
+        [class.active]="programContext.currentRole === 'REVIEWER'"
+        (click)="programContext.currentRole = 'REVIEWER';handleRoleChange()">Review</a>
       <a class="practical-appbar__item"
         *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
-        [class.active]="selectedAttributes.currentRole === 'PUBLISHER' && !showDashboard"
-        (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
+        [class.active]="programContext.currentRole === 'PUBLISHER' && !showDashboard"
+        (click)="programContext.currentRole = 'PUBLISHER';handleRoleChange()">Publish</a>
       <a class="practical-appbar__item"
         *ngIf='programDetails?.userDetails?.roles.includes("PUBLISHER") && !showCertificate'
-        [class.active]="(selectedAttributes.currentRole === 'PUBLISHER' && showDashboard)"
-        (click)="selectedAttributes.currentRole = 'PUBLISHER';handleRoleChange('Dashboard')">Dashboard</a>
+        [class.active]="(programContext.currentRole === 'PUBLISHER' && showDashboard)"
+        (click)="programContext.currentRole = 'PUBLISHER';handleRoleChange('Dashboard')">Dashboard</a>
       <a class="practical-appbar__item" [class.active]="!showCertDashboard && showCertificate" *ngIf='showCertificate'
-        (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange()">Issue&nbsp;Certificate</a>
+        (click)="programContext.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange()">Issue&nbsp;Certificate</a>
       <a class="practical-appbar__item" [class.active]="showCertDashboard && showCertificate" *ngIf='showCertificate'
-        (click)="selectedAttributes.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange('certificatedashboard')">Certificate
+        (click)="programContext.currentRole = 'CERTIFICATE_ISSUER';handleRoleChange('certificatedashboard')">Certificate
         Dashboard</a>
 
       <button class="sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn" type="button">
@@ -200,7 +200,7 @@
   <div *ngIf='programDetails?.userDetails' class="ui segment m-0 w-300 no-bg" style="margin-top:2px !important;">
 
     <div *ngIf="stages[currentStage] === 'chooseClass'">
-      <app-select-textbook [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+      <app-select-textbook [programContext]="programContext" [config]="programDetails.config"
         (selectedClassSubjectEvent)="selectedClassSubjectHandler($event)"></app-select-textbook>
     </div>
 
@@ -211,11 +211,11 @@
           <div>
             <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for </span>
             <span
-              class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.gradeLevel}}</span>
+              class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{programContext.gradeLevel}}</span>
             <span
-              class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{selectedAttributes.subject}}</span>
+              class="sb-pageSection-count sb-label sb-label-xs sb-label-warning mr-8">{{programContext.subject}}</span>
             <span *ngIf="stages[currentStage] === 'topicList' || stages[currentStage] === 'createQuestion'"
-              class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.textbookName}}</span>
+              class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{programContext.textbookName}}</span>
           </div>
           <div *ngIf="stages[currentStage] === 'topicList' && role.currentRole === 'REVIEWER'">
             <div *ngFor="let field of formFieldOptions">
@@ -239,16 +239,16 @@
         </div>
       </div>
       <div *ngIf="stages[currentStage] === 'chooseTextbook'">
-        <app-textbook-list [selectedAttributes]="selectedAttributes" [config]="programDetails.config"
+        <app-textbook-list [programContext]="programContext" [config]="programDetails.config"
           (selectedTextbookEvent)="selectedTextbookHandler($event)"></app-textbook-list>
       </div>
       <div *ngIf="stages[currentStage] === 'topicList' && !showDashboard">
-        <!-- <app-chapter-list [topicList]="topicList" [selectedAttributes]="selectedAttributes"
+        <!-- <app-chapter-list [topicList]="topicList" [programContext]="programContext"
           [selectedSchool]="selectedSchoolForReview" [role]="role"
           (selectedQuestionTypeTopic)="selectedQuestionTypeTopic($event)"></app-chapter-list> -->
       </div>
       <div *ngIf="stages[currentStage] === 'topicList' && showDashboard">
-        <app-dashboard [selectedAttributes]="selectedAttributes"></app-dashboard>
+        <app-dashboard [programContext]="programContext"></app-dashboard>
       </div>
     </div>
 
@@ -261,7 +261,7 @@
             <div>
               <span class="fs-1-143 font-weight-bold m-0 mr-8">Searched results for</span>
               <span
-                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{selectedAttributes.topic}}</span>
+                class="sb-pageSection-count sb-label sb-label-xs sb-label-warning">{{programContext.topic}}</span>
             </div>
           </div>
           <div class="nine wide column p-0">
@@ -284,12 +284,12 @@
               </div>
               <div class="d-flex ml-auto">
                 <button
-                  *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && selectedAttributes.resourceIdentifier"
+                  *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && programContext.resourceIdentifier"
                   class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress" appTelemetryInteract
                   [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
                   (click)="sendResourceName();questionList.updateQuestions() ">Update</button>
                 <button
-                  *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && !selectedAttributes.resourceIdentifier"
+                  *ngIf="role.currentRole !== 'REVIEWER' && role.currentRole !== 'CONTRIBUTOR' && !programContext.resourceIdentifier"
                   class="sb-btn sb-btn-primary sb-btn-normal mr-10" [disabled]="publishInProgress" appTelemetryInteract
                   [telemetryInteractEdata]="{id:'publich_questions',type:'click',pageid:stages[currentStage].toLowerCase()}"
                   (click)="sendResourceName(); questionList.publishQuestions()">Publish</button>
@@ -301,8 +301,8 @@
           </div>
         </div>
       </div>
-      <!-- <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)"
-        [selectedAttributes]="selectedAttributes" [role]="role" [resourceName]="resourceNameInput"
+      <app-question-list #questionList (statusEmitter)="handleRefresEvent($event)"
+
         (changeStage)="navigate($event)" (publishButtonStatus)="publishButtonStatusHandler($event)">
       </app-question-list> -->
     </div>

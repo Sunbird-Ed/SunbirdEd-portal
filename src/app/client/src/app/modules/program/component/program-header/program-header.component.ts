@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, OnChanges,  EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, OnDestroy,  EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ToasterService } from '@sunbird/shared';
 import { ProgramStageService } from '../../services/';
@@ -11,7 +11,7 @@ import { tap, delay, startWith } from 'rxjs/operators';
   templateUrl: './program-header.component.html',
   styleUrls: ['./program-header.component.scss']
 })
-export class ProgramHeaderComponent implements OnInit, OnChanges {
+export class ProgramHeaderComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() headerComponentInput: any;
   @Output() emitTabChange = new EventEmitter<any>();
@@ -24,13 +24,14 @@ export class ProgramHeaderComponent implements OnInit, OnChanges {
   public actionRoles: any;
   public headerActions: IHeaderActions = {};
   public tabsToShow = [];
+  public stageSubscription: any;
   public state: InitialState = {
     stages: []
   };
   constructor(public toasterService: ToasterService, public programStageService: ProgramStageService) { }
 
   ngOnInit() {
-    this.programStageService.getStage().subscribe(state => {
+    this.stageSubscription = this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.handleTabs();
     });
@@ -51,8 +52,6 @@ export class ProgramHeaderComponent implements OnInit, OnChanges {
         tab.visibility = true;
       }
     });
-    const defaultTab = _.find(this.programRoles, {'name': this.userRoles}).defaultTab;
-    const initialStage =  _.find(this.tabs, {index: defaultTab}).onClick;
   }
   ngOnChanges() {
     this.generateTabs();
@@ -60,11 +59,6 @@ export class ProgramHeaderComponent implements OnInit, OnChanges {
 
   handleTabs() {
     this.headerActions.showTabs = (this.state.stages.length > 1) ? false : true;
-  }
-
-
-  objectKey(obj) {
-    return Object.keys(obj);
   }
 
   filterBy(prop: string) {
@@ -81,4 +75,7 @@ export class ProgramHeaderComponent implements OnInit, OnChanges {
     this.defaultTabIndex = index;
   }
 
+  ngOnDestroy() {
+    this.stageSubscription.unsubscribe();
+  }
 }

@@ -10,21 +10,19 @@
       </div>
       <div content>
         <div class="chapter-lists level1" *ngIf="collection.leaf">
-          <div class="chapter-lists--item" *ngFor="let content of collection.leaf; let i=index">
+          <div class="chapter-lists--item" (click)="previewResource($event, content, collection)" *ngFor="let content of collection.leaf; let i=index">
             <span class="item-name mr-auto"> {{content.name}}</span>
             <span class="item-status mr-32">{{content.creator}}</span>
             <span class="item-status mr-24">
               <span class="sb-label sb-label-table sb-label-success-0">{{content.status}}</span>
             </span>
-            <span class="item-link mr-16"><button type="button"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Edit</button></span>
-            <div class="item relative position mr-16">
+            <div class="item relative position mr-16" (click)="menuClick($event)">
               <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
                 <div class="px-8 w-auto pb-8"><span class="sb-dotmenu"></span></div>
                 <div class="menu" suiDropdownMenu>
-                  <div class="item">Preview</div>
-                  <div class="item" (click)="moveResource($event, content.identifier, collection.identifier)">Move</div>
-  
+                  <div class="item" *ngIf="content.status === 'Draft' || content.status === 'Reject'" (click)="previewResource($event, content, collection)">Edit</div>
+                  <div class="item" *ngIf="content.status === 'Live' || content.status === 'Review'" (click)="previewResource($event, content, collection)">Preview</div>
+                  <div class="item" (click)="moveResource($event, content, collection)">Move</div>
                   <div class="item" (click)="deleteResource($event, content, collection)">Delete</div>
                 </div>
               </div>

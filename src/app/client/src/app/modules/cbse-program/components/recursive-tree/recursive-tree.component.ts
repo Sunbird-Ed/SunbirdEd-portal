@@ -25,8 +25,6 @@ export class RecursiveTreeComponent implements OnInit {
       showPopup: event.action === 'add' ? true : false,
       collection: event.collection,
       content: event.content
-      // unitIdentifier: event.unitIdentifier,
-      // contentId: event.contentId
     });
   }
 
@@ -49,13 +47,24 @@ export class RecursiveTreeComponent implements OnInit {
     });
   }
 
-  moveResource(e, content, unitIdentifier) {
+  moveResource(e, content, collection) {
     this.nodeMeta.emit({
       action: 'beforeMove',
       content: content,
-      collection: {
-        identifier: unitIdentifier
-      }
+      collection: collection
     });
   }
+
+  previewResource(e, content, collection) {
+    this.nodeMeta.emit({
+      action: 'preview',
+      content: content,
+      collection: collection
+    });
+  }
+
+  menuClick(e) {
+    e.stopPropagation();
+  }
+
 }

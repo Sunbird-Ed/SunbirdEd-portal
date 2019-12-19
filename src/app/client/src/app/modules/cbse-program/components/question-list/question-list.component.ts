@@ -16,17 +16,16 @@ import { ISelectedAttributes, IContentUploadComponentInput} from '../../interfac
   styleUrls: ['./question-list.component.scss']
 })
 export class QuestionListComponent implements OnInit, OnChanges {
+  // @Input() programContext: any;
+  // @Input() role: any;
   @Input() resourceName: any;
+  // @Input() templateDetails: any;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
-  @Output() uploadedContentMeta = new EventEmitter<any>();
-
-  @Input() contentUploadComponentInput: IContentUploadComponentInput;
-  public selectedAttributes: ISelectedAttributes;
+  @Input() practiceQuestionSetComponentInput: any;
+  public programContext: any;
+  public role: any;
   public templateDetails: any;
-  public unitIdentifier: any;
-  public resourceIdentifier: any;
-  public role: any = {};
   public questionList = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
@@ -62,20 +61,22 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.selectedAttributes.questionType = this.templateDetails.questionType;
     if (this.enableRoleChange) {
       this.initialized = false; // it should be false before fetch
-      if (this.selectedAttributes.questionType) {
+      if(this.programContext.questionType) {
         this.fetchQuestionWithRole();
       }
     }
-    if ((this.selectedAttributes.currentRole === 'REVIEWER') || (this.selectedAttributes.currentRole === 'PUBLISHER')) {
-      this.selectedAttributes['showMode'] = 'previewPlayer';
+    if ((this.programContext.currentRole === 'REVIEWER') || (this.programContext.currentRole === 'PUBLISHER')) {
+      this.programContext['showMode'] = 'previewPlayer';
     } else {
-      this.selectedAttributes['showMode'] = 'editorForm';
+      this.programContext['showMode'] = 'editorForm';
     }
   }
   ngOnInit() {
-    console.log('changes detected in question list', this.selectedAttributes.currentRole);
-    this.role.currentRole = this.selectedAttributes.currentRole;
-    if (this.selectedAttributes.questionType) {
+    this.programContext = _.get(this.practiceQuestionSetComponentInput, 'programContext');
+    this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
+    this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
+    // console.log('changes detected in question list', this.role);
+    if (this.programContext.questionType) {
       this.fetchQuestionWithRole();
     } else {
       console.log(this.templateDetails.questionCategories);
@@ -94,17 +95,17 @@ export class QuestionListComponent implements OnInit, OnChanges {
         'request': {
           'filters': {
             'objectType': 'AssessmentItem',
-            'board': this.selectedAttributes.board,
-            'framework': this.selectedAttributes.framework,
-            'gradeLevel': this.selectedAttributes.gradeLevel,
-            'subject': this.selectedAttributes.subject,
-            'medium': this.selectedAttributes.medium,
-            'type': this.selectedAttributes.questionType === 'mcq' ? 'mcq' : 'reference',
-            'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' :
-              this.selectedAttributes.questionType.toUpperCase(),
-            'topic': this.selectedAttributes.topic,
+            'board': this.programContext.board,
+            'framework': this.programContext.framework,
+            'gradeLevel': this.programContext.gradeLevel,
+            'subject': this.programContext.subject,
+            'medium': this.programContext.medium,
+            'type': this.programContext.questionType === 'mcq' ? 'mcq' : 'reference',
+            'category': this.programContext.questionType === 'curiosity' ? 'CuriosityQuestion' :
+              this.programContext.questionType.toUpperCase(),
+            'topic': this.programContext.topic,
             'createdBy': this.userService.userid,
-            'programId': this.selectedAttributes.programId,
+            'programId': this.programContext.programId,
             'version': 3,
             'status': []
           },
@@ -114,8 +115,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     };
     if (isReviewer) {
       delete req.data.request.filters.createdBy;
-      if (this.selectedAttributes.selectedSchoolForReview) {
-        req.data.request.filters['organisation'] = this.selectedAttributes.selectedSchoolForReview;
+      if (this.programContext.selectedSchoolForReview) {
+        req.data.request.filters['organisation'] = this.programContext.selectedSchoolForReview;
       }
       req.data.request.filters.status = ['Review'];
     }
@@ -129,14 +130,14 @@ export class QuestionListComponent implements OnInit, OnChanges {
     if (this.role.currentRole === 'PUBLISHER') {
       delete req.data.request.filters.createdBy;
       req.data.request.filters.status = ['Live'];
-      if (this.selectedAttributes.resourceIdentifier) {
+      if (this.programContext.resourceIdentifier) {
         // tslint:disable-next-line:max-line-length
         apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false),
           catchError(err => {
             const errInfo = { errorMsg: 'Fetching question list failed' };
             return throwError(this.cbseService.apiErrorHandling(err, errInfo));
           })),
-        this.fetchExistingResource(this.selectedAttributes.resourceIdentifier)];
+        this.fetchExistingResource(this.programContext.resourceIdentifier)];
       }
     }
 
@@ -184,9 +185,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
 
   handleQuestionTabChange(questionId) {
-    if (_.includes(this.selectedAttributes.questionList, questionId)) { return; }
-    this.selectedAttributes.questionList = [];
-    this.selectedAttributes.questionList.push(questionId);
+    if (_.includes(this.programContext.questionList, questionId)) { return; }
+    this.programContext.questionList = [];
+    this.programContext.questionList.push(questionId);
     this.selectedQuestionId = questionId;
     this.showLoader = true;
     this.getQuestionDetails(questionId).pipe(tap(data => this.showLoader = false))
@@ -202,14 +203,14 @@ export class QuestionListComponent implements OnInit, OnChanges {
           data: assessment_item
         };
         // min of 1sec timeOut is set, so that it should go to bottom of call stack and execute whennever the player data is available
-        if (this.selectedAttributes.showMode === 'previewPlayer' && this.initialized) {
+        if (this.programContext.showMode === 'previewPlayer' && this.initialized) {
           this.showLoader = true;
           setTimeout(() => {
             this.showLoader = false;
           }, 1000);
         }
         // tslint:disable-next-line:max-line-length
-        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view') && (this.selectedAttributes.showMode === 'editorForm')) {
+        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view') && (this.programContext.showMode === 'editorForm')) {
           this.refreshEditor();
         }
         this.initialized = true;
@@ -329,29 +330,29 @@ export class QuestionListComponent implements OnInit, OnChanges {
             'request': {
               'content': {
                 // tslint:disable-next-line:max-line-length
-                'name': this.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
-                'contentType': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
+                'name': this.resourceName || `${this.questionTypeName[this.programContext.questionType]} - ${this.programContext.topic}`,
+                'contentType': this.programContext.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
                 'mimeType': 'application/vnd.ekstep.ecml-archive',
-                'programId': this.selectedAttributes.programId,
-                'program': this.selectedAttributes.program,
-                'framework': this.selectedAttributes.framework,
-                'board': this.selectedAttributes.board,
-                'medium': [this.selectedAttributes.medium],
-                'gradeLevel': [this.selectedAttributes.gradeLevel],
-                'subject': [this.selectedAttributes.subject],
-                'topic': [this.selectedAttributes.topic],
+                'programId': this.programContext.programId,
+                'program': this.programContext.program,
+                'framework': this.programContext.framework,
+                'board': this.programContext.board,
+                'medium': [this.programContext.medium],
+                'gradeLevel': [this.programContext.gradeLevel],
+                'subject': [this.programContext.subject],
+                'topic': [this.programContext.topic],
                 'createdBy': this.userService.userid, // '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8'  || 'edce4f4f-6c82-458a-8b23-e3521859992f',
                 'creator': creator,
                 'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
                 'editorVersion': 3,
                 'code': UUID.UUID(),
                 'body': JSON.stringify(theme),
-                'resourceType': this.selectedAttributes.questionType === 'curiosity' ? 'Teach' : 'Practice',
-                'description': `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
+                'resourceType': this.programContext.questionType === 'curiosity' ? 'Teach' : 'Practice',
+                'description': `${this.questionTypeName[this.programContext.questionType]} - ${this.programContext.topic}`,
                 'questions': questions,
                 'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
                 'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
-                'unitIdentifiers': [this.selectedAttributes.textBookUnitIdentifier],
+                'unitIdentifiers': [this.programContext.textBookUnitIdentifier],
                 'plugins': [{
                   identifier: 'org.sunbird.questionunit.quml',
                   semanticVersion: '1.0'
@@ -401,12 +402,12 @@ export class QuestionListComponent implements OnInit, OnChanges {
       });
 
       const updateBody = this.cbseService.getECMLJSON(selectedQuestionsData.ids);
-      const versionKey = this.getContentVersion(this.selectedAttributes.resourceIdentifier);
+      const versionKey = this.getContentVersion(this.programContext.resourceIdentifier);
 
       forkJoin([updateBody, versionKey]).subscribe((response: any) => {
         const existingContentVersionKey = _.get(response[1], 'content.versionKey');
         const options = {
-          url: `private/content/v3/update/${this.selectedAttributes.resourceIdentifier}`,
+          url: `private/content/v3/update/${this.programContext.resourceIdentifier}`,
           data: {
             'request': {
               'content': {
@@ -416,7 +417,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
                 'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
                 // tslint:disable-next-line:max-line-length
-                name: this.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`
+                name: this.resourceName || `${this.questionTypeName[this.programContext.questionType]} - ${this.programContext.topic}`
               }
             }
           }
@@ -454,7 +455,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     );
   }
   public selectQuestionCategory(questionCategory) {
-    this.selectedAttributes.questionType = questionCategory;
+    this.programContext.questionType = questionCategory;
     this.fetchQuestionWithRole();
   }
   publishResource(contentId) {
@@ -477,7 +478,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       .subscribe(response => {
         this.publishedResourceId = response.result.content_id || response.result.node_id || '';
         // tslint:disable-next-line:max-line-length
-        this.updateHierarchyObj(contentId, this.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`);
+        this.updateHierarchyObj(contentId, this.resourceName || `${this.questionTypeName[this.programContext.questionType]} - ${this.programContext.topic}`);
 
       }, (err) => {
         this.publishInProgress = false;
@@ -486,13 +487,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   updateHierarchyObj(contentId, name) {
-    const index = _.indexOf(_.keys(this.selectedAttributes.hierarchyObj.hierarchy), this.selectedAttributes.textBookUnitIdentifier);
+    const index = _.indexOf(_.keys(this.programContext.hierarchyObj.hierarchy), this.programContext.textBookUnitIdentifier);
     if (index >= 0) {
-      this.selectedAttributes.hierarchyObj.hierarchy[this.selectedAttributes.textBookUnitIdentifier].children.push(contentId);
-      if (!_.has(this.selectedAttributes.hierarchyObj.hierarchy, contentId)) {
-        this.selectedAttributes.hierarchyObj.hierarchy[contentId] = {
+      this.programContext.hierarchyObj.hierarchy[this.programContext.textBookUnitIdentifier].children.push(contentId);
+      if (!_.has(this.programContext.hierarchyObj.hierarchy, contentId)) {
+        this.programContext.hierarchyObj.hierarchy[contentId] = {
           'name': name,
-          'contentType': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
+          'contentType': this.programContext.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
           'children': [],
           'root': false
         };
@@ -502,7 +503,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       'request': {
         'data': {
           'nodesModified': {},
-          'hierarchy': this.selectedAttributes.hierarchyObj.hierarchy,
+          'hierarchy': this.programContext.hierarchyObj.hierarchy,
           'lastUpdatedBy': this.userService.userid
         }
       }

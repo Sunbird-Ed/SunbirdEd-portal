@@ -8,8 +8,8 @@ import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
 import { forkJoin, throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IChapterListComponentInput , ISelectedAttributes,
-  IContentUploadComponentInput, IResourceTemplateComponentInput} from '../../interfaces';
+import { IChapterListComponentInput , IProgramContext,
+  IContentUploadComponentInput, IResourceTemplateComponentInput } from '../../interfaces';
 import { QuestionListComponent } from '../../../cbse-program/components/question-list/question-list.component';
 import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
 import { ProgramStageService } from '../../../program/services';
@@ -18,6 +18,7 @@ import { InitialState } from '../../interfaces';
 interface IDynamicInput {
   contentUploadComponentInput?: IContentUploadComponentInput;
   resourceTemplateComponentInput?: IResourceTemplateComponentInput;
+  practiceQuestionSetComponentInput?: any;
 }
 
 @Component({
@@ -30,23 +31,24 @@ export class ChapterListComponent implements OnInit, OnChanges {
   @Input() chapterListComponentInput: IChapterListComponentInput;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
 
-  public selectedAttributes: ISelectedAttributes;
+  public programContext: IProgramContext;
   public role: any;
   public textBookChapters: Array<any> = [];
   private questionType: Array<any> = [];
   private textBookMeta: any;
   public hierarchyObj = {};
-  public collectionHierarchy;
+  public collectionHierarchy = [];
   public countData: Array<any> = [];
   public levelOneChapterList: Array<any> = [];
   public selectedChapterOption: any = {};
   public showResourceTemplatePopup = false;
-  public showContentUploader = false;
   public templateDetails;
   public unitIdentifier;
   public collection: any;
   public showStage;
+  public sharedContext: Array<string>;
   public currentStage: any;
+  public selectedSharedContext: any;
   public state: InitialState = {
     stages: []
   };
@@ -87,10 +89,11 @@ export class ChapterListComponent implements OnInit, OnChanges {
       this.changeView();
     });
     this.currentStage = 'chapterListComponent';
-    this.selectedAttributes = _.get(this.chapterListComponentInput, 'selectedAttributes');
+    this.programContext = _.get(this.chapterListComponentInput, 'programContext');
     this.role = _.get(this.chapterListComponentInput, 'role');
     this.collection  = _.get(this.chapterListComponentInput, 'collection');
-    this.actions = _.get(this.chapterListComponentInput, 'entireConfig.actions');
+    this.actions = _.get(this.chapterListComponentInput, 'entireConfig.config.actions');
+    this.sharedContext = _.get(this.chapterListComponentInput, 'entireConfig.config.sharedContext');
     /**
      * @description : this will fetch question Category configuration based on currently active route
      */
@@ -111,9 +114,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
     });
 
     this.selectedChapterOption = 'all';
-    this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
+    this.getCollectionHierarchy(this.programContext.collection, undefined);
     // clearing the selected questionId when user comes back from question list
-    delete this.selectedAttributes['questionList'];
+    delete this.programContext['questionList'];
 
     this.dynamicOutputs = {
       uploadedContentMeta: (contentMeta) => {
@@ -124,17 +127,24 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changed: any) {
-    this.selectedAttributes = _.get(this.chapterListComponentInput, 'selectedAttributes');
+    this.programContext = _.get(this.chapterListComponentInput, 'programContext');
     this.role = _.get(this.chapterListComponentInput, 'role');
   }
 
-  public initiateInputs() {
+  public initiateInputs(action?) {
     this.dynamicInputs = {
       contentUploadComponentInput: {
-        selectedAttributes: this.selectedAttributes,
+        programContext: this.programContext,
         unitIdentifier: this.unitIdentifier,
         templateDetails: this.templateDetails,
-        resourceIdentifier : this.createdWorksheetIndentifier
+        selectedSharedContext: this.selectedSharedContext,
+        contentIdentifier: this.contentId,
+        action: action
+      },
+      practiceQuestionSetComponentInput: {
+        programContext: this.programContext,
+        templateDetails: this.templateDetails,
+        role: this.role
       }
     };
   }
@@ -168,7 +178,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
         instance.countData['mycontribution'] = 0;
         this.collectionHierarchy = this.getUnitWithChildren(this.collectionData, identifier);
         hierarchy = instance.hierarchyObj;
-        this.selectedAttributes.hierarchyObj = { hierarchy };
+        this.programContext.hierarchyObj = { hierarchy };
         this.showLoader = false;
         this.showError = false;
       });
@@ -182,7 +192,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       'children': _.map(data.children, (child) => {
         return child.identifier;
       }),
-      'root': data.contentType === 'TextBook' ? true : false
+      'root': data.contentType === 'TextBook' ? true : false,
     };
     if (data.contentType !== 'TextBook' && data.contentType !== 'TextBookUnit') {
       this.countData['total'] = this.countData['total'] + 1;
@@ -193,6 +203,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     const childData = data.children;
     if (childData) {
       const tree = childData.map(child => {
+        const meta = _.pick(child, this.sharedContext);
         if (child.parent && child.parent === collectionId) {
           self.levelOneChapterList.push({
             identifier: child.identifier,
@@ -206,7 +217,10 @@ export class ChapterListComponent implements OnInit, OnChanges {
           topic: child.topic,
           status: child.status,
           creator: child.creator,
-          parentId: child.parent || null
+          parentId: child.parent || null,
+          sharedContext: {
+            ...meta
+          }
         };
         const treeUnit = self.getUnitWithChildren(child, collectionId);
         const treeChildren = treeUnit && treeUnit.filter(item => item.contentType === 'TextBookUnit');
@@ -221,7 +235,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
   onSelectChapterChange() {
     this.showLoader = true;
-    this.getCollectionHierarchy(this.selectedAttributes.collection ,
+    this.getCollectionHierarchy(this.programContext.collection ,
       this.selectedChapterOption === 'all' ? undefined :  this.selectedChapterOption);
   }
 
@@ -238,35 +252,81 @@ export class ChapterListComponent implements OnInit, OnChanges {
   handleTemplateComponent(event) {
     this.showResourceTemplatePopup = false;
     if (event.template) {
-      this.showContentUploader = true;
       this.templateDetails = event.templateDetails;
+      let creator = this.userService.userProfile.firstName;
+      if (!_.isEmpty(this.userService.userProfile.lastName)) {
+        creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+      }
+      const option = {
+        url: `content/v3/create`,
+        data: {
+          request: {
+            content: {
+              'name': this.templateDetails.metadata.name,
+              'code': UUID.UUID(),
+              'mimeType': this.templateDetails.mimeType[0],
+              'createdBy': this.userService.userid,
+              'contentType': this.templateDetails.metadata.contentType,
+              'resourceType': this.templateDetails.metadata.resourceType || 'Learn',
+              'creator': creator,
+              'framework': this.programContext.framework,
+              'organisation': this.programContext.onBoardSchool ? [this.programContext.onBoardSchool] : []
+            }
+          }
+        }
+      };
+      this.actionService.post(option).pipe(map(res => res.result), catchError(err => {
+        const errInfo = { errorMsg: 'Unable to create contentId, Please Try Again' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }))
+      .subscribe(result => {
+        this.addResourceToHierarchy(result.node_id);
+        this.contentId = result.node_id;
+        this.componentLoadHandler('creation', this.componentMapping[event.template], event.templateDetails.onClick);
+      });
     }
-    this.initiateInputs();
-    this.creationComponent = this.componentMapping[event.template];
-    this.programStageService.addStage(event.templateDetails.onClick);
   }
+
+  handlePreview(event) {
+    const templateList = _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
+    || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue');
+    this.templateDetails = _.find(templateList, {contentType: event.content.contentType});
+    this.componentLoadHandler('preview', this.componentMapping[event.content.contentType], this.templateDetails.onClick);
+  }
+
+  componentLoadHandler(action, component, componentName) {
+    this.initiateInputs(action);
+    this.creationComponent = component;
+    this.programStageService.addStage(componentName);
+  }
+
 
   showResourceTemplate(event) {
     this.unitIdentifier = event.collection.identifier;
+    this.selectedSharedContext = event.collection.sharedContext;
     switch (event.action) {
       case 'delete':
          this.removeResourceToHierarchy(event.content.identifier, this.unitIdentifier);
          break;
       case 'beforeMove':
           this.showLargeModal = true;
-          this.contentId = event.content;
+          this.contentId = event.content.identifier;
           this.prevUnitSelect = event.collection.identifier;
           break;
       case 'afterMove':
           this.showLargeModal = false;
           this.unitIdentifier = '';
           this.contentId = ''; // Clearing selected unit/content details
-          this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
+          this.getCollectionHierarchy(this.programContext.collection, undefined);
           break;
       case 'cancelMove':
           this.showLargeModal = false;
           this.unitIdentifier = '';
           this.contentId = ''; // Clearing selected unit/content details
+          break;
+      case 'preview':
+          this.contentId = event.content.identifier;
+          this.handlePreview(event);
           break;
       default:
           this.showResourceTemplatePopup = event.showPopup;
@@ -290,7 +350,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
   uploadHandler(event) {
     if (event.contentId) {
-      this.addResourceToHierarchy(event.contentId);
+      // this.addResourceToHierarchy(event.contentId);
     }
   }
 
@@ -299,7 +359,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_ADD,
       data: {
         'request': {
-          'rootId': this.selectedAttributes.collection,
+          'rootId': this.programContext.collection,
           'unitId': this.unitIdentifier,
           'children': [contentId]
         }
@@ -317,7 +377,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_REMOVE,
       data: {
         'request': {
-          'rootId': this.selectedAttributes.collection,
+          'rootId': this.programContext.collection,
           'unitId': unitIdentifier,
           'children': [contentId]
         }
@@ -327,7 +387,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       return throwError('');
     })).subscribe(res => {
       console.log('result ', res);
-      this.getCollectionHierarchy(this.selectedAttributes.collection, undefined);
+      this.getCollectionHierarchy(this.programContext.collection, undefined);
     });
   }
 

@@ -11,7 +11,7 @@ export class ResourceReorderComponent implements OnInit {
   unitSelected: string;
   @Input() collectionUnits;
   @Input() contentId;
-  @Input() selectedAttributes;
+  @Input() programContext;
   @Input() prevUnitSelect;
   @Output() moveEvent = new EventEmitter<any>();
   @ViewChild('modal') modal;
@@ -22,9 +22,9 @@ export class ResourceReorderComponent implements OnInit {
   }
 
   moveResource() {
-    this.collectionHierarchyService.addResourceToHierarchy(this.selectedAttributes.collection, this.unitSelected, this.contentId)
+    this.collectionHierarchyService.addResourceToHierarchy(this.programContext.collection, this.unitSelected, this.contentId)
      .subscribe((data) => {
-     this.collectionHierarchyService.removeResourceToHierarchy(this.selectedAttributes.collection, this.prevUnitSelect, this.contentId)
+     this.collectionHierarchyService.removeResourceToHierarchy(this.programContext.collection, this.prevUnitSelect, this.contentId)
       .subscribe((res) => {
         this.toasterService.success('The Selected Resource is Successfuly Moved');
         this.moveEvent.emit({
