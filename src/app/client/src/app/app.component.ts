@@ -171,7 +171,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   isLocationStatusRequired() {
     const url = this.router.url;
-    return !!(_.includes(url, 'signup') || _.includes(url, 'recover'));
+    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
 
   checkLocationStatus() {
