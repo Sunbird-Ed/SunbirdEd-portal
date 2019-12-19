@@ -2,11 +2,13 @@ import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angu
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { OrgDetailsService, ChannelService, FrameworkService } from '@sunbird/core';
 
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { OnboardingService } from '../../../offline/services/onboarding/onboarding.service';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-update-content-preference',
@@ -31,6 +33,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     public channelService: ChannelService,
     public frameworkService: FrameworkService,
     public toasterService: ToasterService,
+    public activatedRoute: ActivatedRoute,
+    public telemetryService: TelemetryService
   ) { }
   ngOnInit() {
     this.createContentPreferenceForm();
@@ -39,10 +43,10 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
 
   createContentPreferenceForm() {
     this.contentPreferenceForm = this.formBuilder.group({
-      'board': ['', Validators.compose([Validators.required])],
-      'medium': ['', Validators.compose([Validators.required])],
-      'subjects': ['', Validators.compose([])],
-      'class': ['', Validators.compose([Validators.required])],
+      board: new FormControl(null, [Validators.required]),
+      medium: new FormControl(null, [Validators.required]),
+      class: new FormControl(null, [Validators.required]),
+      subjects: new FormControl(null, []),
     });
   }
 
@@ -126,6 +130,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   }
 
   updateUserPreferenece() {
+    this.setTelemetryData();
     this.userService.saveLocation(this.contentPreferenceForm.getRawValue())
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
@@ -138,6 +143,29 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   }
   closeModal() {
     this.dismissed.emit();
+  }
+  setTelemetryData() {
+    const interactData = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        id: 'updating_user_preference',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        extra: {
+          'framework': {
+            'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),
+            'board': this.contentPreferenceForm.value.board,
+            'medium': this.contentPreferenceForm.value.medium,
+            'gradeLevel': this.contentPreferenceForm.value.class,
+            'subjects': this.contentPreferenceForm.value.subjects
+          }
+        }
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

@@ -116,7 +116,7 @@ $btns: "gray" var(--gray-200) var(--gray-400) var(--gray-100),
 }
 // Create button sizes classess from the below list
 // class height padding fontsize width
-$btnsizes: "xs" 1.5rem "0.25rem 1rem" 0.75rem null,
+$btnsizes: "xs" 1.5rem "0.25rem 0.5rem" 0.75rem null,
   "normal" 2rem "0.5rem 1rem" 0.75rem null, "sm" 2.5rem "0.5rem 1rem" 1rem null,
   "md" 3rem "0.5rem 1rem" 1remrem null, "lg" 3.5rem "1rem 1.5rem" 1.25rem null,
   "full" 1.5rem "0.5rem 1rem" 1.25rem 100%;
@@ -152,6 +152,10 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 }
 .sb-btn-radius {
   border-radius: 2rem;
+}
+.sb-btn-white {
+  box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.2);
+  border: 0px solid #ddd;
 }
 .sb-btn-square {
   display: inline-flex;
@@ -226,13 +230,6 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
       margin-right: 0;
     }
   }
-  .sb-left-icon-btn {
-    padding: ($base-block-space * 1) ($base-block-space * 2)
-      ($base-block-space * 1) ($base-block-space * 1);
-    i.icon {
-      margin-right: ($base-block-space / 2);
-    }
-  }
 }
 
 .sb-left-icon-btn {
@@ -242,8 +239,8 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
     margin-right: ($base-block-space / 2);
   }
   html[dir="rtl"] & {
-    padding: ($base-block-space * 1) ($base-block-space * 2)
-      ($base-block-space * 1) ($base-block-space * 1);
+    padding: ($base-block-space * 0) ($base-block-space * 1)
+    ($base-block-space * 0) ($base-block-space * 1);
     i.icon {
       margin-left: ($base-block-space / 2);
     }

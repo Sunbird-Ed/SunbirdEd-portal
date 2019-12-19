@@ -8,6 +8,7 @@ import { ConfigService, ResourceService, BrowserCacheTtlService, SharedModule } 
 import { ElectronDialogService } from '../../services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { response } from './desktop-header.component.spec.data';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('DesktopHeaderComponent', () => {
     let component: DesktopHeaderComponent;
@@ -18,7 +19,8 @@ describe('DesktopHeaderComponent', () => {
             declarations: [DesktopHeaderComponent],
             imports: [SharedModule.forRoot(), CommonConsumptionModule, FormsModule, RouterModule.forRoot([]), CoreModule],
             providers: [ConfigService, ResourceService, ElectronDialogService, TenantService, FormService, OrgDetailsService,
-                BrowserCacheTtlService, TelemetryService]
+                BrowserCacheTtlService, TelemetryService],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA]
         }).compileComponents();
     }));
 
