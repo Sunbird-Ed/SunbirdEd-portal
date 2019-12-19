@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, Output, Input, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
-import { IProgramContext, IChapterListComponentInput, IResourceTemplateComponentInput } from '../../interfaces';
+import { ISessionContext, IChapterListComponentInput, IResourceTemplateComponentInput } from '../../interfaces';
 
 @Component({
   selector: 'app-resource-template',

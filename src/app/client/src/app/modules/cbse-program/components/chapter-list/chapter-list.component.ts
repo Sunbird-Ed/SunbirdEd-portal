@@ -8,7 +8,7 @@ import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
 import { forkJoin, throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IChapterListComponentInput , IProgramContext,
+import { IChapterListComponentInput , ISessionContext,
   IContentUploadComponentInput, IResourceTemplateComponentInput } from '../../interfaces';
 import { QuestionListComponent } from '../../../cbse-program/components/question-list/question-list.component';
 import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
@@ -31,7 +31,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   @Input() chapterListComponentInput: IChapterListComponentInput;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
 
-  public programContext: IProgramContext;
+  public sessionContext: ISessionContext;
   public role: any;
   public textBookChapters: Array<any> = [];
   private questionType: Array<any> = [];
@@ -87,7 +87,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       this.changeView();
     });
     this.currentStage = 'chapterListComponent';
-    this.programContext = _.get(this.chapterListComponentInput, 'programContext');
+    this.sessionContext = _.get(this.chapterListComponentInput, 'sessionContext');
     this.role = _.get(this.chapterListComponentInput, 'role');
     this.collection  = _.get(this.chapterListComponentInput, 'collection');
     this.actions = _.get(this.chapterListComponentInput, 'entireConfig.config.actions');
@@ -112,9 +112,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
     });
 
     this.selectedChapterOption = 'all';
-    this.getCollectionHierarchy(this.programContext.collection, undefined);
+    this.getCollectionHierarchy(this.sessionContext.collection, undefined);
     // clearing the selected questionId when user comes back from question list
-    delete this.programContext['questionList'];
+    delete this.sessionContext['questionList'];
 
     this.dynamicOutputs = {
       uploadedContentMeta: (contentMeta) => {
@@ -125,14 +125,14 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changed: any) {
-    this.programContext = _.get(this.chapterListComponentInput, 'programContext');
+    this.sessionContext = _.get(this.chapterListComponentInput, 'sessionContext');
     this.role = _.get(this.chapterListComponentInput, 'role');
   }
 
   public initiateInputs(action?) {
     this.dynamicInputs = {
       contentUploadComponentInput: {
-        programContext: this.programContext,
+        sessionContext: this.sessionContext,
         unitIdentifier: this.unitIdentifier,
         templateDetails: this.templateDetails,
         selectedSharedContext: this.selectedSharedContext,
@@ -140,7 +140,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
         action: action
       },
       practiceQuestionSetComponentInput: {
-        programContext: this.programContext,
+        sessionContext: this.sessionContext,
         templateDetails: this.templateDetails,
         role: this.role
       }
@@ -176,7 +176,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
         instance.countData['mycontribution'] = 0;
         this.collectionHierarchy = this.getUnitWithChildren(this.collectionData, identifier);
         hierarchy = instance.hierarchyObj;
-        this.programContext.hierarchyObj = { hierarchy };
+        this.sessionContext.hierarchyObj = { hierarchy };
         this.showLoader = false;
         this.showError = false;
       });
@@ -233,7 +233,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
 
   onSelectChapterChange() {
     this.showLoader = true;
-    this.getCollectionHierarchy(this.programContext.collection ,
+    this.getCollectionHierarchy(this.sessionContext.collection ,
       this.selectedChapterOption === 'all' ? undefined :  this.selectedChapterOption);
   }
 
@@ -257,8 +257,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
               'contentType': this.templateDetails.metadata.contentType,
               'resourceType': this.templateDetails.metadata.resourceType || 'Learn',
               'creator': creator,
-              'framework': this.programContext.framework,
-              'organisation': this.programContext.onBoardSchool ? [this.programContext.onBoardSchool] : []
+              'framework': this.sessionContext.framework,
+              'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : []
             }
           }
         }
@@ -278,7 +278,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
   handlePreview(event) {
     const templateList = _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
     || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue');
-    this.templateDetails = _.find(templateList, {contentType: event.content.contentType});
+    this.templateDetails = _.find(templateList, (templateData) => {
+      return templateData.metadata.contentType === event.content.contentType;
+    });
     this.componentLoadHandler('preview', this.componentMapping[event.content.contentType], this.templateDetails.onClick);
   }
 
@@ -305,7 +307,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
           this.showLargeModal = false;
           this.unitIdentifier = '';
           this.contentId = ''; // Clearing selected unit/content details
-          this.getCollectionHierarchy(this.programContext.collection, undefined);
+          this.getCollectionHierarchy(this.sessionContext.collection, undefined);
           break;
       case 'cancelMove':
           this.showLargeModal = false;
@@ -347,7 +349,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_ADD,
       data: {
         'request': {
-          'rootId': this.programContext.collection,
+          'rootId': this.sessionContext.collection,
           'unitId': this.unitIdentifier,
           'children': [contentId]
         }
@@ -365,7 +367,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_REMOVE,
       data: {
         'request': {
-          'rootId': this.programContext.collection,
+          'rootId': this.sessionContext.collection,
           'unitId': unitIdentifier,
           'children': [contentId]
         }
@@ -375,7 +377,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
       return throwError('');
     })).subscribe(res => {
       console.log('result ', res);
-      this.getCollectionHierarchy(this.programContext.collection, undefined);
+      this.getCollectionHierarchy(this.sessionContext.collection, undefined);
     });
   }
 

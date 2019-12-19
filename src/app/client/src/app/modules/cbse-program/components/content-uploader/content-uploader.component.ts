@@ -22,7 +22,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   // @ViewChild('contentTitle') contentTitle: ElementRef;
   @Input() contentUploadComponentInput: IContentUploadComponentInput;
 
-  public programContext: any;
+  public sessionContext: any;
   public templateDetails: any;
   public unitIdentifier: any;
   public formConfiguration: any;
@@ -54,7 +54,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     private cbseService: CbseProgramService, public frameworkService: FrameworkService, public programStageService: ProgramStageService) { }
 
   ngOnInit() {
-    this.programContext  = _.get(this.contentUploadComponentInput, 'programContext');
+    this.sessionContext  = _.get(this.contentUploadComponentInput, 'sessionContext');
     this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
     this.actions = _.get(this.contentUploadComponentInput, 'entireConfig.actions');
@@ -73,10 +73,10 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
 
   handleActionButtons() {
     this.visibility = {};
-    this.visibility['showChangeFile'] = _.includes(this.actions.showChangeFile.roles, this.programContext.currentRoleId);
-    this.visibility['showRequestChanges'] = _.includes(this.actions.showRequestChanges.roles, this.programContext.currentRoleId);
-    this.visibility['showAccept'] = _.includes(this.actions.showAccept.roles, this.programContext.currentRoleId);
-    this.visibility['showSubmit'] = _.includes(this.actions.showSubmit.roles, this.programContext.currentRoleId);
+    this.visibility['showChangeFile'] = _.includes(this.actions.showChangeFile.roles, this.sessionContext.currentRoleId);
+    this.visibility['showRequestChanges'] = _.includes(this.actions.showRequestChanges.roles, this.sessionContext.currentRoleId);
+    this.visibility['showAccept'] = _.includes(this.actions.showAccept.roles, this.sessionContext.currentRoleId);
+    this.visibility['showSubmit'] = _.includes(this.actions.showSubmit.roles, this.sessionContext.currentRoleId);
   }
 
   initiateUploadModal() {
@@ -265,20 +265,20 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
    // tslint:disable-next-line:max-line-length
     this.selectOutcomeOption = { bloomslevel: ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'], LearningOutcome: ['sdhgfsjhadf', 'dfjghkdas', 'hgadfjhg'], license: ['CC BY 4.0', 'CC BY 5.0']};
-    const disableFormField = (this.programContext.currentRole === 'CONTRIBUTOR') ? false : true ;
+    const disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR') ? false : true ;
     // this.contentMetaData = {};
     this.contentMetaData['bloomslevel'] = ['remember'];
     this.contentMetaData['Author'] = 'Shashi';
     this.contentMetaData['LearningOutcome'] = ['sdhgfsjhadf'];
     // this.contentMetaData['creator'] = 'Shashi';
 
-    const topicTerm = _.find(this.programContext.topicList, { name: this.programContext.topic });
+    const topicTerm = _.find(this.sessionContext.topicList, { name: this.sessionContext.topic });
     if (topicTerm && topicTerm.associations) {
        this.selectOutcomeOption['LearningOutcome'] = topicTerm.associations;
     }
 
-    if (this.programContext.bloomsLevel) {
-      this.selectOutcomeOption['bloomslevel'] = this.programContext.bloomsLevel;
+    if (this.sessionContext.bloomsLevel) {
+      this.selectOutcomeOption['bloomslevel'] = this.sessionContext.bloomsLevel;
     }
 
     this.contentDetailsForm = this.formBuilder.group({
@@ -324,11 +324,11 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   }
 
   fetchFrameWorkDetails() {
-    this.frameworkService.initialize(this.programContext.framework);
+    this.frameworkService.initialize(this.sessionContext.framework);
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
       if (frameworkDetails && !frameworkDetails.err) {
-        const frameworkData = frameworkDetails.frameworkdata[this.programContext.framework].categories;
-        this.programContext.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
+        const frameworkData = frameworkDetails.frameworkdata[this.sessionContext.framework].categories;
+        this.sessionContext.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
       }
     });
   }

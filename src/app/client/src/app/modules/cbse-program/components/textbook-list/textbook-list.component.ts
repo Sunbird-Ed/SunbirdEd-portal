@@ -16,7 +16,7 @@ import { CbseProgramService } from '../../services';
 })
 export class TextbookListComponent implements OnInit {
   @Input() config: any;
-  @Input() programContext: any;
+  @Input() sessionContext: any;
   @Output() selectedTextbookEvent = new EventEmitter<any>();
   public textbookList = [];
   showLoader = true;
@@ -33,12 +33,12 @@ export class TextbookListComponent implements OnInit {
         'request': {
           'filters': {
             'objectType': 'content',
-            'board': this.programContext.board,
-            'framework': this.programContext.framework,
-            'gradeLevel': this.programContext.gradeLevel,
-            'subject': this.programContext.subject,
-            'medium': this.programContext.medium,
-            'programId': this.programContext.programId,
+            'board': this.sessionContext.board,
+            'framework': this.sessionContext.framework,
+            'gradeLevel': this.sessionContext.gradeLevel,
+            'subject': this.sessionContext.subject,
+            'medium': this.sessionContext.medium,
+            'programId': this.sessionContext.programId,
             'status': ['Draft', 'Live'],
             'contentType': 'TextBook'
           }

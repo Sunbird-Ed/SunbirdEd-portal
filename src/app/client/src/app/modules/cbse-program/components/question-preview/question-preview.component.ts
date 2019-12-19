@@ -14,7 +14,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
 
 
   @Input() questionMetaData: any;
-  @Input() programContext: any;
+  @Input() sessionContext: any;
   public playerConfig: any;
   public theme: any;
   previewInitialized: boolean;
@@ -32,9 +32,9 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     const context = this.getContext();
 
     this.playerConfig = this.setPlayerConfig(context, this.theme);
-  } else if (!this.programContext.previewQuestionData) {
+  } else if (!this.sessionContext.previewQuestionData) {
     this.toEcml
-    .getECMLJSON(this.programContext.questionList)
+    .getECMLJSON(this.sessionContext.questionList)
     .subscribe( (theme) => {
       /**
        * @param theme this contains the theme[Ecml]
@@ -48,7 +48,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     });
     } else {
     this.toEcml
-    .getECMLJSON(this.programContext.questionList, this.programContext.currentRole, this.programContext.previewQuestionData)
+    .getECMLJSON(this.sessionContext.questionList, this.sessionContext.currentRole, this.sessionContext.previewQuestionData)
     .subscribe( (theme) => {
       /**
        * @param theme this contains the theme[Ecml]
@@ -69,7 +69,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     if (this.previewInitialized) {
       if (this.questionMetaData && this.questionMetaData.mode !== 'create') {
         this.toEcml
-        .getECMLJSON(this.programContext.questionList)
+        .getECMLJSON(this.sessionContext.questionList)
         .subscribe( (theme) => {
           /**
            * @param theme this contains the theme[Ecml]
@@ -81,7 +81,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
         });
       } else {
         this.toEcml
-        .getECMLJSON(this.programContext.questionList, this.programContext.currentRole, this.programContext.previewQuestionData)
+        .getECMLJSON(this.sessionContext.questionList, this.sessionContext.currentRole, this.sessionContext.previewQuestionData)
         .subscribe( (theme) => {
           /**
            * @param theme this contains the theme[Ecml]

@@ -33,7 +33,7 @@ describe('McqCreationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(McqCreationComponent);
     component = fixture.componentInstance;
-    component.programContext = Response.programContext;
+    component.sessionContext = Response.sessionContext;
     component.role = {
       currentRole: 'CONTRIBUTOR'
     };

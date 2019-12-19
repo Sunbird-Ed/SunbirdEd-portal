@@ -1,8 +1,8 @@
-import { IProgramContext } from './index';
+import { ISessionContext } from './index';
 
 
 export interface IContentUploadComponentInput {
-  programContext?: IProgramContext;
+  sessionContext?: ISessionContext;
   unitIdentifier?: string;
   selectedSharedContext?: any;
   contentIdentifier?: string;
