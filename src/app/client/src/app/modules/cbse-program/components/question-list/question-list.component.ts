@@ -107,8 +107,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
             'objectType': 'AssessmentItem',
             'board': this.sessionContext.board,
             'framework': this.sessionContext.framework,
-            'gradeLevel': this.sessionContext.gradeLevel,
-            'subject': this.sessionContext.subject,
+            // 'gradeLevel': this.sessionContext.gradeLevel,
+            // 'subject': this.sessionContext.subject,
             'medium': this.sessionContext.medium,
             'type': this.sessionContext.questionType === 'mcq' ? 'mcq' : 'reference',
             'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' :
