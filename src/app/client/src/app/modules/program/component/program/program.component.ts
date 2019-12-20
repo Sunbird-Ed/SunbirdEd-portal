@@ -8,12 +8,14 @@ import { tap, map, first } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { programSession } from './data';
 import { ICollectionComponentInput } from '../../../cbse-program/interfaces';
-import { InitialState, ISessionContext } from '../../interfaces';
+import { InitialState, ISessionContext, IUserParticipentDetails } from '../../interfaces';
 import { ProgramStageService } from '../../services/';
 
 interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;
 }
+
+
 
 @Component({
   selector: 'app-program-component',
@@ -27,7 +29,7 @@ export class ProgramComponent implements OnInit {
   public userProfile: any;
   public showLoader = true;
   public showTabs = true;
-  public showOnboardPopup = false;
+  public showOnboardPopup:boolean = true;
   public programSelected = false;
   public associatedPrograms: any;
   public headerComponentInput: any;
@@ -61,7 +63,7 @@ export class ProgramComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.handleOnboardEvent(event);
     this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
@@ -79,21 +81,60 @@ export class ProgramComponent implements OnInit {
     }, error => {
 
     });
-    this.fetchProgramDetails().subscribe((programDetails) => {
-      if (!this.programDetails.userDetails || !this.programDetails.userDetails.onBoarded) {
-        this.showOnboardPopup = true;
-      }
-      this.handleHeader('success');
-      this.initiateInputs('success');
-    }, error => {
-      // TODO: navigate to program list page
-      const errorMes = typeof _.get(error, 'error.params.errmsg') === 'string' && _.get(error, 'error.params.errmsg');
-      this.toasterService.error(errorMes || 'Fetching program details failed');
-      this.handleHeader('failed');
-    });
     this.fetchFrameWorkDetails();
   }
 
+
+  handleOnboarding(event) {
+    const checkUserParticipentData = _.has(this.programDetails, 'userDetails') ? true : false;
+    if (checkUserParticipentData) {
+      this.showOnboardPopup = false;
+      this.handleHeader('success');
+      this.initiateInputs('success');
+    }
+    else if (_.has(programSession.config, 'onBoardingForm')) {
+      this.showOnboardPopup = true;
+      this.handleHeader('success');
+      this.initiateInputs('success');
+    }
+    else {
+      this.userOnbording(event);
+      this.showOnboardPopup = false;
+    }
+  }
+
+
+  userOnbording(event): any {
+    const req = {
+      url: `program/v1/add/participant`,
+      data: {
+        request: {
+          programId: this.programDetails.programId,
+          userId: this.userService.userid,
+          onBoarded: true
+        }
+      }
+    };
+    this.extPluginService.post(req).subscribe((data) => {
+      this.setUserParticipentDetails(data);
+    }, error => {
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'User onbording fails');
+    });
+  }
+
+  setUserParticipentDetails(data) {
+    const userDetails: IUserParticipentDetails = {
+      enrolledOn: data['ts'],
+      onBoarded: true,
+      onBoardingData: {},
+      programId: data['result']['programId'],
+      roles: ['CONTRIBUTOR'],
+      userId: this.userService.userid
+    };
+    this.programDetails['userDetails'] = userDetails;
+    this.handleHeader('success');
+    this.initiateInputs('success');
+  }
   initiateInputs (status) {
     this.dynamicInputs = {
       collectionComponentInput:  {
@@ -187,10 +228,12 @@ export class ProgramComponent implements OnInit {
 
   handleOnboardEvent(event) {
     this.fetchProgramDetails().subscribe((programDetails) => {
-      this.showOnboardPopup = false;
+      this.handleOnboarding(event);
     }, error => {
       // TODO: navigate to program list page
-      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'Fetching program details failed');
+      const errorMes = typeof _.get(error, 'error.params.errmsg') === 'string' && _.get(error, 'error.params.errmsg');
+      this.toasterService.error(errorMes || 'Fetching program details failed');
+      this.handleHeader('failed');
     });
   }
 }
