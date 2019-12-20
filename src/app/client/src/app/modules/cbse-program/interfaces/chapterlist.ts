@@ -1,7 +1,7 @@
 export interface IChapterListComponentInput {
   config?: any;
-  programContext?: any;
+  sessionContext?: any;
   role?: string;
   collection?: any;
-  entireConfig?: any;
+  programContext?: any;
 }

@@ -45,7 +45,7 @@ describe('TextbookListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TextbookListComponent);
     component = fixture.componentInstance;
-    component.programContext = {
+    component.sessionContext = {
       board: 'NCERT',
       framework: 'NCFCOPY',
       gradeLevel: 'Kindergarten',

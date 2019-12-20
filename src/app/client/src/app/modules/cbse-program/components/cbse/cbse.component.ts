@@ -7,31 +7,7 @@ import {Subject} from 'rxjs';
 import { QuestionListComponent  } from '../question-list/question-list.component';
 import { ContentUploaderComponent } from '../content-uploader/content-uploader.component';
 import {QuestionPreviewComponent} from '../question-preview/question-preview.component';
-
-
-interface IProgramContext {
-    textBookUnitIdentifier?: any;
-    lastOpenedUnit?: any;
-    framework?: string;
-    channel?: string;
-    board?: string;
-    medium?: string;
-    gradeLevel?: string;
-    subject?: string;
-    textbook?: string;
-    topic?: string;
-    questionType?: string;
-    programId?: string;
-    program?: string;
-    currentRole?: string;
-    bloomsLevel?: Array<any>;
-    topicList?: Array<any>;
-    onBoardSchool?: string;
-    selectedSchoolForReview?: string;
-    resourceIdentifier?: string;
-    hierarchyObj?: any;
-    textbookName?: any;
-}
+import { ISessionContext } from '../../interfaces';
 
 @Component({
   selector: 'app-cbse',
@@ -50,7 +26,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   public showLoader: boolean = false;
   public showDashboard: boolean = false;
   public publishInProgress = false;
-  public programContext: IProgramContext = {};
+  public sessionContext: ISessionContext = {};
   public stages: Array<string> = ['chooseClass', 'chooseTextbook', 'topicList', 'createQuestion', 'uploadContent', 'certificate'];
   public currentStage = 0;
   public role: any = {};
@@ -90,7 +66,7 @@ export class CbseComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
-    this.programContext = {
+    this.sessionContext = {
       currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
       framework: _.get(this.programDetails, 'config.scope.framework'),
       channel: _.get(this.programDetails, 'config.scope.channel'),
@@ -101,10 +77,10 @@ export class CbseComponent implements OnInit, OnDestroy {
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school')
     };
-    this.role.currentRole = this.programContext.currentRole;
+    this.role.currentRole = this.sessionContext.currentRole;
     this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
     this.fetchFrameWorkDetails();
-    this.programContext.lastOpenedUnit = 0;
+    this.sessionContext.lastOpenedUnit = 0;
     this.slug = _.get(this.userProfile, 'rootOrg.slug') || (<HTMLInputElement>document.getElementById('defaultTenant')).value;
     if (_.includes(_.get(this.programDetails, 'userDetails.roles'), 'CERTIFICATE_ISSUER')) {
       this.showCertificate = true;
@@ -125,7 +101,7 @@ export class CbseComponent implements OnInit, OnDestroy {
         this.selectedComponent = this.creationComponentsList[event.templateDetails];
         this.inputs = {
           questionMetaData: this.contentData,
-          programContext: this.programContext
+          sessionContext: this.sessionContext
         };
       }
     };
@@ -134,14 +110,14 @@ export class CbseComponent implements OnInit, OnDestroy {
 
 
   public selectedClassSubjectHandler(event) {
-    this.programContext.gradeLevel =  event.gradeLevel;
-    this.programContext.subject =  event.subject;
+    this.sessionContext.gradeLevel =  event.gradeLevel;
+    this.sessionContext.subject =  event.subject;
     this.navigate('next');
   }
 
   public selectedTextbookHandler(event) {
-    this.programContext.textbook =  event.metaData.identifier;
-    this.programContext.textbookName = event.name;
+    this.sessionContext.textbook =  event.metaData.identifier;
+    this.sessionContext.textbookName = event.name;
     this.navigate('next');
   }
   public publishButtonStatusHandler(event) {
@@ -149,18 +125,18 @@ export class CbseComponent implements OnInit, OnDestroy {
   }
 
   public selectedQuestionTypeTopic(event) {
-    this.programContext.topic =  event.topic;
-    this.programContext.questionType =  event.questionType;
-    this.programContext.textBookUnitIdentifier =  event.textBookUnitIdentifier;
-    this.programContext.resourceIdentifier =  event.resourceIdentifier;
-    this.programContext.lastOpenedUnit = event.textBookUnitIdentifier;
+    this.sessionContext.topic =  event.topic;
+    this.sessionContext.questionType =  event.questionType;
+    this.sessionContext.textBookUnitIdentifier =  event.textBookUnitIdentifier;
+    this.sessionContext.resourceIdentifier =  event.resourceIdentifier;
+    this.sessionContext.lastOpenedUnit = event.textBookUnitIdentifier;
     // tslint:disable-next-line:max-line-length
-    this.resourceName = event.resourceName || `${this.questionTypeName[this.programContext.questionType]} - ${this.programContext.topic}`;
+    this.resourceName = event.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`;
     this.navigate('next');
   }
 
   handleRoleChange(component?: string) {
-    this.role = Object.assign({}, {currentRole : this.programContext.currentRole});
+    this.role = Object.assign({}, {currentRole : this.sessionContext.currentRole});
     this.showDashboard = (component === 'Dashboard');
     if (component === 'certificatedashboard') {
       this.showCertDashboard = true;
@@ -170,11 +146,11 @@ export class CbseComponent implements OnInit, OnDestroy {
     }
   }
   public fetchFrameWorkDetails() {
-    this.frameworkService.initialize(this.programContext.framework);
+    this.frameworkService.initialize(this.sessionContext.framework);
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
       if (frameworkDetails && !frameworkDetails.err) {
-        const frameworkData = frameworkDetails.frameworkdata[this.programContext.framework].categories;
-        this.programContext.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
+        const frameworkData = frameworkDetails.frameworkdata[this.sessionContext.framework].categories;
+        this.sessionContext.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
       }
     });
   }
@@ -214,7 +190,7 @@ export class CbseComponent implements OnInit, OnDestroy {
 
   setLastOpenedTopic(step, currentStage) {
     if (currentStage === 2 && step === 'prev') {
-      this.programContext.lastOpenedUnit = 0;
+      this.sessionContext.lastOpenedUnit = 0;
     }
   }
   selectedTemplatehandler(event) {
@@ -222,16 +198,16 @@ export class CbseComponent implements OnInit, OnDestroy {
     this.selectedComponent = this.creationComponentsList[event.template.contentType];
     if (_.includes(event.template.mimeType, 'application/vnd.ekstep.ecml-archive')) {
       this.inputs = {
-        programContext: this.programContext,
+        sessionContext: this.sessionContext,
         role: {
-          currentRole: this.programContext.currentRole
+          currentRole: this.sessionContext.currentRole
         },
         resourceName: this.resourceName,
         templateDetails: this.templateDetails
       }
     } else {
       this.inputs = {
-        programContext: this.programContext,
+        sessionContext: this.sessionContext,
         templateDetails: this.templateDetails
       };
     }
