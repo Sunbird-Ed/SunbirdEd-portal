@@ -13,8 +13,6 @@ import { of, throwError } from 'rxjs';
 
 describe('ProgramsService', () => {
 
-  let programService: ProgramsService;
-
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
     providers: [ConfigService, ExtPluginService, OrgDetailsService, UserService]
@@ -66,18 +64,19 @@ describe('ProgramsService', () => {
         });
     }));
 
-    it('should return false if user does not belong to custodian org and is state validated but no programs exist for that user', inject([ProgramsService], (programsService) => {
-      mockResponseData.userData['stateValidated'] = true;
-      mockResponseData.mockCustodianOrgApiResponse.result.response.value = '2343242';
-      userService['_userData$'].next({ err: null, userProfile: _.get(mockResponseData, 'userData') });
-      spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() => of(mockResponseData.mockCustodianOrgApiResponse));
-      spyOn(programsService, 'moreThanOneProgram').and.callFake(() => of(false));
-      programsService.enableContributeMenu()
-        .subscribe(result => {
-          expect(result).toBeDefined();
-          expect(result).toBeFalsy();
-        });
-    }));
+    it('should return false if user does not belong to custodian org and is state validated but no programs exist for that user',
+      inject([ProgramsService], (programsService) => {
+        mockResponseData.userData['stateValidated'] = true;
+        mockResponseData.mockCustodianOrgApiResponse.result.response.value = '2343242';
+        userService['_userData$'].next({ err: null, userProfile: _.get(mockResponseData, 'userData') });
+        spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() => of(mockResponseData.mockCustodianOrgApiResponse));
+        spyOn(programsService, 'moreThanOneProgram').and.callFake(() => of(false));
+        programsService.enableContributeMenu()
+          .subscribe(result => {
+            expect(result).toBeDefined();
+            expect(result).toBeFalsy();
+          });
+      }));
 
     it('should return true if user is state validated and have at least one programs', inject([ProgramsService], (programsService) => {
       mockResponseData.userData['stateValidated'] = true;

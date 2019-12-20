@@ -57,7 +57,7 @@ export const mockData = {
                         'homeUrl': null,
                         'orgTypeId': null,
                         'isDefault': true,
-                        'contactDetail': '[{"phone":"213124234234","email":"test@test.com"},{"phone":"+91213124234234","email":"test1@test.com"}]',
+                        'contactDetail': '[{"phone":"213124234234","email":"test@test.com"}]',
                         'createdDate': null,
                         'createdBy': null,
                         'parentOrgId': null,
