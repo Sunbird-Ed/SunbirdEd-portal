@@ -29,8 +29,8 @@ export class UpdateLocationComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute
   ) { }
   ngOnInit() {
-    this.selectedState = this.userLocationData ? this.userLocationData.state : '';
-    this.selectedDistrict = this.userLocationData ? this.userLocationData.city : '';
+    this.selectedState = this.userLocationData ? this.userLocationData.location.state : '';
+    this.selectedDistrict = this.userLocationData ? this.userLocationData.location.city : '';
     this.getAllStates();
     this.setTelemetryData();
   }
@@ -59,6 +59,8 @@ export class UpdateLocationComponent implements OnInit, OnDestroy {
       });
   }
   updateUserLocation() {
+    this.userLocationData.location.state = this.selectedState;
+    this.userLocationData.location.city = this.selectedDistrict;
     const requestParams = {
       request: {
         state: this.selectedState,
@@ -68,11 +70,11 @@ export class UpdateLocationComponent implements OnInit, OnDestroy {
     this.userService.saveLocation(requestParams)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.closeModal('SUCCESS');
+        this.closeModal(this.userLocationData);
         this.toasterService.success(this.resourceService.messages.smsg.m0060);
       }, error => {
+        this.closeModal('');
         this.toasterService.error(this.resourceService.messages.emsg.m0024);
-        this.closeModal('ERROR');
       });
   }
   setTelemetryData () {

@@ -187,6 +187,7 @@
       "REPORT_OTHER_ISSUE":"help/v1/report/issue",
       "READ_FAQ": "faqs/v1/read",
       "CREATE_USER": "desktop/user/v1/create",
+      "UPDATE_USER": "desktop/user/v1/update",
       "READ_USER": "desktop/user/v1/read",
       "LOCATION_SAVE": "data/v1/location/save",
       "LOCATION_READ": "data/v1/location/read",
