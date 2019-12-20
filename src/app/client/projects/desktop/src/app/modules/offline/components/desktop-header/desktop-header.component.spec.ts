@@ -61,12 +61,4 @@ describe('DesktopHeaderComponent', () => {
         component.handleImport();
         expect(electronDialogService.showContentImportDialog).toHaveBeenCalled();
     });
-
-    it('Call handleImport', () => {
-        spyOn(component, 'routeToOffline');
-        component.onEnter('test');
-        component.routeToOffline();
-        expect(component.queryParam.key).toEqual('test');
-        expect(component.routeToOffline).toHaveBeenCalled();
-    });
 });
