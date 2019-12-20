@@ -143,4 +143,9 @@ describe('ContentPlayerComponent', () => {
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
+  it('should open the pdfUrl in a new tab', () => {
+    spyOn(window, 'open').and.callThrough();
+    component.printPdf('www.samplepdf.com');
+    expect(window.open).toHaveBeenCalledWith('www.samplepdf.com', '_blank');
+  });
 });
