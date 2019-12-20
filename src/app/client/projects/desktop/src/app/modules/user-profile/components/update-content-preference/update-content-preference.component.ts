@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnDestroy, ViewChild } from '@angular/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { OrgDetailsService, ChannelService, FrameworkService } from '@sunbird/core';
 
@@ -16,12 +16,14 @@ import { TelemetryService } from '@sunbird/telemetry';
   styleUrls: ['./update-content-preference.component.scss']
 })
 export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
+  @ViewChild('modal') modal;
   contentPreferenceForm: FormGroup;
   boardOption = [];
   mediumOption = [];
   classOption = [];
   subjectsOption = [];
   frameworkCategories: any;
+  frameworkDetails: any;
   @Input() userPreferenceData;
   @Output() dismissed = new EventEmitter<any>();
   public unsubscribe$ = new Subject<void>();
@@ -37,6 +39,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     public telemetryService: TelemetryService
   ) { }
   ngOnInit() {
+    this.frameworkDetails = this.userPreferenceData['framework'];
     this.createContentPreferenceForm();
     this.getCustodianOrg();
   }
@@ -63,7 +66,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.boardOption = _.get(data, 'result.channel.frameworks');
-        this.contentPreferenceForm.controls['board'].setValue(_.find(this.boardOption, { name: this.userPreferenceData['board'] }));
+        this.contentPreferenceForm.controls['board'].setValue(_.find(this.boardOption, { name: this.frameworkDetails.board }));
       }, err => {
       });
   }
@@ -84,8 +87,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
               return element.code === 'board';
             });
             this.mediumOption = this.userService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
-            if (this.contentPreferenceForm.value.board.name === this.userPreferenceData['board']) {
-          this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.userPreferenceData['medium']));
+            if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
+          this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.frameworkDetails['medium']));
             }
 
           }
@@ -113,27 +116,49 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     if (this.contentPreferenceForm.value.medium) {
     this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
 
-      if (this.contentPreferenceForm.value.board.name === this.userPreferenceData['board']) {
+      if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
 
-        this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.userPreferenceData['gradeLevel']));
+        // tslint:disable-next-line: max-line-length
+        this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.frameworkDetails['gradeLevel']));
       }
+      this.onClassChange();
     }
   }
 
   onClassChange() {
     if (this.contentPreferenceForm.value.class) {
+    // tslint:disable-next-line: max-line-length
     this.subjectsOption = this.userService.getAssociationData(this.contentPreferenceForm.value.class, 'subject', this.frameworkCategories);
-    if (this.contentPreferenceForm.value.board.name === this.userPreferenceData['board']) {
-      this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.userPreferenceData['gradeLevel']));
+    if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
+      // tslint:disable-next-line: max-line-length
+      this.contentPreferenceForm.controls['subjects'].setValue(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects']));
     }
     }
   }
 
-  updateUserPreferenece() {
-    this.setTelemetryData();
-    this.userService.saveLocation(this.contentPreferenceForm.getRawValue())
+  updateUser() {
+  this.setTelemetryData();
+    const requestData = {
+      'request': {
+        'identifier': _.get(this.userPreferenceData, '_id'),
+        'name': _.get(this.userPreferenceData, 'name'),
+        'framework': {
+          'board': _.get(this.contentPreferenceForm.value.board, 'name'),
+          'medium': _.map(this.contentPreferenceForm.value.medium, 'name'),
+          'gradeLevel': _.map(this.contentPreferenceForm.value.class, 'name'),
+          'subjects': _.map(this.contentPreferenceForm.value.subjects, 'name')
+        }
+      }
+    };
+    this.userPreferenceData.framework.board = requestData.request.framework.board;
+    this.userPreferenceData.framework.medium = requestData.request.framework.medium;
+    this.userPreferenceData.framework.gradeLevel = requestData.request.framework.gradeLevel;
+    this.userPreferenceData.framework.subjects = requestData.request.framework.subjects;
+
+    this.userService.updateUser(requestData)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
+        this.closeModal(this.userPreferenceData);
         this.toasterService.success(this.resourceService.messages.smsg.m0061);
 
       }, error => {
@@ -141,8 +166,9 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
 
       });
   }
-  closeModal() {
-    this.dismissed.emit();
+  closeModal(requestData) {
+    this.modal.deny();
+    this.dismissed.emit(requestData);
   }
   setTelemetryData() {
     const interactData = {
@@ -156,11 +182,11 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
         extra: {
           'framework': {
-            'id': _.get(this.orgDetailsService, 'orgDetails.hashTagId'),
-            'board': this.contentPreferenceForm.value.board,
-            'medium': this.contentPreferenceForm.value.medium,
-            'gradeLevel': this.contentPreferenceForm.value.class,
-            'subjects': this.contentPreferenceForm.value.subjects
+            '_id': _.get(this.userPreferenceData, '_id'),
+            'board': _.get(this.contentPreferenceForm.value.board, 'name'),
+            'medium': _.map(this.contentPreferenceForm.value.medium, 'name'),
+            'gradeLevel': _.map(this.contentPreferenceForm.value.class, 'name'),
+            'subjects': _.map(this.contentPreferenceForm.value.subjects, 'name')
           }
         }
       }

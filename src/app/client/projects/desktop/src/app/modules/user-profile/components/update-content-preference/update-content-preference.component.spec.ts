@@ -150,16 +150,17 @@ describe('UpdateContentPreferenceComponent', () => {
   });
 
   it('should call close modal', () => {
-    spyOn(component.dismissed, 'emit').and.returnValue('');
-    component.closeModal();
-    expect(component.dismissed.emit).toHaveBeenCalledWith();
+    spyOn(component.dismissed, 'emit').and.returnValue(user_content_preferences_Data.request_body.request);
+    component.closeModal(user_content_preferences_Data.request_body.request);
+    expect(component.dismissed.emit).toHaveBeenCalledWith(user_content_preferences_Data.request_body.request);
   });
 
   it('should call update contenet preferences (success) in onboarding service', () => {
     const userService = TestBed.get(OnboardingService);
-    spyOn(component, 'updateUserPreferenece');
-    spyOn(userService, 'saveLocation').and.returnValue(of(user_content_preferences_Data.success_update_preferences));
-    userService.saveLocation(user_content_preferences_Data.update_content_api_body).subscribe(data => {
+    spyOn(component, 'updateUser');
+    spyOn(userService, 'updateUser').and.returnValue(of(user_content_preferences_Data.success_update_preferences));
+    component.updateUser();
+    userService.updateUser(user_content_preferences_Data.update_content_api_body).subscribe(data => {
       expect(data).toBe(user_content_preferences_Data.success_update_preferences);
       spyOn(component.toasterService, 'success').and.returnValue(of(user_content_preferences_Data.resourceBundle.messages.smsg.m0061));
       expect(component.toasterService.error(user_content_preferences_Data.resourceBundle.messages.smsg.m0061));
@@ -172,9 +173,9 @@ describe('UpdateContentPreferenceComponent', () => {
 
   it('should call update contenet preferences (error) in onboarding service', () => {
     const userService = TestBed.get(OnboardingService);
-    spyOn(component, 'updateUserPreferenece');
-    spyOn(userService, 'saveLocation').and.returnValue(of(user_content_preferences_Data.error_update_preferences));
-    userService.saveLocation(user_content_preferences_Data.update_content_api_body).subscribe(data => {
+    spyOn(component, 'updateUser');
+    spyOn(userService, 'updateUser').and.returnValue(of(user_content_preferences_Data.error_update_preferences));
+    userService.update(user_content_preferences_Data.request_body).subscribe(data => {
 
     }, error => {
       expect(error).toBe(user_content_preferences_Data.error_update_preferences);

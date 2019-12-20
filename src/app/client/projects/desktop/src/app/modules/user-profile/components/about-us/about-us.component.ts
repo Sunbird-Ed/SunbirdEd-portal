@@ -1,3 +1,4 @@
+import { IAppInfo } from './../../interfaces';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { ResourceService, ServerResponse } from '@sunbird/shared';
@@ -13,7 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AboutUsComponent implements OnInit, OnDestroy {
   instance: string;
-  appInfo = {};
+  appInfo: IAppInfo;
   public unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
   public telemetryInteractButtonEData: IInteractEventEdata;

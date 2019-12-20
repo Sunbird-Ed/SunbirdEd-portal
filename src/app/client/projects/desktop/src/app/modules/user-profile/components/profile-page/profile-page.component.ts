@@ -42,10 +42,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       this.setContentTelemetryData();
     }
   }
-  handleDismissEvent(eventStatus) {
+  handleDismissEvent(updatedUserData) {
     this.selectedComponent = '';
-    if (eventStatus === 'SUCCESS') {
-      this.getUserData();
+    if (updatedUserData) {
+      this.userData = updatedUserData;
     }
   }
   setLocationTelemetryData() {

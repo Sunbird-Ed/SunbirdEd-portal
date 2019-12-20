@@ -81,15 +81,15 @@ describe('UpdateLocationComponent', () => {
   });
 
   it('should call close modal in success updating content', () => {
-    spyOn(component.dismissed, 'emit').and.returnValue('SUCCESS');
-    component.closeModal('SUCCESS');
-    expect(component.dismissed.emit).toHaveBeenCalledWith('SUCCESS');
+    spyOn(component.dismissed, 'emit').and.returnValue(location_Data.user_details);
+    component.closeModal(location_Data.user_details);
+    expect(component.dismissed.emit).toHaveBeenCalledWith(location_Data.user_details);
   });
 
   it('should call close modal error while  updating content', () => {
-    spyOn(component.dismissed, 'emit').and.returnValue('ERROR');
-    component.closeModal('ERROR');
-    expect(component.dismissed.emit).toHaveBeenCalledWith('ERROR');
+    spyOn(component.dismissed, 'emit').and.returnValue('');
+    component.closeModal('');
+    expect(component.dismissed.emit).toHaveBeenCalledWith('');
   });
 
   it('should call saveLocation (successful) in onboarding service', () => {
@@ -98,10 +98,9 @@ describe('UpdateLocationComponent', () => {
     spyOn(userService, 'saveLocation').and.returnValue(of(location_Data.success_update_location));
     userService.saveLocation(location_Data.update_location_api_body).subscribe(data => {
       expect(data).toBe(location_Data.success_update_location);
-      spyOn(component.toasterService, 'success').and.returnValue(of(location_Data.resourceBundle.messages.smsg.m0060));
-      spyOn(component.dismissed, 'emit').and.returnValue(of('SUCCESS'));
-      component.closeModal('SUCCESS');
-    expect(component.dismissed.emit).toHaveBeenCalledWith('SUCCESS');
+      spyOn(component.dismissed, 'emit').and.returnValue(of(location_Data.user_details));
+      component.closeModal(location_Data.user_details);
+    expect(component.dismissed.emit).toHaveBeenCalledWith(location_Data.user_details);
       expect(component.toasterService.success).toHaveBeenCalledWith(location_Data.resourceBundle.messages.smsg.m0060);
 
     });
@@ -119,9 +118,10 @@ describe('UpdateLocationComponent', () => {
     }, error => {
       expect(error).toBe(location_Data.error_save_location);
       spyOn(component.toasterService, 'error').and.returnValue(of(location_Data.resourceBundle.messages.emsg.m0024));
-      spyOn(component.dismissed, 'emit').and.returnValue(of('ERROR'));
-      component.closeModal('ERROR');
-      expect(component.toasterService.error(location_Data.resourceBundle.messages.emsg.m0024));
+      spyOn(component.dismissed, 'emit').and.returnValue(of(''));
+      component.closeModal('');
+      expect(component.dismissed.emit).toHaveBeenCalledWith();
+      expect(component.toasterService.error).toHaveBeenCalledWith(location_Data.resourceBundle.messages.emsg.m0024);
     });
 
     spyOn(component, 'setTelemetryData').and.callThrough();

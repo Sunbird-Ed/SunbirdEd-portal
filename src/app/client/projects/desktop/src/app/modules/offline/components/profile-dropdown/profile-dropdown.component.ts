@@ -1,7 +1,7 @@
 import { TelemetryService } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -13,7 +13,7 @@ export class ProfileDropdownComponent implements OnInit {
 
   instance: string;
 
-  constructor(private router: Router, public resourceService: ResourceService,
+  constructor(public resourceService: ResourceService,
     public activatedRoute: ActivatedRoute,
     public telemetryService: TelemetryService) { }
 

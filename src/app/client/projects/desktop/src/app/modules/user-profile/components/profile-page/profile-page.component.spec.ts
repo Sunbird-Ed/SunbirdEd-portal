@@ -76,8 +76,7 @@ describe('ProfilePageComponent', () => {
   it('should handle success DismissEvent', () => {
     component.handleDismissEvent(user_profile_Data.SUCCESS);
     expect(component.selectedComponent).toEqual('');
-    spyOn(component, 'getUserData');
-    component.getUserData();
+    expect(component.userData).toEqual(user_profile_Data.SUCCESS);
   });
   it('should handle error DismissEvent', () => {
     component.handleDismissEvent('');

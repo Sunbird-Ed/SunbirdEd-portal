@@ -113,12 +113,12 @@ describe('DesktopProminentFilterComponent', () => {
     it('should reset filters when ignoreQuery input present', () => {
         component.formInputData = formatedFilterDetails;
         component.ignoreQuery = ['key'];
-        spyOn(component.router, 'navigate');
+        spyOn(component.filterChange, 'emit');
         spyOn<any>(component, 'hardRefreshFilter');
         spyOn<any>(component, 'setFilterInteractData');
         component.resetFilters();
 
-        expect(component.router.navigate).toHaveBeenCalled();
+        expect(component.filterChange.emit).toHaveBeenCalled();
         expect(component['hardRefreshFilter']).toHaveBeenCalled();
         expect(component.formInputData).toEqual({});
         expect(component['setFilterInteractData']).toHaveBeenCalled();
@@ -127,12 +127,12 @@ describe('DesktopProminentFilterComponent', () => {
 
     it('should reset filters', () => {
         component.ignoreQuery = [];
-        spyOn(component.router, 'navigate');
+        spyOn(component.filterChange, 'emit');
         spyOn<any>(component, 'hardRefreshFilter');
         spyOn<any>(component, 'setFilterInteractData');
         component.resetFilters();
 
-        expect(component.router.navigate).toHaveBeenCalled();
+        expect(component.filterChange.emit).toHaveBeenCalled();
         expect(component['hardRefreshFilter']).toHaveBeenCalled();
         expect(component.formInputData).toEqual({});
         expect(component['setFilterInteractData']).toHaveBeenCalled();
