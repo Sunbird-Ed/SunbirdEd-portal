@@ -3,6 +3,9 @@
     "userReadParam": {
       "fields": "organisations,roles,locations"
     },
+    "programSearch": {
+      "fields": "rootOrgId,rootOrgName"
+    },
     "contentGet": "copyrightYear,creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators,streamingUrl,originData,copyright,questions,totalQuestions,totalScore",
     "enrolledCourses": {
       "fields": "contentType,topic,name,channel",
