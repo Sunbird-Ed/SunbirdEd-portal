@@ -1096,6 +1096,7 @@ const programThirdSession = {
           'contentTypes': {
             'value': [
               {
+                'id': 'explanationContent',
                 'label': 'Explanation',
                 'onClick': 'uploadComponent',
                 'mimeType': [
@@ -1118,6 +1119,7 @@ const programThirdSession = {
                 }
               },
               {
+                'id': 'experientialContent',
                 'label': 'Experiential',
                 'onClick': 'uploadComponent',
                 'mimeType': [
@@ -1140,6 +1142,7 @@ const programThirdSession = {
                 }
               },
               {
+                'id': 'focusSpotContent',
                 'label': 'FocusSpot',
                 'onClick': 'uploadComponent',
                 'mimeType': [
@@ -1162,7 +1165,8 @@ const programThirdSession = {
                 }
               },
               {
-                'label': 'Practice Sets',
+                'id': 'vsaPracticeQuestionContent',
+                'label': 'VSA - Practice Sets',
                 'onClick': 'questionSetComponent',
                 'mimeType': [
                   'application/vnd.ekstep.ecml-archive'
@@ -1183,6 +1187,73 @@ const programThirdSession = {
                 ]
               },
               {
+                'id': 'saPracticeQuestionContent',
+                'label': 'SA - Practice Sets',
+                'onClick': 'questionSetComponent',
+                'mimeType': [
+                  'application/vnd.ekstep.ecml-archive'
+                ],
+                'metadata': {
+                  'name': 'Practice QuestionSet',
+                  'description': 'Practice QuestionSet',
+                  'resourceType': 'Learn',
+                  'contentType': 'PracticeQuestionSet',
+                  'audience': [
+                    'Learner'
+                  ],
+                  'appIcon': '',
+                  'marks': 5
+                },
+                'questionCategories': [
+                  'sa'
+                ]
+              },
+              {
+                'id': 'laPracticeQuestionContent',
+                'label': 'LA - Practice Sets',
+                'onClick': 'questionSetComponent',
+                'mimeType': [
+                  'application/vnd.ekstep.ecml-archive'
+                ],
+                'metadata': {
+                  'name': 'Practice QuestionSet',
+                  'description': 'Practice QuestionSet',
+                  'resourceType': 'Learn',
+                  'contentType': 'PracticeQuestionSet',
+                  'audience': [
+                    'Learner'
+                  ],
+                  'appIcon': '',
+                  'marks': 5
+                },
+                'questionCategories': [
+                  'la'
+                ]
+              },
+              {
+                'id': 'mcqPracticeQuestionContent',
+                'label': 'MCQ - Practice Sets',
+                'onClick': 'questionSetComponent',
+                'mimeType': [
+                  'application/vnd.ekstep.ecml-archive'
+                ],
+                'metadata': {
+                  'name': 'Practice QuestionSet',
+                  'description': 'Practice QuestionSet',
+                  'resourceType': 'Learn',
+                  'contentType': 'PracticeQuestionSet',
+                  'audience': [
+                    'Learner'
+                  ],
+                  'appIcon': '',
+                  'marks': 5
+                },
+                'questionCategories': [
+                  'mcq'
+                ]
+              },
+              {
+                'id': 'curiositySetContent',
                 'label': 'Curiosity Sets',
                 'onClick': 'curiositySetComponent',
                 'mimeType': [
@@ -1206,6 +1277,7 @@ const programThirdSession = {
             ],
             'defaultValue': [
               {
+                'id': 'vsaPracticeQuestionContent',
                 'label': 'Practice Sets',
                 'onClick': 'questionSetComponent',
                 'mimeType': [
