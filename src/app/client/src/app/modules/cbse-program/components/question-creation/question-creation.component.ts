@@ -18,7 +18,7 @@ import { CbseProgramService } from '../../services';
 @Component({
   selector: 'app-question-creation',
   templateUrl: './question-creation.component.html',
-  styleUrls: ['./question-creation.component.css']
+  styleUrls: ['./question-creation.component.scss']
 })
 export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked {
   public userProfile: IUserProfile;

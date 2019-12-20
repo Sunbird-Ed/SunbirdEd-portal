@@ -8,25 +8,37 @@
 
 
 <form *ngIf="!showPreview" class="ui form mt-8" [formGroup]="questionMetaForm">
-  <div class="field">
-    <label>Question</label>
-    <label *ngIf="showFormError && [undefined, ''].includes(question)"
-        class="ui basic red error label pt-1">Fill Question</label>
-    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')"
-      [editorDataInput]="question" [editorId]="'question_editor'"></app-ckeditor-tool>
+  <div class="ckeditor-tool width-100">
+    <div class="ckeditor-tool__question mb-24">
+      <div class="sb-field mcq-title mb-16">
+        <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+        <label  *ngIf="showFormError && [undefined, ''].includes(question)"
+          class="ui basic red error label pt-1 question-list">Fill Question</label>
+        <div class="ckeditor-tool-container">
+          <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')"
+        [editorDataInput]="question" [editorId]="'question_editor'"></app-ckeditor-tool>
+        </div>
+      </div>
+    </div>
+
+    <div class="ckeditor-tool__question mb-24">
+      <div class="sb-field mcq-title mb-16">
+        <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
+        <label *ngIf="showFormError && [undefined, ''].includes(editorState.solutions)"
+          class="ui basic red error label pt-1 question-list">Fill Answer</label>
+        <div class="ckeditor-tool-container">
+          <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')"
+        [editorDataInput]="editorState.solutions" [editorId]="'answer_editor'"></app-ckeditor-tool>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="field">
-    <label>Answer</label>
-    <label *ngIf="showFormError && [undefined, ''].includes(editorState.solutions)"
-        class="ui basic red error label pt-1">Fill Answer</label>
-    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')"
-      [editorDataInput]="editorState.solutions" [editorId]="'answer_editor'"></app-ckeditor-tool>
-  </div>
+
   <div class="ui two column grid width-100">
       <div class="one column row" *ngIf="learningOutcomeOptions.length > 0">
           <div class="column">
               <label>Learning Outcome</label>
-              <div>
+              <div class="sb-field">
                   <sui-select class="selection width-100" formControlName="learningOutcome" name="'learningOutcome'">
                       <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name"></sui-select-option>
                     </sui-select>
@@ -38,7 +50,7 @@
       </div>
       <div class="column">
         <label>Learning Level</label>
-        <div>
+        <div class="sb-field">
           <sui-select class="selection width-100" formControlName="bloomsLevel" name="'bloomsLevel'">
             <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
           </sui-select>
@@ -47,16 +59,127 @@
             Learning Level </label>
           </div>
       </div>
-      <div class="one column row">
-      <div class="column">
-          <label>Authors</label> <br/>
-          <div class="ui small icon input">
-              <input #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
-            </div>
+      <div class="two column row">
+        <div class="column">
+          <label>Authors</label> <br />
+          <div class="sb-field">
+            <input class="sb-form-control" #author_names type="text"
+              [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
+          </div>
         </div>
       </div>
-
   </div>
+
+
+  <!-- Question Preview Section HTML -->
+    <div class="ui container" *ngIf="questionMetaData.mode == 'view' ">
+      <div class="ui stackable grid m-0 sb-bg-color-white">
+        <div class="row">
+          <div class="twelve wide column">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+                <div class="ckeditor-tool__solution__body">
+                  <p class="fs-0-785 p-16" [innerHTML]="question"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-0 p-0">
+          <div class="twelve wide column">
+              <div class="d-flex flex-ai-center ckeditor-tool__answer my-16">
+                  <label class="fs-1 mb-0">Answers</label>
+                </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="twelve wide column">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
+                <div class="ckeditor-tool__solution__body">
+                  <p class="fs-0-785 p-16" [innerHTML]="editorState.solutions"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row mb-0 p-0">
+          <div class="twelve wide column">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Solution</label>
+                <div class="ckeditor-tool__solution__body">
+                  <div class="solution-media p-16 d-flex flex-ai-center">
+                    <div class="solution-media__video relative position">
+                      <div class="overlay-image"><i class="play circle icon"></i></div>
+                    </div>
+                    <div class="solution-media__desc ml-16">
+                      Video Thumbnail to the left and
+                      the Video title goes here
+                    </div>
+                  </div>
+                  <p class="fs-0-785 p-16">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book.
+                  </p>
+                  <div class="mcq-checkbox-answer">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div> -->
+      </div>
+
+    </div>
+
+    <!-- Learning Outcome learning level author license Preview HTML -->
+    <div class="ui stackable grid licence-form__content__fields" *ngIf="questionMetaData.mode == 'view' ">
+        <div class="row">
+          <div class="twelve wide column">
+            <div class="sb-field">
+              <label for="outcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a
+                  class="ml-4" href="javascript:void(0)" title="title comes here"><img width="16" alt=""
+                    src="assets/images/Info.svg"></a></label>
+              <p class="fs-0-785">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem
+                Ipsum simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-0">
+          <div class="four wide column">
+            <div class="sb-field space-btn-field">
+              <label for="level" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
+                  href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                    src="assets/images/Info.svg"></a></label>
+              <p class="fs-0-785">Lorem Ipsum is simply dummy text of the printing Dummy text of the printing</p>
+            </div>
+          </div>
+          <div class="four wide column p-0">
+            <div class="sb-field">
+              <label for="author" class="d-flex mb-4">Author(s) <a href="javascript:void(0)"
+                  title="title comes here"><img width="16" alt="" class="ml-4"
+                    src="assets/images/Info.svg"></a></label>
+              <p class="fs-0-785">Lorem Ipsum is simply </p>
+            </div>
+          </div>
+          <div class="four wide column">
+            <div class="sb-field space-btn-field">
+              <label for="license" class="d-flex mb-4">License <a href="javascript:void(0)"
+                  title="title comes here"><img width="16" alt="" class="ml-4"
+                    src="assets/images/Info.svg"></a></label>
+              <p class="fs-0-785">ACT456</p>
+            </div>
+          </div>
+        </div>
+    </div>
+
   <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
 </form>
 
