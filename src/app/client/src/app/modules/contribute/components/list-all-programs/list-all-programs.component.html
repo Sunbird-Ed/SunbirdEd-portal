@@ -8,7 +8,8 @@
         <div class="sbgrid sbgrid--grid-carousel">
           <div class="sbcard sbcard--resource sbcard--course" *ngFor="let program of programsList">
             <div class="sbcard__main_area">
-              <div class="sbcard__img mr-8"><img src="assets/images/programs_default.png" alt="" title="" /></div>
+              <div class="sbcard__img mr-8"><img [src]="program.imagePath || 'assets/images/programs_default.png'"
+                  alt="" title="" /></div>
               <div class="sbcard__info">
                 <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two sb-color-primary font-weight-bold">
                   {{program?.name}}
@@ -19,14 +20,16 @@
             </div>
             <div class="sbcard__moreinfo">
               <div class="sbcard__meta2">
-                <div class="sbcard__medium">CBSE</div>
+                <div class="sbcard__medium">
+                  {{program?.rootOrgName}}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </ng-container>
       <ng-template #noResult>
-        <app-no-result [data]="{messageText: 'no result found'}"></app-no-result>
+        <app-no-result [data]="{messageText: resourceService.messages.stmsg.m0006}"></app-no-result>
       </ng-template>
     </ng-container>
     <ng-template #loading>

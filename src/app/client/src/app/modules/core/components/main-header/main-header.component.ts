@@ -208,7 +208,7 @@ export class MainHeaderComponent implements OnInit {
   getUrl() {
     this.routerEvents.subscribe((urlAfterRedirects: NavigationEnd) => {
       let currentRoute = this.activatedRoute.root;
-      this.contributeTabActive = this.router.isActive('/contribute', false);
+      this.contributeTabActive = this.router.isActive('/contribute', true);
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
           const child: ActivatedRoute[] = currentRoute.children;

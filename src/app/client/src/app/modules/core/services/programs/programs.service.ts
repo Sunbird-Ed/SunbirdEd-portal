@@ -8,7 +8,6 @@ import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { combineLatest, of, iif, Observable, BehaviorSubject, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
-import { mockResponseData } from './programs.service.spec.data';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +15,12 @@ import { mockResponseData } from './programs.service.spec.data';
 export class ProgramsService {
 
   private _programsList$ = new BehaviorSubject(undefined);
+  private _allowToContribute$ = new BehaviorSubject(undefined);
 
   public readonly programsList$ = this._programsList$.asObservable()
+    .pipe(skipWhile(data => data === undefined || data === null));
+
+  public readonly allowToContribute$ = this._allowToContribute$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
 
   constructor(private extFrameworkService: ExtPluginService, private configService: ConfigService,
@@ -39,6 +42,9 @@ export class ProgramsService {
         catchError(err => {
           console.error(err);
           return of(false);
+        }),
+        tap(allowedToContribute => {
+          this._allowToContribute$.next(allowedToContribute);
         })
       );
   }
@@ -51,12 +57,11 @@ export class ProgramsService {
       url: _.get(this.configService, 'urlConFig.URLS.CONTRIBUTION_PROGRAMS.SEARCH'),
       data: {
         request: {
-          channelId: 'channel'
+          rootOrgId: _.get(this.userService, 'userProfile.rootOrg.rootOrgId')
         }
       }
     };
-    // return this.extFrameworkService.post(req)
-    return of(mockResponseData.mockProgramsApiResponse);
+    return this.extFrameworkService.post(req);
   }
 
   /**
@@ -69,7 +74,7 @@ export class ProgramsService {
       tap(programs => {
         this._programsList$.next(programs);
       })
-    )
+    );
   }
 
   /**
@@ -78,6 +83,6 @@ export class ProgramsService {
   private moreThanOneProgram(): Observable<boolean> {
     return this.getPrograms().pipe(
       map(programs => !_.isEmpty(programs))
-    )
+    );
   }
 }
