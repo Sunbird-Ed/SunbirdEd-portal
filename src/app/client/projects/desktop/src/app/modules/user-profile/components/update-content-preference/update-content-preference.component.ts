@@ -159,10 +159,10 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this.closeModal(this.userPreferenceData);
-        this.toasterService.success(this.resourceService.messages.smsg.m0061);
+        this.toasterService.success(this.resourceService.messages.smsg.m0058);
 
       }, error => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0025);
+        this.toasterService.error(this.resourceService.messages.emsg.m0022);
 
       });
   }
