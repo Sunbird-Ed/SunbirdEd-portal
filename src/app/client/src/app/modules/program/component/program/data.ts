@@ -1038,22 +1038,22 @@ const programThirdSession = {
               },
               {
                 'code': 'medium',
-                'defaultValue': 'English',
+                'defaultValue': ['English'],
                 'label': 'Medium'
               }
             ],
             'explicit': [
               {
-                'code': 'class',
+                'code': 'gradeLevel',
                 'range': [
-                  'Class 6',
-                  'Class 7',
-                  'Class 8'
+                  'Grade 6',
+                  'Grade 7',
+                  'Grade 8'
                 ],
                 'label': 'Class',
                 'multiselect': false,
                 'defaultValue': [
-                  'Class 6'
+                  'Grade 6'
                 ],
                 'visibility': true
               },
@@ -1531,8 +1531,7 @@ const programThirdSession = {
       'board',
       'medium',
       'gradeLevel',
-      'subject',
-      'topic'
+      'subject'
     ]
   },
   'defaultRoles': [

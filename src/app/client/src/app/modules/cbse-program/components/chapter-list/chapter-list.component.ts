@@ -245,6 +245,9 @@ export class ChapterListComponent implements OnInit, OnChanges {
       if (!_.isEmpty(this.userService.userProfile.lastName)) {
         creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
       }
+      const reqBody = this.sharedContext.reduce((obj, context) => {
+        return {...obj, [context]: this.selectedSharedContext[context] || this.sessionContext[context]};
+      }, {});
       const option = {
         url: `content/v3/create`,
         data: {
@@ -257,8 +260,10 @@ export class ChapterListComponent implements OnInit, OnChanges {
               'contentType': this.templateDetails.metadata.contentType,
               'resourceType': this.templateDetails.metadata.resourceType || 'Learn',
               'creator': creator,
-              'framework': this.sessionContext.framework,
-              'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : []
+              ...reqBody
+              // 'framework': this.sessionContext.framework,
+              // 'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : [],
+
             }
           }
         }
