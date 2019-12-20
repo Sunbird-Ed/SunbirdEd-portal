@@ -16,19 +16,19 @@
       font-size: $font-size-md;
 
       &__subtitle {
-        color:var(--gray-800);
-        i{
+        color: var(--gray-800);
+        i {
           color: var(--yellow);
         }
       }
     }
 
-    &__screenpart{
-      padding-left: calculateRem(16px);
-      .separator{
-        border-left:calculateRem(0.5px)solid  var(--gray-400);
-        height:calculateRem(40px);
-        width:($base-block-space * 2);
+    &__screenpart {
+      padding-left: calculateRem(8px);
+      .separator {
+        border-left: calculateRem(0.5px) solid var(--gray-100);
+        height: calculateRem(40px);
+        width: $base-block-space;
       }
     }
   }
@@ -55,7 +55,7 @@
     padding-top: 75%;
   }
 
-  &>* {
+  & > * {
     position: absolute;
     top: 0;
     left: 0;
