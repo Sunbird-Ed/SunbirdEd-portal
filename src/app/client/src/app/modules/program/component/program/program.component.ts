@@ -182,6 +182,7 @@ export class ProgramComponent implements OnInit {
         this.programStageService.addStage(this.defaultView.onClick);
         this.component = this.componentMapping[this.defaultView.onClick];
       }
+      this.showLoader = false;
     } else {
       this.toasterService.error('Fetching program details failed');
     }
