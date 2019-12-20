@@ -32,6 +32,10 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public showLoader = true;
   public enableRoleChange = false;
   public showSuccessModal = false;
+  public showReviewModal = false;
+  public showAddReviewModal = false;
+  public showDelectContentModal = false;
+  public showPublishModal = false;
   public publishInProgress = false;
   public publishedResourceId: any;
   public questionSelectionStatus: any;
@@ -74,7 +78,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
     this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
-    this.sessionContext.questionType = this.templateDetails.questionType;
+    this.sessionContext.questionType = this.templateDetails.questionCategories[0];
     this.resourceName = this.templateDetails.metadata.name;
     this.fetchExistingResource(this.sessionContext.resourceIdentifier).subscribe(response => {
       this.resourceDetails = _.get(response, 'result.content');
@@ -579,5 +583,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
     if (this.resourceName.length > 0 && this.resourceName.length <= this.resourceTitleLimit) {
       this.showTextArea = false;
     }
+  }
+
+  public showReview() {
+    this.showReviewModal = true;
   }
 }

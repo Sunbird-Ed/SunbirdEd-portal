@@ -1185,8 +1185,7 @@ const programThirdSession = {
                 },
                 'questionCategories': [
                   'vsa'
-                ],
-                'questionType': 'vsa'
+                ]
               },
               {
                 'id': 'saPracticeQuestionContent',

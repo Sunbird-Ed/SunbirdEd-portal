@@ -63,7 +63,10 @@ export class ChapterListComponent implements OnInit, OnChanges {
   private componentMapping = {
     ExplanationResource: ContentUploaderComponent,
     ExperientialResource: ContentUploaderComponent,
-    PracticeQuestionSet: QuestionListComponent,
+    vsaPracticeQuestionContent: QuestionListComponent,
+    saPracticeQuestionContent: QuestionListComponent,
+    laPracticeQuestionContent: QuestionListComponent,
+    mcqPracticeQuestionContent: QuestionListComponent,
     CuriosityQuestionSet: QuestionListComponent,
   };
   public dynamicInputs: IDynamicInput;

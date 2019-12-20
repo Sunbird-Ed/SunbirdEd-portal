@@ -83,3 +83,13 @@ i.icon.trash {
     font-size: $font-size-xs;
   }
 } 
+.review-modal-list{
+  .list{
+    padding-left: calculateRem(16px);
+    margin: 0;
+    li{
+      font-size: $font-size-sm;
+      line-height: calculateRem(18px);
+    }
+  }
+}
