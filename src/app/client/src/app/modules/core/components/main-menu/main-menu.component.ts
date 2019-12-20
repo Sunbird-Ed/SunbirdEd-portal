@@ -90,7 +90,7 @@ export class MainMenuComponent implements OnInit {
     }
     this.setInteractData();
     this.getUrl();
-    merge(this.programsService.enableContributeMenu().pipe(
+    merge(this.programsService.allowToContribute$.pipe(
       tap((showTab: boolean) => {
         this.showContributeTab = showTab;
       })

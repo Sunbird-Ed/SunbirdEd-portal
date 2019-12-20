@@ -37,7 +37,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
     public unsubscribe$ = new Subject<void>();
 
     public noResultMessage: INoResultMessage;
-    public recentlyAddedContents = [];
 
     isConnected = navigator.onLine;
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
@@ -77,7 +76,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.isBrowse = Boolean(this.router.url.includes('browse'));
-        this.infoData = {msg: this.resourceService.frmelmnts.lbl.allDownloads, linkName: this.resourceService.frmelmnts.btn.myLibrary};
+        this.infoData = { msg: this.resourceService.frmelmnts.lbl.allDownloads, linkName: this.resourceService.frmelmnts.btn.myLibrary };
         this.getSelectedFilters();
         this.setNoResultMessage();
         this.setTelemetryData();
@@ -150,7 +149,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             filters: {},
             mode: _.get(manipulatedData, 'mode'),
             facets: facets,
-            params: this.configService.appConfig.ExplorePage.contentApiQueryParams,
+            params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
         };
         if (addFilters) {
             option.filters = _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters;
@@ -159,6 +158,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         if (manipulatedData.filters) {
             option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
         }
+
+        option.params.online = Boolean(this.isBrowse);
         return option;
     }
 
@@ -280,7 +281,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
     onViewAllClick(event) {
         const queryParams = {
-            channel: this.hashTagId
+            channel: this.hashTagId,
+            apiQuery: JSON.stringify(this.constructSearchRequest(false))
         };
 
         this.router.navigate(['view-all'], {

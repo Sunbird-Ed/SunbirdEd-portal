@@ -2,7 +2,7 @@ import { SharedModule } from '@sunbird/shared';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ContributeRoutingModule } from './contribute-routing.module';
+import { ProgramRoutingModule } from './program-routing.module'
 import { ListAllProgramsComponent } from './components';
 
 @NgModule({
@@ -10,7 +10,7 @@ import { ListAllProgramsComponent } from './components';
   imports: [
     CommonModule,
     SharedModule,
-    ContributeRoutingModule
+    ProgramRoutingModule
   ]
 })
-export class ContributeModule { }
+export class ProgramModule { }
