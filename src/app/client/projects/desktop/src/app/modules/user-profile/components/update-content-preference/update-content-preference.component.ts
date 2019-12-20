@@ -166,7 +166,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
 
       });
   }
-  closeModal(requestData?) {
+   closeModal(requestData?) {
     this.modal.deny();
     this.dismissed.emit(requestData);
   }
