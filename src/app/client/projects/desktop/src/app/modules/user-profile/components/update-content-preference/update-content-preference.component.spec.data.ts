@@ -316,10 +316,10 @@ export const user_content_preferences_Data = {
     resourceBundle: {
         messages: {
             smsg: {
-                m0061: 'Location updated successfully'
+                m0058: 'User preference update successfully...'
             },
             emsg: {
-                m0025: 'Error while updating location'
+                m0022: 'Unable to update user preference. Please try again after some time'
             }
         }
     },
