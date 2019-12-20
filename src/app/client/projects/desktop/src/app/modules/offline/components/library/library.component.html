@@ -3,17 +3,14 @@
     </app-library-filters>
     <div *ngIf="(router.url.includes('browse') && isConnected) || !router.url.includes('browse')">
         <div class="ui container">
-
             <div class="ui stackable grid m-0">
                 <div class="nine wide column p-0">
                     <!--  *ngIf="carouselMasterData.length === 0 && !showLoader" -->
-                    <div class="twelve wide column">
-                        <app-no-content></app-no-content>
-                        <!-- <app-no-result [data]="noResultMessage"></app-no-result> -->
-                    </div>
-
                     <div *ngIf="showLoader">
                         <app-loader [data]='loaderMessage'></app-loader>
+                    </div>
+                    <div class="nine wide column" *ngIf="carouselMasterData.length === 0 && !showLoader">
+                        <app-no-content [filters]="modifiedFilters"></app-no-content>
                     </div>
                     <section *ngFor="let section of pageSections; let index=index;">
                         <!-- START OF RECENTLY VIEWED CONTENT-->
@@ -44,6 +41,9 @@
                                     </sb-library-card>
                                 </div>
                             </ngx-slick>
+                        </div>
+                        <div class="twelve wide column" *ngIf="(pageSections?.length === 1 && !router.url.includes('/browse') && !showLoader)">
+                            <app-no-content [filters]="modifiedFilters" [isContentPresent]="false"></app-no-content>
                         </div>
                         <!-- END OF RECENTLY VIEWED CONTENT-->
                         <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [title]="section?.name"
