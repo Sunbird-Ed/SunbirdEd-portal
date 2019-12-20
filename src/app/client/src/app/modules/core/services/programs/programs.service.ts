@@ -55,6 +55,7 @@ export class ProgramsService {
   searchProgramsAPICall(): Observable<ServerResponse> {
     const req = {
       url: _.get(this.configService, 'urlConFig.URLS.CONTRIBUTION_PROGRAMS.SEARCH'),
+      param: _.get(this.configService, 'urlConFig.params.programSearch'),
       data: {
         request: {
           rootOrgId: _.get(this.userService, 'userProfile.rootOrg.rootOrgId')
