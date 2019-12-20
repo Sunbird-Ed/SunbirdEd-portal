@@ -73,15 +73,16 @@ $btns: "gray" var(--gray-200) var(--gray-400) var(--gray-100),
       @if $btntype == btn {
         background-color: #{nth($btn, 2)};
         border-color: #{nth($btn, 2)};
-        color: #fff;
+        color: var(--white);
         &:hover,
         &:active,
         &.active {
           background-color: #{nth($btn, 3)};
           border: 1px solid transparent;
+          color: var(--white);;
         }
       } @else if $btntype == btn-outline {
-        background-color: #fff;
+        background-color: var(--white);
         color: #{nth($btn, 2)};
         border-color: #{nth($btn, 2)};
         &:hover,

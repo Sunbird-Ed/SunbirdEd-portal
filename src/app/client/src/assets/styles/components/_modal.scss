@@ -139,10 +139,10 @@ $sb-modal-corner-radius: $base-block-space;
       background-color: $sb-modal-header-bg-warning;
     }
     .sb-modal-actions {
-      .sb-btn:first-child {
+      .sb-btn:nth-child(1) {
         @extend .sb-btn-warning;
       }
-      .sb-btn:last-child {
+      .sb-btn{
         @extend .sb-btn-outline-warning;
       }
     }
@@ -152,10 +152,10 @@ $sb-modal-corner-radius: $base-block-space;
       background-color: $sb-modal-header-bg-success;
     }
     .sb-modal-actions {
-      .sb-btn:first-child {
+      .sb-btn:nth-child(1) {
         @extend .sb-btn-success;
       }
-      .sb-btn:last-child {
+      .sb-btn {
         @extend .sb-btn-outline-success;
       }
     }
@@ -165,10 +165,10 @@ $sb-modal-corner-radius: $base-block-space;
       background-color: $sb-modal-header-bg-error;
     }
     .sb-modal-actions {
-      .sb-btn:first-child {
+      .sb-btn:nth-child(1) {
         @extend .sb-btn-error;
-      }
-      .sb-btn:last-child {
+      }  
+      .sb-btn {
         @extend .sb-btn-outline-error;
       }
     }
