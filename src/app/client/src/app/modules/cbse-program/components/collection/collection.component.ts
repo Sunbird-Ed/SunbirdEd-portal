@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CbseProgramService } from '../../services';
 import { ProgramStageService } from '../../../program/services';
-import { ISelectedAttributes, IChapterListComponentInput } from '../../interfaces';
+import { ISessionContext, IChapterListComponentInput } from '../../interfaces';
 import { InitialState } from '../../interfaces';
 
 @Component({
@@ -18,14 +18,14 @@ export class CollectionComponent implements OnInit {
 
   @Input() collectionComponentInput: any;
   @Output() isCollectionSelected  = new EventEmitter<any>();
-  public selectedAttributes: ISelectedAttributes = {};
+  public sessionContext: ISessionContext = {};
   public chapterListComponentInput: IChapterListComponentInput = {};
   public programDetails: any;
   public userProfile: any;
 
   public programSession: any; // TODO: change to just programDetails after creating new program
   public collectionComponentConfig: any;
-  public entireConfig: any;
+  public programContext: any;
   public collectionList: Array<any>;
   public collection;
   public role: any = {};
@@ -50,8 +50,8 @@ export class CollectionComponent implements OnInit {
     this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
     this.collectionComponentConfig = _.get(this.collectionComponentInput, 'config');
-    this.entireConfig = _.get(this.collectionComponentInput, 'entireConfig');
-    this.selectedAttributes = {
+    this.programContext = _.get(this.collectionComponentInput, 'programContext');
+    this.sessionContext = {
       currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
       framework: _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'framework'}).defaultValue,
       channel: _.get(this.programDetails, 'config.scope.channel'),
@@ -65,9 +65,9 @@ export class CollectionComponent implements OnInit {
       collectionStatus: _.get(this.collectionComponentConfig, 'status')
     };
     this.searchCollection();
-    const getCurrentRoleId = _.find(this.entireConfig.roles, {'name': this.selectedAttributes.currentRole});
-    this.selectedAttributes.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
-    this.role.currentRole = this.selectedAttributes.currentRole;
+    const getCurrentRoleId = _.find(this.programContext.config.roles, {'name': this.sessionContext.currentRole});
+    this.sessionContext.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
+    this.role.currentRole = this.sessionContext.currentRole;
   }
 
   objectKey(obj) {
@@ -86,14 +86,14 @@ export class CollectionComponent implements OnInit {
         'request': {
           'filters': {
             'objectType': 'content',
-            'board': this.selectedAttributes.board,
-            'framework': this.selectedAttributes.framework,
+            'board': this.sessionContext.board,
+            'framework': this.sessionContext.framework,
             // 'gradeLevel': 'Kindergarten',
             // 'subject': 'Hindi',
-            'medium': this.selectedAttributes.medium,
-            'programId': this.selectedAttributes.programId,
-            'status': this.selectedAttributes.collectionStatus || ['Draft', 'Live'],
-            'contentType': this.selectedAttributes.collectionType || 'Textbook'
+            'medium': this.sessionContext.medium,
+            'programId': this.sessionContext.programId,
+            'status': this.sessionContext.collectionStatus || ['Draft', 'Live'],
+            'contentType': this.sessionContext.collectionType || 'Textbook'
           }
         }
       }
@@ -136,14 +136,14 @@ export class CollectionComponent implements OnInit {
   }
 
   collectionClickHandler(event) {
-    this.selectedAttributes.collection =  event.data.metaData.identifier;
-    this.selectedAttributes.collectionName = event.data.name;
+    this.sessionContext.collection =  event.data.metaData.identifier;
+    this.sessionContext.collectionName = event.data.name;
     this.collection = event.data;
     this.chapterListComponentInput = {
-      selectedAttributes: this.selectedAttributes,
+      sessionContext: this.sessionContext,
       collection: this.collection,
-      config: _.find(this.entireConfig.components, {'id': 'ng.sunbird.chapterList'}),
-      entireConfig: this.entireConfig,
+      config: _.find(this.programContext.config.components, {'id': 'ng.sunbird.chapterList'}),
+      programContext: this.programContext,
       role: this.role
     };
     this.isCollectionSelected.emit(event.data.metaData.identifier ? true : false);

@@ -350,7 +350,7 @@
   </form>
 </div>
 
-<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [selectedAttributes]="selectedAttributes">
+<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
 </app-question-preview>
 
 <app-mcq-template-selection *ngIf='showTemplatePopup' style="z-index: 1000"

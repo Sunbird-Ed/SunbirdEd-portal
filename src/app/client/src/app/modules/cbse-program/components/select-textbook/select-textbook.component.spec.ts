@@ -24,7 +24,7 @@ describe('TextbookSearchComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectTextbookComponent);
     component = fixture.componentInstance;
-    component.selectedAttributes = Response.selectedAttributes;
+    component.sessionContext = Response.sessionContext;
     fixture.detectChanges();
   });
 

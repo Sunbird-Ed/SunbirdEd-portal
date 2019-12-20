@@ -43,7 +43,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   @Input() questionMetaData: any;
   @Input() questionSelectionStatus: any;
   @Output() questionStatus = new EventEmitter<any>();
-  @Input() selectedAttributes: any;
+  @Input() sessionContext: any;
   @Input() role: any;
   @ViewChild('author_names') authorName;
   @Output() statusEmitter = new EventEmitter<string>();
@@ -89,10 +89,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.editorState = {
       solutions: ''
     };
-    if (this.selectedAttributes.bloomsLevel) {
-      this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
+    if (this.sessionContext.bloomsLevel) {
+      this.bloomsLevelOptions = this.sessionContext.bloomsLevel;
     }
-    const topicTerm = _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
+    const topicTerm = _.find(this.sessionContext.topicList, { name: this.sessionContext.topic });
     if (topicTerm && topicTerm.associations) {
       this.learningOutcomeOptions = topicTerm.associations;
     }
@@ -130,9 +130,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   ngAfterViewInit() {
     this.initializeDropdown();
     // tslint:disable-next-line:max-line-length
-    // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
+    // if( this.sessionContext.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
     // tslint:disable-next-line:max-line-length
-    // if( this.selectedAttributes.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
+    // if( this.sessionContext.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'edit') this.authorName.nativeElement.value = this.questionMetaData.data.authorNames;
   }
   ngOnChanges() {
     if (this.initialized) {
@@ -161,7 +161,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
       // this.buttonTypeHandler('preview')
-    } else if ((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')) {
+    } else if ((this.sessionContext.role === 'CONTRIBUTOR') && (this.sessionContext.showMode = 'editorForm')) {
       this.showPreview = false;
     }
     if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' &&
@@ -215,13 +215,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {
-      this.selectedAttributes.showMode = 'previewPlayer';
+      this.sessionContext.showMode = 'previewPlayer';
       // call createQuestion with param true to get the local question data
-      if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+      if (this.sessionContext.currentRole === 'CONTRIBUTOR') {
         this.createQuestion(true);
       }
     } else if (event === 'edit') {
-      this.selectedAttributes.showMode = 'editorForm';
+      this.sessionContext.showMode = 'editorForm';
       this.refreshEditor();
       this.showPreview = false;
     } else {
@@ -269,14 +269,14 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'metadata': {
                   'createdBy': this.userService.userid,
                   'creator': creator,
-                  'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
+                  'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : [],
                   'code': UUID.UUID(),
                   'type': 'reference',
                   // tslint:disable-next-line:max-line-length
-                  'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' : this.selectedAttributes.questionType.toUpperCase(),
+                  'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
                   'itemType': 'UNIT',
                   'version': 3,
-                  'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+                  'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
                   'body': this.body,
                   'editorState': {
                     solutions: [this.editorState.solutions]
@@ -288,21 +288,21 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
                   'templateId': 'NA',
-                  'programId': this.selectedAttributes.programId,
-                  'program': this.selectedAttributes.program,
-                  'channel': this.selectedAttributes.channel,
-                  'framework': this.selectedAttributes.framework,
-                  'board': this.selectedAttributes.board,
-                  'medium': this.selectedAttributes.medium,
+                  'programId': this.sessionContext.programId,
+                  'program': this.sessionContext.program,
+                  'channel': this.sessionContext.channel,
+                  'framework': this.sessionContext.framework,
+                  'board': this.sessionContext.board,
+                  'medium': this.sessionContext.medium,
                   'gradeLevel': [
-                    this.selectedAttributes.gradeLevel
+                    this.sessionContext.gradeLevel
                   ],
-                  'subject': this.selectedAttributes.subject,
-                  'topic': [this.selectedAttributes.topic],
+                  'subject': this.sessionContext.subject,
+                  'topic': [this.sessionContext.topic],
                   'status': 'Review',
                   'media': this.mediaArr,
                   'qumlVersion': 0.5,
-                  'textBookUnitIdentifier': this.selectedAttributes.textBookUnitIdentifier,
+                  'textBookUnitIdentifier': this.sessionContext.textBookUnitIdentifier,
                   'author': authorName
                 }
               }
@@ -321,7 +321,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': apiRes.result.node_id });
           });
         } else {
-          this.selectedAttributes.previewQuestionData = {
+          this.sessionContext.previewQuestionData = {
             result: {
               assessment_item: req.data.request.assessment_item.metadata
             }
@@ -349,8 +349,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'objectType': 'AssessmentItem',
                 'metadata': {
                   'body': this.body,
-                  'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' :
-                    this.selectedAttributes.questionType.toUpperCase(),
+                  'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' :
+                    this.sessionContext.questionType.toUpperCase(),
                   'solutions': [this.solution],
                   'editorState': {
                     solutions: [this.editorState.solutions]
@@ -361,7 +361,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
                   'status': 'Review',
-                  'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+                  'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
                   'type': 'reference',
                   'code': UUID.UUID(),
                   'template_id': 'NA',
@@ -371,7 +371,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             }
           }
         };
-        if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+        if (this.sessionContext.currentRole === 'CONTRIBUTOR') {
           const authorName = (this.authorName.nativeElement.value === '') ? this.userName : this.authorName.nativeElement.value;
           option.data.request.assessment_item.metadata['author'] = authorName;
         }

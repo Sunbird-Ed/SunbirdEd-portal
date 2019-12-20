@@ -17,7 +17,7 @@ import { CbseProgramService } from '../../services';
   styleUrls: ['./mcq-creation.component.scss']
 })
 export class McqCreationComponent implements OnInit, OnChanges {
-  @Input() selectedAttributes: any;
+  @Input() sessionContext: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
   @Output() questionQueueStatus = new EventEmitter<any>();
@@ -69,10 +69,10 @@ export class McqCreationComponent implements OnInit, OnChanges {
     this.showForm = true;
   }
   ngOnInit() {
-    if (this.selectedAttributes.bloomsLevel) {
-      this.bloomsLevelOptions = this.selectedAttributes.bloomsLevel;
+    if (this.sessionContext.bloomsLevel) {
+      this.bloomsLevelOptions = this.sessionContext.bloomsLevel;
     }
-    const topicTerm = _.find(this.selectedAttributes.topicList, { name: this.selectedAttributes.topic });
+    const topicTerm = _.find(this.sessionContext.topicList, { name: this.sessionContext.topic });
     if (topicTerm && topicTerm.associations) {
       this.learningOutcomeOptions = topicTerm.associations;
     }
@@ -86,7 +86,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
     this.previewData = this.questionMetaData;
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
-    } else if ((this.selectedAttributes.role === 'CONTRIBUTOR') && (this.selectedAttributes.showMode = 'editorForm')) {
+    } else if ((this.sessionContext.role === 'CONTRIBUTOR') && (this.sessionContext.showMode = 'editorForm')) {
       this.showPreview = false;
     }
     if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' &&
@@ -145,14 +145,14 @@ export class McqCreationComponent implements OnInit, OnChanges {
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {
-      this.selectedAttributes.showMode = 'previewPlayer';
+      this.sessionContext.showMode = 'previewPlayer';
       // this.showPreview = true;
       // call createQuestion with param true to get the local question data
-      if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+      if (this.sessionContext.currentRole === 'CONTRIBUTOR') {
         this.createQuestion(true);
       }
     } else if (event === 'edit') {
-      this.selectedAttributes.showMode = 'editorForm';
+      this.sessionContext.showMode = 'editorForm';
       this.refreshEditor();
       this.showPreview = false;
     } else {
@@ -237,9 +237,9 @@ export class McqCreationComponent implements OnInit, OnChanges {
 
         const metadata = {
           'code': UUID.UUID(),
-          'category': this.selectedAttributes.questionType.toUpperCase(),
+          'category': this.sessionContext.questionType.toUpperCase(),
           'templateId': this.questionMetaData.data.templateId,
-          'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+          'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
           'body': questionData.body,
           'responseDeclaration': questionData.responseDeclaration,
           'question': this.mcqForm.question,
@@ -251,7 +251,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
           'type': 'mcq',
         };
 
-        if (this.selectedAttributes.currentRole === 'CONTRIBUTOR') {
+        if (this.sessionContext.currentRole === 'CONTRIBUTOR') {
           const authorName = (this.authorName.nativeElement.value === '') ? this.userName : this.authorName.nativeElement.value;
           metadata['author'] = authorName;
         }
@@ -329,13 +329,13 @@ export class McqCreationComponent implements OnInit, OnChanges {
         const metadata = {
           'createdBy': this.userService.userid,
           'creator': creator,
-          'organisation': this.selectedAttributes.onBoardSchool ? [this.selectedAttributes.onBoardSchool] : [],
+          'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : [],
           'code': UUID.UUID(),
-          'type': this.selectedAttributes.questionType,
-          'category': this.selectedAttributes.questionType.toUpperCase(),
+          'type': this.sessionContext.questionType,
+          'category': this.sessionContext.questionType.toUpperCase(),
           'itemType': 'UNIT',
           'version': 3,
-          'name': this.selectedAttributes.questionType + '_' + this.selectedAttributes.framework,
+          'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
           'body': questionData.body,
           'responseDeclaration': questionData.responseDeclaration,
           'question': this.mcqForm.question,
@@ -343,19 +343,19 @@ export class McqCreationComponent implements OnInit, OnChanges {
           // 'qlevel': this.mcqForm.difficultyLevel,
           'maxScore': 1, // Number(this.mcqForm.maxScore),
           'templateId': this.templateDetails.templateClass,
-          'programId': this.selectedAttributes.programId,
-          'program': this.selectedAttributes.program,
-          'channel': this.selectedAttributes.channel,
-          'framework': this.selectedAttributes.framework,
-          'board': this.selectedAttributes.board,
-          'medium': this.selectedAttributes.medium,
-          'gradeLevel': [this.selectedAttributes.gradeLevel],
-          'subject': this.selectedAttributes.subject,
-          'topic': [this.selectedAttributes.topic],
+          'programId': this.sessionContext.programId,
+          'program': this.sessionContext.program,
+          'channel': this.sessionContext.channel,
+          'framework': this.sessionContext.framework,
+          'board': this.sessionContext.board,
+          'medium': this.sessionContext.medium,
+          'gradeLevel': [this.sessionContext.gradeLevel],
+          'subject': this.sessionContext.subject,
+          'topic': [this.sessionContext.topic],
           'status': 'Review',
           'media': this.mediaArr,
           'qumlVersion': 0.5,
-          'textBookUnitIdentifier': this.selectedAttributes.textBookUnitIdentifier,
+          'textBookUnitIdentifier': this.sessionContext.textBookUnitIdentifier,
           'author': authorName
         };
 
@@ -386,7 +386,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
             this.questionStatus.emit({ 'status': 'success', 'type': 'create', 'identifier': apiRes.result.node_id });
           });
         } else {
-          this.selectedAttributes.previewQuestionData = {
+          this.sessionContext.previewQuestionData = {
             result: {
               assessment_item: req.data.request.assessment_item.metadata
             }

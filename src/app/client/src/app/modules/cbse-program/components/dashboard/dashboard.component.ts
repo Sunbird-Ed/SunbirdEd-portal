@@ -15,7 +15,7 @@ import { CbseProgramService } from '../../services';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  @Input() selectedAttributes: any;
+  @Input() sessionContext: any;
   private textBookMeta: any;
   private questionType: Array<any> = [];
   public collectionData;
@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit {
       { name: 'Rejected', tip: 'No. of questions rejected by reviewer' },
       { name: 'Accepted', tip: 'No. of questions approved by reviewer' },
       { name: 'Published', tip: 'No. of questions published by publisher' }];
-    this.getCollectionHierarchy(this.selectedAttributes.textbook);
+    this.getCollectionHierarchy(this.sessionContext.textbook);
   }
 
   changeQuestionCategory(type) {
@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit {
     this.actionService.get(req).subscribe((response) => {
       this.collectionData = response.result.content;
       hierarchy = this.getHierarchyObj(this.collectionData);
-      this.selectedAttributes.hierarchyObj = { hierarchy };
+      this.sessionContext.hierarchyObj = { hierarchy };
       const textBookMetaData = [];
       _.forEach(this.collectionData.children, data => {
 
@@ -144,12 +144,12 @@ export class DashboardComponent implements OnInit {
         'request': {
           'filters': {
             'objectType': 'AssessmentItem',
-            'board': this.selectedAttributes.board,
-            'framework': this.selectedAttributes.framework,
-            'gradeLevel': this.selectedAttributes.gradeLevel,
-            'subject': this.selectedAttributes.subject,
-            'medium': this.selectedAttributes.medium,
-            'programId': this.selectedAttributes.programId,
+            'board': this.sessionContext.board,
+            'framework': this.sessionContext.framework,
+            'gradeLevel': this.sessionContext.gradeLevel,
+            'subject': this.sessionContext.subject,
+            'medium': this.sessionContext.medium,
+            'programId': this.sessionContext.programId,
             'status': [],
             'type': questionType === 'mcq' ? 'mcq' : 'reference',
           },
@@ -184,11 +184,11 @@ export class DashboardComponent implements OnInit {
             'objectType': 'content',
             'contentType': qtype === 'curiosityquestion' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
             'mimeType': 'application/vnd.ekstep.ecml-archive',
-            'board': this.selectedAttributes.board,
-            'framework': this.selectedAttributes.framework,
-            'gradeLevel': this.selectedAttributes.gradeLevel,
-            'subject': this.selectedAttributes.subject,
-            'medium': this.selectedAttributes.medium,
+            'board': this.sessionContext.board,
+            'framework': this.sessionContext.framework,
+            'gradeLevel': this.sessionContext.gradeLevel,
+            'subject': this.sessionContext.subject,
+            'medium': this.sessionContext.medium,
             'status': ['Live'],
             'questionCategories': (qtype === 'curiosityquestion') ? 'CuriosityQuestion' : qtype.toUpperCase()
           },
@@ -262,7 +262,7 @@ export class DashboardComponent implements OnInit {
   }
 
   refreshReport() {
-    this.getCollectionHierarchy(this.selectedAttributes.textbook);
+    this.getCollectionHierarchy(this.sessionContext.textbook);
   }
 
   downloadReport() {
@@ -277,7 +277,7 @@ export class DashboardComponent implements OnInit {
       decimalSeparator: '.',
       showLabels: true,
       showTitle: true,
-      title: `Texbook Name: ${this.selectedAttributes.textbookName}, ${optional ? optional : ''}`,
+      title: `Texbook Name: ${this.sessionContext.textbookName}, ${optional ? optional : ''}`,
       useTextFile: false,
       useBom: true,
       useKeysAsHeaders: true,

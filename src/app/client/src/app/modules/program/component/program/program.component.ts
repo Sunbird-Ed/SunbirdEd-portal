@@ -1,14 +1,14 @@
-import { ExtPluginService, UserService } from '@sunbird/core';
+import { ExtPluginService, UserService, FrameworkService } from '@sunbird/core';
 import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, first } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { programSession } from './data';
 import { ICollectionComponentInput } from '../../../cbse-program/interfaces';
-import { InitialState } from '../../interfaces';
+import { InitialState, ISessionContext } from '../../interfaces';
 import { ProgramStageService } from '../../services/';
 
 interface IDynamicInput {
@@ -40,6 +40,7 @@ export class ProgramComponent implements OnInit {
     dashboardComponent: DashboardComponent,
     collectionComponent: CollectionComponent,
   };
+  public sessionContext: ISessionContext = {};
   public state: InitialState = {
     stages: []
   };
@@ -51,7 +52,8 @@ export class ProgramComponent implements OnInit {
     }
   };
 
-  constructor(public resourceService: ResourceService, public configService: ConfigService, public activatedRoute: ActivatedRoute,
+  constructor(public frameworkService: FrameworkService, public resourceService: ResourceService,
+    public configService: ConfigService, public activatedRoute: ActivatedRoute,
     public extPluginService: ExtPluginService, public userService: UserService,
     public toasterService: ToasterService, public programStageService: ProgramStageService) {
     this.programId = this.activatedRoute.snapshot.params.programId;
@@ -59,10 +61,13 @@ export class ProgramComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
     });
+    console.log(programSession);
+    this.sessionContext.framework = _.get(programSession, 'config.framework');
     this.userProfile = this.userService.userProfile;
     if (['null', null, undefined, 'undefined'].includes(this.programId)) {
       console.log('no programId found'); // TODO: need to handle this case
@@ -86,31 +91,40 @@ export class ProgramComponent implements OnInit {
       this.toasterService.error(errorMes || 'Fetching program details failed');
       this.handleHeader('failed');
     });
-
+    this.fetchFrameWorkDetails();
   }
 
   initiateInputs (status) {
     this.dynamicInputs = {
       collectionComponentInput:  {
         programDetails: this.programDetails,
+        sessionContext: this.sessionContext,
         userProfile: this.userProfile,
-        config: _.find(programSession.components, {'id': 'ng.sunbird.collection'}), // TODO: change programSession to programDetails
-        entireConfig: programSession
+        config: _.find(programSession.config.components, {'id': 'ng.sunbird.collection'}), // TODO: change programSession to programDetails
+        programContext: programSession
       }
     };
   }
 
+  public fetchFrameWorkDetails() {
+    this.frameworkService.initialize(this.sessionContext.framework);
+    this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
+      if (frameworkDetails && !frameworkDetails.err) {
+        this.sessionContext.frameworkData = frameworkDetails.frameworkdata[this.sessionContext.framework].categories;
+      }
+    });
+  }
 
   handleHeader(status) {
     if (status === 'success') {
       this.headerComponentInput = {
-        roles: _.get(programSession, 'roles'),
-        actions: _.get(programSession, 'actions'),
-        header: _.get(programSession, 'header'),
+        roles: _.get(programSession.config, 'roles'),
+        actions: _.get(programSession.config, 'actions'),
+        header: _.get(programSession.config, 'header'),
         userDetails: _.get(this.programDetails, 'userDetails'),
         showTabs: this.showTabs
       };
-      this.tabs = _.get(programSession, 'header.config.tabs');
+      this.tabs = _.get(programSession.config, 'header.config.tabs');
 
       if (this.tabs) {
         this.defaultView = _.find(this.tabs, {'index': this.getDefaultActiveTab()});
@@ -130,7 +144,7 @@ export class ProgramComponent implements OnInit {
 
 
   getDefaultActiveTab () {
-   const defaultView =  _.find(programSession.roles, {'name': this.programDetails.userDetails.roles[0]});
+   const defaultView =  _.find(programSession.config.roles, {'name': this.programDetails.userDetails.roles[0]});
    if (defaultView) {
     return defaultView.defaultTab;
    } else {

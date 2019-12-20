@@ -14,13 +14,16 @@ import { CbseProgramService } from '../../services';
   styleUrls: ['./question-list.component.scss']
 })
 export class QuestionListComponent implements OnInit, OnChanges {
-  @Input() selectedAttributes: any;
-  @Input() role: any;
+  // @Input() sessionContext: any;
+  // @Input() role: any;
   @Input() resourceName: any;
-  @Input() templateDetails: any;
+  // @Input() templateDetails: any;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
-
+  @Input() practiceQuestionSetComponentInput: any;
+  public sessionContext: any;
+  public role: any;
+  public templateDetails: any;
   public questionList = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
@@ -51,19 +54,22 @@ export class QuestionListComponent implements OnInit, OnChanges {
   ngOnChanges(changedProps: any) {
     if (this.enableRoleChange) {
       this.initialized = false; // it should be false before fetch
-      if(this.selectedAttributes.questionType) {
+      if(this.sessionContext.questionType) {
         this.fetchQuestionWithRole();
       }
     }
-    if ((this.selectedAttributes.currentRole === 'REVIEWER') || (this.selectedAttributes.currentRole === 'PUBLISHER')) {
-      this.selectedAttributes['showMode'] = 'previewPlayer';
+    if ((this.sessionContext.currentRole === 'REVIEWER') || (this.sessionContext.currentRole === 'PUBLISHER')) {
+      this.sessionContext['showMode'] = 'previewPlayer';
     } else {
-      this.selectedAttributes['showMode'] = 'editorForm';
+      this.sessionContext['showMode'] = 'editorForm';
     }
   }
   ngOnInit() {
-    console.log('changes detected in question list', this.role);
-    if (this.selectedAttributes.questionType) {
+    this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
+    this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
+    this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
+    // console.log('changes detected in question list', this.role);
+    if (this.sessionContext.questionType) {
       this.fetchQuestionWithRole();
     } else {
       console.log(this.templateDetails.questionCategories);
@@ -82,17 +88,17 @@ export class QuestionListComponent implements OnInit, OnChanges {
         'request': {
           'filters': {
             'objectType': 'AssessmentItem',
-            'board': this.selectedAttributes.board,
-            'framework': this.selectedAttributes.framework,
-            'gradeLevel': this.selectedAttributes.gradeLevel,
-            'subject': this.selectedAttributes.subject,
-            'medium': this.selectedAttributes.medium,
-            'type': this.selectedAttributes.questionType === 'mcq' ? 'mcq' : 'reference',
-            'category': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestion' :
-              this.selectedAttributes.questionType.toUpperCase(),
-            'topic': this.selectedAttributes.topic,
+            'board': this.sessionContext.board,
+            'framework': this.sessionContext.framework,
+            'gradeLevel': this.sessionContext.gradeLevel,
+            'subject': this.sessionContext.subject,
+            'medium': this.sessionContext.medium,
+            'type': this.sessionContext.questionType === 'mcq' ? 'mcq' : 'reference',
+            'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' :
+              this.sessionContext.questionType.toUpperCase(),
+            'topic': this.sessionContext.topic,
             'createdBy': this.userService.userid,
-            'programId': this.selectedAttributes.programId,
+            'programId': this.sessionContext.programId,
             'version': 3,
             'status': []
           },
@@ -102,8 +108,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     };
     if (isReviewer) {
       delete req.data.request.filters.createdBy;
-      if (this.selectedAttributes.selectedSchoolForReview) {
-        req.data.request.filters['organisation'] = this.selectedAttributes.selectedSchoolForReview;
+      if (this.sessionContext.selectedSchoolForReview) {
+        req.data.request.filters['organisation'] = this.sessionContext.selectedSchoolForReview;
       }
       req.data.request.filters.status = ['Review'];
     }
@@ -117,14 +123,14 @@ export class QuestionListComponent implements OnInit, OnChanges {
     if (this.role.currentRole === 'PUBLISHER') {
       delete req.data.request.filters.createdBy;
       req.data.request.filters.status = ['Live'];
-      if (this.selectedAttributes.resourceIdentifier) {
+      if (this.sessionContext.resourceIdentifier) {
         // tslint:disable-next-line:max-line-length
         apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false),
           catchError(err => {
             const errInfo = { errorMsg: 'Fetching question list failed' };
             return throwError(this.cbseService.apiErrorHandling(err, errInfo));
           })),
-        this.fetchExistingResource(this.selectedAttributes.resourceIdentifier)];
+        this.fetchExistingResource(this.sessionContext.resourceIdentifier)];
       }
     }
 
@@ -172,9 +178,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
 
   handleQuestionTabChange(questionId) {
-    if (_.includes(this.selectedAttributes.questionList, questionId)) { return; }
-    this.selectedAttributes.questionList = [];
-    this.selectedAttributes.questionList.push(questionId);
+    if (_.includes(this.sessionContext.questionList, questionId)) { return; }
+    this.sessionContext.questionList = [];
+    this.sessionContext.questionList.push(questionId);
     this.selectedQuestionId = questionId;
     this.showLoader = true;
     this.getQuestionDetails(questionId).pipe(tap(data => this.showLoader = false))
@@ -190,14 +196,14 @@ export class QuestionListComponent implements OnInit, OnChanges {
           data: assessment_item
         };
         // min of 1sec timeOut is set, so that it should go to bottom of call stack and execute whennever the player data is available
-        if (this.selectedAttributes.showMode === 'previewPlayer' && this.initialized) {
+        if (this.sessionContext.showMode === 'previewPlayer' && this.initialized) {
           this.showLoader = true;
           setTimeout(() => {
             this.showLoader = false;
           }, 1000);
         }
         // tslint:disable-next-line:max-line-length
-        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view') && (this.selectedAttributes.showMode === 'editorForm')) {
+        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view') && (this.sessionContext.showMode === 'editorForm')) {
           this.refreshEditor();
         }
         this.initialized = true;
@@ -317,29 +323,29 @@ export class QuestionListComponent implements OnInit, OnChanges {
             'request': {
               'content': {
                 // tslint:disable-next-line:max-line-length
-                'name': this.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
-                'contentType': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
+                'name': this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`,
+                'contentType': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
                 'mimeType': 'application/vnd.ekstep.ecml-archive',
-                'programId': this.selectedAttributes.programId,
-                'program': this.selectedAttributes.program,
-                'framework': this.selectedAttributes.framework,
-                'board': this.selectedAttributes.board,
-                'medium': [this.selectedAttributes.medium],
-                'gradeLevel': [this.selectedAttributes.gradeLevel],
-                'subject': [this.selectedAttributes.subject],
-                'topic': [this.selectedAttributes.topic],
+                'programId': this.sessionContext.programId,
+                'program': this.sessionContext.program,
+                'framework': this.sessionContext.framework,
+                'board': this.sessionContext.board,
+                'medium': [this.sessionContext.medium],
+                'gradeLevel': [this.sessionContext.gradeLevel],
+                'subject': [this.sessionContext.subject],
+                'topic': [this.sessionContext.topic],
                 'createdBy': this.userService.userid, // '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8'  || 'edce4f4f-6c82-458a-8b23-e3521859992f',
                 'creator': creator,
                 'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
                 'editorVersion': 3,
                 'code': UUID.UUID(),
                 'body': JSON.stringify(theme),
-                'resourceType': this.selectedAttributes.questionType === 'curiosity' ? 'Teach' : 'Practice',
-                'description': `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`,
+                'resourceType': this.sessionContext.questionType === 'curiosity' ? 'Teach' : 'Practice',
+                'description': `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`,
                 'questions': questions,
                 'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
                 'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
-                'unitIdentifiers': [this.selectedAttributes.textBookUnitIdentifier],
+                'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
                 'plugins': [{
                   identifier: 'org.sunbird.questionunit.quml',
                   semanticVersion: '1.0'
@@ -389,12 +395,12 @@ export class QuestionListComponent implements OnInit, OnChanges {
       });
 
       const updateBody = this.cbseService.getECMLJSON(selectedQuestionsData.ids);
-      const versionKey = this.getContentVersion(this.selectedAttributes.resourceIdentifier);
+      const versionKey = this.getContentVersion(this.sessionContext.resourceIdentifier);
 
       forkJoin([updateBody, versionKey]).subscribe((response: any) => {
         const existingContentVersionKey = _.get(response[1], 'content.versionKey');
         const options = {
-          url: `private/content/v3/update/${this.selectedAttributes.resourceIdentifier}`,
+          url: `private/content/v3/update/${this.sessionContext.resourceIdentifier}`,
           data: {
             'request': {
               'content': {
@@ -404,7 +410,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
                 'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
                 // tslint:disable-next-line:max-line-length
-                name: this.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`
+                name: this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`
               }
             }
           }
@@ -442,7 +448,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     );
   }
   public selectQuestionCategory(questionCategory) {
-    this.selectedAttributes.questionType = questionCategory;
+    this.sessionContext.questionType = questionCategory;
     this.fetchQuestionWithRole();
   }
   publishResource(contentId) {
@@ -465,7 +471,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       .subscribe(response => {
         this.publishedResourceId = response.result.content_id || response.result.node_id || '';
         // tslint:disable-next-line:max-line-length
-        this.updateHierarchyObj(contentId, this.resourceName || `${this.questionTypeName[this.selectedAttributes.questionType]} - ${this.selectedAttributes.topic}`);
+        this.updateHierarchyObj(contentId, this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`);
 
       }, (err) => {
         this.publishInProgress = false;
@@ -474,13 +480,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   updateHierarchyObj(contentId, name) {
-    const index = _.indexOf(_.keys(this.selectedAttributes.hierarchyObj.hierarchy), this.selectedAttributes.textBookUnitIdentifier);
+    const index = _.indexOf(_.keys(this.sessionContext.hierarchyObj.hierarchy), this.sessionContext.textBookUnitIdentifier);
     if (index >= 0) {
-      this.selectedAttributes.hierarchyObj.hierarchy[this.selectedAttributes.textBookUnitIdentifier].children.push(contentId);
-      if (!_.has(this.selectedAttributes.hierarchyObj.hierarchy, contentId)) {
-        this.selectedAttributes.hierarchyObj.hierarchy[contentId] = {
+      this.sessionContext.hierarchyObj.hierarchy[this.sessionContext.textBookUnitIdentifier].children.push(contentId);
+      if (!_.has(this.sessionContext.hierarchyObj.hierarchy, contentId)) {
+        this.sessionContext.hierarchyObj.hierarchy[contentId] = {
           'name': name,
-          'contentType': this.selectedAttributes.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
+          'contentType': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
           'children': [],
           'root': false
         };
@@ -490,7 +496,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       'request': {
         'data': {
           'nodesModified': {},
-          'hierarchy': this.selectedAttributes.hierarchyObj.hierarchy,
+          'hierarchy': this.sessionContext.hierarchyObj.hierarchy,
           'lastUpdatedBy': this.userService.userid
         }
       }
