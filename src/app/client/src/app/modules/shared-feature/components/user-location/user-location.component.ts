@@ -1,13 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {HttpOptions, ResourceService, ToasterService, NavigationHelperService} from '@sunbird/shared';
-import {FormBuilder, Validators, FormGroup, FormControl} from '@angular/forms';
+import {ResourceService, ToasterService, NavigationHelperService} from '@sunbird/shared';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DeviceRegisterService, UserService} from '@sunbird/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProfileService} from '@sunbird/profile';
 import * as _ from 'lodash-es';
-import {TelemetryService, IImpressionEventInput, IInteractEventEdata, IInteractEventObject} from '@sunbird/telemetry';
+import {IImpressionEventInput, IInteractEventInput, TelemetryService} from '@sunbird/telemetry';
 import {map} from 'rxjs/operators';
-import {of, forkJoin} from 'rxjs';
+import {forkJoin, of} from 'rxjs';
 
 @Component({
   selector: 'app-user-location',
@@ -33,13 +33,9 @@ export class UserLocationComponent implements OnInit {
   enableSubmitBtn = false;
   isDeviceProfileUpdateAllowed = false;
   isUserProfileUpdateAllowed = false;
-  mergeIntractEdata: any;
   telemetryImpression: IImpressionEventInput;
-  public telemetryCdata: Array<{}> = [];
   public suggestionType: any;
-  public tempLocation: any;
-  public isLocationChanged = false;
-  public interval: any;
+  private suggestedLocation;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
               formBuilder: FormBuilder, public profileService: ProfileService, private activatedRoute: ActivatedRoute,
@@ -51,22 +47,21 @@ export class UserLocationComponent implements OnInit {
   ngOnInit() {
     this.initializeFormFields();
     this.getState();
-    this.interval = setInterval(() => {
-      this.setTelemetryData();
-    }, 500);
   }
 
   ngAfterViewInit () {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
-          env: 'sunbird'
+          env: 'user-location',
+          cdata: [{id: 'user:state:districtConfimation', type: 'Feature'},
+            {id: 'SC-1373', type: 'Task'}
+          ]
         },
         edata: {
           type: 'view',
-          pageid: this.router.url.split('/')[1],
+          pageid: 'location-popup',
           uri: this.router.url,
-          subtype: 'paginate',
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
@@ -206,6 +201,7 @@ export class UserLocationComponent implements OnInit {
 
   setStateDistrict(location) {
     if (location) {
+      this.suggestedLocation = location;
       if (location.state) {
         this.setState(location.state);
       }
@@ -245,7 +241,6 @@ export class UserLocationComponent implements OnInit {
           this.showDistrictDivLoader = true;
           this.getDistrict(state.id).subscribe((districts) => {
             stateValue = stateControl.value;
-            this.isLocationChanged = true;
           });
         }
       });
@@ -294,38 +289,7 @@ export class UserLocationComponent implements OnInit {
       locationDetails.districtCode = this.userDetailsForm.value.district;
     }
     const data = {locationCodes: locationCodes};
-    this.updateLocation(data, locationDetails);
-  }
-
-  updateLocation(data, locationDetails) {
-    this.enableSubmitBtn = false;
-    let response1: any;
-    response1 = this.updateDeviceProfileData(data, locationDetails);
-    const response2 = this.updateUserProfileData(data);
-    forkJoin([response1, response2]).subscribe((res) => {
-      if (res[0] !== {}) {
-        this.telemetryLogEvents('Device Profile', true);
-      }
-      if (res[1] !== {}) {
-        this.telemetryLogEvents('User Profile', true);
-      }
-      this.closeModal();
-    }, (err) => {
-      if (err[0] !== {}) {
-        this.telemetryLogEvents('Device Profile', false);
-      }
-      if (err[1] !== {}) {
-        this.telemetryLogEvents('User Profile', false);
-      }
-      this.closeModal();
-    });
-  }
-
-  updateDeviceProfileData(data, locationDetails) {
-    if (!this.isDeviceProfileUpdateAllowed) {
-      return of({});
-    }
-    let districtData, stateData;
+    let districtData, stateData, changeType = '';
     if (locationDetails.stateCode) {
       stateData = _.find(this.allStates, (states) => {
         return states.code === locationDetails.stateCode;
@@ -336,9 +300,87 @@ export class UserLocationComponent implements OnInit {
         return districts.code === locationDetails.districtCode;
       });
     }
+    if (stateData.name !== _.get(this.suggestedLocation, 'state.name')) {
+      changeType = changeType + 'state-changed';
+    }
+    if (districtData.name !== _.get(this.suggestedLocation, 'district.name')) {
+      if (_.includes(changeType, 'state-changed')) {
+        changeType = 'state-dist-changed';
+      } else {
+        changeType = changeType + 'dist-changed';
+      }
+    }
+    const telemetryData = this.getTelemetryData(changeType);
+    this.generateInteractEvent(telemetryData);
+    this.updateLocation(data, {state: stateData, district: districtData});
+  }
+
+  getTelemetryData(changeType) {
+    return {
+      locationIntractEdata: {
+        id: 'submit-clicked',
+        type: changeType ? 'location-changed' : 'location-unchanged',
+        subtype: changeType
+      },
+      telemetryCdata: [
+        {id: 'user:state:districtConfimation', type: 'Feature'},
+        {id: 'SC-1373', type: 'Task'}
+      ]
+    };
+  }
+
+  private generateInteractEvent(telemetryData) {
+    const intractEdata = telemetryData.locationIntractEdata;
+    const telemetryInteractCdata = telemetryData.telemetryCdata;
+    if (intractEdata) {
+      const appTelemetryInteractData: IInteractEventInput = {
+        context: {
+          env: 'user-location',
+          cdata: [
+            {id: 'user:state:districtConfimation', type: 'Feature'},
+            {id: 'SC-1373', type: 'Task'}
+          ],
+        },
+        edata: intractEdata
+      };
+      if (telemetryInteractCdata) {
+        appTelemetryInteractData.object = telemetryInteractCdata;
+      }
+      this.telemetryService.interact(appTelemetryInteractData);
+    }
+  }
+
+  updateLocation(data, locationDetails) {
+    this.enableSubmitBtn = false;
+    let response1: any;
+    response1 = this.updateDeviceProfileData(data, locationDetails);
+    const response2 = this.updateUserProfileData(data);
+    forkJoin([response1, response2]).subscribe((res) => {
+      if (!_.isEmpty(res[0])) {
+        this.telemetryLogEvents('Device Profile', true);
+      }
+      if (!_.isEmpty(res[1])) {
+        this.telemetryLogEvents('User Profile', true);
+      }
+      this.closeModal();
+    }, (err) => {
+      if (!_.isEmpty(err[0])) {
+        this.telemetryLogEvents('Device Profile', false);
+      }
+      if (!_.isEmpty(err[1])) {
+        this.telemetryLogEvents('User Profile', false);
+      }
+      this.closeModal();
+    });
+  }
+
+  updateDeviceProfileData(data, locationDetails) {
+    if (!this.isDeviceProfileUpdateAllowed) {
+      return of({});
+    }
     return this.deviceRegisterService.updateDeviceProfile({
-      state: stateData.name,
-      district: districtData.name
+      state: _.get(locationDetails, 'state.name'),
+      district: _.get(locationDetails, 'district.name')
     });
   }
 
@@ -347,26 +389,6 @@ export class UserLocationComponent implements OnInit {
       return of({});
     }
     return this.profileService.updateProfile(data);
-  }
-
-  setTelemetryData() {
-    this.mergeIntractEdata = {
-      id: 'user-state-districtConfimation',
-      type: 'click',
-      suggestionType: this.suggestionType,
-      isLocationChanged: this.isLocationChanged,
-      locationUpdateType: []
-    };
-    if (this.isDeviceProfileUpdateAllowed) {
-      this.mergeIntractEdata.locationUpdateType.push('update-device-profile');
-    }
-    if (this.isUserProfileUpdateAllowed) {
-      this.mergeIntractEdata.locationUpdateType.push('update-user-profile');
-    }
-    this.telemetryCdata = [
-      { id: 'user:state:districtConfimation', type: 'Feature' },
-      { id: 'SC-1373', type: 'Task' }
-    ];
   }
 
   telemetryLogEvents(locationType: any, status: boolean) {
@@ -387,10 +409,6 @@ export class UserLocationComponent implements OnInit {
       }
     };
     this.telemetryService.log(event);
-  }
-
-  ngOnDestroy() {
-    clearInterval(this.interval);
   }
 
 }

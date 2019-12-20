@@ -31,7 +31,7 @@ export class ListAllProgramsComponent implements OnInit {
           if (!_.get(program, 'rootOrgName')) {
             program['rootOrgName'] = await this.getRootOrgName(_.get(program, 'rootOrgId')).toPromise();
           }
-        })
+        });
         return programs;
       })
     );
@@ -39,7 +39,7 @@ export class ListAllProgramsComponent implements OnInit {
 
   /**
    * returns the orgName for the provided rootOrgId.
-   * @param rootOrgId 
+   * @param rootOrgId
    */
   private getRootOrgName(rootOrgId): Observable<string> {
     return this.getOrgDetails(rootOrgId).pipe(
@@ -51,12 +51,12 @@ export class ListAllProgramsComponent implements OnInit {
       catchError(err => {
         return of('');
       })
-    )
+    );
   }
 
   /**
    * makes api call to get orgDetails.
-   * @param rootOrgId 
+   * @param rootOrgId
    */
   private getOrgDetails(rootOrgId): Observable<ServerResponse> {
     const option = {

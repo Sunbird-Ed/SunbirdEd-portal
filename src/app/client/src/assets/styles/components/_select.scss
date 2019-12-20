@@ -53,3 +53,7 @@
 .ui.default.dropdown:not(.button)>.text, .ui.dropdown:not(.button)>.default.text {
     color: #333;
 }
+
+.ui.dropdown .menu>.item {
+    font-size:0.86rem;
+}

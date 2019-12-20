@@ -38,5 +38,25 @@ describe('AppUpdateService', () => {
     expect(publicDataService.get).toHaveBeenCalled();
   });
 
+  it('should get app info data', () => {
+    const service: AppUpdateService = TestBed.get(AppUpdateService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.returnValue(observableOf(serverRes.appInfoSuccess));
+    service.getAppInfo().subscribe(data => {
+      expect(data).toEqual(serverRes.appInfoSuccess);
+    });
+    expect(publicDataService.get).toHaveBeenCalledWith({url: 'app/v1/info'});
+  });
+
+  it('should get app info failure case', () => {
+    const service: AppUpdateService = TestBed.get(AppUpdateService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.returnValue(throwError(serverRes.appInfoFailureCase));
+    service.getAppInfo().subscribe(data => {}, err => {
+      expect(err).toEqual(serverRes.appInfoFailureCase);
+    });
+    expect(publicDataService.get).toHaveBeenCalledWith({url: 'app/v1/info'});
+  });
+
 
 });
