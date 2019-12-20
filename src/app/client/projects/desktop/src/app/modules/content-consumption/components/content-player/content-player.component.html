@@ -11,11 +11,11 @@
     </div>
 
     <div class="d-flex flex-w-wrap content-video__player__details sb-bg-color-white" #playerInfo>
-      <div class="d-flex flex-dc flex-basis-1">
-        <div class="content-video__player__title ml-8 mr-auto sb__ellipsis sb__ellipsis--one">
+      <div class="d-flex flex-dc flex-basis-1 ml-8">
+        <div class="content-video__player__title mr-auto sb__ellipsis sb__ellipsis--one">
           Social Science Term
         </div>
-        <div class="content-video__player__title__subtitle fxsmall ml-8 mt-8">
+        <div class="content-video__player__title__subtitle fxsmall mt-4">
           <span class="mr-8">by TNSCERT</span>
           <span class="mr-8">*</span>
           <span class="mr-8">4.7</span>
@@ -25,23 +25,42 @@
 
       <div class="d-flex flex-w-wrap content-video__player__tools">
         <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i
-            class="sync alternate icon"></i><span class="fxsmall">update</span></button>
-        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i class="icon trash"></i><span
-            class="fxsmall">Delete</span></button>
+            class="icon-svg icon-svg--sm icon-back"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#refresh"></use>
+            </svg></i><span class="fxsmall">Update</span></button>
+
+        <button class="sb-btn sb-btn-link sb-btn-link-error sb-btn-sm sb-btn-square"><i
+            class="icon-svg icon-svg--sm icon-back"><svg class="icon icon-svg--error">
+              <use xlink:href="assets/images/sprite.svg#delete"></use>
+            </svg></i><span class="fxsmall">Delete</span></button>
+
         <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i
-            class="icon share alternate"></i><span class="fxsmall">share</span></button>
+            class="icon-svg icon-svg--sm icon-back"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#pendrive"></use>
+            </svg></i><span class="fxsmall">share</span></button>
+
         <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i
-            class="icon star outline "></i><span class="fxsmall">Rate</span></button>
-        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i class="icon print"></i><span
-            class="fxsmall">Print</span></button>
+            class="icon-svg icon-svg--sm icon-back"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#star"></use>
+            </svg></i><span class="fxsmall">Rate</span></button>
+
         <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i
-            class="icon download alternate"></i><span class="fxsmall">Download</span></button>
+            class="icon-svg icon-svg--sm icon-back"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#print"></use>
+            </svg></i><span class="fxsmall">Print</span></button>
+
+        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i
+            class="icon-svg icon-svg--sm icon-back"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#download"></use>
+            </svg></i><span class="fxsmall">Download</span></button>
       </div>
 
-      <div class="d-flex content-video__player__screenpart">
+      <div class="d-flex flex-ai-center content-video__player__screenpart">
         <div class="separator"></div>
-        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square">
-          <i class="icon expand"></i><span class="fxsmall">Full Screen</span></button>
+        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i
+            class="icon-svg icon-svg--sm icon-back"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#fullscreen"></use>
+            </svg></i><span class="fxsmall">Full Screen</span></button>
       </div>
     </div>
 

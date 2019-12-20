@@ -30,13 +30,20 @@
   bottom: 5px !important;
 }
 
-.sb-sticky-bottom {
-  position: sticky;
-  bottom: 0;
-  z-index: 999999;
-}
+.sb-sticky-bottom,
 .sb-sticky-top {
   position: sticky;
-  top: 0;
   z-index: 999999;
+}
+.sb-sticky-bottom {
+  bottom: 0;
+}
+.sb-sticky-top {
+  top: 0;
+}
+.zindex-1 {
+  z-index: 1;
+}
+.zindex-2 {
+  z-index: 2;
 }
