@@ -5,7 +5,7 @@ import { ContentConsumptionRoutingModule } from './content-consumption-routing.m
 import { ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent, TocPageComponent,
   ContentHeaderComponent
  } from './components';
-
+import { SuiAccordionModule } from 'ng2-semantic-ui';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import { ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent
   ],
   imports: [
     CommonModule,
-    ContentConsumptionRoutingModule
+    ContentConsumptionRoutingModule,
+    SuiAccordionModule
   ],
   exports: [
     ContentPlayerComponent, ContentMetadataComponent
