@@ -37,6 +37,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     public unsubscribe$ = new Subject<void>();
 
     public noResultMessage: INoResultMessage;
+    public modifiedFilters: any;
 
     isConnected = navigator.onLine;
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
@@ -108,6 +109,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
     getSelectedFilters() {
         this.selectedFilters = this.publicPlayerService.libraryFilters;
+        this.modifiedFilters = this.selectedFilters;
     }
 
     ngOnDestroy() {
@@ -122,6 +124,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.fetchContents();
         this.publicPlayerService.libraryFilters = event.filters;
         this.hashTagId = event.channelId;
+        this.modifiedFilters = event.filters;
     }
 
     resetSections() {

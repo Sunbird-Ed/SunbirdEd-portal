@@ -32,7 +32,6 @@ import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 @NgModule({
     imports: [
-        CommonConsumptionModule,
         BrowserAnimationsModule,
         CommonModule,
         FormsModule,

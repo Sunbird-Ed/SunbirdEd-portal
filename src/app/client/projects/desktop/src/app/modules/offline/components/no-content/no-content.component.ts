@@ -2,7 +2,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ConnectionService } from '../../services';
 import { ElectronDialogService } from './../../services';
 import * as _ from 'lodash-es';
@@ -16,6 +16,9 @@ export class NoContentComponent implements OnInit, OnDestroy {
   isConnected;
   showModal = false;
   public unsubscribe$ = new Subject<void>();
+  @Input() filters;
+  instance: string;
+  @Input() isContentPresent = true;
 
   constructor(
     public router: Router,
@@ -27,7 +30,7 @@ export class NoContentComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-
+    this.instance = _.upperCase(this.resourceService.instance);
     this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
     });
@@ -73,5 +76,8 @@ export class NoContentComponent implements OnInit, OnDestroy {
     };
     this.telemetryService.interact(interactData);
   }
-
+  exploreContent() {
+    this.router.navigate(['/search'], { queryParams:
+      {board: _.get(this.filters, 'board'), medium: _.get(this.filters, 'medium'), gradeLevel: _.get(this.filters, 'gradeLevel')}});
+  }
 }
