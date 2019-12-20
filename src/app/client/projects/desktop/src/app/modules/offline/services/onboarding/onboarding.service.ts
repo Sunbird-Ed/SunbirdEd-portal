@@ -46,6 +46,13 @@ export class OnboardingService {
     };
     return this.publicDataService.post(options);
   }
+  updateUser(request): Observable<ServerResponse> {
+    const options = {
+      url: this.configService.urlConFig.URLS.OFFLINE.UPDATE_USER,
+      data: request
+    };
+    return this.publicDataService.post(options);
+  }
 
   saveUserPreference(request) {
     const options = {

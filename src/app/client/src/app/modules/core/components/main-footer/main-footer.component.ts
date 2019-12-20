@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest } from 'rxjs';
 import * as _ from 'lodash-es';
@@ -24,7 +24,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   Hide or show footer
   */
   showFooter = true;
-
+  showDownloadmanager: any;
   isOffline: boolean = environment.isOffline;
   instance: string;
   bodyPaddingBottom: string;
@@ -35,6 +35,11 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+    this.showDownloadmanager = this.router.url.includes('/profile');
+      }
+    });
   }
 
   ngAfterViewInit() {
