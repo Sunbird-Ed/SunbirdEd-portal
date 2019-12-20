@@ -140,6 +140,10 @@
     @include label-theme($gray-0);
     color: $gray-400;
 }
+.sb-label-gray-100 {
+    @include label-theme($gray-100);
+    color: $gray-400;
+}
 .sb-label-text-gray-0 {
     color: $gray-400;
 }
