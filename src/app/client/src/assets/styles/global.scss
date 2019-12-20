@@ -4,7 +4,7 @@
 html,
 body {
   height: 100%;
-  font-size: $font-size-base;
+  // font-size: $font-size-base;
 }
 
 body {
@@ -16,11 +16,10 @@ body {
   color: $default-text-color;
   padding-bottom: 336px;
   min-height: 100vh;
-
+  text-rendering: optimizeLegibility;
   &.pushable {
     background: $body-background-color !important;
-
-    &>.pusher {
+    & > .pusher {
       background: transparent !important;
       padding-bottom: 400px !important;
 
@@ -30,24 +29,21 @@ body {
     }
   }
 }
-
-@include respond-above (lg) {
+@include respond-above(lg) {
   body {
     .footer-fix {
       padding-bottom: 56px;
     }
   }
 }
-
-@include respond-between (md, lg) {
+@include respond-between(md, lg) {
   body {
     .footer-fix {
       padding-bottom: 64px;
     }
   }
 }
-
-@include respond-between (sm, md) {
+@include respond-between(sm, md) {
   body {
     .footer-fix {
       padding-bottom: 112px;
@@ -66,7 +62,6 @@ body {
     .footer-fix {
       min-height: calc(100vh - 168px);
     }
-
     .sb-mid-container-min-height {
       min-height: calc(100vh - 288px);
       margin-bottom: -($base-block-space * 4) !important;
@@ -77,7 +72,7 @@ body {
 @include respond-below(sm) {
   .footer-fix {
     min-height: calc(100vh - 336px);
-    padding-bottom: 24px;
+    padding-bottom: $base-block-space * 3;
   }
 }
 
@@ -100,7 +95,6 @@ body {
 *[lang="ur"] body {
   font-family: $font-stack-ur;
 }
-
 
 .publicmenusection.ui.secondary.menu .active.item {
   color: $primary-color;
@@ -197,7 +191,7 @@ body {
 .sb-prominent-filter {
   .accordion {
     .content {
-      padding: .5em 0 0 0;
+      padding: 0.5em 0 0 0;
     }
   }
 }
@@ -207,14 +201,12 @@ body {
 .ui.calendar .ui.celled.table tr th {
   cursor: pointer;
 }
-
 .ui.calendar .ui.table tr td.disabled,
 .ui.calendar .ui.table tr.disabled td,
 .ui.calendar .ui.table tr.disabled:hover,
 .ui.calendar .ui.table tr:hover td.disabled {
-  cursor: default
+  cursor: default;
 }
-
 
 .ui.info.message {
   background-color: var(--primary-0) !important;
@@ -223,7 +215,6 @@ body {
 .ui.info.message .header {
   color: var(--primary-color) !important;
 }
-
 .ui.ordered.list .list,
 ol.ui.list ol {
   margin-left: 2em !important;
@@ -232,7 +223,141 @@ ol.ui.list ol {
 .ui.info.message {
   color: black !important;
 }
-
 .cursor-default {
   cursor: default !important;
+}
+.sb-offline-updates-modal .ui.modal > .close {
+  color: var(--primary-400) !important;
+}
+.o-y-hidden {
+  overflow: hidden;
+}
+.bg-image {
+  background: url("/assets/images/bg.svg") no-repeat center center;
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// login
+.loginform {
+  background: var(--white);
+  height: 100%;
+  width: 100%;
+  padding: 32px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 10px 40px -14px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  @include respond-above(sm) {
+    min-width: 360px;
+    max-width: 416px;
+    height: auto;
+  }
+  &__content {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    &__header {
+      padding: ($base-block-space * 2);
+      img {
+        width: 100px;
+      }
+    }
+    .swiper-slide {
+      height: 360px;
+      width: 100%;
+      transition: all 2s linear;
+      .slide-title {
+        font-size: 14px;
+        color: var(--primary-400);
+        margin-bottom: 0px;
+      }
+      &__title {
+        text-align: center;
+        font-size: 16px;
+        padding: ($base-block-space * 3) 0px;
+      }
+      &__para {
+        text-align: left;
+        font-size: 12px;
+        padding: ($base-block-space * 3) 0px;
+        color: #333333;
+      }
+      .language-selection {
+        width: 100%;
+        margin: 0px auto ($base-block-space * 6) auto;
+        text-align: center;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        background: $primary-0;
+        box-shadow: 0 2px 4px 0 #d8d8d8;
+        height: 100%;
+        padding: ($base-block-space * 2) 0px;
+        max-height: 280px;
+      }
+    }
+    .animate-slide-on {
+      transform: translateX(-430px);
+    }
+    .animate-slide-off {
+      transform: translateX(0px);
+    }
+  }
+}
+
+.arrow-icon {
+  float: right;
+}
+
+// bullets
+.bullets-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0px;
+  .circle {
+    margin: 0 3px;
+    border: 1px solid #eee;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .active {
+    background: var(--secondary-400);
+  }
+  .update {
+    background: var(--primary-200);
+  }
+  .completed {
+    background: var(--secondary-400);
+  }
+}
+
+.ui.selection.dropdown:focus,
+.ui.selection.dropdown:focus ~ label {
+  border: 1px solid var(--primary-300);
+}
+
+/* language selector */
+.sb-offline-language-selector {
+  .ui.dropdown .menu {
+    right: 0;
+    width: auto;
+    left: inherit;
+  }
+  .ui.dropdown .menu > .item {
+    padding: 0.78571429em 1.14285714em !important;
+    font-size: 0.86rem;
+  }
 }
