@@ -1,8 +1,7 @@
 import { Observable, of } from 'rxjs';
 import { ResourceService, ConfigService, ServerResponse } from '@sunbird/shared';
-import { ProgramsService, SearchService, PublicDataService } from '@sunbird/core';
+import { ProgramsService, PublicDataService } from '@sunbird/core';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { map, catchError, retry } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 @Component({
@@ -14,7 +13,7 @@ export class ListAllProgramsComponent implements OnInit {
 
   public programsList$;
   public noResultFound;
-  constructor(private programsService: ProgramsService, public resourceService: ResourceService, private router: Router,
+  constructor(private programsService: ProgramsService, public resourceService: ResourceService,
     private config: ConfigService, private publicDataService: PublicDataService) { }
 
   ngOnInit() {
