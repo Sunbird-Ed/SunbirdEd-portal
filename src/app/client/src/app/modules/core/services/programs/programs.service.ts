@@ -3,16 +3,17 @@ import { mergeMap, catchError, tap, retry, map, skipWhile } from 'rxjs/operators
 import { OrgDetailsService } from './../org-details/org-details.service';
 import { FrameworkService } from './../framework/framework.service';
 import { ExtPluginService } from './../ext-plugin/ext-plugin.service';
-import { ConfigService, ServerResponse } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { combineLatest, of, iif, Observable, BehaviorSubject, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
+import { CanActivate, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProgramsService {
+export class ProgramsService implements CanActivate {
 
   private _programsList$ = new BehaviorSubject(undefined);
   private _allowToContribute$ = new BehaviorSubject(undefined);
@@ -24,7 +25,16 @@ export class ProgramsService {
     .pipe(skipWhile(data => data === undefined || data === null));
 
   constructor(private extFrameworkService: ExtPluginService, private configService: ConfigService,
-    private frameworkService: FrameworkService, private orgDetailsService: OrgDetailsService, private userService: UserService) { }
+    private orgDetailsService: OrgDetailsService, private userService: UserService,
+    private router: Router, private toasterService: ToasterService, private resourceService: ResourceService) { }
+
+
+  /**
+   * initializes the service is the user is logged in;
+   */
+  public initialize() {
+    this.enableContributeMenu().subscribe()
+  }
 
   /**
    * logic which decides whether or not to show contribute tab menu
@@ -85,5 +95,20 @@ export class ProgramsService {
     return this.getPrograms().pipe(
       map(programs => !_.isEmpty(programs))
     );
+  }
+
+  /**
+   * auth guard to prevent unauthorized access to the route
+   */
+  canActivate(): Observable<boolean> {
+    return iif(() => !this.userService.loggedIn, of(false), this.allowToContribute$.pipe(
+      tap(allow => {
+        if (!allow) {
+          this.toasterService.warning(this.resourceService.messages.imsg.m0035);
+          this.router.navigate(['learn']);
+        }
+      })
+    )
+    )
   }
 }
