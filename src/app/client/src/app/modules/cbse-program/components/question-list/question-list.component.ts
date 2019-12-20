@@ -1,5 +1,4 @@
-import { Component, 
-  OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -16,6 +15,7 @@ import { CbseProgramService } from '../../services';
   styleUrls: ['./question-list.component.scss']
 })
 export class QuestionListComponent implements OnInit, OnChanges {
+  @ViewChild('questionCreationChild') questionCreationChild: ElementRef;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
   @Input() practiceQuestionSetComponentInput: any;

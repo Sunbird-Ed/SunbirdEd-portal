@@ -27,7 +27,7 @@
     </div>
     <div class='practical-sb-buttons'>
       <button class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" 
-        (click)="showTextArea =!showTextArea"
+        (click)="questionCreationChild.buttonTypeHandler()"
         *ngIf="resourceStatus === 'Draft' || resourceStatus === 'Rejected' "
         >Save</button>
       <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
@@ -71,7 +71,7 @@
           <label class="mb-0 mr-auto" for="check1"> Question {{i + 1}}</label>
           <i class="info circle sb-color-warning fs-1 icon" *ngIf="question.status === 'Reject'"></i>
           <i class="trash alternate outline icon ml-24" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"></i>
+          <!-- <i class="move icon ml-16 sb-color-primary ml-24" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"></i> -->
         </div>
       </div>
 
@@ -95,7 +95,7 @@
         </div>
         <div *ngIf="sessionContext.questionType !== 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
-            <app-question-creation [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
+            <app-question-creation #questionCreationChild [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
               [questionSelectionStatus]="questionSelectionStatus" [role]="role"
               (questionStatus)="questionStatusHandler($event)"
               (questionQueueStatus)="questionQueueStatusHandler($event)">
