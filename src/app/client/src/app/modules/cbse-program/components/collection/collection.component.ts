@@ -22,7 +22,7 @@ export class CollectionComponent implements OnInit {
   public chapterListComponentInput: IChapterListComponentInput = {};
   public programDetails: any;
   public userProfile: any;
-
+  public sharedContext: any = {};
   public programSession: any; // TODO: change to just programDetails after creating new program
   public collectionComponentConfig: any;
   public programContext: any;
@@ -51,23 +51,38 @@ export class CollectionComponent implements OnInit {
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
     this.collectionComponentConfig = _.get(this.collectionComponentInput, 'config');
     this.programContext = _.get(this.collectionComponentInput, 'programContext');
-    this.sessionContext = {
+
+    this.sharedContext = this.collectionComponentInput.programContext.config.sharedContext.reduce((obj, context) => {
+      return {...obj, [context]: this.getSharedContextObjectProperty(context)};
+    }, {});
+    this.sessionContext = _.assign(this.collectionComponentInput.sessionContext, {
       currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
-      framework: _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'framework'}).defaultValue,
-      channel: _.get(this.programDetails, 'config.scope.channel'),
-      board: _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'board'}).defaultValue,
-      medium: _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'medium'}).defaultValue,
       bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
       programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1' || _.get(this.programDetails, 'programId'),
       program: _.get(this.programDetails, 'name'),
       onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school'),
       collectionType: _.get(this.collectionComponentConfig, 'collectionType'),
       collectionStatus: _.get(this.collectionComponentConfig, 'status')
-    };
+    }, this.sharedContext);
     this.searchCollection();
     const getCurrentRoleId = _.find(this.programContext.config.roles, {'name': this.sessionContext.currentRole});
     this.sessionContext.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
     this.role.currentRole = this.sessionContext.currentRole;
+  }
+
+
+  getSharedContextObjectProperty(property) {
+    if (property === 'channel') {
+       return _.get(this.programDetails, 'config.scope.channel');
+    } else if ( property === 'topic' ) {
+      return null;
+    } else {
+      const filters =  this.collectionComponentConfig.config.filters;
+      const explicitProperty =  _.find(filters.explicit, {'code': property});
+      const implicitProperty =  _.find(filters.implicit, {'code': property});
+      return (implicitProperty) ? implicitProperty.value || implicitProperty.defaultValue :
+       explicitProperty.value || explicitProperty.defaultValue;
+    }
   }
 
   objectKey(obj) {
