@@ -1,14 +1,16 @@
+import { SharedModule } from '@sunbird/shared';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ContributeRoutingModule } from './contribute-routing.module';
+import { ProgramRoutingModule } from './program-routing.module';
 import { ListAllProgramsComponent } from './components';
 
 @NgModule({
   declarations: [ListAllProgramsComponent],
   imports: [
     CommonModule,
-    ContributeRoutingModule
+    SharedModule,
+    ProgramRoutingModule
   ]
 })
-export class ContributeModule { }
+export class ProgramModule { }
