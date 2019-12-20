@@ -24,7 +24,7 @@ export class ResourceTemplateComponent implements OnInit, OnDestroy {
 
   handleSubmit() {
     const templateDetails = _.find(this.templateList, (template) => {
-      return template.metadata.contentType === this.templateSelected;
+      return template.id === this.templateSelected;
     });
     this.templateSelection.emit({ type: 'next', template: this.templateSelected, templateDetails: templateDetails });
   }
