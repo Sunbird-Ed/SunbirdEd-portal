@@ -72,11 +72,11 @@
     <div class="ui container d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
       <div class="d-flex sb-offline-menu-container flex-ai-end">
         <a [routerLink]="'/'" [ngClass]="{'active': checkRouter()}"
-          appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('myLibrary')">
+          appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('myLibrary')" (click)="clearSearchQuery()">
           <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
         </a>
         <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
-          [telemetryInteractEdata]="getTelemetryEdata('browse')">
+          [telemetryInteractEdata]="getTelemetryEdata('browse')" (click)="clearSearchQuery()">
           <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
         </a>
         <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract

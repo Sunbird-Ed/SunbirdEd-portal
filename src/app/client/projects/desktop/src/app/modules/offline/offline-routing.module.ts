@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { BrowseComponent, OfflineHelpCenterComponent, LibraryComponent, DesktopExploreContentComponent } from './components';
+import { BrowseComponent, OfflineHelpCenterComponent, LibraryComponent, DesktopExploreContentComponent,
+    SearchComponent, ViewMoreComponent } from './components';
 const routes: Routes = [
     {
         path: 'browse', component: BrowseComponent, data: {
@@ -18,15 +19,15 @@ const routes: Routes = [
         }
     },
     {
-        path: 'browse/search/:pageNumber', component: DesktopExploreContentComponent, data: {
+        path: 'search', component: SearchComponent, data: {
             telemetry: {
-                env: 'browse', pageid: 'browse-search', type: 'view', subtype: 'paginate'
+                env: 'search', pageid: 'search', type: 'view', subtype: 'paginate'
             },
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
         }
     },
     {
-        path: 'view-all', component: DesktopExploreContentComponent,
+        path: 'view-all', component: ViewMoreComponent,
         data: {
             telemetry: {
                 env: 'library', pageid: 'view-all', type: 'view', subtype: 'paginate'
@@ -37,9 +38,17 @@ const routes: Routes = [
         }
     },
     {
-        path: 'search', component: DesktopExploreContentComponent, data: {
+        path: 'browse/view-more/:pageNumber', component: ViewMoreComponent, data: {
             telemetry: {
-                env: 'library', pageid: 'library-search', type: 'view', subtype: 'paginate'
+                env: 'search', pageid: 'view-more', type: 'view', subtype: 'paginate'
+            },
+            softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
+        }
+    },
+    {
+        path: 'view-more', component: ViewMoreComponent, data: {
+            telemetry: {
+                env: 'search', pageid: 'view-more', type: 'view', subtype: 'paginate'
             },
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
         }
