@@ -154,7 +154,8 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   border-radius: 2rem;
 }
 .sb-btn-white {
-  box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(0, 0, 0, 0.1),
+    0 3px 4px 0 rgba(0, 0, 0, 0.2);
   border: 0px solid #ddd;
 }
 .sb-btn-square {
@@ -191,8 +192,8 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   transition: all 1.2s ease-in-out;
   i::after {
     content: "\f019";
-    font-size: 13px;
-    color: #fff;
+    font-size: calculateRem(13px);
+    color: var(--white);
   }
   &:hover {
     animation: pulse 0.2s 2 both;
@@ -216,33 +217,32 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 
 // Buttons with icon
 .sb-right-icon-btn {
-  padding: ($base-block-space * 1) ($base-block-space * 1)
-    ($base-block-space * 1) ($base-block-space * 2);
+  padding: $base-block-space $base-block-space $base-block-space
+    $base-block-space;
   i.icon {
-    margin-left: ($base-block-space / 2);
+    margin-left: $base-block-space;
     margin-right: 0;
   }
   html[dir="rtl"] & {
-    padding: ($base-block-space * 1) ($base-block-space * 1)
-      ($base-block-space * 1) ($base-block-space * 2);
+    padding: $base-block-space $base-block-space $base-block-space
+      $base-block-space;
     i.icon {
       margin-right: ($base-block-space / 2);
       margin-right: 0;
     }
   }
 }
-
 .sb-left-icon-btn {
-  padding: ($base-block-space * 1) ($base-block-space * 2)
-    ($base-block-space * 1) ($base-block-space * 1);
+  padding: $base-block-space $base-block-space $base-block-space
+    $base-block-space;
   i.icon {
-    margin-right: ($base-block-space / 2);
+    margin-right: $base-block-space;
   }
   html[dir="rtl"] & {
-    padding: ($base-block-space * 0) ($base-block-space * 1)
-    ($base-block-space * 0) ($base-block-space * 1);
+    padding: $base-block-space $base-block-space $base-block-space
+      $base-block-space;
     i.icon {
-      margin-left: ($base-block-space / 2);
+      margin-left: $base-block-space;
     }
   }
 }
@@ -307,7 +307,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
         box-shadow 0.1s ease, -webkit-transform 0.1s ease;
     }
     &:after {
-      background: #fff linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+      background: var(--white) linear-gradient(transparent, rgba(0, 0, 0, 0.05));
       position: absolute;
       content: "" !important;
       opacity: 1;
