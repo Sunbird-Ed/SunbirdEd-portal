@@ -28,8 +28,8 @@
 <div class="ui container">
   <div class="twelve wide column">
     <app-loader [data]='loaderMessage' *ngIf="showLoader"></app-loader>
-    <app-no-result [data]="noResultMessage" [hidden]="router?.url?.includes('browse') && !isConnected"
-      *ngIf="!showLoader && isContentNotAvailable"></app-no-result>
+    <app-no-result [data]="noResultMessage" *ngIf="!showLoader && isContentNotAvailable">
+    </app-no-result>
   </div>
 </div>
 

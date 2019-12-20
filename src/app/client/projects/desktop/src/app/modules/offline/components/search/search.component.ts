@@ -11,7 +11,7 @@ import {
 import { PublicPlayerService } from '@sunbird/public';
 import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
-import { ConnectionService, ContentManagerService } from '../../services';
+import { ContentManagerService } from '../../services';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 @Component({
   selector: 'app-search',
@@ -31,8 +31,6 @@ export class SearchComponent implements OnInit {
   hashTagId: string;
   dataDrivenFilters: any = {};
   facets: string[];
-
-  isConnected = navigator.onLine;
 
   downloadedContents: any[] = [];
   downloadedContentsCount = 0;
@@ -59,7 +57,6 @@ export class SearchComponent implements OnInit {
     public location: Location,
     public orgDetailsService: OrgDetailsService,
     public frameworkService: FrameworkService,
-    private connectionService: ConnectionService,
     public navigationHelperService: NavigationHelperService,
     public telemetryService: TelemetryService,
   ) {
@@ -74,12 +71,6 @@ export class SearchComponent implements OnInit {
     }, error => {
       this.router.navigate(['']);
     });
-
-    this.connectionService.monitor()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(isConnected => {
-        this.isConnected = isConnected;
-      });
   }
 
   public getFilters(filters) {
@@ -105,6 +96,7 @@ export class SearchComponent implements OnInit {
         this.showLoader = true;
         this.queryParams = { ...queryParams };
         this.fetchContents();
+        this.setNoResultMessage();
       });
   }
 
@@ -203,17 +195,10 @@ export class SearchComponent implements OnInit {
   }
 
   setNoResultMessage() {
-    if (!(this.router.url.includes('/browse'))) {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0133'
-      };
-    } else {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
-      };
-    }
+    this.noResultMessage = {
+      messageText: 'messages.stmsg.m0006',
+      message: 'frmelmnts.lbl.searchNotMatchCh',
+    };
   }
 
   addHoverData(contentList, isOnlineSearch) {

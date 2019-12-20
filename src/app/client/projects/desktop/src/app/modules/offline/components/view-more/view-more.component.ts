@@ -12,7 +12,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
-import { ContentManagerService } from '../../services';
+import { ContentManagerService, ConnectionService } from '../../services';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 
 @Component({
@@ -37,11 +37,10 @@ export class ViewMoreComponent implements OnInit {
   apiQuery: any = {};
 
   paginationDetails: IPagination;
-  isConnected = navigator.onLine;
+  isConnected = false;
   isBrowse = false;
   showDownloadLoader = false;
   downloadedContents: any[] = [];
-
 
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
@@ -61,7 +60,8 @@ export class ViewMoreComponent implements OnInit {
     public frameworkService: FrameworkService,
     public navigationHelperService: NavigationHelperService,
     public telemetryService: TelemetryService,
-    public paginationService: PaginationService
+    public paginationService: PaginationService,
+    private connectionService: ConnectionService,
   ) {
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -74,6 +74,12 @@ export class ViewMoreComponent implements OnInit {
     }, error => {
       this.router.navigate(['']);
     });
+
+    this.connectionService.monitor()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
 
     this.activatedRoute.queryParams.subscribe((queryParams) => {
       this.queryParams = { ...queryParams };
@@ -121,6 +127,7 @@ export class ViewMoreComponent implements OnInit {
         this.contentList = this.formatSearchResults(orderedContents);
         this.addHoverData();
       }, error => {
+        this.showLoader = false;
         this.setNoResultMessage();
       });
   }
@@ -139,7 +146,6 @@ export class ViewMoreComponent implements OnInit {
           this.queryParams = { ...queryParams };
           this.fetchContents(false);
         }
-
       });
   }
 

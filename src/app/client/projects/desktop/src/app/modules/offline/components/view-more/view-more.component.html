@@ -26,7 +26,16 @@
 <div class="ui container">
   <div class="twelve wide column">
     <app-loader [data]='loaderMessage' *ngIf="showLoader"></app-loader>
-    <app-no-result [data]="noResultMessage" *ngIf="!showLoader && !contentList?.length"></app-no-result>
+    <app-no-result [data]="noResultMessage" *ngIf="!showLoader && !contentList?.length && isConnected"></app-no-result>
+    <div class="no-content-container d-flex flex-dc flex-jc-center mt-48" *ngIf="!showLoader && !contentList?.length && !isConnected">
+      <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
+        <div>
+          <img src="../../../../../assets/images/offline-icon.svg" width="90px" height="90px">
+        </div>
+        <div class="fs-1-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.offline}}</div>
+        <p class="fs-1 mt-8">{{resourceService?.messages?.imsg?.m0048}}</p>
+      </div>
+    </div>
   </div>
 </div>
 
