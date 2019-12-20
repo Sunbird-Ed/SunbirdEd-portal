@@ -66,7 +66,6 @@ export class ProgramComponent implements OnInit {
       this.state.stages = state.stages;
       this.changeView();
     });
-    console.log(programSession);
     this.sessionContext.framework = _.get(programSession, 'config.framework');
     this.userProfile = this.userService.userProfile;
     if (['null', null, undefined, 'undefined'].includes(this.programId)) {
@@ -84,14 +83,13 @@ export class ProgramComponent implements OnInit {
         this.showOnboardPopup = true;
       }
       this.handleHeader('success');
-      this.initiateInputs('success');
+      this.fetchFrameWorkDetails();
     }, error => {
       // TODO: navigate to program list page
       const errorMes = typeof _.get(error, 'error.params.errmsg') === 'string' && _.get(error, 'error.params.errmsg');
       this.toasterService.error(errorMes || 'Fetching program details failed');
       this.handleHeader('failed');
     });
-    this.fetchFrameWorkDetails();
   }
 
   initiateInputs (status) {
@@ -111,7 +109,12 @@ export class ProgramComponent implements OnInit {
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
       if (frameworkDetails && !frameworkDetails.err) {
         this.sessionContext.frameworkData = frameworkDetails.frameworkdata[this.sessionContext.framework].categories;
+        this.initiateInputs('success');
+        this.showLoader = false;
       }
+    }, error => {
+      const errorMes = typeof _.get(error, 'error.params.errmsg') === 'string' && _.get(error, 'error.params.errmsg');
+      this.toasterService.error(errorMes || 'Fetching framework details failed');
     });
   }
 
@@ -177,7 +180,6 @@ export class ProgramComponent implements OnInit {
     };
     return this.extPluginService.get(req).pipe(tap(programDetails => {
       this.programDetails = programDetails.result;
-      this.showLoader = false;
     }));
   }
 
