@@ -33,7 +33,6 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
     public isCachedDataExists: boolean;
     public formType = 'content';
     public queryParams: any;
-    public showFilters = false;
     public formInputData: any;
     public unsubscribe$ = new Subject<void>();
     refresh = true;
@@ -188,7 +187,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
         } else {
             this.formInputData = {};
         }
-        this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
+        this.filterChange.emit([]);
         this.hardRefreshFilter();
         this.setFilterInteractData();
     }

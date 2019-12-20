@@ -20,4 +20,6 @@ export * from './no-content/no-content.component';
 export * from './connection-status/connection-status.component';
 export * from './info-card/info-card.component';
 export * from './profile-dropdown/profile-dropdown.component';
+export * from './search/search.component';
+export * from './view-more/view-more.component';
 
