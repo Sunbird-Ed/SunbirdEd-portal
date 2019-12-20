@@ -2,7 +2,7 @@ import { SharedModule } from '@sunbird/shared';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ProgramRoutingModule } from './program-routing.module'
+import { ProgramRoutingModule } from './program-routing.module';
 import { ListAllProgramsComponent } from './components';
 
 @NgModule({
