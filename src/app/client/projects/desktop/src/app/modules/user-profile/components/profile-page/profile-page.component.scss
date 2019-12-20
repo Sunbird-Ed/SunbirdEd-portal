@@ -3,6 +3,8 @@
 
 
 .sb-profile-page{
+  
+
     &__avatar{
         width: 92px;
         height: 92px;
@@ -23,11 +25,12 @@
     &__profile-bg{
         background: var(--primary-100);
     }
-    &__category{
-        flex-direction: column;
+    &__category , &__m-responsive-flex-dc{
+        flex-direction: row;   
         margin-top: calculateRem(16px);
-        @include respond-above(sm) {
-            flex-direction: row;
+ 
+        @include respond-below(sm) {
+            flex-wrap:wrap;
             margin-top: calculateRem(0px);
         }
     }
