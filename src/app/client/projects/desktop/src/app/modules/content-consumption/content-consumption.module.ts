@@ -7,6 +7,7 @@ import { ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent
  } from './components';
 import { SuiAccordionModule } from 'ng2-semantic-ui';
 
+
 @NgModule({
   declarations: [
     ContentPlayerComponent,
