@@ -21,7 +21,7 @@
   <!-- Selection of Question in modal -->
 
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!showButton" (click)="handleSubmit()">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" [ngClass]="{'sb-btn-disabled': !showButton}" (click)="handleSubmit()">
       Next
     </button>
   </div>
