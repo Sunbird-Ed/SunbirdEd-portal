@@ -10,8 +10,8 @@
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
-		<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')" routerLink="/contribute"
-			appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata">
+		<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
+			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata">
 			{{resourceService?.frmelmnts?.tab?.contribute}}
 		</a>
 		<a class="item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
@@ -98,7 +98,7 @@
 				routerLink="/learn">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
-			<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
+			<a 	*ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
 				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
 				routerLink="/contribute">
 				{{resourceService?.frmelmnts?.tab?.contribute}}
