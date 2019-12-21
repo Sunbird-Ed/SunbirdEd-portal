@@ -467,11 +467,12 @@ i.large.icon.limitedPublishingLinkIcon {
 .ui.form input[type="password"],
 .ui.form input[type="url"],
 .ui.form input:not([type]),
-.ui.form input:not([type]):focus {
-  border: 0;
-  border-bottom: 1px solid #333;
-  border-radius: 0;
-  padding: 0.8em 0 0.8em 1em;
+.ui.form input:not([type]):focus
+ {
+  // border: 0;
+  // border-bottom: 1px solid #333;
+  // border-radius: 0;
+  // padding: 0.8em 0 0.8em 1em;
 }
 
 // .ui.selection.dropdown {

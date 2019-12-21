@@ -1,0 +1,162 @@
+<div class="d-flex sb-bg-color-gray-0 practical-header">
+        <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
+          <div #contentTitle class="font-weight-bold fs-1" *ngIf="!showTextArea">
+            {{editTitle}} <span class="fs-0-785 pl-8"><a class="cursor-pointer" (click)="showTextArea = !showTextArea">Edit</a></span>
+            <div class="fs-0-785 pt-8">License: CC BY 4.0</div>
+          </div>
+          <div class="sb-field-group textbook-edit" *ngIf="showTextArea">
+            <div class="sb-field relative">
+              <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle"></textarea>
+              <span class="characters-left">200 Characters left</span>
+            </div>
+          </div>
+          <div class='practical-sb-buttons'>
+            <button *ngIf="visibility.showChangeFile" class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" (click)="changeFile()">Change
+              File</button>
+            <button *ngIf="visibility.showRequestChanges" class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" (click)="saveContent()">Request Changes</button>
+            <button *ngIf="visibility.showAccept" class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8">Accept</button>
+            <button *ngIf="visibility.showSubmit" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="saveContent()">Submit</button>
+          </div>
+        </div>
+      </div> 
+
+
+<div class="middle-section-set" *ngIf="showPreview">
+    <div class="ui container msg-box">
+      <div class="msg-box__content">
+        <div class="container msg-box__content__blank-box">
+            <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- <div> -->
+    <sui-modal *ngIf="!showPreview" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+    class="sb-modal sb-file-upload-modal" appBodyScroll #modal>
+    <div type="text/template" id="qq-template-validation" #fineUploaderUI>
+      <div class="qq-uploader-selector qq-uploader custom-qq-uploader">
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
+          <span class="qq-upload-drop-area-text-selector"></span>
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+          <span>Processing dropped files...</span>
+          <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list custom-qq-upload-list" aria-live="polite"
+          aria-relevant="additions removals">
+          <li>
+            <div class="qq-progress-bar-container-selector">
+              <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                class="qq-progress-bar-selector qq-progress-bar"></div>
+            </div>
+            <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+            <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
+            <span class="qq-upload-file-selector qq-upload-file custom-qq-upload-file"></span>
+            <span class="qq-upload-size-selector qq-upload-size"></span>
+            <button type="button" class="qq-btn qq-upload-retry-selector qq-upload-retry">Retry</button>
+            <button type="button" class="qq-btn qq-upload-delete-selector qq-upload-delete">Delete</button>
+            <span role="status" class="qq-upload-status-text-selector qq-upload-status-text"></span>
+          </li>
+        </ul>
+        <div id="qq-upload-actions" class="upload-file-description d-flex flex-ai-center flex-dc">
+          <h5 class="mb-8">Drop Files here</h5>
+          <span class="fs-0-92 mb-8">Or</span>
+          <div class="qq-upload-button-selector qq-upload-button sb-btn sb-btn-normal sb-btn-success">
+            <div>Select Files</div>
+          </div>
+          <p class="mt-8">You can upload .pdf, .doc or .mp4 files ( Max size 50 MB )</p>
+        </div>
+        <dialog class="qq-confirm-dialog-selector">
+          <div class="qq-dialog-message-selector"></div>
+          <div class="qq-dialog-buttons">
+            <button type="button" class="qq-cancel-button-selector">No</button>
+            <button type="button" class="qq-ok-button-selector">Yes</button>
+          </div>
+        </dialog>
+        <dialog class="qq-prompt-dialog-selector">
+          <div class="qq-dialog-message-selector"></div>
+          <input type="text">
+          <div class="qq-dialog-buttons">
+            <button type="button" class="qq-cancel-button-selector">Cancel</button>
+            <button type="button" class="qq-ok-button-selector">Ok</button>
+          </div>
+        </dialog>
+      </div>
+    </div>
+    <div class="sb-modal-header">Upload Files</div>
+    <div class="sb-modal-content">
+    <div *ngIf="!loading">
+      <div  id="upload-content-div" class="upload-file-section"></div>
+    </div>
+      <div *ngIf='!loading' class="upload-file-description pt-16">
+        <ul>
+          <li>File accepted - {{templateDetails.filesConfig.accepted}}</li>
+          <li>Max file size - {{templateDetails.filesConfig.size}} Mb</li>
+        </ul>
+      </div>
+      <div *ngIf='loading' class="uploading-files">
+          <div class='d-flex flex-dc flex-jc-center flex-ai-center icon'>
+            <img src="../../assets/images/Spin.gif" width="64" class='process-icon'>
+            <div class="fs-0-785 pt-16">120 MB Uploading Files (65%)
+            </div>
+            <sui-progress [value]="60" [maximum]="100" class="mb-0 mr-0"></sui-progress>
+          </div>
+          <div class="text-center fs-0-785">"By Uploading asset on SunbirdEd, you consent to publish it
+            under the Creative Commons License Framework
+          </div>
+          <div class="text-center fs-0-785 pt-4 links"><a href="javascript:void(0);">https://creativecommons.org/licenses
+              .</a></div>
+        </div>
+    </div>
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="uploadContent()">Upload</button>
+      <button (click)="closeModal('Cancel')" class="sb-btn sb-btn-outline-primary sb-btn-normal">Cancel</button>
+    </div>
+  </sui-modal>
+<!-- </div> -->
+
+<div *ngIf="showForm">
+<form #contentForm [formGroup]="contentDetailsForm" (ngSubmit)="saveContent()" class='ui container licence-form mt-24' >
+    <div class='licence-form__content__fields px-24 py-16 d-flex flex-w-wrap'>
+      
+        <div class="sb-field pr-8" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
+          <div [formGroupName]="i">
+            <label>{{field.label}}</label>
+            <sui-select formControlName="{{field.code}}" class="selection" [isDisabled]="!(selectedAttributes.currentRole === 'CONTRIBUTOR')" placeholder="{{field.placeholder}}">
+              <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+              </sui-select-option>
+            </sui-select>
+            <label class="warning-message" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+          </div>
+        </div>
+
+        <div class="sb-field pr-8" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
+            <div [formGroupName]="i">
+                <label>{{field.label}}</label>
+                <sui-multi-select formControlName="{{field.code}}" class="selection" [isDisabled]="!(selectedAttributes.currentRole === 'CONTRIBUTOR')" placeholder="{{field.placeholder}}">
+                  <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                  </sui-select-option>
+                </sui-multi-select>
+                <label class="warning-message" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+            </div>
+        </div>
+     
+        <div class="sb-field pr-8" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
+          <div [formGroupName]="i">
+            <label>{{field.label}}</label>
+              <input formControlName="{{field.code}}" type="email" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
+            <label class="warning-message" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+          </div>
+        </div> 
+
+    </div>
+
+    <p class="paragraph fs-0-785">
+      “By creating content on SunbirdEd, you consent to publish it under the Creative Commons License Framework
+      <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
+      Please choose the applicable creative commons license you wish to apply to your content”.
+    </p>
+
+</form>
+</div>

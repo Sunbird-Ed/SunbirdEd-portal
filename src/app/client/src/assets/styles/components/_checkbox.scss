@@ -64,13 +64,9 @@ $sb-radio-btn-border-color: $primary-300;
   }
 
   [disabled="disabled"]+label,
-  input[disabled="disabled"],
-  [disabled="true"]+label,
-  input[disabled="true"],
-  [disabled]+label,
-  input[disabled]{
+  input[disabled="disabled"] {
     opacity: $sb-radio-btn-disabled-opacity;
-    cursor: default;
+    cursor: not-allowed;
   }
 
   [disabled="disabled"]:checked+label:before,
@@ -145,9 +141,10 @@ $sb-radio-btn-border-color: $primary-300;
     font-weight: normal;
   }
 
-  input[type=checkbox] {   
+  input[type=checkbox] {
     outline: 0;
   }
+
 }
 
 .sb-radio-btn-checkbox {
@@ -180,6 +177,7 @@ $sb-radio-btn-border-color: $primary-300;
     input:checked~label:after {
       background-color: $sb-checkbox-warning-background;
     }
+
   }
 
   &.sb-radio-btn-error {
@@ -213,6 +211,52 @@ $sb-radio-btn-border-color: $primary-300;
   }
 }
 
+.sb-chapterlist-modal {
+
+  .sb-checkbox label,
+  .sb-radio-btn-checkbox label {
+    padding-left: 0;
+    padding-right: 24px;
+    margin-bottom: 0;
+  }
+
+  .sb-checkbox label:before {
+    left: unset;
+    right: 0;
+  }
+
+  .sb-radio-btn-checkbox label {
+    &:before {
+      left: unset;
+      right: 0;
+    }
+
+    &:after {
+      left: unset;
+      right: 4px;
+    }
+  }
+
+  .chapter-lists--item {
+    .sb-radio-btn-checkbox label {
+
+      &::before,
+      &::after {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &::before {
+        right: 16px;
+      }
+
+      &::after {
+        right: 20px;
+      }
+    }
+  }
+}
+
 .ui.checkbox {
-  font-size:14px;
+  font-size: 14px;
 }

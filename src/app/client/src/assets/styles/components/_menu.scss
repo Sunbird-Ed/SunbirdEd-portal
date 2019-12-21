@@ -86,3 +86,22 @@
   display: inline-block;
   cursor: pointer;
 }
+
+.sb-tabset-menu {
+    background: $gray-0;
+    width: 100%;
+    min-height: 40px;
+    display: flex;
+
+    .sb-item {
+        font-size: $font-size-base;
+        color: $gray-800;
+        padding: ($base-block-space*2) ($base-block-space*3);
+        cursor: pointer;
+
+        &.active {
+            color: $primary-color;
+            border-bottom: 2px solid $primary-color;
+        }
+    }
+}
