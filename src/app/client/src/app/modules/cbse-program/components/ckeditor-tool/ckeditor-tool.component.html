@@ -1,0 +1,168 @@
+<div class="editorWrapper" [ngClass]="{'hasError': limitExceeded}">
+  <button type="button" appTelemetryInteract
+    [telemetryInteractEdata]="{id:'add_image',type:'click',pageid:'questioncreate'}" data-tooltip="Add image"
+    data-position="bottom center" data-variation="mini" data-inverted="" title="Add image"
+    [disabled]="isAssetBrowserReadOnly || isEditorFocused" (click)="initializeImagePicker('question')"
+    class="ui icon button insert-image-btn">
+    <i class="image outline icon"></i>
+  </button>
+  <textarea class="editor" #editor name="question" placeholder=""></textarea>
+  <div *ngIf="setCharacterLimit > 0">
+    <div class="characterCount">
+      <!-- <i class="icon help"></i> -->
+      Characters left: {{setCharacterLimit - characterCount}}
+    </div>
+  </div>
+</div>
+
+
+<!-- Upload File modal html structure -->
+
+<!-- <sui-modal [isClosable]="true" class="sb-modal" [isInverted]="true" (dismissed)="dismissImagePicker()"
+  *ngIf="showImagePicker" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
+  <div class="sb-modal-header">Upload Files</div>
+  <div class="sb-modal-content">
+    <div class="upload-file-section">
+      <h5 class="mb-8">Drop Files here</h5>
+      <span>Or</span>
+      <button class="sb-btn sb-btn-success sb-btn-normal mt-8">Select Files</button>
+      <p class="mt-8">You can upload .pdf, .doc or .mp4 files ( Max size 50 MB )</p>
+    </div>
+    <div class="upload-file-description my-8 mx-0">
+      <p class="mb-8 fs-0-986">Refer link for</p>
+      <ul>
+        <li><a>How to convert doc into pdf</a></li>
+        <li><a>How to convert video file to MP4</a></li>
+        <li><a>How to compress the MP4 file</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary">Upload</button>
+  </div>
+</sui-modal> -->
+
+<!-- Uploading Progress bar html structure -->
+
+<!-- <sui-modal [isClosable]="true" class="sb-modal" [isInverted]="true" (dismissed)="dismissImagePicker()"
+  *ngIf="showImagePicker" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
+  <div class="sb-modal-header">Uploading...</div>
+  <div class="sb-modal-content">
+
+    <div class="uploading-files">
+      <div class='d-flex flex-dc flex-jc-center flex-ai-center icon'>
+        <img src="../../assets/images/Spin.gif" class='process-icon'>
+        <div class="fs-0-785 pt-16">120 MB Uploading Files (65%)
+        </div>
+        <sui-progress [value]="60" [maximum]="100" class="mb-0 mr-0"></sui-progress>
+      </div>
+      <div class="text-center fs-0-785">“By Uploading asset on SunbirdEd, you consent to publish it
+        under the Creative Commons License Framework
+      </div>
+      <div class="text-center fs-0-785 pt-8"><a href="#" class="link-files">https://creativecommons.org/licenses .</a></div>
+  </div>
+</div>
+<div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-primary sb-btn-normal">Upload</button>
+</div>
+</sui-modal> -->
+
+
+<sui-modal [isClosable]="true" class="sb-modal" [isInverted]="true" (dismissed)="dismissImagePicker()"
+  *ngIf="showImagePicker" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
+  <div class="sb-modal-header">Select Image</div>
+  <div class="sb-modal-content p-0">
+    <sui-tabset>
+      <div class="sb-tabset-menu mb-16">
+        <a class="sb-item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
+        <a class="sb-item" (activate)="getAllImages(0)" suiTabHeader="2">All Image</a>
+      </div>
+
+      <!-- Search section in modal html structure -->
+
+      <!-- <div class="ui container px-24 pb-16 d-flex flex-ai-center">
+        <div class="sb-search-box small no-btn">
+            <div class="input-div relative">
+                <i class="search icon"></i>
+                <input class="sb-search-input" type="text" placeholder="Search..." />
+                <i class="close icon"></i>
+                <div class="sb-loader"></div>
+            </div>
+            <button class="sb-btn sb-btn-normal">Search</button>
+        </div>
+        <p class="fs-0-986 ml-auto" style="color: #666;">256 Videos uploaded</p>
+      </div> -->
+
+      <div class="ui segment sb-tabset-segment m-0 pt-0" infiniteScroll [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
+        <div class="sb-grid-layout image">
+          <div class="sb-video-content" *ngFor="let data of myAssets">
+            <div class="sb-image-section relative position">
+              <!-- Overlay play icon should be integrated for video -->
+              <!-- <div class="overlay-image"><i class="play circle icon"></i></div> -->
+              <img (click)="addImageInEditor(data.downloadUrl, data.identifier)" [src]="data.downloadUrl">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="ui segment sb-tabset-segment m-0 pt-0" infiniteScroll [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
+        <div class="sb-grid-layout image">
+          <div class="sb-video-content" *ngFor="let data of allImages">
+            <div class="sb-image-section">
+              <img (click)="addImageInEditor(data.downloadUrl, data.identifier)" [src]="data.downloadUrl">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </sui-tabset>
+  </div>
+  <div class="sb-modal-actions">
+    <button (click)="initiateImageUploadModal();" appTelemetryInteract
+      [telemetryInteractEdata]="{id:'upload_image',type:'click',pageid:'questioncreate'}"
+      class="sb-btn sb-btn-primary sb-btn-normal">Upload and use</button>
+    <button (click)="dismissImagePicker();" appTelemetryInteract
+      [telemetryInteractEdata]="{id:'cancelUpload_image',type:'click',pageid:'questioncreate'}"
+      class="sb-btn sb-btn-normal sb-btn-outline-primary">Cancel</button>
+
+    <!-- <div class="or"></div>
+      <button (click)="dismissImagePicker();" class="ui primary button">Save</button> -->
+
+  </div>
+</sui-modal>
+
+<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal"
+  [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal3>
+  <div class="header">Upload and Use</div>
+  <div class="content">
+    <div class="ui grid">
+      <div class="one wide column"></div>
+      <div class="ten wide column">
+        <div>
+          <input (change)="uploadImage($event)" type="file" accept="image/jpeg, image/jpg, image/png" name="assetfile">
+        </div>
+        <div class="ui info message">
+          <p>Allowed file types are: jpeg, jpg, png</p>
+          <p>Maximum allowed file size: 1 MB</p>
+        </div>
+        <div *ngIf="showErrorMsg" class="ui error message">
+          <p>{{errorMsg}}</p>
+        </div>
+      </div>
+      <div class="one wide column"></div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui left floated buttons">
+      <button (click)="dismissImageUploadModal();" class="ui primary button">Back</button>
+    </div>
+    <div class="ui buttons">
+      <button (click)="dismissImageUploadModal();" class="ui button">Cancel</button>
+      <!-- <div class="or"></div>
+      <button (click)="dismissImageUploadModal();" class="ui primary button">Upload and use</button> -->
+    </div>
+  </div>
+</sui-modal>

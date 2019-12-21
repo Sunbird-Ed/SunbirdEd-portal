@@ -1,0 +1,358 @@
+<app-question-creation-header *ngIf="questionMetaData" (buttonType)="buttonTypeHandler($event)"
+  [rejectComment]="rejectComment" [questionMetaData]="questionMetaData" [disableSubmission]="isEditorThrowingError"
+  (questionStatus)="handleReviewrStatus($event)" (questionQueueStatus)="handleQuestionSelectionStatus($event)"
+  [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
+
+<div *ngIf='showForm'>
+  <form #mcqFormControl="ngForm" class="ui form mcq-vertical mt-8" *ngIf="!showPreview">
+    <div class="ckeditor-tool width-100">
+      <div class="ckeditor-tool__question mb-24">
+        <div class="sb-field mcq-title mb-16">
+          <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+          <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)"
+            class="ui basic red error label pt-1 question-list">Fill Question</label>
+          <div class="ckeditor-tool-container">
+            <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);"
+              [editorConfig]="questionMetaData" [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
+          </div>
+        </div>
+      </div>
+
+      <div class="mcq-options">
+        <div class="sb-mcq-options-answer width-100">
+          <div class="d-flex flex-ai-center ckeditor-tool__answer my-16">
+            <label class="fs-1 mb-0">Answers</label>
+            <label *ngIf="showFormError && !mcqForm.answer" class="ui basic red error label pt-1">Select one correct
+              answer</label>
+
+            <!-- add button to be integrated -->
+            <!-- <button class="sb-btn sb-btn-outline-primary sb-btn-normal sb-left-icon-btn ml-auto"><i
+                class="plus icon"></i>ADD</button> -->
+
+          </div>
+          <div class="mcq-option ckeditor-tool__option mb-8" *ngFor="let option of mcqForm.options; let i=index">
+            <div class="twelve wide field">
+              <label class="px-16 py-8 mb-0 ckeditor-tool__label">Option {{i + 1}} </label>
+              <label *ngIf="showFormError && (option.body === undefined || option.body === '')"
+                class="ui basic red error label pt-1">Fill this option</label>
+              <div class="ckeditor-tool-container">
+                <app-ckeditor-tool (hasError)="handleEditorError($event)"
+                  (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
+                  [editorConfig]="questionMetaData" [editorDataInput]="option.body"
+                  [setCharacterLimit]="setCharacterLimit" [setImageLimit]="setImageLimit"></app-ckeditor-tool>
+                <div class="mcq-checkbox-answer">
+                  <!-- <sui-radio-button name="'correct_response'" value={{i}} [(ngModel)]="mcqForm.answer"></sui-radio-button>
+                          <label>Mark as right answer</label> -->
+                  <button *ngIf='mcqForm.answer !== i.toString()' (click)="mcqForm.answer = i.toString()"
+                    class="sb-btn sb-btn-outline-gray-disabled sb-btn-xs mr-auto"><i class="checkmark icon"></i>Mark as
+                    right
+                    answer </button>
+                  <button *ngIf='mcqForm.answer === i.toString()'
+                    class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary mr-auto"><i
+                      class="checkmark icon"></i>Marked
+                    as
+                    right answer </button>
+
+                  <!-- Checkbox needs to be integrated -->
+                  <!-- <div class="sb-checkbox sb-checkbox-primary mr-auto">
+                    <input type="checkbox" id="check1" name="example">
+                    <label for="check1">Primary checkbox</label>
+                  </div>
+                  <div class="sb-checkbox sb-checkbox-primary mr-auto selected">
+                    <input type="checkbox" id="check1" name="example">
+                    <label for="check1">Primary checkbox</label>
+                  </div> -->
+                  <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)"
+                    class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn"><i
+                      class="trash alternate outline icon"></i>Delete</button>
+                </div>
+              </div>
+              <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce
+                the
+                size</label>
+            </div>
+          </div>
+
+        </div>
+        <div class="text-center mt-16">
+          <button *ngIf='mcqForm.options.length < 4' class="sb-btn sb-btn-normal sb-btn-primary"
+            (click)="mcqForm.addOptions()"> Add more Options </button>
+        </div>
+
+        <!-- Add Solution(Optional) HTML sturcture -->
+
+        <!-- <div class="my-16 ckeditor-tool__solution width-100">
+          <div class="d-flex flex-ai-center ckeditor-tool__solution__header">
+            <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label">Solution</label>
+            <div class="ui dropdown sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary ml-auto sb-btn-dropdown"
+              suiDropdown autoClose="itemClick">
+              <div class="text">Select One</div>
+              <i class="dropdown icon"></i>
+              <div class="menu" suiDropdownMenu>
+                <div class="item">Modified on</div>
+                <div class="item">Created on</div>
+              </div>
+            </div>
+          </div>
+          <div class="ckeditor-tool__solution__body">
+            <div class="solution-media p-16 d-flex flex-ai-center">
+              <div class="solution-media__video relative position">
+                <div class="overlay-image"><i class="play circle icon"></i></div>
+              </div>
+              <div class="solution-media__desc ml-16">
+                Video Thumbnail to the left and
+                the Video title goes here
+              </div>
+            </div>
+            <div class="mcq-checkbox-answer">
+              <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto"><i
+                  class="trash alternate outline icon"></i>Delete</button>
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+
+    <div class="ui stackable grid licence-form__content__fields width-100 m-0 mt-24">
+      <div class="row">
+        <div class="twelve wide column p-0" *ngIf="learningOutcomeOptions.length">
+          <div class="sb-field">
+            <label class="d-flex mb-8">Learning Outcome</label>
+            <sui-select class="selection width-100" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
+              name="'learningOutcome'">
+              <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name">
+              </sui-select-option>
+            </sui-select>
+            <label class="ui basic red error label pt-1 mt-5 width-100"
+              *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning
+              Outcome</label>
+          </div>
+        </div>
+      </div>
+      <div class="row pt-0">
+        <div class="four wide column pl-0">
+          <div class="sb-field">
+            <label class="d-flex mb-8">Learning Level</label>
+            <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel"
+              name="'bloomsLevel'">
+              <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+            </sui-select>
+            <label class="ui basic red error label pt-1 mt-5 width-100"
+              *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
+          </div>
+        </div>
+        <div class="four wide column">
+          <div class="sb-field">
+            <label>Authors</label> <br />
+            <input class="sb-form-control" #author_names type="text"
+              [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName"
+              class="sb-form-control">
+          </div>
+        </div>
+        <div class="four wide column"></div>
+      </div>
+    </div>
+
+
+    <!-- <div class="ui two column grid width-100">
+      <div class="one column row" *ngIf="learningOutcomeOptions.length">
+        <div class="column">
+          <label>Learning Outcome</label>
+          <div class="sb-field">
+            <sui-select class="selection width-100" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
+              name="'learningOutcome'">
+              <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name">
+              </sui-select-option>
+            </sui-select>
+          </div>
+          <label class="ui basic red error label pt-1 mt-5 width-100"
+            *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
+        </div>
+      </div>
+      <div class="column">
+        <label>Learning Level</label>
+        <div class="sb-field">
+          <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel"
+            name="'bloomsLevel'">
+            <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+          </sui-select>
+        </div>
+        <label class="ui basic red error label pt-1 mt-5 width-100"
+          *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
+      </div>
+
+      <div class="two column row">
+        <div class="column">
+          <label>Authors</label> <br />
+          <div class="sb-field">
+            <input class="sb-form-control" #author_names type="text"
+              [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
+          </div>
+        </div>
+      </div>
+
+    </div> -->
+
+    <!-- Question Preview Section HTML -->
+
+    <!-- <div class="ui container">
+      <div class="ui stackable grid m-0 sb-bg-color-white">
+        <div class="row">
+          <div class="twelve wide column">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+                <div class="ckeditor-tool__solution__body">
+                  <p class="fs-0-785 p-16">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book.
+                  </p>
+                  <div class="mcq-checkbox-answer">
+                    <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto"><i
+                        class="trash alternate outline icon"></i>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+            <div class="row mb-0 p-0">
+      <div class="twelve wide column">
+          <div class="d-flex flex-ai-center ckeditor-tool__answer my-16">
+              <label class="fs-1 mb-0">Answers</label>
+            </div>
+      </div>
+    </div>
+        <div class="row mb-0 p-0">
+          <div class="twelve wide column">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Option 1</label>
+                <div class="ckeditor-tool__solution__body">
+                  <p class="fs-0-785 p-16">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book.
+                  </p>
+                  <div class="mcq-checkbox-answer">
+                    <div class="sb-checkbox sb-checkbox-primary mr-auto selected">
+                      <input type="checkbox" id="check1" name="example">
+                      <label for="check1">Primary checkbox</label>
+                    </div>
+                    <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto"><i
+                        class="trash alternate outline icon"></i>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row mb-0 p-0">
+          <div class="twelve wide column">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Option 2</label>
+                <div class="ckeditor-tool__solution__body">
+                  <p class="fs-0-785 p-16">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book.
+                  </p>
+                  <div class="mcq-checkbox-answer">
+                    <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto"><i
+                        class="trash alternate outline icon"></i>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="row mb-0 p-0">
+          <div class="twelve wide column">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Solution</label>
+                <div class="ckeditor-tool__solution__body">
+                  <div class="solution-media p-16 d-flex flex-ai-center">
+                    <div class="solution-media__video relative position">
+                      <div class="overlay-image"><i class="play circle icon"></i></div>
+                    </div>
+                    <div class="solution-media__desc ml-16">
+                      Video Thumbnail to the left and
+                      the Video title goes here
+                    </div>
+                  </div>
+                  <p class="fs-0-785 p-16">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book.
+                  </p>
+                  <div class="mcq-checkbox-answer">
+                    <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto"><i
+                        class="trash alternate outline icon"></i>Delete</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div> -->
+
+
+    <!-- Learning Outcome learning level author license Preview HTML -->
+    <!-- <div class="ui stackable grid licence-form__content__fields">
+        <div class="row">
+          <div class="twelve wide column">
+            <div class="sb-field">
+              <label for="outcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a
+                  class="ml-4" href="javascript:void(0)" title="title comes here"><img width="16" alt=""
+                    src="assets/images/Info.svg"></a></label>
+              <p class="fs-0-785">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem
+                Ipsum simply dummy text of the printing and typesetting industry</p>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-0">
+          <div class="four wide column">
+            <div class="sb-field space-btn-field">
+              <label for="level" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
+                  href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                    src="assets/images/Info.svg"></a></label>
+              <p class="fs-0-785">Lorem Ipsum is simply dummy text of the printing Dummy text of the printing</p>
+            </div>
+          </div>
+          <div class="four wide column p-0">
+            <div class="sb-field">
+              <label for="author" class="d-flex mb-4">Author(s) <a href="javascript:void(0)"
+                  title="title comes here"><img width="16" alt="" class="ml-4"
+                    src="assets/images/Info.svg"></a></label>
+              <p class="fs-0-785">Lorem Ipsum is simply </p>
+            </div>
+          </div>
+          <div class="four wide column">
+            <div class="sb-field space-btn-field">
+              <label for="license" class="d-flex mb-4">License <a href="javascript:void(0)"
+                  title="title comes here"><img width="16" alt="" class="ml-4"
+                    src="assets/images/Info.svg"></a></label>
+              <p class="fs-0-785">ACT456</p>
+            </div>
+          </div>
+        </div>
+      </div> -->
+  </form>
+</div>
+
+<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
+</app-question-preview>
+
+<app-mcq-template-selection *ngIf='showTemplatePopup' style="z-index: 1000"
+  (templateSelection)="handleTemplateSelection($event)">
+</app-mcq-template-selection>

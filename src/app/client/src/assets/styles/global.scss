@@ -1,5 +1,6 @@
 @import "./variables";
 @import "./mixins/mixins";
+
 html,
 body {
   height: 100%;
@@ -21,6 +22,7 @@ body {
     & > .pusher {
       background: transparent !important;
       padding-bottom: 400px !important;
+
       &.dimmed {
         height: 100vh;
       }
@@ -48,12 +50,15 @@ body {
     }
   }
 }
+
 @include respond-above(sm) {
   body {
     padding-bottom: 168px;
+
     .pusher {
       padding-bottom: 240px !important;
     }
+
     .footer-fix {
       min-height: calc(100vh - 168px);
     }
@@ -63,14 +68,17 @@ body {
     }
   }
 }
+
 @include respond-below(sm) {
   .footer-fix {
     min-height: calc(100vh - 336px);
     padding-bottom: $base-block-space * 3;
   }
 }
+
 .sb-offline {
   padding-bottom: 145px;
+
   .footer-fix {
     min-height: calc(100vh - 180px);
   }
@@ -92,13 +100,15 @@ body {
   color: $primary-color;
   text-transform: capitalize;
 }
-.publicmenusection.ui.secondary.vertical.menu > .item {
+
+.publicmenusection.ui.secondary.vertical.menu>.item {
   text-transform: capitalize;
 }
 
 .sb-placeholder {
   justify-content: center !important;
 }
+
 [dir="rtl"] {
   .sb-explore-qr-container {
     .dial-section-column {
@@ -116,6 +126,50 @@ body {
     }
   }
 }
+
+.quml-responsive-div {
+  figure {
+    text-align: center;
+  }
+
+  // .mcq-vertical .mcq-title, .mcq-horizontal .mcq-title, .mcq-grid .mcq-title {
+  //   img {
+  //     max-width: 400px;
+  //   }
+  // }
+  img {
+    max-width: 80px;
+    width: inherit;
+    height: inherit;
+  }
+
+  .image-style-align-left {
+    margin: 0;
+    max-width: 50%;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    float: left;
+  }
+
+  .image-style-align-right {
+    margin: 0;
+    max-width: 50%;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    text-align: right;
+    float: right;
+  }
+
+  .image-style-align-right img,
+  .image-style-align-left img {
+    max-width: 80px !important;
+  }
+}
+
+.no-bg {
+  background: none !important;
+}
+
 .description.annannouncement-description {
   .sb-label-status-error {
     color: $sb-label-status-error-color;
@@ -126,6 +180,7 @@ body {
     font-size: 11px;
   }
 }
+
 // don't delete this
 .iziModal-isAttached {
   body {
@@ -156,6 +211,7 @@ body {
 .ui.info.message {
   background-color: var(--primary-0) !important;
 }
+
 .ui.info.message .header {
   color: var(--primary-color) !important;
 }
@@ -163,6 +219,7 @@ body {
 ol.ui.list ol {
   margin-left: 2em !important;
 }
+
 .ui.info.message {
   color: black !important;
 }
