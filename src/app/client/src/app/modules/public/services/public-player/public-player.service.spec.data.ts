@@ -9,7 +9,7 @@ export const serverRes = {
             content: {
                 mimeType: 'application/vnd.ekstep.ecml-archive',
                 body: 'body',
-                identifier: 'do_31276383142505676814236',
+                identifier: 'domain_66675',
                 versionKey: '1497028761823',
                 downloadStatus: 'FAILED',
             }
@@ -31,9 +31,9 @@ export const serverRes = {
         'response': {
           'contents': [{
             'id': '5efd0589-9ef3-4c4e-94e0-86e3a8a43e3f',
-            'contentId': 'do_31276383142505676814236',
-            'resourceId': 'do_31276383142505676814236',
-            'mimeType': 'application/vnd.ekstep.content-collection',
+            'contentId': 'domain_66675',
+            'resourceId': 'domain_66675',
+            'mimeType': 'application/vnd.ekstep.ecml-archive',
             'name': '10 ಗಣಿತ ಭಾಗ 1',
             'status': 'failed',
             'createdOn': 1576923938092,
