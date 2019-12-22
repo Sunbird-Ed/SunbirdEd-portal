@@ -70,6 +70,7 @@ export class MainHeaderComponent implements OnInit {
   isOffline: boolean = environment.isOffline;
   languages: Array<any>;
   showOfflineHelpCentre = false;
+  contributeTabActive: boolean;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -207,6 +208,7 @@ export class MainHeaderComponent implements OnInit {
   getUrl() {
     this.routerEvents.subscribe((urlAfterRedirects: NavigationEnd) => {
       let currentRoute = this.activatedRoute.root;
+      this.contributeTabActive = this.router.isActive('/contribute', true);
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
           const child: ActivatedRoute[] = currentRoute.children;

@@ -8,6 +8,7 @@ import { ConfigService, ResourceService, BrowserCacheTtlService, SharedModule } 
 import { ElectronDialogService } from '../../services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { response } from './desktop-header.component.spec.data';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('DesktopHeaderComponent', () => {
     let component: DesktopHeaderComponent;
@@ -18,7 +19,8 @@ describe('DesktopHeaderComponent', () => {
             declarations: [DesktopHeaderComponent],
             imports: [SharedModule.forRoot(), CommonConsumptionModule, FormsModule, RouterModule.forRoot([]), CoreModule],
             providers: [ConfigService, ResourceService, ElectronDialogService, TenantService, FormService, OrgDetailsService,
-                BrowserCacheTtlService, TelemetryService]
+                BrowserCacheTtlService, TelemetryService],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA]
         }).compileComponents();
     }));
 
@@ -32,11 +34,9 @@ describe('DesktopHeaderComponent', () => {
         const orgDetailsService = TestBed.get(OrgDetailsService);
         orgDetailsService._orgDetails$.next({ err: null, orgDetails: response.orgData.orgDetails });
         spyOn(component, 'getLanguage');
-        spyOn(component, 'setInteractData');
         spyOn(component, 'getTenantInfo');
         component.ngOnInit();
         expect(component.getLanguage).toHaveBeenCalledWith(response.orgData.orgDetails.hashTagId);
-        expect(component.setInteractData).toHaveBeenCalled();
         expect(component.getTenantInfo).toHaveBeenCalled();
     });
 
@@ -60,13 +60,5 @@ describe('DesktopHeaderComponent', () => {
         spyOn(electronDialogService, 'showContentImportDialog');
         component.handleImport();
         expect(electronDialogService.showContentImportDialog).toHaveBeenCalled();
-    });
-
-    it('Call handleImport', () => {
-        spyOn(component, 'routeToOffline');
-        component.onEnter('test');
-        component.routeToOffline();
-        expect(component.queryParam.key).toEqual('test');
-        expect(component.routeToOffline).toHaveBeenCalled();
     });
 });

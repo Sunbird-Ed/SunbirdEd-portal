@@ -1,5 +1,5 @@
 import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, map, debounceTime, delay, filter } from 'rxjs/operators';
@@ -30,11 +30,9 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public initFilters = false;
   public loaderMessage: ILoaderMessage;
-  public showFilters = false;
   public hashTagId: string;
   public dataDrivenFilters: any = {};
   public facets: string[];
-  public contentList = [];
   public isViewAll = false;
 
   public paginationDetails: IPagination;
@@ -43,10 +41,14 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   showExportLoader = false;
   showDownloadLoader = false;
   contentName: string;
+  downloadedContents: any[] = [];
 
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
+
+  @Input() contentList: any[] = [];
+  @Input() isOnlineContents = false;
 
   constructor(
     public contentManagerService: ContentManagerService,
@@ -70,7 +72,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
+    this.isBrowse = this.isOnlineContents;
     this.setTelemetryData();
     this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$))
@@ -84,108 +86,14 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.updateCardData(data);
       });
 
-    if (_.includes(this.router.url, 'view-all')) {
-      this.isViewAll = true;
-      this.fetchRecentlyAddedContent();
-    } else {
-      this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
-      this.isViewAll = false;
-      this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).subscribe((orgDetails: any) => {
-        this.hashTagId = orgDetails.hashTagId;
-        this.initFilters = true;
-      }, error => {
-        this.router.navigate(['']);
-      });
-    }
-
     this.router.events.pipe(
       filter((event) => event instanceof NavigationStart),
       takeUntil(this.unsubscribe$))
       .subscribe(element => { this.prepareVisits(); });
   }
 
-  fetchRecentlyAddedContent() {
-    const softConstraintData: any = {
-      filters: {
-        channel: this.hashTagId,
-        contentType: ['Collection', 'TextBook', 'LessonPlan', 'Resource']
-      },
-      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
-      mode: 'soft'
-    };
-
-    const facets = ['board', 'medium', 'gradeLevel', 'subject'];
-
-    const option = {
-      filters: softConstraintData.filters,
-      mode: _.get(softConstraintData, 'mode'),
-      facets: facets,
-      params: this.configService.appConfig.ExplorePage.contentApiQueryParams,
-      softConstraints: softConstraintData.softConstraints
-    };
-
-    this.searchService.contentSearch(option)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(response => {
-        this.showLoader = false;
-        const orderedContents = _.orderBy(_.get(response, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']);
-        this.contentList = this.formatSearchResults(orderedContents);
-        this.addHoverData();
-      }, error => {
-        this.setNoResultMessage();
-      });
-  }
-
-  public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
-    this.dataDrivenFilters = filters;
-    this.fetchContentOnParamChange();
-    this.setNoResultMessage();
-  }
-
-  onFilterChange(event) {
-    this.showLoader = true;
-    this.dataDrivenFilters = _.cloneDeep(event.filters);
-    this.fetchContents();
-    this.publicPlayerService.libraryFilters = event.filters;
-  }
-
-  private fetchContentOnParamChange() {
-    combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-      .pipe(debounceTime(5),
-        delay(10),
-        map(result => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
-        takeUntil(this.unsubscribe$)
-      ).subscribe(({ params, queryParams }) => {
-        this.showLoader = true;
-        this.paginationDetails.currentPage = params.pageNumber;
-        this.queryParams = { ...queryParams };
-        this.fetchContents();
-      });
-  }
-
-  private fetchContents() {
-    this.constructSearchRequest();
-    this.searchService.contentSearch(this.constructSearchRequest())
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        this.showLoader = false;
-        this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-          this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
-        this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
-        this.addHoverData();
-      }, err => {
-        this.showLoader = false;
-        this.contentList = [];
-        this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-          this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-      });
-  }
-
-  addHoverData() {
-    _.each(this.contentList, (value) => {
+  addHoverData(contentList) {
+    _.each(contentList, (value) => {
       value['hoverData'] = {
         'note': this.isBrowse && _.get(value, 'downloadStatus') ===
           'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
@@ -195,7 +103,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
             'label': this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
               this.resourceService.frmelmnts.btn.download :
               this.resourceService.frmelmnts.lbl.saveToPenDrive,
-            'disabled': this.isBrowse && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], _.get(value, 'downloadStatus')) ? true : false
+            'disabled': this.isBrowse && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], Boolean(_.get(value, 'downloadStatus')))
           },
           {
             'type': 'open',
@@ -204,103 +112,13 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         ]
       };
     });
+
+    return contentList;
   }
 
-  constructSearchRequest() {
-    let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    const softConstraintData: any = {
-      filters: {
-        channel: this.hashTagId
-      },
-      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
-      mode: 'soft'
-    };
-    if (this.dataDrivenFilters.board) {
-      softConstraintData.board = this.dataDrivenFilters.board;
-    }
-    const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.dataDrivenFilters, 'appliedFilters'),
-      softConstraintData);
-    const option: any = {
-      filters: _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters,
-      mode: _.get(manipulatedData, 'mode'),
-      params: this.configService.appConfig.ExplorePage.contentApiQueryParams,
-      query: this.queryParams.key,
-      facets: this.facets,
-    };
-
-    if (_.includes(this.router.url, 'browse')) {
-      option.limit = this.configService.appConfig.SEARCH.PAGE_LIMIT;
-      option.pageNumber = _.get(this.paginationDetails, 'currentPage');
-    }
-
-    option.filters['contentType'] = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-    if (manipulatedData.filters) {
-      option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
-    }
-
-    this.frameworkService.channelData$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((channelData) => {
-        if (!channelData.err) {
-          option.params.framework = _.get(channelData, 'channelData.defaultFramework');
-        }
-      });
-
-    return option;
-  }
-
-  private formatSearchResults(list) {
-    _.forEach(list, (value, index) => {
-      const constantData = this.configService.appConfig.ViewAll.otherCourses.constantData;
-      const metaData = this.configService.appConfig.ViewAll.metaData;
-      const dynamicFields = this.configService.appConfig.ViewAll.dynamicFields;
-      list[index] = this.utilService.processContent(list[index],
-        constantData, dynamicFields, metaData);
-    });
-    return list;
-  }
-
-  public navigateToPage(page: number): void {
-    if (page < 1 || page > this.paginationDetails.totalPages) {
-      return;
-    }
-    const url = _.replace(_.split(this.router.url, '?')[0], /[^\/]+$/, page.toString());
-    this.router.navigate([url], { queryParams: this.queryParams });
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
-  }
-
-  goBack() {
-    if (_.includes(this.router.url, 'browse')) {
-      this.router.navigate(['/browse']);
-    } else {
-      this.router.navigate(['']);
-    }
-
-    this.utilService.clearSearchQuery();
-  }
-
-  ngOnDestroy() {
+ ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-
-  private setNoResultMessage() {
-    if (!(this.router.url.includes('/browse'))) {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0133'
-      };
-    } else {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
-      };
-    }
   }
 
   setTelemetryData() {
@@ -440,9 +258,11 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   }
 
   updateCardData(downloadListdata) {
-    _.each(this.contentList, (contents) => {
-      this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
-    });
-    this.addHoverData();
+    if (this.isBrowse || this.isOnlineContents) {
+      _.each(this.contentList, (contents) => {
+        this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
+      });
+      this.addHoverData(this.contentList);
+    }
   }
 }

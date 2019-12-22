@@ -4,6 +4,8 @@ import * as _ from 'lodash-es';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { IInteractEventEdata } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-update-location',
@@ -16,6 +18,7 @@ export class UpdateLocationComponent implements OnInit, OnDestroy {
   districtList = [];
   selectedState: any;
   selectedDistrict: any;
+  onClickSubmit: IInteractEventEdata;
   @Output() dismissed = new EventEmitter<any>();
   public unsubscribe$ = new Subject<void>();
   @Input() userLocationData;
@@ -23,11 +26,13 @@ export class UpdateLocationComponent implements OnInit, OnDestroy {
     public userService: OnboardingService,
     public resourceService: ResourceService,
     public toasterService: ToasterService,
+    public activatedRoute: ActivatedRoute
   ) { }
   ngOnInit() {
-    this.selectedState = this.userLocationData.state;
-    this.selectedDistrict = this.userLocationData.city;
+    this.selectedState = this.userLocationData ? this.userLocationData.location.state : '';
+    this.selectedDistrict = this.userLocationData ? this.userLocationData.location.city : '';
     this.getAllStates();
+    this.setTelemetryData();
   }
 
   closeModal(status) {
@@ -54,6 +59,8 @@ export class UpdateLocationComponent implements OnInit, OnDestroy {
       });
   }
   updateUserLocation() {
+    this.userLocationData.location.state = this.selectedState;
+    this.userLocationData.location.city = this.selectedDistrict;
     const requestParams = {
       request: {
         state: this.selectedState,
@@ -63,12 +70,19 @@ export class UpdateLocationComponent implements OnInit, OnDestroy {
     this.userService.saveLocation(requestParams)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.closeModal('SUCCESS');
-        this.toasterService.success(this.resourceService.messages.smsg.m0060);
+        this.closeModal(this.userLocationData);
+        this.toasterService.success(this.resourceService.messages.smsg.m0057);
       }, error => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0024);
-        this.closeModal('ERROR');
+        this.closeModal('');
+        this.toasterService.error(this.resourceService.messages.emsg.m0021);
       });
+  }
+  setTelemetryData () {
+    this.onClickSubmit = {
+      id: 'update_location',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

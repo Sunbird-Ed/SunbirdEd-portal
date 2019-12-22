@@ -34,7 +34,7 @@ describe('LibraryComponent', () => {
         goToMyDownloads: 'Goto My Downloads',
         saveToPenDrive: 'Save to Pen drive',
         open: 'Open',
-        allDownloads: 'all Downloads will be automatically added to',
+        allDownloads: 'All Downloads will be automatically added to',
         exportingContent: 'Copying {contentName}...',
         downloadingContent: 'Preparing to download {contentName}...',
         recentlyAdded: 'Recently Added',

@@ -1,0 +1,11 @@
+:host {
+  .category-label {
+    color: var(--gray-800);
+    .link:hover {
+      text-decoration: underline;
+    }
+  }
+  .border {
+    border-bottom: calculateRem(1px) solid var(--primary-400);
+  }
+}
