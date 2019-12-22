@@ -4,7 +4,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [{
-  path: '', component: ListAllProgramsComponent, canActivate: [ProgramsService]
+  path: '', component: ListAllProgramsComponent, canActivate: [ProgramsService],
+  data: {
+    telemetry: {
+      env: 'contribute', pageid: 'programs-list', type: 'view', subtype: 'paginate'
+    }
+  }
 }];
 
 @NgModule({
