@@ -1,3 +1,4 @@
+import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,6 +11,7 @@ import { ListAllProgramsComponent } from './components';
   imports: [
     CommonModule,
     SharedModule,
+    CoreModule,
     ProgramRoutingModule
   ]
 })

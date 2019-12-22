@@ -1,12 +1,21 @@
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule, PublicDataService, ProgramsService } from '@sunbird/core';
-import { SharedModule, ResourceService } from '@sunbird/shared';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { SharedModule, ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { async, ComponentFixture, TestBed, inject, fakeAsync, tick } from '@angular/core/testing';
 
 import { ListAllProgramsComponent } from './list-all-programs.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
 import { mockData } from './list-all-programs.spec.data';
+import { ActivatedRoute } from '@angular/router';
+
+const activatedRouterStub = {
+  snapshot: {
+    data: {
+      telemetry: { env: 'contribute', pageid: 'programs-list', type: 'view', subtype: 'paginate' }
+    }
+  }
+};
 
 describe('ListAllProgramsComponent', () => {
   let component: ListAllProgramsComponent;
@@ -16,7 +25,8 @@ describe('ListAllProgramsComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [ListAllProgramsComponent],
-      providers: [PublicDataService, ResourceService, ProgramsService]
+      providers: [PublicDataService, ResourceService, ProgramsService,
+        { provide: ActivatedRoute, useValue: activatedRouterStub }]
     })
       .compileComponents();
   }));
@@ -90,4 +100,39 @@ describe('ListAllProgramsComponent', () => {
       });
     });
   });
+
+  describe('telemetry', () => {
+
+    it('impression event should be', inject([NavigationHelperService], fakeAsync((navigationHelperService) => {
+      spyOn(navigationHelperService, 'getPageLoadTime').and.returnValue(0.23);
+      component.ngAfterViewInit();
+      tick(100);
+      expect(component.telemetryImpression).toBeDefined();
+      expect(component.telemetryImpression).toEqual({
+        context: {env: 'contribute'},
+        edata: { type: 'view', pageid: 'programs-list', uri: '/', subtype: 'paginate', duration: 0.23 }
+      });
+    })));
+
+    it('getTelemetryInteractEdata function should return telemetry interactEdata ', () => {
+      const obj = component.getTelemetryInteractEdata('program-card');
+      expect(obj).toBeDefined();
+      expect(obj).toEqual({
+        id: 'program-card',
+        type: 'click',
+        pageid: 'programs-list'
+      });
+    });
+
+    it('getTelemetryInteractObject function should return telemetry interactEdata  object', () => {
+      const obj = component.getTelemetryInteractObject('4234234');
+      expect(obj).toBeDefined();
+      expect(obj).toEqual({
+        id: '4234234',
+        type: 'Program',
+        ver: '1.0'
+      });
+    });
+  });
+
 });
