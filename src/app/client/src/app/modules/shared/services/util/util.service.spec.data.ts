@@ -338,7 +338,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'Save to Pendrive',
+          'label': undefined,
           'disabled': false
         },
         {
@@ -388,7 +388,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'Save to Pendrive',
+          'label': undefined,
           'disabled': false
         },
         {
@@ -443,7 +443,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'Save to Pendrive',
+          'label': undefined,
           'disabled': false
         },
         {
