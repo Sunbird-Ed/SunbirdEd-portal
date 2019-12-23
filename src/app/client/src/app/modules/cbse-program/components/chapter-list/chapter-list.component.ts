@@ -293,7 +293,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     this.templateDetails = _.find(templateList, (templateData) => {
       return templateData.metadata.contentType === event.content.contentType;
     });
-    this.componentLoadHandler('preview', this.componentMapping[event.content.contentType], this.templateDetails.onClick);
+    this.componentLoadHandler('preview', this.componentMapping[this.templateDetails.id], this.templateDetails.onClick);
   }
 
   componentLoadHandler(action, component, componentName) {

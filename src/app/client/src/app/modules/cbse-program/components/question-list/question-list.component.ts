@@ -82,8 +82,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.resourceName = this.templateDetails.metadata.name;
     this.fetchExistingResource(this.sessionContext.resourceIdentifier).subscribe(response => {
       this.resourceDetails = _.get(response, 'result.content');
-      this.resourceStatus = _.get(this.resourceDetails, 'status');
-      //this.resourceStatus = 'Review';
+      //this.resourceStatus = _.get(this.resourceDetails, 'status');
+      this.resourceStatus = 'Review';
     });
     if (this.sessionContext.questionType) {
       this.fetchQuestionWithRole();
@@ -212,6 +212,12 @@ export class QuestionListComponent implements OnInit, OnChanges {
           mode: editorMode,
           data: assessment_item
         };
+        this.sessionContext.resourceStatus = this.resourceStatus;
+        if (this.sessionContext.resourceStatus === 'Draft' || this.sessionContext.resourceStatus === 'Rejected') {
+          this.sessionContext.isReadOnlyMode = false;
+        } else {
+          this.sessionContext.isReadOnlyMode = true;
+        }
         // min of 1sec timeOut is set, so that it should go to bottom of call stack and execute whennever the player data is available
         if (this.sessionContext.showMode === 'previewPlayer' && this.initialized) {
           this.showLoader = true;

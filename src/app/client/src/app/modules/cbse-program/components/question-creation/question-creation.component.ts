@@ -83,6 +83,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   updateStatus = 'update';
   public rejectComment: any;
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
+  isReadOnlyMode = false;
   ngOnInit() {
     this.initialized = true;
     this.editorConfig = { 'mode': 'create' };
@@ -116,6 +117,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       // this.buttonTypeHandler('preview');
     }
     this.userName = this.setUserName();
+    this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
   }
 
   setUserName() {

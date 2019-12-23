@@ -5,7 +5,7 @@
 
 <div *ngIf='showForm'>
   <form #mcqFormControl="ngForm" class="ui form mcq-vertical mt-8" *ngIf="!showPreview">
-    <div class="ckeditor-tool width-100" *ngIf="!questionMetaData || questionMetaData.mode !== 'view' ">
+    <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode">
       <div class="ckeditor-tool__question mb-24">
         <div class="sb-field mcq-title mb-16">
           <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
@@ -99,7 +99,7 @@
     </div>
 
   
-    <div class="ui two column grid width-100" *ngIf="!questionMetaData || questionMetaData.mode !== 'view' ">
+    <div class="ui two column grid width-100" *ngIf="!isReadOnlyMode">
       <div class="one column row" *ngIf="learningOutcomeOptions.length">
         <div class="column">
           <label>Learning Outcome</label>
@@ -138,7 +138,7 @@
 
 
     <!-- Question Preview Section HTML -->
-      <div class="ui container" *ngIf="questionMetaData.mode == 'view' ">
+      <div class="ui container" *ngIf="isReadOnlyMode">
         <div class="ui stackable grid m-0 sb-bg-color-white">
           <div class="row">
             <div class="twelve wide column">
@@ -146,7 +146,7 @@
                 <div class="ckeditor-tool__question mb-24">
                   <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
                   <div class="ckeditor-tool__solution__body">
-                    <p class="fs-0-785 p-16" [innerHTML]="mcqForm.question"></p>
+                    <p class="fs-0-785 p-16" id="wirisDisplay" [innerHTML]="mcqForm.question | sanitizeHtml"></p>
                   </div>
                 </div>
               </div>
@@ -167,7 +167,7 @@
                 <div class="ckeditor-tool__question mb-24">
                   <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Option {{ i+1 }}</label>
                   <div class="ckeditor-tool__solution__body">
-                    <p class="fs-0-785 p-16" [innerHTML]="option.body"></p>
+                    <p class="fs-0-785 p-16" [innerHTML]="option.body  | sanitizeHtml"></p>
                     <div class="mcq-checkbox-answer" *ngIf="mcqForm.answer === i.toString()">
                       <div class="sb-checkbox sb-checkbox-primary mr-auto selected">
                         <input type="checkbox" id="check1" name="example" disabled checked>
@@ -213,7 +213,7 @@
       </div>
 
       <!-- Learning Outcome learning level author license Preview HTML -->
-      <div class="ui stackable grid licence-form__content__fields" *ngIf="questionMetaData.mode == 'view' ">
+      <div class="ui stackable grid licence-form__content__fields" *ngIf="isReadOnlyMode">
           <div class="row">
             <div class="twelve wide column">
               <div class="sb-field">

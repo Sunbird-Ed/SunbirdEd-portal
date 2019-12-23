@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, OnChanges, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, OnChanges, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { McqForm } from './../../class/McqForm';
 import { ConfigService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { UserService, ActionService } from '@sunbird/core';
@@ -16,7 +16,7 @@ import { CbseProgramService } from '../../services';
   templateUrl: './mcq-creation.component.html',
   styleUrls: ['./mcq-creation.component.scss']
 })
-export class McqCreationComponent implements OnInit, OnChanges {
+export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() sessionContext: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
@@ -35,6 +35,7 @@ export class McqCreationComponent implements OnInit, OnChanges {
   optionBody: any = [];
   isEditorThrowingError: boolean;
   showFormError = false;
+  isReadOnlyMode = false;
   public showPreview = false;
   public previewData: any;
   public setCharacterLimit = 160;
@@ -81,6 +82,14 @@ export class McqCreationComponent implements OnInit, OnChanges {
       // this.buttonTypeHandler('preview');
     }
     this.userName = this.setUserName();
+    this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
+  }
+  ngAfterViewInit() {
+    if (this.isReadOnlyMode) {
+      const el = document.getElementsByClassName('ckeditor-tool__solution__body');
+      // tslint:disable-next-line:only-arrow-functions
+      com.wiris.js.JsPluginViewer.parseElement(el[0], true, function() {});
+    }
   }
   ngOnChanges() {
     this.previewData = this.questionMetaData;

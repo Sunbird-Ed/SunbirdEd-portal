@@ -8,7 +8,7 @@
 
 
 <form *ngIf="!showPreview" class="ui form mt-8" [formGroup]="questionMetaForm">
-  <div class="ckeditor-tool width-100">
+  <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode">
     <div class="ckeditor-tool__question mb-24">
       <div class="sb-field mcq-title mb-16">
         <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <div class="ui two column grid width-100">
+  <div class="ui two column grid width-100" *ngIf="!isReadOnlyMode">
       <div class="one column row" *ngIf="learningOutcomeOptions.length > 0">
           <div class="column">
               <label>Learning Outcome</label>
@@ -72,7 +72,7 @@
 
 
   <!-- Question Preview Section HTML -->
-    <div class="ui container" *ngIf="questionMetaData.mode == 'view' ">
+    <div class="ui container" *ngIf="isReadOnlyMode">
       <div class="ui stackable grid m-0 sb-bg-color-white">
         <div class="row">
           <div class="twelve wide column">
@@ -140,15 +140,14 @@
     </div>
 
     <!-- Learning Outcome learning level author license Preview HTML -->
-    <div class="ui stackable grid licence-form__content__fields" *ngIf="questionMetaData.mode == 'view' ">
-        <div class="row">
+    <div class="ui stackable grid licence-form__content__fields" *ngIf="isReadOnlyMode">
+        <div class="row" *ngIf="learningOutcomeOptions.length > 0">
           <div class="twelve wide column">
             <div class="sb-field">
               <label for="outcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a
                   class="ml-4" href="javascript:void(0)" title="title comes here"><img width="16" alt=""
                     src="assets/images/Info.svg"></a></label>
-              <p class="fs-0-785">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem
-                Ipsum simply dummy text of the printing and typesetting industry</p>
+              <p class="fs-0-785"></p>
             </div>
           </div>
         </div>
