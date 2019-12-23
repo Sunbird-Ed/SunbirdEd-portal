@@ -13,9 +13,11 @@ import { SuiModule } from 'ng2-semantic-ui/dist';
 import {
   role, sessionContext, responseSample, fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample
 } from './chapter-list.component.data';
-import { DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { DynamicModule } from 'ng-dynamic-component';
 
 describe('ChapterListComponent', () => {
   let component: ChapterListComponent;
@@ -61,8 +63,9 @@ describe('ChapterListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule],
+      imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule, FormsModule, DynamicModule],
       declarations: [ChapterListComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActionService, useValue: actionServiceStub }, { provide: UserService, useValue: UserServiceStub },
       { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService,
       {

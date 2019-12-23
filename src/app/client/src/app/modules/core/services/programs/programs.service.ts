@@ -33,7 +33,7 @@ export class ProgramsService implements CanActivate {
    * initializes the service is the user is logged in;
    */
   public initialize() {
-    this.enableContributeMenu().subscribe()
+    this.enableContributeMenu().subscribe();
   }
 
   /**
@@ -109,6 +109,6 @@ export class ProgramsService implements CanActivate {
         }
       })
     )
-    )
+    );
   }
 }

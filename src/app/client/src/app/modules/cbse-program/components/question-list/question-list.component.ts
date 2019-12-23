@@ -54,7 +54,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   ngOnChanges(changedProps: any) {
     if (this.enableRoleChange) {
       this.initialized = false; // it should be false before fetch
-      if(this.sessionContext.questionType) {
+      if (this.sessionContext.questionType) {
         this.fetchQuestionWithRole();
       }
     }

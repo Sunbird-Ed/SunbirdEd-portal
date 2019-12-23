@@ -12,7 +12,6 @@ import { QuestionCreationHeaderComponent } from './components/question-creation-
 import { TelemetryModule } from '@sunbird/telemetry';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { CertificateModule } from './../certificate/certificate.module';
 import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
 import { ContentUploaderComponent } from './components/content-uploader/content-uploader.component';
 import { ResourceTemplateComponent } from './components/resource-template/resource-template.component';
@@ -29,7 +28,7 @@ import { CollectionHierarchyService } from './services/collection-hierarchy/coll
     McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
     QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent,
-     DashboardComponent, RecursiveTreeComponent,
+    DashboardComponent, RecursiveTreeComponent,
     ContentUploaderComponent,  ResourceTemplateComponent, CollectionComponent, ResourceReorderComponent],
   imports: [
     CommonModule,
@@ -40,13 +39,12 @@ import { CollectionHierarchyService } from './services/collection-hierarchy/coll
     InfiniteScrollModule,
     PlayerHelperModule,
     TelemetryModule,
-    CertificateModule,
     DynamicModule.withComponents([QuestionListComponent,
        QuestionCreationComponent, ChapterListComponent,
       McqCreationComponent, CkeditorToolComponent ,
       McqTemplateSelectionComponent,
       QuestionPreviewComponent, QuestionCreationHeaderComponent,
-     DashboardComponent, RecursiveTreeComponent, ContentUploaderComponent, ResourceTemplateComponent]),
+      DashboardComponent, RecursiveTreeComponent, ContentUploaderComponent, ResourceTemplateComponent]),
 
   ],
   providers: [CollectionHierarchyService],
