@@ -2,11 +2,12 @@ import { servicemockRes } from './util.service.spec.data';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { UtilService } from './util.service';
+import { ResourceService } from '../resource/resource.service';
 
 describe('UtilService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UtilService]
+      providers: [UtilService, ResourceService]
     });
   });
 
