@@ -23,7 +23,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
   public userProfile: any;
   public showLoader = true;
   public showTabs = true;
-  public showOnboardPopup : boolean = false;
+  public showOnboardPopup = false;
   public programSelected = false;
   public associatedPrograms: any;
   public headerComponentInput: any;
