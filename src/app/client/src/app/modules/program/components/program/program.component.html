@@ -6,5 +6,5 @@
 </ng-container>
 
 <!-- <app-cbse *ngIf="!showLoader && !showOnboardPopup" [programDetails]="programDetails" [userProfile]="userProfile"></app-cbse> -->
-<app-onboard-popup *ngIf="!showLoader && showOnboardPopup" [programDetails]='programDetails'
+<app-onboard-popup *ngIf="showOnboardPopup" [programDetails]='programDetails'
   (updateEvent)="handleOnboardEvent($event)"></app-onboard-popup>

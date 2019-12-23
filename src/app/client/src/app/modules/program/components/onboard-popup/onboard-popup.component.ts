@@ -21,7 +21,7 @@ export class OnboardPopupComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService) { }
 
   ngOnInit() {
-    this.formFieldOptions = _.get(this.programDetails, 'config.onBoardForm.fields');
+    this.formFieldOptions = _.get(this.programDetails, 'config.onBoardingForm.fields');
   }
   handleFieldChange(event, data) {
     this.showButton = true;
