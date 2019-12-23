@@ -10,26 +10,20 @@ import { programSession } from './data';
 import { ICollectionComponentInput } from '../../../cbse-program/interfaces';
 import { InitialState, ISessionContext, IUserParticipentDetails } from '../../interfaces';
 import { ProgramStageService } from '../../services/';
-
 interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;
 }
-
-
-
 @Component({
   selector: 'app-program-component',
   templateUrl: './program.component.html'
 })
-
 export class ProgramComponent implements OnInit {
-
   public programId: string;
   public programDetails: any;
   public userProfile: any;
   public showLoader = true;
   public showTabs = true;
-  public showOnboardPopup:boolean = true;
+  public showOnboardPopup : boolean = false;
   public programSelected = false;
   public associatedPrograms: any;
   public headerComponentInput: any;
@@ -47,13 +41,11 @@ export class ProgramComponent implements OnInit {
     stages: []
   };
   public currentStage: any;
-
   outputs = {
     isCollectionSelected: (check) => {
       this.showTabs = false;
     }
   };
-
   constructor(public frameworkService: FrameworkService, public resourceService: ResourceService,
     public configService: ConfigService, public activatedRoute: ActivatedRoute,
     public extPluginService: ExtPluginService, public userService: UserService,
@@ -61,28 +53,16 @@ export class ProgramComponent implements OnInit {
     this.programId = this.activatedRoute.snapshot.params.programId;
     localStorage.setItem('programId', this.programId);
   }
-
   ngOnInit() {
     this.handleOnboardEvent(event);
     this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
     });
-    this.sessionContext.framework = _.get(programSession, 'config.framework');
-    this.userProfile = this.userService.userProfile;
     if (['null', null, undefined, 'undefined'].includes(this.programId)) {
       console.log('no programId found'); // TODO: need to handle this case
     }
-    this.getAssociatedPrograms().subscribe(response => {
-      if (response && response.result) {
-        this.associatedPrograms = response.result;
-      }
-    }, error => {
-
-    });
-    this.fetchFrameWorkDetails();
   }
-
   handleOnboardEvent(event) {
     this.fetchProgramDetails().subscribe((programDetails) => {
       this.handleOnboarding(event);
@@ -93,7 +73,6 @@ export class ProgramComponent implements OnInit {
       this.handleHeader('failed');
     });
   }
-
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.sessionContext.framework);
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
@@ -105,23 +84,20 @@ export class ProgramComponent implements OnInit {
       this.toasterService.error(errorMes || 'Fetching framework details failed');
     });
   }
-
   handleOnboarding(event) {
     const checkUserParticipentData = _.has(this.programDetails, 'userDetails') ? true : false;
     if (checkUserParticipentData) {
       this.showOnboardPopup = false;
       this.handleHeader('success');
-    } else if (_.has(programSession.config, 'onBoardingForm')) {
+    } else if (_.has(this.programDetails.config, 'onBoardingForm')) {
       this.showOnboardPopup = true;
-      this.handleHeader('success');
+      //  this.handleHeader('success');
     } else {
       this.userOnbording(event);
       this.showOnboardPopup = false;
     }
     this.initiateInputs('success');
   }
-
-
   userOnbording(event): any {
     const req = {
       url: `program/v1/add/participant`,
@@ -139,7 +115,6 @@ export class ProgramComponent implements OnInit {
       this.toasterService.error(_.get(error, 'error.params.errmsg') || 'User onbording fails');
     });
   }
-
   setUserParticipentDetails(data) {
     const userDetails: IUserParticipentDetails = {
       enrolledOn: data['ts'],
@@ -152,7 +127,6 @@ export class ProgramComponent implements OnInit {
     this.programDetails['userDetails'] = userDetails;
     this.handleHeader('success');
   }
-
   initiateInputs (status) {
     this.dynamicInputs = {
       collectionComponentInput:  {
@@ -164,20 +138,17 @@ export class ProgramComponent implements OnInit {
       }
     };
   }
-
-
   handleHeader(status) {
     if (status === 'success') {
       this.headerComponentInput = {
-        roles: _.get(programSession.config, 'roles'),
-        actions: _.get(programSession.config, 'actions'),
-        header: _.get(programSession.config, 'header'),
+        roles: _.get(this.programDetails.config, 'roles'),
+        actions: _.get(this.programDetails.config, 'actions'),
+        header: _.get(this.programDetails.config, 'header'),
         userDetails: _.get(this.programDetails, 'userDetails'),
         showTabs: this.showTabs
       };
-      this.tabs = _.get(programSession.config, 'header.config.tabs');
-
-      if (this.tabs) {
+      this.tabs = _.get(this.programDetails.config, 'header.config.tabs');
+      if (this.tabs && this.programDetails.userDetails ) {
         this.defaultView = _.find(this.tabs, {'index': this.getDefaultActiveTab()});
         this.programStageService.addStage(this.defaultView.onClick);
         this.component = this.componentMapping[this.defaultView.onClick];
@@ -187,23 +158,19 @@ export class ProgramComponent implements OnInit {
       this.toasterService.error('Fetching program details failed');
     }
   }
-
   changeView() {
     if (!_.isEmpty(this.state.stages)) {
       this.currentStage  = _.last(this.state.stages).stage;
     }
   }
-
-
   getDefaultActiveTab () {
-   const defaultView =  _.find(programSession.config.roles, {'name': this.programDetails.userDetails.roles[0]});
+   const defaultView =  _.find(this.programDetails.config.roles, {'name': this.programDetails.userDetails.roles[0]});
    if (defaultView) {
     return defaultView.defaultTab;
    } else {
      return 1;
    }
   }
-
   getAssociatedPrograms() {
     const req = {
       url: `program/v1/list`,
@@ -220,7 +187,6 @@ export class ProgramComponent implements OnInit {
       return res;
     }));
   }
-
   fetchProgramDetails() {
     const req = {
       // url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
@@ -229,11 +195,14 @@ export class ProgramComponent implements OnInit {
     };
     return this.extPluginService.get(req).pipe(tap(programDetails => {
       this.programDetails = programDetails.result;
+      this.sessionContext.framework = _.get(this.programDetails, 'config.framework');
+      if (this.sessionContext.framework) {
+        this.userProfile = this.userService.userProfile;
+        this.fetchFrameWorkDetails();
+      }
     }));
   }
-
   tabChangeHandler(e) {
     this.component = this.componentMapping[e];
   }
-
 }

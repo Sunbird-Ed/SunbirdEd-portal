@@ -275,7 +275,8 @@ export class ChapterListComponent implements OnInit, OnChanges {
       .subscribe(result => {
         this.addResourceToHierarchy(result.node_id);
         this.contentId = result.node_id;
-        this.componentLoadHandler('creation', this.componentMapping[event.template], event.templateDetails.onClick);
+        // tslint:disable-next-line:max-line-length
+        this.componentLoadHandler('creation', this.componentMapping[event.templateDetails.metadata.contentType], event.templateDetails.onClick);
       });
     }
   }
