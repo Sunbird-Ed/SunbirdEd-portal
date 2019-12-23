@@ -23,7 +23,7 @@
           <sui-select [isSearchable]="true" class="selection" formControlName="state" [options]="allStates"
                       labelField="name" id="states" valueField="code"
                       name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}"
-                      (focusout)="clearInput($event,'state')" #stateDiv>
+                      #stateDiv>
             <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100"
                                [value]="state"></sui-select-option>
           </sui-select>
@@ -40,7 +40,6 @@
                       [options]="allDistricts" id="districts"
                       labelField="name" valueField="code" name="district"
                       placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
-                      (focusout)="clearInput($event,'district')"
                       #districtDiv>
             <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"
                                [value]="district"></sui-select-option>
@@ -54,7 +53,7 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary"
-            [disabled]="!enableSubmitBtn"
+            [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
             (click)="updateUserLocation()">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
