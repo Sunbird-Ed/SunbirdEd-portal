@@ -6,7 +6,7 @@
     <ng-container *ngIf="(programsList$ | async ) as programsList else loading">
       <ng-container *ngIf="programsList && programsList.length else noResult">
         <div class="sbgrid sbgrid--grid-carousel">
-          <div class="sbcard sbcard--resource sbcard--course" (click)="lanchProgram(program.programId)" *ngFor="let program of programsList">
+          <div class="sbcard sbcard--resource sbcard--course" [routerLink]="['./program/' + program.programId]" *ngFor="let program of programsList">
             <div class="sbcard__main_area">
               <div class="sbcard__img mr-8"><img [src]="program.imagePath || 'assets/images/programs_default.png'"
                   alt="" title="" /></div>

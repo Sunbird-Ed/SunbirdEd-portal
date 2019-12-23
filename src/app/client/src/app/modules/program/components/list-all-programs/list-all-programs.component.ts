@@ -71,8 +71,4 @@ export class ListAllProgramsComponent implements OnInit {
     };
     return this.publicDataService.post(option);
   }
-
-  lanchProgram(programId:  string) {
-    this.router.navigate([`program/${programId}`]);
-  }
 }
