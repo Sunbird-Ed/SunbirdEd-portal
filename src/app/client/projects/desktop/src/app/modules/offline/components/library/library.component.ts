@@ -216,6 +216,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     addHoverData() {
+        const status = {
+            DOWNLOADING: this.resourceService.messages.stmsg.m0140,
+            FAILED: this.resourceService.messages.stmsg.m0143,
+            DOWNLOADED: this.resourceService.messages.stmsg.m0139,
+            PAUSED: this.resourceService.messages.stmsg.m0142,
+            CANCELED: this.resourceService.messages.stmsg.m0143,
+          };
         _.each(this.pageSections, (pageSection) => {
             _.each(pageSection.contents, (value) => {
                 value['hoverData'] = {
@@ -224,7 +231,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                     'actions': [
                         {
                             'type': this.isBrowse ? 'download' : 'save',
-                            'label': this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
+                            'label': this.isBrowse ? _.capitalize(status[_.get(value, 'downloadStatus')]) ||
                                 this.resourceService.frmelmnts.btn.download :
                                 this.resourceService.frmelmnts.lbl.saveToPenDrive,
                             'disabled': this.isBrowse && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'],
