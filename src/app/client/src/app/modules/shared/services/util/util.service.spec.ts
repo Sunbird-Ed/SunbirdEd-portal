@@ -1,17 +1,23 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { servicemockRes } from './util.service.spec.data';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { UtilService } from './util.service';
 import { ResourceService } from '../resource/resource.service';
 
+class MockResourceService {
+  messages: any = {};
+  frmelmnts: any = {};
+}
+
 describe('UtilService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UtilService, ResourceService]
+      providers: [UtilService, {provide: ResourceService, useClass: MockResourceService}]
     });
   });
 
-  it('should be created', inject([UtilService], (service: UtilService) => {
+  it('should be created', inject([UtilService, ResourceService], (service: UtilService, resourceService: ResourceService) => {
     expect(service).toBeTruthy();
   }));
 

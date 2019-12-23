@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
-import { ICard } from '@sunbird/shared';
+import { ICard, ILanguage } from '@sunbird/shared';
 import { Subject, Observable } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
   // Dependency injection creates new instance each time if used in router sub-modules
@@ -10,6 +10,7 @@ export class UtilService {
   public showAppPopUp = false;
   private searchQuery = new Subject<any>();
   public searchQuery$ = this.searchQuery.asObservable();
+  public languageChange = new EventEmitter<ILanguage>();
 
   constructor(private resourceService: ResourceService) {
     if (!UtilService.singletonInstance) {
@@ -198,6 +199,13 @@ export class UtilService {
 
   /* This will add hover data in card content */
   addHoverData(contentList, isOnlineSearch) {
+    const status = {
+      DOWNLOADING: this.resourceService.messages.stmsg.m0140,
+      FAILED: this.resourceService.messages.stmsg.m0143,
+      DOWNLOADED: this.resourceService.messages.stmsg.m0139,
+      PAUSED: this.resourceService.messages.stmsg.m0142,
+      CANCELED: this.resourceService.messages.stmsg.m0143,
+    };
     _.each(contentList, (value) => {
       value['hoverData'] = {
         note: isOnlineSearch && _.get(value, 'downloadStatus') ===
@@ -205,7 +213,7 @@ export class UtilService {
         actions: [
           {
             type: isOnlineSearch ? 'download' : 'save',
-            label: isOnlineSearch ? _.capitalize(_.get(value, 'downloadStatus')) ||
+            label: isOnlineSearch ? _.capitalize(status[_.get(value, 'downloadStatus')]) ||
               this.resourceService.frmelmnts.btn.download :
               this.resourceService.frmelmnts.lbl.saveToPenDrive,
             disabled: isOnlineSearch && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], _.get(value, 'downloadStatus'))
@@ -219,5 +227,9 @@ export class UtilService {
     });
 
     return contentList;
+  }
+
+  emitLanguageChangeEvent(language: ILanguage) {
+    this.languageChange.emit(language);
   }
 }
