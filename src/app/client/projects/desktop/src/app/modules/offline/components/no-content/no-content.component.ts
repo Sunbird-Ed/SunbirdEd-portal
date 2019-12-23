@@ -40,13 +40,14 @@ export class NoContentComponent implements OnInit, OnDestroy {
     return  _.includes(this.router.url, 'browse');
   }
 
-  openImportContentDialog() {
+  openImportContentDialog(id) {
     this.electronDialogService.showContentImportDialog();
-    this.addInteractEvent();
+    this.addInteractEvent(id);
   }
 
-  handleModal() {
+  handleModal(id) {
     this.showModal = !this.showModal;
+    this.addInteractEvent(id);
   }
 
   ngOnDestroy() {
@@ -54,29 +55,23 @@ export class NoContentComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  setTelemetryData () {
-    return {
-      id: 'load-content',
-      type: 'click',
-      pageid:  _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'library'
-    };
-  }
-
-  addInteractEvent() {
+  addInteractEvent(id) {
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'browse',
         cdata: []
       },
       edata: {
-        id: 'load-content',
+        id: id,
         type: 'click',
-        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'library'
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'library',
       }
     };
     this.telemetryService.interact(interactData);
   }
-  exploreContent() {
+
+  exploreContent(id) {
+    this.addInteractEvent(id);
     this.router.navigate(['/search'], { queryParams:
       {board: _.get(this.filters, 'board'), medium: _.get(this.filters, 'medium'), gradeLevel: _.get(this.filters, 'gradeLevel')}});
   }
