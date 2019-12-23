@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 
 import { ProgramHeaderComponent } from './program-header.component';
-import { ProgramComponent } from '../../component/program/program.component';
 import { ProgramStageService } from '../../services';
 import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { mockRes } from './program-header.component.spec.data';
