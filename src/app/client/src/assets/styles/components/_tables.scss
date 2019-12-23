@@ -134,10 +134,6 @@
 }
 
 .sb-table-container {
-
-  margin-top: $base-block-space*2;
-  margin-bottom: $base-block-space*2;
-
   .sb-table-search-header {
     width: 100%;
     height: $base-block-space*8;
@@ -357,7 +353,6 @@
   }
 
   .media-heading {
-    margin: 0 auto;
     font-weight: $font-weight-normal;
     max-width: $base-block-space*28;
     overflow: hidden;
@@ -378,7 +373,6 @@
     max-width: $base-block-space*17;
   }
 }
-
 .sb-table {
   &.sb-table-placeholder {
     .sb-media-obj-placeholder {

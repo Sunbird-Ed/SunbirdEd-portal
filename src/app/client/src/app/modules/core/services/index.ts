@@ -20,6 +20,7 @@ export * from './ext-plugin/ext-plugin.service';
 export * from './device-register/device-register.service';
 export * from './channel/channel.service';
 export * from './otp/otp.service';
+export * from './action/action.service';
 export * from './certificate/certificate.service';
 export * from './programs/programs.service';
 export * from './action/action.service';

@@ -18,7 +18,7 @@ import { CbseProgramService } from '../../services';
 @Component({
   selector: 'app-question-creation',
   templateUrl: './question-creation.component.html',
-  styleUrls: ['./question-creation.component.css']
+  styleUrls: ['./question-creation.component.scss']
 })
 export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked {
   public userProfile: IUserProfile;
@@ -70,6 +70,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   question: any;
   editor: any;
   editorState: any;
+  solutionUUID: string;
   body: any;
   myAssets = [];
   allImages = [];
@@ -82,6 +83,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   updateStatus = 'update';
   public rejectComment: any;
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
+  isReadOnlyMode = false;
   ngOnInit() {
     this.initialized = true;
     this.editorConfig = { 'mode': 'create' };
@@ -89,6 +91,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.editorState = {
       solutions: ''
     };
+    this.solutionUUID = UUID.UUID();
     if (this.sessionContext.bloomsLevel) {
       this.bloomsLevelOptions = this.sessionContext.bloomsLevel;
     }
@@ -98,9 +101,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
     this.initializeFormFields();
     if (this.questionMetaData && this.questionMetaData.data) {
-      this.question = this.questionMetaData.data.question;
-      this.editorState.solutions = this.questionMetaData.data.editorState.solutions
-        && this.questionMetaData.data.editorState.solutions[0];
+      this.question = this.questionMetaData.data.editorState.question;
+      this.editorState.solutions = this.questionMetaData.data.editorState.solutions[0].value;
+      this.solutionUUID = this.questionMetaData.data.editorState.solutions[0].id;
       if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
       }
@@ -114,6 +117,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       // this.buttonTypeHandler('preview');
     }
     this.userName = this.setUserName();
+    this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
   }
 
   setUserName() {
@@ -146,8 +150,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.question = '';
       this.editorState.solutions = '';
       if (this.questionMetaData && this.questionMetaData.data) {
-        this.question = this.questionMetaData.data.question;
-        this.editorState.solutions = this.questionMetaData.data.solutions && this.questionMetaData.data.editorState.solutions[0];
+        this.question = this.questionMetaData.data.editorState.question;
+        this.editorState.solutions = this.questionMetaData.data.editorState.solutions[0].value;
+        this.solutionUUID = this.questionMetaData.data.editorState.solutions[0].id;
         if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
           this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         }
@@ -277,12 +282,22 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'itemType': 'UNIT',
                   'version': 3,
                   'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
-                  'body': this.body,
                   'editorState': {
-                    solutions: [this.editorState.solutions]
+                    'question': this.question,
+                    'solutions': [
+                      {
+                        'id': this.solutionUUID,
+                        'value': this.editorState.solutions
+                      }
+                    ]
                   },
-                  'question': this.question,
-                  'solutions': [this.solution],
+                  'body': this.body,
+                  'solutions': [
+                    {
+                      'id': this.solutionUUID,
+                      'value': this.solution
+                    }
+                  ],
                   'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
                   'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                   // 'qlevel': this.questionMetaForm.value.qlevel,
@@ -294,11 +309,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'framework': this.sessionContext.framework,
                   'board': this.sessionContext.board,
                   'medium': this.sessionContext.medium,
-                  'gradeLevel': [
-                    this.sessionContext.gradeLevel
-                  ],
-                  'subject': this.sessionContext.subject,
-                  'topic': [this.sessionContext.topic],
+                  // 'gradeLevel': [
+                  //   this.sessionContext.gradeLevel
+                  // ],
+                  // 'subject': this.sessionContext.subject,
+                  // 'topic': [this.sessionContext.topic],
                   'status': 'Review',
                   'media': this.mediaArr,
                   'qumlVersion': 0.5,
@@ -348,14 +363,24 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               'assessment_item': {
                 'objectType': 'AssessmentItem',
                 'metadata': {
-                  'body': this.body,
                   'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' :
                     this.sessionContext.questionType.toUpperCase(),
-                  'solutions': [this.solution],
-                  'editorState': {
-                    solutions: [this.editorState.solutions]
-                  },
-                  'question': this.question,
+                    'editorState': {
+                      'question': this.question,
+                      'solutions': [
+                        {
+                          'id': this.solutionUUID,
+                          'value': this.editorState.solutions
+                        }
+                      ]
+                    },
+                    'body': this.body,
+                    'solutions': [
+                      {
+                        'id': this.solutionUUID,
+                        'value': this.solution
+                      }
+                    ],
                   'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
                   'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                   // 'qlevel': this.questionMetaForm.value.qlevel,

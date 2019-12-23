@@ -35,6 +35,7 @@ describe('MainHeaderComponent', () => {
     fixture = TestBed.createComponent(MainHeaderComponent);
     component = fixture.componentInstance;
     component.routerEvents  = observableOf({id: 1, url: '/explore', urlAfterRedirects: '/explore'});
+    fixture.detectChanges();
   });
 
   it('should subscribe to user service', () => {
@@ -45,6 +46,8 @@ describe('MainHeaderComponent', () => {
     spyOn(learnerService, 'getWithHeaders').and.returnValue(observableOf(mockUserData.success));
     userService.initialize(true);
     fixture.detectChanges();
+    expect(userService._userProfile).toBeDefined();
+    component.ngOnInit();
     expect(component.userProfile).toBeTruthy();
   });
 

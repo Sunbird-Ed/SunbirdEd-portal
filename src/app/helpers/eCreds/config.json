@@ -1,0 +1,28 @@
+{
+    "Best School Certificate" :{
+        "template" : "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download",
+        "issuer" : {
+            "name": "Gujarat Council of Educational Research and Training",
+            "url": "https://gcert.gujarat.gov.in/gcert/"
+        },
+        "signatory" : [{
+            "name": "CEO Gujarat",
+            "id": "CEO",
+            "designation": "CEO",
+            "image": "https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg"
+        }]
+    },
+    "Best Student Certificate":{
+        "template" : "https://drive.google.com/uc?authuser=1&id=1ryB71i0Oqn2c3aqf9N6Lwvet-MZKytoM&export=download",
+        "issuer" : {
+            "name": "Gujarat Council of Educational Research and Training",
+            "url": "https://gcert.gujarat.gov.in/gcert/"
+        },
+        "signatory" : [{
+            "name": "CEO Gujarat",
+            "id": "CEO",
+            "designation": "CEO",
+            "image": "https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg"
+        }]
+    }
+}

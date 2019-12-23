@@ -57,6 +57,8 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  @media screen and (min-width: 340px) {
+    max-width: $sb-card-width;
   margin-top: $sb-card-hover-movement;
   transition: box-shadow 0.3s ease-out, transform 0.3s ease-out,
     opacity 0.2s ease-out;
@@ -181,6 +183,7 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     box-shadow: $sb-card-box-shadow;
   }
 }
+}
 
 app-card[lang="ta"] {
   .sb-card {
@@ -242,7 +245,6 @@ app-card[lang="ur"] {
     font-size: $h5-font-size;
     font-weight: $font-weight-bold;
   }
-
   .sb-wspace-description {
     font-size: $font-size-sm;
     overflow: hidden;

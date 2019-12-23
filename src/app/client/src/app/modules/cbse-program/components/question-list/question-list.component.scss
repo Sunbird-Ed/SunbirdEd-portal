@@ -44,7 +44,10 @@ i.icon.trash {
   height: ($base-block-space * 11 + 10);
   background: rgba(41, 114, 164, 0.05);
   &__content {
+<<<<<<< HEAD
 
+=======
+>>>>>>> programs_config
     .practical-sb-buttons {
       .sb-btn-file {
         border-top: 1px solid var(--primary-200);
@@ -61,7 +64,10 @@ i.icon.trash {
       }
     }
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> programs_config
   .practice-set {
     &__status {
       a {
@@ -70,7 +76,10 @@ i.icon.trash {
     }
   }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> programs_config
 .sb-field-group.textbook-edit {
   width: 100%;
   max-width: 756px;
@@ -85,4 +94,17 @@ i.icon.trash {
     color: $gray-400;
     font-size: $font-size-xs;
   }
+<<<<<<< HEAD
+=======
+} 
+.review-modal-list{
+  .list{
+    padding-left: calculateRem(16px);
+    margin: 0;
+    li{
+      font-size: $font-size-sm;
+      line-height: calculateRem(18px);
+    }
+  }
+>>>>>>> programs_config
 }

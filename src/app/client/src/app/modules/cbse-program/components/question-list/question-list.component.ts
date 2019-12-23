@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -14,10 +14,7 @@ import { CbseProgramService } from '../../services';
   styleUrls: ['./question-list.component.scss']
 })
 export class QuestionListComponent implements OnInit, OnChanges {
-  // @Input() sessionContext: any;
-  // @Input() role: any;
-  @Input() resourceName: any;
-  // @Input() templateDetails: any;
+  @ViewChild('questionCreationChild') questionCreationChild: ElementRef;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
   @Input() practiceQuestionSetComponentInput: any;
@@ -27,17 +24,27 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public questionList = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
+  public resourceDetails: any = {};
+  public resourceStatus: string;
   public questionMetaData: any;
   public refresh = true;
   public showLoader = true;
   public enableRoleChange = false;
   public showSuccessModal = false;
+  public showReviewModal = false;
+  public showAddReviewModal = false;
+  public showDelectContentModal = false;
+  public showPublishModal = false;
   public publishInProgress = false;
   public publishedResourceId: any;
   public questionSelectionStatus: any;
   public existingContentVersionKey = '';
+  public resourceTitleLimit = 100;
   selectedAll: any;
   initialized: boolean;
+  public showTextArea = false;
+  public resourceName: string;
+  @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
   private questionTypeName = {
     vsa: 'Very Short Answer',
     sa: 'Short Answer',
@@ -52,6 +59,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     public contentService: ContentService) {
   }
   ngOnChanges(changedProps: any) {
+    this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
     if (this.enableRoleChange) {
       this.initialized = false; // it should be false before fetch
       if (this.sessionContext.questionType) {
@@ -65,10 +73,17 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit() {
-    this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
+    // console.log('changes detected in question list', this.role);
     this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
-    // console.log('changes detected in question list', this.role);
+    this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
+    this.sessionContext.questionType = this.templateDetails.questionCategories[0];
+    this.resourceName = this.templateDetails.metadata.name;
+    this.fetchExistingResource(this.sessionContext.resourceIdentifier).subscribe(response => {
+      this.resourceDetails = _.get(response, 'result.content');
+      //this.resourceStatus = _.get(this.resourceDetails, 'status');
+      this.resourceStatus = 'Review';
+    });
     if (this.sessionContext.questionType) {
       this.fetchQuestionWithRole();
     } else {
@@ -90,8 +105,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
             'objectType': 'AssessmentItem',
             'board': this.sessionContext.board,
             'framework': this.sessionContext.framework,
-            'gradeLevel': this.sessionContext.gradeLevel,
-            'subject': this.sessionContext.subject,
+            // 'gradeLevel': this.sessionContext.gradeLevel,
+            // 'subject': this.sessionContext.subject,
             'medium': this.sessionContext.medium,
             'type': this.sessionContext.questionType === 'mcq' ? 'mcq' : 'reference',
             'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' :
@@ -195,6 +210,12 @@ export class QuestionListComponent implements OnInit, OnChanges {
           mode: editorMode,
           data: assessment_item
         };
+        this.sessionContext.resourceStatus = this.resourceStatus;
+        if (this.sessionContext.resourceStatus === 'Draft' || this.sessionContext.resourceStatus === 'Rejected') {
+          this.sessionContext.isReadOnlyMode = false;
+        } else {
+          this.sessionContext.isReadOnlyMode = true;
+        }
         // min of 1sec timeOut is set, so that it should go to bottom of call stack and execute whennever the player data is available
         if (this.sessionContext.showMode === 'previewPlayer' && this.initialized) {
           this.showLoader = true;
@@ -522,5 +543,53 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
   public dismissPublishModal() {
     setTimeout(() => this.changeStage.emit('prev'), 0);
+  }
+
+  deleteQuestion(index, identifier) {
+    console.log(index);
+    console.log(identifier);
+    const selectedQuestions = _.filter(this.questionList, (question) => question.identifier === identifier);
+    console.log(this.questionList[index]);
+    console.log(selectedQuestions);
+  }
+
+  public showResourceTitleEditor() {
+    this.showTextArea = true;
+    setTimeout(() => {
+      this.resourceTtlTextarea.nativeElement.focus();
+    }, 500);
+  }
+
+  public onResourceNameChange(event: any) {
+    const remainChar = this.resourceTitleLimit - this.resourceName.length;
+    if (remainChar <= 0 && event.keyCode !== 8) {
+      event.preventDefault();
+      return;
+    }
+    this.resourceName = this.removeSpecialChars(event.target.value);
+  }
+
+  private removeSpecialChars(text: any) {
+    if (text) {
+      const iChars = '!`~@#$^*+=[]\\\'{}|\"<>%';
+      for (let i = 0; i < text.length; i++) {
+        if (iChars.indexOf(text.charAt(i)) !== -1) {
+          this.toasterService.error(`Special character ${text.charAt(i)} is not allowed`);
+        }
+      }
+       // tslint:disable-next-line:max-line-length
+      text = text.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, '');
+      return text;
+    }
+  }
+
+  public onResourceNameBlur() {
+    if (this.resourceName.length > 0 && this.resourceName.length <= this.resourceTitleLimit) {
+      this.showTextArea = false;
+    }
+  }
+
+  public showReview() {
+    this.showReviewModal = true;
   }
 }

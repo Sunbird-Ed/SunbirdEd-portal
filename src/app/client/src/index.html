@@ -7,6 +7,7 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon">
+  <script src="https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image&async=true"></script>
 </head>
 
 <body>
@@ -75,8 +76,14 @@
   <% if (videoMaxSize) { %>
   <input type="hidden" id="videoMaxSize" value="<%=videoMaxSize%>" />
   <% } %>
+  <% if (cbse_programId) { %>
+    <input type="hidden" id="cbse_programId" value="<%=cbse_programId%>" />
+  <% } %>
   <% if (reportsLocation) { %>
   <input type="hidden" id="reportsLocation" value="<%=reportsLocation%>" />
+  <% } %>
+  <% if (PlayerCdnUrl) { %>
+    <input type="hidden" id="PlayerCdnUrl" value="<%=PlayerCdnUrl%>" />
   <% } %>
   <% if (previewCdnUrl) { %>
     <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />

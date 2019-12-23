@@ -10,7 +10,7 @@ tenantHelper = require('../helpers/tenantHelper.js'),
 logger = require('sb_logger_util_v2'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
-pathMap = {},
+pathMap = {}
 cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
 proxyUtils = require('../proxy/proxyUtils.js')
 
@@ -85,11 +85,15 @@ module.exports = (app, keycloak) => {
     res.setHeader('Expires', new Date(Date.now() + oneDayMS).toUTCString())
     next()
   })
+  
+  if (envHelper.cbse_programId) {
+    app.all('/', (req, res) => res.redirect('/program/cbse/' + envHelper.cbse_programId))
+  }
 
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
-    '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/download/*', '/certs/*', '/recover/*'], redirectTologgedInPage, indexPage(false))
+    '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/download/*', '/certs/*', '/recover/*', '/public/certs/*'], redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
@@ -101,8 +105,15 @@ module.exports = (app, keycloak) => {
     '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
+  app.get('/program/:templateId/:programId', renderProgramPage)
+  app.use('/program', express.static(path.join(__dirname, '../program'), { index: false }))
 }
-
+function renderProgramPage(req, res){
+  res.locals = {
+    programId: req.params.programId
+  }
+  res.render(path.join(__dirname, '../program/'+ req.params.templateId, 'index.ejs'))
+}
 function getLocals(req) {
   var locals = {}
   if(req.includeUserDetail){
@@ -115,7 +126,7 @@ function getLocals(req) {
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = envHelper.sunbird_theme
   locals.defaultPortalLanguage = envHelper.sunbird_default_language
-  locals.instance = process.env.sunbird_instance
+  locals.instance = 'CBSE' || process.env.sunbird_instance
   locals.appId = envHelper.APPID
   locals.defaultTenant = envHelper.DEFAULT_CHANNEL
   locals.exploreButtonVisibility = envHelper.sunbird_explore_button_visibility
@@ -131,6 +142,8 @@ function getLocals(req) {
   locals.googleCaptchaSiteKey = envHelper.sunbird_google_captcha_site_key
   locals.videoMaxSize = envHelper.sunbird_portal_video_max_size
   locals.reportsLocation = envHelper.sunbird_azure_report_container_name
+  locals.PlayerCdnUrl = envHelper.sunbird_portal_player_cdn_url
+  locals.cbse_programId = envHelper.cbse_programId
   locals.previewCdnUrl = envHelper.sunbird_portal_preview_cdn_url
   locals.offlineDesktopAppTenant = envHelper.sunbird_portal_offline_tenant
   locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version

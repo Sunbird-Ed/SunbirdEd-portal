@@ -9,18 +9,18 @@ const routes: Routes = [
     path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],
     data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
   },
-  {
-    path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
-  },
-  {
-    path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
-  },
-  {
-    path: 'explore-course', loadChildren: './module/course/course.module#CourseModule'
-  },
-  {
-    path: ':slug/explore-course', loadChildren: './module/course/course.module#CourseModule'
-  },
+  // {
+  //   path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
+  // },
+  // {
+  //   path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
+  // },
+  // {
+  //   path: 'explore-course', loadChildren: './module/course/course.module#CourseModule'
+  // },
+  // {
+  //   path: ':slug/explore-course', loadChildren: './module/course/course.module#CourseModule'
+  // },
   {
     path: ':slug/signup', loadChildren: './module/signup/signup.module#SignupModule'
   },

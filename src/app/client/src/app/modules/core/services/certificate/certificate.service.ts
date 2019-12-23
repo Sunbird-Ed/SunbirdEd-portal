@@ -15,10 +15,9 @@ export class CertificateService {
 
   validateCertificate(data): Observable<ServerResponse> {
     const option = {
-      url: this.configService.urlConFig.URLS.USER.VALIDATE_CERTIFICATE,
+      url: this.configService.urlConFig.URLS.REGISTRY.VALIDATE_CERTIFICATE,
       data: data
     };
     return this.learnerService.post(option);
-
   }
 }

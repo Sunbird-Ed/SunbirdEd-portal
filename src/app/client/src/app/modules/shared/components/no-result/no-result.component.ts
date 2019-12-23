@@ -45,10 +45,10 @@ export class NoResultComponent implements OnInit, OnDestroy {
 
   setMessage() {
     this.message = _.has(this.data, 'message') ? (_.get(this.resourceService, this.data.message) ||
-    _.get(this.resourceService, 'messages.stmsg.m0007')) : '';
+    _.get(this.resourceService, 'messages.stmsg.m0007')) : 'No Result found';
 
     this.messageText = _.has(this.data, 'messageText') ? (_.get(this.resourceService, this.data.messageText) ||
-      _.get(this.resourceService, 'messages.stmsg.m0006')) : '';
+      _.get(this.resourceService, 'messages.stmsg.m0006')) : 'No Result found';
   }
 
   ngOnDestroy() {

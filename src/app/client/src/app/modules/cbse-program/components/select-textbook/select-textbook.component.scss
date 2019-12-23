@@ -1,0 +1,23 @@
+.sb-box-container {
+    text-align: center;
+    background: #fff;
+    padding: 48px 24px;
+    width: 320px;
+    border-radius: 2px;
+    box-shadow: 0 2px 7px 0 rgba(0,0,0,.16);
+}
+
+.ui.selection.dropdown {
+    min-width: 100% !important;
+}
+
+
+::ng-deep {
+    .ui.secondary.pointing.menu {
+    justify-content: center;
+    background: #fff;
+}
+.ui.default.dropdown:not(.button)>.text, .ui.dropdown:not(.button)>.default.text {
+    color: #333;
+}
+}

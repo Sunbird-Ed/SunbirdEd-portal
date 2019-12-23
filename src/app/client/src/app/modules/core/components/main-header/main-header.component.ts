@@ -158,7 +158,10 @@ export class MainHeaderComponent implements OnInit {
     if (this.isOffline) {
       this.router.navigate(['']);
     } else if (this.userService.loggedIn) {
-      this.router.navigate(['resources']);
+      // this.router.navigate(['resources']);
+      const programId = (<HTMLInputElement>document.getElementById('cbse_programId'))
+      ? (<HTMLInputElement>document.getElementById('cbse_programId')).value : '';
+      this.router.navigate(['/workspace/program/' + programId]);
     } else {
       window.location.href = this.slug ? this.slug + '/explore'  : '/explore';
     }

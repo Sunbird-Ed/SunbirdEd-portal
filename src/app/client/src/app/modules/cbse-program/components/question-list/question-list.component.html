@@ -1,42 +1,43 @@
-<div>
-  <sui-modal *ngIf="!sessionContext.questionType" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-    [size]="'small'" class="sb-modal" appBodyScroll
-    (dismissed)="sessionContext.questionType; dismissPublishModal();" #modal>
-    <div class="sb-modal-header">
-      Select Question Category
-    </div>
-    <div class="sb-modal-content">
-      <ul>
-        <li (click)="selectQuestionCategory(contentType)"
-          *ngFor="let contentType of templateDetails.questionCategories">
-          {{contentType}}
-        </li>
-      </ul>
-    </div>
-  </sui-modal>
-</div>
-
-
 <!-- Untitled Practice Set Section with text field -->
-<!-- <div class="d-flex sb-bg-color-gray-0 practical-header">
-    <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
-      <div class="font-weight-bold fs-1-143" *ngIf="!showTextArea">
-        Untiled Practice Set <span class="fs-0-785 pl-8"><a class="cursor-pointer" (click)="showTextArea=!showTextArea">Edit</a></span>
-        <div class="fs-0-785 pt-8">License: CC BY 4.0</div>
+<div class="d-flex sb-bg-color-gray-0 practical-header">
+  <div class="d-flex flex-ai-center practical-header__content ui container">
+    <div class="mr-auto" *ngIf="!showTextArea">
+      <div class="practice-set__label">
+        <span class="font-weight-bold fs-1-143">{{resourceName}}</span>
+        <a class="cursor-pointer fs-0-785 ml-8" 
+          (click)="showResourceTitleEditor()" 
+          *ngIf="role.currentRole === 'CONTRIBUTOR' && resourceStatus === 'Draft' || resourceStatus === 'Rejected'"
+        >Edit</a>
       </div>
-      <div class="sb-field-group textbook-edit" *ngIf="showTextArea">
-        <div class="sb-field relative">
-          <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
-          <span class="characters-left">200 Characters left</span>
-        </div>
-      </div>
-      <div class='practical-sb-buttons'>
-        <button class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" (click)="showTextArea=!showTextArea">Save</button>
-        <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
-        <button class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="showTextArea=!showTextArea">Submit</button>
+      <div class="mt-8 practice-set__status">
+        <span class="sb-label sb-label-table sb-label-success-0"
+        [ngClass]="{ 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-error-0': resourceStatus == 'Rejected',  'sb-label-gray-100': resourceStatus == 'Review' }">{{ resourceStatus }}</span>
+        <span class="cursor-pointer fs-0-785 ml-8" 
+          (click)="showReview()" 
+          *ngIf="resourceStatus === 'Rejected'"><i class="comment alternate outline icon sb-color-primary"></i><a>View Comments</a></span>
       </div>
     </div>
-  </div>  -->
+    <div class="sb-field-group textbook-edit mr-auto" *ngIf="showTextArea">
+      <div class="sb-field relative">
+        <textarea rows="4" name="resourceName" class="sb-form-control fs-1" #resourceTtlTextarea placeholder="Type here..." [(ngModel)]='resourceName' (keydown)="onResourceNameChange($event)" (blur)="onResourceNameBlur()">{{resourceName}}</textarea>
+        <span class="characters-left">{{resourceTitleLimit - resourceName.length}} Characters left</span>
+        <span class="sb-error-text" *ngIf="resourceName.length > resourceTitleLimit">Title should be maximum 100 characters.</span>
+        <span class="sb-error-text" *ngIf="!resourceName.length">Title required.</span>
+      </div>
+    </div>
+    <div class='practical-sb-buttons'>
+      <button class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" 
+        (click)="questionCreationChild.buttonTypeHandler()"
+        *ngIf="resourceStatus === 'Draft' || resourceStatus === 'Rejected' "
+        >Save</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
+      <button class="sb-btn sb-btn-secondary sb-btn-normal ripple" 
+        (click)="showTextArea=!showTextArea"
+        *ngIf="resourceStatus === 'Draft' || resourceStatus === 'Rejected' "
+        >Submit</button>
+    </div>
+  </div>
+</div> 
 
 <div class="ui container">
   <div *ngIf="sessionContext?.questionType" class="ui twelve column grid m-0">
@@ -51,67 +52,26 @@
         </div>
       </div>
 
-      <!-- Question list Section to be implemented -->
+      <!-- Question list Section -->
 
       <div class="d-flex width-100 flex-jc-center mt-24">
-        <button *ngIf="role.currentRole === 'CONTRIBUTOR'"
+        <button *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"
           [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
           appTelemetryInteract
           [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:sessionContext.questionType.toUpperCase(),topic:sessionContext.topic}}"
           class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn"><i class="add icon"></i>Add new Question</button>
       </div>
 
-
       <div class="question-list">
-
-        <!-- <div class="question-list__item active d-flex flex-ai-center p-16 cursor-pointer active">
-          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 1</label>
-          <i class="info circle sb-color-warning fs-1 icon"></i>
-          <i class="trash alternate outline icon ml-24"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24"></i>
-        </div>
-        <div class="question-list__item d-flex flex-ai-center p-16 cursor-pointer">
-          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 2</label>
-          <i class="trash alternate outline icon ml-24"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24"></i>
-        </div>
-        <div class="question-list__item d-flex flex-ai-center p-16 cursor-pointer">
-          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 3</label>
-          <i class="trash alternate outline icon ml-24"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24"></i>
-        </div>
-        <div class="question-list__item d-flex flex-ai-center p-16 cursor-pointer">
-          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 4</label>
-          <i class="trash alternate outline icon ml-24"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24"></i>
-        </div> -->
-
-        <div class="questionTab ui center tertiary header aligned segment p-8 cursor-pointer"
-          [class.tertiary]="selectedQuestionId === question.identifier"
+        <div class="question-list__item active d-flex flex-ai-center p-16 cursor-pointer"
+          [class.active]="selectedQuestionId === question.identifier"
           (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
           appTelemetryInteract
           [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'questionlist',extra:{type:'reference',identifier:question.identifier}}">
-          <div class="item d-flex flex-ai-center">
-            <ng-container *ngIf="role.currentRole === 'PUBLISHER' else nonPublisher">
-              <div class="sb-checkbox sb-checkbox-primary">
-                <input class="checking" [(ngModel)]="question.isSelected" (change)="checkIfAllSelected(question);"
-                  (click)="$event.stopPropagation()" type="checkbox">
-                <label for="check1" class="mb-0"> Question {{i + 1}}</label>
-              </div>
-            </ng-container>
-            <ng-template #nonPublisher>
-              <div>
-                <label for="check1" class="mb-0 fs-0-92 font-weight-normal"> Question {{i + 1}}</label>
-              </div>
-            </ng-template>
-            <!-- <i class="trash alternate outline icon ml-auto d-flex flex-ai-center"></i> -->
-            <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto"
-              *ngIf="question.status === 'Draft' || question.status === 'Review'"></span>
-            <!-- <span class="sb-status-label sb-bg-success sb-shape-circle ml-auto"
-                *ngIf="question.status === 'Live'"></span> -->
-            <span class="sb-status-label sb-bg-error sb-shape-circle ml-auto"
-              *ngIf="question.status === 'Reject'"></span>
-          </div>
+          <label class="mb-0 mr-auto" for="check1"> Question {{i + 1}}</label>
+          <i class="info circle sb-color-warning fs-1 icon" *ngIf="question.status === 'Reject'"></i>
+          <i class="trash alternate outline icon ml-24" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"></i>
+          <!-- <i class="move icon ml-16 sb-color-primary ml-24" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"></i> -->
         </div>
       </div>
 
@@ -135,7 +95,7 @@
         </div>
         <div *ngIf="sessionContext.questionType !== 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
-            <app-question-creation [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
+            <app-question-creation #questionCreationChild [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
               [questionSelectionStatus]="questionSelectionStatus" [role]="role"
               (questionStatus)="questionStatusHandler($event)"
               (questionQueueStatus)="questionQueueStatusHandler($event)">
@@ -169,5 +129,83 @@
       (click)="showSuccessModal = !showSuccessModal; dismissPublishModal();">
       Close
     </button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="showDelectContentModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal sb-error sb-modal-center" appBodyScroll
+  (dismissed)="showDelectContentModal = !showDelectContentModal" #modal>
+  <div class="sb-modal-header text-left">
+      Delete Content
+  </div>
+  <div class="sb-modal-content">
+      <p>Lorem Ipsum is simply dummy text of the 
+          printingand typesetting industry.</p> 
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal"> Delete </button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="showPublishModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+[size]="'normal'" class="sb-modal" appBodyScroll
+(dismissed)="showPublishModal = !showPublishModal" #modal>
+  <div class="sb-modal-header text-left">
+      Publish (Content Type)
+  </div>
+  <div class="sb-modal-content">
+    <div class="sb-publish-content">
+      <div class="sb-publish-content-title"> Click Publish to:</div>
+      <p class="py-8">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled 
+      </p>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"> Publish </button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="showReviewModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll
+  (dismissed)="showReviewModal = !showReviewModal" #modal>
+  <div class="sb-modal-header">
+      Review Comments
+  </div>
+  <div class="sb-modal-content">
+      <div class="sb-publish-content">
+        <div class="review-modal-list">
+          <ol class="list">
+            <li class="pb-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </li>
+            <li class="pb-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </li>
+            <li class="pb-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </li>
+          </ol>
+      </div>
+      </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"> Continue </button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="showAddReviewModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll
+  (dismissed)="showAddReviewModal = !showAddReviewModal" #modal>
+  <div class="sb-modal-header">
+      Add Review
+  </div>
+  <div class="sb-modal-content">
+      
+      <div class="sb-field-group">
+          <label>Enter your comments</label>
+              <div class="sb-field relative">
+              <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
+              <span class="characters-left">1000 Characters left</span>
+              </div>
+      </div>
+          
+  </div>
+  <div class="sb-modal-actions">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary"> Submit Review </button>
   </div>
 </sui-modal>

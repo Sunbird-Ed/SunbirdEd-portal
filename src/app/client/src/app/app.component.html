@@ -7,10 +7,10 @@
   <app-user-location (close)="onLocationSubmit()" *ngIf="!isLocationConfirmed" [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile" [userProfile]="usersProfile">
   </app-user-location>
   <app-header *ngIf="!hideHeaderNFooter" [routerEvents]="routeData$"></app-header>
-  <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn && !isOffline">
-  </app-install-app>
+  <!-- <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn && !isOffline">
+  </app-install-app> -->
   <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
-  <router-outlet *ngIf="initApp"></router-outlet>
+  <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
 </div>
 <app-footer *ngIf="!hideHeaderNFooter"></app-footer>
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
