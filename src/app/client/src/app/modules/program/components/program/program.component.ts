@@ -17,7 +17,7 @@ interface IDynamicInput {
   selector: 'app-program-component',
   templateUrl: './program.component.html'
 })
-export class ProgramComponent implements OnInit {
+export class ProgramComponent implements OnInit, OnDestroy {
   public programId: string;
   public programDetails: any;
   public userProfile: any;
@@ -27,6 +27,7 @@ export class ProgramComponent implements OnInit {
   public programSelected = false;
   public associatedPrograms: any;
   public headerComponentInput: any;
+  public stageSubscription: any;
   public tabs;
   public showStage;
   public defaultView;
@@ -55,7 +56,8 @@ export class ProgramComponent implements OnInit {
   }
   ngOnInit() {
     this.handleOnboardEvent(event);
-    this.programStageService.getStage().subscribe(state => {
+    this.programStageService.initialize();
+    this.stageSubscription =  this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
     });
@@ -204,5 +206,9 @@ export class ProgramComponent implements OnInit {
   }
   tabChangeHandler(e) {
     this.component = this.componentMapping[e];
+  }
+
+  ngOnDestroy() {
+    this.stageSubscription.unsubscribe();
   }
 }

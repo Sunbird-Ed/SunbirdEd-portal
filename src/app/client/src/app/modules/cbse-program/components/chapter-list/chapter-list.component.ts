@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -26,7 +26,7 @@ interface IDynamicInput {
   templateUrl: './chapter-list.component.html',
   styleUrls: ['./chapter-list.component.scss']
 })
-export class ChapterListComponent implements OnInit, OnChanges {
+export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() chapterListComponentInput: IChapterListComponentInput;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
@@ -68,7 +68,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   public dynamicInputs: IDynamicInput;
   public dynamicOutputs: any;
   public creationComponent;
-
+  public stageSubscription: any;
   telemetryImpression = {};
   public collectionData;
   showLoader = true;
@@ -82,7 +82,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.programStageService.getStage().subscribe(state => {
+    this.stageSubscription =  this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
     });
@@ -387,4 +387,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
     });
   }
 
+  ngOnDestroy() {
+    this.stageSubscription.unsubscribe();
+  }
 }

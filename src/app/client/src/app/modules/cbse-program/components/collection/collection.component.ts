@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
 import { PublicDataService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -14,7 +14,7 @@ import { InitialState } from '../../interfaces';
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss']
 })
-export class CollectionComponent implements OnInit {
+export class CollectionComponent implements OnInit, OnDestroy {
 
   @Input() collectionComponentInput: any;
   @Output() isCollectionSelected  = new EventEmitter<any>();
@@ -26,6 +26,7 @@ export class CollectionComponent implements OnInit {
   public programSession: any; // TODO: change to just programDetails after creating new program
   public collectionComponentConfig: any;
   public programContext: any;
+  public stageSubscription: any;
   public collectionList: Array<any>;
   public collection;
   public role: any = {};
@@ -41,7 +42,7 @@ export class CollectionComponent implements OnInit {
     public utilService: UtilService, public contentService: ContentService) { }
 
   ngOnInit() {
-    this.programStageService.getStage().subscribe(state => {
+    this.stageSubscription = this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
     });
@@ -163,6 +164,10 @@ export class CollectionComponent implements OnInit {
     };
     this.isCollectionSelected.emit(event.data.metaData.identifier ? true : false);
     this.programStageService.addStage('chapterListComponent');
+  }
+
+  ngOnDestroy() {
+    this.stageSubscription.unsubscribe();
   }
 
 }

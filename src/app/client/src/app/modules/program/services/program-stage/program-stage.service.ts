@@ -23,11 +23,19 @@ export class ProgramStageService {
 
   constructor() { }
 
+  initialize() {
+    let { stages } = this.stagesInService;
+    this.stageCount = 1;
+    stages = [];
+    this.stagesInService = {
+      stages: stages
+    };
+    this.stageObservable.next(this.stagesInService);
+  }
   addStage(stage) {
     const stg = {
       stageId: this.stageCount++,
       stage: stage
-
     };
     this.stagesInService = {
       stages: [...this.stagesInService.stages, stg]
