@@ -119,11 +119,11 @@ export class SearchComponent implements OnInit {
           this.downloadedContents = offlineRes.result.count ? _.chunk(getDataForCard(offlineRes.result.content),
             this.MAX_CARDS_TO_SHOW)[0] : [];
           this.downloadedContentsCount = offlineRes.result.count;
-          this.downloadedContents = this.addHoverData(this.downloadedContents, false);
+          this.downloadedContents = this.utilService.addHoverData(this.downloadedContents, false);
 
           this.onlineContents = onlineRes.result.count ? _.chunk(getDataForCard(onlineRes.result.content), this.MAX_CARDS_TO_SHOW)[0] : [];
           this.onlineContentsCount = onlineRes.result.count;
-          this.onlineContents = this.addHoverData(this.onlineContents, true);
+          this.onlineContents = this.utilService.addHoverData(this.onlineContents, true);
 
 
           this.isContentNotAvailable = Boolean(!this.downloadedContents.length && !this.onlineContents.length);
@@ -200,31 +200,6 @@ export class SearchComponent implements OnInit {
       message: 'frmelmnts.lbl.searchNotMatchCh',
     };
   }
-
-  addHoverData(contentList, isOnlineSearch) {
-    _.each(contentList, (value) => {
-      value['hoverData'] = {
-        'note': isOnlineSearch && _.get(value, 'downloadStatus') ===
-          'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
-        'actions': [
-          {
-            'type': isOnlineSearch ? 'download' : 'save',
-            'label': isOnlineSearch ? _.capitalize(_.get(value, 'downloadStatus')) ||
-              this.resourceService.frmelmnts.btn.download :
-              this.resourceService.frmelmnts.lbl.saveToPenDrive,
-            'disabled': isOnlineSearch && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], Boolean(_.get(value, 'downloadStatus')))
-          },
-          {
-            'type': 'open',
-            'label': this.resourceService.frmelmnts.lbl.open
-          }
-        ]
-      };
-    });
-
-    return contentList;
-  }
-
   clearSearchQuery() {
     this.utilService.clearSearchQuery();
   }

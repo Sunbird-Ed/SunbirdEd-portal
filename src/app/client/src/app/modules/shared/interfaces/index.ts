@@ -20,4 +20,4 @@ export * from './courseStates';
 export * from './telemetryShare';
 export * from './batch';
 export * from './highlightText';
-
+export * from './language';
