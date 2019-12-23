@@ -1,4 +1,3 @@
-import { HttpClient, HttpHandler } from '@angular/common/http';
 import { servicemockRes } from './util.service.spec.data';
 import { TestBed, inject } from '@angular/core/testing';
 
