@@ -92,30 +92,6 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
       .subscribe(element => { this.prepareVisits(); });
   }
 
-  addHoverData(contentList) {
-    _.each(contentList, (value) => {
-      value['hoverData'] = {
-        'note': this.isBrowse && _.get(value, 'downloadStatus') ===
-          'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
-        'actions': [
-          {
-            'type': this.isBrowse ? 'download' : 'save',
-            'label': this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
-              this.resourceService.frmelmnts.btn.download :
-              this.resourceService.frmelmnts.lbl.saveToPenDrive,
-            'disabled': this.isBrowse && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], Boolean(_.get(value, 'downloadStatus')))
-          },
-          {
-            'type': 'open',
-            'label': this.resourceService.frmelmnts.lbl.open
-          }
-        ]
-      };
-    });
-
-    return contentList;
-  }
-
  ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -262,7 +238,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
       _.each(this.contentList, (contents) => {
         this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
       });
-      this.addHoverData(this.contentList);
+      this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);
     }
   }
 }

@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
+import { PublicPlayerService } from '@sunbird/public';
 
 @Component({
   selector: 'app-update-content-preference',
@@ -36,7 +37,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     public frameworkService: FrameworkService,
     public toasterService: ToasterService,
     public activatedRoute: ActivatedRoute,
-    public telemetryService: TelemetryService
+    public telemetryService: TelemetryService,
+    public publicPlayerService: PublicPlayerService
   ) { }
   ngOnInit() {
     this.frameworkDetails = this.userPreferenceData['framework'];
@@ -156,8 +158,9 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     this.userPreferenceData.framework.subjects = requestData.request.framework.subjects;
 
     this.userService.updateUser(requestData)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => {
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => {
+      this.updateFilters();
         this.closeModal(this.userPreferenceData);
         this.toasterService.success(this.resourceService.messages.smsg.m0058);
 
@@ -166,6 +169,15 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
 
       });
   }
+
+  updateFilters() {
+    this.userService.getUser();
+    const filters = _.pick(this.userPreferenceData.framework, ['board', 'medium', 'gradeLevel']);
+    filters.board = [filters.board];
+    filters.appliedFilters = true;
+    this.publicPlayerService.libraryFilters = filters;
+  }
+
    closeModal(requestData?) {
     this.modal.deny();
     this.dismissed.emit(requestData);
