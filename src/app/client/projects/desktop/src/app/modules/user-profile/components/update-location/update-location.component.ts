@@ -71,10 +71,10 @@ export class UpdateLocationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this.closeModal(this.userLocationData);
-        this.toasterService.success(this.resourceService.messages.smsg.m0060);
+        this.toasterService.success(this.resourceService.messages.smsg.m0057);
       }, error => {
         this.closeModal('');
-        this.toasterService.error(this.resourceService.messages.emsg.m0024);
+        this.toasterService.error(this.resourceService.messages.emsg.m0021);
       });
   }
   setTelemetryData () {
