@@ -83,4 +83,11 @@ describe('AboutUsComponent', () => {
     expect(component.setTelemetryData).toHaveBeenCalled();
   });
 
+  it('should display Date', () => {
+    component.appInfo = appInfoResponse.appInfo.result;
+    fixture.detectChanges();
+    const element = fixture.debugElement.query(By.css('#date')).nativeElement;
+    expect(element.innerText).toEqual('23/04/19');
+  });
+
 });

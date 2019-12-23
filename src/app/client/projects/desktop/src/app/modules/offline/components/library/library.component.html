@@ -48,7 +48,7 @@
                         <!-- END OF RECENTLY VIEWED CONTENT-->
                         <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [title]="section?.name"
                             [contentList]="section?.contents" [type]="'infinite_card_grid_with_hover'"
-                            (hoverActionClick)="hoverActionClicked($event)">
+                            (hoverActionClick)="hoverActionClicked($event)" [maxCardCount]="3">
                         </sb-library-cards-grid>
                     </section>
                 </div>

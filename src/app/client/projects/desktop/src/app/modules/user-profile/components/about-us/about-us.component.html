@@ -13,7 +13,7 @@
         </dl>
         <dl class="sb-left-content mt-8 mb-0">
             <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.releaseDateKey}}</dt>
-            <dd class="list-value fs-0-92">{{appInfo?.releaseDate}}</dd>
+            <dd class="list-value fs-0-92" id="date">{{appInfo?.releaseDate | date: 'dd/mm/yy'}}</dd>
         </dl>
         <dl class="sb-left-content mt-8 mb-0">
             <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.supportedLanguages}}</dt>
@@ -33,4 +33,4 @@
   </div>
 </div>
 <div class="d-flex flex-jc-center my-8 fxsmall">
-<a href="#" class="link">{{resourceService?.frmelmnts?.lnk?.footerTnC}}</a>&nbsp;| &#9400; 2019, {{instance}}</div>
+<a href="javascript:void(0)" class="link">{{resourceService?.frmelmnts?.lnk?.footerTnC}}</a>&nbsp;| &#9400; 2019, {{instance}}</div>

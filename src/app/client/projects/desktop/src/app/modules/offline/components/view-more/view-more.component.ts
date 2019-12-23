@@ -106,7 +106,10 @@ export class ViewMoreComponent implements OnInit {
 
   goBack() {
     this.location.back();
-    this.clearSearchQuery();
+
+    if (this.isViewAll) {
+      this.clearSearchQuery();
+    }
   }
 
   clearSearchQuery() {
@@ -125,7 +128,7 @@ export class ViewMoreComponent implements OnInit {
         this.showLoader = false;
         const orderedContents = _.orderBy(_.get(response, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']);
         this.contentList = this.formatSearchResults(orderedContents);
-        this.addHoverData();
+        this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);
       }, error => {
         this.showLoader = false;
         this.setNoResultMessage();
@@ -172,7 +175,7 @@ export class ViewMoreComponent implements OnInit {
         }
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
         this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
-        this.addHoverData();
+        this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);
       }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -196,34 +199,12 @@ export class ViewMoreComponent implements OnInit {
     }
   }
 
-  addHoverData() {
-    _.each(this.contentList, (value) => {
-      value['hoverData'] = {
-        note: this.isBrowse && _.get(value, 'downloadStatus') ===
-          'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
-        actions: [
-          {
-            type: this.isBrowse ? 'download' : 'save',
-            label: this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
-              this.resourceService.frmelmnts.btn.download :
-              this.resourceService.frmelmnts.lbl.saveToPenDrive,
-            disabled: this.isBrowse && (_.get(value, 'downloadStatus') === 'DOWNLOADED' ||
-              Boolean(_.get(value, 'downloadStatus') === 'DOWNLOADING'))
-          },
-          {
-            type: 'open',
-            label: this.resourceService.frmelmnts.lbl.open
-          }
-        ]
-      };
-    });
-  }
 
   updateCardData(downloadListdata) {
     _.each(this.contentList, (contents) => {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
-    this.addHoverData();
+    this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);
   }
 
   public navigateToPage(page: number): void {
