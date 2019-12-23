@@ -1,6 +1,7 @@
 export const appInfoResponse = {
     appInfo:  {
         'result': {
+            'termsOfUseUrl': 'http://localhost:4000/abc.html',
             'version': '1.0.2',
             'releaseDate': '16 December 2019',
             'deviceId': 'did1234',
@@ -16,6 +17,7 @@ export const appInfoResponse = {
         instance: 'tenant',
         frmelmnts: {
             lbl: {
+                termsOfUseUrl: 'http://localhost:4000/abc.html',
                 versionKey: 'Version:',
                 deviceId: 'DeviceID',
                 supportedLanguages: 'Supported Languages:',
