@@ -20,12 +20,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
   @Output() isCollectionSelected  = new EventEmitter<any>();
   public sessionContext: ISessionContext = {};
   public chapterListComponentInput: IChapterListComponentInput = {};
-  public programDetails: any;
+  public programContext: any;
   public userProfile: any;
   public sharedContext: any = {};
-  public programSession: any; // TODO: change to just programDetails after creating new program
   public collectionComponentConfig: any;
-  public programContext: any;
   public stageSubscription: any;
   public collectionList: Array<any>;
   public collection;
@@ -48,7 +46,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
     });
 
     this.currentStage = 'collectionComponent';
-    this.programDetails = _.get(this.collectionComponentInput, 'programDetails');
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
     this.collectionComponentConfig = _.get(this.collectionComponentInput, 'config');
     this.programContext = _.get(this.collectionComponentInput, 'programContext');
@@ -57,11 +54,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
       return {...obj, [context]: this.getSharedContextObjectProperty(context)};
     }, {});
     this.sessionContext = _.assign(this.collectionComponentInput.sessionContext, {
-      currentRole: _.get(this.programDetails, 'userDetails.roles[0]'),
-      bloomsLevel: _.get(this.programDetails, 'config.scope.bloomsLevel'),
-      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1' || _.get(this.programDetails, 'programId'),
-      program: _.get(this.programDetails, 'name'),
-      onBoardSchool: _.get(this.programDetails, 'userDetails.onBoardingData.school'),
+      currentRole: _.get(this.programContext, 'userDetails.roles[0]'),
+      bloomsLevel: _.get(this.programContext, 'config.scope.bloomsLevel'),
+      programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1' || _.get(this.programContext, 'programId'),
+      program: _.get(this.programContext, 'name'),
+      onBoardSchool: _.get(this.programContext, 'userDetails.onBoardingData.school'),
       collectionType: _.get(this.collectionComponentConfig, 'collectionType'),
       collectionStatus: _.get(this.collectionComponentConfig, 'status')
     }, this.sharedContext);
@@ -74,7 +71,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   getSharedContextObjectProperty(property) {
     if (property === 'channel') {
-       return _.get(this.programDetails, 'config.scope.channel');
+       return _.get(this.programContext, 'config.scope.channel');
     } else if ( property === 'topic' ) {
       return null;
     } else {

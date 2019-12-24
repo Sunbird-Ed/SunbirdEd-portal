@@ -153,7 +153,6 @@ export class ProgramComponent implements OnInit, OnDestroy {
     this.showLoader = false;
     this.dynamicInputs = {
       collectionComponentInput: {
-        programDetails: this.programDetails,
         sessionContext: this.sessionContext,
         userProfile: this.userProfile,
         config: _.find(this.programDetails.config.components, { 'id': 'ng.sunbird.collection' }),
