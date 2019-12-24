@@ -272,7 +272,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
         if (shouldCallAPI) {
             return of(undefined);
         }
-        const option = this.constructSearchRequest(addFilter);
+
+        const params = _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams);
+        params.online = false;
+        const option = addFilter ? this.constructSearchRequest(addFilter) : { params };
         return this.searchService.contentSearch(option).pipe(
             tap(data => {
             }), catchError(error => {
