@@ -1,14 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FineUploader } from 'fine-uploader';
-import { ToasterService, ConfigService } from '@sunbird/shared';
+import { ToasterService, ConfigService, ResourceService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService, PlayerService, FrameworkService } from '@sunbird/core';
 import { ProgramStageService } from '../../../program/services';
 import * as _ from 'lodash-es';
 import { catchError, map, first } from 'rxjs/operators';
-import { throwError, Observable } from 'rxjs';
+import { throwError, Observable, from } from 'rxjs';
 import { IContentUploadComponentInput} from '../../interfaces';
 import { FormGroup, FormArray, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
 import { CbseProgramService } from '../../services/cbse-program/cbse-program.service';
+import { HelperService } from '../../services/helper.service';
+import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 
 @Component({
   selector: 'app-content-uploader',
@@ -19,10 +21,12 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   @ViewChild('modal') modal;
   @ViewChild('fineUploaderUI') fineUploaderUI: ElementRef;
   @ViewChild('qq-upload-actions') actionButtons: ElementRef;
+  @ViewChild('FormControl') private FormControl;
   // @ViewChild('contentTitle') contentTitle: ElementRef;
   @Input() contentUploadComponentInput: IContentUploadComponentInput;
 
   public sessionContext: any;
+  public programContext: any;
   public templateDetails: any;
   public unitIdentifier: any;
   public formConfiguration: any;
@@ -33,6 +37,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   @Output() uploadedContentMeta = new EventEmitter<any>();
   public playerConfig;
   public showPreview = false;
+  public resourceStatus;
+  showFormError = false;
   showForm;
   uploader;
   loading;
@@ -47,24 +53,31 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   visibility: any;
   editTitle: string;
   showTextArea: boolean;
+  changeFile_instance: boolean;
+  showRequestChangesPopup = false;
 
   constructor(public toasterService: ToasterService, private userService: UserService,
     private publicDataService: PublicDataService, public actionService: ActionService,
     public playerService: PlayerService, public configService: ConfigService, private formBuilder: FormBuilder,
-    private cbseService: CbseProgramService, public frameworkService: FrameworkService, public programStageService: ProgramStageService) { }
+    private cbseService: CbseProgramService, public frameworkService: FrameworkService,
+    public programStageService: ProgramStageService, private helperService: HelperService,
+    private collectionHierarchyService: CollectionHierarchyService, private cd: ChangeDetectorRef,
+    private resourceService: ResourceService) { }
 
   ngOnInit() {
     this.sessionContext  = _.get(this.contentUploadComponentInput, 'sessionContext');
     this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
-    this.actions = _.get(this.contentUploadComponentInput, 'programContext.actions');
-    this.handleActionButtons();
+    this.programContext = _.get(this.contentUploadComponentInput, 'programContext');
+    this.actions = _.get(this.contentUploadComponentInput, 'programContext.config.actions');
+    this.getUploadedContentMeta(_.get(this.contentUploadComponentInput, 'contentId'));
   }
 
   ngAfterViewInit() {
     if (_.get(this.contentUploadComponentInput, 'action') === 'preview') {
       this.showPreview = true;
-      this.getUploadedContentMeta(_.get(this.contentUploadComponentInput, 'contentIdentifier'));
+      this.cd.detectChanges();
+      this.getUploadedContentMeta(_.get(this.contentUploadComponentInput, 'contentId'));
     } else {
       this.initiateUploadModal();
       this.fineUploaderUI.nativeElement.remove();
@@ -73,10 +86,18 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
 
   handleActionButtons() {
     this.visibility = {};
-    this.visibility['showChangeFile'] = _.includes(this.actions.showChangeFile.roles, this.sessionContext.currentRoleId);
-    this.visibility['showRequestChanges'] = _.includes(this.actions.showRequestChanges.roles, this.sessionContext.currentRoleId);
-    this.visibility['showAccept'] = _.includes(this.actions.showAccept.roles, this.sessionContext.currentRoleId);
-    this.visibility['showSubmit'] = _.includes(this.actions.showSubmit.roles, this.sessionContext.currentRoleId);
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showChangeFile'] = (_.includes(this.actions.showChangeFile.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showRequestChanges'] = (_.includes(this.actions.showRequestChanges.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Review');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showPublish'] = (_.includes(this.actions.showPublish.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Review');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showSubmit'] = (_.includes(this.actions.showSubmit.roles, this.sessionContext.currentRoleId)  && this.resourceStatus === 'Draft');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showSave'] = (_.includes(this.actions.showSave.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showEdit'] = (_.includes(this.actions.showEdit.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
   }
 
   initiateUploadModal() {
@@ -110,13 +131,14 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
 
   uploadContent() {
     if (this.uploader.getFile(0) == null && !this.contentURL) {
-      this.toasterService.error('URL or File is required to upload');
+      this.toasterService.error('File is required to upload');
       return;
     }
     let fileUpload = false;
     if (this.uploader.getFile(0) != null) {
       fileUpload = true;
     }
+    console.log(this.uploader.getFile(0) + this.uploader.getName(0));
     const mimeType = fileUpload ? this.detectMimeType(this.uploader.getName(0)) : this.detectMimeType(this.contentURL);
     if (!mimeType) {
       this.toasterService.error('Invalid content type (supported type: pdf, epub, h5p, mp4, html-zip, webm)');
@@ -128,17 +150,14 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
 
   uploadByURL(fileUpload, mimeType) {
     if (fileUpload) {
-      this.uploadFile(mimeType, this.contentUploadComponentInput.contentIdentifier);
+      this.uploadFile(mimeType, this.contentUploadComponentInput.contentId);
     }
   }
 
   uploadFile(mimeType, contentId) {
-    let contentType = mimeType;
+    const contentType = mimeType;
     // document.getElementById('qq-upload-actions').style.display = 'none';
     this.loading = true;
-    if (mimeType === 'application/vnd.ekstep.h5p-archive' || mimeType === 'application/vnd.ekstep.html-archive') {
-      contentType = 'application/octet-stream';
-    }
     const option = {
       url: 'content/v3/upload/url/' + contentId,
       data: {
@@ -194,6 +213,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       const errInfo = { errorMsg: 'Unable to update pre_signed_url with Content Id and Content Creation Failed, Please Try Again' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
+      this.toasterService.success('Content Successfully Uploaded...');
       this.getUploadedContentMeta(contentId);
       this.uploadedContentMeta.emit({
         contentId: contentId
@@ -209,7 +229,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       const errInfo = { errorMsg: 'Unable to read the Content, Please Try Again' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
-      // this.closeModal();
       const contentDetails = {
         contentId: contentId,
         contentData: res
@@ -217,21 +236,25 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       this.contentMetaData = res;
       this.playerConfig = this.playerService.getConfig(contentDetails);
       this.playerConfig.context.pdata.pid = 'cbse-program-portal';
-      this.showPreview = true;
+      this.showPreview = this.contentMetaData.artifactUrl ? true : false;
       this.loading = false;
+      this.handleActionButtons();
       // At the end of execution
       this.fetchFrameWorkDetails();
       this.manageFormConfiguration();
       this.editTitle = this.contentMetaData.name;
+      this.resourceStatus = this.contentMetaData.status;
+      this.cd.detectChanges();
     });
   }
 
   public closeModal(action?) {
-    if (this.modal && this.modal.deny && action === 'Cancel') {
+    if (this.modal && this.modal.deny && action === 'Cancel' && this.changeFile_instance) {
+      this.showPreview = true;
+      this.changeFile_instance = false;
+    } else if (this.modal && this.modal.deny && action === 'Cancel') {
       this.modal.deny();
       this.programStageService.removeLastStage();
-    } else if (this.modal && this.modal.deny) {
-      this.modal.deny();
     }
   }
 
@@ -258,27 +281,26 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   manageFormConfiguration() {
     this.showForm = true;
     // tslint:disable-next-line:max-line-length
-    const compConfiguration = _.find(_.get(this.contentUploadComponentInput, 'programContext.components'), {compId: 'uploadContentComponent'});
+    const compConfiguration = _.find(_.get(this.contentUploadComponentInput, 'programContext.config.components'), {compId: 'uploadContentComponent'});
     this.formConfiguration = compConfiguration.config.formConfiguration;
     this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
     this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
     this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
-   // tslint:disable-next-line:max-line-length
-    this.selectOutcomeOption = { bloomslevel: ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'], LearningOutcome: ['sdhgfsjhadf', 'dfjghkdas', 'hgadfjhg'], license: ['CC BY 4.0', 'CC BY 5.0']};
-    const disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR') ? false : true ;
-    // this.contentMetaData = {};
-    this.contentMetaData['bloomslevel'] = ['remember'];
-    this.contentMetaData['Author'] = 'Shashi';
-    this.contentMetaData['LearningOutcome'] = ['sdhgfsjhadf'];
-    // this.contentMetaData['creator'] = 'Shashi';
+    const formFields = _.map(this.formConfiguration, (formData) => {
+      if (!formData.defaultValue) {
+        return formData.code;
+      }
+      this.selectOutcomeOption[formData.code] = formData.defaultValue;
+    });
 
+    this.helperService.getLicences().subscribe((res) => {
+      this.selectOutcomeOption['license'] = _.map(res.license, (license) => {
+        return license.name;
+      });
+    });
     const topicTerm = _.find(this.sessionContext.topicList, { name: this.sessionContext.topic });
     if (topicTerm && topicTerm.associations) {
-       this.selectOutcomeOption['LearningOutcome'] = topicTerm.associations;
-    }
-
-    if (this.sessionContext.bloomsLevel) {
-      this.selectOutcomeOption['bloomslevel'] = this.sessionContext.bloomsLevel;
+       this.selectOutcomeOption['learningOutcome'] = topicTerm.associations;
     }
 
     this.contentDetailsForm = this.formBuilder.group({
@@ -286,7 +308,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       selectionArr: this.formBuilder.array([ ]),
       multiSelectionArr: this.formBuilder.array([ ])
     });
-
+    const disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR') ? false : true ;
     _.forEach(this.selectionFields, (obj) => {
       const controlName = {};
       const code = obj.code;
@@ -320,7 +342,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       this.textInputArr = this.contentDetailsForm.get('textInputArr') as FormArray;
       this.textInputArr.push(this.formBuilder.group(controlName));
     });
-
   }
 
   fetchFrameWorkDetails() {
@@ -335,13 +356,90 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
 
   saveContent() {
     if (this.contentDetailsForm.valid) {
-     this.formValues = {};
+      this.showTextArea = false;
+      this.formValues = {};
         _.map(this.contentDetailsForm.value, (value, key) => { _.map(value, (obj) => { _.assign(this.formValues, obj); });
-     });
-     console.log(this.formValues);
+      });
+      let contentObj = {
+          'versionKey': this.contentMetaData.versionKey,
+          'name': this.editTitle
+      };
+      contentObj = _.pickBy(_.assign(contentObj, this.formValues), _.identity);
+      const request = {
+        'content': contentObj
+      };
+      this.helperService.updateContent(request, this.contentMetaData.identifier).subscribe((res) => {
+        this.contentMetaData.versionKey = res.result.versionKey;
+        if (this.sessionContext.collection && this.unitIdentifier) {
+          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
+          .subscribe((data) => {
+            this.toasterService.success(this.resourceService.messages.smsg.m0045);
+          });
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0083);
+        }
+      });
     } else {
+      // this.toasterService.error('Please Fill Mandatory Form-Fields...');
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
       this.markFormGroupTouched(this.contentDetailsForm);
     }
+  }
+
+  sendForReview() {
+    this.helperService.reviewContent(this.contentMetaData.identifier)
+       .subscribe((res) => {
+        if (this.sessionContext.collection && this.unitIdentifier) {
+          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
+          .subscribe((data) => {
+            this.toasterService.success(this.resourceService.messages.smsg.m0003);
+          });
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0083);
+        }
+       }, (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0018);
+       });
+  }
+
+  requestChanges(comments) {
+    if (this.FormControl.value.rejectComment) {
+      this.showFormError = false;
+      this.helperService.submitRequestChanges(this.contentMetaData.identifier, this.FormControl.value.rejectComment)
+      .subscribe(res => {
+        if (this.sessionContext.collection && this.unitIdentifier) {
+          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.node_id)
+          .subscribe((data) => {
+            this.toasterService.success(this.resourceService.messages.smsg.m0005);
+            this.showRequestChangesPopup = false;
+            // TODO::Redirect to Chapterlist
+          });
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0083);
+        }
+      }, (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0020);
+      });
+    } else {
+      this.showFormError = true;
+    }
+  }
+
+  publichContent() {
+    this.helperService.publishContent(this.contentMetaData.identifier, this.userService.userProfile.userId)
+       .subscribe(res => {
+        if (this.sessionContext.collection && this.unitIdentifier) {
+          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.node_id)
+          .subscribe((data) => {
+            this.toasterService.success(this.resourceService.messages.smsg.m0004);
+            // TODO::Redirect to Chapterlist
+          });
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0083);
+        }
+      }, (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0019);
+      });
   }
 
   markFormGroupTouched(formGroup: FormGroup) {
@@ -355,16 +453,12 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   }
 
   changeFile() {
+    this.changeFile_instance = true;
     this.showPreview = false;
     setTimeout(() => {
       this.initiateUploadModal();
       this.fineUploaderUI.nativeElement.remove();
     }, 0);
-  }
-
-  editContentTitle() {
-    // this.showTextArea = true;
-    // this.editTitle = this.contentTitle.nativeElement.text;
   }
 }
 

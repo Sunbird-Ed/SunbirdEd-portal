@@ -79,7 +79,7 @@
     <!--Header Blue Section-->
     <!--Computer-->
     <div class="sb-bg-color-primary p-8"
-        *ngIf="showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre">
+        *ngIf="(showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre) && !router.url.includes('/contribute/program')">
         <ng-container *ngIf="contributeTabActive else defaultView">
             <div class="ui container d-flex flex-ai-center mx-0">
                 <span class="fs-1 sb-color-white py-8">{{resourceService?.frmelmnts?.lbl?.availableForContribution}}</span>
