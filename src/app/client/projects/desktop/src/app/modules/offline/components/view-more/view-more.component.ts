@@ -41,10 +41,14 @@ export class ViewMoreComponent implements OnInit {
   isBrowse = false;
   showDownloadLoader = false;
   downloadedContents: any[] = [];
+  visits: any = [];
 
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
+  onlineLibraryLinkInteractEdata: IInteractEventEdata;
+  myDownloadsLinkInteractEdata: IInteractEventEdata;
+
   constructor(
     public contentManagerService: ContentManagerService,
     public router: Router,
@@ -68,6 +72,7 @@ export class ViewMoreComponent implements OnInit {
 
   ngOnInit() {
     this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
+    this.setTelemetryData();
     this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).subscribe((orgDetails: any) => {
       this.hashTagId = orgDetails.hashTagId;
       this.initFilters = true;
@@ -242,5 +247,52 @@ export class ViewMoreComponent implements OnInit {
         'messageText': 'messages.stmsg.m0006'
       };
     }
+  }
+
+  setTelemetryData() {
+    this.visits = [];
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url.split('?')[0],
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationHelperService.getPageLoadTime()
+      }
+    };
+
+    this.backButtonInteractEdata = {
+      id: 'back-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.filterByButtonInteractEdata = {
+      id: 'filter-by-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.myDownloadsLinkInteractEdata = {
+      id: 'my-downloads-link',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.onlineLibraryLinkInteractEdata = {
+      id: 'online-library-link',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+  }
+
+  prepareVisits(event) {
+    this.visits = [...this.visits, ...event.visits];
+    this.telemetryImpression.edata.visits = this.visits;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 }
