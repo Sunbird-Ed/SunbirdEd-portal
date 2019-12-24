@@ -47,7 +47,7 @@ export class NoContentComponent implements OnInit, OnDestroy {
 
   handleModal(id) {
     this.showModal = !this.showModal;
-    this.addInteractEvent(id);
+    if (! _.isEmpty(id)) {this.addInteractEvent(id); }
   }
 
   ngOnDestroy() {
