@@ -33,7 +33,7 @@
     },
     "USER": {
       "SIGNUP": "user/v1/create",
-      "TNC_ACCEPT": "/user/v1/tnc/accept",
+      "TNC_ACCEPT": "user/v1/tnc/accept",
       "UPDATE_USER_PROFILE": "user/v1/update",
       "GET_PROFILE": "user/v2/read/",
       "TENANT_LOGO": "get/tenant/logo",
