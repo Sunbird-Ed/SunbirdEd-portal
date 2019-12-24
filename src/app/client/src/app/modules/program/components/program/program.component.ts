@@ -6,9 +6,8 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { tap, map, first } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
-import { programSession } from './data';
 import { ICollectionComponentInput } from '../../../cbse-program/interfaces';
-import { InitialState, ISessionContext, IUserParticipentDetails } from '../../interfaces';
+import { InitialState, ISessionContext, IUserParticipantDetails } from '../../interfaces';
 import { ProgramStageService } from '../../services/';
 interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;
@@ -55,9 +54,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
     localStorage.setItem('programId', this.programId);
   }
   ngOnInit() {
-    this.handleOnboardEvent(event);
+    this.initiateOnboarding();
     this.programStageService.initialize();
-    this.stageSubscription =  this.programStageService.getStage().subscribe(state => {
+    this.stageSubscription = this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
     });
@@ -65,16 +64,33 @@ export class ProgramComponent implements OnInit, OnDestroy {
       console.log('no programId found'); // TODO: need to handle this case
     }
   }
-  handleOnboardEvent(event) {
+  initiateOnboarding() {
     this.fetchProgramDetails().subscribe((programDetails) => {
-      this.handleOnboarding(event);
+      this.handleOnboarding();
     }, error => {
       // TODO: navigate to program list page
       const errorMes = typeof _.get(error, 'error.params.errmsg') === 'string' && _.get(error, 'error.params.errmsg');
       this.toasterService.error(errorMes || 'Fetching program details failed');
-      this.handleHeader('failed');
+      this.initiateHeader('failed');
     });
   }
+
+  fetchProgramDetails() { // Getting Program Configuration
+    const req = {
+      // url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
+      url: `program/v1/read/${this.programId}`,
+      param: { userId: this.userService.userid }
+    };
+    return this.extPluginService.get(req).pipe(tap((programDetails: any) => {
+      this.programDetails = programDetails.result;
+      this.sessionContext.framework = _.get(this.programDetails, 'config.framework');
+      if (this.sessionContext.framework) {
+        this.userProfile = this.userService.userProfile;
+        this.fetchFrameWorkDetails();
+      }
+    }));
+  }
+
   public fetchFrameWorkDetails() {
     this.frameworkService.initialize(this.sessionContext.framework);
     this.frameworkService.frameworkData$.pipe(first()).subscribe((frameworkDetails: any) => {
@@ -86,21 +102,19 @@ export class ProgramComponent implements OnInit, OnDestroy {
       this.toasterService.error(errorMes || 'Fetching framework details failed');
     });
   }
-  handleOnboarding(event) {
+  handleOnboarding() {
     const checkUserParticipentData = _.has(this.programDetails, 'userDetails') ? true : false;
     if (checkUserParticipentData) {
       this.showOnboardPopup = false;
-      this.handleHeader('success');
+      this.initiateHeader('success');
     } else if (_.has(this.programDetails.config, 'onBoardingForm')) {
       this.showOnboardPopup = true;
-      //  this.handleHeader('success');
+      //  this.initiateHeader('success');
     } else {
-      this.userOnbording(event);
-      this.showOnboardPopup = false;
+      this.userOnboarding();
     }
-    this.initiateInputs('success');
   }
-  userOnbording(event): any {
+  userOnboarding(): any {
     const req = {
       url: `program/v1/add/participant`,
       data: {
@@ -112,35 +126,42 @@ export class ProgramComponent implements OnInit, OnDestroy {
       }
     };
     this.extPluginService.post(req).subscribe((data) => {
-      this.setUserParticipentDetails(data);
+      this.setUserParticipantDetails({
+        data: data,
+        onBoardingData: {}
+      });
     }, error => {
-      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'User onbording fails');
+      this.toasterService.error(_.get(error, 'error.params.errmsg') || 'User onboarding failed');
     });
   }
-  setUserParticipentDetails(data) {
-    const userDetails: IUserParticipentDetails = {
-      enrolledOn: data['ts'],
+
+  setUserParticipantDetails(event) {
+    this.showOnboardPopup = false;
+    const userDetails: IUserParticipantDetails = {
+      enrolledOn: event.data.ts,
       onBoarded: true,
-      onBoardingData: {},
-      programId: data['result']['programId'],
-      roles: ['CONTRIBUTOR'],
+      onBoardingData: event.onBoardingData,
+      programId: event.data.result.programId,
+      roles: ['CONTRIBUTOR'], // TODO: get default role from config
       userId: this.userService.userid
     };
     this.programDetails['userDetails'] = userDetails;
-    this.handleHeader('success');
+    this.initiateHeader('success');
   }
-  initiateInputs (status) {
+
+  initiateInputs() {
+    this.showLoader = false;
     this.dynamicInputs = {
-      collectionComponentInput:  {
+      collectionComponentInput: {
         programDetails: this.programDetails,
         sessionContext: this.sessionContext,
         userProfile: this.userProfile,
-        config: _.find(programSession.config.components, {'id': 'ng.sunbird.collection'}), // TODO: change programSession to programDetails
-        programContext: programSession
+        config: _.find(this.programDetails.config.components, { 'id': 'ng.sunbird.collection' }),
+        programContext: this.programDetails
       }
     };
   }
-  handleHeader(status) {
+  initiateHeader(status) {
     if (status === 'success') {
       this.headerComponentInput = {
         roles: _.get(this.programDetails.config, 'roles'),
@@ -150,60 +171,27 @@ export class ProgramComponent implements OnInit, OnDestroy {
         showTabs: this.showTabs
       };
       this.tabs = _.get(this.programDetails.config, 'header.config.tabs');
-      if (this.tabs && this.programDetails.userDetails ) {
-        this.defaultView = _.find(this.tabs, {'index': this.getDefaultActiveTab()});
+      if (this.tabs && this.programDetails.userDetails) {
+        this.defaultView = _.find(this.tabs, { 'index': this.getDefaultActiveTab() });
         this.programStageService.addStage(this.defaultView.onClick);
         this.component = this.componentMapping[this.defaultView.onClick];
       }
-      this.showLoader = false;
+      this.initiateInputs();
     } else {
       this.toasterService.error('Fetching program details failed');
     }
   }
   changeView() {
     if (!_.isEmpty(this.state.stages)) {
-      this.currentStage  = _.last(this.state.stages).stage;
+      this.currentStage = _.last(this.state.stages).stage;
     }
   }
-  getDefaultActiveTab () {
-   const defaultView =  _.find(this.programDetails.config.roles, {'name': this.programDetails.userDetails.roles[0]});
-   if (defaultView) {
-    return defaultView.defaultTab;
-   } else {
-     return 1;
-   }
+
+  getDefaultActiveTab() {
+    const defaultView = _.find(this.programDetails.config.roles, { 'name': this.programDetails.userDetails.roles[0] });
+    return (defaultView) ? defaultView.defaultTab : 1;
   }
-  getAssociatedPrograms() {
-    const req = {
-      url: `program/v1/list`,
-      data: {
-        'request': {
-          'filters': {
-            'userId': this.userService.userid
-          }
-        }
-      }
-    };
-    return this.extPluginService.post(req).pipe(map(res => {
-      console.log(res);
-      return res;
-    }));
-  }
-  fetchProgramDetails() {
-    const req = {
-      // url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
-      url: `program/v1/read/${this.programId}`,
-      param: { userId: this.userService.userid }
-    };
-    return this.extPluginService.get(req).pipe(tap(programDetails => {
-      this.programDetails = programDetails.result;
-      this.sessionContext.framework = _.get(this.programDetails, 'config.framework');
-      if (this.sessionContext.framework) {
-        this.userProfile = this.userService.userProfile;
-        this.fetchFrameWorkDetails();
-      }
-    }));
-  }
+
   tabChangeHandler(e) {
     this.component = this.componentMapping[e];
   }
