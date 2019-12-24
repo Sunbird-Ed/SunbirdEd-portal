@@ -9,6 +9,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AboutUsComponent } from './about-us.component';
 import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 describe('AboutUsComponent', () => {
   let component: AboutUsComponent;
@@ -31,7 +32,7 @@ describe('AboutUsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AboutUsComponent ],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), HttpClientTestingModule],
-      providers: [
+      providers: [DatePipe,
         {provide: ResourceService, useValue: appInfoResponse.resourceBundle},
         {provide: ActivatedRoute, useClass: ActivatedRouteStub},
         {provide: Router, useClass: RouterStub},
@@ -84,10 +85,12 @@ describe('AboutUsComponent', () => {
   });
 
   it('should display Date', () => {
+    const datePipe = new DatePipe('en-US');
     component.appInfo = appInfoResponse.appInfo.result;
     fixture.detectChanges();
+    const date = Date.now();
     const element = fixture.debugElement.query(By.css('#date')).nativeElement;
-    expect(element.innerText).toEqual('23/12/2019');
+    expect(element.innerText).toEqual(datePipe.transform(date, 'dd/MM/yyyy'));
   });
 
 });
