@@ -140,8 +140,9 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         unitIdentifier: this.unitIdentifier,
         templateDetails: this.templateDetails,
         selectedSharedContext: this.selectedSharedContext,
-        contentIdentifier: this.contentId,
-        action: action
+        contentId: this.contentId,
+        action: action,
+        programContext: _.get(this.chapterListComponentInput, 'programContext')
       },
       practiceQuestionSetComponentInput: {
         sessionContext: this.sessionContext,
@@ -288,7 +289,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
               'contentType': this.templateDetails.metadata.contentType,
               'resourceType': this.templateDetails.metadata.resourceType || 'Learn',
               'creator': creator,
-              ...reqBody
+              ...(_.pickBy(reqBody, _.identity))
               // 'framework': this.sessionContext.framework,
               // 'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : [],
 
@@ -296,6 +297,9 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
           }
         }
       };
+      if (this.templateDetails.metadata.appIcon) {
+        option.data.request.content.appIcon = this.templateDetails.metadata.appIcon;
+      }
       this.actionService.post(option).pipe(map(res => res.result), catchError(err => {
         const errInfo = { errorMsg: 'Unable to create contentId, Please Try Again' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));

@@ -5,7 +5,7 @@ export interface IContentUploadComponentInput {
   sessionContext?: ISessionContext;
   unitIdentifier?: string;
   selectedSharedContext?: any;
-  contentIdentifier?: string;
+  contentId?: string;
   templateDetails?: any;
   programContext?: any;
   action?: string;
