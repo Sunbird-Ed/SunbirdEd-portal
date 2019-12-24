@@ -11,6 +11,9 @@
 <button *ngIf="checkStatus('DOWNLOADED')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
 {{resourceService.frmelmnts?.btn?.addedToLibrary}}
 </button>
+<button *ngIf="checkStatus('PAUSED')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
+  {{resourceService.frmelmnts?.lbl?.downloadingPaused}}
+</button>
 <!--Buttons for Downloading a content or collection -->
 
 <!--Buttons for Updating a content or collection -->
