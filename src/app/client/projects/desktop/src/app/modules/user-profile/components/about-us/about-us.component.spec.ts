@@ -87,7 +87,7 @@ describe('AboutUsComponent', () => {
     component.appInfo = appInfoResponse.appInfo.result;
     fixture.detectChanges();
     const element = fixture.debugElement.query(By.css('#date')).nativeElement;
-    expect(element.innerText).toEqual('23/04/19');
+    expect(element.innerText).toEqual('23/12/2019');
   });
 
 });
