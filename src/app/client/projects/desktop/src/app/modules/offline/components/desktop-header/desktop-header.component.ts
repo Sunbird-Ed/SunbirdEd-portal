@@ -6,14 +6,9 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 
 import { OrgDetailsService, FormService, TenantService } from '@sunbird/core';
-import { ConfigService, ResourceService, UtilService } from '@sunbird/shared';
+import { ConfigService, ResourceService, UtilService, ILanguage } from '@sunbird/shared';
 import { ElectronDialogService } from '../../services';
 
-export interface ILanguage {
-  value: string;
-  label: string;
-  dir: string;
-}
 @Component({
   selector: 'app-desktop-header',
   templateUrl: './desktop-header.component.html',

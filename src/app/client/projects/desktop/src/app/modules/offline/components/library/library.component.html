@@ -9,7 +9,7 @@
                     <div *ngIf="showLoader">
                         <app-loader [data]='loaderMessage'></app-loader>
                     </div>
-                    <div class="nine wide column" *ngIf="carouselMasterData.length === 0 && !showLoader">
+                    <div class="nine wide column" *ngIf="carouselMasterData?.length === 0 && !showLoader">
                         <app-no-content [filters]="modifiedFilters"></app-no-content>
                     </div>
                     <section *ngFor="let section of pageSections; let index=index;">
@@ -27,7 +27,7 @@
                                 </button>
                             </div>
                             <!-- dir="ltr" has to be changed once URdu language selection to dir="rtl" and in app.config.json "rtl=true" through event-->
-                            <ngx-slick dir="ltr" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+                            <ngx-slick [dir]="languageDirection" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
                                 <div ngxSlickItem *ngFor="let content of section?.contents"
                                     class="sbcardwidth slide mr-16">
                                     <sb-library-card [content]="content" [type]="'recently_viewed'"
