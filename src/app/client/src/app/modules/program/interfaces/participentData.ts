@@ -1,4 +1,4 @@
-export interface IUserParticipentDetails {
+export interface IUserParticipantDetails {
     enrolledOn: any;
     onBoarded: boolean;
     onBoardingData: object;

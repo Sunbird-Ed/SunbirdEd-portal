@@ -1,7 +1,7 @@
 import { FormService, UserService, ExtPluginService } from '@sunbird/core';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ToasterService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-onboard-popup',
@@ -17,7 +17,8 @@ export class OnboardPopupComponent implements OnInit, OnDestroy {
   formFieldOptions: Array<any>;
   showButton = false;
 
-  constructor(public formService: FormService, public extPluginService: ExtPluginService, public userService: UserService,
+  constructor(public formService: FormService, public toasterService: ToasterService,
+    public extPluginService: ExtPluginService, public userService: UserService,
     public resourceService: ResourceService) { }
 
   ngOnInit() {
@@ -40,9 +41,12 @@ export class OnboardPopupComponent implements OnInit, OnDestroy {
     }
     };
     this.extPluginService.post(req).subscribe((data) => {
-      this.updateEvent.emit(true);
+      this.updateEvent.emit({
+        data: data,
+        onBoardingData: this.selectedOption
+      });
     }, error => {
-      this.updateEvent.emit(false);
+      this.toasterService.error('User onboarding failed');
     });
   }
   ngOnDestroy() {
