@@ -5,7 +5,7 @@ import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 import {
-    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage, NavigationHelperService
+    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, NavigationHelperService, ILanguage
 } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
@@ -36,7 +36,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
     public dataDrivenFilterEvent = new EventEmitter();
     public unsubscribe$ = new Subject<void>();
 
-    public noResultMessage: INoResultMessage;
     public modifiedFilters: any;
 
     isConnected = navigator.onLine;
@@ -46,6 +45,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     showDownloadLoader = false;
     contentName: string;
     infoData;
+    languageDirection = 'ltr';
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -79,7 +79,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.isBrowse = Boolean(this.router.url.includes('browse'));
         this.infoData = { msg: this.resourceService.frmelmnts.lbl.allDownloads, linkName: this.resourceService.frmelmnts.btn.myLibrary };
         this.getSelectedFilters();
-        this.setNoResultMessage();
         this.setTelemetryData();
 
         this.connectionService.monitor()
@@ -105,6 +104,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.router.events
             .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
             .subscribe(x => { this.prepareVisits(); });
+
+        this.utilService.languageChange
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((language: ILanguage) => {
+                this.languageDirection = language.dir;
+            });
     }
 
     getSelectedFilters() {
@@ -156,8 +161,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         };
         if (addFilters) {
             option.filters = _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters;
+            option.filters['contentType'] = filters.contentType || ['TextBook'];
         }
-        option.filters['contentType'] = filters.contentType || ['TextBook'];
         if (manipulatedData.filters) {
             option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
         }
@@ -222,7 +227,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             DOWNLOADED: this.resourceService.messages.stmsg.m0139,
             PAUSED: this.resourceService.messages.stmsg.m0142,
             CANCELED: this.resourceService.messages.stmsg.m0143,
-          };
+        };
         _.each(this.pageSections, (pageSection) => {
             _.each(pageSection.contents, (value) => {
                 value['hoverData'] = {
@@ -263,25 +268,14 @@ export class LibraryComponent implements OnInit, OnDestroy {
         return carouselData;
     }
 
-    private setNoResultMessage() {
-        if (!(_.includes(this.router.url, 'browse'))) {
-            this.noResultMessage = {
-                message: 'messages.stmsg.m0007',
-                messageText: 'messages.stmsg.m0133'
-            };
-        } else {
-            this.noResultMessage = {
-                message: 'messages.stmsg.m0007',
-                messageText: 'messages.stmsg.m0006'
-            };
-        }
-    }
-
     searchContent(addFilter: boolean, shouldCallAPI) {
         if (shouldCallAPI) {
             return of(undefined);
         }
-        const option = this.constructSearchRequest(addFilter);
+
+        const params = _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams);
+        params.online = false;
+        const option = addFilter ? this.constructSearchRequest(addFilter) : { params };
         return this.searchService.contentSearch(option).pipe(
             tap(data => {
             }), catchError(error => {
