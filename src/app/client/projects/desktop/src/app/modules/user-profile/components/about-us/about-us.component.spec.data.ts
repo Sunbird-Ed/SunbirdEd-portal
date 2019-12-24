@@ -3,7 +3,7 @@ export const appInfoResponse = {
         'result': {
             'termsOfUseUrl': 'http://localhost:4000/abc.html',
             'version': '1.0.2',
-            'releaseDate': '1577075684617',
+            'releaseDate': `${Date.now()}`,
             'deviceId': 'did1234',
             'languages': 'English, Hindi, Telugu, Kannada',
             'updateInfo': {
