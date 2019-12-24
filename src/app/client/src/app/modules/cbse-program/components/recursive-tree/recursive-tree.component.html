@@ -1,16 +1,17 @@
 <div *ngFor="let collection of collectionUnits; let i = index">
-    <sui-accordion-panel [isOpen]=" i === 0 ? true : false">
-      <div title class="sb-accordion-title d-flex flex-ai-center"><span class="chapter-status mr-16"></span>
-        {{collection.name}} ( {{collection.topic}} )
-        <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
+  <sui-accordion-panel [isOpen]=" i === 0 ? true : false">
+    <div title class="sb-accordion-title d-flex flex-ai-center"><span class="chapter-status mr-16"></span>
+      {{collection.name}} ( {{collection.topic}} )
+      <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn ml-auto"
         (click)="showModal = false; createResource($event, collection)"><i class="add icon"></i>ADD</button>
-        <div class="chevron-icon">
-          <i class="chevron down icon mr-0 ml-0"></i>
-        </div>
+      <div class="chevron-icon">
+        <i class="chevron down icon mr-0 ml-0"></i>
       </div>
-      <div content>
-        <div class="chapter-lists level1" *ngIf="collection.leaf">
-          <div class="chapter-lists--item" (click)="previewResource($event, content, collection)" *ngFor="let content of collection.leaf; let i=index">
+    </div>
+    <div content>
+      <div class="chapter-lists level1" *ngIf="collection.leaf">
+        <ng-container *ngFor="let content of collection.leaf; let i=index">
+          <div class="chapter-lists--item" *ngIf="content.visibility === true" (click)="previewResource($event, content, collection)">
             <span class="item-name mr-auto"> {{content.name}}</span>
             <span class="item-status mr-32">{{content.creator}}</span>
             <span class="item-status mr-24">
@@ -20,20 +21,22 @@
               <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
                 <div class="px-8 w-auto pb-8"><span class="sb-dotmenu"></span></div>
                 <div class="menu" suiDropdownMenu>
-                  <div class="item" *ngIf="content.status === 'Draft' || content.status === 'Reject'" (click)="previewResource($event, content, collection)">Edit</div>
-                  <div class="item" *ngIf="content.status === 'Live' || content.status === 'Review'" (click)="previewResource($event, content, collection)">Preview</div>
+                  <div class="item" *ngIf="content.status === 'Draft' || content.status === 'Reject'"
+                    (click)="previewResource($event, content, collection)">Edit</div>
+                  <div class="item" *ngIf="content.status === 'Live' || content.status === 'Review'"
+                    (click)="previewResource($event, content, collection)">Preview</div>
                   <div class="item" (click)="moveResource($event, content, collection)">Move</div>
                   <div class="item" (click)="deleteResource($event, content, collection)">Delete</div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="sb-chapterlist-child" *ngIf="collection.children">
-          <app-recursive-tree [collectionUnits]="collection.children" [selectedChapter]="selectedChapter"
-              (nodeMeta)="nodeMetaEmitter($event)"></app-recursive-tree>
-        </div>
+        </ng-container>
       </div>
-    </sui-accordion-panel>
-  </div>
-
+      <div class="sb-chapterlist-child" *ngIf="collection.children">
+        <app-recursive-tree [collectionUnits]="collection.children" [selectedChapter]="selectedChapter"
+          (nodeMeta)="nodeMetaEmitter($event)"></app-recursive-tree>
+      </div>
+    </div>
+  </sui-accordion-panel>
+</div>

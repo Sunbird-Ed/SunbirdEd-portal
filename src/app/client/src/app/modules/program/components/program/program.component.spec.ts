@@ -88,27 +88,27 @@ describe('ProgramComponent On Bording test', () => {
   });
 
   it('should execute OnboardEvent on initialization of component', () => {
-    spyOn(component, 'handleOnboardEvent');
+    spyOn(component, 'initiateOnboarding');
     component.ngOnInit();
-    expect(component.handleOnboardEvent).toHaveBeenCalled();
+    expect(component.initiateOnboarding).toHaveBeenCalled();
   });
 
   it('should open onbording pop up', () => {
-    spyOn(component, 'userOnbording');
+    spyOn(component, 'userOnboarding');
     component.ngOnInit();
-    expect(component.userOnbording).not.toHaveBeenCalled();
+    expect(component.userOnboarding).not.toHaveBeenCalled();
   });
 
   it('onbording popup property should be initiated as true', () => {
-    spyOn(component, 'userOnbording');
+    spyOn(component, 'userOnboarding');
     component.ngOnInit();
     expect(component.showOnboardPopup).toBe(true);
   });
 
-  it('should not trigger the onbord popup as participent details are vailable in DB', () => {
-    spyOn(component, 'userOnbording');
+  it('should not trigger the onboard popup as participant details are vailable in DB', () => {
+    spyOn(component, 'userOnboarding');
     component.programDetails = programDetailsWithUserDetails;
-    component.handleOnboarding(event);
+    component.handleOnboarding();
     expect(component.showOnboardPopup).toBe(false);
   });
 });

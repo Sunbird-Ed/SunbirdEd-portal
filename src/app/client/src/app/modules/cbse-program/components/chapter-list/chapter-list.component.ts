@@ -69,6 +69,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
   public dynamicOutputs: any;
   public creationComponent;
   public stageSubscription: any;
+  public programContext: any;
+  public currentUserID: string;
   telemetryImpression = {};
   public collectionData;
   showLoader = true;
@@ -88,6 +90,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     });
     this.currentStage = 'chapterListComponent';
     this.sessionContext = _.get(this.chapterListComponentInput, 'sessionContext');
+    this.programContext = _.get(this.chapterListComponentInput, 'programContext');
+    this.currentUserID = _.get(this.programContext, 'userDetails.userId');
     this.role = _.get(this.chapterListComponentInput, 'role');
     this.collection  = _.get(this.chapterListComponentInput, 'collection');
     this.actions = _.get(this.chapterListComponentInput, 'programContext.config.actions');
@@ -215,6 +219,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
           topic: child.topic,
           status: child.status,
           creator: child.creator,
+          createdBy: child.createdBy || null,
           parentId: child.parent || null,
           sharedContext: {
             ...meta
@@ -224,11 +229,34 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         const treeChildren = treeUnit && treeUnit.filter(item => item.contentType === 'TextBookUnit');
         const treeLeaf = treeUnit && treeUnit.filter(item => item.contentType !== 'TextBookUnit');
         treeItem['children'] = (treeChildren && treeChildren.length > 0) ? treeChildren : null;
-        treeItem['leaf'] = (treeLeaf && treeLeaf.length > 0) ? treeLeaf : null;
+
+        if (treeLeaf && treeLeaf.length > 0) {
+          treeItem['leaf'] =  this.getContentVisibility(treeLeaf);
+        }
         return treeItem;
       });
       return tree;
     }
+  }
+  getContentVisibility(branch) {
+    const leafNodes = [];
+    _.forEach(branch, (leaf) => {
+      const contentVisibility = this.shouldContentBeVisible(leaf);
+      leaf['visibility'] = contentVisibility;
+      leafNodes.push(leaf);
+    });
+    return leafNodes;
+  }
+
+  shouldContentBeVisible(content) {
+    const creatorViewRole = this.actions.showCreatorView.roles.includes(this.sessionContext.currentRoleId);
+    const reviewerViewRole = this.actions.showReviewerView.roles.includes(this.sessionContext.currentRoleId);
+      if (reviewerViewRole && content.status === 'Review'  && this.currentUserID !== content.createdBy) {
+        return true;
+      } else if (creatorViewRole && this.currentUserID === content.createdBy) {
+        return true;
+      }
+  return false;
   }
 
   onSelectChapterChange() {
