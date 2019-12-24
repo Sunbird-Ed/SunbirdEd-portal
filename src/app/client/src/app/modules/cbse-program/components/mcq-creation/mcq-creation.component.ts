@@ -86,9 +86,10 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
   ngAfterViewInit() {
     if (this.isReadOnlyMode) {
+      const windowData: any = window;
       const el = document.getElementsByClassName('ckeditor-tool__solution__body');
       // tslint:disable-next-line:only-arrow-functions
-      com.wiris.js.JsPluginViewer.parseElement(el[0], true, function() {});
+      windowData.com.wiris.js.JsPluginViewer.parseElement(el[0], true, function() {});
     }
   }
   ngOnChanges() {
