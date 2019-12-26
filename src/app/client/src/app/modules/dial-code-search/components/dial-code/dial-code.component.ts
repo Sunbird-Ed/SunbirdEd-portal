@@ -42,7 +42,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public searchResults: Array<any> = [];
   public unsubscribe$ = new Subject<void>();
   public telemetryCdata: Array<{}> = [];
+  public selectChapterTelemetryCdata: Array<{}> = [];
   public closeIntractEdata: IInteractEventEdata;
+  public selectChapterInteractEdata: IInteractEventEdata;
   public linkedContents: Array<any>;
   public showMobilePopup = false;
   public isRedirectToDikshaApp = false;
@@ -59,6 +61,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   redirectCollectionUrl: string;
   redirectContentUrl: string;
   showDownloadLoader = false;
+  showSelectChapter = false;
+  chapterName: string;
+  dialContentId: string;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
@@ -157,6 +162,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public getAllPlayableContent(collectionIds) {
     const apiArray = _.map(collectionIds, collectionId => this.getCollectionHierarchy(collectionId));
     return forkJoin(apiArray).pipe(map((results) => {
+      this.getTextbook(results);
       _.forEach(results, (eachCollection) => {
         if (typeof eachCollection === 'object') {
           const parsedCollection = treeModel.parse(eachCollection);
@@ -291,6 +297,17 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       pageid: 'get-dial',
     };
 
+    this.selectChapterInteractEdata = {
+      id: 'select-chapter-button',
+      type: 'click',
+      pageid: 'get-dial'
+    };
+
+    this.selectChapterTelemetryCdata = [
+      { 'type': 'DialCode', 'id': this.dialCode },
+      {'id': 'page:dialcode:select:chapter', 'type': 'Feature'},
+      {'id': 'SB-15628', 'type': 'Task'}];
+
     this.appMobileDownloadInteractData = {
       context: {
         cdata: this.telemetryCdata,
@@ -386,6 +403,29 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }
     };
     this.telemetryService.log(event);
+  }
+
+  getTextbook(result) {
+    let textbookCount = 0;
+    result.forEach(element => {
+      if (element && element.contentType === 'TextBook') {
+        textbookCount ++;
+        this.chapterName = element.name;
+        this.dialContentId = element.identifier;
+      }
+    });
+    if (textbookCount === 1) {
+      this.showSelectChapter = true;
+    }
+  }
+
+  redirectToDetailsPage(contentId) {
+    if (this.userService.loggedIn ) {
+      this.router.navigate(['/resources/play/collection', contentId], {queryParams: {contentType: 'TextBook'},
+      state: {action: 'dialcode'}});
+    } else {
+      this.router.navigate(['/play/collection', contentId], {queryParams: {contentType: 'TextBook'}});
+    }
   }
 
 }

@@ -2,7 +2,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, UtilService, ConfigService } from '@sunbird/shared';
-import { SearchService, OrgDetailsService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, UserService } from '@sunbird/core';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -60,7 +60,7 @@ describe('DialCodeComponent', () => {
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [DialCodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [SearchService, UtilService, ConfigService, OrgDetailsService,
+      providers: [SearchService, UtilService, ConfigService, OrgDetailsService, UserService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
@@ -143,5 +143,27 @@ describe('DialCodeComponent', () => {
     expect(component.showDownloadLoader).toBeFalsy();
     component.getEvent(Response.download_event);
     expect(component.showDownloadLoader).toBeTruthy();
+  });
+
+  it('should enable select chapter button if textbook count is 1', () => {
+    component.getTextbook(Response.textBookSearchResult);
+    expect(component.showSelectChapter).toBeTruthy();
+  });
+
+  it('should redirect to flattened DIAL page with /resource ', () => {
+    const userService = TestBed.get(UserService);
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.redirectToDetailsPage('do_21288543692132352012128');
+    expect(component.router.navigate).toHaveBeenCalledWith(['/resources/play/collection', 'do_21288543692132352012128'],
+    {queryParams: {contentType: 'TextBook'},
+    state: {action: 'dialcode'}});
+  });
+
+  it('should redirect to flattened DIAL page without /resource ', () => {
+    const userService = TestBed.get(UserService);
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
+    component.redirectToDetailsPage('do_21288543692132352012128');
+    expect(component.router.navigate).toHaveBeenCalledWith(['/play/collection', 'do_21288543692132352012128'],
+    {queryParams: {contentType: 'TextBook'}});
   });
 });
