@@ -269,6 +269,7 @@ export class UserLocationComponent implements OnInit {
         }
         case 'district': {
           this.districtDiv.query = '';
+          this.districtDiv.focus();
           break;
         }
       }
