@@ -5,8 +5,7 @@
       <img src="../../../../../assets/images/no-text.svg" width="101px" height="124px">
     </div>
     <div class="mt-8">{{resourceService?.messages?.stmsg?.m0030}}</div>
-    <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mt-16 mb-8" (click)="handleModal()"
-      appTelemetryInteract [telemetryInteractEdata]="setTelemetryData()">
+    <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mt-16 mb-8" (click)="handleModal('upload-content')">
       {{resourceService?.frmelmnts?.btn?.loadContent}}
     </button>
     <div class="fs-0-785">{{resourceService?.messages?.imsg?.m0050}}</div>
@@ -26,7 +25,7 @@
     <p class="fs-1 mt-8">{{resourceService?.messages?.imsg?.m0048}}</p>
     <p class="fs-1 mt-16 mb-8">{{resourceService?.messages?.imsg?.m0049}}</p>
     <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mb-8"
-      (click)="openImportContentDialog()">{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
+      (click)="openImportContentDialog('upload-content')">{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
     <div class="fs-0-785">{{resourceService?.messages?.imsg?.m0050}}</div>
   </div>
 </div>
@@ -36,8 +35,7 @@
   <div class="my-48 p-16 w-100">
   <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
     <div class="mt-8">{{resourceService?.messages?.stmsg?.m0030}} <span *ngIf="filters?.gradeLevel"> for </span> {{filters?.gradeLevel}}</div>
-    <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mt-16 mb-8" (click)="handleModal()"
-      appTelemetryInteract [telemetryInteractEdata]="setTelemetryData()">
+    <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mt-16 mb-8" (click)="handleModal('no-textbook-import')">
       {{resourceService?.frmelmnts?.btn?.loadContent}}
     </button>
     <div class="fs-0-785">{{resourceService?.messages?.imsg?.m0050}}</div>
@@ -53,7 +51,7 @@
       </div>
       <div class="fmedium board-title my-24">{{resourceService?.messages?.stmsg?.m0030}} <span *ngIf="filters?.gradeLevel"> for </span> {{filters?.gradeLevel}}</div>
       <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
-      <button type="button" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="exploreContent()">
+      <button type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="exploreContent('explore-more-content')">
         {{resourceService?.frmelmnts?.lbl?.desktop?.explore}}
       </button>
       <div class="fs-0-785">{{resourceService?.frmelmnts?.lbl?.desktop?.find_more | interpolate:'{instance}':instance}}</div>
