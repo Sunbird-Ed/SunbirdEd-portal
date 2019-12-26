@@ -8,7 +8,7 @@ import { tap, map, first } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { programSession } from './data';
 import { ICollectionComponentInput } from '../../../cbse-program/interfaces';
-import { InitialState, ISessionContext, IUserParticipentDetails } from '../../interfaces';
+import { InitialState, ISessionContext, IUserParticipantDetails } from '../../interfaces';
 import { ProgramStageService } from '../../services/';
 
 interface IDynamicInput {
@@ -141,7 +141,7 @@ export class ProgramComponent implements OnInit {
   }
 
   setUserParticipentDetails(data) {
-    const userDetails: IUserParticipentDetails = {
+    const userDetails: IUserParticipantDetails = {
       enrolledOn: data['ts'],
       onBoarded: true,
       onBoardingData: {},

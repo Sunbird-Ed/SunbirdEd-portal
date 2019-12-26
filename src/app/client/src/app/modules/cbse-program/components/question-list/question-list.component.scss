@@ -1,6 +1,8 @@
 @import "variables";
+@import 'mixins/mixins';
+
 .questionTab.button{
-  border-bottom: 1px solid #cecece;
+  border-bottom: calculateRem(1px) solid #cecece;
 }
 .questionsMenu{
   overflow-y: auto; max-height:500px;
@@ -15,10 +17,10 @@ i.icon.trash {
 .question-list {
 
   &__item {
-    border-bottom: 1px solid rgba(2, 79, 157,0.09);
+    border-bottom: calculateRem(1px) solid rgba(2, 79, 157,0.09);
     label {
       font-weight: normal;
-      font-size: 12px;
+      font-size: calculateRem(12px);
     }
 
     &.active, &:hover {
@@ -36,20 +38,20 @@ i.icon.trash {
 }
 
 .ckeditor-container {
-  border-left: 1px solid rgba(2, 79, 157,0.09);
+  border-left: calculateRem(1px) solid rgba(2, 79, 157,0.09);
 }
 
 
 .practical-header {
-  height: ($base-block-space * 11 + 10);
+  height: calculateRem(98px);
   background: rgba(41, 114, 164, 0.05);
   &__content {
     .practical-sb-buttons {
       .sb-btn-file {
-        border-top: 1px solid var(--primary-200);
-        border-bottom: 1px solid var(--primary-200);
-        border-left: 1px solid #ddd;
-        border-right: 1px solid #ddd;
+        border-top: calculateRem(1px) solid var(--primary-200);
+        border-bottom: calculateRem(1px) solid var(--primary-200);
+        border-left: calculateRem(1px) solid #ddd;
+        border-right: calculateRem(1px) solid #ddd;
         background: #E0F1FD;
         color: var(--primary-400);
       }
@@ -72,7 +74,7 @@ i.icon.trash {
   width: 100%;
   max-width: 756px;
   textarea {
-    height: 56px;
+    height: calculateRem(56px);
     resize: none;
   }
   .characters-left {
@@ -92,4 +94,8 @@ i.icon.trash {
       line-height: calculateRem(18px);
     }
   }
+}
+.trash.icon{
+  font-size: 1.3em;
+  height: auto;
 }

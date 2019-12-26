@@ -1,5 +1,7 @@
+@import "variables";
+@import 'mixins/mixins';
 .sb-table .sb-table-body td {
-    padding: 16px 24px;
+    padding: calculateRem(16px) calculateRem(24px);
     text-align: center;
     &:first-child {
         text-align: left;
@@ -33,14 +35,14 @@
   
   
     &--item {
-      border-bottom: 1px solid #ccc;
+      border-bottom: calculateRem(1px) solid #ccc;
       width: 100%;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      padding: 8px 16px 8px 40px;
+      padding: calculateRem(8px) calculateRem(16px) calculateRem(8px) calculateRem(40px);
       border-radius: 0;
-      font-size: 12px;
+      font-size: calculateRem(12px);
   
       &:last-child {
         border-bottom: 0px;
@@ -64,7 +66,7 @@
     }
   
     &.active {
-      border: 3px solid #024f9d;
+      border: calculateRem(3px) solid #024f9d;
   
       .selected-icon {
         display: inline-block;
@@ -74,12 +76,12 @@
         transform: translate(-50%, -50%);
         background: white;
         border-radius: 50%;
-        height: 18px;
-        width: 18px;
+        height: calculateRem(18px);
+        width: calculateRem(18px);
   
         i.icon {
           color: #024f9d;
-          font-size: 24px;
+          font-size: calculateRem(24px);
           margin: 0;
           position: absolute;
           top: 50%;
@@ -93,7 +95,7 @@
   
   .sb-cbse-homepage-container {
     .chapter-dotted-menu {
-      padding-bottom: 6px;
+      padding-bottom: calculateRem(6px);
     }
     
     i.circle.icon {
@@ -109,7 +111,7 @@
       padding: 0;
       .sb-radio-btn-checkbox {
         label {
-          padding: 16px 16px 16px 40px;
+          padding: calculateRem(16px) calculateRem(16px) calculateRem(16px) calculateRem(40px);
         }
       }
     }
@@ -120,33 +122,33 @@
   //Common contribution card section
   .common-contribution-card {
     box-sizing: border-box;
-    border: 0.5px solid rgba(123, 134, 244, 0.39);
+    border: calculateRem(0.5px) solid rgba(123, 134, 244, 0.39);
     border-radius: ($base-block-space / 2);
     background-color: var(--white);
     box-shadow: none;
   
     .content {
       img {
-        width: 64px;
-        height: 64px;
+        width: calculateRem(64px);
+        height: calculateRem(64px);
       }
   
       .content-title {
         font-size: $font-size-sm;
         color: var(--gray);
         vertical-align: middle;
-        line-height: ($base-block-space * 2);
+        line-height: calculateRem(16px);
       }
   
       .icon {
         display: none;
-        height: ($base-block-space * 2) + 2;
+        height: calculateRem(18px);
         position: absolute;
         right: $base-block-space;
         top: $base-block-space;
         margin: 0;
-        width: ($base-block-space * 2) + 2;
-        font-size: ($base-block-space * 2) + 2;
+        width: calculateRem(18px);
+        font-size: calculateRem(18px);
         color: $secondary-200;
       }
   
@@ -164,8 +166,8 @@
       z-index: 5;
       background: var(--white);
       transform: translateY(-3px);
-      box-shadow: 0 2px 8px 0 rgba(123, 134, 244, 0.31);
-      border: 0.5px solid rgba(208, 208, 208, 0.48);
+      box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(123, 134, 244, 0.31);
+      border: calculateRem(0.5px) solid rgba(208, 208, 208, 0.48);
     }
 
     &.active {
@@ -179,18 +181,18 @@
   .ui.error.reject {
     background-color: #F5F9FC;
     color: var(--gray);
-    border: 1px dashed $primary-200;
+    border: calculateRem(1px) dashed $primary-200;
     box-shadow: none !important;
   
     li {
       font-size: $font-size-sm;
-      line-height: ($base-block-space * 2) + 4;
+      line-height: calculateRem(20px);
     }
   }
   
   //Meta Data
   .sb-meta-data-container.sb-meta-data-column .sb-meta-data {
-    padding-right: 24px;
+    padding-right: calculateRem(24px);
     flex-basis: auto;
     margin: 0;
   
@@ -199,9 +201,9 @@
     }
   
     dt {
-      font-size: 24px;
+      font-size: calculateRem(24px);
       color: #333;
-      margin-bottom: 8px;
+      margin-bottom: calculateRem(8px);
     }
   
     &.active {
@@ -213,6 +215,6 @@
     }
   
     dd {
-      font-size: 12px;
+      font-size: calculateRem(12px);
     }
   }

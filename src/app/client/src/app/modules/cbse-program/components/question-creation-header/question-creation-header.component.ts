@@ -3,7 +3,7 @@ import { Component, OnInit, Output, Input, EventEmitter, OnChanges, ViewChild } 
 @Component({
   selector: 'app-question-creation-header',
   templateUrl: './question-creation-header.component.html',
-  styleUrls: ['./question-creation-header.component.css']
+  styleUrls: ['./question-creation-header.component.scss']
 })
 export class QuestionCreationHeaderComponent implements OnInit, OnChanges {
   public enableBtn;

@@ -75,9 +75,9 @@
     <div class="ui container" *ngIf="isReadOnlyMode">
       <div class="ui stackable grid m-0 sb-bg-color-white">
         <div class="row">
-          <div class="twelve wide column">
+          <div class="twelve wide column p-0">
             <div class="ckeditor-tool width-100">
-              <div class="ckeditor-tool__question mb-24">
+              <div class="ckeditor-tool__question">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
                 <div class="ckeditor-tool__solution__body">
                   <p class="fs-0-785 p-16" [innerHTML]="question"></p>
@@ -88,14 +88,14 @@
         </div>
 
         <div class="row mb-0 p-0">
-          <div class="twelve wide column">
-              <div class="d-flex flex-ai-center ckeditor-tool__answer my-16">
+          <div class="twelve wide column p-0">
+              <div class="d-flex flex-ai-center ckeditor-tool__answer mt-16">
                   <label class="fs-1 mb-0">Answers</label>
                 </div>
           </div>
         </div>
         <div class="row">
-          <div class="twelve wide column">
+          <div class="twelve wide column p-0">
             <div class="ckeditor-tool width-100">
               <div class="ckeditor-tool__question mb-24">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
@@ -138,11 +138,11 @@
       </div>
 
     </div>
-
+    <!-- *ngIf="learningOutcomeOptions.length > 0" -->
     <!-- Learning Outcome learning level author license Preview HTML -->
     <div class="ui stackable grid licence-form__content__fields" *ngIf="isReadOnlyMode">
-        <div class="row" *ngIf="learningOutcomeOptions.length > 0">
-          <div class="twelve wide column">
+        <div class="row" >
+          <div class="six wide column">
             <div class="sb-field">
               <label for="outcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a
                   class="ml-4" href="javascript:void(0)" title="title comes here"><img width="16" alt=""
@@ -150,9 +150,7 @@
               <p class="fs-0-785"></p>
             </div>
           </div>
-        </div>
-        <div class="row pt-0">
-          <div class="four wide column">
+          <div class="six wide column">
             <div class="sb-field space-btn-field">
               <label for="level" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
                   href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
@@ -160,7 +158,10 @@
               <p class="fs-0-785">Lorem Ipsum is simply dummy text of the printing Dummy text of the printing</p>
             </div>
           </div>
-          <div class="four wide column p-0">
+        </div>
+        <div class="row pt-0">
+          
+          <div class="six wide column">
             <div class="sb-field">
               <label for="author" class="d-flex mb-4">Author(s) <a href="javascript:void(0)"
                   title="title comes here"><img width="16" alt="" class="ml-4"
@@ -168,12 +169,23 @@
               <p class="fs-0-785">Lorem Ipsum is simply </p>
             </div>
           </div>
-          <div class="four wide column">
+          <div class="six wide column">
             <div class="sb-field space-btn-field">
               <label for="license" class="d-flex mb-4">License <a href="javascript:void(0)"
                   title="title comes here"><img width="16" alt="" class="ml-4"
                     src="assets/images/Info.svg"></a></label>
               <p class="fs-0-785">ACT456</p>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-16">
+          <div class="twele wide column">
+            <div class="sb-field">
+              <p class="fs-0-785">
+                <span class="font-weight-bold">Disclaimer :</span>
+                By uploading assets to , you consent to publish under the Common Creative License framework. For details, refer 
+                <a class="">https://creativecommons.org/licenses </a>. Select the appropriate license” </p>
+               
             </div>
           </div>
         </div>

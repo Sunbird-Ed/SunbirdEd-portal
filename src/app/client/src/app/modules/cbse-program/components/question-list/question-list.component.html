@@ -54,13 +54,26 @@
 
       <!-- Question list Section -->
 
-      <div class="d-flex width-100 flex-jc-center mt-24">
+      <div class="d-flex flex-ai-center ckeditor-tool__answer my-16 mx-8">
+        <label class="fs-1 mb-0">Question(s)</label>
+
+        <!-- add button to be integrated -->
+        <button  class="sb-btn sb-btn-outline-primary sb-btn-normal sb-left-icon-btn sb-btn-radius ml-auto"
+        *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"
+        [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
+        appTelemetryInteract
+        [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:sessionContext.questionType.toUpperCase(),topic:sessionContext.topic}}">
+        <i class="plus icon"></i>ADD</button>
+
+      </div>
+
+      <!-- <div class="d-flex width-100 flex-jc-center mt-24">
         <button *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"
           [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
           appTelemetryInteract
           [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:sessionContext.questionType.toUpperCase(),topic:sessionContext.topic}}"
           class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn"><i class="add icon"></i>Add new Question</button>
-      </div>
+      </div> -->
 
       <div class="question-list">
         <div class="question-list__item active d-flex flex-ai-center p-16 cursor-pointer"
@@ -71,7 +84,7 @@
           <label class="mb-0 mr-auto" for="check1"> Question {{i + 1}}</label>
           <i class="info circle sb-color-warning fs-1 icon" *ngIf="question.status === 'Reject'"></i>
           <i class="trash alternate outline icon ml-24" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"></i>
-          <!-- <i class="move icon ml-16 sb-color-primary ml-24" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')"></i> -->
+          <!-- <img src="../../../../../assets/images/move.svg" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')" class="ml-8" width="20px" height="16px"> -->
         </div>
       </div>
 

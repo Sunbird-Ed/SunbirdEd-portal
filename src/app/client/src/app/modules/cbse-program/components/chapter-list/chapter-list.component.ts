@@ -147,7 +147,11 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       practiceQuestionSetComponentInput: {
         sessionContext: this.sessionContext,
         templateDetails: this.templateDetails,
-        role: this.role
+        unitIdentifier: this.unitIdentifier,
+        role: this.role,
+        selectedSharedContext: this.selectedSharedContext,
+        contentIdentifier: this.contentId,
+        action: action
       }
     };
   }

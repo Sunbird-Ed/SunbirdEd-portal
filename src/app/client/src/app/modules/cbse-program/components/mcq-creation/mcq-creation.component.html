@@ -141,9 +141,9 @@
       <div class="ui container" *ngIf="isReadOnlyMode">
         <div class="ui stackable grid m-0 sb-bg-color-white">
           <div class="row">
-            <div class="twelve wide column">
+            <div class="twelve wide column p-0">
               <div class="ckeditor-tool width-100">
-                <div class="ckeditor-tool__question mb-24">
+                <div class="ckeditor-tool__question">
                   <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
                   <div class="ckeditor-tool__solution__body">
                     <p class="fs-0-785 p-16" id="wirisDisplay" [innerHTML]="mcqForm.question | sanitizeHtml"></p>
@@ -154,7 +154,7 @@
           </div>
 
           <div class="row mb-0 p-0">
-            <div class="twelve wide column">
+            <div class="twelve wide column p-0">
                 <div class="d-flex flex-ai-center ckeditor-tool__answer my-16">
                     <label class="fs-1 mb-0">Answers</label>
                   </div>
@@ -162,7 +162,7 @@
           </div>
 
           <div class="row mb-0 p-0" *ngFor="let option of mcqForm.options; let i=index">
-            <div class="twelve wide column">
+            <div class="twelve wide column p-0">
               <div class="ckeditor-tool width-100">
                 <div class="ckeditor-tool__question mb-24">
                   <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Option {{ i+1 }}</label>

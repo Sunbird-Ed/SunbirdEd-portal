@@ -81,8 +81,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.resourceName = this.templateDetails.metadata.name;
     this.fetchExistingResource(this.sessionContext.resourceIdentifier).subscribe(response => {
       this.resourceDetails = _.get(response, 'result.content');
-      //this.resourceStatus = _.get(this.resourceDetails, 'status');
-      this.resourceStatus = 'Review';
+      this.resourceStatus = _.get(this.resourceDetails, 'status');
+      //this.resourceStatus = 'Review';
     });
     if (this.sessionContext.questionType) {
       this.fetchQuestionWithRole();
