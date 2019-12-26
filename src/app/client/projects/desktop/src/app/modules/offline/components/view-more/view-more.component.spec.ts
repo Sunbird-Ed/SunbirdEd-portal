@@ -260,20 +260,4 @@ describe('ViewMoreComponent', () => {
     expect(utilService.addHoverData).toHaveBeenCalled();
     expect(publicPlayerService.updateDownloadStatus).toHaveBeenCalled();
   });
-
-  xit('should call call ngOnInit', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    spyOn(orgDetailsService, 'getOrgDetails').and.returnValue(of({ hashTagId: '505c7c48ac6dc1edc9b08f21db5a571d' }));
-    spyOn(component, 'setTelemetryData');
-    const element = document.createElement('INPUT');
-    element.setAttribute('type', 'hidden');
-    element.setAttribute('id', 'defaultTenant');
-    element.setAttribute('value', 'ntp');
-    document.getElementById = jasmine.createSpy('HTML Element').and.returnValue(element);
-    component.ngOnInit();
-    expect(orgDetailsService.getOrgDetails).toHaveBeenCalled();
-    expect(component.setTelemetryData).toHaveBeenCalled();
-    expect(component.hashTagId).toBe('505c7c48ac6dc1edc9b08f21db5a571d');
-    expect(component.initFilters).toBe(true);
-  });
 });

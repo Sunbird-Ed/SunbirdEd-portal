@@ -206,12 +206,4 @@ describe('DesktopExploreContentComponent', () => {
     component.logTelemetry(contentList[0], 'play-content');
     expect(telemetryService.interact).toHaveBeenCalledWith(appTelemetryInteractData);
   });
-
-  xit('should call getFilters when in browse page', () => {
-    const router = TestBed.get(Router);
-    spyOnProperty(router, 'url', 'get').and.returnValue('browse');
-    // component.getFilters(response.filtersData);
-    expect(component.facets).toEqual(['board', 'medium', 'gradeLevel', 'subject', 'contentType']);
-    expect(component.dataDrivenFilters).toEqual(response.filtersData);
-  });
 });

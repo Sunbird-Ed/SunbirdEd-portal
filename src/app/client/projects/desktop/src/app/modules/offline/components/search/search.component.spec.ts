@@ -167,45 +167,4 @@ describe('SearchComponent', () => {
       message: 'frmelmnts.lbl.searchNotMatchCh',
     });
   });
-
-  xit('should call gotoViewMore for Online Search results', () => {
-    // component.dataDrivenFilters = filters;
-    // component.hashTagId = '505c7c48ac6dc1edc9b08f21db5a571d';
-    // const utilService = TestBed.get(UtilService);
-    const router = TestBed.get(Router);
-    // const queryParams = {
-    //   'key': 'test',
-    //   'apiQuery': `{"filters":{"channel":"505c7c48ac6dc1edc9b08f21db5a571d","contentType":["Collection",
-    //   "TextBook","LessonPlan","Resource"]},"mode":"soft","params":{"orgdetails":"orgName,email","framework":"TEST"},
-    //   "query":"test","facets":["board","medium","gradeLevel","subject","contentType"],"softConstraints":{"badgeAssertions":98,
-    //   "board":99,"channel":100}}`
-    // };
-    spyOn(router, 'navigate');
-    spyOn(component, 'constructSearchRequest').and.stub();
-    component.gotoViewMore(true);
-    // expect(router.navigate).toHaveBeenCalledWith(['browse/view-more', 1], { queryParams });
-    expect(router.navigate).toHaveBeenCalled();
-  });
-
-  xit('should call fetchContentOnParamChange', () => {
-    const activatedRoute = TestBed.get(ActivatedRoute);
-    spyOn(activatedRoute, 'queryParams').and.returnValue(of({ name: 'test' }));
-    component.fetchContentOnParamChange();
-    expect(component.showLoader).toBe(true);
-  });
-
-  xit('should call fetchContents and return value', () => {
-    const searchService = TestBed.get(SearchService);
-    const utilService = TestBed.get(UtilService);
-    spyOn(component, 'constructSearchRequest').and.returnValue(searchRequest);
-    spyOn(utilService, 'getDataForCard');
-    component.fetchContents();
-    expect(component.showLoader).toBeFalsy();
-  });
-
-  xit('should call goBack', () => {
-    spyOn(component.utilService, 'clearSearchQuery');
-    component.goBack();
-    expect(component.utilService.clearSearchQuery).toHaveBeenCalled();
-  });
 });
