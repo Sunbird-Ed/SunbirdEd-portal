@@ -167,7 +167,7 @@ const createSession = async (emailId, reqQuery, req, res) => {
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
     method: 'GET',
-    url: envHelper.LEARNER_URL + 'user/v1/get/email/'+ emailId,
+    url: envHelper.LEARNER_URL + 'user/v1/exist/email/'+ emailId,
     headers: getHeaders(req),
     json: true
   }
@@ -187,7 +187,7 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
   }
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v2/create',
+    url: envHelper.LEARNER_URL + 'user/v3/create',
     headers: getHeaders(req),
     body: {
       params: {
