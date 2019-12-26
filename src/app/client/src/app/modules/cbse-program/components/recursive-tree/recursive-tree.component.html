@@ -3,7 +3,7 @@
     <div title class="sb-accordion-title d-flex flex-ai-center"><span class="chapter-status mr-16"></span>
       {{collection.name}}
      <div class="ml-auto d-flex">
-      <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn"
+      <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn" *ngIf="visibility && visibility['showAddresource']"
       (click)="showModal = false; createResource($event, collection)"><i class="add icon"></i>ADD</button>
       <div class="chevron-icon">
         <i class="chevron down icon mr-0 ml-0"></i>

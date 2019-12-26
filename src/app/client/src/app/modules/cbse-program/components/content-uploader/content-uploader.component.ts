@@ -438,7 +438,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.helperService.publishContent(this.contentMetaData.identifier, this.userService.userProfile.userId)
        .subscribe(res => {
         if (this.sessionContext.collection && this.unitIdentifier) {
-          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.node_id)
+          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
           .subscribe((data) => {
             this.toasterService.success(this.resourceService.messages.smsg.m0063);
             this.programStageService.removeLastStage();
