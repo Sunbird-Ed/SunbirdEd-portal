@@ -5,7 +5,8 @@
   "buildNumber": "1",
   "private": true,
   "devDependencies": {
-    "chai": "^4.1.2",
+    "babel": "^6.23.0",
+    "chai": "^4.2.0",
     "chai-http": "^4.2.0",
     "eslint": "^4.3.0",
     "eslint-config-airbnb-base": "^11.3.1",
@@ -30,8 +31,10 @@
     "gulp-sequence": "1.0.0",
     "gulp-string-replace": "1.1.1",
     "gulp-url-prefixer": "0.0.6",
-    "mocha": "^4.0.1",
+    "mocha": "^4.1.0",
     "mochawesome": "^2.3.1",
+    "mock-require": "^3.0.3",
+    "nyc": "^14.1.1",
     "path": "^0.12.7",
     "phantomjs-prebuilt": "2.1.15",
     "require-dir": "0.3.2",
@@ -41,7 +44,7 @@
     "rmdir": "^1.2.0",
     "run-sequence": "2.2.1",
     "save": "2.3.2",
-    "sinon": "^4.0.1",
+    "sinon": "^4.5.0",
     "yargs": "^9.0.1"
   },
   "engines": {
@@ -64,7 +67,24 @@
     "deploy": "gulp deploy",
     "test-with-coverage": "cd client && npm run test-coverage && cat ./coverage/lcov.info | codacy-coverage",
     "tenants-push-cdn": "gulp pushTenantsToCDN --gulpfile gulp-tenant.js",
-    "bundle-report": "webpack-bundle-analyzer dist/stats.json --port 8887"
+    "bundle-report": "webpack-bundle-analyzer dist/stats.json --port 8887",
+    "backend-test": "mocha -w 'tests/server/**/*.spec.js'",
+    "backend-test-with-coverage": "nyc --reporter=html --reporter=lcov npm run backend-test"
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "routes/*.js",
+      "proxy/*.js",
+      "helpers/*.js"
+    ],
+    "extension": [
+      ".js"
+    ],
+    "exclude": [
+      "helpers/announcement/*.js",
+      "helpers/resourceBundles/*.js"
+    ]
   },
   "dependencies": {
     "@project-sunbird/discussion-service": "0.0.6",
