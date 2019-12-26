@@ -264,6 +264,7 @@ export class UserLocationComponent implements OnInit {
       switch (formControlName) {
         case 'state': {
           this.stateDiv.query = '';
+          this.stateDiv.focus();
           break;
         }
         case 'district': {
