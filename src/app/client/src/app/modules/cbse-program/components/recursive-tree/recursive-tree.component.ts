@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-recursive-tree',
@@ -9,14 +10,28 @@ export class RecursiveTreeComponent implements OnInit {
 
   @Input() collectionUnits;
   @Input() selectedChapter;
+  @Input() programContext;
+  @Input() sessionContext;
   @Output() emitSelectedNode = new EventEmitter<any>();
   @Output() nodeMeta = new EventEmitter<any>();
   public showModal = false;
+  public showAddresource = false;
+  visibility: any;
   public unitIdentifier;
   constructor() { }
 
   ngOnInit() {
-    console.log(this.collectionUnits);
+    this.visibility = {};
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showAddresource'] = _.includes(this.programContext.config.actions.showAddResource.roles, this.sessionContext.currentRoleId);
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showEditResource'] = _.includes(this.programContext.config.actions.showEditResource.roles, this.sessionContext.currentRoleId);
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showMoveResource'] = _.includes(this.programContext.config.actions.showMoveResource.roles, this.sessionContext.currentRoleId);
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showDeleteResource'] = _.includes(this.programContext.config.actions.showDeleteResource.roles, this.sessionContext.currentRoleId);
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showPreviewResource'] = _.includes(this.programContext.config.actions.showPreviewResource.roles, this.sessionContext.currentRoleId);
   }
 
   nodeMetaEmitter(event) {

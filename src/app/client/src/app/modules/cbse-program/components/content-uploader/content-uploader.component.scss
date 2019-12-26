@@ -116,7 +116,7 @@
   }
 
   .practical-header {
-    height: ($base-block-space * 11 + 10);
+    height: 98px;
     background: #f2f2f2;
     &__content {
       // margin: 0 ($base-block-space * 8 - 4);
@@ -172,6 +172,7 @@
   .msg-box {
     margin: ($base-block-space * 4) auto ($base-block-space * 6) auto;
     &__content {
+      border: 1px dotted #024f9d;
       &__label {
         color: #00BD7F;
         padding-bottom: ($base-block-space * 0.75);
@@ -181,7 +182,7 @@
         padding-bottom: ($base-block-space * 0.75);
       }
       &__blank-box {
-        height: calculateRem(435px);
+        height: 100%;
         width: 100%;
         border: calculateRem(1px) dotted #80A7CE;
         background: #F5F9FC;

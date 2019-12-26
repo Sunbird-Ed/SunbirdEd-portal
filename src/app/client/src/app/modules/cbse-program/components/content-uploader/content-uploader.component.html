@@ -1,24 +1,31 @@
 <div class="d-flex sb-bg-color-gray-0 practical-header">
-        <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
-          <div #contentTitle class="font-weight-bold fs-1" *ngIf="!showTextArea">
-            {{editTitle}} <span class="fs-0-785 pl-8"><a class="cursor-pointer" (click)="showTextArea = !showTextArea">Edit</a></span>
-            <div class="fs-0-785 pt-8">License: CC BY 4.0</div>
-          </div>
-          <div class="sb-field-group textbook-edit" *ngIf="showTextArea">
-            <div class="sb-field relative">
-              <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle"></textarea>
-              <span class="characters-left">200 Characters left</span>
-            </div>
-          </div>
-          <div class='practical-sb-buttons'>
-            <button *ngIf="visibility.showChangeFile" class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" (click)="changeFile()">Change
-              File</button>
-            <button *ngIf="visibility.showRequestChanges" class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" (click)="saveContent()">Request Changes</button>
-            <button *ngIf="visibility.showAccept" class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8">Accept</button>
-            <button *ngIf="visibility.showSubmit" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="saveContent()">Submit</button>
-          </div>
-        </div>
-      </div> 
+  <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
+    <div #contentTitle class="font-weight-bold fs-1" *ngIf="!showTextArea">
+      {{editTitle}} <span class="fs-0-785 pl-8"><a *ngIf="visibility && visibility.showEdit" class="cursor-pointer" (click)="showTextArea = !showTextArea">Edit</a></span>
+      <div class="mt-8 practice-set__status">
+        <span class="sb-label sb-label-table sb-label-success-0"
+        [ngClass]="{ 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-error-0': resourceStatus == 'Rejected',  'sb-label-gray-100': resourceStatus == 'Review' }">{{ resourceStatus }}</span>
+        <span class="cursor-pointer fs-0-785 ml-8" 
+          (click)="showReview()" 
+          *ngIf="resourceStatus === 'Rejected'"><i class="comment alternate outline icon sb-color-primary"></i><a>View Comments</a></span>
+      </div>
+    </div>
+    <div class="sb-field-group textbook-edit" *ngIf="showTextArea">
+      <div class="sb-field relative">
+        <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle"></textarea>
+        <span class="characters-left">200 Characters left</span>
+      </div>
+    </div>
+    <div class='practical-sb-buttons'>
+      <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="saveContent()">Save</button>
+      <button id="changeContent" *ngIf="visibility && visibility.showChangeFile && resourceStatus === 'Draft'" class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" (click)="changeFile()">Change
+        File</button>
+      <button id="requestChanges" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true;">Request Changes</button>
+      <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-secondary sb-btn-normal ripple mr-8" (click)="publichContent()">Publish</button>
+      <button id="submitContent" *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="sendForReview()">Submit</button>
+    </div>
+  </div>
+</div> 
 
 
 <div class="middle-section-set" *ngIf="showPreview">
@@ -32,7 +39,7 @@
 </div>
 
 <!-- <div> -->
-    <sui-modal *ngIf="!showPreview" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+<sui-modal *ngIf="!showPreview" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
     class="sb-modal sb-file-upload-modal" appBodyScroll #modal>
     <div type="text/template" id="qq-template-validation" #fineUploaderUI>
       <div class="qq-uploader-selector qq-uploader custom-qq-uploader">
@@ -110,20 +117,45 @@
         </div>
     </div>
     <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="uploadContent()">Upload</button>
+      <button id="uploadContent" class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="uploadContent()">Upload</button>
       <button (click)="closeModal('Cancel')" class="sb-btn sb-btn-outline-primary sb-btn-normal">Cancel</button>
     </div>
   </sui-modal>
 <!-- </div> -->
 
-<div *ngIf="showForm">
+<sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll
+  (dismissed)="showRequestChangesPopup = !showRequestChangesPopup" #modal>
+  <div class="sb-modal-header">
+      Add Review Comments
+  </div>
+  <div class="sb-modal-content">
+      <div class="sb-field-group">
+          <label>Enter your comments</label>
+          <div class="sb-field relative">
+            <form #FormControl="ngForm" class="ui form">
+              <textarea class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
+              <label class="ui basic red error label pt-1 mt-5 width-100"
+                  *ngIf="showFormError">Fill comments </label>
+            </form>
+              <!-- <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
+              <span class="characters-left">1000 Characters left</span> -->
+          </div>
+      </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="requestChanges()"> Submit Review </button>
+  </div>
+</sui-modal>
+
+<div *ngIf="showForm && showPreview">
 <form #contentForm [formGroup]="contentDetailsForm" (ngSubmit)="saveContent()" class='ui container licence-form mt-24' >
     <div class='licence-form__content__fields px-24 py-16 d-flex flex-w-wrap'>
       
         <div class="sb-field pr-8" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
           <div [formGroupName]="i">
             <label>{{field.label}}</label>
-            <sui-select formControlName="{{field.code}}" class="selection" [isDisabled]="!(selectedAttributes.currentRole === 'CONTRIBUTOR')" placeholder="{{field.placeholder}}">
+            <sui-select formControlName="{{field.code}}" class="selection" [isDisabled]="!(sessionContext.currentRole === 'CONTRIBUTOR')" placeholder="{{field.placeholder}}">
               <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
               </sui-select-option>
             </sui-select>
@@ -134,7 +166,7 @@
         <div class="sb-field pr-8" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
             <div [formGroupName]="i">
                 <label>{{field.label}}</label>
-                <sui-multi-select formControlName="{{field.code}}" class="selection" [isDisabled]="!(selectedAttributes.currentRole === 'CONTRIBUTOR')" placeholder="{{field.placeholder}}">
+                <sui-multi-select formControlName="{{field.code}}" class="selection" [isDisabled]="!(sessionContext.currentRole === 'CONTRIBUTOR')" placeholder="{{field.placeholder}}">
                   <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
                   </sui-select-option>
                 </sui-multi-select>
@@ -145,7 +177,7 @@
         <div class="sb-field pr-8" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
           <div [formGroupName]="i">
             <label>{{field.label}}</label>
-              <input formControlName="{{field.code}}" type="email" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
+              <input formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
             <label class="warning-message" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
           </div>
         </div> 

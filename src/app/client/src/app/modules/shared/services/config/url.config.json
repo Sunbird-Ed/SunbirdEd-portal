@@ -89,6 +89,8 @@
       "LOCK_LIST": "lock/v1/list",
       "LOCK_CREATE": "lock/v1/create",
       "LOCK_RETIRE": "lock/v1/retire",
+      "UPDATE": "content/v3/update",
+      "REVIEW": "content/v3/review",
       "HIERARCHY_ADD": "content/v3/hierarchy/add",
       "HIERARCHY_REMOVE": "content/v3/hierarchy/remove"
     },
