@@ -330,7 +330,21 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
       this.router.navigate(['/get/dial/', this.dialCode]);
     } else {
-      this.router.navigate(['/']);
+      if (this.isOffline) {
+       const  previousUrl =  this.navigationHelperService.getPreviousUrl();
+       if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
+        this.router.navigate(['/']);
+       } else {
+         if (previousUrl.queryParams) {
+          this.router.navigate([previousUrl.url], {queryParams: previousUrl.queryParams});
+
+         } else {
+          this.router.navigate([previousUrl.url]);
+         }
+       }
+      } else {
+        this.navigationHelperService.navigateToPreviousUrl('/explore');
+      }
     }
   }
   closeContentPlayer() {
