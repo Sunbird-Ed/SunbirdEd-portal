@@ -4,7 +4,7 @@
       {{editTitle}} <span class="fs-0-785 pl-8"><a *ngIf="visibility && visibility.showEdit" class="cursor-pointer" (click)="showTextArea = !showTextArea">Edit</a></span>
       <div class="mt-8 practice-set__status">
         <span class="sb-label sb-label-table sb-label-success-0"
-        [ngClass]="{ 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-error-0': resourceStatus == 'Rejected',  'sb-label-gray-100': resourceStatus == 'Review' }">{{ resourceStatus }}</span>
+        [ngClass]="{ 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-error-0': resourceStatus == 'Rejected',  'sb-label-gray-0': resourceStatus == 'Review' }">{{ resourceStatus }}</span>
         <span class="cursor-pointer fs-0-785 ml-8" 
           (click)="showReview()" 
           *ngIf="resourceStatus === 'Rejected'"><i class="comment alternate outline icon sb-color-primary"></i><a>View Comments</a></span>
@@ -124,8 +124,7 @@
 <!-- </div> -->
 
 <sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll
-  (dismissed)="showRequestChangesPopup = !showRequestChangesPopup" #modal>
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="closeRequestChangesModal()">
   <div class="sb-modal-header">
       Add Review Comments
   </div>
