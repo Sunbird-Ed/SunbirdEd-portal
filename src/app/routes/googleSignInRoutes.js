@@ -3,6 +3,9 @@ const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } =
 const telemetryHelper = require('../helpers/telemetryHelper')
 const googleDid = '2c010e13a76145d864e459f75a176171';
 const logger = require('sb_logger_util_v2')
+const utils = require('../helpers/utilityService');
+const GOOGLE_SIGN_IN_DELAY = 2000;
+
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
@@ -40,7 +43,7 @@ module.exports = (app) => {
         throw 'some of the query params are missing';
       }
       errType = 'GOOGLE_PROFILE_API';
-      googleProfile = await googleOauth.getProfile(req);
+      googleProfile = await googleOauth.getProfile(req).catch(handleGoogleProfileError);
       console.log('googleProfile fetched', JSON.stringify(googleProfile));
       errType = 'USER_FETCH_API';
       sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
@@ -49,9 +52,10 @@ module.exports = (app) => {
         console.log('creating new google user');
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
+        await utils.delay(GOOGLE_SIGN_IN_DELAY);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
-      keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res);
+      keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
       console.log('keyCloakToken fetched', JSON.stringify(keyCloakToken));
       errType = 'UNHANDLED_ERROR';
       redirectUrl = reqQuery.redirect_uri.split('?')[0];
@@ -66,7 +70,7 @@ module.exports = (app) => {
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      logger.error({msg:'google sign in failed', error, additionalInfo: {errType, googleProfile, sunbirdProfile, newUserDetails, redirectUrl}})
+      logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, sunbirdProfile, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
       console.log('redirecting to ', redirectUrl);
@@ -123,6 +127,10 @@ const getErrorMessage = (error) => {
   }
 }
 const handleCreateUserError = (error) => {
+  logger.info({
+    msg: 'ERROR_CREATING_USER',
+    error: error,
+  });
   if (_.get(error, 'error.params')) {
     throw error.error.params;
   } else if (error instanceof Error) {
@@ -137,3 +145,19 @@ const handleGetUserByIdError = (error) => {
   }
   throw error.error || error.message || error;
 }
+
+const handleCreateSessionError = (error) => {
+  logger.info({
+    msg: 'ERROR_CREATING_SESSION',
+    error: error,
+  });
+  throw error.error || error.message || error;
+};
+
+const handleGoogleProfileError = (error) => {
+  logger.info({
+    msg: 'ERROR_FETCHING_GOOGLE_PROFILE',
+    error: error,
+  });
+  throw error.error || error.message || error;
+};
