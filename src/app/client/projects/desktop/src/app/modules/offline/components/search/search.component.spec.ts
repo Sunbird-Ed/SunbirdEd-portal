@@ -8,7 +8,8 @@ import { SharedModule, ResourceService, UtilService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, OrgDetailsService, SearchService } from '@sunbird/core';
 import { of, throwError } from 'rxjs';
-import { filters, searchRequest, visitsEvent } from './search.component.data.spec';
+import { filters, searchRequest, visitsEvent, onlineSearchRequest } from './search.component.data.spec';
+import { Location } from '@angular/common';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -140,6 +141,50 @@ describe('SearchComponent', () => {
     expect(component.visits).toEqual(visitsEvent.visits);
     expect(component.telemetryImpression.edata.visits).toEqual(visitsEvent.visits);
     expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
+  });
+
+  it('should call goBack', () => {
+    const location = TestBed.get(Location);
+    const utilService = TestBed.get(UtilService);
+    spyOn(location, 'back');
+    spyOn(utilService, 'clearSearchQuery');
+    component.goBack();
+    expect(location.back).toHaveBeenCalled();
+    expect(utilService.clearSearchQuery).toHaveBeenCalled();
+  });
+
+  it('should call clearSearchQuery', () => {
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'clearSearchQuery');
+    component.clearSearchQuery();
+    expect(utilService.clearSearchQuery).toHaveBeenCalled();
+  });
+
+  it('should call setNoResultMessage', () => {
+    component.setNoResultMessage();
+    expect(component.noResultMessage).toEqual({
+      messageText: 'messages.stmsg.m0006',
+      message: 'frmelmnts.lbl.searchNotMatchCh',
+    });
+  });
+
+  xit('should call gotoViewMore for Online Search results', () => {
+    // component.dataDrivenFilters = filters;
+    // component.hashTagId = '505c7c48ac6dc1edc9b08f21db5a571d';
+    // const utilService = TestBed.get(UtilService);
+    const router = TestBed.get(Router);
+    // const queryParams = {
+    //   'key': 'test',
+    //   'apiQuery': `{"filters":{"channel":"505c7c48ac6dc1edc9b08f21db5a571d","contentType":["Collection",
+    //   "TextBook","LessonPlan","Resource"]},"mode":"soft","params":{"orgdetails":"orgName,email","framework":"TEST"},
+    //   "query":"test","facets":["board","medium","gradeLevel","subject","contentType"],"softConstraints":{"badgeAssertions":98,
+    //   "board":99,"channel":100}}`
+    // };
+    spyOn(router, 'navigate');
+    spyOn(component, 'constructSearchRequest').and.stub();
+    component.gotoViewMore(true);
+    // expect(router.navigate).toHaveBeenCalledWith(['browse/view-more', 1], { queryParams });
+    expect(router.navigate).toHaveBeenCalled();
   });
 
   xit('should call fetchContentOnParamChange', () => {

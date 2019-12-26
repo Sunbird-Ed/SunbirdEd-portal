@@ -184,3 +184,34 @@ export const visitsEvent = {
   ]
 };
 
+export const onlineSearchRequest = {
+  'filters': {
+    'channel': '505c7c48ac6dc1edc9b08f21db5a571d',
+    'contentType': [
+      'Collection',
+      'TextBook',
+      'LessonPlan',
+      'Resource'
+    ]
+  },
+  'mode': 'soft',
+  'params': {
+    'orgdetails': 'orgName,email',
+    'framework': 'TEST'
+  },
+  'query': 'test',
+  'facets': [
+    'board',
+    'medium',
+    'gradeLevel',
+    'subject',
+    'contentType'
+  ],
+  'softConstraints': {
+    'badgeAssertions': 98,
+    'board': 99,
+    'channel': 100
+  }
+};
+
+
