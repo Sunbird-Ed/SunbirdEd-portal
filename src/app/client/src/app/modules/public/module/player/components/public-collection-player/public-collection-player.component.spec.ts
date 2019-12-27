@@ -158,7 +158,6 @@ describe('PublicCollectionPlayerComponent', () => {
   it('should call closeCollectionPlayer method when you open collections previously from content manager ', () => {
     const url = spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
     component.closeCollectionPlayer();
-    expect(component.isOffline).toBeTruthy();
     const router = TestBed.get(Router);
     expect(url).toEqual(previousUrl.url);
     expect(router.navigate).toHaveBeenCalledWith(['/']);
@@ -167,7 +166,6 @@ describe('PublicCollectionPlayerComponent', () => {
   it('should call closeCollectionPlayer method when you open  collection previously from search', () => {
     const url = spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
     component.closeCollectionPlayer();
-    expect(component.isOffline).toBeTruthy();
     const router = TestBed.get(Router);
     expect(url).toEqual(previousUrl.searchUrl);
     expect(router.navigate).toHaveBeenCalledWith([previousUrl.searchUrl, previousUrl.queryParams]);
@@ -175,7 +173,6 @@ describe('PublicCollectionPlayerComponent', () => {
   it('should call closeCollectionPlayer method and navigate to previous url ', () => {
     const url = spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
     component.closeCollectionPlayer();
-    expect(component.isOffline).toBeTruthy();
     const router = TestBed.get(Router);
     expect(url).toEqual(previousUrl.otherUrl);
     expect(router.navigate).toHaveBeenCalledWith([previousUrl.otherUrl]);
