@@ -227,8 +227,22 @@ export class QuestionListComponent implements OnInit, OnChanges {
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }));
   }
-  public createNewQuestion() {
-    
+  public createNewQuestion(): void {
+    this.createDefaultAssessmentItem().pipe(
+      map((data: any) => {
+        const questinId = data.result.node_id;
+        const questionsIds: any = _.map(this.questionList, (question) => ({ 'identifier': _.get(question, 'identifier') }));
+        questionsIds.push({'identifier': questinId});
+        const requestParams = {
+          'name': this.resourceName,
+          'items': questionsIds
+        };
+        return requestParams;
+    }),
+    mergeMap(requestParams => this.updateItemset(requestParams, this.itemSetIdentifier)))
+    .subscribe((contentRes: any) => {
+        this.fetchQuestionList();
+    });
   }
   
   public questionStatusHandler(event) {
