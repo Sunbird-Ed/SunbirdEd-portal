@@ -16,7 +16,7 @@ class RouterStub {
   events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
 }
 const fakeActivatedRoute = {
-  'params': observableOf({ contentId: 'd0_33567325' }),
+  'params': observableOf({ contentId: 'do_33567325' }),
   'queryParams': observableOf({ language: ['en'] }, {dialCode: '61U24C'}),
   snapshot: {
     data: {
@@ -62,6 +62,7 @@ describe('PublicContentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
     component = fixture.componentInstance;
+    component.contentId = 'do_33567325';
   });
 
   it('should config content player if content status is "Live"', () => {
@@ -91,7 +92,6 @@ describe('PublicContentPlayerComponent', () => {
   });
   it('should call tryAgain method', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
-    component.contentId = 'do_123456';
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(component, 'tryAgain').and.callThrough();
     spyOn(component, 'getContent').and.callThrough();
