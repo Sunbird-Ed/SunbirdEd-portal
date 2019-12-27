@@ -591,6 +591,18 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
   }
 
+  public updateItemset(requestBody, identifier) {
+    const reqBody = requestBody;
+    return this.itemsetService.updateItemset(reqBody, identifier).pipe(map((response) => {
+      return response;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Content updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
+  }
+
   public updateContent(reqBody,contentId) {  
     return this.helperService.updateContent(reqBody, contentId).pipe(map((response) => {
       return response;
