@@ -32,7 +32,7 @@
       <app-no-result [data]="noResultMessage" *ngIf="!showLoader && isContentNotAvailable">
         <ng-container>
           <div>
-            <p class="mt-8 no-search-text">{{resourceService?.frmelmnts?.lbl?.desktop?.yourSearch}}&nbsp;-&nbsp;
+            <p class="mt-8 text-center no-search-text">{{resourceService?.frmelmnts?.lbl?.desktop?.yourSearch}}&nbsp;-&nbsp;
               <span class="font-weight-bold">{{queryParams?.key}}</span>
               {{resourceService?.frmelmnts?.lbl?.desktop?.notMatchContent}}
             </p>
