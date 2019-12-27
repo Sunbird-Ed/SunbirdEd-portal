@@ -1,5 +1,5 @@
 
-import {of as observableOf,  Observable, throwError as observableThrowError  } from 'rxjs';
+import { of as observableOf, Observable, throwError as observableThrowError } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,7 +10,7 @@ import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
-import { CollectionHierarchyGetMockResponse, collectionTree} from './public-collection-player.component.spec.data';
+import { CollectionHierarchyGetMockResponse, collectionTree } from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ContentManagerService } from '@sunbird/offline';
 
@@ -19,10 +19,16 @@ describe('PublicCollectionPlayerComponent', () => {
   let fixture: ComponentFixture<PublicCollectionPlayerComponent>;
   const collectionId = 'do_112270591840509952140';
   const contentId = 'domain_44689';
+  const previousUrl = {
+    url: '/play/collection/do_11287198635947622412',
+    searchUrl: '/search',
+    otherUrl: '/browse/play/collection/do_3123405048187617282365',
+    queryParams: { key: 'collection' }
+  };
   const fakeActivatedRoute = {
     params: observableOf({ collectionId: collectionId }),
     // queryParams: Observable.of({ contentId: contentId }),
-    'queryParams': observableOf({ language: ['en'] }, {dialCode: '61U24C'}),
+    'queryParams': observableOf({ language: ['en'] }, { dialCode: '61U24C' }),
     snapshot: {
       params: {
         collectionId: collectionId
@@ -51,7 +57,7 @@ describe('PublicCollectionPlayerComponent', () => {
     TestBed.configureTestingModule({
       declarations: [PublicCollectionPlayerComponent],
       imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
-      TelemetryModule.forRoot(), SharedModule.forRoot()],
+        TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [ContentService, PublicPlayerService, ResourceService,
         ContentManagerService, ToasterService,
         { provide: Router, useClass: RouterStub },
@@ -114,7 +120,7 @@ describe('PublicCollectionPlayerComponent', () => {
       },
       relativeTo: route
     };
-    component.queryParams = { dialCode: '61U24C'};
+    component.queryParams = { dialCode: '61U24C' };
     component.closeContentPlayer();
     tick(200);
     expect(component.showPlayer).toBeFalsy();
@@ -137,8 +143,8 @@ describe('PublicCollectionPlayerComponent', () => {
     const content = { id: 'do_112474267785674752118', title: 'Test' };
     component.collectionTreeNodes = collectionTree;
     const playContentDetails = {
-      model : {
-        mimeType : 'text/x-url',
+      model: {
+        mimeType: 'text/x-url',
         channel: '505c7c48ac6dc1edc9b08f21db5a571d'
       }
     };
@@ -149,5 +155,29 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.OnPlayContent).toHaveBeenCalledWith(content, true);
     expect(component.playContent).toHaveBeenCalledWith(content);
   });
+  it('should call closeCollectionPlayer method when you open collections previously from content manager ', () => {
+    const url = spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
+    component.closeCollectionPlayer();
+    expect(component.isOffline).toBeTruthy();
+    const router = TestBed.get(Router);
+    expect(url).toEqual(previousUrl.url);
+    expect(router.navigate).toHaveBeenCalledWith(['/']);
+  });
 
+  it('should call closeCollectionPlayer method when you open  collection previously from search', () => {
+    const url = spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
+    component.closeCollectionPlayer();
+    expect(component.isOffline).toBeTruthy();
+    const router = TestBed.get(Router);
+    expect(url).toEqual(previousUrl.searchUrl);
+    expect(router.navigate).toHaveBeenCalledWith([previousUrl.searchUrl, previousUrl.queryParams]);
+  });
+  it('should call closeCollectionPlayer method and navigate to previous url ', () => {
+    const url = spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
+    component.closeCollectionPlayer();
+    expect(component.isOffline).toBeTruthy();
+    const router = TestBed.get(Router);
+    expect(url).toEqual(previousUrl.otherUrl);
+    expect(router.navigate).toHaveBeenCalledWith([previousUrl.otherUrl]);
+  });
 });

@@ -333,15 +333,10 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       if (this.isOffline) {
        const  previousUrl =  this.navigationHelperService.getPreviousUrl();
        if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
-        this.router.navigate(['/']);
-       } else {
-         if (previousUrl.queryParams) {
-          this.router.navigate([previousUrl.url], {queryParams: previousUrl.queryParams});
-
-         } else {
-          this.router.navigate([previousUrl.url]);
-         }
+        return this.router.navigate(['/']);
        }
+       // tslint:disable-next-line: max-line-length
+       previousUrl.queryParams ? this.router.navigate([previousUrl.url], {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
       } else {
         this.navigationHelperService.navigateToPreviousUrl('/explore');
       }
