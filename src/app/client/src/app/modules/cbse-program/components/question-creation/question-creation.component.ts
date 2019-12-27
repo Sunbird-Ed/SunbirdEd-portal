@@ -133,12 +133,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
   ngAfterViewInit() {
     this.initializeDropdown();
-    if (this.isReadOnlyMode) {
-      const windowData: any = window;
-      const el = document.getElementsByClassName('ckeditor-tool__solution__body');
-      // tslint:disable-next-line:only-arrow-functions
-      windowData.com.wiris.js.JsPluginViewer.parseElement(el[0], true, function() {});
-    }
     // tslint:disable-next-line:max-line-length
     // if( this.sessionContext.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
     // tslint:disable-next-line:max-line-length
@@ -298,12 +292,15 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                     ]
                   },
                   'body': this.body,
-                  'solutions': [
-                    {
-                      'id': this.solutionUUID,
-                      'value': this.solution
+                  "responseDeclaration": {
+                    "responseValue": {
+                      "cardinality": "single",
+                      "type": "string",
+                      "correct_response": {
+                        "value": this.solution
+                      }
                     }
-                  ],
+                  },
                   'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
                   'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                   // 'qlevel': this.questionMetaForm.value.qlevel,
@@ -312,9 +309,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'programId': this.sessionContext.programId,
                   'program': this.sessionContext.program,
                   'channel': this.sessionContext.channel,
-                  'framework': this.sessionContext.framework,
-                  'board': this.sessionContext.board,
-                  'medium': this.sessionContext.medium,
+                  // 'framework': this.sessionContext.framework,
+                  // 'board': this.sessionContext.board,
+                  // 'medium': this.sessionContext.medium,
                   // 'gradeLevel': [
                   //   this.sessionContext.gradeLevel
                   // ],
@@ -322,7 +319,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   // 'topic': [this.sessionContext.topic],
                   'status': 'Review',
                   'media': this.mediaArr,
-                  'qumlVersion': 0.5,
+                  'qumlVersion': 1.0,
                   'textBookUnitIdentifier': this.sessionContext.textBookUnitIdentifier,
                   'author': authorName
                 }
@@ -381,17 +378,20 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                       ]
                     },
                     'body': this.body,
-                    'solutions': [
-                      {
-                        'id': this.solutionUUID,
-                        'value': this.solution
+                    "responseDeclaration": {
+                      "responseValue": {
+                        "cardinality": "single",
+                        "type": "string",
+                        "correct_response": {
+                          "value": this.solution
+                        }
                       }
-                    ],
+                    },
                   'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
                   'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
-                  'status': 'Review',
+                  'status': 'Draft',
                   'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
                   'type': 'reference',
                   'code': UUID.UUID(),

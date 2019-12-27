@@ -32,7 +32,9 @@
         >Save</button>
       <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
       <button class="sb-btn sb-btn-secondary sb-btn-normal ripple" 
-        (click)="showTextArea=!showTextArea"
+      [ngClass]="disableSubmitBtn ? 'sb-btn-disabled' : 'sb-btn-secondary'"
+      [disabled] = "disableSubmitBtn"
+       (click)="submitButtonHandler()"
         *ngIf="resourceStatus === 'Draft' || resourceStatus === 'Rejected' "
         >Submit</button>
     </div>

@@ -8,6 +8,7 @@ import { UUID } from 'angular2-uuid';
 import { of, forkJoin, throwError } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CbseProgramService } from '../../services';
+import { ItemsetService } from '../../services/itemset/itemset.service';
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.component.html',
@@ -21,7 +22,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public sessionContext: any;
   public role: any;
   public templateDetails: any;
-  public questionList = [];
+  public questionList : Array<any> = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
   public resourceDetails: any = {};
@@ -34,6 +35,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public showReviewModal = false;
   public showAddReviewModal = false;
   public showDelectContentModal = false;
+  public disableSubmitBtn: boolean = true;
   public showPublishModal = false;
   public publishInProgress = false;
   public publishedResourceId: any;
@@ -56,7 +58,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
     public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService,
     public telemetryService: TelemetryService, private fb: FormBuilder, private cbseService: CbseProgramService,
-    public contentService: ContentService) {
+    public contentService: ContentService,private itemSetService: ItemsetService) {
   }
   ngOnChanges(changedProps: any) {
     this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
@@ -78,12 +80,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
     this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
     this.sessionContext.questionType = this.templateDetails.questionCategories[0];
+    this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
     this.resourceName = this.templateDetails.metadata.name;
-    this.fetchExistingResource(this.sessionContext.resourceIdentifier).subscribe(response => {
-      this.resourceDetails = _.get(response, 'result.content');
-      this.resourceStatus = _.get(this.resourceDetails, 'status');
-      //this.resourceStatus = 'Review';
-    });
     if (this.sessionContext.questionType) {
       this.fetchQuestionWithRole();
     } else {
@@ -92,88 +90,27 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.enableRoleChange = true;
     this.selectedAll = false;
   }
+
   private fetchQuestionWithRole() {
     (this.role.currentRole === 'REVIEWER') ? this.fetchQuestionList(true) : this.fetchQuestionList();
   }
 
   private fetchQuestionList(isReviewer?: boolean) {
-    const req = {
-      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
-      data: {
-        'request': {
-          'filters': {
-            'objectType': 'AssessmentItem',
-            'board': this.sessionContext.board,
-            'framework': this.sessionContext.framework,
-            // 'gradeLevel': this.sessionContext.gradeLevel,
-            // 'subject': this.sessionContext.subject,
-            'medium': this.sessionContext.medium,
-            'type': this.sessionContext.questionType === 'mcq' ? 'mcq' : 'reference',
-            'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' :
-              this.sessionContext.questionType.toUpperCase(),
-            'topic': this.sessionContext.topic,
-            'createdBy': this.userService.userid,
-            'programId': this.sessionContext.programId,
-            'version': 3,
-            'status': []
-          },
-          'sort_by': { 'createdOn': 'desc' }
-        }
+    
+    this.fetchExistingResource(this.sessionContext.resourceIdentifier).subscribe(response => {
+      this.resourceDetails = _.get(response, 'result.content');
+      this.resourceStatus = _.get(this.resourceDetails, 'status');
+      this.questionList = [
+        {identifier:"do_1129216047252029441125",author:'Vaibhav',category:'VSA',organisation:["VB"],status:'Live'},
+        {identifier:"do_1129216055079239681126",author:'Nikunj',category:'VSA',organisation:["NK"],status:'Live'}
+      ] || [];
+      if (this.questionList.length) {
+        this.selectedQuestionId = this.questionList[0].identifier;
+        this.handleQuestionTabChange(this.selectedQuestionId);
+      } else {
+        // create assessment_item and itemSet link to resource
       }
-    };
-    if (isReviewer) {
-      delete req.data.request.filters.createdBy;
-      if (this.sessionContext.selectedSchoolForReview) {
-        req.data.request.filters['organisation'] = this.sessionContext.selectedSchoolForReview;
-      }
-      req.data.request.filters.status = ['Review'];
-    }
-    let apiRequest;
-    apiRequest = [this.contentService.post(req).pipe(
-      tap(data => this.showLoader = false),
-      catchError(err => {
-        const errInfo = { errorMsg: 'Fetching question list failed' };
-        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-      }))];
-    if (this.role.currentRole === 'PUBLISHER') {
-      delete req.data.request.filters.createdBy;
-      req.data.request.filters.status = ['Live'];
-      if (this.sessionContext.resourceIdentifier) {
-        // tslint:disable-next-line:max-line-length
-        apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false),
-          catchError(err => {
-            const errInfo = { errorMsg: 'Fetching question list failed' };
-            return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-          })),
-        this.fetchExistingResource(this.sessionContext.resourceIdentifier)];
-      }
-    }
-
-
-
-    forkJoin(apiRequest)
-      .subscribe((res: any) => {
-        this.questionList = res[0].result.items || [];
-        let selectedQuestionList = [];
-        if (res[1]) {
-          selectedQuestionList = _.map(_.get(res[1], 'result.content.questions'), 'identifier') || [];
-        }
-        _.forEach(this.questionList, (question) => {
-          if (_.includes(selectedQuestionList, question.identifier)) {
-            question.isSelected = true;
-          } else {
-            question.isSelected = false;
-          }
-        });
-        if (this.questionList.length) {
-          this.selectedQuestionId = this.questionList[0].identifier;
-          this.handleQuestionTabChange(this.selectedQuestionId);
-          this.questionSelectionStatus = this.questionList[0].isSelected;
-        }
-        this.selectedAll = this.questionList.every((question: any) => {
-          return question.isSelected === true;
-        });
-      });
+    });
   }
 
   fetchExistingResource(contentId) {
@@ -192,8 +129,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
 
-  handleQuestionTabChange(questionId) {
-    if (_.includes(this.sessionContext.questionList, questionId)) { return; }
+  handleQuestionTabChange(questionId,IsUpdate:boolean = false) {
+    if (_.includes(this.sessionContext.questionList, questionId) && !IsUpdate) { return; }
     this.sessionContext.questionList = [];
     this.sessionContext.questionList.push(questionId);
     this.selectedQuestionId = questionId;
@@ -228,6 +165,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
           this.refreshEditor();
         }
         this.initialized = true;
+        if(IsUpdate)  this.saveResource();
       });
     const selectedQuestion = _.find(this.questionList, { identifier: questionId });
     if (selectedQuestion) {
@@ -270,14 +208,20 @@ export class QuestionListComponent implements OnInit, OnChanges {
     } else {
       if (event.type === 'update') {
         delete this.questionReadApiDetails[event.identifier];
-        this.handleQuestionTabChange(this.selectedQuestionId);
-      } if (event.type === 'Reject' || event.type === 'Live') {
+        this.handleQuestionTabChange(this.selectedQuestionId,true);
+      } 
+      if (event.type === 'Reject' || event.type === 'Live') {
         this.showLoader = true;
         setTimeout(() => this.fetchQuestionList(true), 2000);
-      } else {
-        this.showLoader = true;
-        setTimeout(() => this.fetchQuestionList(), 2000);
-      }
+      } 
+    
+      // if (event.type === 'Reject' || event.type === 'Live') {
+      //   this.showLoader = true;
+      //   setTimeout(() => this.fetchQuestionList(true), 2000);
+      // } else {
+      //   this.showLoader = true;
+      //   setTimeout(() => this.fetchQuestionList(), 2000);
+      // }
     }
   }
 
@@ -315,91 +259,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
     });
     this.questionSelectionStatus = event.status;
   }
-  public publishQuestions() {
-    const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
-    this.publishInProgress = true;
-    this.publishButtonStatus.emit(this.publishInProgress);
-    const selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
-      final.ids.push(_.get(question, 'identifier'));
-      final.author.push(_.get(question, 'author'));
-      final.category.push(_.get(question, 'category'));
-      final.attributions = _.union(final.attributions, _.get(question, 'organisation'));
-      return final;
-    }, { ids: [], author: [], category: [], attributions: [] });
-
-    if (selectedQuestionsData.ids.length > 0) {
-      const questions = [];
-      _.forEach(_.get(selectedQuestionsData, 'ids'), (value) => {
-        questions.push({ 'identifier': value });
-      });
-      this.cbseService.getECMLJSON(selectedQuestionsData.ids).subscribe((theme) => {
-        let creator = this.userService.userProfile.firstName;
-        if (!_.isEmpty(this.userService.userProfile.lastName)) {
-          creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
-        }
-
-        const option = {
-          url: `private/content/v3/create`,
-          data: {
-            'request': {
-              'content': {
-                // tslint:disable-next-line:max-line-length
-                'name': this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`,
-                'contentType': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
-                'mimeType': 'application/vnd.ekstep.ecml-archive',
-                'programId': this.sessionContext.programId,
-                'program': this.sessionContext.program,
-                'framework': this.sessionContext.framework,
-                'board': this.sessionContext.board,
-                'medium': [this.sessionContext.medium],
-                'gradeLevel': [this.sessionContext.gradeLevel],
-                'subject': [this.sessionContext.subject],
-                'topic': [this.sessionContext.topic],
-                'createdBy': this.userService.userid, // '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8'  || 'edce4f4f-6c82-458a-8b23-e3521859992f',
-                'creator': creator,
-                'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
-                'editorVersion': 3,
-                'code': UUID.UUID(),
-                'body': JSON.stringify(theme),
-                'resourceType': this.sessionContext.questionType === 'curiosity' ? 'Teach' : 'Practice',
-                'description': `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`,
-                'questions': questions,
-                'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
-                'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
-                'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
-                'plugins': [{
-                  identifier: 'org.sunbird.questionunit.quml',
-                  semanticVersion: '1.0'
-                }],
-                // tslint:disable-next-line: max-line-length
-                'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11279144369168384014/artifact/qa_1561455529937.png'
-              }
-            }
-          }
-        };
-        this.contentService.post(option).pipe(catchError(err => {
-          const errInfo = { errorMsg: 'Resource publish failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-        }))
-          .subscribe((res) => {
-            console.log('res ', res);
-            if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
-              this.publishResource(res.result.content_id || res.result.node_id);
-            }
-          }, error => {
-            this.publishInProgress = false;
-            this.publishButtonStatus.emit(this.publishInProgress);
-          });
-      });
-    } else {
-      this.publishInProgress = false;
-      this.publishButtonStatus.emit(this.publishInProgress);
-      this.toasterService.error('Please select some questions to Publish');
-    }
-  }
-
-  public updateQuestions() {
-    const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
+  
+  public saveResource() {
+    const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'status') == "Live");
     this.publishInProgress = true;
     this.publishButtonStatus.emit(this.publishInProgress);
     const selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
@@ -421,7 +283,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       forkJoin([updateBody, versionKey]).subscribe((response: any) => {
         const existingContentVersionKey = _.get(response[1], 'content.versionKey');
         const options = {
-          url: `private/content/v3/update/${this.sessionContext.resourceIdentifier}`,
+          url: `${this.configService.urlConFig.URLS.CONTENT.UPDATE}/${this.sessionContext.resourceIdentifier}`,
           data: {
             'request': {
               'content': {
@@ -431,18 +293,29 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
                 'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
                 // tslint:disable-next-line:max-line-length
-                name: this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`
+                name: this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`,
+                'programId': this.sessionContext.programId,
+                'program': this.sessionContext.program,
+                'plugins': [{
+                  identifier: 'org.sunbird.questionunit.quml',
+                  semanticVersion: '1.1'
+                }],
+                'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
+                'topic': this.sessionContext.topic ? [this.sessionContext.topic] : [] ,
+                'editorVersion': 3,
+                'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
               }
             }
           }
         };
-        this.contentService.patch(options).pipe(catchError(err => {
+        this.actionService.patch(options).pipe(catchError(err => {
           const errInfo = { errorMsg: 'Resource updation failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         }))
-          .subscribe((res) => {
+        .subscribe((res) => {
             if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
-              this.publishResource(res.result.content_id || res.result.node_id);
+              this.disableSubmitBtn = false;
+              this.toasterService.success('Question and content updated successfully');
             }
           }, error => {
             this.publishInProgress = false;
@@ -453,6 +326,63 @@ export class QuestionListComponent implements OnInit, OnChanges {
       this.publishInProgress = false;
       this.publishButtonStatus.emit(this.publishInProgress);
     }
+  }
+
+  submitButtonHandler() {
+    const reviewContent = this.reviewResource(this.sessionContext.resourceIdentifier);
+    const reviewItemSet = this.itemSetService.reviewItemset("do_1129152191260999681109");
+    forkJoin([reviewItemSet,reviewContent]).subscribe((response: any) => {
+      console.log(response);
+      this.disableSubmitBtn = true;
+    });
+  }
+
+  public reviewResource(contentId) {
+    const optionVal = {
+      url: `${this.configService.urlConFig.URLS.CONTENT.REVIEW}/${contentId}`,
+      data: {}
+    };
+  
+    return this.actionService.post(optionVal).pipe(map((response) => {
+      let result = _.get(response, 'result');
+      return result;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Resource updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
+
+  }
+  
+  publishResource(contentId) {
+    const requestBody = {
+      request: {
+        content: {
+          publisher: 'CBSE',
+          lastPublishedBy: this.userService.userid
+        }
+      }
+    };
+    const optionVal = {
+      url: `${this.configService.urlConFig.URLS.CONTENT.PUBLISH}${contentId}`,
+      data: requestBody
+    };
+    this.contentService.post(optionVal).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Resource updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }))
+      .subscribe(response => {
+        this.publishedResourceId = response.result.content_id || response.result.node_id || '';
+        this.toasterService.success('Content published successfully');
+      }, (err) => {
+        this.publishInProgress = false;
+        this.publishButtonStatus.emit(this.publishInProgress);
+      });
+  }
+
+  public reviewItemSet() {
+
   }
 
   getContentVersion(contentId) {
@@ -471,74 +401,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public selectQuestionCategory(questionCategory) {
     this.sessionContext.questionType = questionCategory;
     this.fetchQuestionWithRole();
-  }
-  publishResource(contentId) {
-    const requestBody = {
-      request: {
-        content: {
-          publisher: 'CBSE',
-          lastPublishedBy: this.userService.userid // '99606810-7d5c-4f1f-80b0-36c4a0b4415d'
-        }
-      }
-    };
-    const optionVal = {
-      url: `private/content/v3/publish/${contentId}`,
-      data: requestBody
-    };
-    this.contentService.post(optionVal).pipe(catchError(err => {
-      const errInfo = { errorMsg: 'Resource updation failed' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    }))
-      .subscribe(response => {
-        this.publishedResourceId = response.result.content_id || response.result.node_id || '';
-        // tslint:disable-next-line:max-line-length
-        this.updateHierarchyObj(contentId, this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`);
-
-      }, (err) => {
-        this.publishInProgress = false;
-        this.publishButtonStatus.emit(this.publishInProgress);
-      });
-  }
-
-  updateHierarchyObj(contentId, name) {
-    const index = _.indexOf(_.keys(this.sessionContext.hierarchyObj.hierarchy), this.sessionContext.textBookUnitIdentifier);
-    if (index >= 0) {
-      this.sessionContext.hierarchyObj.hierarchy[this.sessionContext.textBookUnitIdentifier].children.push(contentId);
-      if (!_.has(this.sessionContext.hierarchyObj.hierarchy, contentId)) {
-        this.sessionContext.hierarchyObj.hierarchy[contentId] = {
-          'name': name,
-          'contentType': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
-          'children': [],
-          'root': false
-        };
-      }
-    }
-    const requestBody = {
-      'request': {
-        'data': {
-          'nodesModified': {},
-          'hierarchy': this.sessionContext.hierarchyObj.hierarchy,
-          'lastUpdatedBy': this.userService.userid
-        }
-      }
-    };
-    const req = {
-      url: `private/content/v3/hierarchy/update`,
-      data: requestBody
-    };
-    this.contentService.patch(req).pipe(catchError(err => {
-      const errInfo = { errorMsg: 'Resource updation failed' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    }))
-      .subscribe((res) => {
-        this.showSuccessModal = true;
-        this.publishInProgress = false;
-        this.publishButtonStatus.emit(this.publishInProgress);
-        this.toasterService.success('content created & published successfully');
-      }, err => {
-        console.log(err);
-        this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content update failed');
-      });
   }
 
   public dismissPublishModal() {
