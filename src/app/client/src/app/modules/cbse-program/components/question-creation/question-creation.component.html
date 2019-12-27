@@ -80,7 +80,7 @@
               <div class="ckeditor-tool__question">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
                 <div class="ckeditor-tool__solution__body">
-                  <p class="fs-0-785 p-16" [innerHTML]="question"></p>
+                  <p class="fs-0-785 p-16" [innerHTML]="question | sanitizeHtml"></p>
                 </div>
               </div>
             </div>
@@ -100,7 +100,7 @@
               <div class="ckeditor-tool__question mb-24">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
                 <div class="ckeditor-tool__solution__body">
-                  <p class="fs-0-785 p-16" [innerHTML]="editorState.solutions"></p>
+                  <p class="fs-0-785 p-16" [innerHTML]="editorState.solutions | sanitizeHtml"></p>
                 </div>
               </div>
             </div>
@@ -138,16 +138,16 @@
       </div>
 
     </div>
-    <!-- *ngIf="learningOutcomeOptions.length > 0" -->
+
     <!-- Learning Outcome learning level author license Preview HTML -->
     <div class="ui stackable grid licence-form__content__fields" *ngIf="isReadOnlyMode">
         <div class="row" >
-          <div class="six wide column">
+          <div class="six wide column" *ngIf="learningOutcomeOptions.length > 0">
             <div class="sb-field">
               <label for="outcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a
                   class="ml-4" href="javascript:void(0)" title="title comes here"><img width="16" alt=""
                     src="assets/images/Info.svg"></a></label>
-              <p class="fs-0-785"></p>
+              <p class="fs-0-785">{{ questionMetaData.data.learningOutcome[0] }}</p>
             </div>
           </div>
           <div class="six wide column">
@@ -155,7 +155,7 @@
               <label for="level" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
                   href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
                     src="assets/images/Info.svg"></a></label>
-              <p class="fs-0-785">Lorem Ipsum is simply dummy text of the printing Dummy text of the printing</p>
+              <p class="fs-0-785">{{ questionMetaData.data.bloomsLevel[0] }}</p>
             </div>
           </div>
         </div>
@@ -166,7 +166,7 @@
               <label for="author" class="d-flex mb-4">Author(s) <a href="javascript:void(0)"
                   title="title comes here"><img width="16" alt="" class="ml-4"
                     src="assets/images/Info.svg"></a></label>
-              <p class="fs-0-785">Lorem Ipsum is simply </p>
+              <p class="fs-0-785">{{ questionMetaData.data.author }}</p>
             </div>
           </div>
           <div class="six wide column">

@@ -2,13 +2,14 @@ import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, OnCh
 import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { tap, map, catchError } from 'rxjs/operators';
+import { tap, map, catchError, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { of, forkJoin, throwError } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CbseProgramService } from '../../services';
 import { ItemsetService } from '../../services/itemset/itemset.service';
+import { HelperService } from '../../services/helper.service';
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.component.html',
@@ -42,6 +43,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public questionSelectionStatus: any;
   public existingContentVersionKey = '';
   public resourceTitleLimit = 100;
+  public itemSetIdentifier: string;
   selectedAll: any;
   initialized: boolean;
   public showTextArea = false;
@@ -58,7 +60,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
     public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService,
     public telemetryService: TelemetryService, private fb: FormBuilder, private cbseService: CbseProgramService,
-    public contentService: ContentService,private itemSetService: ItemsetService) {
+    public contentService: ContentService, private itemsetService: ItemsetService, private helperService: HelperService) {
   }
   ngOnChanges(changedProps: any) {
     this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
@@ -81,14 +83,37 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
     this.sessionContext.questionType = this.templateDetails.questionCategories[0];
     this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
-    this.resourceName = this.templateDetails.metadata.name;
-    if (this.sessionContext.questionType) {
-      this.fetchQuestionWithRole();
-    } else {
-      console.log(this.templateDetails.questionCategories);
-    }
+    this.fetchExistingResource(this.sessionContext.resourceIdentifier).subscribe(response => {
+      this.resourceDetails = _.get(response, 'result.content');
+      this.resourceStatus = _.get(this.resourceDetails, 'status');
+      this.resourceName = this.resourceDetails.name || this.templateDetails.metadata.name;
+      // this.resourceStatus = 'Review';
+      if (!this.resourceDetails.itemsets) {
+        this.createDefaultQuestionAndItemset();
+        this.fetchQuestionWithRole();
+      } else {
+        const itemSet = JSON.parse(this.resourceDetails.itemsets);
+        if (itemSet[0].identifier) {
+          this.itemSetIdentifier = itemSet[0].identifier;
+        }
+        this.fetchQuestionWithRole();
+      }
+    });
     this.enableRoleChange = true;
     this.selectedAll = false;
+  }
+  public createDefaultQuestionAndItemset() {
+    return this.createDefaultAssessmentItem().subscribe((queRes: any) => {
+      console.log('question created');
+      console.log(queRes);
+      const assessment_item_id = queRes.result.node_id;
+      this.createItemSet(assessment_item_id).subscribe((itemSetRes: any) => {
+        console.log('Itemset created');
+        this.itemSetIdentifier = itemSetRes.identifier;
+        console.log(itemSetRes);
+        return this.updateContent();
+      });
+    });
   }
 
   private fetchQuestionWithRole() {
@@ -96,21 +121,16 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   private fetchQuestionList(isReviewer?: boolean) {
-    
-    this.fetchExistingResource(this.sessionContext.resourceIdentifier).subscribe(response => {
-      this.resourceDetails = _.get(response, 'result.content');
-      this.resourceStatus = _.get(this.resourceDetails, 'status');
-      this.questionList = [
-        {identifier:"do_1129216047252029441125",author:'Vaibhav',category:'VSA',organisation:["VB"],status:'Live'},
-        {identifier:"do_1129216055079239681126",author:'Nikunj',category:'VSA',organisation:["NK"],status:'Live'}
-      ] || [];
-      if (this.questionList.length) {
-        this.selectedQuestionId = this.questionList[0].identifier;
-        this.handleQuestionTabChange(this.selectedQuestionId);
-      } else {
-        // create assessment_item and itemSet link to resource
-      }
-    });
+    this.questionList = [
+      {identifier:"do_1129216047252029441125", author:'Vaibhav', category:'VSA', organisation:["VB"], status:'Live'},
+      {identifier:"do_1129216055079239681126", author:'Nikunj', category:'VSA', organisation:["NK"], status:'Live'}
+    ] || [];
+    if (this.questionList.length) {
+      this.selectedQuestionId = this.questionList[0].identifier;
+      this.handleQuestionTabChange(this.selectedQuestionId);
+    } else {
+      // create assessment_item and itemSet link to resource
+    }
   }
 
   fetchExistingResource(contentId) {
@@ -129,7 +149,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
 
-  handleQuestionTabChange(questionId,IsUpdate:boolean = false) {
+  handleQuestionTabChange(questionId, IsUpdate: boolean = false) {
     if (_.includes(this.sessionContext.questionList, questionId) && !IsUpdate) { return; }
     this.sessionContext.questionList = [];
     this.sessionContext.questionList.push(questionId);
@@ -259,7 +279,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     });
     this.questionSelectionStatus = event.status;
   }
-  
+
   public saveResource() {
     const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'status') == "Live");
     this.publishInProgress = true;
@@ -330,8 +350,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
   submitButtonHandler() {
     const reviewContent = this.reviewResource(this.sessionContext.resourceIdentifier);
-    const reviewItemSet = this.itemSetService.reviewItemset("do_1129152191260999681109");
-    forkJoin([reviewItemSet,reviewContent]).subscribe((response: any) => {
+    const reviewItemSet = this.itemsetService.reviewItemset(this.itemSetIdentifier);
+    forkJoin([reviewItemSet, reviewContent]).subscribe((response: any) => {
       console.log(response);
       this.disableSubmitBtn = true;
     });
@@ -342,7 +362,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       url: `${this.configService.urlConFig.URLS.CONTENT.REVIEW}/${contentId}`,
       data: {}
     };
-  
+
     return this.actionService.post(optionVal).pipe(map((response) => {
       let result = _.get(response, 'result');
       return result;
@@ -354,7 +374,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }));
 
   }
-  
+
   publishResource(contentId) {
     const requestBody = {
       request: {
@@ -454,4 +474,138 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public showReview() {
     this.showReviewModal = true;
   }
+
+  public createDefaultAssessmentItem() {
+    let creator = this.userService.userProfile.firstName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+    }
+
+    const request = {
+      url: `${this.configService.urlConFig.URLS.ASSESSMENT.CREATE}`,
+      data: {
+        'request': {
+          'assessment_item': {
+            'objectType': 'AssessmentItem',
+            'metadata': {
+              'itemType': 'UNIT',
+              'code': UUID.UUID(),
+              'subject': this.sessionContext.subject[0],
+              'qumlVersion': 1.0,
+              'qlevel': 'MEDIUM',
+              'channel': this.sessionContext.channel,
+              'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : [],
+              'language': [
+                'English'
+              ],
+              'program': this.sessionContext.program,
+              'medium': this.sessionContext.medium[0],
+              'templateId': 'NA',
+              'type': 'reference',
+              'gradeLevel': this.sessionContext.gradeLevel,
+              'creator': creator,
+              'version': 3,
+              'framework': this.sessionContext.framework,
+              'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
+              'topic': this.sessionContext.topic ? this.sessionContext.topic : [],
+               // tslint:disable-next-line:max-line-length
+              'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
+              'programId': this.sessionContext.programId,
+              'board': this.sessionContext.board,
+              'editorState': {
+                'question': '',
+                'solutions': [
+                  {
+                    'id': UUID.UUID(),
+                    'value': ''
+                  }
+                ]
+              },
+              'body': '',
+              'solutions': [ ],
+              'media': []
+            }
+          }
+        }
+      }
+    };
+
+    return this.actionService.post(request).pipe(map((response) => {
+      return response;
+    }));
+  }
+
+  public createItemSet(assessment_item_id) {
+    const reqBody = {
+          'code': UUID.UUID(),
+          'title': this.resourceName,
+          'description': '',
+          'language': ['English'],
+          'max_score': 10,
+          'type': 'materialised',
+          'owner': '',
+          'difficulty_level': '',
+          'purpose': '',
+          'sub_purpose': '',
+          'depth_of_knowledge': '',
+          'used_for':'',
+          'copyright':'',
+          'createdBy':'',
+          'children': [
+            {
+              'identifier': assessment_item_id
+            }
+          ]
+    };
+    return this.itemsetService.createItemset(reqBody).pipe(map((response) => {
+      return response;
+    }));
+  }
+
+  public updateItemset(identifier) {
+    const reqBody = {
+        'purpose': 'questions',
+        'depth_of_knowledge': 'yes',
+        'children': [
+          {
+            'identifier': 'do_11291959225978880019'
+          }
+        ]
+    };
+    this.itemsetService.updateItemset(reqBody, identifier).subscribe((res) => {
+      console.log('Itemset updated =>>>>> ');
+      console.log(res);
+      this.readItemset(res.identifier);
+    });
+  }
+
+  public readItemset(identifier) {
+    this.itemsetService.readItemset(identifier).subscribe((res) => {
+      console.log('Itemset read =>>>>> ');
+      console.log(res);
+    });
+  }
+
+  public updateContent() {
+    const contentId = this.resourceDetails.identifier;
+    const reqBody = {
+      'content': {
+        'versionKey': this.existingContentVersionKey,
+        'itemsets': [
+         {
+           'identifier': this.itemSetIdentifier
+         }
+       ]
+     }
+    };
+    this.helperService.updateContent(reqBody, contentId)
+    .subscribe((res) => {
+    console.log('Content updated');
+    console.log(res);
+    }, (err) => {
+      const errInfo = { errorMsg: 'Content update fail' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    });
+  }
+
 }
