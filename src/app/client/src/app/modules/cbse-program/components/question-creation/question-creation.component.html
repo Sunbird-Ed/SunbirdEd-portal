@@ -2,112 +2,160 @@
     <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); initializeDropdown()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
     <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Preview</button>
 </div> -->
-<app-question-creation-header *ngIf="questionMetaData"  (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"
-(questionStatus)="handleReviewrStatus($event)" [questionMetaData]="questionMetaData"
- (questionQueueStatus)="handleQuestionSelectionStatus($event)" [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
+<app-question-creation-header *ngIf="questionMetaData" (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment" (questionStatus)="handleReviewrStatus($event)" [questionMetaData]="questionMetaData" (questionQueueStatus)="handleQuestionSelectionStatus($event)"
+    [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
 
 
-<form *ngIf="!showPreview" class="ui form mt-8" [formGroup]="questionMetaForm">
-  <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode">
-    <div class="ckeditor-tool__question mb-24">
-      <div class="sb-field mcq-title mb-16">
-        <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
-        <label  *ngIf="showFormError && [undefined, ''].includes(question)"
-          class="ui basic red error label pt-1 question-list">Fill Question</label>
-        <div class="ckeditor-tool-container">
-          <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')"
-        [editorDataInput]="question" [editorId]="'question_editor'"></app-ckeditor-tool>
-        </div>
-      </div>
-    </div>
-
-    <div class="ckeditor-tool__question mb-24">
-      <div class="sb-field mcq-title mb-16">
-        <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
-        <label *ngIf="showFormError && [undefined, ''].includes(editorState.solutions)"
-          class="ui basic red error label pt-1 question-list">Fill Answer</label>
-        <div class="ckeditor-tool-container">
-          <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')"
-        [editorDataInput]="editorState.solutions" [editorId]="'answer_editor'"></app-ckeditor-tool>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="ui two column grid width-100" *ngIf="!isReadOnlyMode">
-      <div class="one column row" *ngIf="learningOutcomeOptions.length > 0">
-          <div class="column">
-              <label>Learning Outcome</label>
-              <div class="sb-field">
-                  <sui-select class="selection width-100" formControlName="learningOutcome" name="'learningOutcome'">
-                      <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name"></sui-select-option>
-                    </sui-select>
-                    <label class="ui basic red error label pt-0"
-                      *ngIf="questionMetaForm.controls.learningOutcome.dirty && questionMetaForm.controls['learningOutcome'].errors">Please Select
-                      Learning Outcome</label>
-              </div>
-          </div>
-      </div>
-      <div class="column">
-        <label>Learning Level</label>
-        <div class="sb-field">
-          <sui-select class="selection width-100" formControlName="bloomsLevel" name="'bloomsLevel'">
-            <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
-          </sui-select>
-          <label class="ui basic red error label pt-0"
-            *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Please Select
-            Learning Level </label>
-          </div>
-      </div>
-      <div class="two column row">
-        <div class="column">
-          <label>Authors</label> <br />
-          <div class="sb-field">
-            <input class="sb-form-control" #author_names type="text"
-              [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
-          </div>
-        </div>
-      </div>
-  </div>
-
-
-  <!-- Question Preview Section HTML -->
-    <div class="ui container" *ngIf="isReadOnlyMode">
-      <div class="ui stackable grid m-0 sb-bg-color-white">
-        <div class="row">
-          <div class="twelve wide column p-0">
-            <div class="ckeditor-tool width-100">
-              <div class="ckeditor-tool__question">
+<form *ngIf="!showPreview" class="ui form mt-8 licence-form" [formGroup]="questionMetaForm">
+    <label *ngIf="showFormError && [undefined, ''].includes(question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
+    <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode">
+        <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError">
+            <div class="sb-field mcq-title mb-16">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
-                <div class="ckeditor-tool__solution__body">
-                  <p class="fs-0-785 p-16" [innerHTML]="question | sanitizeHtml"></p>
+                <div class="ckeditor-tool-container">
+                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')" [editorDataInput]="question" [editorId]="'question_editor'"></app-ckeditor-tool>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
 
-        <div class="row mb-0 p-0">
-          <div class="twelve wide column p-0">
-              <div class="d-flex flex-ai-center ckeditor-tool__answer mt-16">
-                  <label class="fs-1 mb-0">Answers</label>
-                </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="twelve wide column p-0">
-            <div class="ckeditor-tool width-100">
-              <div class="ckeditor-tool__question mb-24">
+        <div class="ckeditor-tool__question mb-24">
+            <div class="sb-field mcq-title mb-16">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
-                <div class="ckeditor-tool__solution__body">
-                  <p class="fs-0-785 p-16" [innerHTML]="editorState.solutions | sanitizeHtml"></p>
+                <label *ngIf="showFormError && [undefined, ''].includes(editorState.solutions)" class="ui basic red error label pt-1 question-list">Fill Answer</label>
+                <div class="ckeditor-tool-container">
+                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')" [editorDataInput]="editorState.solutions" [editorId]="'answer_editor'"></app-ckeditor-tool>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
+    </div>
 
-        <!-- <div class="row mb-0 p-0">
+    <!-- <form class='ui container licence-form'> -->
+    <!-- <div class='licence-form__content'>
+        <div class="ui stackable grid licence-form__content__fields">
+            <div class="row">
+                <div class="eight wide column">
+                    <div class="sb-field">
+                        <label for="learningOutcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a
+                class="ml-4" href="javascript:void(0)" title="title comes here"><img width="16" alt=""
+                  src="assets/images/Info.svg"></a></label>
+                        <sui-select class="selection" formControlName="learningOutcome" name="'learningOutcome'">
+                            <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name">
+                            </sui-select-option>
+                        </sui-select>
+
+                    </div>
+                </div>
+                <div class="four wide column pl-0">
+                    <div class="sb-field space-btn-field">
+                        <label for="bloomsLevel" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
+                href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                  src="assets/images/Info.svg"></a></label>
+                        <sui-select class="selection" formControlName="bloomsLevel" name="'bloomsLevel'">
+                            <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+                        </sui-select>
+                    </div>
+                </div>
+            </div>
+            <div class="row pt-0">
+                <div class="four wide column">
+                    <div class="sb-field">
+                        <label for="author" class="d-flex mb-4">Authors <a href="javascript:void(0)" title="title comes here"><img
+                  width="16" alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
+                        <input class="sb-form-control" #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
+                    </div>
+                </div>
+                <div class="four wide column pl-0">
+                    <div class="sb-field space-btn-field">
+                        <label class="d-flex mb-4">License <a href="javascript:void(0)" title="title comes here"><img width="16"
+                  alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
+                        <sui-select class="selection" labelField="name" name="license" placeholder="select">
+                            <sui-select-option *ngFor="let option of selectLicenseOption" [value]="option">
+                            </sui-select-option>
+                        </sui-select>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div> -->
+
+    <!-- </form> -->
+
+    <div class="ui two column grid width-100" *ngIf="!isReadOnlyMode">
+        <div class="one column row" *ngIf="learningOutcomeOptions.length > 0">
+            <div class="column">
+                <label>Learning Outcome</label>
+                <div class="sb-field">
+                    <sui-select class="selection width-100" formControlName="learningOutcome" name="'learningOutcome'">
+                        <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name"></sui-select-option>
+                    </sui-select>
+                    <label class="ui basic red error label pt-0" *ngIf="questionMetaForm.controls.learningOutcome.dirty && questionMetaForm.controls['learningOutcome'].errors">Please
+            Select
+            Learning Outcome</label>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <label>Learning Level</label>
+            <div class="sb-field">
+                <sui-select class="selection width-100" formControlName="bloomsLevel" name="'bloomsLevel'">
+                    <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+                </sui-select>
+                <label class="ui basic red error label pt-0" *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Please
+          Select
+          Learning Level </label>
+            </div>
+        </div>
+        <div class="two column row">
+            <div class="column">
+                <label>Authors</label> <br />
+                <div class="sb-field">
+                    <input class="sb-form-control" #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="paragraph fs-0-785 pt-0 mt-0">
+        <strong>Disclaimer:</strong> By uploading assets to ...., you consent to publish under the Common Creative License framework. For details, refer
+        <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Select the appropriate license.
+    </p>
+
+    <!-- Question Preview Section HTML -->
+    <div class="ui container" *ngIf="isReadOnlyMode">
+        <div class="ui stackable grid m-0 sb-bg-color-white">
+            <div class="row">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question">
+                            <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+                            <div class="ckeditor-tool__solution__body">
+                                <p class="fs-0-785 p-16" [innerHTML]="question | sanitizeHtml"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-0 p-0">
+                <div class="twelve wide column p-0">
+                    <div class="d-flex flex-ai-center ckeditor-tool__answer mt-16">
+                        <label class="fs-1 mb-0">Answers</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question mb-24">
+                            <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
+                            <div class="ckeditor-tool__solution__body">
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.solutions | sanitizeHtml"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="row mb-0 p-0">
           <div class="twelve wide column">
             <div class="ckeditor-tool width-100">
               <div class="ckeditor-tool__question mb-24">
@@ -135,132 +183,126 @@
 
           </div>
         </div> -->
-      </div>
+        </div>
 
     </div>
 
     <!-- Learning Outcome learning level author license Preview HTML -->
     <div class="ui stackable grid licence-form__content__fields" *ngIf="isReadOnlyMode">
-        <div class="row" >
-          <div class="six wide column" *ngIf="learningOutcomeOptions.length > 0">
-            <div class="sb-field">
-              <label for="outcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a
-                  class="ml-4" href="javascript:void(0)" title="title comes here"><img width="16" alt=""
-                    src="assets/images/Info.svg"></a></label>
-              <p class="fs-0-785">{{ questionMetaData.data.learningOutcome[0] }}</p>
+        <div class="row">
+            <div class="six wide column" *ngIf="learningOutcomeOptions.length > 0">
+                <div class="sb-field">
+                    <label for="outcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a class="ml-4"
+              href="javascript:void(0)" title="title comes here"><img width="16" alt=""
+                src="assets/images/Info.svg"></a></label>
+                    <p class="fs-0-785">{{ questionMetaData.data.learningOutcome[0] }}</p>
+                </div>
             </div>
-          </div>
-          <div class="six wide column">
-            <div class="sb-field space-btn-field">
-              <label for="level" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
-                  href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                    src="assets/images/Info.svg"></a></label>
-              <p class="fs-0-785">{{ questionMetaData.data.bloomsLevel[0] }}</p>
+            <div class="six wide column">
+                <div class="sb-field space-btn-field">
+                    <label for="level" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
+              href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                src="assets/images/Info.svg"></a></label>
+                    <p class="fs-0-785">{{ questionMetaData.data.bloomsLevel[0] }}</p>
+                </div>
             </div>
-          </div>
         </div>
         <div class="row pt-0">
-          
-          <div class="six wide column">
-            <div class="sb-field">
-              <label for="author" class="d-flex mb-4">Author(s) <a href="javascript:void(0)"
-                  title="title comes here"><img width="16" alt="" class="ml-4"
-                    src="assets/images/Info.svg"></a></label>
-              <p class="fs-0-785">{{ questionMetaData.data.author }}</p>
+
+            <div class="six wide column">
+                <div class="sb-field">
+                    <label for="author" class="d-flex mb-4">Author(s) <a href="javascript:void(0)" title="title comes here"><img
+                width="16" alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
+                    <p class="fs-0-785">{{ questionMetaData.data.author }}</p>
+                </div>
             </div>
-          </div>
-          <div class="six wide column">
-            <div class="sb-field space-btn-field">
-              <label for="license" class="d-flex mb-4">License <a href="javascript:void(0)"
-                  title="title comes here"><img width="16" alt="" class="ml-4"
-                    src="assets/images/Info.svg"></a></label>
-              <p class="fs-0-785">ACT456</p>
+            <div class="six wide column">
+                <div class="sb-field space-btn-field">
+                    <label for="license" class="d-flex mb-4">License <a href="javascript:void(0)" title="title comes here"><img
+                width="16" alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
+                    <p class="fs-0-785">ACT456</p>
+                </div>
             </div>
-          </div>
         </div>
         <div class="row pt-16">
-          <div class="twele wide column">
-            <div class="sb-field">
-              <p class="fs-0-785">
-                <span class="font-weight-bold">Disclaimer :</span>
-                By uploading assets to , you consent to publish under the Common Creative License framework. For details, refer 
-                <a class="">https://creativecommons.org/licenses </a>. Select the appropriate license” </p>
-               
+            <div class="twele wide column">
+                <div class="sb-field">
+                    <p class="fs-0-785">
+                        <span class="font-weight-bold">Disclaimer :</span> By uploading assets to , you consent to publish under the Common Creative License framework. For details, refer
+                        <a class="">https://creativecommons.org/licenses </a>. Select the appropriate license” </p>
+
+                </div>
             </div>
-          </div>
         </div>
     </div>
 
-  <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
+    <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
 </form>
 
-<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker"
-  [size]="'normal'" class="sb-modal" [isFullScreen]="false" [mustScroll]="true" #modal>
-  <div class="sb-modal-header">Select Image</div>
-  <div class="sb-modal-content">
-    <sui-tabset>
-      <div class="ui tabular menu">
-        <a class="item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
-        <a class="item" (activate)="getAllImages(0)" suiTabHeader="2">All Image</a>
-      </div>
-      <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
-        [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
-        <div class="ui small middle aligned bordered images custom-image">
-          <img *ngFor="let data of myAssets" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
-        </div>
-      </div>
-      <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
-        [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
-        <div class="ui small middle aligned bordered images custom-image">
-          <img *ngFor="let data of allImages" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
-        </div>
-      </div>
-    </sui-tabset>
-  </div>
-  <div class="sb-modal-actions">
-    <div class="ui left floated buttons">
-      <button (click)="initiateImageUploadModal();" class="ui primary button">Upload and use</button>
+<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker" [size]="'normal'" class="sb-modal" [isFullScreen]="false" [mustScroll]="true" #modal>
+    <div class="sb-modal-header">Select Image</div>
+    <div class="sb-modal-content">
+        <sui-tabset>
+            <div class="ui tabular menu">
+                <a class="item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
+                <a class="item" (activate)="getAllImages(0)" suiTabHeader="2">All Image</a>
+            </div>
+            <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
+                <div class="ui small middle aligned bordered images custom-image">
+                    <img *ngFor="let data of myAssets" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+                </div>
+            </div>
+            <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
+                <div class="ui small middle aligned bordered images custom-image">
+                    <img *ngFor="let data of allImages" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+                </div>
+            </div>
+        </sui-tabset>
     </div>
-    <div class="ui buttons">
-      <button (click)="dismissImagePicker();" class="ui button">Cancel</button>
-      <!-- <div class="or"></div>
+    <div class="sb-modal-actions">
+        <div class="ui left floated buttons">
+            <button (click)="initiateImageUploadModal();" class="ui primary button">Upload and use</button>
+        </div>
+        <div class="ui buttons">
+            <button (click)="dismissImagePicker();" class="ui button">Cancel</button>
+            <!-- <div class="or"></div>
       <button (click)="dismissImagePicker();" class="ui primary button">Save</button> -->
+        </div>
     </div>
-  </div>
 </sui-modal>
 
-<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal"
-  [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" class="sb-modal" #modal3>
-  <div class="sb-modal-header">Upload and Use</div>
-  <div class="sb-modal-content">
-    <div class="ui grid">
-      <div class="one wide column"></div>
-      <div class="ten wide column">
-        <div>
-          <input (change)="uploadImage($event)" type="file" accept="image/jpeg, image/jpg, image/png" name="assetfile">
+<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" class="sb-modal" #modal3>
+    <div class="sb-modal-header">Upload and Use</div>
+    <div class="sb-modal-content">
+        <div class="ui grid">
+            <div class="one wide column"></div>
+            <div class="ten wide column">
+                <div>
+                    <input (change)="uploadImage($event)" type="file" accept="image/jpeg, image/jpg, image/png" name="assetfile">
+                </div>
+                <div class="ui info message">
+                    <p>Allowed file types are: jpeg, jpg, png</p>
+                    <p>Maximum allowed file size: 1 MB</p>
+                </div>
+                <div *ngIf="showErrorMsg" class="ui error message">
+                    <p>{{errorMsg}}</p>
+                </div>
+            </div>
+            <div class="one wide column"></div>
         </div>
-        <div class="ui info message">
-          <p>Allowed file types are: jpeg, jpg, png</p>
-          <p>Maximum allowed file size: 1 MB</p>
-        </div>
-        <div *ngIf="showErrorMsg" class="ui error message">
-          <p>{{errorMsg}}</p>
-        </div>
-      </div>
-      <div class="one wide column"></div>
     </div>
-  </div>
-  <div class="sb-modal-actions">
-    <div class="ui left floated buttons">
-      <button (click)="dismissImageUploadModal();" class="ui primary button">Back</button>
-    </div>
-    <div class="ui buttons">
-      <button (click)="dismissImageUploadModal();" class="ui button">Cancel</button>
-      <!-- <div class="or"></div>
+    <div class="sb-modal-actions">
+        <div class="ui left floated buttons">
+            <button (click)="dismissImageUploadModal();" class="ui primary button">Back</button>
+        </div>
+        <div class="ui buttons">
+            <button (click)="dismissImageUploadModal();" class="ui button">Cancel</button>
+            <!-- <div class="or"></div>
       <button (click)="dismissImageUploadModal();" class="ui primary button">Upload and use</button> -->
+        </div>
     </div>
-  </div>
 </sui-modal>
 
 
-<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext"> </app-question-preview>
+<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
+</app-question-preview>
