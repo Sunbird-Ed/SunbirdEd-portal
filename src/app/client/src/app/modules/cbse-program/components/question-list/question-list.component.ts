@@ -147,8 +147,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
 
-  handleQuestionTabChange(questionId, IsUpdate: boolean = false) {
-    if (_.includes(this.sessionContext.questionList, questionId) && !IsUpdate) { return; }
+  handleQuestionTabChange(questionId,isUpdate:boolean = false) {
+    if (_.includes(this.sessionContext.questionList, questionId) && !isUpdate) { return; }
     this.sessionContext.questionList = [];
     this.sessionContext.questionList.push(questionId);
     this.selectedQuestionId = questionId;
@@ -183,7 +183,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
           this.refreshEditor();
         }
         this.initialized = true;
-        if(IsUpdate)  this.saveResource();
+        if(isUpdate)  this.saveResource();
       });
     const selectedQuestion = _.find(this.questionList, { identifier: questionId });
     if (selectedQuestion) {
@@ -243,6 +243,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   handleRefresEvent() {
     this.refreshEditor();
   }
+
   private refreshEditor() {
     this.refresh = false;
     this.cdr.detectChanges();
@@ -349,6 +350,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     forkJoin([reviewItemSet, reviewContent]).subscribe((response: any) => {
       console.log(response);
       this.disableSubmitBtn = true;
+      this.toasterService.success('Content send for review successfully');
     });
   }
 
