@@ -413,7 +413,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
 
   uploadHandler(event) {
     if (event.contentId) {
-      // this.addResourceToHierarchy(event.contentId);
+      this.getCollectionHierarchy(this.sessionContext.collection, undefined);
     }
   }
 
@@ -449,7 +449,6 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     this.actionService.delete(req).pipe(map((data: any) => data.result), catchError(err => {
       return throwError('');
     })).subscribe(res => {
-      console.log('result ', res);
       this.getCollectionHierarchy(this.sessionContext.collection, undefined);
     });
   }
