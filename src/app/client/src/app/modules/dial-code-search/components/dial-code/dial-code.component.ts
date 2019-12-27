@@ -305,7 +305,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
     this.selectChapterTelemetryCdata = [
       { 'type': 'DialCode', 'id': this.dialCode },
-      {'id': 'page:dialcode:select:chapter', 'type': 'Feature'},
+      {'id': 'scan:result:collection:list', 'type': 'Feature'},
       {'id': 'SB-15628', 'type': 'Task'}];
 
     this.appMobileDownloadInteractData = {
