@@ -54,6 +54,7 @@ describe('DialCodeComponent', () => {
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
+    url = 'browse';
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({

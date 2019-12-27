@@ -64,6 +64,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   showSelectChapter = false;
   chapterName: string;
   dialContentId: string;
+  isBrowse = false;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
@@ -75,6 +76,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     EkTelemetry.config.batchsize = 2;
+    this.isBrowse = Boolean(this.router.url.includes('browse'));
     observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
     (params, queryParams) => {
       return { ...params, ...queryParams };
@@ -110,6 +112,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       },
       params: this.configService.appConfig.dialPage.contentApiQueryParams
     };
+    requestParams.params.online = Boolean(this.isBrowse);
     this.searchService.contentSearch(requestParams, false).pipe(mergeMap(apiResponse => {
       const linkedCollectionsIds = [];
       this.linkedContents = [];
