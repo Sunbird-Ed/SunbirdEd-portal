@@ -117,7 +117,7 @@
 
   .practical-header {
     height: 98px;
-    background: #f2f2f2;
+    background: var(--primary-0) !important;
     &__content {
       // margin: 0 ($base-block-space * 8 - 4);
       // width: 100%;

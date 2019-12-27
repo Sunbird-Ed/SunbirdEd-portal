@@ -373,10 +373,10 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         if (this.sessionContext.collection && this.unitIdentifier) {
           this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
           .subscribe((data) => {
-            this.toasterService.success(this.resourceService.messages.smsg.m0045);
+            this.toasterService.success(this.resourceService.messages.smsg.m0060);
           });
         } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0083);
+          this.toasterService.error(this.resourceService.messages.fmsg.m0098);
         }
       });
     } else {
@@ -392,14 +392,22 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         if (this.sessionContext.collection && this.unitIdentifier) {
           this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
           .subscribe((data) => {
-            this.toasterService.success(this.resourceService.messages.smsg.m0003);
+            this.toasterService.success(this.resourceService.messages.smsg.m0061);
+            this.programStageService.removeLastStage();
+            this.uploadedContentMeta.emit({
+              contentId: res.result.content_id
+            });
+          }, (err) => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0099);
           });
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0083);
         }
        }, (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0018);
+        this.toasterService.error(this.resourceService.messages.fmsg.m0099);
        });
+  }
+
+  closeRequestChangesModal() {
+    this.modal.deny();
   }
 
   requestChanges(comments) {
@@ -407,18 +415,19 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       this.showFormError = false;
       this.helperService.submitRequestChanges(this.contentMetaData.identifier, this.FormControl.value.rejectComment)
       .subscribe(res => {
+        this.showRequestChangesPopup = false;
         if (this.sessionContext.collection && this.unitIdentifier) {
           this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.node_id)
           .subscribe((data) => {
-            this.toasterService.success(this.resourceService.messages.smsg.m0005);
-            this.showRequestChangesPopup = false;
-            // TODO::Redirect to Chapterlist
+            this.toasterService.success(this.resourceService.messages.smsg.m0062);
+            this.programStageService.removeLastStage();
+            this.uploadedContentMeta.emit({
+              contentId: res.result.node_id
+            });
           });
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0083);
         }
       }, (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0020);
+        this.toasterService.error(this.resourceService.messages.fmsg.m00100);
       });
     } else {
       this.showFormError = true;
@@ -429,16 +438,17 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.helperService.publishContent(this.contentMetaData.identifier, this.userService.userProfile.userId)
        .subscribe(res => {
         if (this.sessionContext.collection && this.unitIdentifier) {
-          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.node_id)
+          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
           .subscribe((data) => {
-            this.toasterService.success(this.resourceService.messages.smsg.m0004);
-            // TODO::Redirect to Chapterlist
+            this.toasterService.success(this.resourceService.messages.smsg.m0063);
+            this.programStageService.removeLastStage();
+            this.uploadedContentMeta.emit({
+              contentId: res.result.node_id
+            });
           });
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0083);
         }
       }, (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0019);
+        this.toasterService.error(this.resourceService.messages.fmsg.m00101);
       });
   }
 
