@@ -141,6 +141,8 @@ describe('ViewMoreComponent', () => {
 
   it('should call call ngOnInit', () => {
     const router = TestBed.get(Router);
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'emitHideHeaderTabsEvent');
     spyOnProperty(router, 'url', 'get').and.returnValue('view-all');
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(orgDetailsService, 'getOrgDetails').and.returnValue(of({ hashTagId: '505c7c48ac6dc1edc9b08f21db5a571d' }));
@@ -158,6 +160,7 @@ describe('ViewMoreComponent', () => {
     expect(component.initFilters).toBe(true);
     expect(component.isViewAll).toBe(true);
     expect(component.fetchRecentlyAddedContent).toHaveBeenCalled();
+    expect(utilService.emitHideHeaderTabsEvent).toHaveBeenCalledWith(true);
   });
 
   it('should call getFilters', () => {

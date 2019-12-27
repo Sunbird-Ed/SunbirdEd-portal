@@ -62,8 +62,10 @@ describe('SearchComponent', () => {
 
   it('should call call ngOnInit', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
+    const utilService = TestBed.get(UtilService);
     spyOn(orgDetailsService, 'getOrgDetails').and.returnValue(of({ hashTagId: '505c7c48ac6dc1edc9b08f21db5a571d' }));
     spyOn(component, 'setTelemetryData');
+    spyOn(utilService, 'emitHideHeaderTabsEvent');
     const element = document.createElement('INPUT');
     element.setAttribute('type', 'hidden');
     element.setAttribute('id', 'defaultTenant');
@@ -74,6 +76,7 @@ describe('SearchComponent', () => {
     expect(component.setTelemetryData).toHaveBeenCalled();
     expect(component.hashTagId).toBe('505c7c48ac6dc1edc9b08f21db5a571d');
     expect(component.initFilters).toBe(true);
+    expect(utilService.emitHideHeaderTabsEvent).toHaveBeenCalledWith(true);
   });
 
 
@@ -162,9 +165,7 @@ describe('SearchComponent', () => {
 
   it('should call setNoResultMessage', () => {
     component.setNoResultMessage();
-    expect(component.noResultMessage).toEqual({
-      messageText: 'messages.stmsg.m0006',
-      message: 'frmelmnts.lbl.searchNotMatchCh',
-    });
+    expect(component.noResultMessage).toEqual({ messageText: 'messages.stmsg.m0006' });
   });
+
 });

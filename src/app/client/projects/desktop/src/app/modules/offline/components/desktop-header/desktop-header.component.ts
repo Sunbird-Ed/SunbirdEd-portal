@@ -32,6 +32,7 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
   showQrModal = false;
   queryParam: any = {};
   tenantInfo: any = {};
+  hideHeader = false;
 
   constructor(
     public router: Router,
@@ -62,6 +63,12 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.unsubscribe$))
       .subscribe((data) => {
         this.pageId = _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid') || 'library';
+      });
+
+    this.utilService.hideHeaderTabs
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((hideHeader) => {
+        this.hideHeader = hideHeader;
       });
 
   }
