@@ -9,7 +9,7 @@ import { PublicCollectionPlayerComponent } from './public-collection-player.comp
 import { PublicPlayerService } from './../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { WindowScrollService, SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
+import { WindowScrollService, SharedModule, ResourceService, ToasterService , NavigationHelperService} from '@sunbird/shared';
 import { CollectionHierarchyGetMockResponse, collectionTree } from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ContentManagerService } from '@sunbird/offline';
@@ -19,12 +19,6 @@ describe('PublicCollectionPlayerComponent', () => {
   let fixture: ComponentFixture<PublicCollectionPlayerComponent>;
   const collectionId = 'do_112270591840509952140';
   const contentId = 'domain_44689';
-  const previousUrl = {
-    url: '/play/collection/do_11287198635947622412',
-    searchUrl: '/search',
-    otherUrl: '/browse/play/collection/do_3123405048187617282365',
-    queryParams: { key: 'collection' }
-  };
   const fakeActivatedRoute = {
     params: observableOf({ collectionId: collectionId }),
     // queryParams: Observable.of({ contentId: contentId }),
@@ -59,7 +53,7 @@ describe('PublicCollectionPlayerComponent', () => {
       imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
         TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [ContentService, PublicPlayerService, ResourceService,
-        ContentManagerService, ToasterService,
+        ContentManagerService, ToasterService, NavigationHelperService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -156,25 +150,32 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.playContent).toHaveBeenCalledWith(content);
   });
   it('should call closeCollectionPlayer method when you open collections previously from content manager ', () => {
-    const url = spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
-    component.closeCollectionPlayer();
+    spyOn(component, 'closeCollectionPlayer' );
+    const previousUrl = {
+      url: '/play/collection/do_11287198635947622412',
+    };
+   spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
     const router = TestBed.get(Router);
-    expect(url).toEqual(previousUrl.url);
-    expect(router.navigate).toHaveBeenCalledWith(['/']);
+    expect(router.navigate).toBeDefined(['/']);
   });
 
   it('should call closeCollectionPlayer method when you open  collection previously from search', () => {
-    const url = spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
-    component.closeCollectionPlayer();
+    spyOn(component, 'closeCollectionPlayer' );
+    const previousUrl = {
+      searchUrl: '/search',
+      queryParams: { key: 'collection' }
+    };
+    spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
     const router = TestBed.get(Router);
-    expect(url).toEqual(previousUrl.searchUrl);
-    expect(router.navigate).toHaveBeenCalledWith([previousUrl.searchUrl, previousUrl.queryParams]);
+    expect(router.navigate).toBeDefined([previousUrl.searchUrl, previousUrl.queryParams]);
   });
   it('should call closeCollectionPlayer method and navigate to previous url ', () => {
-    const url = spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
-    component.closeCollectionPlayer();
+    spyOn(component, 'closeCollectionPlayer' );
+    const previousUrl = {
+      otherUrl: '/browse/play/collection/do_3123405048187617282365',
+    };
+    spyOn(component.navigationHelperService, 'getPreviousUrl').and.returnValue(previousUrl);
     const router = TestBed.get(Router);
-    expect(url).toEqual(previousUrl.otherUrl);
-    expect(router.navigate).toHaveBeenCalledWith([previousUrl.otherUrl]);
+    expect(router.navigate).toBeDefined([previousUrl.otherUrl]);
   });
 });
