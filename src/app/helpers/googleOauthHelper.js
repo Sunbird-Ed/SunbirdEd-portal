@@ -167,11 +167,11 @@ const createSession = async (emailId, reqQuery, req, res) => {
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
     method: 'GET',
-    url: envHelper.LEARNER_URL + 'user/v1/exist/email/'+ emailId,
+    url: envHelper.LEARNER_URL + 'user/v1/exists/email/'+ emailId,
     headers: getHeaders(req),
     json: true
   }
-  console.log('fetch user request', JSON.stringify(options));
+  console.log('check user exists', JSON.stringify(options));
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return _.get(data, 'result.exists');

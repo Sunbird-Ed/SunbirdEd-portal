@@ -224,6 +224,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.signupService.checkUserExists(uri).subscribe(
       (data: ServerResponse) => {
         if (_.get(data, 'result.exists')) {
+          this.signUpForm.controls['uniqueContact'].setValue('');
           this.showUniqueError = this.signUpForm.controls.contactType.value === 'phone' ?
             this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
         } else {

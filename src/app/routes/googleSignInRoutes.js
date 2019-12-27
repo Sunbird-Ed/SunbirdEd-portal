@@ -47,8 +47,8 @@ module.exports = (app) => {
       console.log('googleProfile fetched', JSON.stringify(googleProfile));
       errType = 'USER_FETCH_API';
       isUserExist = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
-      console.log('sunbird profile fetched', JSON.stringify(isUserExist));
-      if (isUserExist) {
+      console.log('sunbird profile fetched', isUserExist);
+      if (!isUserExist) {
         console.log('creating new google user');
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
