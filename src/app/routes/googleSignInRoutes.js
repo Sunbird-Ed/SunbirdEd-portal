@@ -70,7 +70,7 @@ module.exports = (app) => {
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, sunbirdProfile, newUserDetails, redirectUrl}})
+      logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
       console.log('redirecting to ', redirectUrl);

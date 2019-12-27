@@ -174,7 +174,7 @@ const fetchUserByEmailId = async (emailId, req) => {
   console.log('fetch user request', JSON.stringify(options));
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
-      return data;
+      return _.get(data, 'result.exists');
     } else {
       logger.error({msg: 'googleOauthHelper: fetchUserByEmailId failed', additionalInfo: {data}});
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
