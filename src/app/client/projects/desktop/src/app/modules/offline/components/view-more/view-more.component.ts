@@ -1,5 +1,5 @@
 import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, map, debounceTime, delay } from 'rxjs/operators';
@@ -20,7 +20,7 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
   templateUrl: './view-more.component.html',
   styleUrls: ['./view-more.component.scss']
 })
-export class ViewMoreComponent implements OnInit {
+export class ViewMoreComponent implements OnInit, OnDestroy {
   showLoader = true;
   noResultMessage: INoResultMessage;
   filterType: string;
@@ -73,12 +73,15 @@ export class ViewMoreComponent implements OnInit {
   ngOnInit() {
     this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
     this.setTelemetryData();
-    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).subscribe((orgDetails: any) => {
-      this.hashTagId = orgDetails.hashTagId;
-      this.initFilters = true;
-    }, error => {
-      this.router.navigate(['']);
-    });
+    this.utilService.emitHideHeaderTabsEvent(true);
+    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((orgDetails: any) => {
+        this.hashTagId = orgDetails.hashTagId;
+        this.initFilters = true;
+      }, error => {
+        this.router.navigate(['']);
+      });
 
     this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$))
@@ -86,18 +89,20 @@ export class ViewMoreComponent implements OnInit {
         this.isConnected = isConnected;
       });
 
-    this.activatedRoute.queryParams.subscribe((queryParams) => {
-      this.queryParams = { ...queryParams };
-      this.apiQuery = JSON.parse(this.queryParams.apiQuery);
+    this.activatedRoute.queryParams
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((queryParams) => {
+        this.queryParams = { ...queryParams };
+        this.apiQuery = JSON.parse(this.queryParams.apiQuery);
 
-      if (_.includes(this.router.url, 'view-all')) {
-        this.isViewAll = true;
-        this.fetchRecentlyAddedContent(false);
-      } else {
-        this.fetchContents(false);
-        this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
-      }
-    });
+        if (_.includes(this.router.url, 'view-all')) {
+          this.isViewAll = true;
+          this.fetchRecentlyAddedContent(false);
+        } else {
+          this.fetchContents(false);
+          this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
+        }
+      });
   }
 
   public getFilters(filters) {
@@ -294,5 +299,11 @@ export class ViewMoreComponent implements OnInit {
     this.telemetryImpression.edata.visits = this.visits;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.utilService.emitHideHeaderTabsEvent(false);
   }
 }

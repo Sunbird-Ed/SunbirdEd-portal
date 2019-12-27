@@ -68,14 +68,17 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).subscribe((orgDetails: any) => {
-      this.hashTagId = orgDetails.hashTagId;
-      this.initFilters = true;
-    }, error => {
-      this.router.navigate(['']);
-    });
+    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((orgDetails: any) => {
+        this.hashTagId = orgDetails.hashTagId;
+        this.initFilters = true;
+      }, error => {
+        this.router.navigate(['']);
+      });
 
     this.setTelemetryData();
+    this.utilService.emitHideHeaderTabsEvent(true);
   }
 
   public getFilters(filters) {
@@ -201,8 +204,7 @@ export class SearchComponent implements OnInit {
 
   setNoResultMessage() {
     this.noResultMessage = {
-      messageText: 'messages.stmsg.m0006',
-      message: 'frmelmnts.lbl.searchNotMatchCh',
+      messageText: 'messages.stmsg.m0006'
     };
   }
 
@@ -266,5 +268,6 @@ export class SearchComponent implements OnInit {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.utilService.emitHideHeaderTabsEvent(false);
   }
 }
