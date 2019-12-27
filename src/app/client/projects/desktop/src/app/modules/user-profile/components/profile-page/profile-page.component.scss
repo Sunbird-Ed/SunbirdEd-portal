@@ -18,12 +18,13 @@
         @include respond-above(sm) {
             position: absolute;
             margin-top: 0;
-            right: 0;
+            right: 12%;
             bottom: calculateRem(8px);
         }
     }
     &__profile-bg{
         background: var(--primary-100);
+        background:#E0EFFF;
     }
     &__category , &__m-responsive-flex-dc{
         flex-direction: row;   
