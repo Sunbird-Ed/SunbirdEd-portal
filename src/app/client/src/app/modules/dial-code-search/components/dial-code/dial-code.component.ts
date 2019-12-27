@@ -408,6 +408,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.telemetryService.log(event);
   }
 
+  // TODO: To be modified once new QR code result page is implemented
   getTextbook(result) {
     let textbookCount = 0;
     result.forEach(element => {
