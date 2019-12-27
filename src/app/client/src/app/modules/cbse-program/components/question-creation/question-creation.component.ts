@@ -107,7 +107,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
         this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
       }
-      this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
+      
+      if(this.questionMetaData.data.bloomsLevel && this.questionMetaData.data.bloomsLevel.length) {
+          this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
+      }
+
       // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
       // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
       this.mediaArr = this.questionMetaData.data.media || [];
@@ -164,7 +168,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
           this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
         }
-        this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
+        
+        if(this.questionMetaData.data.bloomsLevel && this.questionMetaData.data.bloomsLevel.length) {
+          this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
+        }
         // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
         // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
       } else {

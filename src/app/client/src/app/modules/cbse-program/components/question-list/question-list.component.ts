@@ -135,21 +135,35 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   private fetchQuestionList(isReviewer?: boolean) {
-    this.itemsetService.readItemset(this.itemSetIdentifier).pipe(catchError(err => {
-      const errInfo = { errorMsg: 'Fetching itemsets failed' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    this.itemsetService.readItemset(this.itemSetIdentifier).pipe(
+      map(response => {
+        let questionList = _.get(response, 'result.itemset.items');
+        let questionIds = _.map(questionList,(question => _.get(question,'identifier')));
+        return questionIds;
+    }),
+    mergeMap(questionIds => {
+      let req = {
+        url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
+        data: {
+          'request': {
+            'filters': {
+              'identifier': questionIds,
+              'status': ["Live","Review","Draft"]
+            },
+            'sort_by': { 'createdOn': 'desc' },
+            "limit": 20
+          }
+        }
+      };
+      return this.contentService.post(req).pipe(map(data => {
+          this.questionList = _.get(data,'result.items')
+          return this.questionList;
+      }));
     }))
-      .subscribe(response => {
-        this.questionList = _.get(response, 'result.itemset.items');
-      console.log("questionList",this.questionList);
-      this.selectedQuestionId = this.questionList[0].identifier;
-      this.handleQuestionTabChange(this.selectedQuestionId);
-      }, (err) => {
-        this.publishInProgress = false;
-        this.publishButtonStatus.emit(this.publishInProgress);
-      });
-
-
+    .subscribe(() => {
+          this.selectedQuestionId = this.questionList[0].identifier;
+          this.handleQuestionTabChange(this.selectedQuestionId);
+    });
   }
 
   fetchExistingResource(contentId) {
@@ -313,10 +327,10 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   public saveResource() {
-    const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'status') == "Live");
+    // const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'status') == "Live");
     this.publishInProgress = true;
     this.publishButtonStatus.emit(this.publishInProgress);
-    const selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
+    const selectedQuestionsData = _.reduce(this.questionList, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
       final.author.push(_.get(question, 'author'));
       final.category.push(_.get(question, 'category'));
@@ -384,7 +398,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
     const reviewContent = this.reviewResource(this.sessionContext.resourceIdentifier);
     const reviewItemSet = this.itemsetService.reviewItemset(this.itemSetIdentifier);
     forkJoin([reviewItemSet, reviewContent]).subscribe((response: any) => {
-      console.log(response);
       this.disableSubmitBtn = true;
       this.toasterService.success('Content send for review successfully');
     });
@@ -546,8 +559,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 ]
               },
               'body': '',
-              'solutions': [ ],
-              'media': []
+              'solutions': [],
+              'media': [],
+              'author' : this.getUserName()
             }
           }
         }
