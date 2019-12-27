@@ -399,11 +399,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   downloadReport(downloadAssessmentReport: boolean) {
     of(downloadAssessmentReport)
       .pipe(
-        switchMap((flag: boolean) => flag ? this.downloadCourseReport('assessment-reports') : 
-        this.downloadCourseReport('course-progress-reports')),
+        switchMap((flag: boolean) => flag ? this.downloadCourseReport('assessment-reports') :
+          this.downloadCourseReport('course-progress-reports')),
         takeUntil(this.unsubscribe)
       )
-      .subscribe(res => {}, err => {
+      .subscribe(res => { }, err => {
         this.toasterService.error(this.resourceService.messages.imsg.m0045);
       });
   }
