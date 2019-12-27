@@ -11,6 +11,7 @@ export class UtilService {
   private searchQuery = new Subject<any>();
   public searchQuery$ = this.searchQuery.asObservable();
   public languageChange = new EventEmitter<ILanguage>();
+  public hideHeaderTabs = new EventEmitter<boolean>();
 
   constructor(private resourceService: ResourceService) {
     if (!UtilService.singletonInstance) {
@@ -231,5 +232,9 @@ export class UtilService {
 
   emitLanguageChangeEvent(language: ILanguage) {
     this.languageChange.emit(language);
+  }
+
+  emitHideHeaderTabsEvent(hideTab: boolean) {
+    this.hideHeaderTabs.emit(hideTab);
   }
 }
