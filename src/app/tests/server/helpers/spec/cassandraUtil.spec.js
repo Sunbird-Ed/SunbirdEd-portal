@@ -48,7 +48,6 @@ describe('Cassandra Utils Test Cases', function () {
 
   it('should return cassandra store instance', function (done) {
     const store = cassandraUtil.getCassandraStoreInstance();
-    console.log('%%%%%%%%%%%%%%%%%%%%%%', store);
     expect(store.ormOptions.migration).to.eql('safe');
     expect(store.clientOptions.queryOptions.consistency).to.eql('one');
     done();
