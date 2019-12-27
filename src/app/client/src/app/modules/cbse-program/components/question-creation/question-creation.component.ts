@@ -133,6 +133,14 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
   ngAfterViewInit() {
     this.initializeDropdown();
+    if (this.isReadOnlyMode) {
+      const windowData: any = window;
+      const el = document.getElementsByClassName('ckeditor-tool__solution__body');
+      // tslint:disable-next-line:only-arrow-functions
+      for (let i = 0; i < el.length; i++) {
+        windowData.com.wiris.js.JsPluginViewer.parseElement(el[i], true, () => {});
+      }
+    }
     // tslint:disable-next-line:max-line-length
     // if( this.sessionContext.currentRole === 'CONTRIBUTOR' && this.questionMetaData.mode === 'create') this.authorName.nativeElement.value =  this.userName;
     // tslint:disable-next-line:max-line-length

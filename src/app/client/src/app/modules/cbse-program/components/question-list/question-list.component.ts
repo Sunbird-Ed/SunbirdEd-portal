@@ -102,13 +102,11 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.enableRoleChange = true;
     this.selectedAll = false;
   }
+
   public createDefaultQuestionAndItemset() {
     return this.createDefaultAssessmentItem().subscribe((queRes: any) => {
-      console.log('question created');
-      console.log(queRes);
       const assessment_item_id = queRes.result.node_id;
       this.createItemSet(assessment_item_id).subscribe((itemSetRes: any) => {
-        console.log('Itemset created');
         this.itemSetIdentifier = itemSetRes.identifier;
         console.log(itemSetRes);
         return this.updateContent();
@@ -208,11 +206,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }));
   }
-  public createNewQuestion(): void {
-    this.questionMetaData = {
-      mode: 'create'
-    };
-    this.refreshEditor();
+  public createNewQuestion() {
+    
   }
   public questionStatusHandler(event) {
     console.log('editor event', event);
@@ -530,7 +525,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       }
     };
 
-    return this.actionService.post(request).pipe(map((response) => {
+    return this.actionService.post(request).pipe(map((response: any) => {
       return response;
     }));
   }
@@ -562,28 +557,11 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }));
   }
 
-  public updateItemset(identifier) {
-    const reqBody = {
-        'purpose': 'questions',
-        'depth_of_knowledge': 'yes',
-        'children': [
-          {
-            'identifier': 'do_11291959225978880019'
-          }
-        ]
-    };
-    this.itemsetService.updateItemset(reqBody, identifier).subscribe((res) => {
-      console.log('Itemset updated =>>>>> ');
-      console.log(res);
-      this.readItemset(res.identifier);
-    });
-  }
-
-  public readItemset(identifier) {
-    this.itemsetService.readItemset(identifier).subscribe((res) => {
-      console.log('Itemset read =>>>>> ');
-      console.log(res);
-    });
+  public updateItemset(requestBody, identifier) {
+    const reqBody = requestBody;
+    return this.itemsetService.updateItemset(reqBody, identifier).pipe(map((response) => {
+      return response;
+    }));
   }
 
   public updateContent() {
