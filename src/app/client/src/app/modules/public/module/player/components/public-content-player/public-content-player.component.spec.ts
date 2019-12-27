@@ -92,12 +92,12 @@ describe('PublicContentPlayerComponent', () => {
   });
   it('should call tryAgain method', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
+    const playerService = TestBed.get(PublicPlayerService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(component, 'tryAgain').and.callThrough();
-    spyOn(component, 'getContent').and.callThrough();
+    spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes.result));
     component.tryAgain();
     expect(component.showError).toBeFalsy();
-    expect(component.getContent).toHaveBeenCalled();
   });
   it('should unsubscribe from all observable subscriptions', () => {
     component.getContent();
