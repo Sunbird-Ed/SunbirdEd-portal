@@ -34,7 +34,8 @@
         </ng-container>
       </div>
       <div class="sb-chapterlist-child" *ngIf="collection.children">
-        <app-recursive-tree [collectionUnits]="collection.children" [selectedChapter]="selectedChapter"
+        <app-recursive-tree [collectionUnits]="collection.children" [programContext]="programContext"
+          [sessionContext]="sessionContext" [selectedChapter]="selectedChapterOption"
           (nodeMeta)="nodeMetaEmitter($event)"></app-recursive-tree>
       </div>
     </div>
