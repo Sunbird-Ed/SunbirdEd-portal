@@ -90,7 +90,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
       // this.resourceStatus = 'Review';
       if (!this.resourceDetails.itemsets) {
         this.createDefaultQuestionAndItemset();
-        this.fetchQuestionWithRole();
       } else {
         const itemSet = JSON.parse(this.resourceDetails.itemsets);
         if (itemSet[0].identifier) {
@@ -104,13 +103,30 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   public createDefaultQuestionAndItemset() {
-    return this.createDefaultAssessmentItem().subscribe((queRes: any) => {
-      const assessment_item_id = queRes.result.node_id;
-      this.createItemSet(assessment_item_id).subscribe((itemSetRes: any) => {
-        this.itemSetIdentifier = itemSetRes.identifier;
-        console.log(itemSetRes);
-        return this.updateContent();
-      });
+    this.createDefaultAssessmentItem().pipe(
+      map(data => {
+        return _.get(data,'result.node_id');
+    }),
+    mergeMap(questionId => this.createItemSet(questionId).pipe(
+      map(res => {
+        this.itemSetIdentifier = _.get(res,'result.identifier');
+        return this.itemSetIdentifier;
+    }),
+    mergeMap(() => {
+      const reqBody = {
+        'content': {
+          'versionKey': this.existingContentVersionKey,
+          'itemsets': [
+           {
+             'identifier': this.itemSetIdentifier
+           }
+         ]
+       }
+      };
+      return this.updateContent(reqBody,this.sessionContext.resourceIdentifier)
+    }))))
+    .subscribe(() => {
+        this.fetchQuestionList();
     });
   }
 
@@ -119,16 +135,21 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   private fetchQuestionList(isReviewer?: boolean) {
-    this.questionList = [
-      {identifier:"do_1129216047252029441125", author:'Vaibhav', category:'VSA', organisation:["VB"], status:'Live'},
-      {identifier:"do_1129216055079239681126", author:'Nikunj', category:'VSA', organisation:["NK"], status:'Live'}
-    ] || [];
-    if (this.questionList.length) {
+    this.itemsetService.readItemset(this.itemSetIdentifier).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Fetching itemsets failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }))
+      .subscribe(response => {
+        this.questionList = _.get(response, 'result.itemset.items');
+      console.log("questionList",this.questionList);
       this.selectedQuestionId = this.questionList[0].identifier;
       this.handleQuestionTabChange(this.selectedQuestionId);
-    } else {
-      // create assessment_item and itemSet link to resource
-    }
+      }, (err) => {
+        this.publishInProgress = false;
+        this.publishButtonStatus.emit(this.publishInProgress);
+      });
+
+
   }
 
   fetchExistingResource(contentId) {
@@ -209,6 +230,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public createNewQuestion() {
     
   }
+  
   public questionStatusHandler(event) {
     console.log('editor event', event);
     if (event.type === 'close') {
@@ -398,10 +420,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
       });
   }
 
-  public reviewItemSet() {
-
-  }
-
   getContentVersion(contentId) {
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}?mode=edit&fields=versionKey,createdBy`
@@ -473,11 +491,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
   }
 
   public createDefaultAssessmentItem() {
-    let creator = this.userService.userProfile.firstName;
-    if (!_.isEmpty(this.userService.userProfile.lastName)) {
-      creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
-    }
-
     const request = {
       url: `${this.configService.urlConFig.URLS.ASSESSMENT.CREATE}`,
       data: {
@@ -500,7 +513,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
               'templateId': 'NA',
               'type': 'reference',
               'gradeLevel': this.sessionContext.gradeLevel,
-              'creator': creator,
+              'creator': this.getUserName(),
               'version': 3,
               'framework': this.sessionContext.framework,
               'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
@@ -527,65 +540,60 @@ export class QuestionListComponent implements OnInit, OnChanges {
       }
     };
 
-    return this.actionService.post(request).pipe(map((response: any) => {
+    return this.actionService.post(request).pipe(map((response) => {
       return response;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Default question creation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }));
   }
 
-  public createItemSet(assessment_item_id) {
+  public createItemSet(questionId) {
     const reqBody = {
-          'code': UUID.UUID(),
-          'title': this.resourceName,
-          'description': '',
-          'language': ['English'],
-          'max_score': 10,
-          'type': 'materialised',
-          'owner': '',
-          'difficulty_level': '',
-          'purpose': '',
-          'sub_purpose': '',
-          'depth_of_knowledge': '',
-          'used_for':'',
-          'copyright':'',
-          'createdBy':'',
-          'children': [
-            {
-              'identifier': assessment_item_id
-            }
-          ]
+      "code": UUID.UUID(),
+      "name": this.resourceName,
+      "description": this.resourceName,
+      "language": [
+          "English"
+      ],
+      "owner": this.getUserName(),
+      'items': [
+        {
+          'identifier': questionId
+        }
+      ]
     };
+
     return this.itemsetService.createItemset(reqBody).pipe(map((response) => {
       return response;
-    }));
-  }
-
-  public updateItemset(requestBody, identifier) {
-    const reqBody = requestBody;
-    return this.itemsetService.updateItemset(reqBody, identifier).pipe(map((response) => {
-      return response;
-    }));
-  }
-
-  public updateContent() {
-    const contentId = this.resourceDetails.identifier;
-    const reqBody = {
-      'content': {
-        'versionKey': this.existingContentVersionKey,
-        'itemsets': [
-         {
-           'identifier': this.itemSetIdentifier
-         }
-       ]
-     }
-    };
-    this.helperService.updateContent(reqBody, contentId)
-    .subscribe((res) => {
-    console.log('Content updated');
-    console.log(res);
-    }, (err) => {
-      const errInfo = { errorMsg: 'Content update fail' };
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Itemsets creation failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    });
+    }));
+
+  }
+
+  public updateContent(reqBody,contentId) {  
+    return this.helperService.updateContent(reqBody, contentId).pipe(map((response) => {
+      return response;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Content updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
+  }
+
+  getUserName() {
+    let creator = this.userService.userProfile.firstName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+    }
+    return creator;
   }
 
 }
