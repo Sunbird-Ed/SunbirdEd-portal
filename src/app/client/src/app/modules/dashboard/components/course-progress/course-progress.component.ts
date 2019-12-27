@@ -346,7 +346,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    */
   private downloadCourseReport(reportType: string) {
     const batchId = this.queryParams.batchIdentifier;
-    const url = `/courseReports/${reportType}/report-${batchId}.csv`
+    const url = `/courseReports/${reportType}/report-${batchId}.csv`;
     return this.usageService.getData(url)
       .pipe(
         tap(response => {
@@ -399,7 +399,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   downloadReport(downloadAssessmentReport: boolean) {
     of(downloadAssessmentReport)
       .pipe(
-        switchMap((flag: boolean) => flag ? this.downloadCourseReport('assessment-reports') : this.downloadCourseReport('course-progress-reports')),
+        switchMap((flag: boolean) => flag ? this.downloadCourseReport('assessment-reports') : 
+        this.downloadCourseReport('course-progress-reports')),
         takeUntil(this.unsubscribe)
       )
       .subscribe(res => {}, err => {
