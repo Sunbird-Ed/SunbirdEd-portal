@@ -134,8 +134,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
       // tslint:disable-next-line: max-line-length
       this.contentPreferenceForm.controls['subjects'].setValue(
-        this.filterContent(this.subjectsOption, this.frameworkDetails['subjects']).filter(data => { return data !== undefined;
-        }));
+        _.compact(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects'])));
     }
     }
   }
