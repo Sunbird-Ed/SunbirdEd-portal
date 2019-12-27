@@ -8,6 +8,7 @@ import * as _ from 'lodash-es';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ItemsetService {
 
   constructor(private configService: ConfigService, private contentService: ContentService,
@@ -24,12 +25,7 @@ export class ItemsetService {
       data: requestBody
     };
 
-    return this.actionService.post(option).pipe(map((res: any) => {
-      return res.result;
-    }), catchError( err => {
-      const errInfo = { errorMsg: 'Itemset creation failed' };
-      return throwError(this.apiErrorHandling(err, errInfo));
-    }));
+    return this.actionService.post(option);
   }
 
   updateItemset(itemset, itemSetIdentifier) {
@@ -43,25 +39,14 @@ export class ItemsetService {
       data: requestBody
     };
 
-    return this.actionService.patch(option).pipe(map((res: any) => {
-      return res.result;
-    }), catchError( err => {
-      const errInfo = { errorMsg: 'Itemset updation failed' };
-      return throwError(this.apiErrorHandling(err, errInfo));
-    }));
+    return this.actionService.patch(option);
   }
 
   readItemset(itemSetIdentifier) {
     const option = {
       url: `${this.configService.urlConFig.URLS.ITEMSET.READ}/${itemSetIdentifier}`,
     };
-
-    return this.actionService.get(option).pipe(map((res: any) => {
-      return res.result;
-    }), catchError( err => {
-      const errInfo = { errorMsg: 'Itemset read failed' };
-      return throwError(this.apiErrorHandling(err, errInfo));
-    }));
+    return this.actionService.get(option);
   }
 
   reviewItemset(itemSetIdentifier) {
@@ -69,15 +54,6 @@ export class ItemsetService {
       url: `${this.configService.urlConFig.URLS.ITEMSET.REVIEW}/${itemSetIdentifier}`,
     };
 
-    return this.actionService.post(option).pipe(map((res: any) => {
-      return res.result;
-    }), catchError( err => {
-      const errInfo = { errorMsg: 'Itemset review failed' };
-      return throwError(this.apiErrorHandling(err, errInfo));
-    }));
-  }
-
-  apiErrorHandling(err, errorInfo) {
-    this.toasterService.error(_.get(err, 'error.params.errmsg') || errorInfo.errorMsg);
+    return this.actionService.post(option);
   }
 }
