@@ -344,7 +344,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
    * method to download course progress reports
    */
-  private downloadCourseReport(reportType: String) {
+  private downloadCourseReport(reportType: string) {
     const batchId = this.queryParams.batchIdentifier;
     const url = `/courseReports/${reportType}/report-${batchId}.csv`
     return this.usageService.getData(url)
