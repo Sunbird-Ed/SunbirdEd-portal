@@ -69,7 +69,7 @@ export class ItemsetService {
       url: `${this.configService.urlConFig.URLS.ITEMSET.REVIEW}/${itemSetIdentifier}`,
     };
 
-    return this.actionService.get(option).pipe(map((res: any) => {
+    return this.actionService.post(option).pipe(map((res: any) => {
       return res.result;
     }), catchError( err => {
       const errInfo = { errorMsg: 'Itemset review failed' };
