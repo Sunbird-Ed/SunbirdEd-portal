@@ -133,7 +133,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     this.subjectsOption = this.userService.getAssociationData(this.contentPreferenceForm.value.class, 'subject', this.frameworkCategories);
     if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
       // tslint:disable-next-line: max-line-length
-      this.contentPreferenceForm.controls['subjects'].setValue(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects']));
+      this.contentPreferenceForm.controls['subjects'].setValue(
+        _.compact(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects'])));
     }
     }
   }
