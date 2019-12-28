@@ -22,7 +22,7 @@ describe('PublicCollectionPlayerComponent', () => {
   const fakeActivatedRoute = {
     params: observableOf({ collectionId: collectionId }),
     // queryParams: Observable.of({ contentId: contentId }),
-    'queryParams': observableOf({ language: ['en'] }, { dialCode: '61U24C' }),
+    queryParams: observableOf({ language: ['en'] }, { dialCode: '61U24C' }, { contentId: contentId }),
     snapshot: {
       params: {
         collectionId: collectionId
