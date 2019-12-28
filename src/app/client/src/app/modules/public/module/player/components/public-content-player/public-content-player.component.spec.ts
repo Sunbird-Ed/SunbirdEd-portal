@@ -19,6 +19,9 @@ const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
   'queryParams': observableOf({ language: ['en'] }, {dialCode: '61U24C'}),
   snapshot: {
+    params: {
+      contentId: 'd0_33567325'
+    },
     data: {
       telemetry: {
         env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
@@ -90,7 +93,7 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   });
-  xit('should call tryAgain method', () => {
+  it('should call tryAgain method', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(component, 'tryAgain').and.callThrough();
@@ -99,13 +102,13 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showError).toBeFalsy();
     expect(component.getContent).toHaveBeenCalled();
   });
-  xit('should unsubscribe from all observable subscriptions', () => {
+  it('should unsubscribe from all observable subscriptions', () => {
     component.getContent();
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  xit('sets the badges data  after making api call and pass input to content-badges component', () => {
+  it('sets the badges data  after making api call and pass input to content-badges component', () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes.result));
     component.ngOnInit();
