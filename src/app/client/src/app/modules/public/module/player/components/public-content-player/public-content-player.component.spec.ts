@@ -62,6 +62,7 @@ describe('PublicContentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
     component = fixture.componentInstance;
+    component.contentId = 'd0_33567325';
   });
 
   it('should config content player if content status is "Live"', () => {
