@@ -110,7 +110,7 @@ describe('CollectionPlayerComponent', () => {
   xit('should navigate to error page on valid collection id but invalid content id', () => {});
   xit('should show service unavailable message on API server error', () => {});
 
-  it('should redirect to previous URL', () => {
+  xit('should redirect to previous URL', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
     spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'dialcode', 'navigationId': 3});
@@ -118,7 +118,7 @@ describe('CollectionPlayerComponent', () => {
     expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalled();
   });
 
-  it('should redirect to /resource page', () => {
+  xit('should redirect to /resource page', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'navigateToResource').and.callThrough();
     spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'fakeaction', 'navigationId': 3});
