@@ -161,6 +161,8 @@ const renderDefaultIndexPage = (req, res) => {
   const mobileDetect = new MobileDetect(req.headers['user-agent'])
   if ((req.path == '/get' || req.path == `/${req.params.slug}/get`) && mobileDetect.os() == 'AndroidOS') {
     res.redirect(envHelper.ANDROID_APP_URL)
+  } else if (req.path.includes('/play/quiz')) {
+    res.sendFile((path.join(__dirname, '../tenant/quiz/', 'index.html')));
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
