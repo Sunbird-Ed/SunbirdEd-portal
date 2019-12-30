@@ -262,22 +262,18 @@ export class UserLocationComponent implements OnInit {
     setTimeout(() => {
       switch (formControlName) {
         case 'state': {
-          if (this.stateDiv.query) {
-            if (event.target.value) {
-              this.userDetailsForm.get(formControlName).reset();
-              this.stateDiv.query = '';
-              this.stateDiv.focus();
-            }
+          if (this.stateDiv.query && event.target.value) {
+            this.userDetailsForm.get(formControlName).reset();
+            this.stateDiv.query = '';
+            this.stateDiv.focus();
           }
           break;
         }
         case 'district': {
-          if (this.districtDiv.query) {
-            if (event.target.value) {
-              this.userDetailsForm.get(formControlName).reset();
-              this.districtDiv.query = '';
-              this.districtDiv.focus();
-            }
+          if (this.districtDiv.query && event.target.value) {
+            this.userDetailsForm.get(formControlName).reset();
+            this.districtDiv.query = '';
+            this.districtDiv.focus();
           }
           break;
         }
