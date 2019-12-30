@@ -259,21 +259,30 @@ export class UserLocationComponent implements OnInit {
   }
 
   clearInput(event, formControlName) {
-    if (event.target.value && this.userDetailsForm.get('state').value) {
-      this.userDetailsForm.get(formControlName).reset();
+    setTimeout(() => {
       switch (formControlName) {
         case 'state': {
-          this.stateDiv.query = '';
-          this.stateDiv.focus();
+          if (this.stateDiv.query) {
+            if (event.target.value) {
+              this.userDetailsForm.get(formControlName).reset();
+              this.stateDiv.query = '';
+              this.stateDiv.focus();
+            }
+          }
           break;
         }
         case 'district': {
-          this.districtDiv.query = '';
-          this.districtDiv.focus();
+          if (this.districtDiv.query) {
+            if (event.target.value) {
+              this.userDetailsForm.get(formControlName).reset();
+              this.districtDiv.query = '';
+              this.districtDiv.focus();
+            }
+          }
           break;
         }
       }
-    }
+    }, 500);
   }
 
   closeModal() {
