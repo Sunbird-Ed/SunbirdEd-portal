@@ -21,7 +21,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   @ViewChild('modal') modal;
   @ViewChild('fineUploaderUI') fineUploaderUI: ElementRef;
   @ViewChild('qq-upload-actions') actionButtons: ElementRef;
-  @ViewChild('FormControl') private FormControl;
+  @ViewChild('FormControl') FormControl: NgForm;
   // @ViewChild('contentTitle') contentTitle: ElementRef;
   @Input() contentUploadComponentInput: IContentUploadComponentInput;
 
@@ -74,15 +74,16 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
     this.programContext = _.get(this.contentUploadComponentInput, 'programContext');
     this.actions = _.get(this.contentUploadComponentInput, 'programContext.config.actions');
-  }
-
-  ngAfterViewInit() {
     if (_.get(this.contentUploadComponentInput, 'action') === 'preview') {
       this.showUploadModal = false;
       this.showPreview = true;
       this.cd.detectChanges();
       this.getUploadedContentMeta(_.get(this.contentUploadComponentInput, 'contentId'));
-    } else {
+    }
+  }
+
+  ngAfterViewInit() {
+    if (_.get(this.contentUploadComponentInput, 'action') !== 'preview') {
       this.initiateUploadModal();
     }
   }
@@ -385,15 +386,18 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         this.contentMetaData.versionKey = res.result.versionKey;
         if (action === 'review') {
           this.sendForReview();
-        }
-        if (this.sessionContext.collection && this.unitIdentifier && action !== 'review') {
+        } else if (this.sessionContext.collection && this.unitIdentifier && action !== 'review') {
           this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
           .subscribe((data) => {
             this.toasterService.success(this.resourceService.messages.smsg.m0060);
+          }, (err) => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0098);
           });
         } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0098);
+          this.toasterService.success(this.resourceService.messages.smsg.m0060);
         }
+      }, (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0098);
       });
     } else {
       // this.toasterService.error('Please Fill Mandatory Form-Fields...');
@@ -422,7 +426,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
        });
   }
 
-  requestChanges(comments) {
+  requestChanges() {
     if (this.FormControl.value.rejectComment) {
       this.helperService.submitRequestChanges(this.contentMetaData.identifier, this.FormControl.value.rejectComment)
       .subscribe(res => {

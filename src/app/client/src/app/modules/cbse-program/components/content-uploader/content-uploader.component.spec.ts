@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, NgForm } from '@angular/forms';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 import {
   ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService,
@@ -13,11 +13,11 @@ import {
 import { CacheService } from 'ng2-cache-service';
 import { TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, throwError as observableError } from 'rxjs';
-import { ActionService, PlayerService, FrameworkService } from '@sunbird/core';
+import { ActionService, PlayerService, FrameworkService, UserService } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { RouterTestingModule } from "@angular/router/testing";
-import {contentUploadComponentInput, contentMetaData, playerConfig, frameworkDetails,
-             licenseDetails, updateContentResponse, getPreSignedUrl} from './content-uploader.component.data';
+import {contentUploadComponentInput, contentMetaData, contentMetaData1, playerConfig, frameworkDetails,
+             licenseDetails, updateContentResponse, getPreSignedUrl, contentUploadComponentInput1} from './content-uploader.component.data';
 import { HelperService } from '../../services/helper.service';
 
 // Following describe method is for 'PREVIEW' scenario
@@ -63,6 +63,26 @@ describe('ContentUploaderComponent', () => {
     },
     updateContent() {
       return observableOf(updateContentResponse);
+    },
+    reviewContent() {
+      return observableOf('success');
+    }
+  };
+
+  const resourceServiceStub = {
+    messages: {
+      fmsg: {
+        m0076: 'Please Fill Mandatory Fields!',
+      },
+      smsg: {
+        m0060: 'Content added to Hierarchy Successfully...'
+      }
+    }
+  };
+
+  const userServiceStub = {
+    userProfile: {
+      userId: '123456789'
     }
   };
 
@@ -74,7 +94,8 @@ describe('ContentUploaderComponent', () => {
       providers: [CollectionHierarchyService, ConfigService, UtilService, ToasterService, TelemetryService, PlayerService, ResourceService,
                   CacheService, BrowserCacheTtlService, { provide: ActionService, useValue: actionServiceStub }, NavigationHelperService,
                   { provide: PlayerService, useValue: playerServiceStub }, { provide: FrameworkService, useValue: frameWorkServiceStub },
-                  { provide: HelperService, useValue: helperServiceStub }]
+                  { provide: HelperService, useValue: helperServiceStub }, { provide: ResourceService, useValue: resourceServiceStub },
+                  {provide: UserService, useValue: userServiceStub}]
     })
     .compileComponents();
   }));
@@ -99,15 +120,38 @@ describe('ContentUploaderComponent', () => {
       expect(component.selectionArr.controls[0].get('bloomslevel').errors.required).toBeTruthy();
   });
 
-  it('should execute saveContent after successful validation of Form', () => {
+  it('should execute saveContent after successful validation of Form without calling sendForReview', () => {
     component.selectionArr.patchValue([{bloomslevel: 'Knowledge (Remembering)'}]);
+    component.editTitle = 'Explanation Content Test1';
      fixture.detectChanges();
-     spyOn(component.toasterService, 'success');
+     spyOn(component, 'sendForReview');
      debugElement
       .query(By.css('#saveContent'))
       .triggerEventHandler('click', null);
-     expect(component.toasterService.success).toHaveBeenCalledWith('Content Updated Successfully...');
+     expect(component.sendForReview).not.toHaveBeenCalled();
   });
+
+  it('should execute sendForReview before successful saveContent', () => {
+    component.selectionArr.patchValue([{bloomslevel: 'Knowledge (Remembering)'}]);
+    component.editTitle = 'Explanation Content Test1';
+     fixture.detectChanges();
+     spyOn(component, 'sendForReview');
+     debugElement
+      .query(By.css('#submitContent'))
+      .triggerEventHandler('click', null);
+     expect(component.sendForReview).toHaveBeenCalled();
+  });
+
+  it('should Preview be playing, when even clicked on changeFile', () => {
+    component.showUploadModal = true;
+    fixture.detectChanges();
+    spyOn(component, 'showPreview');
+    debugElement
+    .query(By.css('#changeContent'))
+    .triggerEventHandler('click', null);
+    expect(component.showPreview).toBeTruthy();
+  });
+
 });
 
 // Following describe method is for fresh 'UPLOAD' scenario
@@ -199,4 +243,109 @@ describe('ContentUploaderComponent', () => {
       .triggerEventHandler('click', null);
       expect(component.toasterService.success).toHaveBeenCalledWith('Content Successfully Uploaded...');
   });
+});
+
+// Following describe method is for 'REVIEWER' role scenario
+describe('ContentUploaderComponent', () => {
+  let component: ContentUploaderComponent;
+  let fixture: ComponentFixture<ContentUploaderComponent>;
+  let debugElement: DebugElement;
+  let errorInitiate;
+  let errorInitiate1;
+  const actionServiceStub = {
+    get() {
+      if (errorInitiate) {
+        return observableError({ result: { responseCode: 404 } });
+      } else {
+        return observableOf(contentMetaData1);
+      }
+    }
+  };
+
+  const playerServiceStub = {
+    getConfig() {
+        return playerConfig;
+    }
+  };
+
+  const frameWorkServiceStub = {
+    initialize() {
+      return null;
+    },
+    frameworkData$: observableOf(frameworkDetails)
+  };
+
+  const helperServiceStub = {
+    getLicences() {
+      return observableOf(licenseDetails);
+  },
+    publishContent() {
+      return observableOf({
+        result: { node_id: '123'}
+      });
+    },
+    submitRequestChanges() {
+      return observableOf({
+        result: { node_id: '123'}
+      });
+    }
+  };
+  const collectionServiceStub = {
+    addResourceToHierarchy() {
+      return observableOf('success');
+    }
+  };
+
+  const userServiceStub = {
+    userProfile: {
+      userId: '123456789'
+    }
+  };
+  const resourceServiceStub = {
+    messages: {
+      smsg: {
+        m0063: 'Content Published Successfully...',
+        m0062: 'Content sent for changes Successfully...'
+      }
+    }
+  };
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,
+                  RouterTestingModule],
+      declarations: [ ContentUploaderComponent ],
+      providers: [ ConfigService, UtilService, ToasterService, TelemetryService, PlayerService, ResourceService,
+                  CacheService, BrowserCacheTtlService, { provide: ActionService, useValue: actionServiceStub }, NavigationHelperService,
+                  { provide: PlayerService, useValue: playerServiceStub }, { provide: FrameworkService, useValue: frameWorkServiceStub },
+                  { provide: HelperService, useValue: helperServiceStub }, {provide: UserService, useValue: userServiceStub},
+                  { provide: CollectionHierarchyService, useValue: collectionServiceStub},{ provide: ResourceService, useValue: resourceServiceStub }]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ContentUploaderComponent);
+    component = fixture.componentInstance;
+    debugElement = fixture.debugElement;
+    component.contentUploadComponentInput = contentUploadComponentInput1;
+    fixture.detectChanges();
+  });
+
+  it('should be success when reviewer publishes content', () => {
+    spyOn(component.toasterService, 'success');
+    debugElement
+      .query(By.css('#publishContent'))
+      .triggerEventHandler('click', null);
+      expect(component.toasterService.success).toHaveBeenCalledWith('Content Published Successfully...');
+  });
+
+  it('should not be able to reject content without comments', () => {
+    spyOn(helperServiceStub, 'submitRequestChanges');
+    debugElement
+      .query(By.css('#requestChanges'))
+      .triggerEventHandler('click', null);
+      expect(helperServiceStub.submitRequestChanges).not.toHaveBeenCalled();
+  });
+
 });
