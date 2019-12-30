@@ -6,9 +6,9 @@ export interface ISessionContext { // TODO: remove any 'textbook' reference
   frameworkData?: any;
   channel?: string;
   board?: string;
-  medium?: string;
-  gradeLevel?: string;
-  subject?: string;
+  medium?: any;
+  gradeLevel?: any;
+  subject?: any;
   textbook?: string;
   collection?: string;
   topic?: string;

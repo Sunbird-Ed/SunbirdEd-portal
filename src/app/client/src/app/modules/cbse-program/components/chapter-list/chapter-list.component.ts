@@ -8,8 +8,10 @@ import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
 import { forkJoin, throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IChapterListComponentInput , ISessionContext,
-  IContentUploadComponentInput, IResourceTemplateComponentInput } from '../../interfaces';
+import {
+  IChapterListComponentInput, ISessionContext,
+  IContentUploadComponentInput, IResourceTemplateComponentInput
+} from '../../interfaces';
 import { QuestionListComponent } from '../../../cbse-program/components/question-list/question-list.component';
 import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
 import { ProgramStageService } from '../../../program/services';
@@ -84,7 +86,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    this.stageSubscription =  this.programStageService.getStage().subscribe(state => {
+    this.stageSubscription = this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
     });
@@ -93,7 +95,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     this.programContext = _.get(this.chapterListComponentInput, 'programContext');
     this.currentUserID = _.get(this.programContext, 'userDetails.userId');
     this.role = _.get(this.chapterListComponentInput, 'role');
-    this.collection  = _.get(this.chapterListComponentInput, 'collection');
+    this.collection = _.get(this.chapterListComponentInput, 'collection');
     this.actions = _.get(this.chapterListComponentInput, 'programContext.config.actions');
     this.sharedContext = _.get(this.chapterListComponentInput, 'programContext.config.sharedContext');
     /**
@@ -157,7 +159,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
   }
   changeView() {
     if (!_.isEmpty(this.state.stages)) {
-      this.currentStage  = _.last(this.state.stages).stage;
+      this.currentStage = _.last(this.state.stages).stage;
     }
   }
 
@@ -183,12 +185,40 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         instance.countData['review'] = 0;
         instance.countData['reject'] = 0;
         instance.countData['mycontribution'] = 0;
-        this.collectionHierarchy = this.getUnitWithChildren(this.collectionData, identifier);
+        this.collectionHierarchy = this.setCollectionTree(this.collectionData, identifier);
         hierarchy = instance.hierarchyObj;
         this.sessionContext.hierarchyObj = { hierarchy };
         this.showLoader = false;
         this.showError = false;
       });
+  }
+
+  setCollectionTree(data, identifier) {
+    if (data.contentType !== 'TextBook') {
+      const rootMeta = _.pick(data, this.sharedContext);
+      const rootTree = this.generateNodeMeta(data, rootMeta);
+      const isFolderExist = _.find(data.children, (child) => {
+        return child.contentType === 'TextBookUnit';
+      });
+      if (isFolderExist) {
+        const children = this.getUnitWithChildren(data, identifier);
+        const treeChildren = children && children.filter(item => item.contentType === 'TextBookUnit');
+        const treeLeaf = children && children.filter(item => item.contentType !== 'TextBookUnit');
+        rootTree['children'] = treeChildren || null;
+        rootTree['leaf'] = this.getContentVisibility(treeLeaf) || null;
+        return [rootTree];
+      } else {
+        rootTree['leaf'] = _.map(data.children, (child) => {
+          const meta = _.pick(child, this.sharedContext);
+          const treeItem = this.generateNodeMeta(child, meta);
+          treeItem['visibility'] = this.shouldContentBeVisible(child);
+          return treeItem;
+        });
+        return [rootTree];
+      }
+    } else {
+      return this.getUnitWithChildren(data, identifier);
+    }
   }
 
   getUnitWithChildren(data, collectionId) {
@@ -217,32 +247,37 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
             name: child.name
           });
         }
-        const treeItem = {
-          identifier: child.identifier,
-          name: child.name,
-          contentType: child.contentType,
-          topic: child.topic,
-          status: child.status,
-          creator: child.creator,
-          createdBy: child.createdBy || null,
-          parentId: child.parent || null,
-          sharedContext: {
-            ...meta
-          }
-        };
+        const treeItem = this.generateNodeMeta(child, meta);
         const treeUnit = self.getUnitWithChildren(child, collectionId);
         const treeChildren = treeUnit && treeUnit.filter(item => item.contentType === 'TextBookUnit');
         const treeLeaf = treeUnit && treeUnit.filter(item => item.contentType !== 'TextBookUnit');
         treeItem['children'] = (treeChildren && treeChildren.length > 0) ? treeChildren : null;
-
         if (treeLeaf && treeLeaf.length > 0) {
-          treeItem['leaf'] =  this.getContentVisibility(treeLeaf);
+          treeItem['leaf'] = this.getContentVisibility(treeLeaf);
         }
         return treeItem;
       });
       return tree;
     }
   }
+
+  generateNodeMeta(node, sharedMeta) {
+   const nodeMeta =  {
+      identifier: node.identifier,
+      name: node.name,
+      contentType: node.contentType,
+      topic: node.topic,
+      status: node.status,
+      creator: node.creator,
+      createdBy: node.createdBy || null,
+      parentId: node.parent || null,
+      sharedContext: {
+        ...sharedMeta
+      }
+    };
+    return nodeMeta;
+  }
+
   getContentVisibility(branch) {
     const leafNodes = [];
     _.forEach(branch, (leaf) => {
@@ -250,24 +285,24 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       leaf['visibility'] = contentVisibility;
       leafNodes.push(leaf);
     });
-    return leafNodes;
+    return _.isEmpty(leafNodes) ? null : leafNodes;
   }
 
   shouldContentBeVisible(content) {
     const creatorViewRole = this.actions.showCreatorView.roles.includes(this.sessionContext.currentRoleId);
     const reviewerViewRole = this.actions.showReviewerView.roles.includes(this.sessionContext.currentRoleId);
-      if (reviewerViewRole && content.status === 'Review'  && this.currentUserID !== content.createdBy) {
-        return true;
-      } else if (creatorViewRole && this.currentUserID === content.createdBy) {
-        return true;
-      }
-  return false;
+    if (reviewerViewRole && content.status === 'Review' && this.currentUserID !== content.createdBy) {
+      return true;
+    } else if (creatorViewRole && this.currentUserID === content.createdBy) {
+      return true;
+    }
+    return false;
   }
 
   onSelectChapterChange() {
     this.showLoader = true;
-    this.getCollectionHierarchy(this.sessionContext.collection ,
-      this.selectedChapterOption === 'all' ? undefined :  this.selectedChapterOption);
+    this.getCollectionHierarchy(this.sessionContext.collection,
+      this.selectedChapterOption === 'all' ? undefined : this.selectedChapterOption);
   }
 
   handleTemplateSelection(event) {
@@ -279,7 +314,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
       }
       const reqBody = this.sharedContext.reduce((obj, context) => {
-        return {...obj, [context]: this.selectedSharedContext[context] || this.sessionContext[context]};
+        return { ...obj, [context]: this.selectedSharedContext[context] || this.sessionContext[context] };
       }, {});
       const option = {
         url: `content/v3/create`,
@@ -307,19 +342,19 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       this.actionService.post(option).pipe(map(res => res.result), catchError(err => {
         const errInfo = { errorMsg: 'Unable to create contentId, Please Try Again' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    }))
-      .subscribe(result => {
-        this.addResourceToHierarchy(result.node_id);
-        this.contentId = result.node_id;
-        // tslint:disable-next-line:max-line-length
-        this.componentLoadHandler('creation', this.componentMapping[event.templateDetails.metadata.contentType], event.templateDetails.onClick);
-      });
+      }))
+        .subscribe(result => {
+          this.addResourceToHierarchy(result.node_id);
+          this.contentId = result.node_id;
+          // tslint:disable-next-line:max-line-length
+          this.componentLoadHandler('creation', this.componentMapping[event.templateDetails.metadata.contentType], event.templateDetails.onClick);
+        });
     }
   }
 
   handlePreview(event) {
     const templateList = _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
-    || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue');
+      || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue');
     this.templateDetails = _.find(templateList, (templateData) => {
       return templateData.metadata.contentType === event.content.contentType;
     });
@@ -338,35 +373,35 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedSharedContext = event.collection.sharedContext;
     switch (event.action) {
       case 'delete':
-         this.removeResourceToHierarchy(event.content.identifier, this.unitIdentifier);
-         break;
+        this.removeResourceToHierarchy(event.content.identifier, this.unitIdentifier);
+        break;
       case 'beforeMove':
-          this.showLargeModal = true;
-          this.contentId = event.content.identifier;
-          this.prevUnitSelect = event.collection.identifier;
-          break;
+        this.showLargeModal = true;
+        this.contentId = event.content.identifier;
+        this.prevUnitSelect = event.collection.identifier;
+        break;
       case 'afterMove':
-          this.showLargeModal = false;
-          this.unitIdentifier = '';
-          this.contentId = ''; // Clearing selected unit/content details
-          this.getCollectionHierarchy(this.sessionContext.collection, undefined);
-          break;
+        this.showLargeModal = false;
+        this.unitIdentifier = '';
+        this.contentId = ''; // Clearing selected unit/content details
+        this.getCollectionHierarchy(this.sessionContext.collection, undefined);
+        break;
       case 'cancelMove':
-          this.showLargeModal = false;
-          this.unitIdentifier = '';
-          this.contentId = ''; // Clearing selected unit/content details
-          break;
+        this.showLargeModal = false;
+        this.unitIdentifier = '';
+        this.contentId = ''; // Clearing selected unit/content details
+        break;
       case 'preview':
-          this.contentId = event.content.identifier;
-          this.handlePreview(event);
-          break;
+        this.contentId = event.content.identifier;
+        this.handlePreview(event);
+        break;
       default:
-          this.showResourceTemplatePopup = event.showPopup;
+        this.showResourceTemplatePopup = event.showPopup;
         break;
     }
-    this.resourceTemplateComponentInput =  {
-    templateList:  _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
-      || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue')
+    this.resourceTemplateComponentInput = {
+      templateList: _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
+        || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue')
     };
   }
 
@@ -397,7 +432,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     };
-    this.actionService.patch(req).pipe(map(data => data.result), catchError(err => {
+    this.actionService.patch(req).pipe(map((data: any) => data.result), catchError(err => {
       return throwError('');
     })).subscribe(res => {
       console.log('result ', res);
@@ -415,7 +450,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     };
-    this.actionService.delete(req).pipe(map(data => data.result), catchError(err => {
+    this.actionService.delete(req).pipe(map((data: any) => data.result), catchError(err => {
       return throwError('');
     })).subscribe(res => {
       this.getCollectionHierarchy(this.sessionContext.collection, undefined);
