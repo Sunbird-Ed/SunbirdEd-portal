@@ -259,7 +259,7 @@ export class UserLocationComponent implements OnInit {
   }
 
   clearInput(event, formControlName) {
-    if (event.target.value) {
+    if (event.target.value && this.userDetailsForm.get('state').value) {
       this.userDetailsForm.get(formControlName).reset();
       switch (formControlName) {
         case 'state': {
