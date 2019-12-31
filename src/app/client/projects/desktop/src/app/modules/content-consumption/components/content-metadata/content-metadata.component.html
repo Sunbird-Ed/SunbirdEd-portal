@@ -67,9 +67,14 @@
         <div class="py-8">
           <div class="content-metadeta__title  fxsmall mb-8">{{resourceService?.frmelmnts?.lbl?.content?.CREATEDON}}
           </div>
-          <div class="content-metadeta__text  fsmall">{{contentData?.createdOn}}</div>
+          <div class="content-metadeta__text  fsmall">{{contentData?.createdOn | dateFormat: 'MMMM Do YYYY'}}</div>
         </div>
-
+        <div class="py-8">
+          <div class="content-metadeta__title  fxsmall mb-8">{{resourceService?.frmelmnts?.lbl?.content?.LASTUPDATEDON}}
+          </div>
+          <div class="content-metadeta__text  fsmall">{{contentData?.lastUpdatedOn | dateFormat: 'MMMM Do YYYY'}}</div>
+        </div>
+        
         <div class="py-8">
           <div class="content-metadeta__title  fxsmall mb-8">{{resourceService?.frmelmnts?.lbl?.content?.KEYWORDS}}
           </div>
