@@ -29,29 +29,28 @@
         </div>
     </div>
 
-    <!-- <form class='ui container licence-form'> -->
-    <!-- <div class='licence-form__content'>
+    <div class='licence-form__content' *ngIf="!isReadOnlyMode">
         <div class="ui stackable grid licence-form__content__fields">
             <div class="row">
-                <div class="eight wide column">
+                <div class="eight wide column" *ngIf="learningOutcomeOptions.length > 0">
                     <div class="sb-field">
-                        <label for="learningOutcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a
-                class="ml-4" href="javascript:void(0)" title="title comes here"><img width="16" alt=""
-                  src="assets/images/Info.svg"></a></label>
+                        <label for="learningOutcome" class="d-flex mb-4">Learning Outcome <span
+                                class="sb-color-red">*</span> <a class="ml-4" href="javascript:void(0)"
+                                title="title comes here"><img width="16" alt="" src="assets/images/Info.svg"></a></label>
                         <sui-select class="selection" formControlName="learningOutcome" name="'learningOutcome'">
                             <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name">
                             </sui-select-option>
                         </sui-select>
-
                     </div>
                 </div>
-                <div class="four wide column pl-0">
+                <div class="four wide column" [class.pl-0]="learningOutcomeOptions.length > 0">
                     <div class="sb-field space-btn-field">
                         <label for="bloomsLevel" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
-                href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                  src="assets/images/Info.svg"></a></label>
+                                href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                    src="assets/images/Info.svg"></a></label>
                         <sui-select class="selection" formControlName="bloomsLevel" name="'bloomsLevel'">
-                            <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
+                            <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option">
+                            </sui-select-option>
                         </sui-select>
                     </div>
                 </div>
@@ -59,66 +58,27 @@
             <div class="row pt-0">
                 <div class="four wide column">
                     <div class="sb-field">
-                        <label for="author" class="d-flex mb-4">Authors <a href="javascript:void(0)" title="title comes here"><img
-                  width="16" alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
-                        <input class="sb-form-control" #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
+                        <label for="author" class="d-flex mb-4">Authors <a href="javascript:void(0)"
+                                title="title comes here"><img width="16" alt="" class="ml-4"
+                                    src="assets/images/Info.svg"></a></label>
+                        <input class="sb-form-control" #author_names type="text"
+                            [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
                     </div>
                 </div>
                 <div class="four wide column pl-0">
                     <div class="sb-field space-btn-field">
-                        <label class="d-flex mb-4">License <a href="javascript:void(0)" title="title comes here"><img width="16"
-                  alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
-                        <sui-select class="selection" labelField="name" name="license" placeholder="select">
-                            <sui-select-option *ngFor="let option of selectLicenseOption" [value]="option">
+                        <label class="d-flex mb-4">License <a href="javascript:void(0)" title="title comes here"><img
+                                    width="16" alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
+                        <sui-select class="selection" formControlName="licences" labelField="name" name="license" placeholder="select">
+                            <sui-select-option *ngFor="let option of licencesOptions" [value]="option">
                             </sui-select-option>
                         </sui-select>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div> -->
-
-    <!-- </form> -->
-
-    <div class="ui two column grid width-100" *ngIf="!isReadOnlyMode">
-        <div class="one column row" *ngIf="learningOutcomeOptions.length > 0">
-            <div class="column">
-                <label>Learning Outcome</label>
-                <div class="sb-field">
-                    <sui-select class="selection width-100" formControlName="learningOutcome" name="'learningOutcome'">
-                        <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name"></sui-select-option>
-                    </sui-select>
-                    <label class="ui basic red error label pt-0" *ngIf="questionMetaForm.controls.learningOutcome.dirty && questionMetaForm.controls['learningOutcome'].errors">Please
-            Select
-            Learning Outcome</label>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-            <label>Learning Level</label>
-            <div class="sb-field">
-                <sui-select class="selection width-100" formControlName="bloomsLevel" name="'bloomsLevel'">
-                    <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
-                </sui-select>
-                <label class="ui basic red error label pt-0" *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Please
-          Select
-          Learning Level </label>
-            </div>
-        </div>
-        <div class="two column row">
-            <div class="column">
-                <label>Authors</label> <br />
-                <div class="sb-field">
-                    <input class="sb-form-control" #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <p class="paragraph fs-0-785 pt-0 mt-0">
-        <strong>Disclaimer:</strong> By uploading assets to ...., you consent to publish under the Common Creative License framework. For details, refer
-        <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Select the appropriate license.
-    </p>
-
+    
     <!-- Question Preview Section HTML -->
     <div class="ui container" *ngIf="isReadOnlyMode">
         <div class="ui stackable grid m-0 sb-bg-color-white">
@@ -224,17 +184,12 @@
                 </div>
             </div>
         </div>
-        <div class="row pt-16">
-            <div class="twele wide column">
-                <div class="sb-field">
-                    <p class="fs-0-785">
-                        <span class="font-weight-bold">Disclaimer :</span> By uploading assets to , you consent to publish under the Common Creative License framework. For details, refer
-                        <a class="">https://creativecommons.org/licenses </a>. Select the appropriate license” </p>
-
-                </div>
-            </div>
-        </div>
     </div>
+
+    <p class="paragraph fs-0-785 pt-15 mt-0">
+        <strong>Disclaimer:</strong> By uploading assets to ...., you consent to publish under the Common Creative License framework. For details, refer
+        <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Select the appropriate license.
+    </p>
 
     <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
 </form>
@@ -302,7 +257,6 @@
         </div>
     </div>
 </sui-modal>
-
 
 <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
 </app-question-preview>
