@@ -191,6 +191,10 @@
         <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Select the appropriate license.
     </p>
 
+    <div class='practical-sb-buttons'>
+        <button id="requestChanges" *ngIf="role.currentRole == 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true">Request Changes</button>
+    </div>
+
     <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
 </form>
 
@@ -256,6 +260,32 @@
       <button (click)="dismissImageUploadModal();" class="ui primary button">Upload and use</button> -->
         </div>
     </div>
+</sui-modal>
+
+<sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="showRequestChangesPopup = false;">
+  <div class="sb-modal-header">
+      Add Review Comments
+  </div>
+  <form #reuestChangeForm="ngForm" class="ui form">
+  <div class="sb-modal-content">
+      <div class="sb-field-group">
+          <label>Enter your comments</label>
+          <div class="sb-field relative">
+            
+              <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
+              <label class="ui basic red error label pt-1 mt-5 width-100"
+                  *ngIf="reuestChangeForm.form.controls.rejectComment?.touched && !reuestChangeForm.form.valid">Fill comments </label>
+            
+              <!-- <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
+              <span class="characters-left">1000 Characters left</span> -->
+          </div>
+      </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': reuestChangeForm.form.valid, 'sb-btn-disabled': !reuestChangeForm.form.valid}"   (click)="requestChanges()"> Submit Review </button>
+  </div>
+</form>
 </sui-modal>
 
 <app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">

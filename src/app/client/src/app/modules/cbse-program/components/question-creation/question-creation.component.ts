@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormGroup, FormControl, NgForm } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
@@ -37,6 +37,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public mediaArr = [];
   public rejectComment: any;
   public userName: any;
+  public showRequestChangesPopup = false;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Input() questionSelectionStatus: any;
@@ -46,6 +47,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   @ViewChild('author_names') authorName;
   @Output() statusEmitter = new EventEmitter<string>();
   @Output() questionQueueStatus = new EventEmitter<any>();
+  @ViewChild('reuestChangeForm') ReuestChangeForm: NgForm;
   questionMetaForm: FormGroup;
   enableSubmitBtn = false;
   initialized = false;
@@ -68,6 +70,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   updateStatus = 'update';
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   isReadOnlyMode = false;
+  questionRejected = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -325,6 +328,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             if (param.key === 'status') {
               this.updateStatus = param.value;
             }
+            if (param.key === 'rejectComment' && param.value !== '') {
+              this.questionRejected = true;
+            }
           });
         }
         this.actionService.patch(option).pipe(catchError(err => {
@@ -333,7 +339,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         })).subscribe((apiRes) => {
           if (this.updateStatus === 'Live') {
             this.toasterService.success('Question Accepted');
-          } else if (this.updateStatus === 'Reject') {
+          } else if (this.updateStatus === 'Draft' && this.questionRejected) {
             this.toasterService.success('Question Rejected');
           }
           this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': this.questionMetaData.data.identifier });
@@ -419,4 +425,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.cdr.detectChanges();
     this.refresh = true;
   }
+
+  requestChanges() {
+    if (this.ReuestChangeForm.value.rejectComment) {
+      this.handleReviewrStatus({ 'status' : 'Draft', 'rejectComment':  this.ReuestChangeForm.value.rejectComment});
+      this.showRequestChangesPopup = false;
+    }
+  }
+
 }

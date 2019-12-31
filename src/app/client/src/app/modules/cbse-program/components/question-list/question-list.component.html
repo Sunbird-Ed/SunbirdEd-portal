@@ -61,7 +61,7 @@
           appTelemetryInteract
           [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'questionlist',extra:{type:'reference',identifier:question.identifier}}">
           <label class="mb-0 mr-auto" for="check1"> Question {{i + 1}}</label>
-          <i class="info circle sb-color-warning fs-1 icon" *ngIf="question.status === 'Reject'"></i>
+          <i class="info circle sb-color-warning fs-1 icon" *ngIf="question.rejectComment && question.rejectComment != '' "></i>
           <i class="trash alternate outline icon ml-24" *ngIf="visibility && visibility.showDeleteQuestion"
            (click)="openDeleteQuestionModal(question.identifier)"></i>
           <!-- <img src="../../../../../assets/images/move.svg" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')" class="ml-8" width="20px" height="16px"> -->
