@@ -24,8 +24,6 @@ export class UserLocationComponent implements OnInit {
   @ViewChild('userLocationModal') userLocationModal;
   @ViewChild('stateDiv') stateDiv;
   @ViewChild('districtDiv') districtDiv;
-  public stateValue;
-  public districtValue;
   userDetailsForm: FormGroup;
   public processedDeviceLocation: any = {};
   selectedState;
