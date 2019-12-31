@@ -212,6 +212,7 @@ export class QuestionListComponent implements OnInit {
         if (this.role.currentRole === 'CONTRIBUTOR') {
           this.refreshEditor();
         }
+        
         if(isUpdate)  this.saveContent();
       });
   }
