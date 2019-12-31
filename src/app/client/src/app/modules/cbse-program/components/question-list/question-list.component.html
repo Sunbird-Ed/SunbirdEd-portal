@@ -13,8 +13,8 @@
         <span class="sb-label sb-label-table sb-label-success-0"
         [ngClass]="{ 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-error-0': resourceStatus == 'Rejected',  'sb-label-gray-100': resourceStatus == 'Review' }">{{ resourceStatus }}</span>
         <span class="cursor-pointer fs-0-785 ml-8" 
-          (click)="showReview()" 
-          *ngIf="resourceStatus === 'Rejected'"><i class="comment alternate outline icon sb-color-primary"></i><a>View Comments</a></span>
+        (click)="showReviewModal=!showReviewModal"
+        *ngIf="contentMetaData && contentMetaData.rejectComment && (sessionContext.currentRoleId === 1)"><i class="comment alternate outline icon sb-color-primary"></i><a>View Comments</a></span>
       </div>
     </div>
     <div class="sb-field-group textbook-edit mr-auto" *ngIf="showTextArea">
@@ -26,10 +26,13 @@
       </div>
     </div>
     <div class='practical-sb-buttons'>
-      <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="saveContent()">Save</button>
+      <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="questionCreationChild.buttonTypeHandler()">Save</button>
       <button id="requestChanges" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true;">Request Changes</button>
-      <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-secondary sb-btn-normal ripple mr-8" (click)="publichContent()">Publish</button>
-      <button id="submitContent" *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="sendForReview()">Submit</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
+      <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-secondary sb-btn-normal ripple mr-8" (click)="showPublishModal = truel;">Publish</button>
+      <button id="submitContent"  *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-normal ripple"   
+        [ngClass]="disableSubmitBtn ? 'sb-btn-disabled' : 'sb-btn-secondary'"
+      [disabled] = "disableSubmitBtn" (click)="sendForReview()">Submit</button>
     </div>
   </div>
 </div> 
@@ -166,6 +169,7 @@
   </div>
 </sui-modal>
 
+
 <sui-modal *ngIf="showReviewModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [size]="'normal'" class="sb-modal" appBodyScroll
   (dismissed)="showReviewModal = !showReviewModal" #modal>
@@ -175,37 +179,42 @@
   <div class="sb-modal-content">
       <div class="sb-publish-content">
         <div class="review-modal-list">
-          <ol class="list">
+          <!-- <ol class="list">
             <li class="pb-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </li>
             <li class="pb-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </li>
             <li class="pb-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </li>
-          </ol>
+          </ol> -->
+          {{resourceDetails?.rejectComment}}
       </div>
       </div>
   </div>
-  <div class="sb-modal-actions">
+  <!-- <div class="sb-modal-actions">
     <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"> Continue </button>
-  </div>
+  </div> -->
 </sui-modal>
 
 <sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll
-  (dismissed)="showRequestChangesPopup = !showRequestChangesPopup" #modal>
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="showRequestChangesPopup = false;">
   <div class="sb-modal-header">
-      Add Review
+      Add Review Comments
   </div>
+  <form #FormControl="ngForm" class="ui form">
   <div class="sb-modal-content">
-      
       <div class="sb-field-group">
           <label>Enter your comments</label>
-              <div class="sb-field relative">
-              <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
-              <span class="characters-left">1000 Characters left</span>
-              </div>
+          <div class="sb-field relative">
+            
+              <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
+              <label class="ui basic red error label pt-1 mt-5 width-100"
+                  *ngIf="FormControl.form.controls.rejectComment?.touched && !FormControl.form.valid">Fill comments </label>
+            
+              <!-- <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
+              <span class="characters-left">1000 Characters left</span> -->
+          </div>
       </div>
-          
   </div>
   <div class="sb-modal-actions">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary"> Submit Review </button>
+    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': FormControl.form.valid, 'sb-btn-disabled': !FormControl.form.valid}"   (click)="requestChanges()"> Submit Review </button>
   </div>
+</form>
 </sui-modal>
