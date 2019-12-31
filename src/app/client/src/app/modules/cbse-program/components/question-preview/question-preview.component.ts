@@ -113,7 +113,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
         'ver': version,
         'pid': 'cbse-program-portal'
       },
-      'contentId': '',
+      'contentId': this.questionMetaData.data.identifier,
       'sid': this.userService.sessionId,
       'uid': this.userService.userid,
       'timeDiff': this.userService.getServerTimeDiff,
