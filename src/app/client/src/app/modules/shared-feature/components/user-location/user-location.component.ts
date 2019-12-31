@@ -262,7 +262,7 @@ export class UserLocationComponent implements OnInit {
   }
 
   closeModal() {
-    document.body.classList.remove('no-scroll'); 
+    document.body.classList.remove('no-scroll');
     this.userLocationModal.deny();
     this.close.emit();
   }
