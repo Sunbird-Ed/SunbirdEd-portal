@@ -3,6 +3,7 @@ import { CbseProgramService } from '../../services';
 import * as _ from 'lodash-es';
 import {UserService} from '@sunbird/core';
 import {PlayerConfig} from './player.config';
+import { UUID } from 'angular2-uuid';
 
 
 @Component({
@@ -99,6 +100,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const version = buildNumber && buildNumber.value ?
     buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const contentId = (this.questionMetaData.data && this.questionMetaData.data.identifier) ? this.questionMetaData.data.identifier : UUID.UUID();
     const tags = [];
     _.forEach(this.userService.userProfile.organisations, (org) => {
       if (org.hashTagId) {
@@ -113,11 +115,11 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
         'ver': version,
         'pid': 'cbse-program-portal'
       },
-      'contentId': '',
       'sid': this.userService.sessionId,
       'uid': this.userService.userid,
       'timeDiff': this.userService.getServerTimeDiff,
       'contextRollup': {},
+      'contentId': contentId,
       'channel': this.userService.channel,
       'did': '',
       'dims': this.userService.dims,
