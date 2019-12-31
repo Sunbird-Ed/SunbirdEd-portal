@@ -44,18 +44,6 @@ describe('UserLocationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set state input', () => {
-    const eventObj = {...userLocationMockData.eventObject};
-    component.clearInput(eventObj, 'state');
-    expect(eventObj.target.value).toEqual({  });
-  });
-
-   it('should set district input', () => {
-    const eventObj = {...userLocationMockData.eventObject};
-    component.clearInput(userLocationMockData.eventObject, 'district');
-    expect(eventObj.target.value).toEqual({  });
-  });
-
   it('should call set state and district is state and district when empty object', () => {
     spyOn(component, 'setState');
     spyOn(component, 'setDistrict');

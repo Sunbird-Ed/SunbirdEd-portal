@@ -258,24 +258,6 @@ export class UserLocationComponent implements OnInit {
     }));
   }
 
-  clearInput(event, formControlName) {
-    if (event.target.value) {
-      this.userDetailsForm.get(formControlName).reset();
-      switch (formControlName) {
-        case 'state': {
-          this.stateDiv.query = '';
-          this.stateDiv.focus();
-          break;
-        }
-        case 'district': {
-          this.districtDiv.query = '';
-          this.districtDiv.focus();
-          break;
-        }
-      }
-    }
-  }
-
   closeModal() {
     this.userLocationModal.deny();
     this.close.emit();
