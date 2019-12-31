@@ -40,18 +40,7 @@
 <div class="ui container">
   <div *ngIf="sessionContext?.questionType" class="ui twelve column grid m-0">
     <div class="three wide column p-0">
-
-      <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
-        <div class="sb-checkbox sb-checkbox-primary">
-          <input type="checkbox" [(ngModel)]="selectedAll" appTelemetryInteract
-            [telemetryInteractEdata]="{id:'select_all_questions',type:'click',pageid:'questionlist'}"
-            (change)="selectAll();">
-          <label for="check1">Select All</label>
-        </div>
-      </div>
-
       <!-- Question list Section -->
-
       <div class="d-flex flex-ai-center ckeditor-tool__answer my-16 mx-8">
         <label class="fs-1 mb-0">Question(s)</label>
 
@@ -169,7 +158,6 @@
   </div>
 </sui-modal>
 
-
 <sui-modal *ngIf="showReviewModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
   [size]="'normal'" class="sb-modal" appBodyScroll
   (dismissed)="showReviewModal = !showReviewModal" #modal>
@@ -178,12 +166,7 @@
   </div>
   <div class="sb-modal-content">
       <div class="sb-publish-content">
-        <div class="review-modal-list">
-          <!-- <ol class="list">
-            <li class="pb-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </li>
-            <li class="pb-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </li>
-            <li class="pb-8">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </li>
-          </ol> -->
+        <div class="review-modal-list"> 
           {{resourceDetails?.rejectComment}}
       </div>
       </div>

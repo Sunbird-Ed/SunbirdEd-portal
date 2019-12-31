@@ -20,7 +20,7 @@ import { ProgramStageService } from '../../../program/services';
   styleUrls: ['./question-list.component.scss']
 })
 
-export class QuestionListComponent implements OnInit, OnChanges {
+export class QuestionListComponent implements OnInit {
   @ViewChild('questionCreationChild') questionCreationChild: ElementRef;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
@@ -40,7 +40,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public questionMetaData: any;
   public refresh = true;
   public showLoader = true;
-  public enableRoleChange = false;
   public showSuccessModal = false;
   public showReviewModal = false;
   public showRequestChangesPopup = false;
@@ -49,15 +48,12 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public showPublishModal = false;
   public publishInProgress = false;
   public publishedResourceId: any;
-  public questionSelectionStatus: any;
   public existingContentVersionKey = '';
   public resourceTitleLimit = 100;
   public itemSetIdentifier: string;
   public deleteAssessmentItemIdentifie : string;
   public showTextArea = false;
   public resourceName: string;
-  selectedAll: any;
-  initialized: boolean;
   visibility: any;
   @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
 
@@ -71,22 +67,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     private resourceService: ResourceService,private collectionHierarchyService: CollectionHierarchyService,
     public programStageService: ProgramStageService) { }
 
-  ngOnChanges(changedProps: any) {
-    this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
-    if (this.enableRoleChange) {
-      this.initialized = false; // it should be false before fetch
-      if (this.sessionContext.questionType) {
-        this.fetchQuestionWithRole();
-      }
-    }
-    if ((this.sessionContext.currentRole === 'REVIEWER') || (this.sessionContext.currentRole === 'PUBLISHER')) {
-      this.sessionContext['showMode'] = 'previewPlayer';
-    } else {
-      this.sessionContext['showMode'] = 'editorForm';
-    }
-  }
-
   ngOnInit() {
+    this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
     this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
     this.actions = _.get(this.practiceQuestionSetComponentInput, 'programContext.config.actions');
@@ -94,8 +76,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.sessionContext.questionType = this.templateDetails.questionCategories[0];
     this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
     this.getContentMetadata(this.sessionContext.resourceIdentifier);
-    this.enableRoleChange = true;
-    this.selectedAll = false; 
   }
 
   getContentMetadata(contentId : string) {
@@ -218,14 +198,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.showLoader = true;
     this.getQuestionDetails(questionId).pipe(tap(data => this.showLoader = false))
       .subscribe((assessment_item) => {
-        let editorMode;
-        if (['Draft', 'Review', 'Reject'].includes(assessment_item.status)) {
-          editorMode = 'edit';
-        } else {
-          editorMode = 'view';
-        }
         this.questionMetaData = {
-          mode: editorMode,
+          mode: 'edit',
           data: assessment_item
         };
         if (this.sessionContext.resourceStatus === 'Draft' || this.sessionContext.resourceStatus === 'Rejected') {
@@ -233,24 +207,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
         } else {
           this.sessionContext.isReadOnlyMode = true;
         }
-        // min of 1sec timeOut is set, so that it should go to bottom of call stack and execute whennever the player data is available
-        if (this.sessionContext.showMode === 'previewPlayer' && this.initialized) {
-          this.showLoader = true;
-          setTimeout(() => {
-            this.showLoader = false;
-          }, 1000);
-        }
+        
         // tslint:disable-next-line:max-line-length
-        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view') && (this.sessionContext.showMode === 'editorForm')) {
+        if (this.role.currentRole === 'CONTRIBUTOR') {
           this.refreshEditor();
         }
-        this.initialized = true;
         if(isUpdate)  this.saveContent();
       });
-    const selectedQuestion = _.find(this.questionList, { identifier: questionId });
-    if (selectedQuestion) {
-      this.questionSelectionStatus = selectedQuestion.isSelected;
-    }
   }
 
   public getQuestionDetails(questionId) {
@@ -323,35 +286,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.refresh = true;
   }
 
-  // selectAll() {
-  //   _.forEach(this.questionList, (question) => {
-  //     question.isSelected = this.selectedAll;
-  //   });
-  //   this.questionSelectionStatus = this.selectedAll;
-  // }
-
-  // checkIfAllSelected(qs) {
-  //   this.selectedAll = this.questionList.every((question: any) => {
-  //     return question.isSelected === true;
-  //   });
-  //   if (this.selectedQuestionId === qs.identifier) {
-  //     this.questionSelectionStatus = qs.isSelected;
-  //   }
-  // }
-
-  // questionQueueStatusHandler(event) {
-  //   const selectedQuestion = _.find(this.questionList, { identifier: event.questionId });
-  //   if (selectedQuestion) {
-  //     selectedQuestion.isSelected = event.status;
-  //   }
-  //   this.selectedAll = this.questionList.every((question: any) => {
-  //     return question.isSelected === true;
-  //   });
-  //   this.questionSelectionStatus = event.status;
-  // }
-
   saveContent() {
-    // const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'status') == "Live");
     this.publishInProgress = true;
     this.publishButtonStatus.emit(this.publishInProgress);
     const selectedQuestionsData = _.reduce(this.questionList, (final, question) => {
@@ -422,7 +357,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     const reviewItemSet = this.itemsetService.reviewItemset(this.itemSetIdentifier);
     const reviewContent = this.helperService.reviewContent(this.sessionContext.resourceIdentifier);
     forkJoin([reviewItemSet, reviewContent]).subscribe((res: any) => {
-      let contentId = res[1].content_id;
+      let contentId = res[1].result.content_id;
       if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
         this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier,contentId )
         .subscribe((data) => {
@@ -456,7 +391,19 @@ export class QuestionListComponent implements OnInit, OnChanges {
       this.helperService.submitRequestChanges(this.sessionContext.resourceIdentifier, this.FormControl.value.rejectComment)
       .subscribe(res => {
         this.showRequestChangesPopup = false;
-        this.toasterService.success(this.resourceService.messages.smsg.m0062);
+        let contentId =  res.result.content_id;
+        if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
+          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier,contentId )
+          .subscribe((data) => {
+            this.toasterService.success(this.resourceService.messages.smsg.m0062);
+            this.programStageService.removeLastStage();
+            this.uploadedContentMeta.emit({
+              contentId: contentId
+            });
+          }, (err) => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m00100);
+          });
+        }
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.fmsg.m00100);
       });
@@ -476,11 +423,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
       })
     );
   }
-
-  // public selectQuestionCategory(questionCategory) {
-  //   this.sessionContext.questionType = questionCategory;
-  //   this.fetchQuestionWithRole();
-  // }
 
   public dismissPublishModal() {
     setTimeout(() => this.changeStage.emit('prev'), 0);
