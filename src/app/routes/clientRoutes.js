@@ -86,8 +86,10 @@ module.exports = (app, keycloak) => {
     next()
   })
 
+  app.all('/play/quiz/*', playContent);
+
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
-    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/explore-course', '/explore-course/*',
+    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
     '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/download/*', '/certs/*', '/recover/*'], redirectTologgedInPage, indexPage(false))
 
@@ -102,7 +104,6 @@ module.exports = (app, keycloak) => {
 
   app.all('/:tenantName', renderTenantPage)
 
-  app.all('/play/*', playContent)
 }
 
 function getLocals(req) {
@@ -247,7 +248,6 @@ const playContent = (req, res) => {
   if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
     res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
   } else {
-    redirectTologgedInPage(req, res);
-    indexPage(false)
+    renderDefaultIndexPage(req, res);
   }
 }
