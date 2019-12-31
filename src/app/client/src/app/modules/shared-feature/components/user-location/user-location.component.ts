@@ -49,6 +49,7 @@ export class UserLocationComponent implements OnInit {
   }
 
   ngOnInit() {
+    document.body.classList.add('no-scroll');
     this.initializeFormFields();
     this.getState();
   }
@@ -261,6 +262,7 @@ export class UserLocationComponent implements OnInit {
   }
 
   closeModal() {
+    document.body.classList.remove('no-scroll'); 
     this.userLocationModal.deny();
     this.close.emit();
   }
