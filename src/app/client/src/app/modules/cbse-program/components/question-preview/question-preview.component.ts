@@ -3,6 +3,7 @@ import { CbseProgramService } from '../../services';
 import * as _ from 'lodash-es';
 import {UserService} from '@sunbird/core';
 import {PlayerConfig} from './player.config';
+import { UUID } from 'angular2-uuid';
 
 
 @Component({
@@ -113,7 +114,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
         'ver': version,
         'pid': 'cbse-program-portal'
       },
-      'contentId': this.questionMetaData.data.identifier,
+      'contentId': this.questionMetaData.data.identifier || UUID.UUID(),
       'sid': this.userService.sessionId,
       'uid': this.userService.userid,
       'timeDiff': this.userService.getServerTimeDiff,
