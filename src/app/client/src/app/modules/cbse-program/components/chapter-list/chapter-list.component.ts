@@ -153,7 +153,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         role: this.role,
         selectedSharedContext: this.selectedSharedContext,
         contentIdentifier: this.contentId,
-        action: action
+        action: action,
+        programContext: _.get(this.chapterListComponentInput, 'programContext')
       }
     };
   }

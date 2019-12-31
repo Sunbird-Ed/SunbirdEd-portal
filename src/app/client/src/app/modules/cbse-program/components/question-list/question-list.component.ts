@@ -10,11 +10,13 @@ import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CbseProgramService } from '../../services';
 import { ItemsetService } from '../../services/itemset/itemset.service';
 import { HelperService } from '../../services/helper.service';
+
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.component.html',
   styleUrls: ['./question-list.component.scss']
 })
+
 export class QuestionListComponent implements OnInit, OnChanges {
   @ViewChild('questionCreationChild') questionCreationChild: ElementRef;
   @Output() changeStage = new EventEmitter<any>();
@@ -23,6 +25,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public sessionContext: any;
   public role: any;
   public templateDetails: any;
+  public actions: any;
   public questionList : Array<any> = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
@@ -34,8 +37,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public enableRoleChange = false;
   public showSuccessModal = false;
   public showReviewModal = false;
-  public showAddReviewModal = false;
-  public showDelectContentModal = false;
+  public showRequestChangesPopup = false;
+  public showDeleteQuestionModal = false;
   public disableSubmitBtn: boolean = true;
   public showPublishModal = false;
   public publishInProgress = false;
@@ -44,24 +47,23 @@ export class QuestionListComponent implements OnInit, OnChanges {
   public existingContentVersionKey = '';
   public resourceTitleLimit = 100;
   public itemSetIdentifier: string;
-  selectedAll: any;
-  initialized: boolean;
+  public deleteAssessmentItemIdentifie : string;
   public showTextArea = false;
   public resourceName: string;
+  selectedAll: any;
+  initialized: boolean;
+  visibility: any;
   @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
-  private questionTypeName = {
-    vsa: 'Very Short Answer',
-    sa: 'Short Answer',
-    la: 'Long Answer',
-    mcq: 'Multiple Choice Question',
-    curiosity: 'Curiosity Question'
-  };
 
-  constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
-    public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService,
-    public telemetryService: TelemetryService, private fb: FormBuilder, private cbseService: CbseProgramService,
-    public contentService: ContentService, private itemsetService: ItemsetService, private helperService: HelperService) {
+  constructor(
+    private configService: ConfigService, private userService: UserService,
+    private publicDataService: PublicDataService,public actionService: ActionService,
+    private cdr: ChangeDetectorRef, public toasterService: ToasterService,
+    public telemetryService: TelemetryService, private fb: FormBuilder,
+    private cbseService: CbseProgramService, public contentService: ContentService, 
+    private itemsetService: ItemsetService, private helperService: HelperService) {
   }
+
   ngOnChanges(changedProps: any) {
     this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
     if (this.enableRoleChange) {
@@ -76,10 +78,11 @@ export class QuestionListComponent implements OnInit, OnChanges {
       this.sessionContext['showMode'] = 'editorForm';
     }
   }
+
   ngOnInit() {
-    // console.log('changes detected in question list', this.role);
     this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
+    this.actions = _.get(this.practiceQuestionSetComponentInput, 'programContext.config.actions');
     this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
     this.sessionContext.questionType = this.templateDetails.questionCategories[0];
     this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
@@ -97,9 +100,28 @@ export class QuestionListComponent implements OnInit, OnChanges {
         }
         this.fetchQuestionWithRole();
       }
+      this.handleActionButtons();
     });
     this.enableRoleChange = true;
-    this.selectedAll = false;
+    this.selectedAll = false; 
+  }
+
+  handleActionButtons() {
+    this.visibility = {};
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showCreateQuestion'] = (_.includes(this.actions.showCreateQuestion.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showDeleteQuestion'] = (_.includes(this.actions.showDeleteQuestion.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft' && this.questionList.length > 1);
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showRequestChanges'] = (_.includes(this.actions.showRequestChanges.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Review');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showPublish'] = (_.includes(this.actions.showPublish.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Review');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showSubmit'] = (_.includes(this.actions.showSubmit.roles, this.sessionContext.currentRoleId)  && this.resourceStatus === 'Draft');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showSave'] = (_.includes(this.actions.showSave.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
+     // tslint:disable-next-line:max-line-length
+    this.visibility['showEdit'] = (_.includes(this.actions.showEdit.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
   }
 
   public createDefaultQuestionAndItemset() {
@@ -126,7 +148,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
       return this.updateContent(reqBody,this.sessionContext.resourceIdentifier)
     }))))
     .subscribe(() => {
-        this.fetchQuestionList();
+        setTimeout(() => {
+          this.fetchQuestionList();
+        }, 1000);
     });
   }
 
@@ -218,13 +242,14 @@ export class QuestionListComponent implements OnInit, OnChanges {
           this.refreshEditor();
         }
         this.initialized = true;
-        if(isUpdate)  this.saveResource();
+        if(isUpdate)  this.saveContent();
       });
     const selectedQuestion = _.find(this.questionList, { identifier: questionId });
     if (selectedQuestion) {
       this.questionSelectionStatus = selectedQuestion.isSelected;
     }
   }
+
   public getQuestionDetails(questionId) {
     if (this.questionReadApiDetails[questionId]) {
       return of(this.questionReadApiDetails[questionId]);
@@ -241,6 +266,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }));
   }
+
   public createNewQuestion(): void {
     this.createDefaultAssessmentItem().pipe(
       map((data: any) => {
@@ -255,7 +281,9 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }),
     mergeMap(requestParams => this.updateItemset(requestParams, this.itemSetIdentifier)))
     .subscribe((contentRes: any) => {
+      setTimeout(() => {
         this.fetchQuestionList();
+      }, 1000);
     });
   }
   
@@ -279,14 +307,6 @@ export class QuestionListComponent implements OnInit, OnChanges {
         this.showLoader = true;
         setTimeout(() => this.fetchQuestionList(true), 2000);
       } 
-    
-      // if (event.type === 'Reject' || event.type === 'Live') {
-      //   this.showLoader = true;
-      //   setTimeout(() => this.fetchQuestionList(true), 2000);
-      // } else {
-      //   this.showLoader = true;
-      //   setTimeout(() => this.fetchQuestionList(), 2000);
-      // }
     }
   }
 
@@ -326,7 +346,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     this.questionSelectionStatus = event.status;
   }
 
-  public saveResource() {
+  public saveContent() {
     // const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'status') == "Live");
     this.publishInProgress = true;
     this.publishButtonStatus.emit(this.publishInProgress);
@@ -359,7 +379,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
                 'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
                 'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
                 // tslint:disable-next-line:max-line-length
-                name: this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`,
+                name: this.resourceName,
                 'programId': this.sessionContext.programId,
                 'program': this.sessionContext.program,
                 'plugins': [{
@@ -394,7 +414,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
     }
   }
 
-  submitButtonHandler() {
+  sendForReview() {
     const reviewContent = this.reviewResource(this.sessionContext.resourceIdentifier);
     const reviewItemSet = this.itemsetService.reviewItemset(this.itemSetIdentifier);
     forkJoin([reviewItemSet, reviewContent]).subscribe((response: any) => {
@@ -421,7 +441,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
   }
 
-  publishResource(contentId) {
+  publichContent(contentId) {
     const requestBody = {
       request: {
         content: {
@@ -438,13 +458,13 @@ export class QuestionListComponent implements OnInit, OnChanges {
       const errInfo = { errorMsg: 'Resource updation failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }))
-      .subscribe(response => {
-        this.publishedResourceId = response.result.content_id || response.result.node_id || '';
-        this.toasterService.success('Content published successfully');
-      }, (err) => {
-        this.publishInProgress = false;
-        this.publishButtonStatus.emit(this.publishInProgress);
-      });
+    .subscribe(response => {
+      this.publishedResourceId = response.result.content_id || response.result.node_id || '';
+      this.toasterService.success('Content published successfully');
+    }, (err) => {
+      this.publishInProgress = false;
+      this.publishButtonStatus.emit(this.publishInProgress);
+    });
   }
 
   getContentVersion(contentId) {
@@ -460,6 +480,7 @@ export class QuestionListComponent implements OnInit, OnChanges {
       })
     );
   }
+
   public selectQuestionCategory(questionCategory) {
     this.sessionContext.questionType = questionCategory;
     this.fetchQuestionWithRole();
@@ -469,12 +490,30 @@ export class QuestionListComponent implements OnInit, OnChanges {
     setTimeout(() => this.changeStage.emit('prev'), 0);
   }
 
-  deleteQuestion(index, identifier) {
-    console.log(index);
-    console.log(identifier);
-    const selectedQuestions = _.filter(this.questionList, (question) => question.identifier === identifier);
-    console.log(this.questionList[index]);
-    console.log(selectedQuestions);
+  openDeleteQuestionModal(identifier : string) {
+    this.deleteAssessmentItemIdentifie = identifier;
+    console.log(this.deleteAssessmentItemIdentifie);
+    this.showDeleteQuestionModal = true;
+  }
+
+  deleteQuestion() {
+    const request = {
+      url: `${this.configService.urlConFig.URLS.ASSESSMENT.RETIRE}/${this.deleteAssessmentItemIdentifie}` 
+    };
+
+    this.actionService.delete(request).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Question deletion failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }))
+    .subscribe((res) => {
+      if (res.responseCode === 'OK') {
+        this.showDeleteQuestionModal = false;
+        this.toasterService.success('Question deleted successfully');
+        this.fetchQuestionList();
+      }
+    }, error => {
+      console.log(error);
+    });
   }
 
   public showResourceTitleEditor() {
