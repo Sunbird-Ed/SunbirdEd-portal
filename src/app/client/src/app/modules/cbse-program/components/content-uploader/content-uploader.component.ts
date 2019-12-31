@@ -21,7 +21,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   @ViewChild('modal') modal;
   @ViewChild('fineUploaderUI') fineUploaderUI: ElementRef;
   @ViewChild('qq-upload-actions') actionButtons: ElementRef;
-  @ViewChild('FormControl') private FormControl;
+  @ViewChild('FormControl') FormControl: NgForm;
   // @ViewChild('contentTitle') contentTitle: ElementRef;
   @Input() contentUploadComponentInput: IContentUploadComponentInput;
 
@@ -38,7 +38,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   public playerConfig;
   public showPreview = false;
   public resourceStatus;
-  showFormError = false;
   showForm;
   uploader;
   loading;
@@ -55,6 +54,11 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   showTextArea: boolean;
   changeFile_instance: boolean;
   showRequestChangesPopup = false;
+  disableFormField: boolean;
+  showReviewModal = false;
+  showUploadModal = true;
+  submitButton: boolean;
+  uploadButton: boolean;
 
   constructor(public toasterService: ToasterService, private userService: UserService,
     private publicDataService: PublicDataService, public actionService: ActionService,
@@ -70,17 +74,17 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
     this.programContext = _.get(this.contentUploadComponentInput, 'programContext');
     this.actions = _.get(this.contentUploadComponentInput, 'programContext.config.actions');
-    this.getUploadedContentMeta(_.get(this.contentUploadComponentInput, 'contentId'));
-  }
-
-  ngAfterViewInit() {
     if (_.get(this.contentUploadComponentInput, 'action') === 'preview') {
+      this.showUploadModal = false;
       this.showPreview = true;
       this.cd.detectChanges();
       this.getUploadedContentMeta(_.get(this.contentUploadComponentInput, 'contentId'));
-    } else {
+    }
+  }
+
+  ngAfterViewInit() {
+    if (_.get(this.contentUploadComponentInput, 'action') !== 'preview') {
       this.initiateUploadModal();
-      this.fineUploaderUI.nativeElement.remove();
     }
   }
 
@@ -127,6 +131,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         }
       }
     });
+    this.fineUploaderUI.nativeElement.remove();
   }
 
   uploadContent() {
@@ -136,9 +141,9 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     }
     let fileUpload = false;
     if (this.uploader.getFile(0) != null) {
+      this.uploadButton = true;
       fileUpload = true;
     }
-    console.log(this.uploader.getFile(0) + this.uploader.getName(0));
     const mimeType = fileUpload ? this.detectMimeType(this.uploader.getName(0)) : this.detectMimeType(this.contentURL);
     if (!mimeType) {
       this.toasterService.error('Invalid content type (supported type: pdf, epub, h5p, mp4, html-zip, webm)');
@@ -234,25 +239,32 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         contentData: res
       };
       this.contentMetaData = res;
+      this.editTitle = this.contentMetaData.name;
+      this.resourceStatus = this.contentMetaData.status;
       this.playerConfig = this.playerService.getConfig(contentDetails);
       this.playerConfig.context.pdata.pid = 'cbse-program-portal';
       this.showPreview = this.contentMetaData.artifactUrl ? true : false;
+      this.showUploadModal = this.contentMetaData.artifactUrl ? false : true;
+      if (this.showUploadModal) {
+        return setTimeout(() => {
+          this.initiateUploadModal();
+        }, 0);
+      }
       this.loading = false;
       this.handleActionButtons();
       // At the end of execution
       this.fetchFrameWorkDetails();
       this.manageFormConfiguration();
-      this.editTitle = this.contentMetaData.name;
-      this.resourceStatus = this.contentMetaData.status;
       this.cd.detectChanges();
     });
   }
 
-  public closeModal(action?) {
-    if (this.modal && this.modal.deny && action === 'Cancel' && this.changeFile_instance) {
+  public closeUploadModal() {
+    if (this.modal && this.modal.deny && this.changeFile_instance) {
       this.showPreview = true;
+      this.showUploadModal = false;
       this.changeFile_instance = false;
-    } else if (this.modal && this.modal.deny && action === 'Cancel') {
+    } else if (this.modal && this.modal.deny && this.showUploadModal) {
       this.modal.deny();
       this.programStageService.removeLastStage();
     }
@@ -286,6 +298,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
     this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
     this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
+
+    this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.resourceStatus === 'Draft') ? false : true ;
     const formFields = _.map(this.formConfiguration, (formData) => {
       if (!formData.defaultValue) {
         return formData.code;
@@ -308,7 +322,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       selectionArr: this.formBuilder.array([ ]),
       multiSelectionArr: this.formBuilder.array([ ])
     });
-    const disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR') ? false : true ;
+
     _.forEach(this.selectionFields, (obj) => {
       const controlName = {};
       const code = obj.code;
@@ -327,7 +341,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       const preSavedValues = {};
       // tslint:disable-next-line:max-line-length
       preSavedValues[code] = (this.contentMetaData && this.contentMetaData[code] && this.contentMetaData[code].length) ? this.contentMetaData[code] : [];
-      obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = preSavedValues[code];
+      obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = [preSavedValues[code]];
       this.multiSelectionArr = this.contentDetailsForm.get('multiSelectionArr') as FormArray;
       this.multiSelectionArr.push(this.formBuilder.group(controlName));
     });
@@ -338,7 +352,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       const preSavedValues = {};
       preSavedValues[code] = (this.contentMetaData && this.contentMetaData[code]) ? this.contentMetaData[code] : '';
       // tslint:disable-next-line:max-line-length
-      obj.required ? controlName[obj.code] = [{value: preSavedValues[code], disabled: disableFormField}, Validators.required] : controlName[obj.code] = preSavedValues[code];
+      obj.required ? controlName[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controlName[obj.code] = preSavedValues[code];
       this.textInputArr = this.contentDetailsForm.get('textInputArr') as FormArray;
       this.textInputArr.push(this.formBuilder.group(controlName));
     });
@@ -354,8 +368,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     });
   }
 
-  saveContent() {
-    if (this.contentDetailsForm.valid) {
+  saveContent(action?) {
+    if (this.contentDetailsForm.valid && this.editTitle && this.editTitle !== '') {
       this.showTextArea = false;
       this.formValues = {};
         _.map(this.contentDetailsForm.value, (value, key) => { _.map(value, (obj) => { _.assign(this.formValues, obj); });
@@ -370,14 +384,20 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       };
       this.helperService.updateContent(request, this.contentMetaData.identifier).subscribe((res) => {
         this.contentMetaData.versionKey = res.result.versionKey;
-        if (this.sessionContext.collection && this.unitIdentifier) {
+        if (action === 'review') {
+          this.sendForReview();
+        } else if (this.sessionContext.collection && this.unitIdentifier && action !== 'review') {
           this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
           .subscribe((data) => {
             this.toasterService.success(this.resourceService.messages.smsg.m0060);
+          }, (err) => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0098);
           });
         } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0098);
+          this.toasterService.success(this.resourceService.messages.smsg.m0060);
         }
+      }, (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0098);
       });
     } else {
       // this.toasterService.error('Please Fill Mandatory Form-Fields...');
@@ -406,13 +426,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
        });
   }
 
-  closeRequestChangesModal() {
-    this.modal.deny();
-  }
-
-  requestChanges(comments) {
+  requestChanges() {
     if (this.FormControl.value.rejectComment) {
-      this.showFormError = false;
       this.helperService.submitRequestChanges(this.contentMetaData.identifier, this.FormControl.value.rejectComment)
       .subscribe(res => {
         this.showRequestChangesPopup = false;
@@ -429,8 +444,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.fmsg.m00100);
       });
-    } else {
-      this.showFormError = true;
     }
   }
 
@@ -464,10 +477,10 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
 
   changeFile() {
     this.changeFile_instance = true;
-    this.showPreview = false;
+    this.uploadButton = false;
+    this.showUploadModal = true;
     setTimeout(() => {
       this.initiateUploadModal();
-      this.fineUploaderUI.nativeElement.remove();
     }, 0);
   }
 }
