@@ -1,4 +1,4 @@
-export interface ContentDetailsInterface {
+export interface ContentDetails {
     description: string;
     board: string;
     medium: string;

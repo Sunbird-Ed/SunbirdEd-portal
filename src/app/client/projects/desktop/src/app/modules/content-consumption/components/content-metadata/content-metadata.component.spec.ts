@@ -6,7 +6,6 @@ import { SuiAccordionModule } from 'ng2-semantic-ui';
 import { OrderModule } from 'ngx-order-pipe';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {contentMetaData} from './content-metadata.component.spec.data';
-import {ContentDetailsInterface} from './content-metadata.component.interface';
 
 describe('ContentMetadataComponent', () => {
   let component: ContentMetadataComponent;
