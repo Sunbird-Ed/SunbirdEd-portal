@@ -24,6 +24,8 @@ export class UserLocationComponent implements OnInit {
   @ViewChild('userLocationModal') userLocationModal;
   @ViewChild('stateDiv') stateDiv;
   @ViewChild('districtDiv') districtDiv;
+  public stateValue;
+  public districtValue;
   userDetailsForm: FormGroup;
   public processedDeviceLocation: any = {};
   selectedState;
@@ -256,29 +258,6 @@ export class UserLocationComponent implements OnInit {
       this.allDistricts = res.result.response;
       return res.result.response;
     }));
-  }
-
-  clearInput(event, formControlName) {
-    setTimeout(() => {
-      switch (formControlName) {
-        case 'state': {
-          if (this.stateDiv.query && event.target.value) {
-            this.userDetailsForm.get(formControlName).reset();
-            this.stateDiv.query = '';
-            this.stateDiv.focus();
-          }
-          break;
-        }
-        case 'district': {
-          if (this.districtDiv.query && event.target.value) {
-            this.userDetailsForm.get(formControlName).reset();
-            this.districtDiv.query = '';
-            this.districtDiv.focus();
-          }
-          break;
-        }
-      }
-    }, 500);
   }
 
   closeModal() {
