@@ -87,7 +87,7 @@ module.exports = (app, keycloak) => {
   })
 
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
-    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
+    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
     '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/download/*', '/certs/*', '/recover/*'], redirectTologgedInPage, indexPage(false))
 
@@ -101,6 +101,8 @@ module.exports = (app, keycloak) => {
     '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
+
+  app.all('/play/*', playContent)
 }
 
 function getLocals(req) {
@@ -161,8 +163,6 @@ const renderDefaultIndexPage = (req, res) => {
   const mobileDetect = new MobileDetect(req.headers['user-agent'])
   if ((req.path == '/get' || req.path == `/${req.params.slug}/get`) && mobileDetect.os() == 'AndroidOS') {
     res.redirect(envHelper.ANDROID_APP_URL)
-  } else if (req.path.includes('/play/quiz')) {
-    res.sendFile((path.join(__dirname, '../tenant/quiz/', 'index.html')));
   } else {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0')
     res.locals = getLocals(req);
@@ -241,4 +241,13 @@ const redirectTologgedInPage = (req, res) => {
 	} else {
 		renderDefaultIndexPage(req, res)
 	}
+}
+
+const playContent = (req, res) => {
+  if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
+    res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
+  } else {
+    redirectTologgedInPage(req, res);
+    indexPage(false)
+  }
 }
