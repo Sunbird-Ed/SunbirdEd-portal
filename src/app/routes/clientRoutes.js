@@ -103,7 +103,6 @@ module.exports = (app, keycloak) => {
     '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
-
 }
 
 function getLocals(req) {
