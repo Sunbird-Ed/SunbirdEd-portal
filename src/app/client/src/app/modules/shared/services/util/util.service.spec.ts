@@ -181,4 +181,11 @@ describe('UtilService', () => {
       service.emitLanguageChangeEvent(language);
       expect(service.languageChange.emit).toHaveBeenCalledWith(language);
     }));
+
+  it('should call emitHideHeaderTabsEvent', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      spyOn(service.hideHeaderTabs, 'emit');
+      service.emitHideHeaderTabsEvent(true);
+      expect(service.hideHeaderTabs.emit).toHaveBeenCalledWith(true);
+    }));
 });

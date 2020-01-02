@@ -43,6 +43,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public telemetryCdata: Array<{}> = [];
   public closeIntractEdata: IInteractEventEdata;
+  public selectChapterTelemetryCdata: Array<{}> = [];
+  public selectChapterInteractEdata: IInteractEventEdata;
   public showMobilePopup = false;
   public isRedirectToDikshaApp = false;
   public closeMobilePopupInteractData: any;
@@ -58,6 +60,10 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   redirectCollectionUrl: string;
   redirectContentUrl: string;
   showDownloadLoader = false;
+  isBrowse = false;
+  showSelectChapter = false;
+  chapterName: string;
+  dialContentId: string;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
@@ -110,6 +116,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   private initialize = (params) => {
     EkTelemetry.config.batchsize = 2;
+    this.isBrowse = Boolean(this.router.url.includes('browse'));
     this.dialSearchSource = _.get(params, 'source') || 'search';
     this.itemsToDisplay = [];
     this.searchResults = [];
@@ -121,7 +128,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
 
   private processDialCode(params) {
-    return this.dialCodeService.searchDialCode(_.get(params, 'dialCode'))
+    return this.dialCodeService.searchDialCode(_.get(params, 'dialCode'), this.isBrowse)
       .pipe(
         mergeMap(this.dialCodeService.filterDialSearchResults)
       )
@@ -230,7 +237,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
 
 
-  closeMobileAppPopup () {
+  closeMobileAppPopup() {
     if (!this.isRedirectToDikshaApp) {
       this.telemetryService.interact(this.closeMobilePopupInteractData);
       (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
@@ -238,7 +245,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     }
   }
 
-  redirectToDikshaApp () {
+  redirectToDikshaApp() {
     this.isRedirectToDikshaApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
@@ -247,7 +254,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     applink = `${applink}&utm_source=${utm_source}&utm_medium=${this.dialSearchSource}&utm_campaign=dial&utm_term=${this.dialCode}`;
     window.location.href = applink.replace(/\s+/g, '');
   }
-  setTelemetryData () {
+  setTelemetryData() {
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
     }
@@ -268,6 +275,17 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'get-dial',
     };
+
+    this.selectChapterInteractEdata = {
+      id: 'select-chapter-button',
+      type: 'click',
+      pageid: 'get-dial'
+    };
+
+    this.selectChapterTelemetryCdata = [
+      { 'type': 'DialCode', 'id': this.dialCode },
+      { 'id': 'scan:result:collection:list', 'type': 'Feature' },
+      { 'id': 'SB-15628', 'type': 'Task' }];
 
     this.appMobileDownloadInteractData = {
       context: {
@@ -308,13 +326,13 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  handleMobilePopupBanner () {
+  handleMobilePopupBanner() {
     setTimeout(() => {
       this.showMobilePopup = true;
     }, 500);
   }
 
-  startDownload (contentId) {
+  startDownload(contentId) {
     this.contentManagerService.downloadContentId = contentId;
     this.contentManagerService.startDownload({}).subscribe(data => {
       this.contentManagerService.downloadContentId = '';

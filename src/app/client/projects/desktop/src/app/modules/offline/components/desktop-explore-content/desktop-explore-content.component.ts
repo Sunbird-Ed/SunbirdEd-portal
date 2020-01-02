@@ -1,8 +1,8 @@
-import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
+import { Subject } from 'rxjs';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { takeUntil, map, debounceTime, delay, filter } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   ResourceService, ConfigService, ToasterService, INoResultMessage,
@@ -49,6 +49,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
 
   @Input() contentList: any[] = [];
   @Input() isOnlineContents = false;
+  @Output() visits: EventEmitter<any> = new EventEmitter();
 
   constructor(
     public contentManagerService: ContentManagerService,
@@ -74,6 +75,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isBrowse = this.isOnlineContents;
     this.setTelemetryData();
+    this.prepareVisits();
     this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(isConnected => {
@@ -86,13 +88,9 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.updateCardData(data);
       });
 
-    this.router.events.pipe(
-      filter((event) => event instanceof NavigationStart),
-      takeUntil(this.unsubscribe$))
-      .subscribe(element => { this.prepareVisits(); });
   }
 
- ngOnDestroy() {
+  ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -144,7 +142,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
       edata: {
         id: actionId,
         type: 'click',
-        pageid: _.split(this.router.url, '/')[1] || 'library'
+        pageid: _.split(_.split(this.router.url, '/')[1], '?')[0] || 'library'
       }
     };
 
@@ -159,18 +157,16 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   }
 
   prepareVisits() {
-    const visits = [];
+    const data: any = { visits: [] };
     _.forEach(this.contentList, (content, index) => {
-      visits.push({
+      data.visits.push({
         objid: content.metaData.identifier,
         objtype: content.metaData.contentType,
         index: index,
       });
     });
 
-    this.telemetryImpression.edata.visits = visits;
-    this.telemetryImpression.edata.subtype = 'pageexit';
-    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    this.visits.emit(data);
   }
 
   hoverActionClicked(event) {

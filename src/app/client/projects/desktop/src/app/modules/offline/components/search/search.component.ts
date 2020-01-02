@@ -8,7 +8,6 @@ import {
   ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, NavigationHelperService
 } from '@sunbird/shared';
-import { PublicPlayerService } from '@sunbird/public';
 import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { ContentManagerService } from '../../services';
@@ -39,11 +38,16 @@ export class SearchComponent implements OnInit {
 
   isContentNotAvailable = false;
   readonly MAX_CARDS_TO_SHOW: number = 10;
+  visits = [];
 
 
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
+  onlineLibraryLinkInteractEdata: IInteractEventEdata;
+  myDownloadsLinkInteractEdata: IInteractEventEdata;
+  viewMoreButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
+
   constructor(
     public contentManagerService: ContentManagerService,
     public router: Router,
@@ -53,7 +57,6 @@ export class SearchComponent implements OnInit {
     public toasterService: ToasterService,
     public configService: ConfigService,
     public utilService: UtilService,
-    private publicPlayerService: PublicPlayerService,
     public location: Location,
     public orgDetailsService: OrgDetailsService,
     public frameworkService: FrameworkService,
@@ -65,12 +68,17 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).subscribe((orgDetails: any) => {
-      this.hashTagId = orgDetails.hashTagId;
-      this.initFilters = true;
-    }, error => {
-      this.router.navigate(['']);
-    });
+    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((orgDetails: any) => {
+        this.hashTagId = orgDetails.hashTagId;
+        this.initFilters = true;
+      }, error => {
+        this.router.navigate(['']);
+      });
+
+    this.setTelemetryData();
+    this.utilService.emitHideHeaderTabsEvent(true);
   }
 
   public getFilters(filters) {
@@ -86,7 +94,7 @@ export class SearchComponent implements OnInit {
     this.fetchContents();
   }
 
-  private fetchContentOnParamChange() {
+  fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
       .pipe(debounceTime(5),
         delay(10),
@@ -100,7 +108,7 @@ export class SearchComponent implements OnInit {
       });
   }
 
-  private fetchContents() {
+  fetchContents() {
     const onlineRequest = _.cloneDeep(this.constructSearchRequest());
     onlineRequest.params.online = true;
 
@@ -196,16 +204,70 @@ export class SearchComponent implements OnInit {
 
   setNoResultMessage() {
     this.noResultMessage = {
-      messageText: 'messages.stmsg.m0006',
-      message: 'frmelmnts.lbl.searchNotMatchCh',
+      messageText: 'messages.stmsg.m0006'
     };
   }
+
   clearSearchQuery() {
     this.utilService.clearSearchQuery();
+  }
+
+  setTelemetryData() {
+    this.visits = [];
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationHelperService.getPageLoadTime()
+      }
+    };
+
+    this.backButtonInteractEdata = {
+      id: 'back-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.filterByButtonInteractEdata = {
+      id: 'filter-by-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.myDownloadsLinkInteractEdata = {
+      id: 'my-downloads-link',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.onlineLibraryLinkInteractEdata = {
+      id: 'online-library-link',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.viewMoreButtonInteractEdata = {
+      id: 'view-more-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+  }
+
+  prepareVisits(event) {
+    this.visits = [...this.visits, ...event.visits];
+    this.telemetryImpression.edata.visits = this.visits;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.utilService.emitHideHeaderTabsEvent(false);
   }
 }

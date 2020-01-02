@@ -1,5 +1,5 @@
 import { combineLatest, Subject } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, map, debounceTime, delay } from 'rxjs/operators';
@@ -20,7 +20,7 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
   templateUrl: './view-more.component.html',
   styleUrls: ['./view-more.component.scss']
 })
-export class ViewMoreComponent implements OnInit {
+export class ViewMoreComponent implements OnInit, OnDestroy {
   showLoader = true;
   noResultMessage: INoResultMessage;
   filterType: string;
@@ -41,10 +41,14 @@ export class ViewMoreComponent implements OnInit {
   isBrowse = false;
   showDownloadLoader = false;
   downloadedContents: any[] = [];
+  visits: any = [];
 
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
+  onlineLibraryLinkInteractEdata: IInteractEventEdata;
+  myDownloadsLinkInteractEdata: IInteractEventEdata;
+
   constructor(
     public contentManagerService: ContentManagerService,
     public router: Router,
@@ -68,12 +72,16 @@ export class ViewMoreComponent implements OnInit {
 
   ngOnInit() {
     this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
-    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).subscribe((orgDetails: any) => {
-      this.hashTagId = orgDetails.hashTagId;
-      this.initFilters = true;
-    }, error => {
-      this.router.navigate(['']);
-    });
+    this.setTelemetryData();
+    this.utilService.emitHideHeaderTabsEvent(true);
+    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((orgDetails: any) => {
+        this.hashTagId = orgDetails.hashTagId;
+        this.initFilters = true;
+      }, error => {
+        this.router.navigate(['']);
+      });
 
     this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$))
@@ -81,18 +89,20 @@ export class ViewMoreComponent implements OnInit {
         this.isConnected = isConnected;
       });
 
-    this.activatedRoute.queryParams.subscribe((queryParams) => {
-      this.queryParams = { ...queryParams };
-      this.apiQuery = JSON.parse(this.queryParams.apiQuery);
+    this.activatedRoute.queryParams
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((queryParams) => {
+        this.queryParams = { ...queryParams };
+        this.apiQuery = JSON.parse(this.queryParams.apiQuery);
 
-      if (_.includes(this.router.url, 'view-all')) {
-        this.isViewAll = true;
-        this.fetchRecentlyAddedContent(false);
-      } else {
-        this.fetchContents(false);
-        this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
-      }
-    });
+        if (_.includes(this.router.url, 'view-all')) {
+          this.isViewAll = true;
+          this.fetchRecentlyAddedContent(false);
+        } else {
+          this.fetchContents(false);
+          this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
+        }
+      });
   }
 
   public getFilters(filters) {
@@ -242,5 +252,58 @@ export class ViewMoreComponent implements OnInit {
         'messageText': 'messages.stmsg.m0006'
       };
     }
+  }
+
+  setTelemetryData() {
+    this.visits = [];
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url.split('?')[0],
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationHelperService.getPageLoadTime()
+      }
+    };
+
+    this.backButtonInteractEdata = {
+      id: 'back-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.filterByButtonInteractEdata = {
+      id: 'filter-by-button',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.myDownloadsLinkInteractEdata = {
+      id: 'my-downloads-link',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+
+    this.onlineLibraryLinkInteractEdata = {
+      id: 'online-library-link',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+  }
+
+  prepareVisits(event) {
+    this.visits = [...this.visits, ...event.visits];
+    this.telemetryImpression.edata.visits = this.visits;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    this.utilService.emitHideHeaderTabsEvent(false);
   }
 }
