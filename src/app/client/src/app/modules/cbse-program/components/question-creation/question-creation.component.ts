@@ -35,7 +35,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   private prevShowPreview = true;
   public previewData: any;
   public mediaArr = [];
-  public rejectComment: any;
   public userName: any;
   public showRequestChangesPopup = false;
   @Input() tabIndex: any;
@@ -189,9 +188,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.isReadOnlyMode = true;
     } else if ((this.sessionContext.role === 'CONTRIBUTOR') && (this.sessionContext.resourceStatus = 'Draft')) {
       this.isReadOnlyMode = false;
-    }
-    if (this.questionMetaData && this.questionMetaData.data.rejectComment && this.questionMetaData.data.rejectComment !== '') {
-      this.rejectComment = this.questionMetaData.data.rejectComment;
     }
   }
   ngAfterViewChecked() {
@@ -431,7 +427,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.ReuestChangeForm.value.rejectComment) {
       this.handleReviewrStatus({ 'status' : 'Draft', 'rejectComment':  this.ReuestChangeForm.value.rejectComment});
       this.showRequestChangesPopup = false;
-      this.rejectComment = this.ReuestChangeForm.value.rejectComment;
+      this.ReuestChangeForm.reset();
     }
   }
 

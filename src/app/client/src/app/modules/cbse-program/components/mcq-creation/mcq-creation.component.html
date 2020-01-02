@@ -1,7 +1,5 @@
-<app-question-creation-header *ngIf="questionMetaData" (buttonType)="buttonTypeHandler($event)"
-  [rejectComment]="rejectComment" [questionMetaData]="questionMetaData" [disableSubmission]="isEditorThrowingError"
-  (questionStatus)="handleReviewrStatus($event)" (questionQueueStatus)="handleQuestionSelectionStatus($event)"
-  [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
+
+<app-question-creation-header *ngIf="questionMetaData" [questionMetaData]="questionMetaData" [role]="role"></app-question-creation-header>
 
 <div *ngIf='showForm'>
   <form #mcqFormControl="ngForm" class="ui form mcq-vertical mt-8" *ngIf="!showPreview">

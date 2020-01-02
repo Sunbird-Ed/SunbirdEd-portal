@@ -122,8 +122,8 @@ export class QuestionListComponent implements OnInit {
     this.visibility['showEdit'] = (_.includes(this.actions.showEdit.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
   }
 
-  public isPublishBtnDisable() {
-    return _.find(this.questionList, (question) => !question.rejectComment || question.rejectComment === '');
+  get isPublishBtnDisable() {
+    return _.find(this.questionList, (question) => question.rejectComment && question.rejectComment !== '');
   }
 
   public createDefaultQuestionAndItemset() {
@@ -206,6 +206,10 @@ export class QuestionListComponent implements OnInit {
         } else {
           this.sessionContext.isReadOnlyMode = true;
         }
+        if (assessment_item.rejectComment && assessment_item.rejectComment !== '') {
+          const index = _.findIndex(this.questionList, {identifier: questionId});
+          this.questionList.splice(index, 1, assessment_item);
+        }
         // tslint:disable-next-line:max-line-length
         if (this.role.currentRole === 'CONTRIBUTOR') {
           this.refreshEditor();
@@ -262,13 +266,9 @@ export class QuestionListComponent implements OnInit {
     if (event.status === 'failed') {
       console.log('failed');
     } else {
-      if (event.type === 'update') {
+      if (event.type === 'update' || event.type === 'Draft' || event.type === 'Live') {
         delete this.questionReadApiDetails[event.identifier];
-        this.handleQuestionTabChange(this.selectedQuestionId,true);
-      }
-      if (event.type === 'Draft' || event.type === 'Live') {
-        this.showLoader = true;
-        setTimeout(() => this.fetchQuestionList(true), 2000);
+        this.handleQuestionTabChange(this.selectedQuestionId,  true);
       }
     }
   }
