@@ -190,8 +190,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     } else if ((this.sessionContext.role === 'CONTRIBUTOR') && (this.sessionContext.resourceStatus = 'Draft')) {
       this.isReadOnlyMode = false;
     }
-    if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' &&
-      this.questionMetaData.data.rejectComment) {
+    if (this.questionMetaData && this.questionMetaData.data.rejectComment && this.questionMetaData.data.rejectComment !== '') {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
   }
@@ -332,6 +331,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               this.questionRejected = true;
             }
           });
+        } else {
+          option.data.request.assessment_item.metadata['rejectComment'] = '';
         }
         this.actionService.patch(option).pipe(catchError(err => {
           const errInfo = { errorMsg: 'Question updation failed' };
@@ -430,6 +431,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.ReuestChangeForm.value.rejectComment) {
       this.handleReviewrStatus({ 'status' : 'Draft', 'rejectComment':  this.ReuestChangeForm.value.rejectComment});
       this.showRequestChangesPopup = false;
+      this.rejectComment = this.ReuestChangeForm.value.rejectComment;
     }
   }
 

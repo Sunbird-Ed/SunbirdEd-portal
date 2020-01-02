@@ -123,10 +123,14 @@ export class QuestionListComponent implements OnInit {
     this.visibility['showEdit'] = (_.includes(this.actions.showEdit.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
   }
 
+  public isPublishBtnDisable() {
+    return _.find(this.questionList, (question) => !question.rejectComment || question.rejectComment === '');
+  }
+
   public createDefaultQuestionAndItemset() {
     this.createDefaultAssessmentItem().pipe(
       map(data => {
-        return _.get(data,'result.node_id');
+        return _.get(data, 'result.node_id');
     }),
     mergeMap(questionId => this.createItemSet(questionId).pipe(
       map(res => {
@@ -180,7 +184,7 @@ export class QuestionListComponent implements OnInit {
       };
       return this.contentService.post(req).pipe(map(data => {
           this.questionList = _.get(data,'result.items')
-          return this.questionList;
+          return this.x;
       }));
     }))
     .subscribe(() => {
@@ -212,7 +216,6 @@ export class QuestionListComponent implements OnInit {
         if (this.role.currentRole === 'CONTRIBUTOR') {
           this.refreshEditor();
         }
-        
         if(isUpdate)  this.saveContent();
       });
   }
@@ -270,7 +273,7 @@ export class QuestionListComponent implements OnInit {
         delete this.questionReadApiDetails[event.identifier];
         this.handleQuestionTabChange(this.selectedQuestionId,true);
       } 
-      if (event.type === 'Reject' || event.type === 'Live') {
+      if (event.type === 'Draft' || event.type === 'Live') {
         this.showLoader = true;
         setTimeout(() => this.fetchQuestionList(true), 2000);
       } 
@@ -392,7 +395,7 @@ export class QuestionListComponent implements OnInit {
       this.helperService.submitRequestChanges(this.sessionContext.resourceIdentifier, this.FormControl.value.rejectComment)
       .subscribe(res => {
         this.showRequestChangesPopup = false;
-        let contentId =  res.result.content_id;
+        let contentId =  res.result.node_id || res.result.content_id;
         if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
           this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier,contentId )
           .subscribe((data) => {

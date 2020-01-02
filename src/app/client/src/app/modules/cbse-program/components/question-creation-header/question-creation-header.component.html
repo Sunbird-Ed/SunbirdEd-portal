@@ -1,6 +1,6 @@
 <!-- Question Status Header HTML structure -->
 
-<div class="ui container py-16 question-status" *ngIf="questionMetaData.data && questionMetaData.data.rejectComment && questionMetaData.data.rejectComment !== '' ">
+<div class="ui container py-16 question-status" *ngIf="rejectComment !== '' ">
     <div class="mt-8 practice-set__status">
         <span class="sb-color-error">Question Rejected</span>
         <span class="cursor-pointer fs-0-785 ml-8" (click)="openReviewerCommentModal()">
@@ -51,6 +51,23 @@
         </div>
     </div>
 </div>
+<sui-modal *ngIf="reviewerCommentModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll
+  (dismissed)="reviewerCommentModal = !reviewerCommentModal" #modal>
+  <div class="sb-modal-header">
+      Review Comments
+  </div>
+  <div class="sb-modal-content">
+      <div class="sb-publish-content">
+        <div class="review-modal-list"> 
+          {{rejectComment}}
+      </div>
+      </div>
+  </div>
+  <!-- <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"> Continue </button>
+  </div> -->
+</sui-modal>
 
 <sui-modal [isClosable]="false" class="sb-modal" [isInverted]="true" (dismissed)="dismissCommentPopup()" *ngIf="showrejectCommentPopup" [size]="'normal'"
   [isFullScreen]="false" [mustScroll]="true" #modal>
@@ -83,22 +100,3 @@
   </div>
 </sui-modal>
   
-  <sui-modal [isClosable]="false" class="sb-modal" [isInverted]="true" (dismissed)="closeReviewerCommentModal()" *ngIf="reviewerCommentModal" [size]="'normal'"
-  [isFullScreen]="false" [mustScroll]="true" #modal>
-      <div class="sb-modal-header">
-          <div class="ui two column grid">
-              <div class="row">
-                  <div class="column">
-                      <span>Request changes</span>
-                  </div>
-                  <div class="column right aligned">
-                      <i class="cursor-pointer close link icon" (click)="closeReviewerCommentModal();"
-                      appTelemetryInteract [telemetryInteractEdata]="{id:'cancel',type:'click',pageid:'reviewercommentmodal'}"></i>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="sb-modal-content">
-          <p>{{rejectComment}}</p>
-      </div>
-  </sui-modal>

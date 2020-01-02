@@ -69,7 +69,7 @@ export class QuestionCreationHeaderComponent implements OnInit, OnChanges {
   }
   openReviewerCommentModal() {
     this.reviewerCommentModal = true;
-   }
+  }
 
    closeReviewerCommentModal() {
      this.reviewerCommentModal = false;
