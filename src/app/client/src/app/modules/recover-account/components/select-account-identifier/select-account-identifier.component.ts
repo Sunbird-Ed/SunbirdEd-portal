@@ -1,7 +1,7 @@
 import { RecoverAccountService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import {ResourceService, ToasterService, ConfigService} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 
@@ -24,7 +24,9 @@ export class SelectAccountIdentifierComponent implements OnInit {
     type: 'Task'
   }];
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
-    public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService) { }
+    public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
+              public configService: ConfigService) {
+  }
 
   ngOnInit() {
     if (this.verifyState()) {
@@ -42,7 +44,7 @@ export class SelectAccountIdentifierComponent implements OnInit {
         type: this.selectedAccountIdentifier.type,
         key: this.selectedAccountIdentifier.value,
         userId: this.selectedAccountIdentifier.id,
-        templateId: 'resetPasswordWithOtp'
+        templateId: this.configService.constants.TEMPLATES.RESET_PASSWORD_TEMPLATE
       }
     };
     this.recoverAccountService.generateOTP(request).subscribe(response => {
