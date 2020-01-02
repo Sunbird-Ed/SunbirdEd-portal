@@ -24,4 +24,13 @@ const delay = (duration = 1000) => {
   });
 };
 
-module.exports = {parseJson, delay};
+/**
+ * Checks if value is valid date
+ * @param date
+ * @returns {boolean}
+ */
+var isDate = function (date) {
+  return (new Date(date) !== "Invalid Date" && !isNaN(new Date(date))) ? true : false;
+};
+
+module.exports = {parseJson, delay, isDate};
