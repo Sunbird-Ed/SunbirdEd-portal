@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ResourcePageComponent, TocPageComponent } from './components';
 const routes: Routes = [];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
