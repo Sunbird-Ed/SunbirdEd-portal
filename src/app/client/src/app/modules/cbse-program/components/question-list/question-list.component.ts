@@ -91,10 +91,10 @@ export class QuestionListComponent implements OnInit {
       this.sessionContext.resourceStatus = this.resourceStatus;
       this.resourceName = this.resourceDetails.name || this.templateDetails.metadata.name;
       // this.resourceStatus = 'Review';
-      if (!this.resourceDetails.itemsets) {
+      if (!this.resourceDetails.itemSets) {
         this.createDefaultQuestionAndItemset();
       } else {
-        const itemSet = JSON.parse(this.resourceDetails.itemsets);
+        const itemSet = JSON.parse(this.resourceDetails.itemSets);
         if (itemSet[0].identifier) {
           this.itemSetIdentifier = itemSet[0].identifier;
         }
@@ -122,7 +122,7 @@ export class QuestionListComponent implements OnInit {
     this.visibility['showEdit'] = (_.includes(this.actions.showEdit.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
   }
 
-  get isPublishBtnDisable() {
+  get isPublishBtnDisable(): boolean {
     return _.find(this.questionList, (question) => question.rejectComment && question.rejectComment !== '');
   }
 
@@ -140,7 +140,7 @@ export class QuestionListComponent implements OnInit {
       const reqBody = {
         'content': {
           'versionKey': this.existingContentVersionKey,
-          'itemsets': [
+          'itemSets': [
            {
              'identifier': this.itemSetIdentifier
            }
@@ -378,12 +378,23 @@ export class QuestionListComponent implements OnInit {
 
   publichContent() {
     this.helperService.publishContent(this.sessionContext.resourceIdentifier, this.userService.userProfile.userId)
-       .subscribe(res => {
-        this.showPublishModal = false;
-        this.toasterService.success(this.resourceService.messages.smsg.m0063);
-      }, (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m00101);
-      });
+      .subscribe(res => {
+      const contentId = res.result.content_id;
+      this.showPublishModal = false;
+      if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
+        // tslint:disable-next-line:max-line-length
+        this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier, contentId )
+        .subscribe((data) => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0063);
+          this.programStageService.removeLastStage();
+          this.uploadedContentMeta.emit({
+            contentId: contentId
+          });
+        });
+      }
+    }, (err) => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m00101);
+    });
   }
 
   requestChanges() {
@@ -391,7 +402,7 @@ export class QuestionListComponent implements OnInit {
       this.helperService.submitRequestChanges(this.sessionContext.resourceIdentifier, this.FormControl.value.rejectComment)
       .subscribe(res => {
         this.showRequestChangesPopup = false;
-        let contentId =  res.result.node_id || res.result.content_id;
+        const contentId =  res.result.node_id || res.result.content_id;
         if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
           this.collectionHierarchyService.addResourceToHierarchy(
             this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier, contentId
@@ -555,13 +566,13 @@ export class QuestionListComponent implements OnInit {
 
   public createItemSet(questionId) {
     const reqBody = {
-      "code": UUID.UUID(),
-      "name": this.resourceName,
-      "description": this.resourceName,
-      "language": [
-          "English"
+      'code': UUID.UUID(),
+      'name': this.resourceName,
+      'description': this.resourceName,
+      'language': [
+          'English'
       ],
-      "owner": this.getUserName(),
+      'owner': this.getUserName(),
       'items': [
         {
           'identifier': questionId
