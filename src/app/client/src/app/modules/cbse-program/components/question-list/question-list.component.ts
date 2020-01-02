@@ -13,7 +13,6 @@ import { HelperService } from '../../services/helper.service';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 import { ProgramStageService } from '../../../program/services';
 
-
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.component.html',
@@ -44,14 +43,14 @@ export class QuestionListComponent implements OnInit {
   public showReviewModal = false;
   public showRequestChangesPopup = false;
   public showDeleteQuestionModal = false;
-  public disableSubmitBtn: boolean = true;
+  public disableSubmitBtn = true;
   public showPublishModal = false;
   public publishInProgress = false;
   public publishedResourceId: any;
   public existingContentVersionKey = '';
   public resourceTitleLimit = 100;
   public itemSetIdentifier: string;
-  public deleteAssessmentItemIdentifie : string;
+  public deleteAssessmentItemIdentifie: string;
   public showTextArea = false;
   public resourceName: string;
   visibility: any;
@@ -59,12 +58,12 @@ export class QuestionListComponent implements OnInit {
 
   constructor(
     private configService: ConfigService, private userService: UserService,
-    private publicDataService: PublicDataService,public actionService: ActionService,
+    private publicDataService: PublicDataService, public actionService: ActionService,
     private cdr: ChangeDetectorRef, public toasterService: ToasterService,
     public telemetryService: TelemetryService, private fb: FormBuilder,
-    private cbseService: CbseProgramService, public contentService: ContentService, 
+    private cbseService: CbseProgramService, public contentService: ContentService,
     private itemsetService: ItemsetService, private helperService: HelperService,
-    private resourceService: ResourceService,private collectionHierarchyService: CollectionHierarchyService,
+    private resourceService: ResourceService, private collectionHierarchyService: CollectionHierarchyService,
     public programStageService: ProgramStageService) { }
 
   ngOnInit() {
@@ -78,7 +77,7 @@ export class QuestionListComponent implements OnInit {
     this.getContentMetadata(this.sessionContext.resourceIdentifier);
   }
 
-  getContentMetadata(contentId : string) {
+  getContentMetadata(contentId: string) {
     const option = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
     };
@@ -99,11 +98,11 @@ export class QuestionListComponent implements OnInit {
         if (itemSet[0].identifier) {
           this.itemSetIdentifier = itemSet[0].identifier;
         }
-        this.fetchQuestionWithRole();
+        this.fetchQuestionList();
       }
       this.handleActionButtons();
-    }); 
-  } 
+    });
+  }
 
   handleActionButtons() {
     this.visibility = {};
@@ -134,7 +133,7 @@ export class QuestionListComponent implements OnInit {
     }),
     mergeMap(questionId => this.createItemSet(questionId).pipe(
       map(res => {
-        this.itemSetIdentifier = _.get(res,'result.identifier');
+        this.itemSetIdentifier = _.get(res, 'result.identifier');
         return this.itemSetIdentifier;
     }),
     mergeMap(() => {
@@ -148,7 +147,7 @@ export class QuestionListComponent implements OnInit {
          ]
        }
       };
-      return this.updateContent(reqBody,this.sessionContext.resourceIdentifier)
+      return this.updateContent(reqBody, this.sessionContext.resourceIdentifier)
     }))))
     .subscribe(() => {
         setTimeout(() => {
@@ -157,34 +156,30 @@ export class QuestionListComponent implements OnInit {
     });
   }
 
-  private fetchQuestionWithRole() {
-    (this.role.currentRole === 'REVIEWER') ? this.fetchQuestionList(true) : this.fetchQuestionList();
-  }
-
-  private fetchQuestionList(isReviewer?: boolean) {
+  private fetchQuestionList() {
     this.itemsetService.readItemset(this.itemSetIdentifier).pipe(
       map(response => {
-        let questionList = _.get(response, 'result.itemset.items');
-        let questionIds = _.map(questionList,(question => _.get(question,'identifier')));
+        const questionList = _.get(response, 'result.itemset.items');
+        const questionIds = _.map(questionList, (question => _.get(question, 'identifier')));
         return questionIds;
     }),
     mergeMap(questionIds => {
-      let req = {
+      const req = {
         url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
         data: {
           'request': {
             'filters': {
               'identifier': questionIds,
-              'status': ["Live","Review","Draft"]
+              'status': ['Live', 'Review', 'Draft']
             },
             'sort_by': { 'createdOn': 'desc' },
-            "limit": 20
+            'limit': 20
           }
         }
       };
       return this.contentService.post(req).pipe(map(data => {
-          this.questionList = _.get(data,'result.items')
-          return this.x;
+          this.questionList = _.get(data, 'result.items');
+          return this.questionList;
       }));
     }))
     .subscribe(() => {
@@ -194,7 +189,7 @@ export class QuestionListComponent implements OnInit {
     });
   }
 
-  handleQuestionTabChange(questionId,isUpdate:boolean = false) {
+  handleQuestionTabChange(questionId, isUpdate: boolean = false) {
     if (_.includes(this.sessionContext.questionList, questionId) && !isUpdate) { return; }
     this.sessionContext.questionList = [];
     this.sessionContext.questionList.push(questionId);
@@ -206,17 +201,16 @@ export class QuestionListComponent implements OnInit {
           mode: 'edit',
           data: assessment_item
         };
-        if (this.sessionContext.resourceStatus === 'Draft' || this.sessionContext.resourceStatus === 'Rejected') {
+        if (this.resourceStatus === 'Draft' || this.resourceStatus === 'Rejected') {
           this.sessionContext.isReadOnlyMode = false;
         } else {
           this.sessionContext.isReadOnlyMode = true;
         }
-        
         // tslint:disable-next-line:max-line-length
         if (this.role.currentRole === 'CONTRIBUTOR') {
           this.refreshEditor();
         }
-        if(isUpdate)  this.saveContent();
+        if (isUpdate) {  this.saveContent(); }
       });
   }
 
@@ -256,7 +250,6 @@ export class QuestionListComponent implements OnInit {
       }, 1000);
     });
   }
-  
   public questionStatusHandler(event) {
     console.log('editor event', event);
     if (event.type === 'close') {
@@ -272,11 +265,11 @@ export class QuestionListComponent implements OnInit {
       if (event.type === 'update') {
         delete this.questionReadApiDetails[event.identifier];
         this.handleQuestionTabChange(this.selectedQuestionId,true);
-      } 
+      }
       if (event.type === 'Draft' || event.type === 'Live') {
         this.showLoader = true;
         setTimeout(() => this.fetchQuestionList(true), 2000);
-      } 
+      }
     }
   }
 
@@ -333,6 +326,7 @@ export class QuestionListComponent implements OnInit {
                 'topic': this.sessionContext.topic ? [this.sessionContext.topic] : [] ,
                 'editorVersion': 3,
                 'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
+                'rejectComment' : ''
               }
             }
           }
@@ -361,9 +355,10 @@ export class QuestionListComponent implements OnInit {
     const reviewItemSet = this.itemsetService.reviewItemset(this.itemSetIdentifier);
     const reviewContent = this.helperService.reviewContent(this.sessionContext.resourceIdentifier);
     forkJoin([reviewItemSet, reviewContent]).subscribe((res: any) => {
-      let contentId = res[1].result.content_id;
+      const contentId = res[1].result.content_id;
       if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
-        this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier,contentId )
+        // tslint:disable-next-line:max-line-length
+        this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier, contentId )
         .subscribe((data) => {
           this.disableSubmitBtn = true;
           this.toasterService.success(this.resourceService.messages.smsg.m0061);
@@ -383,7 +378,7 @@ export class QuestionListComponent implements OnInit {
   publichContent() {
     this.helperService.publishContent(this.sessionContext.resourceIdentifier, this.userService.userProfile.userId)
        .subscribe(res => {
-        this.showPublishModal = false; 
+        this.showPublishModal = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0063);
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.fmsg.m00101);
@@ -397,7 +392,9 @@ export class QuestionListComponent implements OnInit {
         this.showRequestChangesPopup = false;
         let contentId =  res.result.node_id || res.result.content_id;
         if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
-          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier,contentId )
+          this.collectionHierarchyService.addResourceToHierarchy(
+            this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier, contentId
+          )
           .subscribe((data) => {
             this.toasterService.success(this.resourceService.messages.smsg.m0062);
             this.programStageService.removeLastStage();
@@ -432,7 +429,7 @@ export class QuestionListComponent implements OnInit {
     setTimeout(() => this.changeStage.emit('prev'), 0);
   }
 
-  openDeleteQuestionModal(identifier : string) {
+  openDeleteQuestionModal(identifier: string) {
     this.deleteAssessmentItemIdentifie = identifier;
     console.log(this.deleteAssessmentItemIdentifie);
     this.showDeleteQuestionModal = true;
@@ -594,7 +591,7 @@ export class QuestionListComponent implements OnInit {
     }));
   }
 
-  public updateContent(reqBody,contentId) {  
+  public updateContent(reqBody, contentId) {
     return this.helperService.updateContent(reqBody, contentId).pipe(map((response) => {
       return response;
     }, err => {
