@@ -54,7 +54,7 @@ const generateAndAddCertificates = (req) => {
         const extId = _.get(data, 'external id');
         async.waterfall([async.constant({ name, extId, rspObj }), generateCertificateApiCall, addCertificateApiCall,
             downloadCertificateApiCall, downloadCertificate], (err, result) => {
-                if (!result && err) {
+                if (err) {
                     failureRecords.push({ name: data, status: 'failed', index: key });
                 } else {
                     successRecords.push({ name: data, status: 'success', index: key });
@@ -96,7 +96,7 @@ const generateAndAddCertificates = (req) => {
         } else{
             failureRecords.push({ name: data, status: 'failed', index: key });
         }
-        writeDataToCsv(_.get(rspObj, 'processId'), _.merge(successRecords, failureRecords));
+        writeDataToCsv(_.get(rspObj, 'processId'), _.concat(successRecords, failureRecords));
     })
 }
 
