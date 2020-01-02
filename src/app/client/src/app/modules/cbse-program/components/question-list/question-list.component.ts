@@ -206,9 +206,10 @@ export class QuestionListComponent implements OnInit {
         } else {
           this.sessionContext.isReadOnlyMode = true;
         }
-        if (assessment_item.rejectComment && assessment_item.rejectComment !== '') {
+        if (assessment_item && assessment_item.rejectComment === '') {
           const index = _.findIndex(this.questionList, {identifier: questionId});
-          this.questionList.splice(index, 1, assessment_item);
+          this.questionList[index].rejectComment = assessment_item.rejectComment;
+          this.questionList[index].status = assessment_item.status;
         }
         // tslint:disable-next-line:max-line-length
         if (this.role.currentRole === 'CONTRIBUTOR') {
