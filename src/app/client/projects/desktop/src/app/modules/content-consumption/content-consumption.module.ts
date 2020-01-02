@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ContentConsumptionRoutingModule } from './content-consumption-routing.module';
@@ -27,9 +27,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     ContentConsumptionRoutingModule,
     SuiAccordionModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [
-    ContentPlayerComponent, ContentMetadataComponent
-  ]
+    ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent
+  ],
 })
 export class ContentConsumptionModule { }
