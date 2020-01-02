@@ -102,7 +102,8 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       request: {
         type: this.recoverAccountService.selectedAccountIdentifier.type,
         key: this.recoverAccountService.selectedAccountIdentifier.value,
-        userId: this.recoverAccountService.selectedAccountIdentifier.id
+        userId: this.recoverAccountService.selectedAccountIdentifier.id,
+        templateId: 'resetPasswordWithOtp'
       }
     };
     this.recoverAccountService.generateOTP(request).subscribe(response => {
