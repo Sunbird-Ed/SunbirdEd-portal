@@ -1,2 +1,4 @@
+<div [appTelemetryImpression]="telemetryImpression">
 <app-content-player></app-content-player>
-<app-content-metadata></app-content-metadata>
+<app-content-metadata [contentData]="contentDetails"></app-content-metadata>
+</div>
