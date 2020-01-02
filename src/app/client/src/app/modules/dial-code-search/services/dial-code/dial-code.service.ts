@@ -19,7 +19,7 @@ export class DialCodeService {
   /**
    * makes API call to search for dialCode
    */
-  public searchDialCode(dialCode: string): Observable<any[]> {
+  public searchDialCode(dialCode: string, online: boolean): Observable<any[]> {
     const requestParams = {
       filters: {
         dialcodes: dialCode
@@ -27,11 +27,10 @@ export class DialCodeService {
       mode: "collection",
       params: this.configService.appConfig.dialPage.contentApiQueryParams
     };
+    requestParams.params.online = Boolean(online);
     return this.searchService.contentSearch(requestParams, false)
       .pipe(
-        map(apiResponse => _.get(apiResponse, 'result')),
-        retry(2),
-        catchError(error => empty()))
+        map(apiResponse => _.get(apiResponse, 'result')))
   }
 
   /**

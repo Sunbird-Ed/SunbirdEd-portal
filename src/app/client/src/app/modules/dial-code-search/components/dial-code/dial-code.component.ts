@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { combineLatest as observableCombineLatest, iif, of } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam, PlayerService, CoursesService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
-import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { takeUntil, mergeMap, first, finalize, tap } from 'rxjs/operators';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService, TelemetryInteractDirective } from '@sunbird/telemetry';
+import { takeUntil, mergeMap, first, tap, retry, catchError } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
@@ -81,11 +81,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }).pipe(
         tap(this.initialize),
         mergeMap(params => iif(() => _.get(params, 'textbook'), this.processTextBook(params), this.processDialCode(params))),
-        finalize(() => {
-          this.telemetryImpression.edata.pageid = `${this.activatedRoute.snapshot.data.telemetry.pageid}-post-populate`;
-          this.telemetryImpression.edata.duration = this.navigationhelperService.getPageLoadTime();
-          this.dialResultImpression = _.cloneDeep(this.telemetryImpression);
-        })
       ).subscribe(res => {
         const linkedContents = _.flatMap(_.values(res));
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
@@ -95,10 +90,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           this.singleContentRedirect = this.searchResults[0]['name'];
         }
         this.showLoader = false;
-        this.logTelemetryEvents(true);
       }, err => {
         this.showLoader = false;
-        this.logTelemetryEvents(false);
         this.toasterService.error(this.resourceService.messages.fmsg.m0049);
       }, () => {
         this.showLoader = false;
@@ -130,10 +123,48 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   private processDialCode(params) {
     return this.dialCodeService.searchDialCode(_.get(params, 'dialCode'), this.isBrowse)
       .pipe(
-        mergeMap(this.dialCodeService.filterDialSearchResults)
+        tap(value => {
+          const telemetry = {
+            context: { env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'), cdata: [] },
+            edata: {
+              id: 'search-dial',
+              type: 'click',
+              subtype: 'Search Dialcode Success',
+              pageid: 'get-dial'
+            }
+          };
+          this.telemetryService.interact(telemetry);
+          this.logTelemetryEvents(true);
+        }, err => {
+          const telemetry = {
+            context: { env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'), cdata: [] },
+            edata: {
+              id: 'search-dial',
+              type: 'click',
+              subtype: 'Search Dialcode Failed',
+              pageid: 'get-dial'
+            }
+          };
+          this.telemetryService.interact(telemetry);
+          this.logTelemetryEvents(false);
+        }),
+        retry(1),
+        catchError(error => {
+          return of({
+            content: [],
+            collections: []
+          });
+        }),
+        mergeMap(this.dialCodeService.filterDialSearchResults),
+        tap(() => {
+          const telemetryImpression = _.cloneDeep(this.telemetryImpression);
+          telemetryImpression.edata.pageid = `${this.activatedRoute.snapshot.data.telemetry.pageid}-post-populate`;
+          telemetryImpression.edata.duration = this.navigationhelperService.getPageLoadTime();
+          telemetryImpression.edata.subtype = 'non-flatten';
+          this.telemetryService.impression(telemetryImpression);
+        })
       )
   }
-
   private processTextBook(params) {
     const textBookUnit = _.get(params, 'textbook');
     if (!_.find(_.get(this.dialCodeService, 'dialCodeResult.content'), content => {
@@ -142,9 +173,16 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')])
       return of([]);
     }
-    return this.dialCodeService.getAllPlayableContent([textBookUnit])
+    return this.dialCodeService.getAllPlayableContent([textBookUnit]).pipe(
+      tap(() => {
+        const telemetryImpression = _.cloneDeep(this.telemetryImpression);
+        telemetryImpression.edata.pageid = `${this.activatedRoute.snapshot.data.telemetry.pageid}-post-populate`;
+        telemetryImpression.edata.duration = this.navigationhelperService.getPageLoadTime();
+        telemetryImpression.edata.subtype = 'flatten';
+        this.telemetryService.impression(telemetryImpression);
+      })
+    )
   }
-
   onScrollDown() {
     const startIndex = this.itemsToLoad;
     this.itemsToLoad = this.itemsToLoad + this.numOfItemsToAddOnScroll;
@@ -235,8 +273,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
-
-
   closeMobileAppPopup() {
     if (!this.isRedirectToDikshaApp) {
       this.telemetryService.interact(this.closeMobilePopupInteractData);
@@ -244,7 +280,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       (document.querySelector('.mobile-popup-dimmer') as HTMLElement).style.display = 'none';
     }
   }
-
   redirectToDikshaApp() {
     this.isRedirectToDikshaApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
@@ -331,7 +366,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       this.showMobilePopup = true;
     }, 500);
   }
-
   startDownload(contentId) {
     this.contentManagerService.downloadContentId = contentId;
     this.contentManagerService.startDownload({}).subscribe(data => {
@@ -345,7 +379,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
   }
-
   exportOfflineContent(contentId) {
     this.contentManagerService.exportContent(contentId).subscribe(data => {
       this.showExportLoader = false;
@@ -362,7 +395,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
   }
-
   logTelemetryEvents(status: boolean) {
     let level = 'ERROR';
     let msg = 'Search Dialcode failed';
@@ -383,7 +415,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     };
     this.telemetryService.log(event);
   }
-
   public handleCloseButton() {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook') && _.get(this.dialCodeService, 'dialCodeResult.count') > 1) {
       this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')])
