@@ -57,14 +57,12 @@ describe('ResourcePageComponent', () => {
   });
   it('should call getContent method ', () => {
     const publicService = TestBed.get(PublicPlayerService);
-    spyOn(component, 'getContent');
-    publicService.getContent(resourceData.contentId, resourceData.PublicPlayer.contentApiQueryParams).subscribe(data => {
-      expect(data).toBe(resourceData.content);
-      expect(component.contentDetails).toHaveBeenCalledWith(resourceData.content.result.content);
+    spyOn(publicService, 'getContent').and.returnValue(of(resourceData.content));
+      component.getContent();
+      expect(component.contentDetails).toEqual(resourceData.content.result.content);
       spyOn(component, 'setTelemetryData').and.callThrough();
       component.setTelemetryData();
       expect(component.setTelemetryData).toHaveBeenCalled();
-    });
   });
   it('should get content config details ', () => {
     const publicService = TestBed.get(PublicPlayerService);
@@ -73,5 +71,10 @@ describe('ResourcePageComponent', () => {
     component.contentDetails = resourceData.content.result.content;
     component.getContentConfigDetails();
     expect(component.playerConfig).toEqual(resourceData.configDetails);
+  });
+  it('should call setTelemetryData', () => {
+    spyOn(component, 'setTelemetryData').and.callThrough();
+    component.setTelemetryData();
+    expect(component.setTelemetryData).toHaveBeenCalled();
   });
 });
