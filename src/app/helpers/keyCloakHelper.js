@@ -38,21 +38,21 @@ const authenticated = function (request) {
   } catch(err) {
     console.log('userId conversation error', request.kauth.grant.access_token.content.sub, err);
   }
-  // async.series({
+  async.series({
   //   getUserData: function (callback) {
   //     permissionsHelper.getCurrentUserRoles(request, callback)
   //   },
   //   updateLoginTime: function (callback) {
   //     userHelper.updateLoginTime(request, callback)
   //   },
-  //   logSession: function (callback) {
-  //     telemetryHelper.logSessionStart(request, callback)
-  //   }
-  // }, function (err, results) {
-  //   if (err) {
-  //     console.log('err', err)
-  //   }
-  // })
+       logSession: function (callback) {
+          telemetryHelper.logSessionStart(request, callback)
+       }
+      }, function (err, results) {
+       if (err) {
+         console.log('err', err)
+       }
+  })
 }
 module.exports = {
   getKeyCloakClient,
