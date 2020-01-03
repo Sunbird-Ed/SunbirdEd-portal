@@ -30,7 +30,7 @@ const deauthenticated = function (request) {
   }
 }
 const authenticated = function (request) {
-  //permissionsHelper.getPermissions(request)
+  permissionsHelper.getPermissions(request)
   try {
     var userId = request.kauth.grant.access_token.content.sub.split(':')
     request.session.userId = userId[userId.length - 1];
@@ -39,19 +39,19 @@ const authenticated = function (request) {
     console.log('userId conversation error', request.kauth.grant.access_token.content.sub, err);
   }
   async.series({
-  //   getUserData: function (callback) {
-  //     permissionsHelper.getCurrentUserRoles(request, callback)
-  //   },
-  //   updateLoginTime: function (callback) {
-  //     userHelper.updateLoginTime(request, callback)
-  //   },
-       logSession: function (callback) {
-          telemetryHelper.logSessionStart(request, callback)
-       }
-      }, function (err, results) {
-       if (err) {
-         console.log('err', err)
-       }
+    getUserData: function (callback) {
+      permissionsHelper.getCurrentUserRoles(request, callback)
+    },
+    // updateLoginTime: function (callback) {
+    //   userHelper.updateLoginTime(request, callback)
+    // },
+    logSession: function (callback) {
+      telemetryHelper.logSessionStart(request, callback)
+    }
+  }, function (err, results) {
+    if (err) {
+      console.log('err', err)
+    }
   })
 }
 module.exports = {
