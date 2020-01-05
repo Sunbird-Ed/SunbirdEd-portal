@@ -157,6 +157,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         }),
         mergeMap(this.dialCodeService.filterDialSearchResults),
         tap(() => {
+          this.showSelectChapter = false;
           const telemetryImpression = _.cloneDeep(this.telemetryImpression);
           telemetryImpression.edata.pageid = `${this.activatedRoute.snapshot.data.telemetry.pageid}-post-populate`;
           telemetryImpression.edata.duration = this.navigationhelperService.getPageLoadTime();
@@ -167,9 +168,16 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   private processTextBook(params) {
     const textBookUnit = _.get(params, 'textbook');
-    if (!_.find(_.get(this.dialCodeService, 'dialCodeResult.content'), content => {
+    const content = _.find(_.get(this.dialCodeService, 'dialCodeResult.content'), content => {
       return (_.get(content, 'identifier') === textBookUnit);
-    })) {
+    });
+    if (content) {
+      if (_.toLower(_.get(content, 'contentType')) === 'textbook') {
+        this.chapterName = _.get(content, 'name');
+        this.dialContentId = _.get(content, 'identifier');
+        this.showSelectChapter = true;
+      }
+    } else {
       this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')])
       return of([]);
     }
@@ -420,6 +428,16 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')])
     } else {
       this.router.navigate(['/get']);
+    }
+  }
+  public redirectToDetailsPage(contentId) {
+    if (this.userService.loggedIn) {
+      this.router.navigate(['/resources/play/collection', contentId], {
+        queryParams: { contentType: 'TextBook' },
+        state: { action: 'dialcode' }
+      });
+    } else {
+      this.router.navigate(['/play/collection', contentId], { queryParams: { contentType: 'TextBook' } });
     }
   }
 }
