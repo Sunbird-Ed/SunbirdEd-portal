@@ -9,6 +9,7 @@ import { SuiAccordionModule } from 'ng2-semantic-ui';
 import { OrderModule } from 'ngx-order-pipe';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CreditsAndLicenceComponent } from './components/credits-and-licence/credits-and-licence.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     ContentMetadataComponent,
     ResourcePageComponent,
     TocPageComponent,
-    ContentHeaderComponent
+    ContentHeaderComponent,
+    CreditsAndLicenceComponent
   ],
   imports: [
     CommonModule,
