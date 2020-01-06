@@ -95,7 +95,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.fmsg.m0049);
       }, () => {
         this.showLoader = false;
-      })
+      });
     if (this.isOffline) {
       this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
@@ -164,12 +164,12 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           telemetryImpression.edata.subtype = 'non-flatten';
           this.telemetryService.impression(telemetryImpression);
         })
-      )
+      );
   }
   private processTextBook(params) {
     const textBookUnit = _.get(params, 'textbook');
-    const content = _.find(_.get(this.dialCodeService, 'dialCodeResult.content'), content => {
-      return (_.get(content, 'identifier') === textBookUnit);
+    const content = _.find(_.get(this.dialCodeService, 'dialCodeResult.content'), contentObj => {
+      return (_.get(contentObj, 'identifier') === textBookUnit);
     });
     if (content) {
       if (_.toLower(_.get(content, 'contentType')) === 'textbook') {
@@ -185,9 +185,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           telemetryImpression.edata.subtype = 'flatten';
           this.telemetryService.impression(telemetryImpression);
         })
-      )
+      );
     } else {
-      this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')])
+      this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')]);
       return of([]);
     }
   }
@@ -251,8 +251,11 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       if (_.get(event, 'data.metaData.childTextbookUnit') || _.toLower(_.get(event, 'data.contentType') === 'textbook')) {
         this.router.navigate([], {
           relativeTo: this.activatedRoute,
-          queryParams: { l1Parent: event.data.metaData.l1Parent, textbook: _.get(event, 'data.metaData.childTextbookUnit.identifier') || _.get(event, 'data.metaData.identifier') }
-        })
+          queryParams: {
+            l1Parent: event.data.metaData.l1Parent,
+            textbook: _.get(event, 'data.metaData.childTextbookUnit.identifier') || _.get(event, 'data.metaData.identifier')
+          }
+        });
       } else {
         this.router.navigate([this.redirectCollectionUrl, event.data.metaData.identifier],
           { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
@@ -425,7 +428,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   public handleCloseButton() {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook') && _.get(this.dialCodeService, 'dialCodeResult.count') > 1) {
-      this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')])
+      this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')]);
     } else {
       this.router.navigate(['/get']);
     }

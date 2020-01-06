@@ -127,7 +127,7 @@ describe('DialCodeComponent', () => {
     expect(component.itemsToDisplay).toEqual([]);
     expect(component.showLoader).toBeFalsy();
     expect(component.itemsToDisplay).toEqual([]);
-    expect(component.searchResults).toEqual([]);;
+    expect(component.searchResults).toEqual([]);
   });
   it('should return appropriate failure message on error throw', () => {
     const toasterService = TestBed.get(ToasterService);
@@ -222,10 +222,10 @@ describe('DialCodeComponent', () => {
       expect(component['processTextBook']).toHaveBeenCalledWith({
         dialCode: '61U24C',
         textbook: 'do_21288543692132352012128'
-      })
-    })
+      });
+    });
 
-    it(`should redirect the user to get page if invalid textbook id is entered in the url which is not 
+    it(`should redirect the user to get page if invalid textbook id is entered in the url which is not
       associated with the dialcode`, () => {
       const activatedRoute = TestBed.get(ActivatedRoute);
       const router = TestBed.get(Router);
@@ -237,13 +237,13 @@ describe('DialCodeComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith(['/get/dial', '61U24C']);
       expect(component.searchResults).toEqual([]);
       expect(component.showLoader).toBeFalsy();
-    })
+    });
 
     it(`should call collection hierarchy if user valid textbook is clicked`, () => {
       const activatedRoute = TestBed.get(ActivatedRoute);
       const telemetryService = TestBed.get(TelemetryService);
       spyOn(telemetryService, 'impression');
-      activatedRoute.queryParams = observableOf({ textbook: "do_2124791820965806081846" });
+      activatedRoute.queryParams = observableOf({ textbook: 'do_2124791820965806081846' });
       const dialCodeService = TestBed.get(DialCodeService);
       spyOn(dialCodeService, 'getAllPlayableContent').and.returnValue(observableOf([]));
       spyOn<any>(component, 'processTextBook').and.callThrough();
@@ -252,7 +252,7 @@ describe('DialCodeComponent', () => {
       component.ngOnInit();
       expect(dialCodeService.getAllPlayableContent).toHaveBeenCalled();
       expect(dialCodeService.getAllPlayableContent).toHaveBeenCalledWith(['do_2124791820965806081846']);
-    })
-  })
+    });
+  });
 
 });

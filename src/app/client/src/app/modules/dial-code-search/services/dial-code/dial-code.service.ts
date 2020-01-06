@@ -24,17 +24,17 @@ export class DialCodeService {
       filters: {
         dialcodes: dialCode
       },
-      mode: "collection",
+      mode: 'collection',
       params: this.configService.appConfig.dialPage.contentApiQueryParams
     };
     requestParams.params.online = Boolean(online);
     return this.searchService.contentSearch(requestParams, false)
       .pipe(
-        map(apiResponse => _.get(apiResponse, 'result')))
+        map(apiResponse => _.get(apiResponse, 'result')));
   }
 
   /**
-  * @param dialSearchResults 
+  * @param dialSearchResults
   * @returns Returns an array of elements split into two groups , first is collections and second is contents
   */
   public filterDialSearchResults = (dialSearchResults) => {
@@ -43,7 +43,7 @@ export class DialCodeService {
     const textbookUnitsWithoutParentBook = [];
 
     const [collections, contents] = _.partition((_.get(dialSearchResults, 'content') || []), result => {
-      return (_.get(result, 'mimeType') === 'application/vnd.ekstep.content-collection' && result.contentType.toLowerCase() !== 'course')
+      return (_.get(result, 'mimeType') === 'application/vnd.ekstep.content-collection' && result.contentType.toLowerCase() !== 'course');
     });
 
     const groupedCollections = this.groupCollections(collections);
@@ -53,24 +53,24 @@ export class DialCodeService {
     if (_.has(groupedCollections, 'textbookunit')) {
       const collectionsFromApi = _.get(dialSearchResults, 'collections') || [];
       _.forEach(_.get(groupedCollections, 'textbookunit'), async (textbookunit) => {
-        const collection = _.find(collectionsFromApi, collection => {
-          return _.includes(collection.childNodes, _.get(textbookunit, 'identifier'));
-        })
+        const collection = _.find(collectionsFromApi, collectionObj => {
+          return _.includes(collectionObj.childNodes, _.get(textbookunit, 'identifier'));
+        });
         if (collection) {
           collection.childTextbookUnit = textbookunit;
           (response['collection'] || (response['collection'] = [])).push(collection);
         } else {
           textbookUnitsWithoutParentBook.push(_.get(textbookunit, 'identifier'));
         }
-      })
+      });
     }
 
     return this.getAllPlayableContent(textbookUnitsWithoutParentBook).pipe(
-      map(contents => {
-        (response['contents'] || (response['contents'] = [])).push(...contents);
+      map(apiResponse => {
+        (response['contents'] || (response['contents'] = [])).push(...apiResponse);
         return response;
       })
-    )
+    );
   }
 
   public getAllPlayableContent(collectionIds) {
@@ -79,12 +79,12 @@ export class DialCodeService {
       .pipe(
         map(results => _.flatMap(_.map(results, this.parseCollection))),
         catchError(err => of([]))
-      ))
+      ));
   }
 
   /**
    * groups an array of collections on basis of contentTypes
-   * @param collections 
+   * @param collections
    */
   groupCollections(collections) {
     return _.groupBy(collections, collection => _.toLower(_.get(collection, 'contentType')));
@@ -92,7 +92,7 @@ export class DialCodeService {
 
   /**
    * @description parses a collection
-   * @param collection 
+   * @param collection
    */
   public parseCollection(collection) {
     const contents = [];
@@ -109,11 +109,11 @@ export class DialCodeService {
 
   /**
    * fetch collection hierarchy
-   * @param collectionId 
+   * @param collectionId
    */
   public getCollectionHierarchy(collectionId: string): Observable<any[]> {
     return this.playerService.getCollectionHierarchy(collectionId).pipe(
-      map((res) => _.get(res, 'result.content')))
+      map((res) => _.get(res, 'result.content')));
   }
 
   get dialCodeResult() {
