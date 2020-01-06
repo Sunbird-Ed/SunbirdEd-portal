@@ -6,9 +6,9 @@
 
 
 <form *ngIf="!showPreview" class="ui form mt-8 licence-form" [formGroup]="questionMetaForm">
-    <label *ngIf="showFormError && [undefined, ''].includes(question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
     <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode">
-        <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError">
+        <label *ngIf="showFormError && [undefined, ''].includes(question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
+        <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(question)">
             <div class="sb-field mcq-title mb-16">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
                 <div class="ckeditor-tool-container">
@@ -17,10 +17,10 @@
             </div>
         </div>
 
-        <div class="ckeditor-tool__question mb-24">
+        <label *ngIf="showFormError && [undefined, ''].includes(editorState.solutions)" class="sb-label sb-label-table sb-label-error-0">Fill Answer</label>
+        <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(editorState.solutions)">
             <div class="sb-field mcq-title mb-16">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
-                <label *ngIf="showFormError && [undefined, ''].includes(editorState.solutions)" class="ui basic red error label pt-1 question-list">Fill Answer</label>
                 <div class="ckeditor-tool-container">
                     <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')" [editorDataInput]="editorState.solutions" [editorId]="'answer_editor'"></app-ckeditor-tool>
                 </div>

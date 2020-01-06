@@ -185,18 +185,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.enableSubmitBtn = (this.questionMetaForm.status === 'VALID');
     });
   }
-  validateAllFormFields(questionMetaForm: FormGroup) {
-    Object.keys(questionMetaForm.controls).forEach(field => {
-      const control = questionMetaForm.get(field);
-      if (control instanceof FormControl) {
-        control.markAsDirty({
-          onlySelf: true
-        });
-      } else if (control instanceof FormGroup) {
-        this.validateAllFormFields(control);
-      }
-    });
-  }
+
   handleReviewrStatus(event) {
     this.updateQuestion([{ key: 'status', value: event.status }, { key: 'rejectComment', value: event.rejectComment }]);
   }
@@ -222,7 +211,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     } else {
       this.showFormError = true;
       this.showPreview = false;
-      this.validateAllFormFields(this.questionMetaForm);
+      this.markFormGroupTouched(this.questionMetaForm);
     }
   }
 
@@ -459,6 +448,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       obj.required ? controlName[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controlName[obj.code] = preSavedValues[code];
       this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
       this.textInputArr.push(this.formBuilder.group(controlName));
+    });
+  }
+
+  markFormGroupTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
     });
   }
 }
