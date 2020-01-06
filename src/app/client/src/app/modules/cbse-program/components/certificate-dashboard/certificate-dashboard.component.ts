@@ -34,9 +34,10 @@ export class CertificateDashboardComponent implements OnInit {
       (data) => {
         this.data = _.get(data, 'result.response');
         this.data = this.data.sort((a,b) => +moment(a.createdon) - +moment(b.createdon));
-          _.forEach(this.data, function(value) {
-               value['createdon'] = moment(value['createdon']).format('DD/MM/YYYY HH:mm');
-          });
+        _.forEach(this.data, function(value) {
+            value['createdon'] = moment(value['createdon']).format('DD/MM/YYYY HH:mm');
+        });
+        this.data = _.reverse(this.data);
       }, (error) => {
 
       }
