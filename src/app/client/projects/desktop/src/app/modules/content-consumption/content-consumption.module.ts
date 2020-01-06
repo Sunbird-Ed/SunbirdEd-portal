@@ -6,6 +6,9 @@ import { ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent
   ContentHeaderComponent
  } from './components';
 import { SuiAccordionModule } from 'ng2-semantic-ui';
+import { OrderModule } from 'ngx-order-pipe';
+import { SharedModule } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 
 @NgModule({
@@ -18,11 +21,14 @@ import { SuiAccordionModule } from 'ng2-semantic-ui';
   ],
   imports: [
     CommonModule,
+    OrderModule,
+    SharedModule,
+    TelemetryModule,
     ContentConsumptionRoutingModule,
     SuiAccordionModule
   ],
   exports: [
-    ContentPlayerComponent, ContentMetadataComponent
-  ]
+    ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent
+  ],
 })
 export class ContentConsumptionModule { }

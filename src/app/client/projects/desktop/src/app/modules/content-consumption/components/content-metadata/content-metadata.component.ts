@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import {ContentDetailsInterface} from './content-metadata.component.interface';
+import {ContentDetails} from './content-metadata.component.interface';
 @Component({
   selector: 'app-content-metadata',
   templateUrl: './content-metadata.component.html',
@@ -9,7 +9,7 @@ import {ContentDetailsInterface} from './content-metadata.component.interface';
 })
 export class ContentMetadataComponent implements OnInit {
   instance: string;
-  @Input() contentData: ContentDetailsInterface;
+  @Input() contentData: ContentDetails;
   constructor(public resourceService: ResourceService) { }
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);

@@ -1,4 +1,4 @@
-export interface ContentDetailsInterface {
+export interface ContentDetails {
     description: string;
     board: string;
     medium: string;
@@ -9,6 +9,7 @@ export interface ContentDetailsInterface {
     creator: string;
     author: string;
     createdOn: string;
+    lastUpdatedOn: string;
     keywords: Array<string>;
     resourceType: string;
 }

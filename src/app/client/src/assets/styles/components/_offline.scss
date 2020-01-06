@@ -509,6 +509,13 @@
   font-size: 24px;
 }
 
+.slick-next:before {
+  padding-left: 2px;
+}
+.slick-prev:before {
+  padding-right: 2px;
+}
+
 .sb-offline-video-player-container {
   .slick-initialized .slick-slide {
     display: block;
