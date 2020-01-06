@@ -52,14 +52,11 @@ describe('ContentPlayerPageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should get content id from activated route', () => {
-    fixture.detectChanges();
-    expect(component.contentId).toBe(resourceData.contentId);
-  });
+
   it('should call getContent method succssfully geting content', () => {
     const publicService = TestBed.get(PublicPlayerService);
     spyOn(publicService, 'getContent').and.returnValue(of(resourceData.content));
-    component.getContent();
+    component.getContent(resourceData.contentId);
     expect(component.contentDetails).toEqual(resourceData.content.result.content);
     spyOn(component, 'setTelemetryData').and.callThrough();
     component.setTelemetryData();
@@ -69,7 +66,7 @@ describe('ContentPlayerPageComponent', () => {
     const publicService = TestBed.get(PublicPlayerService);
     spyOn(publicService, 'getContent').and.returnValue(throwError(resourceData.contentError));
     spyOn(component.toasterService, 'error').and.returnValue(of(resourceData.resourceBundle.messages.emsg.m0024));
-    component.getContent();
+    component.getContent(resourceData.contentId);
     expect(component.toasterService.error).toHaveBeenCalledWith(resourceData.resourceBundle.messages.emsg.m0024);
     spyOn(component, 'setTelemetryData').and.callThrough();
     component.setTelemetryData();
@@ -78,9 +75,8 @@ describe('ContentPlayerPageComponent', () => {
   it('should get content config details ', () => {
     const publicService = TestBed.get(PublicPlayerService);
     spyOn(publicService, 'getConfig').and.returnValue(resourceData.configDetails);
-    component.contentId = resourceData.contentId;
     component.contentDetails = resourceData.content.result.content;
-    component.getContentConfigDetails();
+    component.getContentConfigDetails(resourceData.contentId);
     expect(component.playerConfig).toEqual(resourceData.configDetails);
   });
   it('should call setTelemetryData', () => {

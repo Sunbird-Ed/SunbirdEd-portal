@@ -16,47 +16,45 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class ContentPlayerPageComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
-  contentId: string;
   contentDetails: ContentData;
   playerConfig: PlayerConfig;
   telemetryImpression: IImpressionEventInput;
-  constructor(public activatedRoute: ActivatedRoute,
-    public playerService: PublicPlayerService,
-    public configService: ConfigService,
-    public router: Router,
-    public navigationHelperService: NavigationHelperService,
+  constructor(private activatedRoute: ActivatedRoute,
+    private playerService: PublicPlayerService,
+    private configService: ConfigService,
+    private router: Router,
+    private navigationHelperService: NavigationHelperService,
     public toasterService: ToasterService,
-    public resourceService: ResourceService,
+    private resourceService: ResourceService,
   ) { }
 
   ngOnInit() {
     this.getContentIdFromRoute();
+    this.setTelemetryData();
   }
   getContentIdFromRoute() {
     this.activatedRoute.params.pipe(
       takeUntil(this.unsubscribe$))
       .subscribe(params => {
         if (params.contentId) {
-          this.contentId = params.contentId;
-          this.getContent();
+          this.getContent(params.contentId);
         }
       });
   }
-  getContent() {
+  getContent(contentId) {
     const params = { params: this.configService.appConfig.PublicPlayer.contentApiQueryParams };
-    this.playerService.getContent(this.contentId, params)
+    this.playerService.getContent(contentId, params)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.contentDetails = _.get(response, 'result.content');
-        this.getContentConfigDetails();
+        this.getContentConfigDetails(contentId);
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0024);
       });
-    this.setTelemetryData();
   }
-  getContentConfigDetails() {
+  getContentConfigDetails(contentId) {
     const contentDetails = {
-      contentId: this.contentId,
+      contentId: contentId,
       contentData: this.contentDetails
     };
     this.playerConfig = this.playerService.getConfig(contentDetails);
