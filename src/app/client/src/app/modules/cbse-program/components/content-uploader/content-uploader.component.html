@@ -11,7 +11,7 @@
     </div>
     <div class="sb-field-group textbook-edit" *ngIf="showTextArea">
       <div class="sb-field relative">
-        <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle"></textarea>
+        <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle" (blur)="showTextArea = !showTextArea" autofocus></textarea>
         <span class="characters-left">200 Characters left</span>
       </div>
     </div>

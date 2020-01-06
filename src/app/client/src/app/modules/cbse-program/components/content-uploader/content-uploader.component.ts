@@ -116,6 +116,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       validation: {
         allowedExtensions: (this.templateDetails.filesConfig.accepted.length === 3) ?
           this.templateDetails.filesConfig.accepted.split(' ') : this.templateDetails.filesConfig.accepted.split(', '),
+        acceptFiles: this.templateDetails.mimeType ? this.templateDetails.mimeType.toString() : '',
         itemLimit: 1,
         sizeLimit: 52428800 // 50 MB = 50 * 1024 * 1024 bytes
       },
