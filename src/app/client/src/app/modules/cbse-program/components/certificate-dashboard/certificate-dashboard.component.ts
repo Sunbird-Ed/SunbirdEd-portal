@@ -33,12 +33,10 @@ export class CertificateDashboardComponent implements OnInit {
     this.http.post('/certificate/user/upload/status', request).subscribe(
       (data) => {
         this.data = _.get(data, 'result.response');
-        _.forEach(this.data, function(value) {
-          //console.log(value.createdon);
-          value['createdon'] = moment(value['createdon']).format('DD/MM/YYYY HH:mm');
-        });
-       this.data = _.sortBy(this.data, ['createdon']);
-          //val['createdon'] = moment(val['createdon']).format('DD/MM/YYYY HH:mm');
+        this.data = this.data.sort((a,b) => +moment(a.createdon) - +moment(b.createdon));
+          _.forEach(this.data, function(value) {
+               value['createdon'] = moment(value['createdon']).format('DD/MM/YYYY HH:mm');
+          });
       }, (error) => {
 
       }
@@ -53,7 +51,7 @@ export class CertificateDashboardComponent implements OnInit {
     this.reverse = !this.reverse;
     this.sortOrder = this.reverse ? 'desc' : 'asc';
     if(value === 'createdon'){
-      this.data = _.orderBy(this.data, ['createdon'],this.sortOrder);
+      this.data = _.reverse(this.data);
     } else{
       this.data = _.orderBy(this.data, ['status'],this.sortOrder);
     }

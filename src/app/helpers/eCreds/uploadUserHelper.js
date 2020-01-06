@@ -63,6 +63,7 @@ const generateAndAddCertificates = (req) => {
             })
     }, (err) => {
         if (!err) {
+            writeDataToCsv(_.get(rspObj, 'processId'), _.concat(successRecords, failureRecords));
             async.waterfall([async.constant(rspObj), prepareZip, uploadToAzure], (err, result) => {
                 const query_obj = { id: _.toString(_.get(rspObj, 'processId')) };
                 let update_values_object;
@@ -95,8 +96,8 @@ const generateAndAddCertificates = (req) => {
             })
         } else{
             failureRecords.push({ name: data, status: 'failed', index: key });
-        }
-        writeDataToCsv(_.get(rspObj, 'processId'), _.concat(successRecords, failureRecords));
+            writeDataToCsv(_.get(rspObj, 'processId'), _.concat(successRecords, failureRecords));
+        }    
     })
 }
 
