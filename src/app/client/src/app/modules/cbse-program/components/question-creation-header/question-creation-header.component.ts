@@ -9,6 +9,7 @@ export class QuestionCreationHeaderComponent implements OnInit {
   public reviewerCommentModal = false;
   @Input() role: any;
   @Input() questionMetaData: any;
+  @Input() resourceStatus: any;
   constructor() { }
 
   ngOnInit() {}

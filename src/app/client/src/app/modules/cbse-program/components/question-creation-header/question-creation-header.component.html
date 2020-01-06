@@ -13,7 +13,7 @@
 
 
 <div class="d-flex flex-ai-center flex-jc-space-between question-header">
-  <div class="d-flex ui blue message py-8 my-0 mr-auto" *ngIf="!showPreview && role.currentRole != 'REVIEWER' && role.currentRole != 'PUBLISHER'">
+  <div class="d-flex ui blue message py-8 my-0 mr-auto" *ngIf="resourceStatus === 'Draft' ">
   Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to upload images</div>
 </div>
 

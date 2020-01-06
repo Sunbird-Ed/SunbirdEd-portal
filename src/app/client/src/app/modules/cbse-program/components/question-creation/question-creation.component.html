@@ -2,7 +2,7 @@
     <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); initializeDropdown()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
     <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Preview</button>
 </div> -->
-<app-question-creation-header *ngIf="questionMetaData" [questionMetaData]="questionMetaData" [role]="role"></app-question-creation-header>
+<app-question-creation-header *ngIf="questionMetaData" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
 
 
 <form *ngIf="!showPreview" class="ui form mt-8 licence-form" [formGroup]="questionMetaForm">
@@ -86,13 +86,7 @@
                 </div>
             </div>
 
-            <div class="row mb-0 p-0">
-                <div class="twelve wide column p-0">
-                    <div class="d-flex flex-ai-center ckeditor-tool__answer mt-16">
-                        <label class="fs-1 mb-0">Answers</label>
-                    </div>
-                </div>
-            </div>
+            
             <div class="row">
                 <div class="twelve wide column p-0">
                     <div class="ckeditor-tool width-100">
@@ -178,7 +172,9 @@
     </p>
 
     <div class='practical-sb-buttons'>
-        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true">Request Changes</button>
+        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true">
+            {{ questionMetaData.data.rejectComment === '' ? 'Request Changes' : 'Edit Comments' }}
+        </button>
     </div>
 
     <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
@@ -258,18 +254,17 @@
       <div class="sb-field-group">
           <label>Enter your comments</label>
           <div class="sb-field relative">
-            
-              <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
-              <label class="ui basic red error label pt-1 mt-5 width-100"
-                  *ngIf="reuestChangeForm.form.controls.rejectComment?.touched && !reuestChangeForm.form.valid">Fill comments </label>
-            
-              <!-- <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
-              <span class="characters-left">1000 Characters left</span> -->
+            <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
+            <span class="characters-left">{{ commentCharLimit - rejectComment.length }} Characters left</span>
+          </div>
+          <div>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="rejectComment.length > commentCharLimit">Comments should be maximum 1000 characters.</label>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="reuestChangeForm.form.controls.rejectComment?.touched && !reuestChangeForm.form.valid">Fill comments </label>
           </div>
       </div>
   </div>
   <div class="sb-modal-actions">
-    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': reuestChangeForm.form.valid, 'sb-btn-disabled': !reuestChangeForm.form.valid}"   (click)="requestChanges()"> Submit Review </button>
+    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [disabled]="rejectComment.length > commentCharLimit" [ngClass]="{'sb-btn-primary': reuestChangeForm.form.valid, 'sb-btn-disabled': !reuestChangeForm.form.valid || rejectComment.length > commentCharLimit}"   (click)="requestChanges()"> Submit Review </button>
   </div>
 </form>
 </sui-modal>
