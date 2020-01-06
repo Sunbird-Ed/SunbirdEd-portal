@@ -1,14 +1,17 @@
+import { PlayerHelperModule } from '@sunbird/player-helper';
+import { PublicModule } from '@sunbird/public';
+import { SharedModule } from '@sunbird/shared';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ContentConsumptionRoutingModule } from './content-consumption-routing.module';
 import { ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent, TocPageComponent,
-  ContentHeaderComponent
+  ContentHeaderComponent, ContentActionsComponent
  } from './components';
-import { SuiAccordionModule } from 'ng2-semantic-ui';
+import { SuiAccordionModule, SuiModalModule } from 'ng2-semantic-ui';
 import { OrderModule } from 'ngx-order-pipe';
-import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 
 @NgModule({
@@ -17,7 +20,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     ContentMetadataComponent,
     ResourcePageComponent,
     TocPageComponent,
-    ContentHeaderComponent
+    ContentHeaderComponent,
+    ContentActionsComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +29,12 @@ import { TelemetryModule } from '@sunbird/telemetry';
     SharedModule,
     TelemetryModule,
     ContentConsumptionRoutingModule,
-    SuiAccordionModule
+    SuiAccordionModule,
+    CommonConsumptionModule,
+    SharedModule,
+    PublicModule,
+    SuiModalModule,
+    PlayerHelperModule
   ],
   exports: [
     ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent

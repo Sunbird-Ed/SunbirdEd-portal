@@ -149,4 +149,12 @@ export class ContentManagerService {
     return this.publicDataService.post(options);
   }
 
+  deleteContent(request) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.DELETE_CONTENT}`,
+      data: request
+    };
+    return this.publicDataService.post(options);
+  }
+
 }
