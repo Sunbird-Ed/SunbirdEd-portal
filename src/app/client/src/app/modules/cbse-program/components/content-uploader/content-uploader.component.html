@@ -1,7 +1,7 @@
 <div class="d-flex sb-bg-color-gray-0 practical-header">
   <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
     <div #contentTitle class="font-weight-bold fs-1" *ngIf="!showTextArea">
-      {{editTitle}} <span class="fs-0-785 pl-8"><a *ngIf="visibility && visibility.showEdit" class="cursor-pointer" (click)="showTextArea = !showTextArea">Edit</a></span>
+      {{editTitle}} <span class="fs-0-785 pl-8"><a *ngIf="visibility && visibility.showEdit" class="cursor-pointer" (click)="editContentTitle()">Edit</a></span>
       <div class="mt-8 practice-set__status">
         <span class="sb-label sb-label-table sb-label-success-0"
         [ngClass]="{ 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-error-0': resourceStatus == 'Rejected',  'sb-label-gray-0': resourceStatus == 'Review' }">{{ resourceStatus }}</span>
@@ -11,7 +11,7 @@
     </div>
     <div class="sb-field-group textbook-edit" *ngIf="showTextArea">
       <div class="sb-field relative">
-        <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle" (blur)="showTextArea = !showTextArea" autofocus></textarea>
+        <textarea #titleTextArea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle" autofocus (blur)="(showTextArea = !showTextArea); saveTitle()"></textarea>
         <span class="characters-left">200 Characters left</span>
       </div>
     </div>
