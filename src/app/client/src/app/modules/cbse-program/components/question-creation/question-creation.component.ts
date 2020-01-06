@@ -41,6 +41,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public textFields: Array<any>;
   public selectionFields: Array<any>;
   public multiSelectionFields: Array<any>;
+  public rejectComment: string;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Input() questionSelectionStatus: any;
@@ -74,6 +75,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   bloomsLevelOptions = ['remember', 'understand', 'apply', 'analyse', 'evaluate', 'create'];
   isReadOnlyMode = false;
   questionRejected = false;
+  commentCharLimit = 1000;
 
   selectOutcomeOption = {};
   textInputArr: FormArray;
@@ -158,6 +160,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.question = this.questionMetaData.data.editorState.question;
         this.editorState.solutions = this.questionMetaData.data.editorState.solutions[0].value;
         this.solutionUUID = this.questionMetaData.data.editorState.solutions[0].id;
+        this.rejectComment = this.questionMetaData.data.rejectComment;
       } else {
         this.questionMetaForm.reset();
       }
@@ -242,8 +245,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               'assessment_item': {
                 'objectType': 'AssessmentItem',
                 'metadata': {
-                  'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' :
-                    this.sessionContext.questionType.toUpperCase(),
+                  // tslint:disable-next-line:max-line-length
+                  'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
                     'editorState': {
                       'question': this.question,
                       'solutions': [
@@ -461,4 +464,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.textInputArr.push(this.formBuilder.group(controlName));
     });
   }
+
+
 }
+
+
+ 
