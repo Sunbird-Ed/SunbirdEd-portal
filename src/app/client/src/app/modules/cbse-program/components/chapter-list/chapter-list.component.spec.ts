@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { Component, Input} from '@angular/core';
 import * as _ from 'lodash-es';
 import { ChapterListComponent } from './chapter-list.component';
@@ -132,14 +132,8 @@ describe('ChapterListComponent', () => {
 
     it('Should have selected "All Chapters" option in the dropdown', () => {
       // fixture.detectChanges();
-      // const chapterListEle: DebugElement = fixture.debugElement;
-      // const chapterSel = chapterListEle.nativeElement.querySelector('.selection');
-      // // const chapterSel = chapterListEle.query(By.css("selection"));
-      // const chapterSelDW = chapterSel.componentInstance;
-      // console.log(chapterSelDW);
-      // Actual we have to verify dom id updated with "All Chapters" option & it should be selected.
-
-      expect(component.selectedChapterOption).toEqual('all');
+      const chapterSel = de.nativeElement.querySelector('.selection');
+      expect(chapterSel.innerText).toEqual('All Chapters');
     })
    
     it("Should have called collection heirarchy API to get heirarchy data", () => {
@@ -160,6 +154,14 @@ describe('ChapterListComponent', () => {
     // var lastItem = component.levelOneChapterList[component.levelOneChapterList.length-1];
     // expect(Object.assign({}, lastItem)).toEqual(Object.assign({}, levelOneCp));
   });
+
+  // describe('Should call collection heirarchy method - getCollectionHierarchy', () => {
+  //   it('first call', fakeAsync(() => {
+  //     let response = {}
+  //     component.getCollectionHierarchy.and.callFake(() =>  Promise.resolve())
+
+  //   }))
+  // })
 
   
 
