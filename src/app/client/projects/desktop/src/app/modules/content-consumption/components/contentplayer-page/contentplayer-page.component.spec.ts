@@ -9,6 +9,7 @@ import { of, throwError } from 'rxjs';
 import { resourceData } from './contentplayer-page.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
 describe('ContentPlayerPageComponent', () => {
   let component: ContentPlayerPageComponent;
   let fixture: ComponentFixture<ContentPlayerPageComponent>;
@@ -31,9 +32,8 @@ describe('ContentPlayerPageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentPlayerPageComponent],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
-        { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceData.resourceBundle },
         PublicPlayerService,
@@ -83,5 +83,12 @@ describe('ContentPlayerPageComponent', () => {
     spyOn(component, 'setTelemetryData').and.callThrough();
     component.setTelemetryData();
     expect(component.setTelemetryData).toHaveBeenCalled();
+  });
+  it('should call prepareVisits method', () => {
+    component.telemetryImpression.edata.visits = [];
+    component.contentDetails = resourceData.content.result.content;
+    component.prepareVisits();
+    expect(component.telemetryImpression.edata.visits).toEqual(resourceData.visits);
+    expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
   });
 });

@@ -238,7 +238,13 @@ export const resourceData = {
             versionKey: '1542779548558',
             visibility: 'Default'
         }
+    },
+    visits: [{
+        objid: 'do_21260742513514086411607',
+        objtype: 'Resource',
+        index: 0
     }
+    ],
 
 };
 

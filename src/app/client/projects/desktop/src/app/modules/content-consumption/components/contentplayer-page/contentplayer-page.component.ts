@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { PublicPlayerService } from '@sunbird/public';
 import {
   ConfigService, NavigationHelperService, PlayerConfig, ContentData, ToasterService, ResourceService
 } from '@sunbird/shared';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -22,7 +22,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute,
     private playerService: PublicPlayerService,
     private configService: ConfigService,
-    private router: Router,
+    public router: Router,
     private navigationHelperService: NavigationHelperService,
     public toasterService: ToasterService,
     private resourceService: ResourceService,
@@ -31,6 +31,9 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getContentIdFromRoute();
     this.setTelemetryData();
+    this.router.events
+    .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
+    .subscribe(x => { this.prepareVisits(); });
   }
   getContentIdFromRoute() {
     this.activatedRoute.params.pipe(
@@ -73,7 +76,17 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
       }
     };
   }
-
+  prepareVisits() {
+    const  visits = [];
+    visits.push({
+      objid: this.contentDetails.identifier,
+      objtype: this.contentDetails.contentType,
+      index: 0
+    });
+    this.telemetryImpression.edata.visits = visits;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
