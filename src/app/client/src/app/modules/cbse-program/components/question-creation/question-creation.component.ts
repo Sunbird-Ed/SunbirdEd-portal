@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { Validators, FormGroup, FormControl, NgForm } from '@angular/forms';
+import { Validators, FormGroup, FormControl, NgForm, FormArray, FormBuilder } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
@@ -37,6 +37,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public mediaArr = [];
   public userName: any;
   public showRequestChangesPopup = false;
+  public formConfiguration: any;
+  public textFields: Array<any>;
+  public selectionFields: Array<any>;
+  public multiSelectionFields: Array<any>;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
   @Input() questionSelectionStatus: any;
@@ -71,6 +75,14 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   isReadOnlyMode = false;
   questionRejected = false;
 
+  selectOutcomeOption = {};
+  textInputArr: FormArray;
+  selectionArr: FormArray;
+  multiSelectionArr: FormArray;
+  formValues: any;
+  contentMetaData;
+  disableFormField: boolean;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -78,6 +90,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     private configService: ConfigService,
     private http: HttpClient,
     private cbseService: CbseProgramService,
+    private formBuilder: FormBuilder,
     publicDataService: PublicDataService,
     toasterService: ToasterService,
     resourceService: ResourceService, public telemetryService: TelemetryService,
@@ -98,30 +111,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       solutions: ''
     };
     this.solutionUUID = UUID.UUID();
-    if (this.sessionContext.bloomsLevel) {
-      this.bloomsLevelOptions = this.sessionContext.bloomsLevel;
-    }
-    this.sessionContext.topicList = _.get(_.find(this.sessionContext.frameworkData, { code: 'topic' }), 'terms');
-    const topicTerm = _.find(this.sessionContext.topicList, { name: this.sessionContext.topic });
-    if (topicTerm && topicTerm.associations) {
-      this.learningOutcomeOptions = topicTerm.associations;
-    }
-    // this.getLicences();
-    this.initializeFormFields();
+    this.manageFormConfiguration();
     if (this.questionMetaData && this.questionMetaData.data) {
       this.question = this.questionMetaData.data.editorState.question;
       this.editorState.solutions = this.questionMetaData.data.editorState.solutions[0].value;
       this.solutionUUID = this.questionMetaData.data.editorState.solutions[0].id;
-      if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
-        this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
-      }
-
-      if (this.questionMetaData.data.bloomsLevel && this.questionMetaData.data.bloomsLevel.length) {
-          this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
-      }
-
-      // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
-      // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
       this.mediaArr = this.questionMetaData.data.media || [];
     }
 
@@ -130,14 +124,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.isReadOnlyMode = true;
     }
-  }
-
-  getLicences() {
-    this.helperService.getLicences().subscribe((res: any) => {
-      this.licencesOptions = _.map(res.license, (license) => {
-        return {name: license.name};
-      });
-    });
   }
 
   setUserName() {
@@ -167,19 +153,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.editorConfig = { 'mode': 'create' };
       this.question = '';
       this.editorState.solutions = '';
+      this.manageFormConfiguration();
       if (this.questionMetaData && this.questionMetaData.data) {
         this.question = this.questionMetaData.data.editorState.question;
         this.editorState.solutions = this.questionMetaData.data.editorState.solutions[0].value;
         this.solutionUUID = this.questionMetaData.data.editorState.solutions[0].id;
-        if (this.questionMetaData.data.learningOutcome && this.questionMetaForm.controls.learningOutcome) {
-          this.questionMetaForm.controls.learningOutcome.setValue(this.questionMetaData.data.learningOutcome[0]);
-        }
-
-        if (this.questionMetaData.data.bloomsLevel && this.questionMetaData.data.bloomsLevel.length) {
-          this.questionMetaForm.controls.bloomsLevel.setValue(this.questionMetaData.data.bloomsLevel[0]);
-        }
-        // this.questionMetaForm.controls.qlevel.setValue(this.questionMetaData.data.qlevel);
-        // this.questionMetaForm.controls.maxScore.setValue(this.questionMetaData.data.maxScore);
       } else {
         this.questionMetaForm.reset();
       }
@@ -198,20 +176,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
   initializeDropdown() {
     (<any>$('.ui.checkbox')).checkbox();
-  }
-  initializeFormFields() {
-    if (this.learningOutcomeOptions.length > 0) {
-      this.questionMetaForm = new FormGroup({
-        learningOutcome: new FormControl(''),
-        bloomsLevel: new FormControl(''),
-        licences: new FormControl(''),
-      });
-    } else {
-      this.questionMetaForm = new FormGroup({
-        bloomsLevel: new FormControl(''),
-        licences: new FormControl('')
-      });
-    }
   }
   handleQuestionSelectionStatus(event) {
     this.questionQueueStatus.emit(event);
@@ -299,8 +263,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                         }
                       }
                     },
-                  'learningOutcome': this.questionMetaForm.value.learningOutcome ? [this.questionMetaForm.value.learningOutcome] : [],
-                  'bloomsLevel': [this.questionMetaForm.value.bloomsLevel],
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
                   'status': 'Draft',
@@ -314,10 +276,15 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             }
           }
         };
-        if (this.sessionContext.currentRole === 'CONTRIBUTOR') {
-          const authorName = (this.authorName.nativeElement.value === '') ? this.userName : this.authorName.nativeElement.value;
-          option.data.request.assessment_item.metadata['author'] = authorName;
-        }
+        this.formValues = {};
+        _.map(this.questionMetaForm.value, (value, key) => { _.map(value, (obj) => { _.assign(this.formValues, obj); }); });
+        // tslint:disable-next-line:max-line-length
+        option.data.request.assessment_item.metadata = _.pickBy(_.assign(option.data.request.assessment_item.metadata, this.formValues), _.identity);
+
+        // if (this.sessionContext.currentRole === 'CONTRIBUTOR') {
+        //   const authorName = (this.authorName.nativeElement.value === '') ? this.userName : this.authorName.nativeElement.value;
+        //   option.data.request.assessment_item.metadata['author'] = authorName;
+        // }
         if (optionalParams) {
           _.forEach(optionalParams, (param) => {
             option.data.request.assessment_item.metadata[param.key] = param.value;
@@ -432,4 +399,66 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
   }
 
+  manageFormConfiguration() {
+    // tslint:disable-next-line:max-line-length
+    const compConfiguration = _.get(this.sessionContext, 'compConfiguration');
+    this.formConfiguration = compConfiguration.config.formConfiguration;
+    this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
+    this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
+    this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
+    // tslint:disable-next-line:max-line-length
+    this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.sessionContext.resourceStatus === 'Draft') ? false : true ;
+    const formFields = _.map(this.formConfiguration, (formData) => {
+      if (!formData.defaultValue) {
+        return formData.code;
+      }
+      this.selectOutcomeOption[formData.code] = formData.defaultValue;
+    });
+
+    this.selectOutcomeOption['license'] = this.sessionContext.licencesOptions;
+    const topicTerm = _.find(this.sessionContext.topicList, { name: this.sessionContext.topic });
+    if (topicTerm && topicTerm.associations) {
+       this.selectOutcomeOption['learningOutcome'] = topicTerm.associations;
+    }
+
+    this.questionMetaForm = this.formBuilder.group({
+      textInputArr: this.formBuilder.array([ ]),
+      selectionArr: this.formBuilder.array([ ]),
+      multiSelectionArr: this.formBuilder.array([ ])
+    });
+
+    _.forEach(this.selectionFields, (obj) => {
+      const controlName = {};
+      const code = obj.code;
+      const preSavedValues = {};
+      // tslint:disable-next-line:max-line-length
+      preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? (Array.isArray(this.questionMetaData.data[code]) ? this.questionMetaData.data[code][0] : this.questionMetaData.data[code]) : '';
+      // tslint:disable-next-line:max-line-length
+      obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = preSavedValues[code];
+      this.selectionArr = this.questionMetaForm.get('selectionArr') as FormArray;
+      this.selectionArr.push(this.formBuilder.group(controlName));
+    });
+
+    _.forEach(this.multiSelectionFields, (obj) => {
+      const controlName = {};
+      const code = obj.code;
+      const preSavedValues = {};
+      // tslint:disable-next-line:max-line-length
+      preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code] && this.questionMetaData.data[code].length) ? this.questionMetaData.data[code] : [];
+      obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = [preSavedValues[code]];
+      this.multiSelectionArr = this.questionMetaForm.get('multiSelectionArr') as FormArray;
+      this.multiSelectionArr.push(this.formBuilder.group(controlName));
+    });
+
+    _.forEach(this.textFields, (obj) => {
+      const controlName = {};
+      const code = obj.code;
+      const preSavedValues = {};
+      preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? this.questionMetaData.data[code] : '';
+      // tslint:disable-next-line:max-line-length
+      obj.required ? controlName[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controlName[obj.code] = preSavedValues[code];
+      this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
+      this.textInputArr.push(this.formBuilder.group(controlName));
+    });
+  }
 }

@@ -53,6 +53,7 @@ export class QuestionListComponent implements OnInit {
   public deleteAssessmentItemIdentifie: string;
   public showTextArea = false;
   public resourceName: string;
+  public licencesOptions = [];
   visibility: any;
   @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
 
@@ -74,7 +75,10 @@ export class QuestionListComponent implements OnInit {
     this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
     this.sessionContext.questionType = this.templateDetails.questionCategories[0];
     this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
+    // tslint:disable-next-line:max-line-length
+    this.sessionContext.compConfiguration = _.find(_.get(this.practiceQuestionSetComponentInput, 'programContext.config.components'), {compId: 'practiceSetComponent'});
     this.getContentMetadata(this.sessionContext.resourceIdentifier);
+    this.getLicences();
   }
 
   getContentMetadata(contentId: string) {
@@ -152,6 +156,15 @@ export class QuestionListComponent implements OnInit {
     }))))
     .subscribe(() => {
       this.handleQuestionTabChange(this.selectedQuestionId);
+    });
+  }
+
+  public getLicences() {
+    this.helperService.getLicences().subscribe((res: any) => {
+      this.licencesOptions = _.map(res.license, (license) => {
+        return license.name;
+      });
+      this.sessionContext['licencesOptions'] = this.licencesOptions;
     });
   }
 

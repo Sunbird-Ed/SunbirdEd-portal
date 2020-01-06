@@ -31,47 +31,39 @@
     <div class='licence-form__content' *ngIf="!isReadOnlyMode">
         <div class="ui stackable grid licence-form__content__fields">
             <div class="row">
-                <div class="eight wide column" *ngIf="learningOutcomeOptions.length > 0">
-                    <div class="sb-field">
-                        <label for="learningOutcome" class="d-flex mb-4">Learning Outcome <span
-                                class="sb-color-red">*</span> <a class="ml-4" href="javascript:void(0)"
-                                title="title comes here"><img width="16" alt="" src="assets/images/Info.svg"></a></label>
-                        <sui-select class="selection" formControlName="learningOutcome" name="'learningOutcome'">
-                            <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name">
-                            </sui-select-option>
-                        </sui-select>
+                <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <sui-multi-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+                          <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                          </sui-select-option>
+                        </sui-multi-select>
+                        <label class="sb-error-text" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
                     </div>
                 </div>
-                <div class="four wide column" [class.pl-0]="learningOutcomeOptions.length > 0">
-                    <div class="sb-field space-btn-field">
-                        <label for="bloomsLevel" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
-                                href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                                    src="assets/images/Info.svg"></a></label>
-                        <sui-select class="selection" formControlName="bloomsLevel" name="'bloomsLevel'">
-                            <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option">
-                            </sui-select-option>
+
+                <div class="six wide column mb-15" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <sui-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+                        <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                        </sui-select-option>
                         </sui-select>
+                        <label class="sb-error-text" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
                     </div>
                 </div>
-            </div>
-            <div class="row pt-0">
-                <div class="four wide column">
-                    <div class="sb-field">
-                        <label for="author" class="d-flex mb-4">Authors <a href="javascript:void(0)"
-                                title="title comes here"><img width="16" alt="" class="ml-4"
-                                    src="assets/images/Info.svg"></a></label>
-                        <input class="sb-form-control" #author_names type="text"
-                            [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
-                    </div>
-                </div>
-                <div class="four wide column pl-0">
-                    <div class="sb-field space-btn-field">
-                        <label class="d-flex mb-4">License <a href="javascript:void(0)" title="title comes here"><img
-                                    width="16" alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
-                        <sui-select class="selection" formControlName="licences" labelField="name" name="license" placeholder="select">
-                            <sui-select-option *ngFor="let option of licencesOptions" [value]="option">
-                            </sui-select-option>
-                        </sui-select>
+
+                <div class="six wide column mb-15" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <input formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
+                      <label class="sb-error-text" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
                     </div>
                 </div>
             </div>
@@ -147,47 +139,42 @@
     </div>
 
     <!-- Learning Outcome learning level author license Preview HTML -->
-    <div class="ui stackable grid licence-form__content__fields" *ngIf="isReadOnlyMode">
-        <div class="row">
-            <div class="six wide column" *ngIf="learningOutcomeOptions.length > 0">
-                <div class="sb-field">
-                    <label for="outcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a class="ml-4"
-              href="javascript:void(0)" title="title comes here"><img width="16" alt=""
-                src="assets/images/Info.svg"></a></label>
-                    <p class="fs-0-785">{{ questionMetaData.data.learningOutcome[0] }}</p>
+    <div class='licence-form__content' *ngIf="isReadOnlyMode">
+        <div class="ui stackable grid licence-form__content__fields">
+            <div class="row">
+                <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="six wide column">
-                <div class="sb-field space-btn-field">
-                    <label for="level" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
-              href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                src="assets/images/Info.svg"></a></label>
-                    <p class="fs-0-785">{{ questionMetaData.data.bloomsLevel[0] }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="row pt-0">
 
-            <div class="six wide column">
-                <div class="sb-field">
-                    <label for="author" class="d-flex mb-4">Author(s) <a href="javascript:void(0)" title="title comes here"><img
-                width="16" alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
-                    <p class="fs-0-785">{{ questionMetaData.data.author }}</p>
+                <div class="six wide column mb-15" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="six wide column">
-                <div class="sb-field space-btn-field">
-                    <label for="license" class="d-flex mb-4">License <a href="javascript:void(0)" title="title comes here"><img
-                width="16" alt="" class="ml-4" src="assets/images/Info.svg"></a></label>
-                    <p class="fs-0-785">ACT456</p>
+
+                <div class="six wide column mb-15" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <p class="paragraph fs-0-785 pt-15 mt-0">
-        <strong>Disclaimer:</strong> By uploading assets to ...., you consent to publish under the Common Creative License framework. For details, refer
-        <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Select the appropriate license.
+        <strong>Disclaimer:</strong> By creating content on SunbirdEd, you consent to publish it under the Creative Commons License Framework. For details, refer
+        <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Please choose the applicable creative commons license you wish to apply to your content.
     </p>
 
     <div class='practical-sb-buttons'>
