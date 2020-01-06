@@ -1,17 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
+import { Component, Input} from '@angular/core';
+import * as _ from 'lodash-es';
 import { ChapterListComponent } from './chapter-list.component';
+import { RecursiveTreeComponent } from '../recursive-tree/recursive-tree.component';
+import { ResourceTemplateComponent } from '../resource-template/resource-template.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { CoreModule, ActionService, UserService, PublicDataService } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of as observableOf, throwError as observableError, of } from 'rxjs';
-import { SuiModule } from 'ng2-semantic-ui/dist';
+import { of as observableOf, throwError as observableError, of, Subscription } from 'rxjs';
+import { SuiModule, SuiTabsModule, SuiSelect } from 'ng2-semantic-ui/dist';
+import { ProgramStageService } from '../../../program/services';
 
 import {
-  role, sessionContext, responseSample, fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample
+  chapterListComponentInput, role, sessionContext, responseSample,
+  fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample
 } from './chapter-list.component.data';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -19,10 +24,13 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DynamicModule } from 'ng-dynamic-component';
 
+
 describe('ChapterListComponent', () => {
   let component: ChapterListComponent;
   let fixture: ComponentFixture<ChapterListComponent>;
+  let stageSubscription: Subscription;
   let errorInitiate, de: DebugElement;
+  let collection;
   const actionServiceStub = {
     get() {
       if (errorInitiate) {
@@ -60,36 +68,155 @@ describe('ChapterListComponent', () => {
       return observableOf(fetchedQueCount);
     }
   };
+  const compState = 'chapterListComponent';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule, FormsModule, DynamicModule],
-      declarations: [ChapterListComponent],
+      imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule,
+        SuiTabsModule, FormsModule, DynamicModule],
+      declarations: [ChapterListComponent, RecursiveTreeComponent, ResourceTemplateComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActionService, useValue: actionServiceStub }, { provide: UserService, useValue: UserServiceStub },
-      { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService,
+      { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService, ProgramStageService,
       {
         provide: ActivatedRoute, useValue: activatedRouteStub
       }]
     })
-      .compileComponents();
+    .compileComponents();
   }));
+
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChapterListComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-    component.role = role;
-    component.sessionContext = sessionContext;
+    component.chapterListComponentInput = chapterListComponentInput;
+    component.role = chapterListComponentInput.role;
+    component.sessionContext = chapterListComponentInput.sessionContext;
     errorInitiate = false;
+    component.programStageService = TestBed.get(ProgramStageService);
+    stageSubscription = component.programStageService.getStage().subscribe(state => {
+      this.state.stages = state.stages;
+    });
     fixture.detectChanges();
   });
 
-  it('should execute getCollectionHierarchy on initialization of component', () => {
-    spyOn(component, 'getCollectionHierarchy');
-    component.ngOnInit();
-    expect(component.getCollectionHierarchy).toHaveBeenCalledWith(sessionContext.textbook);
+
+
+  describe('Component should be initialized: Called ngOnInit', () => {
+    
+    beforeEach(() => {
+      component.ngOnInit();
+    })
+
+    it('Component created', () => {
+      expect(component).toBeDefined();
+    }) 
+
+    it('Should log Telemetry impression with pageId = chapterlist', () => {
+      //Ideally we have to spy on Telemetry Intract event being called or not. It shoulbe be called
+      expect(component.telemetryImpression['edata']).toEqual(jasmine.objectContaining({'pageid': 'chapterlist'}));
+    })
+  
+    it('Should have current stage name = chapterListComponent', () => {
+      expect(component.currentStage).toEqual(compState);
+    })
+  
+    it('Should have selection of "all" in the dropdown', () => {
+      let obj = {
+        identifier: 'all',
+        name: 'All Chapters'
+      }
+      expect(component.levelOneChapterList).toContain(obj);
+    })
+
+    it('Should have selected "All Chapters" option in the dropdown', () => {
+      // fixture.detectChanges();
+      const chapterSel = de.nativeElement.querySelector('.selection');
+      expect(chapterSel.innerText).toEqual('All Chapters');
+    })
+   
+    it("Should have called collection heirarchy API to get heirarchy data", () => {
+      spyOn(component, 'getCollectionHierarchy').and.callThrough();
+      fixture.whenStable().then(() => {
+        expect(component.getCollectionHierarchy).toHaveBeenCalled();
+      })
+    })
+    // spyOn(component, 'getCollectionHierarchy').and.callThrough();
+    // component.ngOnInit();
+   
+    // expect(component.getCollectionHierarchy).toHaveBeenCalledWith(component.sessionContext.collection, undefined);
+    // expect(component.collectionHierarchy).toBeTruthy();
+    
+    // expect(component.selectedChapterOption).toEqual('all');
+
+    // let levelOneCp = {identifier: 'all', name: 'All Chapters'};
+    // var lastItem = component.levelOneChapterList[component.levelOneChapterList.length-1];
+    // expect(Object.assign({}, lastItem)).toEqual(Object.assign({}, levelOneCp));
   });
+
+  // describe('Should call collection heirarchy method - getCollectionHierarchy', () => {
+  //   it('first call', fakeAsync(() => {
+  //     let response = {}
+  //     component.getCollectionHierarchy.and.callFake(() =>  Promise.resolve())
+
+  //   }))
+  // })
+
+  
+
+
+  it('should execute onSelectChapterChange on dropdown change', () => {
+
+    spyOn(component, 'onSelectChapterChange').and.callThrough();
+
+    collection = _.map(component.collectionHierarchy, _.property('identifier'));
+    component.selectedChapterOption = collection[1];
+    fixture.detectChanges();
+    const select = fixture.debugElement.query(By.css('sui-select'));
+    fixture.whenStable().then(() => {
+      select.nativeElement.dispatchEvent(new Event('change'));
+      fixture.detectChanges();
+      expect(component.showLoader).toBe(true);
+      expect(component.onSelectChapterChange).toHaveBeenCalledWith(component.selectedChapterOption);
+    });
+
+  });
+
+  it('show resource template with Add resource action', () => {
+    const recursiveComponent = new RecursiveTreeComponent();
+    const button = fixture.debugElement.nativeElement.querySelector('button');
+    button.click();
+    // recursiveComponent.nodeMeta.emit({
+    //   action: 'add',
+    //   showPopup: true,
+    //   collection: collection[1]
+    // });
+    spyOn(component, 'showResourceTemplate').and.callThrough();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(component.showResourceTemplate).toHaveBeenCalled();
+    });
+  });
+
+  // it('show resource template with delete action', () => {
+  //   const recursiveComponent = new RecursiveTreeComponent();
+  //   recursiveComponent.nodeMeta.emit({
+  //     action: 'delete',
+  //     showPopup: null,
+  //     content: collection[1],
+  //     collection: component.collectionHierarchy
+  //   });
+
+  //   spyOn(component, 'removeResourceToHierarchy').and.callThrough();
+  //   fixture.whenStable().then(() => {
+  //     fixture.detectChanges();
+  //     expect(component.removeResourceToHierarchy).toHaveBeenCalled();
+  //   });
+  // });
+
+
+
 
   // it('should call showChapterList on successfully collecting textBookMetaData', () => {
   //   component.sessionContext.currentRole = 'REVIEWER';
@@ -165,4 +292,11 @@ describe('ChapterListComponent', () => {
   //   expect(component.toasterService.error).toHaveBeenCalledWith('You don\'t have permission to access this page');
   // });
 
+  xit('unsubscribes when destroyed', () => {
+    component.ngOnDestroy();
+    const spy = spyOn(stageSubscription, 'unsubscribe').and.callFake(() => {
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalled();
+    });
+  });
 });
