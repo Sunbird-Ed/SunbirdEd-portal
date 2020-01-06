@@ -34,6 +34,7 @@
     "mocha": "^4.1.0",
     "mochawesome": "^2.3.1",
     "mock-require": "^3.0.3",
+    "node-mocks-http": "^1.8.1",
     "nyc": "^14.1.1",
     "path": "^0.12.7",
     "phantomjs-prebuilt": "2.1.15",
