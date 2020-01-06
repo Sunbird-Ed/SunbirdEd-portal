@@ -177,19 +177,19 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         this.dialContentId = _.get(content, 'identifier');
         this.showSelectChapter = true;
       }
+      return this.dialCodeService.getAllPlayableContent([textBookUnit]).pipe(
+        tap(() => {
+          const telemetryImpression = _.cloneDeep(this.telemetryImpression);
+          telemetryImpression.edata.pageid = `${this.activatedRoute.snapshot.data.telemetry.pageid}-post-populate`;
+          telemetryImpression.edata.duration = this.navigationhelperService.getPageLoadTime();
+          telemetryImpression.edata.subtype = 'flatten';
+          this.telemetryService.impression(telemetryImpression);
+        })
+      )
     } else {
       this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')])
       return of([]);
     }
-    return this.dialCodeService.getAllPlayableContent([textBookUnit]).pipe(
-      tap(() => {
-        const telemetryImpression = _.cloneDeep(this.telemetryImpression);
-        telemetryImpression.edata.pageid = `${this.activatedRoute.snapshot.data.telemetry.pageid}-post-populate`;
-        telemetryImpression.edata.duration = this.navigationhelperService.getPageLoadTime();
-        telemetryImpression.edata.subtype = 'flatten';
-        this.telemetryService.impression(telemetryImpression);
-      })
-    )
   }
   onScrollDown() {
     const startIndex = this.itemsToLoad;

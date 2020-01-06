@@ -28,13 +28,13 @@ describe('DialCodeService', () => {
         expect(searchService.contentSearch).toHaveBeenCalled();
         expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
         expect(searchService.contentSearch).toHaveBeenCalledWith({
-          "filters": {
-            "dialcodes": "646X5X"
+          'filters': {
+            'dialcodes': '646X5X'
           },
-          "mode": "collection",
-          "params": {
-            "orgdetails": "orgName,email",
-            "online": false
+          'mode': 'collection',
+          'params': {
+            'orgdetails': 'orgName,email',
+            'online': false
           }
         }, false);
         expect(res).toBeDefined();
@@ -42,7 +42,7 @@ describe('DialCodeService', () => {
       });
     });
 
-  })
+  });
 
   describe('filterDialSearchResults function', () => {
 
@@ -55,13 +55,13 @@ describe('DialCodeService', () => {
         expect(res.collection).toBeDefined();
         expect(res.contents).toBeDefined();
         expect(res).toEqual({
-          "collection": mockData.dialCodeSearchApiResponse.result.collections,
-          "contents": []
+          'collection': mockData.dialCodeSearchApiResponse.result.collections,
+          'contents': []
         });
         expect(dialCodeService.dialCodeResult).toEqual(mockData.dialCodeSearchApiResponse.result);
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('parseCollection function', () => {
 
@@ -72,9 +72,9 @@ describe('DialCodeService', () => {
       expect(result.length).toBeTruthy();
       expect(result.length).toBe(9);
       expect(result).toEqual(mockData.parsedCollection);
-    })
+    });
 
-  })
+  });
 
   describe('getCollectionHierarchy function', () => {
 
@@ -88,10 +88,10 @@ describe('DialCodeService', () => {
           expect(playerService.getCollectionHierarchy).toHaveBeenCalled();
           expect(playerService.getCollectionHierarchy).toHaveBeenCalledWith('do_21289679356020326415198');
           expect(result).toEqual(mockData.courseHierarchApiResponse.result.content);
-        })
-    })
+        });
+    });
 
-  })
+  });
 
   describe('groupCollections function', () => {
 
@@ -100,9 +100,9 @@ describe('DialCodeService', () => {
       const result = dialCodeService.groupCollections(mockData.dialCodeSearchApiResponse.result.content);
       expect(result).toEqual(mockData.groupedCollection);
       expect(result).toBeDefined();
-    })
+    });
 
-  })
+  });
 
   describe('getAllPlayableContent function', () => {
 
@@ -112,7 +112,7 @@ describe('DialCodeService', () => {
       dialCodeService = TestBed.get(DialCodeService);
       playerService = TestBed.get(PlayerService);
       spyOn(dialCodeService, 'getCollectionHierarchy').and.callThrough();
-    })
+    });
 
     it('should return empty array when no collections are passed', () => {
       spyOn(playerService, 'getCollectionHierarchy').and.returnValue(of(mockData.courseHierarchApiResponse));
@@ -120,8 +120,8 @@ describe('DialCodeService', () => {
         expect(result).toBeDefined();
         expect(result.length).toBe(0);
         expect(result).toEqual([]);
-      })
-    })
+      });
+    });
 
     it('should return empty array when error occurs', () => {
       spyOn(playerService, 'getCollectionHierarchy').and.returnValue(throwError(mockData.courseHierarchApiResponse));
@@ -129,8 +129,8 @@ describe('DialCodeService', () => {
         expect(result).toBeDefined();
         expect(result.length).toBe(0);
         expect(result).toEqual([]);
-      })
-    })
+      });
+    });
 
     it('should return list of playable contents for all collection ids passed', () => {
       spyOn(playerService, 'getCollectionHierarchy').and.returnValue(of(mockData.courseHierarchApiResponse));
@@ -142,7 +142,7 @@ describe('DialCodeService', () => {
         expect(playerService.getCollectionHierarchy).toHaveBeenCalledTimes(2);
         expect(result.length).toBe(18);
         expect(result).toEqual([...mockData.parsedCollection, ...mockData.parsedCollection]);
-      })
-    })
-  })
+      });
+    });
+  });
 });
