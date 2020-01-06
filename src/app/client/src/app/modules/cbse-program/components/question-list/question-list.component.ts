@@ -251,6 +251,7 @@ export class QuestionListComponent implements OnInit {
     mergeMap(requestParams => this.updateItemset(requestParams, this.itemSetIdentifier)))
     .subscribe((contentRes: any) => {
       this.handleQuestionTabChange(this.selectedQuestionId);
+      this.handleActionButtons();
     });
   }
   public questionStatusHandler(event) {
@@ -547,7 +548,6 @@ export class QuestionListComponent implements OnInit {
                 ]
               },
               'body': '',
-              'solutions': [],
               'media': [],
               'author' : this.getUserName()
             }
