@@ -148,7 +148,7 @@ export class QuestionListComponent implements OnInit {
          ]
        }
       };
-      return this.updateContent(reqBody, this.sessionContext.resourceIdentifier)
+      return this.updateContent(reqBody, this.sessionContext.resourceIdentifier);
     }))))
     .subscribe(() => {
       this.handleQuestionTabChange(this.selectedQuestionId);
@@ -303,41 +303,33 @@ export class QuestionListComponent implements OnInit {
 
       forkJoin([updateBody, versionKey]).subscribe((response: any) => {
         const existingContentVersionKey = _.get(response[1], 'content.versionKey');
-        const options = {
-          url: `${this.configService.urlConFig.URLS.CONTENT.UPDATE}/${this.sessionContext.resourceIdentifier}`,
-          data: {
-            'request': {
-              'content': {
-                questions: questions,
-                body: JSON.stringify(response[0]),
-                versionKey: existingContentVersionKey,
-                'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
-                'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
-                // tslint:disable-next-line:max-line-length
-                name: this.resourceName,
-                'programId': this.sessionContext.programId,
-                'program': this.sessionContext.program,
-                'plugins': [{
-                  identifier: 'org.sunbird.questionunit.quml',
-                  semanticVersion: '1.1'
-                }],
-                'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
-                'topic': this.sessionContext.topic ? [this.sessionContext.topic] : [] ,
-                'editorVersion': 3,
-                'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
-                'rejectComment' : ''
-              }
-            }
+        const requestBody = {
+          'content': {
+            questions: questions,
+            body: JSON.stringify(response[0]),
+            versionKey: existingContentVersionKey,
+            'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
+            'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
+            // tslint:disable-next-line:max-line-length
+            name: this.resourceName,
+            'programId': this.sessionContext.programId,
+            'program': this.sessionContext.program,
+            'plugins': [{
+              identifier: 'org.sunbird.questionunit.quml',
+              semanticVersion: '1.1'
+            }],
+            'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
+            'topic': this.sessionContext.topic ? [this.sessionContext.topic] : [] ,
+            'editorVersion': 3,
+            'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
+            'rejectComment' : ''
           }
         };
-        this.actionService.patch(options).pipe(catchError(err => {
-          const errInfo = { errorMsg: 'Resource updation failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-        }))
+        this.updateContent(requestBody, this.sessionContext.resourceIdentifier)
         .subscribe((res) => {
             if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
               this.disableSubmitBtn = false;
-              this.toasterService.success('Question and content updated successfully');
+              this.toasterService.success(this.resourceService.messages.smsg.m0060);
             }
           }, error => {
             this.publishInProgress = false;
@@ -498,6 +490,18 @@ export class QuestionListComponent implements OnInit {
   public onResourceNameBlur() {
     if (this.resourceName.length > 0 && this.resourceName.length <= this.resourceTitleLimit) {
       this.showTextArea = false;
+      const reqBody = {
+        'content': {
+            'versionKey': this.existingContentVersionKey,
+            'name' : this.resourceName
+        }
+      };
+      this.updateContent(reqBody, this.sessionContext.resourceIdentifier)
+      .subscribe((res) => {
+        if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
+          this.toasterService.success(this.resourceService.messages.smsg.m0060);
+        }
+      });
     }
   }
 
@@ -604,6 +608,7 @@ export class QuestionListComponent implements OnInit {
 
   public updateContent(reqBody, contentId) {
     return this.helperService.updateContent(reqBody, contentId).pipe(map((response) => {
+      this.existingContentVersionKey = _.get(response, 'result.versionKey');
       return response;
     }, err => {
       console.log(err);

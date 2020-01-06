@@ -75,11 +75,6 @@
     </div>
 
     <div class="nine wide column bg-white pl-40 p-0 ckeditor-container">
-      <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create' && role.currentRole === 'CONTRIBUTOR'"
-        class="ui segment">No Question - Click
-        Create</div>
-      <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review
-      </div>
       <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
         <div *ngIf="sessionContext.questionType === 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
