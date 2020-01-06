@@ -239,6 +239,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   buttonTypeHandler(event) {
     if (event === 'preview') {
       this.sessionContext.showMode = 'previewPlayer';
+      this.showPreview = true;
     } else if (event === 'edit') {
       this.sessionContext.showMode = 'editorForm';
       this.refreshEditor();
@@ -289,12 +290,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                       ]
                     },
                     'body': this.body,
-                    "responseDeclaration": {
-                      "responseValue": {
-                        "cardinality": "single",
-                        "type": "string",
-                        "correct_response": {
-                          "value": this.solution
+                    'responseDeclaration': {
+                      'responseValue': {
+                        'cardinality': 'single',
+                        'type': 'string',
+                        'correct_response': {
+                          'value': this.solution
                         }
                       }
                     },

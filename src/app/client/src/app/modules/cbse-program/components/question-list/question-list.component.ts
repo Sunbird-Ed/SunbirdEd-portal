@@ -31,7 +31,7 @@ export class QuestionListComponent implements OnInit {
   public role: any;
   public templateDetails: any;
   public actions: any;
-  public questionList : Array<any> = [];
+  public questionList: Array<any> = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
   public resourceDetails: any = {};
@@ -129,7 +129,8 @@ export class QuestionListComponent implements OnInit {
   public createDefaultQuestionAndItemset() {
     this.createDefaultAssessmentItem().pipe(
       map(data => {
-        return _.get(data, 'result.node_id');
+        this.selectedQuestionId = _.get(data, 'result.node_id');
+        return this.selectedQuestionId;
     }),
     mergeMap(questionId => this.createItemSet(questionId).pipe(
       map(res => {
@@ -150,9 +151,7 @@ export class QuestionListComponent implements OnInit {
       return this.updateContent(reqBody, this.sessionContext.resourceIdentifier)
     }))))
     .subscribe(() => {
-        setTimeout(() => {
-          this.fetchQuestionList();
-        }, 1000);
+      this.handleQuestionTabChange(this.selectedQuestionId);
     });
   }
 
@@ -239,20 +238,19 @@ export class QuestionListComponent implements OnInit {
   public createNewQuestion(): void {
     this.createDefaultAssessmentItem().pipe(
       map((data: any) => {
-        const questinId = data.result.node_id;
+        const questionId = data.result.node_id;
         const questionsIds: any = _.map(this.questionList, (question) => ({ 'identifier': _.get(question, 'identifier') }));
-        questionsIds.push({'identifier': questinId});
+        questionsIds.push({'identifier': questionId});
         const requestParams = {
           'name': this.resourceName,
           'items': questionsIds
         };
+        this.selectedQuestionId = questionId;
         return requestParams;
     }),
     mergeMap(requestParams => this.updateItemset(requestParams, this.itemSetIdentifier)))
     .subscribe((contentRes: any) => {
-      setTimeout(() => {
-        this.fetchQuestionList();
-      }, 1000);
+      this.handleQuestionTabChange(this.selectedQuestionId);
     });
   }
   public questionStatusHandler(event) {
@@ -555,6 +553,7 @@ export class QuestionListComponent implements OnInit {
     };
 
     return this.actionService.post(request).pipe(map((response) => {
+      this.questionList.push(_.assign(request.data.request.assessment_item.metadata, {'identifier': _.get(response, 'result.node_id')}));
       return response;
     }, err => {
       console.log(err);

@@ -30,10 +30,10 @@
     <div class='practical-sb-buttons'>
       <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="questionCreationChild.buttonTypeHandler()">Save</button>
       <button id="requestChanges" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true;">Request Changes</button>
-      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" (click)="questionCreationChild.buttonTypeHandler('preview')" >Preview</button>
       <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-normal ripple mr-8" 
       [ngClass]="isPublishBtnDisable ? 'sb-btn-disabled' : 'sb-btn-secondary'"
-      [disabled] = "isPublishBtnDisable" (click)="showPublishModal = truel;">Publish</button>
+      [disabled] = "isPublishBtnDisable" (click)="publichContent()">Publish</button>
       <button id="submitContent"  *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-normal ripple"   
         [ngClass]="disableSubmitBtn ? 'sb-btn-disabled' : 'sb-btn-secondary'"
       [disabled] = "disableSubmitBtn" (click)="sendForReview()">Submit</button>
