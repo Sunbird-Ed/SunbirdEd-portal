@@ -1,7 +1,7 @@
 import { PublicPlayerService } from '@sunbird/public';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { ContentManagerService, ConnectionService } from '@sunbird/offline';
-import { UtilService, ResourceService, ToasterService, OfflineCardService } from '@sunbird/shared';
+import { UtilService, ResourceService, ToasterService, OfflineCardService, NavigationHelperService } from '@sunbird/shared';
 import { Location } from '@angular/common';
 import { IContentHeader } from './../../interfaces';
 import { Component, OnInit, Input, AfterViewInit, OnDestroy } from '@angular/core';
@@ -33,7 +33,8 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     public router: Router,
     public offlineCardService: OfflineCardService,
     public playerService: PublicPlayerService,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public navigationHelperService: NavigationHelperService
   ) { }
 
   ngOnInit() {
@@ -108,12 +109,12 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    console.log('----this.activatedRoute.parent====', this.activatedRoute);
-    const navigationExtras: NavigationExtras = {
-      queryParams: {},
-      relativeTo: this.activatedRoute.parent
-    };
-    this.router.navigate([] , navigationExtras);
+    const  previousUrl =  this.navigationHelperService.getPreviousUrl();
+    if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
+     return this.router.navigate(['/']);
+    }
+    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
+      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
     this.utilService.clearSearchQuery();
   }
   ngOnDestroy() {
@@ -124,11 +125,9 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     return this.utilService.getPlayerDownloadStatus(status, this.collectionData, this.currentRoute);
   }
   deleteCollection(collection) {
-    console.log('deleteContent');
     const request = {request: {contents: [collection.identifier]}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
-    this.location.back();
-    console.log('----this.activatedRoute.parent====', this.activatedRoute);
+    this.goBack();
     }, err => {
       console.log('errerrerr', err);
     });
