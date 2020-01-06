@@ -9,6 +9,7 @@ export interface ContentDetails {
     creator: string;
     author: string;
     createdOn: string;
+    lastUpdatedOn: string;
     keywords: Array<string>;
     resourceType: string;
 }
