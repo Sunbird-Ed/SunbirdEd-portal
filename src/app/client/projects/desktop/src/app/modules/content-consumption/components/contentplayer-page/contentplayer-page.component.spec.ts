@@ -1,17 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResourcePageComponent } from './resource-page.component';
+import { ContentPlayerPageComponent } from './contentplayer-page.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PublicPlayerService } from '@sunbird/public';
 import { SharedModule } from '@sunbird/shared';
 import { of } from 'rxjs';
-import {resourceData} from './resource-page.component.spec.data';
+import {resourceData} from './contentplayer-page.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-describe('ResourcePageComponent', () => {
-  let component: ResourcePageComponent;
-  let fixture: ComponentFixture<ResourcePageComponent>;
+describe('ContentPlayerPageComponent', () => {
+  let component: ContentPlayerPageComponent;
+  let fixture: ComponentFixture<ContentPlayerPageComponent>;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -30,7 +30,7 @@ describe('ResourcePageComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ResourcePageComponent],
+      declarations: [ContentPlayerPageComponent],
       imports: [HttpClientTestingModule,  TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [
         { provide: Router, useClass: RouterStub },
@@ -43,7 +43,7 @@ describe('ResourcePageComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResourcePageComponent);
+    fixture = TestBed.createComponent(ContentPlayerPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

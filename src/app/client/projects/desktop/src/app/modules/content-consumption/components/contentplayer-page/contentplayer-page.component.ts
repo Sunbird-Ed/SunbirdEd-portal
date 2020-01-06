@@ -10,11 +10,11 @@ import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 
 @Component({
-  selector: 'app-resource-page',
-  templateUrl: './resource-page.component.html',
-  styleUrls: ['./resource-page.component.scss']
+  selector: 'app-contentplayer-page',
+  templateUrl: './contentplayer-page.component.html',
+  styleUrls: ['./contentplayer-page.component.scss']
 })
-export class ResourcePageComponent implements OnInit, OnDestroy {
+export class ContentPlayerPageComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   contentId: any;
   contentDetails: any;
