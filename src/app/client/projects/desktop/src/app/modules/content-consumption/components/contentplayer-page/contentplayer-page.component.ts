@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PublicPlayerService } from '@sunbird/public';
 import {
-  ConfigService, NavigationHelperService, PlayerConfig
+  ConfigService, NavigationHelperService, PlayerConfig, ContentData, ToasterService, ResourceService
 } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,15 +16,17 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class ContentPlayerPageComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
-  contentId: any;
-  contentDetails: any;
+  contentId: string;
+  contentDetails: ContentData;
   playerConfig: PlayerConfig;
-  public telemetryImpression: IImpressionEventInput;
+  telemetryImpression: IImpressionEventInput;
   constructor(public activatedRoute: ActivatedRoute,
     public playerService: PublicPlayerService,
     public configService: ConfigService,
     public router: Router,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService,
+    public toasterService: ToasterService,
+    public resourceService: ResourceService,
   ) { }
 
   ngOnInit() {
@@ -47,8 +49,10 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.contentDetails = _.get(response, 'result.content');
         this.getContentConfigDetails();
-        this.setTelemetryData();
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0024);
       });
+    this.setTelemetryData();
   }
   getContentConfigDetails() {
     const contentDetails = {

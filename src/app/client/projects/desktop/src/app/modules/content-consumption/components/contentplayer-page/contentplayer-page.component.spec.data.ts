@@ -99,7 +99,7 @@ export const resourceData = {
                 ],
                 'flagReasons': null,
                 'totalScore': 9,
-                'pkgVersion': 6,
+                'pkgVersion': '6',
                 'versionKey': '1542779548558',
                 'idealScreenDensity': 'hdpi',
                 's3Key': 'ecar_files/do_21260742513514086411607/test-5895_1542303158287_do_21260742513514086411607_5.0.ecar',
@@ -110,12 +110,37 @@ export const resourceData = {
                 'board': 'CBSE',
                 'resourceType': 'Learn',
                 'baseDir': 'content/do_21260742513514086411607',
+                'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+                'body': '',
+                'me_averageRating': '',
+                'userName': 'created_author',
                 'desktopAppMetadata': {
                     'addedUsing': 'import',
                     'createdOn': 1577780630688,
                     'updatedOn': 1577780630688,
                     'artifactAdded': true
                 }
+            }
+        }
+    },
+    contentError: {
+        'id': 'api.content.read',
+        'ver': '1.0',
+        'ts': '2020-01-06T06:58:43.803Z',
+        'params': {
+            'resmsgid': 'ca6ab48a-3bea-4512-9fef-b1ea3c432618',
+            'msgid': '73b69823-15f5-44fc-ab1b-afde774db085',
+            'status': 'failed',
+            'err': 'ERR_DATA_NOT_FOUND',
+            'errmsg': 'Data not found'
+        },
+        'responseCode': 'RESOURCE_NOT_FOUND',
+        'result': {}
+    },
+    resourceBundle: {
+        messages: {
+            emsg: {
+                m0024: 'Unable to load content. Please try again'
             }
         }
     },
