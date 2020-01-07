@@ -180,7 +180,21 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 ([response1, response2]) => {
                     if (response1) {
                         this.showLoader = false;
-                        const filteredContents = _.omit(_.groupBy(response1['result'].content, 'subject'), ['undefined']);
+                        const subjects = [];
+                        let filteredContents = _.omit(_.groupBy(response1['result'].content, (content) => {
+                            if (_.get(content, 'subject.length') > 1) {
+                                content.subject.forEach((currentSubject) => {
+                                    if (subjects[currentSubject]) {
+                                        subjects[currentSubject].push(content);
+                                    } else {
+                                        subjects[currentSubject] = [content];
+                                    }
+                                });
+                                return content.subject[0];
+                            }
+                            return content.subject;
+                        }), ['undefined']);
+                        filteredContents = _.merge(filteredContents, subjects);
                         this.sections = [];
 
                         if (response2) {
