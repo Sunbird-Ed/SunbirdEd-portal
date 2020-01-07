@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import {resourceTemplateComponentInput} from './resource-template.data';
 import { ResourceTemplateComponent } from './resource-template.component';
+import { SuiModule } from 'ng2-semantic-ui';
 
 describe('ResourceTemplateComponent', () => {
   let component: ResourceTemplateComponent;
@@ -8,6 +10,7 @@ describe('ResourceTemplateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SuiModule],
       declarations: [ ResourceTemplateComponent ]
     })
     .compileComponents();
@@ -16,10 +19,36 @@ describe('ResourceTemplateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ResourceTemplateComponent);
     component = fixture.componentInstance;
+    component.resourceTemplateComponentInput = resourceTemplateComponentInput;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('showButton should be false on component initialize', () => {
+    expect(component.showButton).toBeFalsy();
+  });
+
+  it('templateList should be defined', () => {
+    expect(component.templateList).toBeDefined();
+  });
+
+  it('should emit event on handleSubmit', () => {
+    component.templateSelected = 'explanationContent';
+    fixture.detectChanges();
+    spyOn(component.templateSelection, 'emit');
+    component.handleSubmit();
+    expect(component.templateSelection.emit).toHaveBeenCalled();
+  });
+
+  it('should close modal after ngOnDestroy', () => {
+    component.templateSelected = 'explanationContent';
+    fixture.detectChanges();
+    component.ngOnDestroy();
+    setTimeout(() => {
+      expect(document.getElementsByTagName('sui-modal')).toBeUndefined();
+    }, 0);
   });
 });

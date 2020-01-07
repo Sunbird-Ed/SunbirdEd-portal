@@ -16,6 +16,7 @@ import { QuestionListComponent } from '../../../cbse-program/components/question
 import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
 import { ProgramStageService } from '../../../program/services';
 import { InitialState } from '../../interfaces';
+import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 
 interface IDynamicInput {
   contentUploadComponentInput?: IContentUploadComponentInput;
@@ -82,7 +83,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     private userService: UserService, public actionService: ActionService,
     public telemetryService: TelemetryService, private cbseService: CbseProgramService,
     public toasterService: ToasterService, public router: Router,
-    public programStageService: ProgramStageService, public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef) {
+    public programStageService: ProgramStageService, public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef,
+    private collectionHierarchyService: CollectionHierarchyService) {
   }
 
   ngOnInit() {
@@ -341,10 +343,12 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }))
         .subscribe(result => {
-          this.addResourceToHierarchy(result.node_id);
           this.contentId = result.node_id;
-          // tslint:disable-next-line:max-line-length
-          this.componentLoadHandler('creation', this.componentMapping[event.templateDetails.metadata.contentType], event.templateDetails.onClick);
+          this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, result.node_id)
+            .subscribe(() => {
+               // tslint:disable-next-line:max-line-length
+               this.componentLoadHandler('creation', this.componentMapping[event.templateDetails.metadata.contentType], event.templateDetails.onClick);
+            });
         });
     }
   }
