@@ -166,18 +166,16 @@
         </div>
     </div>
 
-    <p class="paragraph fs-0-785 pt-15 mt-0">
-        <strong>Disclaimer:</strong> By creating content on SunbirdEd, you consent to publish it under the Creative Commons License Framework. For details, refer
-        <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Please choose the applicable creative commons license you wish to apply to your content.
-    </p>
-
     <div class='practical-sb-buttons'>
         <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true">
             {{ questionMetaData.data.rejectComment === '' ? 'Request Changes' : 'Edit Comments' }}
         </button>
     </div>
 
-    <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
+    <p class="paragraph fs-0-785 pt-15 mt-0">
+        <strong>Disclaimer:</strong> By creating content on SunbirdEd, you consent to publish it under the Creative Commons License Framework. For details, refer
+        <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Please choose the applicable creative commons license you wish to apply to your content.
+    </p>    
 </form>
 
 <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker" [size]="'normal'" class="sb-modal" [isFullScreen]="false" [mustScroll]="true" #modal>
@@ -245,7 +243,7 @@
 </sui-modal>
 
 <sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="showRequestChangesPopup = false; ReuestChangeForm.form.reset();">
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="showRequestChangesPopup = false; rejectComment = ''">
   <div class="sb-modal-header">
       Add Review Comments
   </div>
@@ -258,7 +256,7 @@
             <span class="characters-left">{{ commentCharLimit - rejectComment.length }} Characters left</span>
           </div>
           <div>
-            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="rejectComment.length > commentCharLimit">Comments should be maximum 1000 characters.</label>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="rejectComment.length > commentCharLimit">Comments should be maximum {{commentCharLimit}} characters.</label>
             <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="reuestChangeForm.form.controls.rejectComment?.touched && !reuestChangeForm.form.valid">Fill comments </label>
           </div>
       </div>

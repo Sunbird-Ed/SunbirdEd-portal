@@ -54,6 +54,8 @@ export class QuestionListComponent implements OnInit {
   public showTextArea = false;
   public resourceName: string;
   public licencesOptions = [];
+  public commentCharLimit = 1000;
+  public contentRejectComment: string;
   visibility: any;
   @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
 
@@ -94,6 +96,7 @@ export class QuestionListComponent implements OnInit {
       this.resourceStatus = _.get(this.resourceDetails, 'status');
       this.sessionContext.resourceStatus = this.resourceStatus;
       this.resourceName = this.resourceDetails.name || this.templateDetails.metadata.name;
+      this.contentRejectComment = this.resourceDetails.rejectComment || '';
       // this.resourceStatus = 'Review';
       if (!this.resourceDetails.itemSets) {
         this.createDefaultQuestionAndItemset();
@@ -402,8 +405,8 @@ export class QuestionListComponent implements OnInit {
   }
 
   requestChanges() {
-    if (this.FormControl.value.rejectComment) {
-      this.helperService.submitRequestChanges(this.sessionContext.resourceIdentifier, this.FormControl.value.rejectComment)
+    if (this.FormControl.value.contentRejectComment) {
+      this.helperService.submitRequestChanges(this.sessionContext.resourceIdentifier, this.FormControl.value.contentRejectComment)
       .subscribe(res => {
         this.showRequestChangesPopup = false;
         const contentId =  res.result.node_id || res.result.content_id;

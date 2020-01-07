@@ -176,7 +176,7 @@
 </sui-modal>
 
 <sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="showRequestChangesPopup = false;">
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="showRequestChangesPopup = false; contentRejectComment = ''">
   <div class="sb-modal-header">
       Add Review Comments
   </div>
@@ -184,19 +184,18 @@
   <div class="sb-modal-content">
       <div class="sb-field-group">
           <label>Enter your comments</label>
-          <div class="sb-field relative">
-            
-              <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
-              <label class="ui basic red error label pt-1 mt-5 width-100"
-                  *ngIf="FormControl.form.controls.rejectComment?.touched && !FormControl.form.valid">Fill comments </label>
-            
-              <!-- <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
-              <span class="characters-left">1000 Characters left</span> -->
+          <div class="sb-field relative">  
+              <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="contentRejectComment" placeholder="Add comment" name="contentRejectComment" required></textarea>
+              <span class="characters-left">{{ commentCharLimit - contentRejectComment.length }} Characters left</span>
+          </div>
+          <div>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="contentRejectComment.length > commentCharLimit">Comments should be maximum {{commentCharLimit}} characters.</label>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="FormControl.form.controls.contentRejectComment?.touched && !FormControl.form.valid">Fill comments </label>
           </div>
       </div>
   </div>
   <div class="sb-modal-actions">
-    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': FormControl.form.valid, 'sb-btn-disabled': !FormControl.form.valid}"   (click)="requestChanges()"> Submit Review </button>
+    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [disabled]="contentRejectComment.length > commentCharLimit"  [ngClass]="{'sb-btn-primary': FormControl.form.valid, 'sb-btn-disabled': !FormControl.form.valid || contentRejectComment.length > commentCharLimit}"   (click)="requestChanges()"> Submit Review </button>
   </div>
 </form>
 </sui-modal>
