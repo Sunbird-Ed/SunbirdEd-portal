@@ -525,51 +525,7 @@ export class QuestionListComponent implements OnInit {
   public createDefaultAssessmentItem() {
     const request = {
       url: `${this.configService.urlConFig.URLS.ASSESSMENT.CREATE}`,
-      data: {
-        'request': {
-          'assessment_item': {
-            'objectType': 'AssessmentItem',
-            'metadata': {
-              'itemType': 'UNIT',
-              'code': UUID.UUID(),
-              'subject': this.sessionContext.subject[0],
-              'qumlVersion': 1.0,
-              'qlevel': 'MEDIUM',
-              'channel': this.sessionContext.channel,
-              'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : [],
-              'language': [
-                'English'
-              ],
-              'program': this.sessionContext.program,
-              'medium': this.sessionContext.medium[0],
-              'templateId': 'NA',
-              'type': 'reference',
-              'gradeLevel': this.sessionContext.gradeLevel,
-              'creator': this.getUserName(),
-              'version': 3,
-              'framework': this.sessionContext.framework,
-              'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
-              'topic': this.sessionContext.topic ? this.sessionContext.topic : [],
-               // tslint:disable-next-line:max-line-length
-              'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
-              'programId': this.sessionContext.programId,
-              'board': this.sessionContext.board,
-              'editorState': {
-                'question': '',
-                'solutions': [
-                  {
-                    'id': UUID.UUID(),
-                    'value': ''
-                  }
-                ]
-              },
-              'body': '',
-              'media': [],
-              'author' : this.getUserName()
-            }
-          }
-        }
-      }
+      data: this.prepareQuestionReqBody()
     };
 
     return this.actionService.post(request).pipe(map((response) => {
@@ -581,6 +537,85 @@ export class QuestionListComponent implements OnInit {
       const errInfo = { errorMsg: 'Default question creation failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }));
+  }
+
+  prepareQuestionReqBody() {
+   // tslint:disable-next-line:prefer-const
+    let finalBody = {
+      'request': {
+        'assessment_item': {
+          'objectType': 'AssessmentItem',
+          'metadata': {
+            'itemType': 'UNIT',
+            'code': UUID.UUID(),
+            'subject': this.sessionContext.subject[0],
+            'qumlVersion': 1.0,
+            'qlevel': 'MEDIUM',
+            'channel': this.sessionContext.channel,
+            'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : [],
+            'language': [
+              'English'
+            ],
+            'program': this.sessionContext.program,
+            'medium': this.sessionContext.medium[0],
+            'templateId': 'NA',
+            'type': 'reference',
+            'gradeLevel': this.sessionContext.gradeLevel,
+            'creator': this.getUserName(),
+            'version': 3,
+            'framework': this.sessionContext.framework,
+            'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
+            'topic': this.sessionContext.topic ? this.sessionContext.topic : [],
+             // tslint:disable-next-line:max-line-length
+            'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
+            'programId': this.sessionContext.programId,
+            'board': this.sessionContext.board,
+            'body': '',
+            'media': [],
+            'author' : this.getUserName()
+          }
+        }
+      }
+    };
+
+    if (_.isEqual(this.sessionContext.questionType, 'mcq')) {
+      finalBody.request.assessment_item.metadata = _.assign(finalBody.request.assessment_item.metadata, this.getMcqQuestionBody());
+    } else {
+      finalBody.request.assessment_item.metadata = _.assign(finalBody.request.assessment_item.metadata, this.getReferenceQuestionBody());
+    }
+    return finalBody;
+  }
+
+  getMcqQuestionBody() {
+    return {
+      'editorState': {
+        'question': '',
+        'options' : []
+      },
+      'responseDeclaration': {
+        'responseValue': {
+          'cardinality': 'single',
+          'type': 'integer',
+          'correct_response': {
+            'value': ''
+          }
+        }
+      }
+    };
+  }
+
+  getReferenceQuestionBody() {
+    return {
+      'editorState': {
+        'question': '',
+        'solutions': [
+          {
+            'id': UUID.UUID(),
+            'value': ''
+          }
+        ]
+      }
+    };
   }
 
   public createItemSet(questionId) {
