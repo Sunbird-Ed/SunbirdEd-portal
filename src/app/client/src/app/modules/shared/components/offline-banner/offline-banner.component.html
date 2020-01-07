@@ -2,7 +2,7 @@
   <div class="ui container sb-banner mt-24">
     <div class="sb-banner-content">
       <div class="sb-banner-content-right">
-        <div class="sb-banner-heading">{{resourceService?.frmelmnts?.lbl?.downloadDikshaLite}}</div>
+        <div class="sb-banner-heading">{{resourceService?.frmelmnts?.lbl?.downloadDikshaLite | interpolate:'{instance}': resourceService?.instance}}</div>
         <dl class="mt-8 mb-0">
           <div class="d-flex" *ngIf="desktopAppVersion">
             <dt class="description-list-key">{{resourceService?.frmelmnts?.lbl?.versionKey}}</dt>

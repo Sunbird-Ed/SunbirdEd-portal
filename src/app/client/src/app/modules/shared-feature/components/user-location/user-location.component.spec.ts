@@ -40,7 +40,7 @@ describe('UserLocationComponent', () => {
     configService = TestBed.get(ConfigService);
   });
 
-  it('should create', () => {
+  it('should create user-location component', () => {
     expect(component).toBeTruthy();
   });
 
