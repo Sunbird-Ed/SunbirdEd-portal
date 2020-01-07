@@ -239,12 +239,10 @@ export const resourceData = {
             visibility: 'Default'
         }
     },
-    visits: [{
-        objid: 'do_21260742513514086411607',
-        objtype: 'Resource',
-        index: 0
+    object: {
+        id: 'do_21260742513514086411607',
+        type: 'Resource',
+        ver: '6',
     }
-    ],
-
 };
 

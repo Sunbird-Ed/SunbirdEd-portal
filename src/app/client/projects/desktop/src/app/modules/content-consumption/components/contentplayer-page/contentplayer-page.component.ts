@@ -30,10 +30,9 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getContentIdFromRoute();
-    this.setTelemetryData();
     this.router.events
     .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
-    .subscribe(x => { this.prepareVisits(); });
+    .subscribe(x => { this.setPageExitTelemtry(); });
   }
   getContentIdFromRoute() {
     this.activatedRoute.params.pipe(
@@ -51,8 +50,10 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.contentDetails = _.get(response, 'result.content');
         this.getContentConfigDetails(contentId);
+       this.setTelemetryData();
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0024);
+      this.setTelemetryData();
       });
   }
   getContentConfigDetails(contentId) {
@@ -67,6 +68,11 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
+      object: {
+        id: this.contentDetails['identifier'],
+        type: this.contentDetails['contentType'],
+        ver: this.contentDetails['pkgVersion'].toString() || '1.0'
+      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
@@ -76,14 +82,13 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
       }
     };
   }
-  prepareVisits() {
-    const  visits = [];
-    visits.push({
-      objid: this.contentDetails.identifier,
-      objtype: this.contentDetails.contentType,
-      index: 0
-    });
-    this.telemetryImpression.edata.visits = visits;
+  setPageExitTelemtry() {
+    const  objectData = {
+      id: this.contentDetails['identifier'],
+      type: this.contentDetails['contentType'],
+      ver: this.contentDetails['pkgVersion'].toString() || '1.0',
+    };
+    this.telemetryImpression.object = objectData;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }

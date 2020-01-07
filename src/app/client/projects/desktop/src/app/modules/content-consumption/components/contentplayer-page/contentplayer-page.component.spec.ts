@@ -63,6 +63,7 @@ describe('ContentPlayerPageComponent', () => {
     expect(component.setTelemetryData).toHaveBeenCalled();
   });
   it('should call getContent method and error while getting content ', () => {
+    component.contentDetails = resourceData.content.result.content;
     const publicService = TestBed.get(PublicPlayerService);
     spyOn(publicService, 'getContent').and.returnValue(throwError(resourceData.contentError));
     spyOn(component.toasterService, 'error').and.returnValue(of(resourceData.resourceBundle.messages.emsg.m0024));
@@ -73,6 +74,7 @@ describe('ContentPlayerPageComponent', () => {
     expect(component.setTelemetryData).toHaveBeenCalled();
   });
   it('should get content config details ', () => {
+    component.contentDetails = resourceData.content.result.content;
     const publicService = TestBed.get(PublicPlayerService);
     spyOn(publicService, 'getConfig').and.returnValue(resourceData.configDetails);
     component.contentDetails = resourceData.content.result.content;
@@ -80,15 +82,16 @@ describe('ContentPlayerPageComponent', () => {
     expect(component.playerConfig).toEqual(resourceData.configDetails);
   });
   it('should call setTelemetryData', () => {
+    component.contentDetails = resourceData.content.result.content;
     spyOn(component, 'setTelemetryData').and.callThrough();
     component.setTelemetryData();
     expect(component.setTelemetryData).toHaveBeenCalled();
   });
-  it('should call prepareVisits method', () => {
-    component.telemetryImpression.edata.visits = [];
+  it('should call setPageExitTelemtry method', () => {
     component.contentDetails = resourceData.content.result.content;
-    component.prepareVisits();
-    expect(component.telemetryImpression.edata.visits).toEqual(resourceData.visits);
+    component.setTelemetryData();
+    component.setPageExitTelemtry();
+    expect(component.telemetryImpression.object).toEqual(resourceData.object);
     expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
   });
 });
