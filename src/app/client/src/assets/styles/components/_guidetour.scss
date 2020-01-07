@@ -46,7 +46,7 @@
 }
 
 .shepherd-element.shepherd-has-title .shepherd-content header h3 {
-    font-size: $font-size-md + 2;
+    font-size: calculateRem(18px);
     color: $white;
     font-weight: bold;
     line-height: $base-block-space * 3;

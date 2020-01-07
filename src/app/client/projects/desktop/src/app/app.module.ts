@@ -15,6 +15,7 @@ import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
 import { WebExtensionsConfig, PluginModules } from './framework.config';
+import { UserProfileModule } from '@sunbird/user-profile';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { WebExtensionsConfig, PluginModules } from './framework.config';
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
+    UserProfileModule,
     PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],

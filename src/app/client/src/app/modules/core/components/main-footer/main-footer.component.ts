@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest } from 'rxjs';
 import * as _ from 'lodash-es';
@@ -10,7 +10,8 @@ import * as _ from 'lodash-es';
   selector: 'app-footer',
   templateUrl: './main-footer.component.html'
 })
-export class MainFooterComponent implements OnInit {
+export class MainFooterComponent implements OnInit, AfterViewInit {
+  @ViewChild('footerFix') footerFix: ElementRef;
   /**
    * reference of resourceService service.
    */
@@ -23,18 +24,33 @@ export class MainFooterComponent implements OnInit {
   Hide or show footer
   */
   showFooter = true;
-
+  showDownloadmanager: any;
   isOffline: boolean = environment.isOffline;
   instance: string;
-  deviceId;
+  bodyPaddingBottom: string;
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
-    public configService: ConfigService) {
+    public configService: ConfigService, private renderer: Renderer2) {
     this.resourceService = resourceService;
-    if (this.isOffline) {this.deviceId =  (<HTMLInputElement>document.getElementById('deviceId')).value; }
   }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+    this.showDownloadmanager = this.router.url.includes('/profile');
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.bodyPaddingBottom = this.footerFix.nativeElement.offsetHeight + 'px';
+      this.renderer.setStyle(
+        document.body,
+        'padding-bottom',
+        this.bodyPaddingBottom
+      );
+    }, 500);
   }
 
   redirectToDikshaApp () {
@@ -68,7 +84,7 @@ export class MainFooterComponent implements OnInit {
     return {
       id: type,
       type: 'click',
-      pageid: 'footer'
+      pageid: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid')
     };
   }
 

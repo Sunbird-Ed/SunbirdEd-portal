@@ -43,6 +43,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public telemetryCdata: Array<{}> = [];
   public closeIntractEdata: IInteractEventEdata;
+  public selectChapterTelemetryCdata: Array<{}> = [];
+  public selectChapterInteractEdata: IInteractEventEdata;
   public linkedContents: Array<any>;
   public showMobilePopup = false;
   public isRedirectToDikshaApp = false;
@@ -59,6 +61,10 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   redirectCollectionUrl: string;
   redirectContentUrl: string;
   showDownloadLoader = false;
+  isBrowse = false;
+  showSelectChapter = false;
+  chapterName: string;
+  dialContentId: string;
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
@@ -70,6 +76,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     EkTelemetry.config.batchsize = 2;
+    this.isBrowse = Boolean(this.router.url.includes('browse'));
     observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
     (params, queryParams) => {
       return { ...params, ...queryParams };
@@ -105,6 +112,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       },
       params: this.configService.appConfig.dialPage.contentApiQueryParams
     };
+    requestParams.params.online = Boolean(this.isBrowse);
     this.searchService.contentSearch(requestParams, false).pipe(mergeMap(apiResponse => {
       const linkedCollectionsIds = [];
       this.linkedContents = [];
@@ -157,6 +165,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public getAllPlayableContent(collectionIds) {
     const apiArray = _.map(collectionIds, collectionId => this.getCollectionHierarchy(collectionId));
     return forkJoin(apiArray).pipe(map((results) => {
+      this.getTextbook(results);
       _.forEach(results, (eachCollection) => {
         if (typeof eachCollection === 'object') {
           const parsedCollection = treeModel.parse(eachCollection);
@@ -291,6 +300,17 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       pageid: 'get-dial',
     };
 
+    this.selectChapterInteractEdata = {
+      id: 'select-chapter-button',
+      type: 'click',
+      pageid: 'get-dial'
+    };
+
+    this.selectChapterTelemetryCdata = [
+      { 'type': 'DialCode', 'id': this.dialCode },
+      {'id': 'scan:result:collection:list', 'type': 'Feature'},
+      {'id': 'SB-15628', 'type': 'Task'}];
+
     this.appMobileDownloadInteractData = {
       context: {
         cdata: this.telemetryCdata,
@@ -386,6 +406,30 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }
     };
     this.telemetryService.log(event);
+  }
+
+  // TODO: To be modified once new QR code result page is implemented
+  getTextbook(result) {
+    let textbookCount = 0;
+    result.forEach(element => {
+      if (element && element.contentType === 'TextBook') {
+        textbookCount ++;
+        this.chapterName = element.name;
+        this.dialContentId = element.identifier;
+      }
+    });
+    if (textbookCount === 1) {
+      this.showSelectChapter = true;
+    }
+  }
+
+  redirectToDetailsPage(contentId) {
+    if (this.userService.loggedIn ) {
+      this.router.navigate(['/resources/play/collection', contentId], {queryParams: {contentType: 'TextBook'},
+      state: {action: 'dialcode'}});
+    } else {
+      this.router.navigate(['/play/collection', contentId], {queryParams: {contentType: 'TextBook'}});
+    }
   }
 
 }

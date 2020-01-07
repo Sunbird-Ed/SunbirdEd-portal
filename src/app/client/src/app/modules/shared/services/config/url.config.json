@@ -3,7 +3,10 @@
     "userReadParam": {
       "fields": "organisations,roles,locations"
     },
-    "contentGet": "copyrightYear,creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators,streamingUrl,originData,copyright,questions,totalQuestions,totalScore",
+    "programSearch": {
+      "fields": "rootOrgId,rootOrgName"
+    },
+    "contentGet": "copyrightYear,creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators,streamingUrl,originData,copyright,questions,totalQuestions,totalScore,itemSetPreviewUrl",
     "enrolledCourses": {
       "fields": "contentType,topic,name,channel",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
@@ -30,7 +33,7 @@
     },
     "USER": {
       "SIGNUP": "user/v1/create",
-      "TNC_ACCEPT": "/user/v1/tnc/accept",
+      "TNC_ACCEPT": "user/v1/tnc/accept",
       "UPDATE_USER_PROFILE": "user/v1/update",
       "GET_PROFILE": "user/v2/read/",
       "TENANT_LOGO": "get/tenant/logo",
@@ -183,13 +186,19 @@
       "RESUME_IMPORT":"content/v1/import/resume",
       "CANCEL_IMPORT":"content/v1/import/cancel",
       "PAUSE_IMPORT":"content/v1/import/pause",
+      "RETRY_IMPORT":"content/v1/import/retry",
       "REPORT_OTHER_ISSUE":"help/v1/report/issue",
       "READ_FAQ": "faqs/v1/read",
       "CREATE_USER": "desktop/user/v1/create",
+      "UPDATE_USER": "desktop/user/v1/update",
       "READ_USER": "desktop/user/v1/read",
       "LOCATION_SAVE": "data/v1/location/save",
-      "LOCATION_READ": "data/v1/location/read"
-
+      "LOCATION_READ": "data/v1/location/read",
+      "APP_INFO": "app/v1/info",
+      "RESUME_DOWNLOAD":"content/v1/download/resume",
+      "CANCEL_DOWNLOAD":"content/v1/download/cancel",
+      "PAUSE_DOWNLOAD":"content/v1/download/pause",
+      "RETRY_DOWNLOAD":"content/v1/download/retry"    
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
@@ -198,6 +207,9 @@
     "ELECTRON_DIALOG": {
       "CONTENT_IMPORT": "content/import",
       "CONTENT_EXPORT": "content/export"
+    },
+    "CONTRIBUTION_PROGRAMS":{
+      "SEARCH": "program/v1/search"
     }
   }
 }

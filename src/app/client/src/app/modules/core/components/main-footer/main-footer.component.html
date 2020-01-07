@@ -15,8 +15,8 @@
     <p class="d-block">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
   </div>
 </div> -->
-    <extension-point [name]="'content-manager'" *ngIf="isOffline"></extension-point>
-<footer class="footer" *ngIf="showFooter">
+<extension-point [name]="'content-manager'" *ngIf="isOffline && !showDownloadmanager"></extension-point>
+<footer class="footer" *ngIf="showFooter" #footerFix>
 
   <div class="ui container" *ngIf="!isOffline">
     <div class="ui grid stackable">
@@ -89,9 +89,6 @@
         href="mailto:support@diksha-ncte.freshdesk.com">
         support@diksha-ncte.freshdesk.com
       </a>
-      <label class="d-block mb-0">
-        {{resourceService.frmelmnts?.lbl?.deviceId}} : {{deviceId}}
-      </label>
     </div>
   </div>
 </footer>

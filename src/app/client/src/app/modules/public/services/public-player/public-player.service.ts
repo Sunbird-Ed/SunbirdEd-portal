@@ -172,31 +172,20 @@ export class PublicPlayerService {
       }
     }, 0);
   }
-  updateDownloadStatus (downloadListdata, content) {
-    const identifier = !_.isEmpty(content.metaData) ? _.get(content, 'metaData.identifier') : _.get(content, 'identifier');
-    const inprogress = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
-      return o.status === 'inProgress';
-    });
-    const submitted = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
-      return o.status === 'inQueue';
-    });
-    const failed = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
-      return o.status === 'failed';
-    });
-    const completed = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
-      return o.status === 'completed';
-    });
-    const compare = { resourceId: identifier };
-    if (_.find([inprogress], compare) || _.find([submitted], compare)) {
-      content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-    } else if (_.find([completed], compare)) {
-      content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
-    } else if (_.find([failed], compare)) {
-      content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
-    }
+  updateDownloadStatus(downloadListdata, content) {
+    const status = {
+      inProgress: this.resourceService.messages.stmsg.m0140,
+      inQueue: this.resourceService.messages.stmsg.m0140,
+      failed: this.resourceService.messages.stmsg.m0143,
+      completed: this.resourceService.messages.stmsg.m0139,
+      paused: this.resourceService.messages.stmsg.m0142,
+      canceled: this.resourceService.messages.stmsg.m0143
+    };
+    const identifier = _.get(content, 'metaData.identifier') || _.get(content, 'identifier');
+    const downloadData = _.find(_.get(downloadListdata, 'result.response.contents'), { contentId: identifier});
+    content.downloadStatus = status[_.get(downloadData, 'status')] || this.resourceService.messages.stmsg.m0143;
     return content;
   }
-
 
     get libraryFilters() {
         return this._libraryFilters;

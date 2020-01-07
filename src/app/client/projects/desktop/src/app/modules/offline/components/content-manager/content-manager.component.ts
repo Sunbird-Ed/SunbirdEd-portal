@@ -1,36 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { timer, Subject, combineLatest } from 'rxjs';
-import { switchMap, map, filter } from 'rxjs/operators';
+import { switchMap, map, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ContentManagerService, ElectronDialogService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-content-manager',
   templateUrl: './content-manager.component.html',
   styleUrls: ['./content-manager.component.scss']
 })
-export class ContentManagerComponent implements OnInit {
+export class ContentManagerComponent implements OnInit, OnDestroy {
 
   contentResponse: any;
-  isOpen = false;
+  isOpen = true;
   callContentList = false;
   callContentListTimer = false;
   contentStatusObject = {};
-  telemetryInteractEdata: IInteractEventEdata = {
-    id: 'content-click',
-    type: 'click',
-    pageid: 'content-manager'
-  };
   subscription: any;
-  interactData: IInteractEventEdata;
+  public unsubscribe$ = new Subject<void>();
   localStatusArr = ['inProgress', 'inQueue', 'resume', 'resuming', 'pausing', 'canceling'];
   cancelId: string;
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
-  completedCount;
+  completedCount: number;
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -42,6 +36,19 @@ export class ContentManagerComponent implements OnInit {
       this.isOpen = true;
       this.apiCallSubject.next();
     });
+  }
+
+  ngOnInit() {
+    // Call download list initially
+    this.apiCallSubject.next();
+
+    // Call content list when clicked on add to library
+    this.contentManagerService.downloadEvent
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.isOpen = true;
+        this.apiCallSubject.next();
+      });
   }
 
   getList() {
@@ -66,19 +73,40 @@ export class ContentManagerComponent implements OnInit {
           this.completedCount = completedCount;
           return _.get(resp, 'result.response.contents');
         })).subscribe((apiResponse: any) => {
-          this.contentResponse = apiResponse;
+          this.contentResponse = _.filter(apiResponse, (o) => {
+            return o.status !== 'canceled';
+          });
         });
   }
 
-  ngOnInit() {
-    // Call download list initially
-    this.apiCallSubject.next();
-
-    // Call content list when clicked on add to library
-    this.contentManagerService.downloadEvent.subscribe((data) => {
-      this.isOpen = true;
-      this.apiCallSubject.next();
-    });
+  contentManagerActions(type: string, action: string, id: string) {
+    // Unique download/import Id
+    switch (`${action.toUpperCase()}_${type.toUpperCase()}`) {
+      case 'PAUSE_IMPORT':
+        this.pauseImportContent(id);
+        break;
+      case 'RESUME_IMPORT':
+        this.resumeImportContent(id);
+        break;
+      case 'CANCEL_IMPORT':
+        this.cancelImportContent(id);
+        break;
+      case 'RETRY_IMPORT':
+        this.retryImportContent(id);
+        break;
+      case 'PAUSE_DOWNLOAD':
+        this.pauseDownloadContent(id);
+        break;
+      case 'RESUME_DOWNLOAD':
+        this.resumeDownloadContent(id);
+        break;
+      case 'CANCEL_DOWNLOAD':
+        this.cancelDownloadContent(id);
+        break;
+      case 'RETRY_DOWNLOAD':
+        this.retryDownloadContent(id);
+        break;
+    }
   }
 
   updateLocalStatus(contentData, currentStatus) {
@@ -90,35 +118,55 @@ export class ContentManagerComponent implements OnInit {
     data.status = currentStatus;
   }
 
-  private getSubscription(contentId) {
+  private getSubscription(id) {
     const _this = this;
     return ({
       next(apiResponse: any) {
-        _this.deleteLocalContentStatus(contentId);
+        _this.deleteLocalContentStatus(id);
         _this.apiCallSubject.next();
       },
       error(err) {
-        _this.deleteLocalContentStatus(contentId);
+        _this.deleteLocalContentStatus(id);
         _this.toasterService.error(_this.resourceService.messages.fmsg.m0097);
         _this.apiCallSubject.next();
       }
     });
   }
 
-  cancelImportContent(contentId) {
-    this.contentManagerService.cancelImportContent(contentId).subscribe(this.getSubscription(contentId));
+  pauseDownloadContent(id) {
+    this.contentManagerService.pauseDownloadContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
   }
 
-  pauseImportContent(contentId) {
-    this.contentManagerService.pauseImportContent(contentId).subscribe(this.getSubscription(contentId));
+  resumeDownloadContent(id) {
+    this.contentManagerService.resumeDownloadContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
   }
 
-  resumeImportContent(contentId) {
-    this.contentManagerService.resumeImportContent(contentId).subscribe(this.getSubscription(contentId));
+  cancelDownloadContent(id) {
+    this.contentManagerService.cancelDownloadContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
   }
 
-  deleteLocalContentStatus(contentId) {
-    delete this.contentStatusObject[contentId];
+  retryDownloadContent(id) {
+    this.contentManagerService.retryDownloadContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
+  }
+
+  pauseImportContent(id) {
+    this.contentManagerService.pauseImportContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
+  }
+
+  resumeImportContent(id) {
+    this.contentManagerService.resumeImportContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
+  }
+
+  cancelImportContent(id) {
+    this.contentManagerService.cancelImportContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
+  }
+
+  retryImportContent(id) {
+    this.contentManagerService.retryImportContent(id).pipe(takeUntil(this.unsubscribe$)).subscribe(this.getSubscription(id));
+  }
+
+  deleteLocalContentStatus(id) {
+    delete this.contentStatusObject[id];
   }
 
   getContentPercentage(progressSize, totalSize) {
@@ -136,26 +184,36 @@ export class ContentManagerComponent implements OnInit {
   }
 
   getTelemetryInteractData() {
+    const pageId = _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+      _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+      _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env');
     return {
       id: this.isOpen ? 'content-manager-close' : 'content-manager-open',
       type: 'click',
-      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') ?
-        _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') : ''
+      pageid: pageId
     };
   }
 
-  setTelemetryInteractEdataData(id, percentage) {
-    this.interactData = {
+  getButtonsInteractData(id, percentage) {
+    const pageId = _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+      _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+      _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env');
+    const interactData = {
       id: id,
       type: 'click',
-      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') ?
-        _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') : ''
+      pageid: pageId
     };
 
     if (percentage) {
-      this.interactData['extra'] = {
+      interactData['extra'] = {
         percentage: percentage
       };
     }
+    return interactData;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

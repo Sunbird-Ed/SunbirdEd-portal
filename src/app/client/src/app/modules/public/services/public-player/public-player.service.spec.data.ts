@@ -16,54 +16,42 @@ export const serverRes = {
         }
     },
     download_list : {
-        id: 'api.content.download.list',
-        ver: '1.0',
-        ts: '2019-08-22T05:07:39.363Z',
-        params: {
-          resmsgid: 'f2da2305-75c9-4b54-a454-72cfe6433ebe',
-          msgid: '2025a654-e573-4546-b87d-0a293f2f6564',
-          status: 'successful',
-          err: null,
-          errmsg: null,
-        },
-        responseCode: 'OK',
-        result: {
-          response: {
-            downloads: {
-              submitted: [],
-              inprogress: [],
-              failed: [
-               {
-                   id: '9922bfb2-d94a-4724-8613-e8172cf3937f',
-                   contentId: 'do_112271823894691840181',
-                   mimeType: 'application/vnd.ekstep.content-collection',
-                   name: 'Math for dummies',
-                   status: 'FAILED',
-                   createdOn: 1566450435237,
-                   pkgVersion: 1,
-                   contentType: 'TextBook',
-                 },
-                 {   id: '9922bfb2-d94a-4724-8613-e8172cf3789g',
-                     contentId: 'domain_66675',
-                     mimeType: 'application/vnd.ekstep.ecml-archive',
-                     name: 'ffgh',
-                     status: 'FAILED',
-                     createdOn: 1566450435237,
-                     pkgVersion: 1,
-                     contentType: '',
-                 },
-              ],
-              completed: [],
-            },
-          },
-        },
+      'id': 'api.content.download.list',
+      'ver': '1.0',
+      'ts': '2019-12-21T10:33:14.983Z',
+      'params': {
+        'resmsgid': '71557329-59c9-487a-8aed-3352f62693b8',
+        'msgid': '0c87a07a-3762-4b7d-98cb-dad427a204b3',
+        'status': 'successful',
+        'err': null,
+        'errmsg': null
       },
+      'responseCode': 'OK',
+      'result': {
+        'response': {
+          'contents': [{
+            'id': '5efd0589-9ef3-4c4e-94e0-86e3a8a43e3f',
+            'contentId': 'domain_66675',
+            'resourceId': 'domain_66675',
+            'mimeType': 'application/vnd.ekstep.ecml-archive',
+            'name': '10 ಗಣಿತ ಭಾಗ 1',
+            'status': 'failed',
+            'createdOn': 1576923938092,
+            'pkgVersion': 2,
+            'contentType': 'TextBook',
+            'totalSize': 1283937260,
+            'addedUsing': 'download'
+          }]
+        }
+      }
+    },
       resourceServiceMockData: {
         messages: {
             stmsg: {
                 m0140: 'DOWNLOADING',
                 m0138: 'FAILED',
                 m0139: 'DOWNLOADED',
+                m0143: 'DOWNLOAD',
             }
         }
     },

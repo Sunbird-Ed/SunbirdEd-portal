@@ -1,3 +1,40 @@
-<p>
-  update-location works!
-</p>
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
+  appBodyScroll #modal (dismissed)="closeModal('');">
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.profile?.yourLocation}}
+  </div>
+
+
+  <div class="sb-modal-content o-y-visible">
+    <div class="sb-form">
+      <p class="mb-8">{{resourceService?.frmelmnts?.lbl?.profile?.yourLocationHeader}} </p>
+      <div class="sb-field">
+        <label>{{resourceService?.frmelmnts?.lbl?.profile?.State}} :</label>
+        <sui-select class="selection" labelField="name" [isSearchable]="true" [(ngModel)]="selectedState"
+          (ngModelChange)="onStateChanges()" placeholder="{{resourceService?.frmelmnts?.lbl?.profile?.selectState}}"
+          [options]="stateList" #states>
+          <sui-select-option *ngFor="let state of states.filteredOptions" [value]="state">
+          </sui-select-option>
+        </sui-select>
+      </div>
+      <div class="sb-fielgroup">
+        <label>{{resourceService?.frmelmnts?.lbl?.profile?.District}} :</label>
+        <div class="sb-field">
+          <sui-select class="selection mt-10" labelField="name" [isSearchable]="true" [(ngModel)]="selectedDistrict"
+            placeholder="{{resourceService?.frmelmnts?.lbl?.profile?.selectDistrict}}" [options]="districtList"
+            #districts>
+            <sui-select-option *ngFor="let district of districts.filteredOptions" [value]="district">
+            </sui-select-option>
+          </sui-select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="updateUserLocation()"
+      appTelemetryInteract [telemetryInteractEdata]="onClickSubmit">
+      {{resourceService?.frmelmnts?.btn?.submit}}
+    </button>
+  </div>
+
+</sui-modal>

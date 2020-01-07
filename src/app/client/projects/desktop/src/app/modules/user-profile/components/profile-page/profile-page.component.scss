@@ -1,0 +1,42 @@
+@import "variables";
+@import "mixins/mixins";
+
+
+.sb-profile-page{
+  
+
+    &__avatar{
+        width: 92px;
+        height: 92px;
+        margin: 0 auto;
+    }
+    &__location-label{
+        color: var(--gray-200);
+    }
+    &__right-aligned-button {
+        margin-top: calculateRem(16px);
+        @include respond-above(sm) {
+            position: absolute;
+            margin-top: 0;
+            right: 12%;
+            bottom: calculateRem(8px);
+        }
+    }
+    &__profile-bg{
+        background: var(--primary-100);
+        background:#E0EFFF;
+    }
+    &__category , &__m-responsive-flex-dc{
+        flex-direction: row;   
+        margin-top: calculateRem(16px);
+ 
+        @include respond-below(sm) {
+            flex-wrap:wrap;
+            margin-top: calculateRem(0px);
+        }
+    }
+    .max-w-400{
+        max-width: 480px;
+    }
+}
+

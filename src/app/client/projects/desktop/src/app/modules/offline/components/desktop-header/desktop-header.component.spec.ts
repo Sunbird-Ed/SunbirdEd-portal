@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DesktopHeaderComponent } from './desktop-header.component';
-import { NetworkStatusComponent } from '../network-status/network-status.component';
 import { FormService, TenantService, CoreModule, OrgDetailsService } from '@sunbird/core';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { ConfigService, ResourceService, BrowserCacheTtlService, SharedModule } from '@sunbird/shared';
+import { RouterModule, Router } from '@angular/router';
+import { ConfigService, ResourceService, BrowserCacheTtlService, SharedModule, UtilService } from '@sunbird/shared';
 import { ElectronDialogService } from '../../services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { response } from './desktop-header.component.spec.data';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('DesktopHeaderComponent', () => {
     let component: DesktopHeaderComponent;
@@ -16,10 +16,11 @@ describe('DesktopHeaderComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [DesktopHeaderComponent, NetworkStatusComponent],
+            declarations: [DesktopHeaderComponent],
             imports: [SharedModule.forRoot(), CommonConsumptionModule, FormsModule, RouterModule.forRoot([]), CoreModule],
             providers: [ConfigService, ResourceService, ElectronDialogService, TenantService, FormService, OrgDetailsService,
-                BrowserCacheTtlService, TelemetryService]
+                BrowserCacheTtlService, TelemetryService, UtilService],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA]
         }).compileComponents();
     }));
 
@@ -31,14 +32,15 @@ describe('DesktopHeaderComponent', () => {
 
     it('Call ngOnInit', () => {
         const orgDetailsService = TestBed.get(OrgDetailsService);
+        const utilService = TestBed.get(UtilService);
         orgDetailsService._orgDetails$.next({ err: null, orgDetails: response.orgData.orgDetails });
+        utilService.hideHeaderTabs.emit(true);
         spyOn(component, 'getLanguage');
-        spyOn(component, 'setInteractData');
         spyOn(component, 'getTenantInfo');
         component.ngOnInit();
         expect(component.getLanguage).toHaveBeenCalledWith(response.orgData.orgDetails.hashTagId);
-        expect(component.setInteractData).toHaveBeenCalled();
         expect(component.getTenantInfo).toHaveBeenCalled();
+        expect(component.hideHeader).toBe(true);
     });
 
     it('Call getTenantInfo', () => {
@@ -63,11 +65,14 @@ describe('DesktopHeaderComponent', () => {
         expect(electronDialogService.showContentImportDialog).toHaveBeenCalled();
     });
 
-    it('Call handleImport', () => {
-        spyOn(component, 'routeToOffline');
+    it('should call onEnter', () => {
+        const router = TestBed.get(Router);
+        const queryParams = {
+            key: 'test'
+        };
+        spyOn(router, 'navigate');
         component.onEnter('test');
-        component.routeToOffline();
-        expect(component.queryParam.key).toEqual('test');
-        expect(component.routeToOffline).toHaveBeenCalled();
+        expect(component.queryParam).toEqual(queryParams);
+        expect(router.navigate).toHaveBeenCalledWith(['search'], { queryParams });
     });
 });

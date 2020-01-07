@@ -19,6 +19,9 @@ const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
   'queryParams': observableOf({ language: ['en'] }, {dialCode: '61U24C'}),
   snapshot: {
+    params: {
+      contentId: 'd0_33567325'
+    },
     data: {
       telemetry: {
         env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
@@ -62,6 +65,7 @@ describe('PublicContentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
     component = fixture.componentInstance;
+    component.contentId = 'd0_33567325';
   });
 
   it('should config content player if content status is "Live"', () => {
@@ -111,6 +115,11 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.badgeData).toBeDefined();
     expect(component.showPlayer).toBeTruthy();
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
+  });
+  it('should open the pdfUrl in a new tab', () => {
+    spyOn(window, 'open').and.callThrough();
+    component.printPdf('www.samplepdf.com');
+    expect(window.open).toHaveBeenCalledWith('www.samplepdf.com', '_blank');
   });
 
 });

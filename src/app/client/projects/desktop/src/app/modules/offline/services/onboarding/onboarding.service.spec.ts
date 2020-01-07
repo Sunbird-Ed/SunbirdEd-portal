@@ -99,5 +99,27 @@ describe('OnboardingService', () => {
     });
   });
 
-
+  it('should get content filter data ', () => {
+    const service: OnboardingService = TestBed.get(OnboardingService);
+    spyOn(service, 'getAssociationData');
+    service.getAssociationData(onboarding.frameworkCategories, onboarding.category, onboarding.frameworkCategories);
+  });
+  it('should  update user successfully', () => {
+    const service: OnboardingService = TestBed.get(OnboardingService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.returnValue(observableOf(onboarding.success_update_user));
+    service.updateUser(onboarding.update_user_request_body).subscribe(data => {
+      expect(data).toBe(onboarding.success_update_user);
+    }, err => {
+    });
+  });
+  it('should throw error while updating user', () => {
+    const service: OnboardingService = TestBed.get(OnboardingService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.returnValue(observableThrowError(onboarding.error_update_user));
+    service.updateUser(onboarding.update_user_request_body).subscribe(data => {
+    }, err => {
+      expect(err).toBe(onboarding.error_update_user);
+    });
+  });
 });

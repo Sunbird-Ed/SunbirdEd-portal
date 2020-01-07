@@ -1,4 +1,4 @@
-<div class="sbpage-title sb-bg-color-white">
+<div class="sbpage-title sb-bg-color-white" [appTelemetryImpression]="setTelemetryImpression()">
     <div class="ui container">
         <h1>{{resourceService?.frmelmnts?.lbl?.learn_more | interpolate:'{instance}': instance}}</h1>
     </div>
@@ -7,11 +7,11 @@
 <div class="ui container mt-32">
     <app-offline-help-videos></app-offline-help-videos>
 
-    <div class="sb-two-column help-faq m-0 mt-40 mb-40">
-        <div class="sb-column help-faq__list">
+    <div class="sb-g help-faq m-0 mt-40 mb-40">
+        <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-xl-9 help-faq__list">
             <app-offline-faq></app-offline-faq>
         </div>
-        <div class="sb-column">
+        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-xl-3">
             <app-offline-report-issues></app-offline-report-issues>
         </div>
     </div>

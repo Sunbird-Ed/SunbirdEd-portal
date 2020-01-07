@@ -5,6 +5,10 @@ import { ContentConsumptionRoutingModule } from './content-consumption-routing.m
 import { ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent, TocPageComponent,
   ContentHeaderComponent
  } from './components';
+import { SuiAccordionModule } from 'ng2-semantic-ui';
+import { OrderModule } from 'ngx-order-pipe';
+import { SharedModule } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 
 @NgModule({
@@ -17,10 +21,14 @@ import { ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent
   ],
   imports: [
     CommonModule,
-    ContentConsumptionRoutingModule
+    OrderModule,
+    SharedModule,
+    TelemetryModule,
+    ContentConsumptionRoutingModule,
+    SuiAccordionModule
   ],
   exports: [
-    ContentPlayerComponent, ContentMetadataComponent
-  ]
+    ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent
+  ],
 })
 export class ContentConsumptionModule { }
