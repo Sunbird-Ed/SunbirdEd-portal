@@ -17,6 +17,22 @@ export const resourceTemplateComponentInput = {
       },
       mimeType: ['application/pdf', 'application/msword'],
       onClick: 'uploadComponent'
+    },
+    {
+      id: 'curiositySetContent',
+      label: 'Curiosity Sets',
+      metadata: {
+        appIcon: '',
+        audience: ['Learner'],
+        contentType: 'CuriosityQuestionSet',
+        description: 'Curiosity QuestionSet',
+        marks: 5,
+        name: 'Curiosity QuestionSet',
+        resourceType: 'Learn'
+      },
+      mimeType: ['application/vnd.ekstep.ecml-archive'],
+      onClick: 'curiositySetComponent',
+      questionCategories: ['Curiosity']
     }
   ]
 };

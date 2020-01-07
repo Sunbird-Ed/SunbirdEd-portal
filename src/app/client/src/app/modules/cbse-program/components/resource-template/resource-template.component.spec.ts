@@ -35,12 +35,13 @@ describe('ResourceTemplateComponent', () => {
     expect(component.templateList).toBeDefined();
   });
 
-  it('should emit event on handleSubmit', () => {
+  it('should emit event with type -next- on handleSubmit method execution', () => {
     component.templateSelected = 'explanationContent';
     fixture.detectChanges();
     spyOn(component.templateSelection, 'emit');
     component.handleSubmit();
-    expect(component.templateSelection.emit).toHaveBeenCalled();
+    // tslint:disable-next-line:max-line-length
+    expect(component.templateSelection.emit).toHaveBeenCalledWith({type: 'next', template: 'explanationContent', templateDetails: resourceTemplateComponentInput.templateList[0]});
   });
 
   it('should close modal after ngOnDestroy', () => {
