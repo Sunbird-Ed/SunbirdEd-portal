@@ -3,7 +3,7 @@
 
 .content-header {
   background: var(--gray-0);
-  height: 80px;
+  min-height: 80px;
 
   &__title {
     color: var(--primary-400);
