@@ -186,6 +186,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         this.sessionContext.hierarchyObj = { hierarchy };
         this.showLoader = false;
         this.showError = false;
+        this.lastOpenedUnit(this.collectionHierarchy[0].identifier);
       });
   }
 
@@ -415,6 +416,24 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     if (event.contentId) {
       this.getCollectionHierarchy(this.sessionContext.collection, undefined);
     }
+  }
+
+  lastOpenedUnit(unitId) {
+    this.collectionHierarchy.map((parentunit) => {
+        if (parentunit.identifier === unitId) {
+          this.sessionContext.lastOpenedUnitChild = unitId;
+          this.sessionContext.lastOpenedUnitParent = parentunit.identifier;
+          return;
+        } else if (parentunit.children) {
+          _.map(parentunit.children, (childUnit) => {
+            if (childUnit.identifier === unitId) {
+             this.sessionContext.lastOpenedUnitChild = childUnit.identifier;
+             this.sessionContext.lastOpenedUnitParent = parentunit.identifier;
+             return;
+            }
+          });
+        }
+    });
   }
 
   public addResourceToHierarchy(contentId) {

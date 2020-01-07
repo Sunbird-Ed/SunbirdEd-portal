@@ -1,7 +1,8 @@
 export interface ISessionContext { // TODO: remove any 'textbook' reference
   textBookUnitIdentifier?: any;
   collectionUnitIdentifier?: any;
-  lastOpenedUnit?: any;
+  lastOpenedUnitChild?: any;
+  lastOpenedUnitParent?: any;
   framework?: string;
   frameworkData?: any;
   channel?: string;

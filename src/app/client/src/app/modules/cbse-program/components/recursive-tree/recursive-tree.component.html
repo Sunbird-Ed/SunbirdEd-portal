@@ -1,5 +1,5 @@
 <div *ngFor="let collection of collectionUnits; let i = index">
-  <sui-accordion-panel [isOpen]=" i === 0 ? true : false">
+  <sui-accordion-panel [isOpen]=" (collection.identifier === sessionContext.lastOpenedUnitChild || collection.identifier === sessionContext.lastOpenedUnitParent) ? true : false">
     <div title class="sb-accordion-title d-flex flex-ai-center"><span class="chapter-status mr-16"></span>
       {{collection.name}}
      <div class="ml-auto d-flex">
