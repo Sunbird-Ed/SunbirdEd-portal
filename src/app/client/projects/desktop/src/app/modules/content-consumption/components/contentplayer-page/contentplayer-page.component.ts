@@ -5,7 +5,7 @@ import {
   ConfigService, NavigationHelperService, PlayerConfig, ContentData, ToasterService, ResourceService
 } from '@sunbird/shared';
 import { Subject } from 'rxjs';
-import { takeUntil, filter} from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 
@@ -31,8 +31,8 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getContentIdFromRoute();
     this.router.events
-    .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
-    .subscribe(x => { this.setPageExitTelemtry(); });
+      .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
+      .subscribe(x => { this.setPageExitTelemtry(); });
   }
   getContentIdFromRoute() {
     this.activatedRoute.params.pipe(
@@ -50,10 +50,10 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.contentDetails = _.get(response, 'result.content');
         this.getContentConfigDetails(contentId);
-       this.setTelemetryData();
+        this.setTelemetryData();
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0024);
-      this.setTelemetryData();
+        this.setTelemetryData();
       });
   }
   getContentConfigDetails(contentId) {
@@ -68,11 +68,6 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env
       },
-      object: {
-        id: this.contentDetails['identifier'],
-        type: this.contentDetails['contentType'],
-        ver: this.contentDetails['pkgVersion'].toString() || '1.0'
-      },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
@@ -81,14 +76,22 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
         duration: this.navigationHelperService.getPageLoadTime()
       }
     };
+    if (this.contentDetails) {
+      this.telemetryImpression.object = {
+        id: this.contentDetails['identifier'],
+        type: this.contentDetails['contentType'],
+        ver: this.contentDetails['pkgVersion'].toString() || '1.0',
+      };
+    }
   }
   setPageExitTelemtry() {
-    const  objectData = {
-      id: this.contentDetails['identifier'],
-      type: this.contentDetails['contentType'],
-      ver: this.contentDetails['pkgVersion'].toString() || '1.0',
-    };
-    this.telemetryImpression.object = objectData;
+    if (this.contentDetails) {
+      this.telemetryImpression.object = {
+        id: this.contentDetails['identifier'],
+        type: this.contentDetails['contentType'],
+        ver: this.contentDetails['pkgVersion'].toString() || '1.0',
+      };
+    }
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
