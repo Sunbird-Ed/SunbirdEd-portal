@@ -28,8 +28,8 @@
       <div class="field">
         <label>{{resourceService?.frmelmnts?.lbl?.state}}:</label>
         <div class="field">
-          <sui-select [isSearchable]="true" class="selection" formControlName="state" [options]="allStates" labelField="name" valueField="code"
-            name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}" (focusout)="clearInput($event,'state')" #stateDiv>
+          <sui-select [isSearchable]="false" class="selection" formControlName="state" [options]="allStates" labelField="name" valueField="code"
+            name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}" #stateDiv>
             <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100" [value]="state"></sui-select-option>
           </sui-select>
         </div>
@@ -42,8 +42,8 @@
               <div class="ui mini text loader">{{resourceService?.messages?.stmsg?.m0130}}</div>
             </div>
           </div>
-          <sui-select *ngIf="!showDistrictDivLoader" [isSearchable]="true" class="selection" formControlName="district" [options]="allDistricts"
-            labelField="name" valueField="code" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" (focusout)="clearInput($event,'district')"
+          <sui-select *ngIf="!showDistrictDivLoader" [isSearchable]="false" class="selection" formControlName="district" [options]="allDistricts"
+            labelField="name" valueField="code" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
             #districtDiv>
             <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
           </sui-select>
