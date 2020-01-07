@@ -344,9 +344,10 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
    * method to download course progress reports
    */
-  private downloadCourseProgressReport() {
+  private downloadCourseReport(reportType: string) {
     const batchId = this.queryParams.batchIdentifier;
-    return this.usageService.getData(`/courseProgress/course-progress-reports/report-${batchId}.csv`)
+    const url = `/courseReports/${reportType}/report-${batchId}.csv`;
+    return this.usageService.getData(url)
       .pipe(
         tap(response => {
           if (_.get(response, 'responseCode') === 'OK') {
@@ -398,10 +399,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   downloadReport(downloadAssessmentReport: boolean) {
     of(downloadAssessmentReport)
       .pipe(
-        switchMap((flag: boolean) => flag ? this.downloadAssessmentReport() : this.downloadCourseProgressReport()),
+        switchMap((flag: boolean) => flag ? this.downloadCourseReport('assessment-reports') :
+          this.downloadCourseReport('course-progress-reports')),
         takeUntil(this.unsubscribe)
       )
-      .subscribe(res => {}, err => {
+      .subscribe(res => { }, err => {
         this.toasterService.error(this.resourceService.messages.imsg.m0045);
       });
   }
