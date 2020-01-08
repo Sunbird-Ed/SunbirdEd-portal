@@ -100,7 +100,7 @@ export class QuestionListComponent implements OnInit {
       if (!this.resourceDetails.itemSets) {
         this.createDefaultQuestionAndItemset();
       } else {
-        const itemSet = JSON.parse(this.resourceDetails.itemSets);
+        const itemSet = this.resourceDetails.itemSets;
         if (itemSet[0].identifier) {
           this.itemSetIdentifier = itemSet[0].identifier;
         }
