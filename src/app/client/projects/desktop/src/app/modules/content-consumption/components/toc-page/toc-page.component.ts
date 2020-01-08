@@ -74,9 +74,11 @@ export class TocPageComponent implements OnInit, OnDestroy {
     public router: Router, public resourceService: ResourceService, private contentUtilsService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService,
     public contentManagerService: ContentManagerService,
+    private utilService: UtilService,
     public toasterService: ToasterService) { }
 
   ngOnInit() {
+    this.utilService.emitHideHeaderTabsEvent(true);
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.getContent();
@@ -156,6 +158,7 @@ public OnPlayContent(content, isClicked?: boolean) {
     }
   }
   ngOnDestroy() {
+    this.utilService.emitHideHeaderTabsEvent(false);
     if (this.subsrciption) {
       this.subsrciption.unsubscribe();
     }
