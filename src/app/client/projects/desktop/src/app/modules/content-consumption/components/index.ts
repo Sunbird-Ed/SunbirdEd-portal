@@ -4,3 +4,4 @@ export * from './content-player/content-player.component';
 export * from './content-metadata/content-metadata.component';
 export * from './content-header/content-header.component';
 export * from './content-actions/content-actions.component';
+export * from './credits-and-licence/credits-and-licence.component';
