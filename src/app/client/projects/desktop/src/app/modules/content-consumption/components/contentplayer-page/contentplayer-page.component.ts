@@ -76,12 +76,10 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.contentDetails = _.get(response, 'result.content');
-        console.log('thisisisisisis', _.get(this.contentDetails, 'desktopAppMetadata'));
         this.getContentConfigDetails(this.contentId, options);
         this.setTelemetryData();
       }, error => {
         this.contentDetails  = { desktopAppMetadata: { isAvailable: false} };
-        this.toasterService.error(this.resourceService.messages.emsg.m0024);
         this.setTelemetryData();
       });
   }

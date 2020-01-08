@@ -78,7 +78,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
 
   updateActionButton(name, disabled, label?) {
     const data: any = _.find(this.actionButtons, { name: name });
-    console.log('contentDatacontentDatacontentDatacontentData', this.contentData.desktopAppMetadata);
     data.disabled = data.name === 'update' ? !_.get(this.contentData, 'desktopAppMetadata.updateAvailable') : disabled;
     data.label = _.isEmpty(label) ? _.capitalize(data.name) : _.capitalize(label);
   }
@@ -137,13 +136,14 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   updateContent(content) {
-    const request = !_.isEmpty(this.collectionId) ? { contentId: this.contentId, parentId: this.collectionId } :
+    const request = !_.isEmpty(this.collectionId) ? { contentId: content.identifier, parentId: this.collectionId } :
       { contentId: this.contentId };
     this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-      this.updateActionButton('Update', true);
+      this.contentData = { desktopAppMetadata: { updateAvailable: false} };
+      this.updateActionButton('update', true);
     }, (err) => {
-      this.updateActionButton('Update', false);
+      this.updateActionButton('update', false);
       const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}',
         this.contentData.name) :
         this.resourceService.messages.fmsg.m0096;
