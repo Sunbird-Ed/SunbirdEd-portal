@@ -193,14 +193,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.updateQuestion([{ key: 'status', value: event.status }, { key: 'rejectComment', value: event.rejectComment }]);
   }
   buttonTypeHandler(event) {
+    this.updateStatus = event;
     if (event === 'preview') {
       this.showPreview = true;
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
-    } else if (event === 'review') {
-      this.updateStatus = event;
-      this.handleSubmit(this.questionMetaForm);
     } else {
       this.handleSubmit(this.questionMetaForm);
     }
