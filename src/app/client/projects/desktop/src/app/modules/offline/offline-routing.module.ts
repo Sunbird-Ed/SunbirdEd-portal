@@ -72,11 +72,18 @@ const routes: Routes = [
         path: ':slug/explore', loadChildren: './../../../../../../src/app/modules/public/module/explore/explore.module#ExploreModule'
     },
     {
-        path: 'play', loadChildren: './../../../../../../src/app/modules/public/module/player/player.module#PlayerModule'
+        path: 'play', loadChildren: './../content-consumption/content-consumption.module#ContentConsumptionModule'
     },
     {
-        path: 'browse/play', loadChildren: './../../../../../../src/app/modules/public/module/player/player.module#PlayerModule'
-    }];
+        path: 'browse/play', loadChildren: './../content-consumption/content-consumption.module#ContentConsumptionModule'
+    }
+    // {
+    //     path: 'play', loadChildren: './../../../../../../src/app/modules/public/module/player/player.module#PlayerModule'
+    // },
+    // {
+    //     path: 'browse/play', loadChildren: './../../../../../../src/app/modules/public/module/player/player.module#PlayerModule'
+    // }
+];
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
