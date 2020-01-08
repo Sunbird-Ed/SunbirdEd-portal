@@ -6,14 +6,14 @@ const routes: Routes = [
   {
     path: 'content/:contentId', component: ContentPlayerPageComponent, data: {
       telemetry: {
-        env: 'content-page', pageid: 'play-content', type: 'view'
+        env: 'content', pageid: 'play-content', type: 'view'
       },
     },
   },
   {
     path: 'collection/:collectionId', component: TocPageComponent, data: {
       telemetry: {
-        env: 'content-page', pageid: 'play-collection', type: 'view'
+        env: 'content', pageid: 'play-collection', type: 'view'
       },
     }
   }
