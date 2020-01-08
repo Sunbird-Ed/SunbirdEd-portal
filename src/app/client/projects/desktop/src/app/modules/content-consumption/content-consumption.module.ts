@@ -6,12 +6,12 @@ import { CommonModule } from '@angular/common';
 
 import { ContentConsumptionRoutingModule } from './content-consumption-routing.module';
 import { ContentPlayerComponent, ContentMetadataComponent, ContentPlayerPageComponent, TocPageComponent,
-  ContentHeaderComponent, ContentActionsComponent
+  ContentHeaderComponent, ContentActionsComponent, CreditsAndLicenceComponent
  } from './components';
 import { SuiAccordionModule, SuiModalModule, SuiDimmerModule } from 'ng2-semantic-ui';
 import { OrderModule } from 'ngx-order-pipe';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule, CreditsAndLicenceComponent } from '@project-sunbird/common-consumption';
 
 
 @NgModule({
@@ -22,6 +22,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     TocPageComponent,
     ContentHeaderComponent,
     ContentActionsComponent,
+    CreditsAndLicenceComponent
   ],
   imports: [
     CommonModule,
