@@ -384,7 +384,8 @@
         "mimeType",
         "framework",
         "contentType",
-        "l1Parent"
+        "l1Parent",
+        "childTextbookUnit"
       ]
     },
     "dynamicFields": {
