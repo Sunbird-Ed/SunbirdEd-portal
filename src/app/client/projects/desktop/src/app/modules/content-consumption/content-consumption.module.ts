@@ -11,7 +11,7 @@ import { ContentPlayerComponent, ContentMetadataComponent, ContentPlayerPageComp
 import { SuiAccordionModule, SuiModalModule, SuiDimmerModule } from 'ng2-semantic-ui';
 import { OrderModule } from 'ngx-order-pipe';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { CommonConsumptionModule, CreditsAndLicenceComponent } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 
 @NgModule({
