@@ -3,7 +3,7 @@
   <div class="one wide column"></div>
   <div class="six wide column pr-8">
     <div class="offline-download-card">
-      <h2 class="offline-download-card-heading">{{resourceService?.frmelmnts?.lbl?.downloadDikshaLite}}</h2>
+      <h2 class="offline-download-card-heading">{{resourceService?.frmelmnts?.lbl?.downloadDikshaLite | interpolate:'{instance}': resourceService?.instance}}</h2>
       <dl class="mt-16">
         <div class="d-flex" *ngIf="desktopAppVersion">
           <dt class="description-list-key">{{resourceService?.frmelmnts?.lbl?.versionKey}}</dt>
@@ -18,7 +18,7 @@
           <dd class="description-list-value">{{desktopAppSupportedLanguage}}</dd>
         </div>
       </dl>
-      <div class="offline-download-card-description mt-32">{{resourceService?.frmelmnts?.lbl?.desktopAppDescription}}</div>
+      <div class="offline-download-card-description mt-32">{{resourceService?.frmelmnts?.lbl?.desktopAppDescription | interpolate:'{instance}': resourceService?.instance}}</div>
       <ul class="sb-circular-list mt-32">
         <li class="sb-circular-list-item mb-0">{{resourceService?.frmelmnts?.lbl?.desktopAppFeature001}}</li>
         <li class="sb-circular-list-item mb-0">{{resourceService?.frmelmnts?.lbl?.desktopAppFeature002}}</li>

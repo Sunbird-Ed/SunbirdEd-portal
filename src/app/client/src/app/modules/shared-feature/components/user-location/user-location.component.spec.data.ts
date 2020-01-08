@@ -1,4 +1,9 @@
 export const userLocationMockData = {
+  eventObject: {
+    target: {
+      value: {}
+    }
+  },
   stateList: [{
     code: '2',
     name: 'Himachal Pradesh',

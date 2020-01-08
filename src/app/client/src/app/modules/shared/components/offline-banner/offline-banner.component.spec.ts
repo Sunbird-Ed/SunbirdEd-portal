@@ -1,7 +1,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CacheService } from 'ng2-cache-service';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, InterpolatePipe } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OfflineBannerComponent } from './offline-banner.component';
@@ -28,7 +28,7 @@ describe('OfflineBannerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
-      declarations: [OfflineBannerComponent],
+      declarations: [OfflineBannerComponent, InterpolatePipe],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, DeviceDetectorService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
