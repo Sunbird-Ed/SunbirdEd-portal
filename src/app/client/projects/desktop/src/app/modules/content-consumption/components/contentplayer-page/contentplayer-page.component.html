@@ -1,12 +1,8 @@
-<!-- <div [appTelemetryImpression]="telemetryImpression">
-<app-content-player></app-content-player>
-<app-content-metadata [contentData]="contentDetails"></app-content-metadata>
-</div> -->
-<div *ngIf="tocPage">
+<div *ngIf="tocPage" class="toc-content">
     <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" (deletedContent)="reloadPage()" [isContentPresent]="isContentPresent"></app-content-player>
     <app-content-metadata [contentData]="contentDetails"></app-content-metadata>
 </div>
-<div *ngIf="!tocPage" [appTelemetryImpression]="telemetryImpression">
+<div *ngIf="!tocPage" [appTelemetryImpression]="telemetryImpression" class="sb-single-resource">
     <div class="ui container sb-single-resource">
         <div class="sb-g-col-xs-12 sb-g-col-md-7 sb-g-col-lg-8">
             <app-content-player></app-content-player>

@@ -151,7 +151,6 @@ public OnPlayContent(content, isClicked?: boolean) {
     this.contentDeleted = event;
   }
   showNoContent(event) {
-    console.log('eveveev', event);
     if (event.message === 'No Content Available') {
       this.isContentPresent = false;
     }

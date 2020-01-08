@@ -122,8 +122,8 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
      return this.router.navigate(['/']);
     }
-    // previousUrl.queryParams ? this.router.navigate([previousUrl.url],
-    //   {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
+    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
+      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
       this.utilService.clearSearchQuery();
   }
   ngOnDestroy() {

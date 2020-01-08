@@ -4,7 +4,7 @@
     <div class="sb-g-col-xs-12 sb-g-col-md-7 sb-g-col-lg-8">
       <app-contentplayer-page [tocPage]="true" [contentDetails]="activeContent" (contentDeleted)="deleteContent($event)" [isContentPresent]="isContentPresent"></app-contentplayer-page>
     </div>
-    <div class="sb-g-col-xs-12 sb-g-col-md-5 sb-g-col-lg-4 sb-bg-color-white" *ngIf="collectionData">
+    <div class="sb-g-col-xs-12 sb-g-col-md-5 sb-g-col-lg-4" *ngIf="collectionData">
       <sb-library-filters [list]="mimeTypeFilters" [layout]="'round-with-icon'"
         (selectedMimeType)="selectedFilter($event)">
       </sb-library-filters>
