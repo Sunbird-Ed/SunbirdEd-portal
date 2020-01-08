@@ -397,7 +397,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         this.showLargeModal = false;
         this.unitIdentifier = '';
         this.contentId = ''; // Clearing selected unit/content details
-        this.getCollectionHierarchy(this.sessionContext.collection, undefined);
+        this.updateAccordianView(event.collection.identifier);
         break;
       case 'cancelMove':
         this.showLargeModal = false;
