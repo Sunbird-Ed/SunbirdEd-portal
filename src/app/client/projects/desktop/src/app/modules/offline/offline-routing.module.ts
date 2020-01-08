@@ -77,12 +77,6 @@ const routes: Routes = [
     {
         path: 'browse/play', loadChildren: './../content-consumption/content-consumption.module#ContentConsumptionModule'
     }
-    // {
-    //     path: 'play', loadChildren: './../../../../../../src/app/modules/public/module/player/player.module#PlayerModule'
-    // },
-    // {
-    //     path: 'browse/play', loadChildren: './../../../../../../src/app/modules/public/module/player/player.module#PlayerModule'
-    // }
 ];
 @NgModule({
     imports: [RouterModule.forChild(routes)],
