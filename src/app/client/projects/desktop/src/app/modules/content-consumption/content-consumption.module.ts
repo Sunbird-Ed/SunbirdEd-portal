@@ -8,7 +8,7 @@ import { ContentConsumptionRoutingModule } from './content-consumption-routing.m
 import { ContentPlayerComponent, ContentMetadataComponent, ContentPlayerPageComponent, TocPageComponent,
   ContentHeaderComponent, ContentActionsComponent
  } from './components';
-import { SuiAccordionModule, SuiModalModule } from 'ng2-semantic-ui';
+import { SuiAccordionModule, SuiModalModule, SuiDimmerModule } from 'ng2-semantic-ui';
 import { OrderModule } from 'ngx-order-pipe';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
@@ -34,7 +34,8 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     SharedModule,
     PublicModule,
     SuiModalModule,
-    PlayerHelperModule
+    PlayerHelperModule,
+    SuiDimmerModule
   ],
   exports: [
     ContentPlayerComponent, ContentMetadataComponent, ContentPlayerPageComponent

@@ -1,5 +1,5 @@
 import { ConfigService, NavigationHelperService } from '@sunbird/shared';
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, OnInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.scss']
 })
-export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit {
+export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
@@ -26,6 +26,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit 
   previewCdnUrl: string;
   isCdnWorking: string;
   @Input() isContentDeleted = false;
+  message: string;
+  @Input() isContentPresent = true;
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
@@ -47,18 +49,18 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit 
   /**
    * loadPlayer method will be called
    */
-  ngOnInit() {
 
-  }
   ngAfterViewInit() {
-    if (this.playerConfig) {
+    this.isContentDeleted = _.isEmpty(this.playerConfig);
+    if (!_.isEmpty(this.playerConfig)) {
       this.loadPlayer();
     }
   }
 
   ngOnChanges() {
     this.contentRatingModal = false;
-    if (this.playerConfig) {
+    this.isContentDeleted = _.isEmpty(this.playerConfig);
+    if (!_.isEmpty(this.playerConfig)) {
       this.loadPlayer();
     }
   }
@@ -163,7 +165,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit 
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
   deleteContent(event) {
-    console.log('eventtt', event);
+    this.isContentDeleted = true;
     this.deletedContent.emit(event);
   }
 }

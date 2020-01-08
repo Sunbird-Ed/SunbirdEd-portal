@@ -4,9 +4,9 @@
      {{contentData?.name}}
     </div>
     <div class="content-video__player__title__subtitle fxsmall mt-4">
-      <span class="mr-8">by TNSCERT</span>
+      <span class="mr-8">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
       <span class="mr-8">*</span>
-      <span class="mr-8">4.7</span>
+      <span class="mr-8">{{contentData?.me_averageRating || '0'}}</span>
       <span><i class="icon star outline"></i></span>
     </div>
   </div>
@@ -16,6 +16,8 @@
     </sb-player-actions>
   </div>
 </div>
+
+<app-content-rating #modal *ngIf="contentRatingModal && contentData"  [contentData] = "contentData"></app-content-rating>
 
 <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
 class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
@@ -27,7 +29,7 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
 </div>
 <div class="sb-modal-actions">
   <button  class="sb-btn sb-btn-normal sb-btn-primary"
-    (click)="downloadCollection(collectionData); showModal = !showModal;">
+    (click)="downloadContent(contentData); showModal = !showModal;">
     {{resourceService.frmelmnts?.btn?.download}}
   </button>
   <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
@@ -36,4 +38,30 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
   </button>
 </div>
 </sui-modal>
-<app-content-rating #modal *ngIf="contentRatingModal && contentData"  [contentData] = "contentData"></app-content-rating>
+
+<sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.lbl?.delete}}
+</div>
+<div class="sb-modal-content">
+  {{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}
+</div>
+<div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-primary"
+    (click)="deleteContent(contentData); showDeleteModal = !showDeleteModal;">
+    {{resourceService?.frmelmnts?.lbl?.delete}}
+  </button>
+  <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+    (click)="showDeleteModal = !showDeleteModal;">
+    {{resourceService.frmelmnts?.btn?.cancel}}
+  </button>
+</div>
+</sui-modal>
+
+
+<sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
+  </h6>
+</sui-dimmer>

@@ -69,6 +69,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   isConnected;
   showUpdate;
   contentDeleted;
+  isContentPresent = true;
   constructor(public playerService: PublicPlayerService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     public router: Router, public resourceService: ResourceService, private contentUtilsService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService,
@@ -116,6 +117,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   tocCardClickHandler(event) {
     console.log('tocCardClickHandler', event);
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
+      this.isContentPresent = true;
       this.activeContent = event.data;
       this.OnPlayContent(this.activeContent, true);
     }
@@ -147,6 +149,12 @@ public OnPlayContent(content, isClicked?: boolean) {
   }
   deleteContent(event) {
     this.contentDeleted = event;
+  }
+  showNoContent(event) {
+    console.log('eveveev', event);
+    if (event.message === 'No Content Available') {
+      this.isContentPresent = false;
+    }
   }
   ngOnDestroy() {
     if (this.subsrciption) {

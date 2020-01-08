@@ -15,13 +15,14 @@ import * as _ from 'lodash-es';
 })
 export class ContentHeaderComponent implements OnInit, OnDestroy {
   @Input() collectionData;
-  public unsubscribe$ = new Subject<void>();
-  public isConnected = navigator.onLine;
+  @Input() showUpdate;
   currentRoute: string;
   showExportLoader = false;
-  @Input() showUpdate;
   showModal = false;
-  message;
+  showDeleteModal = false;
+  public unsubscribe$ = new Subject<void>();
+  public isConnected;
+
   constructor(
     public location: Location,
     public utilService: UtilService,
@@ -106,9 +107,10 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     console.log('deleteContent');
     const request = {request: {contents: [collectionData.identifier]}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
-      this.goBack();
+    this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
+    this.goBack();
     }, err => {
-      console.log('errerrerr', err);
+      this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteErrorMessage);
     });
   }
   isBrowse() {
@@ -120,9 +122,9 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
      return this.router.navigate(['/']);
     }
-    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
-      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
-    this.utilService.clearSearchQuery();
+    // previousUrl.queryParams ? this.router.navigate([previousUrl.url],
+    //   {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
+      this.utilService.clearSearchQuery();
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

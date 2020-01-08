@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { actionButtons } from './actionButtons';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ConfigService, ResourceService, ToasterService, OfflineCardService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ToasterService, OfflineCardService, NavigationHelperService } from '@sunbird/shared';
 import { PublicPlayerService } from '@sunbird/public';
 import { ContentManagerService, ConnectionService } from '@sunbird/offline';
 import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
@@ -17,25 +17,23 @@ import { last } from '@angular/router/src/utils/collection';
   styleUrls: ['./content-actions.component.scss']
 })
 export class ContentActionsComponent implements OnInit, OnChanges {
-  actionButtons = actionButtons;
-  public unsubscribe$ = new Subject<void>();
   @Input() contentData;
   @Input() showUpdate;
+  @Output() deletedContent = new EventEmitter();
+  actionButtons = actionButtons;
   contentRatingModal = false;
-  public isConnected = navigator.onLine;
   contentId;
   collectionId;
   showExportLoader = false;
   showModal = false;
-  message: string;
-  @Output() deletedContent = new EventEmitter();
-
+  showDeleteModal = false;
+  private isConnected;
+  public unsubscribe$ = new Subject<void>();
   constructor(
-    public contentManagerService: ContentManagerService,
-    public playerService: PublicPlayerService,
-    public configService: ConfigService,
-    public router: Router,
+    private contentManagerService: ContentManagerService,
+    private playerService: PublicPlayerService,
     private connectionService: ConnectionService,
+    public router: Router,
     public activatedRoute: ActivatedRoute,
     public resourceService: ResourceService,
     public toasterService: ToasterService,
@@ -48,12 +46,25 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.checkDownloadStatus(data);
     });
+    this.checkOnlineStatus();
+  }
+
+  checkOnlineStatus() {
+    this.connectionService.monitor().subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
+  }
+
+  checkDownloadStatus(downloadListdata) {
+    this.contentData = this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
+    this.updateActionButton('download', _.isEqual(_.get(this.contentData, 'downloadStatus'), 'DOWNLOADED'),
+    _.get(this.contentData, 'downloadStatus'));
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.checkOnlineStatus();
     if (!changes.contentData.firstChange) {
       this.contentData = changes.contentData.currentValue;
-      console.log('this.conetntDataatconetntDataat', this.contentData);
       _.forEach(this.actionButtons, data => {
         if (data.name === 'download') {
           const disabled = this.getContentStatus();
@@ -64,6 +75,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       });
     }
   }
+
   updateActionButton(name, disabled, label?) {
     const data: any = _.find(this.actionButtons, { name: name });
     console.log('contentDatacontentDatacontentDatacontentData', this.contentData.desktopAppMetadata);
@@ -71,24 +83,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     data.label = _.isEmpty(label) ? _.capitalize(data.name) : _.capitalize(label);
   }
 
-  isBrowse() {
-    return this.router.url.includes('browse');
-  }
-
   getContentStatus () {
     return _.get(this.contentData, 'desktopAppMetadata.isAvailable') || _.isEqual(_.get(this.contentData, 'downloadStatus'), 'DOWNLOADED');
-  }
-
-  checkDownloadStatus(downloadListdata) {
-    this.contentData = this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
-    this.updateActionButton('download', _.isEqual(_.get(this.contentData, 'downloadStatus'), 'DOWNLOADED'),
-    _.get(this.contentData, 'downloadStatus'));
-  }
-
-  checkOnlineStatus() {
-    this.connectionService.monitor().subscribe(isConnected => {
-      this.isConnected = isConnected;
-    });
   }
 
   onActionButtonClick(event, content) {
@@ -103,12 +99,11 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         // this.logTelemetry(event.data, 'download-content');
         break;
       case 'DELETE':
-        this.deleteContent(content);
+        this.showDeleteModal = true;
         // this.logTelemetry(event.data, 'delete-content');
         break;
       case 'RATE':
         this.contentRatingModal = true;
-        // this.rateContent(content);
         // this.logTelemetry(event.data, 'rate-content');
         break;
       case 'SHARE':
@@ -160,18 +155,15 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     console.log('deleteContent');
     const request = {request: {contents: [content.identifier], visibility: 'Parent'}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
+    this.contentData = { desktopAppMetadata: { isAvailable: false} };
+    this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
     this.deletedContent.emit(content.identifier);
     }, err => {
-      console.log('errerrerr', err);
+      this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteErrorMessage);
     });
   }
 
-  // rateContent(content) {
-  //   console.log('rateContent');
-  // }
-
   exportContent(content) {
-    console.log('exportContent');
     this.showExportLoader = true;
     this.contentManagerService.exportContent(content.identifier)
       .pipe(takeUntil(this.unsubscribe$))
