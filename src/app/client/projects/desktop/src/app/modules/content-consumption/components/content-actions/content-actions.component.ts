@@ -64,7 +64,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       });
     }
   }
-
   updateActionButton(name, disabled, label?) {
     const data: any = _.find(this.actionButtons, { name: name });
     console.log('contentDatacontentDatacontentDatacontentData', this.contentData.desktopAppMetadata);
