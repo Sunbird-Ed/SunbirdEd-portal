@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ConnectionService } from '@sunbird/offline';
+import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { PublicPlayerService } from '@sunbird/public';
 import {
@@ -14,11 +15,15 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
   templateUrl: './contentplayer-page.component.html',
   styleUrls: ['./contentplayer-page.component.scss']
 })
-export class ContentPlayerPageComponent implements OnInit, OnDestroy {
+export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges {
   public unsubscribe$ = new Subject<void>();
-  contentDetails: ContentData;
-  playerConfig: PlayerConfig;
+  @Input() contentDetails: ContentData;
+  playerConfig;
   telemetryImpression: IImpressionEventInput;
+  @Input() tocPage = false;
+  public isConnected;
+  @Input() dialCode: string;
+
   constructor(private activatedRoute: ActivatedRoute,
     private playerService: PublicPlayerService,
     private configService: ConfigService,
@@ -26,14 +31,30 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
     private navigationHelperService: NavigationHelperService,
     public toasterService: ToasterService,
     private resourceService: ResourceService,
+    private connectionService: ConnectionService,
   ) { }
 
   ngOnInit() {
     this.getContentIdFromRoute();
     this.router.events
       .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
-      .subscribe(x => { this.setPageExitTelemtry(); });
+      .subscribe(x => { if (!this.tocPage) {this.setPageExitTelemtry(); }});
+    this.checkOnlineStatus();
   }
+
+  checkOnlineStatus() {
+    this.connectionService.monitor().subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
+  }
+
+  ngOnChanges() {
+    if (this.contentDetails && this.tocPage) {
+      this.playerConfig = {};
+      this.getContent(this.contentDetails.identifier);
+    }
+  }
+
   getContentIdFromRoute() {
     this.activatedRoute.params.pipe(
       takeUntil(this.unsubscribe$))
@@ -43,26 +64,30 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   getContent(contentId) {
+    const options: any = { dialCode: this.dialCode };
     const params = { params: this.configService.appConfig.PublicPlayer.contentApiQueryParams };
     this.playerService.getContent(contentId, params)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.contentDetails = _.get(response, 'result.content');
-        this.getContentConfigDetails(contentId);
+        this.getContentConfigDetails(contentId, options);
         this.setTelemetryData();
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0024);
         this.setTelemetryData();
       });
   }
-  getContentConfigDetails(contentId) {
+
+  getContentConfigDetails(contentId, options) {
     const contentDetails = {
       contentId: contentId,
       contentData: this.contentDetails
     };
-    this.playerConfig = this.playerService.getConfig(contentDetails);
+    this.playerConfig = this.playerService.getConfig(contentDetails, options);
   }
+
   setTelemetryData() {
     this.telemetryImpression = {
       context: {
@@ -94,6 +119,12 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy {
     }
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+
+  deleteContent(event) {
+    if (this.isConnected && !this.router.url.includes('browse')) {
+      this.playerConfig = {};
+    }
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
