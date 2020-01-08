@@ -42,13 +42,13 @@ describe('CreditsAndLicenceComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call embedUrl', () => {
-    const returnVal = component.embedUrl(undefined);
-    expect(returnVal).toBe('');
-  });
+  it('should call ngAfterViewInit', () => {
+    component.contentData = {
+      license: 'Creative Commons Attribution (CC BY) https://www.google.com/'
+    };
 
-  it('should return text with embedded URL', () => {
-    const returnVal = component.embedUrl('this is a demo url: http://google.com');
-    expect(returnVal).toBe('this is a demo url: <a href="http://google.com">http://google.com</a>');
+    component.ngAfterViewInit();
+    expect(component.licenceElement.nativeElement.innerHTML).
+      toEqual('Creative Commons Attribution (CC BY) <a href="">https://www.google.com/</a>');
   });
 });

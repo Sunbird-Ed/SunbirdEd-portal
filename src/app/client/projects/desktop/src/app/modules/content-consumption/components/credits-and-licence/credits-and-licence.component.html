@@ -12,7 +12,7 @@
         <p class="description">{{contentData?.attributions}}</p>
 
         <h4 *ngIf="contentData?.license" class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
-        <p class="description" [innerHTML]="embedUrl(contentData?.license)"></p>
+        <p class="description" #licence></p>
 
         <h4 *ngIf="contentData?.copyright" class="title">{{resourceService?.frmelmnts?.lbl?.copyRight}}</h4>
         <p class="description">{{contentData?.copyright}}</p>
