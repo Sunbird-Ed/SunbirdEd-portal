@@ -180,21 +180,22 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 ([response1, response2]) => {
                     if (response1) {
                         this.showLoader = false;
-                        const subjects = [];
-                        let filteredContents = _.omit(_.groupBy(response1['result'].content, (content) => {
-                            if (_.get(content, 'subject.length') > 1) {
-                                content.subject.forEach((currentSubject) => {
-                                    if (subjects[currentSubject]) {
-                                        subjects[currentSubject].push(content);
+                        const filteredContents = _.omit(_.groupBy(response1['result'].content, 'subject'), ['undefined']);
+                        // Check for multiple subjects
+                        for (const [key, value] of Object.entries(filteredContents)) {
+                            const isMultipleSubjects = key.split(',').length > 1;
+                            if (isMultipleSubjects) {
+                                const subjects = key.split(',');
+                                subjects.forEach((subject) => {
+                                    if (filteredContents[subject]) {
+                                        filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
                                     } else {
-                                        subjects[currentSubject] = [content];
+                                        filteredContents[subject] = value;
                                     }
                                 });
-                                return content.subject[0];
+                                delete filteredContents[key];
                             }
-                            return content.subject;
-                        }), ['undefined']);
-                        filteredContents = _.merge(filteredContents, subjects);
+                        }
                         this.sections = [];
 
                         if (response2) {
