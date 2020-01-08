@@ -21,6 +21,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   @ViewChild('modal') modal;
   @ViewChild('fineUploaderUI') fineUploaderUI: ElementRef;
   @ViewChild('qq-upload-actions') actionButtons: ElementRef;
+  @ViewChild('titleTextArea') titleTextAreaa: ElementRef;
   @ViewChild('FormControl') FormControl: NgForm;
   // @ViewChild('contentTitle') contentTitle: ElementRef;
   @Input() contentUploadComponentInput: IContentUploadComponentInput;
@@ -116,6 +117,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       validation: {
         allowedExtensions: (this.templateDetails.filesConfig.accepted.length === 3) ?
           this.templateDetails.filesConfig.accepted.split(' ') : this.templateDetails.filesConfig.accepted.split(', '),
+        acceptFiles: this.templateDetails.mimeType ? this.templateDetails.mimeType.toString() : '',
         itemLimit: 1,
         sizeLimit: 52428800 // 50 MB = 50 * 1024 * 1024 bytes
       },
@@ -366,6 +368,39 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         this.sessionContext.topicList = _.get(_.find(frameworkData, { code: 'topic' }), 'terms');
       }
     });
+  }
+
+  editContentTitle() {
+    this.showTextArea = true;
+    this.cd.detectChanges();
+    this.titleTextAreaa.nativeElement.focus();
+  }
+
+  saveTitle() {
+   if (this.editTitle && this.editTitle !== '') {
+     if (this.editTitle === this.contentMetaData.name) {
+       return;
+     } else {
+    const contentObj = {
+      'versionKey': this.contentMetaData.versionKey,
+      'name': this.editTitle
+  };
+  const request = {
+    'content': contentObj
+  };
+  this.helperService.updateContent(request, this.contentMetaData.identifier).subscribe((res) => {
+    this.contentMetaData.versionKey = res.result.versionKey;
+    this.contentMetaData.name = this.editTitle;
+    this.toasterService.success(this.resourceService.messages.smsg.m0060);
+  }, (err) => {
+    this.editTitle = this.contentMetaData.name;
+    this.toasterService.error(this.resourceService.messages.fmsg.m0098);
+  });
+  }
+   } else {
+    this.editContentTitle();
+    this.toasterService.error(this.resourceService.messages.fmsg.m0076);
+   }
   }
 
   saveContent(action?) {
