@@ -71,12 +71,6 @@ const routes: Routes = [
     },
     {
         path: ':slug/explore', loadChildren: './../../../../../../src/app/modules/public/module/explore/explore.module#ExploreModule'
-    },
-    {
-        path: 'play', loadChildren: './../../../app/modules/content-consumption/content-consumption.module#ContentConsumptionModule'
-    },
-    {
-        path: 'browse/play', loadChildren: './../../../app/modules/content-consumption/content-consumption.module#ContentConsumptionModule'
     }
 ];
 @NgModule({
