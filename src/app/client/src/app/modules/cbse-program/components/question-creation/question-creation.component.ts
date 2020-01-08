@@ -194,12 +194,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
   buttonTypeHandler(event) {
     if (event === 'preview') {
-      this.sessionContext.showMode = 'previewPlayer';
       this.showPreview = true;
     } else if (event === 'edit') {
-      this.sessionContext.showMode = 'editorForm';
       this.refreshEditor();
       this.showPreview = false;
+    } else if (event === 'review') {
+      this.updateStatus = event;
+      this.handleSubmit(this.questionMetaForm);
     } else {
       this.handleSubmit(this.questionMetaForm);
     }
@@ -392,26 +393,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   manageFormConfiguration() {
-    // tslint:disable-next-line:max-line-length
-    const compConfiguration = _.get(this.sessionContext, 'compConfiguration');
-    this.formConfiguration = compConfiguration.config.formConfiguration;
-    this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
-    this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
-    this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
-    // tslint:disable-next-line:max-line-length
-    this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.sessionContext.resourceStatus === 'Draft') ? false : true ;
-    const formFields = _.map(this.formConfiguration, (formData) => {
-      if (!formData.defaultValue) {
-        return formData.code;
-      }
-      this.selectOutcomeOption[formData.code] = formData.defaultValue;
-    });
-
-    this.selectOutcomeOption['license'] = this.sessionContext.licencesOptions;
-    const topicTerm = _.find(this.sessionContext.topicList, { name: this.sessionContext.topic });
-    if (topicTerm && topicTerm.associations) {
-       this.selectOutcomeOption['learningOutcome'] = topicTerm.associations;
-    }
 
     this.questionMetaForm = this.formBuilder.group({
       textInputArr: this.formBuilder.array([ ]),
@@ -419,39 +400,67 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       multiSelectionArr: this.formBuilder.array([ ])
     });
 
-    _.forEach(this.selectionFields, (obj) => {
-      const controlName = {};
-      const code = obj.code;
-      const preSavedValues = {};
-      // tslint:disable-next-line:max-line-length
-      preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? (Array.isArray(this.questionMetaData.data[code]) ? this.questionMetaData.data[code][0] : this.questionMetaData.data[code]) : '';
-      // tslint:disable-next-line:max-line-length
-      obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = preSavedValues[code];
-      this.selectionArr = this.questionMetaForm.get('selectionArr') as FormArray;
-      this.selectionArr.push(this.formBuilder.group(controlName));
-    });
+    this.selectionArr = this.questionMetaForm.get('selectionArr') as FormArray;
+    this.multiSelectionArr = this.questionMetaForm.get('multiSelectionArr') as FormArray;
+    this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
 
-    _.forEach(this.multiSelectionFields, (obj) => {
-      const controlName = {};
-      const code = obj.code;
-      const preSavedValues = {};
+    if (this.questionMetaData) {
       // tslint:disable-next-line:max-line-length
-      preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code] && this.questionMetaData.data[code].length) ? this.questionMetaData.data[code] : [];
-      obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = [preSavedValues[code]];
-      this.multiSelectionArr = this.questionMetaForm.get('multiSelectionArr') as FormArray;
-      this.multiSelectionArr.push(this.formBuilder.group(controlName));
-    });
+      const compConfiguration = _.get(this.sessionContext, 'compConfiguration');
+      this.formConfiguration = compConfiguration.config.formConfiguration;
+      this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
+      this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
+      this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
+      // tslint:disable-next-line:max-line-length
+      this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.sessionContext.resourceStatus === 'Draft') ? false : true ;
+      const formFields = _.map(this.formConfiguration, (formData) => {
+        if (!formData.defaultValue) {
+          return formData.code;
+        }
+        this.selectOutcomeOption[formData.code] = formData.defaultValue;
+      });
 
-    _.forEach(this.textFields, (obj) => {
-      const controlName = {};
-      const code = obj.code;
-      const preSavedValues = {};
-      preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? this.questionMetaData.data[code] : '';
-      // tslint:disable-next-line:max-line-length
-      obj.required ? controlName[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controlName[obj.code] = preSavedValues[code];
-      this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
-      this.textInputArr.push(this.formBuilder.group(controlName));
-    });
+      this.selectOutcomeOption['license'] = this.sessionContext.licencesOptions;
+      const topicTerm = _.find(this.sessionContext.topicList, { name: this.sessionContext.topic });
+      if (topicTerm && topicTerm.associations) {
+        this.selectOutcomeOption['learningOutcome'] = topicTerm.associations;
+      }
+
+      _.forEach(this.selectionFields, (obj) => {
+        const controlName = {};
+        const code = obj.code;
+        const preSavedValues = {};
+        // tslint:disable-next-line:max-line-length
+        preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? (Array.isArray(this.questionMetaData.data[code]) ? this.questionMetaData.data[code][0] : this.questionMetaData.data[code]) : '';
+        // tslint:disable-next-line:max-line-length
+        obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = preSavedValues[code];
+        this.selectionArr = this.questionMetaForm.get('selectionArr') as FormArray;
+        this.selectionArr.push(this.formBuilder.group(controlName));
+      });
+
+      _.forEach(this.multiSelectionFields, (obj) => {
+        const controlName = {};
+        const code = obj.code;
+        const preSavedValues = {};
+        // tslint:disable-next-line:max-line-length
+        preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code] && this.questionMetaData.data[code].length) ? this.questionMetaData.data[code] : [];
+        // tslint:disable-next-line:max-line-length
+        obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = [preSavedValues[code]];
+        this.multiSelectionArr = this.questionMetaForm.get('multiSelectionArr') as FormArray;
+        this.multiSelectionArr.push(this.formBuilder.group(controlName));
+      });
+
+      _.forEach(this.textFields, (obj) => {
+        const controlName = {};
+        const code = obj.code;
+        const preSavedValues = {};
+        preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? this.questionMetaData.data[code] : '';
+        // tslint:disable-next-line:max-line-length
+        obj.required ? controlName[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controlName[obj.code] = preSavedValues[code];
+        this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
+        this.textInputArr.push(this.formBuilder.group(controlName));
+      });
+    }
   }
 
   markFormGroupTouched(formGroup: FormGroup) {

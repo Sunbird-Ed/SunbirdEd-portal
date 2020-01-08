@@ -43,7 +43,6 @@ export class QuestionListComponent implements OnInit {
   public showReviewModal = false;
   public showRequestChangesPopup = false;
   public showDeleteQuestionModal = false;
-  public disableSubmitBtn = true;
   public showPublishModal = false;
   public publishInProgress = false;
   public publishedResourceId: any;
@@ -204,8 +203,8 @@ export class QuestionListComponent implements OnInit {
     });
   }
 
-  handleQuestionTabChange(questionId, isUpdate: boolean = false) {
-    if (_.includes(this.sessionContext.questionList, questionId) && !isUpdate) { return; }
+  handleQuestionTabChange(questionId, actionStatus?: string) {
+    if (_.includes(this.sessionContext.questionList, questionId) && !actionStatus) { return; }
     this.sessionContext.questionList = [];
     this.sessionContext.questionList.push(questionId);
     this.selectedQuestionId = questionId;
@@ -230,7 +229,7 @@ export class QuestionListComponent implements OnInit {
         if (this.role.currentRole === 'CONTRIBUTOR') {
           this.refreshEditor();
         }
-        if (isUpdate) {  this.saveContent(); }
+        if (actionStatus) {  this.saveContent(actionStatus); }
       });
   }
 
@@ -270,23 +269,16 @@ export class QuestionListComponent implements OnInit {
       this.handleActionButtons();
     });
   }
+
   public questionStatusHandler(event) {
-    console.log('editor event', event);
-    if (event.type === 'close') {
-      this.questionMetaData = {};
-      if (this.questionList.length) {
-        this.handleQuestionTabChange(this.selectedQuestionId);
-      }
+
+    if (this.isPublishBtnDisable && event.type === 'review') {
+      this.toasterService.error('Please resolve rejected questions or delete');
       return;
     }
-    if (event.status === 'failed') {
-      console.log('failed');
-    } else {
-      if (event.type === 'update' || event.type === 'Draft' || event.type === 'Live') {
-        delete this.questionReadApiDetails[event.identifier];
-        this.handleQuestionTabChange(this.selectedQuestionId,  true);
-      }
-    }
+
+    delete this.questionReadApiDetails[event.identifier];
+    this.handleQuestionTabChange(this.selectedQuestionId, event.type);
   }
 
   handleRefresEvent() {
@@ -299,7 +291,7 @@ export class QuestionListComponent implements OnInit {
     this.refresh = true;
   }
 
-  saveContent() {
+  saveContent(actionStatus: string) {
     this.publishInProgress = true;
     this.publishButtonStatus.emit(this.publishInProgress);
     const selectedQuestionsData = _.reduce(this.questionList, (final, question) => {
@@ -345,8 +337,8 @@ export class QuestionListComponent implements OnInit {
         this.updateContent(requestBody, this.sessionContext.resourceIdentifier)
         .subscribe((res) => {
             if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
-              this.disableSubmitBtn = false;
               this.toasterService.success(this.resourceService.messages.smsg.m0060);
+              if (actionStatus === 'review') { this.sendForReview(); }
             }
           }, error => {
             this.publishInProgress = false;
@@ -368,7 +360,6 @@ export class QuestionListComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier, contentId )
         .subscribe((data) => {
-          this.disableSubmitBtn = true;
           this.toasterService.success(this.resourceService.messages.smsg.m0061);
           this.programStageService.removeLastStage();
           this.uploadedContentMeta.emit({
