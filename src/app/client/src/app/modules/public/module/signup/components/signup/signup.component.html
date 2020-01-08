@@ -50,7 +50,7 @@
               </div>
             </div>
             <div class="required field mb-20">
-              <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.password.touched && signUpForm.controls['password'].errors)">{{resourceService.frmelmnts.lbl.password}}</label>
+              <label class="mb-10 font-weight-bold">{{resourceService.frmelmnts.lbl.password}}</label>
               <div class="ui icon input">
                 <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.password.touched && signUpForm.controls['password'].errors}" [type]="showPassword ? 'text' : 'password'"
                   formControlName="password" name="password" placeholder="{{resourceService.frmelmnts.lbl.EnterPassword}}">
