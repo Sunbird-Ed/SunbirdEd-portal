@@ -165,16 +165,16 @@ a {
 }
 
 .text-right {
-  text-align: right;
+  text-align: right !important;
   html[dir="rtl"] & {
-    text-align: left;
+    text-align: left !important;
   }
 }
 
 .text-left {
-  text-align: left;
+  text-align: left !important;
   html[dir="rtl"] & {
-    text-align: right;
+    text-align: right !important;
   }
 }
 
