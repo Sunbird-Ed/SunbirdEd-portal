@@ -32,4 +32,11 @@ describe('MainMenuComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('getFeatureId method', () => {
+    it('should return the feature id', () => {
+      const result = component.getFeatureId('user:program:contribute', 'SB-15591');
+      expect(result).toEqual([{ id: 'user:program:contribute', type: 'Feature' }, { id: 'SB-15591', type: 'Task' }]);
+    });
+  });
 });
