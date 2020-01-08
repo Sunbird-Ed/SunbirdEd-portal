@@ -2,13 +2,12 @@
 <app-question-creation-header *ngIf="questionMetaData" [questionMetaData]="questionMetaData" [role]="role"></app-question-creation-header>
 
 <div *ngIf='showForm'>
-  <form #mcqFormControl="ngForm" class="ui form mcq-vertical mt-8" *ngIf="!showPreview">
+  <form  class="ui form mcq-vertical mt-8 licence-form" *ngIf="!showPreview" [formGroup]="questionMetaForm">
     <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode">
-      <div class="ckeditor-tool__question mb-24">
+      <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
+      <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(mcqForm.question)">
         <div class="sb-field mcq-title mb-16">
           <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
-          <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)"
-            class="ui basic red error label pt-1 question-list">Fill Question</label>
           <div class="ckeditor-tool-container">
             <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);"
               [editorConfig]="questionMetaData" [editorDataInput]="mcqForm.question"></app-ckeditor-tool>
@@ -30,34 +29,38 @@
               (click)="mcqForm.addOptions()"><i class="plus icon"></i>ADD</button>
 
           </div>
-          <div class="mcq-option ckeditor-tool__option mb-8" *ngFor="let option of mcqForm.options; let i=index">
-            <div class="twelve wide field">
-              <label class="px-16 py-8 mb-0 ckeditor-tool__label">Option {{i + 1}} </label>
-              <label *ngIf="showFormError && (option.body === undefined || option.body === '')"
-                class="ui basic red error label pt-1">Fill this option</label>
-              <div class="ckeditor-tool-container">
-                <app-ckeditor-tool (hasError)="handleEditorError($event)"
-                  (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
-                  [editorConfig]="questionMetaData" [editorDataInput]="option.body"
-                  [setCharacterLimit]="setCharacterLimit" [setImageLimit]="setImageLimit"></app-ckeditor-tool>
-                <div class="mcq-checkbox-answer">
-                  <!-- Checkbox needs to be integrated -->
-                  <div class="sb-checkbox sb-checkbox-primary mr-auto" [class.selected]="mcqForm.answer === i.toString()">
-                    <input type="radio" id="rightAns" name="example" value={{i}} 
-                          [(ngModel)]="mcqForm.answer" [checked]="mcqForm.answer === i.toString()">
-                    <label for="check1">Mark as right answer</label>
-                  </div>
 
-                  <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)"
-                    class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn"><i
-                      class="trash alternate outline icon"></i>Delete</button>
+          <div *ngFor="let option of mcqForm.options; let i=index">
+            <label *ngIf="showFormError && (option.body === undefined || option.body === '')" class="sb-label sb-label-table sb-label-error-0 pt-1">Fill this option</label>
+            <div class="mcq-option ckeditor-tool__option mb-8" [class.error-question-content]="showFormError && (option.body === undefined || option.body === '')">
+              <div class="sb-field mb-0">
+                <label class="px-16 py-8 mb-0 ckeditor-tool__label fs-1 width-100">Option {{i + 1}} </label>
+                <div class="ckeditor-tool-container">
+                  <app-ckeditor-tool (hasError)="handleEditorError($event)"
+                    (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
+                    [editorConfig]="questionMetaData" [editorDataInput]="option.body"
+                    [setCharacterLimit]="setCharacterLimit" [setImageLimit]="setImageLimit"></app-ckeditor-tool>
+                  <div class="mcq-checkbox-answer">
+                    <!-- Checkbox needs to be integrated -->
+                    <div class="sb-checkbox sb-checkbox-primary mr-auto" [class.selected]="mcqForm.answer === i.toString()">
+                      <input type="radio" name="example" value={{i}} 
+                            [(ngModel)]="mcqForm.answer" [ngModelOptions]="{standalone: true}" [checked]="mcqForm.answer === i.toString()">
+                      <label for="check1">Mark as right answer</label>
+                    </div>
+  
+                    <button [disabled]="mcqForm.options.length < 3" (click)="mcqForm.deleteOption(i)"
+                      class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn"><i
+                        class="trash alternate outline icon"></i>Delete</button>
+                  </div>
                 </div>
+                <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce
+                  the
+                  size</label>
               </div>
-              <label *ngIf="showFormError && option.length > 160" class="ui basic red error label pt-1">please reduce
-                the
-                size</label>
             </div>
           </div>
+
+          
 
         </div>
 
@@ -96,43 +99,48 @@
       </div>
     </div>
 
-  
-    <div class="ui two column grid width-100" *ngIf="!isReadOnlyMode">
-      <div class="one column row" *ngIf="learningOutcomeOptions.length">
-        <div class="column">
-          <label>Learning Outcome</label>
-          <div class="sb-field">
-            <sui-select class="selection width-100" #learningOutcome="ngModel" [(ngModel)]="mcqForm.learningOutcome"
-              name="'learningOutcome'">
-              <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name">
-              </sui-select-option>
-            </sui-select>
-          </div>
-          <label class="ui basic red error label pt-1 mt-5 width-100"
-            *ngIf="(learningOutcome.touched || showFormError) && learningOutcome.invalid">Fill Learning Outcome</label>
+
+      <div class='licence-form__content mt-15' *ngIf="!isReadOnlyMode">
+        <div class="ui stackable grid licence-form__content__fields">
+            <div class="row">
+                <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <sui-multi-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+                          <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                          </sui-select-option>
+                        </sui-multi-select>
+                        <label class="sb-error-text" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                    </div>
+                </div>
+
+                <div class="six wide column mb-15" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <sui-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+                        <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                        </sui-select-option>
+                        </sui-select>
+                        <label class="sb-error-text" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                    </div>
+                </div>
+
+                <div class="six wide column mb-15" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <input formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
+                      <label class="sb-error-text" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
-      <div class="column">
-        <label>Learning Level</label>
-        <div class="sb-field">
-          <sui-select class="selection width-100" #bloomsLevel="ngModel" [(ngModel)]="mcqForm.bloomsLevel"
-            name="'bloomsLevel'">
-            <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
-          </sui-select>
-        </div>
-        <label class="ui basic red error label pt-1 mt-5 width-100"
-          *ngIf="(bloomsLevel.touched || showFormError) && bloomsLevel.invalid">Fill Learning Level </label>
-      </div>
-      <div class="two column row">
-        <div class="column">
-          <label>Authors</label> <br />
-          <div class="sb-field">
-            <input class="sb-form-control" #author_names type="text"
-              [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
-          </div>
-        </div>
-      </div>
-    </div>
 
 
     <!-- Question Preview Section HTML -->
@@ -210,46 +218,51 @@
 
       </div>
 
-      <!-- Learning Outcome learning level author license Preview HTML -->
-      <div class="ui stackable grid licence-form__content__fields" *ngIf="isReadOnlyMode">
+      
+    <!-- Learning Outcome learning level author license Preview HTML -->
+    <div class='licence-form__content' *ngIf="isReadOnlyMode">
+      <div class="ui stackable grid licence-form__content__fields">
           <div class="row">
-            <div class="twelve wide column">
-              <div class="sb-field">
-                <label for="outcome" class="d-flex mb-4">Learning Outcome <span class="sb-color-red">*</span> <a
-                    class="ml-4" href="javascript:void(0)" title="title comes here"><img width="16" alt=""
-                      src="assets/images/Info.svg"></a></label>
-                <p class="fs-0-785">Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem
-                  Ipsum simply dummy text of the printing and typesetting industry</p>
+              <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
+                  <div [formGroupName]="i" class="sb-field">
+                      <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                          href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                              src="assets/images/Info.svg"></a></label>
+                      <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+                  </div>
               </div>
-            </div>
-          </div>
-          <div class="row pt-0">
-            <div class="four wide column">
-              <div class="sb-field space-btn-field">
-                <label for="level" class="d-flex mb-4">Learning Level <span class="sb-color-red">*</span> <a
-                    href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                      src="assets/images/Info.svg"></a></label>
-                <p class="fs-0-785">Lorem Ipsum is simply dummy text of the printing Dummy text of the printing</p>
+
+              <div class="six wide column mb-15" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
+                  <div [formGroupName]="i" class="sb-field">
+                      <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                          href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                              src="assets/images/Info.svg"></a></label>
+                      <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+                  </div>
               </div>
-            </div>
-            <div class="four wide column p-0">
-              <div class="sb-field">
-                <label for="author" class="d-flex mb-4">Author(s) <a href="javascript:void(0)"
-                    title="title comes here"><img width="16" alt="" class="ml-4"
-                      src="assets/images/Info.svg"></a></label>
-                <p class="fs-0-785">Lorem Ipsum is simply </p>
+
+              <div class="six wide column mb-15" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
+                  <div [formGroupName]="i" class="sb-field">
+                      <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                          href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                              src="assets/images/Info.svg"></a></label>
+                      <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+                  </div>
               </div>
-            </div>
-            <div class="four wide column">
-              <div class="sb-field space-btn-field">
-                <label for="license" class="d-flex mb-4">License <a href="javascript:void(0)"
-                    title="title comes here"><img width="16" alt="" class="ml-4"
-                      src="assets/images/Info.svg"></a></label>
-                <p class="fs-0-785">ACT456</p>
-              </div>
-            </div>
           </div>
       </div>
+    </div>
+
+    <div class='practical-sb-buttons'>
+        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true">
+            {{ questionMetaData.data.rejectComment === '' ? 'Request Changes' : 'Edit Comments' }}
+        </button>
+    </div>
+
+    <p class="paragraph fs-0-785 pt-15 mt-0">
+        <strong>Disclaimer:</strong> By creating content on SunbirdEd, you consent to publish it under the Creative Commons License Framework. For details, refer
+        <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Please choose the applicable creative commons license you wish to apply to your content.
+    </p>   
   </form>
 </div>
 

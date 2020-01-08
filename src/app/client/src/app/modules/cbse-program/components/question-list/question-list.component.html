@@ -78,7 +78,7 @@
       <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
         <div *ngIf="sessionContext.questionType === 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
-            <app-mcq-creation [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
+            <app-mcq-creation #questionCreationChild [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
               [questionSelectionStatus]="questionSelectionStatus" [role]="role"
               (questionStatus)="questionStatusHandler($event)"
               (questionQueueStatus)="questionQueueStatusHandler($event)">
