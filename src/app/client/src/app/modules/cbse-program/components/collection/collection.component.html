@@ -11,8 +11,8 @@
     <div class="state-medium-container__separator"></div>
     <div class="state-medium-container__medium">
       <div class="sb-medium">
-         <div class="sb-medium__sb-pills-content  sb-medium__pills-container" *ngFor="let subject of subjects;  let index = index" (click)="filterCollectionList(subject,'subject')">
-          <div class="pill active">{{subject}}</div>
+         <div class="sb-medium__sb-pills-content  sb-medium__pills-container" *ngFor="let medium of mediums;  let index = index" (click)=" isMediumClickable ? filterCollectionList(medium,'medium') : false">
+          <div class="pill active">{{medium}}</div>
         </div>
       </div>
     </div>

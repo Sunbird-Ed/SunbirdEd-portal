@@ -29,22 +29,22 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public collection;
   public collectionsWithCardImage;
   public role: any = {};
-  public subjects;
+  public mediums;
   public classes;
   public board;
+  isMediumClickable = false;
   showLoader = true;
   public state: InitialState = {
     stages: []
   };
   public showStage;
   public currentStage: any;
-  _slideConfig = {'slidesToShow': 10, 'slidesToScroll': 10};
+  _slideConfig = {'slidesToShow': 8, 'slidesToScroll': 8};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
     private cbseService: CbseProgramService, public programStageService: ProgramStageService,
     public utilService: UtilService, public contentService: ContentService) { }
 
   ngOnInit() {
-    
     this.stageSubscription = this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
@@ -72,8 +72,9 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.sessionContext.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
     this.role.currentRole = this.sessionContext.currentRole;
     this.classes = _.find(this.collectionComponentConfig.config.filters.explicit, {'code': 'gradeLevel'}).range;
-    this.subjects = _.find(this.collectionComponentConfig.config.filters.explicit, {'code': 'subject'}).range;
+    this.mediums = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'medium'}).defaultValue;
     this.board = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'board'}).defaultValue;
+    (_.size(this.mediums) > 1) ? this.isMediumClickable = true : this.isMediumClickable = false;
   }
 
 
@@ -119,7 +120,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
         }
       }
     };
-
     this.contentService.post(req)
       .pipe(catchError(err => {
       const errInfo = { errorMsg: 'Question creation failed' };
@@ -143,7 +143,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       });
       const collectionCards = this.utilService.getDataForCard(filteredTextbook, constantData, dynamicFields, metaData);
       this.collectionsWithCardImage = _.forEach(collectionCards, collection => this.addCardImage(collection));
-      this.filterCollectionList();
+      this.filterCollectionList(this.classes);
       this.showLoader = false;
     });
   }
@@ -161,21 +161,26 @@ export class CollectionComponent implements OnInit, OnDestroy {
     return _.groupBy(collection, arg);
   }
 
-  filterCollectionList(filterValue?: string, filterby = 'gradeLevel') {
-    let filterValueItem = _.find(this.collectionComponentConfig.config.filters.explicit, {'code': filterby}).defaultValue;
-    const filterArray = [];
-    if (filterValue) {
+  filterCollectionList(filterValue?: any, filterby = 'gradeLevel') {
+    let filterValueItem: any[];
+
+    if (Array.isArray(filterValue)) {
+      filterValueItem = filterValue;
+    } else {
+      const filterArray = [];
       filterArray.push(filterValue);
       filterValueItem = filterArray;
     }
-      this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterby, filterValueItem);
-      this.groupCollectionList();
+
+
+        this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterby, filterValueItem);
+        this.groupCollectionList();
   }
 
   filterByCollection(collection: any[], filterBy: string, filterValue: any[]) {
     return collection.filter( (el) => {
       return filterValue.some((f: any) => {
-        if (Array.isArray(el[filterBy])) {
+        if ( Array.isArray(el[filterBy])) {
           return f === _.intersectionBy(el[filterBy], filterValue).toString();
         } else {
           return f === el[filterBy];
