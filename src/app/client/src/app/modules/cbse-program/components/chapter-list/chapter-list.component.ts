@@ -171,7 +171,9 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     if (!_.isEmpty(this.state.stages)) {
       this.currentStage = _.last(this.state.stages).stage;
     }
-    this.updateAccordianView(this.unitIdentifier);
+    if (this.currentStage === 'chapterListComponent') {
+      this.updateAccordianView(this.unitIdentifier);
+    }
   }
 
   public getCollectionHierarchy(identifier: string, unitIdentifier: string) {
@@ -202,6 +204,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         this.sessionContext.hierarchyObj = { hierarchy };
         this.showLoader = false;
         this.showError = false;
+        this.levelOneChapterList = _.uniqBy(this.levelOneChapterList, 'identifier');
          resolve('Done');
       });
     });
@@ -315,8 +318,6 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
 
   onSelectChapterChange() {
     this.showLoader = true;
-    // tslint:disable-next-line:max-line-length
-    (this.selectedChapterOption === 'all') ? (this.levelOneChapterList = [{identifier: 'all', name: 'All Chapters'}]) : this.levelOneChapterList = this.levelOneChapterList;
     this.updateAccordianView(undefined, true);
   }
 
