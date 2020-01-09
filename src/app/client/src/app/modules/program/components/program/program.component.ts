@@ -31,7 +31,7 @@ export class ProgramComponent implements OnInit, OnDestroy {
   public showStage;
   public defaultView;
   public dynamicInputs: IDynamicInput;
-  public component;
+  public component: any;
   private componentMapping = {
     dashboardComponent: DashboardComponent,
     collectionComponent: CollectionComponent,
