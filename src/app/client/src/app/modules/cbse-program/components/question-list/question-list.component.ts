@@ -314,7 +314,7 @@ export class QuestionListComponent implements OnInit {
         const existingContentVersionKey = _.get(response[1], 'content.versionKey');
         const requestBody = {
           'content': {
-            questions: questions,
+            // questions: questions,
             body: JSON.stringify(response[0]),
             versionKey: existingContentVersionKey,
             'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
@@ -563,7 +563,8 @@ export class QuestionListComponent implements OnInit {
             'board': this.sessionContext.board,
             'body': '',
             'media': [],
-            'author' : this.getUserName()
+            'author' : this.getUserName(),
+            'status' : 'Draft'
           }
         }
       }
@@ -599,12 +600,7 @@ export class QuestionListComponent implements OnInit {
     return {
       'editorState': {
         'question': '',
-        'solutions': [
-          {
-            'id': UUID.UUID(),
-            'value': ''
-          }
-        ]
+        'answer' : ''
       }
     };
   }

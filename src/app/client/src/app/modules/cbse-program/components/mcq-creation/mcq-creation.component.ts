@@ -50,14 +50,13 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   isReadOnlyMode = false;
   learningOutcomeOptions = [];
   updateStatus = 'update';
+  questionRejected = false;
 
   questionMetaForm: FormGroup;
   selectOutcomeOption = {};
   textInputArr: FormArray;
   selectionArr: FormArray;
   multiSelectionArr: FormArray;
-  formValues: any;
-  contentMetaData;
   disableFormField: boolean;
 
   constructor(public configService: ConfigService, private http: HttpClient,
@@ -83,10 +82,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     this.showForm = true;
   }
   ngOnInit() {
-    const topicTerm = _.find(this.sessionContext.topicList, { name: this.sessionContext.topic });
-    if (topicTerm && topicTerm.associations) {
-      this.learningOutcomeOptions = topicTerm.associations;
-    }
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
       this.showPreview = true;
       // this.buttonTypeHandler('preview');
@@ -167,6 +162,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     this.isEditorThrowingError = event;
   }
   buttonTypeHandler(event) {
+    this.updateStatus = event;
     if (event === 'preview') {
       this.showPreview = true;
     } else if (event === 'edit') {
@@ -241,8 +237,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         this.optionBody = res.slice(1).map((option, i) => { // options with latex
           return { body: res[i + 1] };
         });
-
-
         const questionData = this.getHtml(this.body, this.optionBody);
         const correct_answer = this.mcqForm.answer;
         const options = _.map(this.mcqForm.options, (opt, key) => {
@@ -259,12 +253,14 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
           'templateId': this.questionMetaData.data.templateId,
           'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
           'body': questionData.body,
+          'editorState' : {
+            'question': this.mcqForm.question,
+            'options': options,
+          },
           'responseDeclaration': questionData.responseDeclaration,
-          'question': this.mcqForm.question,
-          'options': options,
           // 'qlevel': this.mcqForm.difficultyLevel,
           'maxScore': 1, // Number(this.mcqForm.maxScore),
-          'status': 'Review',
+          'status': 'Draft',
           'media': this.mediaArr,
           'type': 'mcq',
         };
@@ -285,11 +281,15 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
             }
           }
         };
+
         if (optionalParams) {
           _.forEach(optionalParams, (param) => {
             req.data.request.assessment_item.metadata[param.key] = param.value;
             if (param.key === 'status') {
               this.updateStatus = param.value;
+            }
+            if (param.key === 'rejectComment' && param.value !== '') {
+              this.questionRejected = true;
             }
           });
         }
@@ -299,7 +299,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         })).subscribe((apiRes) => {
           if (this.updateStatus === 'Live') {
             this.toasterService.success('Question Accepted');
-          } else if (this.updateStatus === 'Reject') {
+          } else if (this.updateStatus === 'Draft' && this.questionRejected) {
             this.toasterService.success('Question Rejected');
           }
           this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': apiRes.result.node_id });
@@ -331,10 +331,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     return {
       body: questionBody,
       responseDeclaration: responseDeclaration,
-      correct_response: parseInt(this.mcqForm.answer, 10) + 1,
-      // tslint:disable-next-line:max-line-length
-      learningOutcome: (this.questionMetaData.data && this.questionMetaData.data.learningOutcome) ? this.questionMetaData.data.learningOutcome[0] : '',
-      learningLevel: this.mcqForm.bloomsLevel || ''
     };
   }
 
