@@ -10,6 +10,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CreditsAndLicenceComponent } from './components/credits-and-licence/credits-and-licence.component';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { CreditsAndLicenceComponent } from './components/credits-and-licence/cre
     SharedModule,
     TelemetryModule,
     ContentConsumptionRoutingModule,
-    SuiAccordionModule
+    SuiAccordionModule,
+    CommonConsumptionModule
   ],
   exports: [
     ContentPlayerComponent, ContentMetadataComponent, ContentPlayerPageComponent
