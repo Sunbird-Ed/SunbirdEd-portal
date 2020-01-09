@@ -6,7 +6,7 @@ import { SearchService, SearchParam, PlayerService, CoursesService, UserService 
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService, TelemetryInteractDirective } from '@sunbird/telemetry';
-import { takeUntil, mergeMap, first, tap, retry, catchError } from 'rxjs/operators';
+import { takeUntil, mergeMap, first, tap, retry, catchError, map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
@@ -124,28 +124,18 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     return this.dialCodeService.searchDialCode(_.get(params, 'dialCode'), this.isBrowse)
       .pipe(
         tap(value => {
-          const telemetry = {
-            context: { env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'), cdata: [] },
-            edata: {
-              id: 'search-dial',
-              type: 'click',
-              subtype: 'Search Dialcode Success',
-              pageid: 'get-dial'
-            }
-          };
-          this.telemetryService.interact(telemetry);
+          this.logInteractEvent({
+            id: 'search-dial-success',
+            type: 'view',
+            subtype: 'auto',
+          });
           this.logTelemetryEvents(true);
         }, err => {
-          const telemetry = {
-            context: { env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'), cdata: [] },
-            edata: {
-              id: 'search-dial',
-              type: 'click',
-              subtype: 'Search Dialcode Failed',
-              pageid: 'get-dial'
-            }
-          };
-          this.telemetryService.interact(telemetry);
+          this.logInteractEvent({
+            id: 'search-dial-failed',
+            type: 'view',
+            subtype: 'auto',
+          });
           this.logTelemetryEvents(false);
         }),
         retry(1),
@@ -156,13 +146,17 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           });
         }),
         mergeMap(this.dialCodeService.filterDialSearchResults),
-        tap(() => {
+        tap((res) => {
           this.showSelectChapter = false;
-          const telemetryImpression = _.cloneDeep(this.telemetryImpression);
-          telemetryImpression.edata.pageid = `${this.activatedRoute.snapshot.data.telemetry.pageid}-post-populate`;
-          telemetryImpression.edata.duration = this.navigationhelperService.getPageLoadTime();
-          telemetryImpression.edata.subtype = 'non-flatten';
-          this.telemetryService.impression(telemetryImpression);
+          const telemetryInteractEdata = {
+            id: 'content-explode',
+            type: 'view',
+            subtype: 'post-populate'
+          };
+          if (_.get(res, 'collection.length') > 1) {
+            telemetryInteractEdata.id = 'content-collection';
+          }
+          this.logInteractEvent(telemetryInteractEdata);
         })
       );
   }
@@ -178,12 +172,14 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         this.showSelectChapter = true;
       }
       return this.dialCodeService.getAllPlayableContent([textBookUnit]).pipe(
-        tap(() => {
-          const telemetryImpression = _.cloneDeep(this.telemetryImpression);
-          telemetryImpression.edata.pageid = `${this.activatedRoute.snapshot.data.telemetry.pageid}-post-populate`;
-          telemetryImpression.edata.duration = this.navigationhelperService.getPageLoadTime();
-          telemetryImpression.edata.subtype = 'flatten';
-          this.telemetryService.impression(telemetryImpression);
+        map(contents => {
+          const telemetryInteractEdata = {
+            id: 'content-explode',
+            type: 'view',
+            subtype: 'post-populate'
+          };
+          this.logInteractEvent(telemetryInteractEdata);
+          return { contents };
         })
       );
     } else {
@@ -359,9 +355,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
-        pageid: `${this.activatedRoute.snapshot.data.telemetry.pageid}-pre-populate`,
+        pageid: `${this.activatedRoute.snapshot.data.telemetry.pageid}`,
         uri: this.router.url,
-        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        subtype: _.get(this.activatedRoute, 'snapshot.data.telemetry.subtype'),
         duration: this.navigationhelperService.getPageLoadTime()
       }
     };
@@ -415,7 +411,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     }
     const event = {
       context: {
-        env: 'dialcode'
+        env: 'dialcode',
+        cdata: this.telemetryCdata
       },
       edata: {
         type: 'search-dialcode',
@@ -443,4 +440,20 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       this.router.navigate(['/play/collection', contentId], { queryParams: { contentType: 'TextBook', 'dialCode': this.dialCode } });
     }
   }
+
+  logInteractEvent({ id, type, subtype }) {
+    const telemetry = {
+      context: { env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'), cdata: this.telemetryCdata },
+      edata: {
+        id,
+        type,
+        pageid: 'get-dial'
+      }
+    };
+    if (subtype) {
+      telemetry.edata['subtype'] = subtype;
+    }
+    this.telemetryService.interact(telemetry);
+  }
+
 }

@@ -53,6 +53,7 @@ describe('OfflineBannerComponent', () => {
     spyOn(component, 'showOfflineBanner').and.callThrough();
     component.ngOnInit();
     expect(component.showOfflineBanner).toHaveBeenCalled();
+    expect(component.instance).toBe(component.resourceService.instance);
   });
 
   it('should show banner', () => {

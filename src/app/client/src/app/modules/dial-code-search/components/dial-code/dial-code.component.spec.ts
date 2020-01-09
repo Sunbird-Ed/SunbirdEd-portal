@@ -97,9 +97,9 @@ describe('DialCodeComponent', () => {
       expect(telemetryService.interact).toHaveBeenCalledWith({
         context: { env: 'get', cdata: [] },
         edata: {
-          id: 'search-dial',
-          type: 'click',
-          subtype: 'Search Dialcode Success',
+          id: 'search-dial-success',
+          type: 'view',
+          subtype: 'auto',
           pageid: 'get-dial'
         }
       });
