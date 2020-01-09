@@ -181,6 +181,21 @@ export class LibraryComponent implements OnInit, OnDestroy {
                     if (response1) {
                         this.showLoader = false;
                         const filteredContents = _.omit(_.groupBy(response1['result'].content, 'subject'), ['undefined']);
+                        // Check for multiple subjects
+                        for (const [key, value] of Object.entries(filteredContents)) {
+                            const isMultipleSubjects = key.split(',').length > 1;
+                            if (isMultipleSubjects) {
+                                const subjects = key.split(',');
+                                subjects.forEach((subject) => {
+                                    if (filteredContents[subject]) {
+                                        filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
+                                    } else {
+                                        filteredContents[subject] = value;
+                                    }
+                                });
+                                delete filteredContents[key];
+                            }
+                        }
                         this.sections = [];
 
                         if (response2) {
