@@ -27,19 +27,24 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public stageSubscription: any;
   public collectionList: Array<any>;
   public collection;
+  public collectionsWithCardImage;
   public role: any = {};
+  public subjects;
+  public classes;
+  public board;
   showLoader = true;
   public state: InitialState = {
     stages: []
   };
   public showStage;
   public currentStage: any;
-
+  _slideConfig = {'slidesToShow': 10, 'slidesToScroll': 10};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
     private cbseService: CbseProgramService, public programStageService: ProgramStageService,
     public utilService: UtilService, public contentService: ContentService) { }
 
   ngOnInit() {
+    
     this.stageSubscription = this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
@@ -66,6 +71,9 @@ export class CollectionComponent implements OnInit, OnDestroy {
     const getCurrentRoleId = _.find(this.programContext.config.roles, {'name': this.sessionContext.currentRole});
     this.sessionContext.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
     this.role.currentRole = this.sessionContext.currentRole;
+    this.classes = _.find(this.collectionComponentConfig.config.filters.explicit, {'code': 'gradeLevel'}).range;
+    this.subjects = _.find(this.collectionComponentConfig.config.filters.explicit, {'code': 'subject'}).range;
+    this.board = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'board'}).defaultValue;
   }
 
 
@@ -111,6 +119,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
         }
       }
     };
+
     this.contentService.post(req)
       .pipe(catchError(err => {
       const errInfo = { errorMsg: 'Question creation failed' };
@@ -133,9 +142,45 @@ export class CollectionComponent implements OnInit, OnDestroy {
         }
       });
       const collectionCards = this.utilService.getDataForCard(filteredTextbook, constantData, dynamicFields, metaData);
-      const collectionsWithCardImage = _.forEach(collectionCards, collection => this.addCardImage(collection));
-      this.collectionList = this.groupByCollection(collectionsWithCardImage, 'subject');
+      this.collectionsWithCardImage = _.forEach(collectionCards, collection => this.addCardImage(collection));
+      this.filterCollectionList();
       this.showLoader = false;
+    });
+  }
+
+  groupCollectionList(groupValue?: string) {
+    if (groupValue) {
+      this.collectionList = this.groupByCollection(this.collectionsWithCardImage, { 'subject' : groupValue } );
+    } else {
+      this.collectionList = this.groupByCollection(this.collectionList, 'subject');
+    }
+    return this.collectionList;
+  }
+
+  groupByCollection(collection, arg) {
+    return _.groupBy(collection, arg);
+  }
+
+  filterCollectionList(filterValue?: string, filterby = 'gradeLevel') {
+    let filterValueItem = _.find(this.collectionComponentConfig.config.filters.explicit, {'code': filterby}).defaultValue;
+    const filterArray = [];
+    if (filterValue) {
+      filterArray.push(filterValue);
+      filterValueItem = filterArray;
+    }
+      this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterby, filterValueItem);
+      this.groupCollectionList();
+  }
+
+  filterByCollection(collection: any[], filterBy: string, filterValue: any[]) {
+    return collection.filter( (el) => {
+      return filterValue.some((f: any) => {
+        if (Array.isArray(el[filterBy])) {
+          return f === _.intersectionBy(el[filterBy], filterValue).toString();
+        } else {
+          return f === el[filterBy];
+        }
+      });
     });
   }
 
@@ -144,9 +189,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
     return collection;
   }
 
-  groupByCollection(collection, arg) {
-    return _.groupBy(collection, arg);
-  }
 
   collectionClickHandler(event) {
     this.sessionContext.collection =  event.data.metaData.identifier;

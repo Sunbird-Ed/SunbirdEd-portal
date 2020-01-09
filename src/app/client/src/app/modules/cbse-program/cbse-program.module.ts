@@ -20,7 +20,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CollectionComponent } from './components/collection/collection.component';
 import { ResourceReorderComponent } from './components/resource-reorder/resource-reorder.component';
 import { CollectionHierarchyService } from './services/collection-hierarchy/collection-hierarchy.service';
-
+import { SlickModule } from 'ngx-slick';
 
 @NgModule({
   declarations: [QuestionListComponent, QuestionCreationComponent,
@@ -39,6 +39,7 @@ import { CollectionHierarchyService } from './services/collection-hierarchy/coll
     InfiniteScrollModule,
     PlayerHelperModule,
     TelemetryModule,
+    SlickModule.forRoot(),
     DynamicModule.withComponents([QuestionListComponent,
        QuestionCreationComponent, ChapterListComponent,
       McqCreationComponent, CkeditorToolComponent ,
