@@ -68,8 +68,9 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
 
   initForm() {
     if (this.questionMetaData && this.questionMetaData.data) {
-      const { question, responseDeclaration, templateId, learningOutcome, bloomsLevel } = this.questionMetaData.data;
-      const options = _.map(this.questionMetaData.data.options, option => ({ body: option.value.body }));
+      const { responseDeclaration, templateId } = this.questionMetaData.data;
+      const options = _.map(this.questionMetaData.data.editorState.options, option => ({ body: option.value.body }));
+      const question = this.questionMetaData.data.editorState.question;
       this.mcqForm = new McqForm({
         question, options, answer: _.get(responseDeclaration, 'responseValue.correct_response.value')
       }, { templateId });
@@ -109,7 +110,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
       this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
-    if (this.questionMetaData && this.questionMetaData.mode === 'create') {
+    if (this.questionMetaData && this.questionMetaData.data.templateId === 'NA') {
       this.showTemplatePopup = true;
     } else {
       this.initForm();
@@ -121,7 +122,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
 
     this.showTemplatePopup = false;
     if (event.type === 'submit') {
-      this.templateDetails = event.template;
+      this.questionMetaData.data.templateId = event.template.templateClass;
       this.initForm();
     } else {
       this.questionStatus.emit({ type: 'close' });
@@ -250,7 +251,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         let metadata = {
           'code': UUID.UUID(),
           'category': this.sessionContext.questionType.toUpperCase(),
-          'templateId': this.questionMetaData.data.templateId,
+          'templateId': this.mcqForm.templateId,
           'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
           'body': questionData.body,
           'editorState' : {
@@ -312,13 +313,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     const { mcqBody, optionTemplate } = this.configService.editorConfig.QUESTION_EDITOR;
     const optionsBody = _.map(options, data => optionTemplate.replace('{option}', data.body)) // passion option which has latex
       .map((data, index) => data.replace('{value}', index)).join('');
-    let templateClass;
-    if (this.questionMetaData.mode === 'create') {
-      templateClass = this.templateDetails.templateClass;
-    } else {
-      templateClass = this.questionMetaData.data.templateId; // TODO: need to be verified
-    }
-    const questionBody = mcqBody.replace('{templateClass}', templateClass)
+    const questionBody = mcqBody.replace('{templateClass}', this.mcqForm.templateId)
       .replace('{question}', question).replace('{optionList}', optionsBody); // passion question which has latex
     const responseDeclaration = {
       responseValue: {
