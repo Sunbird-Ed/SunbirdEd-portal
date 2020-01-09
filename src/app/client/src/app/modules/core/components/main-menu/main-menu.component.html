@@ -11,7 +11,8 @@
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
-			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata">
+			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
+			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
 			{{resourceService?.frmelmnts?.tab?.contribute}}
 		</a>
 		<a class="item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
@@ -98,9 +99,9 @@
 				routerLink="/learn">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
-			<a 	*ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
+			<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
 				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
-				routerLink="/contribute">
+				routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
 				{{resourceService?.frmelmnts?.tab?.contribute}}
 			</a>
 			<a class="item" [class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
