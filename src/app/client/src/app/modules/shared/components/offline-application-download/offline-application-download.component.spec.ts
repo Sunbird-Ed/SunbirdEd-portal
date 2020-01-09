@@ -26,7 +26,7 @@ describe('OfflineApplicationDownloadComponent', () => {
   };
   const resourceServiceMockData = {
     instance: 'LOCAL',
-    desktopAppVersion:'1.0.3',
+    desktopAppVersion: '1.0.3',
     frmelmnts: {
       btn: {
         downloadAppForWindows32: 'Download for Windows (32-bit)',
@@ -43,7 +43,7 @@ describe('OfflineApplicationDownloadComponent', () => {
       providers: [ ConfigService, CacheService, BrowserCacheTtlService, DeviceDetectorService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: ResourceService, useValue:resourceServiceMockData}
+        { provide: ResourceService, useValue: resourceServiceMockData}
       ]
     })
       .compileComponents();
@@ -84,7 +84,7 @@ describe('OfflineApplicationDownloadComponent', () => {
   });
   it('should be initiate the component and see if windows 32bit os', () => {
     const deviceDetectorService = TestBed.get(DeviceDetectorService);
-    spyOn(deviceDetectorService,'getDeviceInfo').and.returnValue({userAgent:'win32',os:'windows'});
+    spyOn(deviceDetectorService, 'getDeviceInfo').and.returnValue({userAgent: 'win32', os: 'windows'});
     component.ngOnInit();
     expect(component.recomanded_download).toBe(resourceServiceMockData.frmelmnts.btn.downloadAppForWindows32);
     expect(component.otherOption1).toBe(resourceServiceMockData.frmelmnts.btn.downloadAppForWindows64);
@@ -92,7 +92,7 @@ describe('OfflineApplicationDownloadComponent', () => {
   });
   it('should be initiate the component and see if windows 64bit os', () => {
     const deviceDetectorService = TestBed.get(DeviceDetectorService);
-    spyOn(deviceDetectorService,'getDeviceInfo').and.returnValue({userAgent:'win64',os:'windows'});
+    spyOn(deviceDetectorService, 'getDeviceInfo').and.returnValue({userAgent: 'win64', os: 'windows'});
     component.ngOnInit();
     expect(component.recomanded_download).toBe(resourceServiceMockData.frmelmnts.btn.downloadAppForWindows64);
     expect(component.otherOption1).toBe(resourceServiceMockData.frmelmnts.btn.downloadAppForWindows32);
@@ -100,34 +100,34 @@ describe('OfflineApplicationDownloadComponent', () => {
   });
   it('should be initiate the component and see if linux os', () => {
     const deviceDetectorService = TestBed.get(DeviceDetectorService);
-    spyOn(deviceDetectorService,'getDeviceInfo').and.returnValue({userAgent:'Linux x86_64',os:'Linux'});
+    spyOn(deviceDetectorService, 'getDeviceInfo').and.returnValue({userAgent: 'Linux x86_64', os: 'Linux'});
     component.ngOnInit();
     expect(component.recomanded_download).toBe(resourceServiceMockData.frmelmnts.btn.downloadAppForLinux);
     expect(component.otherOption1).toBe(resourceServiceMockData.frmelmnts.btn.downloadAppForWindows32);
     expect(component.otherOption2).toBe(resourceServiceMockData.frmelmnts.btn.downloadAppForWindows64);
   });
   it('should download the desktop app for windows 32bit', () => {
-    spyOn(window,'open')
-    component.appDownloadUrl = "http://staging.ntp.net.in";
-    component.desktopAppVersion="1.0.3";
-    component.instance = "LOCAL";
+    spyOn(window, 'open');
+    component.appDownloadUrl = 'http://staging.ntp.net.in';
+    component.desktopAppVersion = '1.0.3';
+    component.instance = 'LOCAL';
     component.downloadApp('Download for Windows (32-bit)');
-    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl+ '/desktop/latest/' +component.instance+'_'+component.desktopAppVersion + '_windows32bit.exe')
+    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl + '/desktop/latest/' + component.instance + '_' + component.desktopAppVersion + '_windows32bit.exe');
   });
   it('should download the desktop app for windows 64bit', () => {
-    spyOn(window,'open')
-    component.appDownloadUrl = "http://staging.ntp.net.in";
-    component.desktopAppVersion="1.0.3";
-    component.instance = "LOCAL";
+    spyOn(window, 'open');
+    component.appDownloadUrl = 'http://staging.ntp.net.in';
+    component.desktopAppVersion = '1.0.3';
+    component.instance = 'LOCAL';
     component.downloadApp('Download for Windows (64-bit)');
-    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl+ '/desktop/latest/' +component.instance+'_'+component.desktopAppVersion + '_windows64bit.exe')
+    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl + '/desktop/latest/' + component.instance + '_' + component.desktopAppVersion + '_windows64bit.exe');
   });
   it('should download the desktop app for linux ', () => {
-    spyOn(window,'open')
-    component.appDownloadUrl = "http://staging.ntp.net.in";
-    component.desktopAppVersion="1.0.3";
-    component.instance = "LOCAL";
+    spyOn(window, 'open');
+    component.appDownloadUrl = 'http://staging.ntp.net.in';
+    component.desktopAppVersion = '1.0.3';
+    component.instance = 'LOCAL';
     component.downloadApp('Download for Ubuntu');
-    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl+ '/desktop/latest/' +component.instance+'_'+component.desktopAppVersion + '_linux64bit.deb')
+    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl + '/desktop/latest/' + component.instance + '_' + component.desktopAppVersion + '_linux64bit.deb');
   });
 });
