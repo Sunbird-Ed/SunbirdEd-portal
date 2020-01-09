@@ -29,6 +29,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   showDeleteModal = false;
   private isConnected;
   public unsubscribe$ = new Subject<void>();
+  public contentUpdating = false;
   constructor(
     private contentManagerService: ContentManagerService,
     private playerService: PublicPlayerService,
@@ -56,9 +57,12 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   checkDownloadStatus(downloadListdata) {
-    this.contentData = this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
-    this.updateActionButton('download', _.isEqual(_.get(this.contentData, 'downloadStatus'), 'DOWNLOADED'),
-    _.get(this.contentData, 'downloadStatus'));
+    if (!this.contentUpdating) {
+      this.contentData = this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
+      this.updateActionButton('download', _.isEqual(_.get(this.contentData, 'downloadStatus'), 'DOWNLOADED'),
+      _.get(this.contentData, 'downloadStatus'));
+    }
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -66,7 +70,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     if (!changes.contentData.firstChange) {
       this.contentData = changes.contentData.currentValue;
       _.forEach(this.actionButtons, data => {
-        if (data.name === 'download') {
+        if (data.name === 'download' && !this.contentUpdating) {
           const disabled = this.getContentStatus();
           this.updateActionButton(data.name, disabled, (disabled ? 'Downloaded' : 'Download'));
         } else if (data.name !== 'rate') {
@@ -121,6 +125,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
 
   downloadContent(content) {
     console.log('downloadContent');
+    this.contentUpdating = false;
     this.contentManagerService.downloadContentId = content.identifier;
     this.contentManagerService.startDownload({}).subscribe(data => {
       this.contentManagerService.downloadContentId = '';
@@ -136,11 +141,12 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   updateContent(content) {
+    this.contentUpdating = true;
     const request = !_.isEmpty(this.collectionId) ? { contentId: content.identifier, parentId: this.collectionId } :
       { contentId: this.contentId };
     this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-      this.contentData = { desktopAppMetadata: { updateAvailable: false} };
+      this.contentData.desktopAppMetadata.updateAvailable = false;
       this.updateActionButton('update', true);
     }, (err) => {
       this.updateActionButton('update', false);
