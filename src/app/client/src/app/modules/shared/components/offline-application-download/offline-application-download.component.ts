@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ResourceService } from './../../services';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import { DeviceDetectorService } from 'ngx-device-detector';  
+import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -14,9 +14,9 @@ export class OfflineApplicationDownloadComponent implements OnInit, AfterViewIni
 
   public telemetryImpression: IImpressionEventInput;
   instance: string;
-  recomanded_download:string;
-  otherOption1:string;
-  otherOption2:string;
+  recomanded_download: string;
+  otherOption1: string;
+  otherOption2: string;
   /* it stores the release date of the offline desktop app from env variable.*/
   public desktopAppReleaseDate = (<HTMLInputElement>document.getElementById('offlineDesktopAppReleaseDate')) ?
   (<HTMLInputElement>document.getElementById('offlineDesktopAppReleaseDate')).value : '';
@@ -83,13 +83,13 @@ export class OfflineApplicationDownloadComponent implements OnInit, AfterViewIni
     if (appDownloadUrl) {
       switch (downloadApp) {
         case _.get(this.resourceService, 'frmelmnts.btn.downloadAppForLinux'):
-          window.open(appDownloadUrl+'/desktop/latest/'+this.instance+'_'+this.desktopAppVersion+'_linux64bit.deb');
+          window.open(appDownloadUrl + '/desktop/latest/' + this.instance + '_' + this.desktopAppVersion + '_linux64bit.deb');
           break;
         case _.get(this.resourceService, 'frmelmnts.btn.downloadAppForWindows32'):
-          window.open(appDownloadUrl+'/desktop/latest/'+this.instance+'_'+this.desktopAppVersion+'_windows32bit.exe');
+          window.open(appDownloadUrl + '/desktop/latest/' + this.instance + '_' + this.desktopAppVersion + '_windows32bit.exe');
           break;
         case _.get(this.resourceService, 'frmelmnts.btn.downloadAppForWindows64'):
-          window.open(appDownloadUrl+'/desktop/latest/'+this.instance+'_'+this.desktopAppVersion+'_windows64bit.exe');
+          window.open(appDownloadUrl + '/desktop/latest/' + this.instance + '_' + this.desktopAppVersion + '_windows64bit.exe');
           break;
       }
     }

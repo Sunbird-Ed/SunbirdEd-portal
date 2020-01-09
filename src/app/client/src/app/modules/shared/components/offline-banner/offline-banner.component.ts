@@ -17,7 +17,7 @@ export class OfflineBannerComponent implements OnInit {
   showBanner: boolean;
 
   public pageId: string;
-  instance:string;
+  instance: string;
   /* list of states for which banner to be shown */
   public orgList = (<HTMLInputElement>document.getElementById('offlineDesktopAppTenant')) ?
     (<HTMLInputElement>document.getElementById('offlineDesktopAppTenant')).value.toLowerCase().split(',') : [];
