@@ -196,7 +196,7 @@ ol.ui.list ol {
   align-items: center;
   justify-content: center;
   box-shadow: 0px 10px 40px -14px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
+  // overflow: hidden;
   @include respond-above(sm) {
     min-width: 360px;
     max-width: 416px;
@@ -217,7 +217,7 @@ ol.ui.list ol {
       }
     }
     .swiper-slide {
-      height: 360px;
+      min-height: 360px;
       width: 100%;
       transition: all 2s linear;
       .slide-title {
