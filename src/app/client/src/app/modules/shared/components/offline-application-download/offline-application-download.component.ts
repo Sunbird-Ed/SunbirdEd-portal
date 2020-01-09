@@ -93,6 +93,6 @@ export class OfflineApplicationDownloadComponent implements OnInit, AfterViewIni
           break;
       }
     }
-    //window.open(this.appDownloadUrl);
+    // window.open(this.appDownloadUrl);
   }
 }
