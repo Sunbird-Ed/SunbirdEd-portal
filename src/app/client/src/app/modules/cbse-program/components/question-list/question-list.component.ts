@@ -215,7 +215,7 @@ export class QuestionListComponent implements OnInit {
           mode: 'edit',
           data: assessment_item
         };
-        if (this.resourceStatus === 'Draft' || this.resourceStatus === 'Rejected') {
+        if (this.resourceStatus === 'Draft') {
           this.sessionContext.isReadOnlyMode = false;
         } else {
           this.sessionContext.isReadOnlyMode = true;
@@ -226,9 +226,7 @@ export class QuestionListComponent implements OnInit {
           this.questionList[index].status = assessment_item.status;
         }
         // tslint:disable-next-line:max-line-length
-        if (this.role.currentRole === 'CONTRIBUTOR') {
-          this.refreshEditor();
-        }
+        this.refreshEditor();
         if (actionStatus) {  this.saveContent(actionStatus); }
       });
   }

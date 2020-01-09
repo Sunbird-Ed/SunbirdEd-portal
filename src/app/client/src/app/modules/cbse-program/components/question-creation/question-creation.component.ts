@@ -121,7 +121,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
     this.userName = this.setUserName();
-    if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
+    if (this.role.currentRole === 'REVIEWER') {
       this.isReadOnlyMode = true;
     }
   }
@@ -159,15 +159,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       if (this.questionMetaData && this.questionMetaData.data) {
         this.editorState.question = this.questionMetaData.data.editorState.question;
         this.editorState.answer = this.questionMetaData.data.editorState.answer;
-        this.solutionUUID = this.questionMetaData.data.editorState.solutions[0].id;
+        // tslint:disable-next-line:max-line-length
+        this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
         this.rejectComment = this.questionMetaData.data.rejectComment;
       } else {
         this.questionMetaForm.reset();
       }
     }
-    if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
+    if (this.role.currentRole === 'REVIEWER') {
       this.isReadOnlyMode = true;
-    } else if ((this.sessionContext.role === 'CONTRIBUTOR') && (this.sessionContext.resourceStatus = 'Draft')) {
+    } else if ((this.sessionContext.role === 'CONTRIBUTOR') && (this.sessionContext.resourceStatus === 'Draft')) {
       this.isReadOnlyMode = false;
     }
   }
