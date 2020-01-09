@@ -34,14 +34,18 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.checkRouterPath();
     this.instance = _.upperCase(this.resourceService.instance);
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.showDownloadmanager = this.router.url.includes('/profile');
+        this.checkRouterPath();
       }
     });
   }
-
+  checkRouterPath() {
+    this.showDownloadmanager = this.router.url.includes('/profile') || this.router.url.includes('/play/collection') ||
+      this.router.url.includes('/play/content');
+  }
   ngAfterViewInit() {
     setTimeout(() => {
       if (this.footerFix && this.footerFix.nativeElement) {

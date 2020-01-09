@@ -104,7 +104,6 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     });
   }
   deleteCollection(collectionData) {
-    console.log('deleteContent');
     const request = {request: {contents: [collectionData.identifier]}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
     this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
