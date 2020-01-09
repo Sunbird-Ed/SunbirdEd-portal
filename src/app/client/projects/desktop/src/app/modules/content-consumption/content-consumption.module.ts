@@ -39,7 +39,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
     SuiDimmerModule
   ],
   exports: [
-    ContentPlayerComponent, ContentMetadataComponent, ContentPlayerPageComponent
+    ContentPlayerComponent, ContentMetadataComponent, ContentPlayerPageComponent, CreditsAndLicenceComponent
   ],
 })
 export class ContentConsumptionModule { }

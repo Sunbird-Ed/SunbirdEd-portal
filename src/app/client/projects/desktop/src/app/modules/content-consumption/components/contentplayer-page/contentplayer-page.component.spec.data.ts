@@ -243,6 +243,9 @@ export const resourceData = {
         id: 'do_21260742513514086411607',
         type: 'Resource',
         ver: '6',
+    },
+    option: {
+        dialCode: '6G5YNV'
     }
 };
 

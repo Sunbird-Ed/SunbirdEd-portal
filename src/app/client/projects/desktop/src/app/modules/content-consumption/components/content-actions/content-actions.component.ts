@@ -48,6 +48,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       this.checkDownloadStatus(data);
     });
     this.checkOnlineStatus();
+    this.changeContentStatus();
   }
 
   checkOnlineStatus() {
@@ -66,17 +67,20 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.checkOnlineStatus();
     if (!changes.contentData.firstChange) {
       this.contentData = changes.contentData.currentValue;
-      _.forEach(this.actionButtons, data => {
-        if (data.name === 'download') {
-          const disabled = this.getContentStatus();
-          this.updateActionButton(data.name, disabled, (disabled ? 'Downloaded' : 'Download'));
-        } else if (data.name !== 'rate') {
-          this.updateActionButton(data.name, !this.getContentStatus());
-        }
-      });
+      this.changeContentStatus();
     }
   }
 
+changeContentStatus() {
+  _.forEach(this.actionButtons, data => {
+    if (data.name === 'download') {
+      const disabled = this.getContentStatus();
+      this.updateActionButton(data.name, disabled, (disabled ? 'Downloaded' : 'Download'));
+    } else if (data.name !== 'rate') {
+      this.updateActionButton(data.name, !this.getContentStatus());
+    }
+  });
+}
   updateActionButton(name, disabled, label?) {
     const data: any = _.find(this.actionButtons, { name: name });
     data.disabled = (data.name === 'update') ? !_.get(this.contentData, 'desktopAppMetadata.updateAvailable') : disabled;
@@ -88,7 +92,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   onActionButtonClick(event, content) {
-    console.log('Event', event, 'content', content);
     switch (event.data.name.toUpperCase()) {
       case 'UPDATE':
         this.updateContent(content);
@@ -114,7 +117,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   isYoutubeContentPresent(content) {
-    console.log('downloadContent', content);
     this.showModal = this.offlineCardService.isYoutubeContent(content);
     if (!this.showModal) {
       this.downloadContent(content);
@@ -122,7 +124,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   downloadContent(content) {
-    console.log('downloadContent', content);
     this.contentManagerService.downloadContentId = content.identifier;
     this.contentManagerService.startDownload({}).subscribe(data => {
       this.contentManagerService.downloadContentId = '';
@@ -154,8 +155,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   deleteContent(content) {
-    console.log('deleteContent');
-    const request = {request: {contents: [content.identifier], visibility: 'Parent'}};
+  const request = !_.isEmpty(this.collectionId) ? {request: {contents: [content.identifier], visibility: 'Parent'}} :
+    {request: {contents: [content.identifier]}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
     this.contentData.desktopAppMetadata['isAvailable'] = false ;
     this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
@@ -181,7 +182,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   logTelemetry(event, id, extras?) {
-    console.log('logTelemetry');
   }
 
 }
