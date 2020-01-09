@@ -114,7 +114,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.questionMetaData && this.questionMetaData.data) {
       this.editorState.question = this.questionMetaData.data.editorState.question;
       this.editorState.answer = this.questionMetaData.data.editorState.answer;
-      this.solutionUUID = this.questionMetaData.data.editorState.solutions[0].id;
+      // tslint:disable-next-line:max-line-length
+      this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
       this.mediaArr = this.questionMetaData.data.media || [];
     }
 

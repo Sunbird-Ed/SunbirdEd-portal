@@ -257,6 +257,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
             'question': this.mcqForm.question,
             'options': options,
           },
+          'options': options,
           'responseDeclaration': questionData.responseDeclaration,
           // 'qlevel': this.mcqForm.difficultyLevel,
           'maxScore': 1, // Number(this.mcqForm.maxScore),
