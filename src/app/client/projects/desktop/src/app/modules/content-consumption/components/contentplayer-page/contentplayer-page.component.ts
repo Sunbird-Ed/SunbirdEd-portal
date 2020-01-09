@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { UtilService } from 'src/app/modules/shared';
 
 @Component({
   selector: 'app-contentplayer-page',
@@ -33,9 +34,11 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     public toasterService: ToasterService,
     private resourceService: ResourceService,
     private connectionService: ConnectionService,
+    private utilService: UtilService
   ) { }
 
   ngOnInit() {
+    this.utilService.emitHideHeaderTabsEvent(true);
       this.getContentIdFromRoute();
       this.router.events
         .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
@@ -131,8 +134,17 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
       this.getContent();
     }
   }
+  goBack() {
+    const  previousUrl =  this.navigationHelperService.getPreviousUrl();
+    if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
+     return this.router.navigate(['/']);
+    }
+    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
+      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.utilService.emitHideHeaderTabsEvent(false);
   }
 }
