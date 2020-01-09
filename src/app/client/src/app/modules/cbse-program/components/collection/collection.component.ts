@@ -86,8 +86,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
       const filters =  this.collectionComponentConfig.config.filters;
       const explicitProperty =  _.find(filters.explicit, {'code': property});
       const implicitProperty =  _.find(filters.implicit, {'code': property});
-      return (implicitProperty) ? implicitProperty.value || implicitProperty.defaultValue :
-       explicitProperty.value || explicitProperty.defaultValue;
+      return (implicitProperty) ? implicitProperty.range || implicitProperty.defaultValue :
+       explicitProperty.range || explicitProperty.defaultValue;
     }
   }
 
@@ -191,6 +191,14 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
 
   collectionClickHandler(event) {
+    this.sharedContext = this.collectionComponentInput.programContext.config.sharedContext.reduce((obj, context) => {
+      return {...obj, [context]: event.data[context] || this.sharedContext[context]};
+    }, this.sharedContext);
+    if (this.sharedContext.gradeLevel) {
+      // tslint:disable-next-line:max-line-length
+      this.sharedContext.gradeLevel = _.isArray(this.sharedContext.gradeLevel) ? this.sharedContext.gradeLevel : [this.sharedContext.gradeLevel];
+    }
+    this.sessionContext = _.assign(this.sessionContext, this.sharedContext);
     this.sessionContext.collection =  event.data.metaData.identifier;
     this.sessionContext.collectionName = event.data.name;
     this.collection = event.data;
