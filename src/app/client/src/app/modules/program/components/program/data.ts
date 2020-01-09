@@ -1426,6 +1426,12 @@ const programThirdSession = {
         }
       ],
       'actions': {
+        'showCountPanel': {
+          'roles': [
+            1,
+            2
+          ]
+        },
         'showTotalContribution': {
           'roles': [
             1,
