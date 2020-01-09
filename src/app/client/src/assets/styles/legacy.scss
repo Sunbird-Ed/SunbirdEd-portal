@@ -947,6 +947,7 @@ ul.subList-padding {
   color: #7c7b7b;
   line-height: 1.6;
   font-size: 1em;
+  word-break: break-word;
 }
 .courseupdate b {
   font-weight: 400;
@@ -954,6 +955,14 @@ ul.subList-padding {
 .courseupdate span {
   font-weight: 600;
   color: $gray-800;
+}
+.licenseTag {
+  word-break: break-all;
+  font-weight: normal !important;
+  color: #7c7b7b !important;
+  a{
+      text-decoration: underline;
+  }
 }
 .container-with-button {
   width: 100% !important;
