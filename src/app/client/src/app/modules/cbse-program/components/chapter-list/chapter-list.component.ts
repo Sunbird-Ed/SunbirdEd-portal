@@ -137,10 +137,13 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     this.role = _.get(this.chapterListComponentInput, 'role');
   }
 
-  async updateAccordianView(unitId?) {
-    await this.getCollectionHierarchy(this.sessionContext.collection, undefined);
+  async updateAccordianView(unitId?, onSelectChapterChange?) {
+      await this.getCollectionHierarchy(this.sessionContext.collection,
+                this.selectedChapterOption === 'all' ? undefined : this.selectedChapterOption);
     if (unitId) {
       this.lastOpenedUnit(unitId);
+    } else if (onSelectChapterChange === true && this.selectedChapterOption !== 'all') {
+      this.lastOpenedUnit(this.selectedChapterOption);
     } else {
       this.lastOpenedUnit(this.collectionHierarchy[0].identifier);
     }
@@ -312,8 +315,9 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
 
   onSelectChapterChange() {
     this.showLoader = true;
-    this.getCollectionHierarchy(this.sessionContext.collection,
-      this.selectedChapterOption === 'all' ? undefined : this.selectedChapterOption);
+    // tslint:disable-next-line:max-line-length
+    (this.selectedChapterOption === 'all') ? (this.levelOneChapterList = [{identifier: 'all', name: 'All Chapters'}]) : this.levelOneChapterList = this.levelOneChapterList;
+    this.updateAccordianView(undefined, true);
   }
 
   handleTemplateSelection(event) {
