@@ -206,4 +206,9 @@ export class MainMenuComponent implements OnInit {
       return authroles.url;
     }
   }
+
+  getFeatureId(featureId, taskId) {
+    return [{ id: featureId, type: 'Feature' }, { id: taskId, type: 'Task' }];
+  }
+
 }
