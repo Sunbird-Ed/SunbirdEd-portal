@@ -1,14 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FancyTreeComponent } from './fancy-tree.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('FancyTreeComponent', () => {
   let component: FancyTreeComponent;
   let fixture: ComponentFixture<FancyTreeComponent>;
-
+  const fakeActivatedRoute = {
+    snapshot: {
+      queryParams: {
+        dialCode: 'D4R4K4'
+      }
+    }
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FancyTreeComponent ]
+      declarations: [ FancyTreeComponent ],
+      providers: [ { provide: ActivatedRoute, useValue: fakeActivatedRoute } ]
     })
     .compileComponents();
   }));

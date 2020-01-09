@@ -191,21 +191,23 @@ describe('DialCodeComponent', () => {
 
   it('should redirect to flattened DIAL page with /resource ', () => {
     const userService = TestBed.get(UserService);
+    component.dialCode = 'D4R4K4';
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
     component.redirectToDetailsPage('do_21288543692132352012128');
     expect(component.router.navigate).toHaveBeenCalledWith(['/resources/play/collection', 'do_21288543692132352012128'],
       {
-        queryParams: { contentType: 'TextBook' },
+        queryParams: { contentType: 'TextBook', 'dialCode': 'D4R4K4' },
         state: { action: 'dialcode' }
       });
   });
 
   it('should redirect to flattened DIAL page without /resource ', () => {
+    component.dialCode = 'D4R4K4';
     const userService = TestBed.get(UserService);
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
     component.redirectToDetailsPage('do_21288543692132352012128');
     expect(component.router.navigate).toHaveBeenCalledWith(['/play/collection', 'do_21288543692132352012128'],
-      { queryParams: { contentType: 'TextBook' } });
+      { queryParams: { contentType: 'TextBook', 'dialCode': 'D4R4K4' } });
   });
 
   describe('processTextBook function', () => {
