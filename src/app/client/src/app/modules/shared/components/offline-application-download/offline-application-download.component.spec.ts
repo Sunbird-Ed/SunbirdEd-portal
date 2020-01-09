@@ -112,7 +112,9 @@ describe('OfflineApplicationDownloadComponent', () => {
     component.desktopAppVersion = '1.0.3';
     component.instance = 'LOCAL';
     component.downloadApp('Download for Windows (32-bit)');
-    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl + '/desktop/latest/' + component.instance + '_' + component.desktopAppVersion + '_windows32bit.exe');
+    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl +
+       '/desktop/latest/' + component.instance + '_' 
+       + component.desktopAppVersion + '_windows32bit.exe');
   });
   it('should download the desktop app for windows 64bit', () => {
     spyOn(window, 'open');
@@ -120,7 +122,9 @@ describe('OfflineApplicationDownloadComponent', () => {
     component.desktopAppVersion = '1.0.3';
     component.instance = 'LOCAL';
     component.downloadApp('Download for Windows (64-bit)');
-    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl + '/desktop/latest/' + component.instance + '_' + component.desktopAppVersion + '_windows64bit.exe');
+    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl + 
+      '/desktop/latest/' + component.instance + '_' 
+      + component.desktopAppVersion + '_windows64bit.exe');
   });
   it('should download the desktop app for linux ', () => {
     spyOn(window, 'open');
@@ -128,6 +132,8 @@ describe('OfflineApplicationDownloadComponent', () => {
     component.desktopAppVersion = '1.0.3';
     component.instance = 'LOCAL';
     component.downloadApp('Download for Ubuntu');
-    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl + '/desktop/latest/' + component.instance + '_' + component.desktopAppVersion + '_linux64bit.deb');
+    expect(window.open).toHaveBeenCalledWith(component.appDownloadUrl + '/desktop/latest/' 
+    + component.instance + '_' 
+    + component.desktopAppVersion + '_linux64bit.deb');
   });
 });
