@@ -2,22 +2,24 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ContentConsumptionRoutingModule } from './content-consumption-routing.module';
-import { ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent, TocPageComponent,
+import { ContentPlayerComponent, ContentMetadataComponent, ContentPlayerPageComponent, TocPageComponent,
   ContentHeaderComponent
  } from './components';
 import { SuiAccordionModule } from 'ng2-semantic-ui';
 import { OrderModule } from 'ngx-order-pipe';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CreditsAndLicenceComponent } from './components/credits-and-licence/credits-and-licence.component';
 
 
 @NgModule({
   declarations: [
     ContentPlayerComponent,
     ContentMetadataComponent,
-    ResourcePageComponent,
+    ContentPlayerPageComponent,
     TocPageComponent,
-    ContentHeaderComponent
+    ContentHeaderComponent,
+    CreditsAndLicenceComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
     SuiAccordionModule
   ],
   exports: [
-    ContentPlayerComponent, ContentMetadataComponent, ResourcePageComponent
+    ContentPlayerComponent, ContentMetadataComponent, ContentPlayerPageComponent
   ],
 })
 export class ContentConsumptionModule { }

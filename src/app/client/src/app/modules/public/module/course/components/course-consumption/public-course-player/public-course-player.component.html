@@ -116,7 +116,8 @@
                                     </a>
                                     </p>
                                 <div class="ui divider"></div>
-                                <p class="mb-5" *ngIf="courseHierarchy.license">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
+                                <p class="mb-5" *ngIf="courseHierarchy && !(courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']) && courseHierarchy.license">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
+                                <p class="mb-5 licenseTag" *ngIf="courseHierarchy && courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.licenseDetails['name']}} <br> {{courseHierarchy.licenseDetails['description']}}&#x200E; For details - <a href="{{courseHierarchy.licenseDetails['url']}}" target="_blank">{{courseHierarchy.licenseDetails['url']}}</a></p>
                             </div>
                         </div>
                     </div>

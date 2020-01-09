@@ -20,10 +20,10 @@
         <p class="mb-8">{{resourceService?.messages?.imsg?.m0074}}</p>
       <div class="sb-field">
         <label>{{resourceService?.frmelmnts?.lbl?.state}}:</label>
-          <sui-select [isSearchable]="true" class="selection" formControlName="state" [options]="allStates"
+          <sui-select class="selection" formControlName="state" [options]="allStates"
                       labelField="name" id="states" valueField="code"
                       name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}"
-                      (focusout)="clearInput($event,'state')" #stateDiv>
+                      #stateDiv>
             <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100"
                                [value]="state"></sui-select-option>
           </sui-select>
@@ -36,11 +36,10 @@
               <div class="ui mini text loader">{{resourceService?.messages?.stmsg?.m0130}}</div>
             </div>
           </div>
-          <sui-select *ngIf="!showDistrictDivLoader" [isSearchable]="true" class="selection" formControlName="district"
+          <sui-select *ngIf="!showDistrictDivLoader" class="selection" formControlName="district"
                       [options]="allDistricts" id="districts"
                       labelField="name" valueField="code" name="district"
                       placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
-                      (focusout)="clearInput($event,'district')"
                       #districtDiv>
             <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"
                                [value]="district"></sui-select-option>
@@ -54,7 +53,7 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary"
-            [disabled]="!enableSubmitBtn"
+            [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
             (click)="updateUserLocation()">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>

@@ -316,7 +316,7 @@ export const user_content_preferences_Data = {
     resourceBundle: {
         messages: {
             smsg: {
-                m0058: 'User preference update successfully...'
+                m0058: 'User preference updated successfully...'
             },
             emsg: {
                 m0022: 'Unable to update user preference. Please try again after some time'

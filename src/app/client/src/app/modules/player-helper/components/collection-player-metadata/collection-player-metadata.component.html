@@ -43,7 +43,7 @@
   <dl class="sb-meta-data">
       <dt>{{resourceService.frmelmnts.lbl?.licenseTerms}}</dt>
       <dd *ngIf="metaData && !(metaData.licenseDetails && metaData.licenseDetails['name']) && metaData.license">{{metaData.license}}&#x200E;</dd>
-      <dd *ngIf="metaData && metaData.licenseDetails && metaData.licenseDetails['name']">{{metaData.licenseDetails['name']}} {{metaData.licenseDetails['description']}}&#x200E; <a href="{{metaData.licenseDetails['url']}}" target="_blank">{{metaData.licenseDetails['url']}}</a></dd>
+      <dd *ngIf="metaData && metaData.licenseDetails && metaData.licenseDetails['name']">{{metaData.licenseDetails['name']}} {{metaData.licenseDetails['description']}}&#x200E; <br /><a href="{{metaData.licenseDetails['url']}}" target="_blank">{{metaData.licenseDetails['url']}}</a></dd>
   </dl>
   <dl class="sb-meta-data" *ngIf="metaData.orgDetails && metaData.orgDetails.orgName">
       <dt>{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</dt>

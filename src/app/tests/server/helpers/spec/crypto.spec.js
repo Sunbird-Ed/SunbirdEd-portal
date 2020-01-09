@@ -1,6 +1,6 @@
 var mock = require('mock-require');
 const mockEnv = {
-  CRYPTO_ENCRYPTION_KEY: "030702bc8696b8ee2aa71b9f13e4251e"
+  CRYPTO_ENCRYPTION_KEY: "8887a2bc869998be22221b9b1bb42555"
 };
 mock('../../../../helpers/environmentVariablesHelper', mockEnv);
 const {expect} = require('chai');
