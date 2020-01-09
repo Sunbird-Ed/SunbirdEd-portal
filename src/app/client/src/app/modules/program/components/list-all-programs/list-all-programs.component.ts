@@ -108,4 +108,8 @@ export class ListAllProgramsComponent implements OnInit, AfterViewInit {
       ver: '1.0'
     };
   }
+
+  getFeatureId(featureId, taskId) {
+    return [{ id: featureId, type: 'Feature' }, { id: taskId, type: 'Task' }];
+  }
 }

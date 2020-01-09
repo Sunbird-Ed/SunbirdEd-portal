@@ -109,7 +109,7 @@ describe('ListAllProgramsComponent', () => {
       tick(100);
       expect(component.telemetryImpression).toBeDefined();
       expect(component.telemetryImpression).toEqual({
-        context: {env: 'contribute'},
+        context: { env: 'contribute' },
         edata: { type: 'view', pageid: 'programs-list', uri: '/', subtype: 'paginate', duration: 0.23 }
       });
     })));
@@ -132,6 +132,14 @@ describe('ListAllProgramsComponent', () => {
         type: 'Program',
         ver: '1.0'
       });
+    });
+  });
+
+  describe('getFeatureId method', () => {
+
+    it('should return the feature id', () => {
+      const result = component.getFeatureId('user:program:contribute', 'SB-15591');
+      expect(result).toEqual([{ id: 'user:program:contribute', type: 'Feature' }, { id: 'SB-15591', type: 'Task' }]);
     });
   });
 

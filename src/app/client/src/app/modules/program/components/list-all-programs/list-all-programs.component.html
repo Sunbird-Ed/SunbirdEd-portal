@@ -7,7 +7,7 @@
       <ng-container *ngIf="programsList && programsList.length else noResult">
         <div class="sbgrid sbgrid--grid-carousel">
           <div appTelemetryInteract [telemetryInteractObject]="getTelemetryInteractObject(program.programId)"
-            [telemetryInteractEdata]="getTelemetryInteractEdata('program-card')"
+            [telemetryInteractEdata]="getTelemetryInteractEdata('program-card')" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')"
             class="sbcard sbcard--resource sbcard--course" *ngFor="let program of programsList">
             <div class="sbcard__main_area">
               <div class="sbcard__img mr-8"><img [src]="program.imagePath || 'assets/images/programs_default.png'"
