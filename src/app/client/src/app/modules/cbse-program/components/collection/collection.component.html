@@ -1,3 +1,34 @@
+<div class="state-medium-container sb-bg-color-white">
+  <div class="ui container d-flex flex-ai-center">
+    <div class="state-medium-container__dropdown">
+      <div class="sb-field mb-0">
+        <sui-select class="selection state-selection"  placeholder="{{board}}" labelField="name" #multiSelect>
+          <sui-select-option *ngFor="let option of multiSelect1" [value]="option" aria-disabled="#multiSelect">
+          </sui-select-option>
+        </sui-select>
+      </div>
+    </div>
+    <div class="state-medium-container__separator"></div>
+    <div class="state-medium-container__medium">
+      <div class="sb-medium">
+         <div class="sb-medium__sb-pills-content  sb-medium__pills-container" *ngFor="let subject of subjects;  let index = index" (click)="filterCollectionList(subject,'subject')">
+          <div class="pill active">{{subject}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="sb-class sb-bg-color-gray-0">
+  <div class="ui container">
+    <nav class="sb-class__pills-container">
+     <ngx-slick class="carousel" [config]="_slideConfig">
+          <div ngxSlickItem class="sb-class__pill" *ngFor="let class of classes;  let index = index" (click)="filterCollectionList(class)">
+            {{ class }}
+          </div>
+        </ngx-slick>
+    </nav>
+  </div>
+</div>
 
 <div *ngIf="!showLoader && currentStage === 'collectionComponent'">
   <div  *ngIf="objectKey(collectionList).length" class="ui container">
