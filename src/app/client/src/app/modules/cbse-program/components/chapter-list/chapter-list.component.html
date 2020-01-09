@@ -25,7 +25,7 @@
             </sui-select>
           </div>
 
-          <div class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap ml-16">
+          <div *ngIf="actions.showCountPanel.roles.includes(sessionContext.currentRoleId)" class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap ml-16">
             <dl *ngIf="actions.showTotalContribution.roles.includes(sessionContext.currentRoleId)"
               class="sb-meta-data">
               <dt>{{countData['total']}}</dt>
