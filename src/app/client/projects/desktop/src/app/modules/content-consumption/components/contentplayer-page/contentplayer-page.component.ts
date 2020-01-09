@@ -79,7 +79,6 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
         this.getContentConfigDetails(this.contentId, options);
         this.setTelemetryData();
       }, error => {
-        this.contentDetails  = { desktopAppMetadata: { isAvailable: false} };
         this.setTelemetryData();
       });
   }

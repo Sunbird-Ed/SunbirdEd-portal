@@ -79,7 +79,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
 
   updateActionButton(name, disabled, label?) {
     const data: any = _.find(this.actionButtons, { name: name });
-    data.disabled = data.name === 'update' ? !_.get(this.contentData, 'desktopAppMetadata.updateAvailable') : disabled;
+    data.disabled = (data.name === 'update') ? !_.get(this.contentData, 'desktopAppMetadata.updateAvailable') : disabled;
     data.label = _.isEmpty(label) ? _.capitalize(data.name) : _.capitalize(label);
   }
 
@@ -114,6 +114,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   isYoutubeContentPresent(content) {
+    console.log('downloadContent', content);
     this.showModal = this.offlineCardService.isYoutubeContent(content);
     if (!this.showModal) {
       this.downloadContent(content);
@@ -121,14 +122,14 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   downloadContent(content) {
-    console.log('downloadContent');
+    console.log('downloadContent', content);
     this.contentManagerService.downloadContentId = content.identifier;
     this.contentManagerService.startDownload({}).subscribe(data => {
       this.contentManagerService.downloadContentId = '';
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-      this.updateActionButton('Download', true, _.get(content, 'downloadStatus'));
+      this.updateActionButton('download', true, _.get(content, 'downloadStatus'));
     }, (error) => {
-      this.updateActionButton('Download', false, _.get(content, 'downloadStatus'));
+      this.updateActionButton('download', false, _.get(content, 'downloadStatus'));
       this.contentManagerService.downloadContentId = '';
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
@@ -141,7 +142,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       { contentId: this.contentId };
     this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-      this.contentData.desktopAppMetadata.updateAvailable = false;
+      this.contentData.desktopAppMetadata['updateAvailable'] = false;
       this.updateActionButton('update', true);
     }, (err) => {
       this.updateActionButton('update', false);
@@ -156,7 +157,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     console.log('deleteContent');
     const request = {request: {contents: [content.identifier], visibility: 'Parent'}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
-    this.contentData = { desktopAppMetadata: { isAvailable: false} };
+    this.contentData.desktopAppMetadata['isAvailable'] = false ;
     this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
     this.deletedContent.emit(content.identifier);
     }, err => {
