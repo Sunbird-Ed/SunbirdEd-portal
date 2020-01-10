@@ -4,7 +4,7 @@ import { timer, Subject, combineLatest } from 'rxjs';
 import { switchMap, map, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ContentManagerService, ElectronDialogService } from '../../services';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-content-manager',
@@ -12,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./content-manager.component.scss']
 })
 export class ContentManagerComponent implements OnInit, OnDestroy {
-
+  hideContentManager = false;
   contentResponse: any;
   isOpen = true;
   callContentList = false;
@@ -37,15 +37,23 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       this.apiCallSubject.next();
     });
   }
-
+  checkRouterPath() {
+    this.hideContentManager = this.router.url.includes('/profile') || this.router.url.includes('/play/collection') ||
+      this.router.url.includes('/play/content');
+  }
   ngOnInit() {
     // Call download list initially
     this.apiCallSubject.next();
-
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.checkRouterPath();
+      }
+    });
     // Call content list when clicked on add to library
     this.contentManagerService.downloadEvent
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
+        this.hideContentManager = false;
         this.isOpen = true;
         this.apiCallSubject.next();
       });

@@ -24,7 +24,6 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   Hide or show footer
   */
   showFooter = true;
-  showDownloadmanager: any;
   isOffline: boolean = environment.isOffline;
   instance: string;
   bodyPaddingBottom: string;
@@ -34,18 +33,9 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.checkRouterPath();
     this.instance = _.upperCase(this.resourceService.instance);
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.checkRouterPath();
-      }
-    });
   }
-checkRouterPath() {
-  this.showDownloadmanager = this.router.url.includes('/profile') || this.router.url.includes('/play/collection') ||
-   this.router.url.includes('/play/content');
-}
+
   ngAfterViewInit() {
     setTimeout(() => {
       this.bodyPaddingBottom = this.footerFix.nativeElement.offsetHeight + 'px';
