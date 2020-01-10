@@ -152,9 +152,9 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
         map(result => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
         takeUntil(this.unsubscribe$)
       ).subscribe(({ params, queryParams }) => {
-        this.showLoader = true;
 
         if (this.paginationDetails && _.get(params, 'pageNumber') !== 1) {
+          this.showLoader = true;
           this.paginationDetails.currentPage = params.pageNumber;
           this.queryParams = { ...queryParams };
           this.fetchContents(false);
