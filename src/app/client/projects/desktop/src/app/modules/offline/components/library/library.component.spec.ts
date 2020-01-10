@@ -27,6 +27,9 @@ describe('LibraryComponent', () => {
     messages: {
       fmsg: {
         m0004: 'Fetching data failed, please try again later...'
+      },
+      stmsg: {
+        m0140: 'DOWNLOADING'
       }
     },
     frmelmnts: {
@@ -131,12 +134,6 @@ describe('LibraryComponent', () => {
     component.hashTagId = '01285019302823526477';
     const result = component.constructSearchRequest(true);
     expect(result).toEqual(response.constructSearchRequestWithFilter);
-  });
-
-  it('should call constructSearchRequest with false', () => {
-    component.hashTagId = '01285019302823526477';
-    const result = component.constructSearchRequest(false);
-    expect(result).toEqual(response.constructSearchRequestWithOutFilter);
   });
 
   it('should call fetchContents and return value', () => {

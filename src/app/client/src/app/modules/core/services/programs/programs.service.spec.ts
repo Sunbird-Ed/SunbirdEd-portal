@@ -115,7 +115,7 @@ describe('ProgramsService', () => {
   describe('moreThanOneProgram', () => {
 
     it('should return true if there are more than program', inject([ProgramsService], (programsService) => {
-      spyOn(programsService, 'getPrograms').and.returnValue(of([1, 2]));
+      spyOn(programsService, 'getPrograms').and.returnValue(of([{ type: 'public' }, { type: 'private' }]));
       programsService.moreThanOneProgram().subscribe(val => {
         expect(val).toBeDefined();
         expect(val).toBeTruthy();
@@ -127,6 +127,17 @@ describe('ProgramsService', () => {
       programsService.moreThanOneProgram().subscribe(val => {
         expect(val).toBeDefined();
         expect(val).toBeFalsy();
+      });
+    }));
+  });
+
+  describe('filterPublicPrograms ', () => {
+    it('should filter out public programs', inject([ProgramsService], (programsService) => {
+      spyOn(programsService, 'getPrograms').and.returnValue(of([{ type: 'public' }, { type: 'private' }]));
+      programsService['filterPublicPrograms']().subscribe(val => {
+        expect(val).toBeDefined();
+        expect(val.length).toBe(1);
+        expect(val).toEqual([{ type: 'public' }]);
       });
     }));
   });

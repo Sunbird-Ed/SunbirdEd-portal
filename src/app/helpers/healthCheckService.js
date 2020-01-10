@@ -111,7 +111,7 @@ function checkCassandraDBHealth (callback) {
 function contentServiceHealthCheck (callback) {
   var options = {
     method: 'GET',
-    url: envHelper.content_Service_Local_BaseUrl + '/service/health',
+    url: envHelper.CONTENT_URL + 'service/health',
     headers: {
       'Content-Type': 'application/json'
     }

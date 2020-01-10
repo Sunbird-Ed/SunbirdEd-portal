@@ -1,0 +1,34 @@
+<sb-accordion [multi]="false">
+  <sb-accordion-item [expanded]="false">
+    <sb-accordion-header>
+      <span class="title">{{resourceService?.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}}</span>
+    </sb-accordion-header>
+    <sb-accordion-body>
+      <div class="credits-section"> 
+        <h4 *ngIf="contentData?.author" class="title">{{resourceService?.frmelmnts?.lbl?.author}}</h4>
+        <p class="description">{{contentData?.author}}</p>
+
+        <h4 *ngIf="contentData?.attributions?.length" class="title">{{resourceService?.frmelmnts?.lbl?.attributions}}</h4>
+        <p class="description">{{contentData?.attributions}}</p>
+
+        <h4 *ngIf="contentData?.license" class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
+        <p class="description" #licence></p>
+
+        <h4 *ngIf="contentData?.copyright" class="title">{{resourceService?.frmelmnts?.lbl?.copyRight}}</h4>
+        <p class="description">{{contentData?.copyright}}</p>
+
+        <p *ngIf="contentData?.originData" class="sub-section">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}} </p>
+        <div *ngIf="contentData?.originData">
+          <h4 *ngIf="contentData?.originData" class="title">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</h4>
+          <p class="description">{{contentData?.originData?.name}}</p>
+
+          <h4 *ngIf="contentData?.originData?.author" class="title">{{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
+          <p class="description">{{contentData?.originData?.author}}</p>
+
+          <h4 *ngIf="contentData?.originData?.organisation[0]" class="title" [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance"></h4>
+          <p class="description">{{contentData?.originData?.organisation.join(', ')}}</p>
+        </div>
+      </div>
+    </sb-accordion-body>
+  </sb-accordion-item>
+</sb-accordion>

@@ -2,6 +2,7 @@ import { ISessionContext } from './index';
 
 
 export interface IContentUploadComponentInput {
+  config?: any;
   sessionContext?: ISessionContext;
   unitIdentifier?: string;
   selectedSharedContext?: any;

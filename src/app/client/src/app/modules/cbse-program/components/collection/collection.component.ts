@@ -44,7 +44,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     public utilService: UtilService, public contentService: ContentService) { }
 
   ngOnInit() {
-    
+
     this.stageSubscription = this.programStageService.getStage().subscribe(state => {
       this.state.stages = state.stages;
       this.changeView();
@@ -211,6 +211,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
     };
     this.isCollectionSelected.emit(event.data.metaData.identifier ? true : false);
     this.programStageService.addStage('chapterListComponent');
+  }
+
+  viewMoreClickHandler(event) {
+    console.log(event);
   }
 
   ngOnDestroy() {

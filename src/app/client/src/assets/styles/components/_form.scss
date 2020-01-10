@@ -99,7 +99,7 @@ $sb-selection-line-height: calculateRem(18px);
       text-overflow: ellipsis;
       overflow: hidden;
       line-height: 1.5;
-      margin: 1px 0 1px 3px;
+      margin: 0rem calculateRem(20px) 0rem 0rem;
     }
     .menu > .item {
       padding: calculateRem(7px) calculateRem(5px);

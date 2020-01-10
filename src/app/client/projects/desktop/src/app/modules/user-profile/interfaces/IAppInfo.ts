@@ -1,4 +1,5 @@
 export interface IAppInfo {
+    termsOfUseUrl: string;
     version: string;
     releaseDate?: string;
     languages: string;

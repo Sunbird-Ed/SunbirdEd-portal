@@ -86,6 +86,8 @@ module.exports = (app, keycloak) => {
     next()
   })
 
+  app.all('/play/quiz/*', playContent);
+
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
@@ -136,7 +138,7 @@ function getLocals(req) {
   locals.offlineDesktopAppVersion = envHelper.sunbird_portal_offline_app_version
   locals.offlineDesktopAppReleaseDate = envHelper.sunbird_portal_offline_app_release_date
   locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
-  locals.offlineDesktopAppDownloadUrl = envHelper.sunbird_portal_offline_app_download_url
+  locals.offlineDesktopAppDownloadUrl = envHelper.SUNBIRD_PORTAL_BASE_URL
   locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
   locals.deviceId = '';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
@@ -239,4 +241,12 @@ const redirectTologgedInPage = (req, res) => {
 	} else {
 		renderDefaultIndexPage(req, res)
 	}
+}
+
+const playContent = (req, res) => {
+  if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
+    res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
+  } else {
+    renderDefaultIndexPage(req, res);
+  }
 }

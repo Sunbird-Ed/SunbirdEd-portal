@@ -13,7 +13,7 @@
         </dl>
         <dl class="sb-left-content mt-8 mb-0">
             <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.releaseDateKey}}</dt>
-            <dd class="list-value fs-0-92">{{appInfo?.releaseDate}}</dd>
+            <dd class="list-value fs-0-92" id="date">{{appInfo?.releaseDate | date: 'dd/MM/yyyy'}}</dd>
         </dl>
         <dl class="sb-left-content mt-8 mb-0">
             <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.supportedLanguages}}</dt>
@@ -27,10 +27,10 @@
       <!-- right container -->
       <div class="ml-auto d-flex flex-dc flex-ai-end flex-as-flex-end mt-16" *ngIf="appInfo?.updateInfo && appInfo?.updateInfo?.updateAvailable">
         <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="updateApp(appInfo?.updateInfo?.url)" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractButtonEData">{{resourceService?.frmelmnts?.lbl?.desktop?.update | interpolate:'{instance}': instance}}</button>
-        <a href="{{appInfo?.updateInfo?.url}}" class="mt-8 text-right update-link" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEData">{{resourceService?.frmelmnts?.lbl?.desktop?.updateAvailable}} {{appInfo?.updateInfo?.version}}</a>
+        <span  class="mt-8 text-right update-link" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEData">{{resourceService?.frmelmnts?.lbl?.desktop?.updateAvailable}} {{appInfo?.updateInfo?.version}}</span>
       </div>
     </div>
   </div>
 </div>
 <div class="d-flex flex-jc-center my-8 fxsmall">
-<a href="#" class="link">{{resourceService?.frmelmnts?.lnk?.footerTnC}}</a>&nbsp;| &#9400; 2019, {{instance}}</div>
+<a href="javascript:void(0)" class="link">{{resourceService?.frmelmnts?.lnk?.footerTnC}}</a>&nbsp;| &#9400; 2019, {{instance}}</div>
