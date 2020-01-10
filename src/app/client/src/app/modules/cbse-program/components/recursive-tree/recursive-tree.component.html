@@ -4,7 +4,10 @@
       {{collection.name}}
      <div class="ml-auto d-flex">
       <button class="sb-btn sb-btn-primary sb-btn-xs sb-left-icon-btn" *ngIf="visibility && visibility['showAddresource']"
-      (click)="showModal = false; createResource($event, collection)"><i class="add icon"></i>ADD</button>
+      (click)="showModal = false; createResource($event, collection)"><i class="add icon mr-4"></i>ADD</button>
+      <!-- Gray color button -->
+      <!-- <button class="sb-btn sb-btn-gray sb-btn-xs sb-left-icon-btn" *ngIf="visibility && visibility['showAddresource']"
+      (click)="showModal = false; createResource($event, collection)"><i class="add icon mr-4"></i>ADD</button> -->
       <div class="chevron-icon">
         <i class="chevron down icon mr-0 ml-0"></i>
       </div>
@@ -14,17 +17,17 @@
       <div class="chapter-lists level1" *ngIf="collection.leaf">
         <ng-container *ngFor="let content of collection.leaf; let i=index">
           <div class="chapter-lists--item" *ngIf="content.visibility === true" (click)="previewResource($event, content, collection)">
-            <span class="item-name mr-auto"> {{content.name}}</span>
-            <span class="item-status mr-32">{{content.creator}}</span>
-            <span class="item-status mr-24">
+            <span class="item-name"> {{content.name}}</span>
+            <span class="item-status">{{content.creator}}</span>
+            <span class="item-status">
               <span class="sb-label sb-label-table sb-label-warning-0" *ngIf="content.status === 'Draft' && content.prevStatus === null">{{content.status}}</span>
               <span class="sb-label sb-label-table sb-label-primary-100" *ngIf="content.status === 'Review'">Review in Progress</span>
               <span class="sb-label sb-label-table sb-label-success-0" *ngIf="content.status === 'Live'">Published</span>
               <span class="sb-label sb-label-table sb-label-error-0" *ngIf="content.status === 'Draft' && content.prevStatus === 'Review'">Rejected</span>
             </span>
-            <div class="item relative position mr-16" (click)="menuClick($event)" *ngIf="content.status === 'Draft'">
+            <div class="item-dropdown absolute position" (click)="menuClick($event)" *ngIf="content.status === 'Draft'">
               <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
-                <div class="px-8 w-auto pb-8"><span class="sb-dotmenu"></span></div>
+                <div class="px-4 w-auto pb-4"><span class="sb-dotmenu"></span></div>
                 <div class="menu" suiDropdownMenu>
                   <div class="item" *ngIf="visibility && visibility['showEditResource'] && (content.status === 'Draft' || content.status === 'Reject')"
                     (click)="previewResource($event, content, collection)">Edit</div>
