@@ -236,7 +236,7 @@ module.exports = (app) => {
   })
 
   app.get('/v1/sso/error/redirect', async (req, res) => {
-    const redirect_uri = encodeURIComponent(`http://${req.get('host')}/resources?auth_callback=1`);
+    const redirect_uri = encodeURIComponent(`https://${req.get('host')}/resources?auth_callback=1`);
     const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=2&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
   })
@@ -318,7 +318,7 @@ module.exports = (app) => {
       req.session.migrateAccountInfo.encryptedData = encrypt(JSON.stringify(dataToEncrypt));
       const payload = JSON.stringify(req.session.migrateAccountInfo.encryptedData);
       url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
-      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=http://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=http://${req.get('host')}/sign-in/sso/select-org`;
+      query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
       const userInfo = `&userId=${req.query.userId}&identifierType=${req.query.identifier}&identifierValue=${req.query.identifierValue}`;
       redirectUrl = url + query + userInfo;
       console.log('url for migration', redirectUrl);
@@ -359,7 +359,7 @@ module.exports = (app) => {
         req.session.nonStateUserToken = nonStateUserToken;
         await ssoValidations(req, res)
       } else {
-        nonStateUserToken = await generateAuthToken(req.query.code, `http://${req.get('host')}/migrate/account/login/callback`).catch(err => {
+        nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
           console.log('error in verifyAuthToken', err);
           console.log('error details', err.statusCode, err.message)
           const redirect_url = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
