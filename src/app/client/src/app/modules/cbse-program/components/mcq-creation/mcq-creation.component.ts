@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { CbseProgramService } from '../../services';
-import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { Validators, FormGroup, FormArray, FormBuilder, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-mcq-creation',
@@ -25,6 +25,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() questionSelectionStatus: any;
   @Input() role: any;
   @ViewChild('author_names') authorName;
+  @ViewChild('reuestChangeForm') ReuestChangeForm: NgForm;
   public userProfile: IUserProfile;
   public showPreview = false;
   public previewData: any;
@@ -32,7 +33,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   public setImageLimit = 1;
   public refresh = true;
   public mediaArr = [];
-  public rejectComment: any;
+  public rejectComment: string;
   public userName: any;
   public formConfiguration: any;
   public textFields: Array<any>;
@@ -58,6 +59,8 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   selectionArr: FormArray;
   multiSelectionArr: FormArray;
   disableFormField: boolean;
+  showRequestChangesPopup = false;
+  commentCharLimit = 1000;
 
   constructor(public configService: ConfigService, private http: HttpClient,
     private userService: UserService, public actionService: ActionService,
@@ -84,8 +87,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
   ngOnInit() {
     if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
-      this.showPreview = true;
-      // this.buttonTypeHandler('preview');
+      this.isReadOnlyMode = true;
     }
     this.userName = this.setUserName();
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
@@ -101,13 +103,13 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
   ngOnChanges() {
     this.previewData = this.questionMetaData;
-    if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
-      this.showPreview = true;
-    } else if ((this.sessionContext.role === 'CONTRIBUTOR') && (this.sessionContext.showMode = 'editorForm')) {
-      this.showPreview = false;
+    if (this.role.currentRole === 'REVIEWER') {
+      this.isReadOnlyMode = true;
+    } else if (this.sessionContext.role === 'CONTRIBUTOR' && this.sessionContext.resourceStatus === 'Draft') {
+      this.isReadOnlyMode = false;
     }
-    if (this.questionMetaData && this.questionMetaData.mode === 'edit' && this.questionMetaData.data.status === 'Reject' &&
-      this.questionMetaData.data.rejectComment) {
+    this.rejectComment = '';
+    if (this.questionMetaData && this.questionMetaData.data && this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
     }
     if (this.questionMetaData && this.questionMetaData.data.templateId === 'NA') {
@@ -119,7 +121,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   handleTemplateSelection(event) {
-
     this.showTemplatePopup = false;
     if (event.type === 'submit') {
       this.questionMetaData.data.templateId = event.template.templateClass;
@@ -270,7 +271,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         _.map(this.questionMetaForm.value, (value, key) => { _.map(value, (obj) => { _.assign(formValues, obj); }); });
         // tslint:disable-next-line:max-line-length
         metadata = _.pickBy(_.assign(metadata, formValues), _.identity);
-
 
         const req = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
@@ -423,5 +423,13 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         this.markFormGroupTouched(control);
       }
     });
+  }
+
+  requestChanges() {
+    if (this.ReuestChangeForm.value.rejectComment) {
+      this.handleReviewrStatus({ 'status' : 'Draft', 'rejectComment':  this.ReuestChangeForm.value.rejectComment});
+      this.showRequestChangesPopup = false;
+      this.ReuestChangeForm.reset();
+    }
   }
 }
