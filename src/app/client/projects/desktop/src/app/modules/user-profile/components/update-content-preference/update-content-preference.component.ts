@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
+import { PublicPlayerService } from '@sunbird/public';
 
 @Component({
   selector: 'app-update-content-preference',
@@ -36,7 +37,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     public frameworkService: FrameworkService,
     public toasterService: ToasterService,
     public activatedRoute: ActivatedRoute,
-    public telemetryService: TelemetryService
+    public telemetryService: TelemetryService,
+    public publicPlayerService: PublicPlayerService
   ) { }
   ngOnInit() {
     this.frameworkDetails = this.userPreferenceData['framework'];
@@ -131,7 +133,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     this.subjectsOption = this.userService.getAssociationData(this.contentPreferenceForm.value.class, 'subject', this.frameworkCategories);
     if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
       // tslint:disable-next-line: max-line-length
-      this.contentPreferenceForm.controls['subjects'].setValue(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects']));
+      this.contentPreferenceForm.controls['subjects'].setValue(
+        _.compact(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects'])));
     }
     }
   }
@@ -156,16 +159,26 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     this.userPreferenceData.framework.subjects = requestData.request.framework.subjects;
 
     this.userService.updateUser(requestData)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => {
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(() => {
+      this.updateFilters();
         this.closeModal(this.userPreferenceData);
-        this.toasterService.success(this.resourceService.messages.smsg.m0061);
+        this.toasterService.success(this.resourceService.messages.smsg.m0058);
 
       }, error => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0025);
+        this.toasterService.error(this.resourceService.messages.emsg.m0022);
 
       });
   }
+
+  updateFilters() {
+    this.userService.getUser();
+    const filters = _.pick(this.userPreferenceData.framework, ['board', 'medium', 'gradeLevel']);
+    filters.board = [filters.board];
+    filters.appliedFilters = true;
+    this.publicPlayerService.libraryFilters = filters;
+  }
+
    closeModal(requestData?) {
     this.modal.deny();
     this.dismissed.emit(requestData);

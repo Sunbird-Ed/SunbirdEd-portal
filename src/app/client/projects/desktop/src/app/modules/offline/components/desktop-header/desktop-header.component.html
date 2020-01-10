@@ -67,7 +67,7 @@
     </div>
   </div>
   <!-- menu bar with language selection component -->
-  <div class="sb-menubar sb-bg-color-white">
+  <div class="sb-menubar sb-bg-color-white" *ngIf="!hideHeader">
     <!-- menu component -->
     <div class="ui container d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
       <div class="d-flex sb-offline-menu-container flex-ai-end">
@@ -87,7 +87,8 @@
 
       <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImport()"
         appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('contentImport')">
-        <i class="plus icon mr-5"></i>{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
+        <span><img class="mr-8" width="12px" height="10px" src="assets/images/plus.svg"></span>
+        {{resourceService?.frmelmnts?.btn?.loadContent}}</button>
     </div>
     <!-- menu component ends -->
   </div>

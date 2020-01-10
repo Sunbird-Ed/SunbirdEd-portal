@@ -3,7 +3,7 @@ const reportHelper = require('../helpers/reportHelper.js')
 
 module.exports = function (app) {
 
-    app.get('/courseProgress/:slug/:filename',
+    app.get('/courseReports/:slug/:filename',
         reportHelper.validateRoles(['CONTENT_CREATOR']),
         reportHelper.azureBlobStream());
 

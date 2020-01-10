@@ -90,12 +90,25 @@ class GoogleOauth {
       logger.info('userInformation fetched from oauth2 api', userInfo);
     }
     console.log('user information', userInfo);
+    logger.info({
+      msg: 'token fetched'
+    });
+    const plus = google.plus({ version: 'v1', auth: client})
+    const { data } = await plus.people.get({ userId: 'me' }).catch(this.handleError)
+    logger.info({
+      msg: 'fetched user profile'
+    });
     return {
       name: userInfo.name,
       emailId: userInfo.email
     }
   }
-  handleError(error){
+
+  handleError(error) {
+    logger.info({
+      msg: 'googleOauthHelper: getProfile failed',
+      error: error
+    });
     if(_.get(error, 'response.data')){
       throw error.response.data
     } else if(error instanceof Error) {
@@ -134,7 +147,13 @@ const createSession = async (emailId, reqQuery, req, res) => {
     };
   } else {
     console.log('login in progress');
-    grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
+    grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope).catch(function (error) {
+      logger.info({
+        msg: 'googleOauthHelper: createSession failed',
+        error: error
+      });
+      throw 'unable to create session';
+    });
     keycloakClient.storeGrant(grant, req, res);
     req.kauth.grant = grant;
     keycloakClient.authenticated(req)
@@ -157,6 +176,7 @@ const fetchUserByEmailId = async (emailId, req) => {
     if (data.responseCode === 'OK') {
       return data;
     } else {
+      logger.error({msg: 'googleOauthHelper: fetchUserByEmailId failed', additionalInfo: {data}});
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
   })
@@ -186,6 +206,7 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
     if (data.responseCode === 'OK') {
       return data;
     } else {
+      logger.error({msg: 'googleOauthHelper: createUserWithMailId failed', additionalInfo: {data}});
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
     }
   })

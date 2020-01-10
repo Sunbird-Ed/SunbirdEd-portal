@@ -162,8 +162,8 @@ describe('UpdateContentPreferenceComponent', () => {
     component.updateUser();
     userService.updateUser(user_content_preferences_Data.update_content_api_body).subscribe(data => {
       expect(data).toBe(user_content_preferences_Data.success_update_preferences);
-      spyOn(component.toasterService, 'success').and.returnValue(of(user_content_preferences_Data.resourceBundle.messages.smsg.m0061));
-      expect(component.toasterService.error(user_content_preferences_Data.resourceBundle.messages.smsg.m0061));
+      spyOn(component.toasterService, 'success').and.returnValue(of(user_content_preferences_Data.resourceBundle.messages.smsg.m0058));
+      expect(component.toasterService.error(user_content_preferences_Data.resourceBundle.messages.smsg.m0058));
     });
     spyOn(component, 'telemetryService');
     spyOn(component, 'setTelemetryData').and.callThrough();
@@ -179,8 +179,8 @@ describe('UpdateContentPreferenceComponent', () => {
 
     }, error => {
       expect(error).toBe(user_content_preferences_Data.error_update_preferences);
-      spyOn(component.toasterService, 'error').and.returnValue(of(user_content_preferences_Data.resourceBundle.messages.emsg.m0025));
-      expect(component.toasterService.error(user_content_preferences_Data.resourceBundle.messages.emsg.m0025));
+      spyOn(component.toasterService, 'error').and.returnValue(of(user_content_preferences_Data.resourceBundle.messages.emsg.m0022));
+      expect(component.toasterService.error(user_content_preferences_Data.resourceBundle.messages.emsg.m0022));
     });
     spyOn(component, 'telemetryService');
     spyOn(component, 'setTelemetryData').and.callThrough();

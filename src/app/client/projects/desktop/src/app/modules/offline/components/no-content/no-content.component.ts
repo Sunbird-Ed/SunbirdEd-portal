@@ -2,7 +2,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ConnectionService } from '../../services';
 import { ElectronDialogService } from './../../services';
 import * as _ from 'lodash-es';
@@ -16,6 +16,9 @@ export class NoContentComponent implements OnInit, OnDestroy {
   isConnected;
   showModal = false;
   public unsubscribe$ = new Subject<void>();
+  @Input() filters;
+  instance: string;
+  @Input() isContentPresent = true;
 
   constructor(
     public router: Router,
@@ -27,7 +30,7 @@ export class NoContentComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-
+    this.instance = _.upperCase(this.resourceService.instance);
     this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
     });
@@ -37,13 +40,14 @@ export class NoContentComponent implements OnInit, OnDestroy {
     return  _.includes(this.router.url, 'browse');
   }
 
-  openImportContentDialog() {
+  openImportContentDialog(id) {
     this.electronDialogService.showContentImportDialog();
-    this.addInteractEvent();
+    this.addInteractEvent(id);
   }
 
-  handleModal() {
+  handleModal(id) {
     this.showModal = !this.showModal;
+    if (! _.isEmpty(id)) {this.addInteractEvent(id); }
   }
 
   ngOnDestroy() {
@@ -51,27 +55,24 @@ export class NoContentComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  setTelemetryData () {
-    return {
-      id: 'load-content',
-      type: 'click',
-      pageid:  _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'library'
-    };
-  }
-
-  addInteractEvent() {
+  addInteractEvent(id) {
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'browse',
         cdata: []
       },
       edata: {
-        id: 'load-content',
+        id: id,
         type: 'click',
-        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'library'
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'library',
       }
     };
     this.telemetryService.interact(interactData);
   }
 
+  exploreContent(id) {
+    this.addInteractEvent(id);
+    this.router.navigate(['/search'], { queryParams:
+      {board: _.get(this.filters, 'board'), medium: _.get(this.filters, 'medium'), gradeLevel: _.get(this.filters, 'gradeLevel')}});
+  }
 }

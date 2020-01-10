@@ -374,7 +374,7 @@
       "telemetryInteractEdata": {
         "id": "dial-code-view-card",
         "type": "click",
-        "pageid": "dial-code"
+        "pageid": "get-dial"
       },
       "telemetryObjectType": "public"
     },
@@ -384,7 +384,8 @@
         "mimeType",
         "framework",
         "contentType",
-        "l1Parent"
+        "l1Parent",
+        "childTextbookUnit"
       ]
     },
     "dynamicFields": {

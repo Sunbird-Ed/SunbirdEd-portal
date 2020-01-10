@@ -101,7 +101,7 @@ describe('UpdateLocationComponent', () => {
       spyOn(component.dismissed, 'emit').and.returnValue(of(location_Data.user_details));
       component.closeModal(location_Data.user_details);
     expect(component.dismissed.emit).toHaveBeenCalledWith(location_Data.user_details);
-      expect(component.toasterService.success).toHaveBeenCalledWith(location_Data.resourceBundle.messages.smsg.m0060);
+      expect(component.toasterService.success).toHaveBeenCalledWith(location_Data.resourceBundle.messages.smsg.m0057);
 
     });
     spyOn(component, 'setTelemetryData').and.callThrough();
@@ -117,11 +117,11 @@ describe('UpdateLocationComponent', () => {
 
     }, error => {
       expect(error).toBe(location_Data.error_save_location);
-      spyOn(component.toasterService, 'error').and.returnValue(of(location_Data.resourceBundle.messages.emsg.m0024));
+      spyOn(component.toasterService, 'error').and.returnValue(of(location_Data.resourceBundle.messages.emsg.m0021));
       spyOn(component.dismissed, 'emit').and.returnValue(of(''));
       component.closeModal('');
       expect(component.dismissed.emit).toHaveBeenCalledWith();
-      expect(component.toasterService.error).toHaveBeenCalledWith(location_Data.resourceBundle.messages.emsg.m0024);
+      expect(component.toasterService.error).toHaveBeenCalledWith(location_Data.resourceBundle.messages.emsg.m0021);
     });
 
     spyOn(component, 'setTelemetryData').and.callThrough();
