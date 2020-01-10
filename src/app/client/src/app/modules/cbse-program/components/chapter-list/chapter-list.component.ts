@@ -199,6 +199,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         instance.countData['review'] = 0;
         instance.countData['reject'] = 0;
         instance.countData['mycontribution'] = 0;
+        instance.countData['totalreview'] = 0;
+        instance.countData['awaitingreview'] = 0;
         this.collectionHierarchy = this.setCollectionTree(this.collectionData, identifier);
         hierarchy = instance.hierarchyObj;
         this.sessionContext.hierarchyObj = { hierarchy };
@@ -211,6 +213,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setCollectionTree(data, identifier) {
+    this.getContentStatusCount(data);
     if (data.contentType !== 'TextBook') {
       const rootMeta = _.pick(data, this.sharedContext);
       const rootTree = this.generateNodeMeta(data, rootMeta);
@@ -248,12 +251,6 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       }),
       'root': data.contentType === 'TextBook' ? true : false,
     };
-    if (data.contentType !== 'TextBook' && data.contentType !== 'TextBookUnit') {
-      this.countData['total'] = this.countData['total'] + 1;
-      if (data.status === 'Review') {
-        this.countData['review'] = this.countData['review'] + 1;
-      }
-    }
     const childData = data.children;
     if (childData) {
       const tree = childData.map(child => {
@@ -278,6 +275,34 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  getContentStatusCount(data) {
+    const self = this;
+    if (data.contentType !== 'TextBook' && data.contentType !== 'TextBookUnit') {
+      this.countData['total'] = this.countData['total'] + 1;
+      if (data.createdBy === this.currentUserID && data.status === 'Review') {
+        this.countData['review'] = this.countData['review'] + 1;
+      }
+      if (data.createdBy === this.currentUserID && data.status === 'Draft' && data.prevStatus === 'Review') {
+        this.countData['reject'] = this.countData['reject'] + 1;
+      }
+      if (data.createdBy === this.currentUserID && data.createdBy === this.currentUserID) {
+        this.countData['mycontribution'] = this.countData['mycontribution'] + 1;
+      }
+      if (data.status === 'Review') {
+        this.countData['totalreview'] = this.countData['totalreview'] + 1;
+      }
+      if (data.createdBy !== this.currentUserID && data.status === 'Review') {
+        this.countData['awaitingreview'] = this.countData['awaitingreview'] + 1;
+      }
+    }
+    const childData = data.children;
+    if (childData) {
+      childData.map(child => {
+        self.getContentStatusCount(child);
+      });
+    }
+  }
+
   generateNodeMeta(node, sharedMeta) {
    const nodeMeta =  {
       identifier: node.identifier,
@@ -288,6 +313,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       creator: node.creator,
       createdBy: node.createdBy || null,
       parentId: node.parent || null,
+      prevStatus: node.prevStatus || null,
       sharedContext: {
         ...sharedMeta
       }

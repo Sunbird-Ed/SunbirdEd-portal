@@ -1048,6 +1048,7 @@ const programThirdSession = {
                 {
                   'code': 'gradeLevel',
                   'range': [
+                    'Kindergarten',
                     'Grade 1',
                     'Grade 2',
                     'Grade 3'
@@ -1055,6 +1056,7 @@ const programThirdSession = {
                   'label': 'Class',
                   'multiselect': false,
                   'defaultValue': [
+                    'Kindergarten',
                     'Grade 1'
                   ],
                   'visibility': true
@@ -1063,7 +1065,8 @@ const programThirdSession = {
                   'code': 'subject',
                   'range': [
                     'English',
-                    'Maths'
+                    'Mathematics',
+                    'Hindi'
                   ],
                   'label': 'Subject',
                   'multiselect': false,
@@ -1434,8 +1437,7 @@ const programThirdSession = {
         },
         'showTotalContribution': {
           'roles': [
-            1,
-            2
+            1
           ]
         },
         'showMyContribution': {
@@ -1458,12 +1460,7 @@ const programThirdSession = {
             2
           ]
         },
-        'showAcceptedByMe': {
-          'roles': [
-            2
-          ]
-        },
-        'showRejectedByMe': {
+        'showAawaitingReview': {
           'roles': [
             2
           ]

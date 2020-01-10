@@ -17,9 +17,12 @@
             <span class="item-name mr-auto"> {{content.name}}</span>
             <span class="item-status mr-32">{{content.creator}}</span>
             <span class="item-status mr-24">
-              <span class="sb-label sb-label-table sb-label-success-0">{{content.status}}</span>
+              <span class="sb-label sb-label-table sb-label-warning-0" *ngIf="content.status === 'Draft' && content.prevStatus === null">{{content.status}}</span>
+              <span class="sb-label sb-label-table sb-label-primary-100" *ngIf="content.status === 'Review'">Review in Progress</span>
+              <span class="sb-label sb-label-table sb-label-success-0" *ngIf="content.status === 'Live'">Published</span>
+              <span class="sb-label sb-label-table sb-label-error-0" *ngIf="content.status === 'Draft' && content.prevStatus === 'Review'">Rejected</span>
             </span>
-            <div class="item relative position mr-16" (click)="menuClick($event)">
+            <div class="item relative position mr-16" (click)="menuClick($event)" *ngIf="content.status === 'Draft'">
               <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
                 <div class="px-8 w-auto pb-8"><span class="sb-dotmenu"></span></div>
                 <div class="menu" suiDropdownMenu>
