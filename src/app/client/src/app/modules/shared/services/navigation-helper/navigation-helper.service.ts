@@ -1,5 +1,5 @@
 
-import {filter} from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, RouterStateSnapshot, NavigationStart } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
@@ -149,11 +149,28 @@ export class NavigationHelperService {
       this.router.navigate([defaultUrl]);
     } else {
       if (previousUrl.queryParams) {
-        this.router.navigate([previousUrl.url], {queryParams: previousUrl.queryParams});
+        this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
       } else {
         this.router.navigate([previousUrl.url]);
       }
     }
+  }
+
+  public getDesktopPreviousUrl(): UrlHistory {
+    const previousUrl = this.history[this._history.length - 2];
+    const sessionUrl = this.cacheService.get(this.cacheServiceName);
+    if (previousUrl) {
+      this.history.pop();
+      return previousUrl;
+    } else if (sessionUrl) {
+      return sessionUrl;
+    } else {
+      return { url: '/' };
+    }
+  }
+
+  public clearHistory() {
+    this._history = [];
   }
 
 }

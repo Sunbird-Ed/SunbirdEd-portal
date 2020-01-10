@@ -4,6 +4,7 @@ import { NavigationHelperService } from './navigation-helper.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { CacheService } from 'ng2-cache-service';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -14,9 +15,11 @@ class RouterStub {
 const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
   'root': {
-    children: [{snapshot: {
-      queryParams: {}
-    }}]
+    children: [{
+      snapshot: {
+        queryParams: {}
+      }
+    }]
   }
 };
 describe('NavigationHelperService', () => {
@@ -24,7 +27,7 @@ describe('NavigationHelperService', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule.forRoot()],
       providers: [NavigationHelperService,
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute},
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
     });
   });
@@ -35,4 +38,33 @@ describe('NavigationHelperService', () => {
     expect(history).toBeDefined();
     // expect(history).toContain('/home');
   }));
+
+  it('should call clearHistory', inject([NavigationHelperService, Router], (service: NavigationHelperService, router) => {
+    service.clearHistory();
+    expect(service['_history']).toEqual([]);
+  }));
+
+  it('should call getDesktopPreviousUrl', inject([NavigationHelperService, Router, ActivatedRoute, CacheService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService) => {
+
+      const history = [
+        {
+          'url': '/search',
+          'queryParams': {
+            'key': 'test'
+          }
+        },
+        {
+          'url': '/view-all'
+        }
+      ];
+      service['_history'] = history;
+      service['_cacheServiceName'] = 'previousUrl';
+      spyOn(cacheService, 'get');
+      spyOn(service.history, 'pop');
+
+      const previousUrl = service.getDesktopPreviousUrl();
+      expect(service.history.pop).toHaveBeenCalled();
+      expect(previousUrl).toEqual(history[0]);
+    }));
 });

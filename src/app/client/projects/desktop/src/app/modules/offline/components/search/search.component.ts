@@ -185,13 +185,12 @@ export class SearchComponent implements OnInit {
   }
 
   goBack() {
-    const  previousUrl =  this.navigationHelperService.getPreviousUrl();
-    if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
-     return this.router.navigate(['/']);
+    const previousUrl = this.navigationHelperService.getDesktopPreviousUrl();
+    if (previousUrl.queryParams) {
+      this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
+    } else {
+      this.router.navigate([previousUrl.url]);
     }
-    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
-      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
-      this.utilService.clearSearchQuery();
   }
 
   gotoViewMore(isOnlineContents) {

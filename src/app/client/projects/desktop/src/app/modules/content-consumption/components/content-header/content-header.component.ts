@@ -117,13 +117,17 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    const  previousUrl =  this.navigationHelperService.getPreviousUrl();
-    if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
-     return this.router.navigate(['/']);
+    const previousUrl = this.navigationHelperService.getDesktopPreviousUrl();
+
+    if (_.includes(previousUrl, '/search') && previousUrl.queryParams) {
+      this.utilService.updateSearchKeyword(previousUrl.queryParams.key);
     }
-    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
-      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
-      this.utilService.clearSearchQuery();
+
+    if (previousUrl.queryParams) {
+      this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
+    } else {
+      this.router.navigate([previousUrl.url]);
+    }
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

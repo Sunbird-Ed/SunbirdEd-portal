@@ -115,10 +115,16 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.location.back();
+    const previousUrl = this.navigationHelperService.getDesktopPreviousUrl();
 
-    if (this.isViewAll) {
-      this.clearSearchQuery();
+    if (_.includes(previousUrl, '/search') && previousUrl.queryParams) {
+      this.utilService.updateSearchKeyword(previousUrl.queryParams.key);
+    }
+
+    if (previousUrl.queryParams) {
+      this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
+    } else {
+      this.router.navigate([previousUrl.url]);
     }
   }
 
