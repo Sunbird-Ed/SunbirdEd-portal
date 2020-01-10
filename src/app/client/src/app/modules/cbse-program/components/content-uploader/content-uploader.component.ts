@@ -39,6 +39,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   public playerConfig;
   public showPreview = false;
   public resourceStatus;
+  public resourceStatusText;
   public config: any;
   showForm;
   uploader;
@@ -251,6 +252,15 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       this.contentMetaData = res;
       this.editTitle = this.contentMetaData.name;
       this.resourceStatus = this.contentMetaData.status;
+      if (this.resourceStatus === 'Review') {
+        this.resourceStatusText = 'Review in Progress';
+      } else if (this.resourceStatus === 'Draft' && this.contentMetaData.prevStatus === 'Review') {
+        this.resourceStatusText = 'Rejected';
+      } else if (this.resourceStatus === 'Live') {
+        this.resourceStatusText = 'Published';
+      } else {
+        this.resourceStatusText = this.resourceStatus;
+      }
       this.playerConfig = this.playerService.getConfig(contentDetails);
       this.playerConfig.context.pdata.pid = 'cbse-program-portal';
       this.showPreview = this.contentMetaData.artifactUrl ? true : false;
