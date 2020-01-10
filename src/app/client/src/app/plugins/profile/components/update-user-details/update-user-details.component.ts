@@ -38,23 +38,6 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
     this.getState();
   }
 
-  clearInput(event, formControlName) {
-    let value = '';
-    if (event.target.value) {
-      switch (formControlName) {
-        case 'state': {
-          value = this.selectedState ? this.selectedState.name : '';
-          break;
-        }
-        case 'district': {
-          value = this.selectedDistrict ? this.selectedDistrict.name : '';
-          break;
-        }
-      }
-    }
-    event.target.value = value;
-  }
-
   initializeFormFields() {
     this.userDetailsForm = this.sbFormBuilder.group({
       name: new FormControl(this.userProfile.firstName, [Validators.required]),

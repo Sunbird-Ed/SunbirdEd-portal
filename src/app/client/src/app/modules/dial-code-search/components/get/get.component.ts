@@ -52,7 +52,6 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
           type: this.activatedRoute.snapshot.data.telemetry.type,
           pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
           uri: this.router.url,
-          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };

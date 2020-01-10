@@ -68,7 +68,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       collectionType: _.get(this.collectionComponentConfig, 'collectionType'),
       collectionStatus: _.get(this.collectionComponentConfig, 'status')
     }, this.sharedContext);
-    this.filters = this.getImplecitFilters();
+    this.filters = this.getImplicitFilters();
     this.searchCollection();
     const getCurrentRoleId = _.find(this.programContext.config.roles, {'name': this.sessionContext.currentRole});
     this.sessionContext.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
@@ -79,11 +79,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     (_.size(this.mediums) > 1) ? this.isMediumClickable = true : this.isMediumClickable = false;
   }
 
-  getImplecitFilters(): string[] {
+  getImplicitFilters(): string[] {
     const sharedcontext = this.collectionComponentInput.programContext.config.sharedContext,
     implicitFilter = this.collectionComponentConfig.config.filters.implicit,
-    avilableFileters = this.filterByCollection(implicitFilter, 'code', sharedcontext);
-    return avilableFileters;
+    availableFileters = this.filterByCollection(implicitFilter, 'code', sharedcontext);
+    return availableFileters;
   }
 
   getSharedContextObjectProperty(property) {
@@ -169,7 +169,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   filterCollectionList(filterValue?: any, filterby = 'gradeLevel') {
     let filterValueItem: any[];
-    if (Array.isArray(filterValue)) {
+    if (_.isArray(filterValue)) {
       filterValueItem = filterValue;
     } else {
       const filterArray = [];
@@ -183,7 +183,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
   filterByCollection(collection: any[], filterBy: string, filterValue: any[]) {
     return collection.filter( (el) => {
       return filterValue.some((f: any) => {
-        if ( Array.isArray(el[filterBy])) {
+        if ( _.isArray(el[filterBy])) {
           return f === _.intersectionBy(el[filterBy], filterValue).toString();
         } else {
           return f === el[filterBy];
@@ -218,6 +218,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
     };
     this.isCollectionSelected.emit(event.data.metaData.identifier ? true : false);
     this.programStageService.addStage('chapterListComponent');
+  }
+
+  viewMoreClickHandler(event) {
+    console.log(event);
   }
 
   ngOnDestroy() {

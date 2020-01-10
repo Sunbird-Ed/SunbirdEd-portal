@@ -1,10 +1,10 @@
+import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CoreModule } from '@sunbird/core';
 
 import { ProgramRoutingModule } from './program-routing.module';
 import { ListAllProgramsComponent } from './components';

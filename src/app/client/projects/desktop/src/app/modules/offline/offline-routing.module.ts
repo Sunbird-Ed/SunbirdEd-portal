@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowseComponent, OfflineHelpCenterComponent, LibraryComponent, DesktopExploreContentComponent,
     SearchComponent, ViewMoreComponent } from './components';
+
 const routes: Routes = [
     {
         path: 'browse', component: BrowseComponent, data: {
@@ -70,13 +71,8 @@ const routes: Routes = [
     },
     {
         path: ':slug/explore', loadChildren: './../../../../../../src/app/modules/public/module/explore/explore.module#ExploreModule'
-    },
-    {
-        path: 'play', loadChildren: './../../../../../../src/app/modules/public/module/player/player.module#PlayerModule'
-    },
-    {
-        path: 'browse/play', loadChildren: './../../../../../../src/app/modules/public/module/player/player.module#PlayerModule'
-    }];
+    }
+];
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

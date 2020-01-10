@@ -81,7 +81,16 @@ export class ProgramsService implements CanActivate {
   private getPrograms(): Observable<IProgram[]> {
     return this.searchProgramsAPICall().pipe(
       map(result => _.get(result, 'result.programs')),
-      catchError(err => of([])),
+      catchError(err => of([]))
+    );
+  }
+
+  /**
+   * filters out programs which are open to enrollment
+   */
+  private filterPublicPrograms(): Observable<IProgram> {
+    return this.getPrograms().pipe(
+      map(programs => _.filter(programs, { type: 'public' })),
       tap(programs => {
         this._programsList$.next(programs);
       })
@@ -92,7 +101,7 @@ export class ProgramsService implements CanActivate {
    * returns true if more than one programs exists else false
    */
   private moreThanOneProgram(): Observable<boolean> {
-    return this.getPrograms().pipe(
+    return this.filterPublicPrograms().pipe(
       map(programs => !_.isEmpty(programs))
     );
   }
