@@ -14,6 +14,7 @@ const tenantHelper = require('./helpers/tenantHelper.js')
 const envHelper = require('./helpers/environmentVariablesHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
 const healthService = require('./helpers/healthCheckService.js')
+const latexService = require('./helpers/latexService.js')
 const { getKeyCloakClient, memoryStore } = require('./helpers/keyCloakHelper')
 const fs = require('fs')
 const request = require('request-promise');
@@ -63,6 +64,9 @@ app.all('/logoff', endSession, (req, res) => {
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
 app.get('/service/health', healthService.createAndValidateRequestBody, healthService.checkSunbirdPortalHealth)
+
+app.get("/latex/convert", latexService.convert);
+app.post("/latex/convert", bodyParser.json({ limit: '1mb' }), latexService.convert);
 
 require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
