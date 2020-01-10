@@ -120,7 +120,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.selectedChapterOption = 'all';
-    this.getCollectionHierarchy(this.sessionContext.collection, undefined);
+    this.updateAccordianView();
     // clearing the selected questionId when user comes back from question list
     delete this.sessionContext['questionList'];
 
@@ -135,6 +135,18 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changed: any) {
     this.sessionContext = _.get(this.chapterListComponentInput, 'sessionContext');
     this.role = _.get(this.chapterListComponentInput, 'role');
+  }
+
+  async updateAccordianView(unitId?, onSelectChapterChange?) {
+      await this.getCollectionHierarchy(this.sessionContext.collection,
+                this.selectedChapterOption === 'all' ? undefined : this.selectedChapterOption);
+    if (unitId) {
+      this.lastOpenedUnit(unitId);
+    } else if (onSelectChapterChange === true && this.selectedChapterOption !== 'all') {
+      this.lastOpenedUnit(this.selectedChapterOption);
+    } else {
+      this.lastOpenedUnit(this.collectionHierarchy[0].identifier);
+    }
   }
 
   public initiateInputs(action?) {
@@ -164,6 +176,9 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     if (!_.isEmpty(this.state.stages)) {
       this.currentStage = _.last(this.state.stages).stage;
     }
+    if (this.currentStage === 'chapterListComponent') {
+      this.updateAccordianView(this.unitIdentifier);
+    }
   }
 
   public getCollectionHierarchy(identifier: string, unitIdentifier: string) {
@@ -177,6 +192,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       url: hierarchyUrl,
       param: { 'mode': 'edit' }
     };
+     return new Promise((resolve) => {
     this.actionService.get(req).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
@@ -188,16 +204,21 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         instance.countData['review'] = 0;
         instance.countData['reject'] = 0;
         instance.countData['mycontribution'] = 0;
+        instance.countData['totalreview'] = 0;
+        instance.countData['awaitingreview'] = 0;
         this.collectionHierarchy = this.setCollectionTree(this.collectionData, identifier);
         hierarchy = instance.hierarchyObj;
         this.sessionContext.hierarchyObj = { hierarchy };
         this.showLoader = false;
         this.showError = false;
-        this.lastOpenedUnit(this.collectionHierarchy[0].identifier);
+        this.levelOneChapterList = _.uniqBy(this.levelOneChapterList, 'identifier');
+         resolve('Done');
       });
+    });
   }
 
   setCollectionTree(data, identifier) {
+    this.getContentStatusCount(data);
     if (data.contentType !== 'TextBook') {
       const rootMeta = _.pick(data, this.sharedContext);
       const rootTree = this.generateNodeMeta(data, rootMeta);
@@ -235,12 +256,6 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       }),
       'root': data.contentType === 'TextBook' ? true : false,
     };
-    if (data.contentType !== 'TextBook' && data.contentType !== 'TextBookUnit') {
-      this.countData['total'] = this.countData['total'] + 1;
-      if (data.status === 'Review') {
-        this.countData['review'] = this.countData['review'] + 1;
-      }
-    }
     const childData = data.children;
     if (childData) {
       const tree = childData.map(child => {
@@ -265,6 +280,34 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  getContentStatusCount(data) {
+    const self = this;
+    if (data.contentType !== 'TextBook' && data.contentType !== 'TextBookUnit') {
+      this.countData['total'] = this.countData['total'] + 1;
+      if (data.createdBy === this.currentUserID && data.status === 'Review') {
+        this.countData['review'] = this.countData['review'] + 1;
+      }
+      if (data.createdBy === this.currentUserID && data.status === 'Draft' && data.prevStatus === 'Review') {
+        this.countData['reject'] = this.countData['reject'] + 1;
+      }
+      if (data.createdBy === this.currentUserID && data.createdBy === this.currentUserID) {
+        this.countData['mycontribution'] = this.countData['mycontribution'] + 1;
+      }
+      if (data.status === 'Review') {
+        this.countData['totalreview'] = this.countData['totalreview'] + 1;
+      }
+      if (data.createdBy !== this.currentUserID && data.status === 'Review') {
+        this.countData['awaitingreview'] = this.countData['awaitingreview'] + 1;
+      }
+    }
+    const childData = data.children;
+    if (childData) {
+      childData.map(child => {
+        self.getContentStatusCount(child);
+      });
+    }
+  }
+
   generateNodeMeta(node, sharedMeta) {
    const nodeMeta =  {
       identifier: node.identifier,
@@ -275,6 +318,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       creator: node.creator,
       createdBy: node.createdBy || null,
       parentId: node.parent || null,
+      prevStatus: node.prevStatus || null,
       sharedContext: {
         ...sharedMeta
       }
@@ -305,8 +349,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
 
   onSelectChapterChange() {
     this.showLoader = true;
-    this.getCollectionHierarchy(this.sessionContext.collection,
-      this.selectedChapterOption === 'all' ? undefined : this.selectedChapterOption);
+    this.updateAccordianView(undefined, true);
   }
 
   handleTemplateSelection(event) {
@@ -390,7 +433,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         this.showLargeModal = false;
         this.unitIdentifier = '';
         this.contentId = ''; // Clearing selected unit/content details
-        this.getCollectionHierarchy(this.sessionContext.collection, undefined);
+        this.updateAccordianView(event.collection.identifier);
         break;
       case 'cancelMove':
         this.showLargeModal = false;
@@ -423,7 +466,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
 
   uploadHandler(event) {
     if (event.contentId) {
-      this.getCollectionHierarchy(this.sessionContext.collection, undefined);
+      this.updateAccordianView(this.unitIdentifier);
     }
   }
 
