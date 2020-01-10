@@ -16,7 +16,7 @@
     color: $black;
     border-radius: $base-block-space $base-block-space 0 0;
     text-align: center;
-    height: 148px;
+    min-height: 148px;
     overflow-y: auto;
     .playStore-img {
       width: 120px;
@@ -81,9 +81,9 @@
 
 *[dir="rtl"] {
 
-  .diksha-logo {
-    height: 148px;
-  }
+  // .diksha-logo {
+  //   height: 148px;
+  // }
 
   .mobile-circles {
     flex-direction: row-reverse;

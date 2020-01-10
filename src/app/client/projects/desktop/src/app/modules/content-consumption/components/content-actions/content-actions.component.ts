@@ -27,11 +27,11 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   showExportLoader = false;
   showModal = false;
   showDeleteModal = false;
-  private isConnected;
+  public isConnected;
   public unsubscribe$ = new Subject<void>();
 
   constructor(
-    private contentManagerService: ContentManagerService,
+    public contentManagerService: ContentManagerService,
     private playerService: PublicPlayerService,
     private connectionService: ConnectionService,
     public router: Router,

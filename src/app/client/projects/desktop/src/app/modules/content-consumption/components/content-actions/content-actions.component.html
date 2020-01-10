@@ -4,8 +4,8 @@
      {{contentData?.name}}
     </div>
     <div class="content-video__player__title__subtitle fxsmall mt-4">
-      <span class="mr-8">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
-      <span class="mr-8">*</span>
+      <span>{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
+      <span class="dot-divider"></span>
       <span class="mr-8">{{contentData?.me_averageRating || '0'}}</span>
       <span><i class="icon star outline"></i></span>
     </div>

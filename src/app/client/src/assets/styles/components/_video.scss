@@ -17,6 +17,14 @@
 
       &__subtitle {
         color: var(--gray-800);
+        .dot-divider {
+          width: ($base-block-space / 2);
+          height: ($base-block-space / 2);
+          border-radius: 100%;
+          background-color: var(--gray-800);
+          display: inline-block;
+          margin: 0px $base-block-space;
+        }
         i {
           color: var(--yellow);
         }

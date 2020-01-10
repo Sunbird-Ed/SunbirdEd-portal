@@ -16,7 +16,7 @@ const routes: Routes = [
     path: 'dial/:dialCode', component: DialCodeComponent, data: {
       sendUtmParams: true,
       telemetry: {
-        env: 'public', pageid: 'get-dial', type: 'view', subtype: 'paginate'
+        env: 'public', pageid: 'get-dial', type: 'view', subtype: 'pre-populate'
       }
     }
   }];

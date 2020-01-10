@@ -313,3 +313,22 @@ ol.ui.list ol {
     font-size: 0.86rem;
   }
 }
+
+
+.licenseTag {
+  word-break: break-all;
+  font-weight: normal !important;
+  color: #7c7b7b !important;
+  a{
+      text-decoration: underline;
+  }
+}
+//workspace font fix
+.ui {
+  &.menu {
+    font-size: calculateRem(14px);
+  }
+  &.popup {
+    font-size: calculateRem(12px);
+  }
+}
