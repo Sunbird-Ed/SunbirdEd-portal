@@ -1377,7 +1377,9 @@ const programThirdSession = {
                 'required': true,
                 'visible': true
               }
-            ]
+            ],
+            'resourceTitleLength': '200',
+            'tenantName': 'SunbirdEd'
           }
         },
         {
@@ -1414,7 +1416,18 @@ const programThirdSession = {
                 'label': 'Learning Level',
                 'multiselect': true
               }
-            ]
+            ],
+            'resourceTitleLength': '200',
+            'tenantName': '',
+            'assetConfig': {
+              'image': {
+                    'size': '50'
+              },
+              'video': {
+                    'size': '50',
+                    'accepted': 'pdf, mp4, webm, youtube'
+              }
+            }
           }
         },
         {

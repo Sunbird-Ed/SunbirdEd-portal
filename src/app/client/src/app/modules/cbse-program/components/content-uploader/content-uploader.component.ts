@@ -39,6 +39,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   public playerConfig;
   public showPreview = false;
   public resourceStatus;
+  public config: any;
   showForm;
   uploader;
   loading;
@@ -70,6 +71,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     private resourceService: ResourceService) { }
 
   ngOnInit() {
+    this.config = _.get(this.contentUploadComponentInput, 'config');
     this.sessionContext  = _.get(this.contentUploadComponentInput, 'sessionContext');
     this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
