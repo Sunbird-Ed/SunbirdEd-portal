@@ -1,5 +1,9 @@
 .offline-page-content {
   height: 100%;
+  .desktop-icon{
+    width:100%;
+    max-width:300px;
+  }
 }
 
 // === offline-application-download scss === //
