@@ -1448,6 +1448,16 @@ const programThirdSession = {
             2
           ]
         },
+        'showContribution': {
+            'roles': [
+                1
+            ]
+        },
+        'showUpforReview': {
+            'roles': [
+                2
+            ]
+        },
         'showTotalContribution': {
           'roles': [
             1
