@@ -120,7 +120,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.selectedChapterOption = 'all';
-    this.getCollectionHierarchy(this.sessionContext.collection, undefined);
+    this.updateAccordianView();
     // clearing the selected questionId when user comes back from question list
     delete this.sessionContext['questionList'];
 
@@ -135,6 +135,18 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changed: any) {
     this.sessionContext = _.get(this.chapterListComponentInput, 'sessionContext');
     this.role = _.get(this.chapterListComponentInput, 'role');
+  }
+
+  async updateAccordianView(unitId?, onSelectChapterChange?) {
+      await this.getCollectionHierarchy(this.sessionContext.collection,
+                this.selectedChapterOption === 'all' ? undefined : this.selectedChapterOption);
+    if (unitId) {
+      this.lastOpenedUnit(unitId);
+    } else if (onSelectChapterChange === true && this.selectedChapterOption !== 'all') {
+      this.lastOpenedUnit(this.selectedChapterOption);
+    } else {
+      this.lastOpenedUnit(this.collectionHierarchy[0].identifier);
+    }
   }
 
   public initiateInputs(action?) {
@@ -159,6 +171,9 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     if (!_.isEmpty(this.state.stages)) {
       this.currentStage = _.last(this.state.stages).stage;
     }
+    if (this.currentStage === 'chapterListComponent') {
+      this.updateAccordianView(this.unitIdentifier);
+    }
   }
 
   public getCollectionHierarchy(identifier: string, unitIdentifier: string) {
@@ -172,6 +187,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       url: hierarchyUrl,
       param: { 'mode': 'edit' }
     };
+     return new Promise((resolve) => {
     this.actionService.get(req).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Fetching TextBook details failed' }; this.showLoader = false;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
@@ -188,8 +204,10 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         this.sessionContext.hierarchyObj = { hierarchy };
         this.showLoader = false;
         this.showError = false;
-        this.lastOpenedUnit(this.collectionHierarchy[0].identifier);
+        this.levelOneChapterList = _.uniqBy(this.levelOneChapterList, 'identifier');
+         resolve('Done');
       });
+    });
   }
 
   setCollectionTree(data, identifier) {
@@ -300,8 +318,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
 
   onSelectChapterChange() {
     this.showLoader = true;
-    this.getCollectionHierarchy(this.sessionContext.collection,
-      this.selectedChapterOption === 'all' ? undefined : this.selectedChapterOption);
+    this.updateAccordianView(undefined, true);
   }
 
   handleTemplateSelection(event) {
@@ -385,7 +402,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         this.showLargeModal = false;
         this.unitIdentifier = '';
         this.contentId = ''; // Clearing selected unit/content details
-        this.getCollectionHierarchy(this.sessionContext.collection, undefined);
+        this.updateAccordianView(event.collection.identifier);
         break;
       case 'cancelMove':
         this.showLargeModal = false;
@@ -418,7 +435,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
 
   uploadHandler(event) {
     if (event.contentId) {
-      this.getCollectionHierarchy(this.sessionContext.collection, undefined);
+      this.updateAccordianView(this.unitIdentifier);
     }
   }
 
