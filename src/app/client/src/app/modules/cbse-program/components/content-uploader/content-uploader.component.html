@@ -101,9 +101,9 @@
         <ul class="pl-16">
           <!-- <li>File accepted - {{templateDetails.filesConfig.accepted}}</li>
           <li>Max file size - {{templateDetails.filesConfig.size}} Mb</li> -->
-          <li *ngIf="templateDetails.filesConfig.accepted.toLowerCase().includes('mp4')"><a href="https://diksha.gov.in/contributor/mp4-compress.html">How to compress MP4 video files</a></li>
-          <li *ngIf="templateDetails.filesConfig.accepted.toLowerCase().includes('mp4')"><a href="https://diksha.gov.in/contributor/video-mp4.html">How to convert video to MP4</a></li>
-          <li *ngIf="templateDetails.filesConfig.accepted.toLowerCase().includes('pdf')"><a href="https://diksha.gov.in/contributor/word-to-pdf.html">How to convert MS word to PDF</a></li>
+          <li *ngIf="templateDetails.filesConfig.accepted.toLowerCase().includes('mp4')"><a target="_blank" title="How to compress MP4 video files" href="https://diksha.gov.in/contributor/mp4-compress.html">How to compress MP4 video files</a></li>
+          <li *ngIf="templateDetails.filesConfig.accepted.toLowerCase().includes('mp4')"><a target="_blank" title="How to convert video to MP4" href="https://diksha.gov.in/contributor/video-mp4.html">How to convert video to MP4</a></li>
+          <li *ngIf="templateDetails.filesConfig.accepted.toLowerCase().includes('pdf')"><a target="_blank" title="How to convert MS word to PDF" href="https://diksha.gov.in/contributor/word-to-pdf.html">How to convert MS word to PDF</a></li>
         </ul>
       </div>
       <div *ngIf='loading' class="uploading-files">
@@ -113,7 +113,7 @@
             </div> -->
             <!-- <sui-progress [value]="60" [maximum]="100" class="mb-0 mr-0"></sui-progress> -->
           </div>
-          <div class="text-center fs-0-785">"By Uploading asset on SunbirdEd, you consent to publish it
+          <div class="text-center fs-0-785">"By Uploading asset on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it
             under the Creative Commons License Framework
           </div>
           <div class="text-center fs-0-785 pt-4 links"><a href="javascript:void(0);">https://creativecommons.org/licenses
@@ -216,7 +216,7 @@
       </div>
 
       <p class="paragraph fs-0-785">
-        “By creating content on SunbirdEd, you consent to publish it under the Creative Commons License Framework
+        “By creating content on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it under the Creative Commons License Framework
         <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
         Please choose the applicable creative commons license you wish to apply to your content”.
       </p>
