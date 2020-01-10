@@ -9,7 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, OrgDetailsService, SearchService } from '@sunbird/core';
 import { of, throwError } from 'rxjs';
 import { filters, searchRequest, visitsEvent, onlineSearchRequest } from './search.component.data.spec';
-import { Location } from '@angular/common';
+import { NavigationHelperService } from 'src/app/modules/shared';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -147,13 +147,13 @@ describe('SearchComponent', () => {
   });
 
   it('should call goBack', () => {
-    const location = TestBed.get(Location);
-    const utilService = TestBed.get(UtilService);
-    spyOn(location, 'back');
-    spyOn(utilService, 'clearSearchQuery');
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const router = TestBed.get(Router);
+    spyOn(navigationHelperService, 'getDesktopPreviousUrl').and.returnValue({ url: '/browse' });
+    spyOn(router, 'navigate');
     component.goBack();
-    expect(location.back).toHaveBeenCalled();
-    expect(utilService.clearSearchQuery).toHaveBeenCalled();
+    expect(navigationHelperService.getDesktopPreviousUrl).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/browse']);
   });
 
   it('should call clearSearchQuery', () => {

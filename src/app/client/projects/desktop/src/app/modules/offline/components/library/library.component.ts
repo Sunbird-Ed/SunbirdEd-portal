@@ -115,7 +115,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.languageDirection = language.dir;
             });
 
-        console.log('history', this.navigationHelperService.history);
         this.utilService.clearSearchQuery();
     }
 
