@@ -65,8 +65,11 @@ export class PlayerService {
    * @returns {Observable<ServerResponse>}
    */
   getContent(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    const licenseParam = {
+      licenseDetails: 'name,description,url'
+    };
     let param = { fields: this.configService.urlConFig.params.contentGet };
-    param = { ...param, ...option.params };
+    param = { ...param, ...option.params, ...licenseParam};
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param: { ...param, ...option.params }

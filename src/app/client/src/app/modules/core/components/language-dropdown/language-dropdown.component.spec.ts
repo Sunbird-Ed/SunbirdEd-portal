@@ -1,7 +1,7 @@
 
 import { of as observableOf, Observable } from 'rxjs';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '@sunbird/shared';
 import { CoreModule, OrgDetailsService, ContentService, PublicDataService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule } from '@angular/router';
@@ -9,7 +9,6 @@ import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LanguageDropdownComponent } from './language-dropdown.component';
-
 
 describe('LanguageDropdownComponent', () => {
     let component: LanguageDropdownComponent;
@@ -46,7 +45,7 @@ describe('LanguageDropdownComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([])],
-            providers: [ConfigService, OrgDetailsService, CacheService, BrowserCacheTtlService,
+            providers: [ConfigService, OrgDetailsService, CacheService, BrowserCacheTtlService, UtilService,
                 { provide: ResourceService, useValue: resourceBundle },
             ],
             schemas: [NO_ERRORS_SCHEMA]
@@ -59,11 +58,12 @@ describe('LanguageDropdownComponent', () => {
     });
 
     it('On language change', () => {
+        const utilService = TestBed.get(UtilService);
         const cacheService = TestBed.get(CacheService);
-        spyOn(component, 'onLanguageChange');
+        spyOn(utilService, 'emitLanguageChangeEvent');
         cacheService.set('portalLanguage', 'en', { maxAge: 10 * 60 });
         component.onLanguageChange('en');
-        expect(component.onLanguageChange).toHaveBeenCalledWith('en');
+        expect(utilService.emitLanguageChangeEvent).toHaveBeenCalled();
     });
     it('On ngOninit for else case', inject([CacheService], (cacheService) => {
         cacheService.set('portalLanguage', null);

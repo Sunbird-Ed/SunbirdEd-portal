@@ -52,6 +52,6 @@ describe('PublicPlayerService', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;
     playerService.updateDownloadStatus(serverRes.download_list, serverRes.successResult.result.content);
-    expect(serverRes.successResult.result.content.downloadStatus).toBe(resourceService.messages.stmsg.m0138);
+    expect(serverRes.successResult.result.content.downloadStatus).toBe(resourceService.messages.stmsg.m0143);
   });
 });

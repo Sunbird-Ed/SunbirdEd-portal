@@ -101,10 +101,10 @@ export const location_Data = {
     resourceBundle: {
         messages: {
             smsg: {
-                m0060: 'Location updated successfully'
+                m0057: 'Location updated successfully...'
             },
             emsg: {
-                m0024: 'Error while updating location'
+                m0021: 'Unable to update location. Please try again after some time'
             }
         }
     },
