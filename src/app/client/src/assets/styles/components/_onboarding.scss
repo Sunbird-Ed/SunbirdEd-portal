@@ -1,0 +1,101 @@
+// login
+.loginform {
+    background: var(--white);
+    height: 100%;
+    width: 100%;
+    padding: 32px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 10px 40px -14px rgba(0, 0, 0, 0.5);
+    // overflow: hidden;
+    @include respond-above(sm) {
+      min-width: 360px;
+      max-width: 416px;
+      height: auto;
+    }
+    &__content {
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+      &__header {
+        padding: ($base-block-space * 2);
+        img {
+          width: 100px;
+        }
+      }
+      .swiper-slide {
+        min-height: 360px;
+        width: 100%;
+        transition: all 2s linear;
+        .slide-title {
+          font-size: 14px;
+          color: var(--primary-400);
+          margin-bottom: 0px;
+        }
+        &__title {
+          text-align: center;
+          font-size: 16px;
+          padding: ($base-block-space * 3) 0px;
+        }
+        &__para {
+          text-align: left;
+          font-size: 12px;
+          padding: ($base-block-space * 3) 0px;
+          color: #333333;
+        }
+        .language-selection {
+          width: 100%;
+          margin: 0px auto ($base-block-space * 6) auto;
+          text-align: center;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          background: $primary-0;
+          box-shadow: 0 2px 4px 0 #d8d8d8;
+          height: 100%;
+          padding: ($base-block-space * 2) 0px;
+          max-height: 280px;
+        }
+      }
+      .animate-slide-on {
+        transform: translateX(-430px);
+      }
+      .animate-slide-off {
+        transform: translateX(0px);
+      }
+    }
+  }
+  
+  .arrow-icon {
+    float: right;
+  }
+  
+  // bullets
+  .bullets-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0px;
+    .circle {
+      margin: 0 3px;
+      border: 1px solid #eee;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .active {
+      background: var(--secondary-400);
+    }
+    .update {
+      background: var(--primary-200);
+    }
+    .completed {
+      background: var(--secondary-400);
+    }
+  }
