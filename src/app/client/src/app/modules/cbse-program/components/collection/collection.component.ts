@@ -32,6 +32,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public mediums;
   public classes;
   public board;
+  public filters;
+  public implecitFileters: Array<any>;
   isMediumClickable = false;
   showLoader = true;
   public state: InitialState = {
@@ -39,7 +41,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
   };
   public showStage;
   public currentStage: any;
-  _slideConfig = {'slidesToShow': 8, 'slidesToScroll': 8};
+  _slideConfig = {'slidesToShow': 10, 'slidesToScroll': 1, 'variableWidth': true};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
     private cbseService: CbseProgramService, public programStageService: ProgramStageService,
     public utilService: UtilService, public contentService: ContentService) { }
@@ -54,7 +56,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.userProfile = _.get(this.collectionComponentInput, 'userProfile');
     this.collectionComponentConfig = _.get(this.collectionComponentInput, 'config');
     this.programContext = _.get(this.collectionComponentInput, 'programContext');
-
     this.sharedContext = this.collectionComponentInput.programContext.config.sharedContext.reduce((obj, context) => {
       return {...obj, [context]: this.getSharedContextObjectProperty(context)};
     }, {});
@@ -67,6 +68,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       collectionType: _.get(this.collectionComponentConfig, 'collectionType'),
       collectionStatus: _.get(this.collectionComponentConfig, 'status')
     }, this.sharedContext);
+    this.filters = this.getImplecitFilters();
     this.searchCollection();
     const getCurrentRoleId = _.find(this.programContext.config.roles, {'name': this.sessionContext.currentRole});
     this.sessionContext.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
@@ -77,6 +79,12 @@ export class CollectionComponent implements OnInit, OnDestroy {
     (_.size(this.mediums) > 1) ? this.isMediumClickable = true : this.isMediumClickable = false;
   }
 
+  getImplecitFilters(): string[] {
+    const sharedcontext = this.collectionComponentInput.programContext.config.sharedContext,
+    implicitFilter = this.collectionComponentConfig.config.filters.implicit,
+    avilableFileters = this.filterByCollection(implicitFilter, 'code', sharedcontext);
+    return avilableFileters;
+  }
 
   getSharedContextObjectProperty(property) {
     if (property === 'channel') {
@@ -101,25 +109,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }
   }
 
+
   searchCollection() {
-    const req = {
-      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
-      data: {
-        'request': {
-          'filters': {
-            'objectType': 'content',
-            'board': this.sessionContext.board,
-            'framework': this.sessionContext.framework,
-            // 'gradeLevel': 'Kindergarten',
-            // 'subject': 'Hindi',
-            'medium': this.sessionContext.medium,
-            'programId': this.sessionContext.programId,
-            'status': this.sessionContext.collectionStatus || ['Draft', 'Live'],
-            'contentType': this.sessionContext.collectionType || 'Textbook'
-          }
-        }
-      }
-    };
+    const req = {data: {request: { filters: ''}, }, url: ''};
+    req.url = `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`;
+    req.data.request.filters = this.generateSearchFilterRequestData();
     this.contentService.post(req)
       .pipe(catchError(err => {
       const errInfo = { errorMsg: 'Question creation failed' };
@@ -127,10 +121,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     })).subscribe((res) => {
       const filteredTextbook = [];
-
       const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
       const filterArr = _.groupBy(res.result.content, 'identifier');
-
       _.forEach(filterArr, (collection) => {
         if (collection.length > 1) {
           const groupedCollection = _.find(collection, (item) => {
@@ -148,6 +140,20 @@ export class CollectionComponent implements OnInit, OnDestroy {
     });
   }
 
+  generateSearchFilterRequestData() {
+    let payloadArray = [];
+    payloadArray = [{
+      objectType: 'content',
+      programId: this.sessionContext.programId,
+      status: this.sessionContext.collectionStatus || ['Draft', 'Live'],
+      contentType: this.sessionContext.collectionType || 'Textbook'
+    }];
+    this.filters.forEach( (element) => {
+      payloadArray[0][element['code']] = element['defaultValue'];
+  });
+    return payloadArray[0];
+}
+
   groupCollectionList(groupValue?: string) {
     if (groupValue) {
       this.collectionList = this.groupByCollection(this.collectionsWithCardImage, { 'subject' : groupValue } );
@@ -163,7 +169,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   filterCollectionList(filterValue?: any, filterby = 'gradeLevel') {
     let filterValueItem: any[];
-
     if (Array.isArray(filterValue)) {
       filterValueItem = filterValue;
     } else {
@@ -171,10 +176,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
       filterArray.push(filterValue);
       filterValueItem = filterArray;
     }
-
-
-        this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterby, filterValueItem);
-        this.groupCollectionList();
+    this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterby, filterValueItem);
+    this.groupCollectionList();
   }
 
   filterByCollection(collection: any[], filterBy: string, filterValue: any[]) {
@@ -193,7 +196,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
     collection.cardImg = collection.image;
     return collection;
   }
-
 
   collectionClickHandler(event) {
     this.sharedContext = this.collectionComponentInput.programContext.config.sharedContext.reduce((obj, context) => {
