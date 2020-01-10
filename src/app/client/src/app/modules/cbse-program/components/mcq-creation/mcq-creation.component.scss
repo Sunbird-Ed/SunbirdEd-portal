@@ -365,3 +365,43 @@
     }
   }
 }
+
+.error-question-content {
+  border: 1px solid var(--red-400) !important;
+  .sb-field {
+      .ckeditor-tool__label {
+          background: var(--red-0);
+          color: var(--red-400) !important;
+      }
+  }
+}
+
+.licence-form {
+  &__content {
+      height: auto;
+      border-radius: calculateRem(4px);
+      padding: 0 0;
+      width: 100%;
+      &__fields {
+          //margin: 0px 0px;
+          .sb-field {
+              width: 100%;
+              margin-bottom: 0px;
+          }
+      }
+  }
+  .paragraph {
+      color: var(--gray-200);
+      padding: calculateRem(16px) 0px;
+      line-height: normal;
+      strong {
+          color: var(--black);
+      }
+  }
+}
+
+.links {
+  &:hover {
+      text-decoration: underline;
+  }
+}

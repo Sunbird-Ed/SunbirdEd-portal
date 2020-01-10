@@ -3,38 +3,28 @@ import { CbseProgramService } from '../../services';
 import * as _ from 'lodash-es';
 import {UserService} from '@sunbird/core';
 import {PlayerConfig} from './player.config';
-
-
 @Component({
   selector: 'app-question-preview',
   templateUrl: './question-preview.component.html',
   styleUrls: ['./question-preview.component.scss']
 })
 export class QuestionPreviewComponent implements OnInit, OnChanges {
-
-
   @Input() questionMetaData: any;
   @Input() sessionContext: any;
   public playerConfig: any;
   public theme: any;
   previewInitialized: boolean;
   showUpload = true;
-
-  constructor(private toEcml: CbseProgramService, private userService: UserService ) {
-
-  }
-
+  constructor(private toEcml: CbseProgramService, private userService: UserService ) {}
   ngOnInit() {
-
   this.previewInitialized = true;
-  if (this.questionMetaData.mimeType !== 'application/vnd.ekstep.ecml-archive') {
+  if (this.questionMetaData && this.questionMetaData.mimeType && this.questionMetaData.mimeType !== 'application/vnd.ekstep.ecml-archive') {
     this.theme = null;
     const context = this.getContext();
-
     this.playerConfig = this.setPlayerConfig(context, this.theme);
   } else if (!this.sessionContext.previewQuestionData) {
     this.toEcml
-    .getECMLJSON(this.sessionContext.questionList)
+    .getECMLJSON(this.sessionContext.questionsIds)
     .subscribe( (theme) => {
       /**
        * @param theme this contains the theme[Ecml]
@@ -48,7 +38,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
     });
     } else {
     this.toEcml
-    .getECMLJSON(this.sessionContext.questionList, this.sessionContext.currentRole, this.sessionContext.previewQuestionData)
+    .getECMLJSON(this.sessionContext.questionsIds, this.sessionContext.currentRole, this.sessionContext.previewQuestionData)
     .subscribe( (theme) => {
       /**
        * @param theme this contains the theme[Ecml]
@@ -61,15 +51,12 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       console.log(error);
     });
     }
-
-
   }
-
   ngOnChanges() {
     if (this.previewInitialized) {
-      if (this.questionMetaData && this.questionMetaData.mode !== 'create') {
+      if (this.questionMetaData && this.questionMetaData.mode  && this.questionMetaData.mode !== 'create') {
         this.toEcml
-        .getECMLJSON(this.sessionContext.questionList)
+        .getECMLJSON(this.sessionContext.questionsIds)
         .subscribe( (theme) => {
           /**
            * @param theme this contains the theme[Ecml]
@@ -81,7 +68,7 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
         });
       } else {
         this.toEcml
-        .getECMLJSON(this.sessionContext.questionList, this.sessionContext.currentRole, this.sessionContext.previewQuestionData)
+        .getECMLJSON(this.sessionContext.questionsIds, this.sessionContext.currentRole, this.sessionContext.previewQuestionData)
         .subscribe( (theme) => {
           /**
            * @param theme this contains the theme[Ecml]
@@ -94,7 +81,6 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       }
     }
   }
-
   setPlayerConfig(context, theme) {
     const finalPlayerConfiguration  = {
       data: theme,
@@ -102,20 +88,18 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       context: context,
       config: PlayerConfig.config,
     };
-
-     if (this.questionMetaData.mimeType !== 'application/vnd.ekstep.ecml-archive') {
+    // tslint:disable-next-line:max-line-length
+    if (this.questionMetaData && this.questionMetaData.mimeType && this.questionMetaData.mimeType !== 'application/vnd.ekstep.ecml-archive') {
       finalPlayerConfiguration.data = {};
       finalPlayerConfiguration.metadata = this.questionMetaData;
     }
     return finalPlayerConfiguration;
   }
-
   // getUploadedContentMeta(e) {
   //    this.showUpload = false;
   //    this.playerConfig.data = {};
   //    this.playerConfig.metadata = e;
   // }
-
   getContext() {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const version = buildNumber && buildNumber.value ?
@@ -146,6 +130,5 @@ export class QuestionPreviewComponent implements OnInit, OnChanges {
       'app': [this.userService.channel]
     };
     return context;
-
   }
 }
