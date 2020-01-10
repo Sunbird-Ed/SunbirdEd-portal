@@ -1154,7 +1154,7 @@ const programThirdSession = {
                     'application/pdf'
                   ],
                   'metadata': {
-                    'name': 'FocusSpot Resoirce',
+                    'name': 'FocusSpot Resource',
                     'description': 'FocusSpot',
                     'resourceType': 'Read',
                     'contentType': 'FocusSpot',

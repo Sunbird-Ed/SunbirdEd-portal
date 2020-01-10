@@ -45,7 +45,7 @@ export class ProgramHeaderComponent implements OnInit, OnChanges, OnDestroy {
     };
     this.userRoles = _.get(this.headerComponentInput, 'userDetails.roles[0]');
     this.programRoles = _.get(this.headerComponentInput, 'roles');
-    this.defaultTabIndex = 1;
+    this.defaultTabIndex = _.find(this.programRoles, {'name': this.userRoles}).defaultTab;
     const tabRoles = _.find(this.programRoles, {'name': this.userRoles}).tabs;
     this.tabs.forEach(tab => {
       if (tabRoles && tabRoles.includes(tab.index)) {
