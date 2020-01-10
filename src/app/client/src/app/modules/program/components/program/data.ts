@@ -1379,7 +1379,7 @@ const programThirdSession = {
               }
             ],
             'resourceTitleLength': '200',
-            'tenantName': ''
+            'tenantName': 'SunbirdEd'
           }
         },
         {

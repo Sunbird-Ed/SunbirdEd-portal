@@ -24,7 +24,7 @@
       <button id="submitContent" *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="saveContent('review')">Submit</button>
     </div>
   </div>
-</div> 
+</div>
 
 
 <div class="middle-section-set" *ngIf="showPreview">
@@ -96,9 +96,14 @@
       <div  id="upload-content-div" class="upload-file-section"></div>
     </div>
       <div *ngIf='!loading' class="upload-file-description pt-16">
-        <ul>
-          <li>File accepted - {{templateDetails.filesConfig.accepted}}</li>
-          <li>Max file size - {{templateDetails.filesConfig.size}} Mb</li>
+        <p class="mb-8 fsmall">Related information:</p>
+
+        <ul class="pl-16">
+          <!-- <li>File accepted - {{templateDetails.filesConfig.accepted}}</li>
+          <li>Max file size - {{templateDetails.filesConfig.size}} Mb</li> -->
+          <li *ngIf="templateDetails.filesConfig.accepted.toLowerCase().includes('mp4')"><a href="https://diksha.gov.in/contributor/mp4-compress.html">How to compress MP4 video files</a></li>
+          <li *ngIf="templateDetails.filesConfig.accepted.toLowerCase().includes('mp4')"><a href="https://diksha.gov.in/contributor/video-mp4.html">How to convert video to MP4</a></li>
+          <li *ngIf="templateDetails.filesConfig.accepted.toLowerCase().includes('pdf')"><a href="https://diksha.gov.in/contributor/word-to-pdf.html">How to convert MS word to PDF</a></li>
         </ul>
       </div>
       <div *ngIf='loading' class="uploading-files">
@@ -132,11 +137,11 @@
       <div class="sb-field-group">
           <label>Enter your comments</label>
           <div class="sb-field relative">
-            
+
               <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
               <label class="ui basic red error label pt-1 mt-5 width-100"
                   *ngIf="FormControl.form.controls.rejectComment?.touched && !FormControl.form.valid">Fill comments </label>
-            
+
               <!-- <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
               <span class="characters-left">1000 Characters left</span> -->
           </div>
@@ -174,7 +179,7 @@
 <div *ngIf="showForm && showPreview">
   <form #contentForm [formGroup]="contentDetailsForm" (ngSubmit)="saveContent()" class='ui container licence-form mt-24' >
       <div class='licence-form__content__fields px-24 py-16 d-flex flex-w-wrap'>
-        
+
           <div class="sb-field pr-8" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
             <div [formGroupName]="i">
               <label class="font-weight-bold">{{field.label}}:</label>
@@ -186,7 +191,7 @@
               <label class="warning-message" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
             </div>
           </div>
-  
+
           <div class="sb-field pr-8" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
               <div [formGroupName]="i">
                   <label class="font-weight-bold">{{field.label}}:</label>
@@ -198,7 +203,7 @@
                   <label class="warning-message" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
               </div>
           </div>
-       
+
           <div class="sb-field pr-8" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
             <div [formGroupName]="i">
               <label class="font-weight-bold">{{field.label}}:</label>
@@ -206,15 +211,15 @@
                 <div *ngIf="disableFormField"><label>{{contentMetaData[field.code]}}</label></div>
               <label class="warning-message" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
             </div>
-          </div> 
-  
+          </div>
+
       </div>
-  
+
       <p class="paragraph fs-0-785">
         “By creating content on SunbirdEd, you consent to publish it under the Creative Commons License Framework
         <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
         Please choose the applicable creative commons license you wish to apply to your content”.
       </p>
-  
+
   </form>
   </div>
