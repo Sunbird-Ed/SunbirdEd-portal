@@ -117,6 +117,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       // tslint:disable-next-line:max-line-length
       this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
       this.mediaArr = this.questionMetaData.data.media || [];
+      this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
     }
 
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
@@ -161,7 +162,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.editorState.answer = this.questionMetaData.data.editorState.answer;
         // tslint:disable-next-line:max-line-length
         this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
-        this.rejectComment = this.questionMetaData.data.rejectComment;
+        this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
       } else {
         this.questionMetaForm.reset();
       }

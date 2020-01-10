@@ -294,6 +294,8 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
               this.questionRejected = true;
             }
           });
+        } else {
+          req.data.request.assessment_item.metadata['rejectComment'] = '';
         }
         this.actionService.patch(req).pipe(catchError(err => {
           const errInfo = { errorMsg: 'MCQ Question updation failed' };

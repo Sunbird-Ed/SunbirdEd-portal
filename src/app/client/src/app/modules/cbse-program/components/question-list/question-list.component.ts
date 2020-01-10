@@ -225,6 +225,9 @@ export class QuestionListComponent implements OnInit {
           this.questionList[index].rejectComment = assessment_item.rejectComment;
           this.questionList[index].status = assessment_item.status;
         }
+         // for preview of resource
+         const questionsIds: any = _.map(this.questionList, (question) =>  _.get(question, 'identifier'));
+         this.sessionContext.questionsIds = questionsIds;
         // tslint:disable-next-line:max-line-length
         this.refreshEditor();
         if (actionStatus) {  this.saveContent(actionStatus); }
