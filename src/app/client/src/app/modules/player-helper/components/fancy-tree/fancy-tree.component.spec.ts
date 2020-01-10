@@ -60,6 +60,7 @@ describe('FancyTreeComponent', () => {
     };
     component.options = {};
     component.telemetryInteractDirective = {} as TelemetryInteractDirective;
+    component.telemetryInteractDirective.telemetryInteractCdata = [{id: 'D4R4K4', type: 'dialCode'}];
     spyOn(component, 'getTelemetryInteractEdata').and.stub();
     spyOn(component, 'getTelemetryInteractObject').and.stub();
     spyOn(window as any, '$').and.callFake(() => {
