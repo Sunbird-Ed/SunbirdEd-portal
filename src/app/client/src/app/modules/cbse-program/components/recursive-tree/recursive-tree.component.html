@@ -24,6 +24,7 @@
               <span class="sb-label sb-label-table sb-label-primary-100" *ngIf="content.status === 'Review'">Review in Progress</span>
               <span class="sb-label sb-label-table sb-label-success-0" *ngIf="content.status === 'Live'">Published</span>
               <span class="sb-label sb-label-table sb-label-error-0" *ngIf="content.status === 'Draft' && content.prevStatus === 'Review'">Rejected</span>
+              <!-- <img class="ml-8" src="/assets/images/exclamation-icon.svg" alt="Exclamation Icon" suiPopup popupText="two of four questions published" [popupPlacement]="'right'" [popupInverted]="true"> -->
             </span>
             <div class="item-dropdown absolute position" (click)="menuClick($event)" *ngIf="content.status === 'Draft'">
               <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" suiDropdown autoClose="itemClick">
