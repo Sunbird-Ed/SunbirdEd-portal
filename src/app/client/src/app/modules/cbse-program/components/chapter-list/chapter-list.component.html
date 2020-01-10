@@ -46,16 +46,12 @@
             </dl>
             <dl *ngIf="actions.showTotalUnderReview.roles.includes(sessionContext.currentRoleId)"
               class="sb-meta-data">
-              <dt>{{countData['review']}}</dt>
-              <dd>Total Under Review</dd>
+              <dt>{{countData['totalreview']}}</dt>
+              <dd>Total</dd>
             </dl>
-            <dl *ngIf="actions.showAcceptedByMe.roles.includes(sessionContext.currentRoleId)" class="sb-meta-data">
-              <dt>{{countData['review']}}</dt>
-              <dd>Accepted by me</dd>
-            </dl>
-            <dl *ngIf="actions.showRejectedByMe.roles.includes(sessionContext.currentRoleId)" class="sb-meta-data">
-              <dt>{{countData['review']}}</dt>
-              <dd>Rejected by me</dd>
+            <dl *ngIf="actions.showAawaitingReview.roles.includes(sessionContext.currentRoleId)" class="sb-meta-data">
+              <dt>{{countData['awaitingreview']}}</dt>
+              <dd>Awaiting my review</dd>
             </dl>
           </div>
         </div>

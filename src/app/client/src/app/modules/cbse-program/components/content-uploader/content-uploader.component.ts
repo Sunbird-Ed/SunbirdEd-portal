@@ -391,8 +391,13 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   this.helperService.updateContent(request, this.contentMetaData.identifier).subscribe((res) => {
     this.contentMetaData.versionKey = res.result.versionKey;
     this.contentMetaData.name = this.editTitle;
-    this.toasterService.success(this.resourceService.messages.smsg.m0060);
-  }, (err) => {
+    this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
+    .subscribe((data) => {
+        this.toasterService.success(this.resourceService.messages.smsg.m0060);
+      }, (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0098);
+      });
+}, (err) => {
     this.editTitle = this.contentMetaData.name;
     this.toasterService.error(this.resourceService.messages.fmsg.m0098);
   });
