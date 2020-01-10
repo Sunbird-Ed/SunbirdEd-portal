@@ -97,6 +97,12 @@
 
     .sb-menubar {
       width: 100%;
+      .sb-btn-load{
+        span{
+          position: relative;
+          bottom: calculateRem(1px);
+        }
+      }
 
       @include respond-below(sm) {
         .sb-btn-load {

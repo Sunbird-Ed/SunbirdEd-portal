@@ -7,7 +7,7 @@
 }
 .state-medium-container {
   position: relative;
-  z-index: 2;
+  z-index: 999;
   height: 64px;
   &__dropdown {
     padding: ($base-block-space * 2) 0;

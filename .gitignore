@@ -9,5 +9,8 @@ mochawesome-report
 /npm-debug.log
 .coverrun
 /src/app/log
+/src/app/.nyc_output
+/src/app/coverage
+.idea
 
 

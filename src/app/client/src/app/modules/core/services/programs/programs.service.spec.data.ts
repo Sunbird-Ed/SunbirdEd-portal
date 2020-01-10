@@ -246,7 +246,7 @@ export const mockResponseData = {
           'slug': 'sunbird_program',
           'startDate': '2019-05-24T12:50:30.000Z',
           'status': null,
-          'type': 'private',
+          'type': 'public',
           'userDetails': {
             'programId': '58a52010-9cae-11e9-8179-f311bc5bf48d',
             'userId': '0b96635f-fe2b-4ab0-a511-05cfce8faa3f',

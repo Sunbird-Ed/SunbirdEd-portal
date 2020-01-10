@@ -258,7 +258,7 @@ export class SearchService {
       option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
     }
 
-    if (!option.data.request.filters.contentType && addDefaultContentTypesInRequest) {
+    if (_.get(option, 'data.request.filters') && !_.get(option, 'data.request.filters.contentType') && addDefaultContentTypesInRequest) {
       option.data.request.filters.contentType = [
         'Collection',
         'TextBook',

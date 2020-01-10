@@ -22,6 +22,8 @@ export class UserLocationComponent implements OnInit {
   @Input() isCustodianOrgUser: any;
   @Input() userProfile: any;
   @ViewChild('userLocationModal') userLocationModal;
+  @ViewChild('stateDiv') stateDiv;
+  @ViewChild('districtDiv') districtDiv;
   userDetailsForm: FormGroup;
   public processedDeviceLocation: any = {};
   selectedState;
@@ -235,6 +237,7 @@ export class UserLocationComponent implements OnInit {
       (data: string) => {
         if (stateControl.status === 'VALID' && stateValue !== stateControl.value) {
           this.allDistricts = null;
+          this.userDetailsForm.get('district').reset();
           const state = _.find(this.allStates, (states) => {
             return states.code === stateControl.value;
           });
@@ -253,23 +256,6 @@ export class UserLocationComponent implements OnInit {
       this.allDistricts = res.result.response;
       return res.result.response;
     }));
-  }
-
-  clearInput(event, formControlName) {
-    let value = '';
-    if (event.target.value) {
-      switch (formControlName) {
-        case 'state': {
-          value = this.selectedState ? this.selectedState.name : '';
-          break;
-        }
-        case 'district': {
-          value = this.selectedDistrict ? this.selectedDistrict.name : '';
-          break;
-        }
-      }
-    }
-    event.target.value = value;
   }
 
   closeModal() {

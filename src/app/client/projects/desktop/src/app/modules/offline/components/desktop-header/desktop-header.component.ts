@@ -6,14 +6,9 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 
 import { OrgDetailsService, FormService, TenantService } from '@sunbird/core';
-import { ConfigService, ResourceService, UtilService } from '@sunbird/shared';
+import { ConfigService, ResourceService, UtilService, ILanguage } from '@sunbird/shared';
 import { ElectronDialogService } from '../../services';
 
-export interface ILanguage {
-  value: string;
-  label: string;
-  dir: string;
-}
 @Component({
   selector: 'app-desktop-header',
   templateUrl: './desktop-header.component.html',
@@ -37,6 +32,7 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
   showQrModal = false;
   queryParam: any = {};
   tenantInfo: any = {};
+  hideHeader = false;
 
   constructor(
     public router: Router,
@@ -67,6 +63,12 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
       .pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.unsubscribe$))
       .subscribe((data) => {
         this.pageId = _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid') || 'library';
+      });
+
+    this.utilService.hideHeaderTabs
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((hideHeader) => {
+        this.hideHeader = hideHeader;
       });
 
   }

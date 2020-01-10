@@ -3,24 +3,21 @@
     </app-library-filters>
     <div *ngIf="(router.url.includes('browse') && isConnected) || !router.url.includes('browse')">
         <div class="ui container">
-
             <div class="ui stackable grid m-0">
                 <div class="nine wide column p-0">
                     <!--  *ngIf="carouselMasterData.length === 0 && !showLoader" -->
-                    <div class="twelve wide column">
-                        <app-no-content></app-no-content>
-                        <!-- <app-no-result [data]="noResultMessage"></app-no-result> -->
-                    </div>
-
                     <div *ngIf="showLoader">
                         <app-loader [data]='loaderMessage'></app-loader>
+                    </div>
+                    <div class="nine wide column" *ngIf="carouselMasterData?.length === 0 && !showLoader">
+                        <app-no-content [filters]="modifiedFilters"></app-no-content>
                     </div>
                     <section *ngFor="let section of pageSections; let index=index;">
                         <!-- START OF RECENTLY VIEWED CONTENT-->
                         <div *ngIf="index === 0 && section?.name === 'Recently Added'">
                             <div class="header">
                                 <h3 class="title">
-                                    {{resourceService?.frmelmnts?.lbl?.recentlyAdded}}
+                                    {{resourceService?.frmelmnts?.lbl?.desktop?.allDownloads}}
                                 </h3>
                                 <button class="sb-btn sb-btn-xs sb-btn-outline-secondary sb-btn-white"
                                     appTelemetryInteract [telemetryInteractEdata]="viewAllInteractEdata"
@@ -30,7 +27,7 @@
                                 </button>
                             </div>
                             <!-- dir="ltr" has to be changed once URdu language selection to dir="rtl" and in app.config.json "rtl=true" through event-->
-                            <ngx-slick dir="ltr" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+                            <ngx-slick [dir]="languageDirection" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
                                 <div ngxSlickItem *ngFor="let content of section?.contents"
                                     class="sbcardwidth slide mr-16">
                                     <sb-library-card [content]="content" [type]="'recently_viewed'"
@@ -45,10 +42,13 @@
                                 </div>
                             </ngx-slick>
                         </div>
+                        <div class="twelve wide column" *ngIf="(pageSections?.length === 1 && !router.url.includes('/browse') && !showLoader)">
+                            <app-no-content [filters]="modifiedFilters" [isContentPresent]="false"></app-no-content>
+                        </div>
                         <!-- END OF RECENTLY VIEWED CONTENT-->
                         <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [title]="section?.name"
                             [contentList]="section?.contents" [type]="'infinite_card_grid_with_hover'"
-                            (hoverActionClick)="hoverActionClicked($event)">
+                            (hoverActionClick)="hoverActionClicked($event)" [maxCardCount]="3">
                         </sb-library-cards-grid>
                     </section>
                 </div>
