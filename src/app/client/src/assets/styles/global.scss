@@ -253,7 +253,7 @@ ol.ui.list ol {
   align-items: center;
   justify-content: center;
   box-shadow: 0px 10px 40px -14px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
+  // overflow: hidden;
   @include respond-above(sm) {
     min-width: 360px;
     max-width: 416px;
@@ -274,7 +274,7 @@ ol.ui.list ol {
       }
     }
     .swiper-slide {
-      height: 360px;
+      min-height: 360px;
       width: 100%;
       transition: all 2s linear;
       .slide-title {
@@ -351,13 +351,41 @@ ol.ui.list ol {
 
 /* language selector */
 .sb-offline-language-selector {
+  .ui.dropdown>.dropdown.icon {
+    margin: 0 0 0 0.5em;
+    html[dir="rtl"] & {
+        margin: 0 0.5em 0 0;
+    }
+}
+
   .ui.dropdown .menu {
     right: 0;
     width: auto;
     left: inherit;
   }
+  
   .ui.dropdown .menu > .item {
-    padding: 0.78571429em 1.14285714em !important;
+    // padding: 0.78571429em 1.14285714em !important;
+    padding: 1em 1.5em!important;
     font-size: 0.86rem;
+  }
+}
+
+
+.licenseTag {
+  word-break: break-all;
+  font-weight: normal !important;
+  color: #7c7b7b !important;
+  a{
+      text-decoration: underline;
+  }
+}
+//workspace font fix
+.ui {
+  &.menu {
+    font-size: calculateRem(14px);
+  }
+  &.popup {
+    font-size: calculateRem(12px);
   }
 }

@@ -45,6 +45,7 @@ export const serverRes = {
       },
       'responseCode': 'OK',
       'result': {
+        'termsOfUseUrl': 'http://localhost:4000/abc.html',
         'version': '1.0.2',
         'releaseDate': '',
         'deviceId': 'did1234456',
@@ -69,6 +70,7 @@ export const serverRes = {
         },
         'responseCode': 'OK',
         'result': {
+          'termsOfUseUrl': 'http://localhost:4000/abc.html',
           'version': '1.0.2',
           'releaseDate': '',
           'deviceId': 'did1234456',

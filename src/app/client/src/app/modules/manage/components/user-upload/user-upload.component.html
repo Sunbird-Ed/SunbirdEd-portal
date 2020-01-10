@@ -23,7 +23,7 @@
       </div>
       <div>{{resourceService?.frmelmnts?.instn?.t0098}}</div>
       <ol class="ui list">
-        <li *ngFor="let instn of userUploadInstructions">{{instn.instructions}}
+        <li *ngFor="let instn of userUploadInstructions">{{instn.instructions | interpolate:'{instance}': resourceService?.instance}}
         </li>
       </ol>
       <div>{{resourceService?.frmelmnts?.instn?.t0106}}</div>

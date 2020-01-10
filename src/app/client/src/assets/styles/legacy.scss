@@ -948,6 +948,7 @@ ul.subList-padding {
   color: #7c7b7b;
   line-height: 1.6;
   font-size: 1em;
+  word-break: break-word;
 }
 .courseupdate b {
   font-weight: 400;
@@ -1192,6 +1193,12 @@ ul.subList-padding {
 .ui.multiple.dropdown > .default  {
   white-space: nowrap;
   margin: 0.1875rem 0 0.1875rem 0 !important;
+}
+.ui.selection.dropdown{
+  line-height: $sb-input-line-height;
+}
+.ui.multiple.dropdown > .search{
+  padding: 0 !important;
 }
 .filtercolumn.ui.grid > .column:not(.row) {
   padding-left: 1.7em;

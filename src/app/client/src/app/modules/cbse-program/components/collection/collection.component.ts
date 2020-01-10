@@ -220,6 +220,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.programStageService.addStage('chapterListComponent');
   }
 
+  viewMoreClickHandler(event) {
+    console.log(event);
+  }
+
   ngOnDestroy() {
     this.stageSubscription.unsubscribe();
   }

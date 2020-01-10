@@ -1,4 +1,4 @@
-import { of as observableOf, Observable } from 'rxjs';
+import { of as observableOf, Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -54,7 +54,7 @@ describe('BrowserCompatibilityComponent', () => {
 
   it('should call modalHandler method and modal will be displayed if it is not chrome browser or firefox', () => {
     component.showModal = false;
-    component.deviceInfo = Response.deviceInfo;
+    spyOn(component['_deviceDetectorService'], 'getDeviceInfo').and.returnValue(Response.deviceInfoIe);
     spyOn(component, 'modalHandler').and.callThrough();
     component.ngOnInit();
     expect(component.modalHandler).toHaveBeenCalled();
@@ -62,7 +62,7 @@ describe('BrowserCompatibilityComponent', () => {
 
   it('should call modalHandler method and modal will be displayed if it is firefox and being called from workspace', () => {
     component.showModal = true;
-    component.deviceInfo = Response.deviceInfo;
+    spyOn(component['_deviceDetectorService'], 'getDeviceInfo').and.returnValue(Response.deviceInfoFirefox);
     spyOn(component, 'modalHandler').and.callThrough();
     component.ngOnInit();
     expect(component.modalHandler).toHaveBeenCalled();

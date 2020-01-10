@@ -5,7 +5,7 @@ import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 import {
-    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, INoResultMessage, NavigationHelperService
+    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, NavigationHelperService, ILanguage
 } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
@@ -36,7 +36,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     public dataDrivenFilterEvent = new EventEmitter();
     public unsubscribe$ = new Subject<void>();
 
-    public noResultMessage: INoResultMessage;
+    public modifiedFilters: any;
 
     isConnected = navigator.onLine;
     slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
@@ -45,6 +45,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     showDownloadLoader = false;
     contentName: string;
     infoData;
+    languageDirection = 'ltr';
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -78,7 +79,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.isBrowse = Boolean(this.router.url.includes('browse'));
         this.infoData = { msg: this.resourceService.frmelmnts.lbl.allDownloads, linkName: this.resourceService.frmelmnts.btn.myLibrary };
         this.getSelectedFilters();
-        this.setNoResultMessage();
         this.setTelemetryData();
 
         this.connectionService.monitor()
@@ -104,10 +104,17 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.router.events
             .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
             .subscribe(x => { this.prepareVisits(); });
+
+        this.utilService.languageChange
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((language: ILanguage) => {
+                this.languageDirection = language.dir;
+            });
     }
 
     getSelectedFilters() {
         this.selectedFilters = this.publicPlayerService.libraryFilters;
+        this.modifiedFilters = this.selectedFilters;
     }
 
     ngOnDestroy() {
@@ -122,6 +129,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.fetchContents();
         this.publicPlayerService.libraryFilters = event.filters;
         this.hashTagId = event.channelId;
+        this.modifiedFilters = event.filters;
     }
 
     resetSections() {
@@ -153,8 +161,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         };
         if (addFilters) {
             option.filters = _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters;
+            option.filters['contentType'] = filters.contentType || ['TextBook'];
         }
-        option.filters['contentType'] = filters.contentType || ['TextBook'];
         if (manipulatedData.filters) {
             option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
         }
@@ -173,6 +181,21 @@ export class LibraryComponent implements OnInit, OnDestroy {
                     if (response1) {
                         this.showLoader = false;
                         const filteredContents = _.omit(_.groupBy(response1['result'].content, 'subject'), ['undefined']);
+                        // Check for multiple subjects
+                        for (const [key, value] of Object.entries(filteredContents)) {
+                            const isMultipleSubjects = key.split(',').length > 1;
+                            if (isMultipleSubjects) {
+                                const subjects = key.split(',');
+                                subjects.forEach((subject) => {
+                                    if (filteredContents[subject]) {
+                                        filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
+                                    } else {
+                                        filteredContents[subject] = value;
+                                    }
+                                });
+                                delete filteredContents[key];
+                            }
+                        }
                         this.sections = [];
 
                         if (response2) {
@@ -213,6 +236,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     addHoverData() {
+        const status = {
+            DOWNLOADING: this.resourceService.messages.stmsg.m0140,
+            FAILED: this.resourceService.messages.stmsg.m0143,
+            DOWNLOADED: this.resourceService.messages.stmsg.m0139,
+            PAUSED: this.resourceService.messages.stmsg.m0142,
+            CANCELED: this.resourceService.messages.stmsg.m0143,
+        };
         _.each(this.pageSections, (pageSection) => {
             _.each(pageSection.contents, (value) => {
                 value['hoverData'] = {
@@ -221,7 +251,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                     'actions': [
                         {
                             'type': this.isBrowse ? 'download' : 'save',
-                            'label': this.isBrowse ? _.capitalize(_.get(value, 'downloadStatus')) ||
+                            'label': this.isBrowse ? _.capitalize(status[_.get(value, 'downloadStatus')]) ||
                                 this.resourceService.frmelmnts.btn.download :
                                 this.resourceService.frmelmnts.lbl.saveToPenDrive,
                             'disabled': this.isBrowse && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'],
@@ -253,25 +283,14 @@ export class LibraryComponent implements OnInit, OnDestroy {
         return carouselData;
     }
 
-    private setNoResultMessage() {
-        if (!(_.includes(this.router.url, 'browse'))) {
-            this.noResultMessage = {
-                message: 'messages.stmsg.m0007',
-                messageText: 'messages.stmsg.m0133'
-            };
-        } else {
-            this.noResultMessage = {
-                message: 'messages.stmsg.m0007',
-                messageText: 'messages.stmsg.m0006'
-            };
-        }
-    }
-
     searchContent(addFilter: boolean, shouldCallAPI) {
         if (shouldCallAPI) {
             return of(undefined);
         }
-        const option = this.constructSearchRequest(addFilter);
+
+        const params = _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams);
+        params.online = false;
+        const option = addFilter ? this.constructSearchRequest(addFilter) : { params };
         return this.searchService.contentSearch(option).pipe(
             tap(data => {
             }), catchError(error => {
