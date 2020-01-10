@@ -1276,7 +1276,7 @@ const programThirdSession = {
                     'marks': 5
                   },
                   'questionCategories': [
-                    'Curiosity'
+                    'curiosity'
                   ]
                 }
               ],
@@ -1402,18 +1402,62 @@ const programThirdSession = {
               'curiosity'
             ],
             'formConfiguration': [
-              {
-                'code': 'LearningOutcome',
-                'range': [],
-                'label': 'Learning Outcome',
-                'multiselect': false
-              },
-              {
-                'code': 'bloomslevel',
-                'range': [],
-                'label': 'Learning Level',
-                'multiselect': true
-              }
+                {
+                    'code': 'learningOutcome',
+                    'dataType': 'list',
+                    'description': 'Learning Outcomes For The Content',
+                    'editable': true,
+                    'inputType': 'multiselect',
+                    'label': 'Learning Outcome',
+                    'name': 'LearningOutcome',
+                    'placeholder': 'Select Learning Outcomes',
+                    'required': false,
+                    'visible': true
+                },
+                {
+                    'code': 'bloomsLevel',
+                    'dataType': 'list',
+                    'description': 'Learning Level For The Content',
+                    'editable': true,
+                    'inputType': 'multiselect',
+                    'label': 'Learning Level',
+                    'name': 'LearningLevel',
+                    'placeholder': 'Select Learning Levels',
+                    'required': true,
+                    'visible': true,
+                    'defaultValue': [
+                        'remember',
+                        'understand',
+                        'apply',
+                        'analyse',
+                        'evaluate',
+                        'create'
+                    ]
+                },
+                {
+                    'code': 'creator',
+                    'dataType': 'text',
+                    'description': 'Enter The Author Name',
+                    'editable': true,
+                    'inputType': 'text',
+                    'label': 'Author',
+                    'name': 'Author',
+                    'placeholder': 'Enter Author Name',
+                    'required': true,
+                    'visible': true
+                },
+                {
+                    'code': 'license',
+                    'dataType': 'list',
+                    'description': 'License For The Content',
+                    'editable': true,
+                    'inputType': 'select',
+                    'label': 'License',
+                    'name': 'License',
+                    'placeholder': 'Select License',
+                    'required': true,
+                    'visible': true
+                }
             ]
           }
         },
@@ -1546,6 +1590,16 @@ const programThirdSession = {
           'roles': [
             2
           ]
+        },
+        'showCreateQuestion': {
+            'roles': [
+                1
+            ]
+        },
+        'showDeleteQuestion': {
+            'roles': [
+                1
+            ]
         }
       },
       'onBoardingForm': {
