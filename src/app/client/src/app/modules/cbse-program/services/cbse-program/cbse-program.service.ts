@@ -44,7 +44,7 @@ export class CbseProgramService {
     });
     questionConfigCdata.media = media;
     if (_.get(res, 'result.assessment_item.type') === 'reference') {
-      questionConfigCdata.solution = _.get(res, 'result.assessment_item.solutions');
+      questionConfigCdata.answer = _.get(res, 'result.assessment_item.responseDeclaration.responseValue.correct_response.value');
     }
     if (_.get(res, 'result.assessment_item.type') === 'mcq') {
       questionSetConfigCdata.show_feedback = true;

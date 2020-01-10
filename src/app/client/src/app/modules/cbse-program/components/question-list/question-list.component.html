@@ -1,132 +1,82 @@
-<div>
-  <sui-modal *ngIf="!sessionContext.questionType" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-    [size]="'small'" class="sb-modal" appBodyScroll
-    (dismissed)="sessionContext.questionType; dismissPublishModal();" #modal>
-    <div class="sb-modal-header">
-      Select Question Category
-    </div>
-    <div class="sb-modal-content">
-      <ul>
-        <li (click)="selectQuestionCategory(contentType)"
-          *ngFor="let contentType of templateDetails.questionCategories">
-          {{contentType}}
-        </li>
-      </ul>
-    </div>
-  </sui-modal>
-</div>
-
-
 <!-- Untitled Practice Set Section with text field -->
-<!-- <div class="d-flex sb-bg-color-gray-0 practical-header">
-    <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
-      <div class="font-weight-bold fs-1-143" *ngIf="!showTextArea">
-        Untiled Practice Set <span class="fs-0-785 pl-8"><a class="cursor-pointer" (click)="showTextArea=!showTextArea">Edit</a></span>
-        <div class="fs-0-785 pt-8">License: CC BY 4.0</div>
+<div class="d-flex sb-bg-color-gray-0 practical-header">
+  <div class="d-flex flex-ai-center practical-header__content ui container">
+    <div class="mr-auto" *ngIf="!showTextArea">
+      <div class="practice-set__label">
+        <span class="font-weight-bold fs-1-143">{{resourceName}}</span>
+        <a class="cursor-pointer fs-0-785 ml-8" 
+          (click)="showResourceTitleEditor()" 
+          *ngIf="visibility && visibility.showSave"
+        >Edit</a>
       </div>
-      <div class="sb-field-group textbook-edit" *ngIf="showTextArea">
-        <div class="sb-field relative">
-          <textarea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..."></textarea>
-          <span class="characters-left">200 Characters left</span>
-        </div>
-      </div>
-      <div class='practical-sb-buttons'>
-        <button class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" (click)="showTextArea=!showTextArea">Save</button>
-        <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
-        <button class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="showTextArea=!showTextArea">Submit</button>
+      <div class="mt-8 practice-set__status">
+        <span class="sb-label sb-label-table sb-label-success-0" 
+        [ngClass]="{ 'sb-label-error-0': resourceDetails && resourceDetails.rejectComment, 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-gray-100': resourceStatus == 'Review' }">
+        {{ resourceDetails && resourceDetails.rejectComment ? 'Rejected' : (resourceStatus === 'Review' ? 'Review in Progress' : resourceStatus) }}
+        </span>
+        <span class="cursor-pointer fs-0-785 ml-8" 
+        (click)="showReviewModal=!showReviewModal"
+        *ngIf="resourceDetails && resourceDetails.rejectComment && (sessionContext.currentRoleId === 1)"><i class="comment alternate outline icon sb-color-primary"></i><a>View Comments</a></span>
       </div>
     </div>
-  </div>  -->
+    <div class="sb-field-group textbook-edit mr-auto" *ngIf="showTextArea">
+      <div class="sb-field relative">
+        <textarea rows="4" name="resourceName" class="sb-form-control fs-1" #resourceTtlTextarea placeholder="Type here..." [(ngModel)]='resourceName' (keydown)="onResourceNameChange($event)" (blur)="onResourceNameBlur()">{{resourceName}}</textarea>
+        <span class="characters-left">{{resourceTitleLimit - resourceName.length}} Characters left</span>
+        <span class="sb-error-text" *ngIf="resourceName.length > resourceTitleLimit">Title should be maximum 100 characters.</span>
+        <span class="sb-error-text" *ngIf="!resourceName.length">Title required.</span>
+      </div>
+    </div>
+    <div class='practical-sb-buttons'>
+      <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="questionCreationChild.buttonTypeHandler('save')">Save</button>
+      <button id="requestChanges" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true;">Request Changes</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" (click)="questionCreationChild.buttonTypeHandler('preview')" >Preview</button>
+      <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-normal ripple mr-8" 
+      [ngClass]="isPublishBtnDisable ? 'sb-btn-disabled' : 'sb-btn-secondary'"
+      [disabled] = "isPublishBtnDisable" (click)="publichContent()">Publish</button>
+      <button id="submitContent"  *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="questionCreationChild.buttonTypeHandler('review')">Submit</button>
+    </div>
+  </div>
+</div> 
 
 <div class="ui container">
   <div *ngIf="sessionContext?.questionType" class="ui twelve column grid m-0">
     <div class="three wide column p-0">
+      <!-- Question list Section -->
+      <div class="d-flex flex-ai-center ckeditor-tool__answer my-16 mx-8">
+        <label class="fs-1 mb-0">Question(s)</label>
 
-      <div class="d-flex flex-ai-center" *ngIf="role.currentRole === 'PUBLISHER'">
-        <div class="sb-checkbox sb-checkbox-primary">
-          <input type="checkbox" [(ngModel)]="selectedAll" appTelemetryInteract
-            [telemetryInteractEdata]="{id:'select_all_questions',type:'click',pageid:'questionlist'}"
-            (change)="selectAll();">
-          <label for="check1">Select All</label>
-        </div>
+        <!-- add button to be integrated -->
+        <button  class="sb-btn sb-btn-outline-primary sb-btn-normal sb-left-icon-btn sb-btn-radius ml-auto"
+        *ngIf="visibility && visibility.showCreateQuestion"
+        [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
+        appTelemetryInteract
+        [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:sessionContext.questionType.toUpperCase(),topic:sessionContext.topic}}">
+        <i class="plus icon"></i>ADD</button>
       </div>
 
-      <!-- Question list Section to be implemented -->
-
-      <div class="d-flex width-100 flex-jc-center mt-24">
-        <button *ngIf="role.currentRole === 'CONTRIBUTOR'"
-          [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
-          appTelemetryInteract
-          [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:sessionContext.questionType.toUpperCase(),topic:sessionContext.topic}}"
-          class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn"><i class="add icon"></i>Add new Question</button>
-      </div>
-
-
+  
       <div class="question-list">
-
-        <!-- <div class="question-list__item active d-flex flex-ai-center p-16 cursor-pointer active">
-          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 1</label>
-          <i class="info circle sb-color-warning fs-1 icon"></i>
-          <i class="trash alternate outline icon ml-24"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24"></i>
-        </div>
-        <div class="question-list__item d-flex flex-ai-center p-16 cursor-pointer">
-          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 2</label>
-          <i class="trash alternate outline icon ml-24"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24"></i>
-        </div>
-        <div class="question-list__item d-flex flex-ai-center p-16 cursor-pointer">
-          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 3</label>
-          <i class="trash alternate outline icon ml-24"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24"></i>
-        </div>
-        <div class="question-list__item d-flex flex-ai-center p-16 cursor-pointer">
-          <label class="mb-0 mr-auto" for="check1"> Multiple Choice 4</label>
-          <i class="trash alternate outline icon ml-24"></i>
-          <i class="move icon ml-16 sb-color-primary ml-24"></i>
-        </div> -->
-
-        <div class="questionTab ui center tertiary header aligned segment p-8 cursor-pointer"
-          [class.tertiary]="selectedQuestionId === question.identifier"
-          (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index"
+        <div class="question-list__item active d-flex flex-ai-center p-16 cursor-pointer"
+          [class.active]="selectedQuestionId === question.identifier"
+          (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index;last as isLast"
           appTelemetryInteract
           [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'questionlist',extra:{type:'reference',identifier:question.identifier}}">
-          <div class="item d-flex flex-ai-center">
-            <ng-container *ngIf="role.currentRole === 'PUBLISHER' else nonPublisher">
-              <div class="sb-checkbox sb-checkbox-primary">
-                <input class="checking" [(ngModel)]="question.isSelected" (change)="checkIfAllSelected(question);"
-                  (click)="$event.stopPropagation()" type="checkbox">
-                <label for="check1" class="mb-0"> Question {{i + 1}}</label>
-              </div>
-            </ng-container>
-            <ng-template #nonPublisher>
-              <div>
-                <label for="check1" class="mb-0 fs-0-92 font-weight-normal"> Question {{i + 1}}</label>
-              </div>
-            </ng-template>
-            <!-- <i class="trash alternate outline icon ml-auto d-flex flex-ai-center"></i> -->
-            <span class="sb-status-label sb-bg-warning sb-shape-circle ml-auto"
-              *ngIf="question.status === 'Draft' || question.status === 'Review'"></span>
-            <!-- <span class="sb-status-label sb-bg-success sb-shape-circle ml-auto"
-                *ngIf="question.status === 'Live'"></span> -->
-            <span class="sb-status-label sb-bg-error sb-shape-circle ml-auto"
-              *ngIf="question.status === 'Reject'"></span>
-          </div>
+          <label class="mb-0 mr-auto" for="check1"> Question {{i + 1}}</label>
+          <img src="../../../../../assets/images/exclamation-icon.svg" *ngIf="question.rejectComment && question.rejectComment !== '' " class="ml-8" width="20px" height="16px">
+          <i class="trash alternate outline icon ml-24" *ngIf="visibility && visibility.showDeleteQuestion"
+           (click)="openDeleteQuestionModal(question.identifier)"></i>
+          <!-- <img src="../../../../../assets/images/move.svg" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')" class="ml-8" width="20px" height="16px"> -->
         </div>
       </div>
 
     </div>
 
     <div class="nine wide column bg-white pl-40 p-0 ckeditor-container">
-      <div *ngIf="!questionList.length && questionMetaData?.mode !== 'create' && role.currentRole === 'CONTRIBUTOR'"
-        class="ui segment">No Question - Click
-        Create</div>
-      <div *ngIf="!questionList.length && role.currentRole === 'REVIEWER'" class="ui segment">No Questions for Review
-      </div>
       <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
         <div *ngIf="sessionContext.questionType === 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
-            <app-mcq-creation [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
+            <app-mcq-creation #questionCreationChild [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
               [questionSelectionStatus]="questionSelectionStatus" [role]="role"
               (questionStatus)="questionStatusHandler($event)"
               (questionQueueStatus)="questionQueueStatusHandler($event)">
@@ -135,7 +85,7 @@
         </div>
         <div *ngIf="sessionContext.questionType !== 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
-            <app-question-creation [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
+            <app-question-creation #questionCreationChild [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
               [questionSelectionStatus]="questionSelectionStatus" [role]="role"
               (questionStatus)="questionStatusHandler($event)"
               (questionQueueStatus)="questionQueueStatusHandler($event)">
@@ -170,4 +120,80 @@
       Close
     </button>
   </div>
+</sui-modal>
+
+<sui-modal *ngIf="showDeleteQuestionModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'small'" class="sb-modal sb-error sb-modal-center" appBodyScroll
+  (dismissed)="showDeleteQuestionModal = !showDeleteQuestionModal" #modal>
+  <div class="sb-modal-header text-left">
+      Delete Content
+  </div>
+  <div class="sb-modal-content">
+      <p>Do you want to delete the question?</p> 
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal" (click)="deleteQuestion()"> Delete </button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="showPublishModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+[size]="'normal'" class="sb-modal" appBodyScroll
+(dismissed)="showPublishModal = !showPublishModal" #modal>
+  <div class="sb-modal-header text-left">
+      Publish (Content Type)
+  </div>
+  <div class="sb-modal-content">
+    <div class="sb-publish-content">
+      <div class="sb-publish-content-title"> Click Publish to:</div>
+      <p class="py-8">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled 
+      </p>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="publichContent()" > Publish </button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="showReviewModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll
+  (dismissed)="showReviewModal = !showReviewModal" #modal>
+  <div class="sb-modal-header">
+      Review Comments
+  </div>
+  <div class="sb-modal-content">
+      <div class="sb-publish-content">
+        <div class="review-modal-list"> 
+          {{resourceDetails?.rejectComment}}
+      </div>
+      </div>
+  </div>
+  <!-- <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"> Continue </button>
+  </div> -->
+</sui-modal>
+
+<sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="showRequestChangesPopup = false; contentRejectComment = ''">
+  <div class="sb-modal-header">
+      Add Review Comments
+  </div>
+  <form #FormControl="ngForm" class="ui form">
+  <div class="sb-modal-content">
+      <div class="sb-field-group">
+          <label>Enter your comments</label>
+          <div class="sb-field relative">  
+              <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="contentRejectComment" placeholder="Add comment" name="contentRejectComment" required></textarea>
+              <span class="characters-left">{{ commentCharLimit - contentRejectComment.length }} Characters left</span>
+          </div>
+          <div>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="contentRejectComment.length > commentCharLimit">Comments should be maximum {{commentCharLimit}} characters.</label>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="FormControl.form.controls.contentRejectComment?.touched && !FormControl.form.valid">Fill comments </label>
+          </div>
+      </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [disabled]="contentRejectComment.length > commentCharLimit"  [ngClass]="{'sb-btn-primary': FormControl.form.valid, 'sb-btn-disabled': !FormControl.form.valid || contentRejectComment.length > commentCharLimit}"   (click)="requestChanges()"> Submit Review </button>
+  </div>
+</form>
 </sui-modal>

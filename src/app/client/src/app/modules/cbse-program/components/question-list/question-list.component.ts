@@ -1,218 +1,239 @@
-import { Component, OnInit, AfterViewInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges } from '@angular/core';
-import { ConfigService, ToasterService, IUserData } from '@sunbird/shared';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
 import { UserService, PublicDataService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { tap, map, catchError } from 'rxjs/operators';
+import { tap, map, catchError, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { of, forkJoin, throwError } from 'rxjs';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
 import { CbseProgramService } from '../../services';
+import { ItemsetService } from '../../services/itemset/itemset.service';
+import { HelperService } from '../../services/helper.service';
+import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
+import { ProgramStageService } from '../../../program/services';
+
 @Component({
   selector: 'app-question-list',
   templateUrl: './question-list.component.html',
   styleUrls: ['./question-list.component.scss']
 })
-export class QuestionListComponent implements OnInit, OnChanges {
-  // @Input() sessionContext: any;
-  // @Input() role: any;
-  @Input() resourceName: any;
-  // @Input() templateDetails: any;
+
+export class QuestionListComponent implements OnInit {
+  @ViewChild('questionCreationChild') questionCreationChild: ElementRef;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
   @Input() practiceQuestionSetComponentInput: any;
+  @ViewChild('FormControl') FormControl: NgForm;
+  @Output() uploadedContentMeta = new EventEmitter<any>();
+
   public sessionContext: any;
   public role: any;
   public templateDetails: any;
-  public questionList = [];
+  public actions: any;
+  public questionList: Array<any> = [];
   public selectedQuestionId: any;
   public questionReadApiDetails: any = {};
+  public resourceDetails: any = {};
+  public resourceStatus: string;
   public questionMetaData: any;
   public refresh = true;
   public showLoader = true;
-  public enableRoleChange = false;
   public showSuccessModal = false;
+  public showReviewModal = false;
+  public showRequestChangesPopup = false;
+  public showDeleteQuestionModal = false;
+  public showPublishModal = false;
   public publishInProgress = false;
   public publishedResourceId: any;
-  public questionSelectionStatus: any;
   public existingContentVersionKey = '';
-  selectedAll: any;
-  initialized: boolean;
-  private questionTypeName = {
-    vsa: 'Very Short Answer',
-    sa: 'Short Answer',
-    la: 'Long Answer',
-    mcq: 'Multiple Choice Question',
-    curiosity: 'Curiosity Question'
-  };
+  public resourceTitleLimit = 100;
+  public itemSetIdentifier: string;
+  public deleteAssessmentItemIdentifie: string;
+  public showTextArea = false;
+  public resourceName: string;
+  public licencesOptions = [];
+  public commentCharLimit = 1000;
+  public contentRejectComment: string;
+  visibility: any;
+  @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
 
-  constructor(private configService: ConfigService, private userService: UserService, private publicDataService: PublicDataService,
-    public actionService: ActionService, private cdr: ChangeDetectorRef, public toasterService: ToasterService,
-    public telemetryService: TelemetryService, private fb: FormBuilder, private cbseService: CbseProgramService,
-    public contentService: ContentService) {
-  }
-  ngOnChanges(changedProps: any) {
-    if (this.enableRoleChange) {
-      this.initialized = false; // it should be false before fetch
-      if (this.sessionContext.questionType) {
-        this.fetchQuestionWithRole();
-      }
-    }
-    if ((this.sessionContext.currentRole === 'REVIEWER') || (this.sessionContext.currentRole === 'PUBLISHER')) {
-      this.sessionContext['showMode'] = 'previewPlayer';
-    } else {
-      this.sessionContext['showMode'] = 'editorForm';
-    }
-  }
+  constructor(
+    private configService: ConfigService, private userService: UserService,
+    private publicDataService: PublicDataService, public actionService: ActionService,
+    private cdr: ChangeDetectorRef, public toasterService: ToasterService,
+    public telemetryService: TelemetryService, private fb: FormBuilder,
+    private cbseService: CbseProgramService, public contentService: ContentService,
+    private itemsetService: ItemsetService, private helperService: HelperService,
+    private resourceService: ResourceService, private collectionHierarchyService: CollectionHierarchyService,
+    public programStageService: ProgramStageService) { }
+
   ngOnInit() {
     this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
     this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
-    // console.log('changes detected in question list', this.role);
-    if (this.sessionContext.questionType) {
-      this.fetchQuestionWithRole();
-    } else {
-      console.log(this.templateDetails.questionCategories);
-    }
-    this.enableRoleChange = true;
-    this.selectedAll = false;
-  }
-  private fetchQuestionWithRole() {
-    (this.role.currentRole === 'REVIEWER') ? this.fetchQuestionList(true) : this.fetchQuestionList();
+    this.actions = _.get(this.practiceQuestionSetComponentInput, 'programContext.config.actions');
+    this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
+    this.sessionContext.questionType = this.templateDetails.questionCategories[0];
+    this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
+    // tslint:disable-next-line:max-line-length
+    this.sessionContext.compConfiguration = _.find(_.get(this.practiceQuestionSetComponentInput, 'programContext.config.components'), {compId: 'practiceSetComponent'});
+    this.getContentMetadata(this.sessionContext.resourceIdentifier);
+    this.getLicences();
   }
 
-  private fetchQuestionList(isReviewer?: boolean) {
-    const req = {
-      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
-      data: {
-        'request': {
-          'filters': {
-            'objectType': 'AssessmentItem',
-            'board': this.sessionContext.board,
-            'framework': this.sessionContext.framework,
-            'gradeLevel': this.sessionContext.gradeLevel,
-            'subject': this.sessionContext.subject,
-            'medium': this.sessionContext.medium,
-            'type': this.sessionContext.questionType === 'mcq' ? 'mcq' : 'reference',
-            'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' :
-              this.sessionContext.questionType.toUpperCase(),
-            'topic': this.sessionContext.topic,
-            'createdBy': this.userService.userid,
-            'programId': this.sessionContext.programId,
-            'version': 3,
-            'status': []
-          },
-          'sort_by': { 'createdOn': 'desc' }
-        }
-      }
-    };
-    if (isReviewer) {
-      delete req.data.request.filters.createdBy;
-      if (this.sessionContext.selectedSchoolForReview) {
-        req.data.request.filters['organisation'] = this.sessionContext.selectedSchoolForReview;
-      }
-      req.data.request.filters.status = ['Review'];
-    }
-    let apiRequest;
-    apiRequest = [this.contentService.post(req).pipe(
-      tap(data => this.showLoader = false),
-      catchError(err => {
-        const errInfo = { errorMsg: 'Fetching question list failed' };
-        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-      }))];
-    if (this.role.currentRole === 'PUBLISHER') {
-      delete req.data.request.filters.createdBy;
-      req.data.request.filters.status = ['Live'];
-      if (this.sessionContext.resourceIdentifier) {
-        // tslint:disable-next-line:max-line-length
-        apiRequest = [this.contentService.post(req).pipe(tap(data => this.showLoader = false),
-          catchError(err => {
-            const errInfo = { errorMsg: 'Fetching question list failed' };
-            return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-          })),
-        this.fetchExistingResource(this.sessionContext.resourceIdentifier)];
-      }
-    }
-
-
-
-    forkJoin(apiRequest)
-      .subscribe((res: any) => {
-        this.questionList = res[0].result.items || [];
-        let selectedQuestionList = [];
-        if (res[1]) {
-          selectedQuestionList = _.map(_.get(res[1], 'result.content.questions'), 'identifier') || [];
-        }
-        _.forEach(this.questionList, (question) => {
-          if (_.includes(selectedQuestionList, question.identifier)) {
-            question.isSelected = true;
-          } else {
-            question.isSelected = false;
-          }
-        });
-        if (this.questionList.length) {
-          this.selectedQuestionId = this.questionList[0].identifier;
-          this.handleQuestionTabChange(this.selectedQuestionId);
-          this.questionSelectionStatus = this.questionList[0].isSelected;
-        }
-        this.selectedAll = this.questionList.every((question: any) => {
-          return question.isSelected === true;
-        });
-      });
-  }
-
-  fetchExistingResource(contentId) {
-    const request = {
+  getContentMetadata(contentId: string) {
+    const option = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
     };
-    return this.contentService.get(request).pipe(map((response) => {
-      this.existingContentVersionKey = _.get(response, 'result.content.versionKey');
-      return response;
-    }, err => {
-      console.log(err);
-    }), catchError(err => {
-      const errInfo = { errorMsg: 'Resource updation failed' };
+    this.contentService.get(option).pipe(map(data => data.result.content), catchError(err => {
+      const errInfo = { errorMsg: 'Unable to read the Content, Please Try Again' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    }));
+    })).subscribe(res => {
+      this.resourceDetails = res;
+      this.existingContentVersionKey = res.versionKey;
+      this.resourceStatus = _.get(this.resourceDetails, 'status');
+      this.sessionContext.resourceStatus = this.resourceStatus;
+      this.resourceName = this.resourceDetails.name || this.templateDetails.metadata.name;
+      this.contentRejectComment = this.resourceDetails.rejectComment || '';
+      // this.resourceStatus = 'Review';
+      if (!this.resourceDetails.itemSets) {
+        this.createDefaultQuestionAndItemset();
+      } else {
+        const itemSet = this.resourceDetails.itemSets;
+        if (itemSet[0].identifier) {
+          this.itemSetIdentifier = itemSet[0].identifier;
+        }
+        this.fetchQuestionList();
+      }
+      this.handleActionButtons();
+    });
   }
 
+  handleActionButtons() {
+    this.visibility = {};
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showCreateQuestion'] = (_.includes(this.actions.showCreateQuestion.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showDeleteQuestion'] = (_.includes(this.actions.showDeleteQuestion.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft' && this.questionList.length > 1);
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showRequestChanges'] = (_.includes(this.actions.showRequestChanges.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Review');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showPublish'] = (_.includes(this.actions.showPublish.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Review');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showSubmit'] = (_.includes(this.actions.showSubmit.roles, this.sessionContext.currentRoleId)  && this.resourceStatus === 'Draft');
+    // tslint:disable-next-line:max-line-length
+    this.visibility['showSave'] = (_.includes(this.actions.showSave.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
+     // tslint:disable-next-line:max-line-length
+    this.visibility['showEdit'] = (_.includes(this.actions.showEdit.roles, this.sessionContext.currentRoleId) && this.resourceStatus === 'Draft');
+  }
 
-  handleQuestionTabChange(questionId) {
-    if (_.includes(this.sessionContext.questionList, questionId)) { return; }
+  get isPublishBtnDisable(): boolean {
+    return _.find(this.questionList, (question) => question.rejectComment && question.rejectComment !== '');
+  }
+
+  public createDefaultQuestionAndItemset() {
+    this.createDefaultAssessmentItem().pipe(
+      map(data => {
+        this.selectedQuestionId = _.get(data, 'result.node_id');
+        return this.selectedQuestionId;
+    }),
+    mergeMap(questionId => this.createItemSet(questionId).pipe(
+      map(res => {
+        this.itemSetIdentifier = _.get(res, 'result.identifier');
+        return this.itemSetIdentifier;
+    }),
+    mergeMap(() => {
+      const reqBody = {
+        'content': {
+          'versionKey': this.existingContentVersionKey,
+          'itemSets': [
+           {
+             'identifier': this.itemSetIdentifier
+           }
+         ]
+       }
+      };
+      return this.updateContent(reqBody, this.sessionContext.resourceIdentifier);
+    }))))
+    .subscribe(() => {
+      this.handleQuestionTabChange(this.selectedQuestionId);
+    });
+  }
+
+  public getLicences() {
+    this.helperService.getLicences().subscribe((res: any) => {
+      this.licencesOptions = _.map(res.license, (license) => {
+        return license.name;
+      });
+      this.sessionContext['licencesOptions'] = this.licencesOptions;
+    });
+  }
+
+  private fetchQuestionList() {
+    this.itemsetService.readItemset(this.itemSetIdentifier).pipe(
+      map(response => {
+        const questionList = _.get(response, 'result.itemset.items');
+        const questionIds = _.map(questionList, (question => _.get(question, 'identifier')));
+        return questionIds;
+    }),
+    mergeMap(questionIds => {
+      const req = {
+        url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
+        data: {
+          'request': {
+            'filters': {
+              'identifier': questionIds,
+              'status': ['Live', 'Review', 'Draft']
+            },
+            'sort_by': { 'createdOn': 'desc' },
+            'limit': 20
+          }
+        }
+      };
+      return this.contentService.post(req).pipe(map(data => {
+          this.questionList = _.get(data, 'result.items');
+          return this.questionList;
+      }));
+    }))
+    .subscribe(() => {
+          this.selectedQuestionId = this.questionList[0].identifier;
+          this.handleQuestionTabChange(this.selectedQuestionId);
+          this.handleActionButtons();
+    });
+  }
+
+  handleQuestionTabChange(questionId, actionStatus?: string) {
+    if (_.includes(this.sessionContext.questionList, questionId) && !actionStatus) { return; }
     this.sessionContext.questionList = [];
     this.sessionContext.questionList.push(questionId);
     this.selectedQuestionId = questionId;
     this.showLoader = true;
     this.getQuestionDetails(questionId).pipe(tap(data => this.showLoader = false))
       .subscribe((assessment_item) => {
-        let editorMode;
-        if (['Draft', 'Review', 'Reject'].includes(assessment_item.status)) {
-          editorMode = 'edit';
-        } else {
-          editorMode = 'view';
-        }
         this.questionMetaData = {
-          mode: editorMode,
+          mode: 'edit',
           data: assessment_item
         };
-        // min of 1sec timeOut is set, so that it should go to bottom of call stack and execute whennever the player data is available
-        if (this.sessionContext.showMode === 'previewPlayer' && this.initialized) {
-          this.showLoader = true;
-          setTimeout(() => {
-            this.showLoader = false;
-          }, 1000);
+        if (this.resourceStatus === 'Draft') {
+          this.sessionContext.isReadOnlyMode = false;
+        } else {
+          this.sessionContext.isReadOnlyMode = true;
         }
+        if (assessment_item && assessment_item.rejectComment === '') {
+          const index = _.findIndex(this.questionList, {identifier: questionId});
+          this.questionList[index].rejectComment = assessment_item.rejectComment;
+          this.questionList[index].status = assessment_item.status;
+        }
+         // for preview of resource
+         const questionsIds: any = _.map(this.questionList, (question) =>  _.get(question, 'identifier'));
+         this.sessionContext.questionsIds = questionsIds;
         // tslint:disable-next-line:max-line-length
-        if (this.role.currentRole === 'CONTRIBUTOR' && (editorMode === 'edit' || editorMode === 'view') && (this.sessionContext.showMode === 'editorForm')) {
-          this.refreshEditor();
-        }
-        this.initialized = true;
+        this.refreshEditor();
+        if (actionStatus) {  this.saveContent(actionStatus); }
       });
-    const selectedQuestion = _.find(this.questionList, { identifier: questionId });
-    if (selectedQuestion) {
-      this.questionSelectionStatus = selectedQuestion.isSelected;
-    }
   }
+
   public getQuestionDetails(questionId) {
     if (this.questionReadApiDetails[questionId]) {
       return of(this.questionReadApiDetails[questionId]);
@@ -229,159 +250,52 @@ export class QuestionListComponent implements OnInit, OnChanges {
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }));
   }
+
   public createNewQuestion(): void {
-    this.questionMetaData = {
-      mode: 'create'
-    };
-    this.refreshEditor();
+    this.createDefaultAssessmentItem().pipe(
+      map((data: any) => {
+        const questionId = data.result.node_id;
+        const questionsIds: any = _.map(this.questionList, (question) => ({ 'identifier': _.get(question, 'identifier') }));
+        questionsIds.push({'identifier': questionId});
+        const requestParams = {
+          'name': this.resourceName,
+          'items': questionsIds
+        };
+        this.selectedQuestionId = questionId;
+        return requestParams;
+    }),
+    mergeMap(requestParams => this.updateItemset(requestParams, this.itemSetIdentifier)))
+    .subscribe((contentRes: any) => {
+      this.handleQuestionTabChange(this.selectedQuestionId);
+      this.handleActionButtons();
+    });
   }
+
   public questionStatusHandler(event) {
-    console.log('editor event', event);
-    if (event.type === 'close') {
-      this.questionMetaData = {};
-      if (this.questionList.length) {
-        this.handleQuestionTabChange(this.selectedQuestionId);
-      }
+
+    if (this.isPublishBtnDisable && event.type === 'review') {
+      this.toasterService.error('Please resolve rejected questions or delete');
       return;
     }
-    if (event.status === 'failed') {
-      console.log('failed');
-    } else {
-      if (event.type === 'update') {
-        delete this.questionReadApiDetails[event.identifier];
-        this.handleQuestionTabChange(this.selectedQuestionId);
-      } if (event.type === 'Reject' || event.type === 'Live') {
-        this.showLoader = true;
-        setTimeout(() => this.fetchQuestionList(true), 2000);
-      } else {
-        this.showLoader = true;
-        setTimeout(() => this.fetchQuestionList(), 2000);
-      }
-    }
+
+    delete this.questionReadApiDetails[event.identifier];
+    this.handleQuestionTabChange(this.selectedQuestionId, event.type);
   }
 
   handleRefresEvent() {
     this.refreshEditor();
   }
+
   private refreshEditor() {
     this.refresh = false;
     this.cdr.detectChanges();
     this.refresh = true;
   }
 
-  selectAll() {
-    _.forEach(this.questionList, (question) => {
-      question.isSelected = this.selectedAll;
-    });
-    this.questionSelectionStatus = this.selectedAll;
-  }
-
-  checkIfAllSelected(qs) {
-    this.selectedAll = this.questionList.every((question: any) => {
-      return question.isSelected === true;
-    });
-    if (this.selectedQuestionId === qs.identifier) {
-      this.questionSelectionStatus = qs.isSelected;
-    }
-  }
-  questionQueueStatusHandler(event) {
-    const selectedQuestion = _.find(this.questionList, { identifier: event.questionId });
-    if (selectedQuestion) {
-      selectedQuestion.isSelected = event.status;
-    }
-    this.selectedAll = this.questionList.every((question: any) => {
-      return question.isSelected === true;
-    });
-    this.questionSelectionStatus = event.status;
-  }
-  public publishQuestions() {
-    const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
+  saveContent(actionStatus: string) {
     this.publishInProgress = true;
     this.publishButtonStatus.emit(this.publishInProgress);
-    const selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
-      final.ids.push(_.get(question, 'identifier'));
-      final.author.push(_.get(question, 'author'));
-      final.category.push(_.get(question, 'category'));
-      final.attributions = _.union(final.attributions, _.get(question, 'organisation'));
-      return final;
-    }, { ids: [], author: [], category: [], attributions: [] });
-
-    if (selectedQuestionsData.ids.length > 0) {
-      const questions = [];
-      _.forEach(_.get(selectedQuestionsData, 'ids'), (value) => {
-        questions.push({ 'identifier': value });
-      });
-      this.cbseService.getECMLJSON(selectedQuestionsData.ids).subscribe((theme) => {
-        let creator = this.userService.userProfile.firstName;
-        if (!_.isEmpty(this.userService.userProfile.lastName)) {
-          creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
-        }
-
-        const option = {
-          url: `private/content/v3/create`,
-          data: {
-            'request': {
-              'content': {
-                // tslint:disable-next-line:max-line-length
-                'name': this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`,
-                'contentType': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
-                'mimeType': 'application/vnd.ekstep.ecml-archive',
-                'programId': this.sessionContext.programId,
-                'program': this.sessionContext.program,
-                'framework': this.sessionContext.framework,
-                'board': this.sessionContext.board,
-                'medium': [this.sessionContext.medium],
-                'gradeLevel': [this.sessionContext.gradeLevel],
-                'subject': [this.sessionContext.subject],
-                'topic': [this.sessionContext.topic],
-                'createdBy': this.userService.userid, // '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8'  || 'edce4f4f-6c82-458a-8b23-e3521859992f',
-                'creator': creator,
-                'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
-                'editorVersion': 3,
-                'code': UUID.UUID(),
-                'body': JSON.stringify(theme),
-                'resourceType': this.sessionContext.questionType === 'curiosity' ? 'Teach' : 'Practice',
-                'description': `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`,
-                'questions': questions,
-                'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
-                'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
-                'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
-                'plugins': [{
-                  identifier: 'org.sunbird.questionunit.quml',
-                  semanticVersion: '1.0'
-                }],
-                // tslint:disable-next-line: max-line-length
-                'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11279144369168384014/artifact/qa_1561455529937.png'
-              }
-            }
-          }
-        };
-        this.contentService.post(option).pipe(catchError(err => {
-          const errInfo = { errorMsg: 'Resource publish failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-        }))
-          .subscribe((res) => {
-            console.log('res ', res);
-            if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
-              this.publishResource(res.result.content_id || res.result.node_id);
-            }
-          }, error => {
-            this.publishInProgress = false;
-            this.publishButtonStatus.emit(this.publishInProgress);
-          });
-      });
-    } else {
-      this.publishInProgress = false;
-      this.publishButtonStatus.emit(this.publishInProgress);
-      this.toasterService.error('Please select some questions to Publish');
-    }
-  }
-
-  public updateQuestions() {
-    const selectedQuestions = _.filter(this.questionList, (question) => _.get(question, 'isSelected'));
-    this.publishInProgress = true;
-    this.publishButtonStatus.emit(this.publishInProgress);
-    const selectedQuestionsData = _.reduce(selectedQuestions, (final, question) => {
+    const selectedQuestionsData = _.reduce(this.questionList, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
       final.author.push(_.get(question, 'author'));
       final.category.push(_.get(question, 'category'));
@@ -399,29 +313,33 @@ export class QuestionListComponent implements OnInit, OnChanges {
 
       forkJoin([updateBody, versionKey]).subscribe((response: any) => {
         const existingContentVersionKey = _.get(response[1], 'content.versionKey');
-        const options = {
-          url: `private/content/v3/update/${this.sessionContext.resourceIdentifier}`,
-          data: {
-            'request': {
-              'content': {
-                questions: questions,
-                body: JSON.stringify(response[0]),
-                versionKey: existingContentVersionKey,
-                'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
-                'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
-                // tslint:disable-next-line:max-line-length
-                name: this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`
-              }
-            }
+        const requestBody = {
+          'content': {
+            // questions: questions,
+            body: JSON.stringify(response[0]),
+            versionKey: existingContentVersionKey,
+            'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
+            'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
+            // tslint:disable-next-line:max-line-length
+            name: this.resourceName,
+            'programId': this.sessionContext.programId,
+            'program': this.sessionContext.program,
+            'plugins': [{
+              identifier: 'org.sunbird.questionunit.quml',
+              semanticVersion: '1.1'
+            }],
+            'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
+            'topic': this.sessionContext.topic ? [this.sessionContext.topic] : [] ,
+            'editorVersion': 3,
+            'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
+            'rejectComment' : ''
           }
         };
-        this.contentService.patch(options).pipe(catchError(err => {
-          const errInfo = { errorMsg: 'Resource updation failed' };
-          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-        }))
-          .subscribe((res) => {
+        this.updateContent(requestBody, this.sessionContext.resourceIdentifier)
+        .subscribe((res) => {
             if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
-              this.publishResource(res.result.content_id || res.result.node_id);
+              this.toasterService.success(this.resourceService.messages.smsg.m0060);
+              if (actionStatus === 'review') { this.sendForReview(); }
             }
           }, error => {
             this.publishInProgress = false;
@@ -431,6 +349,76 @@ export class QuestionListComponent implements OnInit, OnChanges {
     } else {
       this.publishInProgress = false;
       this.publishButtonStatus.emit(this.publishInProgress);
+    }
+  }
+
+  sendForReview() {
+    const reviewItemSet = this.itemsetService.reviewItemset(this.itemSetIdentifier);
+    const reviewContent = this.helperService.reviewContent(this.sessionContext.resourceIdentifier);
+    forkJoin([reviewItemSet, reviewContent]).subscribe((res: any) => {
+      const contentId = res[1].result.content_id;
+      if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
+        // tslint:disable-next-line:max-line-length
+        this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier, contentId )
+        .subscribe((data) => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0061);
+          this.programStageService.removeLastStage();
+          this.uploadedContentMeta.emit({
+            contentId: contentId
+          });
+        }, (err) => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0099);
+        });
+      }
+    }, (err) => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0099);
+     });
+  }
+
+  publichContent() {
+    this.helperService.publishContent(this.sessionContext.resourceIdentifier, this.userService.userProfile.userId)
+      .subscribe(res => {
+      const contentId = res.result.content_id;
+      this.showPublishModal = false;
+      if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
+        // tslint:disable-next-line:max-line-length
+        this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier, contentId )
+        .subscribe((data) => {
+          this.toasterService.success(this.resourceService.messages.smsg.m0063);
+          this.programStageService.removeLastStage();
+          this.uploadedContentMeta.emit({
+            contentId: contentId
+          });
+        });
+      }
+    }, (err) => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m00101);
+    });
+  }
+
+  requestChanges() {
+    if (this.FormControl.value.contentRejectComment) {
+      this.helperService.submitRequestChanges(this.sessionContext.resourceIdentifier, this.FormControl.value.contentRejectComment)
+      .subscribe(res => {
+        this.showRequestChangesPopup = false;
+        const contentId =  res.result.node_id || res.result.content_id;
+        if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
+          this.collectionHierarchyService.addResourceToHierarchy(
+            this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier, contentId
+          )
+          .subscribe((data) => {
+            this.toasterService.success(this.resourceService.messages.smsg.m0062);
+            this.programStageService.removeLastStage();
+            this.uploadedContentMeta.emit({
+              contentId: contentId
+            });
+          }, (err) => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m00100);
+          });
+        }
+      }, (err) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m00100);
+      });
     }
   }
 
@@ -447,80 +435,234 @@ export class QuestionListComponent implements OnInit, OnChanges {
       })
     );
   }
-  public selectQuestionCategory(questionCategory) {
-    this.sessionContext.questionType = questionCategory;
-    this.fetchQuestionWithRole();
-  }
-  publishResource(contentId) {
-    const requestBody = {
-      request: {
-        content: {
-          publisher: 'CBSE',
-          lastPublishedBy: this.userService.userid // '99606810-7d5c-4f1f-80b0-36c4a0b4415d'
-        }
-      }
-    };
-    const optionVal = {
-      url: `private/content/v3/publish/${contentId}`,
-      data: requestBody
-    };
-    this.contentService.post(optionVal).pipe(catchError(err => {
-      const errInfo = { errorMsg: 'Resource updation failed' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    }))
-      .subscribe(response => {
-        this.publishedResourceId = response.result.content_id || response.result.node_id || '';
-        // tslint:disable-next-line:max-line-length
-        this.updateHierarchyObj(contentId, this.resourceName || `${this.questionTypeName[this.sessionContext.questionType]} - ${this.sessionContext.topic}`);
-
-      }, (err) => {
-        this.publishInProgress = false;
-        this.publishButtonStatus.emit(this.publishInProgress);
-      });
-  }
-
-  updateHierarchyObj(contentId, name) {
-    const index = _.indexOf(_.keys(this.sessionContext.hierarchyObj.hierarchy), this.sessionContext.textBookUnitIdentifier);
-    if (index >= 0) {
-      this.sessionContext.hierarchyObj.hierarchy[this.sessionContext.textBookUnitIdentifier].children.push(contentId);
-      if (!_.has(this.sessionContext.hierarchyObj.hierarchy, contentId)) {
-        this.sessionContext.hierarchyObj.hierarchy[contentId] = {
-          'name': name,
-          'contentType': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestionSet' : 'PracticeQuestionSet',
-          'children': [],
-          'root': false
-        };
-      }
-    }
-    const requestBody = {
-      'request': {
-        'data': {
-          'nodesModified': {},
-          'hierarchy': this.sessionContext.hierarchyObj.hierarchy,
-          'lastUpdatedBy': this.userService.userid
-        }
-      }
-    };
-    const req = {
-      url: `private/content/v3/hierarchy/update`,
-      data: requestBody
-    };
-    this.contentService.patch(req).pipe(catchError(err => {
-      const errInfo = { errorMsg: 'Resource updation failed' };
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    }))
-      .subscribe((res) => {
-        this.showSuccessModal = true;
-        this.publishInProgress = false;
-        this.publishButtonStatus.emit(this.publishInProgress);
-        this.toasterService.success('content created & published successfully');
-      }, err => {
-        console.log(err);
-        this.toasterService.error(_.get(err, 'error.params.errmsg') || 'content update failed');
-      });
-  }
 
   public dismissPublishModal() {
     setTimeout(() => this.changeStage.emit('prev'), 0);
   }
+
+  openDeleteQuestionModal(identifier: string) {
+    this.deleteAssessmentItemIdentifie = identifier;
+    console.log(this.deleteAssessmentItemIdentifie);
+    this.showDeleteQuestionModal = true;
+  }
+
+  deleteQuestion() {
+    const request = {
+      url: `${this.configService.urlConFig.URLS.ASSESSMENT.RETIRE}/${this.deleteAssessmentItemIdentifie}` 
+    };
+
+    this.actionService.delete(request).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Question deletion failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }))
+    .subscribe((res) => {
+      if (res.responseCode === 'OK') {
+        this.showDeleteQuestionModal = false;
+        this.toasterService.success('Question deleted successfully');
+        this.fetchQuestionList();
+      }
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  public showResourceTitleEditor() {
+    this.showTextArea = true;
+    setTimeout(() => {
+      this.resourceTtlTextarea.nativeElement.focus();
+    }, 500);
+  }
+
+  public onResourceNameChange(event: any) {
+    const remainChar = this.resourceTitleLimit - this.resourceName.length;
+    if (remainChar <= 0 && event.keyCode !== 8) {
+      event.preventDefault();
+      return;
+    }
+    this.resourceName = this.removeSpecialChars(event.target.value);
+  }
+
+  private removeSpecialChars(text: any) {
+    if (text) {
+      const iChars = '!`~@#$^*+=[]\\\'{}|\"<>%';
+      for (let i = 0; i < text.length; i++) {
+        if (iChars.indexOf(text.charAt(i)) !== -1) {
+          this.toasterService.error(`Special character ${text.charAt(i)} is not allowed`);
+        }
+      }
+       // tslint:disable-next-line:max-line-length
+      text = text.replace(/[^\u0600-\u06FF\uFB50-\uFDFF\uFE70-\uFEFF\uFB50-\uFDFF\u0980-\u09FF\u0900-\u097F\u0D00-\u0D7F\u0A80-\u0AFF\u0C80-\u0CFF\u0B00-\u0B7F\u0A00-\u0A7F\u0B80-\u0BFF\u0C00-\u0C7F\w:&_\-.(\),\/\s]/g, '');
+      return text;
+    }
+  }
+
+  public onResourceNameBlur() {
+    if (this.resourceName.length > 0 && this.resourceName.length <= this.resourceTitleLimit) {
+      this.showTextArea = false;
+      const reqBody = {
+        'content': {
+            'versionKey': this.existingContentVersionKey,
+            'name' : this.resourceName
+        }
+      };
+      this.updateContent(reqBody, this.sessionContext.resourceIdentifier)
+      .subscribe((res) => {
+        if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
+          this.toasterService.success(this.resourceService.messages.smsg.m0060);
+        }
+      });
+    }
+  }
+
+  public createDefaultAssessmentItem() {
+    const request = {
+      url: `${this.configService.urlConFig.URLS.ASSESSMENT.CREATE}`,
+      data: this.prepareQuestionReqBody()
+    };
+
+    return this.actionService.post(request).pipe(map((response) => {
+      this.questionList.push(_.assign(request.data.request.assessment_item.metadata, {'identifier': _.get(response, 'result.node_id')}));
+      return response;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Default question creation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
+  }
+
+  prepareQuestionReqBody() {
+   // tslint:disable-next-line:prefer-const
+    let finalBody = {
+      'request': {
+        'assessment_item': {
+          'objectType': 'AssessmentItem',
+          'metadata': {
+            'itemType': 'UNIT',
+            'code': UUID.UUID(),
+            'subject': this.sessionContext.subject[0],
+            'qumlVersion': 1.0,
+            'qlevel': 'MEDIUM',
+            'channel': this.sessionContext.channel,
+            'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : [],
+            'language': [
+              'English'
+            ],
+            'program': this.sessionContext.program,
+            'medium': this.sessionContext.medium[0],
+            'templateId': 'NA',
+            'type': 'reference',
+            'gradeLevel': this.sessionContext.gradeLevel,
+            'creator': this.getUserName(),
+            'version': 3,
+            'framework': this.sessionContext.framework,
+            'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
+            'topic': this.sessionContext.topic ? this.sessionContext.topic : [],
+             // tslint:disable-next-line:max-line-length
+            'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
+            'programId': this.sessionContext.programId,
+            'board': this.sessionContext.board,
+            'body': '',
+            'media': [],
+            'author' : this.getUserName(),
+            'status' : 'Draft'
+          }
+        }
+      }
+    };
+
+    if (_.isEqual(this.sessionContext.questionType, 'mcq')) {
+      finalBody.request.assessment_item.metadata = _.assign(finalBody.request.assessment_item.metadata, this.getMcqQuestionBody());
+    } else {
+      finalBody.request.assessment_item.metadata = _.assign(finalBody.request.assessment_item.metadata, this.getReferenceQuestionBody());
+    }
+    return finalBody;
+  }
+
+  getMcqQuestionBody() {
+    return {
+      'editorState': {
+        'question': '',
+        'options' : []
+      },
+      'responseDeclaration': {
+        'responseValue': {
+          'cardinality': 'single',
+          'type': 'integer',
+          'correct_response': {
+            'value': ''
+          }
+        }
+      }
+    };
+  }
+
+  getReferenceQuestionBody() {
+    return {
+      'editorState': {
+        'question': '',
+        'answer' : ''
+      }
+    };
+  }
+
+  public createItemSet(questionId) {
+    const reqBody = {
+      'code': UUID.UUID(),
+      'name': this.resourceName,
+      'description': this.resourceName,
+      'language': [
+          'English'
+      ],
+      'owner': this.getUserName(),
+      'items': [
+        {
+          'identifier': questionId
+        }
+      ]
+    };
+
+    return this.itemsetService.createItemset(reqBody).pipe(map((response) => {
+      return response;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Itemsets creation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
+
+  }
+
+  public updateItemset(requestBody, identifier) {
+    const reqBody = requestBody;
+    return this.itemsetService.updateItemset(reqBody, identifier).pipe(map((response) => {
+      return response;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Content updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
+  }
+
+  public updateContent(reqBody, contentId) {
+    return this.helperService.updateContent(reqBody, contentId).pipe(map((response) => {
+      this.existingContentVersionKey = _.get(response, 'result.versionKey');
+      return response;
+    }, err => {
+      console.log(err);
+    }), catchError(err => {
+      const errInfo = { errorMsg: 'Content updation failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
+  }
+
+  getUserName() {
+    let creator = this.userService.userProfile.firstName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+    }
+    return creator;
+  }
+
 }
