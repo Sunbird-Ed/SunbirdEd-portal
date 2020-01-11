@@ -4,10 +4,10 @@
      {{contentData?.name}}
     </div>
     <div class="content-video__player__title__subtitle fxsmall mt-4">
-      <span class="mr-8">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
-      <span class="mr-8">*</span>
-      <span class="mr-8">{{contentData?.me_averageRating || '0'}}</span>
-      <span><i class="icon star outline"></i></span>
+      <span class="mr-8" *ngIf="contentData?.board">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
+      <span class="mr-8" *ngIf="contentData?.me_averageRating">*</span>
+      <span class="mr-8" *ngIf="contentData?.me_averageRating">{{contentData?.me_averageRating || '0'}}</span>
+      <span *ngIf="contentData?.me_averageRating"><i class="icon star outline"></i></span>
     </div>
   </div>
 
@@ -25,7 +25,7 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
   {{resourceService.frmelmnts?.btn?.download}}
 </div>
 <div class="sb-modal-content">
-  {{resourceService?.messages?.stmsg?.m0137}}
+  {{resourceService?.messages?.desktop?.stmsg?.m0142 }}
 </div>
 <div class="sb-modal-actions">
   <button  class="sb-btn sb-btn-normal sb-btn-primary"
@@ -53,7 +53,7 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
     {{resourceService?.frmelmnts?.lbl?.delete}}
   </button>
   <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
-    (click)="showDeleteModal = !showDeleteModal;">
+    (click)="logTelemetry('cancel-delete-content'); showDeleteModal = !showDeleteModal;">
     {{resourceService.frmelmnts?.btn?.cancel}}
   </button>
 </div>

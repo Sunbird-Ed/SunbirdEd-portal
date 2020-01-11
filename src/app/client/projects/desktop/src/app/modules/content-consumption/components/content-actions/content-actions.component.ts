@@ -1,15 +1,13 @@
-import { Location } from '@angular/common';
+import { TelemetryService } from '@sunbird/telemetry';
 import { actionButtons } from './actionButtons';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, OfflineCardService, NavigationHelperService } from '@sunbird/shared';
 import { PublicPlayerService } from '@sunbird/public';
 import { ContentManagerService, ConnectionService } from '@sunbird/offline';
-import { Component, OnInit, Input, AfterViewInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { IActionButton, ActionButtonType } from '@project-sunbird/common-consumption';
-import { takeUntil, mergeMap, mergeAll, map } from 'rxjs/operators';
-import { Subject, combineLatest, merge, of } from 'rxjs';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject} from 'rxjs';
 import * as _ from 'lodash-es';
-import { last } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-content-actions',
@@ -20,6 +18,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   @Input() contentData;
   @Input() showUpdate;
   @Output() deletedContent = new EventEmitter();
+  @Output() contentDownloaded = new EventEmitter();
   actionButtons = actionButtons;
   contentRatingModal = false;
   contentId;
@@ -39,7 +38,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     public resourceService: ResourceService,
     public toasterService: ToasterService,
     public offlineCardService: OfflineCardService,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService,
+    private telemetryService: TelemetryService
   ) { }
 
   ngOnInit() {
@@ -48,70 +48,77 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       this.checkDownloadStatus(data);
     });
     this.checkOnlineStatus();
-    this.changeContentStatus();
   }
 
   checkOnlineStatus() {
     this.connectionService.monitor().subscribe(isConnected => {
       this.isConnected = isConnected;
+        this.changeContentStatus(this.contentData);
     });
-  }
-
-  checkDownloadStatus(downloadListdata) {
-      this.contentData = this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
-      this.updateActionButton('download', _.isEqual(_.get(this.contentData, 'downloadStatus'), 'DOWNLOADED'),
-      _.get(this.contentData, 'downloadStatus'));
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.checkOnlineStatus();
     if (!changes.contentData.firstChange) {
       this.contentData = changes.contentData.currentValue;
-      this.changeContentStatus();
+      this.changeContentStatus(this.contentData);
     }
   }
 
-changeContentStatus() {
-  _.forEach(this.actionButtons, data => {
-    if (data.name === 'download') {
-      const disabled = this.getContentStatus();
-      this.updateActionButton(data.name, disabled, (disabled ? 'Downloaded' : 'Download'));
-    } else if (data.name !== 'rate') {
-      this.updateActionButton(data.name, !this.getContentStatus());
+  changeContentStatus(content) {
+    if (content) {
+      _.forEach(this.actionButtons, data => {
+        const disableButton = ['DOWNLOADED', 'DOWNLOADING', 'PAUSED', 'PAUSING'];
+        if (data.name === 'download') {
+          const downloadLabel = _.includes(disableButton, _.get(content, 'downloadStatus')) ? _.get(content, 'downloadStatus') :
+          _.get(content, 'desktopAppMetadata.isAvailable') ? 'Downloaded' : 'Download';
+          const status = ((_.isEqual(downloadLabel, 'Download') ? false : true) || !this.isConnected);
+          this.changeLabel(data, status, downloadLabel);
+        } else if (data.name === 'update') {
+          this.changeLabel(data, !(_.get(content, 'desktopAppMetadata.updateAvailable') && this.isConnected), data.name);
+        } else if (data.name !== 'rate') {
+          const disabled = !(_.get(content, 'desktopAppMetadata.isAvailable') || _.isEqual(_.get(content, 'downloadStatus'), 'DOWNLOADED'));
+          this.changeLabel(data, disabled, data.name);
+        }
+      });
     }
-  });
+  }
+
+  changeLabel(data, disabled, label) {
+      data.disabled = disabled;
+      data.label = _.capitalize(label);
+  }
+
+  checkDownloadStatus(downloadListdata) {
+    const content = this.playerService.updateDownloadStatus(downloadListdata, this.contentData);
+    this.contentData = content;
+    if (_.isEqual(_.get(content, 'downloadStatus'), 'DOWNLOADED')) {
+      this.contentDownloaded.emit(content);
+    }
+    this.changeContentStatus(content);
 }
-  updateActionButton(name, disabled, label?) {
-    const data: any = _.find(this.actionButtons, { name: name });
-    data.disabled = (data.name === 'update') ? !_.get(this.contentData, 'desktopAppMetadata.updateAvailable') : disabled;
-    data.label = _.isEmpty(label) ? _.capitalize(data.name) : _.capitalize(label);
-  }
-
-  getContentStatus () {
-    return _.get(this.contentData, 'desktopAppMetadata.isAvailable') || _.isEqual(_.get(this.contentData, 'downloadStatus'), 'DOWNLOADED');
-  }
 
   onActionButtonClick(event, content) {
     switch (event.data.name.toUpperCase()) {
       case 'UPDATE':
         this.updateContent(content);
-        // this.logTelemetry(event.data, 'update-content');
+        this.logTelemetry('update-content');
         break;
       case 'DOWNLOAD':
         this.isYoutubeContentPresent(content);
-        // this.logTelemetry(event.data, 'download-content');
+        this.logTelemetry('is-youtube-content');
         break;
       case 'DELETE':
         this.showDeleteModal = true;
-        // this.logTelemetry(event.data, 'delete-content');
+        this.logTelemetry('confirm-delete-content');
         break;
       case 'RATE':
         this.contentRatingModal = true;
-        // this.logTelemetry(event.data, 'rate-content');
+        this.logTelemetry('rate-content');
         break;
       case 'SHARE':
         this.exportContent(content);
-        // this.logTelemetry(event.data, 'share-content');
+        this.logTelemetry('share-content');
         break;
     }
   }
@@ -124,44 +131,55 @@ changeContentStatus() {
   }
 
   downloadContent(content) {
+    this.logTelemetry('download-content');
+    this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    this.changeContentStatus(content);
     this.contentManagerService.downloadContentId = content.identifier;
     this.contentManagerService.startDownload({}).subscribe(data => {
       this.contentManagerService.downloadContentId = '';
-      content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-      this.updateActionButton('download', true, _.get(content, 'downloadStatus'));
+      this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+      this.changeContentStatus(content);
     }, (error) => {
-      this.updateActionButton('download', false, _.get(content, 'downloadStatus'));
       this.contentManagerService.downloadContentId = '';
-      content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+      this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+      this.changeContentStatus(this.contentData);
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
 
   }
 
   updateContent(content) {
+    this.contentData.desktopAppMetadata['updateAvailable'] = false;
+    this.changeContentStatus(content);
     const request = !_.isEmpty(this.collectionId) ? { contentId: content.identifier, parentId: this.collectionId } :
       { contentId: this.contentId };
     this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-      this.contentData.desktopAppMetadata['updateAvailable'] = false;
-      this.updateActionButton('update', true);
+      this.changeContentStatus(content);
     }, (err) => {
-      this.updateActionButton('update', false);
+      this.changeContentStatus(content);
       const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}',
-        this.contentData.name) :
+        content.name) :
         this.resourceService.messages.fmsg.m0096;
       this.toasterService.error(errorMessage);
     });
   }
 
   deleteContent(content) {
+  this.logTelemetry('delete-content');
   const request = !_.isEmpty(this.collectionId) ? {request: {contents: [content.identifier], visibility: 'Parent'}} :
     {request: {contents: [content.identifier]}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
-    this.contentData.desktopAppMetadata['isAvailable'] = false ;
-    this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
-    this.deletedContent.emit(content.identifier);
+    if (!_.isEmpty(_.get(data, 'result.deleted'))) {
+      this.contentData.desktopAppMetadata['isAvailable'] = false ;
+      delete content['downloadStatus'];
+      this.changeContentStatus(content);
+      this.deletedContent.emit(content);
+      this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
+    } else {
+      this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteErrorMessage);
+    }
     }, err => {
+    this.changeContentStatus(content);
       this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteErrorMessage);
     });
   }
@@ -181,7 +199,19 @@ changeContentStatus() {
       });
   }
 
-  logTelemetry(event, id, extras?) {
+  logTelemetry(id) {
+      const interactData = {
+        context: {
+          env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+          cdata: []
+        },
+        edata: {
+          id: id,
+          type: 'click',
+          pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-content',
+        }
+      };
+      this.telemetryService.interact(interactData);
   }
 
 }

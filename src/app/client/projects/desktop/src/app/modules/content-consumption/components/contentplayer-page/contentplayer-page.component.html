@@ -9,11 +9,12 @@
         </button>
     </div>
 </div>
-<div *ngIf="tocPage" class="toc-content">
-    <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" (deletedContent)="reloadPage()" [isContentPresent]="isContentPresent"></app-content-player>
+
+<div *ngIf="tocPage" class="toc-content" [appTelemetryImpression]="telemetryImpression">
+    <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" [isContentPresent]="isContentPresent" [isContentDeleted]="isContentDeleted"></app-content-player>
     <app-content-metadata [contentData]="contentDetails"></app-content-metadata>
 </div>
-<div *ngIf="!tocPage" [appTelemetryImpression]="telemetryImpression" class="sb-single-resource">
+<div *ngIf="!tocPage" class="sb-single-resource" [appTelemetryImpression]="telemetryImpression">
     <div class="ui container sb-single-resource">
         <div class="sb-g-col-xs-12 sb-g-col-md-7 sb-g-col-lg-8">
             <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" (deletedContent)="goBack()"></app-content-player>
