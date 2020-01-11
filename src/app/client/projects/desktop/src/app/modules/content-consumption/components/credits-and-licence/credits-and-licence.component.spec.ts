@@ -2,9 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreditsAndLicenceComponent } from './credits-and-licence.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import { ResourceService } from 'src/app/modules/shared';
+import { ResourceService, SharedModule } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 describe('CreditsAndLicenceComponent', () => {
   let component: CreditsAndLicenceComponent;
@@ -25,7 +26,7 @@ describe('CreditsAndLicenceComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CreditsAndLicenceComponent],
-      imports: [CommonConsumptionModule, BrowserAnimationsModule],
+      imports: [CommonConsumptionModule, BrowserAnimationsModule, SharedModule.forRoot()],
       providers: [{ provide: ResourceService, useValue: resourceBundle }],
       schemas: [NO_ERRORS_SCHEMA]
     })

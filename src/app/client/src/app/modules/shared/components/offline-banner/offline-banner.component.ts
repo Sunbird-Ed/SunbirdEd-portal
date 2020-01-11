@@ -17,7 +17,7 @@ export class OfflineBannerComponent implements OnInit {
   showBanner: boolean;
 
   public pageId: string;
-
+  instance: string;
   /* list of states for which banner to be shown */
   public orgList = (<HTMLInputElement>document.getElementById('offlineDesktopAppTenant')) ?
     (<HTMLInputElement>document.getElementById('offlineDesktopAppTenant')).value.toLowerCase().split(',') : [];
@@ -38,6 +38,7 @@ export class OfflineBannerComponent implements OnInit {
 
   ngOnInit() {
     this.showOfflineBanner();
+    this.instance = _.upperCase(this.resourceService.instance);
   }
 
   /** determines whether to show the banner for offline desktop apk download or not */
@@ -51,7 +52,7 @@ export class OfflineBannerComponent implements OnInit {
 
   /* navigate to apk download page */
   navigateToDownloadApkPage() {
-    const path = this.slug ? this.slug + '/download/offlineapp' : 'download/offlineapp';
+    const path = this.slug ? this.slug + '/download/desktopapp' : 'download/desktopapp';
     this.router.navigate([path]);
   }
 
