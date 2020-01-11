@@ -39,6 +39,10 @@ export class ResourceReorderComponent implements OnInit {
     });
   }
 
+  onSelectBehaviour(e) {
+    e.stopPropagation();
+  }
+
   cancelMove() {
     this.moveEvent.emit({
       action: 'cancelMove',

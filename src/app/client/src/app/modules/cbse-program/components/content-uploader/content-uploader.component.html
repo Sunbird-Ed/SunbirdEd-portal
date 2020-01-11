@@ -187,7 +187,7 @@
                 <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
                 </sui-select-option>
               </sui-select>
-              <div *ngIf="disableFormField"><label>{{contentMetaData[field.code]}}</label></div>
+              <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
               <label class="warning-message" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
             </div>
           </div>
@@ -199,7 +199,7 @@
                     <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
                     </sui-select-option>
                   </sui-multi-select>
-                  <div *ngIf="disableFormField"><label>{{contentMetaData[field.code]}}</label></div>
+                  <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
                   <label class="warning-message" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
               </div>
           </div>
@@ -208,7 +208,7 @@
             <div [formGroupName]="i">
               <label class="font-weight-bold">{{field.label}}:</label>
                 <input *ngIf="!disableFormField" formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
-                <div *ngIf="disableFormField"><label>{{contentMetaData[field.code]}}</label></div>
+                <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
               <label class="warning-message" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
             </div>
           </div>
