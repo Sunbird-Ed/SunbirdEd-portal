@@ -36,6 +36,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public implecitFileters: Array<any>;
   isMediumClickable = false;
   showLoader = true;
+  selectedIndex = -1;
+  activeFilterIndex = -1;
   public state: InitialState = {
     stages: []
   };
@@ -84,6 +86,15 @@ export class CollectionComponent implements OnInit, OnDestroy {
     implicitFilter = this.collectionComponentConfig.config.filters.implicit,
     availableFileters = this.filterByCollection(implicitFilter, 'code', sharedcontext);
     return availableFileters;
+  }
+
+  setAndClearFilterIndex(index: number) {
+    if (this.activeFilterIndex === index && this.selectedIndex >= 0)  {
+      this.filterCollectionList(this.classes);
+      this.selectedIndex =  -1;
+    } else {
+      this.selectedIndex = this.activeFilterIndex  = index;
+    }
   }
 
   getSharedContextObjectProperty(property) {
