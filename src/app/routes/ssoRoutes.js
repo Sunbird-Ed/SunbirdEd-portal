@@ -159,7 +159,7 @@ module.exports = (app) => {
   });
 
   app.get('/v1/sso/success/redirect', async (req, res) => {
-    let userDetails, jwtPayload, redirectUrl, errType;
+    let userDetails, jwtPayload, redirectUrl, errType, redirectURIFromCookie;
     jwtPayload = req.session.jwtPayload;
     userDetails = req.session.userDetails;
     try {
@@ -169,7 +169,8 @@ module.exports = (app) => {
       }
       errType = 'CREATE_SESSION';
       await createSession(userDetails.userName, 'portal', req, res);
-      redirectUrl = jwtPayload.redirect_uri ? jwtPayload.redirect_uri : '/resources';
+      redirectURIFromCookie = _.get(req, 'cookies.SSO_REDIRECT_URI');
+      redirectUrl = redirectURIFromCookie ? decodeURI(redirectURIFromCookie) : (jwtPayload.redirect_uri ? jwtPayload.redirect_uri : '/resources');
       logger.info({
         msg: 'sso sign-in success callback, session created',
         additionalInfo: {
@@ -194,6 +195,7 @@ module.exports = (app) => {
       })
       logErrorEvent(req, errType, error);
     } finally {
+      redirectURIFromCookie && res.cookie('SSO_REDIRECT_URI', '', {expires: new Date(0)});
       res.redirect(redirectUrl || errorUrl);
     }
   })
