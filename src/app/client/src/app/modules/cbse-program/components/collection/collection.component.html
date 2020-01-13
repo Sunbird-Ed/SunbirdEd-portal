@@ -41,10 +41,17 @@
     </div>
   </div>
   <div  *ngIf="!objectKey(collectionList).length">
-    <app-no-result [data]="{ message: 'messages.stmsg.m0006'}"></app-no-result>
+    <app-no-result [data]="{ message: 'resourceService.messages.stmsg.m0006'}"></app-no-result>
   </div>
 </div>
 
 <div *ngIf="currentStage !== 'collectionComponent'">
   <app-chapter-list [chapterListComponentInput]="chapterListComponentInput" (selectedQuestionTypeTopic)="selectedQuestionTypeTopic"></app-chapter-list>
+</div>
+
+<div class="twelve wide column" *ngIf="!showLoader && showError">
+  <app-no-result [data]="{messageText: resourceService.messages.fmsg.m0004}"></app-no-result>
+</div>
+<div *ngIf='showLoader && !showError' class="ui container sb-chapter-list && currentStage === 'collectionComponent'">
+  <app-loader></app-loader>
 </div>
