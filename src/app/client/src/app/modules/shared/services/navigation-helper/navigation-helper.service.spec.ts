@@ -86,7 +86,7 @@ describe('NavigationHelperService', () => {
           }
         };
         spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
-        spyOn(service.router, 'navigate');
+        // spyOn(service.router, 'navigate');
         spyOn(service.utilService, 'updateSearchKeyword');
         service.goBack();
         expect(service.utilService.updateSearchKeyword).toHaveBeenCalledWith('test');
