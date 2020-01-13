@@ -22,6 +22,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() setImageLimit: any;
   @Output() editorDataOutput = new EventEmitter<any>();
   @Output() hasError = new EventEmitter<any>();
+  @Output() videoDataOutput = new EventEmitter<any>();
+  @Input() videoShow;
   public editorInstance: any;
   public isEditorFocused: boolean;
   public limitExceeded: boolean;
@@ -101,6 +103,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     }, this.editorConfig);
   }
   ngOnChanges() {
+    if(this.videoShow){
+      this.showVideoPicker = true;
+    } 
   }
 
   ngAfterViewInit() {
@@ -127,6 +132,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
    */
   dismissVideoPicker() {
     this.showVideoPicker = false;
+    this.videoShow = false;
   }
   dismissImageUploadModal() {
     this.showImagePicker = true;
@@ -276,23 +282,10 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     this.showImagePicker = false;
   }
 
-  addVideoInEditor(videoUrl, videoId) {
-    const src = this.getMediaOriginURL(videoUrl);
-    this.mediaobj = {
-      id: videoId,
-      type: 'video',
-      src: src,
-      baseUrl: this.baseURL
-    };
-    this.editorInstance.model.change(writer => {
-      const VideoElement = writer.createElement('video', {
-        'src': src,
-        'alt': videoId,
-        'data-asset-variable': videoId
-      });
-      this.editorInstance.model.insertContent(VideoElement, this.editorInstance.model.document.selection);
-    });
+  addVideoInEditor(data:any) {
+    let videoData = data;
     this.showVideoPicker = false;
+    this.videoDataOutput.emit(videoData);
   }
 
   /**
@@ -574,7 +567,7 @@ getAllVideos(offset, query) {
           const errInfo = { errorMsg: 'Video upload failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((response) => {
-          this.addVideoInEditor(response.result.content_url, response.result.node_id);
+          this.addVideoInEditor(response.result);
           this.showVideoPicker = false;
           this.showVideoUploadModal = false;
         });

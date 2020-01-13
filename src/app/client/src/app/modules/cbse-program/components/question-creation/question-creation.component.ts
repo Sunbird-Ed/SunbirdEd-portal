@@ -61,6 +61,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   selectedSolutionTypeIndex:string;
   solutionTypes:any;
   showSolutionDropDown = true;
+  videoSolutionName:string;
   videoSolutionData:any;
   editorState: any;
   solutionUUID: string;
@@ -86,6 +87,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   formValues: any;
   contentMetaData;
   disableFormField: boolean;
+  videoShow: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -167,14 +169,25 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     let index = _.findIndex(this.solutionTypes, function(sol:any) { return sol.value == data });
     this.selectedSolutionType = this.solutionTypes[index].type;
     if(this.selectedSolutionType == 'video'){
-      //call popup for getting video data
-      this.videoSolutionData = {'id':'do_12345',
-        'src':'/image/thumbnail.png',
-        'name': 'Solution video name'  
-      }
+      const showVideo = true;
+      this.videoShow = showVideo;
     }
     this.showSolutionDropDown = false;
   }
+  
+  videoDataOutput(event){
+    this.videoShow = false;
+    this.videoSolutionData = event;
+    this.videoSolutionName = event.name;
+    this.editorState.solution = event.identifier;
+    let videoMedia:any = {};
+    videoMedia.id = event.identifier;
+    videoMedia.src = event.downloadUrl;
+    videoMedia.type = 'video';
+    videoMedia.assetId = event.identifier;
+    this.mediaArr.push(videoMedia);
+  }
+
   getIndexOfSolution(){
     let index = _.findIndex(this.solutionTypes, function(sol:any) { return sol.value == this.selectedSolutionType });
     return index;

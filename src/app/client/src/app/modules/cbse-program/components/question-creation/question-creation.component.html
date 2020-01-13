@@ -13,7 +13,7 @@
             <div class="sb-field mcq-title mb-16">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
                 <div class="ckeditor-tool-container">
-                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')" [editorDataInput]="editorState.question" [editorId]="'question_editor'"></app-ckeditor-tool>
+                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')" [editorDataInput]="editorState.question" [editorId]="'question_editor'" (videoDataOutput)="videoDataOutput($event)" [videoShow]="videoShow"></app-ckeditor-tool>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
                             <div class="overlay-image"><i class="play circle icon"></i></div>
                         </div>
                         <div class="solution-media__desc ml-16">
-                            {{videoSolutionData.name}}
+                            {{videoSolutionName}}
                         </div>
                     </div>
                     <div class="mcq-checkbox-answer" style="margin-left: 92%;background-color: #F3F8FF;">
