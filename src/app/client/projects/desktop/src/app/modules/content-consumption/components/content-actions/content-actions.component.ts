@@ -28,6 +28,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   showDeleteModal = false;
   public isConnected;
   public unsubscribe$ = new Subject<void>();
+  @Input() objectRollUp: {} = {};
 
   constructor(
     public contentManagerService: ContentManagerService,
@@ -102,23 +103,23 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     switch (event.data.name.toUpperCase()) {
       case 'UPDATE':
         this.updateContent(content);
-        this.logTelemetry('update-content');
+        this.logTelemetry('update-content', content);
         break;
       case 'DOWNLOAD':
         this.isYoutubeContentPresent(content);
-        this.logTelemetry('is-youtube-content');
+        this.logTelemetry('is-youtube-content', content);
         break;
       case 'DELETE':
         this.showDeleteModal = true;
-        this.logTelemetry('confirm-delete-content');
+        this.logTelemetry('confirm-delete-content', content);
         break;
       case 'RATE':
         this.contentRatingModal = true;
-        this.logTelemetry('rate-content');
+        this.logTelemetry('rate-content', content);
         break;
       case 'SHARE':
         this.exportContent(content);
-        this.logTelemetry('share-content');
+        this.logTelemetry('share-content', content);
         break;
     }
   }
@@ -131,7 +132,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   downloadContent(content) {
-    this.logTelemetry('download-content');
+    this.logTelemetry('download-content', content);
     this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     this.changeContentStatus(this.contentData);
     this.contentManagerService.downloadContentId = content.identifier;
@@ -166,7 +167,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   deleteContent(content) {
-  this.logTelemetry('delete-content');
+  this.logTelemetry('delete-content', content);
   const request = !_.isEmpty(this.collectionId) ? {request: {contents: [content.identifier], visibility: 'Parent'}} :
     {request: {contents: [content.identifier]}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
@@ -200,16 +201,21 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       });
   }
 
-  logTelemetry(id) {
+  logTelemetry(id, content) {
       const interactData = {
         context: {
           env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
-          cdata: []
         },
         edata: {
           id: id,
           type: 'click',
           pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-content',
+        },
+        object: {
+          id: content['identifier'],
+          type: content['contentType'],
+          ver: `${content['pkgVersion']}`,
+          rollup: this.objectRollUp,
         }
       };
       this.telemetryService.interact(interactData);

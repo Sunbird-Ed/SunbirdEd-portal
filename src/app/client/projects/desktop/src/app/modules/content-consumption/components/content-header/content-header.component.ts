@@ -172,12 +172,16 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     const interactData = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
-        cdata: []
       },
       edata: {
         id: id,
         type: 'click',
         pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
+      },
+      object: {
+        id: this.collectionData['identifier'],
+        type: this.collectionData['contentType'],
+        ver: `${this.collectionData['pkgVersion']}` || '1.0',
       }
     };
     this.telemetryService.interact(interactData);

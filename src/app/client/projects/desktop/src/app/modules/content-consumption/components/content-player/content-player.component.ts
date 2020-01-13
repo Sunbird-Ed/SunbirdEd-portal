@@ -29,6 +29,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   @Input() isContentDeleted: Subject<any>;
   contentDeleted = false;
   @Input() isContentPresent = true;
+  @Input() objectRollUp: {} = {};
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
@@ -66,6 +67,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
     }
     this.contentRatingModal = false;
       if (!_.isEmpty(this.playerConfig)) {
+        console.log('playerConfig', this.playerConfig);
+        this.objectRollUp = _.get(this.playerConfig, 'context.objectRollup') || {};
         this.loadPlayer();
       }
   }

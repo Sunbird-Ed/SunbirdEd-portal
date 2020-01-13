@@ -127,7 +127,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   }
 
   tocCardClickHandler(event) {
-    console.log('tocCardClickHandlertocCardClickHandler', event);
+    console.log('tocCardClickHandler', event);
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
       this.isContentPresent = true;
       this.activeContent = event.data;
@@ -140,8 +140,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   logTelemetry(id, rollup?) {
       const interactData = {
         context: {
-          env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
-          cdata: []
+          env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content'
         },
         edata: {
           id: id,

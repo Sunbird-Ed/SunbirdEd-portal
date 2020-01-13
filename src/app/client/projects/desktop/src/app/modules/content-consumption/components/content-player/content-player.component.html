@@ -30,7 +30,7 @@
     </div>
 
 
-    <app-content-actions *ngIf="contentData" [contentData]="contentData" (deletedContent)="deleteContent($event)" (contentDownloaded)="checkContentDownloading($event)"></app-content-actions>
+    <app-content-actions *ngIf="contentData" [contentData]="contentData" (deletedContent)="deleteContent($event)" (contentDownloaded)="checkContentDownloading($event)" [objectRollUp]="objectRollUp"></app-content-actions>
 
   </section>
 </div>
