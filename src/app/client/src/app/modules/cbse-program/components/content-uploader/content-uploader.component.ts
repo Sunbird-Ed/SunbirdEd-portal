@@ -39,6 +39,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   public playerConfig;
   public showPreview = false;
   public resourceStatus;
+  public resourceStatusText;
   public config: any;
   showForm;
   uploader;
@@ -117,14 +118,15 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         endpoint: '/assets/uploads'
       },
       validation: {
-        allowedExtensions: (this.templateDetails.filesConfig.accepted.length === 3) ?
+        allowedExtensions: (!_.includes(this.templateDetails.filesConfig.accepted, ',')) ?
           this.templateDetails.filesConfig.accepted.split(' ') : this.templateDetails.filesConfig.accepted.split(', '),
         acceptFiles: this.templateDetails.mimeType ? this.templateDetails.mimeType.toString() : '',
         itemLimit: 1,
-        sizeLimit: 52428800 // 50 MB = 50 * 1024 * 1024 bytes
+        sizeLimit: _.toNumber(this.templateDetails.filesConfig.size) * 1024 * 1024  // 52428800  = 50 MB = 50 * 1024 * 1024 bytes
       },
       messages: {
-        sizeError: '{file} is too large, maximum file size is 50MB.'
+        sizeError: `{file} is too large, maximum file size is ${this.templateDetails.filesConfig.size} MB.`,
+        typeError: `Invalid content type (supported type: ${this.templateDetails.filesConfig.accepted})`
       },
       callbacks: {
         onStatusChange: () => {
@@ -132,6 +134,9 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         },
         onSubmit: () => {
           this.uploadContent();
+        },
+        onError: () => {
+          this.uploader.reset();
         }
       }
     });
@@ -141,6 +146,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   uploadContent() {
     if (this.uploader.getFile(0) == null && !this.contentURL) {
       this.toasterService.error('File is required to upload');
+      this.uploader.reset();
       return;
     }
     let fileUpload = false;
@@ -150,7 +156,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     }
     const mimeType = fileUpload ? this.detectMimeType(this.uploader.getName(0)) : this.detectMimeType(this.contentURL);
     if (!mimeType) {
-      this.toasterService.error('Invalid content type (supported type: pdf, epub, h5p, mp4, html-zip, webm)');
+      this.toasterService.error(`Invalid content type (supported type: ${this.templateDetails.filesConfig.accepted})`);
+      this.uploader.reset();
       return;
     } else {
       this.uploadByURL(fileUpload, mimeType);
@@ -234,7 +241,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     const option = {
       url: 'content/v3/read/' + contentId
     };
-    this.actionService.get(option).pipe(map(data => data.result.content), catchError(err => {
+    this.actionService.get(option).pipe(map((data: any) => data.result.content), catchError(err => {
       const errInfo = { errorMsg: 'Unable to read the Content, Please Try Again' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
@@ -245,6 +252,15 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       this.contentMetaData = res;
       this.editTitle = this.contentMetaData.name;
       this.resourceStatus = this.contentMetaData.status;
+      if (this.resourceStatus === 'Review') {
+        this.resourceStatusText = 'Review in Progress';
+      } else if (this.resourceStatus === 'Draft' && this.contentMetaData.prevStatus === 'Review') {
+        this.resourceStatusText = 'Rejected';
+      } else if (this.resourceStatus === 'Live') {
+        this.resourceStatusText = 'Published';
+      } else {
+        this.resourceStatusText = this.resourceStatus;
+      }
       this.playerConfig = this.playerService.getConfig(contentDetails);
       this.playerConfig.context.pdata.pid = 'cbse-program-portal';
       this.showPreview = this.contentMetaData.artifactUrl ? true : false;

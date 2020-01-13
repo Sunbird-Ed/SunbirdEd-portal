@@ -291,3 +291,17 @@
     -webkit-line-clamp: 2;
   }
 }
+
+.selected-board {
+  min-width: 88px;
+  border: 1px solid #024f9d;
+  border-radius: 3px;
+  min-height: 32px;
+  color: #024f9d;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  justify-content: center;
+}

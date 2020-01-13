@@ -1,6 +1,7 @@
-@import 'components/video';
+
 @import "variables";
 @import "mixins/mixins";
+@import 'components/video';
 
 .no-content-player{
     background: var(--black);

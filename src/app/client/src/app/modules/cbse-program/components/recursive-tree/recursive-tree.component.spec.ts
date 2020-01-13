@@ -10,6 +10,7 @@ describe('RecursiveTreeComponent', () => {
   
   let fixture: ComponentFixture<RecursiveTreeComponent>;
   let component: RecursiveTreeComponent;
+  let mockResponseData;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,6 +26,9 @@ describe('RecursiveTreeComponent', () => {
     component.programContext = recursiveTreeComponentInput.programContext;
     component.sessionContext = recursiveTreeComponentInput.sessionContext;
     fixture.detectChanges();
+    component.nodeMeta.subscribe((outputData) => {
+      mockResponseData = outputData;
+    });
   });
 
   it('should create', () => {
@@ -42,6 +46,7 @@ describe('RecursiveTreeComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'SampleAdd'}));
     });
   });
   
@@ -52,6 +57,7 @@ describe('RecursiveTreeComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'add'}));
     });
   });
 
@@ -62,48 +68,51 @@ describe('RecursiveTreeComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'add',collection: 'do_id=232323343434rff'}));
     });
   }));
 
   it('should execute deleteResource on Event, collection, content', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'deleteResource').and.callThrough();
-    component.deleteResource({},'do_id=sampleContent_do_id','do_id=232323343434rff');
+    component.deleteResource({},'sampleContent_do_id','do_id=232323343434rff');
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'delete', content:'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
     });
   });
 
   it('should execute moveResource on Event, collection, content', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'moveResource').and.callThrough();
-    component.moveResource({},'do_id=sampleContent_do_id','do_id=232323343434rff');
+    component.moveResource({},'sampleContent_do_id','do_id=232323343434rff');
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'beforeMove', content:'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
     });
   });
 
   it('should execute previewResource on Event, collection, content', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'previewResource').and.callThrough();
-    component.previewResource({},'do_id=sampleContent_do_id','do_id=232323343434rff');
+    component.previewResource({},'sampleContent_do_id','do_id=232323343434rff');
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'preview', content: 'sampleContent_do_id', collection:'do_id=232323343434rff'}));
     });
   });
 
   it('should execute menuClick on Event', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'menuClick').and.callThrough();
-    component.menuClick({stopPropagation() {return undefined;},sampleEvent:"clicked"});
+    component.menuClick({stopPropagation() {return null;},sampleEvent:"clicked"});
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
     });
   });
-
 });
 

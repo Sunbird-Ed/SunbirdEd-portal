@@ -13,7 +13,7 @@
         <i class="chevron down icon mr-16"></i>
         <div class="item d-flex flex-ai-center cursor-pointer width-100">
           <div class="sb-radio-btn-checkbox sb-radio-btn-primary width-100">
-            <input type="radio" id="{{mainUnit.identifier}}" value="{{mainUnit.identifier}}" name="mainUnit" [(ngModel)]="unitSelected">
+            <input (click)="onSelectBehaviour($event)" type="radio" id="{{mainUnit.identifier}}" value="{{mainUnit.identifier}}" name="mainUnit" [(ngModel)]="unitSelected">
             <label for="{{mainUnit.identifier}}">{{mainUnit.name}}</label>
           </div>
         </div>

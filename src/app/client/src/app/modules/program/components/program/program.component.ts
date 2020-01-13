@@ -6,11 +6,12 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { tap, map, first } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
-import { ICollectionComponentInput } from '../../../cbse-program/interfaces';
+import { ICollectionComponentInput, IdashboardComponentInput } from '../../../cbse-program/interfaces';
 import { InitialState, ISessionContext, IUserParticipantDetails } from '../../interfaces';
 import { ProgramStageService } from '../../services/';
 interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;
+  dashboardComponentInput?: IdashboardComponentInput;
 }
 @Component({
   selector: 'app-program-component',
@@ -157,6 +158,9 @@ export class ProgramComponent implements OnInit, OnDestroy {
         userProfile: this.userProfile,
         config: _.find(this.programDetails.config.components, { 'id': 'ng.sunbird.collection' }),
         programContext: this.programDetails
+      },
+      dashboardComponentInput: {
+        sessionContext: this.sessionContext
       }
     };
   }

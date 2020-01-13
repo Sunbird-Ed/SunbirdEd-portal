@@ -19,9 +19,15 @@
  .selectionField{
     float: right;
     margin-bottom: 10px;
+    margin-top: 15px;
+    margin-right: 13px;
 }    
 
 
-table.dataTable.no-footer {
-    border-bottom: 1px solid #ccc;
+.sb-card .sb-card-body{
+    height: auto;
+}
+
+th{
+    text-align: center;
 }

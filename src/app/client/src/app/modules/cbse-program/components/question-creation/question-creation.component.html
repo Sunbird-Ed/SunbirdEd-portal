@@ -2,131 +2,270 @@
     <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); initializeDropdown()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
     <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Preview</button>
 </div> -->
-<app-question-creation-header *ngIf="questionMetaData"  (buttonType)="buttonTypeHandler($event)" [rejectComment]="rejectComment"
-(questionStatus)="handleReviewrStatus($event)" [questionMetaData]="questionMetaData"
- (questionQueueStatus)="handleQuestionSelectionStatus($event)" [questionSelectionStatus]="questionSelectionStatus" [role]="role"></app-question-creation-header>
+<app-question-creation-header *ngIf="questionMetaData" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
 
 
-<form *ngIf="!showPreview" class="ui form mt-8" [formGroup]="questionMetaForm">
-  <div class="field">
-    <label>Question</label>
-    <label *ngIf="showFormError && [undefined, ''].includes(question)"
-        class="ui basic red error label pt-1">Fill Question</label>
-    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')"
-      [editorDataInput]="question" [editorId]="'question_editor'"></app-ckeditor-tool>
-  </div>
-  <div class="field">
-    <label>Answer</label>
-    <label *ngIf="showFormError && [undefined, ''].includes(editorState.solutions)"
-        class="ui basic red error label pt-1">Fill Answer</label>
-    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')"
-      [editorDataInput]="editorState.solutions" [editorId]="'answer_editor'"></app-ckeditor-tool>
-  </div>
-  <div class="ui two column grid width-100">
-      <div class="one column row" *ngIf="learningOutcomeOptions.length > 0">
-          <div class="column">
-              <label>Learning Outcome</label>
-              <div>
-                  <sui-select class="selection width-100" formControlName="learningOutcome" name="'learningOutcome'">
-                      <sui-select-option *ngFor="let option of learningOutcomeOptions" [value]="option.name"></sui-select-option>
-                    </sui-select>
-                    <label class="ui basic red error label pt-0"
-                      *ngIf="questionMetaForm.controls.learningOutcome.dirty && questionMetaForm.controls['learningOutcome'].errors">Please Select
-                      Learning Outcome</label>
-              </div>
-          </div>
-      </div>
-      <div class="column">
-        <label>Learning Level</label>
-        <div>
-          <sui-select class="selection width-100" formControlName="bloomsLevel" name="'bloomsLevel'">
-            <sui-select-option *ngFor="let option of bloomsLevelOptions" [value]="option"></sui-select-option>
-          </sui-select>
-          <label class="ui basic red error label pt-0"
-            *ngIf="questionMetaForm.controls.bloomsLevel.dirty && questionMetaForm.controls['bloomsLevel'].errors">Please Select
-            Learning Level </label>
-          </div>
-      </div>
-      <div class="one column row">
-      <div class="column">
-          <label>Authors</label> <br/>
-          <div class="ui small icon input">
-              <input #author_names type="text" [value]="(questionMetaData && questionMetaData.mode === 'edit') ? questionMetaData.data.author : userName">
+<form *ngIf="!showPreview" class="ui form mt-8 licence-form" [formGroup]="questionMetaForm">
+    <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode">
+        <label *ngIf="showFormError && [undefined, ''].includes(editorState.question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
+        <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(editorState.question)">
+            <div class="sb-field mcq-title mb-16">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+                <div class="ckeditor-tool-container">
+                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')" [editorDataInput]="editorState.question" [editorId]="'question_editor'"></app-ckeditor-tool>
+                </div>
             </div>
         </div>
-      </div>
 
-  </div>
-  <!-- <input type="button" (click)="createQuestion()"  value="Submit" class="ui button" /> -->
+        <label *ngIf="showFormError && [undefined, ''].includes(editorState.answer)" class="sb-label sb-label-table sb-label-error-0">Fill Answer</label>
+        <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(editorState.answer)">
+            <div class="sb-field mcq-title mb-16">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
+                <div class="ckeditor-tool-container">
+                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'answer')" [editorDataInput]="editorState.answer" [editorId]="'answer_editor'"></app-ckeditor-tool>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='licence-form__content' *ngIf="!isReadOnlyMode">
+        <div class="ui stackable grid licence-form__content__fields">
+            <div class="row">
+                <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <sui-multi-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+                          <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                          </sui-select-option>
+                        </sui-multi-select>
+                        <label class="sb-error-text" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                    </div>
+                </div>
+
+                <div class="six wide column mb-15" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <sui-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+                        <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                        </sui-select-option>
+                        </sui-select>
+                        <label class="sb-error-text" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                    </div>
+                </div>
+
+                <div class="six wide column mb-15" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <input formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
+                      <label class="sb-error-text" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Question Preview Section HTML -->
+    <div class="ui container" *ngIf="isReadOnlyMode">
+        <div class="ui stackable grid m-0 sb-bg-color-white">
+            <div class="row">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question">
+                            <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+                            <div class="ckeditor-tool__solution__body">
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.question | sanitizeHtml"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="row">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question mb-24">
+                            <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Answer</label>
+                            <div class="ckeditor-tool__solution__body">
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.answer | sanitizeHtml"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="row mb-0 p-0">
+          <div class="twelve wide column">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Solution</label>
+                <div class="ckeditor-tool__solution__body">
+                  <div class="solution-media p-16 d-flex flex-ai-center">
+                    <div class="solution-media__video relative position">
+                      <div class="overlay-image"><i class="play circle icon"></i></div>
+                    </div>
+                    <div class="solution-media__desc ml-16">
+                      Video Thumbnail to the left and
+                      the Video title goes here
+                    </div>
+                  </div>
+                  <p class="fs-0-785 p-16">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book.
+                  </p>
+                  <div class="mcq-checkbox-answer">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div> -->
+        </div>
+
+    </div>
+
+    <!-- Learning Outcome learning level author license Preview HTML -->
+    <div class='licence-form__content' *ngIf="isReadOnlyMode">
+        <div class="ui stackable grid licence-form__content__fields">
+            <div class="row">
+                <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+                    </div>
+                </div>
+
+                <div class="six wide column mb-15" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+                    </div>
+                </div>
+
+                <div class="six wide column mb-15" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
+                    <div [formGroupName]="i" class="sb-field">
+                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                                src="assets/images/Info.svg"></a></label>
+                        <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='practical-sb-buttons'>
+        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true">
+            {{ questionMetaData.data.rejectComment === '' ? 'Request Changes' : 'Edit Comments' }}
+        </button>
+    </div>
+
+    <p class="paragraph fs-0-785 pt-15 mt-0">
+        <strong>Disclaimer:</strong> By creating content on {{componentConfiguration.config.tenantName || 'SunbirdEd'}}, you consent to publish it under the Creative Commons License Framework. For details, refer
+        <a href="javascript:void(0);" class="links">https://creativecommons.org/licenses</a>. Please choose the applicable creative commons license you wish to apply to your content.
+    </p>    
 </form>
 
-<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker"
-  [size]="'normal'" class="sb-modal" [isFullScreen]="false" [mustScroll]="true" #modal>
-  <div class="sb-modal-header">Select Image</div>
-  <div class="sb-modal-content">
-    <sui-tabset>
-      <div class="ui tabular menu">
-        <a class="item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
-        <a class="item" (activate)="getAllImages(0)" suiTabHeader="2">All Image</a>
-      </div>
-      <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
-        [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
-        <div class="ui small middle aligned bordered images custom-image">
-          <img *ngFor="let data of myAssets" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
-        </div>
-      </div>
-      <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500"
-        [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
-        <div class="ui small middle aligned bordered images custom-image">
-          <img *ngFor="let data of allImages" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
-        </div>
-      </div>
-    </sui-tabset>
-  </div>
-  <div class="sb-modal-actions">
-    <div class="ui left floated buttons">
-      <button (click)="initiateImageUploadModal();" class="ui primary button">Upload and use</button>
+<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker" [size]="'normal'" class="sb-modal" [isFullScreen]="false" [mustScroll]="true" #modal>
+    <div class="sb-modal-header">Select Image</div>
+    <div class="sb-modal-content">
+        <sui-tabset>
+            <div class="ui tabular menu">
+                <a class="item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
+                <a class="item" (activate)="getAllImages(0)" suiTabHeader="2">All Image</a>
+            </div>
+            <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
+                <div class="ui small middle aligned bordered images custom-image">
+                    <img *ngFor="let data of myAssets" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+                </div>
+            </div>
+            <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
+                <div class="ui small middle aligned bordered images custom-image">
+                    <img *ngFor="let data of allImages" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+                </div>
+            </div>
+        </sui-tabset>
     </div>
-    <div class="ui buttons">
-      <button (click)="dismissImagePicker();" class="ui button">Cancel</button>
-      <!-- <div class="or"></div>
+    <div class="sb-modal-actions">
+        <div class="ui left floated buttons">
+            <button (click)="initiateImageUploadModal();" class="ui primary button">Upload and use</button>
+        </div>
+        <div class="ui buttons">
+            <button (click)="dismissImagePicker();" class="ui button">Cancel</button>
+            <!-- <div class="or"></div>
       <button (click)="dismissImagePicker();" class="ui primary button">Save</button> -->
+        </div>
     </div>
-  </div>
 </sui-modal>
 
-<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal"
-  [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" class="sb-modal" #modal3>
-  <div class="sb-modal-header">Upload and Use</div>
-  <div class="sb-modal-content">
-    <div class="ui grid">
-      <div class="one wide column"></div>
-      <div class="ten wide column">
-        <div>
-          <input (change)="uploadImage($event)" type="file" accept="image/jpeg, image/jpg, image/png" name="assetfile">
+<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" class="sb-modal" #modal3>
+    <div class="sb-modal-header">Upload and Use</div>
+    <div class="sb-modal-content">
+        <div class="ui grid">
+            <div class="one wide column"></div>
+            <div class="ten wide column">
+                <div>
+                    <input (change)="uploadImage($event)" type="file" accept="image/jpeg, image/jpg, image/png" name="assetfile">
+                </div>
+                <div class="ui info message">
+                    <p>Allowed file types are: jpeg, jpg, png</p>
+                    <p>Maximum allowed file size: 1 MB</p>
+                </div>
+                <div *ngIf="showErrorMsg" class="ui error message">
+                    <p>{{errorMsg}}</p>
+                </div>
+            </div>
+            <div class="one wide column"></div>
         </div>
-        <div class="ui info message">
-          <p>Allowed file types are: jpeg, jpg, png</p>
-          <p>Maximum allowed file size: 1 MB</p>
-        </div>
-        <div *ngIf="showErrorMsg" class="ui error message">
-          <p>{{errorMsg}}</p>
-        </div>
-      </div>
-      <div class="one wide column"></div>
     </div>
+    <div class="sb-modal-actions">
+        <div class="ui left floated buttons">
+            <button (click)="dismissImageUploadModal();" class="ui primary button">Back</button>
+        </div>
+        <div class="ui buttons">
+            <button (click)="dismissImageUploadModal();" class="ui button">Cancel</button>
+            <!-- <div class="or"></div>
+      <button (click)="dismissImageUploadModal();" class="ui primary button">Upload and use</button> -->
+        </div>
+    </div>
+</sui-modal>
+
+<sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="showRequestChangesPopup = false; rejectComment = ''">
+  <div class="sb-modal-header">
+      Add Review Comments
+  </div>
+  <form #reuestChangeForm="ngForm" class="ui form">
+  <div class="sb-modal-content">
+      <div class="sb-field-group">
+          <label>Enter your comments</label>
+          <div class="sb-field relative">
+            <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
+            <span class="characters-left">{{ commentCharLimit - rejectComment.length }} Characters left</span>
+          </div>
+          <div>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="rejectComment.length > commentCharLimit">Comments should be maximum {{commentCharLimit}} characters.</label>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="reuestChangeForm.form.controls.rejectComment?.touched && !reuestChangeForm.form.valid">Fill comments </label>
+          </div>
+      </div>
   </div>
   <div class="sb-modal-actions">
-    <div class="ui left floated buttons">
-      <button (click)="dismissImageUploadModal();" class="ui primary button">Back</button>
-    </div>
-    <div class="ui buttons">
-      <button (click)="dismissImageUploadModal();" class="ui button">Cancel</button>
-      <!-- <div class="or"></div>
-      <button (click)="dismissImageUploadModal();" class="ui primary button">Upload and use</button> -->
-    </div>
+    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [disabled]="rejectComment.length > commentCharLimit" [ngClass]="{'sb-btn-primary': reuestChangeForm.form.valid, 'sb-btn-disabled': !reuestChangeForm.form.valid || rejectComment.length > commentCharLimit}"   (click)="requestChanges()"> Submit Review </button>
   </div>
+</form>
 </sui-modal>
 
-
-<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext"> </app-question-preview>
+<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
+</app-question-preview>

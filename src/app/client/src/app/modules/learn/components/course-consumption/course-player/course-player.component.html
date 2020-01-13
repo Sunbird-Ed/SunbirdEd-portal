@@ -79,7 +79,7 @@
                                 <p class="mb-5" *ngIf="courseHierarchy && !(courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']) && courseHierarchy.license">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
                                 <p class="mb-5" *ngIf="courseHierarchy && courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']">
                                     <span>{{resourceService.frmelmnts.lbl.licenseTerms}}:</span>
-                                    {{courseHierarchy.licenseDetails['name']}} <br> {{courseHierarchy.licenseDetails['description']}} <br>
+                                    {{courseHierarchy.licenseDetails['name']}} <br>
                                     <span class="licenseTag">
                                         For details - <a href="{{courseHierarchy.licenseDetails['url']}}" target="_blank">{{courseHierarchy.licenseDetails['url']}}</a>
                                     </span>

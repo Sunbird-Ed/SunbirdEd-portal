@@ -48,6 +48,7 @@
     align-items: center;
     border-radius: 0;
     font-size: $font-size-sm;
+    position: relative;
 
     &:last-child {
       border-bottom: 0px;
@@ -61,8 +62,19 @@
 
   .item-name {
     padding: $base-block-space*3 $base-block-space*2 $base-block-space*3 $base-block-space*5;
+    flex: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
+  .item-status {
+    flex: 1;
+  }
+
+  .item-dropdown {
+    right: 40px;
+  }
 }
 
 [dir="rtl"] {
