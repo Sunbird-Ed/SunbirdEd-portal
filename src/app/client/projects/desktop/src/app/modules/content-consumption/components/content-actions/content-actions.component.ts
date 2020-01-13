@@ -133,12 +133,12 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   downloadContent(content) {
     this.logTelemetry('download-content');
     this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-    this.changeContentStatus(content);
+    this.changeContentStatus(this.contentData);
     this.contentManagerService.downloadContentId = content.identifier;
     this.contentManagerService.startDownload({}).subscribe(data => {
       this.contentManagerService.downloadContentId = '';
       this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-      this.changeContentStatus(content);
+      this.changeContentStatus(this.contentData);
     }, (error) => {
       this.contentManagerService.downloadContentId = '';
       this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
@@ -154,9 +154,10 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     const request = !_.isEmpty(this.collectionId) ? { contentId: content.identifier, parentId: this.collectionId } :
       { contentId: this.contentId };
     this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.changeContentStatus(content);
+      this.changeContentStatus(this.contentData);
     }, (err) => {
-      this.changeContentStatus(content);
+      this.contentData.desktopAppMetadata['updateAvailable'] = true;
+      this.changeContentStatus(this.contentData);
       const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}',
         content.name) :
         this.resourceService.messages.fmsg.m0096;
@@ -171,15 +172,15 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.contentManagerService.deleteContent(request).subscribe(data => {
     if (!_.isEmpty(_.get(data, 'result.deleted'))) {
       this.contentData.desktopAppMetadata['isAvailable'] = false ;
-      delete content['downloadStatus'];
-      this.changeContentStatus(content);
-      this.deletedContent.emit(content);
+      delete this.contentData['downloadStatus'];
+      this.changeContentStatus(this.contentData);
+      this.deletedContent.emit(this.contentData);
       this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
     } else {
       this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteErrorMessage);
     }
     }, err => {
-    this.changeContentStatus(content);
+    this.changeContentStatus(this.contentData);
       this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteErrorMessage);
     });
   }
