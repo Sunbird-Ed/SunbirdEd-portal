@@ -140,7 +140,8 @@ export class TocPageComponent implements OnInit, OnDestroy {
   logTelemetry(id, rollup?) {
       const interactData = {
         context: {
-          env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content'
+          env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+          cdata: []
         },
         edata: {
           id: id,
