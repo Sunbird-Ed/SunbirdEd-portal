@@ -10,7 +10,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule } from '@angular/router';
 import {contentHeaderData} from './content-header.component.spec.data';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-xdescribe('ContentHeaderComponent', () => {
+describe('ContentHeaderComponent', () => {
   let component: ContentHeaderComponent;
   let fixture: ComponentFixture<ContentHeaderComponent>;
 
