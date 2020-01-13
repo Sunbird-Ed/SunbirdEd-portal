@@ -94,7 +94,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   isYoutubeContentPresent(collection) {
-    this.logTelemetry('is-youtube-content');
+    this.logTelemetry('is-youtube-in-collection');
     this.showModal = this.offlineCardService.isYoutubeContent(collection);
     if (!this.showModal) {
       this.downloadCollection(collection);

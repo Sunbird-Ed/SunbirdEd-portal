@@ -151,7 +151,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
         object: {
           id: this.collectionId,
           type: this.contentType,
-          ver: `${this.collectionData['version']}`,
+          ver: `${this.collectionData['pkgVersion']}`,
           rollup: rollup
         }
       };

@@ -33,7 +33,7 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
     {{resourceService.frmelmnts?.btn?.download}}
   </button>
   <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
-    (click)="showModal = !showModal;">
+    (click)="logTelemetry('cancel-download-content', contentData); showModal = !showModal;">
     {{resourceService.frmelmnts?.btn?.cancel}}
   </button>
 </div>

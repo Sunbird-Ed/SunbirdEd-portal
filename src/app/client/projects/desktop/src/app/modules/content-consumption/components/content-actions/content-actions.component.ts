@@ -153,7 +153,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.contentData.desktopAppMetadata['updateAvailable'] = false;
     this.changeContentStatus(content);
     const request = !_.isEmpty(this.collectionId) ? { contentId: content.identifier, parentId: this.collectionId } :
-      { contentId: this.contentId };
+      { contentId: content.identifier };
     this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.changeContentStatus(this.contentData);
     }, (err) => {
