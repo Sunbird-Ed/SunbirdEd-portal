@@ -1,5 +1,3 @@
-
-
 export const collectionComponentInput = {
   'config': {
     'author': 'Venkat',
@@ -1778,6 +1776,7 @@ export const collectionComponentInput = {
       'approvedDate': null,
       'channel': 'ROOT_ORG',
       'communityId': null,
+      // tslint:disable-next-line:max-line-length
       'contactDetail': '[{\'phone\':\'213124234234\',\'email\':\'test@test.com\'},{\'phone\':\'+91213124234234\',\'email\':\'test1@test.com\'}]',
       'createdBy': null,
       'createdDate': null,
@@ -1906,6 +1905,7 @@ export const programSession =  {
   ],
   'data': {},
   'config': {
+    // tslint:disable-next-line:max-line-length
     '_comments': 'These fields are common for any program. Based on program these fields can be removed. Has to define list of mandatory fields & options fields',
     'slug': 'https://api.sunbird.org/',
     'loginReqired': true
@@ -2880,6 +2880,7 @@ export const searchCollectionResponse = [{
         'lastUpdatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
         'lastUpdatedOn': '2020-01-08T17:42:00.318+0000',
         'license': 'CC BY-NC 4.0',
+        // tslint:disable-next-line:max-line-length
         'licenseterms': 'By creating and uploading content on DIKSHA, you consent to publishing this content under the Creative Commons Framework, specifically under the CC-BY-SA 4.0 license.',
         'lockKey': '1dcf80a7-2c0a-4aec-99da-ef3dbce16976',
         'mediaType': 'content',
@@ -2918,6 +2919,7 @@ export const searchCollectionResponse = [{
         'IL_SYS_NODE_TYPE': 'DATA_NODE',
         'IL_UNIQUE_ID': 'do_11281198579627622415.img',
         'SYS_INTERNAL_LAST_UPDATED_ON': '2019-07-24T12:38:52.798+0000',
+        // tslint:disable-next-line:max-line-length
         'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11281198579627622415/artifact/download_1560444536376.thumb.jpeg',
         'appId': 'dev.sunbird.portal',
         'audience': [
@@ -2963,6 +2965,7 @@ export const searchCollectionResponse = [{
         'depth': 0,
         'description': 'Enter description for TextBook',
         'dialcodeRequired': 'No',
+        // tslint:disable-next-line:max-line-length
         'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11281198579627622415/sh-cbse-book_1563971931660_do_11281198579627622415_3.0_spine.ecar',
         'framework': 'NCFCOPY',
         'gradeLevel': [
@@ -3009,6 +3012,7 @@ export const searchCollectionResponse = [{
           'createdBy'
         ],
         'pkgVersion': 3,
+        // tslint:disable-next-line:max-line-length
         'posterImage': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11278316163941171213/artifact/download_1560444536376.jpeg',
         'prevState': 'Draft',
         'program': 'CBSE',
@@ -3020,14 +3024,17 @@ export const searchCollectionResponse = [{
         'subject': [
           'Hindi'
         ],
+        // tslint:disable-next-line:max-line-length
         'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11281198579627622415/artifact/do_11281198579627622415_toc.json',
         'totalCompressedSize': 1578422,
         'variants': {
           'online': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11281198579627622415/sh-cbse-book_1563971932321_do_11281198579627622415_3.0_online.ecar',
             'size': 5557
           },
           'spine': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11281198579627622415/sh-cbse-book_1563971931660_do_11281198579627622415_3.0_spine.ecar',
             'size': 34885
           }
@@ -3041,6 +3048,7 @@ export const searchCollectionResponse = [{
         'IL_SYS_NODE_TYPE': 'DATA_NODE',
         'IL_UNIQUE_ID': 'do_11281198579627622415',
         'SYS_INTERNAL_LAST_UPDATED_ON': '2019-07-24T12:38:52.798+0000',
+        // tslint:disable-next-line:max-line-length
         'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11281198579627622415/artifact/download_1560444536376.thumb.jpeg',
         'appId': 'dev.sunbird.portal',
         'audience': [
@@ -3078,6 +3086,7 @@ export const searchCollectionResponse = [{
         'depth': 0,
         'description': 'Enter description for TextBook',
         'dialcodeRequired': 'No',
+        // tslint:disable-next-line:max-line-length
         'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11281198579627622415/sh-cbse-book_1563971931660_do_11281198579627622415_3.0_spine.ecar',
         'framework': 'NCFCOPY',
         'gradeLevel': [
@@ -3128,6 +3137,7 @@ export const searchCollectionResponse = [{
           'createdBy'
         ],
         'pkgVersion': 3,
+        // tslint:disable-next-line:max-line-length
         'posterImage': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11278316163941171213/artifact/download_1560444536376.jpeg',
         'prevState': 'Draft',
         'program': 'CBSE',
@@ -3139,14 +3149,17 @@ export const searchCollectionResponse = [{
         'subject': [
           'Hindi'
         ],
+        // tslint:disable-next-line:max-line-length
         'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11281198579627622415/artifact/do_11281198579627622415_toc.json',
         'totalCompressedSize': 1578422,
         'variants': {
           'online': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11281198579627622415/sh-cbse-book_1563971932321_do_11281198579627622415_3.0_online.ecar',
             'size': 5557
           },
           'spine': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11281198579627622415/sh-cbse-book_1563971931660_do_11281198579627622415_3.0_spine.ecar',
             'size': 34885
           }
@@ -3266,6 +3279,7 @@ export const searchCollectionResponse = [{
         'depth': 0,
         'description': 'Enter description for TextBook',
         'dialcodeRequired': 'No',
+        // tslint:disable-next-line:max-line-length
         'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639029040660481129/duurvaa-1hindhi_1566306817831_do_1127639029040660481129_2.0_spine.ecar',
         'framework': 'NCFCOPY',
         'gradeLevel': [
@@ -3327,14 +3341,17 @@ export const searchCollectionResponse = [{
         'subject': [
           'Hindi'
         ],
+        // tslint:disable-next-line:max-line-length
         'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639029040660481129/artifact/do_1127639029040660481129_toc.json',
         'totalCompressedSize': 14319606,
         'variants': {
           'online': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639029040660481129/duurvaa-1hindhi_1566306818423_do_1127639029040660481129_2.0_online.ecar',
             'size': 8267
           },
           'spine': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639029040660481129/duurvaa-1hindhi_1566306817831_do_1127639029040660481129_2.0_spine.ecar',
             'size': 147385
           }
@@ -3390,6 +3407,7 @@ export const searchCollectionResponse = [{
         'depth': 0,
         'description': 'Enter description for TextBook',
         'dialcodeRequired': 'No',
+        // tslint:disable-next-line:max-line-length
         'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639029040660481129/duurvaa-1hindhi_1566306817831_do_1127639029040660481129_2.0_spine.ecar',
         'framework': 'NCFCOPY',
         'gradeLevel': [
@@ -3455,14 +3473,17 @@ export const searchCollectionResponse = [{
         'subject': [
           'Hindi'
         ],
+        // tslint:disable-next-line:max-line-length
         'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639029040660481129/artifact/do_1127639029040660481129_toc.json',
         'totalCompressedSize': 14319606,
         'variants': {
           'online': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639029040660481129/duurvaa-1hindhi_1566306818423_do_1127639029040660481129_2.0_online.ecar',
             'size': 8267
           },
           'spine': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639029040660481129/duurvaa-1hindhi_1566306817831_do_1127639029040660481129_2.0_spine.ecar',
             'size': 147385
           }
@@ -3476,6 +3497,7 @@ export const searchCollectionResponse = [{
         'IL_SYS_NODE_TYPE': 'DATA_NODE',
         'IL_UNIQUE_ID': 'do_1127639035982479361130.img',
         'SYS_INTERNAL_LAST_UPDATED_ON': '2019-08-26T09:41:20.297+0000',
+        // tslint:disable-next-line:max-line-length
         'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639035982479361130/artifact/photo-1457383457550-47a5cfdbab17_1551955977794.thumb.jpg',
         'appId': 'local.sunbird.portal',
         'audience': [
@@ -3702,6 +3724,7 @@ export const searchCollectionResponse = [{
         'depth': 0,
         'description': 'Enter description for TextBook',
         'dialcodeRequired': 'No',
+        // tslint:disable-next-line:max-line-length
         'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639035982479361130/baal-raamkthaahindhi_1566812477786_do_1127639035982479361130_6.0_spine.ecar',
         'framework': 'NCFCOPY',
         'gradeLevel': [
@@ -3767,6 +3790,7 @@ export const searchCollectionResponse = [{
           'createdFor'
         ],
         'pkgVersion': 6,
+        // tslint:disable-next-line:max-line-length
         'posterImage': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_112713623365697536111/artifact/photo-1457383457550-47a5cfdbab17_1551955977794.jpg',
         'prevState': 'Review',
         'programId': '31ab2990-7892-11e9-8a02-93c5c62c03f1',
@@ -3778,14 +3802,17 @@ export const searchCollectionResponse = [{
         'subject': [
           'Hindi'
         ],
+        // tslint:disable-next-line:max-line-length
         'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639035982479361130/artifact/do_1127639035982479361130_toc.json',
         'totalCompressedSize': 16777713,
         'variants': {
           'online': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639035982479361130/baal-raamkthaahindhi_1566812479755_do_1127639035982479361130_6.0_online.ecar',
             'size': 18461
           },
           'spine': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639035982479361130/baal-raamkthaahindhi_1566812477786_do_1127639035982479361130_6.0_spine.ecar',
             'size': 387471
           }
@@ -3796,6 +3823,7 @@ export const searchCollectionResponse = [{
       },
       {
         'SYS_INTERNAL_LAST_UPDATED_ON': '2019-08-26T09:41:20.297+0000',
+        // tslint:disable-next-line:max-line-length
         'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639035982479361130/artifact/photo-1457383457550-47a5cfdbab17_1551955977794.thumb.jpg',
         'appId': 'dev.sunbird.portal',
         'audience': [
@@ -3895,6 +3923,7 @@ export const searchCollectionResponse = [{
         'depth': 0,
         'description': 'Enter description for TextBook',
         'dialcodeRequired': 'No',
+        // tslint:disable-next-line:max-line-length
         'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639035982479361130/baal-raamkthaahindhi_1566812477786_do_1127639035982479361130_6.0_spine.ecar',
         'framework': 'NCFCOPY',
         'gradeLevel': [
@@ -3964,6 +3993,7 @@ export const searchCollectionResponse = [{
           'createdFor'
         ],
         'pkgVersion': 6,
+        // tslint:disable-next-line:max-line-length
         'posterImage': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_112713623365697536111/artifact/photo-1457383457550-47a5cfdbab17_1551955977794.jpg',
         'prevState': 'Review',
         'programId': '31ab2990-7892-11e9-8a02-93c5c62c03f1',
@@ -3975,14 +4005,17 @@ export const searchCollectionResponse = [{
         'subject': [
           'Hindi'
         ],
+        // tslint:disable-next-line:max-line-length
         'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639035982479361130/artifact/do_1127639035982479361130_toc.json',
         'totalCompressedSize': 16777713,
         'variants': {
           'online': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639035982479361130/baal-raamkthaahindhi_1566812479755_do_1127639035982479361130_6.0_online.ecar',
             'size': 18461
           },
           'spine': {
+            // tslint:disable-next-line:max-line-length
             'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1127639035982479361130/baal-raamkthaahindhi_1566812477786_do_1127639035982479361130_6.0_spine.ecar',
             'size': 387471
           }

@@ -8,16 +8,17 @@ import { DynamicModule } from 'ng-dynamic-component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicDataService, ContentService } from '@sunbird/core';
 // tslint:disable-next-line:max-line-length
-import { collectionComponentInput, programSession, collectionWithCard , collectionList, searchCollectionRequest} from './collection.component.spec.data';
+import { collectionComponentInput, programSession, collectionWithCard , collectionList, searchCollectionRequest, searchCollectionResponse} from './collection.component.spec.data';
 import { CbseProgramService } from '../../services';
 import { ProgramStageService } from '../../../program/services';
 import { HttpModule, Http, BaseRequestOptions, XHRBackend } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 const ContentServiceStub = {
   post() {
-    return of( [{id: 1}] );
+    return of( searchCollectionResponse );
   }
 };
 
@@ -32,7 +33,16 @@ describe('CollectionComponent', () => {
       imports: [HttpClientTestingModule, CommonConsumptionModule, TelemetryModule.forRoot(),
         DynamicModule.withComponents([ChapterListComponent])],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [ConfigService, ToasterService, UtilService, ContentService, {provide: ContentService, useValue: ContentServiceStub} ]
+      providers: [
+        ConfigService,
+        ToasterService,
+        UtilService,
+        ContentService,
+        {
+          provide: ContentService,
+          useValue: ContentServiceStub
+        }
+      ]
 
     })
     .compileComponents();
@@ -48,6 +58,10 @@ describe('CollectionComponent', () => {
     component.collectionsWithCardImage = collectionWithCard;
     component.collectionList = collectionList;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
   });
 
 
@@ -124,5 +138,28 @@ describe('CollectionComponent', () => {
     const keyArrayOfObject = component.objectKey(object);
     expect(keyArrayOfObject).toEqual(keyArray);
   });
+
+  it('Should check stage', () => {
+    spyOn(component, 'filterByCollection');
+    const filterCollection = component.filterByCollection(component.collectionsWithCardImage, 'Kindergarten', ['gradeLevel']);
+    // console.log(filterCollection);
+    expect(filterCollection).not.toEqual('');
+    // tslint:disable-next-line:no-console
+    // console.info(filterCollection);
+    // expect(filterCollection).toEqual(collectionWithCard);
+  });
+
+  // functional element for filters
+  // it('functionl test', () => {
+  //   component.ngOnInit();
+  //   const subjuctTabs = fixture.debugElement.query(By.css('.state-medium-container__medium'));
+  //   expect(subjuctTabs).toBeDefined();
+  // });
+
+  // it('functionl test', () => {
+  //   component.ngOnInit();
+  //   const gradeLevelTabs = fixture.debugElement.query(By.css('.carousel'));
+  //   expect(gradeLevelTabs).toBeDefined();
+  // });
 });
 

@@ -226,6 +226,13 @@
     "ASSET": {	
       "CREATE": "content/v3/create",	
       "UPDATE": "content/v3/upload"	
+    },
+    "ITEMSET": {
+      "CREATE": "itemset/v3/create",
+      "UPDATE": "itemset/v3/update",
+      "READ": "itemset/v3/read",
+      "RETIRE": "itemset/v3/retire",
+      "REVIEW": "itemset/v3/review"
     }
   }
 }

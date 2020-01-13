@@ -1,6 +1,6 @@
 import { ISessionContext } from './index';
 
 
-export interface IdashboardComponentInput {
+export interface IDashboardComponentInput {
   sessionContext?: ISessionContext;
 }

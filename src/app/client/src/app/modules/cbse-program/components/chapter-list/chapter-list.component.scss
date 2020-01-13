@@ -196,9 +196,9 @@
   }
 
   dt {
-    font-size: $base-block-space*3;
+    font-size: 20px;
     color: $gray-800;
-    margin-bottom: $base-block-space;
+    // margin-bottom: $base-block-space;
   }
 
   &.active {
@@ -210,7 +210,7 @@
   }
 
   dd {
-    font-size: $font-size-sm;
+    font-size: 10px;
   }
 }
 
@@ -226,4 +226,12 @@
       height: 100%;
     }
   }
+}
+
+.dot-separator {
+  margin: 0 8px;
+  background: #999;
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
 }
