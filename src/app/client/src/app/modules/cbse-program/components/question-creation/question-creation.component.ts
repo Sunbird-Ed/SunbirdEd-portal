@@ -88,6 +88,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   contentMetaData;
   disableFormField: boolean;
   videoShow: boolean;
+  componentConfiguration: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -208,6 +209,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
   }
   ngOnChanges() {
+    this.componentConfiguration =  _.get(this.sessionContext, 'practiceSetConfig');
     if (this.initialized) {
       this.previewData = this.questionMetaData;
       this.editorConfig = { 'mode': 'create' };
@@ -476,8 +478,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
     if (this.questionMetaData) {
       // tslint:disable-next-line:max-line-length
-      const compConfiguration = _.get(this.sessionContext, 'compConfiguration');
-      this.formConfiguration = compConfiguration.config.formConfiguration;
+      this.formConfiguration = this.componentConfiguration.config.formConfiguration;
       this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
       this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
       this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});

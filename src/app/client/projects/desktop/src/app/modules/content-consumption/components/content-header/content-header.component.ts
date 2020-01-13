@@ -61,9 +61,9 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     };
     this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-      this.collectionData.showUpdate = false;
+      this.showUpdate = false;
     }, (err) => {
-      this.collectionData.showUpdate = true;
+      this.showUpdate = true;
       const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}', collection.name) :
         this.resourceService.messages.fmsg.m0096;
       this.toasterService.error(errorMessage);
