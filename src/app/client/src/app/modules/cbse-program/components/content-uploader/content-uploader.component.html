@@ -69,12 +69,12 @@
           </li>
         </ul>
         <div id="qq-upload-actions" class="upload-file-description d-flex flex-ai-center flex-dc">
-          <h5 class="mb-8">Drop Files here</h5>
+          <h5 class="mb-8">Drag and Drop Files here</h5>
           <span class="fs-0-92 mb-8">Or</span>
           <div class="qq-upload-button-selector qq-upload-button sb-btn sb-btn-normal sb-btn-success">
             <div>Select Files</div>
           </div>
-          <p class="mt-8">You can upload {{templateDetails.filesConfig.accepted}} files ( Max size 50 MB )</p>
+          <p class="mt-8">Upload {{templateDetails.filesConfig.accepted}} files ( Max size {{templateDetails.filesConfig.size}} MB )</p>
         </div>
         <dialog class="qq-confirm-dialog-selector">
           <div class="qq-dialog-message-selector"></div>
@@ -116,7 +116,7 @@
             </div> -->
             <!-- <sui-progress [value]="60" [maximum]="100" class="mb-0 mr-0"></sui-progress> -->
           </div>
-          <div class="text-center fs-0-785">"By Uploading asset on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it
+          <div class="text-center fs-0-785"><span class="sb-color-gray-800">Disclaimer:</span> "By Uploading asset on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it
             under the Creative Commons License Framework
           </div>
           <div class="text-center fs-0-785 pt-4 links"><a href="javascript:void(0);">https://creativecommons.org/licenses
@@ -190,7 +190,7 @@
                 <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
                 </sui-select-option>
               </sui-select>
-              <div *ngIf="disableFormField"><label>{{contentMetaData[field.code]}}</label></div>
+              <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
               <label class="warning-message" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
             </div>
           </div>
@@ -202,7 +202,7 @@
                     <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
                     </sui-select-option>
                   </sui-multi-select>
-                  <div *ngIf="disableFormField"><label>{{contentMetaData[field.code]}}</label></div>
+                  <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
                   <label class="warning-message" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
               </div>
           </div>
@@ -211,7 +211,7 @@
             <div [formGroupName]="i">
               <label class="font-weight-bold">{{field.label}}:</label>
                 <input *ngIf="!disableFormField" formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
-                <div *ngIf="disableFormField"><label>{{contentMetaData[field.code]}}</label></div>
+                <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
               <label class="warning-message" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
             </div>
           </div>
@@ -219,7 +219,7 @@
       </div>
 
       <p class="paragraph fs-0-785">
-        “By creating content on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it under the Creative Commons License Framework
+        <span class="sb-color-gray-800">Disclaimer:</span> “By creating content on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it under the Creative Commons License Framework
         <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
         Please choose the applicable creative commons license you wish to apply to your content”.
       </p>

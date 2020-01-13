@@ -11,6 +11,7 @@ import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { CbseProgramService } from '../../services';
 import { Validators, FormGroup, FormArray, FormBuilder, NgForm } from '@angular/forms';
+import { mcqTemplateConfig } from '../mcq-template-selection/mcq-template-data';
 
 @Component({
   selector: 'app-mcq-creation',
@@ -312,7 +313,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   getHtml(question, options) {
-    const { mcqBody, optionTemplate } = this.configService.editorConfig.QUESTION_EDITOR;
+    const { mcqBody, optionTemplate } = mcqTemplateConfig;
     const optionsBody = _.map(options, data => optionTemplate.replace('{option}', data.body)) // passion option which has latex
       .map((data, index) => data.replace('{value}', index)).join('');
     const questionBody = mcqBody.replace('{templateClass}', this.mcqForm.templateId)

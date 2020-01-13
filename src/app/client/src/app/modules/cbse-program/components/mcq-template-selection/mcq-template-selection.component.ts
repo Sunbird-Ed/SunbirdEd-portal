@@ -1,5 +1,6 @@
 import { ConfigService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { mcqTemplateConfig } from './mcq-template-data';
 
 @Component({
   selector: 'app-mcq-template-selection',
@@ -12,7 +13,7 @@ export class McqTemplateSelectionComponent implements OnInit, OnDestroy {
   templateSelected;
   @ViewChild('modal') private modal;
   @Output() templateSelection = new EventEmitter<any>();
-  mcqTemplateConfig = this.configService.editorConfig.QUESTION_EDITOR.templateConfig;
+  mcqTemplateConfig = mcqTemplateConfig.templateConfig;
   constructor(public configService: ConfigService) { }
 
   ngOnInit() {

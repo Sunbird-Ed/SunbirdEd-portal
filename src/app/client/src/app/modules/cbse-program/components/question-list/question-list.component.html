@@ -11,7 +11,7 @@
       </div>
       <div class="mt-8 practice-set__status">
         <span class="sb-label sb-label-table sb-label-success-0" 
-        [ngClass]="{ 'sb-label-error-0': resourceDetails && resourceDetails.rejectComment, 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-gray-100': resourceStatus == 'Review' }">
+        [ngClass]="{ 'sb-label-error-0': resourceDetails && resourceDetails.rejectComment, 'sb-label-success-0': resourceStatus == 'Live', 'sb-label-warning-0': resourceStatus == 'Draft',  'sb-label-primary-100': resourceStatus == 'Review' }">
         {{ resourceDetails && resourceDetails.rejectComment ? 'Rejected' : (resourceStatus === 'Review' ? 'Review in Progress' : resourceStatus) }}
         </span>
         <span class="cursor-pointer fs-0-785 ml-8" 
