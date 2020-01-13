@@ -16,6 +16,8 @@ import {CacheService} from 'ng2-cache-service';
 import {DeviceDetectorService} from 'ngx-device-detector';
 import {RouterTestingModule} from '@angular/router/testing';
 import {userLocationMockData} from './user-location.component.spec.data';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { SharedModule } from '@sunbird/shared';
 
 
 describe('UserLocationComponent', () => {
@@ -25,10 +27,11 @@ describe('UserLocationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
+      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule, SharedModule.forRoot()],
       declarations: [UserLocationComponent],
       providers: [ResourceService, ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService,
-        NavigationHelperService, DeviceDetectorService]
+        NavigationHelperService, DeviceDetectorService],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
