@@ -1,3 +1,7 @@
+@import "variables";
+@import 'mixins/mixins';
+@import 'components/onboarding';
+
 :host ::ng-deep{
     .ui.multiple.search.dropdown>input .search{
         padding: 0px 0px !important;
