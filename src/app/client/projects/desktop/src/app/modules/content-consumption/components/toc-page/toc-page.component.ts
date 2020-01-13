@@ -133,11 +133,11 @@ export class TocPageComponent implements OnInit, OnDestroy {
       this.activeContent = event.data;
       this.objectRollUp = this.getContentRollUp(event.rollup);
       this.OnPlayContent(this.activeContent, true);
-      this.logTelemetry('content-inside-collection', this.objectRollUp);
+      this.logTelemetry('content-inside-collection', this.objectRollUp, this.activeContent);
     }
   }
 
-  logTelemetry(id, rollup?) {
+  logTelemetry(id, rollup?, content?) {
       const interactData = {
         context: {
           env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
@@ -149,9 +149,9 @@ export class TocPageComponent implements OnInit, OnDestroy {
           pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
         },
         object: {
-          id: this.collectionId,
-          type: this.contentType,
-          ver: `${this.collectionData['pkgVersion']}`,
+          id: content ? _.get(content, 'identifier') : this.collectionId,
+          type: content ? _.get(content, 'contentType') :  this.contentType,
+          ver: content ? `${_.get(content, 'pkgVersion')}` : `${this.collectionData['pkgVersion']}`,
           rollup: rollup
         }
       };
@@ -189,7 +189,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   }
 
   selectedFilter(event) {
-    this.logTelemetry(event.data.text);
+    this.logTelemetry(`filter-${event.data.text}`);
     this.activeMimeTypeFilter = event.data.value;
   }
 
