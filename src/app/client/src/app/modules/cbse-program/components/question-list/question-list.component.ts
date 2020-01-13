@@ -20,7 +20,7 @@ import { ProgramStageService } from '../../../program/services';
 })
 
 export class QuestionListComponent implements OnInit {
-  @ViewChild('questionCreationChild') questionCreationChild: ElementRef;
+  @ViewChild('questionCreationChild') questionCreationChild;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
   @Input() practiceQuestionSetComponentInput: any;
