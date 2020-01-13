@@ -279,6 +279,8 @@ export class QuestionListComponent implements OnInit {
     if (this.isPublishBtnDisable && event.type === 'review') {
       this.toasterService.error('Please resolve rejected questions or delete');
       return;
+    } else if (event.type === 'close') {
+      return false;
     }
 
     delete this.questionReadApiDetails[event.identifier];
