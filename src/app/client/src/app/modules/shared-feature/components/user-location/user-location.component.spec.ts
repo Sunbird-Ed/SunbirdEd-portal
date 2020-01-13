@@ -27,7 +27,8 @@ describe('UserLocationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule, SharedModule.forRoot()],
+      imports: [SuiModule, FormsModule, ReactiveFormsModule, HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule,
+        SharedModule.forRoot()],
       declarations: [UserLocationComponent],
       providers: [ResourceService, ToasterService, ProfileService, ConfigService, CacheService, BrowserCacheTtlService,
         NavigationHelperService, DeviceDetectorService],
