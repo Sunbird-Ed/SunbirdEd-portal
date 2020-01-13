@@ -78,8 +78,7 @@ export class QuestionListComponent implements OnInit {
     this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
     this.practiceSetConfig = _.get(this.practiceQuestionSetComponentInput, 'config');
     this.resourceTitleLimit = this.practiceSetConfig.config.resourceTitleLength;
-    // tslint:disable-next-line:max-line-length
-    this.sessionContext.compConfiguration = _.find(_.get(this.practiceQuestionSetComponentInput, 'programContext.config.components'), {compId: 'practiceSetComponent'});
+    this.sessionContext.practiceSetConfig = this.practiceSetConfig;
     this.getContentMetadata(this.sessionContext.resourceIdentifier);
     this.getLicences();
   }
