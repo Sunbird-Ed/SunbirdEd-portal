@@ -42,39 +42,41 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       }
     });
   }
-checkRouterPath() {
-  this.showDownloadmanager = this.router.url.includes('/profile') || this.router.url.includes('/play/collection') ||
-   this.router.url.includes('/play/content');
-}
+  checkRouterPath() {
+    this.showDownloadmanager = this.router.url.includes('/profile') || this.router.url.includes('/play/collection') ||
+      this.router.url.includes('/play/content');
+  }
   ngAfterViewInit() {
     setTimeout(() => {
-      this.bodyPaddingBottom = this.footerFix.nativeElement.offsetHeight + 'px';
-      this.renderer.setStyle(
-        document.body,
-        'padding-bottom',
-        this.bodyPaddingBottom
-      );
+      if (this.footerFix && this.footerFix.nativeElement) {
+        this.bodyPaddingBottom = this.footerFix.nativeElement.offsetHeight + 'px';
+        this.renderer.setStyle(
+          document.body,
+          'padding-bottom',
+          this.bodyPaddingBottom
+        );
+      }
     }, 500);
   }
 
-  redirectToDikshaApp () {
+  redirectToDikshaApp() {
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
     const sendUtmParams = _.get(this.activatedRoute, 'firstChild.firstChild.snapshot.data.sendUtmParams');
     if (sendUtmParams) {
       observableCombineLatest(this.activatedRoute.firstChild.firstChild.params, this.activatedRoute.queryParams,
-      (params, queryParams) => {
-        return { ...params, ...queryParams };
-      }).subscribe((params) => {
-        const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-        const utm_source = slug ? `diksha-${slug}` : 'diksha';
-        if (params.dialCode) {
-          const source = params.source || 'search';
-          applink = `${applink}&utm_source=${utm_source}&utm_medium=${source}&utm_campaign=dial&utm_term=${params.dialCode}`;
-        } else {
-          applink = `${applink}&utm_source=${utm_source}&utm_medium=get&utm_campaign=redirection`;
-        }
-        this.redirect(applink.replace(/\s+/g, ''));
-      });
+        (params, queryParams) => {
+          return { ...params, ...queryParams };
+        }).subscribe((params) => {
+          const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
+          const utm_source = slug ? `diksha-${slug}` : 'diksha';
+          if (params.dialCode) {
+            const source = params.source || 'search';
+            applink = `${applink}&utm_source=${utm_source}&utm_medium=${source}&utm_campaign=dial&utm_term=${params.dialCode}`;
+          } else {
+            applink = `${applink}&utm_source=${utm_source}&utm_medium=get&utm_campaign=redirection`;
+          }
+          this.redirect(applink.replace(/\s+/g, ''));
+        });
     } else {
       this.redirect(applink);
     }
@@ -82,7 +84,7 @@ checkRouterPath() {
 
   redirect(url) {
     window.location.href = url;
-    }
+  }
 
   setTelemetryInteractEdata(type): IInteractEventEdata {
     return {
