@@ -136,17 +136,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   goBack() {
-    const previousUrl = this.navigationHelperService.getDesktopPreviousUrl();
-
-    if (_.includes(previousUrl, '/search') && previousUrl.queryParams) {
-      this.utilService.updateSearchKeyword(previousUrl.queryParams.key);
-    }
-
-    if (previousUrl.queryParams) {
-      this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
-    } else {
-      this.router.navigate([previousUrl.url]);
-    }
+    this.navigationHelperService.goBack();
   }
 
   ngOnDestroy() {

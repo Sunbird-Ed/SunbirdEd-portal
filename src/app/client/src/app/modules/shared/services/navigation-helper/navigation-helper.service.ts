@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, RouterStateSnapshot, NavigationStart } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
+import { UtilService } from '../util/util.service';
 interface UrlHistory {
   url: string;
   queryParams?: any;
@@ -32,7 +33,12 @@ export class NavigationHelperService {
    * Name used to store previous url in session
    */
   private cacheServiceName = 'previousUrl';
-  constructor(private router: Router, public activatedRoute: ActivatedRoute, public cacheService: CacheService) {
+  constructor(
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    public cacheService: CacheService,
+    public utilService: UtilService
+  ) {
     if (!NavigationHelperService.singletonInstance) {
       NavigationHelperService.singletonInstance = this;
     }
@@ -166,6 +172,20 @@ export class NavigationHelperService {
       return sessionUrl;
     } else {
       return { url: '/' };
+    }
+  }
+
+  /* Used In Desktop for navigating to back page */
+  goBack() {
+    const previousUrl = this.getDesktopPreviousUrl();
+    if (_.includes(previousUrl.url, '/search') && previousUrl.queryParams) {
+      this.utilService.updateSearchKeyword(previousUrl.queryParams.key);
+    }
+
+    if (previousUrl.queryParams) {
+      this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
+    } else {
+      this.router.navigate([previousUrl.url]);
     }
   }
 

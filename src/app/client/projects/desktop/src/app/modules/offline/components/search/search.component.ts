@@ -206,12 +206,7 @@ export class SearchComponent implements OnInit {
   }
 
   goBack() {
-    const previousUrl = this.navigationHelperService.getDesktopPreviousUrl();
-    if (previousUrl.queryParams) {
-      this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
-    } else {
-      this.router.navigate([previousUrl.url]);
-    }
+    this.navigationHelperService.goBack();
   }
 
   gotoViewMore(isOnlineContents) {

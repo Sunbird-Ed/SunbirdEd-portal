@@ -146,14 +146,11 @@ describe('SearchComponent', () => {
     expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
   });
 
-  it('should call goBack', () => {
+  it('should navigate to previous page', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    const router = TestBed.get(Router);
-    spyOn(navigationHelperService, 'getDesktopPreviousUrl').and.returnValue({ url: '/browse' });
-    spyOn(router, 'navigate');
+    spyOn(navigationHelperService, 'goBack');
     component.goBack();
-    expect(navigationHelperService.getDesktopPreviousUrl).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/browse']);
+    expect(navigationHelperService.goBack).toHaveBeenCalled();
   });
 
   it('should call clearSearchQuery', () => {
