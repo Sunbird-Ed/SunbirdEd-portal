@@ -127,6 +127,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   }
 
   tocCardClickHandler(event) {
+    console.log('tocCardClickHandlertocCardClickHandler', event);
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
       this.isContentPresent = true;
       this.activeContent = event.data;
@@ -216,7 +217,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
       this.telemetryImpression.object = {
         id: this.collectionData['identifier'],
         type: this.collectionData['contentType'],
-        ver: `${this.collectionData['version']}` || '1.0',
+        ver: `${this.collectionData['pkgVersion']}` || '1.0',
       };
     }
   }
@@ -226,7 +227,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
       this.telemetryImpression.object = {
         id: this.collectionData['identifier'],
         type: this.collectionData['contentType'],
-        ver: `${this.collectionData['version']}` || '1.0',
+        ver: `${this.collectionData['pkgVersion']}` || '1.0',
       };
     }
     this.telemetryImpression.edata.subtype = 'pageexit';
