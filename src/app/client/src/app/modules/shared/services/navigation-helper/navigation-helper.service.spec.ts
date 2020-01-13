@@ -100,7 +100,7 @@ describe('NavigationHelperService', () => {
           'url': '/view-all'
         };
         spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
-        spyOn(service.router, 'navigate');
+        // spyOn(service.router, 'navigate');
         service.goBack();
         expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url]);
       }));
