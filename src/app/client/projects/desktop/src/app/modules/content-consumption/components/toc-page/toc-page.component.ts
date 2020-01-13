@@ -200,10 +200,14 @@ export class TocPageComponent implements OnInit, OnDestroy {
   }
 
   setTelemetryData() {
+    let telemetryCdata;
+    if (this.dialCode) {
+      telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
+    }
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{id: this.collectionId, type: this.contentType}]
+        cdata: telemetryCdata || []
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,

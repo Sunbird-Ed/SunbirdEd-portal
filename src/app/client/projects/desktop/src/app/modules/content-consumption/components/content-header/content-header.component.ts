@@ -24,6 +24,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   public isConnected;
   telemetryImpression: IImpressionEventInput;
+  dialCode: string;
 
   constructor(
     public location: Location,
@@ -41,6 +42,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'My Downloads';
     this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.checkDownloadStatus(data);
@@ -145,11 +147,15 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   setPageExitTelemtry() {
+    let telemetryCdata;
+    if (this.dialCode) {
+      telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
+    }
     if (this.collectionData) {
       this.telemetryImpression = {
         context: {
           env: this.activatedRoute.snapshot.data.telemetry.env,
-          cdata: [{id: this.collectionData['identifier'], type: this.collectionData['contentType']}]
+          cdata: telemetryCdata || []
         },
         edata: {
           type: this.activatedRoute.snapshot.data.telemetry.type,
