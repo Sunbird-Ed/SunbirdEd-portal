@@ -76,7 +76,6 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
           window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
-          console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();
         }
       };
@@ -96,7 +95,6 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
           });
           window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
-          console.log('loading default player failed', err);
           const prevUrls = this.navigationHelperService.history;
           if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
             history.back();
@@ -141,7 +139,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   }
 
   generateScoreSubmitEvent(event: any) {
-    if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
+    if (_.lowerCase(event.data) === (_.lowerCase(this.CONSTANT.ACCESSEVENT))) {
       this.questionScoreSubmitEvents.emit(event);
     }
   }
