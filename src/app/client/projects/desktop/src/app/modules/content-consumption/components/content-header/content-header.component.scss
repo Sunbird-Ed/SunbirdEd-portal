@@ -2,8 +2,8 @@
 @import "mixins/mixins";
 
 .content-header {
-  background: var(--gray-0);
-  min-height: 80px;
+  background:#FAFAFA;
+  min-height: calculateRem(14px);
 
   &__content{
     display:flex;
