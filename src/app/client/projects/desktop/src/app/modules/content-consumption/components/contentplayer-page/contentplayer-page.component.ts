@@ -158,7 +158,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: telemetryCdata
+        cdata: telemetryCdata || []
       },
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
