@@ -1,11 +1,11 @@
 
 
-<div *ngIf="!showLoader && currentStage === 'collectionComponent'">
+<div *ngIf="!showLoader && !showError && currentStage === 'collectionComponent'">
 
   <div class="state-medium-container sb-bg-color-white">
     <div class="ui container d-flex flex-ai-center">
       <div class="state-medium-container__dropdown">
-        <div class="sb-field mb-0 selected-board" (click)="clearFilter()">
+        <div class="sb-field mb-0 selected-board">
           {{board}}
           <!-- <sui-select class="selection state-selection"  placeholder="{{board}}" labelField="name" #multiSelect>
             <sui-select-option *ngFor="let option of multiSelect1" [value]="option" aria-disabled="#multiSelect">
@@ -41,7 +41,7 @@
     </div>
   </div>
   <div  *ngIf="!objectKey(collectionList).length">
-    <app-no-result [data]="{ message: 'resourceService.messages.stmsg.m0006'}"></app-no-result>
+    <app-no-result [data]="{ messageText: 'resourceService.messages.stmsg.m0006'}"></app-no-result>
   </div>
 </div>
 
@@ -50,7 +50,7 @@
 </div>
 
 <div class="twelve wide column" *ngIf="!showLoader && showError">
-  <app-no-result [data]="{messageText: resourceService.messages.fmsg.m0004}"></app-no-result>
+  <app-no-result [data]="{ messageText: 'resourceService.messages.fmsg.m0004'}"></app-no-result>
 </div>
 <div *ngIf='showLoader && !showError' class="ui container sb-chapter-list && currentStage === 'collectionComponent'">
   <app-loader></app-loader>

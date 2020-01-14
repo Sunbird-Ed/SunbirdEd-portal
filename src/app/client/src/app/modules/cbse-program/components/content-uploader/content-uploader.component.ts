@@ -447,8 +447,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       });
     } else {
       // this.toasterService.error('Please Fill Mandatory Form-Fields...');
-      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
       this.markFormGroupTouched(this.contentDetailsForm);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
   }
 

@@ -1,9 +1,14 @@
 
-<app-question-creation-header *ngIf="questionMetaData" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
+<app-question-creation-header *ngIf="questionMetaData && !showPreview" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
+
+<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
+</app-question-preview>
 
 <div *ngIf='showForm'>
-  <form  class="ui form mcq-vertical mt-8 licence-form" *ngIf="!showPreview" [formGroup]="questionMetaForm">
-    <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode">
+  <form  class="ui form mcq-vertical mt-8 licence-form" [formGroup]="questionMetaForm">
+    
+    <!-- Question Editor Section HTML -->
+    <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode && !showPreview">
       <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
       <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(mcqForm.question)">
         <div class="sb-field mcq-title mb-16">
@@ -99,128 +104,126 @@
       </div>
     </div>
 
-
-      <div class='licence-form__content mt-15' *ngIf="!isReadOnlyMode">
-        <div class="ui stackable grid licence-form__content__fields">
-            <div class="row">
-                <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
-                    <div [formGroupName]="i" class="sb-field">
-                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
-                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                                src="assets/images/Info.svg"></a></label>
-                        <sui-multi-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
-                          <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
-                          </sui-select-option>
-                        </sui-multi-select>
-                        <label class="sb-error-text" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
-                    </div>
-                </div>
-
-                <div class="six wide column mb-15" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
-                    <div [formGroupName]="i" class="sb-field">
-                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
-                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                                src="assets/images/Info.svg"></a></label>
-                        <sui-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+    <!-- Learning Outcome learning level author license Editor HTML -->
+    <div class='licence-form__content mt-15' *ngIf="!isReadOnlyMode && !showPreview">
+      <div class="ui stackable grid licence-form__content__fields">
+          <div class="row">
+              <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
+                  <div [formGroupName]="i" class="sb-field">
+                      <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                          href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                              src="assets/images/Info.svg"></a></label>
+                      <sui-multi-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
                         <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
                         </sui-select-option>
-                        </sui-select>
-                        <label class="sb-error-text" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
-                    </div>
-                </div>
+                      </sui-multi-select>
+                      <label class="sb-error-text" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                  </div>
+              </div>
 
-                <div class="six wide column mb-15" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
-                    <div [formGroupName]="i" class="sb-field">
-                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
-                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                                src="assets/images/Info.svg"></a></label>
-                        <input formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
-                      <label class="sb-error-text" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
-                    </div>
-                </div>
-            </div>
-        </div>
+              <div class="six wide column mb-15" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
+                  <div [formGroupName]="i" class="sb-field">
+                      <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                          href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                              src="assets/images/Info.svg"></a></label>
+                      <sui-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+                      <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                      </sui-select-option>
+                      </sui-select>
+                      <label class="sb-error-text" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                  </div>
+              </div>
+
+              <div class="six wide column mb-15" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
+                  <div [formGroupName]="i" class="sb-field">
+                      <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
+                          href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                              src="assets/images/Info.svg"></a></label>
+                      <input formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
+                    <label class="sb-error-text" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                  </div>
+              </div>
+          </div>
       </div>
-
+    </div>
 
     <!-- Question Preview Section HTML -->
-      <div class="ui container" *ngIf="isReadOnlyMode">
-        <div class="ui stackable grid m-0 sb-bg-color-white">
-          <div class="row">
-            <div class="twelve wide column p-0">
-              <div class="ckeditor-tool width-100">
-                <div class="ckeditor-tool__question">
-                  <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
-                  <div class="ckeditor-tool__solution__body">
-                    <p class="fs-0-785 p-16" id="wirisDisplay" [innerHTML]="mcqForm.question | sanitizeHtml"></p>
-                  </div>
+    <div class="ui container" *ngIf="isReadOnlyMode && !showPreview">
+      <div class="ui stackable grid m-0 sb-bg-color-white">
+        <div class="row">
+          <div class="twelve wide column p-0">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+                <div class="ckeditor-tool__solution__body">
+                  <p class="fs-0-785 p-16" id="wirisDisplay" [innerHTML]="mcqForm.question | sanitizeHtml"></p>
                 </div>
               </div>
             </div>
           </div>
-
-          <div class="row mb-0 p-0">
-            <div class="twelve wide column p-0">
-                <div class="d-flex flex-ai-center ckeditor-tool__answer my-16">
-                    <label class="fs-1 mb-0">Answers</label>
-                  </div>
-            </div>
-          </div>
-
-          <div class="row mb-0 p-0" *ngFor="let option of mcqForm.options; let i=index">
-            <div class="twelve wide column p-0">
-              <div class="ckeditor-tool width-100">
-                <div class="ckeditor-tool__question mb-24">
-                  <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Option {{ i+1 }}</label>
-                  <div class="ckeditor-tool__solution__body">
-                    <p class="fs-0-785 p-16" [innerHTML]="option.body  | sanitizeHtml"></p>
-                    <div class="mcq-checkbox-answer" *ngIf="mcqForm.answer === i.toString()">
-                      <div class="sb-checkbox sb-checkbox-primary mr-auto selected">
-                        <input type="checkbox" id="check1" name="example" disabled checked>
-                        <label for="check1">Primary checkbox</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- <div class="row mb-0 p-0">
-            <div class="twelve wide column">
-              <div class="ckeditor-tool width-100">
-                <div class="ckeditor-tool__question mb-24">
-                  <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Solution</label>
-                  <div class="ckeditor-tool__solution__body">
-                    <div class="solution-media p-16 d-flex flex-ai-center">
-                      <div class="solution-media__video relative position">
-                        <div class="overlay-image"><i class="play circle icon"></i></div>
-                      </div>
-                      <div class="solution-media__desc ml-16">
-                        Video Thumbnail to the left and
-                        the Video title goes here
-                      </div>
-                    </div>
-                    <p class="fs-0-785 p-16">
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                      industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                      and scrambled it to make a type specimen book.
-                    </p>
-                    <div class="mcq-checkbox-answer">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div> -->
         </div>
 
+        <div class="row mb-0 p-0">
+          <div class="twelve wide column p-0">
+              <div class="d-flex flex-ai-center ckeditor-tool__answer my-16">
+                  <label class="fs-1 mb-0">Answers</label>
+                </div>
+          </div>
+        </div>
+
+        <div class="row mb-0 p-0" *ngFor="let option of mcqForm.options; let i=index">
+          <div class="twelve wide column p-0">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Option {{ i+1 }}</label>
+                <div class="ckeditor-tool__solution__body">
+                  <p class="fs-0-785 p-16" [innerHTML]="option.body  | sanitizeHtml"></p>
+                  <div class="mcq-checkbox-answer" *ngIf="mcqForm.answer === i.toString()">
+                    <div class="sb-checkbox sb-checkbox-primary mr-auto selected">
+                      <input type="checkbox" id="check1" name="example" disabled checked>
+                      <label for="check1">Primary checkbox</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- <div class="row mb-0 p-0">
+          <div class="twelve wide column">
+            <div class="ckeditor-tool width-100">
+              <div class="ckeditor-tool__question mb-24">
+                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Solution</label>
+                <div class="ckeditor-tool__solution__body">
+                  <div class="solution-media p-16 d-flex flex-ai-center">
+                    <div class="solution-media__video relative position">
+                      <div class="overlay-image"><i class="play circle icon"></i></div>
+                    </div>
+                    <div class="solution-media__desc ml-16">
+                      Video Thumbnail to the left and
+                      the Video title goes here
+                    </div>
+                  </div>
+                  <p class="fs-0-785 p-16">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book.
+                  </p>
+                  <div class="mcq-checkbox-answer">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div> -->
       </div>
 
-      
+    </div>
+
     <!-- Learning Outcome learning level author license Preview HTML -->
-    <div class='licence-form__content' *ngIf="isReadOnlyMode">
+    <div class='licence-form__content' *ngIf="isReadOnlyMode || showPreview">
       <div class="ui stackable grid licence-form__content__fields">
           <div class="row">
               <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
@@ -290,9 +293,6 @@
   </div>
 </form>
 </sui-modal>
-
-<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
-</app-question-preview>
 
 <app-mcq-template-selection *ngIf='showTemplatePopup' style="z-index: 1000"
   (templateSelection)="handleTemplateSelection($event)">

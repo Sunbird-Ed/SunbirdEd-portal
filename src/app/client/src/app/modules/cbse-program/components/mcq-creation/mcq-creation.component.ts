@@ -89,9 +89,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     this.showForm = true;
   }
   ngOnInit() {
-    if (this.role.currentRole === 'REVIEWER' || this.role.currentRole === 'PUBLISHER') {
-      this.isReadOnlyMode = true;
-    }
     this.userName = this.setUserName();
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
   }
@@ -107,11 +104,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges() {
     this.componentConfiguration = _.get(this.sessionContext, 'practiceSetConfig');
     this.previewData = this.questionMetaData;
-    if (this.role.currentRole === 'REVIEWER') {
-      this.isReadOnlyMode = true;
-    } else if (this.sessionContext.role === 'CONTRIBUTOR' && this.sessionContext.resourceStatus === 'Draft') {
-      this.isReadOnlyMode = false;
-    }
     this.rejectComment = '';
     if (this.questionMetaData && this.questionMetaData.data && this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;

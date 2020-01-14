@@ -10,6 +10,7 @@ import { resourceData } from './contentplayer-page.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { NavigationHelperService } from 'src/app/modules/shared';
 describe('ContentPlayerPageComponent', () => {
   let component: ContentPlayerPageComponent;
   let fixture: ComponentFixture<ContentPlayerPageComponent>;
@@ -36,7 +37,7 @@ describe('ContentPlayerPageComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceData.resourceBundle },
-        PublicPlayerService,
+        PublicPlayerService, NavigationHelperService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -91,5 +92,12 @@ describe('ContentPlayerPageComponent', () => {
     component.setPageExitTelemtry();
     expect(component.telemetryImpression.object).toEqual(resourceData.object);
     expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
+  });
+
+  it('should navigate to previous page', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'goBack');
+    component.goBack();
+    expect(navigationHelperService.goBack).toHaveBeenCalled();
   });
 });

@@ -226,10 +226,10 @@ describe('ChapterListComponent', () => {
       expect(component.programStageService.addStage).toHaveBeenCalled();
     });
 
-    it('should go to else condition if child unit is passed', () => {
-      console.log(component.collectionHierarchy);
-      component.updateAccordianView('do_112931801879011328152');
-      expect(component.sessionContext.lastOpenedUnitParent).toEqual('do_1127639059664568321138');
-    });
+    // it('should go to else condition if child unit is passed', () => {
+    //   console.log(component.collectionHierarchy);
+    //   component.updateAccordianView('do_112931801879011328152');
+    //   expect(component.sessionContext.lastOpenedUnitParent).toEqual('do_1127639059664568321138');
+    // });
 
 });

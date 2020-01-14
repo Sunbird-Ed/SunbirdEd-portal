@@ -53,7 +53,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public userCSV = 'user-detail.csv';
   public userSummary = 'validated-user-summary.json';
   public userDetail = 'validated-user-summary-district.json';
-  public userZip = 'validated-user-detail.csv';
+  public userZip = 'validated-user-detail.zip';
   public GeoTableId = 'GeoDetailsTable';
   public geoTableHeader;
   public geoTabledata = [];

@@ -19,12 +19,12 @@
       </div>
     </div>
     <div class='practical-sb-buttons'>
-      <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="saveContent()">Save</button>
-      <button id="changeContent" *ngIf="visibility && visibility.showChangeFile && resourceStatus === 'Draft'" class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" (click)="changeFile()">Change
+      <button id="saveContent" suiPopup popupText="Save" [popupPlacement]="'top'" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="saveContent()">Save</button>
+      <button id="changeContent" suiPopup popupText="Replace File" [popupPlacement]="'top'" *ngIf="visibility && visibility.showChangeFile && resourceStatus === 'Draft'" class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" (click)="changeFile()">Replace
         File</button>
-      <button id="requestChanges" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true;">Request Changes</button>
-      <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-secondary sb-btn-normal ripple mr-8" (click)="publichContent()">Publish</button>
-      <button id="submitContent" *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="saveContent('review')">Submit</button>
+      <button id="requestChanges" suiPopup popupText="Request Changes" [popupPlacement]="'top'" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true;">Request Changes</button>
+      <button id="publishContent" suiPopup popupText="Publish" [popupPlacement]="'top'" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-secondary sb-btn-normal ripple mr-8" (click)="publichContent()">Publish</button>
+      <button id="submitContent" suiPopup popupText="Send For Review" [popupPlacement]="'top'" *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="saveContent('review')">Submit</button>
     </div>
   </div>
 </div>

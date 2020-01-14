@@ -514,8 +514,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     this.collectionHierarchyService.removeResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, this.contentId)
        .subscribe(() => {
          this.showConfirmationModal = false;
+         this.updateAccordianView(this.unitIdentifier);
         this.toasterService.success(this.resourceService.messages.smsg.m0064);
-        this.updateAccordianView(this.unitIdentifier);
        });
   }
 
