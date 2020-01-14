@@ -357,6 +357,7 @@ module.exports = (app) => {
       if (_.get(req, 'kauth.grant')) {
         nonStateUserToken = _.get(req, 'kauth.grant.access_token.token');
         req.session.nonStateUserToken = nonStateUserToken;
+        await ssoValidations(req, res)
       } else {
         nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
           console.log('error in verifyAuthToken', err);
@@ -366,110 +367,13 @@ module.exports = (app) => {
         });
         const userToken = parseJson(nonStateUserToken);
         req.session.nonStateUserToken = userToken.access_token;
+        await ssoValidations(req, res)
       }
-      res.redirect('/migrate/user/account');
     }
   });
 
   app.all('/migrate/user/account', async (req, res) => {
-    let stateUserData, stateJwtPayload, errType, response, statusCode;
-    // to support mobile flow
-    if (req.query.client_id === 'android') {
-      console.log('req.query.client_id', req.query.client_id);
-      req.session.migrateAccountInfo = {
-        encryptedData: parseJson(decodeURIComponent(req.get('x-authenticated-user-data')))
-      };
-    }
-    req.session.nonStateUserToken = req.session.nonStateUserToken || req.get('x-authenticated-user-token');
-    if (!req.session.nonStateUserToken || !(req.session.migrateAccountInfo && req.session.migrateAccountInfo.encryptedData)) {
-      res.status(401).send({
-        responseCode: 'UNAUTHORIZED'
-      });
-      return false;
-    }
-    console.log('migration initiated', req.session.nonStateUserToken, JSON.stringify(req.session.migrateAccountInfo));
-    try {
-      console.log('decryption started');
-      const decryptedData = decrypt(req.session.migrateAccountInfo.encryptedData);
-      stateUserData = parseJson(decryptedData);
-      errType = 'VERIFY_SIGNATURE';
-      console.log('validating state token', JSON.stringify(stateUserData));
-      await verifySignature(stateUserData.stateToken);
-      errType = 'JWT_DECODE';
-      stateJwtPayload = jwt.decode(stateUserData.stateToken);
-      errType = 'VERIFY_TOKEN';
-      verifyToken(stateJwtPayload);
-      console.log('state token validated success');
-      errType = 'ERROR_FETCHING_USER_DETAILS';
-      const nonStateUserData = await fetchUserDetails(req.session.nonStateUserToken);
-      errType = 'ERROR_VERIFYING_IDENTITY';
-      const isMigrationAllowed = verifyIdentifier(stateUserData.identifierValue, nonStateUserData[stateUserData.identifier], stateUserData.identifier);
-      console.log('ismigration allowed', isMigrationAllowed);
-      if (isMigrationAllowed) {
-        errType = 'MIGRATE_USER';
-        req.query.userId = getUserIdFromToken(req.session.nonStateUserToken);
-        console.log('userId fetched', req.query.userId);
-        await migrateUser(req, stateJwtPayload);
-        await delay();
-        console.log('migration success');
-        errType = 'ERROR_FETCHING_USER_DETAILS';
-        const userDetails = await fetchUserWithExternalId(stateJwtPayload, req); // to get userName
-        console.log('userDetails fetched from external ID', JSON.stringify(userDetails));
-        if (_.isEmpty(userDetails)){
-          errType = 'USER_DETAILS_EMPTY';
-          throw 'USER_DETAILS_IS_EMPTY';
-        }
-        if (stateJwtPayload.roles && stateJwtPayload.roles.length) {
-          errType = 'UPDATE_USER_ROLES';
-         // await updateRoles(req, req.query.userId, stateJwtPayload).catch(handleProfileUpdateError);
-        }
-        req.session.userDetails = userDetails;
-        redirectUrl = '/accountMerge?status=success&merge_type=auto&redirect_uri=/resources';
-        if (req.query.client_id === 'android') {
-          response = {
-            "id": "api.user.migrate", "params": {
-              "resmsgid": null, "err": null, "status": "success",
-              "errmsg": null
-            }, "responseCode": "OK", "result": {"response": "SUCCESS",}
-          };
-          statusCode = 200
-        }
-      } else {
-        errType = 'UNAUTHORIZED';
-        throw 'USER_DETAILS_DID_NOT_MATCH';
-      }
-    } catch (error) {
-      redirectUrl ='/accountMerge?status=error&merge_type=auto&redirect_uri=/resources';
-      if (req.query.client_id === 'android') {
-        response = {
-          "id": "api.user.migrate", "params": {
-            "resmsgid": null, "err": JSON.stringify(error), "status": "error",
-            "errType": errType
-          }, "responseCode": "INTERNAL_SERVER_ERROR", "result": {"response": "ERROR",}
-        };
-        statusCode = 500
-      }
-      logger.error({
-        msg: 'sso session create v2 api failed',
-        "error": JSON.stringify(error),
-        additionalInfo: {
-          errorType: errType,
-          stateUserData: stateUserData,
-          stateJwtPayload: stateJwtPayload,
-          redirectUrl: redirectUrl
-        }
-      });
-      logErrorEvent(req, errType, error);
-    } finally {
-      req.session.migrateAccountInfo = null;
-      req.session.nonStateUserToken = null;
-      if (req.query.client_id === 'android') {
-        res.status(statusCode).send(response)
-      } else {
-        res.redirect(redirectUrl || errorUrl);
-
-      }
-    }
+    await ssoValidations(req, res)
   })
 };
 
@@ -527,3 +431,107 @@ const getQueryParams = (queryObj) => {
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryObj[key])}`)
     .join('&');
 }
+
+
+const ssoValidations = async (req, res) => {
+  let stateUserData, stateJwtPayload, errType, response, statusCode;
+  // to support mobile flow
+  if (req.query.client_id === 'android') {
+    console.log('req.query.client_id', req.query.client_id);
+    req.session.migrateAccountInfo = {
+      encryptedData: parseJson(decodeURIComponent(req.get('x-authenticated-user-data')))
+    };
+  }
+  req.session.nonStateUserToken = req.session.nonStateUserToken || req.get('x-authenticated-user-token');
+  if (!req.session.nonStateUserToken || !(req.session.migrateAccountInfo && req.session.migrateAccountInfo.encryptedData)) {
+    res.status(401).send({
+      responseCode: 'UNAUTHORIZED'
+    });
+    return false;
+  }
+  console.log('migration initiated', req.session.nonStateUserToken, JSON.stringify(req.session.migrateAccountInfo));
+  try {
+    console.log('decryption started');
+    const decryptedData = decrypt(req.session.migrateAccountInfo.encryptedData);
+    stateUserData = parseJson(decryptedData);
+    errType = 'VERIFY_SIGNATURE';
+    console.log('validating state token', JSON.stringify(stateUserData));
+    await verifySignature(stateUserData.stateToken);
+    errType = 'JWT_DECODE';
+    stateJwtPayload = jwt.decode(stateUserData.stateToken);
+    errType = 'VERIFY_TOKEN';
+    verifyToken(stateJwtPayload);
+    console.log('state token validated success');
+    errType = 'ERROR_FETCHING_USER_DETAILS';
+    const nonStateUserData = await fetchUserDetails(req.session.nonStateUserToken);
+    errType = 'ERROR_VERIFYING_IDENTITY';
+    const isMigrationAllowed = verifyIdentifier(stateUserData.identifierValue, nonStateUserData[stateUserData.identifier], stateUserData.identifier);
+    console.log('ismigration allowed', isMigrationAllowed);
+    if (isMigrationAllowed) {
+      errType = 'MIGRATE_USER';
+      req.query.userId = getUserIdFromToken(req.session.nonStateUserToken);
+      console.log('userId fetched', req.query.userId);
+      await migrateUser(req, stateJwtPayload);
+      await delay();
+      console.log('migration success');
+      errType = 'ERROR_FETCHING_USER_DETAILS';
+      const userDetails = await fetchUserWithExternalId(stateJwtPayload, req); // to get userName
+      console.log('userDetails fetched from external ID', JSON.stringify(userDetails));
+      if (_.isEmpty(userDetails)){
+        errType = 'USER_DETAILS_EMPTY';
+        throw 'USER_DETAILS_IS_EMPTY';
+      }
+      if (stateJwtPayload.roles && stateJwtPayload.roles.length) {
+        errType = 'UPDATE_USER_ROLES';
+        // await updateRoles(req, req.query.userId, stateJwtPayload).catch(handleProfileUpdateError);
+      }
+      req.session.userDetails = userDetails;
+      redirectUrl = '/accountMerge?status=success&merge_type=auto&redirect_uri=/resources';
+      if (req.query.client_id === 'android') {
+        response = {
+          "id": "api.user.migrate", "params": {
+            "resmsgid": null, "err": null, "status": "success",
+            "errmsg": null
+          }, "responseCode": "OK", "result": {"response": "SUCCESS",}
+        };
+        statusCode = 200
+      }
+    } else {
+      errType = 'UNAUTHORIZED';
+      throw 'USER_DETAILS_DID_NOT_MATCH';
+    }
+  } catch (error) {
+    redirectUrl ='/accountMerge?status=error&merge_type=auto&redirect_uri=/resources';
+    if (req.query.client_id === 'android') {
+      response = {
+        "id": "api.user.migrate", "params": {
+          "resmsgid": null, "err": JSON.stringify(error), "status": "error",
+          "errType": errType
+        }, "responseCode": "INTERNAL_SERVER_ERROR", "result": {"response": "ERROR",}
+      };
+      statusCode = 500
+    }
+    logger.error({
+      msg: 'sso session create v2 api failed',
+      "error": JSON.stringify(error),
+      additionalInfo: {
+        errorType: errType,
+        stateUserData: stateUserData,
+        stateJwtPayload: stateJwtPayload,
+        redirectUrl: redirectUrl
+      }
+    });
+    logErrorEvent(req, errType, error);
+  } finally {
+    req.session.migrateAccountInfo = null;
+    req.session.nonStateUserToken = null;
+    if (req.query.client_id === 'android') {
+      res.status(statusCode).send(response)
+    } else {
+      res.redirect(redirectUrl || errorUrl);
+
+    }
+  }
+};
+
+exports.ssoValidations = ssoValidations;
