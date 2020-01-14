@@ -1,10 +1,11 @@
-import { ContentManagerService, ConnectionService } from '@sunbird/offline';
-import * as TreeModel from 'tree-model';
-import { map, mergeMap, catchError, takeUntil } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, Output } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { ContentManagerService } from '@sunbird/offline';
+import { map, mergeMap, takeUntil, filter } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { Observable, Subscription, Subject } from 'rxjs';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
@@ -70,12 +71,17 @@ export class TocPageComponent implements OnInit, OnDestroy {
   showUpdate;
   contentDeleted;
   isContentPresent = true;
+  telemetryImpression: IImpressionEventInput;
+
   constructor(public playerService: PublicPlayerService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     public router: Router, public resourceService: ResourceService, private contentUtilsService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService,
     public contentManagerService: ContentManagerService,
     private utilService: UtilService,
-    public toasterService: ToasterService) { }
+    public toasterService: ToasterService,
+    private navigationHelperService: NavigationHelperService,
+    private deviceDetectorService: DeviceDetectorService,
+    private telemetryService: TelemetryService) { }
 
   ngOnInit() {
     this.utilService.emitHideHeaderTabsEvent(true);
@@ -85,6 +91,9 @@ export class TocPageComponent implements OnInit, OnDestroy {
     this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.checkDownloadStatus(data);
     });
+    this.router.events
+    .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
+    .subscribe(x => {this.setPageExitTelemtry(); });
   }
 
   checkDownloadStatus(downloadListdata) {
@@ -98,6 +107,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
         return this.getCollectionHierarchy(params.collectionId);
       }))
       .subscribe((data) => {
+        this.setTelemetryData();
         this.activatedRoute.queryParams.subscribe((queryParams) => {
           this.queryParams = { ...queryParams};
         });
@@ -120,12 +130,44 @@ export class TocPageComponent implements OnInit, OnDestroy {
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
       this.isContentPresent = true;
       this.activeContent = event.data;
+      this.objectRollUp = this.getContentRollUp(event.rollup);
       this.OnPlayContent(this.activeContent, true);
+      this.logTelemetry('content-inside-collection', this.objectRollUp, this.activeContent);
     }
-
   }
 
-public OnPlayContent(content, isClicked?: boolean) {
+  logTelemetry(id, rollup?, content?) {
+      const interactData = {
+        context: {
+          env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+          cdata: []
+        },
+        edata: {
+          id: id,
+          type: 'click',
+          pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
+        },
+        object: {
+          id: content ? _.get(content, 'identifier') : this.collectionId,
+          type: content ? _.get(content, 'contentType') :  this.contentType,
+          ver: content ? `${_.get(content, 'pkgVersion')}` : `${this.collectionData['pkgVersion']}`,
+          rollup: rollup
+        }
+      };
+      this.telemetryService.interact(interactData);
+  }
+
+  getContentRollUp(rollup: string[]) {
+    const objectRollUp = {};
+    if (rollup) {
+      for (let i = 0; i < rollup.length; i++ ) {
+        objectRollUp[`l${i + 1}`] = rollup[i];
+    }
+    }
+    return objectRollUp;
+  }
+
+  public OnPlayContent(content, isClicked?: boolean) {
     if (content && content.identifier) {
       this.navigateToContent(content);
     } else {
@@ -146,16 +188,55 @@ public OnPlayContent(content, isClicked?: boolean) {
   }
 
   selectedFilter(event) {
+    this.logTelemetry(`filter-${event.data.text}`);
     this.activeMimeTypeFilter = event.data.value;
   }
-  deleteContent(event) {
-    this.contentDeleted = event;
-  }
+
   showNoContent(event) {
     if (event.message === 'No Content Available') {
       this.isContentPresent = false;
     }
   }
+
+  setTelemetryData() {
+    let telemetryCdata;
+    if (this.dialCode) {
+      telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
+    }
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: telemetryCdata || []
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationHelperService.getPageLoadTime()
+      },
+    };
+    if (this.collectionData) {
+      this.telemetryImpression.object = {
+        id: this.collectionData['identifier'],
+        type: this.collectionData['contentType'],
+        ver: `${this.collectionData['pkgVersion']}` || '1.0',
+      };
+    }
+  }
+
+  setPageExitTelemtry() {
+    if (this.collectionData) {
+      this.telemetryImpression.object = {
+        id: this.collectionData['identifier'],
+        type: this.collectionData['contentType'],
+        ver: `${this.collectionData['pkgVersion']}` || '1.0',
+      };
+    }
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+
   ngOnDestroy() {
     this.utilService.emitHideHeaderTabsEvent(false);
     if (this.subsrciption) {

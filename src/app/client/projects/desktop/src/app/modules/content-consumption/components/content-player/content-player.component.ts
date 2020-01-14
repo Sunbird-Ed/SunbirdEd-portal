@@ -1,3 +1,4 @@
+import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -25,9 +26,10 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   contentRatingModal = false;
   previewCdnUrl: string;
   isCdnWorking: string;
-  @Input() isContentDeleted = false;
-  message: string;
+  @Input() isContentDeleted: Subject<any>;
+  contentDeleted = false;
   @Input() isContentPresent = true;
+  @Input() objectRollUp: {} = {};
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
@@ -38,7 +40,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   @Input() contentData;
 
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
-    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService) {
+    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
+    public playerService: PublicPlayerService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -51,18 +54,22 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
    */
 
   ngAfterViewInit() {
-    this.isContentDeleted = _.isEmpty(this.playerConfig);
     if (!_.isEmpty(this.playerConfig)) {
       this.loadPlayer();
     }
   }
 
   ngOnChanges() {
-    this.contentRatingModal = false;
-    this.isContentDeleted = _.isEmpty(this.playerConfig);
-    if (!_.isEmpty(this.playerConfig)) {
-      this.loadPlayer();
+    if (this.isContentDeleted) {
+      this.isContentDeleted.subscribe(data => {
+        this.contentDeleted = data.value && !this.router.url.includes('browse');
+      });
     }
+    this.contentRatingModal = false;
+      if (!_.isEmpty(this.playerConfig)) {
+        this.objectRollUp = _.get(this.playerConfig, 'context.objectRollup') || {};
+        this.loadPlayer();
+      }
   }
   loadCdnPlayer() {
     const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.cdnUrl + '&build_number=' + this.buildNumber;
@@ -165,7 +172,24 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
   deleteContent(event) {
-    this.isContentDeleted = true;
-    this.deletedContent.emit(event);
+    if (!this.router.url.includes('browse')) {
+      this.contentDeleted = true;
+      this.deletedContent.emit(event);
+    }
+  }
+
+  checkContentDownloading(event) {
+    if (!this.router.url.includes('browse')) {
+      this.contentDeleted = false;
+      const contentDetails = {
+        contentId: event.identifier,
+        contentData: event
+      };
+      this.contentData = event;
+      this.playerConfig = this.playerService.getConfig(contentDetails);
+      if (!_.isEmpty(this.playerConfig)) {
+        this.loadPlayer();
+      }
+    }
   }
 }
