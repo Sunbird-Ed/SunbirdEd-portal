@@ -40,7 +40,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     public modifiedFilters: any;
 
     isConnected = navigator.onLine;
-    slideConfig = this.configService.appConfig.CourseBatchPageSection.slideConfig;
+    slideConfig = this.configService.appConfig.AllDownloadsSection.slideConfig;
     isBrowse = false;
     showExportLoader = false;
     showDownloadLoader = false;
