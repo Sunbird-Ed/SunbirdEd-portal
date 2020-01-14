@@ -105,3 +105,21 @@
 <div *ngIf='showLoader && !showError' class="ui container sb-chapter-list">
   <app-loader></app-loader>
 </div>
+
+<sui-modal *ngIf="showConfirmationModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showConfirmationModal = false" #modal>
+  <div class="sb-modal-header">
+      Confirm
+  </div>
+  <div class="sb-modal-content">
+      <div class="sb-publish-content">
+        <div class="review-modal-list">
+          Are you sure want to remove the Resource from selected unit?
+      </div>
+      </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="removeResourceFromHierarchy()"> Yes </button>
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="showConfirmationModal = false"> No </button>
+  </div>
+</sui-modal>

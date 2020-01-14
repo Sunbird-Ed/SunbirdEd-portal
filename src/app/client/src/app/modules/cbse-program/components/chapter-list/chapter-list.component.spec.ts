@@ -13,16 +13,18 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, throwError as observableError, of, Subscription } from 'rxjs';
 import { SuiModule, SuiTabsModule, SuiSelect } from 'ng2-semantic-ui/dist';
 import { ProgramStageService } from '../../../program/services';
+import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 
 import {
   chapterListComponentInput, role, sessionContext, responseSample,
-  fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample
+  fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample, templateSelectionEvent
 } from './chapter-list.component.data';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DynamicModule } from 'ng-dynamic-component';
+import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
 
 
 describe('ChapterListComponent', () => {
@@ -38,6 +40,16 @@ describe('ChapterListComponent', () => {
       } else {
         return observableOf(responseSample);
       }
+    },
+    post() {
+      if (errorInitiate) {
+        return observableError({ result: { responseCode: 404 } });
+      } else {
+        return observableOf({result: {identifier: 'do_123', node_id: 'do_1234', versionKey: '123456'}});
+      }
+    },
+    patch() {
+      return observableOf('success');
     }
   };
 
@@ -61,7 +73,11 @@ describe('ChapterListComponent', () => {
   };
 
   const UserServiceStub = {
-    userid: '874ed8a5-782e-4f6c-8f36-e0288455901e'
+    userid: '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    userProfile: {
+      firstName: 'Creator',
+      lastName: 'ekstep'
+    }
   };
   const PublicDataServiceStub = {
     post() {
@@ -76,11 +92,10 @@ describe('ChapterListComponent', () => {
         SuiTabsModule, FormsModule, DynamicModule],
       declarations: [ChapterListComponent, RecursiveTreeComponent, ResourceTemplateComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: ActionService, useValue: actionServiceStub }, { provide: UserService, useValue: UserServiceStub },
+      providers: [CollectionHierarchyService,
+             { provide: ActionService, useValue: actionServiceStub }, { provide: UserService, useValue: UserServiceStub },
       { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService, ProgramStageService,
-      {
-        provide: ActivatedRoute, useValue: activatedRouteStub
-      }]
+      { provide: ActivatedRoute, useValue: activatedRouteStub}, ProgramStageService]
     })
     .compileComponents();
   }));
@@ -91,212 +106,130 @@ describe('ChapterListComponent', () => {
     component = fixture.componentInstance;
     de = fixture.debugElement;
     component.chapterListComponentInput = chapterListComponentInput;
-    component.role = chapterListComponentInput.role;
-    component.sessionContext = chapterListComponentInput.sessionContext;
     errorInitiate = false;
-    component.programStageService = TestBed.get(ProgramStageService);
-    stageSubscription = component.programStageService.getStage().subscribe(state => {
-      this.state.stages = state.stages;
-    });
     fixture.detectChanges();
   });
 
-
-
-  describe('Component should be initialized: Called ngOnInit', () => {
-    
-    beforeEach(() => {
-      component.ngOnInit();
-    })
 
     it('Component created', () => {
       expect(component).toBeDefined();
-    }) 
-
-    it('Should log Telemetry impression with pageId = chapterlist', () => {
-      //Ideally we have to spy on Telemetry Intract event being called or not. It shoulbe be called
-      expect(component.telemetryImpression['edata']).toEqual(jasmine.objectContaining({'pageid': 'chapterlist'}));
-    })
-  
-    it('Should have current stage name = chapterListComponent', () => {
-      expect(component.currentStage).toEqual(compState);
-    })
-  
-    it('Should have selection of "all" in the dropdown', () => {
-      let obj = {
-        identifier: 'all',
-        name: 'All Chapters'
-      }
-      expect(component.levelOneChapterList).toContain(obj);
-    })
-
-    it('Should have selected "All Chapters" option in the dropdown', () => {
-      // fixture.detectChanges();
-      const chapterSel = de.nativeElement.querySelector('.selection');
-      expect(chapterSel.innerText).toEqual('All Chapters');
-    })
-   
-    it("Should have called collection heirarchy API to get heirarchy data", () => {
-      spyOn(component, 'getCollectionHierarchy').and.callThrough();
-      fixture.whenStable().then(() => {
-        expect(component.getCollectionHierarchy).toHaveBeenCalled();
-      })
-    })
-    // spyOn(component, 'getCollectionHierarchy').and.callThrough();
-    // component.ngOnInit();
-   
-    // expect(component.getCollectionHierarchy).toHaveBeenCalledWith(component.sessionContext.collection, undefined);
-    // expect(component.collectionHierarchy).toBeTruthy();
-    
-    // expect(component.selectedChapterOption).toEqual('all');
-
-    // let levelOneCp = {identifier: 'all', name: 'All Chapters'};
-    // var lastItem = component.levelOneChapterList[component.levelOneChapterList.length-1];
-    // expect(Object.assign({}, lastItem)).toEqual(Object.assign({}, levelOneCp));
-  });
-
-  // describe('Should call collection heirarchy method - getCollectionHierarchy', () => {
-  //   it('first call', fakeAsync(() => {
-  //     let response = {}
-  //     component.getCollectionHierarchy.and.callFake(() =>  Promise.resolve())
-
-  //   }))
-  // })
-
-  
-
-
-  it('should execute onSelectChapterChange on dropdown change', () => {
-
-    spyOn(component, 'onSelectChapterChange').and.callThrough();
-
-    collection = _.map(component.collectionHierarchy, _.property('identifier'));
-    component.selectedChapterOption = collection[1];
-    fixture.detectChanges();
-    const select = fixture.debugElement.query(By.css('sui-select'));
-    fixture.whenStable().then(() => {
-      select.nativeElement.dispatchEvent(new Event('change'));
-      fixture.detectChanges();
-      expect(component.showLoader).toBe(true);
-      expect(component.onSelectChapterChange).toHaveBeenCalledWith(component.selectedChapterOption);
     });
 
-  });
-
-  it('show resource template with Add resource action', () => {
-    const recursiveComponent = new RecursiveTreeComponent();
-    const button = fixture.debugElement.nativeElement.querySelector('button');
-    button.click();
-    // recursiveComponent.nodeMeta.emit({
-    //   action: 'add',
-    //   showPopup: true,
-    //   collection: collection[1]
-    // });
-    spyOn(component, 'showResourceTemplate').and.callThrough();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(component.showResourceTemplate).toHaveBeenCalled();
+    it('stageSubscription should get subcribe on component initialize', () => {
+      expect(component.stageSubscription).toBeDefined();
     });
-  });
 
-  // it('show resource template with delete action', () => {
-  //   const recursiveComponent = new RecursiveTreeComponent();
-  //   recursiveComponent.nodeMeta.emit({
-  //     action: 'delete',
-  //     showPopup: null,
-  //     content: collection[1],
-  //     collection: component.collectionHierarchy
-  //   });
-
-  //   spyOn(component, 'removeResourceToHierarchy').and.callThrough();
-  //   fixture.whenStable().then(() => {
-  //     fixture.detectChanges();
-  //     expect(component.removeResourceToHierarchy).toHaveBeenCalled();
-  //   });
-  // });
-
-
-
-
-  // it('should call showChapterList on successfully collecting textBookMetaData', () => {
-  //   component.sessionContext.currentRole = 'REVIEWER';
-  //   fixture.detectChanges();
-  //   spyOn(component, 'showChapterList');
-  //   component.getCollectionHierarchy(sessionContext.textbook);
-  //   expect(component.showChapterList).toHaveBeenCalled();
-  // });
-
-  // it('should call showChapterList with role  CONTRIBUTOR', () => {
-  //   component.sessionContext.currentRole = 'CONTRIBUTOR';
-  //   fixture.detectChanges();
-  //   spyOn(component, 'showChapterList');
-  //   component.getCollectionHierarchy(sessionContext.textbook);
-  //   expect(component.showChapterList).toHaveBeenCalled();
-  // });
-
-  // it('should call showChapterList with role  PUBLISHER', () => {
-  //   component.sessionContext.currentRole = 'PUBLISHER';
-  //   fixture.detectChanges();
-  //   spyOn(component, 'showChapterList');
-  //   component.getCollectionHierarchy(sessionContext.textbook);
-  //   expect(component.showChapterList).toHaveBeenCalled();
-  // });
-
-  // xit('should throw error Fetching TextBook details failed', () => {
-  //   errorInitiate = true;
-  //   spyOn(component.toasterService, 'error');
-  //   component.getCollectionHierarchy(sessionContext.textbook);
-  //   expect(component.toasterService.error).toHaveBeenCalledWith('Fetching TextBook details failed');
-  // });
-
-  // it('should emit click event on click of chapterlist row', () => {
-  //   spyOn(component, 'emitQuestionTypeTopic');
-  //   spyOn(component, 'getCollectionHierarchy');
-  //   component.showLoader = false;
-  //   component.showError = false;
-  //   component.textBookChapters = chapterlistSample;
-  //   component.routerQuestionCategory = routerQuestionCategorySample;
-  //   component.ngOnInit();
-  //   fixture.detectChanges();
-  //   const tableRow = de.nativeElement.querySelectorAll('tr');
-  //   tableRow[1].click();
-  //   fixture.detectChanges();
-  //   expect(component.emitQuestionTypeTopic).toHaveBeenCalled();
-  // });
-
-  // it('should execute ngOnChanges', () => {
-  //   const changed = { selectedSchool: { currentValue: 'newOne', previousValue: 'oldOne' } };
-  //   spyOn(component, 'ngOnChanges').and.callThrough();
-  //   spyOn(component, 'showChapterList');
-  //   component['textbookMeta'] = [{ test: 1 }];
-  //   component.ngOnChanges(changed);
-  //   expect(component.showChapterList).toHaveBeenCalled();
-  //   expect(component.showChapterList).toHaveBeenCalledTimes(1);
-  //   expect(component.sessionContext.selectedSchoolForReview).toEqual('newOne');
-  // });
-
-  // it('should execute ngOnChanges without break if selectedSchool is not changed', () => {
-  //   const changed = {};
-  //   spyOn(component, 'ngOnChanges').and.callThrough();
-  //   spyOn(component, 'showChapterList');
-  //   component.getCollectionHierarchy(sessionContext.textbook);
-  //   component.ngOnChanges(changed);
-  //   expect(component.showChapterList).toHaveBeenCalled();
-  // });
-
-  // it('should throw error on failure of apiRequest', () => {
-  //   component.sessionContext.currentRole = 'unknown';
-  //   fixture.detectChanges();
-  //   spyOn(component.toasterService, 'error');
-  //   component.showChapterList(textbookMeta);
-  //   expect(component.toasterService.error).toHaveBeenCalledWith('You don\'t have permission to access this page');
-  // });
-
-  xit('unsubscribes when destroyed', () => {
-    component.ngOnDestroy();
-    const spy = spyOn(stageSubscription, 'unsubscribe').and.callFake(() => {
-      fixture.detectChanges();
-      expect(spy).toHaveBeenCalled();
+    it('Default it should show all Chapters', () => {
+      expect(component.selectedChapterOption).toMatch('all');
     });
-  });
+
+    it('dynamicOuts should be registered on initialize', () => {
+      expect(_.get(component.dynamicOutputs, 'uploadedContentMeta')).toBeDefined();
+    });
+
+    it('should call updateAccordianView on componet initialize', () => {
+      spyOn(component, 'updateAccordianView');
+      component.ngOnInit();
+      expect(component.updateAccordianView).toHaveBeenCalled();
+    });
+
+    it('uploadHandler should be in uploadedContentMeta function', () => {
+      spyOn(component, 'uploadHandler');
+      component.dynamicOutputs.uploadedContentMeta({contentId: 'do_1234567'});
+      expect(component.uploadHandler).toHaveBeenCalledWith({contentId: 'do_1234567'});
+    });
+
+    it('should call changeView on stage change', () => {
+       // const programStageSpy = jasmine.createSpyObj('programStageService', ['getStage']);
+       // programStageSpy.getStage.and.returnValue('stubValue');
+       component.programStageService.getStage = jasmine.createSpy('getstage() spy').and.callFake(() => {
+           return observableOf({stages: []});
+       });
+       spyOn(component, 'changeView');
+       component.ngOnInit();
+       expect(component.changeView).toHaveBeenCalled();
+    });
+
+    it('should call getHierarchy with second parameter as undefined', () => {
+      spyOn(component, 'getCollectionHierarchy');
+      component.updateAccordianView();
+      expect(component.getCollectionHierarchy).toHaveBeenCalledWith(jasmine.any(String), undefined);
+    });
+
+    it('should emit output on execution of emitQuestionTypeTopic', () => {
+      let mockData;
+      component.selectedQuestionTypeTopic.subscribe((outputData) => {
+          mockData = outputData;
+      });
+      component.emitQuestionTypeTopic('mcq', 'topic', 'do_123', 'do_1234', 'dummyResource');
+      expect(mockData).toEqual(jasmine.objectContaining({questionType: 'mcq'}));
+    });
+
+    it('should have mandatory input objects to other dynamic components', () => {
+      component.initiateInputs();
+      // All assertions are related to single feature
+      expect(_.has(component.dynamicInputs, 'contentUploadComponentInput.config')).toBeTruthy();
+      expect(_.has(component.dynamicInputs, 'contentUploadComponentInput.sessionContext')).toBeTruthy();
+      expect(_.has(component.dynamicInputs, 'contentUploadComponentInput.unitIdentifier')).toBeTruthy();
+      expect(_.has(component.dynamicInputs, 'contentUploadComponentInput.templateDetails')).toBeTruthy();
+      expect(_.has(component.dynamicInputs, 'contentUploadComponentInput.selectedSharedContext')).toBeTruthy();
+      expect(_.has(component.dynamicInputs, 'contentUploadComponentInput.contentId')).toBeTruthy();
+      expect(_.has(component.dynamicInputs, 'contentUploadComponentInput.action')).toBeTruthy();
+      expect(_.has(component.dynamicInputs, 'contentUploadComponentInput.programContext')).toBeTruthy();
+      expect(_.has(component.dynamicInputs, 'practiceQuestionSetComponentInput.sessionContext')).toBeTruthy();
+      expect(_.has(component.dynamicInputs, 'practiceQuestionSetComponentInput.templateDetails')).toBeTruthy();
+    });
+
+    it('should call updateAccordianView only if current stage is chapterlist', () => {
+      component.unitIdentifier = 'do_1234567890';
+      component.state = { stages: [{stage: 'collectionComponent'}, {stage: 'chapterListComponent'}]};
+      spyOn(component, 'updateAccordianView');
+      component.changeView();
+      expect(component.updateAccordianView).toHaveBeenCalledWith(jasmine.any(String));
+    });
+
+    it('on selecting unit in drop-down of chapterlist', () => {
+      spyOn(component, 'updateAccordianView');
+      component.onSelectChapterChange();
+      expect(component.updateAccordianView).toHaveBeenCalledWith(undefined, jasmine.any(Boolean));
+    });
+
+    it('shoild close template selection-popup on successful selection', () => {
+      component.handleTemplateSelection({});
+      expect(component.showResourceTemplatePopup).toBeFalsy();
+    });
+
+    it('templateDetails should be defined on successful template selection', () => {
+      component.selectedSharedContext = {framework: 'NCFCOPY', topic: ['Topic 2 child']};
+      component.handleTemplateSelection(templateSelectionEvent);
+      expect(component.templateDetails).toBeDefined();
+    });
+
+    it('templateDetails should be defined on successful template selection', () => {
+      // tslint:disable-next-line:prefer-const
+      let stubComponent: ContentUploaderComponent;
+      component.selectedSharedContext = {framework: 'NCFCOPY', topic: ['Topic 2 child']};
+      spyOn(component, 'componentLoadHandler');
+      component.handleTemplateSelection(templateSelectionEvent);
+      expect(component.componentLoadHandler).toHaveBeenCalledWith('creation', jasmine.any(Function), 'uploadComponent');
+    });
+
+    it('should add selected component to stage', () => {
+      component.programStageService.addStage = jasmine.createSpy('addStage() spy').and.callFake(() => {
+        return observableOf({stages: []});
+       });
+      // tslint:disable-next-line:prefer-const
+      let stubComponent: ContentUploaderComponent;
+      component.selectedSharedContext = {framework: 'NCFCOPY', topic: ['Topic 2 child']};
+      // spyOn(component.programStageService, 'addStage');
+      component.handleTemplateSelection(templateSelectionEvent);
+      expect(component.programStageService.addStage).toHaveBeenCalled();
+    });
+
+    it('should go to else condition if child unit is passed', () => {
+      console.log(component.collectionHierarchy);
+      component.updateAccordianView('do_112931801879011328152');
+      expect(component.sessionContext.lastOpenedUnitParent).toEqual('do_1127639059664568321138');
+    });
+
 });
