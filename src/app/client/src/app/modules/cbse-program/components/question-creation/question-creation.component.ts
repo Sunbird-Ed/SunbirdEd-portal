@@ -312,7 +312,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
                   'editorState': {
                     'question': this.editorState.question,
-                    'answer': this.editorState.answer
+                    'answer': this.editorState.answer,
+                    'solutions': []
                   },
                   'body': rendererBody,
                   'responseDeclaration': {
@@ -326,6 +327,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   },
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
+                  'solutions':[],
                   'status': 'Draft',
                   'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
                   'type': 'reference',
@@ -344,8 +346,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           solutionObj.id = this.solutionUUID;
           solutionObj.type = this.selectedSolutionType;
           solutionObj.value = this.editorState.solutions;
-          option.data.request.assessment_item.metadata.editorState.solutions = [solutionObj];
-          option.data.request.assessment_item.metadata.solutions = [solutionObj];
+          option.data.request.assessment_item.metadata.editorState.solutions.push(solutionObj);
+          option.data.request.assessment_item.metadata.solutions.push(solutionObj);
         }
 
         this.formValues = {};
