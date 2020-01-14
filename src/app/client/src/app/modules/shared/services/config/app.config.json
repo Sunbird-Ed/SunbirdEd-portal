@@ -132,7 +132,6 @@
     "slideConfig": {
       "slidesToShow": 4,
       "slidesToScroll": 4,
-      "respondTo": "slider",
       "responsive": [
         {
           "breakpoint": 2800,
