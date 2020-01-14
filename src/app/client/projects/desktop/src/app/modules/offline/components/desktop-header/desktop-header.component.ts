@@ -59,6 +59,12 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => this.clearSearchQuery());
 
+    this.utilService.searchKeyword
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((keyword: string) => {
+        this.updateSearchKeyword(keyword);
+      });
+
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd), takeUntil(this.unsubscribe$))
       .subscribe((data) => {
@@ -152,6 +158,10 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
 
   clearSearchQuery() {
     this.queryParam = {};
+  }
+
+  updateSearchKeyword(keyword: string) {
+    this.queryParam.key = keyword;
   }
 
   handleImport() {

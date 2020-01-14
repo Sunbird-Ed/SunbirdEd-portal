@@ -137,13 +137,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
 
   goBack() {
     this.logTelemetry('close-collection-player');
-    const  previousUrl =  this.navigationHelperService.getPreviousUrl();
-    if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
-     return this.router.navigate(['/']);
-    }
-    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
-      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
-      this.utilService.clearSearchQuery();
+    this.navigationHelperService.goBack();
   }
 
   setPageExitTelemtry() {
