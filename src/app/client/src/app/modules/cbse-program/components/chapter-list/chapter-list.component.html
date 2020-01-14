@@ -100,7 +100,7 @@
       [ndcDynamicOutputs]="dynamicOutputs"></ndc-dynamic>
 </div>
 <div class="twelve wide column" *ngIf="!collectionHierarchy.length && !showLoader">
-  <app-no-result></app-no-result>
+  <app-no-result [data]="{ messageText: 'resourceService.messages.stmsg.m0006'}"></app-no-result>
 </div>
 <div *ngIf='showLoader && !showError' class="ui container sb-chapter-list">
   <app-loader></app-loader>

@@ -115,11 +115,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.location.back();
-
-    if (this.isViewAll) {
-      this.clearSearchQuery();
-    }
+    this.navigationHelperService.goBack();
   }
 
   clearSearchQuery() {
