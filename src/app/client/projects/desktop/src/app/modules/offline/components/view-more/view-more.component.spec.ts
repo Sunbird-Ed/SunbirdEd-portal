@@ -13,6 +13,7 @@ import { visitsEvent, contentList, appConfigViewAll } from './view-more.componen
 import { Location } from '@angular/common';
 import { filters } from '../search/search.component.data.spec';
 import { PublicPlayerService } from '@sunbird/public';
+import { NavigationHelperService } from 'src/app/modules/shared';
 
 const resourceBundle = {
   messages: {
@@ -56,7 +57,7 @@ describe('ViewMoreComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ViewMoreComponent],
       imports: [RouterModule.forRoot([]), CommonConsumptionModule, TelemetryModule.forRoot(), SharedModule.forRoot(), CoreModule],
-      providers: [OrgDetailsService, SearchService, UtilService, ConnectionService,
+      providers: [OrgDetailsService, SearchService, UtilService, ConnectionService, NavigationHelperService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: ActivatedRoute, useClass: MockActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -100,15 +101,11 @@ describe('ViewMoreComponent', () => {
     expect(utilService.clearSearchQuery).toHaveBeenCalled();
   });
 
-  it('should call goBack', () => {
-    component.isViewAll = true;
-    const location = TestBed.get(Location);
-    const utilService = TestBed.get(UtilService);
-    spyOn(location, 'back');
-    spyOn(utilService, 'clearSearchQuery');
+  it('should navigate to previous page', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'goBack');
     component.goBack();
-    expect(location.back).toHaveBeenCalled();
-    expect(utilService.clearSearchQuery).toHaveBeenCalled();
+    expect(navigationHelperService.goBack).toHaveBeenCalled();
   });
 
   it('should call setNoResultMessage', () => {
