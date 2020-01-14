@@ -127,7 +127,6 @@ export class TocPageComponent implements OnInit, OnDestroy {
   }
 
   tocCardClickHandler(event) {
-    console.log('tocCardClickHandler', event);
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
       this.isContentPresent = true;
       this.activeContent = event.data;
