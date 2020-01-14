@@ -58,11 +58,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   showFormError = false;
   editor: any;
   selectedSolutionType: string;
-  selectedSolutionTypeIndex:string;
-  solutionTypes:any;
+  selectedSolutionTypeIndex: string;
+  solutionTypes: any;
   showSolutionDropDown = true;
-  videoSolutionName:string;
-  videoSolutionData:any;
+  videoSolutionName: string;
+  videoSolutionData: any;
   editorState: any;
   solutionUUID: string;
   myAssets = [];
@@ -125,21 +125,20 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.editorState.answer = this.questionMetaData.data.editorState.answer;
       // tslint:disable-next-line:max-line-length
       this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
-      if(this.questionMetaData.data.editorState.solution && this.questionMetaData.data.editorState.solution.length > 0 && this.questionMetaData.data.editorState.solution[0].value)
-      {
-        let editor_state = this.questionMetaData.data.editorState;
+      // tslint:disable-next-line:max-line-length
+      if (this.questionMetaData.data.editorState.solution && this.questionMetaData.data.editorState.solution.length > 0 && this.questionMetaData.data.editorState.solution[0].value) {
+        const editor_state = this.questionMetaData.data.editorState;
         this.editorState.solution = editor_state.solution[0].value;
         this.solutionUUID = editor_state.solution[0].id;
         this.selectedSolutionType = editor_state.solution[0].type;
-        
         this.showSolutionDropDown = false;
-      }else{
+      } else {
         this.editorState.solution = '';
-        this.selectedSolutionType = "";
+        this.selectedSolutionType = '';
       }
       this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
       this.mediaArr = this.questionMetaData.data.media || [];
-      if(!_.isEmpty(this.questionMetaData.data.media)){
+      if (!_.isEmpty(this.questionMetaData.data.media)) {
         this.videoSolutionName = this.questionMetaData.data.media[0].name;
       }
     }
@@ -150,12 +149,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.isReadOnlyMode = true;
     }
     this.solutionTypes = [{
-      "type":"html",
-      "value":"Text+Image"
+      'type': 'html',
+      'value': 'Text+Image'
     },
     {
-      "type":"video",
-      "value":"video"
+      'type': 'video',
+      'value': 'video'
     }];
   }
 
@@ -169,22 +168,24 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
     return userName;
   }
-  selectSolutionType(data:any){
-    let index = _.findIndex(this.solutionTypes, function(sol:any) { return sol.value == data });
+  selectSolutionType(data: any) {
+    const index = _.findIndex(this.solutionTypes, (sol: any) => {
+      return sol.value === data;
+    });
     this.selectedSolutionType = this.solutionTypes[index].type;
-    if(this.selectedSolutionType == 'video'){
+    if (this.selectedSolutionType === 'video') {
       const showVideo = true;
       this.videoShow = showVideo;
     }
     this.showSolutionDropDown = false;
   }
-  
-  videoDataOutput(event){
+
+  videoDataOutput(event) {
     this.videoShow = false;
     this.videoSolutionData = event;
     this.videoSolutionName = event.name;
     this.editorState.solution = event.identifier;
-    let videoMedia:any = {};
+    const videoMedia: any = {};
     videoMedia.id = event.identifier;
     videoMedia.src = event.downloadUrl;
     videoMedia.type = 'video';
@@ -193,10 +194,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.mediaArr.push(videoMedia);
   }
 
-  
-  deleteSolution(){
+  deleteSolution() {
     this.showSolutionDropDown = true;
-    this.selectedSolutionType = "";
+    this.selectedSolutionType = '';
   }
 
   ngAfterViewInit() {
@@ -216,7 +216,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.editorConfig = { 'mode': 'create' };
       this.editorState = {
         question : '',
-        answer: ''
+        answer: '',
+        solution: ''
       };
       this.manageFormConfiguration();
       if (this.questionMetaData && this.questionMetaData.data) {
@@ -224,16 +225,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.editorState.answer = this.questionMetaData.data.editorState.answer;
         // tslint:disable-next-line:max-line-length
         this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
-        if(this.questionMetaData.data.editorState.solution  && this.questionMetaData.data.editorState.solution.length > 0 && this.questionMetaData.data.editorState.solution[0].value)
-      {
-        let editor_state = this.questionMetaData.data.editorState;
+        // tslint:disable-next-line:max-line-length
+        if (this.questionMetaData.data.editorState.solution  && this.questionMetaData.data.editorState.solution.length > 0 && this.questionMetaData.data.editorState.solution[0].value) {
+        const editor_state = this.questionMetaData.data.editorState;
         this.editorState.solution = editor_state.solution[0].value;
         this.solutionUUID = editor_state.solution[0].id;
         this.selectedSolutionType = editor_state.solution[0].type;
         this.showSolutionDropDown = false;
-      }else{
+      } else {
         this.editorState.solution = [];
-        this.selectedSolutionType = "";
+        this.selectedSolutionType = '';
       }
         this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
       } else {
@@ -310,26 +311,25 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'metadata': {
                   // tslint:disable-next-line:max-line-length
                   'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
-                    'editorState': {
-                      'question': this.editorState.question,
-                      'answer': this.editorState.answer,
-                      'solution': [{
-                        'id': this.solutionUUID,
-                        'type': this.selectedSolutionType,
-                        'value': this.editorState.solution
-         
-                      }]
-                    },
-                    'body': rendererBody,
-                    'responseDeclaration': {
-                      'responseValue': {
-                        'cardinality': 'single',
-                        'type': 'string',
-                        'correct_response': {
-                          'value': rendererAnswer
-                        }
+                  'editorState': {
+                    'question': this.editorState.question,
+                    'answer': this.editorState.answer,
+                    'solution': [{
+                      'id': this.solutionUUID,
+                      'type': this.selectedSolutionType,
+                      'value': this.editorState.solution
+                    }]
+                  },
+                  'body': rendererBody,
+                  'responseDeclaration': {
+                    'responseValue': {
+                      'cardinality': 'single',
+                      'type': 'string',
+                      'correct_response': {
+                        'value': rendererAnswer
                       }
-                    },
+                    }
+                  },
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
                   'status': 'Draft',
@@ -380,7 +380,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.editorState.question = event.body;
     } else if (type === 'answer') {
       this.editorState.answer = event.body;
-    }else if (type === 'solution') {
+    } else if (type === 'solution') {
       this.editorState.solution = event.body;
     }
 
