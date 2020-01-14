@@ -17,6 +17,8 @@
 
       &__subtitle {
         color: var(--gray-800);
+        display: flex;
+        align-items: center;
         .dot-divider {
           width: ($base-block-space / 2);
           height: ($base-block-space / 2);
