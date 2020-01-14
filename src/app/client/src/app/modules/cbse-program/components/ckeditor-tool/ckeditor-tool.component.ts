@@ -60,6 +60,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   allVideos = [];
   selectedVideo = {};
   selectedVideoId: string;
+  showAddButton: boolean;
   assetsCount = Number;
   showImagePicker: boolean;
   showVideoPicker = false;
@@ -588,6 +589,7 @@ getAllVideos(offset, query) {
     this.getAllVideos(0, this.query);
   }
   selectVideo(data) {
+    this.showAddButton=true;
     this.selectedVideoId = data.identifier;
     this.selectedVideo = data;
   }

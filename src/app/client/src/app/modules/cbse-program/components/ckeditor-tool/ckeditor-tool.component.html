@@ -223,7 +223,7 @@
   <div class="sb-modal-actions">
     <button (click)="addVideoInEditor();" appTelemetryInteract
       [telemetryInteractEdata]="{id:'upload_video',type:'click',pageid:'questioncreate'}"
-      class="sb-btn sb-btn-primary sb-btn-normal">Add</button>
+      class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': showAddButton, 'sb-btn-disabled': !showAddButton}">Add</button>
   </div>
 </sui-modal>
 
