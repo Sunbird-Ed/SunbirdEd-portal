@@ -73,8 +73,10 @@
             <div class="ui divided list">
                 <div class="item py-10">
                     <div class="content width-100">
-                        <button class="ui right floated sb-btn sb-btn-outline-primary sb-btn-normal"
-                            appTelemetryInteract [telemetryInteractEdata]="unenrollBatchIntractEdata"
+                        <button
+                            [ngClass]="{'sb-btn-disabled': isUnenrollbtnDisabled,'sb-btn-outline-primary': !isUnenrollbtnDisabled}"
+                            class="ui right floated sb-btn-normal" appTelemetryInteract
+                            [telemetryInteractEdata]="unenrollBatchIntractEdata"
                             [telemetryInteractObject]="{id:enrolledBatchInfo.identifier,type:'CourseBatch',ver:'1',rollup:{l1:courseId}}"
                             (click)="unenrollBatch(enrolledBatchInfo)"
                             [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
