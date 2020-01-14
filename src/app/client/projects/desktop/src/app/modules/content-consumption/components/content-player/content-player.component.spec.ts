@@ -2,15 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentPlayerComponent } from './content-player.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Router, RouterModule } from '@angular/router';
-import { PublicPlayerService } from '@sunbird/public';
+import { RouterModule } from '@angular/router';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA , DebugElement} from '@angular/core';
 import { playerData } from './content-player.component.spec.data';
-import { ConfigService, NavigationHelperService } from '@sunbird/shared';
-import { Subject } from 'rxjs';
-import { By } from '@angular/platform-browser';
+import { Subject} from 'rxjs';
 
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
@@ -84,7 +81,6 @@ describe('ContentPlayerComponent', () => {
     expect(component.questionScoreSubmitEvents.emit).toHaveBeenCalledWith(playerData.generateScoreSubmitEvent);
   });
   it('should call  loadCdnPlayer ', () => {
-    component.isContentDeleted = false;
     component.contentData = playerData.content.result;
   component.loadCdnPlayer();
  component.contentIframe.nativeElement.onload( data => {
@@ -93,7 +89,6 @@ describe('ContentPlayerComponent', () => {
  });
   });
   it('should call  loadDefaultPlayer ', () => {
-    component.isContentDeleted = false;
     component.contentData = playerData.content.result;
   component.loadDefaultPlayer();
  component.contentIframe.nativeElement.onload( data => {

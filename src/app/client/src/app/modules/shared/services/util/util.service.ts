@@ -47,7 +47,7 @@ export class UtilService {
       metaData: {},
       completionPercentage: data.completionPercentage || 0,
       mimeTypesCount: data.mimeTypesCount || 0,
-      cardImg: data.appIcon || data.courseLogoUrl || 'assets/images/book.png',
+      cardImg: data.cardImg || data.appIcon || data.courseLogoUrl || 'assets/images/book.png',
       resourceType: data.resourceType,
       badgeAssertions: data.badgeAssertions,
       organisation: data.organisation,
