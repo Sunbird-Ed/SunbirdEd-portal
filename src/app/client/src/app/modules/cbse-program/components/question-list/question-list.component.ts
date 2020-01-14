@@ -20,7 +20,7 @@ import { ProgramStageService } from '../../../program/services';
 })
 
 export class QuestionListComponent implements OnInit {
-  @ViewChild('questionCreationChild') questionCreationChild: ElementRef;
+  @ViewChild('questionCreationChild') questionCreationChild;
   @Output() changeStage = new EventEmitter<any>();
   @Output() publishButtonStatus = new EventEmitter<any>();
   @Input() practiceQuestionSetComponentInput: any;
@@ -55,6 +55,7 @@ export class QuestionListComponent implements OnInit {
   public licencesOptions = [];
   public commentCharLimit = 1000;
   public contentRejectComment: string;
+  public practiceSetConfig: any;
   visibility: any;
   @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
 
@@ -74,10 +75,10 @@ export class QuestionListComponent implements OnInit {
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
     this.actions = _.get(this.practiceQuestionSetComponentInput, 'programContext.config.actions');
     this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
-    this.sessionContext.questionType = this.templateDetails.questionCategories[0];
     this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
-    // tslint:disable-next-line:max-line-length
-    this.sessionContext.compConfiguration = _.find(_.get(this.practiceQuestionSetComponentInput, 'programContext.config.components'), {compId: 'practiceSetComponent'});
+    this.practiceSetConfig = _.get(this.practiceQuestionSetComponentInput, 'config');
+    this.resourceTitleLimit = this.practiceSetConfig.config.resourceTitleLength;
+    this.sessionContext.practiceSetConfig = this.practiceSetConfig;
     this.getContentMetadata(this.sessionContext.resourceIdentifier);
     this.getLicences();
   }
@@ -93,6 +94,7 @@ export class QuestionListComponent implements OnInit {
       this.resourceDetails = res;
       this.existingContentVersionKey = res.versionKey;
       this.resourceStatus = _.get(this.resourceDetails, 'status');
+      this.sessionContext.questionType = _.lowerCase(_.nth(this.resourceDetails.questionCategories, 0));
       this.sessionContext.resourceStatus = this.resourceStatus;
       this.resourceName = this.resourceDetails.name || this.templateDetails.metadata.name;
       this.contentRejectComment = this.resourceDetails.rejectComment || '';
@@ -276,6 +278,8 @@ export class QuestionListComponent implements OnInit {
     if (this.isPublishBtnDisable && event.type === 'review') {
       this.toasterService.error('Please resolve rejected questions or delete');
       return;
+    } else if (event.type === 'close') {
+      return false;
     }
 
     delete this.questionReadApiDetails[event.identifier];
@@ -302,54 +306,51 @@ export class QuestionListComponent implements OnInit {
       final.attributions = _.union(final.attributions, _.get(question, 'organisation'));
       return final;
     }, { ids: [], author: [], category: [], attributions: [] });
-    if (selectedQuestionsData.ids.length > 0) {
-      const questions = [];
-      _.forEach(_.get(selectedQuestionsData, 'ids'), (value) => {
-        questions.push({ 'identifier': value });
-      });
+    if (selectedQuestionsData.ids.length === 0)  { return false; }
+    const questions = [];
+    _.forEach(_.get(selectedQuestionsData, 'ids'), (value) => {
+      questions.push({ 'identifier': value });
+    });
 
-      const updateBody = this.cbseService.getECMLJSON(selectedQuestionsData.ids);
-      const versionKey = this.getContentVersion(this.sessionContext.resourceIdentifier);
+    const updateBody = this.cbseService.getECMLJSON(selectedQuestionsData.ids);
+    const versionKey = this.getContentVersion(this.sessionContext.resourceIdentifier);
 
-      forkJoin([updateBody, versionKey]).subscribe((response: any) => {
-        const existingContentVersionKey = _.get(response[1], 'content.versionKey');
-        const requestBody = {
-          'content': {
-            // questions: questions,
-            body: JSON.stringify(response[0]),
-            versionKey: existingContentVersionKey,
-            'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
-            'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
-            // tslint:disable-next-line:max-line-length
-            name: this.resourceName,
-            'programId': this.sessionContext.programId,
-            'program': this.sessionContext.program,
-            'plugins': [{
-              identifier: 'org.sunbird.questionunit.quml',
-              semanticVersion: '1.1'
-            }],
-            'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
-            'topic': this.sessionContext.topic ? [this.sessionContext.topic] : [] ,
-            'editorVersion': 3,
-            'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
-            'rejectComment' : ''
+    forkJoin([updateBody, versionKey]).subscribe((response: any) => {
+      const existingContentVersionKey = _.get(response[1], 'content.versionKey');
+      const requestBody = {
+        'content': {
+          // questions: questions,
+          body: JSON.stringify(response[0]),
+          versionKey: existingContentVersionKey,
+          'author': _.join(_.uniq(_.compact(_.get(selectedQuestionsData, 'author'))), ', '),
+          'attributions': _.uniq(_.compact(_.get(selectedQuestionsData, 'attributions'))),
+          // tslint:disable-next-line:max-line-length
+          name: this.resourceName,
+          'programId': this.sessionContext.programId,
+          'program': this.sessionContext.program,
+          'plugins': [{
+            identifier: 'org.sunbird.questionunit.quml',
+            semanticVersion: '1.1'
+          }],
+          'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
+          'topic': this.sessionContext.topic ? [this.sessionContext.topic] : [] ,
+          'editorVersion': 3,
+          'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
+          'rejectComment' : ''
+        }
+      };
+      this.updateContent(requestBody, this.sessionContext.resourceIdentifier)
+      .subscribe((res) => {
+          if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
+            this.toasterService.success(this.resourceService.messages.smsg.m0060);
+            if (actionStatus === 'review') { this.sendForReview(); }
           }
-        };
-        this.updateContent(requestBody, this.sessionContext.resourceIdentifier)
-        .subscribe((res) => {
-            if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
-              this.toasterService.success(this.resourceService.messages.smsg.m0060);
-              if (actionStatus === 'review') { this.sendForReview(); }
-            }
-          }, error => {
-            this.publishInProgress = false;
-            this.publishButtonStatus.emit(this.publishInProgress);
-          });
-      });
-    } else {
-      this.publishInProgress = false;
-      this.publishButtonStatus.emit(this.publishInProgress);
-    }
+        }, error => {
+          this.publishInProgress = false;
+          this.publishButtonStatus.emit(this.publishInProgress);
+        });
+    });
+
   }
 
   sendForReview() {

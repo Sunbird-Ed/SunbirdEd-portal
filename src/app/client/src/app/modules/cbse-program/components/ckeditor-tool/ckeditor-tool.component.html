@@ -133,6 +133,97 @@
 
   </div>
 </sui-modal>
+<!--Video POP UP-->
+<sui-modal [isClosable]="true" class="sb-modal" [isInverted]="true" (dismissed)="dismissVideoPicker()"
+  *ngIf="showVideoPicker" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
+  <div class="sb-modal-header">Select Video</div>
+  <div class="sb-modal-content p-0">
+    <sui-tabset>
+      <div class="sb-tabset-menu mb-16">
+        <a class="sb-item" suiTabHeader="1">Upload</a>
+        <a class="sb-item" (activate)="getMyVideos(0)" suiTabHeader="2">My Video(s)</a>
+        <a class="sb-item" (activate)="getAllVideos(0)" suiTabHeader="3">All Video(s)</a>
+      </div>
+      <div class="ui segment sb-tabset-segment m-0 pt-0" infiniteScroll [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="500" [scrollWindow]="false" suiTabContent="1">
+        <div class="content">
+          <div class="ui grid">
+            <div class="one wide column"></div>
+            <div class="ten wide column">
+              <div>
+                <input (change)="uploadVideo($event)" type="file" accept="video/mp4" name="assetfile">
+              </div>
+              <div class="ui info message">
+                <p>Allowed file types are: Mp4</p>
+                <p>Maximum allowed file size: 5 MB</p>
+              </div>
+              <div *ngIf="showErrorMsg" class="ui error message">
+                <p>{{errorMsg}}</p>
+              </div>
+            </div>
+            <div class="one wide column"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui segment sb-tabset-segment m-0 pt-0" infiniteScroll [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadMyVideos()" suiTabContent="2">
+        <!-- Search section in modal html structure -->
+        <div class="ui container px-24 pb-16 d-flex flex-ai-center">
+          <div class="sb-search-box small no-btn">
+              <div class="input-div relative">
+                  <i class="search icon"></i>
+                  <input (change)="searchMyVideo($event)" class="sb-search-input" type="text" placeholder="Search..." />
+                  <i class="close icon"></i>
+                  <div class="sb-loader"></div>
+              </div>
+              <button class="sb-btn sb-btn-normal">Search</button>
+          </div>
+          <p class="fs-0-986 ml-auto" style="color: #666;">{{assetsCount}}</p>
+        </div>
+        <div class="sb-grid-layout video">
+          <div class="sb-video-content" *ngFor="let data of myAssets">
+            <div class="sb-image-section relative position" (click)="addVideoInEditor(data)">
+              <div class="overlay-image"><i class="play circle icon"></i></div>
+              <img [src]="data.thumbnail">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="ui segment sb-tabset-segment m-0 pt-0" infiniteScroll [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadAllVideos()" suiTabContent="3">
+        <!-- Search section in modal html structure -->
+        <div class="ui container px-24 pb-16 d-flex flex-ai-center">
+          <div class="sb-search-box small no-btn">
+              <div class="input-div relative">
+                  <i class="search icon"></i>
+                  <input (change)="searchAllVideo($event)" class="sb-search-input" type="text" placeholder="Search..." />
+                  <i class="close icon"></i>
+                  <div class="sb-loader"></div>
+              </div>
+              <button class="sb-btn sb-btn-normal">Search</button>
+          </div>
+          <p class="fs-0-986 ml-auto" style="color: #666;">{{assetsCount}}</p>
+        </div>
+        <div class="sb-grid-layout video">
+          <div class="sb-video-content" *ngFor="let data of allVideos">
+            <div class="sb-image-section relative position" (click)="addVideoInEditor(data)" >
+              <div class="overlay-image"><i class="play circle icon"></i></div>
+              <img [src]="data.thumbnail">
+            </div>
+          </div>
+        </div>
+      </div>
+    </sui-tabset>
+  </div>
+  <div class="sb-modal-actions">
+    <!-- <button (click)="addVideo();" appTelemetryInteract
+      [telemetryInteractEdata]="{id:'upload_video',type:'click',pageid:'questioncreate'}"
+      class="sb-btn sb-btn-primary sb-btn-normal">Add</button> -->
+  </div>
+</sui-modal>
 
 <sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal"
   [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal3>

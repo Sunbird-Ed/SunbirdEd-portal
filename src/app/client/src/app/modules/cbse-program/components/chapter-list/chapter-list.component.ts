@@ -162,6 +162,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
         programContext: _.get(this.chapterListComponentInput, 'programContext')
       },
       practiceQuestionSetComponentInput: {
+        config: _.find(this.programContext.config.components, {'id': 'ng.sunbird.practiceSetComponent'}),
         sessionContext: this.sessionContext,
         templateDetails: this.templateDetails,
         unitIdentifier: this.unitIdentifier,

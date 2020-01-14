@@ -22,6 +22,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() setImageLimit: any;
   @Output() editorDataOutput = new EventEmitter<any>();
   @Output() hasError = new EventEmitter<any>();
+  @Output() videoDataOutput = new EventEmitter<any>();
+  @Input() videoShow;
   public editorInstance: any;
   public isEditorFocused: boolean;
   public limitExceeded: boolean;
@@ -55,10 +57,15 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   }
   myAssets = [];
   allImages = [];
+  allVideos = [];
+  assetsCount = Number;
   showImagePicker: boolean;
+  showVideoPicker = false;
   showImageUploadModal: boolean;
+  showVideoUploadModal: boolean;
   showErrorMsg: boolean;
   errorMsg: string;
+  query: string;
 
   ngOnInit() {
     this.initialized = true;
@@ -96,6 +103,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     }, this.editorConfig);
   }
   ngOnChanges() {
+    if(this.videoShow){
+      this.showVideoPicker = true;
+    } 
   }
 
   ngAfterViewInit() {
@@ -106,11 +116,23 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   initializeImagePicker(editorType) {
     this.showImagePicker = true;
   }
+
+  initializeVideoPicker(editorType) {
+    this.showVideoPicker = true;
+  }
   /**
    * function to hide image picker
    */
   dismissImagePicker() {
     this.showImagePicker = false;
+  }
+
+  /**
+   * function to hide video picker
+   */
+  dismissVideoPicker() {
+    this.showVideoPicker = false;
+    this.videoShow = false;
   }
   dismissImageUploadModal() {
     this.showImagePicker = true;
@@ -118,6 +140,15 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   }
   initiateImageUploadModal() {
     this.showImagePicker = false;
+    this.showImageUploadModal = true;
+  }
+
+  dismissVideoUploadModal() {
+    this.showVideoPicker = true;
+    this.showVideoUploadModal = false;
+  }
+  initiateVideoUploadModal() {
+    this.showVideoPicker = false;
     this.showImageUploadModal = true;
   }
   public isEditorReadOnly(state) {
@@ -251,6 +282,12 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     this.showImagePicker = false;
   }
 
+  addVideoInEditor(data:any) {
+    let videoData = data;
+    this.showVideoPicker = false;
+    this.videoDataOutput.emit(videoData);
+  }
+
   /**
  * functio to get all images
  * @param offset page no
@@ -277,6 +314,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         }
       }
     };
+
     this.contentService.post(req).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Image search failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
@@ -289,6 +327,91 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         });
       });
   }
+
+  /**
+   * function to get videos
+   * @param offset page no
+   */
+  getMyVideos(offset, query) {
+    if (offset === 0) {
+      this.myAssets.length = 0;
+    }
+    const req = {
+      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
+      data: {
+        'request': {
+          filters: {
+            mediaType: ['video'],
+            contentType: 'Asset',
+            compatibilityLevel: {
+              min: 1,
+              max: 2
+            },
+            status: ['Live'],
+            createdBy: this.userProfile.userId
+          },
+          limit: 50,
+          offset: offset
+        }
+      }
+    };
+
+    if (query) {
+      req.data.request['query'] = query;
+    }
+    this.contentService.post(req).subscribe((res) => {
+      this.assetsCount = res.result.count;
+      _.map(res.result.content, (item) => {
+        if (item.downloadUrl) {
+          this.myAssets.push(item);
+        }
+      });
+    });
+  }
+  /**
+ * functio to get all images
+ * @param offset page no
+ */
+getAllVideos(offset, query) {
+  if (offset === 0) {
+    this.allVideos.length = 0;
+  }
+  const req = {
+    url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
+    data: {
+      'request': {
+        filters: {
+          mediaType: ['video'],
+          contentType: 'Asset',
+          compatibilityLevel: {
+            min: 1,
+            max: 2
+          },
+          status: ['Live']
+        },
+        limit: 50,
+        offset: offset
+      }
+    }
+  };
+
+  if (query) {
+    req.data.request['query'] = query;
+  }
+
+  this.contentService.post(req).pipe(catchError(err => {
+    const errInfo = { errorMsg: 'Video search failed' };
+    return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+  }))
+    .subscribe((res) => {
+      this.assetsCount = res.result.count;
+      _.map(res.result.content, (item) => {
+        if (item.downloadUrl) {
+          this.allVideos.push(item);
+        }
+      });
+    });
+}
 
   /**
    * function to lazy load my images
@@ -304,6 +427,22 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   lazyloadAllImages() {
     const offset = this.allImages.length;
     this.getAllImages(offset);
+  }
+
+   /**
+   * function to lazy load my videos
+   */
+  lazyloadMyVideos() {
+    const offset = this.myAssets.length;
+    this.getMyVideos(offset, this.query);
+  }
+
+  /**
+   * function to lazy load all videos
+   */
+  lazyloadAllVideos() {
+    const offset = this.allVideos.length;
+    this.getAllVideos(offset, this.query);
   }
 
   /**
@@ -372,6 +511,79 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
+  /**
+   * function to upload video
+   */
+  uploadVideo(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    const fileType = file.type;
+    const fileName = file.name;
+    const fileSize = file.size / 1024 / 1024;
+    if (fileType.split('/')[0] === 'video') {
+      this.showErrorMsg = false;
+      if (fileSize > 5) {
+        this.showErrorMsg = true;
+        this.errorMsg = 'Max size allowed is 5MB';
+      } else {
+        this.errorMsg = '';
+        this.showErrorMsg = false;
+        reader.readAsDataURL(file);
+      }
+    } else {
+      this.showErrorMsg = true;
+      this.errorMsg = 'Please choose an Video file';
+    }
+    if (!this.showErrorMsg) {
+      const req = {
+        url: this.configService.urlConFig.URLS.ASSET.CREATE,
+        data: {
+          'request': {
+            content: {
+              name: fileName,
+              contentType: 'Asset',
+              mediaType: 'video',
+              mimeType: fileType,
+              createdBy: this.userProfile.userId,
+              language: ['English'],
+              creator: `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
+              code: 'org.ekstep0.5375271337424472',
+            }
+          }
+        }
+      };
+      this.actionService.post(req).pipe(catchError(err => {
+        const errInfo = { errorMsg: ' Video upload failed' };
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+      })).subscribe((res) => {
+        const videoId = res['result'].node_id;
+        const request = {
+          url: `${this.configService.urlConFig.URLS.ASSET.UPDATE}/${videoId}`,
+          data: formData
+        };
+        this.actionService.post(request).pipe(catchError(err => {
+          const errInfo = { errorMsg: 'Video upload failed' };
+          return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+        })).subscribe((response) => {
+          this.addVideoInEditor(response.result);
+          this.showVideoPicker = false;
+          this.showVideoUploadModal = false;
+        });
+      });
+      reader.onerror = (error: any) => { };
+    }
+  }
+
+  searchMyVideo(event) {
+    this.query = event.target.value;
+    this.getMyVideos(0, this.query);
+  }
+  searchAllVideo(event) {
+    this.query = event.target.value;
+    this.getAllVideos(0, this.query);
+  }
   countCharacters(document) {
     const rootElement = document.getRoot();
     return this.countCharactersInElement(rootElement);
