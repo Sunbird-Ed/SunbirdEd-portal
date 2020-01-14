@@ -58,7 +58,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   showFormError = false;
   editor: any;
   selectedSolutionType: string;
-  selectedSolutionTypeIndex:string;
+  selectedSolutionTypeIndex: string;
   showSolutionDropDown = true;
   videoSolutionName: string;
   videoSolutionData: any;
@@ -88,13 +88,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   disableFormField: boolean;
   videoShow: boolean;
   componentConfiguration: any;
-  solutionTypes:any = [{
-    "type":"html",
-    "value":"Text+Image"
+  solutionTypes: any = [{
+    'type': 'html',
+    'value': 'Text+Image'
   },
   {
-    "type":"video",
-    "value":"video"
+    'type': 'video',
+    'value': 'video'
   }];
 
   constructor(
@@ -123,28 +123,27 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.editorState = {
       question : '',
       answer: '',
-      solution: ''
+      solutions: ''
     };
     this.solutionUUID = UUID.UUID();
     this.manageFormConfiguration();
     if (this.questionMetaData && this.questionMetaData.data) {
       this.editorState.question = this.questionMetaData.data.editorState.question;
       this.editorState.answer = this.questionMetaData.data.editorState.answer;
-      // tslint:disable-next-line:max-line-length
-      this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
-      if(!_.isEmpty(this.questionMetaData.data.editorState.solution))
-      {
-        let editor_state = this.questionMetaData.data.editorState;
-        this.editorState.solution = editor_state.solution[0].value;
-        this.solutionUUID = editor_state.solution[0].id;
-        this.selectedSolutionType = editor_state.solution[0].type; 
+      if (!_.isEmpty(this.questionMetaData.data.editorState.solutions)) {
+        const editor_state = this.questionMetaData.data.editorState;
+        this.editorState.solutions = editor_state.solutions[0].value;
+        this.solutionUUID = editor_state.solutions[0].id;
+        this.selectedSolutionType = editor_state.solutions[0].type;
         this.showSolutionDropDown = false;
-        if (this.selectedSolutionType == 'video') {
-          let index = _.findIndex(this.questionMetaData.data.media, function(o) { return o.type == 'video'; });
+        if (this.selectedSolutionType === 'video') {
+          const index = _.findIndex(this.questionMetaData.data.media, (o) => {
+             return o.type === 'video';
+          });
           this.videoSolutionName = this.questionMetaData.data.media[index].name;
         }
-      }else{
-        this.editorState.solution = '';
+      } else {
+        this.editorState.solutions = '';
         this.selectedSolutionType = '';
       }
       this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
@@ -176,17 +175,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     if (this.selectedSolutionType === 'video') {
       const showVideo = true;
       this.videoShow = showVideo;
-    }else{
+    } else {
       this.showSolutionDropDown = false;
     }
-    
   }
 
   videoDataOutput(event) {
     this.videoShow = false;
     this.videoSolutionData = event;
     this.videoSolutionName = event.name;
-    this.editorState.solution = event.identifier;
+    this.editorState.solutions = event.identifier;
     const videoMedia: any = {};
     videoMedia.id = event.identifier;
     videoMedia.src = event.downloadUrl;
@@ -199,8 +197,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
   deleteSolution() {
     this.showSolutionDropDown = true;
-    this.selectedSolutionType = "";
-    this.editorState.solution = "";
+    this.selectedSolutionType = '';
+    this.editorState.solutions = '';
   }
 
   ngAfterViewInit() {
@@ -221,23 +219,20 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.editorState = {
         question : '',
         answer: '',
-        solution: ''
+        solutions: ''
       };
       this.manageFormConfiguration();
       if (this.questionMetaData && this.questionMetaData.data) {
         this.editorState.question = this.questionMetaData.data.editorState.question;
         this.editorState.answer = this.questionMetaData.data.editorState.answer;
-        // tslint:disable-next-line:max-line-length
-        this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
-        if(!_.isEmpty(this.questionMetaData.data.editorState.solution))
-      {
-        let editor_state = this.questionMetaData.data.editorState;
-        this.editorState.solution = editor_state.solution[0].value;
-        this.solutionUUID = editor_state.solution[0].id;
-        this.selectedSolutionType = editor_state.solution[0].type;
+        if (!_.isEmpty(this.questionMetaData.data.editorState.solutions)) {
+        const editor_state = this.questionMetaData.data.editorState;
+        this.editorState.solutions = editor_state.solutions[0].value;
+        this.solutionUUID = editor_state.solutions[0].id;
+        this.selectedSolutionType = editor_state.solutions[0].type;
         this.showSolutionDropDown = false;
       } else {
-        this.editorState.solution = [];
+        this.editorState.solutions = [];
         this.selectedSolutionType = '';
       }
         this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
@@ -306,13 +301,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       .subscribe((res) => {
         const rendererBody = res[0];
         const rendererAnswer = res[1];
-        let solutionObj:any;
-        if(this.selectedSolutionType.length > 0){
-          solutionObj = {};
-          solutionObj.id = this.solutionUUID,
-          solutionObj.type = this.selectedSolutionType,
-          solutionObj.value = this.editorState.solution 
-        }
         const option = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
           data: {
@@ -322,20 +310,17 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                 'metadata': {
                   // tslint:disable-next-line:max-line-length
                   'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
-                    'editorState': {
-                      'question': this.editorState.question,
-                      'answer': this.editorState.answer,
-                      'solution': [solutionObj]
-                    },
-                    'solutions': [solutionObj],
-                    'body': rendererBody,
-                    'responseDeclaration': {
-                      'responseValue': {
-                        'cardinality': 'single',
-                        'type': 'string',
-                        'correct_response': {
-                          'value': rendererAnswer
-                        }
+                  'editorState': {
+                    'question': this.editorState.question,
+                    'answer': this.editorState.answer
+                  },
+                  'body': rendererBody,
+                  'responseDeclaration': {
+                    'responseValue': {
+                      'cardinality': 'single',
+                      'type': 'string',
+                      'correct_response': {
+                        'value': rendererAnswer
                       }
                     }
                   },
@@ -351,7 +336,18 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               }
             }
           }
-        
+        };
+
+        let solutionObj: any;
+        if (this.selectedSolutionType.length > 0) {
+          solutionObj = {};
+          solutionObj.id = this.solutionUUID;
+          solutionObj.type = this.selectedSolutionType;
+          solutionObj.value = this.editorState.solutions;
+          option.data.request.assessment_item.metadata.editorState.solutions = [solutionObj];
+          option.data.request.assessment_item.metadata.solutions = [solutionObj];
+        }
+
         this.formValues = {};
         _.map(this.questionMetaForm.value, (value, key) => { _.map(value, (obj) => { _.assign(this.formValues, obj); }); });
         // tslint:disable-next-line:max-line-length
@@ -390,7 +386,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     } else if (type === 'answer') {
       this.editorState.answer = event.body;
     } else if (type === 'solution') {
-      this.editorState.solution = event.body;
+      this.editorState.solutions = event.body;
     }
 
     if (event.mediaobj) {

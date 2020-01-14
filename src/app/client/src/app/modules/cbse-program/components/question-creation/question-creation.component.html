@@ -46,7 +46,7 @@
             </div>
             <div class="solution_html" *ngIf="selectedSolutionType == 'html'">
                 <div class="ckeditor-tool-container">
-                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')" [editorDataInput]="editorState.solution" [editorId]="'solution_editor'"></app-ckeditor-tool>
+                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')" [editorDataInput]="editorState.solutions" [editorId]="'solution_editor'"></app-ckeditor-tool>
                     <div class="mcq-checkbox-answer" style="margin-left: 92%;background-color: #F3F8FF;">
                         <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto" (click)="deleteSolution()"><i
                         class="trash alternate outline icon"></i>Delete</button>
@@ -144,13 +144,13 @@
                 </div>
             </div>
 
-            <div class="row" *ngIf="this.editorState.solution.length > 0">
+            <div class="row" *ngIf="this.editorState.solutions.length > 0">
                 <div class="twelve wide column p-0">
                     <div class="ckeditor-tool width-100">
                         <div class="ckeditor-tool__question mb-24">
                             <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Solution</label>
                             <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'html'">
-                                <p class="fs-0-785 p-16" [innerHTML]="editorState.solution | sanitizeHtml"></p>
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.solutions | sanitizeHtml"></p>
                             </div>
                             <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'video'">
                                 <div class="solution-media p-16 d-flex flex-ai-center">
