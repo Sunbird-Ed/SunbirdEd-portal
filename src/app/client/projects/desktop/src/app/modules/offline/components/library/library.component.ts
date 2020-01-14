@@ -203,7 +203,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
                                 contents: _.orderBy(_.get(response2, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
                                 name: 'Recently Added'
                             });
-                            this.sections[0].contents[0].name = 'this is big name really really big name, to read check ellipsis here once';
                         }
 
                         for (const section in filteredContents) {
