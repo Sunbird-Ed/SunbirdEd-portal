@@ -175,7 +175,7 @@
                   <i class="search icon"></i>
                   <input (change)="searchMyVideo($event)" class="sb-search-input" type="text" placeholder="Search..." />
                   <i class="close icon"></i>
-                  <div class="sb-loader"></div>
+                  <!-- <div class="sb-loader"></div> -->
               </div>
               <button class="sb-btn sb-btn-normal">Search</button>
           </div>
@@ -183,8 +183,9 @@
         </div>
         <div class="sb-grid-layout video">
           <div class="sb-video-content" *ngFor="let data of myAssets">
-            <div class="sb-image-section relative position" (click)="addVideoInEditor(data)">
+            <div class="sb-image-section relative position" [ngClass]="{'active': selectedVideoId === data.identifier}" (click)="selectVideo(data)">
               <div class="overlay-image"><i class="play circle icon"></i></div>
+              <i class="check circle icon selected-video"></i>
               <img [src]="data.thumbnail">
             </div>
           </div>
@@ -201,7 +202,7 @@
                   <i class="search icon"></i>
                   <input (change)="searchAllVideo($event)" class="sb-search-input" type="text" placeholder="Search..." />
                   <i class="close icon"></i>
-                  <div class="sb-loader"></div>
+                  <!-- <div class="sb-loader"></div> -->
               </div>
               <button class="sb-btn sb-btn-normal">Search</button>
           </div>
@@ -209,8 +210,9 @@
         </div>
         <div class="sb-grid-layout video">
           <div class="sb-video-content" *ngFor="let data of allVideos">
-            <div class="sb-image-section relative position" (click)="addVideoInEditor(data)" >
+            <div class="sb-image-section relative position" [ngClass]="{'active': selectedVideoId === data.identifier}" (click)="selectVideo(data);">
               <div class="overlay-image"><i class="play circle icon"></i></div>
+              <i class="check circle icon selected-video"></i>
               <img [src]="data.thumbnail">
             </div>
           </div>
@@ -219,9 +221,9 @@
     </sui-tabset>
   </div>
   <div class="sb-modal-actions">
-    <!-- <button (click)="addVideo();" appTelemetryInteract
+    <button (click)="addVideoInEditor();" appTelemetryInteract
       [telemetryInteractEdata]="{id:'upload_video',type:'click',pageid:'questioncreate'}"
-      class="sb-btn sb-btn-primary sb-btn-normal">Add</button> -->
+      class="sb-btn sb-btn-primary sb-btn-normal">Add</button>
   </div>
 </sui-modal>
 
