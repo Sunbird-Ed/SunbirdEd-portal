@@ -4,9 +4,12 @@
 </div> -->
 <app-question-creation-header *ngIf="questionMetaData && !showPreview" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
 
+<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
+</app-question-preview>
 
-<form *ngIf="!showPreview" class="ui form mt-8 licence-form" [formGroup]="questionMetaForm">
-    <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode">
+<form class="ui form mt-8 licence-form" [formGroup]="questionMetaForm">
+    <!-- Question Editor Section HTML -->
+    <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode && !showPreview">
         <label *ngIf="showFormError && [undefined, ''].includes(editorState.question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
         <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(editorState.question)">
             <div class="sb-field mcq-title mb-16">
@@ -28,7 +31,8 @@
         </div>
     </div>
 
-    <div class='licence-form__content' *ngIf="!isReadOnlyMode">
+    <!-- Learning Outcome learning level author license Editor HTML -->
+    <div class='licence-form__content' *ngIf="!isReadOnlyMode && !showPreview">
         <div class="ui stackable grid licence-form__content__fields">
             <div class="row">
                 <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
@@ -37,8 +41,8 @@
                             href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
                                 src="assets/images/Info.svg"></a></label>
                         <sui-multi-select formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
-                          <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
-                          </sui-select-option>
+                            <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                            </sui-select-option>
                         </sui-multi-select>
                         <label class="sb-error-text" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
                     </div>
@@ -63,15 +67,15 @@
                             href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
                                 src="assets/images/Info.svg"></a></label>
                         <input formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
-                      <label class="sb-error-text" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+                        <label class="sb-error-text" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Question Preview Section HTML -->
-    <div class="ui container" *ngIf="isReadOnlyMode">
+    <div class="ui container" *ngIf="isReadOnlyMode && !showPreview">
         <div class="ui stackable grid m-0 sb-bg-color-white">
             <div class="row">
                 <div class="twelve wide column p-0">
@@ -101,39 +105,39 @@
             </div>
 
             <!-- <div class="row mb-0 p-0">
-          <div class="twelve wide column">
+            <div class="twelve wide column">
             <div class="ckeditor-tool width-100">
-              <div class="ckeditor-tool__question mb-24">
+                <div class="ckeditor-tool__question mb-24">
                 <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Solution</label>
                 <div class="ckeditor-tool__solution__body">
-                  <div class="solution-media p-16 d-flex flex-ai-center">
+                    <div class="solution-media p-16 d-flex flex-ai-center">
                     <div class="solution-media__video relative position">
-                      <div class="overlay-image"><i class="play circle icon"></i></div>
+                        <div class="overlay-image"><i class="play circle icon"></i></div>
                     </div>
                     <div class="solution-media__desc ml-16">
-                      Video Thumbnail to the left and
-                      the Video title goes here
+                        Video Thumbnail to the left and
+                        the Video title goes here
                     </div>
-                  </div>
-                  <p class="fs-0-785 p-16">
+                    </div>
+                    <p class="fs-0-785 p-16">
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                     industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
                     and scrambled it to make a type specimen book.
-                  </p>
-                  <div class="mcq-checkbox-answer">
-                  </div>
+                    </p>
+                    <div class="mcq-checkbox-answer">
+                    </div>
                 </div>
-              </div>
+                </div>
             </div>
 
-          </div>
+            </div>
         </div> -->
         </div>
 
     </div>
 
     <!-- Learning Outcome learning level author license Preview HTML -->
-    <div class='licence-form__content' *ngIf="isReadOnlyMode">
+    <div class='licence-form__content' *ngIf="isReadOnlyMode || showPreview">
         <div class="ui stackable grid licence-form__content__fields">
             <div class="row">
                 <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
@@ -266,6 +270,3 @@
   </div>
 </form>
 </sui-modal>
-
-<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
-</app-question-preview>
