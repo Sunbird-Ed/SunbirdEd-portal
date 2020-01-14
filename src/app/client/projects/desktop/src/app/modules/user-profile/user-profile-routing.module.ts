@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProfilePageComponent, AboutUsComponent, ExportTelemetryComponent } from './components';
+import { ProfilePageComponent, AboutUsComponent, TelemetryComponent } from './components';
 
 const routes: Routes = [
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'export-telemetry', component: ExportTelemetryComponent, data: {
+    path: 'telemetry', component: TelemetryComponent, data: {
       telemetry: {
         env: 'telemetry', pageid: 'telemetry', type: 'view'
       }

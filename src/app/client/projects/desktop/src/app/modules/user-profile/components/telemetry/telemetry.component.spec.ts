@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExportTelemetryComponent } from './export-telemetry.component';
+import { TelemetryComponent } from './telemetry.component';
 
-describe('ExportTelemetryComponent', () => {
-  let component: ExportTelemetryComponent;
-  let fixture: ComponentFixture<ExportTelemetryComponent>;
+describe('TelemetryComponent', () => {
+  let component: TelemetryComponent;
+  let fixture: ComponentFixture<TelemetryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExportTelemetryComponent ]
+      declarations: [ TelemetryComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExportTelemetryComponent);
+    fixture = TestBed.createComponent(TelemetryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
