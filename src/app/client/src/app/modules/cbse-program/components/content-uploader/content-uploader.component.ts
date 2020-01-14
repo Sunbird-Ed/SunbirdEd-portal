@@ -79,7 +79,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
     this.programContext = _.get(this.contentUploadComponentInput, 'programContext');
-    this.titleCharacterLimit = 100;
+    this.titleCharacterLimit = _.get(this.config, 'config.resourceTitleLength');
     this.actions = _.get(this.contentUploadComponentInput, 'programContext.config.actions');
     if (_.get(this.contentUploadComponentInput, 'action') === 'preview') {
       this.showUploadModal = false;

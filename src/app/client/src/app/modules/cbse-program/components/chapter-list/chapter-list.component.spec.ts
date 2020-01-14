@@ -18,7 +18,7 @@ import { CollectionHierarchyService } from '../../services/collection-hierarchy/
 import {
   chapterListComponentInput, role, sessionContext, responseSample,
   fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample, templateSelectionEvent
-} from './chapter-list.component.data';
+} from './chapter-list.component.spec.data';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';

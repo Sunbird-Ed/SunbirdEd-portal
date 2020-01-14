@@ -16,7 +16,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { CacheService } from 'ng2-cache-service';
 import {
   role, sessionContext, responseSample, fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample
-} from '../chapter-list/chapter-list.component.data';
+} from '../chapter-list/chapter-list.component.spec.data';
 import {SanitizeHtmlPipe} from '../../../cbse-program/pipe/sanitize-html.pipe';
 
 describe('QuestionCreationComponent', () => {
