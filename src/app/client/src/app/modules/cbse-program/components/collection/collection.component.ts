@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
-import { PublicDataService, ContentService } from '@sunbird/core';
+import { ConfigService, UtilService, ToasterService, ResourceService } from '@sunbird/shared';
+import { PublicDataService, ContentService  } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -30,6 +30,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public collectionsWithCardImage;
   public role: any = {};
   public mediums;
+  public showError = false;
   public classes;
   public board;
   public filters;
@@ -45,6 +46,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
   _slideConfig = {'slidesToShow': 10, 'slidesToScroll': 1, 'variableWidth': true};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
     private cbseService: CbseProgramService, public programStageService: ProgramStageService,
+    public resourceService: ResourceService,
     public utilService: UtilService, public contentService: ContentService) { }
 
   ngOnInit() {
@@ -108,6 +110,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       this.collectionsWithCardImage = _.forEach(collectionCards, collection => this.addCardImage(collection));
       this.filterCollectionList(this.classes);
       this.showLoader = false;
+      this.showError = false;
     });
   }
 
@@ -180,6 +183,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
         catchError(err => {
           const errInfo = { errorMsg: 'Question creation failed' };
           this.showLoader = false;
+          this.showError = true;
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }));
   }
