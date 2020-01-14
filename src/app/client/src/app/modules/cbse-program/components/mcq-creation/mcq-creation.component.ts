@@ -11,6 +11,7 @@ import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { CbseProgramService } from '../../services';
 import { Validators, FormGroup, FormArray, FormBuilder, NgForm } from '@angular/forms';
+import { mcqTemplateConfig } from '../mcq-template-selection/mcq-template-data';
 
 @Component({
   selector: 'app-mcq-creation',
@@ -61,6 +62,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   disableFormField: boolean;
   showRequestChangesPopup = false;
   commentCharLimit = 1000;
+  componentConfiguration: any;
 
   constructor(public configService: ConfigService, private http: HttpClient,
     private userService: UserService, public actionService: ActionService,
@@ -72,11 +74,12 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   initForm() {
     if (this.questionMetaData && this.questionMetaData.data) {
       const { responseDeclaration, templateId } = this.questionMetaData.data;
+      const numberOfOptions = _.get(this.sessionContext.practiceSetConfig.config, 'No of options');
       const options = _.map(this.questionMetaData.data.editorState.options, option => ({ body: option.value.body }));
       const question = this.questionMetaData.data.editorState.question;
       this.mcqForm = new McqForm({
         question, options, answer: _.get(responseDeclaration, 'responseValue.correct_response.value')
-      }, { templateId });
+      }, { templateId, numberOfOptions });
       if (this.questionMetaData.data.media) {
         this.mediaArr = this.questionMetaData.data.media;
       }
@@ -102,6 +105,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
   ngOnChanges() {
+    this.componentConfiguration = _.get(this.sessionContext, 'practiceSetConfig');
     this.previewData = this.questionMetaData;
     if (this.role.currentRole === 'REVIEWER') {
       this.isReadOnlyMode = true;
@@ -116,8 +120,8 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
       this.showTemplatePopup = true;
     } else {
       this.initForm();
+      this.manageFormConfiguration();
     }
-    this.manageFormConfiguration();
   }
 
   handleTemplateSelection(event) {
@@ -125,6 +129,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     if (event.type === 'submit') {
       this.questionMetaData.data.templateId = event.template.templateClass;
       this.initForm();
+      this.manageFormConfiguration();
     } else {
       this.questionStatus.emit({ type: 'close' });
     }
@@ -312,7 +317,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   getHtml(question, options) {
-    const { mcqBody, optionTemplate } = this.configService.editorConfig.QUESTION_EDITOR;
+    const { mcqBody, optionTemplate } = mcqTemplateConfig;
     const optionsBody = _.map(options, data => optionTemplate.replace('{option}', data.body)) // passion option which has latex
       .map((data, index) => data.replace('{value}', index)).join('');
     const questionBody = mcqBody.replace('{templateClass}', this.mcqForm.templateId)
@@ -360,8 +365,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
 
     if (this.questionMetaData) {
       // tslint:disable-next-line:max-line-length
-      const compConfiguration = _.get(this.sessionContext, 'compConfiguration');
-      this.formConfiguration = compConfiguration.config.formConfiguration;
+      this.formConfiguration = this.componentConfiguration.config.formConfiguration;
       this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
       this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
       this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
