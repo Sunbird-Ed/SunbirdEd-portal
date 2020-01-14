@@ -139,7 +139,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   }
 
   generateScoreSubmitEvent(event: any) {
-    if (_.lowerCase(event.data) === (_.lowerCase(this.CONSTANT.ACCESSEVENT))) {
+    if (_.toLower(event.data) === (_.toLower(this.CONSTANT.ACCESSEVENT))) {
       this.questionScoreSubmitEvents.emit(event);
     }
   }
