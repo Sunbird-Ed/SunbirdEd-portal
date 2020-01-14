@@ -115,13 +115,37 @@ describe('LibraryComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 
-  it('should call onFilterChange', () => {
+  it('should call onFilterChange in MyDownloads Page', () => {
+    spyOn(component, 'resetSections');
+    spyOn(component, 'fetchContents');
+    component.onFilterChange(response.onFilterChangeEvent);
+    expect(component.showLoader).toBeFalsy();
+    expect(component.dataDrivenFilters).toEqual(response.onFilterChangeEvent.filters);
+    expect(component.hashTagId).toEqual(response.onFilterChangeEvent.channelId);
+  });
+
+  it('should call onFilterChange in Browse Page', () => {
+    component.isBrowse = true;
     spyOn(component, 'resetSections');
     spyOn(component, 'fetchContents');
     component.onFilterChange(response.onFilterChangeEvent);
     expect(component.showLoader).toBeTruthy();
     expect(component.dataDrivenFilters).toEqual(response.onFilterChangeEvent.filters);
     expect(component.hashTagId).toEqual(response.onFilterChangeEvent.channelId);
+    expect(component.resetSections).toHaveBeenCalled();
+    expect(component.fetchContents).toHaveBeenCalled();
+  });
+
+  it('should call onFilterChange in Browse Page', () => {
+    component.pageSections = [{ name: 'Recently Added', contents: [], length: 2 }, { name: 'English', contents: [], length: 2 }];
+    component.showSectionLoader = true;
+    spyOn(component, 'fetchContents');
+    component.onFilterChange(response.onFilterChangeEvent);
+    expect(component.dataDrivenFilters).toEqual(response.onFilterChangeEvent.filters);
+    expect(component.hashTagId).toEqual(response.onFilterChangeEvent.channelId);
+    expect(component.fetchContents).toHaveBeenCalled();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.showSectionLoader).toBeTruthy();
   });
 
   it('should call resetSections', () => {
@@ -151,5 +175,19 @@ describe('LibraryComponent', () => {
     expect(component.carouselMasterData).toEqual([]);
     expect(component.pageSections).toEqual([]);
     expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should call onViewAllClick', () => {
+    component.hashTagId = 'asasa12121';
+    const queryParams = {
+      channel: 'asasa12121',
+      apiQuery: JSON.stringify({})
+    };
+    const router = TestBed.get(Router);
+    spyOn(router, 'navigate');
+    spyOn(component, 'constructSearchRequest').and.returnValue({});
+    component.onViewAllClick({});
+    expect(router.navigate).toHaveBeenCalledWith(['view-all'], { queryParams });
+    expect(component.constructSearchRequest).toHaveBeenCalledWith(false);
   });
 });
