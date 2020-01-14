@@ -34,7 +34,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public classes;
   public board;
   public filters;
-  public implecitFileters: Array<any>;
   isMediumClickable = false;
   showLoader = true;
   selectedIndex = -1;
@@ -73,7 +72,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       collectionStatus: _.get(this.collectionComponentConfig, 'status')
     }, this.sharedContext);
     this.filters = this.getImplicitFilters();
-    this.searchCollection();
+    this.getCollectionCard();
     const getCurrentRoleId = _.find(this.programContext.config.roles, {'name': this.sessionContext.currentRole});
     this.sessionContext.currentRoleId = (getCurrentRoleId) ? getCurrentRoleId.id : null;
     this.role.currentRole = this.sessionContext.currentRole;
@@ -84,10 +83,50 @@ export class CollectionComponent implements OnInit, OnDestroy {
   }
 
   getImplicitFilters(): string[] {
-    const sharedcontext = this.collectionComponentInput.programContext.config.sharedContext,
+    const sharedContext = this.collectionComponentInput.programContext.config.sharedContext,
     implicitFilter = this.collectionComponentConfig.config.filters.implicit,
-    availableFileters = this.filterByCollection(implicitFilter, 'code', sharedcontext);
-    return availableFileters;
+    availableFilters = this.filterByCollection(implicitFilter, 'code', sharedContext);
+    return availableFilters;
+  }
+
+  filterByCollection(collection: any[], filterBy: any, filterValue: any[]) {
+    return collection.filter( (el) => {
+      return filterValue.some((f: any) => {
+        if ( _.isArray(el[filterBy])) {
+          return f === _.intersectionBy(el[filterBy], filterValue).toString();
+        } else {
+          return el[filterBy].includes(f);
+        }
+      });
+    });
+  }
+
+  getCollectionCard() {
+    this.searchCollection().subscribe((res) => {
+      const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
+      const filterArr = _.groupBy(res.result.content, 'identifier');
+      const filteredTextbook = this.filterTextBook(filterArr);
+      const collectionCards = this.utilService.getDataForCard(filteredTextbook, constantData, dynamicFields, metaData);
+      this.collectionsWithCardImage = _.forEach(collectionCards, collection => this.addCardImage(collection));
+      this.filterCollectionList(this.classes);
+      this.showLoader = false;
+      this.showError = false;
+    });
+  }
+
+  filterTextBook(filterArr) {
+    const filteredTextbook = [];
+    _.forEach(filterArr, (collection) => {
+      if (collection.length > 1) {
+        const groupedCollection = _.find(collection, (item) => {
+          return item.status === 'Draft';
+        });
+        filteredTextbook.push(groupedCollection);
+      } else {
+        filteredTextbook.push(collection[0]);
+      }
+    });
+    return filteredTextbook;
   }
 
   setAndClearFilterIndex(index: number) {
@@ -97,6 +136,19 @@ export class CollectionComponent implements OnInit, OnDestroy {
     } else {
       this.selectedIndex = this.activeFilterIndex  = index;
     }
+  }
+
+  filterCollectionList(filterValue?: any, filterBy = 'gradeLevel') {
+    let filterValueItem: any[];
+    if (_.isArray(filterValue)) {
+      filterValueItem = filterValue;
+    } else {
+      const filterArray = [];
+      filterArray.push(filterValue);
+      filterValueItem = filterArray;
+    }
+    this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterBy, filterValueItem);
+    this.groupCollectionList();
   }
 
   getSharedContextObjectProperty(property) {
@@ -122,38 +174,18 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }
   }
 
-
   searchCollection() {
     const req = {data: {request: { filters: ''}, }, url: ''};
     req.url = `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`;
     req.data.request.filters = this.generateSearchFilterRequestData();
-    this.contentService.post(req)
-      .pipe(catchError(err => {
-      const errInfo = { errorMsg: 'Question creation failed' };
-      this.showLoader = false;
-      this.showError = true;
-      console.log(this.resourceService.messages.stmsg.m0006);
-      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
-    })).subscribe((res) => {
-      const filteredTextbook = [];
-      const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
-      const filterArr = _.groupBy(res.result.content, 'identifier');
-      _.forEach(filterArr, (collection) => {
-        if (collection.length > 1) {
-          const groupedCollection = _.find(collection, (item) => {
-            return item.status === 'Draft';
-          });
-          filteredTextbook.push(groupedCollection);
-        } else {
-          filteredTextbook.push(collection[0]);
-        }
-      });
-      const collectionCards = this.utilService.getDataForCard(filteredTextbook, constantData, dynamicFields, metaData);
-      this.collectionsWithCardImage = _.forEach(collectionCards, collection => this.addCardImage(collection));
-      this.filterCollectionList(this.classes);
-      this.showLoader = false;
-      this.showError = false;
-    });
+    return this.contentService.post(req)
+      .pipe(
+        catchError(err => {
+          const errInfo = { errorMsg: 'Question creation failed' };
+          this.showLoader = false;
+          this.showError = true;
+        return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }));
   }
 
   generateSearchFilterRequestData() {
@@ -166,7 +198,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }];
     this.filters.forEach( (element) => {
       payloadArray[0][element['code']] = element['defaultValue'];
-  });
+    });
     return payloadArray[0];
 }
 
@@ -181,31 +213,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   groupByCollection(collection, arg) {
     return _.groupBy(collection, arg);
-  }
-
-  filterCollectionList(filterValue?: any, filterby = 'gradeLevel') {
-    let filterValueItem: any[];
-    if (_.isArray(filterValue)) {
-      filterValueItem = filterValue;
-    } else {
-      const filterArray = [];
-      filterArray.push(filterValue);
-      filterValueItem = filterArray;
-    }
-    this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterby, filterValueItem);
-    this.groupCollectionList();
-  }
-
-  filterByCollection(collection: any[], filterBy: string, filterValue: any[]) {
-    return collection.filter( (el) => {
-      return filterValue.some((f: any) => {
-        if ( _.isArray(el[filterBy])) {
-          return f === _.intersectionBy(el[filterBy], filterValue).toString();
-        } else {
-          return f === el[filterBy];
-        }
-      });
-    });
   }
 
   addCardImage(collection) {
