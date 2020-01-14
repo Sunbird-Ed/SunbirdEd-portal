@@ -200,9 +200,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
         combineLatest(this.searchContent(true, true), this.searchContent(false, shouldGetAllDownloads))
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(
-                ([response1, response2]) => {
-                    if (response1) {
-                        const filteredContents = _.omit(_.groupBy(response1['result'].content, 'subject'), ['undefined']);
+                ([searchRes, allDownloadsRes]) => {
+                    if (searchRes) {
+                        const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
                         // Check for multiple subjects
                         for (const [key, value] of Object.entries(filteredContents)) {
                             const isMultipleSubjects = key.split(',').length > 1;
@@ -225,9 +225,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
                             this.sections = [];
                         }
 
-                        if (response2) {
+                        if (allDownloadsRes) {
                             this.sections.push({
-                                contents: _.orderBy(_.get(response2, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
+                                contents: _.orderBy(_.get(allDownloadsRes, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
                                 name: 'Recently Added'
                             });
                         }
@@ -243,6 +243,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
                         this.carouselMasterData = this.prepareCarouselData(this.sections);
 
+                        this.hideLoader();
                         if (!this.carouselMasterData.length) {
                             return; // no page section
                         }
@@ -252,7 +253,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
                             this.pageSections = [this.carouselMasterData[0]];
                         }
                         this.addHoverData();
-                        this.hideLoader();
                     } else {
                         this.hideLoader();
                         this.carouselMasterData = [];
