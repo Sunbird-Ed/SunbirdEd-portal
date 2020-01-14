@@ -58,6 +58,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   myAssets = [];
   allImages = [];
   allVideos = [];
+  selectedVideo = {};
+  selectedVideoId: string;
+  showAddButton: boolean;
   assetsCount = Number;
   showImagePicker: boolean;
   showVideoPicker = false;
@@ -282,10 +285,10 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     this.showImagePicker = false;
   }
 
-  addVideoInEditor(data:any) {
-    let videoData = data;
-    this.showVideoPicker = false;
-    this.videoDataOutput.emit(videoData);
+  addVideoInEditor() {
+    const videoData = this.selectedVideo;
+      this.showVideoPicker = false;
+      this.videoDataOutput.emit(videoData);
   }
 
   /**
@@ -567,7 +570,8 @@ getAllVideos(offset, query) {
           const errInfo = { errorMsg: 'Video upload failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((response) => {
-          this.addVideoInEditor(response.result);
+          this.selectedVideo = response.result;
+          this.addVideoInEditor();
           this.showVideoPicker = false;
           this.showVideoUploadModal = false;
         });
@@ -584,6 +588,12 @@ getAllVideos(offset, query) {
     this.query = event.target.value;
     this.getAllVideos(0, this.query);
   }
+  selectVideo(data) {
+    this.showAddButton = true;
+    this.selectedVideoId = data.identifier;
+    this.selectedVideo = data;
+  }
+
   countCharacters(document) {
     const rootElement = document.getRoot();
     return this.countCharactersInElement(rootElement);
