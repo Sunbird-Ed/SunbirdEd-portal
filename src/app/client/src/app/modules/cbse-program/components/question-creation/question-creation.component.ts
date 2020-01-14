@@ -60,8 +60,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   selectedSolutionType: string;
   selectedSolutionTypeIndex:string;
   showSolutionDropDown = true;
-  videoSolutionName:string;
-  videoSolutionData:any;
+  videoSolutionName: string;
+  videoSolutionData: any;
   editorState: any;
   solutionUUID: string;
   myAssets = [];
@@ -139,15 +139,16 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.solutionUUID = editor_state.solution[0].id;
         this.selectedSolutionType = editor_state.solution[0].type; 
         this.showSolutionDropDown = false;
+        if (this.selectedSolutionType == 'video') {
+          let index = _.findIndex(this.questionMetaData.data.media, function(o) { return o.type == 'video'; });
+          this.videoSolutionName = this.questionMetaData.data.media[index].name;
+        }
       }else{
         this.editorState.solution = '';
-        this.selectedSolutionType = "";
+        this.selectedSolutionType = '';
       }
       this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
       this.mediaArr = this.questionMetaData.data.media || [];
-      if(!_.isEmpty(this.questionMetaData.data.media)){
-        this.videoSolutionName = this.questionMetaData.data.media[0].name;
-      }
     }
 
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
@@ -167,10 +168,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
     return userName;
   }
-  selectSolutionType(data:any){
-    let index = _.findIndex(this.solutionTypes, function(sol:any) { return sol.value == data });
+  selectSolutionType(data: any) {
+    const index = _.findIndex(this.solutionTypes, (sol: any) => {
+      return sol.value === data;
+    });
     this.selectedSolutionType = this.solutionTypes[index].type;
-    if(this.selectedSolutionType == 'video'){
+    if (this.selectedSolutionType === 'video') {
       const showVideo = true;
       this.videoShow = showVideo;
     }else{
@@ -178,13 +181,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
     
   }
-  
-  videoDataOutput(event){
+
+  videoDataOutput(event) {
     this.videoShow = false;
     this.videoSolutionData = event;
     this.videoSolutionName = event.name;
     this.editorState.solution = event.identifier;
-    let videoMedia:any = {};
+    const videoMedia: any = {};
     videoMedia.id = event.identifier;
     videoMedia.src = event.downloadUrl;
     videoMedia.type = 'video';
@@ -194,12 +197,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.showSolutionDropDown = false;
   }
 
-  
-  deleteSolution(){
+  deleteSolution() {
     this.showSolutionDropDown = true;
     this.selectedSolutionType = "";
     this.editorState.solution = "";
-
   }
 
   ngAfterViewInit() {
@@ -219,7 +220,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.editorConfig = { 'mode': 'create' };
       this.editorState = {
         question : '',
-        answer: ''
+        answer: '',
+        solution: ''
       };
       this.manageFormConfiguration();
       if (this.questionMetaData && this.questionMetaData.data) {
@@ -234,9 +236,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.solutionUUID = editor_state.solution[0].id;
         this.selectedSolutionType = editor_state.solution[0].type;
         this.showSolutionDropDown = false;
-      }else{
+      } else {
         this.editorState.solution = [];
-        this.selectedSolutionType = "";
+        this.selectedSolutionType = '';
       }
         this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
       } else {
@@ -325,6 +327,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                       'answer': this.editorState.answer,
                       'solution': [solutionObj]
                     },
+                    'solutions': [solutionObj],
                     'body': rendererBody,
                     'responseDeclaration': {
                       'responseValue': {
@@ -334,7 +337,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                           'value': rendererAnswer
                         }
                       }
-                    },
+                    }
+                  },
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
                   'status': 'Draft',
@@ -347,7 +351,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
               }
             }
           }
-        };
+        
         this.formValues = {};
         _.map(this.questionMetaForm.value, (value, key) => { _.map(value, (obj) => { _.assign(this.formValues, obj); }); });
         // tslint:disable-next-line:max-line-length
@@ -385,7 +389,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.editorState.question = event.body;
     } else if (type === 'answer') {
       this.editorState.answer = event.body;
-    }else if (type === 'solution') {
+    } else if (type === 'solution') {
       this.editorState.solution = event.body;
     }
 
