@@ -534,4 +534,4 @@ const ssoValidations = async (req, res) => {
   }
 };
 
-module.exports = {ssoValidations};
+exports.ssoValidations = ssoValidations;
