@@ -8,24 +8,25 @@ import { ResourceService, OfflineCardService, SharedModule } from '@sunbird/shar
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule } from '@angular/router';
-import {contentHeaderData} from './content-header.component.spec.data';
+import { contentHeaderData } from './content-header.component.spec.data';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NavigationHelperService } from 'src/app/modules/shared';
 describe('ContentHeaderComponent', () => {
   let component: ContentHeaderComponent;
   let fixture: ComponentFixture<ContentHeaderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContentHeaderComponent ],
+      declarations: [ContentHeaderComponent],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
         { provide: ResourceService, useValue: contentHeaderData.resourceBundle },
         ConnectionService, ContentManagerService, PublicPlayerService,
-        OfflineCardService,
+        OfflineCardService, NavigationHelperService,
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -115,5 +116,12 @@ describe('ContentHeaderComponent', () => {
     spyOn(contentService, 'deleteContent').and.returnValue(throwError(contentHeaderData.deleteCollection.error));
     component.deleteCollection(contentHeaderData.collectionData);
     expect(component.toasterService.error(contentHeaderData.resourceBundle.messages.stmsg.desktop.deleteErrorMessage));
+  });
+
+  it('should navigate to previous page', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'goBack');
+    component.goBack();
+    expect(navigationHelperService.goBack).toHaveBeenCalled();
   });
 });

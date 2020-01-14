@@ -9,7 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, OrgDetailsService, SearchService } from '@sunbird/core';
 import { of, throwError } from 'rxjs';
 import { filters, searchRequest, visitsEvent, onlineSearchRequest } from './search.component.data.spec';
-import { Location } from '@angular/common';
+import { NavigationHelperService } from 'src/app/modules/shared';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -146,14 +146,11 @@ describe('SearchComponent', () => {
     expect(component.telemetryImpression.edata.subtype).toEqual('pageexit');
   });
 
-  it('should call goBack', () => {
-    const location = TestBed.get(Location);
-    const utilService = TestBed.get(UtilService);
-    spyOn(location, 'back');
-    spyOn(utilService, 'clearSearchQuery');
+  it('should navigate to previous page', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'goBack');
     component.goBack();
-    expect(location.back).toHaveBeenCalled();
-    expect(utilService.clearSearchQuery).toHaveBeenCalled();
+    expect(navigationHelperService.goBack).toHaveBeenCalled();
   });
 
   it('should call clearSearchQuery', () => {
