@@ -127,29 +127,29 @@ export let themeObject = {
       {
           'id': 'org.sunbird.questionunit.quml_manifest',
           'plugin': 'org.sunbird.questionunit.quml',
-          'ver': '1.0',
-          'src': '/content-plugins/org.sunbird.questionunit.quml-1.0/manifest.json',
+          'ver': '1.1',
+          'src': '/content-plugins/org.sunbird.questionunit.quml-1.1/manifest.json',
           'type': 'json'
       },
       {
           'id': 'org.sunbird.questionunit.quml',
           'plugin': 'org.sunbird.questionunit.quml',
-          'ver': '1.0',
-          'src': '/content-plugins/org.sunbird.questionunit.quml-1.0/renderer/plugin.js',
+          'ver': '1.1',
+          'src': '/content-plugins/org.sunbird.questionunit.quml-1.1/renderer/plugin.js',
           'type': 'plugin'
       },
       {
         'id': 'org.sunbird.questionunit.quml',
         'plugin': 'org.sunbird.questionunit.quml',
-        'ver': '1.0',
-        'src': '/content-plugins/org.sunbird.questionunit.quml-1.0/renderer/utils/quml_feedback_popup.js',
+        'ver': '1.1',
+        'src': '/content-plugins/org.sunbird.questionunit.quml-1.1/renderer/utils/quml_feedback_popup.js',
         'type': 'js'
     },
       {
           'id': 'org.sunbird.questionunit.quml_css',
           'plugin': 'org.sunbird.questionunit.quml',
-          'ver': '1.0',
-          'src': '/content-plugins/org.sunbird.questionunit.quml-1.0/renderer/styles/style.css',
+          'ver': '1.1',
+          'src': '/content-plugins/org.sunbird.questionunit.quml-1.1/renderer/styles/style.css',
           'type': 'css'
       },
       {
@@ -273,7 +273,7 @@ export let themeObject = {
       },
       {
         'id': 'org.sunbird.questionunit.quml',
-        'ver': '1.0',
+        'ver': '1.1',
         'type': 'plugin',
         'depends': 'org.ekstep.questionunit'
       }
@@ -317,7 +317,7 @@ export let questionObject = {
   'id': '',
   'type': 'quml',
   'pluginId': 'org.sunbird.questionunit.quml',
-  'pluginVer': '1.0',
+  'pluginVer': '1.1',
   'templateId': 'qumltemplate',
   'data': {
     '__cdata': {}

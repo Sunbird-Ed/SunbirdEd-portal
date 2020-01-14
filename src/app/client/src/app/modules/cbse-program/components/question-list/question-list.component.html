@@ -30,10 +30,11 @@
     <div class='practical-sb-buttons'>
       <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="questionCreationChild.buttonTypeHandler('save')">Save</button>
       <button id="requestChanges" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true;">Request Changes</button>
-      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" (click)="questionCreationChild.buttonTypeHandler('preview')" >Preview</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" *ngIf="previewBtnVisibility" (click)="questionCreationChild.buttonTypeHandler('preview');previewBtnVisibility = false;">Preview</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" *ngIf="!previewBtnVisibility" (click)="questionCreationChild.buttonTypeHandler('edit');previewBtnVisibility = true;" >Edit</button>
       <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-normal ripple mr-8" 
       [ngClass]="isPublishBtnDisable ? 'sb-btn-disabled' : 'sb-btn-secondary'"
-      [disabled] = "isPublishBtnDisable" (click)="publichContent()">Publish</button>
+      [disabled] = "isPublishBtnDisable" (click)="publishContent()">Publish</button>
       <button id="submitContent"  *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="questionCreationChild.buttonTypeHandler('review')">Submit</button>
     </div>
   </div>
@@ -48,8 +49,7 @@
 
         <!-- add button to be integrated -->
         <button  class="sb-btn sb-btn-outline-primary sb-btn-normal sb-left-icon-btn sb-btn-radius ml-auto"
-        *ngIf="visibility && visibility.showCreateQuestion"
-        [disabled]="questionMetaData && questionMetaData.mode === 'create'" (click)="createNewQuestion()"
+        *ngIf="visibility && visibility.showCreateQuestion" (click)="createNewQuestion()"
         appTelemetryInteract
         [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:sessionContext.questionType.toUpperCase(),topic:sessionContext.topic}}">
         <i class="plus icon"></i>ADD</button>
@@ -59,7 +59,7 @@
       <div class="question-list">
         <div class="question-list__item active d-flex flex-ai-center p-16 cursor-pointer"
           [class.active]="selectedQuestionId === question.identifier"
-          (click)="handleQuestionTabChange(question.identifier)" *ngFor="let question of questionList; let i = index;last as isLast"
+          (click)="handleQuestionTabChange(question.identifier);" *ngFor="let question of questionList; let i = index;"
           appTelemetryInteract
           [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'questionlist',extra:{type:'reference',identifier:question.identifier}}">
           <label class="mb-0 mr-auto" for="check1"> Question {{i + 1}}</label>
@@ -73,7 +73,7 @@
     </div>
 
     <div class="nine wide column bg-white pl-40 p-0 ckeditor-container">
-      <div *ngIf="(questionList.length || questionMetaData?.mode === 'create')&& refresh">
+      <div *ngIf="questionList && questionList.length && refresh">
         <div *ngIf="sessionContext.questionType === 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
             <app-mcq-creation #questionCreationChild [sessionContext]="sessionContext" [questionMetaData]="questionMetaData"
