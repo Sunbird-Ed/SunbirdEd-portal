@@ -1,10 +1,11 @@
+import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { PublicPlayerService } from '@sunbird/public';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { ContentManagerService, ConnectionService } from '@sunbird/offline';
 import { UtilService, ResourceService, ToasterService, OfflineCardService, NavigationHelperService } from '@sunbird/shared';
 import { Location } from '@angular/common';
-import { Component, OnInit, Input, AfterViewInit, OnDestroy } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 
@@ -22,6 +23,8 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   showDeleteModal = false;
   public unsubscribe$ = new Subject<void>();
   public isConnected;
+  telemetryImpression: IImpressionEventInput;
+  dialCode: string;
 
   constructor(
     public location: Location,
@@ -34,15 +37,20 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     public offlineCardService: OfflineCardService,
     public playerService: PublicPlayerService,
     public activatedRoute: ActivatedRoute,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService,
+    private telemetryService: TelemetryService,
   ) { }
 
   ngOnInit() {
+    this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'My Downloads';
     this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.checkDownloadStatus(data);
     });
     this.checkOnlineStatus();
+    this.router.events
+    .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
+    .subscribe(x => { this.setPageExitTelemtry(); });
   }
 
   checkOnlineStatus() {
@@ -56,6 +64,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   updateCollection(collection) {
+    this.logTelemetry('update-collection');
     const request = {
       contentId: collection.identifier
     };
@@ -71,6 +80,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   exportCollection(collection) {
+    this.logTelemetry('export-collection');
     this.showExportLoader = true;
     this.contentManagerService.exportContent(collection.identifier)
       .pipe(takeUntil(this.unsubscribe$))
@@ -86,6 +96,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   isYoutubeContentPresent(collection) {
+    this.logTelemetry('is-youtube-in-collection');
     this.showModal = this.offlineCardService.isYoutubeContent(collection);
     if (!this.showModal) {
       this.downloadCollection(collection);
@@ -93,8 +104,9 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   downloadCollection(collection) {
+    this.logTelemetry('download-collection');
     this.contentManagerService.downloadContentId = collection.identifier;
-    this.contentManagerService.startDownload({}).subscribe(data => {
+    this.contentManagerService.startDownload({}).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.contentManagerService.downloadContentId = '';
       collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     }, error => {
@@ -103,33 +115,81 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
       this.toasterService.error(this.resourceService.messages.fmsg.m0090);
     });
   }
+
   deleteCollection(collectionData) {
+    this.logTelemetry('delete-collection');
     const request = {request: {contents: [collectionData.identifier]}};
-    this.contentManagerService.deleteContent(request).subscribe(data => {
+    this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
     this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
     this.goBack();
     }, err => {
       this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteErrorMessage);
     });
   }
+
+    checkStatus(status) {
+      return this.utilService.getPlayerDownloadStatus(status, this.collectionData, this.currentRoute);
+    }
+
   isBrowse() {
     return this.router.url.includes('browse');
   }
 
   goBack() {
-    const  previousUrl =  this.navigationHelperService.getPreviousUrl();
-    if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
-     return this.router.navigate(['/']);
-    }
-    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
-      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
-      this.utilService.clearSearchQuery();
+    this.logTelemetry('close-collection-player');
+    this.navigationHelperService.goBack();
   }
+
+  setPageExitTelemtry() {
+    let telemetryCdata;
+    if (this.dialCode) {
+      telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
+    }
+    if (this.collectionData) {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+          cdata: telemetryCdata || []
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          subtype: 'pageexit',
+          duration: this.navigationHelperService.getPageLoadTime()
+        },
+        object: {
+        id: this.collectionData['identifier'],
+        type: this.collectionData['contentType'],
+        ver: `${this.collectionData['pkgVersion']}` || '1.0',
+      }
+    };
+  }
+}
+
+
+  logTelemetry(id) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: [],
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-collection',
+      },
+      object: {
+        id: this.collectionData['identifier'],
+        type: this.collectionData['contentType'],
+        ver: `${this.collectionData['pkgVersion']}` || '1.0',
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-  checkStatus(status) {
-    return this.utilService.getPlayerDownloadStatus(status, this.collectionData, this.currentRoute);
   }
 }
