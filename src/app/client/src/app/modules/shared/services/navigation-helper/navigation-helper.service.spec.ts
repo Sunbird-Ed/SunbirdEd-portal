@@ -67,12 +67,7 @@ describe('NavigationHelperService', () => {
         }
       ];
       service['_history'] = history;
-      service['_cacheServiceName'] = 'previousUrl';
-      spyOn(cacheService, 'get');
-      spyOn(service.history, 'pop');
-
       const previousUrl = service.getDesktopPreviousUrl();
-      expect(service.history.pop).toHaveBeenCalled();
       expect(previousUrl).toEqual(history[0]);
     }));
 
@@ -86,11 +81,12 @@ describe('NavigationHelperService', () => {
           }
         };
         spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
-        // spyOn(service.router, 'navigate');
+        spyOn(service.history, 'pop');
         spyOn(service.utilService, 'updateSearchKeyword');
         service.goBack();
         expect(service.utilService.updateSearchKeyword).toHaveBeenCalledWith('test');
         expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url], { queryParams: previousUrl.queryParams });
+        expect(service.history.pop).toHaveBeenCalled();
       }));
 
   it('should call goBack when previous URL is without queryParams',
@@ -100,7 +96,6 @@ describe('NavigationHelperService', () => {
           'url': '/view-all'
         };
         spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
-        // spyOn(service.router, 'navigate');
         service.goBack();
         expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url]);
       }));

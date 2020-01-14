@@ -162,14 +162,11 @@ export class NavigationHelperService {
     }
   }
 
+  /* Returns previous URL for the desktop */
   public getDesktopPreviousUrl(): UrlHistory {
     const previousUrl = this.history[this._history.length - 2];
-    const sessionUrl = this.cacheService.get(this.cacheServiceName);
     if (previousUrl) {
-      this.history.pop();
       return previousUrl;
-    } else if (sessionUrl) {
-      return sessionUrl;
     } else {
       return { url: '/' };
     }
@@ -178,6 +175,7 @@ export class NavigationHelperService {
   /* Used In Desktop for navigating to back page */
   goBack() {
     const previousUrl = this.getDesktopPreviousUrl();
+    this.history.pop();
     if (_.includes(previousUrl.url, '/search') && previousUrl.queryParams) {
       this.utilService.updateSearchKeyword(previousUrl.queryParams.key);
     }
