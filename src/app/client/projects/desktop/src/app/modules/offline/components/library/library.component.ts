@@ -81,6 +81,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.getSelectedFilters();
         this.setTelemetryData();
 
+        if (!this.isBrowse) {
+            this.navigationHelperService.clearHistory();
+        }
+
         this.connectionService.monitor()
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(isConnected => {
@@ -110,6 +114,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
             .subscribe((language: ILanguage) => {
                 this.languageDirection = language.dir;
             });
+
+        this.utilService.clearSearchQuery();
     }
 
     getSelectedFilters() {

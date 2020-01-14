@@ -12,6 +12,7 @@ export class UtilService {
   public searchQuery$ = this.searchQuery.asObservable();
   public languageChange = new EventEmitter<ILanguage>();
   public hideHeaderTabs = new EventEmitter<boolean>();
+  public searchKeyword = new EventEmitter<string>();
 
   constructor(private resourceService: ResourceService) {
     if (!UtilService.singletonInstance) {
@@ -197,6 +198,10 @@ export class UtilService {
 
   clearSearchQuery() {
       this.searchQuery.next();
+  }
+
+  updateSearchKeyword(keyword: string) {
+    this.searchKeyword.emit(keyword);
   }
 
   /* This will add hover data in card content */

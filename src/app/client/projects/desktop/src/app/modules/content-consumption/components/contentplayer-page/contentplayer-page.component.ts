@@ -126,13 +126,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
 
   goBack() {
     this.logTelemetry('close-content-player');
-    const  previousUrl =  this.navigationHelperService.getPreviousUrl();
-    if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
-     return this.router.navigate(['/']);
-    }
-    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
-      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
-    this.utilService.clearSearchQuery();
+    this.navigationHelperService.goBack();
   }
 
   logTelemetry(id) {
@@ -191,6 +185,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
