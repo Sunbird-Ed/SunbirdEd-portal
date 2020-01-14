@@ -9,27 +9,38 @@
         <h4 *ngIf="contentData?.author" class="title">{{resourceService?.frmelmnts?.lbl?.author}}</h4>
         <p class="description">{{contentData?.author}}</p>
 
-        <h4 *ngIf="contentData?.attributions?.length" class="title">{{resourceService?.frmelmnts?.lbl?.attributions}}
+        <h4 *ngIf="attributions" class="title">{{resourceService?.frmelmnts?.lbl?.attributions}}
         </h4>
-        <p class="description">{{contentData?.attributions}}</p>
+        <p class="description">{{attributions}}</p>
 
         <h4 *ngIf="contentData?.license" class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
-        <p class="description" #licence></p>
+        <p *ngIf="!(contentData.licenseDetails && contentData.licenseDetails['name']) && contentData.license" #licence>
+          {{contentData.license}}&#x200E;</p>
+        <p *ngIf="contentData && contentData.licenseDetails && contentData.licenseDetails['name']">
+          {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br /><a
+            href="{{contentData.licenseDetails['url']}}" target="_blank">{{contentData.licenseDetails['url']}}</a></p>
 
         <h4 *ngIf="contentData?.copyright" class="title">{{resourceService?.frmelmnts?.lbl?.copyRight}}</h4>
-        <p class="description">{{contentData?.copyright}}</p>
+        <p class="description">{{contentData?.copyright}}<span
+            *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></p>
 
         <p *ngIf="contentData?.originData" class="sub-section">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}
         </p>
+
         <div *ngIf="contentData?.originData">
-          <h4 *ngIf="contentData?.originData" class="title">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</h4>
+          <h4 *ngIf="contentData?.originData?.name" class="title">{{resourceService?.frmelmnts?.lbl?.desktop.content}}
+          </h4>
           <p class="description">{{contentData?.originData?.name}}</p>
 
-          <h4 *ngIf="contentData?.originData?.author" class="title">
+          <h4 *ngIf="contentData?.originData?.creator" class="title">
             {{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
-          <p class="description">{{contentData?.originData?.author}}</p>
+          <p class="description">{{contentData?.originData?.creator}}</p>
 
-          <h4 *ngIf="contentData?.originData?.organisation[0]" class="title"
+          <h4 class="title" *ngIf="contentData?.originData?.license">
+            {{resourceService.frmelmnts.lbl?.licenseTerms | uppercase}}</h4>
+          <p class="description">{{contentData.originData.license}}</p>
+
+          <h4 *ngIf="contentData?.originData?.organisation" class="title"
             [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
           </h4>
           <p class="description">{{contentData?.originData?.organisation.join(', ')}}</p>
