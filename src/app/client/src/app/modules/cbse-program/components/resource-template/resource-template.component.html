@@ -1,7 +1,7 @@
 <sui-modal [mustScroll]="false" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
   appBodyScroll (dismissed)="modal.deny(); templateSelection.emit({type: 'close'})" #modal>
   <div class="sb-modal-header">
-    Create
+    Select to contribute
   </div>
   <div class="sb-modal-content">
     <div class="twelve wide column">
@@ -22,7 +22,7 @@
 
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': showButton, 'sb-btn-disabled': !showButton}" (click)="handleSubmit()">
-      Next
+      Continue
     </button>
   </div>
 </sui-modal>
