@@ -133,7 +133,7 @@
 
   </div>
 </sui-modal>
-
+<!--Video POP UP-->
 <sui-modal [isClosable]="true" class="sb-modal" [isInverted]="true" (dismissed)="dismissVideoPicker()"
   *ngIf="showVideoPicker" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
   <div class="sb-modal-header">Select Video</div>
@@ -183,9 +183,9 @@
         </div>
         <div class="sb-grid-layout video">
           <div class="sb-video-content" *ngFor="let data of myAssets">
-            <div class="sb-image-section relative position">
+            <div class="sb-image-section relative position" (click)="addVideoInEditor(data)">
               <div class="overlay-image"><i class="play circle icon"></i></div>
-              <img (click)="addImageInEditor(data.downloadUrl, data.identifier)" [src]="data.thumbnail">
+              <img [src]="data.thumbnail">
             </div>
           </div>
 
@@ -209,9 +209,9 @@
         </div>
         <div class="sb-grid-layout video">
           <div class="sb-video-content" *ngFor="let data of allVideos">
-            <div class="sb-image-section relative position">
+            <div class="sb-image-section relative position" (click)="addVideoInEditor(data)" >
               <div class="overlay-image"><i class="play circle icon"></i></div>
-              <img (click)="addImageInEditor(data.downloadUrl, data.identifier)" [src]="data.thumbnail">
+              <img [src]="data.thumbnail">
             </div>
           </div>
         </div>
@@ -219,9 +219,9 @@
     </sui-tabset>
   </div>
   <div class="sb-modal-actions">
-    <button (click)="addVideo();" appTelemetryInteract
+    <!-- <button (click)="addVideo();" appTelemetryInteract
       [telemetryInteractEdata]="{id:'upload_video',type:'click',pageid:'questioncreate'}"
-      class="sb-btn sb-btn-primary sb-btn-normal">Add</button>
+      class="sb-btn sb-btn-primary sb-btn-normal">Add</button> -->
   </div>
 </sui-modal>
 
