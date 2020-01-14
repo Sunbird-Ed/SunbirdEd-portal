@@ -60,7 +60,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   allVideos = [];
   assetsCount = Number;
   showImagePicker: boolean;
-  showVideoPicker: boolean;
+  showVideoPicker = false;
   showImageUploadModal: boolean;
   showVideoUploadModal: boolean;
   showErrorMsg: boolean;

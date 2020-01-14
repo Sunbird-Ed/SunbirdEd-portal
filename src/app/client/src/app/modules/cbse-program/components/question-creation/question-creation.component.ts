@@ -125,13 +125,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.editorState.answer = this.questionMetaData.data.editorState.answer;
       // tslint:disable-next-line:max-line-length
       this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
-      if(this.questionMetaData.data.editorState.solution && this.questionMetaData.data.editorState.solution[0].value)
+      if(this.questionMetaData.data.editorState.solution && this.questionMetaData.data.editorState.solution.length > 0 && this.questionMetaData.data.editorState.solution[0].value)
       {
         let editor_state = this.questionMetaData.data.editorState;
         this.editorState.solution = editor_state.solution[0].value;
         this.solutionUUID = editor_state.solution[0].id;
         this.selectedSolutionType = editor_state.solution[0].type;
-        this.selectedSolutionTypeIndex = this.getIndexOfSolution();
+        
         this.showSolutionDropDown = false;
       }else{
         this.editorState.solution = '';
@@ -139,6 +139,9 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       }
       this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
       this.mediaArr = this.questionMetaData.data.media || [];
+      if(!_.isEmpty(this.questionMetaData.data.media)){
+        this.videoSolutionName = this.questionMetaData.data.media[0].name;
+      }
     }
 
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
@@ -152,7 +155,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     },
     {
       "type":"video",
-      "value":"Video"
+      "value":"video"
     }];
   }
 
@@ -186,13 +189,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     videoMedia.src = event.downloadUrl;
     videoMedia.type = 'video';
     videoMedia.assetId = event.identifier;
+    videoMedia.name = event.name;
     this.mediaArr.push(videoMedia);
   }
 
-  getIndexOfSolution(){
-    let index = _.findIndex(this.solutionTypes, function(sol:any) { return sol.value == this.selectedSolutionType });
-    return index;
-  }
+  
   deleteSolution(){
     this.showSolutionDropDown = true;
     this.selectedSolutionType = "";
@@ -223,7 +224,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.editorState.answer = this.questionMetaData.data.editorState.answer;
         // tslint:disable-next-line:max-line-length
         this.solutionUUID = this.questionMetaData.data.editorState.solutions ? this.questionMetaData.data.editorState.solutions[0].id : this.solutionUUID;
-        if(this.questionMetaData.data.editorState.solution && this.questionMetaData.data.editorState.solution[0].value)
+        if(this.questionMetaData.data.editorState.solution  && this.questionMetaData.data.editorState.solution.length > 0 && this.questionMetaData.data.editorState.solution[0].value)
       {
         let editor_state = this.questionMetaData.data.editorState;
         this.editorState.solution = editor_state.solution[0].value;
