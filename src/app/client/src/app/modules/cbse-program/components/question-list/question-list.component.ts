@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
-import { UserService, PublicDataService, ActionService, ContentService } from '@sunbird/core';
+import { UserService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { tap, map, catchError, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -22,7 +22,6 @@ import { ProgramStageService } from '../../../program/services';
 export class QuestionListComponent implements OnInit {
   @ViewChild('questionCreationChild') questionCreationChild;
   @Output() changeStage = new EventEmitter<any>();
-  @Output() publishButtonStatus = new EventEmitter<any>();
   @Input() practiceQuestionSetComponentInput: any;
   @ViewChild('FormControl') FormControl: NgForm;
   @Output() uploadedContentMeta = new EventEmitter<any>();
@@ -44,24 +43,23 @@ export class QuestionListComponent implements OnInit {
   public showRequestChangesPopup = false;
   public showDeleteQuestionModal = false;
   public showPublishModal = false;
-  public publishInProgress = false;
-  public publishedResourceId: any;
   public existingContentVersionKey = '';
   public resourceTitleLimit = 100;
   public itemSetIdentifier: string;
-  public deleteAssessmentItemIdentifie: string;
+  public deleteAssessmentItemIdentifier: string;
   public showTextArea = false;
   public resourceName: string;
   public licencesOptions = [];
   public commentCharLimit = 1000;
   public contentRejectComment: string;
   public practiceSetConfig: any;
+  previewBtnVisibility = true;
   visibility: any;
   @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
 
   constructor(
     private configService: ConfigService, private userService: UserService,
-    private publicDataService: PublicDataService, public actionService: ActionService,
+    public actionService: ActionService,
     private cdr: ChangeDetectorRef, public toasterService: ToasterService,
     public telemetryService: TelemetryService, private fb: FormBuilder,
     private cbseService: CbseProgramService, public contentService: ContentService,
@@ -75,6 +73,7 @@ export class QuestionListComponent implements OnInit {
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
     this.actions = _.get(this.practiceQuestionSetComponentInput, 'programContext.config.actions');
     this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
+    this.sessionContext.questionType = this.templateDetails.questionCategories[0];
     this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
     this.practiceSetConfig = _.get(this.practiceQuestionSetComponentInput, 'config');
     this.resourceTitleLimit = this.practiceSetConfig.config.resourceTitleLength;
@@ -94,11 +93,12 @@ export class QuestionListComponent implements OnInit {
       this.resourceDetails = res;
       this.existingContentVersionKey = res.versionKey;
       this.resourceStatus = _.get(this.resourceDetails, 'status');
-      this.sessionContext.questionType = _.lowerCase(_.nth(this.resourceDetails.questionCategories, 0));
+      if (this.resourceDetails.questionCategories) {
+        this.sessionContext.questionType = _.lowerCase(_.nth(this.resourceDetails.questionCategories, 0));
+      }
       this.sessionContext.resourceStatus = this.resourceStatus;
       this.resourceName = this.resourceDetails.name || this.templateDetails.metadata.name;
       this.contentRejectComment = this.resourceDetails.rejectComment || '';
-      // this.resourceStatus = 'Review';
       if (!this.resourceDetails.itemSets) {
         this.createDefaultQuestionAndItemset();
       } else {
@@ -198,8 +198,8 @@ export class QuestionListComponent implements OnInit {
           return this.questionList;
       }));
     }))
-    .subscribe(() => {
-          this.selectedQuestionId = this.questionList[0].identifier;
+    .subscribe((questionList) => {
+          this.selectedQuestionId = questionList[0].identifier;
           this.handleQuestionTabChange(this.selectedQuestionId);
           this.handleActionButtons();
     });
@@ -222,6 +222,7 @@ export class QuestionListComponent implements OnInit {
         } else {
           this.sessionContext.isReadOnlyMode = true;
         }
+
         if (assessment_item && assessment_item.rejectComment === '') {
           const index = _.findIndex(this.questionList, {identifier: questionId});
           this.questionList[index].rejectComment = assessment_item.rejectComment;
@@ -233,6 +234,7 @@ export class QuestionListComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         this.refreshEditor();
         if (actionStatus) {  this.saveContent(actionStatus); }
+        this.previewBtnVisibility = true;
       });
   }
 
@@ -297,8 +299,6 @@ export class QuestionListComponent implements OnInit {
   }
 
   saveContent(actionStatus: string) {
-    this.publishInProgress = true;
-    this.publishButtonStatus.emit(this.publishInProgress);
     const selectedQuestionsData = _.reduce(this.questionList, (final, question) => {
       final.ids.push(_.get(question, 'identifier'));
       final.author.push(_.get(question, 'author'));
@@ -345,9 +345,6 @@ export class QuestionListComponent implements OnInit {
             this.toasterService.success(this.resourceService.messages.smsg.m0060);
             if (actionStatus === 'review') { this.sendForReview(); }
           }
-        }, error => {
-          this.publishInProgress = false;
-          this.publishButtonStatus.emit(this.publishInProgress);
         });
     });
 
@@ -376,7 +373,7 @@ export class QuestionListComponent implements OnInit {
      });
   }
 
-  publichContent() {
+  publishContent() {
     this.helperService.publishContent(this.sessionContext.resourceIdentifier, this.userService.userProfile.userId)
       .subscribe(res => {
       const contentId = res.result.content_id;
@@ -442,14 +439,14 @@ export class QuestionListComponent implements OnInit {
   }
 
   openDeleteQuestionModal(identifier: string) {
-    this.deleteAssessmentItemIdentifie = identifier;
-    console.log(this.deleteAssessmentItemIdentifie);
+    this.deleteAssessmentItemIdentifier = identifier;
+    console.log(this.deleteAssessmentItemIdentifier);
     this.showDeleteQuestionModal = true;
   }
 
   deleteQuestion() {
     const request = {
-      url: `${this.configService.urlConFig.URLS.ASSESSMENT.RETIRE}/${this.deleteAssessmentItemIdentifie}` 
+      url: `${this.configService.urlConFig.URLS.ASSESSMENT.RETIRE}/${this.deleteAssessmentItemIdentifier}` 
     };
 
     this.actionService.delete(request).pipe(catchError(err => {
