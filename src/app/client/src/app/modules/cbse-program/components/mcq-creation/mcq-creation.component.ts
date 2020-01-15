@@ -63,6 +63,23 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   showRequestChangesPopup = false;
   commentCharLimit = 1000;
   componentConfiguration: any;
+  videoShow: boolean;
+  selectedSolutionType: string;
+  selectedSolutionTypeIndex: string;
+  showSolutionDropDown = true;
+  videoSolutionName: string;
+  videoSolutionData: any;
+  solutionUUID: string;
+  videoThumbnail:string;
+  solutionTypes: any = [{
+    'type': 'html',
+    'value': 'Text+Image'
+  },
+  {
+    'type': 'video',
+    'value': 'video'
+  }];
+  solutionValue: string;
 
   constructor(public configService: ConfigService, private http: HttpClient,
     private userService: UserService, public actionService: ActionService,
@@ -77,9 +94,23 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
       const numberOfOptions = _.get(this.sessionContext.practiceSetConfig.config, 'No of options');
       const options = _.map(this.questionMetaData.data.editorState.options, option => ({ body: option.value.body }));
       const question = this.questionMetaData.data.editorState.question;
+      const solutions = this.questionMetaData.data.editorState.solutions
       this.mcqForm = new McqForm({
         question, options, answer: _.get(responseDeclaration, 'responseValue.correct_response.value')
       }, { templateId, numberOfOptions });
+      if(this.questionMetaData.data.editorState.solutions && this.questionMetaData.data.editorState.solutions.length > 0){
+        this.solutionValue = this.questionMetaData.data.editorState.solutions[0].value;
+        this.selectedSolutionType = this.questionMetaData.data.editorState.solutions[0].type;
+        this.solutionUUID = this.questionMetaData.data.editorState.solutions[0].id;
+        this.showSolutionDropDown = false;
+      }
+      if (this.selectedSolutionType === 'video') {
+        const index = _.findIndex(this.questionMetaData.data.media, (o) => {
+           return o.type === 'video';
+        });
+        this.videoSolutionName = this.questionMetaData.data.media[index].name;
+        this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
+      }
       if (this.questionMetaData.data.media) {
         this.mediaArr = this.questionMetaData.data.media;
       }
@@ -90,6 +121,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
   ngOnInit() {
     this.userName = this.setUserName();
+    this.solutionUUID = UUID.UUID();
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
   }
   ngAfterViewInit() {
@@ -138,6 +170,39 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
       userName += (' ' + this.userService.userProfile.lastName);
     }
     return userName;
+  }
+  videoDataOutput(event) {
+    this.videoShow = false;
+    this.videoSolutionData = event;
+    this.videoSolutionName = event.name;
+    this.solutionValue = event.identifier;
+    this.videoThumbnail = event.thumbnail;
+    const videoMedia: any = {};
+    videoMedia.id = event.identifier;
+    videoMedia.src = event.downloadUrl;
+    videoMedia.type = 'video';
+    videoMedia.assetId = event.identifier;
+    videoMedia.name = event.name;
+    videoMedia.thumbnail = this.videoThumbnail;
+    this.mediaArr.push(videoMedia);
+    this.showSolutionDropDown = false;
+  }
+  selectSolutionType(data: any) {
+    const index = _.findIndex(this.solutionTypes, (sol: any) => {
+      return sol.value === data;
+    });
+    this.selectedSolutionType = this.solutionTypes[index].type;
+    if (this.selectedSolutionType === 'video') {
+      const showVideo = true;
+      this.videoShow = showVideo;
+    } else {
+      this.showSolutionDropDown = false;
+    }
+  }
+  deleteSolution() {
+    this.showSolutionDropDown = true;
+    this.selectedSolutionType = '';
+    this.solutionValue = '';
   }
 
   handleReviewrStatus(event) {
@@ -255,7 +320,9 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
           'editorState' : {
             'question': this.mcqForm.question,
             'options': options,
+            'solutions':[],
           },
+          'solutions':[],
           'options': options,
           'responseDeclaration': questionData.responseDeclaration,
           // 'qlevel': this.mcqForm.difficultyLevel,
@@ -264,6 +331,16 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
           'media': this.mediaArr,
           'type': 'mcq',
         };
+        let solutionObj: any;
+        if (this.selectedSolutionType.length > 0) {
+          solutionObj = {};
+          solutionObj.id = this.solutionUUID;
+          solutionObj.type = this.selectedSolutionType;
+          solutionObj.value = this.solutionValue;
+          metadata.editorState.solutions.push(solutionObj);
+          metadata.solutions.push(solutionObj)
+        }
+        
         const formValues = {};
         _.map(this.questionMetaForm.value, (value, key) => { _.map(value, (obj) => { _.assign(formValues, obj); }); });
         // tslint:disable-next-line:max-line-length

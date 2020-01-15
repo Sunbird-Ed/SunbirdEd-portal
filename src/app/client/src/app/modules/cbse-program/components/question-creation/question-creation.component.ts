@@ -88,6 +88,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   disableFormField: boolean;
   videoShow: boolean;
   componentConfiguration: any;
+  videoThumbnail:string;
   solutionTypes: any = [{
     'type': 'html',
     'value': 'Text+Image'
@@ -141,6 +142,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
              return o.type === 'video';
           });
           this.videoSolutionName = this.questionMetaData.data.media[index].name;
+          this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
         }
       } else {
         this.editorState.solutions = '';
@@ -185,12 +187,14 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.videoSolutionData = event;
     this.videoSolutionName = event.name;
     this.editorState.solutions = event.identifier;
+    this.videoThumbnail = event.thumbnail;
     const videoMedia: any = {};
     videoMedia.id = event.identifier;
     videoMedia.src = event.downloadUrl;
     videoMedia.type = 'video';
     videoMedia.assetId = event.identifier;
     videoMedia.name = event.name;
+    videoMedia.thumbnail = this.videoThumbnail;
     this.mediaArr.push(videoMedia);
     this.showSolutionDropDown = false;
   }
@@ -312,7 +316,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
                   'editorState': {
                     'question': this.editorState.question,
-                    'answer': this.editorState.answer
+                    'answer': this.editorState.answer,
+                    'solutions': []
                   },
                   'body': rendererBody,
                   'responseDeclaration': {
@@ -326,6 +331,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   },
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
+                  'solutions':[],
                   'status': 'Draft',
                   'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
                   'type': 'reference',
@@ -344,8 +350,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
           solutionObj.id = this.solutionUUID;
           solutionObj.type = this.selectedSolutionType;
           solutionObj.value = this.editorState.solutions;
-          option.data.request.assessment_item.metadata.editorState.solutions = [solutionObj];
-          option.data.request.assessment_item.metadata.solutions = [solutionObj];
+          option.data.request.assessment_item.metadata.editorState.solutions.push(solutionObj);
+          option.data.request.assessment_item.metadata.solutions.push(solutionObj);
         }
 
         this.formValues = {};
