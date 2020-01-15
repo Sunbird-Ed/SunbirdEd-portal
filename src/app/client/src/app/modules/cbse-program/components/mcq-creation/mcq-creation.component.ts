@@ -70,6 +70,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   videoSolutionName: string;
   videoSolutionData: any;
   solutionUUID: string;
+  videoThumbnail:string;
   solutionTypes: any = [{
     'type': 'html',
     'value': 'Text+Image'
@@ -108,6 +109,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
            return o.type === 'video';
         });
         this.videoSolutionName = this.questionMetaData.data.media[index].name;
+        this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
       }
       if (this.questionMetaData.data.media) {
         this.mediaArr = this.questionMetaData.data.media;
@@ -174,12 +176,14 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     this.videoSolutionData = event;
     this.videoSolutionName = event.name;
     this.solutionValue = event.identifier;
+    this.videoThumbnail = event.thumbnail;
     const videoMedia: any = {};
     videoMedia.id = event.identifier;
     videoMedia.src = event.downloadUrl;
     videoMedia.type = 'video';
     videoMedia.assetId = event.identifier;
     videoMedia.name = event.name;
+    videoMedia.thumbnail = this.videoThumbnail;
     this.mediaArr.push(videoMedia);
     this.showSolutionDropDown = false;
   }
