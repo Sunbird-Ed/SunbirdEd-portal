@@ -348,7 +348,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       if (this.contentMetaData) {
         if (obj.inputType === 'select') {
           // tslint:disable-next-line:max-line-length
-          preSavedValues[code] = (this.contentMetaData[code]) ? (Array.isArray(this.contentMetaData[code]) ? this.contentMetaData[code][0] : this.contentMetaData[code]) : '';
+          preSavedValues[code] = (this.contentMetaData[code]) ? (_.isArray(this.contentMetaData[code]) ? this.contentMetaData[code][0] : this.contentMetaData[code]) : '';
           // tslint:disable-next-line:max-line-length
           obj.required ? controller[obj.code] = [preSavedValues[code], [Validators.required]] : controller[obj.code] = preSavedValues[code];
         } else if (obj.inputType === 'multiselect') {
@@ -383,34 +383,33 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   }
 
   saveTitle() {
-   if (this.editTitle && this.editTitle !== '') {
-     if (this.editTitle === this.contentMetaData.name) {
-       return;
-     } else {
-    const contentObj = {
-      'versionKey': this.contentMetaData.versionKey,
-      'name': this.editTitle
-  };
-  const request = {
+   if (this.editTitle === '' || (this.editTitle.length > this.titleCharacterLimit)) {
+    this.editContentTitle();
+   } else {
+    if (this.editTitle === this.contentMetaData.name) {
+      return;
+    } else {
+   const contentObj = {
+     'versionKey': this.contentMetaData.versionKey,
+     'name': this.editTitle
+    };
+    const request = {
     'content': contentObj
-  };
-  this.helperService.updateContent(request, this.contentMetaData.identifier).subscribe((res) => {
-    this.contentMetaData.versionKey = res.result.versionKey;
-    this.contentMetaData.name = this.editTitle;
-    this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
-    .subscribe((data) => {
-        this.toasterService.success(this.resourceService.messages.smsg.m0060);
-      }, (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0098);
-      });
-}, (err) => {
+    };
+   this.helperService.updateContent(request, this.contentMetaData.identifier).subscribe((res) => {
+   this.contentMetaData.versionKey = res.result.versionKey;
+   this.contentMetaData.name = this.editTitle;
+   this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
+   .subscribe((data) => {
+       this.toasterService.success(this.resourceService.messages.smsg.m0060);
+     }, (err) => {
+       this.toasterService.error(this.resourceService.messages.fmsg.m0098);
+     });
+    }, (err) => {
     this.editTitle = this.contentMetaData.name;
     this.toasterService.error(this.resourceService.messages.fmsg.m0098);
-  });
+   });
   }
-   } else {
-    this.editContentTitle();
-    this.toasterService.error(this.resourceService.messages.fmsg.m0076);
    }
   }
 
@@ -418,8 +417,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     if (this.contentDetailsForm.valid && this.editTitle && this.editTitle !== '') {
       this.showTextArea = false;
       this.formValues = {};
-      //   _.map(this.contentDetailsForm.value, (value, key) => { _.map(value, (obj) => { _.assign(this.formValues, obj); });
-      // });
       let contentObj = {
           'versionKey': this.contentMetaData.versionKey,
           'name': this.editTitle

@@ -17,6 +17,8 @@
         <textarea #titleTextArea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle" autofocus (blur)="(showTextArea = !showTextArea); saveTitle()"></textarea>
         <span class="characters-left">{{titleCharacterLimit - editTitle.length}} Characters left</span>
       </div>
+      <div class="warning-message" *ngIf="editTitle.length === 0">* Title is mandatory!</div>
+      <div class="warning-message" *ngIf="editTitle.length > 200">* Characters in title should be less than {{titleCharacterLimit}}</div>
     </div>
     <div class='practical-sb-buttons'>
       <button id="saveContent" suiPopup popupText="Save" [popupPlacement]="'top'" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="saveContent()">Save</button>
