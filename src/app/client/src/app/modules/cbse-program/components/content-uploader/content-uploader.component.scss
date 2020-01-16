@@ -83,7 +83,7 @@
     &__content {
       height: auto;
       // border: 1px solid #80A7CE;
-      background: #e9f2f8;
+      // background: #e9f2f8;
       border-radius: ($base-block-space -4);
       
 
@@ -103,7 +103,8 @@
 
     .paragraph {
       color: #9F9F9F;
-      padding: ($base-block-space * 2) 0px;
+      // padding: ($base-block-space * 2) 0px;
+      padding-bottom: ($base-block-space * 2);
 
       .link {
         color: var(--primary-400);
@@ -290,4 +291,9 @@
         height: ($base-block-space) !important;
       }
     }
+  }
+
+  .asterik{
+    position: relative;
+    bottom:calculateRem(8px);
   }

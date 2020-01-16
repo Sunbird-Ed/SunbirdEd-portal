@@ -8,7 +8,6 @@
   }
 }
 
-
 .panel-container {
   margin-bottom: 10px;
   background: $white-color;
@@ -74,7 +73,7 @@
 
   .item-dropdown {
     right: 8px;
-    height: 64px;
+    height: 56px;
     width: 56px;
     .sb-dotted-dropdown {
       height: 100%;
@@ -242,4 +241,9 @@
   dd {
     font-size: $font-size-sm;
   }
+}
+
+.sb-btn-radius {
+  border-radius: 2rem;
+  box-shadow: 0 4px 4px 0 #C8D6EA;
 }

@@ -44,15 +44,15 @@
   <div class="ui twelve column grid m-0">
     <div class="three wide column p-0">
       <!-- Question list Section -->
-      <div class="d-flex flex-ai-center ckeditor-tool__answer my-16 mx-8">
-        <label class="fs-1 mb-0">Question(s)</label>
+      <div class="d-flex flex-ai-center ckeditor-tool__answer pr-8 py-16">
+        <label class="fsmall mb-0">Question(s)</label>
 
         <!-- add button to be integrated -->
-        <button  class="sb-btn sb-btn-outline-primary sb-btn-normal sb-left-icon-btn sb-btn-radius ml-auto"
+        <button  class="sb-btn sb-btn-outline-primary sb-btn-xs sb-left-icon-btn sb-btn-radius ml-auto"
         *ngIf="visibility && visibility.showCreateQuestion" (click)="createNewQuestion()"
         appTelemetryInteract
         [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:sessionContext.questionType.toUpperCase(),topic:sessionContext.topic}}">
-        <i class="plus icon"></i>ADD</button>
+        <i class="plus icon mr-4"></i>ADD</button>
       </div>
 
   
