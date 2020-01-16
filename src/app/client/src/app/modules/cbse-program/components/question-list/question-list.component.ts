@@ -54,6 +54,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
   public commentCharLimit = 1000;
   public contentRejectComment: string;
   public practiceSetConfig: any;
+  public goToNextQuestionStatus = true;
   previewBtnVisibility = true;
   visibility: any;
   @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
@@ -161,6 +162,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
     }))))
     .subscribe(() => {
       this.handleQuestionTabChange(this.selectedQuestionId);
+      this.goToNextQuestionStatus = false;
     });
   }
 
@@ -207,6 +209,8 @@ export class QuestionListComponent implements OnInit, OnDestroy {
   }
 
   handleQuestionTabChange(questionId, actionStatus?: string) {
+
+    if (!this.checkCurrentQuestionStatus()) { return ; }
     if (_.includes(this.sessionContext.questionList, questionId) && !actionStatus) { return; }
     this.sessionContext.questionList = [];
     this.sessionContext.questionList.push(questionId);
@@ -239,6 +243,15 @@ export class QuestionListComponent implements OnInit, OnDestroy {
       });
   }
 
+  public checkCurrentQuestionStatus() {
+    if (this.goToNextQuestionStatus) {
+      return true;
+    } else {
+      this.toasterService.error('Save a question and its answer before you navigate');
+      return false;
+    }
+  }
+
   public getQuestionDetails(questionId) {
     if (this.questionReadApiDetails[questionId]) {
       return of(this.questionReadApiDetails[questionId]);
@@ -257,6 +270,8 @@ export class QuestionListComponent implements OnInit, OnDestroy {
   }
 
   public createNewQuestion(): void {
+
+    if (!this.checkCurrentQuestionStatus()) { return ; }
     this.createDefaultAssessmentItem().pipe(
       map((data: any) => {
         const questionId = data.result.node_id;
@@ -273,6 +288,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
     .subscribe((contentRes: any) => {
       this.handleQuestionTabChange(this.selectedQuestionId);
       this.handleActionButtons();
+      this.goToNextQuestionStatus = false;
     });
   }
 
@@ -282,9 +298,10 @@ export class QuestionListComponent implements OnInit, OnDestroy {
       this.toasterService.error('Please resolve rejected questions or delete');
       return;
     } else if (event.type === 'close') {
-      return false;
+      return;
     }
 
+    this.goToNextQuestionStatus = true;
     delete this.questionReadApiDetails[event.identifier];
     this.handleQuestionTabChange(this.selectedQuestionId, event.type);
   }
@@ -662,6 +679,11 @@ export class QuestionListComponent implements OnInit, OnDestroy {
       creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
     }
     return creator;
+  }
+
+  handleQuestionFormChangeStatus(event: any) {
+    this.goToNextQuestionStatus = event.status;
+    console.log(this.goToNextQuestionStatus);
   }
 
   ngOnDestroy(): void {
