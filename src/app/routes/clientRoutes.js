@@ -86,6 +86,8 @@ module.exports = (app, keycloak) => {
     next()
   })
 
+  app.all('/play/quiz/*', playContent);
+
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
@@ -239,4 +241,12 @@ const redirectTologgedInPage = (req, res) => {
 	} else {
 		renderDefaultIndexPage(req, res)
 	}
+}
+
+const playContent = (req, res) => {
+  if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
+    res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
+  } else {
+    renderDefaultIndexPage(req, res);
+  }
 }
