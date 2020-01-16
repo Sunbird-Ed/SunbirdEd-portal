@@ -44,13 +44,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public rejectComment: string;
   @Input() tabIndex: any;
   @Input() questionMetaData: any;
-  @Input() questionSelectionStatus: any;
   @Output() questionStatus = new EventEmitter<any>();
+  @Output() questionFormChangeStatus = new EventEmitter<any>();
   @Input() sessionContext: any;
   @Input() role: any;
   @ViewChild('author_names') authorName;
-  @Output() statusEmitter = new EventEmitter<string>();
-  @Output() questionQueueStatus = new EventEmitter<any>();
   @ViewChild('reuestChangeForm') ReuestChangeForm: NgForm;
   questionMetaForm: FormGroup;
   enableSubmitBtn = false;
@@ -260,9 +258,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   initializeDropdown() {
     (<any>$('.ui.checkbox')).checkbox();
   }
-  handleQuestionSelectionStatus(event) {
-    this.questionQueueStatus.emit(event);
-  }
   enableSubmitButton() {
     this.questionMetaForm.valueChanges.subscribe(val => {
       this.enableSubmitBtn = (this.questionMetaForm.status === 'VALID');
@@ -408,6 +403,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.mediaArr.push(event.mediaobj);
       }
     }
+    this.onFormValueChange(true);
   }
 
   getConvertedLatex(body) {
@@ -547,7 +543,21 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
         this.textInputArr.push(this.formBuilder.group(controlName));
       });
+
+      this.onFormValueChange();
+
     }
+  }
+
+  onFormValueChange(isQuestionChanged?: boolean) {
+    if (isQuestionChanged) {
+      this.questionFormChangeStatus.emit({'status': false});
+      return false;
+    }
+
+    this.questionMetaForm.valueChanges.subscribe(() => {
+      this.questionFormChangeStatus.emit({'status': false});
+    });
   }
 
   markFormGroupTouched(formGroup: FormGroup) {
