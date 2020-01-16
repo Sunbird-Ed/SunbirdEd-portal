@@ -8,7 +8,6 @@ import { CacheService } from 'ng2-cache-service';
 import { OfflineDialCodeCardComponent } from './offline-dial-code-card.component';
 import { CdnprefixPipe } from './../../../shared/pipes/cdnprefix.pipe';
 import { RouterTestingModule } from '@angular/router/testing';
-import { OfflineCardService } from '@sunbird/offline';
 import { ActivatedRoute } from '@angular/router';
 
 
