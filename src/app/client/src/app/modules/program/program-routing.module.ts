@@ -15,8 +15,7 @@ const routes: Routes = [{
 {
   path: 'program/:programId', component: ProgramComponent,
   data: {
-    telemetry: { env: 'programs_portal', pageid: 'program', type: 'view', subtype: 'paginate' },
-    config: { question_categories: ['vsa', 'sa', 'la', 'mcq']}
+    telemetry: { env: 'programs', type: 'view', subtype: 'paginate' }
   }
 }];
 

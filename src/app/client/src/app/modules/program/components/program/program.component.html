@@ -1,4 +1,4 @@
-<app-program-header *ngIf="!showLoader" [headerComponentInput]="headerComponentInput" (emitTabChange)="tabChangeHandler($event)"></app-program-header>
+<app-program-header *ngIf="!showLoader" [headerComponentInput]="headerComponentInput" (emitTabChange)="tabChangeHandler($event)" [appTelemetryImpression]="telemetryImpression"></app-program-header>
 
 
 <ng-container *ngIf="!showLoader && currentStage">
