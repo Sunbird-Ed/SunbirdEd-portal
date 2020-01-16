@@ -101,3 +101,14 @@ i.icon.trash {
     font-size: 1.3em;
     height: auto;
 }
+
+.sb-btn-radius{
+    border-radius:2rem;
+    box-shadow: 0 4px 4px 0 #C8D6EA;
+}
+
+.ckeditor-tool{
+    &__answer{
+      border-bottom: 0.5px solid #e2e3e5;
+ }
+}

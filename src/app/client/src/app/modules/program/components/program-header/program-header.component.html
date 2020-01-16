@@ -13,8 +13,9 @@
       appTelemetryInteract [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-back', 'click', 'header')"
             [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
             [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
-       *ngIf="!headerActions.showTabs" (click)="handleBack()" class="sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn" type="button">
-        <i class="arrow left icon"></i>Back</button>
+       *ngIf="!headerActions.showTabs" (click)="handleBack()" class="sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn sb-color-white" type="button">
+        <i class="arrow left icon"></i>Back</button
+        >
     </div>
   </div>
 </div>
