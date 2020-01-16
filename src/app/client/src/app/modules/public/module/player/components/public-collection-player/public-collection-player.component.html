@@ -2,26 +2,26 @@
   <div class="ui stackable grid">
 
     <!--Content Section-->
-    <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression" id="app-player-collection-renderer" *ngIf="showPlayer">
+    <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression" id="app-player-collection-renderer" *ngIf="showPlayer && playerContent">
 
       <!--Content Title-->
       <div class="sb-pageSection">
         <div class="sb-pageSection-header">
           <h1 class="sb-pageSection-title m-0 mr-8">
-            {{contentTitle}}
+            {{playerContent.name}}
           </h1>
-          <button 
-            class="sb-btn sb-btn-xs sb-btn-error ml-auto" 
-            type="button" 
-            (click)="closeContentPlayer()" 
-            appTelemetryInteract 
-            [telemetryInteractCdata]="this.telemetryCdata" 
-            [telemetryInteractObject]="playerTelemetryInteractObject" 
-            [telemetryInteractEdata]="closePlayerInteractEdata"
-            > 
+          <div class="ml-auto d-flex flex-ai-center">
+            <div *ngIf="isOffline" class="mr-16">
+                <app-content-download [contentData]="playerContent" [collectionId]="collectionId"></app-content-download>
+            </div>
+            <button class="sb-btn sb-btn-xs sb-btn-error" type="button" (click)="closeContentPlayer()"
+              appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata"
+              [telemetryInteractObject]="playerTelemetryInteractObject"
+              [telemetryInteractEdata]="closePlayerInteractEdata">
               {{resourceService.frmelmnts.btn.close}}
               <i class="ui remove icon"></i>
-          </button>
+            </button>
+          </div>
         </div>
       </div>
       <!--/Content Title-->
@@ -75,18 +75,19 @@
           <h1 class="sb-pageSection-title m-0 mr-5">
             {{collectionTitle}}
           </h1>
-          <button 
-            class="sb-btn sb-btn-xs sb-btn-error ml-auto" 
-            type="button" 
-            (click)="closeCollectionPlayer()" 
-            appTelemetryInteract 
-            [telemetryInteractCdata]="telemetryCdata" 
-            [telemetryInteractObject]="playerTelemetryInteractObject" 
-            [telemetryInteractEdata]="closeCollectionPlayerInteractEdata"
-            >
+          <div class="ml-auto d-flex flex-ai-center">
+            <div *ngIf="isOffline" class="mr-16">
+                <app-content-download [contentData]="collectionData"></app-content-download>
+                </div>
+            <button class="sb-btn sb-btn-xs sb-btn-error " type="button" (click)="closeCollectionPlayer()"
+              appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
+              [telemetryInteractObject]="playerTelemetryInteractObject"
+              [telemetryInteractEdata]="closeCollectionPlayerInteractEdata">
               {{resourceService.frmelmnts.btn.close}}
               <i class="ui remove icon"></i>
-          </button>
+            </button>
+          </div>
+
         </div>
       </div>
       <!--/Collection Title-->

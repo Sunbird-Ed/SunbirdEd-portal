@@ -27,6 +27,8 @@ export let mockChartData = {
         'labelsExpr': 'Grade',
         'chartType': 'pie',
         'options': {
+            'showGraphStats': true,
+            'showLastUpdatedOn': true,
             'tooltips': {
                 'titleSpacing': 5,
                 'bodySpacing': 5

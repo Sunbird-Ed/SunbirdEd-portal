@@ -25,6 +25,7 @@ module.exports = (app) => {
         redirectUri: req.query.redirectUri
       }
     };
+    req.session.save();
     console.log('storing merge account initiator account details', JSON.stringify(req.session.mergeAccountInfo));
     const url = `${envHelper.PORTAL_MERGE_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
     const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/merge/account/u2/login/callback&scope=openid&response_type=code&mergeaccountprocess=1&version=2&goBackUrl=https://${req.get('host')}${req.query.redirectUri}`;
@@ -38,7 +39,7 @@ module.exports = (app) => {
    * Successful login for account merge redirects to below url
    */
   app.all('/merge/account/u2/login/callback', async (req, res) => {
-    console.log('redirect url was initiated');
+    console.log('redirect url was initiated', JSON.stringify(req.session));
     if (!req.session.mergeAccountInfo) {
       res.status(401).send({
         responseCode: 'UNAUTHORIZED'
@@ -64,16 +65,16 @@ module.exports = (app) => {
       u2Token).catch(err => {
       console.log('error in initiateAccountMerge', JSON.stringify(err));
       console.log('error detals', err.statusCode, err.message);
-      const query = '?status=error&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
+      const query = '?status=error&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
       req.session.mergeAccountInfo = null;
-      const redirectUri = `https://${req.get('host')}/accountMerge` + query;
+      const redirectUri = `https://${req.get('host')}/accountMerge` + encodeURIComponent(query);
       res.redirect(url + redirectUri);
     });
     if (_.get(mergeResponse, 'result.result.status') === 'SUCCESS' && mergeResponse.responseCode === 'OK') {
       console.log('mergeResponse coming from backend', JSON.stringify(mergeResponse));
-      const query = '?status=success&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
+      const query = '?status=success&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
       console.log('after final success', query);
-      const redirectUri = `https://${req.get('host')}/accountMerge` + query;
+      const redirectUri = `https://${req.get('host')}/accountMerge` + encodeURIComponent(query);
       req.session.mergeAccountInfo = null;
       res.redirect(url + redirectUri);
     }

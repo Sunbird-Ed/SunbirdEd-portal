@@ -41,6 +41,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   isConnected = navigator.onLine;
   status = this.isConnected ? 'ONLINE' : 'OFFLINE';
+
   constructor(public orgDetailsService: OrgDetailsService,
     private userService: UserService, public router: Router, private connectionService: ConnectionService,
     public resourceService?: ResourceService) {
@@ -53,6 +54,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(isConnected => {
         this.isConnected = isConnected;
         this.status = isConnected ? 'ONLINE' : 'OFFLINE';
+        this.initialize();
       });
     /*
     * rootOrgId is required to select the custom comming soon message from systemsettings
@@ -150,7 +152,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isOffline && node.fileType === 'youtube' && this.status === 'OFFLINE') {
           node.title = `${node.model.name} <div class='sb-label sb-label-table sb-label-warning-0'>
           ${this.resourceService.frmelmnts.lbl.onlineOnly}</div>` ||
-          `Untitled File <div class='sb-label sb-label-table sb-label-warning-0'>${this.resourceService.frmelmnts.lbl.onlineOnly}</div>`;
+            `Untitled File <div class='sb-label sb-label-table sb-label-warning-0'>${this.resourceService.frmelmnts.lbl.onlineOnly}</div>`;
           node.extraClasses = 'disabled';
         } else {
           node.title = node.model.name || 'Untitled File';

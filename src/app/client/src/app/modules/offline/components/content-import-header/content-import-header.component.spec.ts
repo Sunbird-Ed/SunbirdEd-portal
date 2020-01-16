@@ -1,5 +1,4 @@
 import { RouterTestingModule } from '@angular/router/testing';
-import { ContentImportComponent } from './../content-import/content-import.component';
 import { async, ComponentFixture, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { ContentImportHeaderComponent } from './content-import-header.component';
 import { SuiModalModule } from 'ng2-semantic-ui';
@@ -21,7 +20,7 @@ describe('ContentImportHeaderComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, SlickModule],
-      declarations: [ContentImportHeaderComponent, ContentImportComponent, WatchVideoComponent],
+      declarations: [ContentImportHeaderComponent, WatchVideoComponent],
       providers: [{provide: ResourceService, useValue: resourceServiceStub},
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }]
     })

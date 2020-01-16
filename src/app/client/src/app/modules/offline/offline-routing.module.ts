@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ContentImportComponent, BrowseComponent, OfflineHelpCenterComponent } from './components';
+import { BrowseComponent, OfflineHelpCenterComponent } from './components';
 import {ViewAllComponent} from '@sunbird/shared-feature';
 import { ExploreContentComponent } from './../public/module/explore/components/explore-content/explore-content.component';
 
@@ -64,13 +64,6 @@ const routes: Routes = [
   },
   {
     path: 'browse/play', loadChildren: './../public/module/player/player.module#PlayerModule'
-  },
-  {
-    path: 'import/content', component: ContentImportComponent, data: {
-      telemetry: {
-        env: 'offline', pageid: 'import-content', type: 'view', subtype: 'scroll'
-      },
-    }
   }];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

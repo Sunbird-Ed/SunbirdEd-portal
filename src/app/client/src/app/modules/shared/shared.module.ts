@@ -10,7 +10,8 @@ import {
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
-  PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService
+  PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
+  OfflineCardService
 } from './services';
 import { ContentDirectionDirective } from './directives';
 import { CommonModule } from '@angular/common';
@@ -50,7 +51,7 @@ export class SharedModule {
       ngModule: SharedModule,
       providers: [ResourceService, ConfigService, ToasterService, PaginationService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
-        DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService]
+        DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService, OfflineCardService]
     };
   }
 }

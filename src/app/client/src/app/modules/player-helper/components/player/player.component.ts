@@ -13,11 +13,12 @@ import { ToasterService, ResourceService } from '@sunbird/shared';
 export class PlayerComponent implements AfterViewInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
   @Output() contentProgressEvent = new EventEmitter<any>();
+  @Output() assessmentEvents = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   buildNumber: string;
-  @Input() playerOption: any ;
+  @Input() playerOption: any;
   contentRatingModal = false;
   previewCdnUrl: string;
   isCdnWorking: string;
@@ -28,11 +29,11 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
-        ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
+      ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
-        ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
-    this.isCdnWorking  = (<HTMLInputElement>document.getElementById('cdnWorking'))
-    ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
+      ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
+    this.isCdnWorking = (<HTMLInputElement>document.getElementById('cdnWorking'))
+      ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
   }
   /**
    * loadPlayer method will be called
@@ -99,7 +100,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       return;
     }
 
-    if (this.previewCdnUrl !== ''  && (this.isCdnWorking).toLowerCase() === 'yes') {
+    if (this.previewCdnUrl !== '' && (this.isCdnWorking).toLowerCase() === 'yes') {
       this.loadCdnPlayer();
       return;
     }
@@ -116,13 +117,16 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     }
   }
   generateContentReadEvent(event: any) {
-    if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'START' ||
-      event.detail.telemetryData.eid === 'END')) {
+    const eid = event.detail.telemetryData.eid;
+    if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(event);
       this.contentProgressEvent.emit(event);
 
-    } else if (event.detail.telemetryData.eid && (event.detail.telemetryData.eid === 'IMPRESSION')) {
+    } else if (eid && (eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
+    }
+    if (eid && (eid === 'ASSESS') || eid === 'START' || eid === 'END') {
+      this.assessmentEvents.emit(event);
     }
   }
   emitSceneChangeEvent(timer = 0) {

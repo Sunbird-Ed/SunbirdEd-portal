@@ -98,7 +98,7 @@ module.exports = (app, keycloak) => {
   app.all(['/announcement', '/announcement/*', '/search', '/search/*',
     '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
     '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
-    '/resources/*', '/myActivity', '/myActivity/*'], keycloak.protect(), indexPage(true))
+    '/resources/*', '/myActivity', '/myActivity/*', '/org/*'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
 }
@@ -136,7 +136,8 @@ function getLocals(req) {
   locals.offlineDesktopAppReleaseDate = envHelper.sunbird_portal_offline_app_release_date
   locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
   locals.offlineDesktopAppDownloadUrl = envHelper.sunbird_portal_offline_app_download_url
-  locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS
+  locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
+  locals.deviceId = '';
   return locals
 }
 

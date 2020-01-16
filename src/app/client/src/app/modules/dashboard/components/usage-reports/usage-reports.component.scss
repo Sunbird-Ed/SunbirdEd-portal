@@ -14,3 +14,12 @@
 .no-bg {
     background:none;
 }
+.dashboard-body-scroll{
+    display: flex;
+    align-items: flex-start;
+}
+.sb-sidebar-menu{
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    top: 0;
+}
