@@ -22,7 +22,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() sessionContext: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
-  @Output() questionQueueStatus = new EventEmitter<any>();
+  @Output() questionFormChangeStatus = new EventEmitter<any>();
   @Input() questionSelectionStatus: any;
   @Input() role: any;
   @ViewChild('author_names') authorName;
@@ -164,9 +164,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
       this.questionStatus.emit({ type: 'close' });
     }
   }
-  handleQuestionSelectionStatus(event) {
-    this.questionQueueStatus.emit(event);
-  }
+
   setUserName() {
     let userName = '';
     if (this.userService.userProfile.firstName) {
@@ -497,6 +495,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
         this.textInputArr.push(this.formBuilder.group(controlName));
       });
+      this.onFormValueChange();
     }
   }
 
@@ -517,4 +516,16 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
       this.ReuestChangeForm.reset();
     }
   }
+
+  onFormValueChange(isQuestionChanged?: boolean) {
+    if (isQuestionChanged) {
+      this.questionFormChangeStatus.emit({'status': false});
+      return false;
+    }
+
+    this.questionMetaForm.valueChanges.subscribe(() => {
+      this.questionFormChangeStatus.emit({'status': false});
+    });
+  }
+
 }
