@@ -15,25 +15,18 @@ export class ProgramTelemetryService {
   getTelemetryInteractEdata(id: string, type: string, pageid: string, extra?: string): IInteractEventEdata {
     return _.omitBy({
       id,
-      type, // 'type': 'click',
-      pageid, // 'pageid': 'header',
+      type,
+      pageid,
       extra
     }, _.isUndefined);
-
-     // {
-    //   id,
-    //   type, // 'type': 'click',
-    //   pageid // 'pageid': 'header',
-    //   edata
-    // };
   }
   getTelemetryInteractPdata(id?: string, pid?: string) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     return {
-      id, // this.userService.appId,
+      id,
       ver: version,
-      pid // `${this.configService.appConfig.TELEMETRY.PID}.programs`
+      pid
     };
   }
   getTelemetryInteractObject(id: string, type: string, ver: string): IInteractEventObject {
