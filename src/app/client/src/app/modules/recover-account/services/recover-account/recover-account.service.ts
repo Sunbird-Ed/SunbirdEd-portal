@@ -32,6 +32,7 @@ export class RecoverAccountService {
       data: {
         request: {
           filters: {
+            'isDeleted' : 'false',
             fuzzy: {
               firstName: data.name
             }
@@ -50,7 +51,6 @@ export class RecoverAccountService {
         prevUsedEmail: data.identifier
       };
     }
-    console.log('fuzzyUserSearch', options);
     return this.learnerService.post(options);
   }
   getIdentifierType(value) {

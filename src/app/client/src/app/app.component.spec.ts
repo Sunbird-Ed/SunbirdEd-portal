@@ -31,7 +31,8 @@ class RouterStub {
 const fakeActivatedRoute = {
   snapshot: {
     root: { firstChild: { params: { slug: 'sunbird' } } }
-  }
+  },
+  queryParams: of({})
 };
 
 

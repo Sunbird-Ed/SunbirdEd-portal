@@ -15,9 +15,7 @@ declare var jQuery: any;
   templateUrl: './main-header.component.html'
 })
 export class MainHeaderComponent implements OnInit {
-
   @Input() routerEvents;
-
   languageFormQuery = {
     formType: 'content',
     formAction: 'search',

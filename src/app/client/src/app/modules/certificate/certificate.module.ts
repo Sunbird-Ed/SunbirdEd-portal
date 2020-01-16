@@ -6,6 +6,7 @@ import { SuiModalModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { PlayerHelperModule } from '@sunbird/player-helper';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
     CertificateRoutingModule,
     FormsModule,
     SharedModule,
-    TelemetryModule
+    TelemetryModule,
+    PlayerHelperModule
   ]
 })
 export class CertificateModule { }

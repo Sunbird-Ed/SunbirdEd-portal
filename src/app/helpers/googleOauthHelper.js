@@ -28,6 +28,15 @@ const keycloakGoogleAndroid = getKeyCloakClient({
     secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
   }
 })
+const keycloakMergeGoogleAndroid = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_ANDROID_CLIENT.secret
+  }
+})
 
 class GoogleOauth {
   createConnection(req) {
@@ -71,19 +80,40 @@ const googleOauth = new GoogleOauth()
 const createSession = async (emailId, reqQuery, req, res) => {
   let grant;
   let keycloakClient = keycloakGoogle;
+  let keycloakMergeClient = keycloakMergeGoogle;
   let scope = 'openid';
   if (reqQuery.client_id === 'android') {
+    console.log('reqQuery.client_id', reqQuery.client_id);
     keycloakClient = keycloakGoogleAndroid;
+    keycloakMergeClient = keycloakMergeGoogleAndroid;
     scope = 'offline_access';
   }
-  grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
-  keycloakClient.storeGrant(grant, req, res)
-  req.kauth.grant = grant
-  keycloakClient.authenticated(req)
-  return {
-    access_token: grant.access_token.token,
-    refresh_token: grant.refresh_token.token
-  };
+
+  // merge account in progress
+  if (_.get(req, 'session.mergeAccountInfo.initiatorAccountDetails') || reqQuery.merge_account_process === '1') {
+    console.log('merge in progress', emailId, reqQuery.client_id);
+    grant = await keycloakMergeClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
+    console.log('grant received', JSON.stringify(grant.access_token.token));
+    if (reqQuery.client_id !== 'android') {
+      req.session.mergeAccountInfo.mergeFromAccountDetails = {
+        sessionToken: grant.access_token.token
+      };
+    }
+    return {
+      access_token: grant.access_token.token,
+      refresh_token: grant.refresh_token.token
+    };
+  } else {
+    console.log('login in progress');
+    grant = await keycloakClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
+    keycloakClient.storeGrant(grant, req, res);
+    req.kauth.grant = grant;
+    keycloakClient.authenticated(req)
+    return {
+      access_token: grant.access_token.token,
+      refresh_token: grant.refresh_token.token
+    };
+  }
 }
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
@@ -92,6 +122,7 @@ const fetchUserByEmailId = async (emailId, req) => {
     headers: getHeaders(req),
     json: true
   }
+  console.log('fetch user request', JSON.stringify(options));
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
       return data;

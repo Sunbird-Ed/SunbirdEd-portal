@@ -26,7 +26,6 @@ export class MainFooterComponent implements OnInit {
 
   isOffline: boolean = environment.isOffline;
   instance: string;
-
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService) {
     this.resourceService = resourceService;

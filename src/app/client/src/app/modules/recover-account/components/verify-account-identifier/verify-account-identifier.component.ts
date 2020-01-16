@@ -88,13 +88,13 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     if (this.errorCount >= 2) {
       const reqQuery = this.activatedRoute.snapshot.queryParams;
       let resQuery: any = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
-      resQuery.error_message = 'OTP validation failed. Please try again';
+      resQuery.error_message = 'OTP validation failed.';
       resQuery = Object.keys(resQuery).map(key =>
         encodeURIComponent(key) + '=' + encodeURIComponent(resQuery[key])).join('&');
       const redirect_uri = reqQuery.error_callback + '?' + resQuery;
       window.location.href = redirect_uri;
     } else {
-      this.toasterService.error('OTP validation failed. Please try again');
+      this.toasterService.error('OTP validation failed.');
     }
   }
   handleResendOtp() {
@@ -107,6 +107,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     };
     this.recoverAccountService.generateOTP(request).subscribe(response => {
       this.disableResendOtp = true;
+      this.toasterService.success('OTP sent successfully.');
     }, error => {
       this.toasterService.error('Resend OTP failed. Please try again');
     });

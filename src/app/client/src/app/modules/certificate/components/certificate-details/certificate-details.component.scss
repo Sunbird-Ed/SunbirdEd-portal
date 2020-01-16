@@ -1,0 +1,75 @@
+@import 'variables';
+
+.sb-mobileDevice {
+    .sb-mobileDevice-screen {
+      height: $sb-mobileDevice-height-mobile;
+      width: $sb-mobileDevice-width-mobile;
+      border: $sb-mobileDevice-border;
+      border-radius: $sb-mobileDevice-border-radius;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      .sb-mobileDevice-sensors {
+        position: absolute;
+        z-index: 9;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: auto;
+        left: 0;
+        background: $sb-mobileDevice-sensors-background;
+        padding: $sb-mobileDevice-sensors-padding;
+        border-top-right-radius: $sb-mobileDevice-sensors-border-radius;
+        border-bottom-right-radius: $sb-mobileDevice-sensors-border-radius;
+        .sb-mobileDevice-sensor {
+          width: $sb-mobileDevice-sensor-size;
+          height: $sb-mobileDevice-sensor-size;
+          background: $sb-mobileDevice-sensor-background;
+          border-radius: 50%;
+        }
+        .sb-mobileDevice-speaker {
+          width: $sb-mobileDevice-speaker-width;
+          height: $sb-mobileDevice-speaker-height;
+          background: $sb-mobileDevice-sensor-background;
+          border-radius: $sb-mobileDevice-speaker-border-radius;
+          margin: $sb-mobileDevice-speaker-padding;
+        }
+      }
+      .sb-mobileDevice-videoScreen {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        border-radius: $sb-mobileDevice-videoScreen-border-radius;
+        border: none;
+      }
+      @media only screen and (min-width: 540px) {
+        height: $sb-mobileDevice-height-tablet;
+        width: $sb-mobileDevice-width-tablet;
+      }
+      @media only screen and (min-width: 769px) {
+        height: $sb-mobileDevice-height-desktop;
+        max-width: $sb-mobileDevice-width-desktop;
+      }
+    }
+  }
+
+  .player-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: url(../../../../../assets/images/featured-content.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  ::ng-deep {
+    .certificate-area-player {
+      .contentViewerIframeShadow {
+        height:100% !important;
+      }
+    }
+  }
+ 

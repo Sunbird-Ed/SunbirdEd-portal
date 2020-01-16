@@ -47,7 +47,7 @@
       <p *ngIf="courseName && issuedOn" class="sb-certificatePage-holder-desc">
         {{resourceService?.frmelmnts?.lbl?.completingCourseSuccessfully}} 
         <strong class="d-block">“{{courseName}}”</strong>
-        <span class="d-block">{{resourceService?.frmelmnts?.lbl?.onDiksha | interpolate:'{instance}':instance}}<strong>{{issuedOn}}</strong></span>
+        <span class="d-block">{{resourceService?.frmelmnts?.lbl?.onDiksha | interpolate:'{instance}':instance}}<strong> {{issuedOn}}</strong></span>
       </p>
       <button *ngIf="watchVideoLink" type="button" class="sb-btn sb-btn-normal sb-btn-secondary mb-32" (click)="navigateToWatchVideoModal()"
       appTelemetryInteract [telemetryInteractEdata]="{id:'watch-video-button' , type:'click' , pageid:pageId }">
@@ -68,5 +68,4 @@
       </sui-modal>
     </div>
   </div>
-
 </div>

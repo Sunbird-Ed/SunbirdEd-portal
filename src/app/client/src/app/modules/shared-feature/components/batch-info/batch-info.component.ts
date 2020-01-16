@@ -78,13 +78,11 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     event.contentType = 'Course'; // to route to course page
     this.playerService.playContent(event);
   }
-
   public handleEnrollmentEndDate(batchDetails) {
     const enrollmentEndDate = moment(_.get(batchDetails, 'enrollmentEndDate')).format('YYYY-MM-DD');
     const systemDate = moment();
     return enrollmentEndDate ? moment(enrollmentEndDate).isBefore(systemDate) : false;
   }
-
   public handleEnrollEvent(event) {
     this.disableEnrollBtn = true;
     const options = {
