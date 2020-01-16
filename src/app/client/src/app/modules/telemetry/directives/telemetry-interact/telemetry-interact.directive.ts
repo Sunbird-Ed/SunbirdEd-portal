@@ -1,5 +1,5 @@
 import { Directive, Input, OnInit, OnChanges, HostListener } from '@angular/core';
-import { IInteractEventInput, IInteractEventObject, IInteractEventEdata } from '../../interfaces';
+import { IInteractEventInput, IInteractEventObject, IInteractEventEdata, IProducerData } from '../../interfaces';
 import { TelemetryService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -23,6 +23,9 @@ export class TelemetryInteractDirective {
 
   @Input() telemetryInteractCdata: Array<{}>;
   @Input() telemetryInteractContext;
+  @Input() telemetryInteractPdata: IProducerData;
+
+
 
   @HostListener('click', ['$event'])
 
@@ -44,6 +47,9 @@ export class TelemetryInteractDirective {
           _.toString(this.telemetryInteractObject.ver) : this.telemetryInteractObject.ver;
         }
         this.appTelemetryInteractData.object = this.telemetryInteractObject;
+      }
+      if (this.telemetryInteractPdata) {
+        this.appTelemetryInteractData.context.pdata = this.telemetryInteractPdata;
       }
       this.telemetryService.interact(this.appTelemetryInteractData);
     }
