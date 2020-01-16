@@ -21,7 +21,7 @@
       </label>
       <div class="sb-certificatePage-field sb-field" id="certificate">
         <input #codeInputField (keyup)="getCodeLength($event)" (keydown.space)="$event.preventDefault();" [(ngModel)]="certificateCode" type="text" maxlength="6" pattern="^[-a-zA-Z0-9@\.+_]+$" required autofocus name="certificate" class="sb-form-control text-center"/>
-        <button [disabled]="!enableVerifyButton" type="button" class="sb-btn sb-btn-primary sb-btn-normal ripple width-100 mt-32" (click)="certificateVerify()"
+        <button [disabled]="!enableVerifyButton" type="button" class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-32" (click)="certificateVerify()"
         appTelemetryInteract [telemetryInteractEdata]="{id:'verify-certificate-button' , type:'click' , pageid:pageId }"
         [telemetryInteractCdata]="telemetryCdata">
           {{resourceService?.frmelmnts?.btn?.verify}}
