@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
+import { UserService } from '@sunbird/core';
+import { ConfigService } from '@sunbird/shared';
+import { ProgramTelemetryService } from '../../../program/services';
 
 @Component({
   selector: 'app-recursive-tree',
@@ -18,7 +21,8 @@ export class RecursiveTreeComponent implements OnInit {
   public showAddresource = false;
   visibility: any;
   public unitIdentifier;
-  constructor() { }
+  constructor(public userService: UserService, public configService: ConfigService,
+    public programTelemetryService: ProgramTelemetryService) { }
 
   ngOnInit() {
     this.visibility = {};
