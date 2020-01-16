@@ -83,6 +83,20 @@
             </div>
             <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
           </div>
+          <!-- Assessment -->
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
+            [permission]='assessmentRole'>
+            <div class="ui link card workspacecontent" routerLink="assessment" appTelemetryInteract
+              [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}">
+              <div class="content">
+                <div class="textcontent">
+                  <img src="./assets/images/checklist.png" width="36" class="ml-8" />
+                  <span class="my-text ml-12">{{resourceService?.frmelmnts?.lbl?.assessment}}</span>
+                </div>
+              </div>
+            </div>
+            <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.assessmentdescription}}</p>
+          </div>
         </div>
       </div>
       <div class="twelve wide column sb-bulk-upload hide">
