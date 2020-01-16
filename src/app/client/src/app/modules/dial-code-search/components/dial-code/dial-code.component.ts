@@ -86,10 +86,24 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
         this.searchResults = this.utilService.getDataForCard(linkedContents, constantData, dynamicFields, metaData);
         this.appendItems(0, this.itemsToLoad);
-        if (this.searchResults.length === 1 && !sessionStorage.getItem('singleContentRedirect')) {
-          this.singleContentRedirect = this.searchResults[0]['name'];
+        if (this.searchResults.length === 1) {
+          if (_.get(this.searchResults[0], 'metaData.mimeType') === 'application/vnd.ekstep.content-collection' ||
+            !sessionStorage.getItem('singleContentRedirect')) {
+            this.singleContentRedirect = this.searchResults[0]['name'];
+          }
         }
         this.showLoader = false;
+        const telemetryInteractEdata = {
+          id: 'content-explode',
+          type: 'view',
+          subtype: 'post-populate'
+        };
+        if (_.get(res, 'collection.length') > 1) {
+          telemetryInteractEdata.id = 'content-collection';
+        }
+        if (this.searchResults.length !== 1) {
+          this.logInteractEvent(telemetryInteractEdata);
+        }
       }, err => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0049);
@@ -148,15 +162,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         mergeMap(this.dialCodeService.filterDialSearchResults),
         tap((res) => {
           this.showSelectChapter = false;
-          const telemetryInteractEdata = {
-            id: 'content-explode',
-            type: 'view',
-            subtype: 'post-populate'
-          };
-          if (_.get(res, 'collection.length') > 1) {
-            telemetryInteractEdata.id = 'content-collection';
-          }
-          this.logInteractEvent(telemetryInteractEdata);
         })
       );
   }
@@ -173,12 +178,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }
       return this.dialCodeService.getAllPlayableContent([textBookUnit]).pipe(
         map(contents => {
-          const telemetryInteractEdata = {
-            id: 'content-explode',
-            type: 'view',
-            subtype: 'post-populate'
-          };
-          this.logInteractEvent(telemetryInteractEdata);
           return { contents };
         })
       );

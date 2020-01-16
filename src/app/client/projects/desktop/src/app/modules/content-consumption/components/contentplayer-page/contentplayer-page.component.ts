@@ -94,7 +94,9 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.contentDetails = _.get(response, 'result.content');
-        this.isContentDeleted.next({value: !_.get(this.contentDetails, 'desktopAppMetadata.isAvailable')});
+        const status = !_.has(this.contentDetails, 'desktopAppMetadata.isAvailable') ? false :
+        !_.get(this.contentDetails, 'desktopAppMetadata.isAvailable');
+        this.isContentDeleted.next({value: status});
         this.getContentConfigDetails(this.contentId, options);
         this.setTelemetryData();
       }, error => {
