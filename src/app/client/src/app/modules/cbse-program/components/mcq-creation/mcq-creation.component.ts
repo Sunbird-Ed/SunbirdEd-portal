@@ -94,7 +94,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
       const numberOfOptions = _.get(this.sessionContext.practiceSetConfig.config, 'No of options');
       const options = _.map(this.questionMetaData.data.editorState.options, option => ({ body: option.value.body }));
       const question = this.questionMetaData.data.editorState.question;
-      const solutions = this.questionMetaData.data.editorState.solutions
       this.mcqForm = new McqForm({
         question, options, answer: _.get(responseDeclaration, 'responseValue.correct_response.value')
       }, { templateId, numberOfOptions });
@@ -320,9 +319,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
           'editorState' : {
             'question': this.mcqForm.question,
             'options': options,
-            'solutions':[],
           },
-          'solutions':[],
           'options': options,
           'responseDeclaration': questionData.responseDeclaration,
           // 'qlevel': this.mcqForm.difficultyLevel,
@@ -332,13 +329,13 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
           'type': 'mcq',
         };
         let solutionObj: any;
-        if (this.selectedSolutionType.length > 0) {
+        if (!_.isUndefined(this.selectedSolutionType) && !_.isEmpty(this.selectedSolutionType)) {
           solutionObj = {};
           solutionObj.id = this.solutionUUID;
           solutionObj.type = this.selectedSolutionType;
           solutionObj.value = this.solutionValue;
-          metadata.editorState.solutions.push(solutionObj);
-          metadata.solutions.push(solutionObj)
+          metadata.editorState['solutions'] = [solutionObj];
+          metadata['solutions'] = [solutionObj]
         }
         
         const formValues = {};

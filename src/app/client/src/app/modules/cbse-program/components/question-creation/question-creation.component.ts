@@ -316,8 +316,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
                   'editorState': {
                     'question': this.editorState.question,
-                    'answer': this.editorState.answer,
-                    'solutions': []
+                    'answer': this.editorState.answer
                   },
                   'body': rendererBody,
                   'responseDeclaration': {
@@ -331,7 +330,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   },
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
-                  'solutions':[],
                   'status': 'Draft',
                   'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
                   'type': 'reference',
@@ -345,13 +343,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         };
 
         let solutionObj: any;
-        if (this.selectedSolutionType.length > 0) {
+        if (!_.isUndefined(this.selectedSolutionType) && !_.isEmpty(this.selectedSolutionType)) {
           solutionObj = {};
           solutionObj.id = this.solutionUUID;
           solutionObj.type = this.selectedSolutionType;
           solutionObj.value = this.editorState.solutions;
-          option.data.request.assessment_item.metadata.editorState.solutions.push(solutionObj);
-          option.data.request.assessment_item.metadata.solutions.push(solutionObj);
+          option.data.request.assessment_item.metadata.editorState['solutions'] = [solutionObj];
+          option.data.request.assessment_item.metadata['solutions'] = [solutionObj];
         }
 
         this.formValues = {};
