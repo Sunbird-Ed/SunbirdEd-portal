@@ -73,7 +73,16 @@
   }
 
   .item-dropdown {
-    right: 40px;
+    right: 8px;
+    height: 64px;
+    width: 56px;
+    .sb-dotted-dropdown {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 
