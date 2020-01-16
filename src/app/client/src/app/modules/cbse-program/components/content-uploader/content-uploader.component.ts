@@ -62,6 +62,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   showUploadModal = true;
   submitButton: boolean;
   uploadButton: boolean;
+  titleCharacterLimit: Number;
+  allFormFields: Array<any>;
 
   constructor(public toasterService: ToasterService, private userService: UserService,
     private publicDataService: PublicDataService, public actionService: ActionService,
@@ -77,6 +79,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.templateDetails  = _.get(this.contentUploadComponentInput, 'templateDetails');
     this.unitIdentifier  = _.get(this.contentUploadComponentInput, 'unitIdentifier');
     this.programContext = _.get(this.contentUploadComponentInput, 'programContext');
+    this.titleCharacterLimit = _.get(this.config, 'config.resourceTitleLength');
     this.actions = _.get(this.contentUploadComponentInput, 'programContext.config.actions');
     if (_.get(this.contentUploadComponentInput, 'action') === 'preview') {
       this.showUploadModal = false;
@@ -311,6 +314,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   }
 
   manageFormConfiguration() {
+    const controller = {};
     this.showForm = true;
     // tslint:disable-next-line:max-line-length
     const compConfiguration = _.find(_.get(this.contentUploadComponentInput, 'programContext.config.components'), {compId: 'uploadContentComponent'});
@@ -318,6 +322,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
     this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
     this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
+    this.allFormFields = _.filter(this.formConfiguration, {'visible': true});
 
     this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.resourceStatus === 'Draft') ? false : true ;
     const formFields = _.map(this.formConfiguration, (formData) => {
@@ -337,45 +342,28 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
        this.selectOutcomeOption['learningOutcome'] = topicTerm.associations;
     }
 
-    this.contentDetailsForm = this.formBuilder.group({
-      textInputArr: this.formBuilder.array([ ]),
-      selectionArr: this.formBuilder.array([ ]),
-      multiSelectionArr: this.formBuilder.array([ ])
-    });
-
-    _.forEach(this.selectionFields, (obj) => {
-      const controlName = {};
+     _.map(this.allFormFields, (obj) => {
       const code = obj.code;
       const preSavedValues = {};
-      // tslint:disable-next-line:max-line-length
-      preSavedValues[code] = (this.contentMetaData && this.contentMetaData[code]) ? (Array.isArray(this.contentMetaData[code]) ? this.contentMetaData[code][0] : this.contentMetaData[code]) : '';
-      // tslint:disable-next-line:max-line-length
-      obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = preSavedValues[code];
-      this.selectionArr = this.contentDetailsForm.get('selectionArr') as FormArray;
-      this.selectionArr.push(this.formBuilder.group(controlName));
+      if (this.contentMetaData) {
+        if (obj.inputType === 'select') {
+          // tslint:disable-next-line:max-line-length
+          preSavedValues[code] = (this.contentMetaData[code]) ? (_.isArray(this.contentMetaData[code]) ? this.contentMetaData[code][0] : this.contentMetaData[code]) : '';
+          // tslint:disable-next-line:max-line-length
+          obj.required ? controller[obj.code] = [preSavedValues[code], [Validators.required]] : controller[obj.code] = preSavedValues[code];
+        } else if (obj.inputType === 'multiselect') {
+          // tslint:disable-next-line:max-line-length
+          preSavedValues[code] = (this.contentMetaData[code] && this.contentMetaData[code].length) ? this.contentMetaData[code] : [];
+          // tslint:disable-next-line:max-line-length
+          obj.required ? controller[obj.code] = [preSavedValues[code], [Validators.required]] : controller[obj.code] = [preSavedValues[code]];
+        } else if (obj.inputType === 'text') {
+          preSavedValues[code] = (this.contentMetaData[code]) ? this.contentMetaData[code] : '';
+          // tslint:disable-next-line:max-line-length
+          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controller[obj.code] = preSavedValues[code];
+        }
+      }
     });
-
-    _.forEach(this.multiSelectionFields, (obj) => {
-      const controlName = {};
-      const code = obj.code;
-      const preSavedValues = {};
-      // tslint:disable-next-line:max-line-length
-      preSavedValues[code] = (this.contentMetaData && this.contentMetaData[code] && this.contentMetaData[code].length) ? this.contentMetaData[code] : [];
-      obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = [preSavedValues[code]];
-      this.multiSelectionArr = this.contentDetailsForm.get('multiSelectionArr') as FormArray;
-      this.multiSelectionArr.push(this.formBuilder.group(controlName));
-    });
-
-    _.forEach(this.textFields, (obj) => {
-      const controlName = {};
-      const code = obj.code;
-      const preSavedValues = {};
-      preSavedValues[code] = (this.contentMetaData && this.contentMetaData[code]) ? this.contentMetaData[code] : '';
-      // tslint:disable-next-line:max-line-length
-      obj.required ? controlName[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controlName[obj.code] = preSavedValues[code];
-      this.textInputArr = this.contentDetailsForm.get('textInputArr') as FormArray;
-      this.textInputArr.push(this.formBuilder.group(controlName));
-    });
+    this.contentDetailsForm = this.formBuilder.group(controller);
   }
 
   fetchFrameWorkDetails() {
@@ -395,34 +383,33 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   }
 
   saveTitle() {
-   if (this.editTitle && this.editTitle !== '') {
-     if (this.editTitle === this.contentMetaData.name) {
-       return;
-     } else {
-    const contentObj = {
-      'versionKey': this.contentMetaData.versionKey,
-      'name': this.editTitle
-  };
-  const request = {
+   if (this.editTitle === '' || (this.editTitle.length > this.titleCharacterLimit)) {
+    this.editContentTitle();
+   } else {
+    if (this.editTitle === this.contentMetaData.name) {
+      return;
+    } else {
+   const contentObj = {
+     'versionKey': this.contentMetaData.versionKey,
+     'name': this.editTitle
+    };
+    const request = {
     'content': contentObj
-  };
-  this.helperService.updateContent(request, this.contentMetaData.identifier).subscribe((res) => {
-    this.contentMetaData.versionKey = res.result.versionKey;
-    this.contentMetaData.name = this.editTitle;
-    this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
-    .subscribe((data) => {
-        this.toasterService.success(this.resourceService.messages.smsg.m0060);
-      }, (err) => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0098);
-      });
-}, (err) => {
+    };
+   this.helperService.updateContent(request, this.contentMetaData.identifier).subscribe((res) => {
+   this.contentMetaData.versionKey = res.result.versionKey;
+   this.contentMetaData.name = this.editTitle;
+   this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
+   .subscribe((data) => {
+       this.toasterService.success(this.resourceService.messages.smsg.m0060);
+     }, (err) => {
+       this.toasterService.error(this.resourceService.messages.fmsg.m0098);
+     });
+    }, (err) => {
     this.editTitle = this.contentMetaData.name;
     this.toasterService.error(this.resourceService.messages.fmsg.m0098);
-  });
+   });
   }
-   } else {
-    this.editContentTitle();
-    this.toasterService.error(this.resourceService.messages.fmsg.m0076);
    }
   }
 
@@ -430,13 +417,11 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     if (this.contentDetailsForm.valid && this.editTitle && this.editTitle !== '') {
       this.showTextArea = false;
       this.formValues = {};
-        _.map(this.contentDetailsForm.value, (value, key) => { _.map(value, (obj) => { _.assign(this.formValues, obj); });
-      });
       let contentObj = {
           'versionKey': this.contentMetaData.versionKey,
           'name': this.editTitle
       };
-      contentObj = _.pickBy(_.assign(contentObj, this.formValues), _.identity);
+      contentObj = _.pickBy(_.assign(contentObj, this.contentDetailsForm.value), _.identity);
       const request = {
         'content': contentObj
       };
@@ -459,8 +444,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       });
     } else {
       // this.toasterService.error('Please Fill Mandatory Form-Fields...');
-      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
       this.markFormGroupTouched(this.contentDetailsForm);
+      this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
   }
 

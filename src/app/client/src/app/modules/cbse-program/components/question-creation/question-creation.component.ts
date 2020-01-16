@@ -88,7 +88,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   disableFormField: boolean;
   videoShow: boolean;
   componentConfiguration: any;
-  videoThumbnail:string;
+  videoThumbnail: string;
   solutionTypes: any = [{
     'type': 'html',
     'value': 'Text+Image'
@@ -154,9 +154,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
     this.userName = this.setUserName();
-    if (this.role.currentRole === 'REVIEWER') {
-      this.isReadOnlyMode = true;
-    }
   }
 
   setUserName() {
@@ -230,24 +227,28 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.editorState.question = this.questionMetaData.data.editorState.question;
         this.editorState.answer = this.questionMetaData.data.editorState.answer;
         if (!_.isEmpty(this.questionMetaData.data.editorState.solutions)) {
-        const editor_state = this.questionMetaData.data.editorState;
-        this.editorState.solutions = editor_state.solutions[0].value;
-        this.solutionUUID = editor_state.solutions[0].id;
-        this.selectedSolutionType = editor_state.solutions[0].type;
-        this.showSolutionDropDown = false;
-      } else {
-        this.editorState.solutions = [];
-        this.selectedSolutionType = '';
-      }
+          const editor_state = this.questionMetaData.data.editorState;
+          this.editorState.solutions = editor_state.solutions[0].value;
+          this.solutionUUID = editor_state.solutions[0].id;
+          this.selectedSolutionType = editor_state.solutions[0].type;
+          this.showSolutionDropDown = false;
+          if (this.selectedSolutionType === 'video') {
+            const index = _.findIndex(this.questionMetaData.data.media, (o) => {
+               return o.type === 'video';
+            });
+            this.videoSolutionName = this.questionMetaData.data.media[index].name;
+            this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
+          }
+        } else {
+          this.editorState.solutions = '';
+          this.selectedSolutionType = '';
+        }
+
         this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
       } else {
         this.questionMetaForm.reset();
       }
-    }
-    if (this.role.currentRole === 'REVIEWER') {
-      this.isReadOnlyMode = true;
-    } else if ((this.sessionContext.role === 'CONTRIBUTOR') && (this.sessionContext.resourceStatus === 'Draft')) {
-      this.isReadOnlyMode = false;
+      this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
     }
   }
   ngAfterViewChecked() {
@@ -316,8 +317,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
                   'editorState': {
                     'question': this.editorState.question,
-                    'answer': this.editorState.answer,
-                    'solutions': []
+                    'answer': this.editorState.answer
                   },
                   'body': rendererBody,
                   'responseDeclaration': {
@@ -331,7 +331,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   },
                   // 'qlevel': this.questionMetaForm.value.qlevel,
                   // 'maxScore': Number(this.questionMetaForm.value.maxScore),
-                  'solutions':[],
                   'status': 'Draft',
                   'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
                   'type': 'reference',
@@ -345,13 +344,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         };
 
         let solutionObj: any;
-        if (this.selectedSolutionType.length > 0) {
+        if (!_.isUndefined(this.selectedSolutionType) && !_.isEmpty(this.selectedSolutionType)) {
           solutionObj = {};
           solutionObj.id = this.solutionUUID;
           solutionObj.type = this.selectedSolutionType;
           solutionObj.value = this.editorState.solutions;
-          option.data.request.assessment_item.metadata.editorState.solutions.push(solutionObj);
-          option.data.request.assessment_item.metadata.solutions.push(solutionObj);
+          option.data.request.assessment_item.metadata.editorState['solutions'] = [solutionObj];
+          option.data.request.assessment_item.metadata['solutions'] = [solutionObj];
         }
 
         this.formValues = {};
@@ -372,6 +371,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         } else {
           option.data.request.assessment_item.metadata['rejectComment'] = '';
         }
+
+        if (_.isEmpty(this.editorState.solutions)) {
+          option.data.request.assessment_item.metadata['solutions'] = '';
+        }
+
         this.actionService.patch(option).pipe(catchError(err => {
           const errInfo = { errorMsg: 'Question updation failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
