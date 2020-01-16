@@ -118,6 +118,7 @@
     padding: ($base-block-space / 2) ($base-block-space * 2);
     color: var(--primary-400);
     min-height: ($base-block-space * 4);
+    font-size:0.875rem;
     cursor: pointer;
     &:hover {
       background-color: var(--primary-400);

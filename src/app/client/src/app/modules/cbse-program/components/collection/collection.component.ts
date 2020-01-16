@@ -226,7 +226,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }, this.sharedContext);
     if (this.sharedContext.gradeLevel) {
       // tslint:disable-next-line:max-line-length
-      this.sharedContext.gradeLevel = _.isArray(this.sharedContext.gradeLevel) ? this.sharedContext.gradeLevel : [this.sharedContext.gradeLevel];
+      this.sharedContext.gradeLevel = _.isArray(this.sharedContext.gradeLevel) ? this.sharedContext.gradeLevel : _.split(this.sharedContext.gradeLevel, ',');
     }
     this.sessionContext = _.assign(this.sessionContext, this.sharedContext);
     this.sessionContext.collection =  event.data.metaData.identifier;

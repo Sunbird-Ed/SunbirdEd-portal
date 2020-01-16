@@ -186,31 +186,35 @@
 }
 
 //Meta Data
-.sb-meta-data-container.sb-meta-data-column .sb-meta-data {
-  padding-right: $base-block-space*3;
-  flex-basis: auto;
-  margin: 0;
+.sb-meta-data-container.sb-meta-data-column {
+  width: 330px;
 
-  &:last-child {
-    padding-right: 0;
-  }
-
-  dt {
-    font-size: 20px;
-    color: $gray-800;
-    // margin-bottom: $base-block-space;
-  }
-
-  &.active {
-
-    dt,
-    dd {
-      color: $secondary-200;
+  .sb-meta-data {
+    padding-right: $base-block-space*3;
+    flex-basis: auto;
+    margin: 0;
+  
+    &:last-child {
+      padding-right: 0;
     }
-  }
-
-  dd {
-    font-size: 10px;
+  
+    dt {
+      font-size: 20px;
+      color: $gray-800;
+      // margin-bottom: $base-block-space;
+    }
+  
+    &.active {
+  
+      dt,
+      dd {
+        color: $secondary-200;
+      }
+    }
+  
+    dd {
+      font-size: 10px;
+    }
   }
 }
 
@@ -234,4 +238,8 @@
   height: 5px;
   width: 5px;
   border-radius: 50%;
+}
+
+.sb-textbook-allchapters {
+  min-width: 240px
 }

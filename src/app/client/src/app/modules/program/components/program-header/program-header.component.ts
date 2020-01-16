@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, OnChanges, OnDestroy,  EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
-import { ToasterService } from '@sunbird/shared';
-import { ProgramStageService } from '../../services/';
+import { UserService } from '@sunbird/core';
+import { ToasterService, ConfigService} from '@sunbird/shared';
+import { ProgramStageService, ProgramTelemetryService } from '../../services/';
 import { IHeaderActions, InitialState } from '../../interfaces/';
 import { tap, delay, startWith } from 'rxjs/operators';
 
@@ -28,7 +29,9 @@ export class ProgramHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public state: InitialState = {
     stages: []
   };
-  constructor(public toasterService: ToasterService, public programStageService: ProgramStageService) { }
+  constructor(public toasterService: ToasterService, public programStageService: ProgramStageService,
+     public userService: UserService, public configService: ConfigService,
+     public programTelemetryService: ProgramTelemetryService) { }
 
   ngOnInit() {
     this.stageSubscription = this.programStageService.getStage().subscribe(state => {
