@@ -9,7 +9,6 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Observable } from 'rxjs';
 declare var jQuery: any;
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
