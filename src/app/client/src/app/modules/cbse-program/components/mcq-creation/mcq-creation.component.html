@@ -14,7 +14,7 @@
         <div class="sb-field mcq-title mb-16">
           <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
           <div class="ckeditor-tool-container">
-            <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);"
+            <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);onFormValueChange(true);"
               [editorConfig]="questionMetaData" [editorDataInput]="mcqForm.question" (videoDataOutput)="videoDataOutput($event)" [videoShow]="videoShow"></app-ckeditor-tool>
           </div>
         </div>
@@ -42,7 +42,7 @@
                 <label class="px-16 py-8 mb-0 ckeditor-tool__label fs-1 width-100">Option {{i + 1}} </label>
                 <div class="ckeditor-tool-container">
                   <app-ckeditor-tool (hasError)="handleEditorError($event)"
-                    (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj)"
+                    (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj);onFormValueChange(true);"
                     [editorConfig]="questionMetaData" [editorDataInput]="option.body"
                     [setCharacterLimit]="setCharacterLimit" [setImageLimit]="setImageLimit"></app-ckeditor-tool>
                   <div class="mcq-checkbox-answer">
@@ -87,7 +87,7 @@
             </div>
             <div class="solution_html" *ngIf="selectedSolutionType == 'html'">
                 <div class="ckeditor-tool-container">
-                    <app-ckeditor-tool (editorDataOutput)="solutionValue = $event.body; getMedia($event.mediaobj);"
+                    <app-ckeditor-tool (editorDataOutput)="solutionValue = $event.body; getMedia($event.mediaobj);onFormValueChange(true);"
               [editorConfig]="questionMetaData" [editorDataInput]="solutionValue"></app-ckeditor-tool>
                     <div class="mcq-checkbox-answer" style="margin-left: 92%;background-color: #F3F8FF;">
                         <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto" (click)="deleteSolution()"><i

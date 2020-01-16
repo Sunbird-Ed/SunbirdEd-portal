@@ -1,14 +1,15 @@
 import { ExtPluginService, UserService, FrameworkService } from '@sunbird/core';
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { tap, map, first } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { ICollectionComponentInput, IDashboardComponentInput } from '../../../cbse-program/interfaces';
 import { InitialState, ISessionContext, IUserParticipantDetails } from '../../interfaces';
-import { ProgramStageService, ProgramTelemetryService } from '../../services/';
+import { ProgramStageService } from '../../services/';
+import { IImpressionEventInput } from '@sunbird/telemetry';
 interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;
   dashboardComponentInput?: IDashboardComponentInput;
@@ -17,7 +18,7 @@ interface IDynamicInput {
   selector: 'app-program-component',
   templateUrl: './program.component.html'
 })
-export class ProgramComponent implements OnInit, OnDestroy {
+export class ProgramComponent implements OnInit, OnDestroy, AfterViewInit {
   public programId: string;
   public programDetails: any;
   public userProfile: any;
@@ -42,15 +43,18 @@ export class ProgramComponent implements OnInit, OnDestroy {
     stages: []
   };
   public currentStage: any;
+  public telemetryImpression: IImpressionEventInput;
   outputs = {
     isCollectionSelected: (check) => {
       this.showTabs = false;
     }
   };
+  public telemetryPageId = 'collection';
   constructor(public frameworkService: FrameworkService, public resourceService: ResourceService,
-    public configService: ConfigService, public activatedRoute: ActivatedRoute,
+    public configService: ConfigService, public activatedRoute: ActivatedRoute, private router: Router,
     public extPluginService: ExtPluginService, public userService: UserService,
-    public toasterService: ToasterService, public programStageService: ProgramStageService) {
+    public toasterService: ToasterService, public programStageService: ProgramStageService,
+    private navigationHelperService: NavigationHelperService) {
     this.programId = this.activatedRoute.snapshot.params.programId;
     localStorage.setItem('programId', this.programId);
   }
@@ -64,6 +68,31 @@ export class ProgramComponent implements OnInit, OnDestroy {
     if (['null', null, undefined, 'undefined'].includes(this.programId)) {
       console.log('no programId found'); // TODO: need to handle this case
     }
+  }
+  ngAfterViewInit() {
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const telemetryCdata = [{ 'type': 'Program', 'id': this.programId }];
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+          cdata: telemetryCdata || [],
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: `${this.configService.appConfig.TELEMETRY.PID}.programs`
+          }
+        },
+        edata: {
+          type: _.get(this.activatedRoute, 'snapshot.data.telemetry.type'),
+          pageid: this.telemetryPageId,
+          uri: this.router.url,
+          subtype: _.get(this.activatedRoute, 'snapshot.data.telemetry.subtype'),
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+    });
   }
   initiateOnboarding() {
     this.fetchProgramDetails().subscribe((programDetails) => {
