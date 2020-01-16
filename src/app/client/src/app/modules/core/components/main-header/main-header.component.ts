@@ -1,4 +1,4 @@
-import {filter, first, map} from 'rxjs/operators';
+import { filter, first } from 'rxjs/operators';
 import { UserService, PermissionService, TenantService, OrgDetailsService, FormService } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
@@ -7,6 +7,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
+import { Observable } from 'rxjs';
 declare var jQuery: any;
 import { Observable } from 'rxjs';
 
@@ -25,8 +26,6 @@ export class MainHeaderComponent implements OnInit {
   queryParam: any = {};
   showExploreHeader = false;
   showQrmodal = false;
-  showAccountMergemodal = false;
-  isValidCustodianOrgUser = true;
   tenantInfo: any = {};
   userProfile: IUserProfile;
   adminDashboard: Array<string>;
@@ -89,8 +88,7 @@ export class MainHeaderComponent implements OnInit {
       this.userService.userData$.pipe(first()).subscribe((user: any) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-          this.getLanguage(this.userService.channel);
-          this.isCustodianOrgUser();
+            this.getLanguage(this.userService.channel);
         }
       });
     } else {
@@ -121,16 +119,6 @@ export class MainHeaderComponent implements OnInit {
         }
       });
     }
-  }
-
-  private isCustodianOrgUser() {
-    this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
-      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
-        this.isValidCustodianOrgUser = true;
-      } else {
-        this.isValidCustodianOrgUser = false;
-      }
-    });
   }
   getLanguage(channelId) {
     const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);

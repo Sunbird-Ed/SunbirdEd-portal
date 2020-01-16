@@ -37,7 +37,8 @@ export class UtilService {
       topic: this.getTopicSubTopic('topic', data.topic),
       subTopic: this.getTopicSubTopic('subTopic', data.topic),
       metaData: {},
-      completionPercentage: data.completionPercentage || 0
+      completionPercentage: data.completionPercentage || 0,
+      mimeTypesCount: data.mimeTypesCount || 0
     };
 
     // this customization is done for enrolled courses

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService, CoursesService } from '@sunbird/core';
+import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, ConfigService, PaginationService,
   IContents, ToasterService, ResourceService, ILoaderMessage, INoResultMessage,
@@ -61,8 +61,6 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
    * loader message
   */
   loaderMessage: ILoaderMessage;
-
-  showCourseQRCodeBtn = false;
 
   /**
    * To show / hide error when no result found
@@ -141,8 +139,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, public navigationhelperService: NavigationHelperService,
-    public coursesService: CoursesService) {
+    config: ConfigService, public navigationhelperService: NavigationHelperService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
