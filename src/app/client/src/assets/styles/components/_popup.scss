@@ -1,0 +1,31 @@
+.ui {
+    &.popup {
+      background: $tooltip-bg;
+      border: 1px solid $tooltip-bg;
+      padding: $base-block-space;
+  
+      .content {
+        font-size: $tooltip-content-font-size;
+        color: $tooltip-color; 
+        line-height: normal;
+      }
+  
+      .header {
+        font-size: $tooltip-header-font-size;
+        color:$tooltip-content-color;
+      }
+  
+      .arrow {
+        background: $tooltip-bg;
+        border: 1px solid $tooltip-bg;
+        box-shadow: 1px 1px 0 0 $tooltip-bg !important;
+        display: none;
+      }
+    }
+  }
+  
+
+  tooltip {
+    color: white !important;
+    background-color: black !important;
+  }

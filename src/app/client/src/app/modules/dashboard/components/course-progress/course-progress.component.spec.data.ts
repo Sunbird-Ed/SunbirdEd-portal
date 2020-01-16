@@ -226,7 +226,8 @@ getBatchRes :
       'result': {
          'response': {
             'count': 0,
-            'content': []
+            'content': [],
+            'participantCount': 2
          }
       }
    },

@@ -36,7 +36,7 @@ export class OtpComponent implements OnInit {
   generateVerifyOtpErrorInteractEdata: any;
   createUserErrorInteractEdata: any;
   telemetryCdata: Array<{}>;
-
+  instance: string;
   constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public deviceDetectorService: DeviceDetectorService) { }
@@ -50,6 +50,8 @@ export class OtpComponent implements OnInit {
     this.unabletoVerifyErrorMessage = this.mode === 'phone' ? this.resourceService.frmelmnts.lbl.unableToVerifyPhone :
       this.resourceService.frmelmnts.lbl.unableToVerifyEmail;
     this.setInteractEvent();
+    this.instance = _.upperCase(this.resourceService.instance);
+
   }
 
   verifyOTP() {
@@ -104,6 +106,10 @@ export class OtpComponent implements OnInit {
 
   createUser() {
     const createRequest = {
+      params: {
+        source: _.get(this.activatedRoute, 'snapshot.queryParams.client_id'),
+        signupType: 'self'
+      },
       'request': {
         'firstName': _.trim(this.signUpdata.controls.name.value),
         'password': _.trim(this.signUpdata.controls.password.value),
@@ -116,7 +122,6 @@ export class OtpComponent implements OnInit {
       createRequest.request['email'] = this.signUpdata.controls.email.value;
       createRequest.request['emailVerified'] = true;
     }
-
     this.signupService.createUser(createRequest).subscribe(
       (resp: ServerResponse) => {
         const reqQuery = this.activatedRoute.snapshot.queryParams;

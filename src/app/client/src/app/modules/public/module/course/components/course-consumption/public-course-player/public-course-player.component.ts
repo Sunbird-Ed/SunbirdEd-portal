@@ -13,8 +13,7 @@ import * as TreeModel from 'tree-model';
 
 @Component({
   selector: 'app-public-course-player',
-  templateUrl: './public-course-player.component.html',
-  styleUrls: ['./public-course-player.component.css']
+  templateUrl: './public-course-player.component.html'
 })
 export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
 
@@ -35,6 +34,8 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
   public telemetryCourseImpression: IImpressionEventInput;
 
   public treeModel: any;
+
+  showContentCreditsModal: boolean;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -106,9 +107,13 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
       },
       object: {
         id: this.activatedRoute.snapshot.params.courseId,
-        type: 'course',
+        type: 'Course',
         ver: '1.0'
       }
     };
+  }
+
+  showContentCreditsPopup () {
+    this.showContentCreditsModal = true;
   }
 }

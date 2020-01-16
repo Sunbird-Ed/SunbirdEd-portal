@@ -1,3 +1,4 @@
+import { OfflineFileUploaderService } from '../../../../../offline/services';
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
@@ -11,7 +12,11 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { environment } from '@sunbird/environment';
+import { DownloadManagerService } from './../../../../../offline/services';
+
 @Component({
+  selector: 'app-explore-component',
   templateUrl: './explore.component.html'
 })
 export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -33,19 +38,25 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilters = false;
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
+  isOffline: boolean = environment.isOffline;
+  showExportLoader = false;
+  contentName: string;
+  public slug: string;
+  organisationId: string;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
-    && this.pageSections.length < this.carouselMasterData.length) {
-        this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+      && this.pageSections.length < this.carouselMasterData.length) {
+      this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
     }
   }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
+    public offlineFileUploaderService: OfflineFileUploaderService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -53,8 +64,10 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
       mergeMap((orgDetails: any) => {
+        this.slug = orgDetails.slug;
         this.hashTagId = orgDetails.hashTagId;
         this.initFilters = true;
+        this.organisationId = orgDetails.id;
         return this.dataDrivenFilterEvent;
       }), first()
     ).subscribe((filters: any) => {
@@ -66,7 +79,19 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.router.navigate(['']);
       }
     );
+
+    if (this.isOffline) {
+      const self = this;
+      this.offlineFileUploaderService.isUpload.subscribe(() => {
+        self.fetchPageData();
+      });
+
+      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+        this.updateCardData(data);
+      });
+    }
   }
+
   public getFilters(filters) {
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element.code === 'board') {
@@ -78,34 +103,37 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
-        takeUntil(this.unsubscribe$))
+      takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         this.showLoader = true;
-        this.queryParams = { ...result[0], ...result[1] };
+        this.queryParams = { ...result[1] };
         this.carouselMasterData = [];
         this.pageSections = [];
         this.fetchPageData();
       });
   }
   private fetchPageData() {
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key)  => {
+    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
         return false;
       }
       return value.length;
     });
     const softConstraintData = {
-      filters: {channel: this.hashTagId,
-      board: [this.dataDrivenFilters.board]},
+      filters: {
+        channel: this.hashTagId,
+        board: [this.dataDrivenFilters.board]
+      },
       softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
       mode: 'soft'
     };
-    const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
-    softConstraintData);
+    const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
+      softConstraintData);
     const option = {
+      organisationId: this.organisationId,
       source: 'web',
       name: 'Explore',
-      filters: _.get(this.queryParams, 'appliedFilters') ?  filters : _.get(manipulatedData, 'filters'),
+      filters: _.get(this.queryParams, 'appliedFilters') ? filters : _.get(manipulatedData, 'filters'),
       mode: _.get(manipulatedData, 'mode'),
       exists: [],
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams
@@ -160,32 +188,50 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
+
+    // For offline environment content will only play when event.action is open
+    if (event.action === 'download' && this.isOffline) {
+      this.startDownload(event.data.metaData.identifier);
+      return false;
+    } else if (event.action === 'export' && this.isOffline) {
+      this.showExportLoader = true;
+      this.contentName = event.data.name;
+      this.exportOfflineContent(event.data.metaData.identifier);
+      return false;
+    }
+
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
       this.showLoginModal = true;
       this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
     } else {
-      this.publicPlayerService.playContent(event);
+      if (_.includes(this.router.url, 'browse') && this.isOffline) {
+        this.publicPlayerService.playContentForOfflineBrowse(event);
+      } else {
+        this.publicPlayerService.playContent(event);
+      }
     }
   }
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
     const softConstraintsFilter = {
-      board : [this.dataDrivenFilters.board],
+      board: [this.dataDrivenFilters.board],
       channel: this.hashTagId,
     };
-    searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
-    searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
-    searchQuery.request.filters.exists = searchQuery.request.exists;
+    if (_.includes(this.router.url, 'browse') || !this.isOffline) {
+      searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+      searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
+      searchQuery.request.filters.exists = searchQuery.request.exists;
+    }
     this.cacheService.set('viewAllQuery', searchQuery.request.filters);
     this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
     const queryParams = { ...searchQuery.request.filters, ...this.queryParams };
     const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
     this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
   }
-  ngAfterViewInit () {
-      setTimeout(() => {
-        this.setTelemetryData();
-      });
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.setTelemetryData();
+    });
   }
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -211,9 +257,71 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private setNoResultMessage() {
+    if (this.isOffline && !(this.router.url.includes('/browse'))) {
+      this.noResultMessage = {
+        'message': 'messages.stmsg.m0007',
+        'messageText': 'messages.stmsg.m0133'
+      };
+    } else {
       this.noResultMessage = {
         'message': 'messages.stmsg.m0007',
         'messageText': 'messages.stmsg.m0006'
       };
+    }
   }
+
+  startDownload (contentId) {
+    this.downloadManagerService.downloadContentId = contentId;
+    this.downloadManagerService.startDownload({}).subscribe(data => {
+      this.downloadManagerService.downloadContentId = '';
+    }, error => {
+      this.downloadManagerService.downloadContentId = '';
+      _.each(this.pageSections, (pageSection) => {
+        _.each(pageSection.contents, (pageData) => {
+          pageData['addedToLibrary'] = false;
+          pageData['showAddingToLibraryButton'] = false;
+        });
+      });
+      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+    });
+  }
+
+  exportOfflineContent(contentId) {
+    this.downloadManagerService.exportContent(contentId).subscribe(data => {
+      const link = document.createElement('a');
+      link.href = data.result.response.url;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.showExportLoader = false;
+    }, error => {
+      this.showExportLoader = false;
+      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+    });
+  }
+
+  updateCardData(downloadListdata) {
+    _.each(this.pageSections, (pageSection) => {
+      _.each(pageSection.contents, (pageData) => {
+
+        // If download is completed card should show added to library
+        _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+          if (pageData.metaData.identifier === completed.contentId) {
+            pageData['addedToLibrary'] = true;
+            pageData['showAddingToLibraryButton'] = false;
+          }
+        });
+
+        // If download failed, card should show again add to library
+        _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+          if (pageData.metaData.identifier === failed.contentId) {
+            pageData['addedToLibrary'] = false;
+            pageData['showAddingToLibraryButton'] = false;
+          }
+        });
+      });
+    });
+  }
+
 }

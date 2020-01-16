@@ -26,6 +26,7 @@ export class UtilService {
     const content: any = {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
+      addedToLibrary: data.addedToLibrary || false,
       description: data.description,
       rating: data.me_averageRating || '0',
       subject: data.subject,
@@ -35,7 +36,8 @@ export class UtilService {
       contentType: data.contentType,
       topic: this.getTopicSubTopic('topic', data.topic),
       subTopic: this.getTopicSubTopic('subTopic', data.topic),
-      metaData: {}
+      metaData: {},
+      completionPercentage: data.completionPercentage || 0
     };
 
     // this customization is done for enrolled courses

@@ -1,0 +1,44 @@
+.ui.secondary.pointing.menu .active.item,
+.ui.secondary.pointing.menu .active.item:hover {
+    border-color: $sb-tabs-border-active-color;
+    color: $sb-tabs-color;
+  }
+  
+  
+  .ui.tabular.menu .active.item {
+    color: $sb-tabs-color;
+  }
+
+  .ui.secondary.pointing.menu.pointing-tab .active.item:after {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 100%;
+    left: 50%;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-top: solid $base-block-space $primary-100;
+    border-right: solid $base-block-space transparent;
+  }
+
+  .ui.secondary.pointing.menu.pointing-tab .active.item,
+  .ui.secondary.pointing.menu.pointing-tab .active.item:hover {
+    border:0;
+    margin:0;
+    background-color: $primary-100;
+  }
+
+  .ui.secondary.pointing.menu.pointing-tab {
+    border: 1px solid $sb-pointing-tabs-border;
+    border-radius: $sb-pointing-tabs-border-radius;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.15);
+    min-height: $sb-pointing-tabs-min-width;
+  }
+
+  .ui.secondary.pointing.menu.pointing-tab .item {
+    border-right: 1px solid $sb-pointing-tabs-border;
+  }
+  .ui.secondary.pointing.menu.pointing-tab .item:last-child {
+    border-right: 0;
+  }

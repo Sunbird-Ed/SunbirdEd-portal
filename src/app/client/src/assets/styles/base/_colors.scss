@@ -1,36 +1,45 @@
-.sb-color-primary {
+// text colors
+.sb-color-primary,
+.sb-color-info {
     color: $primary-color;
 }
-.sb-color-success {
+.sb-color-success,
+.sb-color-secondary {
     color: $secondary-200;
 }
-.sb-color-error {
-    color: $red;
-}
-.sb-color-warning {
+.sb-color-warning,
+.sb-color-tertiary {
     color: $warning-color;
 }
-.sb-color-info {
-    color: $info-color;
+.sb-color-error {
+    color: $red !important;
+}
+.sb-color-gray {
+    color: $gray-800;
 }
 
-
-//to clean
-.color-3 {
-    color: #333; 
+// bg colors
+.sb-workspace-bg {
+    background-image: linear-gradient(to left, $primary-0, $primary-0 50%, $primary-0 65%, $white 75%);
 }
-.color-4 {
-    color: #979797;
+.sb-bg-color-primary,
+.sb-bg-color-info {
+    background-color: $primary-color;
 }
-.color-5 {
-    color: #9017FF;
+.sb-bg-color-success,
+.sb-bg-color-secondary {
+    background-color: $secondary-200;
 }
-.text-gray{
-    color: #9F9F9F !important;
+.sb-bg-color-warning, 
+.sb-bg-color-tertiary {
+    background-color: $warning-color;
 }
-.text-blue{
-    color: #0079FF;
+.sb-bg-color-error {
+    background-color: $red;
 }
-.primary-color {
-    color: $primary-color !important;
+.sb-bg-color-gray {
+    background-color: $gray-800;
+}
+.sb-bg-color-black {
+    background-color: $black;
 }

@@ -1,6 +1,3 @@
-.d-flex {
-  display: flex !important;
-}
 .flex-jc-center {
   justify-content: center !important;
 }
@@ -22,6 +19,12 @@
 .flex-ai-center {
   align-items: center !important;
 }
+.flex-ai-baseline {
+  align-items: baseline !important;
+}
+.flex-ai-end {
+  align-items: flex-end !important;
+}
 .flex-dr {
   flex-direction: row !important;
 }
@@ -30,4 +33,10 @@
 }
 .flex-w-wrap {
   flex-wrap: wrap !important;
+}
+.flex-basis-1 {
+  flex:1;
+}
+.flex-basis-100 {
+  flex-basis: 100%;
 }

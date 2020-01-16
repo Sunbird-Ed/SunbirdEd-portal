@@ -12,6 +12,7 @@ let envVariables = {
   CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
   PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
   PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.open-sunbird.org/auth',
+  PORTAL_MERGE_AUTH_SERVER_URL: env.sunbird_portal_merge_auth_server_url || 'https://merge.staging.open-sunbird.org/auth',
   PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
   APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
   DEFAULT_CHANNEL: env.sunbird_default_channel,
@@ -34,7 +35,7 @@ let envVariables = {
   CACHE_STORE: env.sunbird_cache_store || 'memory',
   CACHE_TTL: env.sunbird_cache_ttl || 1800,
   ANDROID_APP_URL: env.sunbird_android_app_url || 'http://www.sunbird.org',
-  BUILD_NUMBER: env.sunbird_build_number || packageObj.version + '.' + packageObj.buildHash,
+  BUILD_NUMBER: packageObj.version + '.' + packageObj.buildHash,
   TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
   PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
   RESPONSE_CACHE_TTL: env.sunbird_response_cache_ttl || '180', // used in tenant helper to cache the tenant response info
@@ -70,10 +71,33 @@ let envVariables = {
   sunbird_portal_health_check_enabled: env.sunbird_health_check_enable || 'true',
   sunbird_learner_service_health_status: 'true',
   sunbird_content_service_health_status: 'true',
-  sunbird_portal_cassandra_db_health_status: 'true'
+  sunbird_portal_cassandra_db_health_status: 'true',
+  sunbird_portal_preview_cdn_url: env.sunbird_portal_preview_cdn_url,
+  sunbird_processing_kafka_host: process.env.sunbird_processing_kafka_host,
+  sunbird_sso_kafka_topic: process.env.sunbird_sso_kafka_topic,
+  sunbird_portal_offline_tenant: env.sunbird_portal_offline_tenant,
+  sunbird_portal_offline_supported_languages: env.sunbird_portal_offline_supported_languages,
+  sunbird_portal_offline_app_release_date: env.sunbird_portal_offline_app_release_date,
+  sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version,
+  sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
+  sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
+  sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug',
+  KEYCLOAK_GOOGLE_ANDROID_CLIENT: {
+    clientId: env.sunbird_google_android_keycloak_client_id,
+    secret: env.sunbird_google_android_keycloak_secret
+  },
+  KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT: {
+    clientId: env.sunbird_trampoline_android_keycloak_client_id,
+    secret: env.sunbird_trampoline_android_keycloak_secret
+  },
+  KEYCLOAK_ANDROID_CLIENT: {
+    clientId: env.sunbird_android_keycloak_client_id || 'android',
+  },
+  LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true'
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
 module.exports = envVariables
+

@@ -16,19 +16,15 @@ const proxyUtils = require('./proxy/proxyUtils.js')
 const healthService = require('./helpers/healthCheckService.js')
 const { getKeyCloakClient, memoryStore } = require('./helpers/keyCloakHelper')
 const fs = require('fs')
-const request = require('request');
-const reqDataLimitOfContentEditor = '50mb'
-const reqDataLimitOfContentUpload = '50mb'
+const request = require('request-promise');
 const portal = this
-const Telemetry = require('sb_telemetry_util')
-const telemetry = new Telemetry()
-const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
+const telemetry = new (require('sb_telemetry_util'))()
+const telemetryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
-
-const app = express()
-
+const cookieParser = require('cookie-parser')
+const logger = require('sb_logger_util_v2');
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
   'auth-server-url': envHelper.PORTAL_AUTH_SERVER_URL,
@@ -36,7 +32,17 @@ let keycloak = getKeyCloakClient({
   'resource': envHelper.PORTAL_AUTH_SERVER_CLIENT,
   'public-client': true
 })
+const logLevel = envHelper.sunbird_portal_log_level;
 
+logger.init({
+  logLevel
+})
+
+logger.debug({ msg: `logger initialized with LEVEL= ${logLevel}` })
+
+const app = express()
+
+app.use(cookieParser())
 app.use(helmet())
 app.use(session({
   secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -47,74 +53,49 @@ app.use(session({
 
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
-// announcement api routes
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
+  bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak)) // announcement api routes
 
 app.all('/logoff', endSession, (req, res) => {
-  res.cookie('connect.sid', '', { expires: new Date() })
-  res.redirect('/logout')
+  res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
 
-// health check api
-app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth)
+app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
-// check portal health and return 200
 app.get('/service/health', healthService.createAndValidateRequestBody, healthService.checkSunbirdPortalHealth)
 
-// client app routes
-require('./routes/googleSignInRoutes.js')(app, keycloak)
+require('./routes/googleSignInRoutes.js')(app, keycloak) // google sign in routes
 
-// sso routes
-require('./routes/ssoRoutes.js')(app, keycloak)
+require('./routes/ssoRoutes.js')(app, keycloak) // sso routes
 
-// client app routes
-require('./routes/clientRoutes.js')(app, keycloak)
+require('./routes/refreshTokenRoutes.js')(app, keycloak) // refresh token routes
 
-// report routes
-require('./routes/reportRoutes.js')(app, keycloak)
+require('./routes/accountMergeRoute.js')(app, keycloak) // refresh token routes
+
+require('./routes/clientRoutes.js')(app, keycloak) // client app routes
+
+require('./routes/reportRoutes.js')(app, keycloak) // report routes
 
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: reqDataLimitOfContentEditor }), keycloak.protect(), telemetryHelper.logSessionEvents)
+  bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logSessionEvents)
 
-// learner api routes
-require('./routes/learnerRoutes.js')(app)
+require('./routes/learnerRoutes.js')(app) // learner api routes
 
-app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'],
-  proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-    proxyReqPathResolver: (req) => require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemtryEventConfig.endpoint).path
-  }))
+app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
+  limit: '50mb',
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  proxyReqPathResolver: req => require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemetryEventConfig.endpoint).path
+}))
 
-// middleware to add CORS headers
-function addCorsHeaders(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
-    'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
+app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], proxyUtils.addCorsHeaders, tenantHelper.getInfo) // tenant api
 
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200)
-  } else {
-    next()
-  };
-}
+require('./routes/publicRoutes.js')(app) // public api routes
 
-// tenant api
-app.get(['/v1/tenant/info', '/v1/tenant/info/:tenantId'], addCorsHeaders, tenantHelper.getInfo)
+require('./proxy/contentEditorProxy.js')(app, keycloak) // proxy api routes
 
-// public api routes
-require('./routes/publicRoutes.js')(app)
+require('./routes/contentRoutes.js')(app) // content api routes
 
-// proxy urls
-require('./proxy/contentEditorProxy.js')(app, keycloak)
-
-// content api routes
-require('./routes/contentRoutes.js')(app)
-
-// Local proxy for content and learner service
-require('./proxy/localProxy.js')(app)
+require('./proxy/localProxy.js')(app) // Local proxy for content and learner service
 
 app.all('/v1/user/session/create', (req, res) => trampolineServiceHelper.handleRequest(req, res, keycloak))
 
@@ -128,23 +109,14 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
   res.end()
 })
 
-// Resource bundles apis
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
-
-
-console.log('[Extensible framework]: Bootstrapping...')
+  bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express)) // Resource bundles apis
 
 const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
-
-// subApp.use('/plugin/review/comment/*', keycloak.protect()); // keycloak protection 
-
 app.use('/plugin', subApp)
-frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp())
-  .catch(error => {
-    runApp()   // if framework fails, do not stop the portal
-  })
+
+frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp()).catch(error => runApp())
 
 function endSession(request, response, next) {
   delete request.session['roles']
@@ -152,7 +124,6 @@ function endSession(request, response, next) {
   delete request.session['orgs']
   if (request.session) {
     if (_.get(request, 'session.userId')) { telemetryHelper.logSessionEnd(request) }
-    request.session.sessionEvents = request.session.sessionEvents || []
     delete request.session.sessionEvents
     delete request.session['deviceId']
   }
@@ -160,37 +131,24 @@ function endSession(request, response, next) {
 }
 
 if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
-  console.error('please set environment variable sunbird_environment, ' +
-    'sunbird_instance  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird')
+  logger.error({msg: `please set environment variable sunbird_environment,sunbird_instance
+  start service Eg: sunbird_environment = dev, sunbird_instance = sunbird`})
   process.exit(1)
 }
 function runApp() {
 
-  // redirect to home if nothing found
-  app.all('*', (req, res) => res.redirect('/'))
+  app.all('*', (req, res) => res.redirect('/')) // redirect to home if nothing found
   // start server after building the configuration data and fetch default channel id
 
   fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
-      let defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId')
-      envHelper.defaultChannelId = defaultChannelId; // needs to be added in envVariable file
-      console.log(defaultChannelId, 'is set as default channel id in evnHelper');
-      if (envHelper.PORTAL_CDN_URL) {
-        const req = request
-          .get(envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs')
-          .on('response', function (res) {
-            if (res.statusCode === 200) {
-              req.pipe(fs.createWriteStream(path.join(__dirname, 'dist', 'index.ejs')))
-            } else {
-              console.log('Error while fetching ' + envHelper.PORTAL_CDN_URL + 'index.' + packageObj.version + '.' + packageObj.buildHash + '.ejs file when CDN enabled');
-            }
-          })
-      }
-      console.log('app running on port ' + envHelper.PORTAL_PORT)
+      envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
+      logger.info({msg: `app running on port ${envHelper.PORTAL_PORT}`})
     })
+    portal.server.keepAliveTimeout = 60000 * 5;
   })
 }
-const fetchDefaultChannelDetails = async (callback) => {
+const fetchDefaultChannelDetails = (callback) => {
   const options = {
     method: 'POST',
     url: envHelper.LEARNER_URL + '/org/v1/search',
@@ -211,21 +169,18 @@ const fetchDefaultChannelDetails = async (callback) => {
   return request(options, callback)
 }
 
-exports.close = () => portal.server.close()
-
-// Telemetry initialization
-const telemetryConfig = {
+telemetry.init({
   pdata: { id: envHelper.APPID, ver: packageObj.version },
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
-  endpoint: telemtryEventConfig.endpoint,
+  endpoint: telemetryEventConfig.endpoint,
   host: envHelper.TELEMETRY_SERVICE_LOCAL_URL,
   authtoken: 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN
-}
+})
 
-process.on('unhandledRejection', function (reason, p) {
-  console.log("Possibly Unhandled Rejection at: Promise ", p, " reason: ", reason);
-  // application specific logging here
+process.on('unhandledRejection', (reason, p) => console.log('Unhandled Rejection', p, reason));
+process.on('uncaughtException', (err) => {
+  console.log('Uncaught Exception', err)
+  process.exit(1);
 });
-
-telemetry.init(telemetryConfig)
+exports.close = () => portal.server.close()

@@ -14,8 +14,7 @@ import { takeUntil, map, mergeMap, first, filter, debounceTime, catchError, tap,
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
-    templateUrl: './explore-course.component.html',
-    styleUrls: ['./explore-course.component.scss']
+    templateUrl: './explore-course.component.html'
 })
 export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     public showLoader = true;
@@ -204,8 +203,8 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
         this.router.navigate([url], { queryParams: this.queryParams });
         window.scroll({
-            top: 100,
-            left: 100,
+            top: 0,
+            left: 0,
             behavior: 'smooth'
         });
     }

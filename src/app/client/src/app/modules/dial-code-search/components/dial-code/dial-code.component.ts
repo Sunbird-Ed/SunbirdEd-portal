@@ -1,12 +1,19 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { combineLatest as observableCombineLatest } from 'rxjs';
 import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SearchService, SearchParam, PlayerService } from '@sunbird/core';
+import { SearchService, SearchParam, PlayerService, CoursesService, UserService } from '@sunbird/core';
+import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, catchError, mergeMap } from 'rxjs/operators';
 import { Subject, forkJoin, of } from 'rxjs';
 import * as TreeModel from 'tree-model';
+import { environment } from '@sunbird/environment';
+import { DownloadManagerService } from './../../../offline/services';
+
+const treeModel = new TreeModel();
+
 
 @Component({
   selector: 'app-dial-code',
@@ -14,193 +21,126 @@ import * as TreeModel from 'tree-model';
   styleUrls: ['./dial-code.component.scss']
 })
 export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
-  inviewLogs: any = [];
+  public inviewLogs: any = [];
   /**
 	 * telemetryImpression
 	*/
-  telemetryImpression: IImpressionEventInput;
+  public telemetryImpression: IImpressionEventInput;
   /**
-   * reference of SearchService
+   * Initializing the infinite scroller
    */
-  private searchService: SearchService;
-
-  /**
-   * reference of ToasterService
-   */
-  private toasterService: ToasterService;
-
-  /**
-  * reference of ResourceService
-  */
-  public resourceService: ResourceService;
-  /**
-   * used to store insatnce name
-   */
-  public instanceName;
-  /**
-   * used to store searched keyword
-   */
+  public itemsToDisplay: any = [];
+  public itemsToLoad = 50;
+  public throttle = 50;
+  public numOfItemsToAddOnScroll = 20;
+  public scrollDistance = 2;
   public dialCode;
-  /**
-   * used to store searched keyword
-   */
-  public searchKeyword;
-  /**
-  * To navigate to other pages
-   */
-  public router: Router;
-
-  /**
-   * To send activatedRoute.snapshot to routerNavigationService
-   */
-  public activatedRoute: ActivatedRoute;
-
-  /**
-  * This variable hepls to show and hide page loader.
-  * It is kept true by default as at first when we comes
-  * to a page the loader should be displayed before showing
-  * any data
-  */
-  showLoader = true;
-
-  /**
-    * loader message
-   */
-  loaderMessage: any;
-
-  /**
-   * to store search results
-  */
-  searchResults: Array<any> = [];
-  /**
-   * to unsubscribe
-  */
+  public showLoader = true;
+  public loaderMessage: any;
+  public searchResults: Array<any> = [];
   public unsubscribe$ = new Subject<void>();
+  public telemetryCdata: Array<{}> = [];
+  public closeIntractEdata: IInteractEventEdata;
+  public linkedContents: Array<any>;
+  public showMobilePopup = false;
+  public isRedirectToDikshaApp = false;
+  public closeMobilePopupInteractData: any;
+  public appMobileDownloadInteractData: any;
+  public dialSearchSource: string;
+  public showBatchInfo = false;
+  public selectedCourseBatches: any;
+  isOffline: boolean = environment.isOffline;
+  showExportLoader = false;
+  contentName: string;
+  instance: string;
+  redirectCollectionUrl: string;
+  redirectContentUrl: string;
 
-  linkedContents: Array<any>;
-  showMobilePopup = false;
-  isRedirectToDikshaApp = false;
-  closeMobilePopupInteractData: any;
-  appMobileDownloadInteractData: any;
-
-  constructor(resourceService: ResourceService, router: Router, activatedRoute: ActivatedRoute,
-    searchService: SearchService, toasterService: ToasterService, public configService: ConfigService,
+  constructor(public resourceService: ResourceService, public userService: UserService,
+    public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
+    public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
-    public playerService: PlayerService, public telemetryService: TelemetryService) {
-    this.resourceService = resourceService;
-    this.router = router;
-    this.activatedRoute = activatedRoute;
-    this.searchService = searchService;
-    this.toasterService = toasterService;
+    public playerService: PlayerService, public telemetryService: TelemetryService,
+    public downloadManagerService: DownloadManagerService, public publicPlayerService: PublicPlayerService) {
   }
 
   ngOnInit() {
-    this.setTelemetryData();
-    this.instanceName = this.resourceService.instance;
-    this.activatedRoute.params.subscribe(params => {
-      this.searchKeyword = this.dialCode = params.dialCode;
+    EkTelemetry.config.batchsize = 2;
+    observableCombineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
+    (params, queryParams) => {
+      return { ...params, ...queryParams };
+    }).subscribe((params) => {
+      this.dialSearchSource = params.source || 'search';
+      this.itemsToDisplay = [];
+      this.searchResults = [];
+      this.dialCode = params.dialCode;
+      this.setTelemetryData();
       this.searchDialCode();
     });
     this.handleMobilePopupBanner();
-  }
 
-  setTelemetryData () {
-    this.closeMobilePopupInteractData = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-      },
-      edata: {
-        id: 'mobile-popup-close',
-        type: 'click',
-        pageid: 'get-dial'
-      }
-    };
-
-    this.appMobileDownloadInteractData = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env,
-      },
-      edata: {
-        id: 'app-download-mobile',
-        type: 'click',
-        pageid: 'get-dial'
-      }
-    };
-  }
-
-  handleMobilePopupBanner () {
-    setTimeout(() => {
-      this.showMobilePopup = true;
-    }, 500);
-  }
-
-  closeMobileAppPopup () {
-    if (!this.isRedirectToDikshaApp) {
-      this.telemetryService.interact(this.closeMobilePopupInteractData);
-      (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
-      (document.querySelector('.mobile-popup-dimmer') as HTMLElement).style.display = 'none';
+    if (this.isOffline) {
+      this.downloadManagerService.downloadListEvent.subscribe((data) => {
+        this.updateCardData(data);
+      });
     }
-  }
+    this.instance = _.upperCase(this.resourceService.instance);
 
-  redirectToDikshaApp () {
-    this.isRedirectToDikshaApp = true;
-    this.telemetryService.interact(this.appMobileDownloadInteractData);
-    window.location.href = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
   }
 
   public searchDialCode() {
     this.showLoader = true;
     const requestParams = {
       filters: {
-        'dialcodes': this.dialCode
-      }
+        dialcodes: this.dialCode
+      },
+      params: this.configService.appConfig.dialPage.contentApiQueryParams
     };
-    this.searchService.contentSearch(requestParams, false).pipe(
-      mergeMap(apiResponse => {
-        const linkedCollectionsIds = [];
-        this.linkedContents = [];
-        if (apiResponse.result.content && apiResponse.result.content.length > 0) {
-          _.forEach(apiResponse.result.content, (data) => {
-            if (data.mimeType === 'application/vnd.ekstep.content-collection') {
-              linkedCollectionsIds.push(data.identifier);
-            } else {
-              this.linkedContents.push(data);
-            }
-          });
-
-          if (linkedCollectionsIds.length) {
-            return this.getAllPlayableContent(linkedCollectionsIds);
-          } else {
-            return of([]);
-          }
+    this.searchService.contentSearch(requestParams, false).pipe(mergeMap(apiResponse => {
+      const linkedCollectionsIds = [];
+      this.linkedContents = [];
+      _.forEach(_.get(apiResponse, 'result.content'), (data) => {
+        if (data.mimeType === 'application/vnd.ekstep.content-collection' && data.contentType.toLowerCase() !== 'course') {
+          linkedCollectionsIds.push(data.identifier);
         } else {
-          return of([]);
+          this.linkedContents.push(data);
         }
-      }))
-      .subscribe(data => {
-        const constantData = this.configService.appConfig.GetPage.constantData;
-        const metaData = this.configService.appConfig.GetPage.metaData;
-        const dynamicFields = this.configService.appConfig.GetPage.dynamicFields;
-        this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
-        this.showLoader = false;
-      }, error => {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0049);
       });
+      if (linkedCollectionsIds.length) {
+        return this.getAllPlayableContent(linkedCollectionsIds);
+      } else {
+        return of([]);
+      }
+    })).subscribe(data => {
+      const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
+      this.searchResults = this.utilService.getDataForCard(this.linkedContents, constantData, dynamicFields, metaData);
+      this.appendItems(0, this.itemsToLoad);
+      this.showLoader = false;
+    }, error => {
+      this.showLoader = false;
+      this.toasterService.error(this.resourceService.messages.fmsg.m0049);
+    });
+  }
+
+  onScrollDown() {
+    const startIndex = this.itemsToLoad;
+    this.itemsToLoad = this.itemsToLoad + this.numOfItemsToAddOnScroll;
+    this.appendItems(startIndex, this.itemsToLoad);
+  }
+
+  appendItems (startIndex, endIndex) {
+    this.itemsToDisplay.push(...this.searchResults.slice(startIndex, endIndex));
   }
 
   public getAllPlayableContent(collectionIds) {
-    const apiArray = [];
-    _.forEach(collectionIds, (data) => {
-      apiArray.push(this.getCollectionHierarchy(data));
-    });
+    const apiArray = _.map(collectionIds, collectionId => this.getCollectionHierarchy(collectionId));
     return forkJoin(apiArray).pipe(map((results) => {
-      const model = new TreeModel();
       _.forEach(results, (eachCollection) => {
         if (typeof eachCollection === 'object') {
-          const treeModel = model.parse(eachCollection);
-          treeModel.walk((node) => {
+          const parsedCollection = treeModel.parse(eachCollection);
+          parsedCollection.walk((node) => {
             if (_.get(node, 'model.mimeType') && node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+              node.model.l1Parent = eachCollection.identifier;
               this.linkedContents.push(node.model);
             }
             return true;
@@ -211,21 +151,60 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getCollectionHierarchy(collectionId) {
-    return this.playerService.getCollectionHierarchy(collectionId).pipe(map((res) =>
-    _.get(res, 'result.content')), catchError(e => of(undefined)));
+    return this.playerService.getCollectionHierarchy(collectionId).pipe(
+      map((res) => _.get(res, 'result.content')), catchError(e => of(undefined)));
   }
 
-  public navigateToSearch() {
-    if (this.searchKeyword.length > 0) {
-      this.router.navigate(['/get/dial', this.searchKeyword]);
+  public playCourse({ section, data }) {
+    const { metaData } = data;
+    if (this.userService.loggedIn) {
+      this.coursesService.getEnrolledCourses().subscribe(() => {
+        const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
+        this.coursesService.findEnrolledCourses(metaData.identifier);
+        if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+          return this.playerService.playContent(metaData);
+        }
+        if (onGoingBatchCount === 1) { // play course if only one open batch is present
+          metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+          return this.playerService.playContent(metaData);
+        }
+        this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+        this.showBatchInfo = true;
+      }, error => {
+        this.publicPlayerService.playExploreCourse(metaData.identifier);
+      });
+    } else {
+      this.publicPlayerService.playExploreCourse(metaData.identifier);
     }
   }
 
   public getEvent(event) {
-    if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-      this.router.navigate(['play/collection', event.data.metaData.identifier], { queryParams: { dialCode: this.searchKeyword } });
+
+    // For offline environment content will only play when event.action is open
+    if (event.action === 'download' && this.isOffline) {
+      this.startDownload(event.data.metaData.identifier);
+      return false;
+    } else if (event.action === 'export' && this.isOffline) {
+      this.showExportLoader = true;
+      this.contentName = event.data.name;
+      this.exportOfflineContent(event.data.metaData.identifier);
+      return false;
+    }
+
+    if (_.includes(this.router.url, 'browse') && this.isOffline) {
+      this.redirectCollectionUrl = 'browse/play/collection';
+      this.redirectContentUrl = 'browse/play/content';
     } else {
-      this.router.navigate(['play/content', event.data.metaData.identifier], { queryParams: { dialCode: this.searchKeyword } });
+      this.redirectCollectionUrl = 'play/collection';
+      this.redirectContentUrl = 'play/content';
+    }
+
+    if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      this.router.navigate([this.redirectCollectionUrl, event.data.metaData.identifier],
+        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
+    } else {
+      this.router.navigate([this.redirectContentUrl, event.data.metaData.identifier],
+        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
     }
   }
 
@@ -253,13 +232,13 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
         context: {
           env: this.activatedRoute.snapshot.data.telemetry.env,
           cdata: [{
-            type: 'dialCode',
-            id: this.dialCode
+            type: 'DialCode',
+            id: this.activatedRoute.snapshot.params.dialCode
           }]
         },
         object: {
-          id: this.dialCode,
-          type: 'dialCode',
+          id: this.activatedRoute.snapshot.params.dialCode,
+          type: 'DialCode',
           ver: '1.0'
         },
         edata: {
@@ -272,8 +251,115 @@ export class DialCodeComponent implements OnInit, OnDestroy, AfterViewInit {
       };
     });
   }
+  closeMobileAppPopup () {
+    if (!this.isRedirectToDikshaApp) {
+      this.telemetryService.interact(this.closeMobilePopupInteractData);
+      (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
+      (document.querySelector('.mobile-popup-dimmer') as HTMLElement).style.display = 'none';
+    }
+  }
+
+  redirectToDikshaApp () {
+    this.isRedirectToDikshaApp = true;
+    this.telemetryService.interact(this.appMobileDownloadInteractData);
+    let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
+    const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
+    const utm_source = slug ? `diksha-${slug}` : 'diksha';
+    applink = `${applink}&utm_source=${utm_source}&utm_medium=${this.dialSearchSource}&utm_campaign=dial&utm_term=${this.dialCode}`;
+    window.location.href = applink.replace(/\s+/g, '');
+  }
+  setTelemetryData () {
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
+    }
+    this.closeMobilePopupInteractData = {
+      context: {
+        cdata: this.telemetryCdata,
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: 'mobile-popup-close',
+        type: 'click',
+        pageid: 'get-dial'
+      }
+    };
+
+    this.closeIntractEdata = {
+      id: 'dialpage-close',
+      type: 'click',
+      pageid: 'get-dial',
+    };
+
+    this.appMobileDownloadInteractData = {
+      context: {
+        cdata: this.telemetryCdata,
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: 'app-download-mobile',
+        type: 'click',
+        pageid: 'get-dial'
+      }
+    };
+  }
   ngOnDestroy() {
+    EkTelemetry.config.batchsize = 10;
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+  handleMobilePopupBanner () {
+    setTimeout(() => {
+      this.showMobilePopup = true;
+    }, 500);
+  }
+
+  startDownload (contentId) {
+    this.downloadManagerService.downloadContentId = contentId;
+    this.downloadManagerService.startDownload({}).subscribe(data => {
+      this.downloadManagerService.downloadContentId = '';
+    }, error => {
+      this.downloadManagerService.downloadContentId = '';
+      _.each(this.itemsToDisplay, (contents) => {
+        contents['addedToLibrary'] = false;
+        contents['showAddingToLibraryButton'] = false;
+      });
+      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+    });
+  }
+
+  exportOfflineContent(contentId) {
+    this.downloadManagerService.exportContent(contentId).subscribe(data => {
+      const link = document.createElement('a');
+      link.href = data.result.response.url;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      this.showExportLoader = false;
+    }, error => {
+      this.showExportLoader = false;
+      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+    });
+  }
+
+  updateCardData(downloadListdata) {
+    _.each(this.itemsToDisplay, (contents) => {
+
+      // If download is completed card should show added to library
+      _.find(downloadListdata.result.response.downloads.completed, (completed) => {
+        if (contents.metaData.identifier === completed.contentId) {
+          contents['addedToLibrary'] = true;
+          contents['showAddingToLibraryButton'] = false;
+        }
+      });
+
+      // If download failed, card should show again add to library
+      _.find(downloadListdata.result.response.downloads.failed, (failed) => {
+        if (contents.metaData.identifier === failed.contentId) {
+          contents['addedToLibrary'] = false;
+          contents['showAddingToLibraryButton'] = false;
+        }
+      });
+    });
   }
 }

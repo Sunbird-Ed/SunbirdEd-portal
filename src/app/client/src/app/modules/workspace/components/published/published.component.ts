@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, CoursesService } from '@sunbird/core';
 import {
   ServerResponse, ConfigService, PaginationService,
   IContents, ToasterService, ResourceService, ILoaderMessage, INoResultMessage,
@@ -61,6 +61,8 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
    * loader message
   */
   loaderMessage: ILoaderMessage;
+
+  showCourseQRCodeBtn = false;
 
   /**
    * To show / hide error when no result found
@@ -139,7 +141,8 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
     toasterService: ToasterService, resourceService: ResourceService,
-    config: ConfigService, public navigationhelperService: NavigationHelperService) {
+    config: ConfigService, public navigationhelperService: NavigationHelperService,
+    public coursesService: CoursesService) {
     super(searchService, workSpaceService, userService);
     this.paginationService = paginationService;
     this.route = route;
@@ -154,6 +157,27 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     this.activatedRoute.params.subscribe(params => {
       this.pageNumber = Number(params.pageNumber);
       this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
+    });
+    this.isPublishedCourse();
+  }
+  isPublishedCourse() {
+    const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
+    const inputParams = { params: '' };
+      this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
+       if (data.result.content.length > 0) {
+         this.showCourseQRCodeBtn = true;
+       }
+      });
+  }
+  getCourseQRCsv() {
+    this.coursesService.getQRCodeFile().subscribe((data: any) => {
+      const FileURL = _.get(data, 'result.fileUrl');
+      if (FileURL) {
+        window.open (FileURL, '_blank');
+      }
+    },
+    (err: ServerResponse) => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0095);
     });
   }
   /**

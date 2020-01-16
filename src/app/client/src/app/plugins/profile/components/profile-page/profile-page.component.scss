@@ -9,9 +9,6 @@
   .color-2 {
     color: #007aff !important;
   }
-  .color-5 {
-    color: #9017FF !important;
-  }
   /* profile page color palate */
 
   .profile-bg-c-1 {
@@ -41,6 +38,12 @@
 
   .profile-label-container {
     max-width: 600px !important;
+  }
+  
+  .profile-label-container {
+    .ui.basic.label:hover {
+      border: 1px solid #fdfdfd !important;
+    }
   }
 
   @media only screen and (max-width: 767px) {
@@ -76,7 +79,7 @@
   line-height: 24px !important;
 }
 
-.ui.semi-circular.update.basic.label {
+.ui.semi-circular.update.basic.label, .ui.semi-circular.basic.label {
   border: 1px solid $primary-color !important;
   border-radius: 18.5px;
   font-size: 1.16rem;
@@ -157,3 +160,28 @@ display: inline-block;
 //     opacity: 0;
 //   }
 // }
+
+
+// TODO::need to move this to styles component(right now this is done to avoid shadow DOM)
+.ui.semi-circular.update.basic.label {
+  border-radius: 18.5px;
+  font-size: 1.16rem;
+  padding: 8px 16px;
+  color: #9b9b9b;
+  .icon {
+    margin: 0;
+  }
+}
+
+.ui.semi-circular.dodger-blue.basic.label {
+  border-radius: 18.5px;
+  font-size: 1.16rem;
+  padding: 8px 16px;
+  color: $primary-color;
+  &:hover {
+    border:0;
+  }
+  .icon {
+    margin: 0;
+  }
+}

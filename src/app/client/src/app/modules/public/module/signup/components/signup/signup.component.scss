@@ -165,5 +165,9 @@ input[type=number]::-webkit-inner-spin-button {
   background: url('/assets/images/bg.svg') no-repeat center center fixed;
   background-size: cover;
   width: 100%;
-  position: fixed;
-}  
+  position: relative;
+
+  @media screen and (min-width: 768px) {
+    position: fixed;
+  }
+} 

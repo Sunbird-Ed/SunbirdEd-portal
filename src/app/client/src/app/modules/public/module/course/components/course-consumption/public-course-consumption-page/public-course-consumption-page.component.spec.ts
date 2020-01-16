@@ -94,6 +94,6 @@ describe('PublicCourseConsumptionPageComponent', () => {
     component.ngOnInit();
     component.onShareLink();
     expect(component.sharelinkModal).toBe(true);
-    expect(component.shareLink).toBe('http://localhost:9876/explore-course/course/do_212347136096788480178');
+    expect(component.shareLink).toContain('explore-course/course/do_212347136096788480178');
   });
 });

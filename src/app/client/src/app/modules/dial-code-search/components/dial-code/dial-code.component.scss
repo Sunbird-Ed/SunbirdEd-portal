@@ -123,10 +123,10 @@
         top: 10px;
         display: flex;
         align-items: center;
-        margin: 0 40px;
+        margin: 0 20px;
        }
        .mobile-circles .border-round {
-        background: #464646;
+        background: #666666;
         border: none;
        }
        
@@ -149,7 +149,6 @@
        .mobile-circles .small-box {
         height: 8px;
         width: 8px;
-        margin-left: 10px; 
        }
      }
    }
@@ -157,6 +156,16 @@
 
 .bottom-0 {
   bottom: 0;
+}
+.dial-code-section-result{
+  align-items: center !important;
+  .header{
+    display: inline-flex;
+    align-items: center;
+  }
+  .header-label{
+    font-size: 12px;
+  }
 }
 @media screen and  (min-width: 240px) and (max-width: 768px) {
   .dial-section-input {
@@ -169,7 +178,7 @@
   }
 }
 .dial-code-section-bg {
-  background: #fff;
+  //background: #fff;
 }
 @media only screen and (max-width: 767px) {
   .ui.container.public-responvive-container {    
@@ -201,12 +210,15 @@
         right: 0;
         left: 0;
         box-shadow: 0 0 20px 10px rgba(0,0,0,.2);
-        height: 145px;
+        height: 175px;
+        p {
+          display: block !important;
+        }
         .close-mobile-div {
           display: flex;
         }
         .diksha-logo{
-          height: 115px;
+          height: 145px;
           overflow: hidden;
         }
       }

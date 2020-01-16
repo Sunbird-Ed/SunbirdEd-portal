@@ -62,8 +62,8 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
-     searchParams.filters.enrollmentType = 'open';
-     this.courseBatchService.getAllBatchDetails(searchParams).pipe(
+    searchParams.filters.enrollmentType = 'open';
+    this.courseBatchService.getAllBatchDetails(searchParams).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data: ServerResponse) => {
         if (data.result.response.content && data.result.response.content.length > 0) {
@@ -75,6 +75,14 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
         this.showError = true;
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
+  }
+
+  isValidEnrollmentEndDate(enrollmentEndDate) {
+    return !!enrollmentEndDate;
+  }
+
+  isEnrollmentAllowed(enrollmentEndDate) {
+    return moment(enrollmentEndDate).isBefore(this.todayDate);
   }
 
   enrollBatch() {

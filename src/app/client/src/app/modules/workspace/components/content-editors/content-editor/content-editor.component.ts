@@ -24,6 +24,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   private userProfile: IUserProfile;
   private routeParams: any;
   private buildNumber: string;
+  private deviceId: string;
   private portalVersion: string;
   public logo: string;
   public showLoader = true;
@@ -44,6 +45,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   ) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
+    const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
+    this.deviceId = deviceId ? deviceId.value : '';
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     this.videoMaxSize = (<HTMLInputElement>document.getElementById('videoMaxSize')) ?
       (<HTMLInputElement>document.getElementById('videoMaxSize')).value : '100';
@@ -180,6 +183,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap
       },
+      did: this.deviceId,
       sid: this.userService.sessionId,
       contentId: this.routeParams.contentId,
       pdata: {
@@ -286,5 +290,9 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     }
     sessionStorage.setItem('inEditor', 'false');
     this.workspaceService.toggleWarning();
+    const removeIzi = document.querySelector('.iziModal-isAttached');
+    if (removeIzi) {
+      removeIzi.classList.remove('iziModal-isAttached');
+    }
   }
 }

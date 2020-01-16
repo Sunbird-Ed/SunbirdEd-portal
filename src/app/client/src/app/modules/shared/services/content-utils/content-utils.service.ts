@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ISharelink } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
+import * as _ from 'lodash-es';
 
 @Injectable()
 export class ContentUtilsServiceService {
@@ -44,6 +45,18 @@ export class ContentUtilsServiceService {
 
   getCoursePublicShareUrl (courseid) {
     return `${this.baseUrl}explore-course/course/${courseid}`;
+  }
+
+  /**
+  * {content} is node which comes from collection tree for each content and returns rollup object upto 4 elements
+  *  this function is called from public and private modules of collection and course players
+  */
+  getContentRollup (content) {
+    const objectRollUp = {};
+    let nodes = content.getPath();
+    nodes = _.slice(nodes, 0, 4).slice(0, -1);
+    nodes.forEach((eachnode, index) => objectRollUp['l' + (index + 1)] = eachnode.model.identifier);
+    return objectRollUp;
   }
 
   /**

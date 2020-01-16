@@ -240,6 +240,19 @@ describe('BatchListComponent', () => {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
+  it('should call onCardClick method for navigation', () => {
+    const userService = TestBed.get(UserService);
+    const router = TestBed.get(Router);
+    component.telemetryImpression = testData.telemetryData;
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(observableOf(testData.userlist));
+    userService._userProfile = testData.userSuccess.success;
+    userService._userProfile.roleOrgMap = roleOrgMap;
+    spyOn(component, 'onCardClick').and.callThrough();
+    component.onCardClick(testData.cardClickEvent);
+    expect(router.navigate).toHaveBeenCalledWith(['update/batch', '012767178876862464110'],
+    {queryParamsHandling: 'merge', relativeTo: fakeActivatedRoute});
+  });
 });
 
 

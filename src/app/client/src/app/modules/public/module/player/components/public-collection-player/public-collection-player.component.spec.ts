@@ -1,6 +1,6 @@
 
 import {of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -98,7 +98,7 @@ describe('PublicCollectionPlayerComponent', () => {
     };
     expect(component.closeCollectionPlayerInteractEdata).toBeDefined();
   });
-  it('should call closeContentPlayer method', () => {
+  it('should call closeContentPlayer method', fakeAsync(() => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');
     const router = TestBed.get(Router);
@@ -111,9 +111,10 @@ describe('PublicCollectionPlayerComponent', () => {
     };
     component.queryParams = { dialCode: '61U24C'};
     component.closeContentPlayer();
+    tick(200);
     expect(component.showPlayer).toBeFalsy();
     expect(router.navigate).toHaveBeenCalledWith([], navigation);
-  });
+  }));
   it('should call playContent method', () => {
     const windowScrollService = TestBed.get(WindowScrollService);
     spyOn(windowScrollService, 'smoothScroll');

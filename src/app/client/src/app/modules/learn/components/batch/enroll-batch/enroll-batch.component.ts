@@ -119,7 +119,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   setTelemetryData() {
     this.submitInteractEdata = {
-      id: 'enroll-batch',
+      id: 'enroll-batch-popup',
       type: 'click',
       pageid: 'course-consumption'
     };

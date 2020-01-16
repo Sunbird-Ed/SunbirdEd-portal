@@ -125,8 +125,8 @@ describe('CourseProgressComponent', () => {
   it('on selection of courseId call setBatchId()', inject([UserService], (userService) => {
     userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
     fixture.detectChanges();
-    component.setBatchId('01248661735846707228');
-    expect(component.queryParams.batchIdentifier).toEqual('01248661735846707228');
+    component.setBatchId(testData.mockUserData.getBatchResZero);
+    expect(component.queryParams.batchIdentifier).toEqual(testData.mockUserData.getBatchResZero.id);
   }));
 
   it('on selection of timeperiod call setTimePeriod()', inject([UserService], (userService) => {
@@ -141,7 +141,7 @@ describe('CourseProgressComponent', () => {
       userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
       fixture.detectChanges();
       spyOn(courseService, 'getDashboardData').and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
-      component.populateCourseDashboardData();
+      component.populateCourseDashboardData(testData.mockUserData.getBatchResZero.result.response);
       expect(component.dashboarData).toBeDefined();
       expect(component.showLoader).toEqual(false);
     }));
@@ -152,7 +152,7 @@ describe('CourseProgressComponent', () => {
       fixture.detectChanges();
       spyOn(courseService, 'getDashboardData').and.callFake(() => observableThrowError(testData.mockUserData.dashboardError));
       spyOn(toasterService, 'error').and.callThrough();
-      component.populateCourseDashboardData();
+      component.populateCourseDashboardData(testData.mockUserData.getBatchResZero.result.response);
       expect(toasterService.error).toHaveBeenCalledWith(testData.mockUserData.dashboardError.error.params.errmsg);
     }));
 

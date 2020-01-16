@@ -28,9 +28,12 @@ export class PlayerService {
    * stores collection/course details
    */
   collectionData: ContentData;
+  previewCdnUrl: string;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService,
     public publicDataService: PublicDataService) {
+      this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
+      ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
 
   /**
@@ -49,8 +52,8 @@ export class PlayerService {
         if (option.courseId) {
           contentDetails.courseId = option.courseId;
         }
-        if (option.courseId && option.batchHashTagId) {
-          contentDetails.batchHashTagId = option.batchHashTagId;
+        if (option.courseId && option.batchId) {
+          contentDetails.batchId = option.batchId;
         }
         return observableOf(this.getConfig(contentDetails));
       }));
@@ -79,13 +82,15 @@ export class PlayerService {
    * @memberof PlayerService
    */
   getConfig(contentDetails: ContentDetails): PlayerConfig {
-    const configuration: any = this.configService.appConfig.PLAYER_CONFIG.playerConfig;
+    const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
     configuration.context.timeDiff = this.userService.getServerTimeDiff;
-    configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.organisationIds);
+    configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.hashTagIds);
     configuration.context.channel = this.userService.channel;
+    const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
+    configuration.context.did = deviceId ? deviceId.value : '';
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
     buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
@@ -94,8 +99,8 @@ export class PlayerService {
     } else {
       const cloneDims = _.cloneDeep(this.userService.dims) || [];
       cloneDims.push(contentDetails.courseId);
-      if (contentDetails.batchHashTagId) {
-        cloneDims.push(contentDetails.batchHashTagId);
+      if (contentDetails.batchId) {
+        cloneDims.push(contentDetails.batchId);
       }
       configuration.context.dims = cloneDims;
     }
@@ -112,12 +117,17 @@ export class PlayerService {
         id: contentDetails.courseId,
         type: 'course'
       }];
+      if (contentDetails.batchId) {
+        configuration.context.cdata.push({ type: 'batch',
+        id: contentDetails.batchId} );
+      }
     }
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
     configuration.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
+    configuration.config.previewCdnUrl = this.previewCdnUrl;
     return configuration;
   }
 
@@ -189,7 +199,7 @@ export class PlayerService {
     setTimeout(() => { // setTimeOut is used to trigger telemetry interact event as changeDetectorRef.detectChanges() not working.
       if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
-          this.router.navigate(['/resources/play/collection', content.identifier]);
+          this.router.navigate(['/resources/play/collection', content.identifier], {queryParams: {contentType: content.contentType}});
         } else if (content.batchId) {
           this.router.navigate(['/learn/course', content.courseId || content.identifier, 'batch', content.batchId]);
         } else {

@@ -61,7 +61,7 @@
   <% if (instance) { %>
   <input type="hidden" id="instance" value="<%=instance%>" />
   <% } %>
-  <input type="hidden" id="deviceId" />
+  <input type="hidden" id="deviceId"/>
   <% if (googleCaptchaSiteKey) { %>
   <input type="hidden" id="googleCaptchaSiteKey" value="<%=googleCaptchaSiteKey%>" />
   <% } %>
@@ -70,6 +70,30 @@
   <% } %>
   <% if (reportsLocation) { %>
   <input type="hidden" id="reportsLocation" value="<%=reportsLocation%>" />
+  <% } %>
+  <% if (previewCdnUrl) { %>
+    <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />
+  <% } %>
+  <% if (cdnWorking) { %>
+    <input type="hidden" id="cdnWorking" value="<%=cdnWorking%>" />
+  <% } %>
+  <% if (offlineDesktopAppTenant) { %>
+  <input type="hidden" id="offlineDesktopAppTenant" value="<%=offlineDesktopAppTenant%>" />
+  <% } %>
+  <% if (offlineDesktopAppVersion) { %>
+  <input type="hidden" id="offlineDesktopAppVersion" value="<%=offlineDesktopAppVersion%>" />
+  <% } %>
+  <% if (offlineDesktopAppReleaseDate) { %>
+  <input type="hidden" id="offlineDesktopAppReleaseDate" value="<%=offlineDesktopAppReleaseDate%>" />
+  <% } %>
+  <% if (offlineDesktopAppSupportedLanguage) { %>
+  <input type="hidden" id="offlineDesktopAppSupportedLanguage" value="<%=offlineDesktopAppSupportedLanguage%>" />
+  <% } %>
+  <% if (offlineDesktopAppDownloadUrl) { %>
+    <input type="hidden" id="offlineDesktopAppDownloadUrl" value="<%=offlineDesktopAppDownloadUrl%>" />
+  <% } %>
+  <% if (logFingerprintDetails) { %>
+    <input type="hidden" id="logFingerprintDetails" value="<%=logFingerprintDetails%>" />
   <% } %>
   <app-root></app-root>
 </body>

@@ -7,59 +7,43 @@ node('build-slave') {
         String ANSI_YELLOW = "\u001B[33m"
 
         ansiColor('xterm') {
-            stage('Checkout') {
-                if (!env.hub_org) {
-                    println(ANSI_BOLD + ANSI_RED + "Uh Oh! Please set a Jenkins environment variable named hub_org with value as registery/sunbidrded" + ANSI_NORMAL)
-                    error 'Please resolve the errors and rerun..'
-                } else
-                    println(ANSI_BOLD + ANSI_GREEN + "Found environment variable named hub_org with value as: " + hub_org + ANSI_NORMAL)
-            }
-            cleanWs()
-            if (params.github_release_tag == "") {
-                checkout scm
-                commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
-                build_tag = branch_name + "_" + commit_hash
-                // Creating artifact version
-                artifact_version = branch_name + "_" + commit_hash
-                println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag not specified, using the latest commit hash: " + commit_hash + ANSI_NORMAL)
-            } else {
-                def scmVars = checkout scm
-                checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/$params.github_release_tag"]], userRemoteConfigs: [[url: scmVars.GIT_URL]]]
-                build_tag = params.github_release_tag
-                // Creating artifact version
-                commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
-                artifact_version = branch_name + "_" + commit_hash
-                println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag specified, building from github_release_tag: " + params.github_release_tag + ANSI_NORMAL)
-            }
-            echo "build_tag: " + build_tag
-
-            stage('Build') {
-                sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org}")
-            }
-
-            // Building cdn artifact
-            // if toggle enabled; default is false
-            // override this variable by creating a jenkins parameter and assign `true`
-            def cdnEnable = params.cdnEnable ?: false
-            // If cdnEnable variable is set true; else skip
-            if (cdnEnable) {
-                // check jenkins parameter cdnUrl
-                if ( ! params.cdnUrl ){
-                    error 'cdn url is not defined'
-                    stage('Build-CDN') {
-                        sh ("docker run --rm -v `pwd`:/work -w /work node:8.11.2-alpine sh ./build-cdn.sh ${params.cdnUrl} ${commit_hash} ${artifact_version}")
-                        archiveArtifacts 'src/app/player_artifacts.zip*'
-                        // Appending artifact info into metadata
-                        sh (" sed -i 's/}/,\"artifact_name\" : \"player_artifacts.zip\", \"artifact_version\":\"${artifact_version}\"}/g' metadata.json")
-                    }
+            timestamps {
+                stage('Checkout') {
+                    if (!env.hub_org) {
+                        println(ANSI_BOLD + ANSI_RED + "Uh Oh! Please set a Jenkins environment variable named hub_org with value as registery/sunbidrded" + ANSI_NORMAL)
+                        error 'Please resolve the errors and rerun..'
+                    } else
+                        println(ANSI_BOLD + ANSI_GREEN + "Found environment variable named hub_org with value as: " + hub_org + ANSI_NORMAL)
                 }
-            }
+//                cleanWs()
+                if (params.github_release_tag == "") {
+                    checkout scm
+                    commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
+                    build_tag = branch_name + "_" + commit_hash
+                    // Creating artifact version
+                    artifact_version = branch_name + "_" + commit_hash
+                    println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag not specified, using the latest commit hash: " + commit_hash + ANSI_NORMAL)
+                } else {
+                    def scmVars = checkout scm
+                    checkout scm: [$class: 'GitSCM', branches: [[name: "refs/tags/$params.github_release_tag"]], userRemoteConfigs: [[url: scmVars.GIT_URL]]]
+                    build_tag = params.github_release_tag
+                    // Creating artifact version
+                    commit_hash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    branch_name = sh(script: 'git name-rev --name-only HEAD | rev | cut -d "/" -f1| rev', returnStdout: true).trim()
+                    artifact_version = branch_name + "_" + commit_hash
+                    println(ANSI_BOLD + ANSI_YELLOW + "github_release_tag specified, building from github_release_tag: " + params.github_release_tag + ANSI_NORMAL)
+                }
+                echo "build_tag: " + build_tag
 
-            stage('ArchiveArtifacts') {
-                archiveArtifacts "metadata.json"
-                currentBuild.description = "${build_tag}"
+                stage('Build') {
+                    sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.sunbird_content_editor_artifact_url} ${params.sunbird_collection_editor_artifact_url} ${params.sunbird_generic_editor_artifact_url}")
+                }
+
+                stage('ArchiveArtifacts') {
+                    archiveArtifacts "metadata.json"
+                    currentBuild.description = "${build_tag}"
+                }
             }
         }
     }

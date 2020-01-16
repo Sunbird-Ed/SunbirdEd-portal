@@ -14,9 +14,9 @@ const appRoutes: Routes = [
   {
     path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
   },
-  {
-    path: 'home', loadChildren: 'app/modules/home/home.module#HomeModule'
-  },
+  // {
+  //   path: 'home', loadChildren: 'app/modules/home/home.module#HomeModule'
+  // },
   {
     path: 'announcement', loadChildren: 'app/modules/announcement/announcement.module#AnnouncementModule'
   },
@@ -28,6 +28,18 @@ const appRoutes: Routes = [
   },
   {
     path: 'profile', loadChildren: 'app/plugins/profile/profile.module#ProfileModule'
+  },
+  {
+    path: 'certs', loadChildren: 'app/modules/certificate/certificate.module#CertificateModule'
+  },
+  {
+    path: 'recover', loadChildren: 'app/modules/recover-account/recover-account.module#RecoverAccountModule'
+  },
+  {
+    path: 'accountMerge', loadChildren: 'app/modules/merge-account/merge-account.module#MergeAccountModule'
+  },
+  {
+    path: ':slug/get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
   },
   {
     path: 'get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'

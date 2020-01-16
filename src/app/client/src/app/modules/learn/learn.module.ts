@@ -15,7 +15,6 @@ import { CourseConsumptionService, CourseBatchService, CourseProgressService } f
 import { CoreModule } from '@sunbird/core';
 import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
-import { CourseBatchModule } from '@sunbird/course-batch';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 
@@ -32,7 +31,6 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     ReactiveFormsModule,
     NotesModule,
     TelemetryModule,
-    CourseBatchModule,
     NgInviewModule,
     SharedFeatureModule,
     PlayerHelperModule

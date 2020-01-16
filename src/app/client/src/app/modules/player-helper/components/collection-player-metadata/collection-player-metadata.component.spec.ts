@@ -6,7 +6,7 @@ import { CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { CollectionPlayerMetadataComponent } from './collection-player-metadata.component';
-import { DateFormatPipe } from '@sunbird/shared';
+import { DateFormatPipe, InterpolatePipe } from '@sunbird/shared';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { Response } from './collection-player-metadata.spec.data';
@@ -19,7 +19,7 @@ describe('CollectionPlayerMetadataComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CollectionPlayerMetadataComponent, DateFormatPipe],
+      declarations: [CollectionPlayerMetadataComponent, DateFormatPipe, InterpolatePipe],
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [ResourceService, ConfigService, CacheService,
         BrowserCacheTtlService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }],

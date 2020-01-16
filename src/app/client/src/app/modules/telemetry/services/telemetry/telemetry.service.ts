@@ -2,9 +2,11 @@ import { Injectable, Inject, InjectionToken } from '@angular/core';
 import * as _ from 'lodash-es';
 import {
   ITelemetryEvent, ITelemetryContextData, TelemetryObject,
-  IStartEventInput, IImpressionEventInput,
+  IStartEventInput, IImpressionEventInput, IExDataEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
+
+
  export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
 * Service for telemetry v3 event methods
@@ -45,6 +47,8 @@ export class TelemetryService {
    * @param {*} telemetryProvider
    * @memberof TelemetryService
    */
+
+
   constructor() {
     // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
@@ -60,7 +64,6 @@ export class TelemetryService {
     this.context = _.cloneDeep(context);
     this.telemetryProvider.initialize(this.context.config);
     this.isInitialized = true;
-    console.log('Telemetry Service is Initialized!', this.context);
   }
   getDeviceId(callback) {
     EkTelemetry.getFingerPrint(callback);
@@ -165,6 +168,18 @@ export class TelemetryService {
     }
   }
 
+  /**
+   * Logs 'exdata' telemetry event
+   *
+   * @param {IExDataEventInput} exDataEventInput
+   * @memberof TelemetryService
+   */
+  public exData(exDataEventInput: IExDataEventInput) {
+    if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(exDataEventInput);
+      this.telemetryProvider.exdata(eventData.edata, eventData.options);
+    }
+  }
 
   /**
    * Feedback 'feedback' telemetry event

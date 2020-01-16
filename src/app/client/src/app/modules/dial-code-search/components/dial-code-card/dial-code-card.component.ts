@@ -1,5 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { ResourceService, ICard } from '@sunbird/shared';
 
 @Component({
@@ -7,7 +6,7 @@ import { ResourceService, ICard } from '@sunbird/shared';
   templateUrl: './dial-code-card.component.html',
   styleUrls: ['./dial-code-card.component.scss']
 })
-export class DialCodeCardComponent {
+export class DialCodeCardComponent implements OnInit {
 
 /**
  * content is used to render IContents value on the view
@@ -20,11 +19,13 @@ export class DialCodeCardComponent {
 
   constructor(public resourceService: ResourceService) {
     this.resourceService = resourceService;
-    if (this.dialCode) {
-      this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
-    }
   }
 
+  ngOnInit() {
+    if (this.dialCode) {
+      this.telemetryCdata = [{ 'type': 'DialCode', 'id': this.dialCode }];
+    }
+  }
   public onAction(data, action) {
     this.clickEvent.emit({ 'action': action, 'data': data });
   }

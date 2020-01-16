@@ -24,9 +24,8 @@ export class LanguageDropdownComponent implements OnInit {
 
   onLanguageChange(event) {
     this._cacheService.set('portalLanguage', event);
-    this.resourceService.getResource(event);
     const language = _.find(this.languageRange, ['value', event]);
-    this.resourceService.getLanguageChange(language);
+    this.resourceService.getResource(event, language);
   }
   getTelemetryInteractEdata(language): IInteractEventEdata {
     return {id : `${language}-lang`, type: 'click' , pageid: this.router.url.split('/')[1]};

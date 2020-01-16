@@ -1,6 +1,6 @@
-import { filter, first } from 'rxjs/operators';
+import {filter, first, map} from 'rxjs/operators';
 import { UserService, PermissionService, TenantService, OrgDetailsService, FormService } from './../../services';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -8,13 +8,14 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 declare var jQuery: any;
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './main-header.component.html'
 })
 export class MainHeaderComponent implements OnInit {
-
+  @Input() routerEvents;
   languageFormQuery = {
     formType: 'content',
     formAction: 'search',
@@ -24,6 +25,8 @@ export class MainHeaderComponent implements OnInit {
   queryParam: any = {};
   showExploreHeader = false;
   showQrmodal = false;
+  showAccountMergemodal = false;
+  isValidCustodianOrgUser = true;
   tenantInfo: any = {};
   userProfile: IUserProfile;
   adminDashboard: Array<string>;
@@ -55,7 +58,6 @@ export class MainHeaderComponent implements OnInit {
   public signUpInteractEdata: IInteractEventEdata;
   public enterDialCodeInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
-  exploreRoutingUrl: string;
   pageId: string;
   searchBox = {
     'center': false,
@@ -66,6 +68,7 @@ export class MainHeaderComponent implements OnInit {
   slug: string;
   isOffline: boolean = environment.isOffline;
   languages: Array<any>;
+  showOfflineHelpCentre = false;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -86,7 +89,8 @@ export class MainHeaderComponent implements OnInit {
       this.userService.userData$.pipe(first()).subscribe((user: any) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-            this.getLanguage(this.userService.channel);
+          this.getLanguage(this.userService.channel);
+          this.isCustodianOrgUser();
         }
       });
     } else {
@@ -105,6 +109,28 @@ export class MainHeaderComponent implements OnInit {
     this.setInteractEventData();
     this.cdr.detectChanges();
     this.setWindowConfig();
+
+    // This subscription is only for offline and it checks whether the page is offline
+    // help centre so that it can load its own header/footer
+    if (this.isOffline) {
+      this.router.events.subscribe((val) => {
+        if (_.includes(this.router.url, 'help-center')) {
+          this.showOfflineHelpCentre = true;
+        } else {
+          this.showOfflineHelpCentre = false;
+        }
+      });
+    }
+  }
+
+  private isCustodianOrgUser() {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+        this.isValidCustodianOrgUser = true;
+      } else {
+        this.isValidCustodianOrgUser = false;
+      }
+    });
   }
   getLanguage(channelId) {
     const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);
@@ -126,10 +152,12 @@ export class MainHeaderComponent implements OnInit {
     }
   }
   navigateToHome() {
-    if (this.userService.loggedIn) {
+    if (this.isOffline) {
+      this.router.navigate(['']);
+    } else if (this.userService.loggedIn) {
       this.router.navigate(['resources']);
     } else {
-      window.location.href = this.slug ? this.slug : '';
+      window.location.href = this.slug ? this.slug + '/explore'  : '/explore';
     }
   }
   onEnter(key) {
@@ -137,11 +165,45 @@ export class MainHeaderComponent implements OnInit {
     if (key && key.length) {
       this.queryParam.key = key;
     }
-    this.router.navigate([this.exploreRoutingUrl, 1], { queryParams: this.queryParam });
+    if (this.isOffline) {
+      this.routeToOffline();
+    } else {
+      const url = this.router.url.split('?')[0];
+      let redirectUrl;
+      if (url.indexOf('/explore-course') !== -1) {
+        redirectUrl = url.substring(0, url.indexOf('explore-course')) + 'explore-course';
+      } else {
+        redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
+      }
+      this.router.navigate([redirectUrl, 1], { queryParams: this.queryParam });
+    }
+  }
+
+  /* This method searches only for offline module*/
+  routeToOffline() {
+    if (_.includes(this.router.url, 'browse')) {
+      this.router.navigate(['browse', 1], { queryParams: this.queryParam });
+    } else {
+      this.router.navigate(['search', 1], { queryParams: this.queryParam });
+    }
+  }
+
+  getSearchButtonInteractEdata(key) {
+    const searchInteractEdata = {
+      id: `search-button`,
+      type: 'click',
+      pageid: this.router.url.split('/')[1]
+    };
+    if (key) {
+      searchInteractEdata['extra'] = {
+        query: key
+      };
+    }
+    return searchInteractEdata;
   }
 
   getUrl() {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
+    this.routerEvents.subscribe((urlAfterRedirects: NavigationEnd) => {
       let currentRoute = this.activatedRoute.root;
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
@@ -159,22 +221,8 @@ export class MainHeaderComponent implements OnInit {
         }
       }
       this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-      if (_.includes(urlAfterRedirects.url, '/explore')) {
+      if (_.includes(urlAfterRedirects.url, '/explore-course') || _.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
-      } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
-        this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore-course') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
       } else {
         this.showExploreHeader = false;
       }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LandingPageComponent } from './components';
 import { LandingpageGuard } from './services';
+import { OfflineApplicationDownloadComponent } from '@sunbird/shared';
 
 const routes: Routes = [
   {
@@ -34,7 +35,13 @@ const routes: Routes = [
   },
   {
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
-  }];
+  },
+  {
+   path: ':slug/download/offlineapp', component: OfflineApplicationDownloadComponent
+  },
+  {
+   path: 'download/offlineapp', component: OfflineApplicationDownloadComponent
+   }];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

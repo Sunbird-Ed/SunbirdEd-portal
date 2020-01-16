@@ -18,8 +18,7 @@
     .item {
       padding: $block-padding-y-x;
       color: $gray-800;
-      &:hover,
-      &:focus {
+      &:hover {
         color: $primary-color;
         outline: none;
       }

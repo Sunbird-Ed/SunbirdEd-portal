@@ -36,3 +36,10 @@
 .bottom-5 {
     bottom: 5px !important;
 }
+
+.sb-sticky-bottom {
+    position: sticky;bottom: 0;  z-index: 999999;
+  }
+  .sb-sticky-top {
+    position: sticky;top: 0;z-index: 999999;
+  }

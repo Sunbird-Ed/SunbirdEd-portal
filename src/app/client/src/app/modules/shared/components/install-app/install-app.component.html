@@ -6,7 +6,7 @@
                 <div class="ui mini fixed-small modal active p-0 m-0">
                     <div class="header appPopup-header p-10">
                         <div class="appPopup-logo img-cover p-5 m-0 mr-15">
-                            <img src="{{'assets/images/logo.png'}}" class="js-appLogo" alt="{{resourceService.frmelmnts?.lbl?.installAppTitle}}"/>
+                            <img src="{{'assets/images/logo.png'}}" class="js-appLogo" alt="{{resourceService.frmelmnts?.lbl?.installAppTitle | interpolate:'{instance}': instance}}"/>
                         </div>
                         <div class="appPopup-title">
                             {{resourceService.frmelmnts?.lbl?.installAppTitle}} <br />

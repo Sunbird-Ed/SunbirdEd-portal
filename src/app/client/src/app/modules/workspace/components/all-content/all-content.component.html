@@ -47,7 +47,7 @@
         </td>
         <td class="UpForReviewStatusOrange">{{content.status}}</td>
         <td>
-          <i appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
+          <i *ngIf="!(content.pkgVersion && content.pkgVersion > 0 && (content.status === 'Review' || content.status === 'Draft'))" appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
           [telemetryInteractEdata]="{id:'deleteContent',type:'click',pageid:'AllContent'}"  class="trash large icon" (click)="deleteConfirmModal(content.identifier); $event.stopPropagation()">
           </i>
         </td>

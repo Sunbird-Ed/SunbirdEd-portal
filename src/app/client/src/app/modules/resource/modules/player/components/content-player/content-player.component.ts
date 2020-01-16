@@ -15,8 +15,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
  */
 @Component({
   selector: 'app-content-player',
-  templateUrl: './content-player.component.html',
-  styleUrls: ['./content-player.component.scss']
+  templateUrl: './content-player.component.html'
 })
 export class ContentPlayerComponent implements OnInit, AfterViewInit {
   /**
@@ -192,7 +191,15 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
    * @memberof ContentPlayerComponent
    */
   close() {
-    this.navigationHelperService.navigateToResource('/resources');
+    try {
+      window.frames['contentPlayer'].contentDocument.body.onunload({});
+    } catch {
+
+    } finally {
+      setTimeout(() => {
+        this.navigationHelperService.navigateToResource('/explore');
+      }, 100);
+    }
   }
 
   /**

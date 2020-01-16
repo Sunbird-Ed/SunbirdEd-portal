@@ -3,10 +3,10 @@
     "userReadParam": {
       "fields": "organisations,roles,locations"
     },
-    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators,streamingUrl",
+    "contentGet": "creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators,streamingUrl,originData,copyright",
     "enrolledCourses": {
       "fields": "contentType,topic,name,channel",
-      "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy"
+      "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
     }
   },
   "URLS": {
@@ -41,13 +41,16 @@
       "GET_USER_BY_KEY": "user/v1/get",
       "CREATE_V2": "user/v2/create",
       "LOCATION_SEARCH": "data/v1/location/search",
-      "TYPE": "user/v1/type/list"
+      "TYPE": "user/v1/type/list",
+      "VALIDATE_CERTIFICATE": "user/v1/certs/validate",
+      "DOWNLOAD_CERTIFICATE": "user/v1/certs/download"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
     },
     "SYSTEM_SETTING":{
-      "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId"
+      "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId",
+      "COMMING_SOON_MESSAGE":"data/v1/system/settings/get/contentComingSoonMsg"
     },
     "COURSE_FRAMEWORK":{
       "COURSE_FRAMEWORKID":"data/v1/system/settings/get/courseFrameworkId"
@@ -60,7 +63,8 @@
       "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
       "ENROLL_USER_COURSE": "course/v1/enrol",
       "RECOMMENDED_COURSE": "recommended/courses",
-      "UNENROLL_USER_COURSE":"course/v1/unenrol"
+      "UNENROLL_USER_COURSE":"course/v1/unenrol",
+      "GET_QR_CODE_FILE":"course/v1/qrcode/download"
     },
     "CONTENT": {
       "SEARCH": "content/v1/search",
@@ -100,7 +104,9 @@
       "UPDATE": "course/v1/batch/update",
       "ADD_USERS": "course/v1/batch/user/add",
       "GET_DETAILS": "course/v1/batch/read",
-      "GET_BATCHS": "course/v1/batch/list"
+      "GET_PARTICIPANT_LIST": "course/v1/batch/participants/list",
+      "GET_BATCHS": "course/v1/batch/list",
+      "REMOVE_USERS": "course/v1/batch/user/remove"
     },
     "ADMIN": {
       "USER_SEARCH": "user/v1/search",
@@ -159,6 +165,15 @@
     "OTP": {
       "GENERATE": "otp/v1/generate",
       "VERIFY": "otp/v1/verify"
+    },
+    "OFFLINE": {
+      "DOWNLOAD": "content/v1/download",
+      "DOWNLOAD_LIST": "content/v1/download/list",
+      "EXPORT": "content/v1/export"
+    },
+    "ACCOUNT_RECOVERY": {
+      "FUZZY_SEARCH": "user/v1/fuzzy/search",
+      "RESET_PASSWORD": "user/v1/password/reset"
     }
   }
 }
