@@ -88,7 +88,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   disableFormField: boolean;
   videoShow: boolean;
   componentConfiguration: any;
-  videoThumbnail:string;
+  videoThumbnail: string;
   solutionTypes: any = [{
     'type': 'html',
     'value': 'Text+Image'
@@ -317,7 +317,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
                   'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
                   'editorState': {
                     'question': this.editorState.question,
-                    'answer': this.editorState.answer,
+                    'answer': this.editorState.answer
                   },
                   'body': rendererBody,
                   'responseDeclaration': {
