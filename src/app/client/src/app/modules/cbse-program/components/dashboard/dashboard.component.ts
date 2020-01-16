@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import { ExportToCsv } from 'export-to-csv';
 import { forkJoin, throwError, Subscription } from 'rxjs';
 import { CbseProgramService } from '../../services';
-import { IdashboardComponentInput, ISessionContext } from '../../interfaces';
+import { IDashboardComponentInput, ISessionContext } from '../../interfaces';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +16,7 @@ import { IdashboardComponentInput, ISessionContext } from '../../interfaces';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  @Input() dashboardComponentInput: IdashboardComponentInput;
+  @Input() dashboardComponentInput: IDashboardComponentInput;
   private textBookMeta: any;
   public dtOptions: any = {};
   public hierarchyObj = {};

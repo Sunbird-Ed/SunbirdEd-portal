@@ -15,6 +15,7 @@ export class ResourceReorderComponent implements OnInit {
   @Input() prevUnitSelect;
   @Output() moveEvent = new EventEmitter<any>();
   @ViewChild('modal') modal;
+  showMoveButton = false;
 
   constructor(private collectionHierarchyService: CollectionHierarchyService, public toasterService: ToasterService) { }
 

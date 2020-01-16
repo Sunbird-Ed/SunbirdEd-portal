@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
-import { ConfigService, ServerResponse, ContentData, ToasterService } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
@@ -79,12 +79,13 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
   showLoader = true;
   showError = false;
   public questionPattern: Array<any> = [];
+  showConfirmationModal = false;
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService,
     public telemetryService: TelemetryService, private cbseService: CbseProgramService,
     public toasterService: ToasterService, public router: Router,
     public programStageService: ProgramStageService, public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef,
-    private collectionHierarchyService: CollectionHierarchyService) {
+    private collectionHierarchyService: CollectionHierarchyService, private resourceService: ResourceService) {
   }
 
   ngOnInit() {
@@ -424,7 +425,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedSharedContext = event.collection.sharedContext;
     switch (event.action) {
       case 'delete':
-        this.removeResourceToHierarchy(event.content.identifier, this.unitIdentifier);
+        this.contentId = event.content.identifier;
+        this.showConfirmationModal = true;
         break;
       case 'beforeMove':
         this.showLargeModal = true;
@@ -508,23 +510,15 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  public removeResourceToHierarchy(contentId, unitIdentifier) {
-    const req = {
-      url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_REMOVE,
-      data: {
-        'request': {
-          'rootId': this.sessionContext.collection,
-          'unitId': unitIdentifier,
-          'children': [contentId]
-        }
-      }
-    };
-    this.actionService.delete(req).pipe(map((data: any) => data.result), catchError(err => {
-      return throwError('');
-    })).subscribe(res => {
-      this.getCollectionHierarchy(this.sessionContext.collection, undefined);
-    });
+  removeResourceFromHierarchy() {
+    this.collectionHierarchyService.removeResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, this.contentId)
+       .subscribe(() => {
+         this.showConfirmationModal = false;
+         this.updateAccordianView(this.unitIdentifier);
+        this.toasterService.success(this.resourceService.messages.smsg.m0064);
+       });
   }
+
 
   ngOnDestroy() {
     this.stageSubscription.unsubscribe();

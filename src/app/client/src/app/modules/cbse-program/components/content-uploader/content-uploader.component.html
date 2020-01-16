@@ -1,7 +1,7 @@
 <div class="d-flex sb-bg-color-gray-0 practical-header">
   <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
     <div #contentTitle class="font-weight-bold fs-1" *ngIf="!showTextArea">
-      {{editTitle}} <span class="fs-0-785 pl-8"><a *ngIf="visibility && visibility.showEdit" class="cursor-pointer" (click)="editContentTitle()">Edit</a></span>
+      <div class="d-flex flex-ai-center"><span class="practical-header__title" suiPopup popupText="{{editTitle}}">{{editTitle}} </span><span class="fs-0-785 pl-16 sb-color-primary"><a *ngIf="visibility && visibility.showEdit" class="cursor-pointer" (click)="editContentTitle()">Edit</a></span></div>
       <div class="mt-8 practice-set__status">
         <span class="sb-label sb-label-table sb-label-success-0"
         [ngClass]="{ 'sb-label-success-0': resourceStatus === 'Live', 'sb-label-warning-0': (resourceStatus === 'Draft'),  'sb-label-error-0': (resourceStatus === 'Draft' && contentMetaData.prevStatus === 'Review') ,  'sb-label-gray-0': resourceStatus === 'Review' }">{{ resourceStatusText }}</span>
@@ -14,9 +14,11 @@
     </div>
     <div class="sb-field-group textbook-edit" *ngIf="showTextArea">
       <div class="sb-field relative">
-        <textarea #titleTextArea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle" autofocus (blur)="(showTextArea = !showTextArea); saveTitle()"></textarea>
-        <span class="characters-left">200 Characters left</span>
+        <textarea #titleTextArea rows="4" name="moretext" class="sb-form-control" placeholder="Type here..." [(ngModel)]="editTitle" autofocus (blur)="(showTextArea = false); saveTitle()"></textarea>
+        <span class="characters-left">{{titleCharacterLimit - editTitle.length}} Characters left</span>
       </div>
+      <div class="warning-message" *ngIf="editTitle.length === 0">* Title is mandatory!</div>
+      <div class="warning-message" *ngIf="editTitle.length > titleCharacterLimit">* Characters in title should be less than {{titleCharacterLimit}}</div>
     </div>
     <div class='practical-sb-buttons'>
       <button id="saveContent" suiPopup popupText="Save" [popupPlacement]="'top'" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="saveContent()">Save</button>
@@ -181,48 +183,57 @@
 
 <div *ngIf="showForm && showPreview">
   <form #contentForm [formGroup]="contentDetailsForm" (ngSubmit)="saveContent()" class='ui container licence-form mt-24' >
-      <div class='licence-form__content__fields px-24 py-16 d-flex flex-w-wrap'>
-
-          <div class="sb-field pr-8" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
-            <div [formGroupName]="i">
-              <label class="font-weight-bold">{{field.label}}:</label>
-              <sui-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
-                <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
-                </sui-select-option>
-              </sui-select>
-              <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
-              <label class="warning-message" *ngIf="((selectionArr.controls[i].get(field.code).touched) && (selectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
-            </div>
-          </div>
-
-          <div class="sb-field pr-8" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
-              <div [formGroupName]="i">
-                  <label class="font-weight-bold">{{field.label}}:</label>
-                  <sui-multi-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
-                    <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
-                    </sui-select-option>
-                  </sui-multi-select>
-                  <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
-                  <label class="warning-message" *ngIf="((multiSelectionArr.controls[i].get(field.code).touched) && (multiSelectionArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+    <div class="middle-section-set">
+      <div class="licence-form__content">
+          <div class='licence-form__content__fields py-16 ui stackable grid'>
+          
+              <div *ngFor = "let field of allFormFields; let i = index " class="sb-field">
+                <div *ngIf="field.inputType === 'select'" class="width-100">
+                  <div>
+                    <label class="font-weight-bold">{{field.label}}:</label><span class="sb-color-red" *ngIf="field.required">*</span>
+                    <sui-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+                      <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                      </sui-select-option>
+                    </sui-select>
+                    <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
+                    <label class="warning-message" *ngIf="((contentDetailsForm.get(field.code).touched) && (contentDetailsForm.get(field.code).errors?.required))">* This field is mandatory</label>
+                  </div>
+                </div>
+      
+                <div *ngIf="field.inputType === 'multiselect'" class="width-100">
+                    <div>
+                        <label class="font-weight-bold">{{field.label}}:</label><span class="sb-color-red" *ngIf="field.required">*</span>
+                        <sui-multi-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}">
+                          <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option">
+                          </sui-select-option>
+                        </sui-multi-select>
+                        <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
+                        <label class="warning-message" *ngIf="((contentDetailsForm.get(field.code).touched) && (contentDetailsForm.get(field.code).errors?.required))">* This field is mandatory</label>
+                    </div>
+                </div>
+      
+                <div *ngIf="field.inputType === 'text'" class="width-100">
+                  <div>
+                    <label class="font-weight-bold">{{field.label}}:</label><span class="sb-color-red" *ngIf="field.required">*</span>
+                      <input *ngIf="!disableFormField" formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
+                      <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
+                    <label class="warning-message" *ngIf="((contentDetailsForm.get(field.code).touched) && (contentDetailsForm.get(field.code).errors?.required))">* This field is mandatory</label>
+                    
+                  </div>
+                </div>
               </div>
-          </div>
-
-          <div class="sb-field pr-8" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
-            <div [formGroupName]="i">
-              <label class="font-weight-bold">{{field.label}}:</label>
-                <input *ngIf="!disableFormField" formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}">
-                <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
-              <label class="warning-message" *ngIf="((textInputArr.controls[i].get(field.code).touched) && (textInputArr.controls[i].get(field.code).errors?.required))">* This field is mandatory</label>
+      
             </div>
-          </div>
-
       </div>
-
       <p class="paragraph fs-0-785">
-        <span class="sb-color-gray-800">Disclaimer:</span> “By creating content on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it under the Creative Commons License Framework
-        <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
-        Please choose the applicable creative commons license you wish to apply to your content”.
-      </p>
+          <span class="sb-color-gray-800">Disclaimer:</span> “By creating content on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it under the Creative Commons License Framework
+          <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
+          Please choose the applicable creative commons license you wish to apply to your content”.
+        </p>
+    </div>  
+    
+
+      
 
   </form>
   </div>
