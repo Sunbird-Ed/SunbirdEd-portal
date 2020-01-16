@@ -3,7 +3,6 @@ import { ResourceService, ICard, UtilService, OfflineCardService } from '@sunbir
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { OfflineCardService } from '@sunbird/offline';
 
 @Component({
   selector: 'app-offline-dial-code-card',
