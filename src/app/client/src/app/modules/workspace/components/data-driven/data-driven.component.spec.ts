@@ -170,6 +170,24 @@ describe('DataDrivenComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(
       ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework, 'Draft']);
   });
+  it('should router to contentEditor editor ', () => {
+    const state = 'draft';
+    const router = TestBed.get(Router);
+    const userService = TestBed.get(UserService);
+    const editorService = TestBed.get(EditorService);
+    componentChild.formInputData = { name: 'testAssessment'};
+    componentParent.formData = componentChild;
+    componentParent.framework = 'NCERT';
+    componentParent.contentType = 'assessment';
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
+    spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
+    componentParent.createContent();
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['/workspace/content/edit/content/', 'do_2124708548063559681134', 'draft', componentParent.framework, 'Draft']);
+  });
   it('should not router to contentEditor editer ', () => {
     const state = 'draft';
     const router = TestBed.get(Router);

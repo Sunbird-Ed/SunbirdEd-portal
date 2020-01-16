@@ -1091,7 +1091,8 @@
     "course": "designcourse",
     "collection": "createcollection",
     "studymaterial": "createlessontext",
-    "lessonplan": "createlessonplan"
+    "lessonplan": "createlessonplan",
+    "assessment": "createassessment"
   },
   "contentName": {
     "textbook": "Untitled Textbook",
@@ -1112,7 +1113,8 @@
     "course": "Course",
     "collection": "Collection",
     "studymaterial": "Resource",
-    "lessonplan": "LessonPlan"
+    "lessonplan": "LessonPlan",
+    "assessment": "SelfAssess"
   },
   "course": {
     "filterType": "course",
@@ -1179,7 +1181,8 @@
     "framework-code": "framework-code",
     "courses": "courses",
     "organization": "organization",
-    "externalIdVerification": "externalIdVerification"
+    "externalIdVerification": "externalIdVerification",
+    "assessment": "assessment"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
