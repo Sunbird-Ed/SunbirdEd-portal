@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
 import { UserService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -19,7 +19,8 @@ import { ProgramStageService } from '../../../program/services';
   styleUrls: ['./question-list.component.scss']
 })
 
-export class QuestionListComponent implements OnInit {
+export class QuestionListComponent implements OnInit, OnDestroy {
+
   @ViewChild('questionCreationChild') questionCreationChild;
   @Output() changeStage = new EventEmitter<any>();
   @Input() practiceQuestionSetComponentInput: any;
@@ -92,7 +93,7 @@ export class QuestionListComponent implements OnInit {
     })).subscribe(res => {
       this.resourceDetails = res;
       this.existingContentVersionKey = res.versionKey;
-      this.resourceStatus = _.get(this.resourceDetails, 'status');
+      this.resourceStatus =  _.get(this.resourceDetails, 'status');
       if (this.resourceDetails.questionCategories) {
         this.sessionContext.questionType = _.lowerCase(_.nth(this.resourceDetails.questionCategories, 0));
       }
@@ -661,6 +662,10 @@ export class QuestionListComponent implements OnInit {
       creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
     }
     return creator;
+  }
+
+  ngOnDestroy(): void {
+    this.sessionContext.questionList = [];
   }
 
 }
