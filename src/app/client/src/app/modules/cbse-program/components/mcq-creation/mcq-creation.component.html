@@ -1,7 +1,7 @@
 
 <app-question-creation-header *ngIf="questionMetaData && !showPreview" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
 
-<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
+<app-question-preview *ngIf="showPreview" [sessionContext]="sessionContext">
 </app-question-preview>
 
 <div *ngIf='showForm'>
@@ -222,7 +222,7 @@
                   <div class="mcq-checkbox-answer" *ngIf="mcqForm.answer === i.toString()">
                     <div class="sb-checkbox sb-checkbox-primary mr-auto selected">
                       <input type="checkbox" id="check1" name="example" disabled checked>
-                      <label for="check1">Primary checkbox</label>
+                      <label for="check1">Correct answer</label>
                     </div>
                   </div>
                 </div>
