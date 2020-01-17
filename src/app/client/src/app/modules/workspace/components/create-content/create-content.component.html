@@ -87,7 +87,7 @@
           <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
             [permission]='assessmentRole'>
             <div class="ui link card workspacecontent" routerLink="assessment" appTelemetryInteract
-              [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}">
+              [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}" [telemetryInteractCdata]="[{ id: 'user:workspace:assessment:create', type: 'Feature' }, { id: 'SB-17206', type: 'Task' }]">
               <div class="content">
                 <div class="textcontent">
                   <img src="./assets/images/checklist.png" width="36" class="ml-8" />
