@@ -7,6 +7,7 @@ import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CbseProgramService } from '../../services';
+import MathText from '../../../../../assets/libs/mathEquation/plugin/mathTextPlugin.js';
 
 @Component({
   selector: 'app-ckeditor-tool',
@@ -81,8 +82,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.editorConfig = _.assign({
       toolbar: ['bold', '|', 'italic', '|', 'underline',
-        '|', 'numberedList', '|', 'fontSize', '|', 'ChemType', '|',
-        'mathtype', '|', 'subscript', '|', 'superscript', '|',
+        '|', 'numberedList', '|', 'fontSize', '|', 'subscript', '|', 'superscript', '|', 'MathText'
       ],
       fontSize: {
         options: [
@@ -102,7 +102,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
         styles: ['full', 'alignLeft', 'alignRight', 'alignCenter']
       },
       isReadOnly: false,
-      removePlugins: ['ImageCaption']
+      removePlugins: ['ImageCaption', 'mathtype', 'ChemType']
     }, this.editorConfig);
   }
   ngOnChanges() {
@@ -161,8 +161,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
   initializeEditors() {
     ClassicEditor.create(this.editorRef.nativeElement, {
-      // plugins: this.editorConfig.plugins,
-      extraPlugins: ['Font'],
+      extraPlugins: ['Font', MathText],
       toolbar: this.editorConfig.toolbar,
       fontSize: this.editorConfig.fontSize,
       image: this.editorConfig.image,

@@ -29,7 +29,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('reuestChangeForm') ReuestChangeForm: NgForm;
   public userProfile: IUserProfile;
   public showPreview = false;
-  public previewData: any;
   public setCharacterLimit = 160;
   public setImageLimit = 1;
   public refresh = true;
@@ -141,7 +140,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges() {
     this.componentConfiguration = _.get(this.sessionContext, 'practiceSetConfig');
-    this.previewData = this.questionMetaData;
     this.rejectComment = '';
     if (this.questionMetaData && this.questionMetaData.data && this.questionMetaData.data.rejectComment) {
       this.rejectComment = this.questionMetaData.data.rejectComment;
@@ -375,7 +373,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
           req.data.request.assessment_item.metadata['rejectComment'] = '';
         }
 
-        if (!_.isUndefined(this.solutionValue) && !_.isEmpty(this.solutionValue)) {
+        if (_.isUndefined(this.solutionValue) || _.isEmpty(this.solutionValue)) {
           req.data.request.assessment_item.metadata['solutions'] = '';
         }
 

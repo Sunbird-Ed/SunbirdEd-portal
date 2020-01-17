@@ -28,6 +28,8 @@ export class QuestionListComponent implements OnInit, OnDestroy {
   @Output() uploadedContentMeta = new EventEmitter<any>();
 
   public sessionContext: any;
+  public sharedContext: any;
+  public selectedSharedContext: any;
   public role: any;
   public templateDetails: any;
   public actions: any;
@@ -71,9 +73,11 @@ export class QuestionListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
+    this.selectedSharedContext = _.get(this.practiceQuestionSetComponentInput, 'selectedSharedContext');
     this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
     this.actions = _.get(this.practiceQuestionSetComponentInput, 'programContext.config.actions');
+    this.sharedContext = _.get(this.practiceQuestionSetComponentInput, 'programContext.config.sharedContext');
     this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
     this.sessionContext.questionType = this.templateDetails.questionCategories[0];
     this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
@@ -93,6 +97,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     })).subscribe(res => {
       this.resourceDetails = res;
+      this.sessionContext.contentMetadata = this.resourceDetails;
       this.existingContentVersionKey = res.versionKey;
       this.resourceStatus =  _.get(this.resourceDetails, 'status');
       if (this.resourceDetails.questionCategories) {
@@ -332,6 +337,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
 
     const updateBody = this.cbseService.getECMLJSON(selectedQuestionsData.ids);
     const versionKey = this.getContentVersion(this.sessionContext.resourceIdentifier);
+    const topic = _.isEmpty(this.selectedSharedContext.topic) ? this.sessionContext.topic : this.selectedSharedContext.topic;
 
     forkJoin([updateBody, versionKey]).subscribe((response: any) => {
       const existingContentVersionKey = _.get(response[1], 'content.versionKey');
@@ -351,12 +357,16 @@ export class QuestionListComponent implements OnInit, OnDestroy {
             semanticVersion: '1.1'
           }],
           'questionCategories': _.uniq(_.compact(_.get(selectedQuestionsData, 'category'))),
-          'topic': this.sessionContext.topic ? [this.sessionContext.topic] : [] ,
           'editorVersion': 3,
           'unitIdentifiers': [this.sessionContext.textBookUnitIdentifier],
           'rejectComment' : ''
         }
       };
+
+      if (!_.isEmpty(topic)) {
+        requestBody.content['topic'] = topic;
+      }
+
       this.updateContent(requestBody, this.sessionContext.resourceIdentifier)
       .subscribe((res) => {
           if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
@@ -548,6 +558,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
   }
 
   prepareQuestionReqBody() {
+
    // tslint:disable-next-line:prefer-const
     let finalBody = {
       'request': {
@@ -556,28 +567,21 @@ export class QuestionListComponent implements OnInit, OnDestroy {
           'metadata': {
             'itemType': 'UNIT',
             'code': UUID.UUID(),
-            'subject': this.sessionContext.subject[0],
             'qumlVersion': 1.0,
             'qlevel': 'MEDIUM',
-            'channel': this.sessionContext.channel,
             'organisation': this.sessionContext.onBoardSchool ? [this.sessionContext.onBoardSchool] : [],
             'language': [
               'English'
             ],
             'program': this.sessionContext.program,
-            'medium': this.sessionContext.medium[0],
             'templateId': 'NA',
             'type': 'reference',
-            'gradeLevel': this.sessionContext.gradeLevel,
             'creator': this.getUserName(),
             'version': 3,
-            'framework': this.sessionContext.framework,
             'name': this.sessionContext.questionType + '_' + this.sessionContext.framework,
-            'topic': this.sessionContext.topic ? this.sessionContext.topic : [],
              // tslint:disable-next-line:max-line-length
             'category': this.sessionContext.questionType === 'curiosity' ? 'CuriosityQuestion' : this.sessionContext.questionType.toUpperCase(),
             'programId': this.sessionContext.programId,
-            'board': this.sessionContext.board,
             'body': '',
             'media': [],
             'author' : this.getUserName(),
@@ -587,12 +591,30 @@ export class QuestionListComponent implements OnInit, OnDestroy {
       }
     };
 
+    finalBody.request.assessment_item.metadata =  _.assign(finalBody.request.assessment_item.metadata, this.prepareSharedContext());
+
     if (_.isEqual(this.sessionContext.questionType, 'mcq')) {
       finalBody.request.assessment_item.metadata = _.assign(finalBody.request.assessment_item.metadata, this.getMcqQuestionBody());
     } else {
       finalBody.request.assessment_item.metadata = _.assign(finalBody.request.assessment_item.metadata, this.getReferenceQuestionBody());
     }
     return finalBody;
+  }
+
+  prepareSharedContext() {
+    let data = {};
+    const sharedContext = this.sharedContext.reduce((obj, context) => {
+      return { ...obj, [context]: this.selectedSharedContext[context] || this.sessionContext[context] };
+    }, {});
+
+    data = _.assign(data, ...(_.pickBy(sharedContext, _.identity)));
+    if (!_.isEmpty(data['subject'])) {
+      data['subject'] = data['subject'][0];
+    }
+    if (!_.isEmpty(data['medium'])) {
+      data['medium'] = data['medium'][0];
+    }
+    return data;
   }
 
   getMcqQuestionBody() {
