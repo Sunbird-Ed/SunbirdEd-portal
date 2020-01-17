@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public telemetryImpression: any;
   public telemetryPageId = 'dashboard';
 
-  constructor(public publicDataService: PublicDataService, private configService: ConfigService, private userService: UserService,
+  constructor(public publicDataService: PublicDataService, public configService: ConfigService, public userService: UserService,
     public actionService: ActionService, public toasterService: ToasterService, private cbseService: CbseProgramService,
     public contentService: ContentService, public programTelemetryService: ProgramTelemetryService,
     public activeRoute: ActivatedRoute, public router: Router, private navigationHelperService: NavigationHelperService) {}

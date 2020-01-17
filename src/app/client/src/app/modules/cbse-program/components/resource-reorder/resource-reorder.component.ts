@@ -21,7 +21,7 @@ export class ResourceReorderComponent implements OnInit {
   showMoveButton = false;
 
   constructor(private collectionHierarchyService: CollectionHierarchyService, public toasterService: ToasterService,
-              public programTelemetryService: ProgramTelemetryService, private userService: UserService,
+              public programTelemetryService: ProgramTelemetryService, public userService: UserService,
               public configService: ConfigService) { }
 
   ngOnInit() {

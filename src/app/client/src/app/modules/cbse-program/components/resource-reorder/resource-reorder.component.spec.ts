@@ -19,7 +19,7 @@ describe('ResourceReorderComponent', () => {
   let fixture: ComponentFixture<ResourceReorderComponent>;
   let debugElement: DebugElement;
   let errorInitiate;
-  let errorInitiate1;
+  const errorInitiate1 = false;
   const actionServiceStub = {
     patch() {
       if (errorInitiate) {
