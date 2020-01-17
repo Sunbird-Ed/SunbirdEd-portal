@@ -47,9 +47,9 @@
       padding: 1em 1.5em;
     }
   }
-  &.dropdown:not(.button)>.default.text {
-    color: var(--primary-400);
-  }
+  // &.dropdown:not(.button)>.default.text {
+  //   color: var(--primary-400);
+  // }
 }
 .sb-medium {
   width: 100%;
@@ -118,7 +118,7 @@
     padding: ($base-block-space / 2) ($base-block-space * 2);
     color: var(--primary-400);
     min-height: ($base-block-space * 4);
-    font-size:0.875rem;
+    font-size:calculateRem(14px);
     cursor: pointer;
     &:hover {
       background-color: var(--primary-400);
@@ -305,4 +305,10 @@
   padding: 8px;
   cursor: pointer;
   justify-content: center;
+}
+
+:host ::ng-deep {
+  .slick-track {
+  padding-top: 0px !important;
+ }
 }

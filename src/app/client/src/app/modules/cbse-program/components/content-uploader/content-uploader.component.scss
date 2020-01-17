@@ -88,7 +88,7 @@
       
 
       &__fields {
-        margin: ($base-block-space * 2) 0px;
+        padding: ($base-block-space * 2) 0px;
 
         .sb-field {
           width: 50%;
@@ -103,8 +103,7 @@
 
     .paragraph {
       color: #9F9F9F;
-      // padding: ($base-block-space * 2) 0px;
-      padding-bottom: ($base-block-space * 2);
+      padding: ($base-block-space * 3) 0 ($base-block-space * 4) 0;
 
       .link {
         color: var(--primary-400);
@@ -169,8 +168,9 @@
 }
 
 .warning-message{
-  color: red;
-  font-size: smaller;
+  color: var(--red);
+  font-size: 11px;
+  font-weight: normal;
 }
 
 .middle-section-set {
@@ -178,7 +178,7 @@
   width: 100%;
   margin: 0 auto;
   .msg-box {
-    margin: ($base-block-space * 4) auto ($base-block-space * 6) auto;
+    margin: ($base-block-space * 4) auto;
     &__content {
       border: 1px dotted #024f9d;
       &__label {

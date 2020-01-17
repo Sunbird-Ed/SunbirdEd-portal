@@ -432,11 +432,11 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public redirectToDetailsPage(contentId) {
     if (this.userService.loggedIn) {
       this.router.navigate(['/resources/play/collection', contentId], {
-        queryParams: { contentType: 'TextBook' },
+        queryParams: { contentType: 'TextBook', 'dialCode': this.dialCode },
         state: { action: 'dialcode' }
       });
     } else {
-      this.router.navigate(['/play/collection', contentId], { queryParams: { contentType: 'TextBook' } });
+      this.router.navigate(['/play/collection', contentId], { queryParams: { contentType: 'TextBook', 'dialCode': this.dialCode } });
     }
   }
 

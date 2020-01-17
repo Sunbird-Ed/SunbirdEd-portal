@@ -1,3 +1,4 @@
+// tslint:disable:max-line-length
 export const addParticipentResponseSample = {
   id: 'api.add.participants',
   params: {
@@ -3137,7 +3138,7 @@ export const userProfile = {
   'organisationNames': [
     'Sunbird'
   ]
-}
+};
 
 
 

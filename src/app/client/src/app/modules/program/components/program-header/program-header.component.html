@@ -3,15 +3,19 @@
     <div class="practical-appbar__content ui container d-flex flex-ai-center">
       <ng-container *ngIf="headerActions.showTabs">
         <ng-container *ngFor="let tab of filterBy('index'); let i = index">
-            <a  appTelemetryInteract [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-tab', 'click', 'header')"
-            [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(headerComponentInput.userDetails.programId, 'Program', '1.0')"
+            <a appTelemetryInteract [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-tab', 'click', 'header')"
             [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
             [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
             class="practical-appbar__item" *ngIf="tab?.visibility" (click)="handleTabChange(tab.onClick, tab.index)" [class.active]="tab.index == defaultTabIndex">{{tab.label}}</a>
         </ng-container>
       </ng-container>
-      <button *ngIf="!headerActions.showTabs" (click)="handleBack()" class="sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn sb-color-white" type="button">
-        <i class="arrow left icon"></i>Back</button>
+      <button
+      appTelemetryInteract [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-back', 'click', 'header')"
+            [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
+            [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+       *ngIf="!headerActions.showTabs" (click)="handleBack()" class="sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn sb-color-white" type="button">
+        <i class="arrow left icon"></i>Back</button
+        >
     </div>
   </div>
 </div>
@@ -38,9 +42,9 @@
       </div>
     </div>
     <div class='practical-sb-buttons'>
-      <button class="sb-btn sb-btn-primary sb-btn-normal ripple mr-8" (click)="showTextArea=!showTextArea">Save</button>
-      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8">Preview</button>
-      <button class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="showTextArea=!showTextArea">Submit</button>
+      <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="showTextArea=!showTextArea">Save</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8">Preview</button>
+      <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showTextArea=!showTextArea">Submit</button>
     </div>
   </div>
 </div>  -->

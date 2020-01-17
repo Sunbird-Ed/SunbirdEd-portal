@@ -1,7 +1,7 @@
 <div class="d-flex sb-bg-color-gray-0 practical-header" [appTelemetryImpression]="telemetryImpression">
   <div class="d-flex flex-ai-center flex-jc-space-between practical-header__content ui container">
     <div #contentTitle class="font-weight-bold fs-1" *ngIf="!showTextArea">
-      <div class="d-flex flex-ai-center"><span class="practical-header__title" suiPopup popupText="{{editTitle}}">{{editTitle}} </span><span class="fs-0-785 pl-16 sb-color-primary"><a *ngIf="visibility && visibility.showEdit" class="cursor-pointer" 
+      <div class="d-flex flex-ai-center"><span class="practical-header__title" suiPopup popupText="{{editTitle}}">{{editTitle}} </span><span class="fsmall ml-16 sb-color-primary font-weight-normal"><a *ngIf="visibility && visibility.showEdit" class="cursor-pointer" 
         appTelemetryInteract 
         [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('edit-resourcetitle', 'click', 'content-uploader')"
         [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
@@ -241,7 +241,7 @@
   </div> -->
 </sui-modal>
 
-<div *ngIf="showForm && showPreview" class="middle-section-set">
+<div *ngIf="showForm && showPreview">
   <form #contentForm [formGroup]="contentDetailsForm" class='ui container licence-form mt-24' >
     <div class="middle-section-set">
       <div class="licence-form__content">
@@ -250,7 +250,7 @@
               <div *ngFor = "let field of allFormFields; let i = index " class="sb-field">
                 <div *ngIf="field.inputType === 'select'" class="width-100">
                   <div>
-                    <label class="font-weight-bold">{{field.label}}:</label><span class="sb-color-red" *ngIf="field.required">*</span>
+                    <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
                     <sui-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}"
                     appTelemetryInteract 
         [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('select-' + field.code, 'click', 'content-uploader')"
@@ -274,7 +274,7 @@
       
                 <div *ngIf="field.inputType === 'multiselect'" class="width-100">
                     <div>
-                        <label class="font-weight-bold">{{field.label}}:</label><span class="sb-color-red" *ngIf="field.required">*</span>
+                        <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
                         <sui-multi-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}"
                         appTelemetryInteract 
         [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('multiselect-' + field.code, 'click', 'content-uploader')"
@@ -298,7 +298,7 @@
       
                 <div *ngIf="field.inputType === 'text'" class="width-100">
                   <div>
-                    <label class="font-weight-bold">{{field.label}}:</label><span class="sb-color-red" *ngIf="field.required">*</span>
+                    <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
                       <input *ngIf="!disableFormField" formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}"
                       appTelemetryInteract 
         [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('input-' + field.code, 'click', 'content-uploader')"
@@ -315,7 +315,7 @@
       
             </div>
       </div>
-      <p class="paragraph fs-0-785">
+      <p class="paragraph fsmall">
           <span class="sb-color-gray-800">Disclaimer:</span> “By creating content on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it under the Creative Commons License Framework
           <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
           Please choose the applicable creative commons license you wish to apply to your content”.

@@ -38,6 +38,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
  */
   @ViewChild('modal') modal;
   @Input() contentData;
+  isLoading: Boolean = false; // To restrict player loading multiple times
 
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
@@ -66,49 +67,68 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
       });
     }
     this.contentRatingModal = false;
-      if (!_.isEmpty(this.playerConfig)) {
-        this.objectRollUp = _.get(this.playerConfig, 'context.objectRollup') || {};
-        this.loadPlayer();
-      }
+    if (!_.isEmpty(this.playerConfig)) {
+      this.objectRollUp = _.get(this.playerConfig, 'context.objectRollup') || {};
+      this.loadPlayer();
+    }
   }
   loadCdnPlayer() {
+    if (this.isLoading) {// To restrict player loading multiple times
+      return;
+    }
+    this.isLoading = true;
     const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.cdnUrl + '&build_number=' + this.buildNumber;
-    setTimeout(() => {
-      const playerElement = this.contentIframe.nativeElement;
-      playerElement.src = iFrameSrc;
-      playerElement.onload = (event) => {
-        try {
-          this.adjustPlayerHeight();
-          playerElement.contentWindow.initializePreview(this.playerConfig);
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
-        } catch (err) {
-          this.loadDefaultPlayer();
-        }
-      };
-    }, 0);
+
+    const playerElement = this.contentIframe.nativeElement;
+    playerElement.src = iFrameSrc;
+    playerElement.onload = (event) => {
+      this.isLoading = false;
+      try {
+        this.adjustPlayerHeight();
+        playerElement.contentWindow.initializePreview(this.playerConfig);
+        playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => {
+          const eid = telemetryEvent.detail.telemetryData.eid;
+          if (eid && (eid === 'START')) {
+            this.isLoading = false; // To restrict player loading multiple times
+          }
+          this.generateContentReadEvent(telemetryEvent);
+        });
+        window.frames['contentPlayer'].addEventListener('message', accessEvent =>
+          this.generateScoreSubmitEvent(accessEvent), false);
+      } catch (err) {
+        this.isLoading = false; // To restrict player loading multiple times
+        this.loadDefaultPlayer();
+      }
+    };
   }
   loadDefaultPlayer(url = this.configService.appConfig.PLAYER_CONFIG.baseURL) {
+    if (this.isLoading) { // To restrict player loading multiple times
+      return;
+    }
+    this.isLoading = true;
     const iFrameSrc = url + '&build_number=' + this.buildNumber;
-    setTimeout(() => {
-      const playerElement = this.contentIframe.nativeElement;
-      playerElement.src = iFrameSrc;
-      playerElement.onload = (event) => {
-        try {
-          this.adjustPlayerHeight();
-          playerElement.contentWindow.initializePreview(this.playerConfig);
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => {
-            this.generateContentReadEvent(telemetryEvent);
-          });
-          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
-        } catch (err) {
-          const prevUrls = this.navigationHelperService.history;
-          if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
-            history.back();
+    const playerElement = this.contentIframe.nativeElement;
+    playerElement.src = iFrameSrc;
+    playerElement.onload = (event) => {
+      try {
+        this.adjustPlayerHeight();
+        playerElement.contentWindow.initializePreview(this.playerConfig);
+        playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => {
+          const eid = telemetryEvent.detail.telemetryData.eid;
+          if (eid && (eid === 'START')) {
+            this.isLoading = false; // To restrict player loading multiple times
           }
+          this.generateContentReadEvent(telemetryEvent);
+        });
+        window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+      } catch (err) {
+        this.isLoading = false; // To restrict player loading multiple times
+        const prevUrls = this.navigationHelperService.history;
+        if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
+          history.back();
         }
-      };
-    }, 0);
+      }
+    };
   }
   /**
    * Initializes player with given config and emits player telemetry events
@@ -120,7 +140,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
       return;
     } else if (!_.includes(this.router.url, 'browse')) {
       if (_.get(this.playerConfig, 'metadata.artifactUrl')
-      && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
+        && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
         const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
         this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
       }

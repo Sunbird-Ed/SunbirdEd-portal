@@ -36,6 +36,7 @@ const programOneSession = {
   ],
   'data': {},
   'config': {
+    // tslint:disable-next-line:max-line-length
     '_comments': 'These fields are common for any program. Based on program these fields can be removed. Has to define list of mandatory fields & options fields',
     'slug': 'https://api.sunbird.org/',
     'loginReqired': true
@@ -1115,6 +1116,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
+                    // tslint:disable-next-line:max-line-length
                     'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
                     'marks': 5
                   },
@@ -1138,6 +1140,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
+                    // tslint:disable-next-line:max-line-length
                     'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
                     'marks': 5
                   },
@@ -1161,6 +1164,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
+                    // tslint:disable-next-line:max-line-length
                     'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553100098764812/artifact/focus-spot_1561727473311.thumb_1576602905573.png',
                     'marks': 5
                   },

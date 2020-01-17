@@ -15,7 +15,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, throwError as observableError } from 'rxjs';
 import { ActionService, PlayerService, FrameworkService, UserService } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
-import { RouterTestingModule } from "@angular/router/testing";
+import { RouterTestingModule } from '@angular/router/testing';
 import {contentUploadComponentInput, contentMetaData, contentMetaData1, playerConfig, frameworkDetails,
              licenseDetails, updateContentResponse, getPreSignedUrl, contentUploadComponentInput1} from './content-uploader.component.data';
 import { HelperService } from '../../services/helper.service';
@@ -25,7 +25,9 @@ describe('ContentUploaderComponent', () => {
   let component: ContentUploaderComponent;
   let fixture: ComponentFixture<ContentUploaderComponent>;
   let debugElement: DebugElement;
+  // tslint:disable-next-line:prefer-const
   let errorInitiate;
+    // tslint:disable-next-line:prefer-const
   let errorInitiate1;
   const actionServiceStub = {
     patch() {
@@ -159,7 +161,9 @@ describe('ContentUploaderComponent', () => {
   let component: ContentUploaderComponent;
   let fixture: ComponentFixture<ContentUploaderComponent>;
   let debugElement: DebugElement;
+    // tslint:disable-next-line:prefer-const
   let errorInitiate;
+    // tslint:disable-next-line:prefer-const
   let errorInitiate1;
   const actionServiceStub = {
     patch() {
@@ -250,7 +254,9 @@ describe('ContentUploaderComponent', () => {
   let component: ContentUploaderComponent;
   let fixture: ComponentFixture<ContentUploaderComponent>;
   let debugElement: DebugElement;
+  // tslint:disable-next-line:prefer-const
   let errorInitiate;
+  // tslint:disable-next-line:prefer-const
   let errorInitiate1;
   const actionServiceStub = {
     get() {
@@ -319,7 +325,8 @@ describe('ContentUploaderComponent', () => {
                   CacheService, BrowserCacheTtlService, { provide: ActionService, useValue: actionServiceStub }, NavigationHelperService,
                   { provide: PlayerService, useValue: playerServiceStub }, { provide: FrameworkService, useValue: frameWorkServiceStub },
                   { provide: HelperService, useValue: helperServiceStub }, {provide: UserService, useValue: userServiceStub},
-                  { provide: CollectionHierarchyService, useValue: collectionServiceStub},{ provide: ResourceService, useValue: resourceServiceStub }]
+                  { provide: CollectionHierarchyService, useValue: collectionServiceStub},
+                  { provide: ResourceService, useValue: resourceServiceStub }]
     })
     .compileComponents();
   }));

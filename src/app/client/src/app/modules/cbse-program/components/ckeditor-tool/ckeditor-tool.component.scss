@@ -175,3 +175,21 @@
     border: none;
   }
 }
+
+.upload-image-modal-section {
+  border-radius: 4px;
+  width: 100%;
+  min-height: 192px;
+  background: #F5F9FC;
+  border: 1px dashed #024f9d;
+}
+
+.upload-input-button {
+  input[type="file"] {
+    display: none;
+}
+}
+
+.terms-and-condition {
+  line-height: 14px;
+}

@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ConfigService, UtilService, ToasterService, ResourceService } from '@sunbird/shared';
-import { PublicDataService, ContentService  } from '@sunbird/core';
+import { PublicDataService, ContentService, UserService  } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CbseProgramService } from '../../services';
-import { ProgramStageService } from '../../../program/services';
+import { ProgramStageService, ProgramTelemetryService } from '../../../program/services';
 import { ISessionContext, IChapterListComponentInput } from '../../interfaces';
 import { InitialState } from '../../interfaces';
 
@@ -46,8 +46,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
   _slideConfig = {'slidesToShow': 10, 'slidesToScroll': 1, 'variableWidth': true};
   constructor(private configService: ConfigService, public publicDataService: PublicDataService,
     private cbseService: CbseProgramService, public programStageService: ProgramStageService,
-    public resourceService: ResourceService,
-    public utilService: UtilService, public contentService: ContentService) { }
+    public resourceService: ResourceService, public programTelemetryService: ProgramTelemetryService,
+    public userService: UserService, public utilService: UtilService, public contentService: ContentService) { }
 
   ngOnInit() {
     this.stageSubscription = this.programStageService.getStage().subscribe(state => {
