@@ -3,15 +3,19 @@
     <div class="practical-appbar__content ui container d-flex flex-ai-center">
       <ng-container *ngIf="headerActions.showTabs">
         <ng-container *ngFor="let tab of filterBy('index'); let i = index">
-            <a  appTelemetryInteract [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-tab', 'click', 'header')"
-            [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(headerComponentInput.userDetails.programId, 'Program', '1.0')"
+            <a appTelemetryInteract [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-tab', 'click', 'header')"
             [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
             [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
             class="practical-appbar__item" *ngIf="tab?.visibility" (click)="handleTabChange(tab.onClick, tab.index)" [class.active]="tab.index == defaultTabIndex">{{tab.label}}</a>
         </ng-container>
       </ng-container>
-      <button *ngIf="!headerActions.showTabs" (click)="handleBack()" class="sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn sb-color-white" type="button">
-        <i class="arrow left icon"></i>Back</button>
+      <button
+      appTelemetryInteract [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-back', 'click', 'header')"
+            [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
+            [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+       *ngIf="!headerActions.showTabs" (click)="handleBack()" class="sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn sb-color-white" type="button">
+        <i class="arrow left icon"></i>Back</button
+        >
     </div>
   </div>
 </div>
