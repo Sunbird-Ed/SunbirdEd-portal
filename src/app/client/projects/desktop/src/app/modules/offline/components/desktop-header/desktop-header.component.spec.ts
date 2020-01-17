@@ -35,6 +35,7 @@ describe('DesktopHeaderComponent', () => {
         const utilService = TestBed.get(UtilService);
         orgDetailsService._orgDetails$.next({ err: null, orgDetails: response.orgData.orgDetails });
         utilService.hideHeaderTabs.emit(true);
+        utilService.searchKeyword.emit('test');
         spyOn(component, 'getLanguage');
         spyOn(component, 'getTenantInfo');
         component.ngOnInit();

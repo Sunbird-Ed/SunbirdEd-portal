@@ -57,19 +57,19 @@ p,
 }
 
 .fs-0-785 {
-  font-size: 0.785rem !important;  
+  font-size: 0.785rem !important;
 }
 .fs-0-92 {
-  font-size: 0.9286rem !important;  
+  font-size: 0.9286rem !important;
 }
 .fs-1 {
-  font-size: 1rem !important;  
+  font-size: 1rem !important;
 }
 .fs-1-143 {
-  font-size: 1.143rem !important;  
+  font-size: 1.143rem !important;
 }
 .fs-1-16 {
-  font-size: 1.16rem !important;  
+  font-size: 1.16rem !important;
 }
 .fs-1-286 {
   font-size: 1.286rem !important;
@@ -91,10 +91,10 @@ p,
 }
 .fs-2-5 {
   font-size: 2.5rem !important;
-} 
+}
 .fs-2-57 {
   font-size: 2.571rem !important;
-}  
+}
 .fs-3 {
   font-size: 3rem !important;
 }
@@ -202,8 +202,12 @@ a {
   -webkit-line-clamp: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+  word-break: break-word;
   &--two {
     -webkit-line-clamp: 2;
+  }
+  &--three {
+    -webkit-line-clamp: 3;
   }
 }
 .ellipsis {

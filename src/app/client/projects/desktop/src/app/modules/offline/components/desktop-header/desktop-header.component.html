@@ -14,7 +14,7 @@
         </div>
 
         <div class="sbheader-mid-container">
-          <button class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract
+          <button class="sb-btn sb-btn-normal sb-btn-outline-primary d-flex" appTelemetryInteract
             [telemetryInteractEdata]="getTelemetryEdata('enterDialCode')" (click)="showQrModal = true;"
             title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}">
             <i class="icon-svg icon-svg--xxs icon-qr mr-4">
@@ -61,38 +61,38 @@
           <!-- language component ends-->
 
           <div class="ml-16 cursor-pointer">
-            <app-profile-dropdown ></app-profile-dropdown>
+            <app-profile-dropdown></app-profile-dropdown>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- menu bar with language selection component -->
-  <div class="sb-menubar sb-bg-color-white" *ngIf="!hideHeader">
-    <!-- menu component -->
-    <div class="ui container d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-      <div class="d-flex sb-offline-menu-container flex-ai-end">
-        <a [routerLink]="'/'" [ngClass]="{'active': checkRouter()}"
-          appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('myLibrary')" (click)="clearSearchQuery()">
-          <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
-        </a>
-        <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
-          [telemetryInteractEdata]="getTelemetryEdata('browse')" (click)="clearSearchQuery()">
-          <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
-        </a>
-        <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract
-          [telemetryInteractEdata]="getTelemetryEdata('helpCenter')">
-          <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
-        </a>
+    <!-- menu bar with language selection component -->
+    <div class="sb-menubar sb-bg-color-white" *ngIf="!hideHeader">
+      <!-- menu component -->
+      <div class="ui container d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+        <div class="d-flex sb-offline-menu-container flex-ai-end">
+          <a [routerLink]="'/'" [ngClass]="{'active': checkRouter()}" appTelemetryInteract
+            [telemetryInteractEdata]="getTelemetryEdata('myLibrary')" (click)="clearSearchQuery()">
+            <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
+          </a>
+          <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
+            [telemetryInteractEdata]="getTelemetryEdata('browse')" (click)="clearSearchQuery()">
+            <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
+          </a>
+          <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract
+            [telemetryInteractEdata]="getTelemetryEdata('helpCenter')">
+            <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
+          </a>
+        </div>
+
+        <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImport()"
+          appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('contentImport')">
+          <span><img class="mr-8" width="12px" height="10px" src="assets/images/plus.svg"></span>
+          {{resourceService?.frmelmnts?.btn?.loadContent}}</button>
       </div>
-
-      <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImport()"
-        appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('contentImport')">
-        <span><img class="mr-8" width="12px" height="10px" src="assets/images/plus.svg"></span>
-        {{resourceService?.frmelmnts?.btn?.loadContent}}</button>
+      <!-- menu component ends -->
     </div>
-    <!-- menu component ends -->
+    <!-- menu bar with language selection component ends -->
   </div>
-  <!-- menu bar with language selection component ends -->
-</div>
 
-<!-- header component ends -->
+  <!-- header component ends -->
