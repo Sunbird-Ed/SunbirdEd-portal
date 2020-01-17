@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { PublicDataService, UserService, ActionService, ContentService } from '@sunbird/core';
-import { ConfigService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { map, catchError } from 'rxjs/operators';
 import * as $ from 'jquery';
 import 'datatables.net';
@@ -9,13 +9,15 @@ import { ExportToCsv } from 'export-to-csv';
 import { forkJoin, throwError, Subscription } from 'rxjs';
 import { CbseProgramService } from '../../services';
 import { IDashboardComponentInput, ISessionContext } from '../../interfaces';
+import { ProgramTelemetryService } from '../../../program/services';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
   @Input() dashboardComponentInput: IDashboardComponentInput;
   private textBookMeta: any;
   public dtOptions: any = {};
@@ -33,16 +35,46 @@ export class DashboardComponent implements OnInit {
   textbookList: Array<any>;
   programLevelData: Array<any>;
   public sessionContext: ISessionContext = {};
+  public programContext: any;
+  public telemetryImpression: any;
+  public telemetryPageId = 'dashboard';
 
-  constructor(public publicDataService: PublicDataService, private configService: ConfigService,
+  constructor(public publicDataService: PublicDataService, private configService: ConfigService, private userService: UserService,
     public actionService: ActionService, public toasterService: ToasterService, private cbseService: CbseProgramService,
-    public contentService: ContentService) {}
+    public contentService: ContentService, public programTelemetryService: ProgramTelemetryService,
+    public activeRoute: ActivatedRoute, public router: Router, private navigationHelperService: NavigationHelperService) {}
 
   ngOnInit() {
     this.sessionContext = this.dashboardComponentInput.sessionContext;
+    this.programContext = this.dashboardComponentInput.programContext;
     this.reports = [{ name: 'Program Level Report Status' }];
     this.selectedReport = 'Program Level Report Status';
     this.generateProgramLevelData(this.selectedReport);
+  }
+
+  ngAfterViewInit() {
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const telemetryCdata = [{ 'type': 'Program', 'id': this.programContext.programId }];
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activeRoute.snapshot.data.telemetry.env,
+          cdata: telemetryCdata || [],
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: `${this.configService.appConfig.TELEMETRY.PID}.programs`
+          }
+        },
+        edata: {
+          type: _.get(this.activeRoute, 'snapshot.data.telemetry.type'),
+          pageid: this.telemetryPageId,
+          uri: this.router.url,
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   refreshReport() {

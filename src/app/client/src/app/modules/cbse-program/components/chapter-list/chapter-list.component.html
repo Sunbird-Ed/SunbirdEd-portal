@@ -1,6 +1,6 @@
-<div *ngIf='!showLoader && !showError' class="sb-chapter-list" [appTelemetryImpression]="telemetryImpression">
+<div *ngIf='!showLoader && !showError' class="sb-chapter-list">
   <div *ngIf="collectionHierarchy.length && currentStage === 'chapterListComponent'">
-    <div class="sb-cbse-homepage-container">
+    <div class="sb-cbse-homepage-container" [appTelemetryImpression]="telemetryImpression">
 
       <!-- Header Section -->
       <div class="sb-pageSection-header">
@@ -86,7 +86,7 @@
       <!-- Move to Modal Section -->
       <div *ngIf="showLargeModal">
         <app-resource-reorder [collectionUnits]="collectionHierarchy" [contentId]="contentId"
-          [sessionContext]="sessionContext" [prevUnitSelect]="prevUnitSelect"
+          [sessionContext]="sessionContext" [prevUnitSelect]="prevUnitSelect" [programContext]="programContext"
           (moveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
       </div>
     </div>
