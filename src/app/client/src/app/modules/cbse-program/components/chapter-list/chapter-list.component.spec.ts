@@ -92,7 +92,7 @@ describe('ChapterListComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [CollectionHierarchyService,
              { provide: ActionService, useValue: actionServiceStub }, { provide: UserService, useValue: UserServiceStub },
-      { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService, ProgramStageService,
+      { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService,
       { provide: ActivatedRoute, useValue: activatedRouteStub}, ProgramStageService]
     })
     .compileComponents();
