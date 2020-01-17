@@ -79,6 +79,7 @@ describe('RecursiveTreeComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
+      // tslint:disable-next-line:max-line-length
       expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'delete', content: 'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
     });
   });
@@ -90,6 +91,7 @@ describe('RecursiveTreeComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
+      // tslint:disable-next-line:max-line-length
       expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'beforeMove', content: 'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
     });
   });
@@ -101,6 +103,7 @@ describe('RecursiveTreeComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
+      // tslint:disable-next-line:max-line-length
       expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'preview', content: 'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
     });
   });

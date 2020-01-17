@@ -30,9 +30,7 @@ import { ContentUploaderComponent } from '../../components/content-uploader/cont
 describe('ChapterListComponent', () => {
   let component: ChapterListComponent;
   let fixture: ComponentFixture<ChapterListComponent>;
-  let stageSubscription: Subscription;
   let errorInitiate, de: DebugElement;
-  let collection;
   const actionServiceStub = {
     get() {
       if (errorInitiate) {

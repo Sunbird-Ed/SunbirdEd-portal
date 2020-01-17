@@ -1,3 +1,4 @@
+// tslint:disable:max-line-length
 export const addParticipentResponseSample = {
   id: 'api.add.participants',
   params: {

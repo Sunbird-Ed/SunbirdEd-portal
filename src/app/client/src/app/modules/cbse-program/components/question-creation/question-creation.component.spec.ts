@@ -25,7 +25,8 @@ describe('QuestionCreationComponent', () => {
  beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ],
-      declarations: [ QuestionCreationComponent, QuestionCreationHeaderComponent, CkeditorToolComponent, QuestionPreviewComponent, SanitizeHtmlPipe],
+      declarations: [ QuestionCreationComponent, QuestionCreationHeaderComponent,
+        CkeditorToolComponent, QuestionPreviewComponent, SanitizeHtmlPipe],
       imports: [TelemetryModule.forRoot(), SuiModule,
                 FormsModule, ReactiveFormsModule,
                 InfiniteScrollModule, RouterModule.forRoot([])],
