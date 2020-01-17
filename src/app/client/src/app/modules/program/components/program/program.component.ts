@@ -189,7 +189,8 @@ export class ProgramComponent implements OnInit, OnDestroy, AfterViewInit {
         programContext: this.programDetails
       },
       dashboardComponentInput: {
-        sessionContext: this.sessionContext
+        sessionContext: this.sessionContext,
+        programContext: this.programDetails
       }
     };
   }

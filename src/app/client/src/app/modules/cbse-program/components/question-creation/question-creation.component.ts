@@ -33,7 +33,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public showPreview = false;
   public refresh = true;
   private prevShowPreview = true;
-  public previewData: any;
   public mediaArr = [];
   public userName: any;
   public showRequestChangesPopup = false;
@@ -213,7 +212,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   ngOnChanges() {
     this.componentConfiguration =  _.get(this.sessionContext, 'practiceSetConfig');
     if (this.initialized) {
-      this.previewData = this.questionMetaData;
       this.editorConfig = { 'mode': 'create' };
       this.editorState = {
         question : '',

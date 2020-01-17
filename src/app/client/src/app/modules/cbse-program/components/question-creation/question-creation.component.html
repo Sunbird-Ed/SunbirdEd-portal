@@ -4,7 +4,7 @@
 </div> -->
 <app-question-creation-header *ngIf="questionMetaData && !showPreview" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
 
-<app-question-preview *ngIf="showPreview" [questionMetaData]="previewData" [sessionContext]="sessionContext">
+<app-question-preview *ngIf="showPreview" [sessionContext]="sessionContext">
 </app-question-preview>
 
 <form class="ui form mt-8 licence-form" [formGroup]="questionMetaForm">
