@@ -6,6 +6,7 @@ const LiteAdaptor = require("mathjax-full/js/adaptors/liteAdaptor");
 const RegisterHTMLHandler = require("mathjax-full/js/handlers/html");
 const AllPackages = require("mathjax-full/js/input/tex/AllPackages");
 const svg2img = require("svg2img");
+const fs = require('fs');
 
 const adaptor = new LiteAdaptor.LiteAdaptor();
 RegisterHTMLHandler.RegisterHTMLHandler(adaptor);
@@ -45,6 +46,11 @@ function svg2png(svgString) {
     });
 }
 
+function png2base64(pngString) {
+    var base64Image = new Buffer(pngString, 'binary').toString('base64');
+    return 'data:image/png;base64,'+base64Image;
+}
+
 async function convert(req, res) {
     let equation = req.query.equation;
     if (!equation) {
@@ -62,16 +68,21 @@ async function convert(req, res) {
         // render equation
         if (isPNG) {
             imageData = await svg2png(svgString);
-            res.contentType("image/png");
+            const base64Image = await png2base64(imageData);
+            res.contentType("application/json");
+            imageData = { 'data': base64Image };
+            res.send(imageData);
         } else {
             res.contentType("image/svg+xml");
             res.write(`<?xml version="1.0" standalone="no" ?>
                 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
             `);
+            res.end(imageData);
         }
-        res.end(imageData);
     }
 }
+
+
 
 module.exports.convert = convert
 module.exports.tex2svg = tex2svg
