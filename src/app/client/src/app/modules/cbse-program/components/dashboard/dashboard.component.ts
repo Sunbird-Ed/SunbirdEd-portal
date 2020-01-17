@@ -192,16 +192,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         'request': {
           'filters': {
             'objectType': 'content',
-            'board': this.sessionContext.board,
-            'framework': this.sessionContext.framework,
-            'medium': this.sessionContext.medium,
-            'programId': this.sessionContext.programId,
             'status': ['Draft', 'Live'],
             'contentType': 'TextBook'
           }
         }
       }
     };
+    if (this.sessionContext && this.sessionContext.board) {
+      req.data.request.filters['board'] = this.sessionContext.board;
+    }
+    if (this.sessionContext && this.sessionContext.framework) {
+      req.data.request.filters['framework'] = this.sessionContext.framework;
+    }
+    if (this.sessionContext && this.sessionContext.medium) {
+      req.data.request.filters['medium'] = this.sessionContext.medium;
+    }
+    if (this.sessionContext && this.sessionContext.programId) {
+      req.data.request.filters['programId'] = this.sessionContext.programId;
+    }
     this.showLoader = true;
     this.contentService.post(req).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Fetching of textbook list failed' };

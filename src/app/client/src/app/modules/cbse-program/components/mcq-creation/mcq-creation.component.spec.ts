@@ -9,6 +9,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './mcq-creation.component.spec.data';
+import { SanitizeHtmlPipe } from '../../pipe/sanitize-html.pipe';
 
 describe('McqCreationComponent', () => {
   let component: McqCreationComponent;
@@ -19,7 +20,7 @@ describe('McqCreationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [McqCreationComponent],
+      declarations: [McqCreationComponent, SanitizeHtmlPipe],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), SharedModule.forRoot(), SuiModule, RouterTestingModule,
       ReactiveFormsModule, FormsModule],
