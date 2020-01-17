@@ -16,6 +16,7 @@ const successUrl = '/sso/sign-in/success';
 const updateContactUrl = '/sign-in/sso/update/contact';
 const errorUrl = '/sso/sign-in/error';
 const logger = require('sb_logger_util_v2')
+const url = require('url');
 
 module.exports = (app) => {
 
@@ -55,13 +56,14 @@ module.exports = (app) => {
         redirectUrl = updateContactUrl; // verify phone then create user
         logger.info({
           msg:'sso session create v2 api, successfully redirected to update phone page',
-        additionalInfo: {
-          state_id: jwtPayload.state_id,
-          jwtPayload: jwtPayload,
-          query: req.query,
-          userDetails: userDetails,
-          redirectUrl: redirectUrl
-        }})
+          additionalInfo: {
+            state_id: jwtPayload.state_id,
+            jwtPayload: jwtPayload,
+            query: req.query,
+            userDetails: userDetails,
+            redirectUrl: redirectUrl
+          }
+        })
       }
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
@@ -170,7 +172,14 @@ module.exports = (app) => {
       errType = 'CREATE_SESSION';
       await createSession(userDetails.userName, 'portal', req, res);
       redirectURIFromCookie = _.get(req, 'cookies.SSO_REDIRECT_URI');
-      redirectUrl = redirectURIFromCookie ? decodeURI(redirectURIFromCookie) : (jwtPayload.redirect_uri ? jwtPayload.redirect_uri : '/resources');
+      if (redirectURIFromCookie) {
+        const parsedRedirectURIFromCookie = url.parse(decodeURI(redirectURIFromCookie), true);
+        delete parsedRedirectURIFromCookie.query.auth_callback;
+        delete parsedRedirectURIFromCookie.search;
+        redirectUrl = url.format(parsedRedirectURIFromCookie);
+      } else {
+        redirectUrl = jwtPayload.redirect_uri ? jwtPayload.redirect_uri : '/resources';
+      }
       logger.info({
         msg: 'sso sign-in success callback, session created',
         additionalInfo: {
@@ -423,7 +432,7 @@ module.exports = (app) => {
         }
         if (stateJwtPayload.roles && stateJwtPayload.roles.length) {
           errType = 'UPDATE_USER_ROLES';
-         // await updateRoles(req, req.query.userId, stateJwtPayload).catch(handleProfileUpdateError);
+          // await updateRoles(req, req.query.userId, stateJwtPayload).catch(handleProfileUpdateError);
         }
         req.session.userDetails = userDetails;
         redirectUrl = '/accountMerge?status=success&merge_type=auto&redirect_uri=/resources';
