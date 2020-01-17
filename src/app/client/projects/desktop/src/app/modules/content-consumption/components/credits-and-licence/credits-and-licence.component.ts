@@ -25,13 +25,11 @@ export class CreditsAndLicenceComponent implements OnInit, AfterViewInit {
       // contributors , it is a combination of content credits names, creators, and owner
       const contentCredits = _.get(this.contentData, 'contentCredits');
       const contentCreditNames = contentCredits && contentCredits.length ? _.map(contentCredits, 'name') : [];
-      let contributors = this.contentData['contributors'] ? this.contentData['contributors'].split(',') : [];
+      const contributors = this.contentData['contributors'] ? this.contentData['contributors'].split(',') : [];
 
       if (this.contentData['owner']) {
         contributors.push(this.contentData['owner']);
       }
-
-      contributors = (_.compact(_.uniq(_.union(contentCreditNames, contributors).sort())).join(', '));
 
       // creators is a combination of creators and creator
       const creators = this.contentData['creators'] ? this.contentData['creators'].split(',') : [];
