@@ -1,4 +1,4 @@
-
+// tslint:disable:max-line-length
 const programOneSession = {
   'programId': '217bddc0-df59-11e9-8d82-2b7f2cdfa2fd',
   'description': 'Test Prep program',
@@ -1116,8 +1116,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
-                    // tslint:disable-next-line:max-line-length
-                    'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
+                    'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31280847585016217619710/artifact/explanation.thumb.png',
                     'marks': 5
                   },
                   'filesConfig': {
@@ -1140,8 +1139,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
-                    // tslint:disable-next-line:max-line-length
-                    'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
+                    'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31280561379920281615017/artifact/experiential.thumb.png',
                     'marks': 5
                   },
                   'filesConfig': {
@@ -1164,8 +1162,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
-                    // tslint:disable-next-line:max-line-length
-                    'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553100098764812/artifact/focus-spot_1561727473311.thumb_1576602905573.png',
+                    'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31291455031832576019477/artifact/3_1535000262441.thumb.png',
                     'marks': 5
                   },
                   'filesConfig': {
@@ -1188,7 +1185,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
-                    'appIcon': '',
+                    'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31281765358595276811728/artifact/qa_1561455529937.thumb.png',
                     'marks': 5
                   },
                   'questionCategories': [
@@ -1210,7 +1207,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
-                    'appIcon': '',
+                    'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31281765358595276811728/artifact/qa_1561455529937.thumb.png',
                     'marks': 5
                   },
                   'questionCategories': [
@@ -1232,7 +1229,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
-                    'appIcon': '',
+                    'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31281765358595276811728/artifact/qa_1561455529937.thumb.png',
                     'marks': 5
                   },
                   'questionCategories': [
@@ -1254,7 +1251,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
-                    'appIcon': '',
+                    'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31281765358595276811728/artifact/qa_1561455529937.thumb.png',
                     'marks': 5
                   },
                   'questionCategories': [
@@ -1276,7 +1273,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
-                    'appIcon': '',
+                    'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31281765358595276811728/artifact/qa_1561455529937.thumb.png',
                     'marks': 5
                   },
                   'questionCategories': [
@@ -1300,7 +1297,7 @@ const programThirdSession = {
                     'audience': [
                       'Learner'
                     ],
-                    'appIcon': '',
+                    'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31281765358595276811728/artifact/qa_1561455529937.thumb.png',
                     'marks': 5
                   },
                   'questionCategories': [
