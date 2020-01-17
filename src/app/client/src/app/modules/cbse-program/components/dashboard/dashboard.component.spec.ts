@@ -50,6 +50,9 @@ describe('DashboardComponent', () => {
     snapshot: {
       queryParams: {
         dialCode: 'D4R4K4'
+      },
+      data: {
+        telemetry: { env: 'programs'}
       }
     }
   };
