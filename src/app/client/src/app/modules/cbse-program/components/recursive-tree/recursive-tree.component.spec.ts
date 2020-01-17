@@ -3,6 +3,9 @@ import { RecursiveTreeComponent } from './recursive-tree.component';
 import { By } from '@angular/platform-browser';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-semantic-ui';
 import { recursiveTreeComponentInput } from './recursive-tree.component.spec.data';
+import { TelemetryModule, TelemetryInteractDirective } from '@sunbird/telemetry';
+import { ConfigService } from '@sunbird/shared';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import * as _ from 'lodash-es';
 
@@ -14,8 +17,11 @@ describe('RecursiveTreeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ SuiModalModule, SuiProgressModule, SuiAccordionModule],
-      declarations: [ RecursiveTreeComponent ]
+      imports: [ SuiModalModule, SuiProgressModule,
+        SuiAccordionModule, TelemetryModule.forRoot(),
+        HttpClientTestingModule],
+      declarations: [ RecursiveTreeComponent ],
+      providers: [ ConfigService ]
     })
     .compileComponents();
   }));
@@ -35,7 +41,7 @@ describe('RecursiveTreeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(' ADD Button should be false on component initialize', () => {
+  it('add button should be false on component initialize', () => {
     expect(component.showAddresource).toBeFalsy();
   });
 

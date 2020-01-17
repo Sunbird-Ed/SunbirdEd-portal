@@ -32,7 +32,7 @@ export class ResourceReorderComponent implements OnInit {
      .subscribe((data) => {
      this.collectionHierarchyService.removeResourceToHierarchy(this.sessionContext.collection, this.prevUnitSelect, this.contentId)
       .subscribe((res) => {
-        this.toasterService.success('The Selected Resource is Successfuly Moved');
+        this.toasterService.success('The Selected Resource is Successfully Moved');
         this.moveEvent.emit({
           action: 'afterMove',
           contentId: this.contentId,
