@@ -132,19 +132,33 @@ export let themeObject = {
           'type': 'json'
       },
       {
-          'id': 'org.sunbird.questionunit.quml',
+          'id': 'org.sunbird.questionunit.quml.plugin_js',
           'plugin': 'org.sunbird.questionunit.quml',
           'ver': '1.1',
           'src': '/content-plugins/org.sunbird.questionunit.quml-1.1/renderer/plugin.js',
           'type': 'plugin'
       },
       {
-        'id': 'org.sunbird.questionunit.quml',
+        'id': 'org.sunbird.questionunit.quml.feedback_popup',
         'plugin': 'org.sunbird.questionunit.quml',
         'ver': '1.1',
         'src': '/content-plugins/org.sunbird.questionunit.quml-1.1/renderer/utils/quml_feedback_popup.js',
         'type': 'js'
-    },
+      },
+      {
+          'id': 'org.sunbird.questionunit.quml.feedback_close',
+          'plugin': 'org.sunbird.questionunit.quml',
+          'ver': '1.1',
+          'src': '/content-plugins/org.sunbird.questionunit.quml-1.1/renderer/assets/feedback-close.svg',
+          'type': 'image'
+      },
+      {
+      'id': 'org.sunbird.questionunit.quml.play',
+      'plugin': 'org.sunbird.questionunit.quml',
+      'ver': '1.1',
+      'src': '/content-plugins/org.sunbird.questionunit.quml-1.1/renderer/assets/player-play-button.png',
+      'type': 'image'
+      },
       {
           'id': 'org.sunbird.questionunit.quml_css',
           'plugin': 'org.sunbird.questionunit.quml',
