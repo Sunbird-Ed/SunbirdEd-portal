@@ -1,18 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, inject } from '@angular/core';
-import { ConfigService, UtilService, ToasterService } from '@sunbird/shared';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+// tslint:disable-next-line:max-line-length
+import { ConfigService, ResourceService, ToasterService, SharedModule, UtilService, BrowserCacheTtlService,
+  NavigationHelperService } from '@sunbird/shared';
 import { CollectionComponent, ChapterListComponent} from '../index';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { DynamicModule } from 'ng-dynamic-component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { PublicDataService, ContentService } from '@sunbird/core';
-// tslint:disable-next-line:max-line-length
-import { collectionComponentInput, programSession, collectionWithCard , collectionList, searchCollectionRequest, searchCollectionResponse} from './collection.component.spec.data';
-import { CbseProgramService } from '../../services';
-import { ProgramStageService } from '../../../program/services';
-import { HttpModule, Http, BaseRequestOptions, XHRBackend } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
+import { ContentService } from '@sunbird/core';
+import { CacheService } from 'ng2-cache-service';
+import { collectionComponentInput, collectionWithCard , collectionList, searchCollectionResponse} from './collection.component.spec.data';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
@@ -31,11 +29,14 @@ describe('CollectionComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ CollectionComponent, ChapterListComponent ],
       imports: [HttpClientTestingModule, CommonConsumptionModule, TelemetryModule.forRoot(),
-        DynamicModule.withComponents([ChapterListComponent])],
+        DynamicModule.withComponents([CollectionComponent])],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         ConfigService,
         ToasterService,
+        ResourceService,
+        CacheService,
+        BrowserCacheTtlService,
         UtilService,
         ContentService,
         {
@@ -51,6 +52,7 @@ describe('CollectionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CollectionComponent);
     component = fixture.componentInstance;
+    component.showError = false;
     component.collectionComponentInput = collectionComponentInput;
     component.userProfile = collectionComponentInput.userProfile;
     component.collectionComponentConfig = collectionComponentInput.config;
@@ -69,14 +71,11 @@ describe('CollectionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have a defined component', () => {
-    expect(component).toBeDefined();
-  });
 
-  it('should execute search collection', () => {
-    spyOn(component, 'searchCollection');
+  it('should execute filters on collection', () => {
+    spyOn(component, 'getCollectionCard');
     component.ngOnInit();
-    expect(component.searchCollection).toHaveBeenCalled();
+    expect(component.getCollectionCard).toHaveBeenCalled();
   });
 
   it('should execute filter collection without parameter', () => {
@@ -85,13 +84,13 @@ describe('CollectionComponent', () => {
     expect(component.filterCollectionList).toHaveBeenCalled();
   });
 
-  it('should execute filter collection withonly filterValue', () => {
+  it('should execute filter collection with only filterValue', () => {
     spyOn(component, 'filterCollectionList');
     component.filterCollectionList('Kindergarten');
     expect(component.filterCollectionList).toHaveBeenCalled();
   });
 
-  it('should execute filter collection withonly filterBy', () => {
+  it('should execute filter collection with only filterBy', () => {
     spyOn(component, 'filterCollectionList');
     component.filterCollectionList('', 'gradeLevel');
     expect(component.filterCollectionList).toHaveBeenCalled();
@@ -103,7 +102,7 @@ describe('CollectionComponent', () => {
     expect(component.filterCollectionList).toHaveBeenCalled();
   });
 
-  it('filterByCollection() should execute filter on filter collection with diffrent param', () => {
+  it('filterByCollection() should execute filter on filter collection with different param', () => {
     spyOn(component, 'filterByCollection');
     component.filterByCollection(component.collectionsWithCardImage, 'gradeLevel', ['grade 1']);
     expect(component.filterByCollection).toBeDefined();
@@ -150,16 +149,15 @@ describe('CollectionComponent', () => {
   });
 
   // functional element for filters
-  // it('functionl test', () => {
+  // it('functional test', () => {
   //   component.ngOnInit();
-  //   const subjuctTabs = fixture.debugElement.query(By.css('.state-medium-container__medium'));
-  //   expect(subjuctTabs).toBeDefined();
+  //   const subjectTabs = fixture.debugElement.query(By.css('.state-medium-container__medium'));
+  //   expect(subjectTabs).toBeDefined();
   // });
 
-  // it('functionl test', () => {
+  // it('functional test', () => {
   //   component.ngOnInit();
   //   const gradeLevelTabs = fixture.debugElement.query(By.css('.carousel'));
   //   expect(gradeLevelTabs).toBeDefined();
   // });
 });
-
