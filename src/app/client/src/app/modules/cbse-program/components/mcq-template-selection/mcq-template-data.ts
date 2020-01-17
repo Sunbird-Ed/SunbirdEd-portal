@@ -27,4 +27,4 @@ export const mcqTemplateConfig = {
     ],
     'mcqBody': '<div class=\'{templateClass} cheveron-helper\'><div class=\'mcq-title\'>{question}</div><i class=\'chevron down icon\'></i><div class=\'mcq-options\'>{optionList}</div></div>',
     'optionTemplate': '<div data-simple-choice-interaction data-response-variable=\'responseValue\' value={value} class=\'mcq-option\'>{option}</div>'
-}
+};
