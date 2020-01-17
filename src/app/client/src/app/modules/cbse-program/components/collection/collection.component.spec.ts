@@ -44,7 +44,6 @@ describe('CollectionComponent', () => {
           useValue: ContentServiceStub
         }
       ]
-
     })
     .compileComponents();
   }));
@@ -70,7 +69,6 @@ describe('CollectionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 
   it('should execute filters on collection', () => {
     spyOn(component, 'getCollectionCard');
@@ -141,23 +139,6 @@ describe('CollectionComponent', () => {
   it('Should check stage', () => {
     spyOn(component, 'filterByCollection');
     const filterCollection = component.filterByCollection(component.collectionsWithCardImage, 'Kindergarten', ['gradeLevel']);
-    // console.log(filterCollection);
     expect(filterCollection).not.toEqual('');
-    // tslint:disable-next-line:no-console
-    // console.info(filterCollection);
-    // expect(filterCollection).toEqual(collectionWithCard);
   });
-
-  // functional element for filters
-  // it('functional test', () => {
-  //   component.ngOnInit();
-  //   const subjectTabs = fixture.debugElement.query(By.css('.state-medium-container__medium'));
-  //   expect(subjectTabs).toBeDefined();
-  // });
-
-  // it('functional test', () => {
-  //   component.ngOnInit();
-  //   const gradeLevelTabs = fixture.debugElement.query(By.css('.carousel'));
-  //   expect(gradeLevelTabs).toBeDefined();
-  // });
 });
