@@ -1,6 +1,6 @@
 export const recursiveTreeComponentInput = {
-    action: "preview",
-    contentId: "do_1129159525832540161668",
+    action: 'preview',
+    contentId: 'do_1129159525832540161668',
     programContext: {
       config: {
         actions: {
@@ -21,9 +21,9 @@ export const recursiveTreeComponentInput = {
           }
         }
       },
-      defaultRoles: ["CONTRIBUTOR"]
+      defaultRoles: ['CONTRIBUTOR']
     },
     sessionContext: {
         currentRoleId: 1
       }
-}
+};

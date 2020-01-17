@@ -19,7 +19,7 @@ import { QuestionListComponent } from './question-list.component';
 import { CkeditorToolComponent } from '../ckeditor-tool/ckeditor-tool.component';
 import * as editorConfig from '../../../shared/services/config/editor.config.json';
 import { DebugElement, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { SanitizeHtmlPipe } from '../../../cbse-program/pipe/sanitize-html.pipe'
+import { SanitizeHtmlPipe } from '../../../cbse-program/pipe/sanitize-html.pipe';
 import { /*SuiModule, SuiTabsModule,*/ SuiSelect } from 'ng2-semantic-ui/dist';
 import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';

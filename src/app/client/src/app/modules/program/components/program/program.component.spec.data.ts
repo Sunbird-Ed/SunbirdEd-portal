@@ -3137,7 +3137,7 @@ export const userProfile = {
   'organisationNames': [
     'Sunbird'
   ]
-}
+};
 
 
 

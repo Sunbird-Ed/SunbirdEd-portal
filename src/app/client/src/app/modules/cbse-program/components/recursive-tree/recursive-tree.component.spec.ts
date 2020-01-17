@@ -7,7 +7,7 @@ import { recursiveTreeComponentInput } from './recursive-tree.component.spec.dat
 import * as _ from 'lodash-es';
 
 describe('RecursiveTreeComponent', () => {
-  
+
   let fixture: ComponentFixture<RecursiveTreeComponent>;
   let component: RecursiveTreeComponent;
   let mockResponseData;
@@ -22,7 +22,7 @@ describe('RecursiveTreeComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RecursiveTreeComponent);
-    component = fixture.componentInstance; 
+    component = fixture.componentInstance;
     component.programContext = recursiveTreeComponentInput.programContext;
     component.sessionContext = recursiveTreeComponentInput.sessionContext;
     fixture.detectChanges();
@@ -42,14 +42,14 @@ describe('RecursiveTreeComponent', () => {
   it('should execute nodeMetaEmitter on Event', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'nodeMetaEmitter').and.callThrough();
-    component.nodeMetaEmitter({sampleEvent:"NodeMetaEmit",action : 'SampleAdd'});
+    component.nodeMetaEmitter({sampleEvent: 'NodeMetaEmit', action : 'SampleAdd'});
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
       expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'SampleAdd'}));
     });
   });
-  
+
   it('should execute nodeMetaEmitter on Event for eventAction add to be true', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'nodeMetaEmitter').and.callThrough();
@@ -61,54 +61,54 @@ describe('RecursiveTreeComponent', () => {
     });
   });
 
-  it('should execute createResource on Event & collection', async(() => { 
+  it('should execute createResource on Event & collection', async(() => {
     fixture.detectChanges();
     const spy = spyOn(component, 'createResource').and.callThrough();
-    component.createResource({stopPropagation() {return null;}},'do_id=232323343434rff');
+    component.createResource({stopPropagation() {return null; }}, 'do_id=232323343434rff');
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
-      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'add',collection: 'do_id=232323343434rff'}));
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'add', collection: 'do_id=232323343434rff'}));
     });
   }));
 
   it('should execute deleteResource on Event, collection, content', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'deleteResource').and.callThrough();
-    component.deleteResource({},'sampleContent_do_id','do_id=232323343434rff');
+    component.deleteResource({}, 'sampleContent_do_id', 'do_id=232323343434rff');
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
-      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'delete', content:'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'delete', content: 'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
     });
   });
 
   it('should execute moveResource on Event, collection, content', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'moveResource').and.callThrough();
-    component.moveResource({},'sampleContent_do_id','do_id=232323343434rff');
+    component.moveResource({}, 'sampleContent_do_id', 'do_id=232323343434rff');
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
-      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'beforeMove', content:'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'beforeMove', content: 'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
     });
   });
 
   it('should execute previewResource on Event, collection, content', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'previewResource').and.callThrough();
-    component.previewResource({},'sampleContent_do_id','do_id=232323343434rff');
+    component.previewResource({}, 'sampleContent_do_id', 'do_id=232323343434rff');
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
-      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'preview', content: 'sampleContent_do_id', collection:'do_id=232323343434rff'}));
+      expect(mockResponseData).toEqual(jasmine.objectContaining({action: 'preview', content: 'sampleContent_do_id', collection: 'do_id=232323343434rff'}));
     });
   });
 
   it('should execute menuClick on Event', () => {
     fixture.detectChanges();
     const spy = spyOn(component, 'menuClick').and.callThrough();
-    component.menuClick({stopPropagation() {return null;},sampleEvent:"clicked"});
+    component.menuClick({stopPropagation() {return null; }, sampleEvent: 'clicked'});
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();

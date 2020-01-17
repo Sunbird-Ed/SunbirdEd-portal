@@ -1,6 +1,6 @@
 export const contentUploadComponentInput = {
-  action: "preview",
-  contentId: "do_1129159525832540161668",
+  action: 'preview',
+  contentId: 'do_1129159525832540161668',
   programContext: {
     config: {
       actions: {
@@ -25,72 +25,72 @@ export const contentUploadComponentInput = {
       },
       components: [
         {
-          id: "ng.sunbird.uploadComponent",
-          ver: "1.0",
-          compId: "uploadContentComponent",
-          author: "Kartheek",
-          description: "",
-          publishedDate: "",
+          id: 'ng.sunbird.uploadComponent',
+          ver: '1.0',
+          compId: 'uploadContentComponent',
+          author: 'Kartheek',
+          description: '',
+          publishedDate: '',
           data: {},
           config: {
             filesConfig: {
-              accepted: "pdf, mp4, webm, youtube",
-              size: "50"
+              accepted: 'pdf, mp4, webm, youtube',
+              size: '50'
             },
             formConfiguration: [
               {
-                code: "learningOutcome",
-                dataType: "list",
-                description: "Learning Outcomes For The Content",
+                code: 'learningOutcome',
+                dataType: 'list',
+                description: 'Learning Outcomes For The Content',
                 editable: true,
-                inputType: "multiselect",
-                label: "Learning Outcome",
-                name: "LearningOutcome",
-                placeholder: "Select Learning Outcomes",
+                inputType: 'multiselect',
+                label: 'Learning Outcome',
+                name: 'LearningOutcome',
+                placeholder: 'Select Learning Outcomes',
                 required: false,
                 visible: true
               },
               {
-                code: "bloomslevel",
-                dataType: "list",
-                description: "Learning Level For The Content",
+                code: 'bloomslevel',
+                dataType: 'list',
+                description: 'Learning Level For The Content',
                 editable: true,
-                inputType: "select",
-                label: "Learning Level",
-                name: "LearningLevel",
-                placeholder: "Select Learning Levels",
+                inputType: 'select',
+                label: 'Learning Level',
+                name: 'LearningLevel',
+                placeholder: 'Select Learning Levels',
                 required: true,
                 visible: true,
                 defaultValue: [
-                  "Knowledge (Remembering)",
-                  "Comprehension (Understanding)",
-                  "Application (Transferring)",
-                  "Analysis (Relating)",
-                  "Evaluation (Judging)",
-                  "Synthesis (Creating)"
+                  'Knowledge (Remembering)',
+                  'Comprehension (Understanding)',
+                  'Application (Transferring)',
+                  'Analysis (Relating)',
+                  'Evaluation (Judging)',
+                  'Synthesis (Creating)'
                 ]
               },
               {
-                code: "creator",
-                dataType: "text",
-                description: "Enter The Author Name",
+                code: 'creator',
+                dataType: 'text',
+                description: 'Enter The Author Name',
                 editable: true,
-                inputType: "text",
-                label: "Author",
-                name: "Author",
-                placeholder: "Enter Author Name",
+                inputType: 'text',
+                label: 'Author',
+                name: 'Author',
+                placeholder: 'Enter Author Name',
                 required: true,
                 visible: true
               },
               {
-                code: "license",
-                dataType: "list",
-                description: "License For The Content",
+                code: 'license',
+                dataType: 'list',
+                description: 'License For The Content',
                 editable: true,
-                inputType: "select",
-                label: "License",
-                name: "License",
-                placeholder: "Select License",
+                inputType: 'select',
+                label: 'License',
+                name: 'License',
+                placeholder: 'Select License',
                 required: true,
                 visible: true
               }
@@ -99,64 +99,64 @@ export const contentUploadComponentInput = {
         }
       ]
     },
-    defaultRoles: ["CONTRIBUTOR"]
+    defaultRoles: ['CONTRIBUTOR']
   },
   sessionContext: {
     bloomsLevel: undefined,
-    board: "NCERT",
-    channel: "b00bc992ef25f1a9a8d63291e20efc8d",
-    collection: "do_1127639035982479361130",
-    collectionName: "बाल रामकथा(HINDHI)",
+    board: 'NCERT',
+    channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
+    collection: 'do_1127639035982479361130',
+    collectionName: 'बाल रामकथा(HINDHI)',
     collectionStatus: undefined,
     collectionType: undefined,
-    currentRole: "CONTRIBUTOR",
+    currentRole: 'CONTRIBUTOR',
     currentRoleId: 1,
-    framework: "NCFCOPY",
-    medium: "English",
+    framework: 'NCFCOPY',
+    medium: 'English',
     onBoardSchool: undefined,
-    program: "CBSE",
-    programId: "31ab2990-7892-11e9-8a02-93c5c62c03f1"
+    program: 'CBSE',
+    programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1'
   },
   templateDetails: {
     filesConfig: {
-      accepted: "pdf",
-      size: "50",
-      label: "Explanation"
+      accepted: 'pdf',
+      size: '50',
+      label: 'Explanation'
     },
     metadata: {
       // tslint:disable-next-line:max-line-length
       appIcon:
-        "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png",
-      audience: ["Learner"],
-      contentType: "ExplanationResource",
-      description: "ExplanationResource",
+        'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
+      audience: ['Learner'],
+      contentType: 'ExplanationResource',
+      description: 'ExplanationResource',
       marks: 5,
-      name: "Explanation Resource",
-      resourceType: "Read"
+      name: 'Explanation Resource',
+      resourceType: 'Read'
     }
   },
   selectedSharedContext: {
-    framework: "NCFCOPY",
-    topic: ["Topic 1"]
+    framework: 'NCFCOPY',
+    topic: ['Topic 1']
   },
-  unitIdentifier: "do_1127639059664486401136"
+  unitIdentifier: 'do_1127639059664486401136'
 };
 
 export const contentMetaData = {
   result: {
     content: {
-      SYS_INTERNAL_LAST_UPDATED_ON: "2019-12-18T07:34:33.262+0000",
-      appId: "sunbird.env.sunbird.ins.portal",
+      SYS_INTERNAL_LAST_UPDATED_ON: '2019-12-18T07:34:33.262+0000',
+      appId: 'sunbird.env.sunbird.ins.portal',
       artifactUrl:
         // tslint:disable-next-line:max-line-length
-        "https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/assets/do_1129159525832540161668/5-mbsamplepdffile_5mb.pdf",
-      audience: ["Learner"],
-      channel: "b00bc992ef25f1a9a8d63291e20efc8d",
-      code: "3ec87ece-39c4-d8e1-cb77-7a51db464a02",
+        'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/assets/do_1129159525832540161668/5-mbsamplepdffile_5mb.pdf',
+      audience: ['Learner'],
+      channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
+      code: '3ec87ece-39c4-d8e1-cb77-7a51db464a02',
       compatibilityLevel: 1,
-      consumerId: "4190d121-3206-4c9e-b0d4-903fcd87c2ff",
-      contentDisposition: "inline",
-      contentEncoding: "identity",
+      consumerId: '4190d121-3206-4c9e-b0d4-903fcd87c2ff',
+      contentDisposition: 'inline',
+      contentEncoding: 'identity',
       contentType: 'ExplanationResource',
       createdBy: '874ed8a5-782e-4f6c-8f36-e0288455901e',
       createdOn: '2019-12-18T07:32:48.074+0000',
@@ -297,18 +297,18 @@ export const getPreSignedUrl = {
 export const contentMetaData1 = {
   result: {
     content: {
-      SYS_INTERNAL_LAST_UPDATED_ON: "2019-12-18T07:34:33.262+0000",
-      appId: "sunbird.env.sunbird.ins.portal",
+      SYS_INTERNAL_LAST_UPDATED_ON: '2019-12-18T07:34:33.262+0000',
+      appId: 'sunbird.env.sunbird.ins.portal',
       artifactUrl:
         // tslint:disable-next-line:max-line-length
-        "https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/assets/do_1129159525832540161668/5-mbsamplepdffile_5mb.pdf",
-      audience: ["Learner"],
-      channel: "b00bc992ef25f1a9a8d63291e20efc8d",
-      code: "3ec87ece-39c4-d8e1-cb77-7a51db464a02",
+        'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/assets/do_1129159525832540161668/5-mbsamplepdffile_5mb.pdf',
+      audience: ['Learner'],
+      channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
+      code: '3ec87ece-39c4-d8e1-cb77-7a51db464a02',
       compatibilityLevel: 1,
-      consumerId: "4190d121-3206-4c9e-b0d4-903fcd87c2ff",
-      contentDisposition: "inline",
-      contentEncoding: "identity",
+      consumerId: '4190d121-3206-4c9e-b0d4-903fcd87c2ff',
+      contentDisposition: 'inline',
+      contentEncoding: 'identity',
       contentType: 'ExplanationResource',
       createdBy: '874ed8a5-782e-4f6c-8f36-e0288455901e',
       createdOn: '2019-12-18T07:32:48.074+0000',
@@ -338,8 +338,8 @@ export const contentMetaData1 = {
   }
 };
 export const contentUploadComponentInput1 = {
-  action: "preview",
-  contentId: "do_1129159525832540161668",
+  action: 'preview',
+  contentId: 'do_1129159525832540161668',
   programContext: {
     config: {
       actions: {
@@ -364,72 +364,72 @@ export const contentUploadComponentInput1 = {
       },
       components: [
         {
-          id: "ng.sunbird.uploadComponent",
-          ver: "1.0",
-          compId: "uploadContentComponent",
-          author: "Kartheek",
-          description: "",
-          publishedDate: "",
+          id: 'ng.sunbird.uploadComponent',
+          ver: '1.0',
+          compId: 'uploadContentComponent',
+          author: 'Kartheek',
+          description: '',
+          publishedDate: '',
           data: {},
           config: {
             filesConfig: {
-              accepted: "pdf, mp4, webm, youtube",
-              size: "50"
+              accepted: 'pdf, mp4, webm, youtube',
+              size: '50'
             },
             formConfiguration: [
               {
-                code: "learningOutcome",
-                dataType: "list",
-                description: "Learning Outcomes For The Content",
+                code: 'learningOutcome',
+                dataType: 'list',
+                description: 'Learning Outcomes For The Content',
                 editable: true,
-                inputType: "multiselect",
-                label: "Learning Outcome",
-                name: "LearningOutcome",
-                placeholder: "Select Learning Outcomes",
+                inputType: 'multiselect',
+                label: 'Learning Outcome',
+                name: 'LearningOutcome',
+                placeholder: 'Select Learning Outcomes',
                 required: false,
                 visible: true
               },
               {
-                code: "bloomslevel",
-                dataType: "list",
-                description: "Learning Level For The Content",
+                code: 'bloomslevel',
+                dataType: 'list',
+                description: 'Learning Level For The Content',
                 editable: true,
-                inputType: "select",
-                label: "Learning Level",
-                name: "LearningLevel",
-                placeholder: "Select Learning Levels",
+                inputType: 'select',
+                label: 'Learning Level',
+                name: 'LearningLevel',
+                placeholder: 'Select Learning Levels',
                 required: true,
                 visible: true,
                 defaultValue: [
-                  "Knowledge (Remembering)",
-                  "Comprehension (Understanding)",
-                  "Application (Transferring)",
-                  "Analysis (Relating)",
-                  "Evaluation (Judging)",
-                  "Synthesis (Creating)"
+                  'Knowledge (Remembering)',
+                  'Comprehension (Understanding)',
+                  'Application (Transferring)',
+                  'Analysis (Relating)',
+                  'Evaluation (Judging)',
+                  'Synthesis (Creating)'
                 ]
               },
               {
-                code: "creator",
-                dataType: "text",
-                description: "Enter The Author Name",
+                code: 'creator',
+                dataType: 'text',
+                description: 'Enter The Author Name',
                 editable: true,
-                inputType: "text",
-                label: "Author",
-                name: "Author",
-                placeholder: "Enter Author Name",
+                inputType: 'text',
+                label: 'Author',
+                name: 'Author',
+                placeholder: 'Enter Author Name',
                 required: true,
                 visible: true
               },
               {
-                code: "license",
-                dataType: "list",
-                description: "License For The Content",
+                code: 'license',
+                dataType: 'list',
+                description: 'License For The Content',
                 editable: true,
-                inputType: "select",
-                label: "License",
-                name: "License",
-                placeholder: "Select License",
+                inputType: 'select',
+                label: 'License',
+                name: 'License',
+                placeholder: 'Select License',
                 required: true,
                 visible: true
               }
@@ -438,45 +438,45 @@ export const contentUploadComponentInput1 = {
         }
       ]
     },
-    defaultRoles: ["CONTRIBUTOR"]
+    defaultRoles: ['CONTRIBUTOR']
   },
   sessionContext: {
     bloomsLevel: undefined,
-    board: "NCERT",
-    channel: "b00bc992ef25f1a9a8d63291e20efc8d",
-    collection: "do_1127639035982479361130",
-    collectionName: "बाल रामकथा(HINDHI)",
+    board: 'NCERT',
+    channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
+    collection: 'do_1127639035982479361130',
+    collectionName: 'बाल रामकथा(HINDHI)',
     collectionStatus: undefined,
     collectionType: undefined,
-    currentRole: "CONTRIBUTOR",
+    currentRole: 'CONTRIBUTOR',
     currentRoleId: 2,
-    framework: "NCFCOPY",
-    medium: "English",
+    framework: 'NCFCOPY',
+    medium: 'English',
     onBoardSchool: undefined,
-    program: "CBSE",
-    programId: "31ab2990-7892-11e9-8a02-93c5c62c03f1"
+    program: 'CBSE',
+    programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1'
   },
   templateDetails: {
     filesConfig: {
-      accepted: "pdf",
-      size: "50",
-      label: "Explanation"
+      accepted: 'pdf',
+      size: '50',
+      label: 'Explanation'
     },
     metadata: {
       // tslint:disable-next-line:max-line-length
       appIcon:
-        "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png",
-      audience: ["Learner"],
-      contentType: "ExplanationResource",
-      description: "ExplanationResource",
+        'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
+      audience: ['Learner'],
+      contentType: 'ExplanationResource',
+      description: 'ExplanationResource',
       marks: 5,
-      name: "Explanation Resource",
-      resourceType: "Read"
+      name: 'Explanation Resource',
+      resourceType: 'Read'
     }
   },
   selectedSharedContext: {
-    framework: "NCFCOPY",
-    topic: ["Topic 1"]
+    framework: 'NCFCOPY',
+    topic: ['Topic 1']
   },
-  unitIdentifier: "do_1127639059664486401136"
+  unitIdentifier: 'do_1127639059664486401136'
 };
