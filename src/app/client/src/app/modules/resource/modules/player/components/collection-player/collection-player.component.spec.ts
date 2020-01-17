@@ -125,4 +125,11 @@ describe('CollectionPlayerComponent', () => {
     component.closeCollectionPlayer();
     expect(navigationHelperService.navigateToResource).toHaveBeenCalledWith('/resources');
   });
+
+  it('should set dialcode to the telemetryCdata if any', () => {
+    component.dialCode = 'D4R4K4';
+    spyOn<any>(component, 'getCollectionHierarchy').and.callThrough();
+    component['getContent']();
+    expect(component['getCollectionHierarchy']).toHaveBeenCalled();
+  });
 });
