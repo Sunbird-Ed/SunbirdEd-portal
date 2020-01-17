@@ -1,6 +1,6 @@
 import { UserService } from '@sunbird/core';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { Component, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA   } from '@angular/Core';
+import { Component, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA   } from '@angular/core';
 import { QuestionCreationComponent
  } from './question-creation.component';
 import { QuestionCreationHeaderComponent } from '../question-creation-header/question-creation-header.component';
