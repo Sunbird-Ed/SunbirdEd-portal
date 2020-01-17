@@ -3,8 +3,8 @@
   <div class="d-flex flex-ai-center practical-header__content ui container">
     <div class="mr-auto" *ngIf="!showTextArea">
       <div class="practice-set__label">
-        <span class="font-weight-bold fs-1-143">{{resourceName}}</span>
-        <a class="cursor-pointer fs-0-785 ml-8" 
+        <span class="font-weight-bold fs-1">{{resourceName}}</span>
+        <a class="cursor-pointer fsmall sb-color-primary ml-16" 
           (click)="showResourceTitleEditor()" 
           *ngIf="visibility && visibility.showSave"
         >Edit</a>
@@ -28,14 +28,14 @@
       </div>
     </div>
     <div class='practical-sb-buttons'>
-      <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 ripple" (click)="questionCreationChild.buttonTypeHandler('save')">Save</button>
-      <button id="requestChanges" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true;">Request Changes</button>
-      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" *ngIf="previewBtnVisibility" (click)="questionCreationChild.buttonTypeHandler('preview');previewBtnVisibility = false;">Preview</button>
-      <button class="sb-btn sb-btn-outline-primary sb-btn-normal ripple mr-8" *ngIf="!previewBtnVisibility" (click)="questionCreationChild.buttonTypeHandler('edit');previewBtnVisibility = true;" >Edit</button>
-      <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-normal ripple mr-8" 
+      <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" (click)="questionCreationChild.buttonTypeHandler('save')">Save</button>
+      <button id="requestChanges" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal mr-8" (click)="showRequestChangesPopup = true;">Request Changes</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="previewBtnVisibility" (click)="questionCreationChild.buttonTypeHandler('preview');previewBtnVisibility = false;">Preview</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="!previewBtnVisibility" (click)="questionCreationChild.buttonTypeHandler('edit');previewBtnVisibility = true;" >Edit</button>
+      <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-normal mr-8" 
       [ngClass]="isPublishBtnDisable ? 'sb-btn-disabled' : 'sb-btn-secondary'"
       [disabled] = "isPublishBtnDisable" (click)="publishContent()">Publish</button>
-      <button id="submitContent"  *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal ripple" (click)="questionCreationChild.buttonTypeHandler('review')">Submit</button>
+      <button id="submitContent"  *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal" (click)="questionCreationChild.buttonTypeHandler('review')">Submit</button>
     </div>
   </div>
 </div> 

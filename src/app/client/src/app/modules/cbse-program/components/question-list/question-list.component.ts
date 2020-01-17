@@ -474,7 +474,7 @@ export class QuestionListComponent implements OnInit, OnDestroy {
 
   deleteQuestion() {
     const request = {
-      url: `${this.configService.urlConFig.URLS.ASSESSMENT.RETIRE}/${this.deleteAssessmentItemIdentifier}` 
+      url: `${this.configService.urlConFig.URLS.ASSESSMENT.RETIRE}/${this.deleteAssessmentItemIdentifier}`
     };
 
     this.actionService.delete(request).pipe(catchError(err => {

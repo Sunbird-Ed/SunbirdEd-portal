@@ -14,6 +14,7 @@ import { DebugElement } from '@angular/core';
 import { CollectionComponent } from '../../../cbse-program/components/collection/collection.component';
 import { ProgramHeaderComponent } from '../program-header/program-header.component';
 import { OnboardPopupComponent } from '../onboard-popup/onboard-popup.component';
+// tslint:disable-next-line:prefer-const
 let errorInitiate, de: DebugElement;
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';

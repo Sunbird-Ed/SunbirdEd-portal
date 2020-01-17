@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { UserService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
+import * as _ from 'lodash-es';
 
 
 @Injectable({
@@ -11,20 +12,21 @@ export class ProgramTelemetryService {
 
   constructor( public userService: UserService, public configService: ConfigService ) { }
 
-  getTelemetryInteractEdata(id: string, type: string, pageid: string): IInteractEventEdata {
-    return {
+  getTelemetryInteractEdata(id: string, type: string, pageid: string, extra?: string): IInteractEventEdata {
+    return _.omitBy({
       id,
-      type, // 'type': 'click',
-      pageid // 'pageid': 'header'
-    };
+      type,
+      pageid,
+      extra
+    }, _.isUndefined);
   }
   getTelemetryInteractPdata(id?: string, pid?: string) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     return {
-      id, // this.userService.appId,
+      id,
       ver: version,
-      pid // `${this.configService.appConfig.TELEMETRY.PID}.programs`
+      pid
     };
   }
   getTelemetryInteractObject(id: string, type: string, ver: string): IInteractEventObject {

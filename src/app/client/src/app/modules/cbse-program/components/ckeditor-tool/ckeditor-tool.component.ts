@@ -106,9 +106,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     }, this.editorConfig);
   }
   ngOnChanges() {
-    if(this.videoShow){
+    if (this.videoShow) {
       this.showVideoPicker = true;
-    } 
+    }
   }
 
   ngAfterViewInit() {

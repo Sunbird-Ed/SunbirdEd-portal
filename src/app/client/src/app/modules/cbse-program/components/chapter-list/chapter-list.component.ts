@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
-import { ConfigService, ServerResponse, ResourceService, ToasterService } from '@sunbird/shared';
+import { ConfigService, ServerResponse, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
@@ -29,7 +29,7 @@ interface IDynamicInput {
   templateUrl: './chapter-list.component.html',
   styleUrls: ['./chapter-list.component.scss']
 })
-export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
+export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
   @Input() chapterListComponentInput: IChapterListComponentInput;
   @Output() selectedQuestionTypeTopic = new EventEmitter<any>();
@@ -80,12 +80,14 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
   showError = false;
   public questionPattern: Array<any> = [];
   showConfirmationModal = false;
+  public telemetryPageId = 'chapter-list';
   constructor(public publicDataService: PublicDataService, private configService: ConfigService,
     private userService: UserService, public actionService: ActionService,
     public telemetryService: TelemetryService, private cbseService: CbseProgramService,
     public toasterService: ToasterService, public router: Router,
     public programStageService: ProgramStageService, public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef,
-    private collectionHierarchyService: CollectionHierarchyService, private resourceService: ResourceService) {
+    private collectionHierarchyService: CollectionHierarchyService, private resourceService: ResourceService,
+    private navigationHelperService: NavigationHelperService) {
   }
 
   ngOnInit() {
@@ -104,17 +106,6 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * @description : this will fetch question Category configuration based on currently active route
      */
-
-    this.telemetryImpression = {
-      context: {
-        env: 'cbse_program'
-      },
-      edata: {
-        type: 'view',
-        pageid: 'chapterlist',
-        uri: this.router.url,
-      }
-    };
     this.levelOneChapterList.push({
       identifier: 'all',
       name: 'All Chapters'
@@ -136,6 +127,31 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changed: any) {
     this.sessionContext = _.get(this.chapterListComponentInput, 'sessionContext');
     this.role = _.get(this.chapterListComponentInput, 'role');
+  }
+
+  ngAfterViewInit() {
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const telemetryCdata = [{ 'type': 'Program', 'id': this.programContext.programId }];
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activeRoute.snapshot.data.telemetry.env,
+          cdata: telemetryCdata || [],
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: `${this.configService.appConfig.TELEMETRY.PID}.programs`
+          }
+        },
+        edata: {
+          type: _.get(this.activeRoute, 'snapshot.data.telemetry.type'),
+          pageid: this.telemetryPageId,
+          uri: this.router.url,
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   async updateAccordianView(unitId?, onSelectChapterChange?) {
@@ -389,7 +405,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy {
       if (this.templateDetails.metadata.appIcon) {
         option.data.request.content.appIcon = this.templateDetails.metadata.appIcon;
       }
-      this.actionService.post(option).pipe(map(res => res.result), catchError(err => {
+      this.actionService.post(option).pipe(map((res: any) => res.result), catchError(err => {
         const errInfo = { errorMsg: 'Unable to create contentId, Please Try Again' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }))

@@ -19,6 +19,7 @@ import { ExportToCsv } from 'export-to-csv';
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+    // tslint:disable-next-line:prefer-const
   let errorInitiate;
   const actionServiceStub = {
     get() {

@@ -12,7 +12,7 @@
       <label *ngIf="showFormError && [undefined, ''].includes(mcqForm.question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
       <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(mcqForm.question)">
         <div class="sb-field mcq-title mb-16">
-          <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+          <label class="px-16 py-8 fs-0-92 mb-0 ckeditor-tool__label width-100">Question</label>
           <div class="ckeditor-tool-container">
             <app-ckeditor-tool (editorDataOutput)="mcqForm.question = $event.body; getMedia($event.mediaobj);onFormValueChange(true);"
               [editorConfig]="questionMetaData" [editorDataInput]="mcqForm.question" (videoDataOutput)="videoDataOutput($event)" [videoShow]="videoShow"></app-ckeditor-tool>
@@ -23,7 +23,7 @@
       <div class="mcq-options">
         <div class="sb-mcq-options-answer width-100">
           <div class="d-flex flex-ai-center ckeditor-tool__answer my-16">
-            <label class="fs-1 mb-0">Answers</label>
+            <label class="fs-0-92 mb-0">Answers</label>
             <label *ngIf="showFormError && !mcqForm.answer" class="ui basic red error label pt-1">Select one correct
               answer</label>
 
@@ -39,7 +39,7 @@
             <label *ngIf="showFormError && (option.body === undefined || option.body === '')" class="sb-label sb-label-table sb-label-error-0 pt-1">Fill this option</label>
             <div class="mcq-option ckeditor-tool__option mb-8" [class.error-question-content]="showFormError && (option.body === undefined || option.body === '')">
               <div class="sb-field mb-0">
-                <label class="px-16 py-8 mb-0 ckeditor-tool__label fs-1 width-100">Option {{i + 1}} </label>
+                <label class="px-16 py-8 mb-0 ckeditor-tool__label fs-0-92 width-100">Option {{i + 1}} </label>
                 <div class="ckeditor-tool-container">
                   <app-ckeditor-tool (hasError)="handleEditorError($event)"
                     (editorDataOutput)="option.body = $event.body; option.length = $event.length; getMedia($event.mediaobj);onFormValueChange(true);"
@@ -72,7 +72,7 @@
         <!-- Add Solution(Optional) HTML sturcture -->
         <div class="my-16 ckeditor-tool__solution width-100">
             <div class="d-flex flex-ai-center ckeditor-tool__solution__header">
-                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label">Solution (Optional) <a
+                <label class="px-16 py-8 fs-0-92 mb-0 ckeditor-tool__label">Solution (Optional) <a
                     href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
                         src="assets/images/Info.svg"></a></label>
                 <div class="ui dropdown sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary ml-auto sb-btn-dropdown"
@@ -89,7 +89,7 @@
                 <div class="ckeditor-tool-container">
                     <app-ckeditor-tool (editorDataOutput)="solutionValue = $event.body; getMedia($event.mediaobj);onFormValueChange(true);"
               [editorConfig]="questionMetaData" [editorDataInput]="solutionValue"></app-ckeditor-tool>
-                    <div class="mcq-checkbox-answer" style="margin-left: 92%;background-color: #F3F8FF;">
+                    <div class="mcq-checkbox-answer">
                         <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto" (click)="deleteSolution()"><i
                         class="trash alternate outline icon"></i>Delete</button>
                     </div>
@@ -105,7 +105,7 @@
                             {{videoSolutionName}}
                         </div>
                     </div>
-                    <div class="mcq-checkbox-answer" style="margin-left: 92%;background-color: #F3F8FF;">
+                    <div class="mcq-checkbox-answer">
                     <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto" (click)="deleteSolution()"><i
                         class="trash alternate outline icon"></i>Delete</button>
                     </div>
@@ -195,7 +195,7 @@
           <div class="twelve wide column p-0">
             <div class="ckeditor-tool width-100">
               <div class="ckeditor-tool__question">
-                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Question</label>
+                <label class="px-16 py-8 fs-0-92 mb-0 ckeditor-tool__label width-100">Question</label>
                 <div class="ckeditor-tool__solution__body">
                   <p class="fs-0-785 p-16" id="wirisDisplay" [innerHTML]="mcqForm.question | sanitizeHtml"></p>
                 </div>
@@ -207,7 +207,7 @@
         <div class="row mb-0 p-0">
           <div class="twelve wide column p-0">
               <div class="d-flex flex-ai-center ckeditor-tool__answer my-16">
-                  <label class="fs-1 mb-0">Answers</label>
+                  <label class="fs-0-92 mb-0">Answers</label>
                 </div>
           </div>
         </div>
@@ -216,7 +216,7 @@
           <div class="twelve wide column p-0">
             <div class="ckeditor-tool width-100">
               <div class="ckeditor-tool__question mb-24">
-                <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Option {{ i+1 }}</label>
+                <label class="px-16 py-8 fs-0-92 mb-0 ckeditor-tool__label width-100">Option {{ i+1 }}</label>
                 <div class="ckeditor-tool__solution__body">
                   <p class="fs-0-785 p-16" [innerHTML]="option.body  | sanitizeHtml"></p>
                   <div class="mcq-checkbox-answer" *ngIf="mcqForm.answer === i.toString()">
@@ -235,7 +235,7 @@
             <div class="twelve wide column p-0">
                 <div class="ckeditor-tool width-100">
                     <div class="ckeditor-tool__question mb-24">
-                        <label class="px-16 py-8 fs-1 mb-0 ckeditor-tool__label width-100">Solution</label>
+                        <label class="px-16 py-8 fs-0-92 mb-0 ckeditor-tool__label width-100">Solution</label>
                         <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'html'">
                             <p class="fs-0-785 p-16" [innerHTML]="solutionValue | sanitizeHtml"></p>
                         </div>
@@ -320,7 +320,7 @@
     </div>
 
     <div class='practical-sb-buttons'>
-        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal ripple mr-8" (click)="showRequestChangesPopup = true">
+        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal mr-8" (click)="showRequestChangesPopup = true">
             {{  rejectComment === '' ? 'Request Changes' : 'Edit Comments' }}
         </button>
     </div>
