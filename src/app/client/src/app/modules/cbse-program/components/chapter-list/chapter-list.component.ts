@@ -405,7 +405,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
       if (this.templateDetails.metadata.appIcon) {
         option.data.request.content.appIcon = this.templateDetails.metadata.appIcon;
       }
-      this.actionService.post(option).pipe(map(res => res.result), catchError(err => {
+      this.actionService.post(option).pipe(map((res: any) => res.result), catchError(err => {
         const errInfo = { errorMsg: 'Unable to create contentId, Please Try Again' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       }))

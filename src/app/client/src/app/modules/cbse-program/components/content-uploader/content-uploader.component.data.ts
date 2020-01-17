@@ -124,8 +124,8 @@ export const contentUploadComponentInput = {
       label: 'Explanation'
     },
     metadata: {
-      // tslint:disable-next-line:max-line-length
       appIcon:
+      // tslint:disable-next-line:max-line-length
         'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
       audience: ['Learner'],
       contentType: 'ExplanationResource',
@@ -463,8 +463,8 @@ export const contentUploadComponentInput1 = {
       label: 'Explanation'
     },
     metadata: {
-      // tslint:disable-next-line:max-line-length
       appIcon:
+      // tslint:disable-next-line:max-line-length
         'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
       audience: ['Learner'],
       contentType: 'ExplanationResource',

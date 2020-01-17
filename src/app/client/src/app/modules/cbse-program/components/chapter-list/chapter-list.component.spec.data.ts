@@ -2354,6 +2354,7 @@ export const chapterListComponentInput = {
   collection: {
     name: 'बाल रामकथा(HINDHI)',
     image:
+      // tslint:disable-next-line:max-line-length
       'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639035982479361130/artifact/photo-1457383457550-47a5cfdbab17_1551955977794.thumb.jpg',
     description: 'Enter description for TextBook',
     rating: '0',
@@ -2374,6 +2375,7 @@ export const chapterListComponentInput = {
     mimeTypesCount:
       '{"application/vnd.ekstep.content-collection":31,"application/vnd.ekstep.ecml-archive":31}',
     cardImg:
+      // tslint:disable-next-line:max-line-length
       'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639035982479361130/artifact/photo-1457383457550-47a5cfdbab17_1551955977794.thumb.jpg',
     resourceType: 'Book',
     organisation: ['Sunbird'],
@@ -2415,6 +2417,7 @@ export const chapterListComponentInput = {
               contentType: 'ExplanationResource',
               audience: ['Learner'],
               appIcon:
+                // tslint:disable-next-line:max-line-length
                 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
               marks: 5
             },
@@ -2435,6 +2438,7 @@ export const chapterListComponentInput = {
               contentType: 'ExperientialResource',
               audience: ['Learner'],
               appIcon:
+                // tslint:disable-next-line:max-line-length
                 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
               marks: 5
             },
@@ -2455,6 +2459,7 @@ export const chapterListComponentInput = {
               contentType: 'FocusSpot',
               audience: ['Learner'],
               appIcon:
+                // tslint:disable-next-line:max-line-length
                 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553100098764812/artifact/focus-spot_1561727473311.thumb_1576602905573.png',
               marks: 5
             },
@@ -2694,6 +2699,7 @@ export const chapterListComponentInput = {
                     contentType: 'ExplanationResource',
                     audience: ['Learner'],
                     appIcon:
+                      // tslint:disable-next-line:max-line-length
                       'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
                     marks: 5
                   },
@@ -2714,6 +2720,7 @@ export const chapterListComponentInput = {
                     contentType: 'ExperientialResource',
                     audience: ['Learner'],
                     appIcon:
+                      // tslint:disable-next-line:max-line-length
                       'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
                     marks: 5
                   },
@@ -2734,6 +2741,7 @@ export const chapterListComponentInput = {
                     contentType: 'FocusSpot',
                     audience: ['Learner'],
                     appIcon:
+                      // tslint:disable-next-line:max-line-length
                       'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553100098764812/artifact/focus-spot_1561727473311.thumb_1576602905573.png',
                     marks: 5
                   },
@@ -3319,6 +3327,7 @@ export const templateSelectionEvent = {
     metadata: {
       // tslint:disable-next-line:max-line-length
       appIcon:
+        // tslint:disable-next-line:max-line-length
         'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
       audience: ['Learner'],
       contentType: 'ExplanationResource',
