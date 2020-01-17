@@ -13,7 +13,13 @@
         <i class="chevron down icon mr-16"></i>
         <div class="item d-flex flex-ai-center cursor-pointer width-100">
           <div [ngClass]="{'sb-radio-btn-checkbox sb-radio-btn-primary width-100': !(this.prevUnitSelect === mainUnit.identifier)}">
-            <input *ngIf = "!(this.prevUnitSelect === mainUnit.identifier)" (click)="onSelectBehaviour($event)" type="radio" id="{{mainUnit.identifier}}" value="{{mainUnit.identifier}}" name="mainUnit" [(ngModel)]="unitSelected" (click)="showMoveButton = true">
+            <input *ngIf = "!(this.prevUnitSelect === mainUnit.identifier)" (click)="onSelectBehaviour($event)" type="radio" id="{{mainUnit.identifier}}" value="{{mainUnit.identifier}}" name="mainUnit" [(ngModel)]="unitSelected" (click)="showMoveButton = true"
+            appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('radiobutton-'+ mainUnit.name, 'click', 'chapter-list')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+            >
             <label for="{{mainUnit.identifier}}">{{mainUnit.name}}</label>
           </div>
         </div>
@@ -23,7 +29,13 @@
           <div class="chapter-lists--item">
             <div class="item d-flex flex-ai-center cursor-pointer width-100">
               <div class="width-100" [ngClass]="{'sb-radio-btn-checkbox sb-radio-btn-primary': !(this.prevUnitSelect === childUnit.identifier), 'p-16 pl-40': (this.prevUnitSelect === childUnit.identifier)}">
-                <input *ngIf= "!(this.prevUnitSelect === childUnit.identifier)" type="radio" id="{{childUnit.identifier}}" value="{{childUnit.identifier}}" name="childUnit" [(ngModel)]="unitSelected" (click)="showMoveButton = true">
+                <input *ngIf= "!(this.prevUnitSelect === childUnit.identifier)" type="radio" id="{{childUnit.identifier}}" value="{{childUnit.identifier}}" name="childUnit" [(ngModel)]="unitSelected" (click)="showMoveButton = true"
+                appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('radiobutton-' + childUnit.name, 'click', 'chapter-list')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+                >
                 <label for="{{childUnit.identifier}}">{{childUnit.name}}</label>
               </div>
             </div>
@@ -40,7 +52,13 @@
 <!-- Selection of Question in modal -->
 
 <div class="sb-modal-actions">
-  <button id="moveResource" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn sb-btn-primary': showMoveButton, 'sb-btn-disabled': !showMoveButton}" (click)="moveResource()">
+  <button id="moveResource" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn sb-btn-primary': showMoveButton, 'sb-btn-disabled': !showMoveButton}" (click)="moveResource()"
+  appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('move-resource', 'click', 'chapter-list')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+  >
     Move
   </button>
 </div>

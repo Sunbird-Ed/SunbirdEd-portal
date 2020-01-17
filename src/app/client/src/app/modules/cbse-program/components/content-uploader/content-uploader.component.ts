@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FineUploader } from 'fine-uploader';
-import { ToasterService, ConfigService, ResourceService } from '@sunbird/shared';
+import { ToasterService, ConfigService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService, PlayerService, FrameworkService } from '@sunbird/core';
 import { ProgramStageService } from '../../../program/services';
 import * as _ from 'lodash-es';
@@ -11,6 +11,8 @@ import { FormGroup, FormArray, FormBuilder, Validators, NgForm, FormControl } fr
 import { CbseProgramService } from '../../services/cbse-program/cbse-program.service';
 import { HelperService } from '../../services/helper.service';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
+import { ProgramTelemetryService } from '../../../program/services';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-uploader',
@@ -64,6 +66,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   uploadButton: boolean;
   titleCharacterLimit: Number;
   allFormFields: Array<any>;
+  telemetryImpression: any;
+  public telemetryPageId = 'content-uploader';
 
   constructor(public toasterService: ToasterService, private userService: UserService,
     private publicDataService: PublicDataService, public actionService: ActionService,
@@ -71,7 +75,8 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     private cbseService: CbseProgramService, public frameworkService: FrameworkService,
     public programStageService: ProgramStageService, private helperService: HelperService,
     private collectionHierarchyService: CollectionHierarchyService, private cd: ChangeDetectorRef,
-    private resourceService: ResourceService) { }
+    private resourceService: ResourceService, public programTelemetryService: ProgramTelemetryService,
+    public activeRoute: ActivatedRoute, public router: Router, private navigationHelperService: NavigationHelperService) { }
 
   ngOnInit() {
     this.config = _.get(this.contentUploadComponentInput, 'config');
@@ -93,6 +98,28 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     if (_.get(this.contentUploadComponentInput, 'action') !== 'preview') {
       this.initiateUploadModal();
     }
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const telemetryCdata = [{ 'type': 'Program', 'id': this.programContext.programId }];
+     setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activeRoute.snapshot.data.telemetry.env,
+          cdata: telemetryCdata || [],
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: `${this.configService.appConfig.TELEMETRY.PID}.programs`
+          }
+        },
+        edata: {
+          type: _.get(this.activeRoute, 'snapshot.data.telemetry.type'),
+          pageid: this.telemetryPageId,
+          uri: this.router.url,
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+     });
   }
 
   handleActionButtons() {

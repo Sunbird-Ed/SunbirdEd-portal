@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ConfigService, ToasterService } from '@sunbird/shared';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
+import { ProgramTelemetryService } from '../../../program/services';
+import { UserService } from '@sunbird/core';
 
 @Component({
   selector: 'app-resource-reorder',
@@ -12,12 +14,15 @@ export class ResourceReorderComponent implements OnInit {
   @Input() collectionUnits;
   @Input() contentId;
   @Input() sessionContext;
+  @Input() programContext;
   @Input() prevUnitSelect;
   @Output() moveEvent = new EventEmitter<any>();
   @ViewChild('modal') modal;
   showMoveButton = false;
 
-  constructor(private collectionHierarchyService: CollectionHierarchyService, public toasterService: ToasterService) { }
+  constructor(private collectionHierarchyService: CollectionHierarchyService, public toasterService: ToasterService,
+              public programTelemetryService: ProgramTelemetryService, private userService: UserService,
+              public configService: ConfigService) { }
 
   ngOnInit() {
   }
