@@ -42,6 +42,7 @@ export class ResourceReorderComponent implements OnInit {
         });
         this.modal.deny();
       });
+    }, err => {
     });
   }
 

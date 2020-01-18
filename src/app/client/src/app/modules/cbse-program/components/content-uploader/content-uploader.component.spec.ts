@@ -11,6 +11,7 @@ import {
   ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService,
   NavigationHelperService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
+import { TelemetryModule } from '@sunbird/telemetry';
 import { TelemetryService } from '@sunbird/telemetry';
 import { of as observableOf, throwError as observableError } from 'rxjs';
 import { ActionService, PlayerService, FrameworkService, UserService } from '@sunbird/core';
@@ -19,6 +20,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {contentUploadComponentInput, contentMetaData, contentMetaData1, playerConfig, frameworkDetails,
              licenseDetails, updateContentResponse, getPreSignedUrl, contentUploadComponentInput1} from './content-uploader.component.data';
 import { HelperService } from '../../services/helper.service';
+import { ActivatedRoute } from '@angular/router';
 
 // Following describe method is for 'PREVIEW' scenario
 describe('ContentUploaderComponent', () => {
@@ -91,13 +93,14 @@ describe('ContentUploaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,
-                  RouterTestingModule],
+                  RouterTestingModule, TelemetryModule],
       declarations: [ ContentUploaderComponent ],
       providers: [CollectionHierarchyService, ConfigService, UtilService, ToasterService, TelemetryService, PlayerService, ResourceService,
                   CacheService, BrowserCacheTtlService, { provide: ActionService, useValue: actionServiceStub }, NavigationHelperService,
                   { provide: PlayerService, useValue: playerServiceStub }, { provide: FrameworkService, useValue: frameWorkServiceStub },
                   { provide: HelperService, useValue: helperServiceStub }, { provide: ResourceService, useValue: resourceServiceStub },
-                  {provide: UserService, useValue: userServiceStub}]
+                  {provide: UserService, useValue: userServiceStub},
+                  {provide: ActivatedRoute, useValue: {snapshot: {data: {telemetry: { env: 'program'}}}}}]
     })
     .compileComponents();
   }));
@@ -115,15 +118,16 @@ describe('ContentUploaderComponent', () => {
   });
 
   it('should not execute saveContent if Mandatory Form-fields are empty', () => {
+    component.ngOnInit();
     debugElement
       .query(By.css('#saveContent'))
       .triggerEventHandler('click', null);
-      expect(component.selectionArr.controls[0].get('bloomslevel').touched).toBeTruthy();
-      expect(component.selectionArr.controls[0].get('bloomslevel').errors.required).toBeTruthy();
+      expect(component.contentDetailsForm.get('bloomslevel').touched).toBeTruthy();
+      expect(component.contentDetailsForm.get('bloomslevel').errors.required).toBeTruthy();
   });
 
   it('should execute saveContent after successful validation of Form without calling sendForReview', () => {
-    component.selectionArr.patchValue([{bloomslevel: 'Knowledge (Remembering)'}]);
+    component.contentDetailsForm.get('bloomslevel').patchValue([{bloomslevel: 'Knowledge (Remembering)'}]);
     component.editTitle = 'Explanation Content Test1';
      fixture.detectChanges();
      spyOn(component, 'sendForReview');
@@ -134,7 +138,7 @@ describe('ContentUploaderComponent', () => {
   });
 
   it('should execute sendForReview before successful saveContent', () => {
-    component.selectionArr.patchValue([{bloomslevel: 'Knowledge (Remembering)'}]);
+    component.contentDetailsForm.get('bloomslevel').patchValue([{bloomslevel: 'Knowledge (Remembering)'}]);
     component.editTitle = 'Explanation Content Test1';
      fixture.detectChanges();
      spyOn(component, 'sendForReview');
@@ -206,11 +210,12 @@ describe('ContentUploaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,
-                  RouterTestingModule],
+                  RouterTestingModule, TelemetryModule],
       declarations: [ ContentUploaderComponent ],
       providers: [CollectionHierarchyService, ConfigService, UtilService, ToasterService, TelemetryService, PlayerService, ResourceService,
                   CacheService, BrowserCacheTtlService, { provide: ActionService, useValue: actionServiceStub }, NavigationHelperService,
-                  { provide: PlayerService, useValue: playerServiceStub }, { provide: FrameworkService, useValue: frameWorkServiceStub }]
+                  { provide: PlayerService, useValue: playerServiceStub }, { provide: FrameworkService, useValue: frameWorkServiceStub },
+                 {provide: ActivatedRoute, useValue: {snapshot: {data: {telemetry: { env: 'program'}}}}}]
     })
     .compileComponents();
   }));
@@ -319,14 +324,15 @@ describe('ContentUploaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, ReactiveFormsModule, PlayerHelperModule,
-                  RouterTestingModule],
+                  RouterTestingModule, TelemetryModule],
       declarations: [ ContentUploaderComponent ],
       providers: [ ConfigService, UtilService, ToasterService, TelemetryService, PlayerService, ResourceService,
                   CacheService, BrowserCacheTtlService, { provide: ActionService, useValue: actionServiceStub }, NavigationHelperService,
                   { provide: PlayerService, useValue: playerServiceStub }, { provide: FrameworkService, useValue: frameWorkServiceStub },
                   { provide: HelperService, useValue: helperServiceStub }, {provide: UserService, useValue: userServiceStub},
                   { provide: CollectionHierarchyService, useValue: collectionServiceStub},
-                  { provide: ResourceService, useValue: resourceServiceStub }]
+                  // tslint:disable-next-line:max-line-length
+                  { provide: ResourceService, useValue: resourceServiceStub }, {provide: ActivatedRoute, useValue: {snapshot: {data: {telemetry: { env: 'program'}}}}}]
     })
     .compileComponents();
   }));

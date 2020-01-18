@@ -22,28 +22,14 @@ describe('ResourceReorderComponent', () => {
   let debugElement: DebugElement;
   let errorInitiate;
   const errorInitiate1 = false;
-  const actionServiceStub = {
-    patch() {
-      if (errorInitiate) {
-        return observableError({ result: { responseCode: 404 } });
-      } else {
-        return observableOf('Success');
-      }
-    },
-    delete() {
-      if (errorInitiate1) {
-        return observableError({ result: { responseCode: 404 } });
-      } else {
-        return observableOf('Success');
-      }
-    }
-  };
+  const hierarchyServiceStub: any = {};
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, RouterModule.forRoot([]), TelemetryModule.forRoot()],
       declarations: [ ResourceReorderComponent ],
-      providers: [CollectionHierarchyService, ProgramTelemetryService, ConfigService, UtilService, ToasterService, TelemetryService,
-                       ResourceService, CacheService, BrowserCacheTtlService, { provide: ActionService, useValue: actionServiceStub }]
+      providers: [ProgramTelemetryService, ConfigService, UtilService, ToasterService, TelemetryService,
+                       ResourceService, CacheService, BrowserCacheTtlService,
+                       {provide: CollectionHierarchyService, useValue: hierarchyServiceStub}]
     })
     .compileComponents();
   }));
@@ -72,9 +58,28 @@ describe('ResourceReorderComponent', () => {
       };
     fixture.detectChanges();
   });
+
+  beforeAll(() => {
+    hierarchyServiceStub.addResourceToHierarchy = jasmine.createSpy(' addHierarchySpy').and.callFake(() => {
+      if (errorInitiate) {
+              return observableError({ result: { responseCode: 404 } });
+            } else {
+              return observableOf('Success');
+            }
+    });
+    hierarchyServiceStub.removeResourceToHierarchy = jasmine.createSpy(' removeHierarchySpy').and.callFake(() => {
+      if (errorInitiate) {
+              return observableError({ result: { responseCode: 404 } });
+            } else {
+              return observableOf('Success');
+            }
+    });
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
   it('should execute moveResource method successfully', () => {
     fixture.detectChanges();
     spyOn(component.toasterService, 'success');
@@ -90,6 +95,6 @@ describe('ResourceReorderComponent', () => {
     debugElement
       .query(By.css('#moveResource'))
       .triggerEventHandler('click', null);
-      expect(component.toasterService.success).not.toHaveBeenCalledWith('The Selected Resource is Successfully Moved');
+      expect(component.toasterService.success).not.toHaveBeenCalled();
   });
 });
