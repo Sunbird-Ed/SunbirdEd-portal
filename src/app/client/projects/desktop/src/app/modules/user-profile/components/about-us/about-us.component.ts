@@ -25,9 +25,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   showModal = false;
   showLoader = true;
   count = 0;
-  loaderMessage: ILoaderMessage = {
-    'loaderMessage': this.resourceService.messages.stmsg.m0129
-  };
+  loaderMessage: ILoaderMessage = {};
   currentYear;
   constructor(public resourceService: ResourceService, private appUpdateService: AppUpdateService,
     private router: Router, public activatedRoute: ActivatedRoute,
@@ -35,6 +33,9 @@ export class AboutUsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentYear = new Date().getFullYear();
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0129
+    };
     this.instance = _.upperCase(this.resourceService.instance);
     this.getAppInfo();
   }
