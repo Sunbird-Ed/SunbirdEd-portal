@@ -41,6 +41,7 @@
 //     spyOn(component.templateSelection, 'emit');
 //     component.handleSubmit();
 //     // tslint:disable-next-line:max-line-length
+// tslint:disable-next-line:max-line-length
 //     expect(component.templateSelection.emit).toHaveBeenCalledWith({type: 'next', template: 'explanationContent', templateDetails: resourceTemplateComponentInput.templateList[0]});
 //   });
 
