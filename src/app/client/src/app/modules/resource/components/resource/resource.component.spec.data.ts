@@ -137,7 +137,7 @@ export const Response = {
           },
           'maxCount': 0,
           'progress': 0,
-          'section': 'My Courses'
+          'section': 'My Trainings'
         },
         {
           'name': 'AAAA',
@@ -161,7 +161,7 @@ export const Response = {
           },
           'maxCount': 4,
           'progress': 0,
-          'section': 'My Courses'
+          'section': 'My Trainings'
         }
       ],
     filters: [

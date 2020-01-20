@@ -31,6 +31,11 @@ describe('LearnPageComponent', () => {
       'fmsg': {},
       'emsg': {},
       'stmsg': {}
+    },
+    'frmelmnts': {
+      'lbl': {
+        'mytrainings': 'My Trainings'
+      }
     }
   };
   class FakeActivatedRoute {
@@ -102,6 +107,12 @@ describe('LearnPageComponent', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters([]);
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
+  });
+  it('should fetch enrolledSection from API and name must be My Trainings', () => {
+    coursesService.initialize();
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
   });
   it('should fetch hashTagId from API and filter details from data driven filter component', () => {
     coursesService.initialize();
