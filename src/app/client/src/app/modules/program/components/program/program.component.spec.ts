@@ -147,16 +147,16 @@ describe('ProgramComponent On Bording test', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should execute OnboardEvent on initialization of component', () => {
-    spyOn(component, 'initiateOnboarding');
-    component.ngOnInit();
-    expect(component.initiateOnboarding).toHaveBeenCalled();
-  });
+  // it('should execute OnboardEvent on initialization of component', () => {
+  //   spyOn(component, 'initiateOnboarding');
+  //   component.ngOnInit();
+  //   expect(component.initiateOnboarding).toHaveBeenCalled();
+  // });
 
-  it('should execute OnboardEvent on initialization of component', () => {
-    component.programId = null;
-    component.ngOnInit();
-  });
+  // it('should execute OnboardEvent on initialization of component', () => {
+  //   component.programId = null;
+  //   component.ngOnInit();
+  // });
 
 
   it('should call fetchProgramDetails', inject([HttpTestingController],
@@ -172,17 +172,17 @@ describe('ProgramComponent On Bording test', () => {
   });
 
 
-  it('should open onboarding pop up', () => {
-    spyOn(component, 'userOnboarding');
-    component.ngOnInit();
-    expect(component.userOnboarding).not.toHaveBeenCalled();
-  });
+  // it('should open onboarding pop up', () => {
+  //   spyOn(component, 'userOnboarding');
+  //   component.ngOnInit();
+  //   expect(component.userOnboarding).not.toHaveBeenCalled();
+  // });
 
-  it('onboarding popup property should be initiated as false', () => {
-    spyOn(component, 'userOnboarding');
-    component.ngOnInit();
-    expect(component.showOnboardPopup).toBe(false);
-  });
+  // it('onboarding popup property should be initiated as false', () => {
+  //   spyOn(component, 'userOnboarding');
+  //   component.ngOnInit();
+  //   expect(component.showOnboardPopup).toBe(false);
+  // });
 
 
   it('should not trigger the onboard popup as participant details are available in DB', () => {
