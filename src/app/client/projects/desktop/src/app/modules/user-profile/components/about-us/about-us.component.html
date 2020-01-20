@@ -33,4 +33,41 @@
   </div>
 </div>
 <div class="d-flex flex-jc-center my-8 fxsmall">
-<a href="javascript:void(0)" class="link">{{resourceService?.frmelmnts?.lnk?.footerTnC}}</a>&nbsp;| &#9400; 2019, {{instance}}</div>
+
+<a href="javascript:void(0)" class="link" (click)="toggleTocModal()" appTelemetryInteract [telemetryInteractEdata]="telemetryTermsOfUseEData">{{resourceService?.frmelmnts?.lnk?.footerTnC}}</a>&nbsp;| &#9400; {{currentYear}}, {{instance}}</div>
+
+
+<sui-modal
+  [mustScroll]="false" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  *ngIf="showModal"
+  (dismissed)="showModal = !showModal;"
+  #modal 
+>
+
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.termsAndCond}}&lrm;
+  </div>
+  <!--/Header-->
+
+ 
+  <!--Content-->
+  <div class="sb-modal-content">
+    <div *ngIf="showLoader">
+      <app-loader  [data]='loaderMessage'></app-loader>
+    </div>
+    <form class="ui form d-flex flex-jc-center">
+      <iframe id="serviceFrameSend" [src]="tncLatestVersionUrl" width="100%" height="600px"  frameborder="0" (load)="isIframeLoaded()" ></iframe>
+    </form>
+    <div>
+    </div>
+  </div>
+
+  <!--/Content-->
+
+</sui-modal>
+

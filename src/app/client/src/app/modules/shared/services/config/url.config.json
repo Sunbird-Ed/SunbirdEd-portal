@@ -199,7 +199,6 @@
       "CANCEL_DOWNLOAD":"content/v1/download/cancel",
       "PAUSE_DOWNLOAD":"content/v1/download/pause",
       "RETRY_DOWNLOAD":"content/v1/download/retry",
-      "TERMS_OF_URL": "app/v1/terms_of_url",
       "DELETE_CONTENT":"content/v1/delete"
     },
     "ACCOUNT_RECOVERY": {

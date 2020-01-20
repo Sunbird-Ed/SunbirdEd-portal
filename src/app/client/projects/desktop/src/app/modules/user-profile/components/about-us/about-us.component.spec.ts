@@ -93,4 +93,10 @@ describe('AboutUsComponent', () => {
     expect(element.innerText).toEqual(datePipe.transform(date, 'dd/MM/yyyy'));
   });
 
+  it('should display toc loader', () => {
+    component.toggleTocModal();
+    expect(component.showLoader).toBeTruthy();
+    expect(component.showModal).toBeTruthy();
+  });
+
 });
