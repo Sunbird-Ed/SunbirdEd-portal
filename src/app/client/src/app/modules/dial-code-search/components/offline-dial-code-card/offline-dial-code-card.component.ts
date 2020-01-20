@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output, HostListener, OnChanges, ChangeDetectorRef } from '@angular/core';
-import { ResourceService, ICard } from '@sunbird/shared';
-import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
-import { Router } from '@angular/router';
+import { ResourceService, ICard, UtilService, OfflineCardService } from '@sunbird/shared';
+import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { OfflineCardService } from '@sunbird/offline';
 
 @Component({
   selector: 'app-offline-dial-code-card',
@@ -22,10 +21,13 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
   hover: Boolean;
   isConnected: Boolean = navigator.onLine;
   route: string;
-  checkOfflineRoutes: string;
+  currentRoute: string;
   contentId: string;
   showAddingToLibraryButton: boolean;
   showModal = false;
+  public telemetryInteractObject: IInteractEventObject;
+  public downloadContentEdata: IInteractEventEdata;
+  public cancelDownloadYoutubeContentEdata: IInteractEventEdata;
 
   @HostListener('mouseenter') onMouseEnter() {
     this.hover = true;
@@ -35,40 +37,61 @@ export class OfflineDialCodeCardComponent implements OnInit, OnChanges {
     this.hover = false;
   }
   constructor(public resourceService: ResourceService, private router: Router,
-    private cdr: ChangeDetectorRef, public offlineCardService: OfflineCardService) {
+    private cdr: ChangeDetectorRef,
+    public utilService: UtilService, public offlineCardService: OfflineCardService, public activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
   }
 
   ngOnInit() {
+    this.setTelemetryData();
     if (this.dialCode) {
       this.telemetryCdata = [{ 'type': 'dialCode', 'id': this.dialCode }];
     }
     this.route = this.router.url;
-    if (_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'browse';
-    } else if (!_.includes(this.route, 'browse')) {
-      this.checkOfflineRoutes = 'library';
-    }
+    this.currentRoute = _.includes(this.route, 'browse') ? 'browse' : 'library';
   }
 
   public onAction(data, action) {
     this.contentId = data.metaData.identifier;
     if (action === 'download') {
-      data.showAddingToLibraryButton = true;
-      this.showModal = this.offlineCardService.checkYoutubeContent(data);
-      if (this.showModal === false)  { this.clickEvent.emit({ 'action': action, 'data': data }); }
+      this.showModal = this.offlineCardService.isYoutubeContent(data);
+      if (this.showModal === false)  {
+        data['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+        this.clickEvent.emit({ 'action': action, 'data': data });
+      }
     } else {
       this.clickEvent.emit({ 'action': action, 'data': data });
     }
   }
 
   download(data, action) {
+    data['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     this.clickEvent.emit({ 'action': action, 'data': data });
   }
 
   ngOnChanges () {
     this.cdr.detectChanges();
   }
+
+  checkStatus(status) {
+    return this.utilService.getPlayerDownloadStatus(status, this.data, this.currentRoute);
+  }
+
+  setTelemetryData() {
+    this.telemetryInteractObject = {
+      id: this.contentId,
+      type: this.data.contentType,
+      ver: '1.0'
+    };
+    this.downloadContentEdata = {
+      id: 'download-content',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+    this.cancelDownloadYoutubeContentEdata = {
+      id: 'cancel-download-content',
+      type: 'click',
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
+  }
 }
-
-

@@ -1,94 +1,81 @@
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'large'" class="sb-modal"
-  appBodyScroll (dismissed)="redirect();modal.deny();" #modal>
-
-  <!--Header-->
-  <div class="sb-modal-header" [appTelemetryImpression]="telemetryImpression">
-    {{resourceService?.frmelmnts?.instn?.t0016}}
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect();modal.deny();" #modal
+*ngIf="modalName === 'upload'">
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.instn?.t0016}}
+</div>
+<div class="sb-modal-content">
+  <div class="m-0">
+    <span class="m-0 mr-16">{{resourceService?.frmelmnts?.lbl?.uploadmsg}}</span>
+    <!-- <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary">Download Sample
+      CSV</button> -->
+      <a href="/assets/SampleUserCsv.csv">{{resourceService?.frmelmnts?.btn?.smplcsv}}</a>
   </div>
-  <!--/Header-->
 
-  <!--Content-->
-  <div class="sb-modal-content">
-    <div *ngIf="showLoader">
-      <app-loader></app-loader>
-    </div>
-    <form *ngIf="!processId && !showLoader" class="ui form" id="bulkUsers" [formGroup]="uploadUserForm">
-      <div class="ui grid" *ngIf="!processId">
-        <div class="six wide column">
-          <div class="required field">
-            <label>{{resourceService?.frmelmnts?.lbl?.provider}}</label>
-            <input formControlName="provider" type="text" placeholder="OrgProvider" autofocus>
-          </div>
-        </div>
-        <div class="six wide column">
-          <div class="required field">
-            <label>{{resourceService?.frmelmnts?.lbl?.extlid}}</label>
-            <input formControlName="externalId" type="text" placeholder="OrgExternalId">
-          </div>
-        </div>
-      </div>
-      <div *ngIf="!processId" class="ui horizontal divider mt-40">
-        Or
-      </div>
-      <div class="ui grid" *ngIf="!processId">
-        <div class="six wide column">
-          <div class="one field">
-            <div class=" required field">
-              <label>{{resourceService?.frmelmnts?.lbl?.orgid}}</label>
-              <input formControlName="organisationId" type="text" placeholder="OrgId">
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </form>
-    <div class="ui negative message" *ngIf="bulkUploadError">
-      <i class="close icon" (click)="closeBulkUploadError()"></i>
-      <p>{{bulkUploadErrorMessage}}</p>
-    </div>
-    <h5 *ngIf="fileName">
-      <i class="file outline icon"></i>{{resourceService?.frmelmnts?.lbl?.upldfile}}: {{fileName}}
-    </h5>
-    <div *ngIf="processId">
-      <h5>{{resourceService?.frmelmnts?.lbl?.processid}}: {{processId}}</h5>
-      <p>{{resourceService?.frmelmnts?.instn?.t0012}}</p>
-    </div>
-    <div *ngIf="!processId && !showLoader" class="ui horizontal divider mt-40">
-
-    </div>
-    <div *ngIf="resourceService.frmelmnts && !processId && !showLoader" class="ui info message">
-      <div class="header">
-        {{resourceService?.frmelmnts?.scttl?.instructions}}
-      </div>
-      <ol class="ui list">
-        <li *ngFor="let instn of userUploadInstructions">{{instn.instructions}}
-          <ol *ngIf="instn.subinstructions">
-            <li *ngFor="let subinstn of instn.subinstructions">{{subinstn.instructions}}</li>
-          </ol>
-        </li>
-      </ol>
-      <div>{{resourceService?.frmelmnts?.instn?.t0076}} <a href={{uploadUserRefLink}}
-          target="_blank">{{resourceService?.frmelmnts?.instn?.t0077}}</a></div>
-    </div>
+  <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
+    {{resourceService?.frmelmnts?.lbl?.uploadcsvfile}}
+    <input type="file" #inputbtn class="sb-btn-upload" name="file" accept=".csv" (change)="fileChanged($event)"/>
   </div>
-  <!--/Content-->
-
-  <!--Actions-->
-  <div class="sb-modal-actions">
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="processId"
-      class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
-      {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
-    </button>
-    <!-- <angular2csv class="sb-btn sb-btn-normal sb-btn-outline-gray mr-auto"
-      [data]="config.appConfig.ADMIN_UPLOAD.SAMPLE_USER_CSV" filename="Sample_Users"
-      [options]="csvOptions" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="downloadCSVInteractEdata">
-      {{resourceService?.frmelmnts?.btn?.smplcsv}} TODO: use Blob object to generate csv file
-    </angular2csv> -->
-    <input #inputbtn type="file" accept=".csv" class="content-input ui small d-none" id="uploadUsrsCSV"
-      onclick="this.value = null" (change)="uploadUsersCSV($event.target.files)" required="" />
+  <div *ngIf="file">
+    <span> {{resourceService?.frmelmnts?.lbl?.upldfile }} :</span>
+    <label>{{file.name}}</label>
   </div>
-  <!--/Actions-->
+  <div *ngIf="resourceService.frmelmnts && !processId && !showLoader" class="ui info message">
+    <div class="header">
+      {{resourceService?.frmelmnts?.scttl?.instructions}}
+    </div>
+    <div>{{resourceService?.frmelmnts?.instn?.t0098}}</div>
+    <ol class="ui list">
+      <li *ngFor="let instn of userUploadInstructions">{{instn.instructions}}
+      </li>
+    </ol>
+    <div>{{resourceService?.frmelmnts?.instn?.t0106}}</div>
+    <!-- <div>{{resourceService?.frmelmnts?.instn?.t0076}} <a href={{uploadUserRefLink}}
+        target="_blank">{{resourceService?.frmelmnts?.instn?.t0077}}</a></div> -->
+  </div>
+</div>
 
+<div class="sb-modal-actions">
+  <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+  [telemetryInteractEdata]="userUploadInteractEdata" [disabled]="!activateUpload"
+  class="sb-btn sb-btn-normal sb-btn-primary" (click)="uploadUsersCSV()">
+  {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
+</button>
+</div>
 </sui-modal>
+
+
+
+
+<sui-modal *ngIf="modalName === 'error'" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+     [size]="'normal'" class="sb-modal sb-error" appBodyScroll  (dismissed)="redirect();modal.deny();" #errormodal>
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.lbl?.errorinupload}}
+</div>
+<div class="sb-modal-content">
+  <div class="ui error message bulkupload-error">
+    <div class="header">
+      {{resourceService?.frmelmnts?.scttl?.error}}
+    </div>
+    <div *ngFor = "let er of errors">
+      <span> {{er}}</span>
+    </div>
+    <div id="errorDiv" class="errorDiv">
+      <textarea id="errorTextArea" class="errorTextArea"></textarea>
+    </div>
+  </div>
+  <div>
+    <span> {{resourceService?.frmelmnts?.lbl?.errorMsg }}</span>
+  </div>
+  
+</div>
+<div class="sb-modal-actions">
+  <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+  [telemetryInteractEdata]="userErrorInteractEdata" [disabled]="processId"
+  class="sb-btn sb-btn-normal sb-btn-primary" (click)="copyToClipboard()">
+  {{resourceService?.frmelmnts?.btn?.copytoclipboard}}
+  </button>
+</div>
+</sui-modal>
+
+

@@ -63,7 +63,18 @@ describe('SelectAccountIdentifierComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should call initializeForm', () => {
+    spyOn(component, 'verifyState').and.returnValue(true);
+    spyOn(component, 'initializeForm').and.callThrough();
+    component.ngOnInit();
+    expect(component.initializeForm).toHaveBeenCalled();
+  });
+
+  it('should call handleGenerateOtp()', () => {
+    const recoverAccountService = TestBed.get(RecoverAccountService);
+    spyOn(recoverAccountService, 'generateOTP').and.returnValue(of({}));
+    spyOn(component, 'navigateToNextStep').and.callThrough();
+    component.handleGenerateOtp();
+    expect(component.navigateToNextStep).toHaveBeenCalled();
   });
 });

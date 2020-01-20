@@ -132,10 +132,15 @@
               <!-- below needs to be done score card -->
               <!-- <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-8"><i class="download icon"></i>Score Card</button> -->
               <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
-                href="javascript:void(0);" (click)="downloadReport();" *ngIf="showDownloadLink" appTelemetryInteract
-                [telemetryInteractObject]="interactObject"
-                [telemetryInteractEdata]="{id:'download',type:'click',pageid:'course-progress-dashboard'}"><i
-                  class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0065}}</button>
+              href="javascript:void(0);" (click)="downloadReport(true);" *ngIf="showDownloadLink" appTelemetryInteract
+              [telemetryInteractObject]="interactObject"
+              [telemetryInteractEdata]="{id:'download-score-report',type:'click',pageid:'course-progress-dashboard'}"><i
+                class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0066}}</button>
+            <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
+              href="javascript:void(0);" (click)="downloadReport(false);" *ngIf="showDownloadLink" appTelemetryInteract
+              [telemetryInteractObject]="interactObject"
+              [telemetryInteractEdata]="{id:'download-progress-report',type:'click',pageid:'course-progress-dashboard'}"><i
+                class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0065}}</button>
             </div>
             <table id="CourseStatsTable" class="sb-table sb-table-striped sb-table-sortable sb-table-fixed"
               cellspacing="0">

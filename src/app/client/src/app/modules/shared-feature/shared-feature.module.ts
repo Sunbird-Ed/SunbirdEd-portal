@@ -2,8 +2,10 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgModule , ModuleWithProviders} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
-  OtpPopupComponent, BatchInfoComponent } from './components';
+import {
+  ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
+  OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent
+} from './components';
 import { SlickModule } from 'ngx-slick';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule } from '@angular/router';
@@ -24,7 +26,10 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent, OtpPopupComponent, BatchInfoComponent],
-  exports: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent, OtpPopupComponent, BatchInfoComponent]
+  declarations: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
+    OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent
+  ],
+  exports: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
+    OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent]
 })
 export class SharedFeatureModule { }

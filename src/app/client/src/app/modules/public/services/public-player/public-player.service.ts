@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { UserService, CollectionHierarchyAPI, PublicDataService, OrgDetailsService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService
+  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
@@ -25,7 +25,8 @@ export class PublicPlayerService {
   previewCdnUrl: string;
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
-    public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService) {
+    public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
+    public resourceService: ResourceService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
@@ -165,5 +166,16 @@ export class PublicPlayerService {
         this.router.navigate(['explore-course/course', courseId]);
       }
     }, 0);
+  }
+  updateDownloadStatus (downloadListdata, content) {
+    const identifier = !_.isEmpty(content.metaData) ? _.get(content, 'metaData.identifier') : _.get(content, 'identifier');
+        // If download is completed card should show added to library
+        if (_.find(downloadListdata.result.response.downloads.completed, { contentId: identifier })) {
+          content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
+        }
+        // // If download failed, card should show again add to library
+        if (_.find(downloadListdata.result.response.downloads.failed, { contentId: identifier })) {
+          content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+        }
   }
 }

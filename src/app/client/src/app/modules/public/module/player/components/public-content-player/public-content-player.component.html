@@ -12,20 +12,20 @@
               {{contentData.name}}
             </h1>
             <!--/Title-->
-
-            <!--Close Button-->
-            <button 
-              appTelemetryInteract 
-              [telemetryInteractCdata]="this.telemetryCdata" 
-              [telemetryInteractObject]="telemetryInteractObject" 
-              [telemetryInteractEdata]="closePlayerInteractEdata"
-              (click)="close()"
-              class="sb-btn sb-btn-normal sb-btn-error ml-auto">
+            <div class="ml-auto d-flex flex-ai-center">
+              <div *ngIf="isOffline" class="mr-16">
+                  <app-content-download [contentData]="contentData"></app-content-download>
+            </div>
+              <!--Close Button-->
+              <button appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata"
+                [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata"
+                (click)="close()" class="sb-btn sb-btn-normal sb-btn-error">
                 {{resourceService.frmelmnts.btn.close}}
                 <i class="ui remove icon"></i>
-            </button>
-            <!--/Close Button-->
-
+              </button>
+                <!--/Close Button-->
+            </div>
+        
           </div>
         </div>
         <!--/Content Title-->

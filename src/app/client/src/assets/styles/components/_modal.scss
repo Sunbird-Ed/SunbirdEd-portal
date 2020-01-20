@@ -89,6 +89,22 @@
             }
         }
     } // sb modal confirmation/alert styles 
+    &-center {
+        .sb-modal-header{
+            text-align:center;
+        }
+        .sb-modal-content {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            text-align:center;
+        }
+        .sb-modal-actions {
+          @extend .sb-modal-content;
+          border-top:0px !important;
+          padding-bottom:24px !important;
+        }
+    }
     &.sb-warning .ui.modal {
         .sb-modal-header {
             background-color: $sb-modal-header-bg-warning;
@@ -173,3 +189,15 @@
         list-style-type: disc;
     }
 }
+
+.ui.error.message.bulkupload-error {
+    max-height: 200px;
+    overflow: auto;
+    .errorDiv{
+        opacity: 0.00001;
+        .errorTextArea{
+            height:8px;
+        }
+    }
+}
+

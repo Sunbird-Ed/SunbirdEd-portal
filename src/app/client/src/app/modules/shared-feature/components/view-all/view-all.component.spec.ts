@@ -10,6 +10,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui';
+import { DownloadManagerService } from '@sunbird/offline';
+
 describe('ViewAllComponent', () => {
   let component: ViewAllComponent;
   let fixture: ComponentFixture<ViewAllComponent>;
@@ -45,6 +47,7 @@ describe('ViewAllComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       declarations: [ ViewAllComponent ],
       providers: [ConfigService, CoursesService, SearchService, LearnerService, PublicPlayerService,
+        DownloadManagerService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
@@ -174,4 +177,20 @@ describe('ViewAllComponent', () => {
     expect(route.navigate).toHaveBeenCalledWith(['learn/view-all/LatestCourses/1'], { queryParams: component.queryParams,
        relativeTo: fakeActivatedRoute});
   });
+  it('showDownloadLoader to be true' , () => {
+    spyOn(component, 'startDownload');
+    component.isOffline = true;
+    expect(component.showDownloadLoader).toBeFalsy();
+    component.playContent(Response.download_event);
+    expect(component.showDownloadLoader).toBeTruthy();
+  });
+
+  it('should call updateDownloadStatus when updateCardData is called' , () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    spyOn(playerService, 'updateDownloadStatus');
+    component.searchList = Response.successData.result.content;
+    component.updateCardData(Response.download_list);
+    expect(playerService.updateDownloadStatus).toHaveBeenCalled();
+  });
+
 });
