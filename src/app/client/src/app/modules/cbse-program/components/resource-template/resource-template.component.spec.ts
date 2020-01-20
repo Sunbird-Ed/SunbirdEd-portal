@@ -44,7 +44,7 @@ describe('ResourceTemplateComponent', () => {
     expect(component.templateSelection.emit).toHaveBeenCalledWith({type: 'next', template: 'explanationContent', templateDetails: resourceTemplateComponentInput.templateList[0]});
   });
 
-  it('should close modal after ngOnDestroy', () => {
+  xit('should close modal after ngOnDestroy', () => {
     component.templateSelected = 'explanationContent';
     fixture.detectChanges();
     component.ngOnDestroy();
