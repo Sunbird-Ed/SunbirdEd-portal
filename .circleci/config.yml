@@ -21,10 +21,7 @@ jobs:
           command: 'npm install -g @angular/cli@7.3.9'
       - run:
           name: Installing npm deps
-          command: 'npm install'
-      - save_cache: # special step to save the dependency cache
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths: ./node_modules
+          command: 'npm install'    
       - run:
           name: Executing test cases
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
