@@ -10,12 +10,12 @@ jobs:
           name: run build file
           command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
   test-cases:
-    environment:
-      - NODE_OPTIONS: --max_old_space_size=8192
     working_directory: ~/portal/src/app/client
     docker:
       - image: sunbird/build:player
     steps:
+      environment:
+        - NODE_OPTIONS: --max_old_space_size=8192
       - checkout:
           path: ~/portal
       - run:
