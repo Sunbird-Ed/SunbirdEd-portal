@@ -49,7 +49,7 @@ export class SignupService {
 
   createUserV3(data) {
     const options = {
-      url: this.configService.urlConFig.URLS.USER.CREATE_V3,
+      url: this.configService.urlConFig.URLS.USER.SIGN_UP_V1,
       data: data
     };
     return this.learnerService.post(options);

@@ -42,7 +42,7 @@
       "GET_USER_BY_KEY": "user/v1/get",
       "CHECK_USER_EXISTS": "user/v1/exists",
       "CREATE_V2": "user/v2/create",
-      "CREATE_V3": "user/v3/create",
+      "SIGN_UP_V1": "user/v1/signup",
       "LOCATION_SEARCH": "data/v1/location/search",
       "TYPE": "user/v1/type/list",
       "VALIDATE_CERTIFICATE": "user/v1/certs/validate",
