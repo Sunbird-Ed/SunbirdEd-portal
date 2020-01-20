@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 
@@ -7,11 +7,9 @@ import * as _ from 'lodash-es';
   templateUrl: './credits-and-licence.component.html',
   styleUrls: ['./credits-and-licence.component.scss']
 })
-export class CreditsAndLicenceComponent implements OnInit, AfterViewInit {
+export class CreditsAndLicenceComponent implements OnInit {
 
   @Input() contentData;
-  @ViewChild('licence') licenceElement: ElementRef;
-
   instance: string;
   attributions: string;
 
@@ -46,14 +44,4 @@ export class CreditsAndLicenceComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    if (this.contentData && this.contentData.license) {
-      const urlRegex = /(https?:\/\/[^\s]+)/g;
-      this.licenceElement.nativeElement.innerHTML = this.contentData.license.replace(urlRegex, '<a href="">$1</a>');
-      this.licenceElement.nativeElement.querySelector('a').addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-      });
-    }
-  }
 }
