@@ -10,6 +10,8 @@ jobs:
           name: run build file
           command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
   test-cases:
+    environment:
+      - NODE_OPTIONS: --max_old_space_size=8192
     working_directory: ~/portal/src/app/client
     docker:
       - image: sunbird/build:player
@@ -20,7 +22,7 @@ jobs:
           name: Installing angular cli
           command: 'npm install -g @angular/cli@7.3.9'
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          # key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Installing npm deps
           command: 'npm install'
