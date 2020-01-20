@@ -1,17 +1,21 @@
-import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
+// tslint:disable-next-line:max-line-length
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy, AfterViewInit} from '@angular/core';
+import { FormGroup, FormArray, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfigService, ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { UserService, ActionService, ContentService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { tap, map, catchError, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { of, forkJoin, throwError } from 'rxjs';
-import { FormGroup, FormArray, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
 import { CbseProgramService } from '../../services';
 import { ItemsetService } from '../../services/itemset/itemset.service';
 import { HelperService } from '../../services/helper.service';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 import { ProgramStageService } from '../../../program/services';
+import { ProgramTelemetryService } from '../../../program/services';
+
 
 @Component({
   selector: 'app-question-list',
@@ -19,15 +23,17 @@ import { ProgramStageService } from '../../../program/services';
   styleUrls: ['./question-list.component.scss']
 })
 
-export class QuestionListComponent implements OnInit, OnDestroy {
+export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('questionCreationChild') questionCreationChild;
   @Output() changeStage = new EventEmitter<any>();
   @Input() practiceQuestionSetComponentInput: any;
   @ViewChild('FormControl') FormControl: NgForm;
   @Output() uploadedContentMeta = new EventEmitter<any>();
+  @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
 
   public sessionContext: any;
+  public programContext: any;
   public sharedContext: any;
   public selectedSharedContext: any;
   public role: any;
@@ -59,25 +65,29 @@ export class QuestionListComponent implements OnInit, OnDestroy {
   public goToNextQuestionStatus = true;
   previewBtnVisibility = true;
   visibility: any;
-  @ViewChild('resourceTtlTextarea') resourceTtlTextarea: ElementRef;
+  telemetryImpression: any;
+  public telemetryPageId = 'question-list';
 
   constructor(
-    private configService: ConfigService, private userService: UserService,
+    public configService: ConfigService, public userService: UserService,
     public actionService: ActionService,
     private cdr: ChangeDetectorRef, public toasterService: ToasterService,
     public telemetryService: TelemetryService, private fb: FormBuilder,
     private cbseService: CbseProgramService, public contentService: ContentService,
     private itemsetService: ItemsetService, private helperService: HelperService,
     private resourceService: ResourceService, private collectionHierarchyService: CollectionHierarchyService,
-    public programStageService: ProgramStageService) { }
+    public programStageService: ProgramStageService, public activeRoute: ActivatedRoute,
+    public router: Router, private navigationHelperService: NavigationHelperService,
+    public programTelemetryService: ProgramTelemetryService) { }
 
   ngOnInit() {
     this.sessionContext = _.get(this.practiceQuestionSetComponentInput, 'sessionContext');
     this.selectedSharedContext = _.get(this.practiceQuestionSetComponentInput, 'selectedSharedContext');
     this.role = _.get(this.practiceQuestionSetComponentInput, 'role');
     this.templateDetails = _.get(this.practiceQuestionSetComponentInput, 'templateDetails');
-    this.actions = _.get(this.practiceQuestionSetComponentInput, 'programContext.config.actions');
-    this.sharedContext = _.get(this.practiceQuestionSetComponentInput, 'programContext.config.sharedContext');
+    this.programContext = _.get(this.practiceQuestionSetComponentInput, 'programContext');
+    this.actions = _.get(this.programContext, 'config.actions');
+    this.sharedContext = _.get(this.programContext, 'config.sharedContext');
     this.sessionContext.resourceIdentifier = _.get(this.practiceQuestionSetComponentInput, 'contentIdentifier');
     this.sessionContext.questionType = this.templateDetails.questionCategories[0];
     this.sessionContext.textBookUnitIdentifier = _.get(this.practiceQuestionSetComponentInput, 'unitIdentifier');
@@ -86,6 +96,31 @@ export class QuestionListComponent implements OnInit, OnDestroy {
     this.sessionContext.practiceSetConfig = this.practiceSetConfig;
     this.getContentMetadata(this.sessionContext.resourceIdentifier);
     this.getLicences();
+  }
+
+  ngAfterViewInit() {
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const telemetryCdata = [{ 'type': 'Program', 'id': this.programContext.programId }];
+     setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activeRoute.snapshot.data.telemetry.env,
+          cdata: telemetryCdata || [],
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: `${this.configService.appConfig.TELEMETRY.PID}.programs`
+          }
+        },
+        edata: {
+          type: _.get(this.activeRoute, 'snapshot.data.telemetry.type'),
+          pageid: this.telemetryPageId,
+          uri: this.router.url,
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+     });
   }
 
   getContentMetadata(contentId: string) {
@@ -116,6 +151,15 @@ export class QuestionListComponent implements OnInit, OnDestroy {
         this.fetchQuestionList();
       }
       this.handleActionButtons();
+    });
+  }
+
+  public getLicences() {
+    this.helperService.getLicences().subscribe((res: any) => {
+      this.licencesOptions = _.map(res.license, (license) => {
+        return license.name;
+      });
+      this.sessionContext['licencesOptions'] = this.licencesOptions;
     });
   }
 
@@ -168,15 +212,6 @@ export class QuestionListComponent implements OnInit, OnDestroy {
     .subscribe(() => {
       this.handleQuestionTabChange(this.selectedQuestionId);
       this.goToNextQuestionStatus = false;
-    });
-  }
-
-  public getLicences() {
-    this.helperService.getLicences().subscribe((res: any) => {
-      this.licencesOptions = _.map(res.license, (license) => {
-        return license.name;
-      });
-      this.sessionContext['licencesOptions'] = this.licencesOptions;
     });
   }
 
