@@ -11,7 +11,7 @@
     <tr>
       <th (click)="sortColumns('name')" class="five wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'name','descending':sortDirection === 'desc' && column === 'name'}">
-        {{ resourceService?.frmelmnts?.lbl?.content}}
+        {{ resourceService?.frmelmnts?.lbl?.contentLabel}}
       </th>
       <th (click)="sortColumns('creator')" class="four wide UpReviewTableHeader sorted bl-0" [ngClass]="{'ascending':sortDirection === 'asc' && 
       column === 'creator','descending':sortDirection === 'desc' && column === 'creator'}">{{ resourceService?.frmelmnts?.lbl?.creator}}
