@@ -1,0 +1,9 @@
+<app-program-header *ngIf="!showLoader" [headerComponentInput]="headerComponentInput" (emitTabChange)="tabChangeHandler($event)" [appTelemetryImpression]="telemetryImpression"></app-program-header>
+
+
+<ng-container *ngIf="!showLoader && currentStage">
+  <ndc-dynamic [ndcDynamicComponent]="component" [ndcDynamicInputs]="dynamicInputs" [ndcDynamicOutputs]="outputs"></ndc-dynamic>
+</ng-container>
+
+<!-- <app-cbse *ngIf="!showLoader && !showOnboardPopup" [programDetails]="programDetails" [userProfile]="userProfile"></app-cbse> -->
+<app-onboard-popup *ngIf="showOnboardPopup" [programDetails]='programDetails' (updateEvent)="setUserParticipantDetails($event)"></app-onboard-popup>

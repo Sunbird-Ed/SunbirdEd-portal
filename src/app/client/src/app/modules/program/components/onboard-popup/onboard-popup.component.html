@@ -1,0 +1,38 @@
+<sui-modal [mustScroll]="true" [isClosable]="isClosable" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
+  appBodyScroll #modal (dismissed)="modal.deny();close.emit();" *ngIf="formFieldOptions.length" #modal>
+  <div class="sb-modal-header">
+    {{'Please fill the form to continue'}}&lrm;
+  </div>
+  <div class="sb-modal-content onBoardDropdown">
+    <form class="ui form">
+      <div *ngFor="let field of formFieldOptions">
+        <div *ngIf="field.inputType ==='multi-select' " class="field mt-15">
+          <label>{{field.label}}</label>
+          <div class="field">
+            <sui-multi-select id={{field.code}} [isSearchable]=true class="selection"
+              [(ngModel)]="selectedOption[field.code]" [options]="field.range" labelField="name" valueField="name"
+              (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect>
+              <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option"></sui-select-option>
+            </sui-multi-select>
+          </div>
+        </div>
+        <div *ngIf="field.inputType ==='select'" class="field mt-15">
+          <label>{{field.label}}</label>
+          <div class="field">
+            <sui-select [isSearchable]="true" id={{field.code}} name={{field.code}} class="selection" 
+              [(ngModel)]="selectedOption[field.code]" labelField="name" valueField="name"
+              (ngModelChange)="handleFieldChange($event, field)" [options]="field.range" #select>
+              <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option"></sui-select-option>
+            </sui-select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary"
+      [disabled]="!showButton" (click)="handleSubmit()">
+      {{'Submit'}}
+    </button>
+  </div>
+</sui-modal>

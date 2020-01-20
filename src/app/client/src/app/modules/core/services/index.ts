@@ -22,3 +22,4 @@ export * from './channel/channel.service';
 export * from './otp/otp.service';
 export * from './certificate/certificate.service';
 export * from './programs/programs.service';
+export * from './action/action.service';
