@@ -60,7 +60,7 @@
     <div *ngIf="showLoader">
       <app-loader  [data]='loaderMessage'></app-loader>
     </div>
-    <form class="ui form d-flex flex-jc-center">
+    <form class="ui form d-flex flex-jc-center" *ngIf="tncLatestVersionUrl">
       <iframe id="serviceFrameSend" [src]="tncLatestVersionUrl" width="100%" height="600px"  frameborder="0" (load)="isIframeLoaded()" ></iframe>
     </form>
     <div>
