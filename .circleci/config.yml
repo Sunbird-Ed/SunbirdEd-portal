@@ -34,7 +34,7 @@ jobs:
           name: Executing test cases
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
           environment:
-            - NODE_OPTIONS: --max_old_space_size=4096
+            - NODE_OPTIONS: --max_old_space_size=8192
       - run:
           name: install sonar scanner
           command: npm install -g sonarqube-scanner
