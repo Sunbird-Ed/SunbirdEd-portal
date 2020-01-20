@@ -31,6 +31,11 @@ describe('LearnPageComponent', () => {
       'fmsg': {},
       'emsg': {},
       'stmsg': {}
+    },
+    'frmelmnts': {
+      'lbl': {
+        'mytrainings': 'My Trainings'
+      }
     }
   };
   class FakeActivatedRoute {
