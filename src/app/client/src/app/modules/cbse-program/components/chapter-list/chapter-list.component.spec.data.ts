@@ -1,137 +1,25 @@
 export const chapterListComponentInput = {
     sessionContext: {
       framework: 'NCFCOPY',
-      currentRole: 'CONTRIBUTOR',
       programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1',
-      program: 'CBSE 2',
-      onBoardSchool: 'My School',
       board: 'NCERT',
       channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
-      medium: ['English'],
-      gradeLevel: ['Grade 1'],
-      subject: ['English'],
-      topic: null,
-      currentRoleId: 1,
-      frameworkData: [{
-          identifier: 'ncfcopy_board',
-          code: 'board',
-          terms: [{
-              identifier: 'ncfcopy_board_ncert',
-              code: 'ncert',
-              translations: null,
-              name: 'NCERT',
-              description: '',
-              index: 1,
-              category: 'board',
-              status: 'Live'
-            }],
-          translations: null,
-          name: 'Curriculum',
-          description: '',
-          index: 1,
-          status: 'Live'
-        },
-        {
-          identifier: 'ncfcopy_medium',
-          code: 'medium',
-          terms: [{
-                identifier: 'ncfcopy_medium_english',
-                code: 'english',
-                translations: '{"hi":"अंग्रेज़ी"}',
-                name: 'English',
-                description: '',
-                index: 1,
-                category: 'medium',
-                status: 'Live'
-          }],
-          translations: '{"hi":"मध्यम"}',
-          name: 'Medium',
-          description: '',
-          index: 2,
-          status: 'Live'
-        },
-        {
-          identifier: 'ncfcopy_gradelevel',
-          code: 'gradeLevel',
-          terms: [{
-              identifier: 'ncfcopy_gradelevel_grade1',
-              code: 'grade1',
-              translations: null,
-              name: 'Grade 1',
-              description: '',
-              index: 1,
-              category: 'gradeLevel',
-              status: 'Live'
-            }
-          ],
-          translations: '{"hi":"क्रम स्तर"}',
-          name: 'Class',
-          description: 'NCF Gredelevel',
-          index: 3,
-          status: 'Live'
-        },
-        {
-          identifier: 'ncfcopy_subject',
-          code: 'subject',
-          terms: [{
-              identifier: 'ncfcopy_subject_mathematics',
-              code: 'mathematics',
-              translations: null,
-              name: 'Math',
-              description: 'Mathematics',
-              index: 1,
-              category: 'subject',
-              status: 'Live'
-            }],
-          translations: '{"hi":"विषय"}',
-          name: 'Subject',
-          description: '',
-          index: 4,
-          status: 'Live'
-        },
-        {
-          identifier: 'ncfcopy_topic',
-          code: 'topic',
-          terms: [{
-              identifier: 'ncfcopy_topic_topic1',
-              code: 'topic1',
-              translations: null,
-              name: 'Topic, topic 1',
-              description: 'Mathematics',
-              index: 1,
-              category: 'topic',
-              status: 'Live'
-          }],
-          translations: null,
-          name: 'Topic',
-          description: 'Topic',
-          index: 5,
-          status: 'Live'
-        }
-      ],
-      collection: 'do_1127639035982479361130',
-      collectionName: 'बाल रामकथा(HINDHI)',
       hierarchyObj: {
         hierarchy: {
           do_11282684038818201618: {
             // tslint:disable-next-line:max-line-length
-            name: 'Question Bank', contentType: 'TextBookUnit', children: [ 'do_1129159369778708481511', 'do_1129159874804776961789'], root: false
-          },
-          do_1129159369778708481511: {
+            name: 'Question Bank', contentType: 'TextBookUnit', children: [ 'do_1129159369778708481511'], root: false
+          }, do_1129159369778708481511: {
             name: 'Practice Sets', contentType: 'PracticeQuestionSet', children: [], root: false
           },
-          do_1129159874804776961789: {
-            name: 'Practice Sets', contentType: 'PracticeQuestionSet', children: [], root: false
-          }
         }
       },
       topicList: [{
-          identifier: 'ncfcopy_topic_topic1', code: 'topic1', translations: null,
-          name: 'Topic, topic 1', description: 'Mathematics', index: 1, category: 'topic', status: 'Live'
-        },
-        {
-          identifier: 'ncfcopy_topic_topic2', code: 'topic2', translations: null, name: 'Topic 2',
-          description: 'Topic 2', index: 2, category: 'topic', status: 'Live'
+          // tslint:disable-next-line:max-line-length
+          identifier: 'ncfcopy_topic_topic1', code: 'topic1', translations: null, name: 'Topic, topic 1', description: 'Mathematics', index: 1, category: 'topic', status: 'Live'
+        }, {
+          // tslint:disable-next-line:max-line-length
+          identifier: 'ncfcopy_topic_topic2', code: 'topic2', translations: null, name: 'Topic 2', description: 'Topic 2', index: 2, category: 'topic', status: 'Live'
         }]
     },
     collection: {
@@ -139,78 +27,35 @@ export const chapterListComponentInput = {
       image:
         // tslint:disable-next-line:max-line-length
         'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639035982479361130/artifact/photo-1457383457550-47a5cfdbab17_1551955977794.thumb.jpg',
-      description: 'Enter description for TextBook',
-      rating: '0',
       subject: ['Hindi'],
       medium: ['English'],
-      orgDetails: {},
       gradeLevel: 'Kindergarten',
       contentType: 'TextBook',
-      topic: '',
-      subTopic: '',
-      metaData: {
-        identifier: 'do_1127639035982479361130',
-        mimeType: 'application/vnd.ekstep.content-collection',
-        framework: 'NCFCOPY',
-        contentType: 'TextBook'
-      },
-      completionPercentage: 0,
-      mimeTypesCount:
-        '{"application/vnd.ekstep.content-collection":31,"application/vnd.ekstep.ecml-archive":31}',
-      cardImg:
-        // tslint:disable-next-line:max-line-length
-        'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639035982479361130/artifact/photo-1457383457550-47a5cfdbab17_1551955977794.thumb.jpg',
       resourceType: 'Book'
     },
     config: {
-      id: 'ng.sunbird.chapterList',
-      ver: '1.0',
-      compId: 'chapterListComponent',
-      author: 'Kartheek',
-      description: '',
-      publishedDate: '',
-      data: {},
       config: {
         contentTypes: {
           value: [
             {
               id: 'explanationContent',
-              label: 'Explanation',
               onClick: 'uploadComponent',
               mimeType: ['application/pdf'],
               metadata: {
-                name: 'Explanation Resource',
-                description: 'ExplanationResource',
-                resourceType: 'Read',
-                contentType: 'ExplanationResource',
-                audience: ['Learner'],
-                appIcon:
-                  // tslint:disable-next-line:max-line-length
-                  'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
-                marks: 5
+                contentType: 'ExplanationResource'
               },
-              filesConfig: {
-                accepted: 'pdf',
-                size: '50'
-              }
+              filesConfig: { accepted: 'pdf', size: '50' }
             }
           ],
           defaultValue: [
             {
-              id: 'vsaPracticeQuestionContent',
-              label: 'Practice Sets',
-              onClick: 'questionSetComponent',
-              mimeType: ['application/vnd.ekstep.ecml-archive'],
-              metadata: {
-                name: 'Practice QuestionSet',
-                description: 'Practice QuestionSet',
-                resourceType: 'Learn',
-                contentType: 'PracticeQuestionSet',
-                audience: ['Learner'],
-                appIcon: '',
-                marks: 5
-              },
-              questionCategories: ['vsa']
+                id: 'explanationContent',
+                onClick: 'uploadComponent',
+                mimeType: ['application/pdf'],
+                metadata: {
+                  contentType: 'ExplanationResource'
+                },
+                filesConfig: { accepted: 'pdf', size: '50' }
             }
           ]
         }
@@ -231,76 +76,15 @@ export const chapterListComponentInput = {
             tabs: [1]
           }
         ],
-        header: {
-          id: 'ng.sunbird.header',
-          ver: '1.0',
-          compId: 'headerComp',
-          author: 'Venkat',
-          description: '',
-          publishedDate: '',
-          data: {},
-          config: {
-            tabs: [
-              {
+        header: { config: { tabs: [{
                 index: 1,
                 label: 'Contribute',
                 onClick: 'collectionComponent',
                 visibility: true
-              }
-            ]
-          }
-        },
+        }]}},
         components: [
           {
-            id: 'ng.sunbird.collection',
-            ver: '1.0',
-            compId: 'collectionComponent',
-            author: 'Venkat',
-            description: '',
-            publishedDate: '',
-            data: {},
             config: {
-              filters: {
-                implicit: [
-                  {
-                    code: 'framework',
-                    defaultValue: 'NCFCOPY',
-                    label: 'Framework'
-                  },
-                  {
-                    code: 'board',
-                    defaultValue: 'NCERT',
-                    label: 'Board'
-                  },
-                  {
-                    code: 'medium',
-                    defaultValue: ['English'],
-                    label: 'Medium'
-                  }
-                ],
-                explicit: [
-                  {
-                    code: 'gradeLevel',
-                    range: ['Grade 1', 'Grade 2', 'Grade 3'],
-                    label: 'Class',
-                    multiselect: false,
-                    defaultValue: ['Grade 1'],
-                    visibility: true
-                  },
-                  {
-                    code: 'subject',
-                    range: ['English', 'Maths'],
-                    label: 'Subject',
-                    multiselect: false,
-                    defaultValue: ['English'],
-                    visibility: true
-                  }
-                ]
-              },
-              groupBy: {
-                value: 'subject',
-                defaultValue: 'subject'
-              },
               collectionType: 'Textbook',
               collectionList: [],
               status: ['Draft', 'Live']
@@ -308,118 +92,30 @@ export const chapterListComponentInput = {
           },
           {
             id: 'ng.sunbird.chapterList',
-            ver: '1.0',
-            compId: 'chapterListComponent',
-            author: 'Kartheek',
-            description: '',
-            publishedDate: '',
-            data: {},
             config: {
               contentTypes: {
-                value: [
-                  {
+                value: [{
                     id: 'explanationContent',
-                    label: 'Explanation',
                     onClick: 'uploadComponent',
                     mimeType: ['application/pdf'],
                     metadata: {
                       name: 'Explanation Resource',
-                      description: 'ExplanationResource',
-                      resourceType: 'Read',
-                      contentType: 'ExplanationResource',
-                      audience: ['Learner'],
-                      appIcon:
-                        // tslint:disable-next-line:max-line-length
-                        'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291553051403878414/artifact/explanation.thumb_1576602846206.png',
-                      marks: 5
+                      contentType: 'ExplanationResource'
                     },
-                    filesConfig: {
-                      accepted: 'pdf',
-                      size: '50'
-                    }
-                  }
-                ],
-                defaultValue: [
-                  {
-                    id: 'vsaPracticeQuestionContent',
-                    label: 'Practice Sets',
-                    onClick: 'questionSetComponent',
-                    mimeType: ['application/vnd.ekstep.ecml-archive'],
+                    filesConfig: { accepted: 'pdf', size: '50' }
+                }],
+                defaultValue: [{
+                    id: 'explanationContent',
+                    onClick: 'uploadComponent',
+                    mimeType: ['application/pdf'],
                     metadata: {
-                      name: 'Practice QuestionSet',
-                      description: 'Practice QuestionSet',
-                      resourceType: 'Learn',
-                      contentType: 'PracticeQuestionSet',
-                      audience: ['Learner'],
-                      appIcon: '',
-                      marks: 5
+                      name: 'Explanation Resource',
+                      contentType: 'ExplanationResource'
                     },
-                    questionCategories: ['vsa']
-                  }
-                ]
+                    filesConfig: { accepted: 'pdf', size: '50' }
+                  }]
               }
             }
-          },
-          {
-            id: 'ng.sunbird.uploadComponent',
-            ver: '1.0',
-            compId: 'uploadContentComponent',
-            author: 'Kartheek',
-            description: '',
-            publishedDate: '',
-            data: {},
-            config: {
-              filesConfig: {
-                accepted: 'pdf, mp4, webm, youtube',
-                size: '50'
-              },
-              formConfiguration: [
-                {
-                  code: 'learningOutcome',
-                  dataType: 'list',
-                  description: 'Learning Outcomes For The Content',
-                  editable: true,
-                  inputType: 'multiselect',
-                  label: 'Learning Outcome',
-                  name: 'LearningOutcome',
-                  placeholder: 'Select Learning Outcomes',
-                  required: false,
-                  visible: true
-                }
-              ]
-            }
-          },
-          {
-            id: 'ng.sunbird.practiceSetComponent',
-            ver: '1.0',
-            compId: 'practiceSetComponent',
-            author: 'Kartheek',
-            description: '',
-            publishedDate: '',
-            data: {},
-            config: {
-              'No of options': 4,
-              solutionType: ['Video', 'Text & image'],
-              questionCategory: ['vsa', 'sa', 'ls', 'mcq', 'curiosity'],
-              formConfiguration: [
-                {
-                  code: 'LearningOutcome',
-                  range: [],
-                  label: 'Learning Outcome',
-                  multiselect: false
-                }
-              ]
-            }
-          },
-          {
-            id: 'ng.sunbird.dashboard',
-            ver: '1.0',
-            compId: 'dashboardComp',
-            author: 'Venkanna Gouda',
-            description: '',
-            publishedDate: '',
-            data: {},
-            config: {}
           }
         ],
         actions: {
@@ -515,14 +211,10 @@ export const chapterListComponentInput = {
       },
       defaultRoles: ['CONTRIBUTOR'],
       description: 'CBSE program',
-      endDate: null,
-      imagePath: null,
       name: 'CBSE 2',
       rootOrgId: 'ORG_001',
-      rootOrgName: 'Test Rootorg',
       slug: 'sunbird',
       startDate: '2019-12-20T07:20:30.000Z',
-      status: null,
       type: 'private',
       userDetails: {
         programId: '4bc66d00-279f-11ea-8e51-77f851f90140',
