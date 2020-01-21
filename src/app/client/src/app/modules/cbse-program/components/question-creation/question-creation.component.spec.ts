@@ -14,9 +14,6 @@ import {RouterModule} from '@angular/router';
 import { ConfigService, ResourceService, ToasterService, BrowserCacheTtlService} from '@sunbird/shared';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { CacheService } from 'ng2-cache-service';
-import {
-  role, sessionContext, responseSample, fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample
-} from '../chapter-list/chapter-list.component.spec.data';
 import {SanitizeHtmlPipe} from '../../../cbse-program/pipe/sanitize-html.pipe';
 
 describe('QuestionCreationComponent', () => {
@@ -37,8 +34,8 @@ describe('QuestionCreationComponent', () => {
      beforeEach(() => {
     fixture = TestBed.createComponent(QuestionCreationComponent);
     component = fixture.componentInstance;
-    component.sessionContext = sessionContext;
-    component.role = role;
+    // component.sessionContext = sessionContext;
+    // component.role = role;
 
     fixture.detectChanges();
   });

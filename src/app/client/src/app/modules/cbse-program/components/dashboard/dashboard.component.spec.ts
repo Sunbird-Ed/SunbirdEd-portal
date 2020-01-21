@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  ResourceService, ToasterService, SharedModule, ConfigService,
+  ResourceService, ToasterService, ConfigService,
   UtilService, BrowserCacheTtlService, NavigationHelperService
 } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
@@ -12,10 +12,9 @@ import { DashboardComponent } from './dashboard.component';
 import { FormsModule } from '@angular/forms';
 import { AppLoaderComponent } from '../../../shared/components/app-loader/app-loader.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { role, sessionContext, sampleTextbook, textbookList,
-  programContext, chapterlistSample, textbookMeta } from './dashboard.component.spec.data';
+import { sessionContext, sampleTextbook, textbookList, programContext } from './dashboard.component.spec.data';
 import { of as observableOf, throwError as observableError } from 'rxjs';
-import { CoreModule, ActionService, UserService, PublicDataService, ContentService } from '@sunbird/core';
+import { ActionService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ExportToCsv } from 'export-to-csv';
 

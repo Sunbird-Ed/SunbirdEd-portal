@@ -6,9 +6,8 @@ import { DynamicModule } from 'ng-dynamic-component';
 import { ProgramComponent } from './program.component';
 import * as _ from 'lodash-es';
 import {  throwError , of } from 'rxjs';
-import { first } from 'rxjs/operators';
 // tslint:disable-next-line:max-line-length
-import { addParticipentResponseSample, programSession, userDetails, userProfile,  frameWorkData, programDetailsWithOutUserDetails,
+import { addParticipentResponseSample, userProfile,  frameWorkData, programDetailsWithOutUserDetails,
   programDetailsWithOutUserAndForm, extFrameWorkPostData, programDetailsWithUserDetails } from './program.component.spec.data';
 import { DebugElement } from '@angular/core';
 import { CollectionComponent } from '../../../cbse-program/components/collection/collection.component';
@@ -16,12 +15,11 @@ import { ProgramHeaderComponent } from '../program-header/program-header.compone
 import { OnboardPopupComponent } from '../onboard-popup/onboard-popup.component';
 // tslint:disable-next-line:prefer-const
 let errorInitiate, de: DebugElement;
-import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { componentHostSyntheticProperty } from '@angular/core/src/render3';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const userServiceStub = {
   get() {

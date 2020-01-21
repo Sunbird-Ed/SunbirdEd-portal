@@ -1,6 +1,3 @@
-export const role = {
-    currentRole: 'PUBLISHER'
-  };
 
   export const sessionContext = {
     bloomsLevel: undefined,
@@ -207,31 +204,6 @@ export const role = {
       facets: [{ values: [{ count: 66, name: 'topic 1' }] }]
     }
   };
-
-  export const chapterlistSample = [
-    {
-      identifier: 'do_1127639059664568321138',
-      la: { name: 'la', total: 0, me: 0, attention: 0 },
-      mcq: { name: 'mcq', total: 0, me: 0, attention: 0 },
-      name: 'दो वरदान',
-      sa: { name: 'sa', total: 0, me: 0, attention: 0 },
-      topic: 'Topic 1 child',
-      vsa: { name: 'vsa', total: 0, me: 0, attention: 0 }
-    }
-  ];
-
-  export const textbookMeta = [
-    {
-      identifier: 'do_1127639059664486401136',
-      name: 'अवधपुरी मे राम',
-      topic: 'Topic 1'
-    },
-    {
-      identifier: 'do_1127639059664568321137',
-      name: 'जंगल और जनकपुर',
-      topic: 'Topic 2'
-    }
-  ];
 
   export const programContext = {
     programId: '4bc66d00-279f-11ea-8e51-77f851f90140',

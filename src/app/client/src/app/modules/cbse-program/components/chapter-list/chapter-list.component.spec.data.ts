@@ -3119,26 +3119,6 @@ export const chapterListComponentInput = {
   }
 };
 
-export const role = {
-  currentRole: 'CONTRIBUTOR'
-};
-
-export const sessionContext = {
-  bloomsLevel: undefined,
-  board: 'NCERT',
-  channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
-  currentRole: 'REVIEWER',
-  framework: 'NCFCOPY',
-  gradeLevel: 'Kindergarten',
-  medium: 'English',
-  onBoardSchool: undefined,
-  program: 'CBSE',
-  programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1',
-  subject: 'Hindi',
-  textbook: 'do_1127639035982479361130',
-  collection: 'do_1127639035982479361130'
-};
-
 export const responseSample = {
   result: {
     content: {
@@ -3197,28 +3177,6 @@ export const responseSample = {
           visibility: 'Parent'
         },
         {
-          // children: [
-          //   {
-          //     children: [],
-          //     code: "30bc460c-8d92-4865-9097-bd64b772bb24",
-          //     contentType: "TextBookUnit",
-          //     createdOn: "2020-01-09T16:58:16.559+0000",
-          //     depth: 2,
-          //     dialcodeRequired: "No",
-          //     framework: "NCFCOPY",
-          //     identifier: "do_112931801879011328152",
-          //     index: 3,
-          //     lastStatusChangedOn: "2020-01-09T16:58:16.559+0000",
-          //     lastUpdatedOn: "2020-01-09T16:58:16.559+0000",
-          //     mimeType: "application/vnd.ekstep.content-collection",
-          //     name: "Unit 1.1",
-          //     parent: "do_112931687703855104137",
-          //     status: "Draft",
-          //     topic: ["Topic 2"],
-          //     versionKey: "1578589096559",
-          //     visibility: "Parent"
-          //   }
-          // ],
           code: '93910a43-2c5c-4cc5-a438-63489dab41c8',
           contentType: 'TextBookUnit',
           createdOn: '2019-05-17T11:53:10.046+0000',
@@ -3241,29 +3199,11 @@ export const responseSample = {
           ]
         }
       ],
-      code: 'org.sunbird.L9HqTc',
-      compatibilityLevel: 1,
-      consumerId: '9393568c-3a56-47dd-a9a3-34da3c821638',
-      contentDisposition: 'inline',
-      contentEncoding: 'gzip',
       contentType: 'TextBook',
-      createdBy: '874ed8a5-782e-4f6c-8f36-e0288455901e',
-      createdFor: ['ORG_001'],
-      createdOn: '2019-05-17T11:48:20.958+0000',
       creator: 'Creation',
-      depth: 0,
-      description: 'Enter description for TextBook',
-      dialcodeRequired: 'No',
       framework: 'NCFCOPY',
       gradeLevel: ['Kindergarten'],
-      idealScreenDensity: 'hdpi',
-      idealScreenSize: 'normal',
       identifier: 'do_1127639035982479361130',
-      language: ['English'],
-      lastStatusChangedOn: '2019-05-17T11:55:29.702+0000',
-      lastUpdatedBy: '874ed8a5-782e-4f6c-8f36-e0288455901e',
-      lastUpdatedOn: '2019-05-17T12:19:32.854+0000',
-      lockKey: 'eed6ec88-b388-42c1-aa23-3b24b03c9b89',
       mediaType: 'content',
       medium: ['English'],
       mimeType: 'application/vnd.ekstep.content-collection',
@@ -3290,33 +3230,6 @@ export const fetchedQueCount = {
     facets: [{ values: [{ count: 66, name: 'topic 1' }] }]
   }
 };
-
-export const chapterlistSample = [
-  {
-    identifier: 'do_1127639059664568321138',
-    la: { name: 'la', total: 0, me: 0, attention: 0 },
-    mcq: { name: 'mcq', total: 0, me: 0, attention: 0 },
-    name: 'दो वरदान',
-    sa: { name: 'sa', total: 0, me: 0, attention: 0 },
-    topic: 'Topic 1 child',
-    vsa: { name: 'vsa', total: 0, me: 0, attention: 0 }
-  }
-];
-
-export const textbookMeta = [
-  {
-    identifier: 'do_1127639059664486401136',
-    name: 'अवधपुरी मे राम',
-    topic: 'Topic 1'
-  },
-  {
-    identifier: 'do_1127639059664568321137',
-    name: 'जंगल और जनकपुर',
-    topic: 'Topic 2'
-  }
-];
-
-export const routerQuestionCategorySample = ['vsa', 'sa', 'la', 'mcq'];
 
 export const templateSelectionEvent = {
   template: 'explanationContent',
