@@ -1,5 +1,6 @@
 
 
+
 <div *ngIf="!showLoader && !showError && currentStage === 'collectionComponent'">
 
   <div class="state-medium-container sb-bg-color-white">
@@ -62,7 +63,7 @@
   </div>
 </div>
 
-<div *ngIf="currentStage !== 'collectionComponent'">
+<div *ngIf="currentStage !== 'collectionComponent'" style="margin-bottom:-60px;">
   <app-chapter-list [chapterListComponentInput]="chapterListComponentInput" (selectedQuestionTypeTopic)="selectedQuestionTypeTopic"></app-chapter-list>
 </div>
 
