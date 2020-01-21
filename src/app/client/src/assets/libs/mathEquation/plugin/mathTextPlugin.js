@@ -53,6 +53,9 @@ export default class MathText extends Plugin {
         var iframeBackdrop = document.createElement('div');
         iframeBackdrop.id = 'iframeBackdrop';
         iframeBackdrop.style = "background-color: #00000040;width: 100%;height: 100%;position: fixed;top: 0;left: 0;z-index: 1000;";
+        iframeBackdrop.onclick = function () {
+            that._removeIframeModal();
+        };
         document.body.appendChild(iframeBackdrop);
         iframe.onload = function() {  
             iframeObj = this;
