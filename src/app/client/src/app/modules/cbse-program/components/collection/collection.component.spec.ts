@@ -10,6 +10,7 @@ import { DynamicModule } from 'ng-dynamic-component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ContentService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
+// tslint:disable-next-line:max-line-length
 // import { collectionComponentInput, collectionWithCard , collectionList, searchCollectionResponse} from './collection.component.spec.data';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
