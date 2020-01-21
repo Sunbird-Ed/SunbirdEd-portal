@@ -2,12 +2,12 @@
     <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); initializeDropdown()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
     <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Preview</button>
 </div> -->
-<app-question-creation-header *ngIf="questionMetaData && !showPreview" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
+<app-question-creation-header *ngIf="questionMetaData && !showPreview" [telemetryEventsInput]="telemetryEventsInput" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
 
 <app-question-preview *ngIf="showPreview" [sessionContext]="sessionContext">
 </app-question-preview>
 
-<form class="ui form mt-8 licence-form" [formGroup]="questionMetaForm">
+<form class="ui form mt-8 licence-form" [formGroup]="questionMetaForm" [appTelemetryImpression]="telemetryImpression">
     <!-- Question Editor Section HTML -->
     <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode && !showPreview">
         <label *ngIf="showFormError && [undefined, ''].includes(editorState.question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
@@ -205,7 +205,13 @@
     </div>
 
     <div class='practical-sb-buttons'>
-        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal mr-8" (click)="showRequestChangesPopup = true">
+        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal mr-8" (click)="showRequestChangesPopup = true"
+        appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('reject-question', 'click', 'question-creation')"
+        [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+        [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+        >
             {{ questionMetaData.data.rejectComment === '' ? 'Request Changes' : 'Edit Comments' }}
         </button>
     </div>

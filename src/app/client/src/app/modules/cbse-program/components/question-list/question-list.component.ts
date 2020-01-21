@@ -4,7 +4,7 @@ import { FormGroup, FormArray, FormBuilder, Validators, NgForm, FormControl } fr
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { UserService, ActionService, ContentService } from '@sunbird/core';
-import { TelemetryService } from '@sunbird/telemetry';
+import { TelemetryService} from '@sunbird/telemetry';
 import { tap, map, catchError, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
@@ -63,13 +63,14 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
   public contentRejectComment: string;
   public practiceSetConfig: any;
   public goToNextQuestionStatus = true;
+  public telemetryEventsInput: any = {};
   previewBtnVisibility = true;
   visibility: any;
   telemetryImpression: any;
   public telemetryPageId = 'question-list';
 
   constructor(
-    public configService: ConfigService, public userService: UserService,
+    private configService: ConfigService, private userService: UserService,
     public actionService: ActionService,
     private cdr: ChangeDetectorRef, public toasterService: ToasterService,
     public telemetryService: TelemetryService, private fb: FormBuilder,
@@ -96,6 +97,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.sessionContext.practiceSetConfig = this.practiceSetConfig;
     this.getContentMetadata(this.sessionContext.resourceIdentifier);
     this.getLicences();
+    this.preprareTelemetryEvents();
   }
 
   ngAfterViewInit() {
@@ -121,6 +123,15 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       };
      });
+  }
+
+  public preprareTelemetryEvents() {
+    // tslint:disable-next-line:max-line-length
+    this.telemetryEventsInput.telemetryInteractObject = this.programTelemetryService.getTelemetryInteractObject(this.sessionContext.collection, 'Content', '1.0');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryEventsInput.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata('Program', this.programContext.userDetails.programId);
+    // tslint:disable-next-line:max-line-length
+    this.telemetryEventsInput.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
   }
 
   getContentMetadata(contentId: string) {
@@ -350,6 +361,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
       delete this.questionReadApiDetails[event.identifier];
       this.saveContent(event.type);
       this.previewBtnVisibility = false;
+      this.goToNextQuestionStatus = true;
       return;
     }
 
@@ -513,7 +525,13 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     setTimeout(() => this.changeStage.emit('prev'), 0);
   }
 
-  openDeleteQuestionModal(identifier: string) {
+  openDeleteQuestionModal(event, identifier: string) {
+    event.stopPropagation();
+
+    if (identifier !== this.selectedQuestionId) {
+      if (!this.checkCurrentQuestionStatus()) { return ; }
+    }
+
     this.deleteAssessmentItemIdentifier = identifier;
     console.log(this.deleteAssessmentItemIdentifier);
     this.showDeleteQuestionModal = true;
@@ -532,6 +550,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
       if (res.responseCode === 'OK') {
         this.showDeleteQuestionModal = false;
         this.toasterService.success('Question deleted successfully');
+        this.goToNextQuestionStatus = true;
         this.fetchQuestionList();
       }
     }, error => {

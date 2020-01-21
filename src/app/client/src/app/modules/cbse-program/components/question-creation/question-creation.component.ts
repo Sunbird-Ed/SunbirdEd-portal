@@ -3,7 +3,7 @@ import {
   OnChanges, AfterViewChecked, ChangeDetectorRef, ElementRef, ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Validators, FormGroup, FormControl, NgForm, FormArray, FormBuilder } from '@angular/forms';
@@ -15,6 +15,7 @@ import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
 import { CbseProgramService } from '../../services';
 import { HelperService } from '../../services/helper.service';
+import { ProgramTelemetryService } from '../../../program/services';
 
 @Component({
   selector: 'app-question-creation',
@@ -22,6 +23,17 @@ import { HelperService } from '../../services/helper.service';
   styleUrls: ['./question-creation.component.scss']
 })
 export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChanges, AfterViewChecked {
+
+  @Input() tabIndex: any;
+  @Input() questionMetaData: any;
+  @Output() questionStatus = new EventEmitter<any>();
+  @Output() questionFormChangeStatus = new EventEmitter<any>();
+  @Input() sessionContext: any;
+  @Input() telemetryEventsInput: any;
+  @Input() role: any;
+  @ViewChild('author_names') authorName;
+  @ViewChild('reuestChangeForm') ReuestChangeForm: NgForm;
+
   public userProfile: IUserProfile;
   public publicDataService: PublicDataService;
   private toasterService: ToasterService;
@@ -41,14 +53,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public selectionFields: Array<any>;
   public multiSelectionFields: Array<any>;
   public rejectComment: string;
-  @Input() tabIndex: any;
-  @Input() questionMetaData: any;
-  @Output() questionStatus = new EventEmitter<any>();
-  @Output() questionFormChangeStatus = new EventEmitter<any>();
-  @Input() sessionContext: any;
-  @Input() role: any;
-  @ViewChild('author_names') authorName;
-  @ViewChild('reuestChangeForm') ReuestChangeForm: NgForm;
   questionMetaForm: FormGroup;
   enableSubmitBtn = false;
   initialized = false;
@@ -94,19 +98,17 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     'type': 'video',
     'value': 'video'
   }];
+  telemetryImpression: any;
+  public telemetryPageId = 'question-creation';
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private userService: UserService,
-    private configService: ConfigService,
-    private http: HttpClient,
-    private cbseService: CbseProgramService,
-    private formBuilder: FormBuilder,
-    publicDataService: PublicDataService,
-    toasterService: ToasterService,
-    resourceService: ResourceService, public telemetryService: TelemetryService,
-    public actionService: ActionService, private cdr: ChangeDetectorRef, private helperService: HelperService
+    private userService: UserService, private configService: ConfigService,
+    private http: HttpClient, private cbseService: CbseProgramService,
+    private formBuilder: FormBuilder, publicDataService: PublicDataService,
+    toasterService: ToasterService, resourceService: ResourceService, public telemetryService: TelemetryService,
+    public actionService: ActionService, private cdr: ChangeDetectorRef, private helperService: HelperService,
+    public programTelemetryService: ProgramTelemetryService, public activeRoute: ActivatedRoute,
+    public router: Router, private navigationHelperService: NavigationHelperService
   ) {
     this.userService = userService;
     this.configService = configService;
@@ -151,6 +153,85 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
     this.userName = this.setUserName();
+  }
+
+  ngAfterViewInit() {
+    this.initializeDropdown();
+    if (this.isReadOnlyMode) {
+      const windowData: any = window;
+      const el = document.getElementsByClassName('ckeditor-tool__solution__body');
+      for (let i = 0; i < el.length; i++) {
+        windowData.com.wiris.js.JsPluginViewer.parseElement(el[i], true, () => {});
+      }
+    }
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const telemetryCdata = this.telemetryEventsInput.telemetryInteractCdata;
+     setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activeRoute.snapshot.data.telemetry.env,
+          cdata: telemetryCdata || [],
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: `${this.configService.appConfig.TELEMETRY.PID}.programs`
+          }
+        },
+        edata: {
+          type: _.get(this.activeRoute, 'snapshot.data.telemetry.type'),
+          pageid: this.telemetryPageId,
+          uri: this.router.url,
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+     });
+  }
+
+  ngOnChanges() {
+    this.componentConfiguration =  _.get(this.sessionContext, 'practiceSetConfig');
+    if (this.initialized) {
+      this.editorConfig = { 'mode': 'create' };
+      this.editorState = {
+        question : '',
+        answer: '',
+        solutions: ''
+      };
+      this.manageFormConfiguration();
+      if (this.questionMetaData && this.questionMetaData.data) {
+        this.editorState.question = this.questionMetaData.data.editorState.question;
+        this.editorState.answer = this.questionMetaData.data.editorState.answer;
+        if (!_.isEmpty(this.questionMetaData.data.editorState.solutions)) {
+          const editor_state = this.questionMetaData.data.editorState;
+          this.editorState.solutions = editor_state.solutions[0].value;
+          this.solutionUUID = editor_state.solutions[0].id;
+          this.selectedSolutionType = editor_state.solutions[0].type;
+          this.showSolutionDropDown = false;
+          if (this.selectedSolutionType === 'video') {
+            const index = _.findIndex(this.questionMetaData.data.media, (o) => {
+               return o.type === 'video';
+            });
+            this.videoSolutionName = this.questionMetaData.data.media[index].name;
+            this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
+          }
+        } else {
+          this.editorState.solutions = '';
+          this.selectedSolutionType = '';
+        }
+
+        this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
+      } else {
+        this.questionMetaForm.reset();
+      }
+      this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
+    }
+  }
+
+  ngAfterViewChecked() {
+    if (!this.showPreview && this.prevShowPreview) {
+      this.initializeDropdown();
+    }
+    this.prevShowPreview = this.showPreview;
   }
 
   setUserName() {
@@ -200,60 +281,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.editorState.solutions = '';
   }
 
-  ngAfterViewInit() {
-    this.initializeDropdown();
-    if (this.isReadOnlyMode) {
-      const windowData: any = window;
-      const el = document.getElementsByClassName('ckeditor-tool__solution__body');
-      for (let i = 0; i < el.length; i++) {
-        windowData.com.wiris.js.JsPluginViewer.parseElement(el[i], true, () => {});
-      }
-    }
-  }
-  ngOnChanges() {
-    this.componentConfiguration =  _.get(this.sessionContext, 'practiceSetConfig');
-    if (this.initialized) {
-      this.editorConfig = { 'mode': 'create' };
-      this.editorState = {
-        question : '',
-        answer: '',
-        solutions: ''
-      };
-      this.manageFormConfiguration();
-      if (this.questionMetaData && this.questionMetaData.data) {
-        this.editorState.question = this.questionMetaData.data.editorState.question;
-        this.editorState.answer = this.questionMetaData.data.editorState.answer;
-        if (!_.isEmpty(this.questionMetaData.data.editorState.solutions)) {
-          const editor_state = this.questionMetaData.data.editorState;
-          this.editorState.solutions = editor_state.solutions[0].value;
-          this.solutionUUID = editor_state.solutions[0].id;
-          this.selectedSolutionType = editor_state.solutions[0].type;
-          this.showSolutionDropDown = false;
-          if (this.selectedSolutionType === 'video') {
-            const index = _.findIndex(this.questionMetaData.data.media, (o) => {
-               return o.type === 'video';
-            });
-            this.videoSolutionName = this.questionMetaData.data.media[index].name;
-            this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
-          }
-        } else {
-          this.editorState.solutions = '';
-          this.selectedSolutionType = '';
-        }
-
-        this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
-      } else {
-        this.questionMetaForm.reset();
-      }
-      this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
-    }
-  }
-  ngAfterViewChecked() {
-    if (!this.showPreview && this.prevShowPreview) {
-      this.initializeDropdown();
-    }
-    this.prevShowPreview = this.showPreview;
-  }
   initializeDropdown() {
     (<any>$('.ui.checkbox')).checkbox();
   }

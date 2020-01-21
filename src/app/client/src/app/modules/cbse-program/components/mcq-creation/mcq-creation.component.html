@@ -4,7 +4,7 @@
 <app-question-preview *ngIf="showPreview" [sessionContext]="sessionContext">
 </app-question-preview>
 
-<div *ngIf='showForm'>
+<div *ngIf='showForm' [appTelemetryImpression]="telemetryImpression">
   <form  class="ui form mcq-vertical mt-8 licence-form" [formGroup]="questionMetaForm">
     
     <!-- Question Editor Section HTML -->
@@ -320,7 +320,13 @@
     </div>
 
     <div class='practical-sb-buttons'>
-        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal mr-8" (click)="showRequestChangesPopup = true">
+        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal mr-8" (click)="showRequestChangesPopup = true"
+        appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('reject-question', 'click', 'mcq-creation')"
+        [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+        [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+        >
             {{  rejectComment === '' ? 'Request Changes' : 'Edit Comments' }}
         </button>
     </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnChanges, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { McqForm } from './../../class/McqForm';
-import { ConfigService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
+import { ConfigService, IUserData, IUserProfile, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { UserService, ActionService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -12,6 +13,7 @@ import { map, catchError } from 'rxjs/operators';
 import { CbseProgramService } from '../../services';
 import { Validators, FormGroup, FormArray, FormBuilder, NgForm } from '@angular/forms';
 import { mcqTemplateConfig } from '../mcq-template-selection/mcq-template-data';
+import { ProgramTelemetryService } from '../../../program/services';
 
 @Component({
   selector: 'app-mcq-creation',
@@ -20,6 +22,7 @@ import { mcqTemplateConfig } from '../mcq-template-selection/mcq-template-data';
 })
 export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() sessionContext: any;
+  @Input() telemetryEventsInput: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
   @Output() questionFormChangeStatus = new EventEmitter<any>();
@@ -79,12 +82,15 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     'value': 'video'
   }];
   solutionValue: string;
+  telemetryImpression: any;
+  public telemetryPageId = 'mcq-creation';
 
   constructor(public configService: ConfigService, private http: HttpClient,
     private userService: UserService, public actionService: ActionService,
     public toasterService: ToasterService, private cdr: ChangeDetectorRef, private cbseService: CbseProgramService,
-    private formBuilder: FormBuilder,
-    public telemetryService: TelemetryService) {
+    private formBuilder: FormBuilder, public telemetryService: TelemetryService,
+    public activeRoute: ActivatedRoute, public programTelemetryService: ProgramTelemetryService, 
+    public router: Router, private navigationHelperService: NavigationHelperService) {
   }
 
   initForm() {
@@ -136,6 +142,30 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         windowData.com.wiris.js.JsPluginViewer.parseElement(el[i], true, () => {});
       }
     }
+
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const telemetryCdata = this.telemetryEventsInput.telemetryInteractCdata;
+     setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activeRoute.snapshot.data.telemetry.env,
+          cdata: telemetryCdata || [],
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: `${this.configService.appConfig.TELEMETRY.PID}.programs`
+          }
+        },
+        edata: {
+          type: _.get(this.activeRoute, 'snapshot.data.telemetry.type'),
+          pageid: this.telemetryPageId,
+          uri: this.router.url,
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+     });
+
   }
 
   ngOnChanges() {
