@@ -174,20 +174,25 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     return userName;
   }
   videoDataOutput(event) {
-    this.videoShow = false;
-    this.videoSolutionData = event;
-    this.videoSolutionName = event.name;
-    this.solutionValue = event.identifier;
-    this.videoThumbnail = event.thumbnail;
-    const videoMedia: any = {};
-    videoMedia.id = event.identifier;
-    videoMedia.src = event.downloadUrl;
-    videoMedia.type = 'video';
-    videoMedia.assetId = event.identifier;
-    videoMedia.name = event.name;
-    videoMedia.thumbnail = this.videoThumbnail;
-    this.mediaArr.push(videoMedia);
-    this.showSolutionDropDown = false;
+    if(event){
+      this.videoShow = false;
+      this.videoSolutionData = event;
+      this.videoSolutionName = event.name;
+      this.solutionValue = event.identifier;
+      this.videoThumbnail = event.thumbnail;
+      const videoMedia: any = {};
+      videoMedia.id = event.identifier;
+      videoMedia.src = event.downloadUrl;
+      videoMedia.type = 'video';
+      videoMedia.assetId = event.identifier;
+      videoMedia.name = event.name;
+      videoMedia.thumbnail = this.videoThumbnail;
+      this.mediaArr.push(videoMedia);
+      this.showSolutionDropDown = false;
+    }else{
+      this.deleteSolution();
+      this.videoShow = false;
+    }
   }
   selectSolutionType(data: any) {
     const index = _.findIndex(this.solutionTypes, (sol: any) => {
@@ -205,6 +210,8 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     this.showSolutionDropDown = true;
     this.selectedSolutionType = '';
     this.solutionValue = '';
+    this.videoSolutionName = '';
+    this.videoThumbnail = '';
   }
 
   handleReviewrStatus(event) {

@@ -177,26 +177,34 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   videoDataOutput(event) {
-    this.videoShow = false;
-    this.videoSolutionData = event;
-    this.videoSolutionName = event.name;
-    this.editorState.solutions = event.identifier;
-    this.videoThumbnail = event.thumbnail;
-    const videoMedia: any = {};
-    videoMedia.id = event.identifier;
-    videoMedia.src = event.downloadUrl;
-    videoMedia.type = 'video';
-    videoMedia.assetId = event.identifier;
-    videoMedia.name = event.name;
-    videoMedia.thumbnail = this.videoThumbnail;
-    this.mediaArr.push(videoMedia);
-    this.showSolutionDropDown = false;
+    if(event){
+      this.videoShow = false;
+      this.videoSolutionData = event;
+      this.videoSolutionName = event.name;
+      this.editorState.solutions = event.identifier;
+      this.videoThumbnail = event.thumbnail;
+      const videoMedia: any = {};
+      videoMedia.id = event.identifier;
+      videoMedia.src = event.downloadUrl;
+      videoMedia.type = 'video';
+      videoMedia.assetId = event.identifier;
+      videoMedia.name = event.name;
+      videoMedia.thumbnail = this.videoThumbnail;
+      this.mediaArr.push(videoMedia);
+      this.showSolutionDropDown = false;
+    }else{
+      this.deleteSolution();
+      this.videoShow = false;
+    }
   }
 
   deleteSolution() {
     this.showSolutionDropDown = true;
     this.selectedSolutionType = '';
     this.editorState.solutions = '';
+    this.videoSolutionName = '';
+    this.editorState.solutions = '';
+    this.videoThumbnail ='';
   }
 
   ngAfterViewInit() {
