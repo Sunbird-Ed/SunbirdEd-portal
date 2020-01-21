@@ -143,7 +143,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           subtype: 'auto',
         });
       }),
-      mergeMap(params => this.dialCodeService.searchDialCode(_.get(params, 'dialCode'), this.isBrowse)
+      mergeMap(param => this.dialCodeService.searchDialCode(_.get(param, 'dialCode'), this.isBrowse)
         .pipe(
           tap(value => {
             this.logInteractEvent({
