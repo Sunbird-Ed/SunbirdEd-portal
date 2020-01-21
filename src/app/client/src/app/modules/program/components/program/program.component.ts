@@ -1,14 +1,13 @@
 import { ExtPluginService, UserService, FrameworkService } from '@sunbird/core';
-import { Component, OnInit, EventEmitter, Output, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { Subject } from 'rxjs';
 import { tap, map, first } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { ICollectionComponentInput, IDashboardComponentInput } from '../../../cbse-program/interfaces';
 import { InitialState, ISessionContext, IUserParticipantDetails } from '../../interfaces';
-import { ProgramStageService } from '../../services/';
+import { ProgramStageService, ProgramComponentsService } from '../../services/';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;
@@ -54,6 +53,7 @@ export class ProgramComponent implements OnInit, OnDestroy, AfterViewInit {
     public configService: ConfigService, public activatedRoute: ActivatedRoute, private router: Router,
     public extPluginService: ExtPluginService, public userService: UserService,
     public toasterService: ToasterService, public programStageService: ProgramStageService,
+    public programComponentsService: ProgramComponentsService,
     private navigationHelperService: NavigationHelperService) {
     this.programId = this.activatedRoute.snapshot.params.programId;
     localStorage.setItem('programId', this.programId);
@@ -207,7 +207,7 @@ export class ProgramComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.tabs && this.programDetails.userDetails) {
         this.defaultView = _.find(this.tabs, { 'index': this.getDefaultActiveTab() });
         this.programStageService.addStage(this.defaultView.onClick);
-        this.component = this.componentMapping[this.defaultView.onClick];
+        this.component = this.programComponentsService.getComponentInstance(this.defaultView.onClick);
       }
       this.initiateInputs();
     } else {
@@ -226,7 +226,7 @@ export class ProgramComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   tabChangeHandler(e) {
-    this.component = this.componentMapping[e];
+    this.component = this.programComponentsService.getComponentInstance(e);
   }
 
   ngOnDestroy() {

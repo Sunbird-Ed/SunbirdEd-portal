@@ -14,7 +14,7 @@ import {
 } from '../../interfaces';
 import { QuestionListComponent } from '../../../cbse-program/components/question-list/question-list.component';
 import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
-import { ProgramStageService } from '../../../program/services';
+import { ProgramStageService, ProgramComponentsService } from '../../../program/services';
 import { InitialState } from '../../interfaces';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 
@@ -85,7 +85,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
     private userService: UserService, public actionService: ActionService,
     public telemetryService: TelemetryService, private cbseService: CbseProgramService,
     public toasterService: ToasterService, public router: Router,
-    public programStageService: ProgramStageService, public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef,
+    public programStageService: ProgramStageService, public programComponentsService: ProgramComponentsService,
+    public activeRoute: ActivatedRoute, private ref: ChangeDetectorRef,
     private collectionHierarchyService: CollectionHierarchyService, private resourceService: ResourceService,
     private navigationHelperService: NavigationHelperService) {
   }
@@ -414,7 +415,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
           this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, result.node_id)
             .subscribe(() => {
                // tslint:disable-next-line:max-line-length
-               this.componentLoadHandler('creation', this.componentMapping[event.templateDetails.metadata.contentType], event.templateDetails.onClick);
+               this.componentLoadHandler('creation', this.programComponentsService.getComponentInstance(event.templateDetails.onClick), event.templateDetails.onClick);
             });
         });
     }
@@ -426,7 +427,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
     this.templateDetails = _.find(templateList, (templateData) => {
       return templateData.metadata.contentType === event.content.contentType;
     });
-    this.componentLoadHandler('preview', this.componentMapping[event.content.contentType], this.templateDetails.onClick);
+    this.componentLoadHandler('preview',
+      this.programComponentsService.getComponentInstance(this.templateDetails.onClick), this.templateDetails.onClick);
   }
 
   componentLoadHandler(action, component, componentName) {
