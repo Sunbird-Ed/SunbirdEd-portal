@@ -14,6 +14,8 @@ export default class MathText extends Plugin {
         const componentFactory  = editor.ui.componentFactory;
         this._defineSchema();
         this._defineConverters();
+        var clicks = 0;
+        var timeout;
         view.addObserver( ClickObserver );
 
         componentFactory.add('MathText', locale => {
@@ -33,12 +35,19 @@ export default class MathText extends Plugin {
         });
 
         this.listenTo( editor.editing.view.document, 'click', ( evt, data ) => {
-            if ( data.domEvent.detail == 3 ) {
+            clicks++;
+            if (clicks == 1) {
+                timeout = setTimeout(function () {
+                    clicks = 0;
+                }, 400);
+            } else if (clicks == 2) {
+                timeout && clearTimeout(timeout);
                 let ifrm = document.getElementById('mathModalIframe')
                 if (data.domTarget.nodeName.toLowerCase() == 'img' && data.domTarget.hasAttribute("data-mathtext") && !ifrm) {
                     this._loadIframeModal('dbClick', data);
                 }
                 evt.stop();
+                clicks = 0;
             }
         }, { priority: 'highest' } );
     }
