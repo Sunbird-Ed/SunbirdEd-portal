@@ -19,7 +19,7 @@ describe('ContentPlayerComponent', () => {
       declarations: [ContentPlayerComponent],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
-        ResourceService, ConnectionService, ToasterService,
+         ConnectionService, ToasterService,
         { provide: ResourceService, useValue: playerData.resourceBundle },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
