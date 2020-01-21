@@ -47,12 +47,26 @@ export default class MathText extends Plugin {
         const that = this;
         var iframe = document.createElement('iframe');
         iframe.id = 'mathModalIframe';
-        iframe.style="border: none;min-height: 480px; width:500px; position: fixed;top: 25%;left: 33%;z-index:1001;border: 1px solid #ccc;";
+        iframe.style=`border: none;z-index:1001;border: 1px solid #ccc;
+                        --width: 500px;
+                        --height: 480px;
+                        position: fixed;
+                        width: var(--width);
+                        height: var(--height);
+                        left: calc( ( 100% - var(--width) ) / 2 );
+                        right: calc( ( 100% - var(--width) ) / 2 );
+                        top: calc( ( 100% - var(--height) ) / 2 );
+                        bottom: calc( ( 100% - var(--height) ) / 2 );
+                        border-radius: 5px;
+                        box-shadow: 3px 5px 4px #00000030;`;
         iframe.src = '../../../../../assets/libs/mathEquation/plugin/mathModal/index.html';
         document.body.appendChild(iframe);
         var iframeBackdrop = document.createElement('div');
         iframeBackdrop.id = 'iframeBackdrop';
         iframeBackdrop.style = "background-color: #00000040;width: 100%;height: 100%;position: fixed;top: 0;left: 0;z-index: 1000;";
+        iframeBackdrop.onclick = function () {
+            that._removeIframeModal();
+        };
         document.body.appendChild(iframeBackdrop);
         iframe.onload = function() {  
             iframeObj = this;
