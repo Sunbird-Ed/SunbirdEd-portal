@@ -74,7 +74,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
   public stageSubscription: any;
   public programContext: any;
   public currentUserID: string;
-  telemetryImpression = {};
+  telemetryImpression: any;
   public collectionData;
   showLoader = true;
   showError = false;

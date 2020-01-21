@@ -84,6 +84,11 @@ describe('ProgramComponent On Bording test', () => {
     snapshot: {
       params: {
         programId: '6835f250-1fe1-11ea-93ea-2dffbaedca40'
+      },
+      data: {
+        telemetry: {
+          env: 'programs'
+        }
       }
     }
   };
