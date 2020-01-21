@@ -163,6 +163,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
     return userName;
   }
+
   selectSolutionType(data: any) {
     const index = _.findIndex(this.solutionTypes, (sol: any) => {
       return sol.value === data;
@@ -268,7 +269,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   buttonTypeHandler(event) {
     this.updateStatus = event;
     if (event === 'preview') {
-      this.showPreview = true;
+      if (this.sessionContext.resourceStatus === 'Draft') {
+        this.handleSubmit(this.questionMetaForm);
+      } else {
+        this.showPreview = true;
+      }
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
@@ -377,6 +382,8 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             this.toasterService.success('Question Accepted');
           } else if (this.updateStatus === 'Draft' && this.questionRejected) {
             this.toasterService.success('Question Rejected');
+          } else if (this.updateStatus === 'preview') {
+            this.showPreview = true;
           }
           this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': this.questionMetaData.data.identifier });
         });

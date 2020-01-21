@@ -250,8 +250,8 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   handleQuestionTabChange(questionId, actionStatus?: string) {
 
-    if (!this.checkCurrentQuestionStatus()) { return ; }
     if (_.includes(this.sessionContext.questionList, questionId) && !actionStatus) { return; }
+    if (!this.checkCurrentQuestionStatus()) { return ; }
     this.sessionContext.questionList = [];
     this.sessionContext.questionList.push(questionId);
     this.selectedQuestionId = questionId;
@@ -332,12 +332,24 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  public handlerContentPreview() {
+    this.questionCreationChild.buttonTypeHandler('preview');
+    if (this.resourceStatus !== 'Draft') {
+      this.previewBtnVisibility = false;
+    }
+  }
+
   public questionStatusHandler(event) {
 
     if (this.isPublishBtnDisable && event.type === 'review') {
       this.toasterService.error('Please resolve rejected questions or delete');
       return;
     } else if (event.type === 'close') {
+      return;
+    } else if (event.type === 'preview') {
+      delete this.questionReadApiDetails[event.identifier];
+      this.saveContent(event.type);
+      this.previewBtnVisibility = false;
       return;
     }
 
