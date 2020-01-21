@@ -27,6 +27,9 @@
                 text-transform: uppercase;
             }
         }
+        a{
+            color: var(--primary-color) !important;
+        }
     }
 
     &.sb-meta-data-row-facing {
