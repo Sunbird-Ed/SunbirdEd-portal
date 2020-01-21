@@ -571,14 +571,14 @@ getAllVideos(offset, query) {
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((response) => {
           //Read upload video data
-          this.getUploadVide(response.result.node_id);
+          this.getUploadVideo(response.result.node_id);
         });
       });
       reader.onerror = (error: any) => { };
     }
   }
 
-  getUploadVide(videoId){
+  getUploadVideo(videoId){
     const option = {
       url: 'content/v3/read/' + videoId
     };
