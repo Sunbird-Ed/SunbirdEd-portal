@@ -94,6 +94,8 @@ describe('AboutUsComponent', () => {
   });
 
   it('should display toc loader', () => {
+    component.isConnected = true;
+    component.tncLatestVersionUrl = 'test_url';
     component.toggleTocModal();
     expect(component.showLoader).toBeTruthy();
     expect(component.showModal).toBeTruthy();

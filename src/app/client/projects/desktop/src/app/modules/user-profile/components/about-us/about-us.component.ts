@@ -1,10 +1,10 @@
 import { IAppInfo } from './../../interfaces';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
-import { ResourceService, ServerResponse, ILoaderMessage } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ILoaderMessage, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
-import { AppUpdateService } from './../../../offline/services';
+import { AppUpdateService, ConnectionService } from './../../../offline/services';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -27,17 +27,27 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   count = 0;
   loaderMessage: ILoaderMessage = {};
   currentYear;
+  public isConnected;
   constructor(public resourceService: ResourceService, private appUpdateService: AppUpdateService,
     private router: Router, public activatedRoute: ActivatedRoute,
+    private connectionService: ConnectionService,
+    private toasterService: ToasterService,
     public sanitizer: DomSanitizer) {}
 
   ngOnInit() {
+    this.checkOnlineStatus();
     this.currentYear = new Date().getFullYear();
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0129
     };
     this.instance = _.upperCase(this.resourceService.instance);
     this.getAppInfo();
+  }
+
+  checkOnlineStatus() {
+    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
   }
 
   getAppInfo() {
@@ -58,8 +68,13 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   }
 
   toggleTocModal() {
-    this.showLoader = true;
-    this.showModal = !this.showModal;
+    if (this.isConnected && this.tncLatestVersionUrl) {
+      this.showLoader = true;
+      this.showModal = !this.showModal;
+    } else {
+      this.toasterService.error(this.resourceService.frmelmnts.emsg.desktop.termsOfUse);
+    }
+
   }
 
   isIframeLoaded() {
