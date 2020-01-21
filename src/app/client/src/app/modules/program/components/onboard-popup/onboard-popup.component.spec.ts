@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OnboardPopupComponent } from './onboard-popup.component';
+// import { OnboardPopupComponent } from './onboard-popup.component';
 
-xdescribe('OnboardPopupComponent', () => {
-  let component: OnboardPopupComponent;
-  let fixture: ComponentFixture<OnboardPopupComponent>;
+// xdescribe('OnboardPopupComponent', () => {
+//   let component: OnboardPopupComponent;
+//   let fixture: ComponentFixture<OnboardPopupComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ OnboardPopupComponent ]
-    })
-    .compileComponents();
-  }));
+//   beforeEach(async(() => {
+//     TestBed.configureTestingModule({
+//       declarations: [ OnboardPopupComponent ]
+//     })
+//     .compileComponents();
+//   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(OnboardPopupComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+//   beforeEach(() => {
+//     fixture = TestBed.createComponent(OnboardPopupComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+//   it('should create', () => {
+//     expect(component).toBeTruthy();
+//   });
+// });
