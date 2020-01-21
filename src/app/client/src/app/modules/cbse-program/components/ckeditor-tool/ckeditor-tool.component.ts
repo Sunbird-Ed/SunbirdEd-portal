@@ -586,7 +586,6 @@ getAllVideos(offset, query) {
       const errInfo = { errorMsg: 'Unable to read the Video, Please Try Again' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
-      console.log(res);
       this.selectedVideo = res;
       this.addVideoInEditor();
       this.showVideoPicker = false;
