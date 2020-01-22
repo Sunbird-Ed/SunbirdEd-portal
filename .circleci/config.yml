@@ -19,6 +19,9 @@ jobs:
       - run:
           name: Installing angular cli
           command: 'npm install -g @angular/cli@6.0.8'
+      - run:
+          name: Increase memory limit for node
+          command: 'export NODE_OPTIONS=--max_old_space_size=4096'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -32,7 +35,7 @@ jobs:
           command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log' 
       - run:
           name: Executing test cases
-          command: 'node --max_old_space_size=3072 ./node_modules/@angular/cli/bin/ng test src --code-coverage=true --watch=false'
+          command: './node_modules/@angular/cli/bin/ng test src --code-coverage=true --watch=false'
       - run:
           name: install sonar scanner
           command: npm install -g sonarqube-scanner
