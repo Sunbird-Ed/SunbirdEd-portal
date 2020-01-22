@@ -119,39 +119,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
   ngOnInit() {
     this.initialized = true;
-    this.editorConfig = { 'mode': 'create' };
-    this.editorState = {
-      question : '',
-      answer: '',
-      solutions: ''
-    };
     this.solutionUUID = UUID.UUID();
-    this.manageFormConfiguration();
+    this.initialize();
     if (this.questionMetaData && this.questionMetaData.data) {
-      this.editorState.question = this.questionMetaData.data.editorState.question;
-      this.editorState.answer = this.questionMetaData.data.editorState.answer;
-      if (!_.isEmpty(this.questionMetaData.data.editorState.solutions)) {
-        const editor_state = this.questionMetaData.data.editorState;
-        this.editorState.solutions = editor_state.solutions[0].value;
-        this.solutionUUID = editor_state.solutions[0].id;
-        this.selectedSolutionType = editor_state.solutions[0].type;
-        this.showSolutionDropDown = false;
-        if (this.selectedSolutionType === 'video') {
-          const index = _.findIndex(this.questionMetaData.data.media, (o) => {
-             return o.type === 'video';
-          });
-          this.videoSolutionName = this.questionMetaData.data.media[index].name;
-          this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
-        }
-      } else {
-        this.editorState.solutions = '';
-        this.selectedSolutionType = '';
-      }
-      this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
       this.mediaArr = this.questionMetaData.data.media || [];
     }
-
-    this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
     this.userName = this.setUserName();
   }
 
@@ -191,39 +163,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   ngOnChanges() {
     this.componentConfiguration =  _.get(this.sessionContext, 'practiceSetConfig');
     if (this.initialized) {
-      this.editorConfig = { 'mode': 'create' };
-      this.editorState = {
-        question : '',
-        answer: '',
-        solutions: ''
-      };
-      this.manageFormConfiguration();
-      if (this.questionMetaData && this.questionMetaData.data) {
-        this.editorState.question = this.questionMetaData.data.editorState.question;
-        this.editorState.answer = this.questionMetaData.data.editorState.answer;
-        if (!_.isEmpty(this.questionMetaData.data.editorState.solutions)) {
-          const editor_state = this.questionMetaData.data.editorState;
-          this.editorState.solutions = editor_state.solutions[0].value;
-          this.solutionUUID = editor_state.solutions[0].id;
-          this.selectedSolutionType = editor_state.solutions[0].type;
-          this.showSolutionDropDown = false;
-          if (this.selectedSolutionType === 'video') {
-            const index = _.findIndex(this.questionMetaData.data.media, (o) => {
-               return o.type === 'video';
-            });
-            this.videoSolutionName = this.questionMetaData.data.media[index].name;
-            this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
-          }
-        } else {
-          this.editorState.solutions = '';
-          this.selectedSolutionType = '';
-        }
-
-        this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
-      } else {
-        this.questionMetaForm.reset();
-      }
-      this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
+      this.initialize();
     }
   }
 
@@ -232,6 +172,39 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.initializeDropdown();
     }
     this.prevShowPreview = this.showPreview;
+  }
+
+  initialize() {
+    this.editorConfig = { 'mode': 'create' };
+    this.editorState = {
+      question : '',
+      answer: '',
+      solutions: ''
+    };
+    this.manageFormConfiguration();
+    if (this.questionMetaData && this.questionMetaData.data) {
+      this.editorState.question = this.questionMetaData.data.editorState.question;
+      this.editorState.answer = this.questionMetaData.data.editorState.answer;
+      if (!_.isEmpty(this.questionMetaData.data.editorState.solutions)) {
+        const editor_state = this.questionMetaData.data.editorState;
+        this.editorState.solutions = editor_state.solutions[0].value;
+        this.solutionUUID = editor_state.solutions[0].id;
+        this.selectedSolutionType = editor_state.solutions[0].type;
+        this.showSolutionDropDown = false;
+        if (this.selectedSolutionType === 'video') {
+          const index = _.findIndex(this.questionMetaData.data.media, (o) => {
+             return o.type === 'video';
+          });
+          this.videoSolutionName = this.questionMetaData.data.media[index].name;
+          this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
+        }
+      } else {
+        this.editorState.solutions = '';
+        this.selectedSolutionType = '';
+      }
+      this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
+    }
+    this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
   }
 
   setUserName() {
