@@ -131,6 +131,7 @@
     }
   }
 }
+
 .sb-grid-layout .sb-video-content .sb-image-section img {
   width: 100%;
   height: 100%;
@@ -164,14 +165,16 @@
 
 ::ng-deep {
 
-  .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar, .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+  .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
+  .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
     border-left: none;
     border-right: none;
     border-bottom: 1px solid #c4c4c4;
     border-radius: 0;
   }
-  
-  .ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable, .ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners {
+
+  .ck-rounded-corners .ck.ck-editor__main>.ck-editor__editable,
+  .ck.ck-editor__main>.ck-editor__editable.ck-rounded-corners {
     border: none;
   }
 }
@@ -187,7 +190,7 @@
 .upload-input-button {
   input[type="file"] {
     display: none;
-}
+  }
 }
 
 .terms-and-condition {
