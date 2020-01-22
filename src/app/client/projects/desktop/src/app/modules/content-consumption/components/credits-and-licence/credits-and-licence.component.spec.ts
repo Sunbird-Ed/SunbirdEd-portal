@@ -5,7 +5,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { contentInformation } from './credits-and-licence.component.spec.data';
 
 describe('CreditsAndLicenceComponent', () => {
   let component: CreditsAndLicenceComponent;
@@ -36,20 +36,19 @@ describe('CreditsAndLicenceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreditsAndLicenceComponent);
     component = fixture.componentInstance;
+    component.contentData = contentInformation.contentData;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should call ngAfterViewInit', () => {
-    component.contentData = {
-      license: 'Creative Commons Attribution (CC BY) https://www.google.com/'
-    };
-
-    component.ngAfterViewInit();
-    expect(component.licenceElement.nativeElement.innerHTML).
-      toEqual('Creative Commons Attribution (CC BY) <a href="">https://www.google.com/</a>');
+  it('should check the content data is defined or not ', () => {
+    expect(component.contentData).toBeTruthy();
+  });
+  it('should check the attributions', () => {
+    component.contentData = contentInformation.contentData;
+    component.ngOnInit();
+    expect(component.attributions).toEqual(contentInformation.attributions);
   });
 });
