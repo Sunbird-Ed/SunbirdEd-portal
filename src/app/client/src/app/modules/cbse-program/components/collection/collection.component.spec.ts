@@ -1,8 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-// tslint:disable-next-line:max-line-length
-import { ConfigService, ResourceService, ToasterService, SharedModule, UtilService, BrowserCacheTtlService,
-  NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, UtilService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CollectionComponent, ChapterListComponent} from '../index';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -10,20 +8,11 @@ import { DynamicModule } from 'ng-dynamic-component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ContentService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
-import { collectionComponentInput, collectionWithCard , collectionList, searchCollectionResponse} from './collection.component.spec.data';
-import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
-
-const ContentServiceStub = {
-  post() {
-    return of( searchCollectionResponse );
-  }
-};
+import { collectionComponentInput, collectionWithCard , collectionList} from './collection.component.spec.data';
 
 describe('CollectionComponent', () => {
   let component: CollectionComponent;
   let fixture: ComponentFixture<CollectionComponent>;
-
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -38,11 +27,7 @@ describe('CollectionComponent', () => {
         CacheService,
         BrowserCacheTtlService,
         UtilService,
-        ContentService,
-        {
-          provide: ContentService,
-          useValue: ContentServiceStub
-        }
+        ContentService
       ]
     })
     .compileComponents();
@@ -53,7 +38,6 @@ describe('CollectionComponent', () => {
     component = fixture.componentInstance;
     component.showError = false;
     component.collectionComponentInput = collectionComponentInput;
-    component.userProfile = collectionComponentInput.userProfile;
     component.collectionComponentConfig = collectionComponentInput.config;
     component.programContext = collectionComponentInput.programContext;
     component.collectionsWithCardImage = collectionWithCard;
