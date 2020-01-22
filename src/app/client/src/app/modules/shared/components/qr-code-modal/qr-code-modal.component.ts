@@ -14,7 +14,6 @@ export class QrCodeModalComponent implements OnInit {
   @ViewChild('modal') modal;
   @Output() closeQrModal = new EventEmitter<any>();
   instance: string;
-  queryParam: any = {};
   public submitDialCodeInteractEdata: IInteractEventEdata;
   public closeDialCodeInteractEdata: IInteractEventEdata;
   constructor(public router: Router, public resourceService: ResourceService) { }
@@ -37,9 +36,10 @@ export class QrCodeModalComponent implements OnInit {
     if (!_.isEmpty(dialCode)) {
       this.setsubmitDialCodeInteractEdata(dialCodeVal);
       this.modal.approve();
-      if (this.isOffline) {
-        this.queryParam.key = dialCodeVal;
-        this.router.navigate(['search'], { queryParams: this.queryParam });
+      if (_.includes(this.router.url, 'browse') && this.isOffline) {
+        this.router.navigate(['/browse/get/dial/', dialCode]);
+      } else {
+        this.router.navigate(['/get/dial/', dialCode]);
       }
     }
   }
