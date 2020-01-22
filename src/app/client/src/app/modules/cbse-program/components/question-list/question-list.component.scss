@@ -44,6 +44,12 @@ i.icon.trash {
 .practical-header {
     height: calculateRem(98px);
     background: rgba(41, 114, 164, 0.05);
+    &__title {
+        max-width: 680px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
     &__content {
         .practical-sb-buttons {
             .sb-btn-file {

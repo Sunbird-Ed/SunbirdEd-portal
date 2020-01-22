@@ -19,18 +19,15 @@
     max-height: inherit;
     min-height: inherit;
     overflow-y: inherit;
+    width: 688px;
+    height: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .qq-upload-list.custom-qq-upload-list li {
     background: transparent;
 }
-// .qq-upload-button.custom-qq-upload-button{
-//  background: #4A88CB;
-//  border-color: transparent;
-//  color: #fff;
-// }
-// .qq-upload-button.custom-qq-upload-button:hover{
-//  background: #317bca;
-// }
 .qq-upload-cancel.custom-qq-upload-cancel{
     background: #FF9800;
     -webkit-box-shadow: none;
@@ -223,14 +220,6 @@
 .qq-upload-list.custom-qq-upload-list li {
     background: transparent;
 }
-// .qq-upload-button.custom-qq-upload-button{
-//  background: #4A88CB;
-//  border-color: transparent;
-//  color: #fff;
-// }
-// .qq-upload-button.custom-qq-upload-button:hover{
-//  background: #317bca;
-// }
 .qq-upload-cancel.custom-qq-upload-cancel{
     background: #FF9800;
     -webkit-box-shadow: none;
