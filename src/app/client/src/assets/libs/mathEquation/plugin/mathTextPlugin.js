@@ -2,6 +2,7 @@ import { modelToViewAttributeConverter } from '@ckeditor/ckeditor5-image/src/ima
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
 import ClickObserver from '@ckeditor/ckeditor5-engine/src/view/observer/clickobserver';
+import DoubleClickObserver from './doubleClickObserver';
 var iframeObj;
 
 var imageIcon = `<?xml version="1.0" encoding="iso-8859-1"?> <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"> <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 190 190" style="enable-background:new 0 0 190 190;" xml:space="preserve"> <path d="M3.53,0h182.94v44.78h-32.439V32.439H73.017L125.42,95l-52.403,62.561h81.015V145.22h32.439V190H3.53l79.574-95L3.53,0z"/> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>`;
@@ -14,9 +15,8 @@ export default class MathText extends Plugin {
         const componentFactory  = editor.ui.componentFactory;
         this._defineSchema();
         this._defineConverters();
-        var clicks = 0;
-        var timeout;
         view.addObserver( ClickObserver );
+        view.addObserver( DoubleClickObserver );
 
         componentFactory.add('MathText', locale => {
             const view = new ButtonView(locale);
@@ -34,21 +34,12 @@ export default class MathText extends Plugin {
             return view;
         });
 
-        this.listenTo( editor.editing.view.document, 'click', ( evt, data ) => {
-            clicks++;
-            if (clicks == 1) {
-                timeout = setTimeout(function () {
-                    clicks = 0;
-                }, 400);
-            } else if (clicks == 2) {
-                timeout && clearTimeout(timeout);
-                let ifrm = document.getElementById('mathModalIframe')
-                if (data.domTarget.nodeName.toLowerCase() == 'img' && data.domTarget.hasAttribute("data-mathtext") && !ifrm) {
-                    this._loadIframeModal('dbClick', data);
-                }
-                evt.stop();
-                clicks = 0;
+        this.listenTo( editor.editing.view.document, 'dblclick', ( evt, data ) => {
+            let ifrm = document.getElementById('mathModalIframe')
+            if (data.domTarget.nodeName.toLowerCase() == 'img' && data.domTarget.hasAttribute("data-mathtext") && !ifrm) {
+                this._loadIframeModal('dbClick', data);
             }
+            evt.stop();
         }, { priority: 'highest' } );
     }
 
