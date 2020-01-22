@@ -74,6 +74,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.roles = [];
     _.forEach(this.userProfile.organisations, (org, index) => {
       if (this.userProfile.rootOrgId !== org.organisationId) {
+        if (org.locations && org.locations.length === 0) {
+          if (this.userProfile.organisations[0].locationIds && this.userProfile.organisations[0].locations) {
+            org.locationIds = this.userProfile.organisations[0].locationIds;
+            org.locations = this.userProfile.organisations[0].locations;
+          }
+        }
         orgList.push(org);
       }
       _.forEach(org.roles, (value, key) => {
