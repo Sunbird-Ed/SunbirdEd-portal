@@ -628,7 +628,14 @@
       "TextBook",
       "Course",
       "LessonPlan",
-      "Resource"
+      "Resource",
+      "FocusSpot",
+      "LearningOutcomeDefinition",
+      "PracticeQuestionSet",
+      "CuriosityQuestions",
+      "MarkingSchemeRubric",
+      "ExplanationResource",
+      "ExperientialResource"
     ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",
