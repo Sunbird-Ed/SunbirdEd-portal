@@ -55,12 +55,9 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   learningOutcomeOptions = [];
   updateStatus = 'update';
   questionRejected = false;
-
+  allFormFields: Array<any>;
   questionMetaForm: FormGroup;
   selectOutcomeOption = {};
-  textInputArr: FormArray;
-  selectionArr: FormArray;
-  multiSelectionArr: FormArray;
   disableFormField: boolean;
   showRequestChangesPopup = false;
   commentCharLimit = 1000;
@@ -376,11 +373,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
           metadata['solutions'] = [solutionObj];
         }
 
-        const formValues = {};
-        _.map(this.questionMetaForm.value, (value, key) => { _.map(value, (obj) => { _.assign(formValues, obj); }); });
-        // tslint:disable-next-line:max-line-length
-        metadata = _.pickBy(_.assign(metadata, formValues), _.identity);
-
+        metadata = _.pickBy(_.assign(metadata, this.questionMetaForm.value), _.identity);
         const req = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
           data: {
@@ -465,21 +458,11 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   manageFormConfiguration() {
-    this.questionMetaForm = this.formBuilder.group({
-      textInputArr: this.formBuilder.array([ ]),
-      selectionArr: this.formBuilder.array([ ]),
-      multiSelectionArr: this.formBuilder.array([ ])
-    });
-    this.selectionArr = this.questionMetaForm.get('selectionArr') as FormArray;
-    this.multiSelectionArr = this.questionMetaForm.get('multiSelectionArr') as FormArray;
-    this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
-
+    const controller = {};
+    this.questionMetaForm = this.formBuilder.group(controller);
     if (this.questionMetaData) {
-      // tslint:disable-next-line:max-line-length
       this.formConfiguration = this.componentConfiguration.config.formConfiguration;
-      this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
-      this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
-      this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
+      this.allFormFields = _.filter(this.formConfiguration, {'visible': true});
       // tslint:disable-next-line:max-line-length
       this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.sessionContext.resourceStatus === 'Draft') ? false : true ;
       const formFields = _.map(this.formConfiguration, (formData) => {
@@ -495,40 +478,28 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         this.selectOutcomeOption['learningOutcome'] = topicTerm.associations;
       }
 
-      _.forEach(this.selectionFields, (obj) => {
-        const controlName = {};
+      _.map(this.allFormFields, (obj) => {
         const code = obj.code;
         const preSavedValues = {};
-        // tslint:disable-next-line:max-line-length
-        preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? (Array.isArray(this.questionMetaData.data[code]) ? this.questionMetaData.data[code][0] : this.questionMetaData.data[code]) : '';
-        // tslint:disable-next-line:max-line-length
-        obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = preSavedValues[code];
-        this.selectionArr = this.questionMetaForm.get('selectionArr') as FormArray;
-        this.selectionArr.push(this.formBuilder.group(controlName));
+        if (this.questionMetaData) {
+          if (obj.inputType === 'select') {
+            // tslint:disable-next-line:max-line-length
+            preSavedValues[code] = (this.questionMetaData.data[code]) ? (_.isArray(this.questionMetaData.data[code]) ? this.questionMetaData.data[code][0] : this.questionMetaData.data[code]) : '';
+            // tslint:disable-next-line:max-line-length
+            obj.required ? controller[obj.code] = [preSavedValues[code], [Validators.required]] : controller[obj.code] = preSavedValues[code];
+          } else if (obj.inputType === 'multiselect') {
+            // tslint:disable-next-line:max-line-length
+            preSavedValues[code] = (this.questionMetaData.data[code] && this.questionMetaData.data[code].length) ? this.questionMetaData.data[code] : [];
+            // tslint:disable-next-line:max-line-length
+            obj.required ? controller[obj.code] = [preSavedValues[code], [Validators.required]] : controller[obj.code] = [preSavedValues[code]];
+          } else if (obj.inputType === 'text') {
+            preSavedValues[code] = (this.questionMetaData.data[code]) ? this.questionMetaData.data[code] : '';
+            // tslint:disable-next-line:max-line-length
+            obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controller[obj.code] = preSavedValues[code];
+          }
+        }
       });
-
-      _.forEach(this.multiSelectionFields, (obj) => {
-        const controlName = {};
-        const code = obj.code;
-        const preSavedValues = {};
-        // tslint:disable-next-line:max-line-length
-        preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code] && this.questionMetaData.data[code].length) ? this.questionMetaData.data[code] : [];
-        // tslint:disable-next-line:max-line-length
-        obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = [preSavedValues[code]];
-        this.multiSelectionArr = this.questionMetaForm.get('multiSelectionArr') as FormArray;
-        this.multiSelectionArr.push(this.formBuilder.group(controlName));
-      });
-
-      _.forEach(this.textFields, (obj) => {
-        const controlName = {};
-        const code = obj.code;
-        const preSavedValues = {};
-        preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? this.questionMetaData.data[code] : '';
-        // tslint:disable-next-line:max-line-length
-        obj.required ? controlName[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controlName[obj.code] = preSavedValues[code];
-        this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
-        this.textInputArr.push(this.formBuilder.group(controlName));
-      });
+      this.questionMetaForm = this.formBuilder.group(controller);
       this.onFormValueChange();
     }
   }
