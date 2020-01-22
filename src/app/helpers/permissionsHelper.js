@@ -52,8 +52,7 @@ let PERMISSIONS_HELPER = {
         'x-msgid': uuidv1(),
         'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
         'content-type': 'application/json',
-        'Authorization': 'Bearer ' + apiAuthToken,
-        'x-authenticated-user-token': reqObj.kauth.grant.access_token.token
+        'Authorization': 'Bearer ' + apiAuthToken
       },
       json: true
     }

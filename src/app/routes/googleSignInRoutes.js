@@ -36,7 +36,7 @@ module.exports = (app) => {
   app.get('/google/auth/callback', async (req, res) => {
     console.log('google auth callback called');
     const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
-    let googleProfile, sunbirdProfile, newUserDetails, keyCloakToken, redirectUrl, errType;
+    let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
         errType = 'MISSING_QUERY_PARAMS';
@@ -46,9 +46,9 @@ module.exports = (app) => {
       googleProfile = await googleOauth.getProfile(req).catch(handleGoogleProfileError);
       console.log('googleProfile fetched', JSON.stringify(googleProfile));
       errType = 'USER_FETCH_API';
-      sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
-      console.log('sunbird profile fetched', JSON.stringify(sunbirdProfile));
-      if (!_.get(sunbirdProfile, 'result.response.userName') || !_.get(sunbirdProfile, 'result.response.firstName')) {
+      isUserExist = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
+      console.log('sunbird profile fetched', isUserExist);
+      if (!isUserExist) {
         console.log('creating new google user');
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
@@ -63,14 +63,14 @@ module.exports = (app) => {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
       console.log('redirect url ', redirectUrl);
-      logger.info({msg:'google sign in success',additionalInfo: {googleProfile, sunbirdProfile, newUserDetails, redirectUrl}});
+      logger.info({msg:'google sign in success',additionalInfo: {googleProfile, isUserExist, newUserDetails, redirectUrl}});
     } catch (error) {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
-      logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, sunbirdProfile, newUserDetails, redirectUrl}})
+      logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
       console.log('redirecting to ', redirectUrl);
