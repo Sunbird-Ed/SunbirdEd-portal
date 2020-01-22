@@ -3,48 +3,25 @@
     <div class="practical-appbar__content ui container d-flex flex-ai-center">
       <ng-container *ngIf="headerActions.showTabs">
         <ng-container *ngFor="let tab of filterBy('index'); let i = index">
-            <a appTelemetryInteract [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-tab', 'click', 'header')"
+          <a appTelemetryInteract
+            [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-tab', 'click', 'header')"
             [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
             [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
-            class="practical-appbar__item" *ngIf="tab?.visibility" (click)="handleTabChange(tab.onClick, tab.index)" [class.active]="tab.index == defaultTabIndex">{{tab.label}}</a>
+            class="practical-appbar__item" *ngIf="tab?.visibility" (click)="handleTabChange(tab.onClick, tab.index)"
+            [class.active]="tab.index == defaultTabIndex">{{tab.label}}</a>
         </ng-container>
       </ng-container>
-      <button
-      appTelemetryInteract [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-back', 'click', 'header')"
-            [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
-            [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
-       *ngIf="!headerActions.showTabs" (click)="handleBack()" class="sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn sb-color-white" type="button">
-        <i class="arrow left icon"></i>Back</button
-        >
+      <button appTelemetryInteract
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-back', 'click', 'header')"
+        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
+        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+        *ngIf="!headerActions.showTabs" (click)="handleBack()"
+        class="d-flex flex-ai-center sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn sb-color-white" type="button">
+        <i class="icon-svg icon-svg--xs icon-arrow-long-left mr-8">
+          <svg class="icon icon-svg--white">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg>
+        </i>Back</button>
     </div>
   </div>
 </div>
-<!-- <div class="d-flex sb-bg-color-gray-0 practical-header">
-  <div class="d-flex flex-ai-center practical-header__content ui container">
-    <div class="mr-auto" *ngIf="!showTextArea">
-
-      <div class="practice-set__label">
-        <span class="font-weight-bold fs-1-143">Untiled Practice Set</span>
-        <a class="cursor-pointer fs-0-785 ml-8" (click)="showTextArea=!showTextArea">Edit</a>
-      </div>
-      <div class="mt-8 practice-set__status"> -->
-          <!-- <span class="sb-label sb-label-table sb-label-success-0">Review</span>
-          <span class="sb-label sb-label-table sb-label-warning-0">Review/Warning</span>
-          <span class="sb-label sb-label-table sb-label-error-0">Error</span> -->
-        <!-- <span class="sb-label sb-label-table sb-label-gray-100">Review</span>
-        <span class="cursor-pointer fs-0-785 ml-8"><i class="comment alternate outline icon sb-color-primary"></i><a>View Comments</a></span>
-      </div>
-    </div>
-    <div class="sb-field-group textbook-edit mr-auto" *ngIf="showTextArea">
-      <div class="sb-field relative">
-        <textarea rows="4" name="moretext" class="sb-form-control fs-1" placeholder="Type here..."></textarea>
-        <span class="characters-left">200 Characters left</span>
-      </div>
-    </div>
-    <div class='practical-sb-buttons'>
-      <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="showTextArea=!showTextArea">Save</button>
-      <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8">Preview</button>
-      <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showTextArea=!showTextArea">Submit</button>
-    </div>
-  </div>
-</div>  -->
