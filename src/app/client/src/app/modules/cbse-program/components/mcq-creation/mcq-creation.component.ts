@@ -132,14 +132,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.isReadOnlyMode) {
-      const windowData: any = window;
-      const el = document.getElementsByClassName('ckeditor-tool__solution__body');
-      for (let i = 0; i < el.length; i++) {
-        windowData.com.wiris.js.JsPluginViewer.parseElement(el[i], true, () => {});
-      }
-    }
-
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     const telemetryCdata = this.telemetryEventsInput.telemetryInteractCdata;

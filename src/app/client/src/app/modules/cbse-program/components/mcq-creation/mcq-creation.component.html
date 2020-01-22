@@ -115,79 +115,7 @@
       </div>
     </div>
 
-    <!-- Learning Outcome learning level author license Editor HTML -->
-    <div class='licence-form__content mt-15' *ngIf="!isReadOnlyMode && !showPreview">
-      <div class="ui stackable grid licence-form__content__fields">
-          <div class="row">
-            <div *ngFor = "let field of allFormFields; let i = index " class="sb-field six wide column mb-16">
-              <div class="six wide column mb-16" *ngIf="field.inputType === 'select'" class="width-100">
-                <div>
-                  <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
-                  <sui-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}"
-                  appTelemetryInteract 
-                  [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('select-' + field.code, 'click', 'content-uploader')"
-                  [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
-                  [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
-                  [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
-                  >
-                    <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option"
-                    appTelemetryInteract 
-                      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('selectoption-' + option, 'click', 'content-uploader')"
-                      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
-                      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
-                      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
-                    >
-                    </sui-select-option>
-                  </sui-select>
-                  <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{questionMetaData.data[field.code]}}</span></div>
-                  <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
-                </div>
-              </div>
     
-              <div class="six wide column mb-16" *ngIf="field.inputType === 'multiselect'" class="width-100">
-                  <div>
-                      <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
-                      <sui-multi-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}"
-                      appTelemetryInteract 
-                      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('multiselect-' + field.code, 'click', 'content-uploader')"
-                      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
-                      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
-                      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
-                      >
-                        <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option"
-                        appTelemetryInteract 
-                          [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('selectoption-' + option, 'click', 'content-uploader')"
-                          [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
-                          [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
-                          [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
-                        >
-                        </sui-select-option>
-                      </sui-multi-select>
-                      <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{questionMetaData.data[field.code]}}</span></div>
-                      <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
-                  </div>
-              </div>
-    
-              <div class="six wide column mb-16" *ngIf="field.inputType === 'text'" class="width-100">
-                <div>
-                  <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
-                    <input *ngIf="!disableFormField" formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}"
-                    appTelemetryInteract 
-                      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('input-' + field.code, 'click', 'content-uploader')"
-                      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
-                      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
-                      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
-                    >
-                    <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{questionMetaData.data[field.code]}}</span></div>
-                  <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-      </div>
-    </div>
-
     <!-- Question Preview Section HTML -->
     <div class="ui container" *ngIf="isReadOnlyMode && !showPreview">
       <div class="ui stackable grid m-0 sb-bg-color-white">
@@ -257,36 +185,75 @@
 
     </div>
 
-    <!-- Learning Outcome learning level author license Preview HTML -->
-    <div class='licence-form__content' *ngIf="isReadOnlyMode || showPreview">
+    <!-- Learning Outcome learning level author license Editor HTML -->
+    <div class='licence-form__content mt-15'>
       <div class="ui stackable grid licence-form__content__fields">
           <div class="row">
-              <div class="six wide column mb-15" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
-                  <div [formGroupName]="i" class="sb-field">
-                      <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
-                          href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                              src="assets/images/Info.svg"></a></label>
-                      <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
+            <div *ngFor = "let field of allFormFields; let i = index " class="sb-field six wide column mb-16">
+              <div class="six wide column mb-16" *ngIf="field.inputType === 'select'" class="width-100">
+                <div>
+                  <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
+                  <sui-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}"
+                  appTelemetryInteract 
+                  [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('select-' + field.code, 'click', 'content-uploader')"
+                  [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                  [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                  [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                  >
+                    <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option"
+                    appTelemetryInteract 
+                      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('selectoption-' + option, 'click', 'content-uploader')"
+                      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                    >
+                    </sui-select-option>
+                  </sui-select>
+                  <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{questionMetaData.data[field.code]}}</span></div>
+                  <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
+                </div>
+              </div>
+    
+              <div class="six wide column mb-16" *ngIf="field.inputType === 'multiselect'" class="width-100">
+                  <div>
+                      <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
+                      <sui-multi-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}"
+                      appTelemetryInteract 
+                      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('multiselect-' + field.code, 'click', 'content-uploader')"
+                      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                      >
+                        <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option"
+                        appTelemetryInteract 
+                          [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('selectoption-' + option, 'click', 'content-uploader')"
+                          [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                          [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                          [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                        >
+                        </sui-select-option>
+                      </sui-multi-select>
+                      <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{questionMetaData.data[field.code]}}</span></div>
+                      <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
                   </div>
               </div>
-
-              <div class="six wide column mb-15" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
-                  <div [formGroupName]="i" class="sb-field">
-                      <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
-                          href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                              src="assets/images/Info.svg"></a></label>
-                      <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
-                  </div>
+    
+              <div class="six wide column mb-16" *ngIf="field.inputType === 'text'" class="width-100">
+                <div>
+                  <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
+                    <input *ngIf="!disableFormField" formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}"
+                    appTelemetryInteract 
+                      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('input-' + field.code, 'click', 'content-uploader')"
+                      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                    >
+                    <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{questionMetaData.data[field.code]}}</span></div>
+                  <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
+                  
+                </div>
               </div>
-
-              <div class="six wide column mb-15" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
-                  <div [formGroupName]="i" class="sb-field">
-                      <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red" *ngIf="field.required">*</span> <a
-                          href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                              src="assets/images/Info.svg"></a></label>
-                      <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
-                  </div>
-              </div>
+            </div>
           </div>
       </div>
     </div>

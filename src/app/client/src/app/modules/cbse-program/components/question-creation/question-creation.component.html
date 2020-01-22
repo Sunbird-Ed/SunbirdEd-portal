@@ -72,8 +72,63 @@
         </div>
     </div>
 
+    <!-- Question Preview Section HTML -->
+    <div class="ui container" *ngIf="isReadOnlyMode && !showPreview">
+        <div class="ui stackable grid m-0 sb-bg-color-white">
+            <div class="row">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question">
+                            <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Question</label>
+                            <div class="ckeditor-tool__solution__body">
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.question | sanitizeHtml"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question">
+                            <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Answer</label>
+                            <div class="ckeditor-tool__solution__body">
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.answer | sanitizeHtml"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="this.editorState.solutions.length > 0">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question mb-24">
+                            <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Solution</label>
+                            <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'html'">
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.solutions | sanitizeHtml"></p>
+                            </div>
+                            <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'video'">
+                                <div class="solution-media p-16 d-flex flex-ai-center">
+                                    <div class="solution-media__video relative position">
+                                    <div class="overlay-image" [ngStyle]="{background: 'url(' + videoThumbnail + ')'}"><i class="play circle icon"></i></div>
+                                    </div>
+                                    <div class="solution-media__desc ml-16">
+                                    {{videoSolutionName}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+
+    </div>
+
     <!-- Learning Outcome learning level author license Editor HTML -->
-    <div class='licence-form__content' *ngIf="!isReadOnlyMode && !showPreview">
+    <div class='licence-form__content'>
         <div class="ui stackable grid licence-form__content__fields my-0">
             <div class="row">
                 <div *ngFor = "let field of allFormFields; let i = index " class="sb-field six wide column mb-16">
@@ -139,95 +194,6 @@
                         <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
                         
                       </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Question Preview Section HTML -->
-    <div class="ui container" *ngIf="isReadOnlyMode && !showPreview">
-        <div class="ui stackable grid m-0 sb-bg-color-white">
-            <div class="row">
-                <div class="twelve wide column p-0">
-                    <div class="ckeditor-tool width-100">
-                        <div class="ckeditor-tool__question">
-                            <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Question</label>
-                            <div class="ckeditor-tool__solution__body">
-                                <p class="fs-0-785 p-16" [innerHTML]="editorState.question | sanitizeHtml"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="twelve wide column p-0">
-                    <div class="ckeditor-tool width-100">
-                        <div class="ckeditor-tool__question">
-                            <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Answer</label>
-                            <div class="ckeditor-tool__solution__body">
-                                <p class="fs-0-785 p-16" [innerHTML]="editorState.answer | sanitizeHtml"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row" *ngIf="this.editorState.solutions.length > 0">
-                <div class="twelve wide column p-0">
-                    <div class="ckeditor-tool width-100">
-                        <div class="ckeditor-tool__question mb-24">
-                            <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Solution</label>
-                            <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'html'">
-                                <p class="fs-0-785 p-16" [innerHTML]="editorState.solutions | sanitizeHtml"></p>
-                            </div>
-                            <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'video'">
-                                <div class="solution-media p-16 d-flex flex-ai-center">
-                                    <div class="solution-media__video relative position">
-                                    <div class="overlay-image" [ngStyle]="{background: 'url(' + videoThumbnail + ')'}"><i class="play circle icon"></i></div>
-                                    </div>
-                                    <div class="solution-media__desc ml-16">
-                                    {{videoSolutionName}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>  
-        </div>
-
-    </div>
-
-    <!-- Learning Outcome learning level author license Preview HTML -->
-    <div class='licence-form__content' *ngIf="isReadOnlyMode || showPreview">
-        <div class="ui stackable grid licence-form__content__fields">
-            <div class="row">
-                <div class="six wide column mb-16" formArrayName="multiSelectionArr" *ngFor = "let field of multiSelectionFields; let i = index ">
-                    <div [formGroupName]="i" class="sb-field">
-                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span> <a
-                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                                src="assets/images/Info.svg"></a></label>
-                        <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
-                    </div>
-                </div>
-
-                <div class="six wide column mb-16" formArrayName="selectionArr" *ngFor = "let field of selectionFields; let i = index ">
-                    <div [formGroupName]="i" class="sb-field">
-                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span> <a
-                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                                src="assets/images/Info.svg"></a></label>
-                        <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
-                    </div>
-                </div>
-
-                <div class="six wide column mb-16" formArrayName="textInputArr" *ngFor = "let field of textFields; let i = index ">
-                    <div [formGroupName]="i" class="sb-field">
-                        <label for="field.label" class="d-flex mb-4">{{field.label}} <span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span> <a
-                            href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
-                                src="assets/images/Info.svg"></a></label>
-                        <p class="fs-0-785">{{questionMetaData.data[field.code]}}</p>
                     </div>
                 </div>
             </div>
