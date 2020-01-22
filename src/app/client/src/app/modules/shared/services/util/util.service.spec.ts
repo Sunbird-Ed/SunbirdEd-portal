@@ -109,4 +109,41 @@ channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
     service.convertSelectedOption(null, null, null, null);
     expect(service.convertSelectedOption).toBeTruthy();
   }));
+
+  it('should call getPlayerDownloadStatus() when status is Download', inject([UtilService], (service: UtilService) => {
+    spyOn(service, 'getPlayerDownloadStatus').and.callThrough();
+    service.getPlayerDownloadStatus('DOWNLOAD', servicemockRes.successResult.result.content, 'browse');
+    expect(service.getPlayerDownloadStatus).toBeTruthy();
+  }));
+
+  it('should call getPlayerDownloadStatus() when status is Downloading ', inject([UtilService], (service: UtilService) => {
+    spyOn(service, 'getPlayerDownloadStatus').and.callThrough();
+    service.getPlayerDownloadStatus('DOWNLOADING', servicemockRes.successResult.result.content, 'browse');
+    expect(service.getPlayerDownloadStatus).toBeTruthy();
+  }));
+
+  it('should call getPlayerDownloadStatus() and return false', inject([UtilService], (service: UtilService) => {
+    spyOn(service, 'getPlayerDownloadStatus').and.callThrough();
+    service.getPlayerDownloadStatus('DOWNLOADING', servicemockRes.successResult.result.content, 'library');
+    expect(service.getPlayerDownloadStatus).toBeTruthy();
+  }));
+
+  it('should call getPlayerUpdateStatus() when status is update', inject([UtilService], (service: UtilService) => {
+    spyOn(service, 'getPlayerUpdateStatus').and.callThrough();
+    service.getPlayerUpdateStatus('UPDATE', servicemockRes.successResult.result.content, 'library', true);
+    expect(service.getPlayerUpdateStatus).toBeTruthy();
+  }));
+
+  it('should call getPlayerUpdateStatus() when status is downloading', inject([UtilService], (service: UtilService) => {
+    spyOn(service, 'getPlayerUpdateStatus').and.callThrough();
+    service.getPlayerUpdateStatus('DOWNLOADING', servicemockRes.successResult.result.content, 'library', true);
+    expect(service.getPlayerUpdateStatus).toBeTruthy();
+  }));
+
+  it('should call getPlayerUpdateStatus() and return false', inject([UtilService], (service: UtilService) => {
+    spyOn(service, 'getPlayerUpdateStatus').and.callThrough();
+    service.getPlayerUpdateStatus('UPDATE', servicemockRes.successResult.result.content, 'browse', false);
+    expect(service.getPlayerUpdateStatus).toBeTruthy();
+  }));
+
 });

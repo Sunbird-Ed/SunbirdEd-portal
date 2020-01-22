@@ -44,6 +44,7 @@ let envVariables = {
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
   PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
+  sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
   DEVICE_REGISTER_API: process.env.sunbird_device_register_api || 'https://api.open-sunbird.org/v3/device/register/',
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   sunbird_theme: env.sunbird_theme || 'default',
@@ -66,6 +67,7 @@ let envVariables = {
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
   sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
+  sunbird_azure_admin_container_name: env.sunbird_azure_admin_container_name || 'admin-user-reports',
   sunbird_azure_account_name: env.sunbird_azure_account_name,
   sunbird_azure_account_key: env.sunbird_azure_account_key,
   sunbird_portal_health_check_enabled: env.sunbird_health_check_enable || 'true',
@@ -82,6 +84,7 @@ let envVariables = {
   sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug',
+  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || 'https://staging.open-sunbird.org/api/v3/device/profile/',
   KEYCLOAK_GOOGLE_ANDROID_CLIENT: {
     clientId: env.sunbird_google_android_keycloak_client_id,
     secret: env.sunbird_google_android_keycloak_secret
@@ -93,11 +96,12 @@ let envVariables = {
   KEYCLOAK_ANDROID_CLIENT: {
     clientId: env.sunbird_android_keycloak_client_id || 'android',
   },
-  LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true'
+  LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
+  DESKTOP_APP_STORAGE_URL: env.desktop_app_storage_url,
+  SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
 module.exports = envVariables
-

@@ -22,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" [appTelemetryImpression]="dialResultImpression">
       <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
         (scrolled)="onScrollDown()">
         <div *ngIf="!showLoader && itemsToDisplay.length" in-view-container (inview)="inview($event)"

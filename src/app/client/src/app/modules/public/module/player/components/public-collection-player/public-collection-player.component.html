@@ -15,7 +15,7 @@
                 <app-content-download [contentData]="playerContent" [collectionId]="collectionId"></app-content-download>
             </div>
             <button class="sb-btn sb-btn-xs sb-btn-error" type="button" (click)="closeContentPlayer()"
-              appTelemetryInteract [telemetryInteractCdata]="this.telemetryCdata"
+              appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
               [telemetryInteractObject]="playerTelemetryInteractObject"
               [telemetryInteractEdata]="closePlayerInteractEdata">
               {{resourceService.frmelmnts.btn.close}}

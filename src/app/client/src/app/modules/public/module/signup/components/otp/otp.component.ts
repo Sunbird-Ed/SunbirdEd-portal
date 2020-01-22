@@ -37,11 +37,15 @@ export class OtpComponent implements OnInit {
   createUserErrorInteractEdata: any;
   telemetryCdata: Array<{}>;
   instance: string;
+  emailAddress: any;
+  phoneNumber: any;
   constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit() {
+    this.emailAddress = this.signUpdata.value.email;
+    this.phoneNumber = this.signUpdata.value.phone;
     this.mode = this.signUpdata.controls.contactType.value;
     this.otpForm = new FormGroup({
       otp: new FormControl('', [Validators.required])

@@ -3,6 +3,7 @@ import {SuiModule} from 'ng2-semantic-ui';
 import {ResourceService} from '@sunbird/shared';
 import {TelemetryModule} from '@sunbird/telemetry';
 import {RouterTestingModule} from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import {AccountMergeModalComponent} from './account-merge-modal.component';
 import {of as observableOf} from 'rxjs';
@@ -18,7 +19,7 @@ describe('AccountMergeModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule],
+      imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [AccountMergeModalComponent, InterpolatePipe],
       providers: [
         {provide: ResourceService, useValue: resourceBundle}]

@@ -148,6 +148,15 @@ label {
   font-weight: bold;
 }
 
+.sb-footer-license {
+  display: flex;
+  margin-bottom: $base-block-space * 1;
+  font-size: $sb-label-font-size;
+  font-weight: bold;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 small {
   font-size: 80%;
   font-weight: 400;

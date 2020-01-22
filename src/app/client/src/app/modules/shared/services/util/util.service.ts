@@ -172,4 +172,13 @@ export class UtilService {
     }
     return false;
   }
+  getPlayerUpdateStatus(status, content, currentRoute, isUpdated) {
+    if (currentRoute === 'library' && isUpdated) {
+      if (status === 'UPDATE') {
+        return (!content['downloadStatus'] || content['downloadStatus'] === 'FAILED');
+      }
+      return (content['downloadStatus'] === status);
+    }
+    return false;
+  }
 }

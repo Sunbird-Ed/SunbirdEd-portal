@@ -4,7 +4,6 @@ import * as _ from 'lodash-es';
 import * as Md5 from 'md5';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
-
 @Injectable()
 export class AssessmentScoreService {
   /***
@@ -71,7 +70,7 @@ export class AssessmentScoreService {
       this._assessEvents.push(eventData);
     } else if (eventData && eid === 'END') {
       this._endEvent = eventData;
-      this.processAssessEvents();
+      // this.processAssessEvents();
     }
   }
 
@@ -80,7 +79,7 @@ export class AssessmentScoreService {
    */
   private checkContentForAssessment() {
     if (_.get(this._batchDetails, 'batchId') && _.get(this._contentDetails, 'identifier') && _.get(this._batchDetails, 'courseId')) {
-      if (this._contentDetails && _.get(this._contentDetails, 'totalQuestions') > 0) {
+      if (this._contentDetails && _.get(this._contentDetails, 'contentType') === 'SelfAssess') {
         this.initialized = true;
       } else {
         this.initialized = false;
@@ -117,12 +116,12 @@ export class AssessmentScoreService {
   }
 
   /**
-   * generates md5 hash from four strings (courseId , batchId , contentId and userId)
+   * generates UUID for attemptId
    */
   private generateHash() {
     const string = _.join([_.get(this._batchDetails, 'courseId'), _.get(this._batchDetails, 'batchId'),
     _.get(this._contentDetails, 'identifier'),
-    this._userId], '-');
+    this._userId, (new Date()).getTime()], '-');
     const hash = Md5(string);
     return hash;
   }
@@ -159,10 +158,10 @@ export class AssessmentScoreService {
   }
 
   /**
-   * handles browser change or route change in b/w courseplay.
+   * handles submit button clicked in course player
    */
-  handleInterruptEvent(interrupt: Boolean) {
-    if (interrupt && this._startEvent && this.initialized) {
+  handleSubmitButtonClickEvent(clicked: Boolean) {
+    if (clicked && this._startEvent && this.initialized) {
       this.processAssessEvents();
     }
   }
