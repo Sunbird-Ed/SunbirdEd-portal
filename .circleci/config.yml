@@ -21,7 +21,7 @@ jobs:
           command: 'npm install -g @angular/cli@6.0.8'
       - run:
           name: Increase memory limit for node
-          command: 'export NODE_OPTIONS=--max_old_space_size=4096'
+          command: 'export NODE_OPTIONS=--max_old_space_size=2096'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -30,9 +30,9 @@ jobs:
       - save_cache: # special step to save the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}
           paths: ./node_modules
-      - run:
-          name: ng lint and building
-          command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log' 
+      # - run:
+      #     name: ng lint and building
+      #     command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log' 
       - run:
           name: Executing test cases
           command: './node_modules/@angular/cli/bin/ng test src --code-coverage=true --watch=false'
