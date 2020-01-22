@@ -16,8 +16,8 @@ import { ProgramStageService } from '../../../program/services';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 
 import {
-  chapterListComponentInput, role, sessionContext, responseSample,
-  fetchedQueCount, chapterlistSample, textbookMeta, routerQuestionCategorySample, templateSelectionEvent
+  chapterListComponentInput, responseSample,
+  fetchedQueCount, templateSelectionEvent
 } from './chapter-list.component.spec.data';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
