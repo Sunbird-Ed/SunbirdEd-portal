@@ -260,7 +260,11 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   buttonTypeHandler(event) {
     this.updateStatus = event;
     if (event === 'preview') {
-      this.showPreview = true;
+      if (this.sessionContext.resourceStatus === 'Draft') {
+        this.handleSubmit(this.questionMetaForm);
+      } else {
+        this.showPreview = true;
+      }
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
@@ -415,6 +419,8 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
             this.toasterService.success('Question Accepted');
           } else if (this.updateStatus === 'Draft' && this.questionRejected) {
             this.toasterService.success('Question Rejected');
+          } else if (this.updateStatus === 'preview') {
+            this.showPreview = true;
           }
           this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': apiRes.result.node_id });
         });
