@@ -7,7 +7,6 @@ import * as _ from 'lodash-es';
 import { AppUpdateService } from './../../../offline/services';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-about-us',
   templateUrl: './about-us.component.html',
@@ -29,8 +28,8 @@ export class AboutUsComponent implements OnInit, OnDestroy {
 
   constructor(public resourceService: ResourceService, private appUpdateService: AppUpdateService,
     private router: Router, public activatedRoute: ActivatedRoute,
-    private toasterService: ToasterService,
-    public sanitizer: DomSanitizer) {}
+    private toasterService: ToasterService
+    ) {}
 
   ngOnInit() {
     this.currentYear = new Date().getFullYear();
