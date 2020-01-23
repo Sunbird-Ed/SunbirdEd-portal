@@ -204,8 +204,7 @@
       "CANCEL_DOWNLOAD":"content/v1/download/cancel",
       "PAUSE_DOWNLOAD":"content/v1/download/pause",
       "RETRY_DOWNLOAD":"content/v1/download/retry",
-      "DELETE_CONTENT":"content/v1/delete",
-      "TERMS_OF_USE":"app/v1/terms_of_use"
+      "DELETE_CONTENT":"content/v1/delete"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
