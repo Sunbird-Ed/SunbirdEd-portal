@@ -2,8 +2,8 @@
 <div class="d-flex sb-bg-color-gray-0 practical-header">
   <div class="d-flex flex-ai-center practical-header__content ui container">
     <div class="mr-auto" *ngIf="!showTextArea">
-      <div class="practice-set__label">
-        <span class="font-weight-bold fs-1">{{resourceName}}</span>
+      <div class="d-flex flex-ai-center">
+        <span class="font-weight-bold fs-1 practical-header__title">{{resourceName}}</span>
         <a class="cursor-pointer fsmall sb-color-primary ml-16" 
           (click)="showResourceTitleEditor()" 
           *ngIf="visibility && visibility.showSave"
@@ -48,11 +48,11 @@
         <label class="fsmall mb-0">Question(s)</label>
 
         <!-- add button to be integrated -->
-        <button  class="sb-btn sb-btn-outline-primary sb-btn-xs sb-left-icon-btn sb-btn-radius ml-auto"
+        <button  class="sb-btn sb-btn-outline-primary sb-btn-normal sb-left-icon-btn sb-btn-radius ml-auto"
         *ngIf="visibility && visibility.showCreateQuestion" (click)="createNewQuestion()"
         appTelemetryInteract
         [telemetryInteractEdata]="{id:'create_btn',type:'click',pageid:'questionlist',extra:{type:'reference',category:sessionContext.questionType.toUpperCase(),topic:sessionContext.topic}}">
-        <i class="plus icon mr-4"></i>ADD</button>
+        <i class="plus icon mr-4 ml-4"></i>ADD</button>
       </div>
 
   
