@@ -461,6 +461,8 @@ export class QuestionListComponent implements OnInit, OnChanges {
     const index = _.indexOf(_.keys(this.selectedAttributes.hierarchyObj.hierarchy), this.selectedAttributes.textBookUnitIdentifier);
     if (index >= 0) {
       this.selectedAttributes.hierarchyObj.hierarchy[this.selectedAttributes.textBookUnitIdentifier].children.push(contentId);
+      // tslint:disable-next-line:max-line-length
+      this.selectedAttributes.hierarchyObj.hierarchy[this.selectedAttributes.textBookUnitIdentifier].children =  _.uniq(this.selectedAttributes.hierarchyObj.hierarchy[this.selectedAttributes.textBookUnitIdentifier].children);
       if (!_.has(this.selectedAttributes.hierarchyObj.hierarchy, contentId)) {
         this.selectedAttributes.hierarchyObj.hierarchy[contentId] = {
           'name': name,
