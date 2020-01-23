@@ -1,18 +1,16 @@
 <div class="content-video">
-    <section class="content-video__player" id="player-area-height">
-      <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
-        <div>
-          <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow br-4" name="contentPlayer"></iframe>
-        </div>
-   
-        <!--If Content is deleted-->
-          <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center no-content-player" *ngIf="contentDeleted">
-            <div class="no-content-player__text"></div>
-            <div>
-              <img src="../../../../../assets/images/shape.svg" width="90px" height="70px">
-  
-            </div>
-           <div class="fnormal font-weight-bold  mt-16 mb-8">{{resourceService?.messages?.stmsg?.desktop?.deleteMessage}}</div> 
+  <section class="content-video__player" id="player-area-height">
+    <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
+      <div>
+        <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow br-4" name="contentPlayer"></iframe>
+      </div>
+ 
+      <!--If Content is deleted-->
+        <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center no-content-player" *ngIf="contentDeleted">
+          <div class="no-content-player__text"></div>
+          <div>
+            <img src="../../../../../assets/images/shape.svg" width="90px" height="70px">
+
           </div>
        <!--If Content is deleted-->
   
