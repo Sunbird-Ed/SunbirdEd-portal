@@ -1,5 +1,6 @@
 export const chapterListComponentInput = {
     sessionContext: {
+      collection: 'do_1234567890',
       framework: 'NCFCOPY',
       programId: '31ab2990-7892-11e9-8a02-93c5c62c03f1',
       board: 'NCERT',

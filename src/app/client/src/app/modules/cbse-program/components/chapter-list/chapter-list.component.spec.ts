@@ -84,7 +84,7 @@ describe('ChapterListComponent', () => {
   };
   const compState = 'chapterListComponent';
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule,
         SuiTabsModule, FormsModule, DynamicModule],
@@ -99,7 +99,7 @@ describe('ChapterListComponent', () => {
   }));
 
 
-  beforeEach(() => {
+  beforeAll(() => {
     fixture = TestBed.createComponent(ChapterListComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
@@ -148,7 +148,7 @@ describe('ChapterListComponent', () => {
        expect(component.changeView).toHaveBeenCalled();
     });
 
-    xit('should call getHierarchy with second parameter as undefined', () => {
+    it('should call getHierarchy with second parameter as undefined', () => {
       spyOn(component, 'getCollectionHierarchy');
       component.updateAccordianView();
       expect(component.getCollectionHierarchy).toHaveBeenCalledWith(jasmine.any(String), undefined);
