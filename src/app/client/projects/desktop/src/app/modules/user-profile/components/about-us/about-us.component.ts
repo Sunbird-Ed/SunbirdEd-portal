@@ -21,13 +21,10 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   public telemetryInteractButtonEData: IInteractEventEdata;
   public telemetryInteractEData: IInteractEventEdata;
   public telemetryTermsOfUseEData: IInteractEventEdata;
-  tncLatestVersionUrl;
   showModal = false;
   showLoader = true;
-  count = 0;
   loaderMessage: ILoaderMessage = {};
   currentYear;
-  public isConnected;
   @ViewChild('termsIframe') termsIframe: ElementRef;
 
   constructor(public resourceService: ResourceService, private appUpdateService: AppUpdateService,
