@@ -2,7 +2,6 @@ import {TestBed, inject, getTestBed} from '@angular/core/testing';
 import {throwError as observableThrowError, of as observableOf, Observable} from 'rxjs';
 import {SignupService} from './signup.service';
 import {ConfigService, SharedModule} from '@sunbird/shared';
-import {HttpClientModule, HttpClient} from '@angular/common/http';
 import {LearnerService, UserService} from '@sunbird/core';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 
@@ -35,7 +34,7 @@ describe('SignupService', () => {
     const signupService = TestBed.get(SignupService);
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableThrowError(mockError));
-    signupService.getTncConfig().subscribe(data => {
+    signupService.getTncConfig().subscribe(null, data => {
       expect(data).toBe(mockError);
     });
   }));
