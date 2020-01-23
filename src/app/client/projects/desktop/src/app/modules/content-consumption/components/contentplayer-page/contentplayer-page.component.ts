@@ -72,6 +72,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   ngOnChanges() {
     if (this.contentDetails && this.tocPage) {
       this.contentId = this.contentDetails.identifier;
+      this.playerConfig = {};
       this.getContent();
     }
   }
