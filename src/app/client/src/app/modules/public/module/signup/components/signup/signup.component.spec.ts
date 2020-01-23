@@ -214,6 +214,8 @@ describe('SignUpComponent', () => {
     contactType.setValue('email');
     const uniqueContact = component.signUpForm.controls['uniqueContact'];
     uniqueContact.setValue(true);
+    const tncAccepted = component.signUpForm.controls['tncAccepted'];
+    tncAccepted.setValue(true);
     expect(component.disableSubmitBtn).toBeFalsy();
   });
   it('should call displayPassword method to show password', () => {

@@ -53,7 +53,8 @@ describe('OtpComponent', () => {
       confirmPassword: ['test1234'],
       phone: ['9876543210'],
       email: ['test@gmail.com'],
-      contactType: ['phone']
+      contactType: ['phone'],
+      tncAccepted: ['true']
     }),
 
       fixture.detectChanges();
