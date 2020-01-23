@@ -54,7 +54,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   public multiSelectionFields: Array<any>;
   public rejectComment: string;
   questionMetaForm: FormGroup;
-  enableSubmitBtn = false;
   initialized = false;
   showFormError = false;
   editor: any;
@@ -63,7 +62,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   showSolutionDropDown = true;
   videoSolutionName: string;
   videoSolutionData: any;
-  editorState: any;
+  editorState: any = {};
   solutionUUID: string;
   myAssets = [];
   allImages = [];
@@ -245,15 +244,11 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   initializeDropdown() {
     (<any>$('.ui.checkbox')).checkbox();
   }
-  enableSubmitButton() {
-    this.questionMetaForm.valueChanges.subscribe(val => {
-      this.enableSubmitBtn = (this.questionMetaForm.status === 'VALID');
-    });
-  }
 
   handleReviewrStatus(event) {
     this.updateQuestion([{ key: 'status', value: event.status }, { key: 'rejectComment', value: event.rejectComment }]);
   }
+
   buttonTypeHandler(event) {
     this.updateStatus = event;
     if (event === 'preview') {
@@ -269,6 +264,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       this.handleSubmit(this.questionMetaForm);
     }
   }
+
   handleSubmit(questionMetaForm) {
     if (this.questionMetaForm.valid && this.editorState.question !== ''
       && this.editorState.answer !== '') {
@@ -424,33 +420,33 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     }
   }
 
-  getConvertedSVG(body) {
-    const getLatex = (encodedMath) => {
-      return this.http.get('https://www.wiris.net/demo/editor/render?mml=' + encodedMath + '&backgroundColor=%23fff&format=svg', {
-        responseType: 'text'
-      });
-    };
-    let latexBody;
-    const isMathML = body.match(/((<math("[^"]*"|[^\/">])*)(.*?)<\/math>)/gi);
-    if (isMathML && isMathML.length > 0) {
-      latexBody = isMathML.map(math => {
-        const encodedMath = encodeURIComponent(math);
-        return getLatex(encodedMath);
-      });
-    }
-    if (latexBody) {
-      return forkJoin(latexBody).pipe(
-        map((res) => {
-          _.forEach(res, (latex, i) => {
-            body = latex.includes('Error') ? body : body.replace(isMathML[i], latex);
-          });
-          return body;
-        })
-      );
-    } else {
-      return of(body);
-    }
-  }
+  // getConvertedSVG(body) {
+  //   const getLatex = (encodedMath) => {
+  //     return this.http.get('https://www.wiris.net/demo/editor/render?mml=' + encodedMath + '&backgroundColor=%23fff&format=svg', {
+  //       responseType: 'text'
+  //     });
+  //   };
+  //   let latexBody;
+  //   const isMathML = body.match(/((<math("[^"]*"|[^\/">])*)(.*?)<\/math>)/gi);
+  //   if (isMathML && isMathML.length > 0) {
+  //     latexBody = isMathML.map(math => {
+  //       const encodedMath = encodeURIComponent(math);
+  //       return getLatex(encodedMath);
+  //     });
+  //   }
+  //   if (latexBody) {
+  //     return forkJoin(latexBody).pipe(
+  //       map((res) => {
+  //         _.forEach(res, (latex, i) => {
+  //           body = latex.includes('Error') ? body : body.replace(isMathML[i], latex);
+  //         });
+  //         return body;
+  //       })
+  //     );
+  //   } else {
+  //     return of(body);
+  //   }
+  // }
 
   private refreshEditor() {
     this.refresh = false;
