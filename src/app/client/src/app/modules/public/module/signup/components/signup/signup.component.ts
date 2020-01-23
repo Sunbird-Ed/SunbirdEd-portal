@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import { ResourceService, ServerResponse, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import {ResourceService, ServerResponse, ToasterService, NavigationHelperService, UtilService} from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -36,17 +36,34 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   submitInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}>;
   instance: string;
+  termsAndConditionLink: string;
+  tncLatestVersion: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public utilService: UtilService) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
-    this.instance = _.upperCase(this.resourceService.instance);
+    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+        const response = _.get(data, 'result.response.value');
+        if (response) {
+          try {
+            const tncConfig = this.utilService.parseJson(response);
+            this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
+            this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
+          } catch (e) {
+            this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+          }
+        }
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      }
+    );
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
       data => {
         if (data && !data.err) {
@@ -122,7 +139,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       phone: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
       email: new FormControl(null, [Validators.email]),
       contactType: new FormControl('phone'),
-      uniqueContact: new FormControl(null, [Validators.required])
+      uniqueContact: new FormControl(null, [Validators.required]),
+      tncAccepted: new FormControl(false, [Validators.requiredTrue])
     }, {
       validator: (formControl) => {
         const passCtrl = formControl.controls.password;

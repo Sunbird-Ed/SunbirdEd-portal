@@ -237,4 +237,17 @@ export class UtilService {
   emitHideHeaderTabsEvent(hideTab: boolean) {
     this.hideHeaderTabs.emit(hideTab);
   }
+
+  /**
+   * Parses string to object
+   * Throws error if unable to parse
+   * @param string
+   */
+  parseJson(string) {
+    try {
+      return JSON.parse(string);
+    } catch (e) {
+      throw new Error('ERROR_PARSING_STRING');
+    }
+  }
 }
