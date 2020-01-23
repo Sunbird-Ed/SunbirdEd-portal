@@ -1,6 +1,6 @@
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, NavigationHelperService } from '@sunbird/shared';
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.scss']
 })
-export class ContentPlayerComponent implements AfterViewInit, OnChanges {
+export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
@@ -77,30 +77,19 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
       this.objectRollUp = _.get(this.playerConfig, 'context.objectRollup') || {};
       this.loadPlayer();
     }
-    this.checkOnlineStatus();
-    this.displayToasterMessage();
   }
-
+  ngOnInit() {
+    this.checkOnlineStatus();
+  }
   checkOnlineStatus() {
     this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
+    this.displayToasterMessage();
     });
   }
   displayToasterMessage() {
     if (!this.isConnected && this.contentData) {
-      if (!this.router.url.includes('browse')) {
-        const isYoutubeContent = this.offlineCardService.isYoutubeContent(this.contentData);
-        if (isYoutubeContent) {
-          if (this.isDisplayToaster) {
-          this.isDisplayToaster = false;
-            return ;
-          }
-          this.isDisplayToaster = true;
-          this.toasterService.error(this.resourceService.messages.stmsg.desktop.noInternetMessage);
-        }
-      } else {
         this.toasterService.error(this.resourceService.messages.stmsg.desktop.noInternetMessage);
-      }
     }
   }
   loadCdnPlayer() {
@@ -240,6 +229,10 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
         this.loadPlayer();
       }
     }
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
 

@@ -111,7 +111,6 @@ describe('ContentPlayerComponent', () => {
     component.contentData = playerData.content.result.content;
     // tslint:disable-next-line: max-line-length
     spyOn(toasterService, 'error').and.returnValue(throwError(playerData.resourceBundle.messages.stmsg.desktop.noInternetMessage));
-    spyOn(component.offlineCardService, 'isYoutubeContent').and.returnValue(of(true));
     component.displayToasterMessage();
     expect(toasterService.error).toHaveBeenCalled();
   });
