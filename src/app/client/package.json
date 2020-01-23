@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
-    "test-coverage": "node --max_old_space_size=3584 'node_modules/@angular/cli/bin/ng' test src --code-coverage=true --watch=false",
+    "test-coverage": "ng test src --code-coverage=true --watch=false",
     "desktop-test-coverage": "ng test desktop --watch=false",
     "build-cdn": "ng build --prod",
     "build-offline": "ng build --project offline --deployUrl dist/ --c=offline && mv ../dist/index.html ../dist/index.ejs",
