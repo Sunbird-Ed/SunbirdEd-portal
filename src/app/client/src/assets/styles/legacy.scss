@@ -957,6 +957,10 @@ ul.subList-padding {
   font-weight: 600;
   color: $gray-800;
 }
+.courseupdate a{
+  color: var(--primary-color) !important;
+  text-decoration: underline !important;
+}
 .container-with-button {
   width: 100% !important;
   padding-right: 0px !important;
