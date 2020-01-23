@@ -2,9 +2,9 @@ import { IAppInfo } from './../../interfaces';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { ResourceService, ServerResponse, ILoaderMessage, ToasterService } from '@sunbird/shared';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import * as _ from 'lodash-es';
-import { AppUpdateService, ConnectionService } from './../../../offline/services';
+import { AppUpdateService } from './../../../offline/services';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -28,32 +28,26 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   loaderMessage: ILoaderMessage = {};
   currentYear;
   public isConnected;
+  @ViewChild('termsIframe') termsIframe: ElementRef;
+
   constructor(public resourceService: ResourceService, private appUpdateService: AppUpdateService,
     private router: Router, public activatedRoute: ActivatedRoute,
-    private connectionService: ConnectionService,
     private toasterService: ToasterService,
     public sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    this.checkOnlineStatus();
     this.currentYear = new Date().getFullYear();
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0129
     };
     this.instance = _.upperCase(this.resourceService.instance);
     this.getAppInfo();
-  }
 
-  checkOnlineStatus() {
-    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
-      this.isConnected = isConnected;
-    });
   }
 
   getAppInfo() {
     this.appUpdateService.getAppInfo().pipe(takeUntil(this.unsubscribe$)).subscribe((response: ServerResponse) => {
       this.appInfo = _.get(response, 'result');
-      this.tncLatestVersionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.appInfo.termsOfUseUrl);
       this.setTelemetryData();
     });
   }
@@ -68,18 +62,15 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   }
 
   toggleTocModal() {
-    if (this.isConnected && this.tncLatestVersionUrl) {
-      this.showLoader = true;
-      this.showModal = !this.showModal;
-    } else {
-      this.toasterService.error(this.resourceService.frmelmnts.emsg.desktop.termsOfUse);
-    }
-
+      this.showLoader = this.showModal = true;
   }
 
-  isIframeLoaded() {
-    this.count++;
-    this.showLoader = this.count === 2 ? (this.count = 0, false) : true;
+  isIFrameLoaded() {
+    this.showLoader = false;
+    if (this.termsIframe.nativeElement.contentWindow.document.title === 'Error') {
+      this.showModal = false;
+      this.toasterService.error(this.resourceService.messages.emsg.desktop.termsOfUse);
+    }
   }
 
   setTelemetryData () {
