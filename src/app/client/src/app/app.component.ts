@@ -10,8 +10,8 @@ import { UserService, PermissionService, CoursesService, TenantService, OrgDetai
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { Observable, of, throwError, combineLatest, BehaviorSubject } from 'rxjs';
-import { first, filter, mergeMap, tap, map, skipWhile, startWith } from 'rxjs/operators';
+import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin} from 'rxjs';
+import {first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil} from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
@@ -85,6 +85,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   queryParams: any;
   telemetryContextData: any ;
   didV2: boolean;
+  flag = false;
+  deviceProfile: any;
+  isCustodianOrgUser: any;
+  usersProfile: any;
+  isLocationConfirmed = true;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -103,7 +108,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
-    this.telemetryService.syncEvents();
+    this.telemetryService.syncEvents(false);
   }
   handleLogin() {
     window.location.reload();
@@ -160,6 +165,45 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       document.body.classList.add('sb-offline');
     }
 }
+
+  checkLocationStatus() {
+    this.usersProfile = this.userService.userProfile;
+    const deviceRegister = this.deviceRegisterService.getDeviceProfile();
+    const custodianOrgDetails = this.orgDetailsService.getCustodianOrgDetails();
+    forkJoin([deviceRegister, custodianOrgDetails]).subscribe((res) => {
+      const deviceProfile = res[0];
+      this.deviceProfile = deviceProfile;
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(res[1], 'result.response.value')) {
+        // non state user
+        this.isCustodianOrgUser = true;
+        this.deviceProfile = deviceProfile;
+        if (this.userService.loggedIn) {
+          if (!deviceProfile.userDeclaredLocation ||
+            !(this.usersProfile && this.usersProfile.userLocations && this.usersProfile.userLocations.length >= 1)) {
+            this.isLocationConfirmed = false;
+          }
+        } else {
+          if (!deviceProfile.userDeclaredLocation) {
+            this.isLocationConfirmed = false;
+          }
+        }
+      } else {
+        // state user
+        this.isCustodianOrgUser = false;
+        if (this.userService.loggedIn) {
+          if (!deviceProfile.userDeclaredLocation) {
+            this.isLocationConfirmed = false;
+          }
+        } else {
+          if (!deviceProfile.userDeclaredLocation) {
+            this.isLocationConfirmed = false;
+          }
+        }
+      }
+    }, (err) => {
+      this.isLocationConfirmed = true;
+    });
+  }
 
 setFingerPrintTelemetry() {
   const printFingerprintDetails  = (<HTMLInputElement>document.getElementById('logFingerprintDetails'))
@@ -237,9 +281,12 @@ setFingerPrintTelemetry() {
     const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
     if (frameWorkPopUp) {
       this.showFrameWorkPopUp = false;
+      this.checkLocationStatus();
     } else {
       if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
         this.showFrameWorkPopUp = true;
+      } else {
+        this.checkLocationStatus();
       }
     }
   }
@@ -390,12 +437,13 @@ setFingerPrintTelemetry() {
     this.profileService.updateProfile(req).subscribe(res => {
       this.frameWorkPopUp.modal.deny();
       this.showFrameWorkPopUp = false;
+      this.checkLocationStatus();
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
     }, err => {
       this.toasterService.warning(this.resourceService.messages.emsg.m0012);
       this.frameWorkPopUp.modal.deny();
-      this.router.navigate(['/resources']);
+      this.checkLocationStatus();
       this.cacheService.set('showFrameWorkPopUp', 'installApp');
     });
   }

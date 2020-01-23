@@ -169,13 +169,17 @@ export class PublicPlayerService {
   }
   updateDownloadStatus (downloadListdata, content) {
     const identifier = !_.isEmpty(content.metaData) ? _.get(content, 'metaData.identifier') : _.get(content, 'identifier');
-        // If download is completed card should show added to library
-        if (_.find(downloadListdata.result.response.downloads.completed, { contentId: identifier })) {
-          content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
-        }
-        // // If download failed, card should show again add to library
-        if (_.find(downloadListdata.result.response.downloads.failed, { contentId: identifier })) {
-          content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
-        }
+    const { inprogress = [], submitted= [], completed= [], failed= [] } = _.get(downloadListdata, 'result.response.downloads');
+    const compare = { resourceId: identifier };
+
+    if (_.find(inprogress, compare) || _.find(submitted, compare)) {
+      content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    } else if (_.find(completed, compare)) {
+      content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
+    } else if (_.find(failed, compare)) {
+      content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+    }
+    return content;
   }
+
 }

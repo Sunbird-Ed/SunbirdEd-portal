@@ -124,6 +124,22 @@
     }
 }
 
+@include respond-between(sm, lg) {
+.sb-meta-data-container {
+    &.sb-meta-data-row-facing{
+        .sb-meta-data{
+            dt {
+                flex-basis: 40%;
+             }
+             dd {
+                flex-basis: 60%;
+             }
+        }
+    }
+  }
+}
+
+
 @include respond-below(sm) {
     .sb-meta-data-container {
         &.sb-meta-data-column {

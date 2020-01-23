@@ -26,6 +26,27 @@ body {
     }
   }
 }
+@include respond-above (lg){
+  body{
+    .footer-fix {
+      padding-bottom: 56px;
+    }
+  }
+}
+@include respond-between (md, lg){
+  body{
+    .footer-fix {
+      padding-bottom: 64px;
+    }
+  }
+}
+@include respond-between (sm, md){
+  body{
+    .footer-fix {
+      padding-bottom: 112px;
+    }
+  }
+}
 @include respond-above(sm) {
   body {
     padding-bottom: 168px;
@@ -34,7 +55,6 @@ body {
     }
     .footer-fix {
       min-height: calc(100vh - 168px);
-      padding-bottom: $base-block-space * 4;
     }
     .sb-mid-container-min-height{
       min-height: calc(100vh - 288px);
@@ -45,7 +65,7 @@ body {
 @include respond-below(sm) {
   .footer-fix {
     min-height: calc(100vh - 336px);
-    padding-bottom: $base-block-space * 3;
+    padding-bottom: 24px;
   }
 }
 .sb-offline {

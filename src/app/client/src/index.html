@@ -49,6 +49,9 @@
   <% if (deviceRegisterApi) { %>
   <input type="hidden" id="deviceRegisterApi" value="<%=deviceRegisterApi%>" />
   <% } %>
+  <% if (deviceProfileApi) { %>
+  <input type="hidden" id="deviceProfileApi" value="<%=deviceProfileApi%>" />
+  <% } %>
   <% if (cdnUrl) { %>
   <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
   <% } %>
@@ -98,6 +101,9 @@
   <% } %>
   <% if (logFingerprintDetails) { %>
     <input type="hidden" id="logFingerprintDetails" value="<%=logFingerprintDetails%>" />
+  <% } %>
+  <% if (deviceApi) { %>
+    <input type="hidden" id="deviceApi" value="<%=deviceApi%>" />
   <% } %>
   <app-root></app-root>
 </body>

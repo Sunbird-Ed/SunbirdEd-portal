@@ -1,7 +1,7 @@
 import { UserService } from '@sunbird/core';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from './../../services';
 import * as _ from 'lodash-es';
@@ -10,7 +10,7 @@ import * as _ from 'lodash-es';
   templateUrl: './account-recovery-info.component.html',
   styleUrls: ['./account-recovery-info.component.scss']
 })
-export class AccountRecoveryInfoComponent implements OnInit {
+export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
   @Output() close = new EventEmitter<any>();
   @ViewChild('accountRecoveryModal') accountRecoveryModal;
 

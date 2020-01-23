@@ -5,23 +5,28 @@ import { PlayerConfig } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
-
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
 })
 export class PlayerComponent implements AfterViewInit, OnChanges {
   @Input() playerConfig: PlayerConfig;
-  @Output() contentProgressEvent = new EventEmitter<any>();
   @Output() assessmentEvents = new EventEmitter<any>();
+  @Output() questionScoreSubmitEvents = new EventEmitter<any>();
   @ViewChild('contentIframe') contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
+  @Input() contentProgressEvents$: Subject<any>;
+
   buildNumber: string;
   @Input() playerOption: any;
   contentRatingModal = false;
   previewCdnUrl: string;
   isCdnWorking: string;
+  CONSTANT = {
+    ACCESSEVENT: 'renderer:question:submitscore'
+  };
   /**
  * Dom element reference of contentRatingModal
  */
@@ -60,6 +65,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
           console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();
@@ -77,6 +83,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
           console.log('loading default player failed', err);
           const prevUrls = this.navigationHelperService.history;
@@ -116,12 +123,18 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       $('#contentPlayer').css('height', height + 'px');
     }
   }
+
+  generateScoreSubmitEvent(event: any) {
+    if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
+      this.questionScoreSubmitEvents.emit(event);
+    }
+  }
+
   generateContentReadEvent(event: any) {
     const eid = event.detail.telemetryData.eid;
     if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(event);
-      this.contentProgressEvent.emit(event);
-
+      this.contentProgressEvents$.next(event);
     } else if (eid && (eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }

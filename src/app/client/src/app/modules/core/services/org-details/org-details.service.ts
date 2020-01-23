@@ -1,4 +1,4 @@
-import { throwError, of, Observable, BehaviorSubject } from 'rxjs';
+import {throwError, of, Observable, BehaviorSubject} from 'rxjs';
 import { mergeMap, map, catchError, skipWhile } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
@@ -17,6 +17,7 @@ export class OrgDetailsService {
   orgDetails: any;
   orgInfo: any;
   timeDiff: any;
+  custodianOrgDetails: any;
 
   private _orgDetails$ = new BehaviorSubject<any>(undefined);
   /**
@@ -126,6 +127,16 @@ export class OrgDetailsService {
     return this.orgInfo;
   }
 
+  public getCustodianOrgDetails() {
+    if (this.custodianOrgDetails) {
+      return of(this.custodianOrgDetails);
+    }
+    return this.getCustodianOrg().pipe(map(custodianOrgDetails => {
+      this.custodianOrgDetails = custodianOrgDetails;
+      return custodianOrgDetails;
+    }));
+  }
+
   getCustodianOrg() {
     const systemSetting = {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
@@ -198,5 +209,4 @@ export class OrgDetailsService {
     return this.publicDataService.post(option);
   }
 }
-
 
