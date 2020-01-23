@@ -43,7 +43,6 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   @ViewChild('modal') modal;
   @Input() contentData;
   isLoading: Boolean = false; // To restrict player loading multiple times
-  isDisplayToaster: Boolean = false;
   constructor(public configService: ConfigService, public router: Router, public toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private connectionService: ConnectionService,
