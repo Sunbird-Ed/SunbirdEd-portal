@@ -44,7 +44,6 @@ module.exports = function (config) {
           base: 'Chrome',
           flags: ['--headless', '--remote-debugging-port=9222', '--no-sandbox']
        }                             
-    }
     },
     singleRun: false
   })
