@@ -17,6 +17,9 @@ module.exports = function (config) {
     ],
     browserNoActivityTimeout: 100000,
     client: {
+      jasmine: {
+        timeoutInterval: 50000
+      },
       args: [tags],
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
