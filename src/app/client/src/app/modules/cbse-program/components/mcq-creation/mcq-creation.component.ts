@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnChanges, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { McqForm } from './../../class/McqForm';
-import { ConfigService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
+import { ConfigService, IUserData, IUserProfile, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { UserService, ActionService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -12,6 +13,7 @@ import { map, catchError } from 'rxjs/operators';
 import { CbseProgramService } from '../../services';
 import { Validators, FormGroup, FormArray, FormBuilder, NgForm } from '@angular/forms';
 import { mcqTemplateConfig } from '../mcq-template-selection/mcq-template-data';
+import { ProgramTelemetryService } from '../../../program/services';
 
 @Component({
   selector: 'app-mcq-creation',
@@ -20,6 +22,7 @@ import { mcqTemplateConfig } from '../mcq-template-selection/mcq-template-data';
 })
 export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() sessionContext: any;
+  @Input() telemetryEventsInput: any;
   @Input() questionMetaData: any;
   @Output() questionStatus = new EventEmitter<any>();
   @Output() questionFormChangeStatus = new EventEmitter<any>();
@@ -52,12 +55,9 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   learningOutcomeOptions = [];
   updateStatus = 'update';
   questionRejected = false;
-
+  allFormFields: Array<any>;
   questionMetaForm: FormGroup;
   selectOutcomeOption = {};
-  textInputArr: FormArray;
-  selectionArr: FormArray;
-  multiSelectionArr: FormArray;
   disableFormField: boolean;
   showRequestChangesPopup = false;
   commentCharLimit = 1000;
@@ -79,12 +79,15 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     'value': 'video'
   }];
   solutionValue: string;
+  telemetryImpression: any;
+  public telemetryPageId = 'mcq-creation';
 
   constructor(public configService: ConfigService, private http: HttpClient,
     private userService: UserService, public actionService: ActionService,
     public toasterService: ToasterService, private cdr: ChangeDetectorRef, private cbseService: CbseProgramService,
-    private formBuilder: FormBuilder,
-    public telemetryService: TelemetryService) {
+    private formBuilder: FormBuilder, public telemetryService: TelemetryService,
+    public activeRoute: ActivatedRoute, public programTelemetryService: ProgramTelemetryService,
+    public router: Router, private navigationHelperService: NavigationHelperService) {
   }
 
   initForm() {
@@ -129,13 +132,29 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.isReadOnlyMode) {
-      const windowData: any = window;
-      const el = document.getElementsByClassName('ckeditor-tool__solution__body');
-      for (let i = 0; i < el.length; i++) {
-        windowData.com.wiris.js.JsPluginViewer.parseElement(el[i], true, () => {});
-      }
-    }
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const telemetryCdata = this.telemetryEventsInput.telemetryInteractCdata;
+     setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activeRoute.snapshot.data.telemetry.env,
+          cdata: telemetryCdata || [],
+          pdata: {
+            id: this.userService.appId,
+            ver: version,
+            pid: `${this.configService.appConfig.TELEMETRY.PID}.programs`
+          }
+        },
+        edata: {
+          type: _.get(this.activeRoute, 'snapshot.data.telemetry.type'),
+          pageid: this.telemetryPageId,
+          uri: this.router.url,
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+     });
+
   }
 
   ngOnChanges() {
@@ -230,7 +249,11 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   buttonTypeHandler(event) {
     this.updateStatus = event;
     if (event === 'preview') {
-      this.showPreview = true;
+      if (this.sessionContext.resourceStatus === 'Draft') {
+        this.handleSubmit(this.questionMetaForm);
+      } else {
+        this.showPreview = true;
+      }
     } else if (event === 'edit') {
       this.refreshEditor();
       this.showPreview = false;
@@ -342,11 +365,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
           metadata['solutions'] = [solutionObj];
         }
 
-        const formValues = {};
-        _.map(this.questionMetaForm.value, (value, key) => { _.map(value, (obj) => { _.assign(formValues, obj); }); });
-        // tslint:disable-next-line:max-line-length
-        metadata = _.pickBy(_.assign(metadata, formValues), _.identity);
-
+        metadata = _.pickBy(_.assign(metadata, this.questionMetaForm.value), _.identity);
         const req = {
           url: this.configService.urlConFig.URLS.ASSESSMENT.UPDATE + '/' + this.questionMetaData.data.identifier,
           data: {
@@ -385,6 +404,8 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
             this.toasterService.success('Question Accepted');
           } else if (this.updateStatus === 'Draft' && this.questionRejected) {
             this.toasterService.success('Question Rejected');
+          } else if (this.updateStatus === 'preview') {
+            this.showPreview = true;
           }
           this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': apiRes.result.node_id });
         });
@@ -429,21 +450,11 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   manageFormConfiguration() {
-    this.questionMetaForm = this.formBuilder.group({
-      textInputArr: this.formBuilder.array([ ]),
-      selectionArr: this.formBuilder.array([ ]),
-      multiSelectionArr: this.formBuilder.array([ ])
-    });
-    this.selectionArr = this.questionMetaForm.get('selectionArr') as FormArray;
-    this.multiSelectionArr = this.questionMetaForm.get('multiSelectionArr') as FormArray;
-    this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
-
+    const controller = {};
+    this.questionMetaForm = this.formBuilder.group(controller);
     if (this.questionMetaData) {
-      // tslint:disable-next-line:max-line-length
       this.formConfiguration = this.componentConfiguration.config.formConfiguration;
-      this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
-      this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
-      this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
+      this.allFormFields = _.filter(this.formConfiguration, {'visible': true});
       // tslint:disable-next-line:max-line-length
       this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.sessionContext.resourceStatus === 'Draft') ? false : true ;
       const formFields = _.map(this.formConfiguration, (formData) => {
@@ -459,40 +470,28 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         this.selectOutcomeOption['learningOutcome'] = topicTerm.associations;
       }
 
-      _.forEach(this.selectionFields, (obj) => {
-        const controlName = {};
+      _.map(this.allFormFields, (obj) => {
         const code = obj.code;
         const preSavedValues = {};
-        // tslint:disable-next-line:max-line-length
-        preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? (Array.isArray(this.questionMetaData.data[code]) ? this.questionMetaData.data[code][0] : this.questionMetaData.data[code]) : '';
-        // tslint:disable-next-line:max-line-length
-        obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = preSavedValues[code];
-        this.selectionArr = this.questionMetaForm.get('selectionArr') as FormArray;
-        this.selectionArr.push(this.formBuilder.group(controlName));
+        if (this.questionMetaData) {
+          if (obj.inputType === 'select') {
+            // tslint:disable-next-line:max-line-length
+            preSavedValues[code] = (this.questionMetaData.data[code]) ? (_.isArray(this.questionMetaData.data[code]) ? this.questionMetaData.data[code][0] : this.questionMetaData.data[code]) : '';
+            // tslint:disable-next-line:max-line-length
+            obj.required ? controller[obj.code] = [preSavedValues[code], [Validators.required]] : controller[obj.code] = preSavedValues[code];
+          } else if (obj.inputType === 'multiselect') {
+            // tslint:disable-next-line:max-line-length
+            preSavedValues[code] = (this.questionMetaData.data[code] && this.questionMetaData.data[code].length) ? this.questionMetaData.data[code] : [];
+            // tslint:disable-next-line:max-line-length
+            obj.required ? controller[obj.code] = [preSavedValues[code], [Validators.required]] : controller[obj.code] = [preSavedValues[code]];
+          } else if (obj.inputType === 'text') {
+            preSavedValues[code] = (this.questionMetaData.data[code]) ? this.questionMetaData.data[code] : '';
+            // tslint:disable-next-line:max-line-length
+            obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controller[obj.code] = preSavedValues[code];
+          }
+        }
       });
-
-      _.forEach(this.multiSelectionFields, (obj) => {
-        const controlName = {};
-        const code = obj.code;
-        const preSavedValues = {};
-        // tslint:disable-next-line:max-line-length
-        preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code] && this.questionMetaData.data[code].length) ? this.questionMetaData.data[code] : [];
-        // tslint:disable-next-line:max-line-length
-        obj.required ? controlName[obj.code] = [preSavedValues[code], [Validators.required]] : controlName[obj.code] = [preSavedValues[code]];
-        this.multiSelectionArr = this.questionMetaForm.get('multiSelectionArr') as FormArray;
-        this.multiSelectionArr.push(this.formBuilder.group(controlName));
-      });
-
-      _.forEach(this.textFields, (obj) => {
-        const controlName = {};
-        const code = obj.code;
-        const preSavedValues = {};
-        preSavedValues[code] = (this.questionMetaData.data && this.questionMetaData.data[code]) ? this.questionMetaData.data[code] : '';
-        // tslint:disable-next-line:max-line-length
-        obj.required ? controlName[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controlName[obj.code] = preSavedValues[code];
-        this.textInputArr = this.questionMetaForm.get('textInputArr') as FormArray;
-        this.textInputArr.push(this.formBuilder.group(controlName));
-      });
+      this.questionMetaForm = this.formBuilder.group(controller);
       this.onFormValueChange();
     }
   }

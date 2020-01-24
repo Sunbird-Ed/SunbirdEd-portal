@@ -1,5 +1,5 @@
-<sui-modal [mustScroll]="false" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
-  appBodyScroll (dismissed)="modal.deny(); templateSelection.emit({type: 'close'})" #modal>
+<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
+  appBodyScroll (dismissed)="modal.deny(); templateSelection.emit({type: 'close'})" #modal [isBasic]="false">
   <div class="sb-modal-header">
     {{'Please select a Template to proceed'}}&lrm;
   </div>
