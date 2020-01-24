@@ -2,7 +2,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { SignupComponent } from './signup.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService, SharedModule } from '@sunbird/shared';
+import {ResourceService, SharedModule, ToasterService} from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { CoreModule, TenantService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -10,7 +10,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
+import {SignUpComponentMockData} from './signup.component.spec.data';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -58,7 +59,7 @@ describe('SignUpComponent', () => {
       imports: [SharedModule.forRoot(), RecaptchaModule, CoreModule,
         HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ SignupComponent ],
-      providers: [FormBuilder, ResourceService, SignupService,
+      providers: [FormBuilder, ResourceService, SignupService, ToasterService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle },
@@ -214,6 +215,8 @@ describe('SignUpComponent', () => {
     contactType.setValue('email');
     const uniqueContact = component.signUpForm.controls['uniqueContact'];
     uniqueContact.setValue(true);
+    const tncAccepted = component.signUpForm.controls['tncAccepted'];
+    tncAccepted.setValue(true);
     expect(component.disableSubmitBtn).toBeFalsy();
   });
   it('should call displayPassword method to show password', () => {
@@ -232,4 +235,48 @@ describe('SignUpComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
+
+  it('should fetch tnc configuration', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    component.ngOnInit();
+    expect(component.tncLatestVersion).toEqual('v4');
+    expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
+  });
+
+  it('should not fetch tnc configuration and throw error', () => {
+    const signupService = TestBed.get(SignupService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableThrowError(SignUpComponentMockData.tncConfig));
+    component.ngOnInit();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+  });
+
+  it('should fetch tnc configuration and throw error as cannot parse data', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfigIncorrectData));
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    component.ngOnInit();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+  });
+
+  it('should init instance with sunbird', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    spyOn(component, 'getCacheLanguage');
+    spyOn(component, 'initializeFormFields');
+    spyOn(component, 'setInteractEventData');
+    spyOn(component, 'signUpTelemetryStart');
+    component.ngOnInit();
+    expect(component.instance).toEqual('SUNBIRD');
+    expect(component.getCacheLanguage).toHaveBeenCalled();
+    expect(component.tncLatestVersion).toEqual('v4');
+    expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
+    expect(component.initializeFormFields).toHaveBeenCalled();
+    expect(component.setInteractEventData).toHaveBeenCalled();
+    expect(component.signUpTelemetryStart).toHaveBeenCalled();
+    });
+
 });

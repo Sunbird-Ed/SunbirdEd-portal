@@ -1,11 +1,35 @@
 export const OtpComponentMockResponse = {
-    signupData: {
-        'controls': {
-            'contactType': {
-                'value': 'phone'
-            }
-        }
+  signupData: {
+    'controls': {
+      'contactType': {
+        'value': 'phone'
+      },
+      name: {
+        value: 'firstName'
+      },
+      password: {
+        value: 'password'
+      },
+      email: {
+        value: 'email@gmail.com'
+      },
+      tncAccepted: {
+        value: true,
+        status: 'VALID'
+      }
+
+    }
+  },
+  tncAcceptResponse: {
+    id: 'api.user.tnc.accept',
+    params: {
+      err: null,
+      status: 'success',
+      errType: null
     },
+    responseCode: 'OK',
+    result: {response: 'Success'}
+  },
     resourceBundle: {
         'frmelmnts': {
             'lbl': {

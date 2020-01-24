@@ -21,6 +21,7 @@ const request = require('request-promise');
 const portal = this
 const telemetry = new (require('sb_telemetry_util'))()
 const telemetryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
+const userService = require('./helpers/userService');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
@@ -67,6 +68,7 @@ app.get('/service/health', healthService.createAndValidateRequestBody, healthSer
 
 app.get("/latex/convert", latexService.convert);
 app.post("/latex/convert", bodyParser.json({ limit: '1mb' }), latexService.convert);
+app.post('/user/v2/accept/tnc', bodyParser.json({limit: '1mb'}), userService.acceptTnc);
 
 require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
