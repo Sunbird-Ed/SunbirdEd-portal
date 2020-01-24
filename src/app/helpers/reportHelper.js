@@ -71,7 +71,7 @@ function azureBlobStream() {
             readStream.on('end', () => {
                 res.end();
             })
-            readStream.on('err', error => {
+            readStream.on('error', error => {
                 if (error && error.statusCode === 404) {
                     console.log('Error with status code 404 - ', error);
                     const response = {
