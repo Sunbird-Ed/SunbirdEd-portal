@@ -28,6 +28,16 @@ export const appInfoResponse = {
                     app: '{instance} Lite Desktop App'
                 }
             }
+        },
+    messages: {
+        stmsg: {
+            m0129: 'Loading the Terms and Conditions.',
+        },
+        emsg: {
+            desktop: {
+                termsOfUse: 'Unable to get Terms Of Use. Please Try Again Later...'
+            }
         }
+    }
     }
 };
