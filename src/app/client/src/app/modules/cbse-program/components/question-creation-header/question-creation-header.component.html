@@ -3,7 +3,13 @@
 <div class="ui container py-16 question-status" *ngIf="questionMetaData.data && questionMetaData.data.rejectComment && questionMetaData.data.rejectComment !== '' ">
     <div class="mt-8 practice-set__status">
         <span class="sb-color-error">Question Rejected</span>
-        <span class="cursor-pointer fs-0-785 ml-8" (click)="openReviewerCommentModal()">
+        <span class="cursor-pointer fs-0-785 ml-8" (click)="openReviewerCommentModal()"
+        appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('view-reviewercomments', 'click', 'question-creation-header')"
+        [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+        [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+        >
             <i class="comment alternate outline icon sb-color-primary"></i>
             <a >View Comments</a>
         </span>
