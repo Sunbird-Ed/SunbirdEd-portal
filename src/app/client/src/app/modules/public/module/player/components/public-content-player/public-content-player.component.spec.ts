@@ -19,6 +19,9 @@ const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
   'queryParams': observableOf({ language: ['en'] }, {dialCode: '61U24C'}),
   snapshot: {
+    params: {
+      contentId: 'd0_33567325'
+    },
     data: {
       telemetry: {
         env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'

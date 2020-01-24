@@ -9,7 +9,7 @@ import { ResourceService, SharedModule, ToasterService, NavigationHelperService 
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserOrgManagementComponent } from './user-org-management.component';
-import { throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, of } from 'rxjs';
 import { mockManageData } from './user-org-management.mock.spec';
 
 const fakeActivatedRoute = {
@@ -133,18 +133,55 @@ describe('UserOrgManagementComponent', () => {
     expect(userTableId).toEqual('ValidatedUserDetailsTable');
   });
 
-//   it('should call the getData API for fetching geoJSON data', () => {
-//     // const userService = TestBed.get(UserService);
-//     const manageService = TestBed.get(ManageService);
-//     // spyOn(userService, 'userData').and.returnValue(observableOf(mockManageData.user));
-//     spyOn(component, 'getGeoJSON');
-//     spyOn(manageService, 'getData').and.returnValue(observableOf(mockManageData.geoData));
-//     component.getGeoJSON();
-//     expect(component.getGeoJSON).toHaveBeenCalled();
-//     expect(manageService.getData).toHaveBeenCalledWith(component.slug, 'geo-summary.json');
-//     expect(component.geoData).toEqual(jasmine.objectContaining({
-//         districts: 0
-//     }));
-//   });
+  it('should fetch user json', () => {
+    const manageService = TestBed.get(ManageService);
+    spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
+    component.slug = 'sunbird';
+    component.userJSON = 'user.json';
+    component.getUserJSON();
+    expect(component.uploadedDetails).toBeDefined();
+  });
+
+  it('should fetch geo json', () => {
+    const manageService = TestBed.get(ManageService);
+    spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
+    component.slug = 'sunbird';
+    component.userJSON = 'user.json';
+    component.getGeoJSON();
+    expect(component.geoData).toBeDefined();
+  });
+
+  it('should fetch user summary', () => {
+    const manageService = TestBed.get(ManageService);
+    spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
+    component.slug = 'sunbird';
+    component.userJSON = 'user.json';
+    component.getUserSummary();
+    expect(component.validatedUser).toBeDefined();
+  });
+
+  it('should fetch geo summary', () => {
+    const manageService = TestBed.get(ManageService);
+    spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
+    component.slug = 'sunbird';
+    component.userJSON = 'user.json';
+    component.getGeoDetail();
+    expect(component.geoSummary).toBeDefined();
+  });
+
+  it('should download csv file', () => {
+    const manageService = TestBed.get(ManageService);
+    spyOn(manageService, 'getData').and.returnValue(of({
+      result: {
+        signedUrl: 'a'
+      }
+    }));
+    spyOn(window, 'open');
+    component.slug = 'sunbird';
+    component.userJSON = 'user.json';
+    component.downloadZipFile('user.json');
+    expect(window.open).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith('a', '_blank');
+  });
 
 });
