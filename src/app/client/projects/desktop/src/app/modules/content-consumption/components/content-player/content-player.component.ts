@@ -1,18 +1,20 @@
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, NavigationHelperService } from '@sunbird/shared';
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
+import { ConnectionService } from '@sunbird/offline';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.scss']
 })
-export class ContentPlayerComponent implements AfterViewInit, OnChanges {
+export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
@@ -30,6 +32,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   contentDeleted = false;
   @Input() isContentPresent = true;
   @Input() objectRollUp: {} = {};
+  isConnected: any;
+  public unsubscribe$ = new Subject<void>();
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
@@ -39,9 +43,9 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   @ViewChild('modal') modal;
   @Input() contentData;
   isLoading: Boolean = false; // To restrict player loading multiple times
-
-  constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
+  constructor(public configService: ConfigService, public router: Router, public toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
+    private connectionService: ConnectionService,
     public playerService: PublicPlayerService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
@@ -70,6 +74,20 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
     if (!_.isEmpty(this.playerConfig)) {
       this.objectRollUp = _.get(this.playerConfig, 'context.objectRollup') || {};
       this.loadPlayer();
+    }
+  }
+  ngOnInit() {
+    this.checkOnlineStatus();
+  }
+  checkOnlineStatus() {
+    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    this.displayToasterMessage();
+    });
+  }
+  displayToasterMessage() {
+    if (!this.isConnected && this.contentData) {
+        this.toasterService.error(this.resourceService.messages.stmsg.desktop.noInternetMessage);
     }
   }
   loadCdnPlayer() {
@@ -210,4 +228,9 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
       }
     }
   }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
+

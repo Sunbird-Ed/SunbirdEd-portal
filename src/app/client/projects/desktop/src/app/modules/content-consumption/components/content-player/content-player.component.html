@@ -12,25 +12,23 @@
             <img src="../../../../../assets/images/shape.svg" width="90px" height="70px">
 
           </div>
-         <div class="fnormal font-weight-bold  mt-16 mb-8">{{resourceService?.messages?.stmsg?.desktop?.deleteMessage}}</div> 
+       <!--If Content is deleted-->
+  
+       <!--If content is not present-->
+       <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center no-content-player" *ngIf="!isContentPresent">
+        <div class="no-content-player__text"></div>
+        <div>
+          <img src="../../../../../assets/images/shape.svg" width="90px" height="70px">
+  
         </div>
-     <!--If Content is deleted-->
-
-     <!--If content is not present-->
-     <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center no-content-player" *ngIf="!isContentPresent">
-      <div class="no-content-player__text"></div>
-      <div>
-        <img src="../../../../../assets/images/shape.svg" width="90px" height="70px">
-
+        <div class="fnormal">{{resourceService?.messages?.stmsg?.desktop?.noContentMessage}}</div>
       </div>
-      <div class="fnormal">{{resourceService?.messages?.stmsg?.desktop?.noContentMessage}}</div>
-    </div>
-         <!--If content is not present-->
-
-    </div>
-
-
-    <app-content-actions *ngIf="contentData" [contentData]="contentData" (deletedContent)="deleteContent($event)" (contentDownloaded)="checkContentDownloading($event)" [objectRollUp]="objectRollUp"></app-content-actions>
-
-  </section>
-</div>
+           <!--If content is not present-->
+  
+      </div>
+  
+  
+      <app-content-actions *ngIf="contentData" [contentData]="contentData" (deletedContent)="deleteContent($event)" (contentDownloaded)="checkContentDownloading($event)" [objectRollUp]="objectRollUp"></app-content-actions>
+  
+    </section>
+  </div>
