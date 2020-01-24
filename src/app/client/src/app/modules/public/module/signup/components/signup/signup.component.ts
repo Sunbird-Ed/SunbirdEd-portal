@@ -37,6 +37,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryCdata: Array<{}>;
   instance: string;
   tncLatestVersion: string;
+  termsAndConditionLink: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
@@ -47,6 +48,21 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+        const response = _.get(data, 'result.response.value');
+        if (response) {
+          try {
+            const tncConfig = this.utilService.parseJson(response);
+            this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
+            this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
+          } catch (e) {
+            this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+          }
+        }
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      }
+    );
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
       data => {
@@ -68,24 +84,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Telemetry Start
     this.signUpTelemetryStart();
-  }
-
-  openTnc() {
-    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
-        const response = _.get(data, 'result.response.value');
-        if (response) {
-          try {
-            const tncConfig = this.utilService.parseJson(response);
-            this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
-            window.open(tncConfig[this.tncLatestVersion].url, '_blank');
-          } catch (e) {
-            this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-          }
-        }
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      }
-    );
   }
 
   getCacheLanguage() {
