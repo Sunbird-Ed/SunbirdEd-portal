@@ -111,7 +111,7 @@ module.exports = {
         return _.get(data, 'result.response');
       } else {
         logger.info({msg: 'userHelper:acceptTermsAndCondition failed', data: data});
-        throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+        throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err' || 'FAILED'));
       }
     }, function (error) {
       logger.error({
