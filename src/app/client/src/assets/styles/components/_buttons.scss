@@ -53,6 +53,9 @@ a.sb-btn {
   &.flat {
     border-radius: 0;
   }
+  &.sb-btn-radius {
+    border-radius: 2rem;
+  }
 }
 // Create button color classess from the below list
 // btnname basecolor hovercolor outlinecolor
@@ -150,9 +153,6 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
       }
     }
   }
-}
-.sb-btn-radius {
-  border-radius: 2rem;
 }
 .sb-btn-white {
   box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(0, 0, 0, 0.1),
