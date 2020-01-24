@@ -3,11 +3,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentPlayerComponent } from './content-player.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule } from '@angular/router';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { CUSTOM_ELEMENTS_SCHEMA , DebugElement} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { playerData } from './content-player.component.spec.data';
-import { Subject} from 'rxjs';
+import { Subject } from 'rxjs';
+import { ConnectionService } from '@sunbird/offline';
+import { of, throwError } from 'rxjs';
 
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
@@ -17,7 +19,8 @@ describe('ContentPlayerComponent', () => {
       declarations: [ContentPlayerComponent],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
-        ResourceService,
+         ConnectionService, ToasterService,
+        { provide: ResourceService, useValue: playerData.resourceBundle },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -95,6 +98,21 @@ describe('ContentPlayerComponent', () => {
    expect(component.adjustPlayerHeight).toHaveBeenCalled();
    expect(component.generateContentReadEvent).toHaveBeenCalled();
  });
+  });
+  it('should check isConnected', () => {
+    const connectionService = TestBed.get(ConnectionService);
+    spyOn(connectionService, 'monitor').and.returnValue(of(true));
+    component.checkOnlineStatus();
+    expect(component.isConnected).toBeTruthy();
+  });
+  it('should display ToasterMessage', () => {
+    const toasterService = TestBed.get(ToasterService);
+    component.isConnected = false;
+    component.contentData = playerData.content.result.content;
+    // tslint:disable-next-line: max-line-length
+    spyOn(toasterService, 'error').and.returnValue(throwError(playerData.resourceBundle.messages.stmsg.desktop.noInternetMessage));
+    component.displayToasterMessage();
+    expect(toasterService.error).toHaveBeenCalled();
   });
 
 });
