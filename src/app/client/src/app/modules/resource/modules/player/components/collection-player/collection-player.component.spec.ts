@@ -132,4 +132,10 @@ describe('CollectionPlayerComponent', () => {
     component['getContent']();
     expect(component['getCollectionHierarchy']).toHaveBeenCalled();
   });
+
+  it('should open the pdfUrl in a new tab', () => {
+    spyOn(window, 'open').and.callThrough();
+    component.printPdf('www.samplepdf.com');
+    expect(window.open).toHaveBeenCalledWith('www.samplepdf.com', '_blank');
+  });
 });

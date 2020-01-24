@@ -70,6 +70,13 @@
           <i class="blue clone outline icon"></i>
           {{resourceService?.frmelmnts?.lbl?.copy}}
         </a>
+        <!-- Print Button for printable contents-->
+        <span class="d-inline-block" *ngIf="selectedContent?.model?.itemSetPreviewUrl">
+          <a appTelemetryInteract [telemetryInteractObject]="objectInteract" [telemetryInteractEdata]= "printPdfInteractEdata" class="cursor-pointer btn-bg p-8 d-flex font-weight-bold" (click)="printPdf(selectedContent.model.itemSetPreviewUrl)">
+              <img src="assets/images/print.svg" width="16" /> <span>&nbsp;&nbsp;{{resourceService.frmelmnts.btn.print}}</span>
+          </a>
+        </span>
+        <!-- /Print Button for printable contents-->
         <app-content-badge [data]="badgeData" class="ml-20 m-responsive-cp-badge-ml"></app-content-badge>
         <!-- Temporarily disable flagging-->
           <!-- <a routerLink="flag" class="pr-10 blue-text-color-sunbird">
