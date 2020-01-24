@@ -1,0 +1,15 @@
+@import 'mixins/mixins';
+
+.warning-ecar-list {
+    width: 100%;
+    line-height: normal;
+    border-top: 1px solid #ddd;
+    font-size:calculateRem(14px);
+    &:last-child {
+        border-bottom: 1px solid #ddd;
+    }
+}
+
+.import-content{
+    color:var(--tertiary-100); 
+}

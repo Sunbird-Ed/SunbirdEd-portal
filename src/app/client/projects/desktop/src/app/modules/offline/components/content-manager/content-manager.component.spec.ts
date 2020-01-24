@@ -264,5 +264,33 @@ describe('ContentManagerComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   });
 
+  fit('should call getNoSpaceContentList show failed contents in popup', () => {
+    component.previousList = [];
+    component.getNoSpaceContentList(response.allContentList);
+     expect(component.noSpaceContentList).toEqual(response.failedList);
+     expect(component.listToShow).toEqual(response.listToShow);
+     expect(component.showContentListModal).toBeTruthy();
+  });
+  fit('should call getNoSpaceContentList show failed contents in popup when difference is not empty', () => {
+    component.previousList = response.previousList;
+    component.getNoSpaceContentList(response.allContentList);
+     expect(component.noSpaceContentList).toEqual(response.failedList);
+     expect(component.listToShow).toEqual(response.listToShowWithDifference);
+     expect(component.showContentListModal).toBeTruthy();
+  });
+  fit('should call getNoSpaceContentList and no contents to show in pop up when difference is empty ', () => {
+    component.previousList = response.failedList;
+    component.getNoSpaceContentList(response.allContentList);
+     expect(component.noSpaceContentList).toEqual(response.failedList);
+     expect(component.listToShow).toEqual([]);
+     expect(component.showContentListModal).toBeFalsy();
+  });
+  fit('should call getNoSpaceContentList and no contents to show in pop up when all contents list is empty', () => {
+    component.previousList = [];
+    component.getNoSpaceContentList([]);
+     expect(component.noSpaceContentList).toEqual([]);
+     expect(component.listToShow).toEqual([]);
+     expect(component.showContentListModal).toBeFalsy();
+  });
 });
 

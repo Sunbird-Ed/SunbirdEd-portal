@@ -50,8 +50,8 @@
               {{resourceService?.frmelmnts?.btn?.cancel}}
             </button>
 
-            <button *ngIf="data.status === 'failed' || data.status === 'retrying'"
-              type="button" class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8"
+            <button *ngIf="data.status === 'failed' || data.status === 'retrying'" type="button"
+              class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8"
               (click)="contentManagerActions(data.addedUsing, 'Retry', data.id); updateLocalStatus(data, 'retrying');"
               [disabled]="data.status === 'retrying'" appTelemetryInteract
               [telemetryInteractEdata]="getButtonsInteractData('retry', data.downloadedSize)"
@@ -147,3 +147,5 @@
     </div>
   </sui-accordion-panel>
 </sui-accordion>
+
+<app-nospace-content-list *ngIf="showContentListModal" [contentlistToShow]="listToShow" (dismissed)="closeModal($event)"> </app-nospace-content-list>

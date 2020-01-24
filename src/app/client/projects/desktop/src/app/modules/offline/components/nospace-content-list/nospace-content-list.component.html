@@ -1,0 +1,24 @@
+<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+  class="sb-modal sb-warning sb-modal-center" appBodyScroll (dismissed)="closeModal()" #modal>
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.desktop?.storageSpaceRunningOutHeader}}
+  </div>
+
+  <div class="sb-modal-content flex-dc">
+    <p class="text-center fmedium import-content">
+      {{resourceService?.frmelmnts?.lbl?.desktop?.failedListLabel}}
+    </p>
+    <div class="p-8 warning-ecar-list" *ngFor="let items of contentlistToShow">
+      {{items['name']}}
+    </div>
+  <p class="text-center fsmall import-content">
+      {{resourceService?.frmelmnts?.lbl?.desktop?.storageSpaceRunningOutSubHeader}}
+    </p>
+  </div>
+
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-warning" (click)="closeModal()">
+      {{resourceService?.frmelmnts?.lbl?.desktop?.btn?.OK}}
+    </button>
+  </div>
+</sui-modal>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy , EventEmitter, Output} from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { timer, Subject, combineLatest } from 'rxjs';
 import { switchMap, map, filter, takeUntil } from 'rxjs/operators';
@@ -25,6 +25,11 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
   completedCount: number;
+  noSpaceContentList: any;
+  previousList: any;
+  listToShow: any;
+  showContentListModal: Boolean = false;
+  @Output() contentlistToShow = new EventEmitter<any>();
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -53,7 +58,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
 
   getList() {
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
-      .pipe(filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
+      .pipe(takeUntil(this.unsubscribe$), filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
           this.callContentList = false;
           let completedCount = 0;
@@ -76,9 +81,20 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.contentResponse = _.filter(apiResponse, (o) => {
             return o.status !== 'canceled';
           });
+          this.getNoSpaceContentList(apiResponse);
         });
   }
-
+  getNoSpaceContentList(allContentList) {
+    this.noSpaceContentList = _.filter(allContentList, (content) =>  content.failedCode === 'LOW_DISK_SPACE');
+    this.listToShow =  _.differenceBy(this.noSpaceContentList , this.previousList, 'identifier');
+    this.previousList = this.noSpaceContentList;
+    this.listToShow['length'] ? this.showContentListModal = true : this.showContentListModal = false;
+    console.log(this.listToShow , 'this.listToShow');
+  }
+  closeModal() {
+    console.log('hiii');
+    this.showContentListModal  = false;
+  }
   contentManagerActions(type: string, action: string, id: string) {
     // Unique download/import Id
     switch (`${action.toUpperCase()}_${type.toUpperCase()}`) {
@@ -107,6 +123,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         this.retryDownloadContent(id);
         break;
     }
+    this.previousList = _.filter(this.previousList, (content) => content.id !== id);
   }
 
   updateLocalStatus(contentData, currentStatus) {
