@@ -236,20 +236,12 @@ describe('SignUpComponent', () => {
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
 
-  it('should fetch tnc configuration', () => {
-    const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
-    component.ngOnInit();
-    expect(component.tncLatestVersion).toEqual('v4');
-    expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
-  });
-
   it('should not fetch tnc configuration and throw error', () => {
     const signupService = TestBed.get(SignupService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(signupService, 'getTncConfig').and.returnValue(observableThrowError(SignUpComponentMockData.tncConfig));
-    component.ngOnInit();
+    component.openTnc();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
 
@@ -258,17 +250,21 @@ describe('SignUpComponent', () => {
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfigIncorrectData));
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
-    component.ngOnInit();
+    component.openTnc();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
   });
 
-  it('should init instance with sunbird as instance not present', () => {
-    const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+  it('should init instance with sunbird', () => {
+    spyOn(component, 'getCacheLanguage');
+    spyOn(component, 'initializeFormFields');
+    spyOn(component, 'setInteractEventData');
+    spyOn(component, 'signUpTelemetryStart');
     component.ngOnInit();
-    expect(component.tncLatestVersion).toEqual('v4');
-    expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
     expect(component.instance).toEqual('SUNBIRD');
+    expect(component.getCacheLanguage).toHaveBeenCalled();
+    expect(component.initializeFormFields).toHaveBeenCalled();
+    expect(component.setInteractEventData).toHaveBeenCalled();
+    expect(component.signUpTelemetryStart).toHaveBeenCalled();
   });
 
 });

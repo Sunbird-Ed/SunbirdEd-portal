@@ -74,9 +74,8 @@
                      formControlName="tncAccepted" name="tncAccepted"
                      class="mr-10 cursor-pointer">
               {{resourceService?.frmelmnts?.lbl?.tncLabel}}
-              <a href="{{termsAndConditionLink}}"
-                 target="_blank">
-                {{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': instance}}
+              <a [routerLink]="" (click)="openTnc()">
+              {{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': instance}}
               </a>
             </div>
           </form>
