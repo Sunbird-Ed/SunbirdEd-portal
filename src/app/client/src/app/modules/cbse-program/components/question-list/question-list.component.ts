@@ -138,7 +138,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     const option = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
     };
-    this.contentService.get(option).pipe(map(data => data.result.content), catchError(err => {
+    this.contentService.get(option).pipe(map((data: any) => data.result.content), catchError(err => {
       const errInfo = { errorMsg: 'Unable to read the Content, Please Try Again' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     })).subscribe(res => {
@@ -310,7 +310,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     const req = {
       url: `${this.configService.urlConFig.URLS.ASSESSMENT.READ}/${questionId}`
     };
-    return this.actionService.get(req).pipe(map(res => {
+    return this.actionService.get(req).pipe(map((res: any) => {
       this.questionReadApiDetails[questionId] = res.result.assessment_item;
       return res.result.assessment_item;
     }),

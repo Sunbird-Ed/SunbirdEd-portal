@@ -86,7 +86,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     private userService: UserService, public actionService: ActionService,
     public toasterService: ToasterService, private cdr: ChangeDetectorRef, private cbseService: CbseProgramService,
     private formBuilder: FormBuilder, public telemetryService: TelemetryService,
-    public activeRoute: ActivatedRoute, public programTelemetryService: ProgramTelemetryService, 
+    public activeRoute: ActivatedRoute, public programTelemetryService: ProgramTelemetryService,
     public router: Router, private navigationHelperService: NavigationHelperService) {
   }
 
