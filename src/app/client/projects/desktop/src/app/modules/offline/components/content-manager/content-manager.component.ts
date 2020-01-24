@@ -27,8 +27,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   completedCount: number;
   noSpaceContentList: any;
   previousList: any;
-  listToShow: any;
-  showContentListModal: Boolean = false;
+  listToShow = [];
   @Output() contentlistToShow = new EventEmitter<any>();
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -85,15 +84,16 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         });
   }
   getNoSpaceContentList(allContentList) {
-    this.noSpaceContentList = _.filter(allContentList, (content) =>  content.failedCode === 'LOW_DISK_SPACE');
+    this.noSpaceContentList = _.filter(allContentList, (content) =>
+    content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
     this.listToShow =  _.differenceBy(this.noSpaceContentList , this.previousList, 'identifier');
-    this.previousList = this.noSpaceContentList;
-    this.listToShow['length'] ? this.showContentListModal = true : this.showContentListModal = false;
-    console.log(this.listToShow , 'this.listToShow');
+  }
+  removeFromPreviousList(id) {
+    this.previousList = _.filter(this.previousList, (content) => content.id !== id);
   }
   closeModal() {
-    console.log('hiii');
-    this.showContentListModal  = false;
+    this.previousList = this.noSpaceContentList;
+    this.listToShow = [];
   }
   contentManagerActions(type: string, action: string, id: string) {
     // Unique download/import Id
@@ -123,7 +123,6 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         this.retryDownloadContent(id);
         break;
     }
-    this.previousList = _.filter(this.previousList, (content) => content.id !== id);
   }
 
   updateLocalStatus(contentData, currentStatus) {
@@ -141,11 +140,13 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       next(apiResponse: any) {
         _this.deleteLocalContentStatus(id);
         _this.apiCallSubject.next();
+        _this.removeFromPreviousList(id);
       },
       error(err) {
         _this.deleteLocalContentStatus(id);
         _this.toasterService.error(_this.resourceService.messages.fmsg.m0097);
         _this.apiCallSubject.next();
+        _this.removeFromPreviousList(id);
       }
     });
   }

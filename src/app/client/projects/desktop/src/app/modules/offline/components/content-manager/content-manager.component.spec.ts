@@ -11,6 +11,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER, IInteractEventEdata } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
 import { response } from './content-manager.component.spec.data';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 
 describe('ContentManagerComponent', () => {
@@ -35,7 +36,8 @@ describe('ContentManagerComponent', () => {
         RouterTestingModule, FileSizeModule, OrderModule, TelemetryModule],
       declarations: [ContentManagerComponent],
       providers: [ContentManagerService, ConnectionService, TelemetryService, ToasterService,
-        { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, { provide: ResourceService, useValue: resourceMockData }]
+        { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, { provide: ResourceService, useValue: resourceMockData }],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -264,33 +266,34 @@ describe('ContentManagerComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   });
 
-  fit('should call getNoSpaceContentList show failed contents in popup', () => {
+  it('should call getNoSpaceContentList show failed contents in popup', () => {
     component.previousList = [];
     component.getNoSpaceContentList(response.allContentList);
      expect(component.noSpaceContentList).toEqual(response.failedList);
      expect(component.listToShow).toEqual(response.listToShow);
-     expect(component.showContentListModal).toBeTruthy();
   });
-  fit('should call getNoSpaceContentList show failed contents in popup when difference is not empty', () => {
+  it('should call getNoSpaceContentList show failed contents in popup when difference is not empty', () => {
     component.previousList = response.previousList;
     component.getNoSpaceContentList(response.allContentList);
      expect(component.noSpaceContentList).toEqual(response.failedList);
      expect(component.listToShow).toEqual(response.listToShowWithDifference);
-     expect(component.showContentListModal).toBeTruthy();
   });
-  fit('should call getNoSpaceContentList and no contents to show in pop up when difference is empty ', () => {
+  it('should call getNoSpaceContentList and no contents to show in pop up when difference is empty ', () => {
     component.previousList = response.failedList;
     component.getNoSpaceContentList(response.allContentList);
      expect(component.noSpaceContentList).toEqual(response.failedList);
      expect(component.listToShow).toEqual([]);
-     expect(component.showContentListModal).toBeFalsy();
   });
-  fit('should call getNoSpaceContentList and no contents to show in pop up when all contents list is empty', () => {
+  it('should call getNoSpaceContentList and no contents to show in pop up when all contents list is empty', () => {
     component.previousList = [];
     component.getNoSpaceContentList([]);
      expect(component.noSpaceContentList).toEqual([]);
      expect(component.listToShow).toEqual([]);
-     expect(component.showContentListModal).toBeFalsy();
+  });
+  it('should call close modal ', () => {
+    component.previousList = response.failedList;
+    spyOn(component, 'closeModal');
+    expect(component.listToShow).toEqual([]);
   });
 });
 
