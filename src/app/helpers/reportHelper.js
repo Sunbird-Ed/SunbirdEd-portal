@@ -66,35 +66,36 @@ function azureBlobStream() {
         let container = envHelper.sunbird_azure_report_container_name;
         let fileToGet = req.params.slug + '/' + req.params.filename;
         if (fileToGet.includes('.json')) {
-            blobService.getBlobToStream(container, fileToGet, res, (error, result) => {
-                if (!error) {
-                    res.status(200).end();
-                } else {
-                    if (error && error.statusCode === 404) {
-                        console.log('Error with status code 404 - ', error);
-                        const response = {
-                            responseCode: "CLIENT_ERROR",
-                            params: {
-                                err: "CLIENT_ERROR",
-                                status: "failed",
-                                errmsg: "Blob not found"
-                            },
-                            result: {}
-                        }
-                        res.status(404).send(apiResponse(response));
-                    } else {
-                        console.log('Error without status code 404 - ', error);
-                        const response = {
-                            responseCode: "SERVER_ERROR",
-                            params: {
-                                err: "SERVER_ERROR",
-                                status: "failed",
-                                errmsg: "Failed to display blob"
-                            },
-                            result: {}
-                        }
-                        res.status(500).send(apiResponse(response));
+            const readStream = blobService.createReadStream(container, fileToGet);
+            readStream.pipe(res);
+            readStream.on('end', () => {
+                res.end();
+            })
+            readStream.on('err', error => {
+                if (error && error.statusCode === 404) {
+                    console.log('Error with status code 404 - ', error);
+                    const response = {
+                        responseCode: "CLIENT_ERROR",
+                        params: {
+                            err: "CLIENT_ERROR",
+                            status: "failed",
+                            errmsg: "Blob not found"
+                        },
+                        result: {}
                     }
+                    res.status(404).send(apiResponse(response));
+                } else {
+                    console.log('Error without status code 404 - ', error);
+                    const response = {
+                        responseCode: "SERVER_ERROR",
+                        params: {
+                            err: "SERVER_ERROR",
+                            status: "failed",
+                            errmsg: "Failed to display blob"
+                        },
+                        result: {}
+                    }
+                    res.status(500).send(apiResponse(response));
                 }
             })
         } else {
