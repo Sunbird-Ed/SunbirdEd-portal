@@ -6,7 +6,7 @@ import { SearchService, SearchParam, PlayerService, CoursesService, UserService 
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService, TelemetryInteractDirective } from '@sunbird/telemetry';
-import { takeUntil, mergeMap, first, tap, retry, catchError, map } from 'rxjs/operators';
+import { takeUntil, mergeMap, first, tap, retry, catchError, map, finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
@@ -135,35 +135,44 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
 
   private processDialCode(params) {
-    return this.dialCodeService.searchDialCode(_.get(params, 'dialCode'), this.isBrowse)
-      .pipe(
-        tap(value => {
-          this.logInteractEvent({
-            id: 'search-dial-success',
-            type: 'view',
-            subtype: 'auto',
-          });
-          this.logTelemetryEvents(true);
-        }, err => {
-          this.logInteractEvent({
-            id: 'search-dial-failed',
-            type: 'view',
-            subtype: 'auto',
-          });
-          this.logTelemetryEvents(false);
-        }),
-        retry(1),
-        catchError(error => {
-          return of({
-            content: [],
-            collections: []
-          });
-        }),
-        mergeMap(this.dialCodeService.filterDialSearchResults),
-        tap((res) => {
-          this.showSelectChapter = false;
-        })
-      );
+    return of(params).pipe(
+      finalize(() => {
+        this.logInteractEvent({
+          id: 'search-dial-init',
+          type: 'view',
+          subtype: 'auto',
+        });
+      }),
+      mergeMap(param => this.dialCodeService.searchDialCode(_.get(param, 'dialCode'), this.isBrowse)
+        .pipe(
+          tap(value => {
+            this.logInteractEvent({
+              id: 'search-dial-success',
+              type: 'view',
+              subtype: 'auto',
+            });
+            this.logTelemetryEvents(true);
+          }, err => {
+            this.logInteractEvent({
+              id: 'search-dial-failed',
+              type: 'view',
+              subtype: 'auto',
+            });
+            this.logTelemetryEvents(false);
+          }),
+          retry(1),
+          catchError(error => {
+            return of({
+              content: [],
+              collections: []
+            });
+          }),
+          mergeMap(this.dialCodeService.filterDialSearchResults),
+          tap((res) => {
+            this.showSelectChapter = false;
+          })
+        ))
+    );
   }
   private processTextBook(params) {
     const textBookUnit = _.get(params, 'textbook');
