@@ -282,7 +282,7 @@ export const playerData = {
         messages: {
             stmsg: {
                 desktop: {
-                    noInternetMessage: 'Internet not available. Please connect and try again.'
+                     noInternetMessage: 'Internet not available. Please connect and try again.'
                 }
             }
         }
