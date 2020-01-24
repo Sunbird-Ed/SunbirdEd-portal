@@ -950,6 +950,10 @@ ul.subList-padding {
   font-size: 1em;
   word-break: break-word;
 }
+.courseupdate a{
+  color: var(--primary-color) !important;
+  text-decoration: underline !important;
+}
 .courseupdate b {
   font-weight: 400;
 }
