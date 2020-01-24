@@ -518,3 +518,96 @@ i.icon {
   }
 
 }
+
+// CBSE Program Accordion	
+.sb-chapterlist-accordion {	
+  &.ui.styled.accordion {	
+    background: inherit;	
+    .active.title {	
+      border: 1px solid $primary-200;	
+      border-bottom: none;	
+      background-color: #F3F8FF;	
+      font-weight: $font-weight-bold;	
+      border-bottom-left-radius: 0;	
+      border-bottom-right-radius: 0;	
+      font-size: $font-size-sm;	
+      .chevron-icon {	
+        background: #D9E4F2;	
+        border-left: none;	
+      }	
+      .chapter-status {	
+        background: $primary-color;	
+      }	
+    }	
+    .title {	
+      margin-top: $base-block-space;	
+      background: $gray-0;	
+      border: 1px solid $gray-100;	
+      border-radius: 4px;	
+      font-size: $font-size-sm;	
+      .chevron-icon {	
+        background: $gray-0;	
+        border-left: 1px solid $gray-100;	
+      }	
+      .chapter-status {	
+        height: $base-block-space;	
+        width: $base-block-space;	
+        border-radius: 50%;	
+        background: $gray-100;	
+      }	
+    }	
+    .sb-chapterlist-child {	
+      .active.title {	
+        border-top: 1px solid $primary-200;	
+        border-radius: 0;	
+        .chapter-status {	
+          background: #88B7E6;	
+        }	
+      }	
+      .title {	
+        margin-top: 0;	
+        border-radius: 0px 0px 4px 4px;	
+        border: none;	
+        border-top: 1px solid $gray-100;	
+      }	
+      .content {	
+        border: none;	
+      }	
+      .chevron-icon {	
+        border-top-right-radius: 0px;	
+      }	
+    }	
+    .content {	
+      border: 1px solid $primary-200;	
+      border-top: none;	
+      border-bottom-left-radius: 4px;	
+      border-bottom-right-radius: 4px;	
+      background: $white-color;	
+    }	
+    .chevron-icon {	
+      height: 56px;	
+      width: 56px;	
+      margin: -16px -16px -16px 16px;	
+      display: flex;	
+      align-items: center;	
+      justify-content: center;	
+      border-top-right-radius: 4px;	
+      border-bottom-right-radius: 4px;	
+    }	
+    .chevron.down.icon {	
+      height: auto;	
+    }	
+    .accordion {	
+      .active.title {	
+        border: 1px solid $primary-200;	
+        border-bottom: none;	
+        background-color: #F3F8FF;	
+        font-weight: $font-weight-bold;	
+      }	
+      .content {	
+        border: 1px solid $primary-200;	
+        border-top: none;	
+      }	
+    }	
+  }	
+}
