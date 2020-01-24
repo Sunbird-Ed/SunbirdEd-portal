@@ -1,0 +1,79 @@
+<div class="selectionField d-flex flex-jc-center flex-ai-center" [appTelemetryImpression]="telemetryImpression">
+    <label *ngIf= "!(selectedReport === 'Program Level Report Status')" class="mr-8 mb-0" >Textbook: </label>
+    <div class="sb-label sb-label-table sb-label-gray-0" *ngIf= "!(selectedReport === 'Program Level Report Status')" style="margin-right: 12px;"> {{selectedTextbook}} </div>
+  <label *ngIf= "!(selectedReport === 'Program Level Report Status')" class="mr-8 mb-0">Select Report: </label>
+  <div *ngIf= "!(selectedReport === 'Program Level Report Status')" class="field">
+    <sui-select [isSearchable]="true" id=reportSelection name=reportSelection class="selection"
+      [(ngModel)]="selectedReport" labelField="name" valueField="name" [options]="reports" #select>
+      <sui-select-option *ngFor="let report of reports" [value]="report" (click)="onReportChange(report.name)">
+      </sui-select-option>
+    </sui-select>
+  </div>
+  <label *ngIf= "(selectedReport === 'Program Level Report Status')" class="mr-8 mb-0">Report: </label>
+  <div class="sb-label sb-label-table sb-label-gray-0" *ngIf= "(selectedReport === 'Program Level Report Status')"> {{selectedReport}}</div>
+  <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-left-icon-btn"
+    (click)="refreshReport()"
+    appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('refresh-' + selectedReport, 'click', 'dashboard')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject('', 'Report', '1.0')"
+        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+    ><i class="refresh icon"></i>Refresh</button>
+  <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-primary sb-left-icon-btn"
+    (click)="downloadReport()"
+    appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('download-' + selectedReport, 'click', 'dashboard')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject('', 'Report', '1.0')"
+        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+    ><i class="download icon"></i>Download Report</button>
+
+</div>
+
+
+<div *ngIf="selectedReport === 'Program Level Report Status' && !showLoader" style="width: 100%; overflow-x: auto;">
+    <table class="sb-table sb-table-striped sb-table-sortable" id='ProgramLevelReportStatus'>
+      <thead class="sb-table-header sb-table-thead-gray">
+        <tr>
+          <th id="textbookName"
+          appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('sort-textbookname', 'click', 'dashboard')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject('', 'Report', '1.0')"
+        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+          > Textbook Name </th>
+          <th *ngFor="let label of headers" suiPopup popupHeader="{{label.tip}}"
+          appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('sort-' + label.name, 'click', 'dashboard')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject('', 'Report', '1.0')"
+        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+          > {{label.name}}
+          </th>
+        </tr>
+      </thead>
+      
+      <tbody class="sb-table-body" >
+        <tr *ngFor="let count of tableData">
+          <td>         
+      <div class="sb-card sb-card-qr" tabindex="0">
+          <div class="sb-card-body">
+              <div class="sb-media">
+                  <img src="assets/images/book.png" alt="" class="sb-media-object mr-15">
+                  <div class="sb-media-body">
+                      <h6 class="media-heading">{{count['Textbook Name']}}</h6>
+                      <p class="media-description">Class: {{count['Grade']}} <br>Subject: {{count['Subject']}} <br>Medium: {{count['Medium']}}</p>
+                  </div>
+                  </div> 
+          </div>
+        </div>
+            </td>
+            <td *ngFor="let level of UnitLevels">{{count[level] ? count[level] : 0}}</td>
+            <td *ngFor="let content of contentTypes">{{count[content] ? count[content] : 0}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+<br>
+<app-loader *ngIf='showLoader'></app-loader>

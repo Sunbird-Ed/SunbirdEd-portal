@@ -1,3 +1,4 @@
+import { SuiModalModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
@@ -31,7 +32,7 @@ describe('AboutUsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AboutUsComponent ],
-      imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), HttpClientTestingModule],
+      imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), HttpClientTestingModule, SuiModalModule],
       providers: [DatePipe,
         {provide: ResourceService, useValue: appInfoResponse.resourceBundle},
         {provide: ActivatedRoute, useClass: ActivatedRouteStub},
@@ -91,6 +92,21 @@ describe('AboutUsComponent', () => {
     const date = Date.now();
     const element = fixture.debugElement.query(By.css('#date')).nativeElement;
     expect(element.innerText).toEqual(datePipe.transform(date, 'dd/MM/yyyy'));
+  });
+
+  it('should display terms and conditions loader', () => {
+    component.toggleTocModal();
+    expect(component.showLoader).toBeTruthy();
+    expect(component.showModal).toBeTruthy();
+  });
+
+  it('should change display modal', () => {
+    component.termsIframe = {nativeElement: {contentWindow: {document: {title: 'Error'}}}};
+    spyOn(component['toasterService'], 'error');
+    component.isIFrameLoaded();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.showModal).toBeFalsy();
+    expect(component['toasterService'].error).toHaveBeenCalledWith(appInfoResponse.resourceBundle.messages.emsg.desktop.termsOfUse);
   });
 
 });

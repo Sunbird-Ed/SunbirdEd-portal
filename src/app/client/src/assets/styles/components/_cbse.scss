@@ -6,6 +6,20 @@
   border-bottom: 1px solid #cecece;
 }
 
+.questionTab.segment {
+  label {
+    font-size: 12px;
+    font-weight: normal;
+  }
+  &:hover, &.active {
+    background-color: #EDF4F9;
+    color: #024f9d;
+    label {
+      font-weight: 700;
+    }
+  }
+}
+
 .questionsMenu {
   overflow-y: auto;
   max-height: 500px;
@@ -15,16 +29,22 @@
   border: none;
 }
 
-i.icon.trash {
-  color: #ff6979;
+i.icon {
+  &.trash {
+    color: var(--red-100);
+  }
+  &.expand {
+    color: var(--primary-color);
+  }
 }
+
 
 // mcq preview layout styles
 .sb-question-outerframe {
   height: 100%;
   height: 392px;
   max-width: 800px;
-  border: 10px solid black;
+  border: 10px solid var(--black);
   margin: 0 auto;
   position: relative;
 }
@@ -32,7 +52,7 @@ i.icon.trash {
   .sb-editor-image {
     height: 392px;
     max-width: 800px;
-    border: 10px solid black;
+    border: 10px solid var(--black);
     border-radius: 15px;
     margin: 0 auto;
     position: relative;
@@ -43,26 +63,27 @@ i.icon.trash {
       transform: translateY(-50%);
       margin: auto;
       left: 0px;
-      background: black;
-      padding: 10px 5px 10px 0;
-      border-top-right-radius: 25px;
-      border-bottom-right-radius: 25px;
+      background: var(--black);
+      padding: ($base-block-space + 2) ($base-block-space - 3) ($base-block-space + 2) 0;
+      border-top-right-radius: ($base-block-space * 3) + 1;
+      border-bottom-right-radius: ($base-block-space * 3) + 1;
+
       .sensor {
-        width: 8px;
-        height: 8px;
+        width: $base-block-space;
+        height: $base-block-space;
         background: #252525;
         border-radius: 50%;
       }
       .speaker {
-        width: 5px;
+        width: ($base-block-space - 3);
         height: 74px;
         background: #252525;
-        border-radius: 10px;
-        margin: 10px 0 10px 1px;
+        border-radius: ($base-block-space + 2);
+        margin: ($base-block-space + 2) 0 ($base-block-space + 2) 1px;
       }
       .sensor {
-        width: 8px;
-        height: 8px;
+        width: $base-block-space;
+        height: $base-block-space;
         background: #252525;
         border-radius: 50%;
       }
@@ -74,30 +95,30 @@ i.icon.trash {
     // max-height: 392px;
     // margin: 0 auto;
     // overflow: hidden;
-    border-radius: 4px;
+    border-radius: ($base-block-space - 4);
     //height: calc(100% - 48px);
     height: 100vh;
 
     .question-bg {
-      background-image: linear-gradient(-90deg, lightblue, white);
+      background-image: linear-gradient(-90deg, lightblue, var(--white));
     }
 
     .answer-bg {
-      background-image: linear-gradient(-90deg, #fcf2d6, white);
+      background-image: linear-gradient(-90deg, #fcf2d6, var(--white));
     }
 
     .question-menu {
       .hambergur-menu-container {
-        max-width: 24px;
+        max-width: ($base-block-space * 3);
         display: inline-block;
         cursor: pointer;
       }
 
       .hambergur-menu {
-        width: 24px;
-        height: 3px;
-        margin: 4px 0;
-        background-color: #333333;
+        width: ($base-block-space * 3);
+        height: ($base-block-space - 5);
+        margin: ($base-block-space - 4) 0;
+        background-color: var(--gray);
       }
       .sb-btn-arrows {
         min-width: 50px;
@@ -110,13 +131,13 @@ i.icon.trash {
 
   .sb-question-header {
     display: block;
-    padding: 8px 16px;
+    padding: ($base-block-space) ($base-block-space * 2);
     text-align: right;
 
     .sb-mark {
-      font-size: 12px;
-      padding-right: 8px;
-      color: var(--primary-400);
+      font-size: $font-size-sm;
+      padding-right: $base-block-space;
+      color: var(--blue);
     }
     &.sb-learning-outcome-header {
       align-items: center;
@@ -133,7 +154,7 @@ i.icon.trash {
     .page-section {
       //min-height: calc(372px - 48px);
       height: 100%;
-      padding: 24px;
+      padding: ($base-block-space * 3);
 
       &:first-child {
         padding-top: 0;
@@ -141,16 +162,15 @@ i.icon.trash {
     }
 
     .sb-question-content-card {
-      background: white;
-      border-radius: 8px;
+      background: var(--white);
+      border-radius: $base-block-space;
       min-height: 72px;
       font-weight: inherit;
-      font-size: 14px;
       line-height: normal;
       box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
-      border: 0.5px solid #f2f2f2;
-      padding: 16px;
-      overflow: auto;
+      border: 0.5px solid var(--gray-0);
+      padding: ($base-block-space * 2);
+      // overflow: auto;
     }
 
     .sb-question-content-card p svg {
@@ -160,30 +180,30 @@ i.icon.trash {
 
     .sb-question {
       margin-right: auto;
-      font-size: 12px;
-      color: var(--primary-400);
-      margin-bottom: 16px;
+      font-size: $font-size-sm;
+      color: var(--blue);
+      margin-bottom: ($base-block-space * 2);
     }
 
     .sb-star-icon {
-      background: #e55a28;
-      width: 16px;
-      height: 16px;
+      background: var(--orange);
+      width: ($base-block-space * 2);
+      height: ($base-block-space * 2);
       border-radius: 50%;
-      margin-left: 8px;
+      margin-left: $base-block-space;
       text-align: center;
       display: inline-block;
 
       i.icon {
-        color: white;
-        font-size: 10px;
+        color: var(--white);
+        font-size: $font-size-xs;
         margin: 0;
       }
     }
 
     .sb-answer {
-      font-size: 12px;
-      color: #333;
+      font-size: $font-size-sm;
+      color: var(--gray-800);
     }
 
     // learning out come styles
@@ -191,7 +211,7 @@ i.icon.trash {
       height: calc(100% - 44px);
 
       .question-bg {
-        background-image: linear-gradient(-90deg, #00c786, #e1ffdf);
+        background-image: linear-gradient(-90deg, var(--secondary-100), var(--secondary-0));
       }
 
       .page-section {
@@ -199,7 +219,7 @@ i.icon.trash {
 
         .page-section-title {
           margin: 0;
-          padding: 16px 24px;
+          padding: ($base-block-space * 2) ($base-block-space * 3);
         }
 
         .sb-question-content-learning {
@@ -208,16 +228,16 @@ i.icon.trash {
 
           .sb-question-content-card {
             min-height: 60px;
-            font-size: 14px;
-            line-height: 22px;
-            margin: 16px 24px;
+            line-height: ($base-block-space * 3) - 3;
+            margin: ($base-block-space * 2) ($base-block-space * 3);
+
             &:first-child {
               margin-top: 0;
             }
             .sb-learning-outcome-label {
               width: 100%;
               span.sb-status-label {
-                padding: 4px;
+                padding: ($base-block-space - 4);
               }
               label {
                 margin-bottom: 0px;
@@ -235,26 +255,27 @@ i.icon.trash {
           height: 100%;
           overflow-y: auto;
           .sb-question-content-focus-spot-label {
-            padding: 16px 24px;
+            padding: ($base-block-space * 2) ($base-block-space * 3);
+
             .sb-label {
-              padding: 8px;
+              padding: $base-block-space;
             }
           }
           .sb-question-content-card {
             min-height: 60px;
-            font-size: 14px;
-            margin: 16px 24px;
+            margin: ($base-block-space * 2) ($base-block-space * 3);
             margin-top: 0;
             .sb-question-content-focus-spot-group {
-              padding-bottom: 16px;
+              padding-bottom: ($base-block-space * 2);
+
               .sb-question-content-focus-spot-extra {
-                font-size: 12px;
-                color: #999;
+                font-size: $font-size-sm;
+                color: var(--gray-200);
               }
               .sb-focus-spot-label {
                 width: 100%;
                 span.sb-status-label {
-                  padding: 4px;
+                  padding: ($base-block-space - 4);
                 }
                 label {
                   margin-bottom: 0px;
@@ -290,8 +311,8 @@ i.icon.trash {
         z-index: 1;
         width: 100%;
         flex-basis: 100%;
-        padding: 8px 24px;
-        background: white;
+        padding: ($base-block-space) ($base-block-space * 3);
+        background: var(--white);
         font-weight: 700;
         //   max-height: 76px;
         height: 76px;
@@ -311,7 +332,7 @@ i.icon.trash {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        padding: 24px;
+        padding: ($base-block-space * 3);
         padding-top: 100px;
         // max-height: calc(436px - 64px);
         height: 100vh;
@@ -320,30 +341,30 @@ i.icon.trash {
         background-image: linear-gradient(-90deg, lightblue, #afd9e7);
 
         .mcq-option {
-          margin-bottom: 16px;
+          margin-bottom: ($base-block-space * 2);
           height: auto;
           box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
-          background: white;
-          border-radius: 8px;
+          background: var(--white);
+          border-radius: $base-block-space;
           line-height: 20px;
-          padding: 8px;
+          padding: $base-block-space;
 
           p {
-            font-size: 12px;
+            font-size: $font-size-sm;
           }
         }
       }
 
       i.chevron {
         position: absolute;
-        bottom: 8px;
-        right: 4px;
+        bottom: $base-block-space;
+        right: ($base-block-space - 4);
         z-index: 999;
         cursor: pointer;
         background: #024a93;
-        color: white;
-        width: 32px;
-        height: 32px;
+        color: var(--white);
+        width: ($base-block-space * 4);
+        height: ($base-block-space * 4);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -362,7 +383,7 @@ i.icon.trash {
         position: initial;
         max-height: 100vh;
         overflow-y: auto;
-        padding: 16px 8px 16px 24px;
+        padding: ($base-block-space * 2) 8px ($base-block-space * 2) 24px;
         height: 100%;
       }
 
@@ -372,7 +393,7 @@ i.icon.trash {
 
       .mcq-options {
         flex-basis: 70%;
-        padding-top: 16px;
+        padding-top: ($base-block-space * 2);
 
         p svg {
           display: inline-block;
@@ -427,8 +448,8 @@ i.icon.trash {
 
     .mcq-submit-btn {
       margin-left: auto;
-      padding-right: 16px;
-      margin-bottom: 16px;
+      padding-right: ($base-block-space * 2);
+      margin-bottom: ($base-block-space * 2);
     }
   }
 
@@ -437,16 +458,156 @@ i.icon.trash {
   //   overflow-y: auto;
   // }
   .mcq-checkbox-answer {
-    background: #f2f2f2;
-    padding: 16px;
+    background: var(--gray-0);
+    padding: ($base-block-space * 2);
     display: flex;
     border: 1px solid #c4c4c4;
     border-top: none;
 
     label {
       font-weight: 700;
-      padding-right: 8px;
-      font-size: 14px;
+      padding-right: $base-block-space;
+      font-size: $font-size-base;
     }
   }
+}
+
+.sb-card {
+  // .sb-card-metas .sb-card-image {
+  //   width: 120px;
+  //   height: 96px;
+
+  //   img {
+  //     width: auto;
+  //     height: auto;
+  //   }
+  // }
+
+  .sb-card-content-list {
+    font-size: $font-size-sm;
+    color: var(--gray-800);
+
+    .sb-card-circular-list {
+      padding: 0 15px;
+      .sb-circular-list-item {
+        list-style-type: decimal;
+        font-size: 0.9286rem;
+        margin-bottom: ($base-block-space * 2);
+      }
+    }
+  }
+}
+
+// Progress bar for modal
+.uploading-files {
+  margin: ($base-block-space * 3) auto;
+
+  .process-icon {
+    width: ($base-block-space * 7);
+    height: ($base-block-space * 6);
+  }
+
+  .ui.progress {
+    margin: ($base-block-space + 4) ($base-block-space * 3) ($base-block-space * 3 + 4) ($base-block-space * 3) !important;
+    width: 60%;
+  }
+
+  .ui.progress .bar {
+    background: $tertiary-100;
+    height: ($base-block-space) !important;
+  }
+
+}
+
+// CBSE Program Accordion	
+.sb-chapterlist-accordion {	
+  &.ui.styled.accordion {	
+    background: inherit;	
+    .active.title {	
+      border: 1px solid $primary-200;	
+      border-bottom: none;	
+      background-color: #F3F8FF;	
+      font-weight: $font-weight-bold;	
+      border-bottom-left-radius: 0;	
+      border-bottom-right-radius: 0;	
+      font-size: $font-size-sm;	
+      .chevron-icon {	
+        background: #D9E4F2;	
+        border-left: none;	
+      }	
+      .chapter-status {	
+        background: $primary-color;	
+      }	
+    }	
+    .title {	
+      margin-top: $base-block-space;	
+      background: $gray-0;	
+      border: 1px solid $gray-100;	
+      border-radius: 4px;	
+      font-size: $font-size-sm;	
+      .chevron-icon {	
+        background: $gray-0;	
+        border-left: 1px solid $gray-100;	
+      }	
+      .chapter-status {	
+        height: $base-block-space;	
+        width: $base-block-space;	
+        border-radius: 50%;	
+        background: $gray-100;	
+      }	
+    }	
+    .sb-chapterlist-child {	
+      .active.title {	
+        border-top: 1px solid $primary-200;	
+        border-radius: 0;	
+        .chapter-status {	
+          background: #88B7E6;	
+        }	
+      }	
+      .title {	
+        margin-top: 0;	
+        border-radius: 0px 0px 4px 4px;	
+        border: none;	
+        border-top: 1px solid $gray-100;	
+      }	
+      .content {	
+        border: none;	
+      }	
+      .chevron-icon {	
+        border-top-right-radius: 0px;	
+      }	
+    }	
+    .content {	
+      border: 1px solid $primary-200;	
+      border-top: none;	
+      border-bottom-left-radius: 4px;	
+      border-bottom-right-radius: 4px;	
+      background: $white-color;	
+    }	
+    .chevron-icon {	
+      height: 56px;	
+      width: 56px;	
+      margin: -16px -16px -16px 16px;	
+      display: flex;	
+      align-items: center;	
+      justify-content: center;	
+      border-top-right-radius: 4px;	
+      border-bottom-right-radius: 4px;	
+    }	
+    .chevron.down.icon {	
+      height: auto;	
+    }	
+    .accordion {	
+      .active.title {	
+        border: 1px solid $primary-200;	
+        border-bottom: none;	
+        background-color: #F3F8FF;	
+        font-weight: $font-weight-bold;	
+      }	
+      .content {	
+        border: 1px solid $primary-200;	
+        border-top: none;	
+      }	
+    }	
+  }	
 }
