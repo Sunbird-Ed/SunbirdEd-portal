@@ -90,7 +90,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     this.handledFailedList = _.filter(this.handledFailedList, (content) => content.id !== id);
   }
   closeModal() {
-    this.handledFailedList = [...this.unHandledFailedList];
+    this.handledFailedList.push(...this.unHandledFailedList);
     this.unHandledFailedList = [];
   }
   contentManagerActions(type: string, action: string, id: string) {
