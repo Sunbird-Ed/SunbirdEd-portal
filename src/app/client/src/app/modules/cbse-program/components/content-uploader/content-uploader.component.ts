@@ -386,7 +386,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         } else if (obj.inputType === 'text') {
           preSavedValues[code] = (this.contentMetaData[code]) ? this.contentMetaData[code] : '';
           // tslint:disable-next-line:max-line-length
-          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, [Validators.required, Validators.pattern('(?=.*[a-z]).{0,}')]] : controller[obj.code] = preSavedValues[code];
+          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, [Validators.required, Validators.pattern('(?=.*[a-zA-Z0-9]).{0,}')]] : controller[obj.code] = preSavedValues[code];
         }
       }
     });
