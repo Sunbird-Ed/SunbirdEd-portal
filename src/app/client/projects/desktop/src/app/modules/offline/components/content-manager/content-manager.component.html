@@ -149,4 +149,4 @@
 </sui-accordion>
 
 
-<app-nospace-content-list *ngIf="listToShow['length']" [contentlistToShow]="listToShow" (dismissed)="closeModal($event)"> </app-nospace-content-list>
+<app-nospace-content-list *ngIf="unHandledFailedList.length" [unHandledFailedList]="unHandledFailedList" (dismissed)="closeModal($event)"> </app-nospace-content-list>

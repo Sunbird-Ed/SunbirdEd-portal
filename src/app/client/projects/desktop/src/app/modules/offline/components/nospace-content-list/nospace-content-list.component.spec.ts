@@ -25,7 +25,7 @@ describe('NospaceContentListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NospaceContentListComponent);
     component = fixture.componentInstance;
-    component.contentlistToShow = contantData.contentList;
+    component.unHandledFailedList = contantData.contentList;
     fixture.detectChanges();
   });
 
@@ -33,7 +33,7 @@ describe('NospaceContentListComponent', () => {
     expect(component).toBeTruthy();
   });
   it('contentlistToShow should be truthy ', () => {
-    expect(component.contentlistToShow).toBeTruthy();
+    expect(component.unHandledFailedList).toBeTruthy();
   });
   it('should call close modal', () => {
     spyOn(component.dismissed, 'emit');

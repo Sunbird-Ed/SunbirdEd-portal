@@ -25,10 +25,8 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
   completedCount: number;
-  noSpaceContentList: any;
-  previousList: any;
-  listToShow = [];
-  @Output() contentlistToShow = new EventEmitter<any>();
+  handledFailedList = [];
+  unHandledFailedList = [];
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -80,20 +78,20 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.contentResponse = _.filter(apiResponse, (o) => {
             return o.status !== 'canceled';
           });
-          this.getNoSpaceContentList(apiResponse);
+          this.handleInsufficentMemoryError(apiResponse);
         });
   }
-  getNoSpaceContentList(allContentList) {
-    this.noSpaceContentList = _.filter(allContentList, (content) =>
+  handleInsufficentMemoryError(allContentList) {
+    const noSpaceContentList = _.filter(allContentList, (content) =>
     content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
-    this.listToShow =  _.differenceBy(this.noSpaceContentList , this.previousList, 'identifier');
+    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'identifier');
   }
-  removeFromPreviousList(id) {
-    this.previousList = _.filter(this.previousList, (content) => content.id !== id);
+  removeFromHandledFailedList(id) {
+    this.handledFailedList = _.filter(this.handledFailedList, (content) => content.id !== id);
   }
   closeModal() {
-    this.previousList = this.noSpaceContentList;
-    this.listToShow = [];
+    this.handledFailedList = [...this.unHandledFailedList];
+    this.unHandledFailedList = [];
   }
   contentManagerActions(type: string, action: string, id: string) {
     // Unique download/import Id
@@ -140,13 +138,13 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       next(apiResponse: any) {
         _this.deleteLocalContentStatus(id);
         _this.apiCallSubject.next();
-        _this.removeFromPreviousList(id);
+        _this.removeFromHandledFailedList(id);
       },
       error(err) {
         _this.deleteLocalContentStatus(id);
         _this.toasterService.error(_this.resourceService.messages.fmsg.m0097);
         _this.apiCallSubject.next();
-        _this.removeFromPreviousList(id);
+        _this.removeFromHandledFailedList(id);
       }
     });
   }

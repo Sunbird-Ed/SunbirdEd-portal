@@ -7,7 +7,7 @@ import { ResourceService } from '@sunbird/shared';
   styleUrls: ['./nospace-content-list.component.scss']
 })
 export class NospaceContentListComponent implements OnInit {
-  @Input() contentlistToShow;
+  @Input() unHandledFailedList;
   @ViewChild('modal') modal;
   @Output() dismissed = new EventEmitter<any>();
 
