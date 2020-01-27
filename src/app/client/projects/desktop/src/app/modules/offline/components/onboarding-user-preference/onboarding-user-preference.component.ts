@@ -21,6 +21,8 @@ export class OnboardingUserPreferenceComponent implements OnInit {
   selectedMedium: any;
   selectedClass: any;
   frameworkCategories: any;
+  showMedium = false;
+  showClass = false;
   disableContinueBtn = true;
   tenantInfo: any = {};
   @Output() userPreferenceSaved = new EventEmitter();
@@ -58,6 +60,8 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     this.selectedMedium = '';
     this.classOption = [];
     this.selectedClass = '';
+    this.showMedium = false;
+    this.showClass = false;
     this.disableContinueBtn = true;
     this.frameworkService.getFrameworkCategories(_.get(option, 'identifier')).subscribe((data) => {
       if (data && _.get(data, 'result.framework.categories')) {
@@ -66,6 +70,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
           return element.code === 'board';
         });
         this.mediumOption = this.onboardingService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
+        this.showMedium = true;
       }
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -78,6 +83,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     this.classOption = [];
     this.selectedClass = '';
     this.classOption = this.onboardingService.getAssociationData(mediumData, 'gradeLevel', this.frameworkCategories);
+    this.showClass = _.isEmpty(this.selectedMedium) ? false : true;
     this.selectedMedium = mediumData;
     this.disableContinueBtn = _.isEmpty(this.selectedMedium) || _.isEmpty(this.selectedClass) ? true : false;
   }
