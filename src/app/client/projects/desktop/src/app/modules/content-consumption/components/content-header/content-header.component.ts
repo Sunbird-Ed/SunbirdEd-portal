@@ -120,10 +120,10 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     this.logTelemetry('delete-collection');
     const request = {request: {contents: [collectionData.identifier]}};
     this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-    this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteSuccessMessage);
+    this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
     this.goBack();
     }, err => {
-      this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteErrorMessage);
+      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteTextbookErrorMessage);
     });
   }
 
