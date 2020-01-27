@@ -42,6 +42,7 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
   frameworkCategories: any;
   userDetails: any;
   hashTagId: string;
+  showDefaultFilter: boolean;
   public unsubscribe$ = new Subject<void>();
 
   @Input() selectedFilters;
@@ -57,6 +58,7 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.showDefaultFilter = false;
     this.orgDetailsService.getCustodianOrg()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
@@ -73,10 +75,19 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
         this.boards = _.get(orgDetails, 'result.channel.frameworks');
 
         if (this.boards) {
+          const defaultBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
+
           if (_.get(this.selectedFilters, 'board[0]')) {
-            this.selectedBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
+            const offlineBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
+
+            if (offlineBoard) {
+              this.selectedBoard = offlineBoard;
+            } else {
+              this.selectedBoard = defaultBoard;
+              this.showDefaultFilter = true;
+            }
           } else {
-            this.selectedBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
+            this.selectedBoard = defaultBoard;
           }
         }
 
@@ -86,7 +97,7 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
               if (res && _.get(res, 'result.framework.categories')) {
                 this.frameworkCategories = _.get(res, 'result.framework.categories');
-                if (_.get(this.selectedFilters, 'board[0]')) {
+                if (_.get(this.selectedFilters, 'board[0]') && !this.showDefaultFilter) {
                   this.setFilters(false);
                 } else {
                   this.setFilters(true);
@@ -105,27 +116,28 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
       switch (element.code) {
         case 'medium':
           this.mediums = element.terms.map(medium => medium.name);
-
           let mediumIndex;
-          if (_.get(this.selectedFilters, 'medium[0]')) {
-            mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
-          } else if (showDefault) {
+
+          if (showDefault) {
             mediumIndex = this.mediums.findIndex(medium => framework.medium.includes(medium));
+          } else if (_.get(this.selectedFilters, 'medium[0]')) {
+            mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
           }
 
           if (_.isNumber(mediumIndex)) {
             this.selectedMediumIndex.push(mediumIndex);
           }
           break;
+
         case 'gradeLevel':
           this.classes = element.terms.map(gradeLevel => gradeLevel.name);
           let classIndex;
 
-          if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
+          if (showDefault) {
+            classIndex = this.classes.findIndex(value => framework.gradeLevel.includes(value));
+          } else if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
             classIndex = this.classes.findIndex((classElement) =>
               classElement === this.selectedFilters.gradeLevel[0]);
-          } else if (showDefault) {
-            classIndex = this.classes.findIndex(value => framework.gradeLevel.includes(value));
           }
 
           if (_.isNumber(classIndex)) {

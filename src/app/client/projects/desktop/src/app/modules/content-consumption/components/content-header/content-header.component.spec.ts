@@ -108,14 +108,14 @@ describe('ContentHeaderComponent', () => {
     const contentService = TestBed.get(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(of(contentHeaderData.deleteCollection.success));
     component.deleteCollection(contentHeaderData.collectionData);
-    expect(component.toasterService.success(contentHeaderData.resourceBundle.messages.stmsg.desktop.deleteSuccessMessage));
+    expect(component.toasterService.success(contentHeaderData.resourceBundle.messages.stmsg.desktop.deleteTextbookSuccessMessage));
   });
   it('should call delete collection and error while deleting collection ', () => {
     component.collectionData = contentHeaderData.collectionData;
     const contentService = TestBed.get(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(throwError(contentHeaderData.deleteCollection.error));
     component.deleteCollection(contentHeaderData.collectionData);
-    expect(component.toasterService.error(contentHeaderData.resourceBundle.messages.stmsg.desktop.deleteErrorMessage));
+    expect(component.toasterService.error(contentHeaderData.resourceBundle.messages.etmsg.deleteTextbookErrorMessage));
   });
 
   it('should navigate to previous page', () => {
