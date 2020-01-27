@@ -25,6 +25,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
   completedCount: number;
+  localContentData: any = [];
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -76,6 +77,12 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.contentResponse = _.filter(apiResponse, (o) => {
             return o.status !== 'canceled';
           });
+
+          if (!this.localContentData || this.contentResponse.length > this.localContentData.length) {
+            this.localContentData = this.contentResponse;
+          } else if (this.localContentData.length > this.contentResponse.length) {
+            this.callContentList = true;
+          }
         });
   }
 
