@@ -1,3 +1,4 @@
+import { OfflineModule } from './../../../../projects/desktop/src/app/modules/offline';
 import { DialCodeSearchRoutingModule } from './dial-code-search.routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -26,7 +27,8 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     FormsModule,
     InfiniteScrollModule,
     PlayerHelperModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    OfflineModule
   ],
   declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent, OfflineDialCodeCardComponent]
 })

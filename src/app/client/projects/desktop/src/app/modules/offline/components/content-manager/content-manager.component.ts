@@ -25,6 +25,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
   completedCount: number;
+  showDownloadManager = true;
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -55,6 +56,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
       .pipe(filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
+          this.showDownloadManager = !_.isEmpty( _.get(resp, 'result.response.contents'));
           this.callContentList = false;
           let completedCount = 0;
           _.forEach(_.get(resp, 'result.response.contents'), (value) => {

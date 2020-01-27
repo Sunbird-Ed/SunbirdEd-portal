@@ -10,7 +10,6 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     ContentImportHeaderComponent, WatchVideoComponent,
     BrowseComponent, ContentManagerComponent, OfflineHelpCenterComponent, DesktopAppUpdateComponent,
@@ -32,7 +31,6 @@ import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 @NgModule({
     imports: [
-        BrowserAnimationsModule,
         CommonModule,
         FormsModule,
         CoreModule,
@@ -88,6 +86,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         ContentImportHeaderComponent,
     ],
     exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
-        OnboardingLocationComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent, ProfileDropdownComponent]
+        OnboardingLocationComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent, ProfileDropdownComponent,
+        DesktopExploreContentComponent]
 })
 export class OfflineModule { }

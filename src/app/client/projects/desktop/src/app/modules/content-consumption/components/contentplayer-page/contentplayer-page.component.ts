@@ -45,6 +45,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   ) { }
 
   ngOnInit() {
+    this.dialCode = _.get(this.activatedRoute.snapshot, 'queryParams.dialCode');
     this.utilService.emitHideHeaderTabsEvent(true);
     this.contentType = this.activatedRoute.snapshot.queryParams.contentType;
     this.getContentIdFromRoute();

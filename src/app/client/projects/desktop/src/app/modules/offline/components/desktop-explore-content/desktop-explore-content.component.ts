@@ -50,6 +50,9 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   @Input() contentList: any[] = [];
   @Input() isOnlineContents = false;
   @Output() visits: EventEmitter<any> = new EventEmitter();
+  redirectCollectionUrl: string;
+  redirectContentUrl: string;
+  dialCode: string;
 
   constructor(
     public contentManagerService: ContentManagerService,
@@ -73,6 +76,10 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (_.includes(this.router.url, 'dial')) {
+      const index = (this.router.url).lastIndexOf('dial');
+      this.dialCode = (this.router.url).slice(index + 5);
+    }
     this.isBrowse = this.isOnlineContents;
     this.setTelemetryData();
     this.prepareVisits();
@@ -174,7 +181,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     this.contentName = event.content.name;
     switch (event.hover.type.toUpperCase()) {
       case 'OPEN':
-        this.playContent(event);
+        this.dialCode ? this.playDialCodeContent(event) : this.playContent(event);
         this.logTelemetry(event.data, 'play-content');
         break;
       case 'DOWNLOAD':
@@ -191,10 +198,28 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
+      if (this.isBrowse) {
+        this.publicPlayerService.playContentForOfflineBrowse(event);
+      } else {
+        this.publicPlayerService.playContent(event);
+      }
+  }
+
+  playDialCodeContent (event) {
+
     if (this.isBrowse) {
-      this.publicPlayerService.playContentForOfflineBrowse(event);
+      this.redirectCollectionUrl = '/browse/play/collection';
+      this.redirectContentUrl = '/browse/play/content';
     } else {
-      this.publicPlayerService.playContent(event);
+      this.redirectCollectionUrl = '/play/collection';
+      this.redirectContentUrl = '/play/content';
+    }
+    if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        this.router.navigate([this.redirectCollectionUrl, event.data.metaData.identifier],
+          { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
+    } else {
+      this.router.navigate([this.redirectContentUrl, event.data.metaData.identifier],
+        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
     }
   }
 

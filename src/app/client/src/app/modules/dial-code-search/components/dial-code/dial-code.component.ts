@@ -64,6 +64,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   showSelectChapter = false;
   chapterName: string;
   dialContentId: string;
+  visits: any = [];
+  offlineContents: any = [];
 
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
@@ -82,6 +84,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         tap(this.initialize),
         mergeMap(params => iif(() => _.get(params, 'textbook'), this.processTextBook(params), this.processDialCode(params))),
       ).subscribe(res => {
+        console.log('resssssresssssresssss', res);
         const linkedContents = _.flatMap(_.values(res));
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
         this.searchResults = this.utilService.getDataForCard(linkedContents, constantData, dynamicFields, metaData);
@@ -104,21 +107,15 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         if (this.searchResults.length !== 1) {
           this.logInteractEvent(telemetryInteractEdata);
         }
+        if (this.isOffline) {
+          this.getOfflineContents(this.itemsToDisplay);
+        }
       }, err => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0049);
       }, () => {
         this.showLoader = false;
       });
-    if (this.isOffline) {
-      this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
-        this.updateCardData(data);
-      });
-      this.contentManagerService.downloadEvent.pipe(first(),
-        takeUntil(this.unsubscribe$)).subscribe(() => {
-          this.showDownloadLoader = false;
-        });
-    }
   }
 
   private initialize = (params) => {
@@ -190,7 +187,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           return { contents };
         })
       );
-    } else {
+    } else if (!this.isOffline) {
       this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')]);
       return of([]);
     }
@@ -464,4 +461,35 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.telemetryService.interact(telemetry);
   }
 
+  getOfflineContents(contents) {
+    let offlineLinkedContents: any = [];
+    const contentIds: any = [];
+    _.each(contents, content => {
+      if (_.get(content, 'metaData.childTextbookUnit') || _.toLower(_.get(content, 'contentType') === 'textbook')) {
+        const id = _.get(content, 'metaData.childTextbookUnit.identifier') || _.get(content, 'identifier');
+        contentIds.push(id);
+      } else {
+          contentIds.push(_.get(content, 'identifier'));
+      }
+    });
+    this.getPlayableContents(contentIds).subscribe((playableContents) => {
+      offlineLinkedContents = playableContents.contents;
+    const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
+    this.offlineContents = this.utilService.getDataForCard(offlineLinkedContents, constantData, dynamicFields, metaData);
+    this.offlineContents = this.utilService.addHoverData(this.offlineContents, this.isBrowse);
+    });
+  }
+  getPlayableContents(contentIds) {
+    return this.dialCodeService.getAllPlayableContent(contentIds).pipe(
+      map(contents => {
+        return { contents };
+      })
+    );
+  }
+  prepareVisits(event) {
+    this.visits = [...this.visits, ...event.visits];
+    this.telemetryImpression.edata.visits = this.visits;
+    this.telemetryImpression.edata.subtype = 'pageexit';
+    this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
 }
