@@ -12,7 +12,7 @@ export const actionsData = {
                 m0140: 'DOWNLOADING',
                 desktop: {
                     deleteSuccessMessage: 'Content Deleted successfully',
-                    deleteErrorMessage: 'Unable to delete content.Please tryagain..',
+                    deleteErrorMessage: 'Unable to delete content.Please try again..',
                 }
             },
             smsg: {
