@@ -18,7 +18,7 @@ import {
     OfflineFaqComponent, OfflineReportIssuesComponent, OfflineHelpVideosComponent, OnboardingComponent,
     OnboardingLocationComponent, OnboardingUserPreferenceComponent, DesktopProminentFilterComponent,
     LoadContentComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent,
-    ProfileDropdownComponent, SearchComponent, ViewMoreComponent, NospaceContentListComponent
+    ProfileDropdownComponent, SearchComponent, ViewMoreComponent, ContentManagerInfoPopUpComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -79,7 +79,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         ProfileDropdownComponent,
         SearchComponent,
         ViewMoreComponent,
-        NospaceContentListComponent
+        ContentManagerInfoPopUpComponent
     ],
     entryComponents: [
         ContentImportHeaderComponent,
@@ -88,7 +88,8 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         WatchVideoComponent,
         ContentImportHeaderComponent,
     ],
-    exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent, NospaceContentListComponent,
+    exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
+         ContentManagerInfoPopUpComponent,
         OnboardingLocationComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent, ProfileDropdownComponent]
 })
 export class OfflineModule { }

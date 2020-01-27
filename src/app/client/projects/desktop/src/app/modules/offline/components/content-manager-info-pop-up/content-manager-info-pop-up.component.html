@@ -8,14 +8,14 @@
     <p class="text-center fmedium import-content">
       {{resourceService?.frmelmnts?.lbl?.desktop?.failedListLabel}}
     </p>
-    <div class="p-8 warning-ecar-list" *ngFor="let items of unHandledFailedList">
+    <div class="p-8 warning-ecar-list" *ngFor="let items of failedList">
       {{items['name']}}
     </div>
   </div>
 
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-outline-warning" (click)="closeModal()">
-      {{resourceService?.frmelmnts?.lbl?.desktop?.btn?.OK}}
+      {{resourceService?.frmelmnts?.btn?.ok}}
     </button>
   </div>
 </sui-modal>

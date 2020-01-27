@@ -2,12 +2,13 @@ import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angu
 import { ResourceService } from '@sunbird/shared';
 
 @Component({
-  selector: 'app-nospace-content-list',
-  templateUrl: './nospace-content-list.component.html',
-  styleUrls: ['./nospace-content-list.component.scss']
+  selector: 'app-content-manager-info-pop-up',
+  templateUrl: './content-manager-info-pop-up.component.html',
+  styleUrls: ['./content-manager-info-pop-up.component.scss']
 })
-export class NospaceContentListComponent implements OnInit {
-  @Input() unHandledFailedList;
+export class ContentManagerInfoPopUpComponent implements OnInit {
+
+  @Input() failedList;
   @ViewChild('modal') modal;
   @Output() dismissed = new EventEmitter<any>();
 

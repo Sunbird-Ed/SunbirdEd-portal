@@ -149,4 +149,4 @@
 </sui-accordion>
 
 
-<app-nospace-content-list *ngIf="unHandledFailedList.length" [unHandledFailedList]="unHandledFailedList" (dismissed)="closeModal($event)"> </app-nospace-content-list>
+<app-content-manager-info-pop-up *ngIf="unHandledFailedList.length" [failedList]="unHandledFailedList" (dismissed)="closeModal($event)"> </app-content-manager-info-pop-up>
