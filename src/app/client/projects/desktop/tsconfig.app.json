@@ -1,0 +1,93 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/app",
+    "module": "es2015",
+    "types": [],
+    "experimentalDecorators": true,
+    "baseUrl": "./../../",
+    "paths": {
+      "@sunbird/core": [
+        "src/app/modules/core"
+      ],
+      "@sunbird/shared": [
+        "src/app/modules/shared"
+      ],
+      "@sunbird/home": [
+        "src/app/modules/home"
+      ],
+      "@sunbird/dashboard": [
+        "src/app/modules/dashboard"
+      ],
+      "@sunbird/announcement": [
+        "src/app/modules/announcement"
+      ],
+      "@sunbird/notes": [
+        "src/app/modules/notes"
+      ],
+      "@sunbird/admin": [
+        "src/app/modules/admin"
+      ],
+      "@sunbird/resource": [
+        "src/app/modules/resource"
+      ],
+      "@sunbird/learn": [
+        "src/app/modules/learn"
+      ],
+      "@sunbird/workspace": [
+        "src/app/modules/workspace"
+      ],
+      "@sunbird/org-management": [
+        "src/app/modules/org-management"
+      ],
+      "@sunbird/public": [
+        "src/app/modules/public"
+      ],
+      "@sunbird/profile": [
+        "src/app/plugins/profile"
+      ],
+      "@sunbird/search": [
+        "src/app/modules/search"
+      ],
+      "@sunbird/telemetry": [
+        "src/app/modules/telemetry"
+      ],
+      "@sunbird/badge": [
+        "src/app/modules/badging"
+      ],
+      "@sunbird/shared-feature": [
+        "src/app/modules/shared-feature"
+      ],
+      "@sunbird/environment": [
+        "projects/desktop/src/environments/environment"
+      ],
+      "@sunbird/course-batch": [
+        "src/app/modules/course-batch"
+      ],
+      "moment": [
+        "../node_modules/moment/min/moment.min.js"
+      ],
+      "@sunbird/player-helper": [
+        "src/app/modules/player-helper"
+      ],
+      "@sunbird/offline": [
+        "projects/desktop/src/app/modules/offline"
+      ],
+      "@sunbird/user-profile": [
+        "projects/desktop/src/app/modules/user-profile"
+      ],
+      "@sunbird/content-consumption": [
+        "projects/desktop/src/app/modules/content-consumption"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "./../../src/app/modules/**/*.ts",
+  ],
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts",
+    "./../../src/app/modules/**/*.spec.ts",
+  ]
+}

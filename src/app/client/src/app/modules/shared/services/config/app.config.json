@@ -90,12 +90,14 @@
   },
   "CourseConsumption": {
     "contentApiQueryParams": {
-      "orgdetails": "orgName,email"
+      "orgdetails": "orgName,email",
+      "licenseDetails": "name,description,url"
     }
   },
   "Course": {
     "contentApiQueryParams": {
-      "orgdetails": "orgName,email"
+      "orgdetails": "orgName,email",
+      "licenseDetails": "name,description,url"
     },
     "otherCourse": {
       "constantData": {
@@ -315,12 +317,14 @@
   },
   "PublicPlayer": {
     "contentApiQueryParams": {
-      "orgdetails": "orgName,email"
+      "orgdetails": "orgName,email",
+      "licenseDetails": "name,description,url"
     }
   },
   "ContentPlayer": {
     "contentApiQueryParams": {
-      "orgdetails": "orgName,email"
+      "orgdetails": "orgName,email",
+      "licenseDetails": "name,description,url"
     }
   },
   "ExplorePage": {
@@ -1089,7 +1093,8 @@
     "explore-course": "explore-course",
     "framework-code": "framework-code",
     "courses": "courses",
-    "organization": "organization"
+    "organization": "organization",
+    "externalIdVerification": "externalIdVerification"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

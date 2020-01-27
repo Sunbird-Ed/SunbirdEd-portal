@@ -23,12 +23,17 @@ export class PublicPlayerService {
   */
   collectionData: ContentData;
   previewCdnUrl: string;
+  sessionId;
+  private _libraryFilters: any = {};
+
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
+      this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
+      ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
   }
 
   /**
@@ -53,8 +58,11 @@ export class PublicPlayerService {
    * @returns {Observable<ServerResponse>}
    */
   getContent(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    const licenseParam = {
+      licenseDetails: 'name,description,url'
+    };
     let param = { fields: this.configService.urlConFig.params.contentGet };
-    param = { ...param, ...option.params };
+    param = { ...param, ...option.params, ...licenseParam};
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,
       param: param
@@ -77,7 +85,7 @@ export class PublicPlayerService {
   getConfig(contentDetails: ContentDetails, option: any = {}): PlayerConfig {
     const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
     configuration.context.contentId = contentDetails.contentId;
-    configuration.context.sid = this.userService.anonymousSid;
+    configuration.context.sid = (environment.isOffline && !_.isEmpty(this.sessionId)) ? this.sessionId : this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
     configuration.context.timeDiff = this.orgDetailsService.getServerTimeDiff;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
@@ -169,17 +177,36 @@ export class PublicPlayerService {
   }
   updateDownloadStatus (downloadListdata, content) {
     const identifier = !_.isEmpty(content.metaData) ? _.get(content, 'metaData.identifier') : _.get(content, 'identifier');
-    const { inprogress = [], submitted= [], completed= [], failed= [] } = _.get(downloadListdata, 'result.response.downloads');
+    const inprogress = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'inProgress';
+    });
+    const submitted = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'inQueue';
+    });
+    const failed = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'failed';
+    });
+    const completed = _.find(_.get(downloadListdata, 'result.response.contents'), (o) => {
+      return o.status === 'completed';
+    });
     const compare = { resourceId: identifier };
-
-    if (_.find(inprogress, compare) || _.find(submitted, compare)) {
+    if (_.find([inprogress], compare) || _.find([submitted], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-    } else if (_.find(completed, compare)) {
+    } else if (_.find([completed], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
-    } else if (_.find(failed, compare)) {
+    } else if (_.find([failed], compare)) {
       content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
     }
     return content;
   }
+
+
+    get libraryFilters() {
+        return this._libraryFilters;
+    }
+
+    set libraryFilters(filters) {
+        this._libraryFilters = filters;
+    }
 
 }

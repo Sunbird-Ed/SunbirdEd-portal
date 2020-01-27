@@ -43,3 +43,13 @@
 .sb-bg-color-black {
     background-color: $black;
 }
+.sb-bg-color-gray-0 {
+    background-color: $gray-0 !important;
+}
+.sb-bg-color-white{
+    background:var(--white);
+}
+
+.sb-bg-color-primary-100 {
+    background: $primary-100;
+}

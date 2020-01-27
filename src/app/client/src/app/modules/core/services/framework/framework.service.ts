@@ -39,6 +39,7 @@ export class FrameworkService {
       this._frameworkData[frameWorkName] = data;
       this._frameworkData$.next({ err: null, frameworkdata: this._frameworkData });
       this._channelData$.next({ err: null, channelData: channelData });
+      this._channelData = channelData;
     } else {
       if (framework && !_.get(this._frameworkData, framework)) {
 
@@ -102,4 +103,9 @@ export class FrameworkService {
     };
     return this.learnerService.get(systemSetting);
   }
+
+  public getDefaultLicense() {
+    return _.get(this._channelData, 'defaultLicense');
+  }
+
 }

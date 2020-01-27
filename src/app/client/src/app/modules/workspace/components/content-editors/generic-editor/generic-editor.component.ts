@@ -3,7 +3,7 @@ import * as  iziModal from 'izimodal/js/iziModal';
 import { NavigationHelperService, ResourceService, ToasterService, ConfigService, IUserProfile, ServerResponse } from '@sunbird/shared';
 import { TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest, of, throwError } from 'rxjs';
-import { UserService, TenantService } from '@sunbird/core';
+import { UserService, TenantService, FrameworkService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
@@ -37,7 +37,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
     private navigationHelperService: NavigationHelperService, public workspaceService: WorkSpaceService,
     private configService: ConfigService, private editorService: EditorService, private toasterService: ToasterService,
-    private resourceService: ResourceService) {
+    private resourceService: ResourceService, private frameworkService: FrameworkService) {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.buildNumber = buildNumber ? buildNumber.value : '1.0';
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
@@ -173,6 +173,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
       tags: this.userService.dims,
       channel: this.userService.channel,
+      defaultLicense: this.frameworkService.getDefaultLicense(),
       env: 'generic-editor',
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,

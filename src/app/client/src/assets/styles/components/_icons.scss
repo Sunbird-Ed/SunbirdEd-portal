@@ -128,3 +128,71 @@ margin-left: 4px;
 display: inline-block;
 vertical-align: bottom;
 }
+
+
+
+//common consumption library
+
+// icons
+.icon-arrow-round-down {
+  transform: rotate(90deg);
+}
+.icon-svg {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  opacity: 1;
+  svg.icon {
+    width: 100%;
+    height: inherit;
+  }
+  //sizes
+  &--xxs {
+    width: var(--icon-svg-xxs);
+    height: var(--icon-svg-xxs);
+  }
+  &--xs {
+    width: var(--icon-svg-xs);
+    height: var(--icon-svg-xs);
+  }
+  &--sm {
+    width: var(--icon-svg-sm);
+    height: var(--icon-svg-sm);
+  }
+  &--md {
+    width: var(--icon-svg-md);
+    height: var(--icon-svg-md);
+  }
+  &--lg {
+    width: var(--icon-svg-lg);
+    height: var(--icon-svg-lg);
+  }
+  &--xl {
+    width: var(--icon-svg-xl);
+    height: var(--icon-svg-xl);
+  }
+
+  //colors
+  &--white {
+    fill: var(--white);
+  }
+  &--primary {
+    fill: var(--primary-color);
+  }
+  &--secondary {
+    fill: var(--secondary-color);
+  }
+  &--tertiary {
+    fill: var(--tertiary-color);
+  }
+  &--red {
+    fill: var(--red-400);
+  }
+  &--gray {
+    fill: var(--gray-800);
+  }
+}

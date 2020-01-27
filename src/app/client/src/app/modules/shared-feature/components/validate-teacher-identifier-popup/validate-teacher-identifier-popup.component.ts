@@ -1,7 +1,12 @@
+import { IInteractEventObject, IImpressionEventInput } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, Output,  EventEmitter  } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { UserService } from '@sunbird/core';
 import { environment } from '@sunbird/environment';
+import { ToasterService } from '@sunbird/shared';
+import * as _ from 'lodash-es';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-validate-teacher-identifier-popup',
@@ -9,48 +14,141 @@ import { environment } from '@sunbird/environment';
   styleUrls: ['./validate-teacher-identifier-popup.component.scss']
 })
 export class ValidateTeacherIdentifierPopupComponent implements OnInit {
-  /* TODO:  code optimization yet to be done after API integration,
-            msgs to be taken from api response
-  */
+  @Input() userFeedData: {};
+  @Input() labels: {};
   @Output() close = new EventEmitter<any>();
   @ViewChild('createValidateModal') createValidateModal;
-  @ViewChild('extIdInputField') extIdInputField: ElementRef;
-  externalId: string;
+  userDetailsForm: FormGroup;
+  formBuilder: FormBuilder;
   processValidation = false;
   enableSubmitButton: boolean;
-  count = 0;
   showError: boolean;
   extIdVerified: boolean;
   extIdFailed: boolean;
-  navivateToResult =  false;
-  instance: string;
   isOffline = environment.isOffline;
   userId: string;
+  channelData: [];
+  showStateDropdown: boolean;
+  telemetryCdata: Array<{}> = [];
+  telemetryInteractObject: IInteractEventObject;
+  telemetryImpressionData: IImpressionEventInput;
+  closeInteractEdata: any;
+  pageId = 'user-verification-popup';
   constructor(
     public userService: UserService,
-    public resourceService: ResourceService) { }
+    public resourceService: ResourceService,
+    public toasterService: ToasterService,
+    public router: Router) { }
+
   ngOnInit() {
-    this.instance = 'Tamil Nadu';
+    this.setTelemetryData();
     this.userId = this.userService.userid;
+    this.processUserFeedData();
+    this.initializeFormField();
   }
 
-
-  getIdLength(event: any) {
-    if (event.target.value.length > 0) {
-      this.showError = false;
-      this.enableSubmitButton = true;
-    } else {
-      this.enableSubmitButton = false;
+  initializeFormField() {
+    this.userDetailsForm = new FormGroup({
+      extId: new FormControl('', Validators.required)
+    });
+    if (this.showStateDropdown) {
+      this.userDetailsForm.addControl('state', new FormControl('', Validators.required));
     }
+    this.handleSubmitButton();
+  }
+
+  handleSubmitButton() {
+    this.enableSubmitButton = false;
+    this.userDetailsForm.valueChanges.subscribe(val => {
+      this.showError = false;
+      this.enableSubmitButton = (this.userDetailsForm.status === 'VALID');
+    });
+  }
+
+  verifyExtId(action: string) {
+    const req = {
+      request: {
+        'userId': this.userId,
+        'action': action,
+        'feedId': _.get(this.userFeedData, 'id')
+      }
+    };
+    if (action === 'accept') {
+      const channelValue = _.get(this.userFeedData, 'data.prospectChannels').length > 1 ?
+        this.userDetailsForm.get('state').value : _.get(this.userFeedData, 'data.prospectChannels[0]');
+      req.request['channel'] = channelValue;
+      req.request['userExtId'] = this.userDetailsForm.get('extId').value;
+    }
+
+    this.userService.userMigrate(req).subscribe((data) => {
+      if (_.get(data, 'responseCode') === 'OK' && _.get(data, 'result.response') === 'SUCCESS') {
+        this.extIdVerified = true;
+      }
+    }, (error) => {
+      if (_.get(error, 'responseCode') === 'invalidUserExternalId' && _.get(error, 'result.remainingAttempt') > 0) {
+        this.userDetailsForm.reset();
+        this.showError = true;
+      } else if (_.get(error, 'error.params.err') === 'USER_MIGRATION_FAILED') {
+        this.extIdFailed = true;
+      } else {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        this.closeModal();
+      }
+    });
+  }
+
+  processUserFeedData() {
+    this.channelData = _.get(this.userFeedData, 'data.prospectChannels');
+    this.showStateDropdown = this.channelData.length > 1 ? true : false;
   }
 
   closeModal() {
+    if (this.extIdVerified) {
+      this.userService.getUserProfile();
+    }
     this.createValidateModal.deny();
     this.close.emit();
   }
 
   navigateToValidateId() {
     this.processValidation = true;
+  }
+
+  setTelemetryData() {
+    this.closeInteractEdata = {
+      id: this.extIdVerified ? 'ext-user-verify-success' : 'ext-user-verify-fail',
+      type: 'click',
+      pageid: this.pageId
+
+    };
+    this.telemetryCdata = [
+      {
+        id: 'user:state:teacherId',
+        type: 'Feature'
+      },
+      {
+        id: 'SC-1349',
+        type: 'Task'
+      }
+    ];
+
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'User',
+      ver: '1.0'
+    };
+
+    this.telemetryImpressionData = {
+      context: {
+        env: 'user-verification',
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        type: 'view',
+        pageid: this.pageId,
+        uri: this.router.url
+      }
+    };
   }
 
 }

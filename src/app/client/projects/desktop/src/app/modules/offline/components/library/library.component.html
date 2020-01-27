@@ -1,0 +1,45 @@
+<div [appTelemetryImpression]="telemetryImpression">
+    <app-library-filters (filterChange)="onFilterChange($event)" [selectedFilters]="selectedFilters">
+    </app-library-filters>
+    <div class="sb-bg-color-primary-100"
+        *ngIf="(router.url.includes('browse') && isConnected) || !router.url.includes('browse')">
+        <div class="ui container">
+
+            <div class="twelve wide column" *ngIf="showLoader">
+                <app-loader [data]='loaderMessage'></app-loader>
+            </div>
+
+            <div class="twelve wide column" *ngIf="carouselMasterData.length === 0 && !showLoader">
+                <app-no-result [data]="noResultMessage"></app-no-result>
+            </div>
+            <section class="mb-16" *ngFor="let section of pageSections; let index=index;">
+
+                <!-- START OF RECENTLY VIEWED CONTENT-->
+                <section *ngIf="index === 0 && section?.name === 'Recently Added'">
+                    <div class="header">
+                        <h3 class="title">
+                            {{resourceService?.frmelmnts?.lbl?.recentlyAdded}}
+                        </h3>
+                        <button class="sb-btn sb-btn-normal sb-btn-outline-secondary sb-btn-white" appTelemetryInteract
+                            [telemetryInteractEdata]="viewAllInteractEdata" (click)="onViewAllClick($event)"
+                            *ngIf="section?.contents?.length > slideConfig?.slidesToShow">
+                            {{resourceService?.frmelmnts?.lnk?.viewall}}
+                        </button>
+                    </div>
+                    <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig">
+                        <div ngxSlickItem *ngFor="let content of section?.contents" class="sbcardwidth slide mr-16">
+                            <sb-library-card [content]="content" [type]="'recently_viewed'"
+                                [cardImg]="content?.cardImg || 'assets/images/book.png'"
+                                (click)="playContent({event: $event, data: content})">
+                            </sb-library-card>
+                        </div>
+                    </ngx-slick>
+                </section>
+                <!-- END OF RECENTLY VIEWED CONTENT-->
+                <sb-library-cards-grid *ngIf="index > 0" [title]="section?.name" [contentList]="section?.contents"
+                    [type]="'infinite_card_grid'" (cardClick)="playContent($event)">
+                </sb-library-cards-grid>
+            </section>
+        </div>
+    </div>
+</div>

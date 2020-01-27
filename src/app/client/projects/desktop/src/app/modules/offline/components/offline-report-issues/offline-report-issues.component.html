@@ -1,0 +1,61 @@
+<div class="help-faq__report">
+  <p class="help-faq__report_text">
+    {{resourceService.frmelmnts?.lbl?.haventFoundAnyOtherissue}}&lrm;
+  </p>
+  <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="openModal()" appTelemetryInteract
+    [telemetryInteractEdata]="onClickReportOtherIssueInteractEdata" data-target="#openPopUp">
+    {{resourceService.frmelmnts?.lbl?.reportOtherIssue}} </button>
+</div>
+<sui-modal *ngIf="openReportIssueModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="openReportIssueModal = !openReportIssueModal" #modal
+  id="openPopUp">
+  <div class="sb-modal-header">{{resourceService.frmelmnts?.lbl?.reportAnIssue}} </div>
+  <form [formGroup]="reportOtherissueForm">
+    <div class="sb-modal-content">
+      <div *ngIf='!issueReportedSuccessfully'>
+        <div class="sb-field">
+          <label for="email">{{resourceService.frmelmnts?.lbl?.email}}</label>
+          <input type="email" name="email" formControlName="email"
+            [ngClass]="{'is-invalid': reportOtherissueForm.controls.email.touched && reportOtherissueForm.controls['email'].errors}"
+            class="sb-form-control  mb-8" placeholder="{{resourceService.frmelmnts?.lbl?.enterEmailID}}">
+          <small *ngIf="reportOtherissueForm.controls.email.touched && reportOtherissueForm.controls['email'].errors"
+            class="message sb-color-error">{{resourceService.frmelmnts?.lbl?.validEmail}}</small>
+        </div>
+        <div class="sb-field mt-16">
+          <label for="moretext">{{resourceService.frmelmnts?.lbl?.tellUsMoreAboutProblem}} </label>
+          <div class="relative">
+            <textarea rows="4" name="moretext" class="sb-form-control mb-8" formControlName="description"
+              maxlength="1000"
+              [ngClass]="{'is-invalid': reportOtherissueForm.controls.description.touched && reportOtherissueForm.controls['description'].errors}"
+              placeholder="{{resourceService.frmelmnts?.lbl?.typeHere}}"></textarea>
+            <small
+              *ngIf="reportOtherissueForm.controls.description.touched && reportOtherissueForm.controls['description'].errors"
+              class="message sb-color-error">{{resourceService.frmelmnts?.lbl?.validDescription}}</small>
+            <span class="characters-left">{{descriptionCount}} {{resourceService.frmelmnts?.lbl?.characterleft}} </span>
+          </div>
+        </div>
+      </div>
+      <div class="sb-report-content" *ngIf='issueReportedSuccessfully'>
+        <div class='d-flex flex-jc-center flex-ai-center sb-icon'>
+          <img src="../../assets/images/circle-with-check-symbol.svg">
+        </div>
+        <div class="text-center font-weight-bold sb-success-text">
+          {{resourceService.frmelmnts?.lbl?.issueReportedSuccessfuly}}</div>
+        <div class="text-center fs-0-785 sb-success-para">
+          {{resourceService?.frmelmnts?.lbl?.issueReportedSuccessfulySubNote | interpolate:'{instance}': instance}}
+        </div>
+      </div>
+
+
+
+    </div>
+    <div class="sb-modal-actions" *ngIf='!issueReportedSuccessfully'>
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="submitIssue()"
+        [disabled]="reportOtherissueForm.invalid || isDisplayLoader" appTelemetryInteract
+        [telemetryInteractEdata]="raiseSupportTicketInteractEdata">
+        <img  width="12" *ngIf="isDisplayLoader" src="../../assets/images/loader.svg">
+        {{resourceService.frmelmnts?.lbl?.submitIssueButton}}
+      </button>
+    </div>
+  </form>
+</sui-modal>

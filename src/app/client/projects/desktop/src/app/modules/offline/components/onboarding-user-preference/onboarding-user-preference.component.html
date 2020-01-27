@@ -1,0 +1,49 @@
+<div class="loginform__content">
+  <div class="loginform__content__header">
+    <img src="{{tenantInfo.logo}}" alt="{{tenantInfo.titleName}}">
+  </div>
+  <!-- Slides -->
+  <div class="d-flex">
+    <div class="swiper-slide">
+      <div class="swiper-slide__para pt-8">{{resourceService?.frmelmnts?.instn?.t0067}} </div>
+      <div class="d-flex flex-dc fields-selection">
+        <div class="sb-field" *ngIf="boardOption">
+          <label class="d-flex fields-selection__label" for="board">{{resourceService?.frmelmnts?.lbl?.boards}}</label>
+          <sui-select class="selection" labelField="name" [isSearchable]="true" [(ngModel)]="selectedBoard"
+            (ngModelChange)="onBoardChange(selectedBoard)" placeholder="{{resourceService?.messages?.stmsg?.m0126}}"
+            [options]="boardOption" #boards>
+            <sui-select-option *ngFor="let board of boards.filteredOptions" [value]="board">
+            </sui-select-option>
+          </sui-select>
+        </div>
+
+        <div class="sb-field" *ngIf="showMedium">
+          <label class="d-flex fields-selection__label" for="medium">{{resourceService?.frmelmnts?.lbl?.medium}}</label>
+          <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0127}}" class="selection"
+            [(ngModel)]="selectedMedium" (ngModelChange)="onMediumChange($event)" [options]="mediumOption"
+            labelField="name" [isSearchable]="true" #mediums>
+            <sui-select-option *ngFor="let medium of mediums.filteredOptions" [value]="medium"> </sui-select-option>
+          </sui-multi-select>
+        </div>
+
+        <div class="sb-field" *ngIf="showClass">
+          <label class="d-flex fields-selection__label" for="class">{{resourceService?.frmelmnts?.lbl?.class}}</label>
+          <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0128}}" class="selection"
+            [(ngModel)]="selectedClass" (ngModelChange)="onClassChange($event)" [options]="classOption"
+            labelField="name" [isSearchable]="true" #classes>
+            <sui-select-option *ngFor="let class of classes.filteredOptions" [value]="class"> </sui-select-option>
+          </sui-multi-select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bullets-container">
+    <div class="circle update"></div>
+    <div class="circle active"></div>
+  </div>
+  <button (click)="saveUserData()" type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm"
+    appTelemetryInteract [telemetryInteractEdata]="setTelemetryData()">
+    {{submitLabel}}
+    <span class='arrow-icon'></span></button>
+</div>

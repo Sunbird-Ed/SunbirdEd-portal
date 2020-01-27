@@ -1,0 +1,40 @@
+<div class="loginform__content" [appTelemetryImpression]="telemetryImpression">
+    <div class="loginform__content__header">
+        <img src="{{tenantInfo.logo}}" alt="{{tenantInfo.titleName}}">
+    </div>
+    <!-- Slides -->
+    <div class="d-flex">
+        <div class="swiper-slide">
+            <label
+                class="swiper-slide__title p-0 m-0 sb-color-primary">{{resourceService?.messages?.imsg?.m0075}}</label>
+            <div class="swiper-slide__para pt-8">{{resourceService?.messages?.imsg?.m0074}} </div>
+            <div class="d-flex flex-dc fields-selection">
+                <div class="sb-field">
+                    <sui-select class="selection" labelField="name" [isSearchable]="true" [(ngModel)]="selectedState"
+                        (ngModelChange)="onOptionChanges(selectedState)" placeholder="Select State"
+                        [options]="stateList" #states>
+                        <sui-select-option *ngFor="let state of states.filteredOptions" [value]="state">
+                        </sui-select-option>
+                    </sui-select>
+                </div>
+                <div class="sb-field" *ngIf="districtList.length">
+                    <sui-select class="selection mt-10" labelField="name" [isSearchable]="true"
+                        [(ngModel)]="selectedDistrict" (ngModelChange)="onOptionChanges(selectedDistrict)"
+                        placeholder="Select District" [options]="districtList" #districts>
+                        <sui-select-option *ngFor="let district of districts.filteredOptions" [value]="district">
+                        </sui-select-option>
+                    </sui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bullets-container">
+        <div class="circle active"></div>
+        <div class="circle update"></div>
+    </div>
+    <button type="button" [disabled]="disableContinueBtn" class="sb-btn sb-btn-primary sb-btn-sm"
+        (click)="handleSubmitButton()" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEdata">
+        {{continueLabel}}
+        <span class='arrow-icon'><i class="arrow right icon"></i></span></button>
+</div>

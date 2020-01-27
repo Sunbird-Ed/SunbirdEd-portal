@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon">
+</head>
+
+<body>
+  <% if (userId) { %>
+  <input type="hidden" id="userId" value="<%=userId%>" />
+  <% } %>
+  <% if (sessionId) { %>
+  <input type="hidden" id="sessionId" value="<%=sessionId%>" />
+  <% } %>
+  <% if (appId) { %>
+  <input type="hidden" id="appId" value="<%=appId%>" />
+  <% } %>
+  <% if (cloudStorageUrls) { %>
+  <input type="hidden" id="cloudStorageUrls" value="<%=cloudStorageUrls%>" />
+  <% } %>
+  <% if (defaultTenant) { %>
+  <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
+  <% } %>
+  <% if (exploreButtonVisibility) { %>
+  <input type="hidden" id="exploreButtonVisibility" value="<%=exploreButtonVisibility%>" />
+  <% } %>
+  <% if (helpLinkVisibility) { %>
+  <input type="hidden" id="helpLinkVisibility" value="<%=helpLinkVisibility%>" />
+  <% } %>
+  <% if (apiCacheTtl) { %>
+  <input type="hidden" id="apiCacheTtl" value="<%=apiCacheTtl%>" />
+  <% } %>
+  <% if (userUploadRefLink) { %>
+  <input type="hidden" id="userUploadRefLink" value="<%=userUploadRefLink%>" />
+  <% } %>
+  <% if (defaultTenantIndexStatus) { %>
+  <input type="hidden" id="defaultTenantIndexStatus" value="<%=defaultTenantIndexStatus%>" />
+  <% } %>
+  <% if (buildNumber) { %>
+  <input type="hidden" id="buildNumber" value="<%=buildNumber%>" />
+  <% } %>
+  <% if (extContWhitelistedDomains) { %>
+  <input type="hidden" id="extContWhitelistedDomains" value="<%=extContWhitelistedDomains%>" />
+  <% } %>
+  <% if (deviceRegisterApi) { %>
+  <input type="hidden" id="deviceRegisterApi" value="<%=deviceRegisterApi%>" />
+  <% } %>
+  <% if (cdnUrl) { %>
+  <input type="hidden" id="cdnUrl" value="<%=cdnUrl%>" />
+  <% } %>
+  <% if (theme) { %>
+  <input type="hidden" id="theme" value="<%=theme%>" />
+  <% } %>
+  <% if (defaultPortalLanguage) { %>
+  <input type="hidden" id="defaultPortalLanguage" value="<%=defaultPortalLanguage%>" />
+  <% } %>
+  <% if (instance) { %>
+  <input type="hidden" id="instance" value="<%=instance%>" />
+  <% } %>
+  <% if (deviceId) { %>
+  <input type="hidden" id="deviceId" value="<%=deviceId%>" />	
+  <%} else { %>	
+  <input type="hidden" id="deviceId"/>	
+  <% } %>
+  <% if (googleCaptchaSiteKey) { %>
+  <input type="hidden" id="googleCaptchaSiteKey" value="<%=googleCaptchaSiteKey%>" />
+  <% } %>
+  <% if (videoMaxSize) { %>
+  <input type="hidden" id="videoMaxSize" value="<%=videoMaxSize%>" />
+  <% } %>
+  <% if (reportsLocation) { %>
+  <input type="hidden" id="reportsLocation" value="<%=reportsLocation%>" />
+  <% } %>
+  <% if (previewCdnUrl) { %>
+    <input type="hidden" id="previewCdnUrl" value="<%=previewCdnUrl%>" />
+  <% } %>
+  <% if (cdnWorking) { %>
+    <input type="hidden" id="cdnWorking" value="<%=cdnWorking%>" />
+  <% } %>
+  <% if (offlineDesktopAppTenant) { %>
+  <input type="hidden" id="offlineDesktopAppTenant" value="<%=offlineDesktopAppTenant%>" />
+  <% } %>
+  <% if (offlineDesktopAppVersion) { %>
+  <input type="hidden" id="offlineDesktopAppVersion" value="<%=offlineDesktopAppVersion%>" />
+  <% } %>
+  <% if (offlineDesktopAppReleaseDate) { %>
+  <input type="hidden" id="offlineDesktopAppReleaseDate" value="<%=offlineDesktopAppReleaseDate%>" />
+  <% } %>
+  <% if (offlineDesktopAppSupportedLanguage) { %>
+  <input type="hidden" id="offlineDesktopAppSupportedLanguage" value="<%=offlineDesktopAppSupportedLanguage%>" />
+  <% } %>
+  <% if (offlineDesktopAppDownloadUrl) { %>
+    <input type="hidden" id="offlineDesktopAppDownloadUrl" value="<%=offlineDesktopAppDownloadUrl%>" />
+  <% } %>
+  <% if (logFingerprintDetails) { %>
+    <input type="hidden" id="logFingerprintDetails" value="<%=logFingerprintDetails%>" />
+  <% } %>
+  <% if (deviceApi) { %>
+    <input type="hidden" id="deviceApi" value="<%=deviceApi%>" />
+  <% } %>
+  <% if (deviceProfileApi) { %>
+    <input type="hidden" id="deviceProfileApi" value="<%=deviceProfileApi%>" />
+    <% } %>
+  <app-root></app-root>
+</body>
+
+</html>

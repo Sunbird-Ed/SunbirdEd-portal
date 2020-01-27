@@ -1,0 +1,104 @@
+<div class="sb-bg-color-white">
+    <div class="ui container py-8">
+        <div class="d-flex flex-jc-space-between sb-back-btn-bar">
+            <button type="button" appTelemetryInteract [telemetryInteractEdata]="backButtonInteractEdata"
+                (click)="goBack()"
+                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fmedium">
+                <i class="arrow left icon"></i>{{resourceService?.frmelmnts?.btn?.back}}
+            </button>
+            <button *ngIf="!router?.url?.includes('view-all')" type="button" appTelemetryInteract
+                [telemetryInteractEdata]="filterByButtonInteractEdata"
+                class="sb-btn sb-btn-outline-primary sb-btn-normal font-weight-bold" [class.active]="showFilters"
+                (click)="showFilters = !showFilters">
+                <i class="icon-svg icon-svg--xxs icon-play">
+                    <svg class="icon icon-svg--primary">
+                        <use xlink:href="assets/images/sprite.svg#filter"></use>
+                    </svg>
+                </i> {{resourceService?.frmelmnts?.lbl?.filterby}}
+            </button>
+        </div>
+    </div>
+</div>
+
+<app-desktop-prominent-filter [pageId]="'explore-page'" [hidden]="!showFilters" *ngIf="initFilters"
+    [filterEnv]="filterType" [ignoreQuery]="['key']" [hashTagId]="hashTagId"
+    (prominentFilter)="getFilters($event)" (filterChange)="onFilterChange($event)">
+</app-desktop-prominent-filter>
+
+<div class="twelve wide column">
+    <app-loader [data]='loaderMessage' *ngIf="showLoader"></app-loader>
+    <app-no-result [data]="noResultMessage" [hidden]="router?.url?.includes('browse') && !isConnected"
+        *ngIf="contentList.length === 0 && !showLoader"></app-no-result>
+</div>
+
+<!-- For View All-->
+<div class="ui container" *ngIf="isViewAll && !showLoader" [appTelemetryImpression]="telemetryImpression">
+    <div class="sb-pageSection mt-24">
+        <div class="sb-pageSection-header">
+            <h4 class="sb-pageSection-title m-0 mr-5">{{resourceService?.frmelmnts?.lbl?.recentlyAdded}}</h4>
+        </div>
+    </div>
+    <div class="content-grid mt-24">
+        <ng-container *ngTemplateOutlet="cardContainerTemplate"></ng-container>
+    </div>
+</div>
+
+<!-- For Search Results-->
+<div class="ui container" *ngIf="!isViewAll && !showLoader && contentList?.length"
+    [appTelemetryImpression]="telemetryImpression" [hidden]="router?.url?.includes('browse') && !isConnected">
+    <div class="sb-pageSection mt-24">
+        <div class="sb-pageSection-header">
+            <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsForwithCount |
+            interpolate:'{count}':contentList?.length | interpolate:'{searchString}':this.queryParams.key"></h4>
+        </div>
+    </div>
+    <div class="content-grid mt-24">
+        <ng-container *ngTemplateOutlet="cardContainerTemplate"></ng-container>
+
+        <div class="twelve wide column right aligned py-0"
+            *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && (router.url.includes('browse'))">
+            <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails?.pages?.length">
+                <div class="sb-pagination my-0">
+                    <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+                        (click)="navigateToPage(1) ">&laquo;</a>
+                    <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+                        (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+                    <a *ngFor="let page of paginationDetails.pages"
+                        [ngClass]="{active:paginationDetails.currentPage===page}" (click)="navigateToPage(page)"
+                        class="sb-item">{{page}}</a>
+                    <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+                        (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+                    <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+                        (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="ui container mt-20" *ngIf="router?.url?.includes('browse') && !isConnected">
+    <div class="d-flex flex-ai-center flex-jc-center offline-page-content mt-32">
+        <div class="text-center">
+            <img src="../../../../../assets/images/offline-cloud.png" alt="offline computer image">
+            <h2 class="offline-page-heading text-center">{{resourceService.frmelmnts?.lbl?.offline}}</h2>
+            <div class="offline-page-subheading mt-10">{{resourceService.frmelmnts?.lbl?.connectInternet}}</div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #cardContainerTemplate>
+    <div class="twelve wide column" *ngIf="contentList.length">
+        <div class="masonry-grid dynamic-section-card">
+            <div class="masonry-item card-width" *ngFor="let content of contentList;let i = index;">
+                <sb-library-card [content]="content" [type]="'desktop_textbook'" appTelemetryInteract
+                    [telemetryInteractEdata]="cardInteractEdata"
+                    [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
+                    [telemetryInteractCdata]="[{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType}]"
+                    [cardImg]="content?.cardImg || 'assets/images/book.png'"
+                    (click)="playContent({event: $event, data: content})"></sb-library-card>
+            </div>
+        </div>
+    </div>
+</ng-template>

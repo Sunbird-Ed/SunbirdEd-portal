@@ -21,7 +21,7 @@
     }
   }
 
-  &>.container {
+  & > .container {
     padding: $base-block-space;
     @media only screen and (min-width: 768px) {
       padding: $base-block-space 0;
@@ -58,7 +58,6 @@
   }
 }
 
-
 .qr-code-btn {
   background: $white-color !important;
   color: $primary-color !important;
@@ -69,7 +68,7 @@
   box-shadow: none !important;
   height: 30px !important;
   padding: 8px 15px !important;
-  
+
   .qrcode {
     color: $primary-color !important;
     font-size: 1.3em;
@@ -106,10 +105,10 @@
 
 *[dir="rtl"] {
   .ui.right.sidebar {
-    right: auto!important;
-    left: 0!important;
+    right: auto !important;
+    left: 0 !important;
   }
-  .ui.vertical.menu .item>i.icon {
+  .ui.vertical.menu .item > i.icon {
     float: left;
   }
 }
@@ -129,7 +128,7 @@
     font-weight: bold;
     padding: $base-block-space;
 
-    &>.dropdown.icon {
+    & > .dropdown.icon {
       margin: 0 0 0 $base-block-space;
     }
 
@@ -155,7 +154,7 @@
 }
 *[dir="rtl"] {
   .ui.menu .language-selector .ui.dropdown {
-    &>.dropdown.icon {
+    & > .dropdown.icon {
       padding: $base-block-space 0 $base-block-space $base-block-space;
       margin: 0 $base-block-space 0 0;
     }
@@ -205,11 +204,12 @@
     }
   }
 
-  .sb-header-links {}
+  .sb-header-links {
+  }
 }
 
 .sb-sub-header {
-  .blue-bar{
+  .blue-bar {
     background: $blue;
     padding: $base-block-space $base-block-space * 2;
   }
@@ -220,11 +220,11 @@
   .sb-sub-header-select {
     padding-left: $base-block-space;
     &.ui.dropdown:not(.button) > .default.text {
-      color:$white;
+      color: $white;
     }
-    &.ui.dropdown{
+    &.ui.dropdown {
       .menu {
-        .active{
+        .active {
           &.item {
             color: $blue;
           }
@@ -233,7 +233,7 @@
           font-size: $font-size-sm;
         }
       }
-    } 
+    }
   }
   .white-bar {
     padding: $base-block-space * 2;
@@ -253,13 +253,12 @@
   background: rgba(255, 255, 255, 0.4);
 }
 
-
 .sb-toggle-btn {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
-  font-size: $base-block-space * 1.5 ;
+  font-size: $base-block-space * 1.5;
   color: $white-color;
   margin: 0;
   padding: $base-block-space;
@@ -285,5 +284,4 @@
   &.rotate img {
     transform: rotateX(-180deg);
   }
-
 }

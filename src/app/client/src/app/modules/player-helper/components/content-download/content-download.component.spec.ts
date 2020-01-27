@@ -1,5 +1,5 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { DownloadManagerService, ConnectionService } from '@sunbird/offline';
+import { ContentManagerService, ConnectionService } from '@sunbird/offline';
 import { serverRes } from './content-download.component.spec.data';
 import { of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { RouterTestingModule,  } from '@angular/router/testing';
@@ -66,25 +66,25 @@ describe('ContentDownloadComponent', () => {
     expect(component.downloadContentInteractEdata).toBeDefined();
   });
 
-  it('should call download manager service on startDownload()', () => {
-    const downloadManagerService = TestBed.get(DownloadManagerService);
+  it('should call content manager service on startDownload()', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;
-    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableOf(serverRes.download_success));
+    spyOn(contentManagerService, 'startDownload').and.returnValue(observableOf(serverRes.download_success));
     component.contentData = serverRes.result.result.content;
     component.startDownload(component.contentData);
-    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(contentManagerService.startDownload).toHaveBeenCalled();
   });
 
   it('startDownload should fail', () => {
-    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const contentManagerService = TestBed.get(ContentManagerService);
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     resourceService.messages = serverRes.resourceServiceMockData.messages;
-    spyOn(downloadManagerService, 'startDownload').and.returnValue(observableThrowError(serverRes.download_error));
+    spyOn(contentManagerService, 'startDownload').and.returnValue(observableThrowError(serverRes.download_error));
     spyOn(toasterService, 'error').and.callThrough();
     component.startDownload(serverRes.result.result.content);
-    expect(downloadManagerService.startDownload).toHaveBeenCalled();
+    expect(contentManagerService.startDownload).toHaveBeenCalled();
     expect(component.toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0090);
   });
 
@@ -113,27 +113,27 @@ describe('ContentDownloadComponent', () => {
     expect(offlineCardService.isYoutubeContent).toHaveBeenCalled();
   });
 
-  it('should call updateContent() from downloadmanager service', () => {
-    const downloadManagerService = TestBed.get(DownloadManagerService);
+  it('should call updateContent() from contentmanager service', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
     resourceService.messages = serverRes.resourceServiceMockData.messages;
-    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableOf(serverRes.content_update_success));
+    spyOn(contentManagerService, 'updateContent').and.returnValue(observableOf(serverRes.content_update_success));
     component.contentData = serverRes.result.result.content;
     component.updateContent(component.contentData);
-    expect(downloadManagerService.updateContent).toHaveBeenCalled();
+    expect(contentManagerService.updateContent).toHaveBeenCalled();
   });
 
   it('should throw errror on updateContent()', () => {
-    const downloadManagerService = TestBed.get(DownloadManagerService);
+    const contentManagerService = TestBed.get(ContentManagerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.frmelmnts = serverRes.resourceServiceMockData.frmelmnts;
     resourceService.messages = serverRes.resourceServiceMockData.messages;
     component.isConnected = false;
-    spyOn(downloadManagerService, 'updateContent').and.returnValue(observableThrowError(serverRes.content_update_error));
+    spyOn(contentManagerService, 'updateContent').and.returnValue(observableThrowError(serverRes.content_update_error));
     component.contentData = serverRes.result.result.content;
     component.updateContent(component.contentData);
-    expect(downloadManagerService.updateContent).toHaveBeenCalled();
+    expect(contentManagerService.updateContent).toHaveBeenCalled();
   });
 
   it('should call getPlayerUpdateStatus()', () => {
