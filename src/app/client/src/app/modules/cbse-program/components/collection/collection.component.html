@@ -1,0 +1,74 @@
+
+
+<div *ngIf="!showLoader && !showError && currentStage === 'collectionComponent'">
+
+  <div class="state-medium-container sb-bg-color-white">
+    <div class="ui container d-flex flex-ai-center">
+      <div class="state-medium-container__dropdown">
+        <div class="sb-field mb-0 selected-board"
+        appTelemetryInteract
+           [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('collection-filter', 'click', 'collection', {'filters': { 'board': [board]}})"
+           [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', collectionComponentInput.programContext.programId)"
+           [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')">
+          {{board}}
+          <!-- <sui-select class="selection state-selection"  placeholder="{{board}}" labelField="name" #multiSelect>
+            <sui-select-option *ngFor="let option of multiSelect1" [value]="option" aria-disabled="#multiSelect">
+            </sui-select-option>
+          </sui-select> -->
+        </div>
+      </div>
+      <div class="state-medium-container__separator"></div>
+      <div class="state-medium-container__medium">
+        <div class="sb-medium">
+           <div class="sb-medium__sb-pills-content  sb-medium__pills-container"
+           appTelemetryInteract
+           [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('collection-filter', 'click', 'collection', {'filters': { 'medium': [medium]}})"
+           [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', collectionComponentInput.programContext.programId)"
+           [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+            *ngFor="let medium of mediums;  let index = index" (click)=" isMediumClickable ? filterCollectionList(medium,'medium') : false">
+            <div class="pill active">{{medium}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sb-class sb-bg-color-gray-0">
+    <div class="ui container">
+      <nav class="sb-class__pills-container">
+       <ngx-slick class="carousel" [config]="_slideConfig">
+            <div ngxSlickItem class="sb-class__pill" appTelemetryInteract
+            [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('collection-filter', 'click', 'collection', {'filters': { 'class': [class]}})"
+            [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', collectionComponentInput.programContext.programId)"
+            [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+            *ngFor="let class of classes;let i = index" [class.active]="selectedIndex === i" (click)="filterCollectionList(class); setAndClearFilterIndex(i)">
+              {{ class }}
+            </div>
+          </ngx-slick>
+      </nav>
+    </div>
+  </div>
+  <div  *ngIf="objectKey(collectionList).length" class="ui container">
+    <div *ngFor="let key of objectKey(collectionList)">
+      <sb-library-cards-grid  [title]="key" appTelemetryInteract
+      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('collection-card', 'click', 'collection')"
+      [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', collectionComponentInput.programContext.programId)"
+      [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+      [contentList]="collectionList[key]" [maxCardCount]="4" [type]="'infinite_card_grid'" (viewMoreClick)="viewMoreClickHandler($event)" (cardClick)="collectionClickHandler($event)"></sb-library-cards-grid>
+        <!-- <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="telemetryInteract" [data]="content" appTelemetryInteract [telemetryInteractEdata]="telemetryInteract" (clickEvent)="showTopics($event)"></app-card> -->
+    </div>
+  </div>
+  <div  *ngIf="!objectKey(collectionList).length">
+    <app-no-result [data]="{ messageText: 'resourceService.messages.stmsg.m0006'}"></app-no-result>
+  </div>
+</div>
+
+<div *ngIf="currentStage !== 'collectionComponent'" style="margin-bottom: -60px;">
+  <app-chapter-list [chapterListComponentInput]="chapterListComponentInput" (selectedQuestionTypeTopic)="selectedQuestionTypeTopic"></app-chapter-list>
+</div>
+
+<div class="twelve wide column" *ngIf="!showLoader && showError">
+  <app-no-result [data]="{ messageText: 'resourceService.messages.fmsg.m0004'}"></app-no-result>
+</div>
+<div *ngIf='showLoader && !showError' class="ui container sb-chapter-list && currentStage === 'collectionComponent'">
+  <app-loader></app-loader>
+</div>

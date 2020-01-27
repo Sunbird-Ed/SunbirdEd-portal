@@ -1,17 +1,20 @@
+import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, NavigationHelperService } from '@sunbird/shared';
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
+import { ConnectionService } from '@sunbird/offline';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.scss']
 })
-export class ContentPlayerComponent implements AfterViewInit, OnChanges {
+export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit, OnDestroy {
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
@@ -25,9 +28,12 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   contentRatingModal = false;
   previewCdnUrl: string;
   isCdnWorking: string;
-  @Input() isContentDeleted = false;
-  message: string;
+  @Input() isContentDeleted: Subject<any>;
+  contentDeleted = false;
   @Input() isContentPresent = true;
+  @Input() objectRollUp: {} = {};
+  isConnected: any;
+  public unsubscribe$ = new Subject<void>();
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
@@ -36,9 +42,11 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
  */
   @ViewChild('modal') modal;
   @Input() contentData;
-
-  constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
-    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService) {
+  isLoading: Boolean = false; // To restrict player loading multiple times
+  constructor(public configService: ConfigService, public router: Router, public toasterService: ToasterService,
+    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
+    private connectionService: ConnectionService,
+    public playerService: PublicPlayerService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -51,59 +59,94 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
    */
 
   ngAfterViewInit() {
-    this.isContentDeleted = _.isEmpty(this.playerConfig);
     if (!_.isEmpty(this.playerConfig)) {
       this.loadPlayer();
     }
   }
 
   ngOnChanges() {
+    if (this.isContentDeleted) {
+      this.isContentDeleted.subscribe(data => {
+        this.contentDeleted = data.value && !this.router.url.includes('browse');
+      });
+    }
     this.contentRatingModal = false;
-    this.isContentDeleted = _.isEmpty(this.playerConfig);
     if (!_.isEmpty(this.playerConfig)) {
+      this.objectRollUp = _.get(this.playerConfig, 'context.objectRollup') || {};
       this.loadPlayer();
     }
   }
+  ngOnInit() {
+    this.checkOnlineStatus();
+  }
+  checkOnlineStatus() {
+    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    this.displayToasterMessage();
+    });
+  }
+  displayToasterMessage() {
+    if (!this.isConnected && this.contentData) {
+        this.toasterService.error(this.resourceService.messages.stmsg.desktop.noInternetMessage);
+    }
+  }
   loadCdnPlayer() {
+    if (this.isLoading) {// To restrict player loading multiple times
+      return;
+    }
+    this.isLoading = true;
     const iFrameSrc = this.configService.appConfig.PLAYER_CONFIG.cdnUrl + '&build_number=' + this.buildNumber;
-    setTimeout(() => {
-      const playerElement = this.contentIframe.nativeElement;
-      playerElement.src = iFrameSrc;
-      playerElement.onload = (event) => {
-        try {
-          this.adjustPlayerHeight();
-          playerElement.contentWindow.initializePreview(this.playerConfig);
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
-        } catch (err) {
-          console.log('loading cdn player failed', err);
-          this.loadDefaultPlayer();
-        }
-      };
-    }, 0);
+
+    const playerElement = this.contentIframe.nativeElement;
+    playerElement.src = iFrameSrc;
+    playerElement.onload = (event) => {
+      this.isLoading = false;
+      try {
+        this.adjustPlayerHeight();
+        playerElement.contentWindow.initializePreview(this.playerConfig);
+        playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => {
+          const eid = telemetryEvent.detail.telemetryData.eid;
+          if (eid && (eid === 'START')) {
+            this.isLoading = false; // To restrict player loading multiple times
+          }
+          this.generateContentReadEvent(telemetryEvent);
+        });
+        window.frames['contentPlayer'].addEventListener('message', accessEvent =>
+          this.generateScoreSubmitEvent(accessEvent), false);
+      } catch (err) {
+        this.isLoading = false; // To restrict player loading multiple times
+        this.loadDefaultPlayer();
+      }
+    };
   }
   loadDefaultPlayer(url = this.configService.appConfig.PLAYER_CONFIG.baseURL) {
+    if (this.isLoading) { // To restrict player loading multiple times
+      return;
+    }
+    this.isLoading = true;
     const iFrameSrc = url + '&build_number=' + this.buildNumber;
-    setTimeout(() => {
-      const playerElement = this.contentIframe.nativeElement;
-      playerElement.src = iFrameSrc;
-      playerElement.onload = (event) => {
-        try {
-          this.adjustPlayerHeight();
-          playerElement.contentWindow.initializePreview(this.playerConfig);
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => {
-            this.generateContentReadEvent(telemetryEvent);
-          });
-          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
-        } catch (err) {
-          console.log('loading default player failed', err);
-          const prevUrls = this.navigationHelperService.history;
-          if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
-            history.back();
+    const playerElement = this.contentIframe.nativeElement;
+    playerElement.src = iFrameSrc;
+    playerElement.onload = (event) => {
+      try {
+        this.adjustPlayerHeight();
+        playerElement.contentWindow.initializePreview(this.playerConfig);
+        playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => {
+          const eid = telemetryEvent.detail.telemetryData.eid;
+          if (eid && (eid === 'START')) {
+            this.isLoading = false; // To restrict player loading multiple times
           }
+          this.generateContentReadEvent(telemetryEvent);
+        });
+        window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+      } catch (err) {
+        this.isLoading = false; // To restrict player loading multiple times
+        const prevUrls = this.navigationHelperService.history;
+        if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
+          history.back();
         }
-      };
-    }, 0);
+      }
+    };
   }
   /**
    * Initializes player with given config and emits player telemetry events
@@ -115,7 +158,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
       return;
     } else if (!_.includes(this.router.url, 'browse')) {
       if (_.get(this.playerConfig, 'metadata.artifactUrl')
-      && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
+        && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
         const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
         this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
       }
@@ -141,7 +184,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
   }
 
   generateScoreSubmitEvent(event: any) {
-    if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
+    if (_.toLower(event.data) === (_.toLower(this.CONSTANT.ACCESSEVENT))) {
       this.questionScoreSubmitEvents.emit(event);
     }
   }
@@ -165,7 +208,29 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges {
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
   deleteContent(event) {
-    this.isContentDeleted = true;
-    this.deletedContent.emit(event);
+    if (!this.router.url.includes('browse')) {
+      this.contentDeleted = true;
+      this.deletedContent.emit(event);
+    }
+  }
+
+  checkContentDownloading(event) {
+    if (!this.router.url.includes('browse')) {
+      this.contentDeleted = false;
+      const contentDetails = {
+        contentId: event.identifier,
+        contentData: event
+      };
+      this.contentData = event;
+      this.playerConfig = this.playerService.getConfig(contentDetails);
+      if (!_.isEmpty(this.playerConfig)) {
+        this.loadPlayer();
+      }
+    }
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
+

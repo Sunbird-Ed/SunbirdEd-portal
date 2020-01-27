@@ -71,7 +71,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     const event = {
       context: {
-        env: 'app'
+        env: 'portal'
       },
       edata: {
         type: 'enroll-batch',

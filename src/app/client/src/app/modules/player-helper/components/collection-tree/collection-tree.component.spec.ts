@@ -26,12 +26,20 @@ describe('CollectionTreeComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  const fakeActivatedRoute = {
+    snapshot: {
+      queryParams: {
+        dialCode: 'D4R4K4'
+      }
+    }
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiAccordionModule, HttpClientTestingModule, HttpClientModule],
       declarations: [CollectionTreeComponent, FancyTreeComponent],
       providers: [ ResourceService, ToasterService,  { provide: ResourceService, useValue: resourceBundle },
-        { provide: Router, useClass: RouterStub }, CacheService, ConfigService, BrowserCacheTtlService]
+        { provide: Router, useClass: RouterStub }, CacheService, ConfigService, BrowserCacheTtlService,
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
     }).compileComponents();
   }));
 

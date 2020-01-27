@@ -1,0 +1,28 @@
+<sui-modal [mustScroll]="false" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
+  appBodyScroll (dismissed)="modal.deny(); templateSelection.emit({type: 'close'})" #modal>
+  <div class="sb-modal-header">
+    Select to contribute
+  </div>
+  <div class="sb-modal-content">
+    <div class="twelve wide column">
+      <div class="ui grid flex-jc-center m-0">
+        <div class="three wide column p-8"  *ngFor="let template of templateList" (click)="showButton=true; templateSelected = template.id" >
+          <div class="ui card text-center common-contribution-card" [ngClass]="{'active': templateSelected === template.id}">
+            <div class="content">
+              <i class="check circle icon"></i>
+              <img class="mt-16" src="{{template.metadata.appIcon || 'assets/images/book.png'}}" rel="placeholder">
+              <div class="content-title pt-16 pb-8">{{template.label}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Selection of Question in modal -->
+
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': showButton, 'sb-btn-disabled': !showButton}" (click)="handleSubmit()">
+      Continue
+    </button>
+  </div>
+</sui-modal>

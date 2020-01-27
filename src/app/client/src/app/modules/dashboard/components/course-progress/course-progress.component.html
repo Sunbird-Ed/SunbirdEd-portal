@@ -47,42 +47,46 @@
           </div>
           <div class="d-flex mt-16 mb-0 sb-course-progress-status d-flex flex-w-wrap px-16 py-8 flex-ai-center"
             *ngIf="dashboarData">
-            <span class="course-start-dt course-participants-label black-divider pr-16">
+            <span class="course-start-dt course-participants-label  pr-16">
               <span *ngIf="dashboarData.startDate">
-                {{resourceService?.frmelmnts?.lbl?.batchstartdate}}&nbsp;:
+                {{resourceService?.frmelmnts?.lbl?.batchstartdate}}
               </span>
-              &nbsp;{{dashboarData.startDate | dateFormat :'DD/MM/YYYY' }}
+             <span class="font-weight-bold"> {{dashboarData.startDate | dateFormat :'DD/MM/YYYY' }}</span>
             </span>
 
-            <span class="course-end-dt course-participants-label black-divider px-16">
-              <span>{{resourceService?.frmelmnts?.lbl?.batchenddate}}&nbsp;:
+            <span class="course-end-dt course-participants-label  px-16">
+              <span>{{resourceService?.frmelmnts?.lbl?.batchenddate}}
               </span>
-              <span *ngIf="dashboarData.endDate">{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}</span>
+              <span *ngIf="dashboarData.endDate" class="font-weight-bold">{{dashboarData.endDate | dateFormat :'DD/MM/YYYY'}}</span>
               <span *ngIf="!dashboarData.endDate">-</span>
             </span>
 
-            <span *ngIf="dashboarData.count" class="course-participants course-participants-label black-divider px-16">
-              <span>{{resourceService?.frmelmnts?.lbl?.participants}}&nbsp;:
-              </span> &nbsp;{{dashboarData.count}}
+            <span *ngIf="dashboarData.count" class="course-participants course-participants-label  px-16">
+              <span>{{resourceService?.frmelmnts?.lbl?.participants}}
+              </span> 
+              <span class="font-weight-bold">{{dashboarData.count}}</span>
             </span>
             <span *ngIf="dashboarData.completedCount!==null"
-              class="course-participants course-participants-label black-divider px-16">
-              <span>{{resourceService?.frmelmnts?.lbl?.completedCourse}}&nbsp;:
+              class="course-participants course-participants-label  px-16">
+              <span>{{resourceService?.frmelmnts?.lbl?.completedCourse}}
               </span>
-              &nbsp;{{dashboarData.completedCount}}
+              <span class="font-weight-bold">{{dashboarData.completedCount}}</span>
+              
             </span>
             <span *ngIf="dashboarData.certificateCount!==null"
-              class="course-participants course-participants-label black-divider px-16">
-              <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}&nbsp;:
+              class="course-participants course-participants-label  px-16">
+              <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}
               </span>
-              &nbsp;{{dashboarData.certificateCount}}
+              <span class="font-weight-bold"> {{dashboarData.certificateCount}}</span>
+             
             </span>
 
-            <span class="course-completed course-participants-label ml-auto"
+            <span class="course-completed course-participants-label"
               *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
-              <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}&nbsp;:
+              <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}
               </span>
-              &nbsp;{{dashboarData.reportUpdatedOn.slice(0, 10) | dateFormat :'DD/MM/YYYY'}}
+              <span class="font-weight-bold"> {{dashboarData.reportUpdatedOn.slice(0, 10) | dateFormat :'DD/MM/YYYY'}}</span>
+              
             </span>
           </div>
         </div>

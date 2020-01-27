@@ -1,0 +1,43 @@
+<!-- Question Status Header HTML structure -->
+
+<div class="ui container py-16 question-status" *ngIf="questionMetaData.data && questionMetaData.data.rejectComment && questionMetaData.data.rejectComment !== '' ">
+    <div class="mt-8 practice-set__status">
+        <span class="sb-color-error">Question Rejected</span>
+        <span class="cursor-pointer fs-0-785 ml-8" (click)="openReviewerCommentModal()"
+        appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('view-reviewercomments', 'click', 'question-creation-header')"
+        [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+        [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+        >
+            <i class="comment alternate outline icon sb-color-primary"></i>
+            <a >View Comments</a>
+        </span>
+    </div>
+</div>
+
+
+
+<div class="d-flex flex-ai-center flex-jc-space-between question-header">
+  <div class="d-flex ui blue message py-8 my-0 mr-auto" *ngIf="resourceStatus === 'Draft' ">
+  Please only use&nbsp;&nbsp;<b>Add Image</b>(<i class="image outline icon mr-0 py-2"></i>)&nbsp;&nbsp;button to upload images</div>
+</div>
+
+<sui-modal *ngIf="reviewerCommentModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll
+  (dismissed)="reviewerCommentModal = !reviewerCommentModal" #modal>
+  <div class="sb-modal-header">
+      Review Comments
+  </div>
+  <div class="sb-modal-content">
+      <div class="sb-publish-content">
+        <div class="review-modal-list"> 
+          {{ questionMetaData.data.rejectComment }}
+      </div>
+      </div>
+  </div>
+  <!-- <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"> Continue </button>
+  </div> -->
+</sui-modal>
+  

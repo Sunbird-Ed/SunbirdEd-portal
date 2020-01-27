@@ -1,0 +1,120 @@
+@import "variables";
+@import 'mixins/mixins';
+.questionTab.button {
+    border-bottom: calculateRem(1px) solid #cecece;
+}
+
+.questionsMenu {
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+.emptyList {
+    border: none;
+}
+
+i.icon.trash {
+    color: #FF6979;
+}
+
+.question-list {
+    &__item {
+        border-bottom: calculateRem(1px) solid rgba(2, 79, 157, 0.09);
+        label {
+            font-weight: normal;
+            font-size: calculateRem(12px);
+        }
+        &.active,
+        &:hover {
+            background: #F3F8FF;
+        }
+        &.active {
+            label {
+                font-weight: 700;
+                color: #024f9d;
+            }
+        }
+    }
+}
+
+.ckeditor-container {
+    border-left: calculateRem(1px) solid rgba(2, 79, 157, 0.09);
+}
+
+.practical-header {
+    height: calculateRem(98px);
+    background: rgba(41, 114, 164, 0.05);
+    &__title {
+        max-width: 680px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    &__content {
+        .practical-sb-buttons {
+            .sb-btn-file {
+                border-top: calculateRem(1px) solid var(--primary-200);
+                border-bottom: calculateRem(1px) solid var(--primary-200);
+                border-left: calculateRem(1px) solid #ddd;
+                border-right: calculateRem(1px) solid #ddd;
+                background: #E0F1FD;
+                color: var(--primary-400);
+            }
+            .sb-btn-submit {
+                background: var(--primary-200);
+                opacity: 50%;
+                color: var(--white);
+            }
+        }
+    }
+    .practice-set {
+        &__status {
+            a {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.sb-field-group.textbook-edit {
+    width: 100%;
+    max-width: 756px;
+    textarea {
+        height: calculateRem(56px);
+        resize: none;
+    }
+    .characters-left {
+        position: absolute;
+        bottom: $base-block-space;
+        right: $base-block-space;
+        color: $gray-400;
+        font-size: $font-size-xs;
+    }
+}
+
+.review-modal-list {
+    .list {
+        padding-left: calculateRem(16px);
+        margin: 0;
+        li {
+            font-size: $font-size-sm;
+            line-height: calculateRem(18px);
+        }
+    }
+}
+
+.trash.icon {
+    font-size: calculateRem(14px);
+    height: auto;
+}
+
+.sb-btn-radius{
+    border-radius:2rem;
+    box-shadow: 0 4px 4px 0 #C8D6EA;
+}
+
+.ckeditor-tool{
+    &__answer{
+      border-bottom: 0.5px solid #e2e3e5;
+ }
+}

@@ -247,7 +247,7 @@ export class AppComponent implements OnInit, OnDestroy {
   logExData(type: string, data: object) {
     const event = {
       context: {
-        env: 'app'
+        env: 'portal'
       },
       edata: {
         type: type,

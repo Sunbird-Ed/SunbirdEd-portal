@@ -70,7 +70,7 @@ body {
   }
 }
 .sb-offline {
-  // padding-bottom: 145px;
+  padding-bottom: 0px;
   // .footer-fix {
   //   min-height: calc(100vh - 180px);
   // }
@@ -228,4 +228,8 @@ ol.ui.list ol {
   &.popup {
     font-size: calculateRem(12px);
   }
+}
+
+app-workspace {
+  font-size:14px;
 }
