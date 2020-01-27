@@ -187,11 +187,11 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       this.deletedContent.emit(this.contentData);
       this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteContentSuccessMessage);
     } else {
-      this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteContentErrorMessage);
+      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteContentErrorMessage);
     }
     }, err => {
     this.changeContentStatus(this.contentData);
-      this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteContentErrorMessage);
+      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteContentErrorMessage);
     });
   }
 

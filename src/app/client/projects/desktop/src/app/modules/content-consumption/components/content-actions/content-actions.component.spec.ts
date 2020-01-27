@@ -200,7 +200,7 @@ describe('ContentActionsComponent', () => {
     const request = {request: {contents: [actionsData.contentData.identifier], visibility: 'Parent'}};
     component['contentManagerService'].deleteContent(request).subscribe(data => {}, err => {
       expect(err).toEqual(actionsData.deleteContent.error);
-      expect(component.toasterService.success(actionsData.resourceBundle.messages.stmsg.desktop.deleteContentErrorMessage));
+      expect(component.toasterService.success(actionsData.resourceBundle.messages.etmsg.deleteContentErrorMessage));
     });
   });
 

@@ -5,10 +5,13 @@ export const contentHeaderData = {
                 m0138: 'FAILED',
                 m0140: 'DOWNLOADING',
                 desktop: {
-                    deleteTextbookSuccessMessage: 'Textbook deleted successfully',
-                    deleteTextbookErrorMessage: 'Unable to delete textbook. Please try again..',
+                    deleteTextbookSuccessMessage: 'Textbook deleted successfully'
                 }
             },
+            etmsg: {
+                deleteTextbookErrorMessage: 'Unable to delete textbook. Please try again..',
+            },
+
             smsg: {
                 m0056: 'You should be online to update the content',
                 m0059: 'Content successfully copied'

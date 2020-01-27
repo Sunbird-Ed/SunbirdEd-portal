@@ -123,7 +123,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
     this.goBack();
     }, err => {
-      this.toasterService.error(this.resourceService.messages.stmsg.desktop.deleteTextbookErrorMessage);
+      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteTextbookErrorMessage);
     });
   }
 
