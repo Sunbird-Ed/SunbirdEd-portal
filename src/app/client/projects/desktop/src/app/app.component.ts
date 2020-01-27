@@ -296,19 +296,19 @@ export class AppComponent implements OnInit, OnDestroy {
     return message.replace('{instance}', _.upperCase(this.instance));
   }
   initializeTourTravel() {
-    this.showOnboardingPopup = false;
-      setTimeout(() => {
-        this.initializeShepherdData();
-          this.shepherdService.defaultStepOptions = defaultStepOptions;
-          this.shepherdService.disableScroll = true;
-          this.shepherdService.modal = true;
-          this.shepherdService.confirmCancel = false;
-          this.shepherdService.addSteps(this.shepherdData);
-          if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
-            localStorage.setItem('TakeOfflineTour', 'show');
-            this.shepherdService.start();
-          }
-      }, 1000);
+    // this.showOnboardingPopup = false;
+    //   setTimeout(() => {
+    //     this.initializeShepherdData();
+    //       this.shepherdService.defaultStepOptions = defaultStepOptions;
+    //       this.shepherdService.disableScroll = true;
+    //       this.shepherdService.modal = true;
+    //       this.shepherdService.confirmCancel = false;
+    //       this.shepherdService.addSteps(this.shepherdData);
+    //       if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
+    //         localStorage.setItem('TakeOfflineTour', 'show');
+    //         this.shepherdService.start();
+    //       }
+    //   }, 1000);
   }
 
   getDesktopUserData() {
