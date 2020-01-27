@@ -42,7 +42,7 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
   frameworkCategories: any;
   userDetails: any;
   hashTagId: string;
-  showDefaultFilter = false;
+  showDefaultFilter: boolean;
   public unsubscribe$ = new Subject<void>();
 
   @Input() selectedFilters;
@@ -79,9 +79,8 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
 
           if (_.get(this.selectedFilters, 'board[0]')) {
             const offlineBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
-            const boardValue = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
 
-            if (boardValue) {
+            if (offlineBoard) {
               this.selectedBoard = offlineBoard;
             } else {
               this.selectedBoard = defaultBoard;
