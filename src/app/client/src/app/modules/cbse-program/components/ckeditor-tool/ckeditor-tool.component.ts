@@ -609,7 +609,7 @@ getAllVideos(offset, query) {
   })).subscribe(res => {
       this.selectedVideo = res;
       this.showAddButton = true;
-      this.addVideoInEditor();;
+      this.addVideoInEditor();
     });
   }
 
