@@ -164,35 +164,19 @@
       <div class="ui segment sb-tabset-segment m-0 pt-0" infiniteScroll [infiniteScrollDistance]="2"
         [infiniteScrollThrottle]="500" [scrollWindow]="false" suiTabContent="1">
         <div class="content">
-          <div class="ui grid">
-            <div class="one wide column"></div>
-            <div class="ten wide column">
-              <div>
-                <input (change)="uploadVideo($event)" type="file" accept="video/mp4" name="assetfile">
-              </div>
-              <div class="ui info message">
-                <p>Allowed file types are: Mp4</p>
-                <p>Maximum allowed file size: 5 MB</p>
-              </div>
-              <div *ngIf="showErrorMsg" class="ui error message">
-                <p>{{errorMsg}}</p>
-              </div>
-            </div>
-            <div class="one wide column"></div>
-          </div>
           <!-- New upload image design section starts here -->
-          <!-- <div class="upload-image-modal-section d-flex flex-ai-center flex-jc-center flex-dc">
-            <button class="upload-input-button sb-btn sb-btn-success sb-btn-normal" (change)="uploadVideo($event)">
+          <div class="upload-image-modal-section d-flex flex-ai-center flex-jc-center flex-dc">
+            <button class="upload-input-button sb-btn sb-btn-success sb-btn-normal">
               Upload from Computer
-              <input (change)="uploadVideo($event)" type="file" accept="video/mp4" name="assetfile">
+              <input (change)="uploadVideo($event)" type="file" [accept]="acceptVideoType" name="assetfile">
             </button>
             <p class="fsmall my-8">Drag and Drop files here</p>
-            <span class="fxsmall">Upload png and jpeg(Max File size: 5MB)</span>
+            <span class="fxsmall">Upload {{assetConfig.video.accepted}} (Maxx File size: {{assetConfig.video.size}}MB)</span>
             <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
               <p>{{errorMsg}}</p>
             </div>
           </div>
-          <p class="fsmall mt-8 terms-and-condition">I understand and confirm that all resources and assets created through the content editor or uploaded on the platform shall be available for free and public use without limitations on the platform (web portal, applications and any other end user interface that the platform would enable) and will be licensed under terms & conditions and policy guidelines of the platform. In doing so, the copyright and license of the original author is not infringed.</p> -->
+          <p class="fsmall mt-8 terms-and-condition">I understand and confirm that all resources and assets created through the content editor or uploaded on the platform shall be available for free and public use without limitations on the platform (web portal, applications and any other end user interface that the platform would enable) and will be licensed under terms & conditions and policy guidelines of the platform. In doing so, the copyright and license of the original author is not infringed.</p>
           <!-- New upload image design section ends here -->
         </div>
 
@@ -272,7 +256,7 @@
         </div>
         <div class="ui info message">
           <p>Allowed file types are: jpeg, jpg, png</p>
-          <p>Maximum allowed file size: 1 MB</p>
+          <p>Maximum allowed file size: {{assetConfig.image.size}} MB</p>
         </div>
         <div *ngIf="showErrorMsg" class="ui error message">
           <p>{{errorMsg}}</p>
