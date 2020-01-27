@@ -74,8 +74,9 @@
   <div class="sb-modal-content p-0">
     <sui-tabset>
       <div class="sb-tabset-menu mb-16">
-        <a class="sb-item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
-        <a class="sb-item" (activate)="getAllImages(0)" suiTabHeader="2">All Image</a>
+        <a class="sb-item" suiTabHeader="1">Upload</a>
+        <a class="sb-item" (activate)="getMyImages(0)" suiTabHeader="2">My Images</a>
+        <a class="sb-item" (activate)="getAllImages(0)" suiTabHeader="3">All Image</a>
       </div>
 
       <!-- Search section in modal html structure -->
@@ -93,8 +94,26 @@
         <p class="fs-0-986 ml-auto" style="color: #666;">256 Videos uploaded</p>
       </div> -->
 
+<div class="ui segment sb-tabset-segment m-0 pt-0" suiTabContent="1"  >
+<div class="content">
+  <div class="upload-image-modal-section d-flex flex-ai-center flex-jc-center flex-dc">
+    <button class="upload-input-button sb-btn sb-btn-success sb-btn-normal" (click)="imageInput.click()">
+      Upload from Computer
+      <input #imageInput (change)="uploadImage($event)" type="file" accept="image/*" name="assetfile">
+    </button>
+    <p class="fsmall my-8">Drag and Drop files here</p>
+    <span class="fxsmall">Upload png and jpeg(Max File size: 5MB)</span>
+    <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
+      <p>{{errorMsg}}</p>
+    </div>
+  </div>
+  <p class="fsmall mt-8 terms-and-condition">I understand and confirm that all resources and assets created through the content editor or uploaded on the platform shall be available for free and public use without limitations on the platform (web portal, applications and any other end user interface that the platform would enable) and will be licensed under terms & conditions and policy guidelines of the platform. In doing so, the copyright and license of the original author is not infringed.</p>
+
+</div>
+</div>
+      
       <div class="ui segment sb-tabset-segment m-0 pt-0" infiniteScroll [infiniteScrollDistance]="2"
-        [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
+        [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="2">
         <div class="sb-grid-layout image">
           <div class="sb-video-content" *ngFor="let data of myAssets">
             <div class="sb-image-section relative position">
@@ -108,7 +127,7 @@
       </div>
 
       <div class="ui segment sb-tabset-segment m-0 pt-0" infiniteScroll [infiniteScrollDistance]="2"
-        [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
+        [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="3">
         <div class="sb-grid-layout image">
           <div class="sb-video-content" *ngFor="let data of allImages">
             <div class="sb-image-section">
@@ -121,12 +140,10 @@
     </sui-tabset>
   </div>
   <div class="sb-modal-actions">
-    <button (click)="initiateImageUploadModal();" appTelemetryInteract
+    <button (click)="addImageInEditor();" appTelemetryInteract
       [telemetryInteractEdata]="{id:'upload_image',type:'click',pageid:'questioncreate'}"
-      class="sb-btn sb-btn-primary sb-btn-normal">Upload and use</button>
-    <button (click)="dismissImagePicker();" appTelemetryInteract
-      [telemetryInteractEdata]="{id:'cancelUpload_image',type:'click',pageid:'questioncreate'}"
-      class="sb-btn sb-btn-normal sb-btn-outline-primary">Cancel</button>
+      class="sb-btn sb-btn-primary sb-btn-normal">Add</button>
+    
 
     <!-- <div class="or"></div>
       <button (click)="dismissImagePicker();" class="ui primary button">Save</button> -->

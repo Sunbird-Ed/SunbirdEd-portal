@@ -277,5 +277,14 @@ export const playerData = {
                 }
             }
         }
+    },
+    resourceBundle: {
+        messages: {
+            stmsg: {
+                desktop: {
+                     noInternetMessage: 'Internet not available. Please connect and try again.'
+                }
+            }
+        }
     }
 };

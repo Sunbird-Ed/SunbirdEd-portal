@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnChanges, ViewChild } from '@angular/core';
+import { ProgramTelemetryService } from '../../../program/services';
 
 @Component({
   selector: 'app-question-creation-header',
@@ -10,7 +11,10 @@ export class QuestionCreationHeaderComponent implements OnInit {
   @Input() role: any;
   @Input() questionMetaData: any;
   @Input() resourceStatus: any;
-  constructor() { }
+  @Input() telemetryEventsInput: any;
+  constructor(
+    public programTelemetryService: ProgramTelemetryService,
+  ) { }
 
   ngOnInit() {}
 

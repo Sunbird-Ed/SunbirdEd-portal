@@ -15,6 +15,7 @@ export class OfflineApplicationDownloadComponent implements OnInit, AfterViewIni
   public telemetryImpression: IImpressionEventInput;
   instance: string;
   recomanded_download: string;
+  recomandedOS: string;
   otherOption1: string;
   otherOption2: string;
   /* it stores the release date of the offline desktop app from env variable.*/
@@ -53,6 +54,7 @@ export class OfflineApplicationDownloadComponent implements OnInit, AfterViewIni
         this.otherOption2 = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForLinux');
       }
     } else if (os.toLowerCase() === 'linux') {
+      this.recomandedOS = 'linux';
       this.recomanded_download = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForLinux');
       this.otherOption1 = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForWindows32');
       this.otherOption2 = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForWindows64');

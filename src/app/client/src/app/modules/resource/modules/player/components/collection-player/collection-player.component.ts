@@ -78,6 +78,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   closeIntractEdata: IInteractEventEdata;
 
+  printPdfInteractEdata: IInteractEventEdata;
+
   closeContentIntractEdata: IInteractEventEdata;
 
   private subscription: Subscription;
@@ -109,6 +111,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
   public telemetryCdata: Array<{}>;
+  selectedContent: {};
   constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
@@ -260,6 +263,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
           this.contentId = queryParams.contentId;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
+            this.selectedContent = content;
             if (content) {
               this.objectRollUp = this.contentUtilsServiceService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
@@ -279,6 +283,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   setTelemetryData() {
     this.closeIntractEdata = {
       id: 'collection-close',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.printPdfInteractEdata = {
+      id: 'print-pdf-button',
       type: 'click',
       pageid: 'collection-player'
     };
@@ -313,12 +322,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }
   }
   closeContentPlayer() {
+    this.selectedContent = {};
     this.showPlayer = false;
     this.triggerContentImpression = false;
     const navigationExtras: NavigationExtras = {
       relativeTo: this.route,
-      queryParams: { contentType: this.contentType, ..._.get(this.route, 'snapshot.queryParams') }
+      queryParams: { contentType: this.contentType }
     };
+    if (this.dialCode) {
+      navigationExtras.queryParams['dialCode'] = _.get(this.route, 'snapshot.queryParams.dialCode');
+    }
     this.router.navigate([], navigationExtras);
   }
 
@@ -417,6 +430,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         mode: 'play'
       }
     };
+  }
+
+  printPdf(pdfUrl: string) {
+    window.open(pdfUrl, '_blank');
   }
 
 }

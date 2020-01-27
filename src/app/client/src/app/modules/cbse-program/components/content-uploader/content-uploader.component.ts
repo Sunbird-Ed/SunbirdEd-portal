@@ -386,7 +386,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         } else if (obj.inputType === 'text') {
           preSavedValues[code] = (this.contentMetaData[code]) ? this.contentMetaData[code] : '';
           // tslint:disable-next-line:max-line-length
-          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, Validators.required] : controller[obj.code] = preSavedValues[code];
+          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, [Validators.required, Validators.pattern('(?=.*[a-zA-Z0-9]).{0,}')]] : controller[obj.code] = preSavedValues[code];
         }
       }
     });
@@ -426,6 +426,11 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
    this.helperService.updateContent(request, this.contentMetaData.identifier).subscribe((res) => {
    this.contentMetaData.versionKey = res.result.versionKey;
    this.contentMetaData.name = this.editTitle;
+   const contentDetails = {
+    contentId: this.contentMetaData.identifier,
+    contentData: this.contentMetaData
+    };
+   this.playerConfig = this.playerService.getConfig(contentDetails);
    this.collectionHierarchyService.addResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, res.result.content_id)
    .subscribe((data) => {
        this.toasterService.success(this.resourceService.messages.smsg.m0060);

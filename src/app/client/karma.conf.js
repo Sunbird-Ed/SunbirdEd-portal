@@ -17,6 +17,9 @@ module.exports = function (config) {
     ],
     browserNoActivityTimeout: 100000,
     client: {
+      jasmine: {
+        timeoutInterval: 50000
+      },
       args: [tags],
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
@@ -49,7 +52,8 @@ module.exports = function (config) {
           // Without a remote debugging port, Google Chrome exits immediately.
           '--remote-debugging-port=9222',
           '--proxy-server=direct://',
-          '--proxy-bypass-list=*'
+          '--proxy-bypass-list=*',
+          '--max_old_space_size=4096'
         ]
       }
     },
