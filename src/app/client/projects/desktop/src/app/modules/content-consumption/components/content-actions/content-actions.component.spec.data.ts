@@ -11,8 +11,8 @@ export const actionsData = {
                 m0138: 'FAILED',
                 m0140: 'DOWNLOADING',
                 desktop: {
-                    deleteSuccessMessage: 'Content Deleted successfully',
-                    deleteErrorMessage: 'Unable to delete content.Please try again..',
+                    deleteContentSuccessMessage: 'Content deleted successfully',
+                    deleteContentErrorMessage: 'Unable to delete content. Please try again..',
                 }
             },
             smsg: {
