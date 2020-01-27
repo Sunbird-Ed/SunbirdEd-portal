@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { get } from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +21,15 @@ export class UsageService {
   }
 
   getData(url: string) {
-    return this.http.get(url, { responseType: 'json' });
+    return this.http.get(url, { responseType: 'json' })
+      .pipe(
+        map(res => {
+          const result = {
+            responseCode: 'OK'
+          };
+          result['result'] = get(res, 'result') || res;
+          return result;
+        })
+      );
   }
 }
