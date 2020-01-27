@@ -73,9 +73,17 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     });
   }
 
-  isTncToggle(e) {
+  /**
+   * Toogles contact form value based on event data
+   * @param e event data
+   */
+  toggleTncCheckBox(e) {
     this.contactForm.tncAccepted = e.target.checked;
   }
+
+  /**
+   * Fetches tnc related configuration
+   */
   fetchTncConfiguration() {
     this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
         const response = _.get(data, 'result.response.value');

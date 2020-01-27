@@ -44,7 +44,7 @@
             <br>
             <div class="required field mb-10">
               <input type="checkbox" id="tncAccepted" role="checkbox"
-                     [(ngModel)]="contactForm.tncAccepted"  (change)="isTncToggle($event)" name="tncAccepted"
+                     [(ngModel)]="contactForm.tncAccepted"  (change)="toggleTncCheckBox($event)" name="tncAccepted"
                      class="mr-10 cursor-pointer" required  #tncAccepted="ngModel" >
               {{resourceService?.frmelmnts?.lbl?.tncLabel}}
               <a href="{{termsAndConditionLink}}" target="_blank">

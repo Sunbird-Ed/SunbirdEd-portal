@@ -13,6 +13,7 @@ import { ResourceService} from '@sunbird/shared';
 import {of as observableOf, Observable, throwError as observableThrowError} from 'rxjs';
 import {TenantService, UserService, OtpService, OrgDetailsService} from '@sunbird/core';
 import {mockUpdateContactData} from './update-contact.mock.spec.data';
+import {SignupService} from '../../../../signup/services';
 
 describe('UpdateContactComponent', () => {
   let component: UpdateContactComponent;
@@ -258,4 +259,55 @@ describe('UpdateContactComponent', () => {
     expect(component.disableSubmitBtn).toEqual(false);
     expect(component.otpData).toEqual(mockUpdateContactData.phoneOtpData);
   });
+
+  it('initiate instance with SUNBIRD', () => {
+    spyOn(component, 'fetchTncConfiguration');
+    component.ngOnInit();
+    expect(component.instance).toEqual('SUNBIRD');
+    expect(component.submitPhoneInteractEdata).toEqual({
+      id: 'submit-phone',
+      type: 'click',
+      pageid: 'sso-sign-in',
+    });
+    expect(component.fetchTncConfiguration).toHaveBeenCalled();
+  });
+
+  it('should toggle tnc checkboc', () => {
+    component.contactForm.tncAccepted = true;
+    component.toggleTncCheckBox({target: {checked: false}});
+    expect(component.contactForm.tncAccepted).toEqual(false);
+  });
+
+  it('should toggle tnc checkboc if already false', () => {
+    component.contactForm.tncAccepted = false;
+    component.toggleTncCheckBox({target: {checked: true}});
+    expect(component.contactForm.tncAccepted).toEqual(true);
+  });
+
+  it('should fetch tnc configuration', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(mockUpdateContactData.tncConfig));
+    component.fetchTncConfiguration();
+    expect(component.tncLatestVersion).toEqual('v4');
+    expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
+  });
+
+  it('should not fetch tnc configuration and throw error', () => {
+    const signupService = TestBed.get(SignupService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableThrowError(mockUpdateContactData.tncConfig));
+    component.fetchTncConfiguration();
+    expect(toasterService.error).toHaveBeenCalledWith(mockUpdateContactData.resourceBundle.messages.fmsg.m0004);
+  });
+
+  it('should fetch tnc configuration and throw error as cannot parse data', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(mockUpdateContactData.tncConfigIncorrectData));
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    component.fetchTncConfiguration();
+    expect(toasterService.error).toHaveBeenCalledWith(mockUpdateContactData.resourceBundle.messages.fmsg.m0004);
+  });
+
 });
