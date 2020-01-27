@@ -49,7 +49,7 @@ export class OfflineApplicationDownloadComponent implements OnInit, AfterViewIni
         this.otherOption1 = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForWindows64');
         this.otherOption2 = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForLinux');
       } else if (userAgent.toLowerCase().indexOf('win64') >= 0) {
-        this.recomanded_download = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForWindows64',);
+        this.recomanded_download = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForWindows64');
         this.otherOption1 = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForWindows32');
         this.otherOption2 = _.get(this.resourceService, 'frmelmnts.btn.downloadAppForLinux');
       }
