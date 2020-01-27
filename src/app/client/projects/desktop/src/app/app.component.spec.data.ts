@@ -1157,7 +1157,15 @@ export const mockData = {
                 'm0050': 'Submiting failed'
             },
             'stmsg': {
+             'desktop': {
+                'internetAvailableMessage': 'Internet is available.'
+             },
                 'm0077': 'we are submiting your request'
+            },
+            'emsg': {
+                'desktop': {
+                    'noInternetMessage': 'Internet not available. Please connect to internet and try again.'
+                }
             }
         },
         'frmelmnts': {
