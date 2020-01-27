@@ -1,4 +1,4 @@
-export interface IFancytreeOptions extends Fancytree.FancytreeOptions {
+export interface IFancytreeOptions {
   glyph?: {
     preset: string;
     map: {

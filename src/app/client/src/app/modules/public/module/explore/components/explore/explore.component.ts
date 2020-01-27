@@ -1,4 +1,3 @@
-import { OfflineFileUploaderService } from '../../../../../offline/services';
 import { combineLatest, Subject } from 'rxjs';
 import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
@@ -13,7 +12,10 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, tap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { DownloadManagerService } from './../../../../../offline/services';
+import {
+  ContentManagerService
+} from './../../../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
+
 
 @Component({
   selector: 'app-explore-component',
@@ -53,12 +55,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
-    public offlineFileUploaderService: OfflineFileUploaderService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
-    public navigationhelperService: NavigationHelperService, public downloadManagerService: DownloadManagerService) {
+    public navigationhelperService: NavigationHelperService, public contentManagerService: ContentManagerService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -83,17 +84,17 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     if (this.isOffline) {
-      const self = this;
-      this.offlineFileUploaderService.isUpload.subscribe(() => {
-        self.fetchPageData();
-      });
-
-      this.downloadManagerService.downloadListEvent.pipe(
+      this.contentManagerService.downloadListEvent.pipe(
         takeUntil(this.unsubscribe$)).subscribe((data) => {
         this.updateCardData(data);
       });
-
-      this.downloadManagerService.downloadEvent.pipe(tap(() => {
+      this.contentManagerService.completeEvent.pipe(
+        takeUntil(this.unsubscribe$)).subscribe((data) => {
+          if (this.router.url === '/') {
+            this.fetchPageData();
+          }
+      });
+      this.contentManagerService.downloadEvent.pipe(tap(() => {
         this.showDownloadLoader = false;
       }), takeUntil(this.unsubscribe$)).subscribe(() => {});
     }
@@ -280,11 +281,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   startDownload (contentId) {
-    this.downloadManagerService.downloadContentId = contentId;
-    this.downloadManagerService.startDownload({}).subscribe(data => {
-      this.downloadManagerService.downloadContentId = '';
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.startDownload({}).subscribe(data => {
+      this.contentManagerService.downloadContentId = '';
     }, error => {
-      this.downloadManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentId = '';
       this.showDownloadLoader = false;
       _.each(this.pageSections, (pageSection) => {
         _.each(pageSection.contents, (pageData) => {
@@ -296,17 +297,14 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   exportOfflineContent(contentId) {
-    this.downloadManagerService.exportContent(contentId).subscribe(data => {
-      const link = document.createElement('a');
-      link.href = data.result.response.url;
-      link.style.display = 'none';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    this.contentManagerService.exportContent(contentId).subscribe(data => {
       this.showExportLoader = false;
+      this.toasterService.success(this.resourceService.messages.smsg.m0059);
     }, error => {
       this.showExportLoader = false;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      if (error.error.responseCode !== 'NO_DEST_FOLDER') {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+      }
     });
   }
 

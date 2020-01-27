@@ -1,0 +1,66 @@
+@import "variables";
+@import "mixins/mixins";
+
+:host {
+  // menu bar
+  .sb-offline-menu-container {
+    min-height: ($base-block-space * 4);
+    // width: 100%;
+    margin-top: ($base-block-space);
+    margin-left: $base-block-space;
+    html[dir="rtl"] & {
+      margin-right: 8px;
+    }
+    a {
+      position: relative;
+      background: #bac9d8; //var(--primary-200);
+      font-size: $font-size-sm;
+      padding: $base-block-space ($base-block-space * 3);
+      color: var(--primary-400);
+      margin-right: ($base-block-space * 2);
+      border-radius: ($base-block-space / 2) ($base-block-space / 2) 0 0;
+      html[dir="rtl"] & {
+        margin-left: $base-block-space;
+        margin-right: 0px;
+      }
+      &:before,
+      &:after {
+        content: "";
+        position: absolute;
+        height: 10px;
+        width: 20px;
+        bottom: 0;
+      }
+
+      &:after {
+        right: -20px;
+        border-radius: 0 0 0 10px;
+        box-shadow: -10px 0 0 0 #bac9d8;
+      }
+
+      &:before {
+        left: -20px;
+        border-radius: 0 0 10px 0;
+        box-shadow: 10px 0 0 0 #bac9d8;
+      }
+
+      &.active:after,
+      &:hover:after {
+        box-shadow: -10px 0 0 0 var(--primary-400);
+      }
+
+      &.active:before,
+      &:hover:before {
+        box-shadow: 10px 0 0 0 var(--primary-400);
+      }
+
+      &:hover,
+      &.active {
+        background: var(--primary-400);
+        color: var(--white);
+        text-decoration: none;
+      }
+    }
+  }
+  // menu bar ends
+}

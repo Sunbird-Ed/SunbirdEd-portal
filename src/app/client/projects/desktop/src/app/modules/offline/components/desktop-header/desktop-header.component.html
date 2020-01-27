@@ -1,0 +1,109 @@
+<div *ngIf="showQrModal">
+    <app-qr-code-modal (closeQrModal)="showQrModal = false"></app-qr-code-modal>
+</div>
+<!-- header component -->
+<div class="sb-header-offline-bar sb-bg-color-white">
+    <div class="ui container">
+        <!-- header component starts-->
+
+        <div class="sbheader sbheader--offline">
+            <div class="sbheader__branding sbheader--offline__branding">
+                <div class="logo" (click)="navigateToHome()" appTelemetryInteract
+                    [telemetryInteractEdata]="homeInteractEdata">
+                    <img src="{{tenantInfo.logo}}" alt={{tenantInfo.titleName}}>
+                </div>
+                <app-network-status></app-network-status>
+            </div>
+
+            <div class="sbheader-mid-container">
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-qrcode mr-16" appTelemetryInteract
+                    [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrModal = true;"
+                    title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}">
+                    <span class="qrcode">
+                        <i class="icon-svg icon-svg--xxs icon-qr">
+                            <svg class="icon icon-svg--primary">
+                                <use xlink:href="assets/images/sprite.svg#qr-code"></use>
+                            </svg>
+                        </i>&nbsp;{{resourceService?.frmelmnts?.lbl?.enterQrCode}}
+                    </span>
+                </button>
+                <div class="sbheader--offline__search">
+
+                    <div class="sbsearchbox">
+                        <div class="sbsearchbox__input-container">
+                            <input class="sbsearchbox__input" type="text"
+                                placeholder="{{resourceService?.frmelmnts?.lbl?.searchContent}}&lrm;"
+                                [(ngModel)]="queryParam.key" (keyup.enter)="onEnter(queryParam.key)" />
+
+                            <i class="icon-svg icon-svg--xxs icon-close" *ngIf="queryParam?.key?.length"
+                                (click)="clearSearchQuery()" appTelemetryInteract
+                                [telemetryInteractEdata]="clearSearchInteractEdata">
+                                <svg class="icon icon-svg--primary">
+                                    <use xlink:href="assets/images/sprite.svg#close-button"></use>
+                                </svg>
+                            </i>
+                        </div>
+                        <div class="sbsearchbox__input-action" appTelemetryInteract
+                            [telemetryInteractEdata]="getSearchButtonInteractEdata(queryParam.key)"
+                            (click)="onEnter(queryParam.key)">
+                            <i class="icon-svg icon-svg--xs icon-search">
+                                <svg class="icon icon-svg--white">
+                                    <use xlink:href="assets/images/sprite.svg#search"></use>
+                                </svg>
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sbheader--offline__actions">
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" appTelemetryInteract
+                    [telemetryInteractEdata]="takeTourInteractEdata">
+                    <i class="icon-svg icon-svg--xxs icon-play">
+                        <svg class="icon icon-svg--primary">
+                            <use xlink:href="assets/images/sprite.svg#play"></use>
+                        </svg></i>
+                    {{resourceService?.frmelmnts?.btn?.takeTour}}
+                </button>
+                <button (click)="handleImport()" appTelemetryInteract
+                    [telemetryInteractEdata]="contentImportInteractEdata"
+                    class="sb-btn sb-btn-normal sb-btn-outline-tertiary">{{resourceService?.frmelmnts?.lbl?.uploadContent}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- header component ends -->
+
+<!-- menu bar with language selection component -->
+<div class="sb-menubar sb-bg-color-primary-100">
+    <div class="ui container d-flex flex-ai-center flex-jc-space-between">
+        <!-- menu component -->
+        <div class="w-100 d-flex flex-ai-center flex-jc-space-between">
+
+            <div class="d-flex sb-offline-menu-container flex-ai-center">
+                <a [routerLink]="'/'"
+                    [ngClass]="(router.isActive('/', false) && !(router.isActive('/browse', false) || router.isActive('/help-center', false)) ) ? 'active': ''"
+                    appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+                    <span>{{resourceService?.frmelmnts?.btn?.myLibrary}}</span>
+                </a>
+                <a routerLinkActive="active" [routerLink]="'/browse'" appTelemetryInteract
+                    [telemetryInteractEdata]="browseEdata">
+                    <span>{{resourceService?.frmelmnts?.lbl?.browse}}</span>
+                </a>
+                <a routerLinkActive="active" [routerLink]="'/help-center'" appTelemetryInteract
+                    [telemetryInteractEdata]="helpCenterEdata">
+                    <span>{{resourceService?.frmelmnts?.tab?.help}}</span>
+                </a>
+            </div>
+
+            <!-- language component -->
+            <div class="sb-field mb-0">
+                <app-language-dropdown [languageRange]="availableLanguages" *ngIf="availableLanguages">
+                </app-language-dropdown>
+            </div>
+            <!-- language component ends-->
+        </div>
+        <!-- menu component ends -->
+    </div>
+</div>
+<!-- menu bar with language selection component ends -->

@@ -7,62 +7,6 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
-    "paths": {
-      "@sunbird/core": [
-        "src/app/modules/core"
-      ],
-      "@sunbird/shared": [
-        "app/modules/shared"
-      ],
-      "@sunbird/home": [
-        "app/modules/home"
-      ],
-      "@sunbird/dashboard": [
-        "app/modules/dashboard"
-      ],
-      "@sunbird/announcement": [
-        "app/modules/announcement"
-      ],
-      "@sunbird/notes": [
-        "app/modules/notes"
-      ],
-      "@sunbird/resource": [
-        "app/modules/resource"
-      ],
-      "@sunbird/learn": [
-        "app/modules/learn"
-      ],
-      "@sunbird/org-management": [
-        "app/modules/org-management"
-      ],
-      "@sunbird/search": [
-        "app/modules/search"
-      ],
-      "@sunbird/profile": [
-        "app/plugins/profile"
-      ],
-      "@sunbird/telemetry": [
-        "app/modules/telemetry"
-      ],
-      "@sunbird/public": [
-        "app/modules/public"
-      ],
-      "@sunbird/shared-feature": [
-        "app/modules/shared-feature"
-      ],
-      "@sunbird/environment": [
-        "environments/environment"
-      ],
-      "@sunbird/course-batch": [
-        "app/modules/course-batch"
-      ],
-      "@sunbird/player-helper": [
-        "app/modules/player-helper"
-      ],
-      "@sunbird/offline": [
-        "app/modules/offline"
-      ]
-    },
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",

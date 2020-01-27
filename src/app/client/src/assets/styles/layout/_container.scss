@@ -17,3 +17,39 @@
   }
 }
 
+@media only screen and (max-width: 1199px) and (min-width: 768px){
+  .ui.container {
+      width: 90%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+  }
+  }
+
+// two column layout 
+.sb-two-column {
+  display: grid;
+  grid-template-columns: repeat(12, [col-start] 1fr);
+  grid-gap: 16px;
+
+  .sb-column {
+    grid-column: col-start / span 12;
+  }
+
+  .sb-column:nth-child(2) {
+    overflow: auto;
+  }
+
+  @include respond-above(md) {
+    //grid-template-columns: 1fr 400px;
+    grid-template-columns: repeat(12, [col-start] 1fr);
+
+    .sb-column {
+      grid-column: col-start / span 8;
+    }
+
+    .sb-column:nth-child(2) {
+      grid-column: col-start 9 / span 4;
+      overflow: auto;
+    }
+  }
+}

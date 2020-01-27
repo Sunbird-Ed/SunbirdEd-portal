@@ -28,12 +28,13 @@ export class DashboardUtilsService {
    */
   secondToMinConversion(numericData: any) {
     numericData.value = +numericData.value;
+    const momentFormat: any = moment.duration(numericData.value, 'seconds');
     if (numericData.value < 60) {
-      numericData.value = moment.duration(numericData.value, 'seconds').format('s [Second]');
+      numericData.value = momentFormat.format('s [Second]');
     } else if (numericData.value >= 60 && numericData.value <= 3600) {
-      numericData.value = moment.duration(numericData.value, 'seconds').format('m [minute]');
+      numericData.value = momentFormat.format('m [minute]');
     } else if (numericData.value >= 3600) {
-      numericData.value = moment.duration(numericData.value, 'seconds').format('h [Hour]');
+      numericData.value = momentFormat.format('h [Hour]');
     } else {
       return numericData;
     }

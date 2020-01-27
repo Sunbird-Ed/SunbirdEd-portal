@@ -6,7 +6,7 @@ a {
   }
   &:focus {
     outline: 0;
-}
+  }
 }
 .text-capitalize {
   text-transform: capitalize !important;
@@ -29,8 +29,21 @@ a {
 .text-underline {
   text-decoration: underline;
 }
-.ellipsis{
-  white-space: nowrap; 
+
+.sb__ellipsis {
+  /* autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &--two {
+    -webkit-line-clamp: 2;
+  }
+}
+.ellipsis {
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
@@ -42,10 +55,10 @@ a {
   white-space: nowrap !important;
 }
 .font-weight-bold {
-  font-weight: bold !important;;
+  font-weight: bold !important;
 }
 .font-weight-normal {
-  font-weight: normal !important;;
+  font-weight: normal !important;
 }
 .font-italic {
   font-style: italic;

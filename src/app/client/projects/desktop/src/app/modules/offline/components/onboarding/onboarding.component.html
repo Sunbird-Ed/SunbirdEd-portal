@@ -1,0 +1,6 @@
+<div class="bg-image">
+    <div class="loginform">
+        <app-onboarding-location *ngIf="slide === 'location'" (locationSaved)="handleLocationSaveEvent($event)"></app-onboarding-location>
+        <app-onboarding-user-preference *ngIf="slide === 'contentPreference'" (userPreferenceSaved)="handleContentPreferenceSaveEvent($event)" #userPreference></app-onboarding-user-preference>
+    </div>
+</div>

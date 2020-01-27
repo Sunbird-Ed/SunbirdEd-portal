@@ -1,6 +1,6 @@
 import { combineLatest, Subscription, Observable, Subject, of } from 'rxjs';
 
-import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay } from 'rxjs/operators';
+import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, delay, tap } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -9,7 +9,7 @@ import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
   NavigationHelperService
 } from '@sunbird/shared';
-import { CourseProgressService } from './../../services';
+import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { IPagination } from '@sunbird/announcement';
@@ -178,7 +178,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     toasterService: ToasterService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, private usageService: UsageService) {
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -342,33 +342,70 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   /**
-   * To method calls the download API with specific batch id and timeperiod
+   * method to download course progress reports
    */
-  downloadReport(downloadAssessmentReport: Boolean = false): void {
-    const option = {
-      batchIdentifier: this.queryParams.batchIdentifier,
-    };
-    this.courseProgressService.downloadDashboardData(option).pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe(
-        (apiResponse: ServerResponse) => {
-          let downloadUrl;
-          if (!downloadAssessmentReport) {
-            downloadUrl = _.get(apiResponse, 'result.signedUrl') || _.get(apiResponse, 'result.reports.courseProgressReportUrl');
-          } else {
-            downloadUrl = _.get(apiResponse, 'result.reports.assessmentReportUrl');
-          }
-          if (downloadUrl) {
-            window.open(downloadUrl, '_blank');
+  private downloadCourseReport(reportType: string) {
+    const batchId = this.queryParams.batchIdentifier;
+    const url = `/courseReports/${reportType}/report-${batchId}.csv`;
+    return this.usageService.getData(url)
+      .pipe(
+        tap(response => {
+          if (_.get(response, 'responseCode') === 'OK') {
+            const data = _.get(response, 'result');
+            const blob = new Blob(
+              [data],
+              {
+                type: 'text/csv;charset=utf-8'
+              }
+            );
+            const downloadUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            document.body.appendChild(a);
+            a.href = downloadUrl;
+            a.download = `${batchId}.csv`;
+            a.click();
+            document.body.removeChild(a);
           } else {
             this.toasterService.error(this.resourceService.messages.stmsg.m0141);
           }
-        },
-        err => {
-          this.toasterService.error(this.resourceService.messages.imsg.m0045);
-        }
+        })
       );
-    this.setInteractEventData();
+  }
+
+  /**
+   * method to download assessment score reports
+   */
+  private downloadAssessmentReport() {
+    const option = {
+      batchIdentifier: this.queryParams.batchIdentifier,
+    };
+
+    return this.courseProgressService.downloadDashboardData(option).pipe(
+      tap((apiResponse: ServerResponse) => {
+        let downloadUrl;
+        downloadUrl = _.get(apiResponse, 'result.reports.assessmentReportUrl');
+        if (downloadUrl) {
+          window.open(downloadUrl, '_blank');
+        } else {
+          this.toasterService.error(this.resourceService.messages.stmsg.m0141);
+        }
+      }));
+  }
+
+  /**
+   * method to download assessment/course progress report
+   * @param downloadAssessmentReport
+   */
+  downloadReport(downloadAssessmentReport: boolean) {
+    of(downloadAssessmentReport)
+      .pipe(
+        switchMap((flag: boolean) => flag ? this.downloadCourseReport('assessment-reports') :
+          this.downloadCourseReport('course-progress-reports')),
+        takeUntil(this.unsubscribe)
+      )
+      .subscribe(res => { }, err => {
+        this.toasterService.error(this.resourceService.messages.imsg.m0045);
+      });
   }
 
   navigateToPage(page: number): undefined | void {

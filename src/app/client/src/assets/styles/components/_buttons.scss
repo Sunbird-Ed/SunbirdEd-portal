@@ -18,6 +18,7 @@ a.sb-btn {
 }
 // base button styles
 .sb-btn {
+  white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   outline: 0;
@@ -28,6 +29,7 @@ a.sb-btn {
   min-width: ($base-block-space * 8);
   @include border-radius(3px);
   position: relative;
+  line-height: 1.15;
   text: {
     transform: capitalize;
     decoration: none;
@@ -35,8 +37,8 @@ a.sb-btn {
   &:hover {
     opacity: 1;
   }
-  &.disabled,
-  &.disabled:hover,
+  &-disabled,
+  &-disabled:hover,
   &:disabled,
   &:disabled:hover {
     background-color: $gray-100;
@@ -60,313 +62,399 @@ a.sb-btn {
     transform: scale(1, 1) translate(-50%);
     transform-origin: 50% 50%;
   }
+  &.flat {
+    border-radius: 0;
+  }
+  // button sizes
+  &-xs,
+  &-normal,
+  &-sm,
+  &-md,
+  &-full {
+    padding: ($base-block-space * 1) ($base-block-space * 2);
+  }
+  &-xs {
+    height: ($base-block-space * 3);
+    padding: ($base-block-space * 0) ($base-block-space * 1);
+    font-size: $font-size-sm;
+  }
+  //primary button style
+  &-normal {
+    height: ($base-block-space * 4);
+    font-size: $font-size-sm;
+  }
+  &-sm {
+    height: ($base-block-space * 5);
+    font-size: $font-size-normal;
+  }
+  &-md {
+    height: ($base-block-space * 6);
+    font-size: $font-size-md;
+  }
+  &-lg {
+    height: ($base-block-space * 7);
+    padding: ($base-block-space * 2) ($base-block-space * 3);
+    font-size: $font-size-lg;
+  }
+  &-full {
+    width: 100%;
+  }
 
-  //   @keyframes ripple {
-  //     0% {
-  //       transform: scale(0, 0);
-  //       opacity: 1;
-  //     }
-  //     100% {
-  //       opacity: 0;
-  //       transform: scale(50, 50);
-  //     }
-  //   }
-  //   &:focus:not(:active)::after {
-  //     animation: ripple 1s ease-in-out;
-  //   }
-}
+  // default colored btns
+  &-primary,
+  &-info,
+  &-secondary,
+  &-success,
+  &-tertiary,
+  &-error {
+    &:hover,
+    &:active,
+    &.active {
+      color: $white;
+      border: 1px solid transparent;
+    }
+  }
+  &-white {
+    box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.2);
+    border: 0px solid #ddd;
+  }
+  &-primary,
+  &-info {
+    @include btn-theme($primary-color);
+    &:hover,
+    &:active,
+    &.active {
+      background: $primary-800;
+    }
+  }
+  &-secondary,
+  &-success {
+    @include btn-theme($secondary-200);
+    &:hover,
+    &:active,
+    &.active {
+      background: $secondary-400;
+    }
+  }
+  &-tertiary,
+  &-warning {
+    @include btn-theme($tertiary-100);
+    &:hover,
+    &:active,
+    &.active {
+      background: $tertiary-400;
+    }
+  }
+  &-success {
+    @include btn-theme($success-color);
+    &:hover,
+    &:active,
+    &.active {
+      background: $secondary-400;
+    }
+  }
+  &-info {
+    @include btn-theme($info-color);
+    &:hover,
+    &:active,
+    &.active {
+      background: $primary-800;
+    }
+  }
+  &-warning {
+    @include btn-theme($warning-color);
+    &:hover,
+    &:active,
+    &.active {
+      background: $tertiary-400;
+    }
+  }
+  &-error {
+    @include btn-theme($danger-color);
+    &:hover,
+    &:active,
+    &.active {
+      background: $red-400;
+    }
+  }
+  &-gray {
+    @include btn-theme($gray-200);
+    &:hover,
+    &:active,
+    &.active {
+      background: $gray-400;
+    }
+  }
 
-// button sizes
-.sb-btn-xs,
-.sb-btn-normal,
-.sb-btn-sm,
-.sb-btn-md {
-  padding: ($base-block-space * 1) ($base-block-space * 2);
-}
-.sb-btn-xs {
-  height: ($base-block-space * 3);
-  padding: ($base-block-space * 0) ($base-block-space * 1);
-  font-size: $font-size-sm;
-}
-//primary button style
-.sb-btn-normal {
-  height: ($base-block-space * 4);
-  font-size: $font-size-sm;
-}
-.sb-btn-sm {
-  height: ($base-block-space * 5);
-  font-size: $font-size-normal;
-}
-.sb-btn-md {
-  height: ($base-block-space * 6);
-  font-size: $font-size-md;
-}
-.sb-btn-lg {
-  height: ($base-block-space * 7);
-  padding: ($base-block-space * 2) ($base-block-space * 3);
-  font-size: $font-size-lg;
-}
-
-// default outline colored btns
-// status outline buttons
-
-.sb-btn-outline-primary,
-.sb-btn-outline-info {
-  @include btn-theme-bgwhite($primary-color);
-  border-color: $primary-color;
-  &:hover,
-  &:active {
-    background: $primary-100;
+  // default outline colored btns
+  &-outline-primary,
+  &-outline-info {
+    @include btn-theme-bgwhite($primary-color);
+    &:hover,
+    &:active,
+    &.active {
+      background: $primary-100;
+      color: $primary-800;
+      border-color: $primary-800;
+    }
+  }
+  &-outline-secondary,
+  &-outline-success {
+    @include btn-theme-bgwhite($secondary-200);
+    color: $secondary-100;
+    border-color: $secondary-100;
+    &:hover,
+    &:active,
+    &.active {
+      background: $secondary-0;
+      color: $secondary-400;
+      border-color: $secondary-400;
+    }
+  }
+  &-outline-tertiary,
+  &-outline-warning {
+    @include btn-theme-bgwhite($tertiary-color);
+    color: $tertiary-100;
+    border-color: $tertiary-100;
+    &:hover,
+    &:active,
+    &.active {
+      background: $tertiary-0;
+      color: $tertiary-400;
+      border-color: $tertiary-400;
+    }
+  }
+  &-outline-error {
+    @include btn-theme-bgwhite($red-400);
+    color: $red-100;
+    border-color: $red-100;
+    &:hover,
+    &:active,
+    &.active {
+      background: $red-0;
+      color: $red-400;
+      border-color: $red-400;
+    }
+  }
+  &-outline-gray {
+    @include btn-theme-bgwhite($gray-800);
+    color: $gray-300;
+    border-color: $gray-300;
+    &:hover,
+    &:active,
+    &.active {
+      background: $gray-0;
+      color: $gray-800;
+      border-color: $gray-800;
+    }
+  }
+  &-outline-white {
+    @include btn-theme-bgwhite($white);
     color: $primary-800;
-    border-color: $primary-800;
+    border-color: $white;
+    &:hover,
+    &:active,
+    &.active {
+      background: $gray-0;
+      color: $primary-800;
+      border-color: $white;
+    }
   }
-}
-.sb-btn-outline-secondary,
-.sb-btn-outline-success {
-  @include btn-theme-bgwhite($secondary-200);
-  color: $secondary-100;
-  border-color: $secondary-100;
-  &:hover,
-  &:active {
-    background: $secondary-0;
-    color: $secondary-400;
-    border-color: $secondary-400;
-  }
-}
-.sb-btn-outline-tertiary,
-.sb-btn-outline-warning {
-  @include btn-theme-bgwhite($tertiary-color);
-  color: $tertiary-100;
-  border-color: $tertiary-100;
-  &:hover,
-  &:active {
-    background: $tertiary-0;
-    color: $tertiary-400;
-    border-color: $tertiary-400;
-  }
-}
-.sb-btn-outline-error {
-  @include btn-theme-bgwhite($red-400);
-  color: $red-100;
-  border-color: $red-100;
-  &:hover,
-  &:active {
-    background: $red-0;
-    color: $red-400;
-    border-color: $red-400;
-  }
-}
-.sb-btn-outline-gray {
-  @include btn-theme-bgwhite($gray-800);
-  color: $gray-300;
-  border-color: $gray-300;
-  &:hover,
-  &:active {
-    background: $gray-0;
-    color: $gray-800;
-    border-color: $gray-800;
-  }
-}
-.sb-btn-outline-white {
-  @include btn-theme-bgwhite($white-color);
-  color: $primary-800;
-  border-color: $white-color;
-  &:hover,
-  &:active {
-    background: $gray-0;
-    color: $primary-800;
-    border-color: $white-color;
-  }
-}
-// default colored btns
-.sb-btn-primary,
-.sb-btn-info,
-.sb-btn-secondary,
-.sb-btn-success,
-.sb-btn-tertiary,
-.sb-btn-error {
-  &:hover,
-  &:active {
-    color: $white-color;
-    border: 1px solid transparent;
-  }
-}
 
-.sb-btn-primary,
-.sb-btn-info {
-  @include btn-theme($primary-color);
-  &:hover,
-  &:active {
-    background: $primary-800;
-  }
-}
-.sb-btn-secondary,
-.sb-btn-success {
-  @include btn-theme($secondary-200);
-  &:hover,
-  &:active {
-    background: $secondary-400;
-  }
-}
-.sb-btn-tertiary,
-.sb-btn-warning {
-  @include btn-theme($tertiary-100);
-  &:hover,
-  &:active {
-    background: $tertiary-400;
-  }
-}
-.sb-btn-success {
-  @include btn-theme($success-color);
-  &:hover,
-  &:active {
-    background: $secondary-400;
-  }
-}
-.sb-btn-info {
-  @include btn-theme($info-color);
-  &:hover,
-  &:active {
-    background: $primary-800;
-  }
-}
-.sb-btn-warning {
-  @include btn-theme($warning-color);
-  &:hover,
-  &:active {
-    background: $tertiary-400;
-  }
-}
-.sb-btn-error {
-  @include btn-theme($danger-color);
-  &:hover,
-  &:active {
-    background: $red-400;
-  }
-}
-.sb-btn-gray {
-  @include btn-theme($gray-200);
-  &:hover,
-  &:active {
-    background: $gray-400;
-  }
-}
-
-// button links colored
-.sb-btn-link-primary,.sb-btn-link-info,.sb-btn-link-secondary,.sb-btn-link-success,.sb-btn-link-tertiary,
-.sb-btn-link-warning,.sb-btn-link-error,.sb-btn-link-gray{
-    background:none;
+  // button links colored
+  &-link-primary,
+  &-link-info,
+  &-link-secondary,
+  &-link-success,
+  &-link-tertiary,
+  &-link-warning,
+  &-link-error,
+  &-link-gray {
+    background: none;
     border: 0px;
-}
-.sb-btn-link-primary,
-.sb-btn-link-info {
-  @include btn-theme-links($primary-color);
-  &:hover,
-  &:active {
-    background: $primary-100;
   }
-}
-.sb-btn-link-secondary,
-.sb-btn-link-success {
-  @include btn-theme-links($secondary-200);
-  &:hover,
-  &:active {
-    background: $secondary-0;
+  &-link-primary,
+  &-link-info {
+    @include btn-theme-links($primary-color);
+    &:hover,
+    &:active,
+    &.active {
+      background: $primary-100;
+    }
   }
-}
-.sb-btn-link-tertiary,
-.sb-btn-link-warning {
-  @include btn-theme-links($tertiary-color);
-  &:hover,
-  &:active {
-    background: $tertiary-0;
-    border:0px;
+  &-link-secondary,
+  &-link-success {
+    @include btn-theme-links($secondary-200);
+    &:hover,
+    &:active,
+    &.active {
+      background: $secondary-0;
+    }
   }
-}
-// status outline buttons
-.sb-btn-link-error {
-  @include btn-theme-links($red-400);
-  &:hover,
-  &:active {
-    background: $red-0;
+  &-link-tertiary,
+  &-link-warning {
+    @include btn-theme-links($tertiary-color);
+    &:hover,
+    &:active,
+    &.active {
+      background: $tertiary-0;
+      border: 0px;
+    }
   }
-}
-.sb-btn-link-gray {
-  @include btn-theme-links($gray-800);
-  &:hover,
-  &:active {
-    background: $gray-0;
+  &-link-error {
+    @include btn-theme-links($red-400);
+    &:hover,
+    &:active,
+    &.active {
+      background: $red-0;
+    }
   }
-}
+  &-link-gray {
+    @include btn-theme-links($gray-800);
+    &:hover,
+    &:active,
+    &.active {
+      background: $gray-0;
+    }
+  }
 
-// button link
-.sb-btn-link {
-  background: none;
-  border: 0;
-  &:hover {
-    font-weight: $font-weight-bold;
+  // button link
+  &-link {
+    background: none;
+    border: 0;
+    &:hover {
+      // font-weight: $font-weight-bold;
+    }
   }
-}
-
-.sb-btn-loading-spinner {
-  padding: ($base-block-space * 1) ($base-block-space * 2)
-    ($base-block-space * 1) ($base-block-space * 1);
-}
-
-@keyframes spinner-border {
-  to {
-    transform: rotate(360deg);
+  //dashed buttons
+  &-dashed {
+    border-style: dashed;
+    border-width: 1px;
   }
-}
+  &-dashed-primary,
+  &-dashed-info {
+    background-color: $sb-btn-dashed-background-color;
+    border-color: $primary-400;
+    color: $sb-btn-dashed-color;
+    &:hover,
+    &:active,
+    &.active {
+      background-color: $primary-0;
+    }
+  }
+  // disabled button
+  &-disabled,
+  &-primary[disabled],
+  &-secondary[disabled],
+  &-tertiary[disabled],
+  &-info[disabled],
+  &-success[disabled],
+  &-warning[disabled],
+  &-error[disabled] {
+    background-color: $gray-100;
+    border: 1px solid $gray-100;
+    color: $gray-200;
+    cursor: default;
+  }
+  &-outline-disabled,
+  &-outline-primary[disabled],
+  &-outline-secondary[disabled],
+  &-outline-tertiary[disabled],
+  &-outline-info[disabled],
+  &-outline-success[disabled],
+  &-outline-warning[disabled],
+  &-outline-error[disabled],
+  &-outline-gray[disabled] {
+    background-color: $white;
+    border: 1px solid $gray-100;
+    color: $gray-100;
+    cursor: default;
+    font-weight: normal;
+  }
+  //download button animation
+  &-download {
+    transition: all 1.2s ease-in-out;
+    i::after {
+      content: "\f019";
+      font-size: 13px;
+      color: #fff;
+    }
+    &:hover {
+      animation: pulse 0.2s 2 both;
+    }
+    &.loading {
+      i {
+        animation: loading 2s infinite linear;
+        &::after {
+          content: "\f1ce";
+        }
+      }
+    }
+    &.success {
+      i::after {
+        content: "\f00c";
+        color: transparent;
+        animation: change-icon 1s 0.6s linear both;
+      }
+    }
+  }
+  //Button icons with title - Square
+  &-square {
+    &.sb-btn {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      font-size: $font-size-sm;
+      padding: $base-block-space;
+      i.icon {
+        margin: 0 0 0 0;
+      }
+      span {
+        margin: $base-block-space 0 0 0;
+      }
+    }
+    &.sb-btn-sm {
+      height: $base-block-space * 6;
+      width: $base-block-space * 6;
+      font-size: $font-size-xs;
+      i.icon {
+        font-size: 18px;
+      }
+    }
+    &.sb-btn-normal {
+      height: $base-block-space * 8;
+      width: $base-block-space * 8;
+      i.icon {
+        font-size: 18px;
+      }
+    }
 
-.loading-spinner {
-  width: 1rem;
-  height: 1rem;
-  margin-right: 8px;
-  border-width: 0.2em;
-  display: inline-block;
-  vertical-align: text-bottom;
-  border: 0.15em solid currentColor;
-  border-right-color: transparent;
-  border-radius: 50%;
-  -webkit-animation: spinner-border 0.75s linear infinite;
-  animation: spinner-border 0.75s linear infinite;
-}
+    &.sb-btn-lg {
+      height: 128px;
+      width: 128px;
+      font-size: $font-size-base;
+      i.icon {
+        font-size: $font-size-lg;
+      }
+    }
 
-.sb-btn-loading:before {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 50%;
-  margin: -0.64285714em 0 0 -0.64285714em;
-  width: 1.28571429em;
-  height: 1.28571429em;
-  border-radius: 500rem;
-  border: 0.2em solid rgba(0, 0, 0, 0.15);
-}
-
-.sb-btn-loading:after {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 50%;
-  margin: -0.64285714em 0 0 -0.64285714em;
-  width: 1.28571429em;
-  height: 1.28571429em;
-  -webkit-animation: button-spin 0.6s linear;
-  animation: button-spin 0.6s linear;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  border-radius: 500rem;
-  border-color: #fff transparent transparent;
-  border-style: solid;
-  border-width: 0.2em;
-  -webkit-box-shadow: 0 0 0 1px transparent;
-  box-shadow: 0 0 0 1px transparent;
+    &.sb-btn-xs {
+      padding: 4px;
+      height: $base-block-space * 4;
+      min-width: $base-block-space * 4;
+      font-size: $font-size-xs;
+      i.icon {
+        font-size: $font-size-xs;
+      }
+      span {
+        margin: 4px 0 0 0;
+      }
+    }
+  }
 }
 
 // Buttons with icon
-
 *[dir="ltr"] {
   .sb-right-icon-btn {
     padding: ($base-block-space * 1) ($base-block-space * 1)
@@ -407,7 +495,6 @@ a.sb-btn {
 }
 
 //Buttons toggle
-
 .ui.toggle.checkbox.sb-toggle {
   min-height: ($base-block-space * 3);
   position: relative;
@@ -488,9 +575,7 @@ a.sb-btn {
     box-shadow: none;
   }
 }
-
 // button groups
-
 .btn-group {
   border: $sb-btn-group-border-width solid $sb-btn-group-border-color;
   display: inline-flex;
@@ -526,59 +611,68 @@ a.sb-btn {
   }
 }
 
-//dashed buttons
-.sb-btn-dashed {
-  border-style: dashed;
-  border-width: 1px;
+.sb-btn-loading-spinner {
+  padding: ($base-block-space * 1) ($base-block-space * 2)
+    ($base-block-space * 1) ($base-block-space * 1);
 }
-.sb-btn-dashed-primary,
-.sb-btn-dashed-info {
-  background-color: $sb-btn-dashed-background-color;
-  border-color: $primary-400;
-  color: $sb-btn-dashed-color;
-  &:hover,
-  &:active {
-    background-color: $primary-0;
+
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
   }
 }
-// disabled button
-.sb-btn-disabled,
-.sb-btn-primary[disabled],
-.sb-btn-secondary[disabled],
-.sb-btn-tertiary[disabled],
-.sb-btn-info[disabled],
-.sb-btn-success[disabled],
-.sb-btn-warning[disabled],
-.sb-btn-error[disabled] {
-  background-color: $gray-100;
-  border: 1px solid $gray-100;
-  color: $gray-200;
-  cursor: default;
-}
-.sb-btn-outline-disabled,
-.sb-btn-outline-primary[disabled],
-.sb-btn-outline-secondary[disabled],
-.sb-btn-outline-tertiary[disabled],
-.sb-btn-outline-info[disabled],
-.sb-btn-outline-success[disabled],
-.sb-btn-outline-warning[disabled],
-.sb-btn-outline-error[disabled],
-.sb-btn-outline-gray[disabled] {
-  background-color: $white-color;
-  border: 1px solid $gray-100;
-  color: $gray-100;
-  cursor: default;
-  font-weight: normal;
+
+.sb-loading-spinner {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 8px;
+  border-width: 0.2em;
+  display: inline-block;
+  vertical-align: text-bottom;
+  border: 0.15em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: spinner-border 0.75s linear infinite;
+  animation: spinner-border 0.75s linear infinite;
 }
 
+.sb-btn-loading:before {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 50%;
+  margin: -0.64285714em 0 0 -0.64285714em;
+  width: 1.28571429em;
+  height: 1.28571429em;
+  border-radius: 500rem;
+  border: 0.2em solid rgba(0, 0, 0, 0.15);
+}
+
+.sb-btn-loading:after {
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 50%;
+  margin: -0.64285714em 0 0 -0.64285714em;
+  width: 1.28571429em;
+  height: 1.28571429em;
+  -webkit-animation: button-spin 0.6s linear;
+  animation: button-spin 0.6s linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  border-radius: 500rem;
+  border-color: #fff transparent transparent;
+  border-style: solid;
+  border-width: 0.2em;
+  -webkit-box-shadow: 0 0 0 1px transparent;
+  box-shadow: 0 0 0 1px transparent;
+}
 /*Create ripple effec*/
-
 .ripple {
   position: relative;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
 }
-
 .ripple:after {
   content: "";
   display: block;
@@ -595,7 +689,6 @@ a.sb-btn {
   opacity: 0;
   transition: transform 0.5s, opacity 1s;
 }
-
 .ripple:active:after {
   transform: scale(0, 0);
   opacity: 0.3;
@@ -603,7 +696,6 @@ a.sb-btn {
 }
 
 //download button animation
-
 .sb-btn-download {
   transition: all 1.2s ease-in-out;
   i::after {
