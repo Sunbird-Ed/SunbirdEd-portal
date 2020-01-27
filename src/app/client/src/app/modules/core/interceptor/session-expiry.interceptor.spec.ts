@@ -11,10 +11,10 @@ describe('Session Expiry Interceptor', () => {
     let httpMock: HttpTestingController;
     const mockUrl = '/data';
     let userService: UserService;
-    let makeApiCall = () => {
+    const makeApiCall = () => {
         const http = TestBed.get(HttpClient);
-        return http.get(mockUrl)
-    }
+        return http.get(mockUrl);
+    };
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -43,7 +43,7 @@ describe('Session Expiry Interceptor', () => {
         mockHttp.flush({ responseCode: 'SESSION_EXPIRED' }, { status: 401, statusText: 'Unauthorized' });
         expect(sessionExpiryInterceptor.sessionExpired).toBeFalsy();
         expect(sessionExpiryInterceptor.intercept).toHaveBeenCalled();
-    })
+    });
 
     it('should handle session expiry when status code is 401 and user is logged in ', () => {
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
@@ -55,7 +55,7 @@ describe('Session Expiry Interceptor', () => {
         });
         const mockHttp = httpMock.expectOne(mockUrl);
         mockHttp.flush({ responseCode: 'SESSION_EXPIRED' }, { status: 401, statusText: 'Unauthorized' });
-    })
+    });
 
     it('should not handle session expiry when status code is 401 and user is not logged in ', () => {
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
@@ -65,7 +65,7 @@ describe('Session Expiry Interceptor', () => {
         });
         const mockHttp = httpMock.expectOne(mockUrl);
         mockHttp.flush({ responseCode: 'SESSION_EXPIRED' }, { status: 401, statusText: 'Unauthorized' });
-    })
+    });
 
     it('should handle session expiry when status code is not 401', () => {
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
@@ -75,11 +75,11 @@ describe('Session Expiry Interceptor', () => {
         });
         const mockHttp = httpMock.expectOne(mockUrl);
         mockHttp.flush({ responseCode: 'SESSION_EXPIRED' }, { status: 500, statusText: 'Unauthorized' });
-    })
+    });
 
     afterEach(() => {
         SessionExpiryInterceptor.singletonInstance = null;
         httpMock.verify();
-    })
+    });
 });
-;
+
