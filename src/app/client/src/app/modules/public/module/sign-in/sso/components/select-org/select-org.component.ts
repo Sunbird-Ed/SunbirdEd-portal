@@ -4,7 +4,7 @@ import { FormService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
 import { TenantService } from '@sunbird/core';
 import { ResourceService, NavigationHelperService } from '@sunbird/shared';
-
+import { get } from 'lodash-es';
 @Component({
   templateUrl: './select-org.component.html',
   styleUrls: ['./select-org.component.scss']
@@ -23,8 +23,10 @@ export class SelectOrgComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.setTenantInfo();
     this.setTelemetryData();
+    this.setRedirectUriCookie();
+
     this.getSsoOrgList().subscribe(formData => this.orgList = formData,
-    error => console.log('no org configured in form')); // show toaster message
+      error => console.log('no org configured in form')); // show toaster message
   }
   private setTenantInfo() {
     this.tenantService.tenantData$.pipe(first()).subscribe(data => {
@@ -73,5 +75,9 @@ export class SelectOrgComponent implements OnInit, AfterViewInit {
       type: 'click',
       pageid: 'sso-sign-in',
     };
+  }
+  private setRedirectUriCookie() {
+    const redirectUri = get(this.activatedRoute, 'snapshot.queryParams.redirect_uri');
+    if (redirectUri) { document.cookie = `SSO_REDIRECT_URI=${redirectUri}; path=/`; }
   }
 }

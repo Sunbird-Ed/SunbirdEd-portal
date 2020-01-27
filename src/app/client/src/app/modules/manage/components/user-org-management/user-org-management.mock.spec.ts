@@ -10,5 +10,14 @@ export const mockManageData = {
                 'isSSOEnabled': false
             }
         }
+    },
+    userSummary: {
+        'accounts_unclaimed': 0,
+        'accounts_validated': 0,
+        'accounts_rejected': 0,
+        'FAILED': 0,
+        'MULTIMATCH': 0,
+        'ORGEXTIDMISMATCH': 0,
+        'accounts_failed': 0
     }
 };
