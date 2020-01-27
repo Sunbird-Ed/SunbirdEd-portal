@@ -76,7 +76,8 @@ describe('UpdateContactComponent', () => {
     expect(component.disableSubmitBtn).toEqual(true);
     expect(component.contactForm).toEqual({
       value: '',
-      type: 'phone'
+      type: 'phone',
+      tncAccepted: false
     });
     expect(component.userExist).toEqual(false);
     expect(component.userBlocked).toEqual(false);
@@ -98,7 +99,8 @@ describe('UpdateContactComponent', () => {
     expect(component.disableSubmitBtn).toEqual(true);
     expect(component.contactForm).toEqual({
       value: '',
-      type: 'phone'
+      type: 'phone',
+      tncAccepted: false
     });
     expect(component.userExist).toEqual(false);
     expect(component.userDetails).toEqual({});
