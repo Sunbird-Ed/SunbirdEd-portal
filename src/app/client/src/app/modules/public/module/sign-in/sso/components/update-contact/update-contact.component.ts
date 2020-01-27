@@ -2,8 +2,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { TenantService, UserService, OtpService, OrgDetailsService } from '@sunbird/core';
 import { first, delay } from 'rxjs/operators';
-import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import {
+  ResourceService, ToasterService, NavigationHelperService,
+  ServerResponse, UtilService
+} from '@sunbird/shared';
 import * as _ from 'lodash-es';
+import {SignupService} from '../../../../signup/services';
 import { map } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
 
@@ -32,13 +36,23 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   };
   public contactForm = {
     value: '',
-    type: 'phone'
+    type: 'phone',
+    tncAccepted: false
   };
+  tncLatestVersion: string;
+  termsAndConditionLink: string;
+  instance: string;
+
+
   constructor(public activatedRoute: ActivatedRoute, private tenantService: TenantService, public resourceService: ResourceService,
-    public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
-    public navigationHelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService) { }
+              public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
+              public navigationHelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService,
+              public utilService: UtilService, public signupService: SignupService) {
+  }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    this.fetchTncConfiguration();
     this.setTenantInfo();
     this.setTelemetryData();
   }
@@ -58,17 +72,40 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       };
     });
   }
+
+  isTncToggle(e) {
+    this.contactForm.tncAccepted = e.target.checked;
+  }
+  fetchTncConfiguration() {
+    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+        const response = _.get(data, 'result.response.value');
+        if (response) {
+          try {
+            const tncConfig = this.utilService.parseJson(response);
+            this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
+            this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
+          } catch (e) {
+            this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+          }
+        }
+      }, (err) => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      }
+    );
+  }
+
   handleFormChangeEvent() {
     this.contactDetailsForm.valueChanges.pipe(delay(1)).subscribe((data, data2) => {
-      if (_.get(this.contactDetailsForm, 'controls.value.status') === 'VALID'
-        && this.validationPattern[this.contactForm.type].test(this.contactForm.value)) {
+      if (_.get(this.contactDetailsForm, 'status') === 'VALID' &&
+        _.get(this.contactDetailsForm, 'controls.tncAccepted.value')) {
         this.disableSubmitBtn = false;
          this.isValidIdentifier = true;
         this.userExist = false;
         this.userBlocked = false;
       } else {
         this.disableSubmitBtn = true;
-        this.isValidIdentifier = false;
+        this.isValidIdentifier = _.get(this.contactDetailsForm, 'controls.value.status') === 'VALID'
+          && this.validationPattern[this.contactForm.type].test(this.contactForm.value);
         this.userExist = false;
         this.userBlocked = false;
       }
@@ -141,7 +178,8 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     this.disableSubmitBtn = true;
     this.contactForm = {
       value: '',
-      type: type
+      type: type,
+      tncAccepted: false
     };
     this.userDetails = {};
     this.userExist = false;
@@ -172,7 +210,9 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   public handleOtpValidationSuccess() {
     const query: any = {
       type: this.contactForm.type,
-      value: this.contactForm.value
+      value: this.contactForm.value,
+      tncAccepted: this.contactForm.tncAccepted,
+      tncVersion: this.tncLatestVersion
     };
     if (!_.isEmpty(this.userDetails)) {
       if (this.userDetails.id) {
