@@ -296,7 +296,7 @@ export class AppComponent implements OnInit, OnDestroy {
     return message.replace('{instance}', _.upperCase(this.instance));
   }
   initializeTourTravel() {
-    // this.showOnboardingPopup = false;
+    this.showOnboardingPopup = false;
     //   setTimeout(() => {
     //     this.initializeShepherdData();
     //       this.shepherdService.defaultStepOptions = defaultStepOptions;
