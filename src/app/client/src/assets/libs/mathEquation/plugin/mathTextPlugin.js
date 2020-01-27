@@ -124,7 +124,7 @@ export default class MathText extends Plugin {
             model.change( writer => {
                 const imageElement = writer.createElement( 'image', {
                     src: data.imgURL,
-                    'data-mathtext': data.latexFrmla,
+                    'data-mathtext': encodeURIComponent(data.latexFrmla),
                     advanced : data.advanced
                 });
                 this._removeIframeModal();
@@ -135,7 +135,7 @@ export default class MathText extends Plugin {
     }
 
     _editorToPopupdoubleClickHandler(element, event) {
-        var latexStr = element.getAttribute("data-mathtext");
+        var latexStr = decodeURIComponent(element.getAttribute("data-mathtext"));
         var advanced = element.getAttribute("advanced");
         if (typeof event.stopPropagation != 'undefined') { // old I.E compatibility.
             event.stopPropagation();
