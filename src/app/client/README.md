@@ -20,15 +20,15 @@ Installing Sunbird requires two primary software components:
     <td colspan="2"><b>System Requirements</b></td>
   </tr>
   <tr>
-    <td>Operating System**</td>
+    <td><b>Operating System</b></td>
     <td>Windows 7 and above/4.2 Mac OS X 10.0 and above/Linux</td>
   </tr>
   <tr>
-    <td>RAM**</td>
+    <td><b>RAM</b></td>
     <td>> 1.5 Gb</td>
   </tr>
   <tr>
-    <td>CPU**</td>
+    <td><b>CPU</b></td>
     <td>2 cores, > 2 GHz</td>
   </tr>
 </table>
@@ -79,7 +79,7 @@ Installing Sunbird requires two primary software components:
     > Configure the following system environment variables in the terminal which you have opened
 
           | Environment Variable      |  Value  | Data Type |
-          |---------------------------|---------|-----------|
+          | :------------------------ | ------- | --------- |
           |  sunbird_environment      | local   |   string  |
           |  sunbird_instance         | sunbird |   string  |
           |  sunbird_default_channel  | sunbird |   string  |
@@ -163,10 +163,6 @@ Installing Sunbird requires two primary software components:
     │   |   └── server.js                        # Main application program file / entry file for Sunbird services stack or the backend API interface
     │   ├── .gitignore                                # git configuration to ignore some files and folder
     └───└── /test                                 # Test case scripts
-
-### Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ### Running end-to-end tests
 
