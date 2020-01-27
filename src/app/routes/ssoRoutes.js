@@ -20,6 +20,7 @@ const logger = require('sb_logger_util_v2')
 module.exports = (app) => {
 
   app.get('/v2/user/session/create', async (req, res) => { // updating api version to 2
+    logger.info({msg: '/v2/user/session/create called'});
     let jwtPayload, userDetails, redirectUrl, errType;
     try {
       errType = 'VERIFY_SIGNATURE';
@@ -38,7 +39,7 @@ module.exports = (app) => {
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
       req.session.userDetails = userDetails;
-      console.log("userDetails fetched", userDetails);
+      logger.info({msg: "userDetails fetched" + userDetails});
       if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
         redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
         logger.info({
@@ -83,6 +84,7 @@ module.exports = (app) => {
   });
 
   app.get('/v1/sso/contact/verified', async (req, res) => {
+    logger.info({msg: '/v1/sso/contact/verified called'});
     let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload; // fetch from session
     userDetails = req.session.userDetails; // fetch from session
@@ -159,6 +161,7 @@ module.exports = (app) => {
   });
 
   app.get('/v1/sso/success/redirect', async (req, res) => {
+    logger.info({msg: '/v1/sso/success/redirect called'});
     let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload;
     userDetails = req.session.userDetails;
@@ -199,6 +202,7 @@ module.exports = (app) => {
   })
 
   app.get('/v1/sso/create/session', async (req, res) => { // needs to onboard to kong
+    logger.info({msg: '/v1/sso/create/session called'});
     let userName, response, errType;
     try {
       if (!req.query.id) {
@@ -236,6 +240,7 @@ module.exports = (app) => {
   })
 
   app.get('/v1/sso/error/redirect', async (req, res) => {
+    logger.info({msg: '/v1/sso/error/redirect called'});
     const redirect_uri = encodeURIComponent(`https://${req.get('host')}/resources?auth_callback=1`);
     const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=2&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
@@ -243,6 +248,7 @@ module.exports = (app) => {
 
   // creates state user
   app.get('/v1/sso/create/user', async (req, res) => {
+    logger.info({msg: '/v1/sso/create/user called'});
     let response, errType, jwtPayload, redirectUrl, userDetails;
     jwtPayload = req.session.jwtPayload; // fetch from session
     try {
@@ -302,6 +308,7 @@ module.exports = (app) => {
 
 
   app.get('/v1/sso/migrate/account/initiate', async (req, res) => {
+    logger.info({msg: '/v1/sso/migrate/account/initiate called'});
     let response, errType, redirectUrl, url, query;
     try {
       if (!req.query.userId || !req.query.identifier || !req.query.identifierValue || !req.session.migrateAccountInfo) {
@@ -321,7 +328,7 @@ module.exports = (app) => {
       query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
       const userInfo = `&userId=${req.query.userId}&identifierType=${req.query.identifier}&identifierValue=${req.query.identifierValue}`;
       redirectUrl = url + query + userInfo;
-      console.log('url for migration', redirectUrl);
+      logger.info({msg: 'url for migration' + redirectUrl});
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       response = {error: getErrorMessage(error, errType)};
@@ -341,6 +348,7 @@ module.exports = (app) => {
 
 
   app.all('/migrate/account/login/callback', async (req, res) => {
+    logger.info({msg: '/migrate/account/login/callback called'});
     let nonStateUserToken;
     if (!req.session.migrateAccountInfo) {
       res.status(401).send({
@@ -349,7 +357,7 @@ module.exports = (app) => {
       return false;
     }
     if (req.session.migrateAccountInfo.client_id === 'android') {
-      console.log('mobile login success');
+      logger.info({msg: 'mobile login success'});
       const query = '?payload=' + req.session.migrateAccountInfo.encryptedData + '&code=' + req.query.code + '&automerge=1';
       res.redirect('/account/migrate/login' + query);
     } else {
@@ -359,8 +367,18 @@ module.exports = (app) => {
         req.session.nonStateUserToken = nonStateUserToken;
       } else {
         nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
-          console.log('error in verifyAuthToken', err);
-          console.log('error details', err.statusCode, err.message)
+          logger.error({
+            msg: 'error in verifyAuthToken',
+            error: JSON.stringify(err)
+          });
+          logger.error({
+            msg: 'error details',
+            error: JSON.stringify(result),
+            additionalInfo: {
+              statusCode: err.statusCode,
+              message: err.message
+            }
+          });
           const redirect_url = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
           res.redirect(redirect_url)
         });
@@ -372,10 +390,11 @@ module.exports = (app) => {
   });
 
   app.all('/migrate/user/account', async (req, res) => {
+    logger.info({msg: '/migrate/user/account called'});
     let stateUserData, stateJwtPayload, errType, response, statusCode;
     // to support mobile flow
     if (req.query.client_id === 'android') {
-      console.log('req.query.client_id', req.query.client_id);
+      logger.info({msg: 'req.query.client_id' + req.query.client_id});
       req.session.migrateAccountInfo = {
         encryptedData: parseJson(decodeURIComponent(req.get('x-authenticated-user-data')))
       };
@@ -387,34 +406,39 @@ module.exports = (app) => {
       });
       return false;
     }
-    console.log('migration initiated', req.session.nonStateUserToken, JSON.stringify(req.session.migrateAccountInfo));
+    logger.info({msg: 'migration initiated',
+      additionalInfo: {
+        nonStateUserToken: req.session.nonStateUserToken,
+        migrateAccountInfo: JSON.stringify(req.session.migrateAccountInfo)
+      }
+    });
     try {
-      console.log('decryption started');
+      logger.info({msg: 'decryption started'});
       const decryptedData = decrypt(req.session.migrateAccountInfo.encryptedData);
       stateUserData = parseJson(decryptedData);
       errType = 'VERIFY_SIGNATURE';
-      console.log('validating state token', JSON.stringify(stateUserData));
+      logger.info({msg: 'validating state token' + JSON.stringify(stateUserData)});
       await verifySignature(stateUserData.stateToken);
       errType = 'JWT_DECODE';
       stateJwtPayload = jwt.decode(stateUserData.stateToken);
       errType = 'VERIFY_TOKEN';
       verifyToken(stateJwtPayload);
-      console.log('state token validated success');
+      logger.info({msg: 'state token validated success'});
       errType = 'ERROR_FETCHING_USER_DETAILS';
       const nonStateUserData = await fetchUserDetails(req.session.nonStateUserToken);
       errType = 'ERROR_VERIFYING_IDENTITY';
       const isMigrationAllowed = verifyIdentifier(stateUserData.identifierValue, nonStateUserData[stateUserData.identifier], stateUserData.identifier);
-      console.log('ismigration allowed', isMigrationAllowed);
+      logger.info({msg: 'ismigration allowed' + isMigrationAllowed});
       if (isMigrationAllowed) {
         errType = 'MIGRATE_USER';
         req.query.userId = getUserIdFromToken(req.session.nonStateUserToken);
-        console.log('userId fetched', req.query.userId);
+        logger.info({msg: 'userId fetched' + req.query.userId});
         await migrateUser(req, stateJwtPayload);
         await delay();
-        console.log('migration success');
+        logger.info({msg: 'migration success'});
         errType = 'ERROR_FETCHING_USER_DETAILS';
         const userDetails = await fetchUserWithExternalId(stateJwtPayload, req); // to get userName
-        console.log('userDetails fetched from external ID', JSON.stringify(userDetails));
+        logger.info({msg: 'userDetails fetched from external ID' + JSON.stringify(userDetails)});
         if (_.isEmpty(userDetails)){
           errType = 'USER_DETAILS_EMPTY';
           throw 'USER_DETAILS_IS_EMPTY';
