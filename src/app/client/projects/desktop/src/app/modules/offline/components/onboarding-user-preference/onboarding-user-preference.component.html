@@ -17,7 +17,7 @@
           </sui-select>
         </div>
 
-        <div class="sb-field" *ngIf="showMedium">
+        <div class="sb-field">
           <label class="d-flex fields-selection__label" for="medium">{{resourceService?.frmelmnts?.lbl?.medium}}</label>
           <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0127}}" class="selection"
             [(ngModel)]="selectedMedium" (ngModelChange)="onMediumChange($event)" [options]="mediumOption"
@@ -26,7 +26,7 @@
           </sui-multi-select>
         </div>
 
-        <div class="sb-field" *ngIf="showClass">
+        <div class="sb-field">
           <label class="d-flex fields-selection__label" for="class">{{resourceService?.frmelmnts?.lbl?.class}}</label>
           <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0128}}" class="selection"
             [(ngModel)]="selectedClass" (ngModelChange)="onClassChange($event)" [options]="classOption"
