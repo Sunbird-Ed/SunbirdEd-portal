@@ -54,6 +54,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   }
 
   getList() {
+    // tslint:disable-next-line: deprecation
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
       .pipe(takeUntil(this.unsubscribe$), filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
