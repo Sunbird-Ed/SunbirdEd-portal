@@ -609,8 +609,16 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
       };
       this.updateContent(reqBody, this.sessionContext.resourceIdentifier)
       .subscribe((res) => {
-        if (res.responseCode === 'OK' && (res.result.content_id || res.result.node_id)) {
-          this.toasterService.success(this.resourceService.messages.smsg.m0060);
+        const contentId = res.result.content_id || res.result.node_id;
+        if (this.sessionContext.collection && this.sessionContext.textBookUnitIdentifier) {
+          this.collectionHierarchyService.addResourceToHierarchy(
+            this.sessionContext.collection, this.sessionContext.textBookUnitIdentifier, contentId
+          )
+          .subscribe((data) => {
+            this.toasterService.success(this.resourceService.messages.smsg.m0060);
+          }, (err) => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0098);
+          });
         }
       });
     }
@@ -766,7 +774,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
     }, err => {
       console.log(err);
     }), catchError(err => {
-      const errInfo = { errorMsg: 'Content updation failed' };
+      const errInfo = { errorMsg: this.resourceService.messages.fmsg.m0098 };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }));
   }
