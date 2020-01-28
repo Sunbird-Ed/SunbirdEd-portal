@@ -38,6 +38,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   instance: string;
   tncLatestVersion: string;
   termsAndConditionLink: string;
+  passwordError: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
@@ -162,6 +163,10 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onPasswordChange(passCtrl: FormControl): void {
+    let emailVal;
+    if (this.showContact === 'email') {
+      emailVal = this.signUpForm.get('email').value;
+    }
     const val = _.get(passCtrl, 'value');
     const lwcsRegex = new RegExp('^(?=.*[a-z])');
     const upcsRegex = new RegExp('^(?=.*[A-Z])');
@@ -169,9 +174,13 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     const numRegex = new RegExp('^(?=.*[0-9])');
     const specRegex = new RegExp('^[^<>{}\'\"/|;:.\ ,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
     if (!charRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)) {
-      const passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
-      passCtrl.setErrors({ passwordError });
+      this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
+      passCtrl.setErrors({ passwordError: this.passwordError });
+    } else if (emailVal === val) {
+      this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwderr');
+      passCtrl.setErrors({ passwordError: this.passwordError });
     } else {
+      this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
       passCtrl.setErrors(null);
     }
   }
