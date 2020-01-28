@@ -144,6 +144,7 @@ describe('ViewMoreComponent', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(orgDetailsService, 'getOrgDetails').and.returnValue(of({ hashTagId: '505c7c48ac6dc1edc9b08f21db5a571d' }));
     spyOn(component, 'setTelemetryData');
+    spyOn(component, 'setNoResultMessage');
     spyOn(component, 'fetchRecentlyAddedContent');
     const element = document.createElement('INPUT');
     element.setAttribute('type', 'hidden');
@@ -158,6 +159,7 @@ describe('ViewMoreComponent', () => {
     expect(component.isViewAll).toBe(true);
     expect(component.fetchRecentlyAddedContent).toHaveBeenCalled();
     expect(utilService.emitHideHeaderTabsEvent).toHaveBeenCalledWith(true);
+    expect(component.setNoResultMessage).toHaveBeenCalled();
   });
 
   it('should call getFilters', () => {
@@ -241,13 +243,11 @@ describe('ViewMoreComponent', () => {
   it('should call fetchRecentlyAddedContent on error', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(throwError({}));
-    spyOn(component, 'setNoResultMessage');
     component.dataDrivenFilters = filters;
     component.dataDrivenFilters.appliedFilters = true;
     component.fetchRecentlyAddedContent(true);
     expect(searchService.contentSearch).toHaveBeenCalled();
     expect(component.showLoader).toBe(false);
-    expect(component.setNoResultMessage).toHaveBeenCalled();
   });
 
   it('should call updateCardData', () => {
