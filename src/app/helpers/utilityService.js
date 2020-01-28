@@ -33,4 +33,13 @@ const isValidAndNotEmptyString = (value) => {
   return typeof value === "string" && value.length > 0;
 };
 
-module.exports = {parseJson, delay, isValidAndNotEmptyString};
+/**
+ * Checks if value is valid date
+ * @param date
+ * @returns {boolean}
+ */
+var isDate = function (date) {
+  return (new Date(date) !== "Invalid Date" && !isNaN(new Date(date))) ? true : false;
+};
+
+module.exports = { parseJson, delay, isDate, isValidAndNotEmptyString };

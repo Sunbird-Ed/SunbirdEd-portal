@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService, RequestParam, ServerResponse, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from '../../../core/services/learner/learner.service';
 import { Observable } from 'rxjs';
-
+import { map } from 'rxjs/operators';
+import { get } from 'lodash-es';
 @Injectable({
   providedIn: 'root'
 })
@@ -59,7 +60,16 @@ export class ManageService {
   }
 
   public getData(slug: any, fileNmae: any): Observable<any> {
-    return this.httpClient.get('/admin-reports/' + slug + '/' + fileNmae);
+    return this.httpClient.get('/admin-reports/' + slug + '/' + fileNmae)
+      .pipe(
+        map(res => {
+          const result = {
+            responseCode: 'OK'
+          };
+          result['result'] = get(res, 'result') || res;
+          return result;
+        })
+      );
   }
 
 }

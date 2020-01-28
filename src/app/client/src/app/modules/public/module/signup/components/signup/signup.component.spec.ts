@@ -10,7 +10,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -32,7 +32,8 @@ const resourceBundle = {
     'lbl': {
       'chkuploadsts': 'Check Status',
       'passwd': 'Password must contain a minimum of 8 characters including numerals, '
-      + 'lower and upper case alphabets and special characters.'
+      + 'lower and upper case alphabets and special characters.',
+      'uniquePhone': 'uniquePhone'
     },
   },
   'messages': {
@@ -232,4 +233,50 @@ describe('SignUpComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
+
+  it('should validate user contact type for phone number', () => {
+    component.initializeFormFields();
+    const contactType = component.signUpForm.controls['contactType'];
+    const phone = component.signUpForm.controls['phone'];
+    contactType.setValue('phone');
+    phone.setValue('959562561');
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'checkUserExists').and.returnValue(observableOf({
+      'responseCode': 'OK', 'result': {'exists': false}
+    }));
+    component.vaidateUserContact();
+    expect(component.showUniqueError).toBe('');
+    expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
+  });
+
+  it('should validate user contact type for phone number and throw user exist', () => {
+    component.initializeFormFields();
+    const contactType = component.signUpForm.controls['contactType'];
+    const phone = component.signUpForm.controls['phone'];
+    contactType.setValue('phone');
+    phone.setValue('959562561');
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'checkUserExists').and.returnValue(observableOf({
+      'responseCode': 'OK', 'result': {'exists': true}
+    }));
+    component.vaidateUserContact();
+    expect(component.showUniqueError).toBe('uniquePhone');
+    expect(component.signUpForm.controls['uniqueContact'].value).toBe('');
+  });
+
+  it('should validate user contact type for phone number and throw error as api failed', () => {
+    component.initializeFormFields();
+    const contactType = component.signUpForm.controls['contactType'];
+    const phone = component.signUpForm.controls['phone'];
+    contactType.setValue('phone');
+    phone.setValue('959562561');
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'checkUserExists').and.returnValue(observableThrowError({
+      'responseCode': '500', 'params': {'status': 500, 'type': 'INTERNAL_SERVER_ERROR'}
+    }));
+    component.vaidateUserContact();
+    expect(component.showUniqueError).toBe('');
+    expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
+  });
+
 });
