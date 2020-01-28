@@ -157,7 +157,7 @@
   <div class="sb-modal-content p-0">
     <sui-tabset>
       <div class="sb-tabset-menu mb-16">
-        <a class="sb-item" suiTabHeader="1">Upload</a>
+        <a class="sb-item" suiTabHeader="1" (click)="showAddButton=false">Upload</a>
         <a class="sb-item" (activate)="getMyVideos(0)" suiTabHeader="2">My Video(s)</a>
         <a class="sb-item" (activate)="getAllVideos(0)" suiTabHeader="3">All Video(s)</a>
       </div>
@@ -165,15 +165,22 @@
         [infiniteScrollThrottle]="500" [scrollWindow]="false" suiTabContent="1">
         <div class="content">
           <!-- New upload image design section starts here -->
-          <div class="upload-image-modal-section d-flex flex-ai-center flex-jc-center flex-dc">
-            <button class="upload-input-button sb-btn sb-btn-success sb-btn-normal">
-              Upload from Computer
-              <input (change)="uploadVideo($event)" type="file" [accept]="acceptVideoType" name="assetfile">
-            </button>
-            <p class="fsmall my-8">Drag and Drop files here</p>
-            <span class="fxsmall">Upload {{assetConfig.video.accepted}} (Max File size: {{assetConfig.video.size}}MB)</span>
-            <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
-              <p>{{errorMsg}}</p>
+          <div *ngIf='!loading' class="upload-image-modal-section d-flex flex-ai-center flex-jc-center flex-dc">
+            <div class="text-center" >
+              <button class="upload-input-button sb-btn sb-btn-success sb-btn-normal">
+                Upload from Computer
+                <input (change)="uploadVideo($event)" type="file" [accept]="acceptVideoType" name="assetfile">
+              </button>
+              <p class="fsmall my-8">Drag and Drop files here</p>
+              <span class="fxsmall">Upload {{assetConfig.video.accepted}} (Max File size: {{assetConfig.video.size}}MB)</span>
+              <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
+                <p>{{errorMsg}}</p>
+            </div>
+            </div>
+          </div>
+          <div *ngIf='loading' class="uploading-files">
+            <div class='d-flex flex-dc flex-jc-center flex-ai-center icon'>
+              <img src="assets/images/Spin.gif" class='process-icon'>
             </div>
           </div>
           <p class="fsmall mt-8 terms-and-condition">I understand and confirm that all resources and assets created through the content editor or uploaded on the platform shall be available for free and public use without limitations on the platform (web portal, applications and any other end user interface that the platform would enable) and will be licensed under terms & conditions and policy guidelines of the platform. In doing so, the copyright and license of the original author is not infringed.</p>

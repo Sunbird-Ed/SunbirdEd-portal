@@ -69,6 +69,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   allImages = [];
   allVideos = [];
   selectedVideo = {};
+  loading = false;
   selectedVideoId: string;
   showAddButton: boolean;
   assetsCount = Number;
@@ -166,6 +167,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   initiateVideoUploadModal() {
     this.showVideoPicker = false;
     this.showImageUploadModal = true;
+    this.loading = false;
   }
   public isEditorReadOnly(state) {
     this.editorInstance.isReadOnly = state;
@@ -539,6 +541,7 @@ getAllVideos(offset, query) {
    * function to upload video
    */
   uploadVideo(event) {
+    this.loading = true;
     const file = event.target.files[0];
     const reader = new FileReader();
     const formData: FormData = new FormData();
@@ -609,6 +612,7 @@ getAllVideos(offset, query) {
   })).subscribe(res => {
       this.selectedVideo = res;
       this.showAddButton = true;
+      this.loading = false;
       this.addVideoInEditor();
     });
   }
