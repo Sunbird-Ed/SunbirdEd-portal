@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
-import { ConnectionService } from '@sunbird/offline';
+import { ConnectionService, ContentManagerService } from '@sunbird/offline';
 import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-content-player',
@@ -46,6 +46,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   constructor(public configService: ConfigService, public router: Router, public toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private connectionService: ConnectionService,
+    private contentManagerService: ContentManagerService,
     public playerService: PublicPlayerService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
@@ -77,6 +78,9 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     }
   }
   ngOnInit() {
+    this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+      this.deleteContent(data);
+    });
   }
 
   loadCdnPlayer() {

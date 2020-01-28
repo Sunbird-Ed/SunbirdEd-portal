@@ -15,10 +15,15 @@ export class ContentManagerService {
   downloadEvent = new EventEmitter();
   downloadListEvent = new EventEmitter();
   completeEvent = new EventEmitter();
+  deletedContent = new EventEmitter();
 
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
     private electronDialogService: ElectronDialogService) { }
+
+  emitAfterDeleteContent(contentData) {
+    this.deletedContent.emit(contentData);
+  }
 
   getContentList() {
     const downloadListOptions = {
