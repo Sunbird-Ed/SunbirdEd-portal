@@ -1,4 +1,4 @@
-.download-diksha {
+.download-sunbird {
   border-radius: 20px 20px 0 0;
   position: absolute;
   bottom: 0px;
@@ -11,7 +11,7 @@
   margin: 0 auto;
   z-index: 9;
 
-  .diksha-logo {
+  .sunbird-logo {
     background: $white;
     color: $black;
     border-radius: $base-block-space $base-block-space 0 0;
@@ -81,7 +81,7 @@
 
 *[dir="rtl"] {
 
-  // .diksha-logo {
+  // .sunbird-logo {
   //   height: 148px;
   // }
 
@@ -155,7 +155,7 @@
 
 @media screen and (max-width: 767px) {
 
-  .download-diksha {
+  .download-sunbird {
     bottom: 206px;
     margin: 0 auto;
     right: 0;
@@ -172,10 +172,10 @@
     }
   }
 
-    .download-diksha {
+    .download-sunbird {
       height: auto;
 
-      .diksha-logo {
+      .sunbird-logo {
         height: auto;
       }
 
