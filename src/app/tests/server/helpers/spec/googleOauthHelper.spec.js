@@ -92,4 +92,22 @@ describe('Google Oauth Helper Test Cases', function () {
       });
   });
 
+  it('should create user with mail id will be successful if request body is correct', function (done) {
+    googleOauthHelper.createUserWithMailId({ name: 'test-useer', emailId: 'user@gmail.com' }, 'portal', request)
+      .then(function (data) {
+        expect(data.responseCode).to.eql('OK')
+        done();
+      })
+  });
+
+  it('should throw error if username is empty', function (done) {
+    googleOauthHelper.createUserWithMailId({ name: '', emailId: 'user@gmail.com' }, 'portal', request)
+      .then(function (data) {
+      }, function (error) {
+        const errorMsg = new Error('USER_NAME_NOT_PRESENT');
+        expect(error.message).to.eql(errorMsg.message);
+        done();
+      });
+  });
+
 });

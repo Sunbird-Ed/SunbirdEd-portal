@@ -104,6 +104,7 @@ gulp.task('prepare:app:dist', () => {
         'package-lock.json',
         'sunbird-plugins/**/*',
         'routes/**/*',
+        'constants/**/*',
         'server.js'], { 'base': '.' })
         .pipe(gulp.dest('./app_dist'))
 })
