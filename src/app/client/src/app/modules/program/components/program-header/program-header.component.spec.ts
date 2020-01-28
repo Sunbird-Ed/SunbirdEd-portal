@@ -119,7 +119,7 @@ describe('ProgramHeaderComponent', () => {
 
 
   it('should have empty stage', () => {
-    const EXPECTED_NUMBER_OF_ITEMS: number = 0;
+    const EXPECTED_NUMBER_OF_ITEMS = 0;
     expect(component.state.stages.length).toBe(EXPECTED_NUMBER_OF_ITEMS);
   });
 
