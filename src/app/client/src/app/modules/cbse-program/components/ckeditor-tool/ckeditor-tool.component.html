@@ -171,7 +171,7 @@
               <input (change)="uploadVideo($event)" type="file" [accept]="acceptVideoType" name="assetfile">
             </button>
             <p class="fsmall my-8">Drag and Drop files here</p>
-            <span class="fxsmall">Upload {{assetConfig.video.accepted}} (Maxx File size: {{assetConfig.video.size}}MB)</span>
+            <span class="fxsmall">Upload {{assetConfig.video.accepted}} (Max File size: {{assetConfig.video.size}}MB)</span>
             <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
               <p>{{errorMsg}}</p>
             </div>
