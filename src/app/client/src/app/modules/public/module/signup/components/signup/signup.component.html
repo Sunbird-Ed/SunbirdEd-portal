@@ -56,7 +56,7 @@
                   formControlName="password" name="password" placeholder="{{resourceService.frmelmnts.lbl.EnterPassword}}">
                 <i class="icon large sb-icon-preview link opacity-1" (click)="displayPassword()"></i>
               </div>
-              <label class="ui basic label pt-8 p-0 m-0 infotext line-height-1-3" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{resourceService.frmelmnts.lbl.passwd}}</label>
+              <label class="ui basic label pt-8 p-0 m-0 infotext line-height-1-3" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{passwordError}}</label>
             </div>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors">{{resourceService.frmelmnts.lbl.errorConfirmPassword}}</label>
             <div class="required field mb-20">

@@ -33,7 +33,8 @@ const resourceBundle = {
     'lbl': {
       'chkuploadsts': 'Check Status',
       'passwd': 'Password must contain a minimum of 8 characters including numerals, '
-      + 'lower and upper case alphabets and special characters.'
+      + 'lower and upper case alphabets and special characters.',
+      'passwderr': 'Password cannot be same as your username.'
     },
   },
   'messages': {
@@ -191,19 +192,19 @@ describe('SignUpComponent', () => {
     expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
     + 'lower and upper case alphabets and special characters.');
   }));
-  it('should show password must not be equal to username error message for password', fakeAsync(() => {
+  it('should show password cannot be equal to username error message for password', fakeAsync(() => {
     spyOn(component, 'onPasswordChange').and.callThrough();
     component.initializeFormFields();
     let errors = {};
-    const name = component.signUpForm.controls['name'];
-    name.setValue('User@2010');
+    component.showContact = 'email';
+    const email = component.signUpForm.controls['email'];
+    email.setValue('User2010@gmail.com');
     const password = component.signUpForm.controls['password'];
-    password.setValue('User@2010');
+    password.setValue('User2010@gmail.com');
     tick(200);
     errors = password.errors || {};
     expect(component.onPasswordChange).toHaveBeenCalled();
-    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
-    + 'lower and upper case alphabets and special characters.');
+    expect(password.errors.passwordError).toEqual('Password cannot be same as your username.');
   }));
   it('should call onEmailChange method', () => {
     spyOn(component, 'onEmailChange');
