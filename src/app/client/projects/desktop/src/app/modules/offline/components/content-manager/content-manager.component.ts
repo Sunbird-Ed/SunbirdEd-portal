@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ContentManagerComponent implements OnInit, OnDestroy {
 
-  contentResponse: any;
+  contentResponse: any = [];
   isOpen = true;
   callContentList = false;
   callContentListTimer = false;
@@ -26,6 +26,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   apiCallSubject = new Subject();
   completedCount: number;
   deletedContents: string [] = [];
+  localContentData: any = [];
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -100,6 +101,11 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.contentResponse = _.filter(apiResponse, (o) => {
             return o.status !== 'canceled';
           });
+          if (apiResponse.length >= this.localContentData.length) {
+            this.localContentData = apiResponse;
+          } else if (this.localContentData.length > apiResponse.length) {
+            this.callContentList = true;
+          }
           this.removeDeleteId();
         });
   }

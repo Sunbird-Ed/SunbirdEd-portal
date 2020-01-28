@@ -81,19 +81,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.deleteContent(data);
     });
-    this.checkOnlineStatus();
   }
-  checkOnlineStatus() {
-    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
-      this.isConnected = isConnected;
-    this.displayToasterMessage();
-    });
-  }
-  displayToasterMessage() {
-    if (!this.isConnected && this.contentData) {
-        this.toasterService.error(this.resourceService.messages.stmsg.desktop.noInternetMessage);
-    }
-  }
+
   loadCdnPlayer() {
     if (this.isLoading) {// To restrict player loading multiple times
       return;

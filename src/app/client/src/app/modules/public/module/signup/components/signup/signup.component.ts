@@ -221,10 +221,16 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     const value = this.signUpForm.controls.contactType.value === 'phone' ?
       this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value;
     const uri = this.signUpForm.controls.contactType.value.toString() + '/' + value;
-    this.signupService.getUserByKey(uri).subscribe(
+    this.signupService.checkUserExists(uri).subscribe(
       (data: ServerResponse) => {
-        this.showUniqueError = this.signUpForm.controls.contactType.value === 'phone' ?
-          this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
+        if (_.get(data, 'result.exists')) {
+          this.signUpForm.controls['uniqueContact'].setValue('');
+          this.showUniqueError = this.signUpForm.controls.contactType.value === 'phone' ?
+            this.resourceService.frmelmnts.lbl.uniquePhone : this.resourceService.frmelmnts.lbl.uniqueEmail;
+        } else {
+          this.signUpForm.controls['uniqueContact'].setValue(true);
+          this.showUniqueError = '';
+        }
       },
       (err) => {
         if (_.get(err, 'error.params.status') && err.error.params.status === 'USER_ACCOUNT_BLOCKED') {

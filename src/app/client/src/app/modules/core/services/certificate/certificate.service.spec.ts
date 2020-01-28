@@ -24,7 +24,7 @@ describe('CertificateService', () => {
       const params = {'request': { 'certId': '123456', 'accessCode': 'QWERTY', 'verifySignature': 'true' }};
       spyOn(learnerService, 'post').and.returnValue(observableOf(mockResponseData.validateCertificateCodeData));
       certificateService.validateCertificate(params);
-      const options = { url: 'user/v1/certs/validate', data: params };
+      const options = { url: 'certreg/v1/certs/validate', data: params };
       expect(learnerService.post).toHaveBeenCalledWith(options);
     }));
 });

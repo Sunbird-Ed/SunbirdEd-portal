@@ -45,7 +45,7 @@ describe('NoContentComponent', () => {
         m0030: 'No Textbooks Available',
       },
       imsg: {
-        m0050: 'Load Textbooks to your library for offline usage',
+        m0050: 'Load textbooks to access them offline',
         // tslint:disable-next-line:max-line-length
         m0048: 'Please connect to the internet to view content',
         m0049: 'Have a textbook downloaded on your system/ pendrive? Click below link to upload'

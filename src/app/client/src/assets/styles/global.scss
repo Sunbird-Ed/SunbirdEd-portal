@@ -233,3 +233,13 @@ ol.ui.list ol {
 app-workspace {
   font-size:14px;
 }
+
+// ckeditor tool solution image overlap
+
+.ckeditor-tool__solution__body {
+  figure.image {
+    img {
+      max-width: 100%;
+    }
+  }
+}
