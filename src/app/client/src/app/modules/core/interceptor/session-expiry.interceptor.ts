@@ -18,21 +18,21 @@ export class SessionExpiryInterceptor implements HttpInterceptor {
   }
   handleSessionExpiry(event) {
     if ([401, '401'].includes(event.status) && this.userService.loggedIn
-      && event.error.responseCode === 'SESSION_EXPIRED') {
+      && (event.error.responseCode === 'SESSION_EXPIRED' || event.error.responseCode === 'UNAUTHORIZED_ACCESS')) {
       this.sessionExpired = true;
       return of(undefined); // to help stop event propagation
     } else {
       return throwError(event);
     }
   }
-  intercept( request: HttpRequest<any>, next: HttpHandler): Observable<any> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
     return next.handle(request).pipe(map((event: HttpEvent<any>) => {
       return event; // success case
     }),
-    catchError((error: HttpEvent<any>) => {
-      return this.handleSessionExpiry(error); // error case
-    }),
-    skipWhile(data => data === undefined || data === null)); // stop api call and show login popup
+      catchError((error: HttpEvent<any>) => {
+        return this.handleSessionExpiry(error); // error case
+      }),
+      skipWhile(data => data === undefined || data === null)); // stop api call and show login popup
   }
 }
 

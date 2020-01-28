@@ -62,6 +62,14 @@ app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
 
+app.all('/sessionExpired', endSession, (req, res) => {
+  const redirectUri = req.get('referer') || `${_.get(envHelper, 'SUNBIRD_PORTAL_BASE_URL')}/profile`;
+  const logoutUrl = keycloak.logoutUrl(redirectUri);
+  delete req.session.userId;
+  res.cookie('connect.sid', '', { expires: new Date() });
+  res.redirect(logoutUrl);
+})
+
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
 app.get('/service/health', healthService.createAndValidateRequestBody, healthService.checkSunbirdPortalHealth)
@@ -139,7 +147,8 @@ function endSession(request, response, next) {
 }
 
 if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
-  logger.error({msg: `please set environment variable sunbird_environment,sunbird_instance
+  logger.error({
+    msg: `please set environment variable sunbird_environment,sunbird_instance
   start service Eg: sunbird_environment = dev, sunbird_instance = sunbird`})
   process.exit(1)
 }
@@ -151,7 +160,7 @@ function runApp() {
   fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
-      logger.info({msg: `app running on port ${envHelper.PORTAL_PORT}`})
+      logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
     })
     portal.server.keepAliveTimeout = 60000 * 5;
   })
