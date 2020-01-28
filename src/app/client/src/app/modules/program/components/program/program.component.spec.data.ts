@@ -54,15 +54,6 @@ export const frameWorkData = {
           'status': 'Live'
         },
         {
-          'identifier': 'ncfcopy_medium',
-          'code': 'medium',
-          'translations': '{"hi":"मध्यम"}',
-          'name': 'Medium',
-          'description': '',
-          'index': 2,
-          'status': 'Live'
-        },
-        {
           'identifier': 'ncfcopy_subject',
           'code': 'subject',
           'terms': [
