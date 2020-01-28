@@ -67,7 +67,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     this.channelService.getFrameWork(custodianOrgId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        this.boardOption = _.get(data, 'result.channel.frameworks');
+        this.boardOption = _.sortBy(_.get(data, 'result.channel.frameworks'), 'index');
         this.contentPreferenceForm.controls['board'].setValue(_.find(this.boardOption, { name: this.frameworkDetails.board }));
       }, err => {
       });
