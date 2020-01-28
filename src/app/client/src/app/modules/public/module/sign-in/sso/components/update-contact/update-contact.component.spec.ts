@@ -7,7 +7,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {SharedModule, ToasterService} from '@sunbird/shared';
 import {CoreModule, SearchService} from '@sunbird/core';
-import { TelemetryModule } from '@sunbird/telemetry';
+import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ResourceService} from '@sunbird/shared';
 import {of as observableOf, Observable, throwError as observableThrowError} from 'rxjs';
@@ -34,7 +34,7 @@ describe('UpdateContactComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{provide: ActivatedRoute, useValue: fakeActivatedRoute},
         {provide: ResourceService, useValue: mockUpdateContactData.resourceBundle},
-        TenantService, ToasterService, UserService
+        TenantService, ToasterService, UserService, TelemetryService
       ]
     })
       .compileComponents();
@@ -272,17 +272,22 @@ describe('UpdateContactComponent', () => {
     expect(component.fetchTncConfiguration).toHaveBeenCalled();
   });
 
-  it('should toggle tnc checkboc', () => {
-    component.contactForm.tncAccepted = true;
-    component.toggleTncCheckBox({target: {checked: false}});
-    expect(component.contactForm.tncAccepted).toEqual(false);
-  });
-
   it('should toggle tnc checkboc if already false', () => {
-    component.contactForm.tncAccepted = false;
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
     component.toggleTncCheckBox({target: {checked: true}});
     expect(component.contactForm.tncAccepted).toEqual(true);
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockUpdateContactData.interactEDataSelected);
   });
+
+  it('should toggle tnc checkboc', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.toggleTncCheckBox({target: {checked: false}});
+    expect(component.contactForm.tncAccepted).toEqual(false);
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockUpdateContactData.interactEDataUnSelected);
+  });
+
 
   it('should fetch tnc configuration', () => {
     const signupService = TestBed.get(SignupService);
