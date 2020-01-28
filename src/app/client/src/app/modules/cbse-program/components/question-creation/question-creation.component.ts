@@ -162,7 +162,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   initialize() {
-    this.editorConfig = { 'mode': 'create' };
+    const config: any = _.get(this.sessionContext.practiceSetConfig, 'config');
+    this.editorConfig = { 'mode': 'create',
+    config
+    };
     this.editorState = {
       question : '',
       answer: '',
@@ -219,26 +222,33 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   videoDataOutput(event) {
+    if (event) {
+      this.videoSolutionData = event;
+      this.videoSolutionName = event.name;
+      this.editorState.solutions = event.identifier;
+      this.videoThumbnail = event.thumbnail;
+      const videoMedia: any = {};
+      videoMedia.id = event.identifier;
+      videoMedia.src = event.downloadUrl;
+      videoMedia.type = 'video';
+      videoMedia.assetId = event.identifier;
+      videoMedia.name = event.name;
+      videoMedia.thumbnail = this.videoThumbnail;
+      this.mediaArr.push(videoMedia);
+      this.showSolutionDropDown = false;
+    } else {
+      this.deleteSolution();
+    }
     this.videoShow = false;
-    this.videoSolutionData = event;
-    this.videoSolutionName = event.name;
-    this.editorState.solutions = event.identifier;
-    this.videoThumbnail = event.thumbnail;
-    const videoMedia: any = {};
-    videoMedia.id = event.identifier;
-    videoMedia.src = event.downloadUrl;
-    videoMedia.type = 'video';
-    videoMedia.assetId = event.identifier;
-    videoMedia.name = event.name;
-    videoMedia.thumbnail = this.videoThumbnail;
-    this.mediaArr.push(videoMedia);
-    this.showSolutionDropDown = false;
   }
 
   deleteSolution() {
     this.showSolutionDropDown = true;
     this.selectedSolutionType = '';
     this.editorState.solutions = '';
+    this.videoSolutionName = '';
+    this.editorState.solutions = '';
+    this.videoThumbnail = '';
   }
 
   initializeDropdown() {

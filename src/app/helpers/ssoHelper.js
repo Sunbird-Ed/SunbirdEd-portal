@@ -8,6 +8,7 @@ const kafkaService = require('../helpers/kafkaHelperService');
 const logger = require('sb_logger_util_v2');
 const {getUserIdFromToken} = require('../helpers/jwtHelper');
 const {getUserDetails} = require('../helpers/userHelper');
+const {isDate} = require('../helpers/utilityService');
 let ssoWhiteListChannels;
 const privateBaseUrl = '/private/user/';
 const {isValidAndNotEmptyString} = require('../helpers/utilityService');
@@ -47,12 +48,30 @@ const verifySignature = async (token) => {
   return true
 }
 const verifyToken = (token) => {
-  let timeInSeconds = parseInt(Date.now() / 1000)
-  if (!(token.iat < timeInSeconds)) {
+  let timeInSeconds = Date.now();
+  let date1 = new Date(0);
+  let date2 = new Date(0);
+  date1.setUTCSeconds(token.iat);
+  let iat = date1.getTime();
+  date2.setUTCSeconds(token.exp);
+  let exp = date2.getTime();
+  if (isDate(iat) && !(iat < timeInSeconds)) {
+    logger.info({
+      msg: 'ssoHelper:verifyToken: TOKEN_IAT_FUTURE',
+      additionalInfo: {iat: iat, timeInSeconds: timeInSeconds}
+    });
     throw new Error('TOKEN_IAT_FUTURE');
-  } else if (!(token.exp > timeInSeconds)) {
+  } else if (isDate(exp) && !(exp > timeInSeconds)) {
+    logger.info({
+      msg: 'ssoHelper:verifyToken: TOKEN_EXPIRED',
+      additionalInfo: {iat: iat, timeInSeconds: timeInSeconds, exp: exp}
+    });
     throw new Error('TOKEN_EXPIRED');
   } else if (!token.sub) {
+    logger.info({
+      msg: 'ssoHelper:verifyToken: USER_ID_NOT_PRESENT',
+      additionalInfo: {iat: iat, timeInSeconds: timeInSeconds, sub: token.sub}
+    });
     throw new Error('USER_ID_NOT_PRESENT');
   }
   return true;

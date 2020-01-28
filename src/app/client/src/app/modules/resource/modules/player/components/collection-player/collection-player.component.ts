@@ -322,12 +322,16 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }
   }
   closeContentPlayer() {
+    this.selectedContent = {};
     this.showPlayer = false;
     this.triggerContentImpression = false;
     const navigationExtras: NavigationExtras = {
       relativeTo: this.route,
-      queryParams: { contentType: this.contentType, ..._.get(this.route, 'snapshot.queryParams') }
+      queryParams: { contentType: this.contentType }
     };
+    if (this.dialCode) {
+      navigationExtras.queryParams['dialCode'] = _.get(this.route, 'snapshot.queryParams.dialCode');
+    }
     this.router.navigate([], navigationExtras);
   }
 

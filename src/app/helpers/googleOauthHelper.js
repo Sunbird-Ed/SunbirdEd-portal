@@ -167,14 +167,14 @@ const createSession = async (emailId, reqQuery, req, res) => {
 const fetchUserByEmailId = async (emailId, req) => {
   const options = {
     method: 'GET',
-    url: envHelper.LEARNER_URL + 'user/v1/get/email/'+ emailId,
+    url: envHelper.LEARNER_URL + 'user/v1/exists/email/'+ emailId,
     headers: getHeaders(req),
     json: true
   }
-  console.log('fetch user request', JSON.stringify(options));
+  console.log('check user exists', JSON.stringify(options));
   return request(options).then(data => {
     if (data.responseCode === 'OK') {
-      return data;
+      return _.get(data, 'result.exists');
     } else {
       logger.error({msg: 'googleOauthHelper: fetchUserByEmailId failed', additionalInfo: {data}});
       throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
@@ -187,7 +187,7 @@ const createUserWithMailId = async (accountDetails, client_id, req) => {
   }
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v2/create',
+    url: envHelper.LEARNER_URL + 'user/v1/signup',
     headers: getHeaders(req),
     body: {
       params: {

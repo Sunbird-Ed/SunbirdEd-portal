@@ -149,7 +149,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.resourceStatus =  _.get(this.resourceDetails, 'status');
       if (this.resourceStatus === 'Review') {
         this.resourceStatusText = 'Review in Progress';
-      } else if (this.resourceStatus === 'Draft' && this.resourceDetails.rejectComment !== '') {
+      } else if (this.resourceStatus === 'Draft' && this.resourceDetails.rejectComment && this.resourceDetails.rejectComment !== '') {
         this.resourceStatusText = 'Rejected';
       } else if (this.resourceStatus === 'Live') {
         this.resourceStatusText = 'Published';
