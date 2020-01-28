@@ -1158,7 +1158,7 @@ export const mockData = {
             },
             'stmsg': {
              'desktop': {
-                'onlineStatus': 'Internet is available.'
+                'onlineStatus': 'You are online.'
              },
                 'm0077': 'we are submiting your request'
             },
