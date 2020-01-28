@@ -125,7 +125,7 @@ const acceptTnc = async (req, res) => {
 };
 
 
-module.exports = {acceptTnc};
+module.exports = {acceptTnc, acceptTncAndGenerateToken};
 
 
 

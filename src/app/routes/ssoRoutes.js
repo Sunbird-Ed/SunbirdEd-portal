@@ -15,8 +15,9 @@ const fs = require('fs');
 const successUrl = '/sso/sign-in/success';
 const updateContactUrl = '/sign-in/sso/update/contact';
 const errorUrl = '/sso/sign-in/error';
-const logger = require('sb_logger_util_v2')
+const logger = require('sb_logger_util_v2');
 const url = require('url');
+const {acceptTncAndGenerateToken} = require('../helpers/userService');
 
 module.exports = (app) => {
 
@@ -91,13 +92,17 @@ module.exports = (app) => {
     jwtPayload = req.session.jwtPayload; // fetch from session
     userDetails = req.session.userDetails; // fetch from session
     try {
-      if (_.isEmpty(jwtPayload) && ((!['phone', 'email'].includes(req.query.type) && !req.query.value) || req.query.userId)) {
+      if (_.isEmpty(jwtPayload) && ((!['phone', 'email', 'tncVersion', 'tncAccepted'].includes(req.query.type) && !req.query.value) || req.query.userId)) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
       if (!_.isEmpty(userDetails) && !userDetails[req.query.type]) { // existing user without phone
         errType = 'UPDATE_CONTACT_DETAILS';
         await updateContact(req, userDetails).catch(handleProfileUpdateError); // api need to be verified
+        if (req.query.tncAccepted === 'true') {
+          errType = 'ACCEPT_TNC';
+          await acceptTncAndGenerateToken(req.query.value, req.query.tncVersion).catch(handleProfileUpdateError);
+        }
         logger.info({
           msg: 'sso phone updated successfully and redirected to success page',
           additionalInfo: {
@@ -124,6 +129,10 @@ module.exports = (app) => {
           throw 'USER_DETAILS_IS_EMPTY';
         }
         req.session.userDetails = userDetails;
+        if (req.query.tncAccepted === 'true') {
+          errType = 'ACCEPT_TNC';
+          await acceptTncAndGenerateToken(req.query.value, req.query.tncVersion).catch(handleProfileUpdateError);
+        }
         logger.info({
           msg: 'sso user creation and role updated successfully and redirected to success page',
           additionalInfo: {
@@ -145,7 +154,7 @@ module.exports = (app) => {
         additionalInfo: {
           state_Id: jwtPayload.state_id,
           errType: errType,
-          phone: req.query.phone,
+          queryParams: req.query,
           userDetails: userDetails,
           jwtPayload: jwtPayload,
           redirectUrl: redirectUrl,
@@ -263,7 +272,8 @@ module.exports = (app) => {
     let response, errType, jwtPayload, redirectUrl, userDetails;
     jwtPayload = req.session.jwtPayload; // fetch from session
     try {
-      if (!req.query.userId || !req.query.identifier || !req.query.identifierValue) {
+      if (!req.query.userId || !req.query.identifier || !req.query.identifierValue
+        || !req.query.tncVersion || !req.query.tncAccepted) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
@@ -288,6 +298,10 @@ module.exports = (app) => {
         throw 'USER_DETAILS_IS_EMPTY';
       }
       req.session.userDetails = userDetails;
+      if (req.query.tncAccepted === 'true') {
+        errType = 'ACCEPT_TNC';
+        await acceptTncAndGenerateToken(req.query.value, req.query.tncVersion).catch(handleProfileUpdateError);
+      }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
       logger.info({
         msg: 'sso user creation and role updated successfully and redirected to success page',
@@ -322,7 +336,8 @@ module.exports = (app) => {
     logger.info({msg: '/v1/sso/migrate/account/initiate called'});
     let response, errType, redirectUrl, url, query;
     try {
-      if (!req.query.userId || !req.query.identifier || !req.query.identifierValue || !req.session.migrateAccountInfo) {
+      if (!req.query.userId || !req.query.identifier || !req.query.identifierValue || !req.session.migrateAccountInfo
+        || !req.query.tncVersion || !req.query.tncAccepted) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
@@ -330,14 +345,16 @@ module.exports = (app) => {
         stateToken : req.session.migrateAccountInfo.stateToken,
         userId: req.query.userId,
         identifier: req.query.identifier,
-        identifierValue: req.query.identifierValue
+        identifierValue: req.query.identifierValue,
+        tncVersion: req.query.tncVersion,
+        tncAccepted: req.query.tncAccepted
       };
       errType = 'ERROR_ENCRYPTING_DATA';
       req.session.migrateAccountInfo.encryptedData = encrypt(JSON.stringify(dataToEncrypt));
       const payload = JSON.stringify(req.session.migrateAccountInfo.encryptedData);
       url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
       query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
-      const userInfo = `&userId=${req.query.userId}&identifierType=${req.query.identifier}&identifierValue=${req.query.identifierValue}`;
+      const userInfo = `&userId=${req.query.userId}&identifierType=${req.query.identifier}&identifierValue=${req.query.identifierValue}&tncVersion=${req.query.tncVersion}&tncAccepted=${req.query.tncAccepted}`;
       redirectUrl = url + query + userInfo;
       logger.info({msg: 'url for migration' + redirectUrl});
     } catch (error) {
@@ -407,6 +424,12 @@ module.exports = (app) => {
 };
 
 const handleProfileUpdateError = (error) => {
+  logger.error({
+    msg: 'ssoRoutes: handleProfileUpdateError',
+    error: error,
+    params: _.get(error, 'error.params'),
+    message: _.get(error, 'message')
+  });
   if (_.get(error, 'error.params')) {
     throw error.error.params;
   } else if (error instanceof Error) {
@@ -515,6 +538,10 @@ const ssoValidations = async (req, res) => {
         // await updateRoles(req, req.query.userId, stateJwtPayload).catch(handleProfileUpdateError);
       }
       req.session.userDetails = userDetails;
+      if (stateUserData.tncAccepted === 'true') {
+        errType = 'ACCEPT_TNC';
+        await acceptTncAndGenerateToken(stateUserData.identifierValue, stateUserData.tncVersion).catch(handleProfileUpdateError);
+      }
       redirectUrl = '/accountMerge?status=success&merge_type=auto&redirect_uri=/resources';
       if (req.query.client_id === 'android') {
         response = {
