@@ -101,12 +101,12 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.contentResponse = _.filter(apiResponse, (o) => {
             return o.status !== 'canceled';
           });
-          if (apiResponse.length >= this.localContentData.length) {
-            this.localContentData = apiResponse;
-          } else if (this.localContentData.length > apiResponse.length) {
-            this.callContentList = true;
-          }
-          this.removeDeleteId();
+        if (apiResponse.length >= this.localContentData.length) {
+          this.localContentData = apiResponse;
+        } else if (this.localContentData.length > apiResponse.length) {
+          this.callContentList = true;
+        }
+        this.removeDeleteId();
         });
   }
 
