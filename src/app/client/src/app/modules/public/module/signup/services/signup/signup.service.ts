@@ -32,9 +32,24 @@ export class SignupService {
     return this.learnerService.get(options);
   }
 
+  checkUserExists(data) {
+    const options = {
+      url: this.configService.urlConFig.URLS.USER.CHECK_USER_EXISTS + '/' + data,
+    };
+    return this.learnerService.get(options);
+  }
+
   createUser(data) {
     const options = {
       url: this.configService.urlConFig.URLS.USER.CREATE_V2,
+      data: data
+    };
+    return this.learnerService.post(options);
+  }
+
+  createUserV3(data) {
+    const options = {
+      url: this.configService.urlConFig.URLS.USER.SIGN_UP_V1,
       data: data
     };
     return this.learnerService.post(options);

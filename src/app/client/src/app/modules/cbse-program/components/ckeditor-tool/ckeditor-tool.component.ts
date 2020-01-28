@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { catchError } from 'rxjs/operators';
+import { catchError, map} from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { CbseProgramService } from '../../services';
 import MathText from '../../../../../assets/libs/mathEquation/plugin/mathTextPlugin.js';
@@ -56,6 +56,15 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     this.toasterService = toasterService;
     this.resourceService = resourceService;
   }
+  assetConfig: any = {
+    'image': {
+      'size': '50'
+    },
+    'video': {
+      'size': '50',
+      'accepted': 'mp4, webm'
+    }
+  };
   myAssets = [];
   allImages = [];
   allVideos = [];
@@ -67,6 +76,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   showVideoPicker = false;
   showImageUploadModal: boolean;
   showVideoUploadModal: boolean;
+  acceptVideoType: any;
   showErrorMsg: boolean;
   errorMsg: string;
   query: string;
@@ -79,7 +89,6 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
           this.userProfile = user.userProfile;
         }
       });
-
     this.editorConfig = _.assign({
       toolbar: ['bold', '|', 'italic', '|', 'underline',
         '|', 'numberedList', '|', 'fontSize', '|', 'subscript', '|', 'superscript', '|', 'MathText', '|'
@@ -104,6 +113,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       isReadOnly: false,
       removePlugins: ['ImageCaption', 'mathtype', 'ChemType']
     }, this.editorConfig);
+
+    this.assetConfig = this.editorConfig.config.assetConfig || this.assetConfig;
+    this.acceptVideoType = this.getVideoInputAccetType(this.assetConfig.video.accepted);
   }
   ngOnChanges() {
     if (this.videoShow) {
@@ -136,6 +148,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   dismissVideoPicker() {
     this.showVideoPicker = false;
     this.videoShow = false;
+    this.videoDataOutput.emit(false);
   }
   dismissImageUploadModal() {
     this.showImagePicker = true;
@@ -157,6 +170,14 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   public isEditorReadOnly(state) {
     this.editorInstance.isReadOnly = state;
     this.isAssetBrowserReadOnly = state;
+  }
+  getVideoInputAccetType(VideoType) {
+    const videoType = VideoType.split(', ');
+    const result = [];
+    _.forEach(videoType, (content) => {
+      result.push('video/' + content);
+    });
+    return result.toString();
   }
 
   initializeEditors() {
@@ -286,8 +307,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
   addVideoInEditor() {
     const videoData = this.selectedVideo;
-      this.showVideoPicker = false;
-      this.videoDataOutput.emit(videoData);
+    this.showVideoPicker = false;
+    this.showVideoUploadModal = false;
+    this.videoDataOutput.emit(videoData);
   }
 
   /**
@@ -460,9 +482,9 @@ getAllVideos(offset, query) {
     const fileSize = file.size / 1024 / 1024;
     if (fileType.split('/')[0] === 'image') {
       this.showErrorMsg = false;
-      if (fileSize > 1) {
+      if (fileSize > this.assetConfig.image.size) {
         this.showErrorMsg = true;
-        this.errorMsg = 'Max size allowed is 1MB';
+        this.errorMsg = 'Max size allowed is ' + this.assetConfig.image.size + 'MB';
       } else {
         this.errorMsg = '';
         this.showErrorMsg = false;
@@ -526,9 +548,9 @@ getAllVideos(offset, query) {
     const fileSize = file.size / 1024 / 1024;
     if (fileType.split('/')[0] === 'video') {
       this.showErrorMsg = false;
-      if (fileSize > 5) {
+      if (fileSize > this.assetConfig.video.size) {
         this.showErrorMsg = true;
-        this.errorMsg = 'Max size allowed is 5MB';
+        this.errorMsg = 'Max size allowed is ' + this.assetConfig.video.size + 'MB';
       } else {
         this.errorMsg = '';
         this.showErrorMsg = false;
@@ -569,14 +591,26 @@ getAllVideos(offset, query) {
           const errInfo = { errorMsg: 'Video upload failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((response) => {
-          this.selectedVideo = response.result;
-          this.addVideoInEditor();
-          this.showVideoPicker = false;
-          this.showVideoUploadModal = false;
+          // Read upload video data
+          this.getUploadVideo(response.result.node_id);
         });
       });
       reader.onerror = (error: any) => { };
     }
+  }
+
+  getUploadVideo(videoId) {
+    const option = {
+      url: 'content/v3/read/' + videoId
+    };
+    this.actionService.get(option).pipe(map((data: any) => data.result.content), catchError(err => {
+      const errInfo = { errorMsg: 'Unable to read the Video, Please Try Again' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+  })).subscribe(res => {
+      this.selectedVideo = res;
+      this.showAddButton = true;
+      this.addVideoInEditor();
+    });
   }
 
   searchMyVideo(event) {
