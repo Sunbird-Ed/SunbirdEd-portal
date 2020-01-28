@@ -202,7 +202,7 @@ it('should show toaster message when connected to internet  ', () => {
     const connectionService = TestBed.get(ConnectionService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(connectionService, 'monitor').and.returnValue(of(true));
-    spyOn(toasterService, 'success').and.returnValue(of(mockData.resourceBundle.messages.stmsg.desktop.internetAvailableMessage));
+    spyOn(toasterService, 'success').and.returnValue(of(mockData.resourceBundle.messages.stmsg.desktop.onlineStatus));
     component.handleOnlineStatus();
     expect(component.isConnected).toBeTruthy();
     expect(toasterService.success).toHaveBeenCalled();
@@ -213,7 +213,7 @@ it('should show toaster message when connected to internet  ', () => {
       const connectionService = TestBed.get(ConnectionService);
       const toasterService = TestBed.get(ToasterService);
       spyOn(connectionService, 'monitor').and.returnValue(of(false));
-      spyOn(toasterService, 'error').and.returnValue(throwError(mockData.resourceBundle.messages.emsg.desktop.noInternetMessage));
+      spyOn(toasterService, 'error').and.returnValue(throwError(mockData.resourceBundle.messages.emsg.desktop.offlineStatus));
       component.handleOnlineStatus();
       expect(component.isConnected).toBeFalsy();
       expect(toasterService.error).toHaveBeenCalled();

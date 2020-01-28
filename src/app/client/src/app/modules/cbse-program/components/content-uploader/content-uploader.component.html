@@ -163,7 +163,7 @@
           <div class="text-center fs-0-785"><span class="sb-color-gray-800">Disclaimer:</span> "By Uploading asset on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it
             under the Creative Commons License Framework
           </div>
-          <div class="text-center fs-0-785 pt-4 links"><a href="javascript:void(0);">https://creativecommons.org/licenses
+          <div class="text-center fs-0-785 pt-4 links"><a href="https://creativecommons.org/licenses" target="_blank">https://creativecommons.org/licenses
               .</a></div>
         </div>
     </div>
@@ -175,7 +175,7 @@
         [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
         [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
       >Upload</button>
-      <button (click)="closeUploadModal()" class="sb-btn sb-btn-outline-primary sb-btn-normal"
+      <button (click)="closeUploadModal()" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-outline-primary': !uploadButton, 'sb-btn-disabled': uploadButton}"
       appTelemetryInteract 
         [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('cancel-resourceupload', 'click', 'content-uploader')"
         [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
@@ -308,7 +308,7 @@
                       >
                       <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
                     <label class="warning-message" *ngIf="((contentDetailsForm.get(field.code).touched) && (contentDetailsForm.get(field.code).errors?.required))">* This field is mandatory</label>
-                    
+                    <label class="warning-message" *ngIf="((contentDetailsForm.get(field.code).touched) && (contentDetailsForm.get(field.code).errors?.pattern))">* Please enter valid text</label>
                   </div>
                 </div>
               </div>
@@ -317,7 +317,7 @@
       </div>
       <p class="paragraph fsmall">
           <span class="sb-color-gray-800">Disclaimer:</span> “By creating content on {{config.config.tenantName || 'SunbirdEd'}}, you consent to publish it under the Creative Commons License Framework
-          <span class="link font-weight-bold">https://creativecommons.org/licenses .</span>
+          <a class="link font-weight-bold" href="https://creativecommons.org/licenses" target="_blank">https://creativecommons.org/licenses .</a>
           Please choose the applicable creative commons license you wish to apply to your content”.
         </p>
     </div>  

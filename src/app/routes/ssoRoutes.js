@@ -16,6 +16,7 @@ const successUrl = '/sso/sign-in/success';
 const updateContactUrl = '/sign-in/sso/update/contact';
 const errorUrl = '/sso/sign-in/error';
 const logger = require('sb_logger_util_v2')
+const url = require('url');
 
 module.exports = (app) => {
 
@@ -55,13 +56,14 @@ module.exports = (app) => {
         redirectUrl = updateContactUrl; // verify phone then create user
         logger.info({
           msg:'sso session create v2 api, successfully redirected to update phone page',
-        additionalInfo: {
-          state_id: jwtPayload.state_id,
-          jwtPayload: jwtPayload,
-          query: req.query,
-          userDetails: userDetails,
-          redirectUrl: redirectUrl
-        }})
+          additionalInfo: {
+            state_id: jwtPayload.state_id,
+            jwtPayload: jwtPayload,
+            query: req.query,
+            userDetails: userDetails,
+            redirectUrl: redirectUrl
+          }
+        })
       }
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
@@ -159,7 +161,7 @@ module.exports = (app) => {
   });
 
   app.get('/v1/sso/success/redirect', async (req, res) => {
-    let userDetails, jwtPayload, redirectUrl, errType;
+    let userDetails, jwtPayload, redirectUrl, errType, redirectURIFromCookie;
     jwtPayload = req.session.jwtPayload;
     userDetails = req.session.userDetails;
     try {
@@ -169,7 +171,15 @@ module.exports = (app) => {
       }
       errType = 'CREATE_SESSION';
       await createSession(userDetails.userName, 'portal', req, res);
-      redirectUrl = jwtPayload.redirect_uri ? jwtPayload.redirect_uri : '/resources';
+      redirectURIFromCookie = _.get(req, 'cookies.SSO_REDIRECT_URI');
+      if (redirectURIFromCookie) {
+        const parsedRedirectURIFromCookie = url.parse(decodeURI(redirectURIFromCookie), true);
+        delete parsedRedirectURIFromCookie.query.auth_callback;
+        delete parsedRedirectURIFromCookie.search;
+        redirectUrl = url.format(parsedRedirectURIFromCookie);
+      } else {
+        redirectUrl = jwtPayload.redirect_uri ? jwtPayload.redirect_uri : '/resources';
+      }
       logger.info({
         msg: 'sso sign-in success callback, session created',
         additionalInfo: {
@@ -194,6 +204,7 @@ module.exports = (app) => {
       })
       logErrorEvent(req, errType, error);
     } finally {
+      redirectURIFromCookie && res.cookie('SSO_REDIRECT_URI', '', {expires: new Date(0)});
       res.redirect(redirectUrl || errorUrl);
     }
   })

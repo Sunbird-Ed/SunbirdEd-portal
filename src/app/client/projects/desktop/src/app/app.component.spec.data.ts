@@ -1158,13 +1158,13 @@ export const mockData = {
             },
             'stmsg': {
              'desktop': {
-                'internetAvailableMessage': 'Internet is available.'
+                'onlineStatus': 'Internet is available.'
              },
                 'm0077': 'we are submiting your request'
             },
             'emsg': {
                 'desktop': {
-                    'noInternetMessage': 'Internet not available. Please connect to internet and try again.'
+                    'offlineStatus': 'You are offline.'
                 }
             }
         },

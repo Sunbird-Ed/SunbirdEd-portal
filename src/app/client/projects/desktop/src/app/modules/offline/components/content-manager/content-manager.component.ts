@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ContentManagerComponent implements OnInit, OnDestroy {
 
-  contentResponse: any;
+  contentResponse: any = [];
   isOpen = true;
   callContentList = false;
   callContentListTimer = false;

@@ -153,8 +153,8 @@ handleOnlineStatus() {
   this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
     if (this.resourceService.messages.emsg) {
       this.isConnected = isConnected;
-      this.isConnected === true ? this.toasterService.success(this.resourceService.messages.stmsg.desktop.internetAvailableMessage) :
-      this.toasterService.error(this.resourceService.messages.emsg.desktop.noInternetMessage);
+      this.isConnected === true ? this.toasterService.success(this.resourceService.messages.stmsg.desktop.onlineStatus) :
+      this.toasterService.error(this.resourceService.messages.emsg.desktop.offlineStatus);
     }
   });
 }
@@ -313,18 +313,18 @@ handleOnlineStatus() {
   }
   initializeTourTravel() {
     this.showOnboardingPopup = false;
-      setTimeout(() => {
-        this.initializeShepherdData();
-          this.shepherdService.defaultStepOptions = defaultStepOptions;
-          this.shepherdService.disableScroll = true;
-          this.shepherdService.modal = true;
-          this.shepherdService.confirmCancel = false;
-          this.shepherdService.addSteps(this.shepherdData);
-          if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
-            localStorage.setItem('TakeOfflineTour', 'show');
-            this.shepherdService.start();
-          }
-      }, 1000);
+    //   setTimeout(() => {
+    //     this.initializeShepherdData();
+    //       this.shepherdService.defaultStepOptions = defaultStepOptions;
+    //       this.shepherdService.disableScroll = true;
+    //       this.shepherdService.modal = true;
+    //       this.shepherdService.confirmCancel = false;
+    //       this.shepherdService.addSteps(this.shepherdData);
+    //       if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
+    //         localStorage.setItem('TakeOfflineTour', 'show');
+    //         this.shepherdService.start();
+    //       }
+    //   }, 1000);
   }
 
   getDesktopUserData() {

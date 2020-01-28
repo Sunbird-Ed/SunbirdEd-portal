@@ -12,6 +12,10 @@
             <img src="../../../../../assets/images/shape.svg" width="90px" height="70px">
 
           </div>
+        <div class="fnormal">{{resourceService?.messages?.stmsg?.desktop?.deleteMessage}}</div>
+
+      </div>
+
        <!--If Content is deleted-->
   
        <!--If content is not present-->
@@ -25,10 +29,10 @@
       </div>
            <!--If content is not present-->
   
-      </div>
   
+    </div>
   
       <app-content-actions *ngIf="contentData" [contentData]="contentData" (deletedContent)="deleteContent($event)" (contentDownloaded)="checkContentDownloading($event)" [objectRollUp]="objectRollUp"></app-content-actions>
-  
+
     </section>
   </div>
