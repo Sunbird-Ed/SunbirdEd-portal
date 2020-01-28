@@ -191,6 +191,20 @@ describe('SignUpComponent', () => {
     expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
     + 'lower and upper case alphabets and special characters.');
   }));
+  it('should show password must not be equal to username error message for password', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
+    let errors = {};
+    const name = component.signUpForm.controls['name'];
+    name.setValue('User@2010');
+    const password = component.signUpForm.controls['password'];
+    password.setValue('User@2010');
+    tick(200);
+    errors = password.errors || {};
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+    + 'lower and upper case alphabets and special characters.');
+  }));
   it('should call onEmailChange method', () => {
     spyOn(component, 'onEmailChange');
      spyOn(component, 'enableSignUpSubmitButton');

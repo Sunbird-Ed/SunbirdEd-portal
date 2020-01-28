@@ -146,7 +146,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         const passCtrl = formControl.controls.password;
         const conPassCtrl = formControl.controls.confirmPassword;
         const nameCtrl = formControl.controls.name;
-        this.onPasswordChange(passCtrl);
+        this.onPasswordChange(nameCtrl, passCtrl);
         if (_.trim(nameCtrl.value) === '') { nameCtrl.setErrors({ required: true }); }
         if (_.trim(passCtrl.value) === '') { passCtrl.setErrors({ required: true }); }
         if (_.trim(conPassCtrl.value) === '') { conPassCtrl.setErrors({ required: true }); }
@@ -161,14 +161,16 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.onPhoneChange();
   }
 
-  onPasswordChange(passCtrl: FormControl): void {
+  onPasswordChange(nameCtrl: FormControl, passCtrl: FormControl): void {
+    const nameVal = _.get(nameCtrl, 'value');
     const val = _.get(passCtrl, 'value');
     const lwcsRegex = new RegExp('^(?=.*[a-z])');
     const upcsRegex = new RegExp('^(?=.*[A-Z])');
     const charRegex = new RegExp('^(?=.{8,})');
     const numRegex = new RegExp('^(?=.*[0-9])');
     const specRegex = new RegExp('^[^<>{}\'\"/|;:.\ ,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
-    if (!charRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)) {
+    if (!charRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)
+      || (nameVal === val)) {
       const passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
       passCtrl.setErrors({ passwordError });
     } else {
