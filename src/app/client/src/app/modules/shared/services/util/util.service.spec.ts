@@ -213,4 +213,10 @@ describe('UtilService', () => {
       }
     }));
 
+  it('should call emit event searchKeyword', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      spyOn(service.searchKeyword, 'emit');
+      service.updateSearchKeyword('test');
+      expect(service.searchKeyword.emit).toHaveBeenCalledWith('test');
+    }));
 });

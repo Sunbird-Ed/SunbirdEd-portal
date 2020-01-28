@@ -1,0 +1,28 @@
+<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
+  appBodyScroll (dismissed)="modal.deny(); templateSelection.emit({type: 'close'})" #modal [isBasic]="false">
+  <div class="sb-modal-header">
+    {{'Please select a Template to proceed'}}&lrm;
+  </div>
+  <div class="sb-modal-content">
+    <div class="d-flex flex-jc-space-around flex-w-wrap">
+        <div class="sb-card mb-16 template-items p-8 mr-8 relative" 
+        appTelemetryInteract [telemetryInteractEdata]="{id:'template_card',type:'click',pageid:'cardselection',extra:{template:template}}"
+        [ngClass]="{'active': templateSelected === template}" *ngFor="let template of mcqTemplateConfig" (click)="showButton=true; templateSelected = template">
+          <span *ngIf="templateSelected === template" class="template-item-selection"><i class="check circle icon"></i></span>
+            <div class="sb-card-metas flex-jc-center mb-8">
+              <div class="sb-card-image">
+                <img src="{{template.url}}">
+              </div>
+            </div>
+            <span [innerHTML]="template.templateDescription" class="sb-card-title">
+            </span>
+          </div>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button appTelemetryInteract [telemetryInteractEdata]="{id:'submit_btn',type:'click',pageid:'templateselection',extra:{selectedtemplate:templateSelected}}"
+    class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!showButton" (click)="handleSubmit()">
+      {{'Submit'}}
+    </button>
+  </div>
+</sui-modal>

@@ -15,7 +15,7 @@
       <div class="flex-basis-1 mr-32">
         <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one">
           {{collectionData?.name || 'Untitled Collection'}}</div>
-        <div class="d-flex flex-ai-center content-header__info">
+        <div class="d-flex flex-ai-center content-header__info mt-4" *ngIf="collectionData?.subject && (collectionData?.class || collectionData?.gradeLevel)">
           <span>{{collectionData?.subject}}</span>
           <span class="dot-divider"></span>
           <span>{{collectionData?.class || collectionData?.gradeLevel}}</span>
@@ -23,11 +23,12 @@
       </div>
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons" *ngIf="collectionData">
         <button class="sb-btn sb-btn-outline-secondary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED') || !isBrowse()) && showUpdate" (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
-        <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED') || !isBrowse()" (click)="showDeleteModal = !showDeleteModal">{{resourceService?.frmelmnts?.lbl?.delete}}</button>
+        <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED') || !isBrowse()" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.delete}}</button>
         <button type="button" class="sb-btn sb-btn-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED') || !isBrowse()" (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
-        <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" *ngIf="isBrowse() && checkStatus('DOWNLOAD')" (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
-        <button type="button" class="sb-btn sb-btn-outline-disabled sb-btn-normal" *ngIf="isBrowse() && checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
-        <button type="button" class="sb-btn sb-btn-outline-disabled sb-btn-normal" *ngIf="isBrowse() && checkStatus('DOWNLOADED')">{{resourceService?.messages?.stmsg?.m0139}}</button>
+        
+        <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" *ngIf="checkStatus('DOWNLOAD')" (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
+        <button type="button" class="sb-btn sb-btn-outline-disabled sb-btn-normal" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
+        <button type="button" class="sb-btn sb-btn-outline-disabled sb-btn-normal" *ngIf="checkStatus('DOWNLOADED')">{{resourceService?.messages?.stmsg?.m0139}}</button>
         <button *ngIf="checkStatus('PAUSED')" class="sb-btn sb-btn-normal sb-btn-link-primary cursor-default disable">
           {{resourceService.frmelmnts?.lbl?.downloadingPaused}}
         </button>
@@ -50,7 +51,7 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
     {{resourceService.frmelmnts?.btn?.download}}
   </button>
   <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
-    (click)="showModal = !showModal;">
+    (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
     {{resourceService.frmelmnts?.btn?.cancel}}
   </button>
 </div>
@@ -70,7 +71,7 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
     {{resourceService?.frmelmnts?.lbl?.delete}}
   </button>
   <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
-    (click)="showDeleteModal = !showDeleteModal;">
+    (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
     {{resourceService.frmelmnts?.btn?.cancel}}
   </button>
 </div>

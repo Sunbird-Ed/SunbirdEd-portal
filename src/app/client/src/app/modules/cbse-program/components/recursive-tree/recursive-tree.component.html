@@ -1,0 +1,103 @@
+<div *ngFor="let collection of collectionUnits; let i = index">
+  <sui-accordion-panel appTelemetryInteract 
+  [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('node-accordion', 'click', 'chapter-list')"
+  [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+  [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+  [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')" 
+  [isOpen]=" (collection.identifier === sessionContext.lastOpenedUnitChild || collection.identifier === sessionContext.lastOpenedUnitParent) ? true : false">
+    <div title class="sb-accordion-title d-flex flex-ai-center"><span class="chapter-status mr-16"></span>
+      {{collection.name}}
+     <div class="ml-auto d-flex">
+      <button class="sb-btn sb-btn-outline-primary sb-btn-xs sb-left-icon-btn sb-btn-radius"
+        *ngIf="visibility && visibility['showAddresource']"
+        appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('add-resource', 'click', 'chapter-list')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+        (click)="showModal = false; createResource($event, collection)">
+          <i class="add icon mr-4"></i>ADD
+      </button>
+      <!-- Gray color button -->
+      <!-- <button class="sb-btn sb-btn-gray sb-btn-xs sb-left-icon-btn" *ngIf="visibility && visibility['showAddresource']"
+      (click)="showModal = false; createResource($event, collection)"><i class="add icon mr-4"></i>ADD</button> -->
+      <div class="chevron-icon">
+        <i class="chevron down icon mr-0 ml-0"></i>
+      </div>
+    </div>
+    </div>
+    <div content>
+      <div class="chapter-lists level1" *ngIf="collection.leaf">
+        <ng-container *ngFor="let content of collection.leaf; let i=index">
+          <div class="chapter-lists--item" 
+          *ngIf="content.visibility === true"
+          appTelemetryInteract 
+          [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('previewResource', 'click', 'chapter-list')"
+          [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+          [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+          [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')" 
+          (click)="previewResource($event, content, collection)">
+            <span class="item-name"> {{content.name}}</span>
+            <span class="item-status">{{content.creator}}</span>
+            <span class="item-status">
+              <span class="sb-label sb-label-table sb-label-warning-0" *ngIf="content.status === 'Draft' && content.prevStatus === null">{{content.status}}</span>
+              <span class="sb-label sb-label-table sb-label-primary-100" *ngIf="content.status === 'Review'">Review in Progress</span>
+              <span class="sb-label sb-label-table sb-label-success-0" *ngIf="content.status === 'Live'">Published</span>
+              <span class="sb-label sb-label-table sb-label-error-0" *ngIf="content.status === 'Draft' && content.prevStatus === 'Review'">Rejected</span>
+            </span>
+            <div class="item-dropdown absolute position" (click)="menuClick($event)" *ngIf="content.status === 'Draft'">
+              <div class="ui dropdown sb-dotted-dropdown chapter-dotted-menu" 
+                suiDropdown 
+                appTelemetryInteract 
+                [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('context-menu', 'click', 'chapter-list')"
+                [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+                [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+                [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+                autoClose="itemClick">
+                <div class="px-4 w-auto pb-4"><span class="sb-dotmenu"></span></div>
+                <div class="menu" suiDropdownMenu>
+                  <div class="item" 
+                    *ngIf="visibility && visibility['showEditResource'] && (content.status === 'Draft' || content.status === 'Reject')"
+                    appTelemetryInteract 
+                    [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('edit-resource', 'click', 'chapter-list')"
+                    [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+                    [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+                    [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')" 
+                    (click)="previewResource($event, content, collection)">Edit</div>
+                  <div class="item" 
+                    *ngIf="visibility && visibility['showPreviewResource'] && (content.status === 'Live' || content.status === 'Review')"
+                    appTelemetryInteract 
+                    [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('preview-resource', 'click', 'chapter-list')"
+                    [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+                    [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+                    [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')" 
+                    (click)="previewResource($event, content, collection)">Preview</div>
+                  <div class="item" 
+                    *ngIf="(visibility && visibility['showMoveResource']) && content.status === 'Draft'" 
+                    appTelemetryInteract 
+                    [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('move-resource', 'click', 'chapter-list')"
+                    [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+                    [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+                    [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')" 
+                    (click)="moveResource($event, content, collection)">Move</div>
+                  <div class="item" 
+                    *ngIf="(visibility && visibility['showDeleteResource']) && content.status === 'Draft'" 
+                    appTelemetryInteract 
+                    [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('delete-resource', 'click', 'chapter-list')"
+                    [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
+                    [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
+                    [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')" 
+                    (click)="deleteResource($event, content, collection)">Delete</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="sb-chapterlist-child" *ngIf="collection.children">
+        <app-recursive-tree [collectionUnits]="collection.children" [programContext]="programContext" [sessionContext]="sessionContext"  [selectedChapter]="selectedChapter"
+          (nodeMeta)="nodeMetaEmitter($event)"></app-recursive-tree>
+      </div>
+    </div>
+  </sui-accordion-panel>
+</div>

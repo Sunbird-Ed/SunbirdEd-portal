@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CacheService } from 'ng2-cache-service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { SharedModule } from '../../shared.module';
 
 describe('RedirectComponent', () => {
   let component: RedirectComponent;
@@ -40,6 +41,9 @@ describe('RedirectComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  class NavigationHelperServiceStub {
+
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,7 +51,7 @@ describe('RedirectComponent', () => {
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
-        TelemetryModule.forRoot()
+        TelemetryModule.forRoot(),
       ],
       providers: [
         ResourceService,
@@ -56,6 +60,7 @@ describe('RedirectComponent', () => {
         ToasterService,
         BrowserCacheTtlService,
         NavigationHelperService,
+        {provide: NavigationHelperService, useClass: NavigationHelperServiceStub},
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],

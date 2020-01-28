@@ -1,8 +1,8 @@
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { takeUntil, map, debounceTime, delay } from 'rxjs/operators';
+import { takeUntil, map, debounceTime, delay, tap, catchError } from 'rxjs/operators';
 
 import {
   ResourceService, ConfigService, ToasterService, INoResultMessage,
@@ -10,7 +10,7 @@ import {
 } from '@sunbird/shared';
 import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
-import { ContentManagerService } from '../../services';
+import { ContentManagerService, ConnectionService } from '../../services';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 @Component({
   selector: 'app-search',
@@ -39,7 +39,7 @@ export class SearchComponent implements OnInit {
   isContentNotAvailable = false;
   readonly MAX_CARDS_TO_SHOW: number = 10;
   visits = [];
-
+  isConnected = false;
 
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
@@ -62,6 +62,7 @@ export class SearchComponent implements OnInit {
     public frameworkService: FrameworkService,
     public navigationHelperService: NavigationHelperService,
     public telemetryService: TelemetryService,
+    private connectionService: ConnectionService
   ) {
     this.filterType = this.configService.appConfig.explore.filterType;
 
@@ -75,6 +76,12 @@ export class SearchComponent implements OnInit {
         this.initFilters = true;
       }, error => {
         this.router.navigate(['']);
+      });
+
+    this.connectionService.monitor()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(isConnected => {
+        this.isConnected = isConnected;
       });
 
     this.setTelemetryData();
@@ -118,7 +125,7 @@ export class SearchComponent implements OnInit {
     const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
     const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
 
-    combineLatest(this.searchService.contentSearch(onlineRequest), this.searchService.contentSearch(offlineRequest))
+    combineLatest(this.searchContent(onlineRequest, true), this.searchContent(offlineRequest, false))
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         ([onlineRes, offlineRes]: any) => {
@@ -129,10 +136,12 @@ export class SearchComponent implements OnInit {
           this.downloadedContentsCount = offlineRes.result.count;
           this.downloadedContents = this.utilService.addHoverData(this.downloadedContents, false);
 
-          this.onlineContents = onlineRes.result.count ? _.chunk(getDataForCard(onlineRes.result.content), this.MAX_CARDS_TO_SHOW)[0] : [];
-          this.onlineContentsCount = onlineRes.result.count;
-          this.onlineContents = this.utilService.addHoverData(this.onlineContents, true);
-
+          if (onlineRes) {
+            this.onlineContents = onlineRes.result.count ?
+              _.chunk(getDataForCard(onlineRes.result.content), this.MAX_CARDS_TO_SHOW)[0] : [];
+            this.onlineContentsCount = onlineRes.result.count;
+            this.onlineContents = this.utilService.addHoverData(this.onlineContents, true);
+          }
 
           this.isContentNotAvailable = Boolean(!this.downloadedContents.length && !this.onlineContents.length);
         }, err => {
@@ -184,14 +193,20 @@ export class SearchComponent implements OnInit {
     return option;
   }
 
-  goBack() {
-    const  previousUrl =  this.navigationHelperService.getPreviousUrl();
-    if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
-     return this.router.navigate(['/']);
+  searchContent(request, isOnlineRequest: boolean) {
+    if (!this.isConnected && isOnlineRequest) {
+      return of(undefined);
     }
-    previousUrl.queryParams ? this.router.navigate([previousUrl.url],
-      {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
-      this.utilService.clearSearchQuery();
+
+    return this.searchService.contentSearch(request).pipe(
+      tap(data => {
+      }), catchError(error => {
+        return of(undefined);
+      }));
+  }
+
+  goBack() {
+    this.navigationHelperService.goBack();
   }
 
   gotoViewMore(isOnlineContents) {

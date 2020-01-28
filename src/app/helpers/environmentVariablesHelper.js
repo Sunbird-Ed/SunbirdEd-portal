@@ -24,6 +24,7 @@ let envVariables = {
   CONFIG_URL: env.sunbird_config_service_url || 'https://staging.open-sunbird.org/api/config/',
   EKSTEP_ENV: env.ekstep_env || 'qa',
   DEVICE_REGISTER_API: process.env.sunbird_device_register_api || 'https://api.open-sunbird.org/v3/device/register/',
+  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || 'https://staging.open-sunbird.org/api/v3/device/profile/',
   sunbird_theme: env.sunbird_theme || 'default',
   BUILD_NUMBER: packageObj.version + '.' + packageObj.buildHash,
   sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug',
@@ -35,6 +36,7 @@ let envVariables = {
   CONFIG_SERVICE_ENABLED: env.config_service_enabled || false,
   CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
+  SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
 
 
   // TTL and Intervals
@@ -42,6 +44,7 @@ let envVariables = {
   PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
   CACHE_TTL: env.sunbird_cache_ttl || 1800,
   RESPONSE_CACHE_TTL: env.sunbird_response_cache_ttl || '180', // used in tenant helper to cache the tenant response info
+  sunbird_portal_updateLoginTimeEnabled:env.sunbird_portal_updateLoginTimeEnabled || false,
 
 
   // Telemetry Configuration
@@ -124,7 +127,8 @@ let envVariables = {
   sunbird_portal_offline_app_release_date: env.sunbird_portal_offline_app_release_date,
   sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version,
   sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
-
+  DESKTOP_APP_STORAGE_URL: env.desktop_app_storage_url,
+ 
 
   // CDN Configuration
   PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',

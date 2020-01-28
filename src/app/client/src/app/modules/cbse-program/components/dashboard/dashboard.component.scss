@@ -1,0 +1,34 @@
+.sb-table .sb-table-body td {
+    padding: 16px 24px;
+    text-align: center;
+    &:first-child {
+        text-align: left;
+    }
+    height: 12px;
+}
+
+.sb-table .sb-table-header.heading-large tr th {
+    text-align: center;
+    height: 20px;
+}
+
+.topicSection{
+    border-right: 1px solid #dedede;
+}
+   
+ .selectionField{
+    float: right;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-right: 13px;
+}    
+
+
+.sb-card .sb-card-body{
+    height: auto;
+    cursor: not-allowed;
+}
+
+th{
+    text-align: center;
+}
