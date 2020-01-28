@@ -17,7 +17,7 @@ let errorInitiate, de: DebugElement;
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 
 const userServiceStub = {
@@ -133,9 +133,5 @@ describe('ProgramComponent On Boarding test', () => {
     fixture = TestBed.createComponent(ProgramComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should have a defined component', () => {
-    expect(component).toBeDefined();
   });
 });
