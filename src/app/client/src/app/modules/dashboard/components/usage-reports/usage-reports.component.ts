@@ -1,4 +1,4 @@
-import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective , IImpressionEventInput} from '@sunbird/telemetry';
+import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UsageService } from './../../services';
 import * as _ from 'lodash-es';
@@ -150,21 +150,8 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   downloadCSV() {
     this.usageService.getData(this.downloadUrl).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
-        const data = _.get(response, 'result');
-        const blob = new Blob(
-          [data],
-          {
-            type: 'text/csv;charset=utf-8'
-          }
-        );
-        const downloadUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        document.body.appendChild(a);
-        //        a.style = 'display: none';
-        a.href = downloadUrl;
-        a.download = UUID.UUID() + '.csv';
-        a.click();
-        document.body.removeChild(a);
+        const url = _.get(response, 'result.signedUrl');
+        if (url) { window.open(url, '_blank'); }
       } else {
         this.toasterService.error(this.resourceService.messages.emsg.m0019);
       }

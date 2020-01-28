@@ -1,0 +1,254 @@
+<!-- Untitled Practice Set Section with text field -->
+<div class="d-flex sb-bg-color-gray-0 practical-header" [appTelemetryImpression]="telemetryImpression">
+  <div class="d-flex flex-ai-center practical-header__content ui container">
+    <div class="mr-auto" *ngIf="!showTextArea">
+      <div class="d-flex flex-ai-center">
+        <span class="font-weight-bold fs-1 practical-header__title">{{resourceName}}</span>
+        <a class="cursor-pointer fsmall sb-color-primary ml-16" 
+          appTelemetryInteract 
+          [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('edit-resourcetitle', 'click', 'question-list')"
+          [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+          [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+          [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+          (click)="showResourceTitleEditor()" 
+          *ngIf="visibility && visibility.showSave"
+        >Edit</a>
+      </div>
+      <div class="mt-8 practice-set__status">
+       
+        <span class="sb-label sb-label-table sb-label-success-0"
+        [ngClass]="{ 'sb-label-success-0': resourceStatus === 'Live', 'sb-label-warning-0': (resourceStatus === 'Draft'),  'sb-label-error-0': (resourceStatus === 'Draft' && resourceDetails.rejectComment && resourceDetails.rejectComment !== '') ,  'sb-label-gray-0': resourceStatus === 'Review' }">{{ resourceStatusText }}</span>
+        
+        <span class="cursor-pointer fs-0-785 ml-8" 
+        appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('view-reviewercomments', 'click', 'question-list')"
+        [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+        [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+        (click)="showReviewModal=!showReviewModal"
+        *ngIf="resourceDetails && resourceDetails.rejectComment && (sessionContext.currentRoleId === 1)"><i class="comment alternate outline icon sb-color-primary"></i><a>View Comments</a></span>
+      </div>
+    </div>
+    <div class="sb-field-group textbook-edit mr-auto" *ngIf="showTextArea">
+      <div class="sb-field relative">
+        <textarea rows="4" name="resourceName" class="sb-form-control fs-1" #resourceTtlTextarea placeholder="Type here..." [(ngModel)]='resourceName' (keydown)="onResourceNameChange($event)" (blur)="onResourceNameBlur()">{{resourceName}}</textarea>
+        <span class="characters-left">{{resourceTitleLimit - resourceName.length}} Characters left</span>
+        <span class="sb-error-text" *ngIf="resourceName.length > resourceTitleLimit">Title should be maximum 100 characters.</span>
+        <span class="sb-error-text" *ngIf="!resourceName.length">Title required.</span>
+      </div>
+    </div>
+    <div class='practical-sb-buttons'>
+      <button id="saveContent" *ngIf="visibility && visibility.showSave" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" (click)="questionCreationChild.buttonTypeHandler('save')"
+      appTelemetryInteract 
+      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('save-resourcemetadata', 'click', 'question-list')"
+      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+      >Save</button>
+      <button id="requestChanges" *ngIf="visibility && visibility.showRequestChanges && resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal mr-8" (click)="showRequestChangesPopup = true;"
+      appTelemetryInteract 
+      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('reject-resource', 'click', 'question-list')"
+      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+      >Request Changes</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="previewBtnVisibility" (click)="handlerContentPreview()"
+      appTelemetryInteract 
+      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('preview-resource', 'click', 'question-list')"
+      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+      >Preview</button>
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="!previewBtnVisibility" (click)="questionCreationChild.buttonTypeHandler('edit');previewBtnVisibility = true;" 
+      appTelemetryInteract 
+      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('edit-resource', 'click', 'question-list')"
+      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+      >Edit</button>
+      <button id="publishContent" *ngIf="visibility && visibility.showPublish && resourceStatus === 'Review'" class="sb-btn sb-btn-normal mr-8" 
+      [ngClass]="isPublishBtnDisable ? 'sb-btn-disabled' : 'sb-btn-secondary'"
+      [disabled] = "isPublishBtnDisable" (click)="publishContent()"
+      appTelemetryInteract 
+      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('publish-resource', 'click', 'question-list')"
+      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+      >Publish</button>
+      <button id="submitContent"  *ngIf="visibility && visibility.showSubmit && resourceStatus === 'Draft'" class="sb-btn sb-btn-secondary sb-btn-normal" (click)="questionCreationChild.buttonTypeHandler('review')"
+      appTelemetryInteract 
+      [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('submit-resourceforreview', 'click', 'question-list')"
+      [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+      [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+      [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+      >Submit</button>
+    </div>
+  </div>
+</div> 
+
+<div class="ui container">
+  <div class="ui twelve column grid m-0">
+    <div class="three wide column p-0">
+      <!-- Question list Section -->
+      <div class="d-flex flex-ai-center ckeditor-tool__answer pr-8 py-16">
+        <label class="fsmall mb-0">Question(s)</label>
+
+        <!-- add button to be integrated -->
+        <button  class="sb-btn sb-btn-outline-primary sb-btn-normal sb-left-icon-btn sb-btn-radius ml-auto"
+        *ngIf="visibility && visibility.showCreateQuestion" (click)="createNewQuestion()"
+        appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('create-question', 'click', 'question-list')"
+        [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+        [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata">
+        <i class="plus icon mr-4 ml-4"></i>ADD</button>
+      </div>
+
+  
+      <div class="question-list">
+        <div class="question-list__item active d-flex flex-ai-center p-16 cursor-pointer"
+          [class.active]="selectedQuestionId === question.identifier"
+          (click)="handleQuestionTabChange(question.identifier);" *ngFor="let question of questionList; let i = index;"
+          appTelemetryInteract 
+          [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('question-tab', 'click', 'question-list')"
+          [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+          [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+          [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata">
+          <label class="mb-0 mr-auto" for="check1"> Question {{i + 1}}</label>
+          <img src="../../../../../assets/images/exclamation-icon.svg" *ngIf="question.rejectComment && question.rejectComment !== '' " class="ml-8" width="20px" height="16px">
+          <i class="trash alternate outline icon ml-24" *ngIf="visibility && visibility.showDeleteQuestion"
+          appTelemetryInteract 
+          [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('delete-question', 'click', 'question-list')"
+          [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+          [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+          [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+           (click)="openDeleteQuestionModal($event,question.identifier)"></i>
+          <!-- <img src="../../../../../assets/images/move.svg" *ngIf="role.currentRole === 'CONTRIBUTOR' && (resourceStatus === 'Draft' || resourceStatus === 'Rejected')" class="ml-8" width="20px" height="16px"> -->
+        </div>
+      </div>
+
+    </div>
+
+    <div class="nine wide column bg-white pl-40 p-0 ckeditor-container">
+      <div *ngIf="questionList && questionList.length && refresh">
+        <div *ngIf="sessionContext.questionType === 'mcq'" class="ui segment">
+          <div [hidden]="showLoader">
+            <app-mcq-creation #questionCreationChild [sessionContext]="sessionContext" [telemetryEventsInput]="telemetryEventsInput" [questionMetaData]="questionMetaData"
+              [role]="role" (questionStatus)="questionStatusHandler($event)"
+              (questionFormChangeStatus)="handleQuestionFormChangeStatus($event)">
+            </app-mcq-creation>
+          </div>
+        </div>
+        <div *ngIf="sessionContext.questionType !== 'mcq'" class="ui segment">
+          <div [hidden]="showLoader">
+            <app-question-creation #questionCreationChild [sessionContext]="sessionContext" [telemetryEventsInput]="telemetryEventsInput" [questionMetaData]="questionMetaData"
+              [role]="role" (questionStatus)="questionStatusHandler($event)"
+              (questionFormChangeStatus)="handleQuestionFormChangeStatus($event)">
+            </app-question-creation>
+          </div>
+        </div>
+      </div>
+      <app-loader *ngIf='showLoader'></app-loader>
+    </div>
+  </div>
+
+</div>
+
+<sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+  class="sb-modal" appBodyScroll (dismissed)="showSuccessModal = !showSuccessModal; dismissPublishModal();" #modal>
+  <div class="sb-modal-header">
+    Practice Set Successfully Published
+  </div>
+  <div class="sb-modal-content">
+    <p>Name : {{resourceName}} </p>
+    <p>Board : {{sessionContext.board}} </p>
+    <p>Medium : {{sessionContext.medium}} </p>
+    <p>Class : {{sessionContext.gradeLevel}} </p>
+    <p>Subject : {{sessionContext.subject}} </p>
+    <p>ResourceID : {{publishedResourceId}} </p>
+    Preview Link : <a target="_blank" href="https://diksha.gov.in/play/content/{{publishedResourceId}}">Click here</a>
+  </div>
+
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="showSuccessModal = !showSuccessModal; dismissPublishModal();">
+      Close
+    </button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="showDeleteQuestionModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'small'" class="sb-modal sb-error sb-modal-center" appBodyScroll
+  (dismissed)="showDeleteQuestionModal = !showDeleteQuestionModal" #modal>
+  <div class="sb-modal-header text-left">
+      Delete Content
+  </div>
+  <div class="sb-modal-content">
+      <p>Do you want to delete the question?</p> 
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal" (click)="deleteQuestion()"> Delete </button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="showPublishModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+[size]="'normal'" class="sb-modal" appBodyScroll
+(dismissed)="showPublishModal = !showPublishModal" #modal>
+  <div class="sb-modal-header text-left">
+      Publish (Content Type)
+  </div>
+  <div class="sb-modal-content">
+    <div class="sb-publish-content">
+      <div class="sb-publish-content-title"> Click Publish to:</div>
+      <p class="py-8">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled 
+      </p>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="publichContent()" > Publish </button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="showReviewModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll
+  (dismissed)="showReviewModal = !showReviewModal" #modal>
+  <div class="sb-modal-header">
+      Review Comments
+  </div>
+  <div class="sb-modal-content">
+      <div class="sb-publish-content">
+        <div class="review-modal-list"> 
+          {{resourceDetails?.rejectComment}}
+      </div>
+      </div>
+  </div>
+  <!-- <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary"> Continue </button>
+  </div> -->
+</sui-modal>
+
+<sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="showRequestChangesPopup = false; contentRejectComment = ''">
+  <div class="sb-modal-header">
+      Add Review Comments
+  </div>
+  <form #FormControl="ngForm" class="ui form">
+  <div class="sb-modal-content">
+      <div class="sb-field-group">
+          <label>Enter your comments</label>
+          <div class="sb-field relative">  
+              <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="contentRejectComment" placeholder="Add comment" name="contentRejectComment" required></textarea>
+              <span class="characters-left">{{ commentCharLimit - contentRejectComment.length }} Characters left</span>
+          </div>
+          <div>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="contentRejectComment.length > commentCharLimit">Comments should be maximum {{commentCharLimit}} characters.</label>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="FormControl.form.controls.contentRejectComment?.touched && !FormControl.form.valid">Fill comments </label>
+          </div>
+      </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [disabled]="contentRejectComment.length > commentCharLimit"  [ngClass]="{'sb-btn-primary': FormControl.form.valid, 'sb-btn-disabled': !FormControl.form.valid || contentRejectComment.length > commentCharLimit}"   (click)="requestChanges()"> Submit Review </button>
+  </div>
+</form>
+</sui-modal>

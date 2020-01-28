@@ -19,13 +19,19 @@
             "assets": [
               "src/assets",
               "src/thirdparty",
-              "src/favicon.png"
+              "src/favicon.png",
+              {
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/common-consumption/assets",
+                "output": "./assets/common-consumption"
+              }
             ],
             "styles": [
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "src/assets/styles/styles.scss"
+              "src/assets/styles/styles.scss",
+              "./node_modules/common-consumption-styles/assets/_styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -214,8 +220,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "3mb",
+                  "maximumError": "6mb"
                 }
               ]
             }

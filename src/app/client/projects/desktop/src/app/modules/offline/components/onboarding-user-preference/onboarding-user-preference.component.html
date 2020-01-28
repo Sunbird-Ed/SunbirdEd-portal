@@ -17,18 +17,18 @@
           </sui-select>
         </div>
 
-        <div class="sb-field" *ngIf="showMedium">
+        <div class="sb-field">
           <label class="d-flex fields-selection__label" for="medium">{{resourceService?.frmelmnts?.lbl?.medium}}</label>
-          <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0127}}" class="selection"
+          <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0127}}" class="selection" [isDisabled]="!showMedium"
             [(ngModel)]="selectedMedium" (ngModelChange)="onMediumChange($event)" [options]="mediumOption"
             labelField="name" [isSearchable]="true" #mediums>
             <sui-select-option *ngFor="let medium of mediums.filteredOptions" [value]="medium"> </sui-select-option>
           </sui-multi-select>
         </div>
 
-        <div class="sb-field" *ngIf="showClass">
+        <div class="sb-field">
           <label class="d-flex fields-selection__label" for="class">{{resourceService?.frmelmnts?.lbl?.class}}</label>
-          <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0128}}" class="selection"
+          <sui-multi-select placeholder="{{resourceService?.messages?.stmsg?.m0128}}" class="selection" [isDisabled]="!showClass"
             [(ngModel)]="selectedClass" (ngModelChange)="onClassChange($event)" [options]="classOption"
             labelField="name" [isSearchable]="true" #classes>
             <sui-select-option *ngFor="let class of classes.filteredOptions" [value]="class"> </sui-select-option>

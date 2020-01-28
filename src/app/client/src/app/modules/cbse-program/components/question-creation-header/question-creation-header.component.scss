@@ -1,0 +1,34 @@
+@import "variables";
+@import 'mixins/mixins';
+.btn-group {
+    text-align: right;
+  }
+.btn-group button:first-child {
+    border-right: none;
+    border-radius: 0;
+}
+.btn-group button:last-child {
+    border-left: none;
+    border-radius: 0;
+    margin-right: 0;
+}
+.btn-group button.active {
+    background: #024a93;
+    color: #ffffff;
+}
+.question-status a {
+    text-decoration: underline;
+}
+.question-header .message {
+    font-size: 11px;
+}
+.review-modal-list {
+    .list {
+        padding-left: calculateRem(16px);
+        margin: 0;
+        li {
+            font-size: $font-size-sm;
+            line-height: calculateRem(18px);
+        }
+    }
+}

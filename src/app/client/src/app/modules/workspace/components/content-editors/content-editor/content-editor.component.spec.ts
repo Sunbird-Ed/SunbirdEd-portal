@@ -23,6 +23,9 @@ const mockActivatedRoute = {
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
+class NavigationHelperServiceStub {
+  public navigateToWorkSpace() {}
+}
 const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
 describe('ContentEditorComponent', () => {
   let component: ContentEditorComponent;
@@ -34,7 +37,8 @@ describe('ContentEditorComponent', () => {
       providers: [
         EditorService, UserService, ContentService, BrowserCacheTtlService,
         ResourceService, ToasterService, ConfigService, LearnerService,
-        NavigationHelperService, WorkSpaceService,
+        WorkSpaceService,
+        {provide: NavigationHelperService, useClass: NavigationHelperServiceStub},
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: mockResourceService },
         { provide: UserService, useValue: mockUserService },
