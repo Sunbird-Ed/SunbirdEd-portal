@@ -25,6 +25,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
   completedCount: number;
+  deletedContents: string [] = [];
   localContentData: any = [];
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -40,6 +41,12 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data: any) => {
+      if (_.get(data, 'identifier')) {
+        this.deletedContents.push(data.identifier);
+        this.removeDeletedContentInList();
+      }
+    });
     // Call download list initially
     this.apiCallSubject.next();
 
@@ -50,6 +57,23 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         this.isOpen = true;
         this.apiCallSubject.next();
       });
+  }
+
+  removeDeletedContentInList() {
+    this.contentResponse = _.filter(this.contentResponse, (o) => {
+      return !_.includes(this.deletedContents, o.contentId);
+    });
+  }
+
+  removeDeleteId() {
+    _.filter(this.contentResponse, (o) => {
+      if (_.includes(this.deletedContents, o.contentId) && o.status !== 'completed') {
+        _.remove(this.deletedContents, (n) => {
+          return n === o.contentId;
+        });
+      }
+    });
+    this.removeDeletedContentInList();
   }
 
   getList() {
@@ -79,9 +103,10 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           });
         if (apiResponse.length >= this.localContentData.length) {
           this.localContentData = apiResponse;
-        } else if (this.localContentData.length  > apiResponse.length) {
+        } else if (this.localContentData.length > apiResponse.length) {
           this.callContentList = true;
         }
+        this.removeDeleteId();
         });
   }
 
