@@ -38,11 +38,11 @@ describe('Session Expiry Interceptor', () => {
             expect(err.error).toEqual({ responseCode: 'SESSION_EXPIRED' });
             expect(err.status).toBe(401);
             expect(err.statusText).toBe('Unauthorized');
+            expect(sessionExpiryInterceptor.sessionExpired).toBeFalsy();
+            expect(sessionExpiryInterceptor.intercept).toHaveBeenCalled();
         });
         const mockHttp = httpMock.expectOne(mockUrl);
         mockHttp.flush({ responseCode: 'SESSION_EXPIRED' }, { status: 401, statusText: 'Unauthorized' });
-        expect(sessionExpiryInterceptor.sessionExpired).toBeFalsy();
-        expect(sessionExpiryInterceptor.intercept).toHaveBeenCalled();
     });
 
     it('should handle session expiry when status code is 401 and user is logged in ', () => {
