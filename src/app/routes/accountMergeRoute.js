@@ -7,13 +7,14 @@ const request = require('request-promise');
 const envHelper = require('./../helpers/environmentVariablesHelper.js');
 const authorizationToken = envHelper.PORTAL_API_AUTH_TOKEN;
 const logger = require('sb_logger_util_v2');
+const ROUTES = require('../constants/routesConstants')
 
 module.exports = (app) => {
 
   /**
    * User initiated merge process is redirected to following url
    */
-  app.get('/user/session/save', (req, res) => {
+  app.get(ROUTES.ACCOUNT_MERGE.SESSION_SAVE, (req, res) => {
     logger.info({msg: '/user/session/save called'});
     if (!_.get(req, 'kauth.grant.access_token.token')) {
       res.status(401).send({
