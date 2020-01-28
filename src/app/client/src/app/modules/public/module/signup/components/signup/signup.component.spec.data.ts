@@ -26,5 +26,35 @@ export const SignUpComponentMockData = {
         'value': '{"latestVersion":"v4","v4":{"url":}}'
       }
     }
+  },
+  interactEDataUnSelected: {
+    context: {
+      env: 'self-signup',
+      cdata: [
+        {id: 'user:tnc:accept', type: 'Feature'},
+        {id: 'SB-16663', type: 'Task'}
+      ]
+    },
+    edata: {
+      id: 'user:tnc:accept',
+      type: 'click',
+      subtype: 'unselected',
+      pageid: 'self-signup'
+    }
+  },
+  interactEDataSelected: {
+    context: {
+      env: 'self-signup',
+      cdata: [
+        {id: 'user:tnc:accept', type: 'Feature'},
+        {id: 'SB-16663', type: 'Task'}
+      ]
+    },
+    edata: {
+      id: 'user:tnc:accept',
+      type: 'click',
+      subtype: 'selected',
+      pageid: 'self-signup'
+    }
   }
 };

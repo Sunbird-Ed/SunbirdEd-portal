@@ -348,4 +348,24 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
   }
+
+  generateTelemetry(e) {
+    const selectedType = e.target.checked ? 'selected' : 'unselected';
+    const interactData = {
+      context: {
+        env: 'self-signup',
+        cdata: [
+          {id: 'user:tnc:accept', type: 'Feature'},
+          {id: 'SB-16663', type: 'Task'}
+        ]
+      },
+      edata: {
+        id: 'user:tnc:accept',
+        type: 'click',
+        subtype: selectedType,
+        pageid: 'self-signup'
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
 }

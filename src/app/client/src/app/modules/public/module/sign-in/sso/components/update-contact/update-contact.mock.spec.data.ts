@@ -135,6 +135,36 @@ export const mockUpdateContactData = {
         'value': '{"latestVersion":"v4","v4":{"url":}}'
       }
     }
+  },
+  interactEDataUnSelected: {
+    context: {
+      env: 'sso-signup',
+      cdata: [
+        {id: 'user:tnc:accept', type: 'Feature'},
+        {id: 'SB-16663', type: 'Task'}
+      ]
+    },
+    edata: {
+      id: 'user:tnc:accept',
+      type: 'click',
+      subtype: 'unselected',
+      pageid: 'sso-signup'
+    }
+  },
+  interactEDataSelected: {
+    context: {
+      env: 'sso-signup',
+      cdata: [
+        {id: 'user:tnc:accept', type: 'Feature'},
+        {id: 'SB-16663', type: 'Task'}
+      ]
+    },
+    edata: {
+      id: 'user:tnc:accept',
+      type: 'click',
+      subtype: 'selected',
+      pageid: 'sso-signup'
+    }
   }
 };
 

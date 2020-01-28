@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {ResourceService, SharedModule, ToasterService} from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { CoreModule, TenantService } from '@sunbird/core';
-import { TelemetryModule } from '@sunbird/telemetry';
+import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { FormBuilder } from '@angular/forms';
@@ -63,7 +63,7 @@ describe('SignUpComponent', () => {
       providers: [FormBuilder, ResourceService, SignupService, ToasterService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: ResourceService, useValue: resourceBundle },
+        { provide: ResourceService, useValue: resourceBundle }, TelemetryService,
         {provide : TenantService, useValue: { tenantData$: of('')}}],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -323,6 +323,20 @@ describe('SignUpComponent', () => {
     component.vaidateUserContact();
     expect(component.showUniqueError).toBe('');
     expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
+  });
+
+  it('should toggle tnc checkboc', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.generateTelemetry({target: {checked: false}});
+    expect(telemetryService.interact).toHaveBeenCalledWith(SignUpComponentMockData.interactEDataUnSelected);
+  });
+
+  it('should toggle tnc checkboc if already false', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.generateTelemetry({target: {checked: true}});
+    expect(telemetryService.interact).toHaveBeenCalledWith(SignUpComponentMockData.interactEDataSelected);
   });
 
 });
