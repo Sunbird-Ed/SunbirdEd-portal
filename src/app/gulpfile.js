@@ -105,6 +105,7 @@ gulp.task('prepare:app:dist', () => {
         'sunbird-plugins/**/*',
         'routes/**/*',
         'constants/**/*',
+        'controllers/**/*',
         'server.js'], { 'base': '.' })
         .pipe(gulp.dest('./app_dist'))
 })
