@@ -1,0 +1,125 @@
+<div *ngIf='!showLoader && !showError' class="sb-chapter-list">
+  <div *ngIf="collectionHierarchy.length && currentStage === 'chapterListComponent'">
+    <div class="sb-cbse-homepage-container" [appTelemetryImpression]="telemetryImpression">
+
+      <!-- Header Section -->
+      <div class="sb-pageSection-header">
+        <div class="ui container d-flex flex-ai-center chapterlist-header">
+          <div class="d-flex mr-auto flex-ai-center">
+            <!-- <div class="chapterlist-header__image">
+              <img [src]="collection.image" alt="Book" title="Book">
+            </div> -->
+            <div class="textbook-details ml-8">
+              <label class="d-block fs-1 mb-4">{{collection.name}}</label>
+              <div class="d-flex flex-ai-center"><label class="d-block fsmall font-weight-normal mb-0">{{collection.subject}}</label>
+                <!-- To be integrated -->
+                <span class="dot-separator"></span>
+            <label class="d-block fsmall font-weight-normal mb-0">{{collection.gradeLevel}}</label>
+          </div>
+            </div>
+          </div>
+
+          <div *ngIf="actions.showCountPanel.roles.includes(sessionContext.currentRoleId)" class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap ml-16">
+            <label class="d-block width-100" *ngIf="actions.showContribution.roles.includes(sessionContext.currentRoleId)">Contributions</label>
+            <label class="d-block width-100" *ngIf="actions.showUpforReview.roles.includes(sessionContext.currentRoleId)">Up for Review</label>
+            <div class="d-flex">
+              <dl *ngIf="actions.showTotalContribution.roles.includes(sessionContext.currentRoleId)"
+                class="sb-meta-data">
+                <dt>{{countData['total']}}</dt>
+                <dd>Total</dd>
+              </dl>
+              <dl *ngIf="actions.showMyContribution.roles.includes(sessionContext.currentRoleId)"
+                class="sb-meta-data">
+                <dt>{{countData['mycontribution']}}</dt>
+                <dd>My Content</dd>
+              </dl>
+              <dl *ngIf="actions.showRejected.roles.includes(sessionContext.currentRoleId)" class="sb-meta-data">
+                <dt>{{countData['reject']}}</dt>
+                <dd>Rejected</dd>
+              </dl>
+              <dl *ngIf="actions.showUnderReview.roles.includes(sessionContext.currentRoleId)" class="sb-meta-data">
+                <dt>{{countData['review']}}</dt>
+                <dd>Review in Progress</dd>
+              </dl>
+              <dl *ngIf="actions.showTotalUnderReview.roles.includes(sessionContext.currentRoleId)"
+                class="sb-meta-data">
+                <dt>{{countData['total']}}</dt>
+                <dd>Total</dd>
+              </dl>
+              <dl *ngIf="actions.showAawaitingReview.roles.includes(sessionContext.currentRoleId)" class="sb-meta-data">
+                <dt>{{countData['awaitingreview']}}</dt>
+                <dd>Awaiting my review</dd>
+              </dl>
+            </div>
+          </div>
+
+          <div class="sb-textbook-allchapters sb-field">
+            <label class="fsmall font-weight-normal">Select Chapters</label>
+            <sui-select class="selection w-100" placeholder="All Chapters" [isSearchable]=true labelField="name"
+              valueField="identifier" [(ngModel)]="selectedChapterOption"
+              (selectedOptionChange)="onSelectChapterChange()" [options]="levelOneChapterList" #selectdChapter>
+              <sui-select-option *ngFor="let option of selectdChapter.filteredOptions" [value]="option">
+              </sui-select-option>
+            </sui-select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Accordion Section -->
+      <div class="sb-pageSection-content sb-bg-white py-24 px-0" style="min-height: 350px;">
+        <div class="ui container sb-textbook-details-container mb-24">
+          <div class="sb-chapterlist">
+            <sui-accordion class="styled fluid sb-accordion sb-chapterlist-accordion" [closeOthers]="true">
+              <app-recursive-tree [collectionUnits]="collectionHierarchy" [programContext]="programContext" [sessionContext]="sessionContext" [selectedChapter]="selectedChapterOption"
+                (nodeMeta)="showResourceTemplate($event)"></app-recursive-tree>
+            </sui-accordion>
+          </div>
+        </div>
+      </div>
+
+      <app-resource-template *ngIf='showResourceTemplatePopup'
+        [resourceTemplateComponentInput]="resourceTemplateComponentInput"
+        (templateSelection)="handleTemplateSelection($event)">
+      </app-resource-template>
+
+      <!-- Move to Modal Section -->
+      <div *ngIf="showLargeModal">
+        <app-resource-reorder [collectionUnits]="collectionHierarchy" [contentId]="contentId"
+          [sessionContext]="sessionContext" [prevUnitSelect]="prevUnitSelect" [programContext]="programContext"
+          (moveEvent)="showResourceTemplate($event)"> </app-resource-reorder>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="twelve wide column sb-bg-white" *ngIf="currentStage !== 'chapterListComponent'">
+  <!-- <app-content-uploader [sessionContext]="sessionContext" [unitIdentifier]="unitIdentifier"
+      [templateDetails]="templateDetails" (contentMetaData)="uploadHandler($event)"></app-content-uploader> -->
+
+    <ndc-dynamic [ndcDynamicComponent]="creationComponent" [ndcDynamicInputs]="dynamicInputs"
+      [ndcDynamicOutputs]="dynamicOutputs"></ndc-dynamic>
+</div>
+<div class="twelve wide column" *ngIf="!collectionHierarchy.length && !showLoader">
+  <app-no-result [data]="{ messageText: 'resourceService.messages.stmsg.m0006'}"></app-no-result>
+</div>
+<div *ngIf='showLoader && !showError' class="ui container sb-chapter-list">
+  <app-loader></app-loader>
+</div>
+
+<sui-modal *ngIf="showConfirmationModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showConfirmationModal = false" #modal>
+  <div class="sb-modal-header">
+      Confirm
+  </div>
+  <div class="sb-modal-content">
+      <div class="sb-publish-content">
+        <div class="review-modal-list">
+          Are you sure want to remove the Resource from selected unit?
+      </div>
+      </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="removeResourceFromHierarchy()"> Yes </button>
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="showConfirmationModal = false"> No </button>
+  </div>
+</sui-modal>

@@ -65,7 +65,40 @@ function azureBlobStream() {
     return function (req, res, next) {
         let container = envHelper.sunbird_azure_report_container_name;
         let fileToGet = req.params.slug + '/' + req.params.filename;
-        if (fileToGet.includes('.zip')) {
+        if (fileToGet.includes('.json')) {
+            const readStream = blobService.createReadStream(container, fileToGet);
+            readStream.pipe(res);
+            readStream.on('end', () => {
+                res.end();
+            })
+            readStream.on('error', error => {
+                if (error && error.statusCode === 404) {
+                    console.log('Error with status code 404 - ', error);
+                    const response = {
+                        responseCode: "CLIENT_ERROR",
+                        params: {
+                            err: "CLIENT_ERROR",
+                            status: "failed",
+                            errmsg: "Blob not found"
+                        },
+                        result: {}
+                    }
+                    res.status(404).send(apiResponse(response));
+                } else {
+                    console.log('Error without status code 404 - ', error);
+                    const response = {
+                        responseCode: "SERVER_ERROR",
+                        params: {
+                            err: "SERVER_ERROR",
+                            status: "failed",
+                            errmsg: "Failed to display blob"
+                        },
+                        result: {}
+                    }
+                    res.status(500).send(apiResponse(response));
+                }
+            })
+        } else {
             var startDate = new Date();
             var expiryDate = new Date(startDate);
             expiryDate.setMinutes(startDate.getMinutes() + 3600);
@@ -91,46 +124,6 @@ function azureBlobStream() {
                 }
             }
             res.status(200).send(apiResponse(response));
-        } else {
-            blobService.getBlobToText(container, fileToGet, function (error, text) {
-                if (error && error.statusCode === 404) {
-                    console.log('Error with status code 404 - ', error);
-                    const response = {
-                        responseCode: "CLIENT_ERROR",
-                        params: {
-                            err: "CLIENT_ERROR",
-                            status: "failed",
-                            errmsg: "Blob not found"
-                        },
-                        result: {}
-                    }
-                    res.status(404).send(apiResponse(response));
-                } else if (error) {
-                    console.log('Error without status code 404 - ', error);
-                    const response = {
-                        responseCode: "SERVER_ERROR",
-                        params: {
-                            err: "SERVER_ERROR",
-                            status: "failed",
-                            errmsg: "Failed to display blob"
-                        },
-                        result: {}
-                    }
-                    res.status(500).send(apiResponse(response));
-                } else {
-                    try { text = JSON.parse(text); } catch (e) { }
-                    const response = {
-                        responseCode: "OK",
-                        params: {
-                            err: null,
-                            status: "success",
-                            errmsg: null
-                        },
-                        result: text
-                    }
-                    res.status(200).send(apiResponse(response));
-                }
-            });
         }
     }
 }

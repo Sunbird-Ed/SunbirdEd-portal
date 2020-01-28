@@ -112,7 +112,7 @@ describe('OtpComponent', () => {
 
   it('it should not create new user as create user api failed', () => {
     const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'createUser').and.returnValue(observableThrowError(OtpComponentMockResponse.createUserErrorResponse));
+    spyOn(signupService, 'createUserV3').and.returnValue(observableThrowError(OtpComponentMockResponse.createUserErrorResponse));
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableOf(OtpComponentMockResponse.tncAcceptResponse));
     component.mode = 'email';
     component.tncLatestVersion = 'v4';
@@ -126,7 +126,7 @@ describe('OtpComponent', () => {
   it('it should redirect to sign page as tnc api failed but user created', () => {
     spyOn(component, 'redirectToSignPage');
     const signupService = TestBed.get(SignupService);
-    spyOn(signupService, 'createUser').and.returnValue(observableOf(OtpComponentMockResponse.createUserSuccessResponse));
+    spyOn(signupService, 'createUserV3').and.returnValue(observableOf(OtpComponentMockResponse.createUserSuccessResponse));
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableThrowError(OtpComponentMockResponse.tncAcceptResponse));
     component.mode = 'email';
     component.tncLatestVersion = 'v4';
@@ -138,7 +138,7 @@ describe('OtpComponent', () => {
   it('it should create new user', () => {
     const signupService = TestBed.get(SignupService);
     spyOn(component, 'redirectToSignPage');
-    spyOn(signupService, 'createUser').and.returnValue(observableOf(OtpComponentMockResponse.createUserSuccessResponse));
+    spyOn(signupService, 'createUserV3').and.returnValue(observableOf(OtpComponentMockResponse.createUserSuccessResponse));
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableOf(OtpComponentMockResponse.tncAcceptResponse));
     component.mode = 'email';
     component.tncLatestVersion = 'v4';

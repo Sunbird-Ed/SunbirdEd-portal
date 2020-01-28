@@ -6,7 +6,7 @@ import { SearchService, SearchParam, PlayerService, CoursesService, UserService 
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService, TelemetryInteractDirective } from '@sunbird/telemetry';
-import { takeUntil, mergeMap, first, tap, retry, catchError, map } from 'rxjs/operators';
+import { takeUntil, mergeMap, first, tap, retry, catchError, map, finalize } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
@@ -86,10 +86,24 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
         this.searchResults = this.utilService.getDataForCard(linkedContents, constantData, dynamicFields, metaData);
         this.appendItems(0, this.itemsToLoad);
-        if (this.searchResults.length === 1 && !sessionStorage.getItem('singleContentRedirect')) {
-          this.singleContentRedirect = this.searchResults[0]['name'];
+        if (this.searchResults.length === 1) {
+          if (_.get(this.searchResults[0], 'metaData.mimeType') === 'application/vnd.ekstep.content-collection' ||
+            !sessionStorage.getItem('singleContentRedirect')) {
+            this.singleContentRedirect = this.searchResults[0]['name'];
+          }
         }
         this.showLoader = false;
+        const telemetryInteractEdata = {
+          id: 'content-explode',
+          type: 'view',
+          subtype: 'post-populate'
+        };
+        if (_.get(res, 'collection.length') > 1) {
+          telemetryInteractEdata.id = 'content-collection';
+        }
+        if (this.searchResults.length !== 1) {
+          this.logInteractEvent(telemetryInteractEdata);
+        }
       }, err => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0049);
@@ -121,44 +135,44 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
 
   private processDialCode(params) {
-    return this.dialCodeService.searchDialCode(_.get(params, 'dialCode'), this.isBrowse)
-      .pipe(
-        tap(value => {
-          this.logInteractEvent({
-            id: 'search-dial-success',
-            type: 'view',
-            subtype: 'auto',
-          });
-          this.logTelemetryEvents(true);
-        }, err => {
-          this.logInteractEvent({
-            id: 'search-dial-failed',
-            type: 'view',
-            subtype: 'auto',
-          });
-          this.logTelemetryEvents(false);
-        }),
-        retry(1),
-        catchError(error => {
-          return of({
-            content: [],
-            collections: []
-          });
-        }),
-        mergeMap(this.dialCodeService.filterDialSearchResults),
-        tap((res) => {
-          this.showSelectChapter = false;
-          const telemetryInteractEdata = {
-            id: 'content-explode',
-            type: 'view',
-            subtype: 'post-populate'
-          };
-          if (_.get(res, 'collection.length') > 1) {
-            telemetryInteractEdata.id = 'content-collection';
-          }
-          this.logInteractEvent(telemetryInteractEdata);
-        })
-      );
+    return of(params).pipe(
+      finalize(() => {
+        this.logInteractEvent({
+          id: 'search-dial-init',
+          type: 'view',
+          subtype: 'auto',
+        });
+      }),
+      mergeMap(param => this.dialCodeService.searchDialCode(_.get(param, 'dialCode'), this.isBrowse)
+        .pipe(
+          tap(value => {
+            this.logInteractEvent({
+              id: 'search-dial-success',
+              type: 'view',
+              subtype: 'auto',
+            });
+            this.logTelemetryEvents(true);
+          }, err => {
+            this.logInteractEvent({
+              id: 'search-dial-failed',
+              type: 'view',
+              subtype: 'auto',
+            });
+            this.logTelemetryEvents(false);
+          }),
+          retry(1),
+          catchError(error => {
+            return of({
+              content: [],
+              collections: []
+            });
+          }),
+          mergeMap(this.dialCodeService.filterDialSearchResults),
+          tap((res) => {
+            this.showSelectChapter = false;
+          })
+        ))
+    );
   }
   private processTextBook(params) {
     const textBookUnit = _.get(params, 'textbook');
@@ -173,12 +187,6 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }
       return this.dialCodeService.getAllPlayableContent([textBookUnit]).pipe(
         map(contents => {
-          const telemetryInteractEdata = {
-            id: 'content-explode',
-            type: 'view',
-            subtype: 'post-populate'
-          };
-          this.logInteractEvent(telemetryInteractEdata);
           return { contents };
         })
       );
@@ -433,11 +441,11 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public redirectToDetailsPage(contentId) {
     if (this.userService.loggedIn) {
       this.router.navigate(['/resources/play/collection', contentId], {
-        queryParams: { contentType: 'TextBook' },
+        queryParams: { contentType: 'TextBook', 'dialCode': this.dialCode },
         state: { action: 'dialcode' }
       });
     } else {
-      this.router.navigate(['/play/collection', contentId], { queryParams: { contentType: 'TextBook' } });
+      this.router.navigate(['/play/collection', contentId], { queryParams: { contentType: 'TextBook', 'dialCode': this.dialCode } });
     }
   }
 

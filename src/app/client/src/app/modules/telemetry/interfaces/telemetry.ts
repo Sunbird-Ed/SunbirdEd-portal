@@ -126,6 +126,7 @@ export interface IImpressionEventInput {
   'context': {
     'env': string;
     'cdata'?: Array<object>;
+    'pdata'?: IProducerData
   };
   'object'?: {
     'id': string;
@@ -139,7 +140,8 @@ export interface IImpressionEventInput {
 export interface IInteractEventInput {
   'context': {
     'env': string;
-    'cdata': Array<object>
+    'cdata': Array<object>,
+    'pdata'?: IProducerData
   };
   'object'?: IInteractEventObject;
   'edata': IInteractEventEdata;

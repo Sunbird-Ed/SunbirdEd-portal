@@ -14,6 +14,30 @@ describe('Utility Service Test Cases', function () {
     done();
   });
 
+  it('should check for valid string', function (done) {
+    const isString = utils.isValidAndNotEmptyString('test');
+    expect(isString).to.eql(true);
+    done();
+  });
+
+  it('should return false as invalid string', function (done) {
+    const isString = utils.isValidAndNotEmptyString(null);
+    expect(isString).to.eql(false);
+    done();
+  });
+
+  it('should return false as it is undefined', function (done) {
+    const isString = utils.isValidAndNotEmptyString(undefined);
+    expect(isString).to.eql(false);
+    done();
+  });
+
+  it('should return false as it is empty string', function (done) {
+    const isString = utils.isValidAndNotEmptyString('');
+    expect(isString).to.eql(false);
+    done();
+  });
+
   it('should get delay of given duration', function (done) {
     const date1 = Date.now();
     const delayTime = 100;

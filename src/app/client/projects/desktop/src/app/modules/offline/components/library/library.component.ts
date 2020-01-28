@@ -20,6 +20,7 @@ import { ConnectionService, ContentManagerService } from '../../services';
 export class LibraryComponent implements OnInit, OnDestroy {
 
     public showLoader = true;
+    public showSectionLoader = false;
     public queryParams: any;
     public hashTagId: string;
     public dataDrivenFilters: any = {};
@@ -46,6 +47,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     contentName: string;
     infoData;
     languageDirection = 'ltr';
+    isFilterChanged = false;
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -81,6 +83,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.getSelectedFilters();
         this.setTelemetryData();
 
+        if (!this.isBrowse) {
+            this.navigationHelperService.clearHistory();
+        }
+
         this.connectionService.monitor()
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(isConnected => {
@@ -91,7 +97,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe((data) => {
                 if (this.router.url === '/') {
-                    this.fetchContents();
+                    this.fetchContents(false);
                 }
             });
 
@@ -110,6 +116,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
             .subscribe((language: ILanguage) => {
                 this.languageDirection = language.dir;
             });
+
+        this.utilService.clearSearchQuery();
     }
 
     getSelectedFilters() {
@@ -123,13 +131,27 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     onFilterChange(event) {
-        this.showLoader = true;
         this.dataDrivenFilters = _.cloneDeep(event.filters);
-        this.resetSections();
-        this.fetchContents();
         this.publicPlayerService.libraryFilters = event.filters;
         this.hashTagId = event.channelId;
         this.modifiedFilters = event.filters;
+
+        if (this.isBrowse) {
+            this.showLoader = true;
+            this.resetSections();
+            this.fetchContents();
+        } else {
+            this.fetchContents(this.isFilterChanged);
+            if (!this.isFilterChanged) {
+                this.isFilterChanged = true;
+                this.showLoader = false;
+                this.resetSections();
+            } else {
+                this.showLoader = false;
+                this.showSectionLoader = true;
+                this.pageSections.splice(1, this.sections.length);
+            }
+        }
     }
 
     resetSections() {
@@ -171,16 +193,16 @@ export class LibraryComponent implements OnInit, OnDestroy {
         return option;
     }
 
-    fetchContents() {
+    fetchContents(isFilterChange?: boolean) {
+        const shouldGetAllDownloads = !(this.isBrowse || isFilterChange);
         // First call - Search content with selected filters and API should call always.
         // Second call - Search content without selected filters and API should not call in browse page
-        combineLatest(this.searchContent(true, false), this.searchContent(false, this.isBrowse))
+        combineLatest(this.searchContent(true, true), this.searchContent(false, shouldGetAllDownloads))
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(
-                ([response1, response2]) => {
-                    if (response1) {
-                        this.showLoader = false;
-                        const filteredContents = _.omit(_.groupBy(response1['result'].content, 'subject'), ['undefined']);
+                ([searchRes, allDownloadsRes]) => {
+                    if (searchRes) {
+                        const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
                         // Check for multiple subjects
                         for (const [key, value] of Object.entries(filteredContents)) {
                             const isMultipleSubjects = key.split(',').length > 1;
@@ -196,11 +218,16 @@ export class LibraryComponent implements OnInit, OnDestroy {
                                 delete filteredContents[key];
                             }
                         }
-                        this.sections = [];
 
-                        if (response2) {
+                        if (!shouldGetAllDownloads && this.sections[0] && !this.isBrowse) {
+                            this.sections.splice(1, this.sections.length);
+                        } else {
+                            this.sections = [];
+                        }
+
+                        if (allDownloadsRes) {
                             this.sections.push({
-                                contents: _.orderBy(_.get(response2, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
+                                contents: _.orderBy(_.get(allDownloadsRes, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
                                 name: 'Recently Added'
                             });
                         }
@@ -216,6 +243,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
                         this.carouselMasterData = this.prepareCarouselData(this.sections);
 
+                        this.hideLoader();
                         if (!this.carouselMasterData.length) {
                             return; // no page section
                         }
@@ -226,7 +254,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                         }
                         this.addHoverData();
                     } else {
-                        this.showLoader = false;
+                        this.hideLoader();
                         this.carouselMasterData = [];
                         this.pageSections = [];
                         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
@@ -235,35 +263,14 @@ export class LibraryComponent implements OnInit, OnDestroy {
             );
     }
 
+    hideLoader() {
+        this.showLoader = false;
+        this.showSectionLoader = false;
+    }
+
     addHoverData() {
-        const status = {
-            DOWNLOADING: this.resourceService.messages.stmsg.m0140,
-            FAILED: this.resourceService.messages.stmsg.m0143,
-            DOWNLOADED: this.resourceService.messages.stmsg.m0139,
-            PAUSED: this.resourceService.messages.stmsg.m0142,
-            CANCELED: this.resourceService.messages.stmsg.m0143,
-        };
         _.each(this.pageSections, (pageSection) => {
-            _.each(pageSection.contents, (value) => {
-                value['hoverData'] = {
-                    'note': this.isBrowse && _.get(value, 'downloadStatus') ===
-                        'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
-                    'actions': [
-                        {
-                            'type': this.isBrowse ? 'download' : 'save',
-                            'label': this.isBrowse ? _.capitalize(status[_.get(value, 'downloadStatus')]) ||
-                                this.resourceService.frmelmnts.btn.download :
-                                this.resourceService.frmelmnts.lbl.saveToPenDrive,
-                            'disabled': this.isBrowse && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'],
-                                _.get(value, 'downloadStatus')) ? true : false
-                        },
-                        {
-                            'type': 'open',
-                            'label': this.resourceService.frmelmnts.lbl.open
-                        }
-                    ]
-                };
-            });
+            this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, this.isBrowse);
         });
     }
 
@@ -283,8 +290,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         return carouselData;
     }
 
-    searchContent(addFilter: boolean, shouldCallAPI) {
-        if (shouldCallAPI) {
+    searchContent(addFilter: boolean, shouldCallAPI: boolean) {
+        if (!shouldCallAPI) {
             return of(undefined);
         }
 

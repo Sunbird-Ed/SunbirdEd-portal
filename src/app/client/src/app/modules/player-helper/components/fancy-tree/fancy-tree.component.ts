@@ -3,6 +3,7 @@ import 'jquery.fancytree';
 import { IFancytreeOptions } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { TelemetryInteractDirective } from '@sunbird/telemetry';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-fancy-tree',
   templateUrl: './fancy-tree.component.html'
@@ -14,6 +15,7 @@ export class FancyTreeComponent implements AfterViewInit {
   @Input() public rootNode;
   @Output() public itemSelect: EventEmitter<Fancytree.FancytreeNode> = new EventEmitter();
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective: TelemetryInteractDirective;
+  constructor(public activatedRoute: ActivatedRoute) { }
   ngAfterViewInit() {
     let options: any = {
       extensions: ['glyph'],
@@ -29,6 +31,8 @@ export class FancyTreeComponent implements AfterViewInit {
       click: (event, data): boolean => {
         this.telemetryInteractDirective.telemetryInteractObject = this.getTelemetryInteractObject(_.get(data, 'node.data'));
         this.telemetryInteractDirective.telemetryInteractEdata = this.getTelemetryInteractEdata();
+        this.telemetryInteractDirective.telemetryInteractCdata = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode') ?
+        [{id: _.get(this.activatedRoute, 'snapshot.queryParams.dialCode'), type: 'dialCode'}] : [];
         this.tree.nativeElement.click();
         const node = data.node;
         this.itemSelect.emit(node);

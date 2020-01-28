@@ -131,7 +131,7 @@ export class OtpComponent implements OnInit {
       identifier = this.signUpdata.controls.email.value;
     }
     if (this.signUpdata.controls.tncAccepted.value && this.signUpdata.controls.tncAccepted.status === 'VALID') {
-      this.signupService.createUser(createRequest).subscribe((resp: ServerResponse) => {
+      this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
           const tncAcceptRequestBody = {
             request: {
               version: this.tncLatestVersion,

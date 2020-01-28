@@ -1,0 +1,31 @@
+export interface ISessionContext { // TODO: remove any 'textbook' reference
+  textBookUnitIdentifier?: any;
+  collectionUnitIdentifier?: any;
+  lastOpenedUnitChild?: any;
+  lastOpenedUnitParent?: any;
+  framework?: string;
+  frameworkData?: any;
+  channel?: string;
+  board?: string;
+  medium?: any;
+  gradeLevel?: any;
+  subject?: any;
+  textbook?: string;
+  collection?: string;
+  topic?: string;
+  questionType?: string;
+  programId?: string;
+  program?: string;
+  currentRole?: string;
+  currentRoleId?: null | number;
+  bloomsLevel?: Array<any>;
+  topicList?: Array<any>;
+  onBoardSchool?: string;
+  selectedSchoolForReview?: string;
+  resourceIdentifier?: string;
+  hierarchyObj?: any;
+  textbookName?: any;
+  collectionName?: any;
+  collectionType?: any;
+  collectionStatus?: any;
+}

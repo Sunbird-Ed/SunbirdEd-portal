@@ -70,7 +70,7 @@
                 </dl>
              <div class="ml-auto" *ngIf="validatedUserSummary && validatedUserSummary.length" >
                 <button class="sb-btn sb-btn-normal" [ngClass]="(teachersButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" (click)="teachersTableView()" appTelemetryInteract [telemetryInteractEdata]="userViewInteractEdata">{{teachersButtonText}}</button>
-                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadCSVFile(userZip)" appTelemetryInteract [telemetryInteractEdata]="userDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
+                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadZipFile(userZip)" appTelemetryInteract [telemetryInteractEdata]="userDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
              </div>
             </div>
           </div>
