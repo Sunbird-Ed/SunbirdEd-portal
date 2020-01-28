@@ -110,7 +110,7 @@
           [class.active]="selectedQuestionId === question.identifier"
           (click)="handleQuestionTabChange(question.identifier);" *ngFor="let question of questionList; let i = index;"
           appTelemetryInteract 
-          [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('question-tab', 'click', 'question-list')"
+          [telemetryInteractEdata]="{id:'question_tab',type:'click',pageid:'question-list',extra: {type:'reference',category:question.category,identifier:question.identifier}}"
           [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
           [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
           [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata">
@@ -118,7 +118,7 @@
           <img src="../../../../../assets/images/exclamation-icon.svg" *ngIf="question.rejectComment && question.rejectComment !== '' " class="ml-8" width="20px" height="16px">
           <i class="trash alternate outline icon ml-24" *ngIf="visibility && visibility.showDeleteQuestion"
           appTelemetryInteract 
-          [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('delete-question', 'click', 'question-list')"
+          [telemetryInteractEdata]="{id:'delete-question',type:'click',pageid:'question-list',extra: {type:'reference',category:question.category,identifier:question.identifier}}"
           [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
           [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
           [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
@@ -181,7 +181,7 @@
   [size]="'small'" class="sb-modal sb-error sb-modal-center" appBodyScroll
   (dismissed)="showDeleteQuestionModal = !showDeleteQuestionModal" #modal>
   <div class="sb-modal-header text-left">
-      Delete Content
+      Delete Question
   </div>
   <div class="sb-modal-content">
       <p>Do you want to delete the question?</p> 
