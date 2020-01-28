@@ -58,7 +58,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   }
   assetConfig: any = {
     'image': {
-      'size': '50'
+      'size': '50',
+      'accepted': 'png, jpeg'
     },
     'video': {
       'size': '50',
@@ -77,6 +78,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   showImageUploadModal: boolean;
   showVideoUploadModal: boolean;
   acceptVideoType: any;
+  acceptImageType: any;
   showErrorMsg: boolean;
   errorMsg: string;
   query: string;
@@ -116,6 +118,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.assetConfig = this.editorConfig.config.assetConfig || this.assetConfig;
     this.acceptVideoType = this.getVideoInputAccetType(this.assetConfig.video.accepted);
+    this.acceptImageType = this.getImageInputAccetType(this.assetConfig.image.accepted);
   }
   ngOnChanges() {
     if (this.videoShow) {
@@ -176,6 +179,14 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     const result = [];
     _.forEach(videoType, (content) => {
       result.push('video/' + content);
+    });
+    return result.toString();
+  }
+  getImageInputAccetType(ImageType) {
+    const imageType = ImageType.split(', ');
+    const result = [];
+    _.forEach(imageType, (content) => {
+      result.push('image/' + content);
     });
     return result.toString();
   }

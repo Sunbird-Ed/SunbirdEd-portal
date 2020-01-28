@@ -97,12 +97,12 @@
 <div class="ui segment sb-tabset-segment m-0 pt-0" suiTabContent="1"  >
 <div class="content">
   <div class="upload-image-modal-section d-flex flex-ai-center flex-jc-center flex-dc">
-    <button class="upload-input-button sb-btn sb-btn-success sb-btn-normal" (click)="imageInput.click()">
+    <button class="upload-input-button sb-btn sb-btn-success sb-btn-normal">
       Upload from Computer
-      <input #imageInput (change)="uploadImage($event)" type="file" accept="image/*" name="assetfile">
+      <input (change)="uploadImage($event)" type="file" [accept]="acceptImageType" name="assetfile">
     </button>
     <p class="fsmall my-8">Drag and Drop files here</p>
-    <span class="fxsmall">Upload png and jpeg(Max File size: 5MB)</span>
+    <span class="fxsmall">Upload {{assetConfig.image.accepted}} (Max File size: {{assetConfig.image.size}}MB)</span>
     <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
       <p>{{errorMsg}}</p>
     </div>
@@ -142,7 +142,7 @@
   <div class="sb-modal-actions">
     <button (click)="addImageInEditor();" appTelemetryInteract
       [telemetryInteractEdata]="{id:'upload_image',type:'click',pageid:'questioncreate'}"
-      class="sb-btn sb-btn-primary sb-btn-normal">Add</button>
+      class="sb-btn sb-btn-primary sb-btn-normal" [ngClass]="{'sb-btn-primary': showAddButton, 'sb-btn-disabled': !showAddButton}">Add</button>
     
 
     <!-- <div class="or"></div>
