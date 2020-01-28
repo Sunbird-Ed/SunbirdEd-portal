@@ -59,19 +59,20 @@
   font-weight: bold;
   display: flex;
   align-items: center;
-  border: 1px solid var(--primary-400);
-  &:active {
-    background: #bac9d8 !important;
+  border: calculateRem(1px) solid var(--primary-400);
+  &.active {
+    background: #E5EDF5 !important;
     color: var(--primary-400) !important;
+    border-color: #96c8da;
   }
 
   &:hover {
-    background: #bac9d8;
     color: var(--blue) !important;
     box-sizing: border-box;
-    border-radius: 2px;
-    background-color: #e5edf5;
+    border-radius: calculateRem(2px);
+    background-color: #E5EDF5;
   }
+  
 }
 
 .ui.selection.dropdown .menu {
