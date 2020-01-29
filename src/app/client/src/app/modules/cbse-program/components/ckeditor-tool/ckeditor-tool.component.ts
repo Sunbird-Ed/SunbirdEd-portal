@@ -187,9 +187,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     return result.toString();
   }
   getImageInputAccetType(ImageType) {
-    const imageType = ImageType.split(', ');
+    const types = ImageType ? ImageType.split(', ') : ['png', 'jpeg'];
     const result = [];
-    _.forEach(imageType, (content) => {
+    _.forEach(types, (content) => {
       result.push('image/' + content);
     });
     return result.toString();
@@ -594,7 +594,7 @@ getAllVideos(offset, query) {
               'x-ms-blob-type': 'BlockBlob'
             }
           };
-          this.uploadToBlob(signedURL, config, formData).subscribe(() => {
+          this.uploadToBlob(signedURL, file, config).subscribe(() => {
             const fileURL = signedURL.split('?')[0];
             this.updateContentWithURL(fileURL, fileType, contentId);
           });
@@ -624,8 +624,8 @@ getAllVideos(offset, query) {
     };
   }
 
-  uploadToBlob(signedURL, config, formData): Observable<any> {
-    return this.actionService.http.put(signedURL, formData, config).pipe(catchError(err => {
+  uploadToBlob(signedURL, file, config): Observable<any> {
+    return this.actionService.http.put(signedURL, file, config).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Unable to upload to Blob and Content Creation Failed, Please Try Again' };
       this.isClosable = true;
       this.loading = false;
@@ -667,15 +667,17 @@ getAllVideos(offset, query) {
       const errInfo = { errorMsg: 'Unable to read the Video, Please Try Again' };
       this.loading = false;
       this.isClosable = true;
+      this.loading = false;
+      this.isClosable = true;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
       this.toasterService.success('Asset Successfully Uploaded...');
       this.selectedVideo = res;
       this.showAddButton = true;
+      this.loading = false;
+      this.isClosable = true;
       this.addVideoInEditor();
     });
-    this.loading = false;
-    this.isClosable = true;
   }
 
   searchMyVideo(event) {

@@ -111,7 +111,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
 
         if (this.selectedSolutionType === 'video') {
           const index = _.findIndex(this.questionMetaData.data.media, (o) => {
-             return o.type === 'video';
+            return o.type === 'video' && o.id === this.questionMetaData.data.editorState.solutions[0].value;
           });
           this.videoSolutionName = this.questionMetaData.data.media[index].name;
           this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
