@@ -102,7 +102,7 @@
       <input (change)="uploadImage($event)" type="file" [accept]="acceptImageType" name="assetfile">
     </button>
     <!-- <p class="fsmall my-">Drag and Drop files here</p> -->
-    <span class="fxsmall">Upload {{assetConfig.image.accepted}} (Max File size: {{assetConfig.image.size}}MB)</span>
+    <span class="fsmall mt-16">Upload {{assetConfig.image.accepted}} (Max File size: {{assetConfig.image.size}}MB)</span>
     <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
       <p>{{errorMsg}}</p>
     </div>
