@@ -303,7 +303,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
       if (data.createdBy === this.currentUserID && data.status === 'Draft' && data.prevStatus === 'Review') {
         this.countData['reject'] = this.countData['reject'] + 1;
       }
-      if (data.createdBy === this.currentUserID && data.createdBy === this.currentUserID) {
+      if (data.createdBy === this.currentUserID) {
         this.countData['mycontribution'] = this.countData['mycontribution'] + 1;
       }
       if (data.status === 'Review') {
@@ -486,13 +486,13 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   lastOpenedUnit(unitId) {
-    this.collectionHierarchy.map((parentunit) => {
+    this.collectionHierarchy.forEach((parentunit) => {
         if (parentunit.identifier === unitId) {
           this.sessionContext.lastOpenedUnitChild = unitId;
           this.sessionContext.lastOpenedUnitParent = parentunit.identifier;
           return;
         } else if (parentunit.children) {
-          _.map(parentunit.children, (childUnit) => {
+          _.forEach(parentunit.children, (childUnit) => {
             if (childUnit.identifier === unitId) {
              this.sessionContext.lastOpenedUnitChild = childUnit.identifier;
              this.sessionContext.lastOpenedUnitParent = parentunit.identifier;
