@@ -78,7 +78,8 @@
     "include": [
       "routes/*.js",
       "proxy/*.js",
-      "helpers/*.js"
+      "helpers/*.js",
+      "controllers/*.js"
     ],
     "extension": [
       ".js"
