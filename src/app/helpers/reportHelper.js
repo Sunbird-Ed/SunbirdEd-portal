@@ -8,6 +8,7 @@ const logger = require('sb_logger_util_v2');
 
 const validateSlug = (allowedFolders = []) => {
     return (req, res, next) => {
+        console.log('validateSlug method called', { allowedFolders, sessionRootOrgDetails: _.get(req, 'session.rootOrg') || 'null', params: _.get(req, 'params') });
         if (_.includes([...allowedFolders, _.get(req, 'session.rootOrg.slug')], _.get(req, 'params.slug'))) {
             logger.info({ msg: 'validate slug passed' })
             next();
@@ -30,6 +31,7 @@ const validateSlug = (allowedFolders = []) => {
 const validateRoles = (allowedRoles = []) => {
     return (req, res, next) => {
         const userRoles = _.get(req, 'session.roles');
+        console.log('validateRoles method called', { sessionRoles: _.get(req, 'session.roles') || 'null', allowedRoles })
         if (_.intersection(userRoles, allowedRoles).length > 0) {
             logger.info({ msg: 'validate roles passed' })
             next();
