@@ -101,7 +101,7 @@
       Upload from Computer
       <input (change)="uploadImage($event)" type="file" [accept]="acceptImageType" name="assetfile">
     </button>
-    <p class="fsmall my-8">Drag and Drop files here</p>
+    <!-- <p class="fsmall my-">Drag and Drop files here</p> -->
     <span class="fxsmall">Upload {{assetConfig.image.accepted}} (Max File size: {{assetConfig.image.size}}MB)</span>
     <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
       <p>{{errorMsg}}</p>
@@ -151,7 +151,7 @@
   </div>
 </sui-modal>
 <!--Video POP UP-->
-<sui-modal [isClosable]="true" class="sb-modal" [isInverted]="true" (dismissed)="dismissVideoPicker()"
+<sui-modal [isClosable]="isClosable" class="sb-modal" [isInverted]="true" (dismissed)="dismissVideoPicker()"
   *ngIf="showVideoPicker" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
   <div class="sb-modal-header">Select Video</div>
   <div class="sb-modal-content p-0">
@@ -171,8 +171,8 @@
                 Upload from Computer
                 <input (change)="uploadVideo($event)" type="file" [accept]="acceptVideoType" name="assetfile">
               </button>
-              <p class="fsmall my-8">Drag and Drop files here</p>
-              <span class="fxsmall">Upload {{assetConfig.video.accepted}} (Max File size: {{assetConfig.video.size}}MB)</span>
+              <!-- <p class="fsmall my-8">Drag and Drop files here</p> -->
+              <p class="fsmall mt-16">Upload {{assetConfig.video.accepted}} (Max File size: {{assetConfig.video.size}}MB)</p>
               <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
                 <p>{{errorMsg}}</p>
             </div>
