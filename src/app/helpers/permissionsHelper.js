@@ -105,7 +105,6 @@ let PERMISSIONS_HELPER = {
         }
         reqObj.session.orgs = _.uniq(reqObj.session.orgs)
         reqObj.session.roles = _.uniq(reqObj.session.roles)
-        logger.info({msg: 'setUserSessionData after updating session var', body, reqObj});
         if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
           reqObj.session.rootOrgId = body.result.response.rootOrg.id
           reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
@@ -152,6 +151,7 @@ let PERMISSIONS_HELPER = {
       if(error){
         logger.error({msg: 'error while user/v1/read', error});
       }
+      logger.info({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
       reqObj.session.save()
 
       callback(error, body)
