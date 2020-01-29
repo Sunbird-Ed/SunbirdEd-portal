@@ -113,13 +113,12 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   }
   onMediumChange() {
     this.classOption = [];
+    this.subjectsOption = [];
     this.contentPreferenceForm.controls['class'].setValue('');
     this.contentPreferenceForm.controls['subjects'].setValue('');
-    if (this.contentPreferenceForm.value.medium) {
+    if (!_.isEmpty(this.contentPreferenceForm.value.medium)) {
     this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
-
       if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
-
         // tslint:disable-next-line: max-line-length
         this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.frameworkDetails['gradeLevel']));
       }
@@ -128,14 +127,16 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   }
 
   onClassChange() {
-    if (this.contentPreferenceForm.value.class) {
-    // tslint:disable-next-line: max-line-length
-    this.subjectsOption = this.userService.getAssociationData(this.contentPreferenceForm.value.class, 'subject', this.frameworkCategories);
-    if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
+    this.subjectsOption = [];
+    this.contentPreferenceForm.controls['subjects'].setValue('');
+    if (!_.isEmpty(this.contentPreferenceForm.value.class)) {
       // tslint:disable-next-line: max-line-length
-      this.contentPreferenceForm.controls['subjects'].setValue(
-        _.compact(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects'])));
-    }
+      this.subjectsOption = this.userService.getAssociationData(this.contentPreferenceForm.value.class, 'subject', this.frameworkCategories);
+      if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
+        // tslint:disable-next-line: max-line-length
+        this.contentPreferenceForm.controls['subjects'].setValue(
+          _.compact(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects'])));
+      }
     }
   }
 
