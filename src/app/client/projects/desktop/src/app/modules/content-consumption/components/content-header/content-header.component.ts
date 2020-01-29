@@ -25,7 +25,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   public isConnected;
   telemetryImpression: IImpressionEventInput;
   dialCode: string;
-
+  disableDelete = false;
   constructor(
     public location: Location,
     public utilService: UtilService,
@@ -117,12 +117,14 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   deleteCollection(collectionData) {
+    this.disableDelete = true;
     this.logTelemetry('delete-collection');
     const request = {request: {contents: [collectionData.identifier]}};
     this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
     this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
     this.goBack();
     }, err => {
+      this.disableDelete = false;
       this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteTextbookErrorMessage);
     });
   }

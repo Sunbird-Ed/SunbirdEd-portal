@@ -1466,7 +1466,8 @@ const programThirdSession = {
             'tenantName': '',
             'assetConfig': {
               'image': {
-                    'size': '50'
+                    'size': '50',
+                    'accepted': 'png, jpeg, jpg'
               },
               'video': {
                     'size': '50',
