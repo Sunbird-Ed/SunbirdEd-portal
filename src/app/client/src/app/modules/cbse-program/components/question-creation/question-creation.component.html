@@ -233,7 +233,7 @@
     <div class='practical-sb-buttons'>
         <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal mr-8" (click)="showRequestChangesPopup = true"
         appTelemetryInteract 
-        [telemetryInteractEdata]="{id:reject-question,type:'click',pageid:'question-list',extra: {type:'reference',category:sessionContext.questionType,identifier:questionMetaData ? questionMetaData.data.identifier : ''}}" 
+        [telemetryInteractEdata]="{id:'reject-question',type:'click',pageid:'question-list',extra: {type:'reference',category:sessionContext.questionType,identifier:questionMetaData ? questionMetaData.data.identifier : ''}}" 
         [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
         [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
         [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
@@ -334,7 +334,7 @@
   <div class="sb-modal-actions">
     <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" 
     appTelemetryInteract
-    [telemetryInteractEdata]="{id:submit-reviewercomments,type:'click',pageid:'question-list',extra: {type:'reference',category:sessionContext.questionType,identifier:questionMetaData ? questionMetaData.data.identifier : ''}}" 
+    [telemetryInteractEdata]="{id:'submit-reviewercomments',type:'click',pageid:'question-list',extra: {type:'reference',category:sessionContext.questionType,identifier:questionMetaData ? questionMetaData.data.identifier : ''}}" 
     [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
     [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
     [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
