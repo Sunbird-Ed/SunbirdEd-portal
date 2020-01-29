@@ -175,6 +175,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   deleteContent(content) {
+  const button = _.find(this.actionButtons, {label: 'Delete'});
+  button.disabled = true;
   this.logTelemetry('delete-content', content);
   const request = !_.isEmpty(this.collectionId) ? {request: {contents: [content.identifier], visibility: 'Parent'}} :
     {request: {contents: [content.identifier]}};
