@@ -511,23 +511,7 @@ getAllVideos(offset, query) {
     }
     if (!this.showErrorMsg) {
       // reader.onload = (uploadEvent: any) => {
-      const req = {
-        url: this.configService.urlConFig.URLS.ASSET.CREATE,
-        data: {
-          'request': {
-            content: {
-              name: fileName,
-              contentType: 'Asset',
-              mediaType: 'image',
-              mimeType: fileType,
-              createdBy: this.userProfile.userId,
-              language: ['English'],
-              creator: `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
-              code: 'org.ekstep0.5375271337424472',
-            }
-          }
-        }
-      };
+      const req = this.generateAssetCreateRequest(fileName, fileType, 'image');
       this.actionService.post(req).pipe(catchError(err => {
         const errInfo = { errorMsg: 'Image upload failed' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
@@ -578,23 +562,7 @@ getAllVideos(offset, query) {
       this.errorMsg = 'Please choose an Video file';
     }
     if (!this.showErrorMsg) {
-      const req = {
-        url: this.configService.urlConFig.URLS.ASSET.CREATE,
-        data: {
-          'request': {
-            content: {
-              name: fileName,
-              contentType: 'Asset',
-              mediaType: 'video',
-              mimeType: fileType,
-              createdBy: this.userProfile.userId,
-              language: ['English'],
-              creator: `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
-              code: 'org.ekstep0.5375271337424472',
-            }
-          }
-        }
-      };
+      const req = this.generateAssetCreateRequest(fileName, fileType, 'video');
       this.actionService.post(req).pipe(catchError(err => {
         this.loading = false;
         this.isClosable = true;
@@ -634,6 +602,26 @@ getAllVideos(offset, query) {
       });
       reader.onerror = (error: any) => { };
     }
+  }
+
+  generateAssetCreateRequest(fileName, fileType, mediaType) {
+    return {
+      url: this.configService.urlConFig.URLS.ASSET.CREATE,
+      data: {
+        'request': {
+          content: {
+            name: fileName,
+            contentType: 'Asset',
+            mediaType: mediaType,
+            mimeType: fileType,
+            createdBy: this.userProfile.userId,
+            language: ['English'],
+            creator: `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
+            code: 'org.ekstep0.5375271337424472',
+          }
+        }
+      }
+    };
   }
 
   uploadToBlob(signedURL, config, formData): Observable<any> {
