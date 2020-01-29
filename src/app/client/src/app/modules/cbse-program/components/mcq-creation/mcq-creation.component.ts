@@ -42,6 +42,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   public textFields: Array<any>;
   public selectionFields: Array<any>;
   public multiSelectionFields: Array<any>;
+  editorConfig: any;
   showTemplatePopup = false;
   showForm = false;
   templateDetails: any = {};
@@ -66,6 +67,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   selectedSolutionType: string;
   selectedSolutionTypeIndex: string;
   showSolutionDropDown = true;
+  showSolution = false;
   videoSolutionName: string;
   videoSolutionData: any;
   solutionUUID: string;
@@ -105,6 +107,7 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         this.selectedSolutionType = this.questionMetaData.data.editorState.solutions[0].type;
         this.solutionUUID = this.questionMetaData.data.editorState.solutions[0].id;
         this.showSolutionDropDown = false;
+        this.showSolution = true;
 
         if (this.selectedSolutionType === 'video') {
           const index = _.findIndex(this.questionMetaData.data.media, (o) => {
@@ -126,6 +129,8 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnInit() {
+    const config: any = _.get(this.sessionContext.practiceSetConfig, 'config');
+    this.editorConfig = { config };
     this.userName = this.setUserName();
     this.solutionUUID = UUID.UUID();
     this.isReadOnlyMode = this.sessionContext.isReadOnlyMode;
@@ -193,20 +198,25 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     return userName;
   }
   videoDataOutput(event) {
+    if (event) {
+      this.videoSolutionData = event;
+      this.videoSolutionName = event.name;
+      this.solutionValue = event.identifier;
+      this.videoThumbnail = event.thumbnail;
+      const videoMedia: any = {};
+      videoMedia.id = event.identifier;
+      videoMedia.src = event.downloadUrl;
+      videoMedia.type = 'video';
+      videoMedia.assetId = event.identifier;
+      videoMedia.name = event.name;
+      videoMedia.thumbnail = this.videoThumbnail;
+      this.mediaArr.push(videoMedia);
+      this.showSolutionDropDown = false;
+      this.showSolution = true;
+    } else {
+      this.deleteSolution();
+    }
     this.videoShow = false;
-    this.videoSolutionData = event;
-    this.videoSolutionName = event.name;
-    this.solutionValue = event.identifier;
-    this.videoThumbnail = event.thumbnail;
-    const videoMedia: any = {};
-    videoMedia.id = event.identifier;
-    videoMedia.src = event.downloadUrl;
-    videoMedia.type = 'video';
-    videoMedia.assetId = event.identifier;
-    videoMedia.name = event.name;
-    videoMedia.thumbnail = this.videoThumbnail;
-    this.mediaArr.push(videoMedia);
-    this.showSolutionDropDown = false;
   }
   selectSolutionType(data: any) {
     const index = _.findIndex(this.solutionTypes, (sol: any) => {
@@ -224,6 +234,8 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     this.showSolutionDropDown = true;
     this.selectedSolutionType = '';
     this.solutionValue = '';
+    this.videoThumbnail = '';
+    this.showSolution = false;
   }
 
   handleReviewrStatus(event) {

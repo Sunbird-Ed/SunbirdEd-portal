@@ -49,7 +49,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
 
   readChannel(custodianOrgId) {
     this.channelService.getFrameWork(custodianOrgId).subscribe(data => {
-      this.boardOption = _.get(data, 'result.channel.frameworks');
+      this.boardOption = _.sortBy(_.get(data, 'result.channel.frameworks'), 'index');
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
