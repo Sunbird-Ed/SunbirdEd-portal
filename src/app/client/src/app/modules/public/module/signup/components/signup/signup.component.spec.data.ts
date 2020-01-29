@@ -56,5 +56,25 @@ export const SignUpComponentMockData = {
       subtype: 'selected',
       pageid: 'self-signup'
     }
+  },
+  telemetryLogError: {
+    context: {
+      env: 'self-signup'
+    },
+    edata: {
+      type: 'fetch-terms-condition',
+      level: 'ERROR',
+      message: 'fetch-terms-condition failed'
+    }
+  },
+  telemetryLogSuccess: {
+    context: {
+      env: 'self-signup'
+    },
+    edata: {
+      type: 'fetch-terms-condition',
+      level: 'SUCCESS',
+      message: 'fetch-terms-condition success'
+    }
   }
 };

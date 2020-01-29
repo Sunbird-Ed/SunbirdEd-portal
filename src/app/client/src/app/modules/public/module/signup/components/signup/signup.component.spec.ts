@@ -255,18 +255,24 @@ describe('SignUpComponent', () => {
   it('should fetch tnc configuration', () => {
     const signupService = TestBed.get(SignupService);
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
     component.ngOnInit();
     expect(component.tncLatestVersion).toEqual('v4');
     expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
+    expect(telemetryService.log).toHaveBeenCalledWith(SignUpComponentMockData.telemetryLogSuccess);
   });
 
   it('should not fetch tnc configuration and throw error', () => {
     const signupService = TestBed.get(SignupService);
     const toasterService = TestBed.get(ToasterService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(signupService, 'getTncConfig').and.returnValue(observableThrowError(SignUpComponentMockData.tncConfig));
     component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+    expect(telemetryService.log).toHaveBeenCalledWith(SignUpComponentMockData.telemetryLogError);
   });
 
   it('should fetch tnc configuration and throw error as cannot parse data', () => {
