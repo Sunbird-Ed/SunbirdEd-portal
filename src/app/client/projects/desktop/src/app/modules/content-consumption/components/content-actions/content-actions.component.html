@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<app-content-rating #modal *ngIf="contentRatingModal && contentData"  [contentData] = "contentData"></app-content-rating>
+<app-content-rating #modal *ngIf="contentRatingModal && contentData" [contentData] = "contentData" (closeModal)="contentRatingModal = false"></app-content-rating>
 
 <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
 class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
