@@ -5,7 +5,7 @@ import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService
 import { PublicDataService, UserService, ActionService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { catchError, map} from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, Observable} from 'rxjs';
 import { CbseProgramService } from '../../services';
 import MathText from '../../../../../assets/libs/mathEquation/plugin/mathTextPlugin.js';
 
@@ -582,24 +582,74 @@ getAllVideos(offset, query) {
         }
       };
       this.actionService.post(req).pipe(catchError(err => {
-        const errInfo = { errorMsg: ' Video upload failed' };
+        this.loading = false;
+        const errInfo = { errorMsg: ' Unable to create an Asset' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       })).subscribe((res) => {
-        const videoId = res['result'].node_id;
+        const contentId = res['result'].node_id;
         const request = {
-          url: `${this.configService.urlConFig.URLS.ASSET.UPDATE}/${videoId}`,
-          data: formData
+          url: 'content/v3/upload/url/' + contentId,
+          data: {
+            request: {
+              content: {
+                fileName: fileName
+              }
+            }
+          }
         };
         this.actionService.post(request).pipe(catchError(err => {
-          const errInfo = { errorMsg: 'Video upload failed' };
+          const errInfo = { errorMsg: 'Unable to get pre_signed_url and Content Creation Failed, Please Try Again' };
+          this.loading = false;
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((response) => {
-          // Read upload video data
-          this.getUploadVideo(response.result.node_id);
+          const signedURL = response.result.pre_signed_url;
+          const config = {
+            processData: false,
+            contentType: 'Asset',
+            headers: {
+              'x-ms-blob-type': 'BlockBlob'
+            }
+          };
+          this.uploadToBlob(signedURL, config, formData).subscribe(() => {
+            const fileURL = signedURL.split('?')[0];
+            this.updateContentWithURL(fileURL, fileType, contentId);
+          });
         });
       });
       reader.onerror = (error: any) => { };
     }
+  }
+
+  uploadToBlob(signedURL, config, formData): Observable<any> {
+    return this.actionService.http.put(signedURL, formData, config).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Unable to upload to Blob and Content Creation Failed, Please Try Again' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+  }), map(data => data));
+  }
+
+  updateContentWithURL(fileURL, mimeType, contentId) {
+    const data = new FormData();
+    data.append('fileUrl', fileURL);
+    data.append('mimeType', mimeType);
+    const config = {
+      enctype: 'multipart/form-data',
+      processData: false,
+      contentType: false,
+      cache: false
+    };
+    const option = {
+      url: 'content/v3/upload/' + contentId,
+      data: data,
+      param: config
+    };
+    this.actionService.post(option).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Unable to update pre_signed_url with Content Id and Content Creation Failed, Please Try Again' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+  })).subscribe(res => {
+      this.toasterService.success('Asset Successfully Uploaded...');
+      // Read upload video data
+      this.getUploadVideo(res.result.node_id);
+    });
   }
 
   getUploadVideo(videoId) {
