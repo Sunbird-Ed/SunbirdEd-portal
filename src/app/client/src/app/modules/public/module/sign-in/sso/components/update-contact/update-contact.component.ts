@@ -113,6 +113,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
    */
   fetchTncConfiguration() {
     this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+      this.telemetryLogEvents('fetch-terms-condition', true);
         const response = _.get(data, 'result.response.value');
         if (response) {
           try {
@@ -124,7 +125,8 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
           }
         }
       }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      this.telemetryLogEvents('fetch-terms-condition', false);
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       }
     );
   }
@@ -276,4 +278,25 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  telemetryLogEvents(api: any, status: boolean) {
+    let level = 'ERROR';
+    let msg = api + ' failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = api + ' success';
+    }
+    const event = {
+      context: {
+        env: 'sso-signup'
+      },
+      edata: {
+        type: api,
+        level: level,
+        message: msg
+      }
+    };
+    this.telemetryService.log(event);
+  }
+
 }
