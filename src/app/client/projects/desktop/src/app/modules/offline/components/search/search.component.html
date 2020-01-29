@@ -53,7 +53,7 @@
         <div *ngIf="downloadedContents?.length" class="pt-24 px-0">
           <span
             [innerHTML]="resourceService?.frmelmnts?.lbl?.showingResultsForwithCount |
-        interpolate:'{count}':downloadedContents?.length | interpolate:'{searchString}': (queryParams.key || queryParams.gradeLevel || queryParams.medium +' Medium')"></span>&nbsp;
+        interpolate:'{count}':downloadedContents?.length | interpolate:'{searchString}': queryParams?.key"></span>&nbsp;
           <a [routerLink]="'/'" (click)="clearSearchQuery();" appTelemetryInteract
             [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
@@ -87,7 +87,7 @@
         <div *ngIf="onlineContents?.length" class="px-0">
           <span
             [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsForwithCount |
-          interpolate:'{count}':onlineContents?.length | interpolate:'{searchString}':(queryParams.key || queryParams.medium +' Medium')"></span>&nbsp;
+          interpolate:'{count}':onlineContents?.length | interpolate:'{searchString}': queryParams?.key"></span>&nbsp;
           <a [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract
             [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
