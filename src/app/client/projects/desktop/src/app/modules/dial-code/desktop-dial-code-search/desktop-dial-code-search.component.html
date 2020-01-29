@@ -1,0 +1,75 @@
+<div class="ui container" [appTelemetryImpression]="telemetryImpression">
+  <div class="content-grid py-24">
+    <div class="row">
+    </div>
+    <div class="row" *ngIf="showLoader">
+      <div class="twelve wide column">
+        <app-loader [data]='loaderMessage'></app-loader>
+      </div>
+    </div>
+
+    <!-- Offline Results-->
+    <section *ngIf="!showLoader">
+      <div class="category-label fs-1">
+        <div *ngIf="offlineSearchResults?.length" class="pt-24 px-0">
+          <span [innerHTML]="resourceService?.frmelmnts?.lbl?.showingResultsForwithCount |
+            interpolate:'{count}':offlineSearchResults?.length | interpolate:'{searchString}': dialCode"></span>&nbsp;
+          <a [routerLink]="'/'" (click)="clearSearchQuery();" appTelemetryInteract
+            [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
+            class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
+        </div>
+        <div *ngIf="!offlineSearchResults?.length" class="py-24 px-0">
+          <span
+            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':dialCode"></span>&nbsp;
+          <a [routerLink]="'/'" (click)="clearSearchQuery()" appTelemetryInteract
+            [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
+            class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
+        </div>
+        <hr *ngIf="!offlineSearchResults?.length" class="border">
+      </div>
+
+      <div class="row">
+        <div *ngIf="!showLoader && offlineSearchResults?.length" class="masonry-grid dynamic-section-card">
+          <app-desktop-explore-content [contentList]="offlineSearchResults" [isOnlineContents]="false"
+            (visits)="prepareVisits($event)">
+          </app-desktop-explore-content>
+        </div>
+      </div>
+    </section>
+
+    <!--Online Results-->
+    <section *ngIf="!showLoader">
+      <div class="category-label fs-1">
+        <div *ngIf="searchResults?.length" class="px-0">
+          <span [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsForwithCount |
+          interpolate:'{count}':searchResults?.length | interpolate:'{searchString}': dialCode"></span>&nbsp;
+          <a [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract
+            [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
+            class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
+        </div>
+        <div *ngIf="!searchResults?.length" class="px-0">
+          <span
+            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':dialCode"></span>&nbsp;
+          <a [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract
+            [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
+            class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
+        </div>
+      </div>
+      <div class="row">
+        <div *ngIf="!showLoader && searchResults?.length" class="masonry-grid dynamic-section-card">
+          <app-desktop-explore-content [contentList]="searchResults" [isOnlineContents]="true"
+            (visits)="prepareVisits($event)">
+          </app-desktop-explore-content>
+        </div>
+      </div>
+    </section>
+
+    <!-- <div class="row">
+      <div class="row sb-placeholder">
+        <div *ngIf="!showLoader && !searchResults?.length && !offlineSearchResults?.length">
+          <app-comming-soon></app-comming-soon>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

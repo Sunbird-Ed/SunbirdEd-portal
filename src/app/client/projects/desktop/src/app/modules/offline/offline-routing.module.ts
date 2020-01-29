@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { BrowseComponent, OfflineHelpCenterComponent, LibraryComponent, DesktopExploreContentComponent,
-    SearchComponent, ViewMoreComponent } from './components';
+import {
+    BrowseComponent, OfflineHelpCenterComponent, LibraryComponent, DesktopExploreContentComponent,
+    SearchComponent, ViewMoreComponent
+} from './components';
 
 const routes: Routes = [
     {
@@ -55,11 +57,11 @@ const routes: Routes = [
         }
     },
     {
-        path: 'get', loadChildren: './../../../../../../src/app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
+        path: 'get', loadChildren: '../dial-code/dial-code.module#DialCodeModule'
     },
     {
         path: 'browse/get',
-        loadChildren: './../../../../../../src/app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
+        loadChildren: '../dial-code/dial-code.module#DialCodeModule'
     },
     {
         path: '', component: LibraryComponent, data: {

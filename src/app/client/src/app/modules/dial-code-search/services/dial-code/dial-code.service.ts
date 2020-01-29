@@ -24,7 +24,7 @@ export class DialCodeService {
       filters: {
         dialcodes: dialCode
       },
-      mode: 'collection',
+      // mode: 'collection',
       params: this.configService.appConfig.dialPage.contentApiQueryParams
     };
     requestParams.params.online = Boolean(online);
@@ -73,8 +73,8 @@ export class DialCodeService {
     );
   }
 
-  public getAllPlayableContent(collectionIds) {
-    const apiArray = _.map(collectionIds, (collectionId: string) => this.getCollectionHierarchy(collectionId));
+  public getAllPlayableContent(collectionIds, options: any = { params: {} }) {
+    const apiArray = _.map(collectionIds, (collectionId: string) => this.getCollectionHierarchy(collectionId, options));
     return iif(() => !apiArray.length, of([]), forkJoin(apiArray)
       .pipe(
         map(results => _.flatMap(_.map(results, this.parseCollection))),
@@ -111,8 +111,8 @@ export class DialCodeService {
    * fetch collection hierarchy
    * @param collectionId
    */
-  public getCollectionHierarchy(collectionId: string): Observable<any[]> {
-    return this.playerService.getCollectionHierarchy(collectionId).pipe(
+  public getCollectionHierarchy(collectionId: string, options): Observable<any[]> {
+    return this.playerService.getCollectionHierarchy(collectionId, options).pipe(
       map((res) => _.get(res, 'result.content')));
   }
 

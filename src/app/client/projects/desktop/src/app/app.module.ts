@@ -16,6 +16,7 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
 import { WebExtensionsConfig, PluginModules } from './framework.config';
 import { UserProfileModule } from '@sunbird/user-profile';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { UserProfileModule } from '@sunbird/user-profile';
     CommonModule,
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     SuiModule,
     SuiSelectModule,
     SharedModule.forRoot(),

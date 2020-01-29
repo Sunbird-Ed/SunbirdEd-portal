@@ -52,7 +52,8 @@ export class UtilService {
       badgeAssertions: data.badgeAssertions,
       organisation: data.organisation,
       hoverData: data.hoverData,
-      board: data.board || ''
+      board: data.board || '',
+      identifier: data.identifier
     };
 
     // this customization is done for enrolled courses
