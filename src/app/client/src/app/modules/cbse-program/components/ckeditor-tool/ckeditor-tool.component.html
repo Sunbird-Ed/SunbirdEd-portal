@@ -101,8 +101,8 @@
       Upload from Computer
       <input #imageInput (change)="uploadImage($event)" type="file" accept="image/*" name="assetfile">
     </button>
-    <p class="fsmall my-8">Drag and Drop files here</p>
-    <span class="fxsmall">Upload png and jpeg(Max File size: 5MB)</span>
+    <!-- <p class="fsmall my-8">Drag and Drop files here</p> -->
+    <p class="fsmall mt-16">Upload png and jpeg(Max File size: 5MB)</p>
     <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
       <p>{{errorMsg}}</p>
     </div>
@@ -171,8 +171,8 @@
                 Upload from Computer
                 <input (change)="uploadVideo($event)" type="file" [accept]="acceptVideoType" name="assetfile">
               </button>
-              <p class="fsmall my-8">Drag and Drop files here</p>
-              <span class="fxsmall">Upload {{assetConfig.video.accepted}} (Max File size: {{assetConfig.video.size}}MB)</span>
+              <!-- <p class="fsmall my-8">Drag and Drop files here</p> -->
+              <p class="fsmall mt-16">Upload {{assetConfig.video.accepted}} (Max File size: {{assetConfig.video.size}}MB)</p>
               <div *ngIf="showErrorMsg" class="sb-color-error fsmall mt-8">
                 <p>{{errorMsg}}</p>
             </div>
