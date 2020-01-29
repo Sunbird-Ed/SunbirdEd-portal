@@ -70,6 +70,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   allVideos = [];
   selectedVideo = {};
   loading = false;
+  isClosable = true;
   selectedVideoId: string;
   showAddButton: boolean;
   assetsCount = Number;
@@ -168,6 +169,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     this.showVideoPicker = false;
     this.showImageUploadModal = true;
     this.loading = false;
+    this.isClosable = true;
   }
   public isEditorReadOnly(state) {
     this.editorInstance.isReadOnly = state;
@@ -541,6 +543,7 @@ getAllVideos(offset, query) {
    * function to upload video
    */
   uploadVideo(event) {
+    this.isClosable = false;
     this.loading = true;
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -583,6 +586,7 @@ getAllVideos(offset, query) {
       };
       this.actionService.post(req).pipe(catchError(err => {
         this.loading = false;
+        this.isClosable = true;
         const errInfo = { errorMsg: ' Unable to create an Asset' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       })).subscribe((res) => {
@@ -600,6 +604,7 @@ getAllVideos(offset, query) {
         this.actionService.post(request).pipe(catchError(err => {
           const errInfo = { errorMsg: 'Unable to get pre_signed_url and Content Creation Failed, Please Try Again' };
           this.loading = false;
+          this.isClosable = true;
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((response) => {
           const signedURL = response.result.pre_signed_url;
@@ -623,6 +628,8 @@ getAllVideos(offset, query) {
   uploadToBlob(signedURL, config, formData): Observable<any> {
     return this.actionService.http.put(signedURL, formData, config).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Unable to upload to Blob and Content Creation Failed, Please Try Again' };
+      this.isClosable = true;
+      this.loading = false;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   }), map(data => data));
   }
@@ -644,9 +651,10 @@ getAllVideos(offset, query) {
     };
     this.actionService.post(option).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Unable to update pre_signed_url with Content Id and Content Creation Failed, Please Try Again' };
+      this.isClosable = true;
+      this.loading = false;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
-      this.toasterService.success('Asset Successfully Uploaded...');
       // Read upload video data
       this.getUploadVideo(res.result.node_id);
     });
@@ -658,13 +666,17 @@ getAllVideos(offset, query) {
     };
     this.actionService.get(option).pipe(map((data: any) => data.result.content), catchError(err => {
       const errInfo = { errorMsg: 'Unable to read the Video, Please Try Again' };
+      this.loading = false;
+      this.isClosable = true;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
+      this.toasterService.success('Asset Successfully Uploaded...');
       this.selectedVideo = res;
       this.showAddButton = true;
-      this.loading = false;
       this.addVideoInEditor();
     });
+    this.loading = false;
+    this.isClosable = true;
   }
 
   searchMyVideo(event) {

@@ -151,7 +151,7 @@
   </div>
 </sui-modal>
 <!--Video POP UP-->
-<sui-modal [isClosable]="true" class="sb-modal" [isInverted]="true" (dismissed)="dismissVideoPicker()"
+<sui-modal [isClosable]="isClosable" class="sb-modal" [isInverted]="true" (dismissed)="dismissVideoPicker()"
   *ngIf="showVideoPicker" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" #modal>
   <div class="sb-modal-header">Select Video</div>
   <div class="sb-modal-content p-0">
