@@ -25,12 +25,12 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
   {{resourceService.frmelmnts?.btn?.download}}
 </div>
 <div class="sb-modal-content">
-  {{resourceService?.messages?.desktop?.stmsg?.m0142 }}
+  {{resourceService?.messages?.stmsg?.m0137 }}
 </div>
 <div class="sb-modal-actions">
   <button  class="sb-btn sb-btn-normal sb-btn-primary"
     (click)="downloadContent(contentData); showModal = !showModal;">
-    {{resourceService.frmelmnts?.btn?.download}}
+    {{resourceService.frmelmnts?.btn?.yes}}
   </button>
   <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
     (click)="logTelemetry('cancel-download-content', contentData); showModal = !showModal;">

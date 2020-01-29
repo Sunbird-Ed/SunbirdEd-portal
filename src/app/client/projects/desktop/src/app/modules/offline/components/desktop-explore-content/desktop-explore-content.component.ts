@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import {
   ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, UtilService, PaginationService, NavigationHelperService
+  ILoaderMessage, UtilService, PaginationService, NavigationHelperService, OfflineCardService
 } from '@sunbird/shared';
 import { PublicPlayerService } from '@sunbird/public';
 import { Location } from '@angular/common';
@@ -46,6 +46,8 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
+  showModal = false;
+  downloadIdentifier: string;
 
   @Input() contentList: any[] = [];
   @Input() isOnlineContents = false;
@@ -68,6 +70,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService,
     public navigationHelperService: NavigationHelperService,
     public telemetryService: TelemetryService,
+    private offlineCardService: OfflineCardService
   ) {
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -178,9 +181,13 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.logTelemetry(event.data, 'play-content');
         break;
       case 'DOWNLOAD':
-        this.showDownloadLoader = true;
-        this.downloadContent(_.get(event, 'content.metaData.identifier'));
-        this.logTelemetry(event.data, 'download-content');
+        this.downloadIdentifier = _.get(event, 'content.metaData.identifier');
+        this.showModal = this.offlineCardService.isYoutubeContent(event.data);
+        if (!this.showModal) {
+          this.showDownloadLoader = true;
+          this.downloadContent(this.downloadIdentifier);
+          this.logTelemetry(event.data, 'download-content');
+        }
         break;
       case 'SAVE':
         this.showExportLoader = true;
@@ -188,6 +195,11 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.logTelemetry(event.data, 'export-content');
         break;
     }
+  }
+
+  callDownload() {
+    this.showDownloadLoader = true;
+    this.downloadContent(this.downloadIdentifier);
   }
 
   playContent(event) {
@@ -203,9 +215,11 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     this.contentManagerService.startDownload({})
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
+        this.downloadIdentifier = '';
         this.showDownloadLoader = false;
         this.contentManagerService.downloadContentId = '';
       }, error => {
+        this.downloadIdentifier = '';
         this.contentManagerService.downloadContentId = '';
         this.showDownloadLoader = false;
         _.each(this.contentList, (contents) => {

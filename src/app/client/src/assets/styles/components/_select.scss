@@ -57,3 +57,8 @@
 .ui.dropdown .menu>.item {
     font-size:0.86rem;
 }
+
+.ui.selection.dropdown.state-selection .menu > .item.active {
+    color: #024f9d;
+    background-color: #E5EDF5;
+}
