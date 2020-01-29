@@ -14,9 +14,9 @@
         </div>
 
         <div class="sbheader-mid-container">
-          <button class="sb-btn sb-btn-normal sb-btn-outline-primary d-flex" appTelemetryInteract
+          <button class="sb-btn sb-btn-normal sb-btn-disabled d-flex" appTelemetryInteract
             [telemetryInteractEdata]="getTelemetryEdata('enterDialCode')" (click)="showQrModal = true;"
-            title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}">
+            title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}" disabled="true">
             <i class="icon-svg icon-svg--xxs icon-qr mr-4">
               <svg class="icon icon-svg--primary">
                 <use xlink:href="assets/images/sprite.svg#qr-code"></use>
