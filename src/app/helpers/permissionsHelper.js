@@ -7,7 +7,7 @@ const learnerURL = envHelper.LEARNER_URL
 const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK
 const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryHelper = require('./telemetryHelper')
-
+const logger = require('sb_logger_util_v2');
 let PERMISSIONS_HELPER = {
   ROLES_URLS: {
     'course/create': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER'],
@@ -113,6 +113,7 @@ let PERMISSIONS_HELPER = {
         }
       }
     } catch (e) {
+      logger.error({msg: 'error while saving user session data', err: e})
       console.log(e)
     }
   },
@@ -146,6 +147,9 @@ let PERMISSIONS_HELPER = {
       reqObj.session.orgs = []
       if (!error && body) {
         module.exports.setUserSessionData(reqObj, body)
+      }
+      if(error){
+        logger.error({msg: 'error while user/v1/read', error});
       }
       reqObj.session.save()
 
