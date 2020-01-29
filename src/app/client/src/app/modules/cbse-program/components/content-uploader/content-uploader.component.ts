@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, 
 import { FineUploader } from 'fine-uploader';
 import { ToasterService, ConfigService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService, PlayerService, FrameworkService } from '@sunbird/core';
-import { ProgramStageService } from '../../../program/services';
+import { ProgramStageService, ProgramTelemetryService } from '../../../program/services';
 import * as _ from 'lodash-es';
 import { catchError, map, first } from 'rxjs/operators';
 import { throwError, Observable, from } from 'rxjs';
@@ -11,7 +11,6 @@ import { FormGroup, FormArray, FormBuilder, Validators, NgForm, FormControl } fr
 import { CbseProgramService } from '../../services/cbse-program/cbse-program.service';
 import { HelperService } from '../../services/helper.service';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
-import { ProgramTelemetryService } from '../../../program/services';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

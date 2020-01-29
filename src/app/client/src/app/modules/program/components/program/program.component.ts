@@ -7,7 +7,8 @@ import { tap, map, first } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { ICollectionComponentInput, IDashboardComponentInput } from '../../../cbse-program/interfaces';
 import { InitialState, ISessionContext, IUserParticipantDetails } from '../../interfaces';
-import { ProgramStageService, ProgramComponentsService } from '../../services/';
+import { ProgramStageService } from '../../services/';
+import { ProgramComponentsService} from '../../services/program-components/program-components.service';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 interface IDynamicInput {
   collectionComponentInput?: ICollectionComponentInput;

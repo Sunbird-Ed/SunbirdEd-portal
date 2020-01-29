@@ -10,12 +10,6 @@ import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 
-
-const fakeState = {
-  getStage() {
-    of([{ stageId: 1, stage: 'collectionComponent' }]);
-  },
-};
 const fakeActivatedRoute = {
   snapshot: {
     params: {
@@ -97,9 +91,11 @@ describe('ProgramHeaderComponent', () => {
     telemetryService = TestBed.get(TelemetryService);
     component = fixture.componentInstance;
     component.headerComponentInput = mockRes.inputData;
-    fixture.detectChanges();
   });
 
+  beforeEach(() => {
+    fixture.detectChanges();
+  });
 
   it('should create the app', async(() => {
     expect(component).toBeTruthy();
@@ -107,7 +103,6 @@ describe('ProgramHeaderComponent', () => {
 
 
   it('should generate tabs based on config', () => {
-    const response = [];
     const spyOne = spyOn(component, 'generateTabs').and.callThrough();
     component.ngOnInit();
     // programStageService.getStage();

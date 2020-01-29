@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
-import { ConfigService, ServerResponse, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
@@ -12,9 +12,8 @@ import {
   IChapterListComponentInput, ISessionContext,
   IContentUploadComponentInput, IResourceTemplateComponentInput
 } from '../../interfaces';
-import { QuestionListComponent } from '../../../cbse-program/components/question-list/question-list.component';
-import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
-import { ProgramStageService, ProgramComponentsService } from '../../../program/services';
+import { ProgramStageService } from '../../../program/services';
+import { ProgramComponentsService } from '../../../program/services/program-components/program-components.service';
 import { InitialState } from '../../interfaces';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 
@@ -62,12 +61,6 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
   showLargeModal: boolean;
   // private labels: Array<string>;
   private actions: any;
-  private componentMapping = {
-    ExplanationResource: ContentUploaderComponent,
-    ExperientialResource: ContentUploaderComponent,
-    PracticeQuestionSet: QuestionListComponent,
-    CuriosityQuestionSet: QuestionListComponent,
-  };
   public dynamicInputs: IDynamicInput;
   public dynamicOutputs: any;
   public creationComponent;
