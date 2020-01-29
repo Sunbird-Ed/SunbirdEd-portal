@@ -5,7 +5,7 @@ import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 import {
-    ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, NavigationHelperService, ILanguage
+    OfflineCardService, ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, NavigationHelperService, ILanguage
 } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
@@ -48,6 +48,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
     infoData;
     languageDirection = 'ltr';
     isFilterChanged = false;
+    showModal = false;
+    downloadIdentifier: string;
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -74,7 +76,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         private connectionService: ConnectionService,
         public navigationHelperService: NavigationHelperService,
         public telemetryService: TelemetryService,
-        public contentManagerService: ContentManagerService
+        public contentManagerService: ContentManagerService,
+        private offlineCardService: OfflineCardService
     ) { }
 
     ngOnInit() {
@@ -397,9 +400,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.logTelemetry(event.data, 'play-content');
                 break;
             case 'DOWNLOAD':
-                this.showDownloadLoader = true;
-                this.downloadContent(_.get(event, 'content.metaData.identifier'));
-                this.logTelemetry(event.data, 'download-content');
+                this.downloadIdentifier = _.get(event, 'content.metaData.identifier');
+                this.showModal = this.offlineCardService.isYoutubeContent(event.data);
+                if (!this.showModal) {
+                  this.showDownloadLoader = true;
+                  this.downloadContent(this.downloadIdentifier);
+                  this.logTelemetry(event.data, 'download-content');
+                }
                 break;
             case 'SAVE':
                 this.showExportLoader = true;
@@ -407,6 +414,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.logTelemetry(event.data, 'export-content');
                 break;
         }
+    }
+
+    callDownload() {
+        this.showDownloadLoader = true;
+        this.downloadContent(this.downloadIdentifier);
     }
 
     playContent(event: any) {
@@ -422,9 +434,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.contentManagerService.startDownload({})
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(data => {
+                this.downloadIdentifier = '';
                 this.contentManagerService.downloadContentId = '';
                 this.showDownloadLoader = false;
             }, error => {
+                this.downloadIdentifier = '';
                 this.contentManagerService.downloadContentId = '';
                 this.showDownloadLoader = false;
                 _.each(this.pageSections, (pageSection) => {
