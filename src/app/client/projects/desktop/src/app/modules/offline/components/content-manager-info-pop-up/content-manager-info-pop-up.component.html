@@ -1,4 +1,4 @@
-<sui-modal  [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+<sui-modal  [mustScroll]="false" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
   class="sb-modal sb-warning sb-modal-center" appBodyScroll (dismissed)="closeModal()" #modal>
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.desktop?.storageSpaceRunningOutHeader}}
@@ -8,9 +8,11 @@
     <p class="text-center fmedium import-content">
       {{resourceService?.frmelmnts?.lbl?.desktop?.failedListLabel}}
     </p>
+    <div class="custom-height">
     <div class="p-8 warning-ecar-list" *ngFor="let items of failedList">
       {{items['name']}}
     </div>
+  </div>
   </div>
 
   <div class="sb-modal-actions">
