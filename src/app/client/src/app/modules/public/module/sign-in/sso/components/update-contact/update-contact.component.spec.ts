@@ -291,18 +291,24 @@ describe('UpdateContactComponent', () => {
 
   it('should fetch tnc configuration', () => {
     const signupService = TestBed.get(SignupService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(mockUpdateContactData.tncConfig));
     component.fetchTncConfiguration();
     expect(component.tncLatestVersion).toEqual('v4');
     expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
+    expect(telemetryService.log).toHaveBeenCalledWith(mockUpdateContactData.telemetryLogSuccess);
   });
 
   it('should not fetch tnc configuration and throw error', () => {
     const signupService = TestBed.get(SignupService);
     const toasterService = TestBed.get(ToasterService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(signupService, 'getTncConfig').and.returnValue(observableThrowError(mockUpdateContactData.tncConfig));
     component.fetchTncConfiguration();
+    expect(telemetryService.log).toHaveBeenCalledWith(mockUpdateContactData.telemetryLogError);
     expect(toasterService.error).toHaveBeenCalledWith(mockUpdateContactData.resourceBundle.messages.fmsg.m0004);
   });
 
