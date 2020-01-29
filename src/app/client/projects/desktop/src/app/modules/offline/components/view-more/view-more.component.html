@@ -31,8 +31,7 @@
       <app-no-result [data]="noResultMessage" *ngIf="!showLoader && !contentList?.length && isConnected">
           <ng-container>
               <div>
-                <p class="mt-24 text-center no-search-text">{{resourceService?.frmelmnts?.lbl?.desktop?.yourSearch}}&nbsp;-&nbsp;
-                  <span class="font-weight-bold">{{queryParams?.key}}</span>
+                <p class="mt-24 text-center no-search-text">{{resourceService?.frmelmnts?.lbl?.desktop?.yourSearch | interpolate: '{key}':queryParams?.key}}
                   {{resourceService?.frmelmnts?.lbl?.desktop?.notMatchContent}}
                 </p>
                 <ul class="m-0">

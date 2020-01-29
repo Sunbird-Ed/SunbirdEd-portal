@@ -216,7 +216,7 @@
                         <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'video'">
                             <div class="solution-media p-16 d-flex flex-ai-center">
                                 <div class="solution-media__video relative position">
-                                <div class="overlay-image" [ngStyle]="{background: 'url(' + videoThumbnail + ')'}"><i class="play circle icon"></i></div>
+                                <div class="overlay-image" [ngStyle]="videoThumbnail ?  {'background' : 'url(' + videoThumbnail + ')' }  : {'background': 'rgba(0,0,0,0.3)'}"><i class="play circle icon"></i></div>
                                 </div>
                                 <div class="solution-media__desc ml-16">
                                 {{videoSolutionName}}
