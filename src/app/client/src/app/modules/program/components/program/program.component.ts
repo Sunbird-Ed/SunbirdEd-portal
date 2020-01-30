@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { tap, first } from 'rxjs/operators';
-import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { ICollectionComponentInput, IDashboardComponentInput } from '../../../cbse-program/interfaces';
 import { InitialState, ISessionContext, IUserParticipantDetails } from '../../interfaces';
 import { ProgramStageService } from '../../services/';
@@ -34,10 +33,6 @@ export class ProgramComponent implements OnInit, OnDestroy, AfterViewInit {
   public defaultView;
   public dynamicInputs: IDynamicInput;
   public component: any;
-  private componentMapping = {
-    dashboardComponent: DashboardComponent,
-    collectionComponent: CollectionComponent,
-  };
   public sessionContext: ISessionContext = {};
   public state: InitialState = {
     stages: []

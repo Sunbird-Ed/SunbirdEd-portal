@@ -112,56 +112,70 @@ export const frameWorkData = {
   }
 };
 
+const onBoardingForm =  {
+  'action': 'onboard',
+  'fields': [
+    {
+      'code': 'class',
+      'dataType': 'text',
+      'description': 'Class',
+      'displayProperty': 'Editable',
+      'index': 1,
+      'inputType': 'select',
+      'label': 'Class',
+      'name': 'Class',
+      'range': [
+        {
+          'category': 'class',
+          'code': 'class1',
+          'description': 'Class 1',
+          'identifier': 'Class 1',
+          'index': 1,
+          'name': 'Class 1',
+          'status': 'Live'
+        },
+        {
+          'category': 'class',
+          'code': 'class2',
+          'description': 'Class 2',
+          'identifier': 'Class 2',
+          'index': 2,
+          'name': 'Class 2',
+          'status': 'Live'
+        },
+        {
+          'category': 'class',
+          'code': 'class3',
+          'description': 'Class 3',
+          'identifier': 'Class 3',
+          'index': 3,
+          'name': 'Class 3',
+          'status': 'Live'
+        }
+      ],
+      'required': false,
+      'visible': true
+    }
+  ],
+  'templateName': 'onBoardingForm'
+};
+
+const userDetails =  {
+  'programId': '453b79e0-2d2f-11ea-a48e-338d4518b681',
+  'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+  'onBoarded': true,
+  'onBoardingData': {
+    'school': 'My School'
+  },
+  'roles': [
+    'CONTRIBUTOR'
+  ]
+}
+
 // without user details
 export const programDetailsWithOutUserDetails = {
   'config': {
-    'onBoardingForm': {
-      'action': 'onboard',
-      'fields': [
-        {
-          'code': 'class',
-          'dataType': 'text',
-          'description': 'Class',
-          'displayProperty': 'Editable',
-          'index': 1,
-          'inputType': 'select',
-          'label': 'Class',
-          'name': 'Class',
-          'range': [
-            {
-              'category': 'class',
-              'code': 'class1',
-              'description': 'Class 1',
-              'identifier': 'Class 1',
-              'index': 1,
-              'name': 'Class 1',
-              'status': 'Live'
-            },
-            {
-              'category': 'class',
-              'code': 'class2',
-              'description': 'Class 2',
-              'identifier': 'Class 2',
-              'index': 2,
-              'name': 'Class 2',
-              'status': 'Live'
-            },
-            {
-              'category': 'class',
-              'code': 'class3',
-              'description': 'Class 3',
-              'identifier': 'Class 3',
-              'index': 3,
-              'name': 'Class 3',
-              'status': 'Live'
-            }
-          ],
-          'required': false,
-          'visible': true
-        }
-      ],
-      'templateName': 'onBoardingForm'
-    },
+    'framework': 'NCFCOPY',
     'roles': [
       {
         'role': 'CONTRIBUTOR'
@@ -170,32 +184,43 @@ export const programDetailsWithOutUserDetails = {
         'role': 'REVIEWER'
       }
     ],
-    'scope': {
-      'board': [
-        'NCERT'
-      ],
-      'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
-      'framework': 'NCFCOPY',
-      'gradeLevel': [
-        'Kindergarten',
-        'Grade 1',
-        'Grade 2',
-        'Grade 3',
-        'Grade 4'
-      ],
-      'medium': [
-        'English'
-      ],
-      'subject': [
-        'Hindi',
-        'Mathematics',
-        'English',
-        'Telugu'
-      ],
-      'topics': [
-        'Addition'
-      ]
-    }
+    'header': {
+      'id': 'ng.sunbird.header',
+      'ver': '1.0',
+      'compId': 'headerComp',
+      'author': 'Venkat',
+      'description': '',
+      'publishedDate': '',
+      'data': {},
+      'config': {
+        'tabs': [
+          {
+            'index': 1,
+            'label': 'Contribute',
+            'onClick': 'collectionComponent'
+          },
+          {
+            'index': 2,
+            'label': 'Review',
+            'onClick': 'collectionComponent'
+          },
+          {
+            'index': 3,
+            'label': 'Dashboard',
+            'onClick': 'dashboardComponent'
+          }
+        ]
+      }
+    },
+    'sharedContext': [
+      'channel',
+      'framework',
+      'board',
+      'medium',
+      'gradeLevel',
+      'subject'
+    ],
+    'onBoardingForm': {...onBoardingForm},
   },
   'defaultRoles': [
     'CONTRIBUTOR'
@@ -210,8 +235,7 @@ export const programDetailsWithOutUserDetails = {
   'type': 'private'
 };
 
-export const programDetailsWithUserDetails = {
-  'programId': '453b79e0-2d2f-11ea-a48e-338d4518b681',
+export const programDetailsWithOutUserAndForm = {
   'config': {
     'framework': 'NCFCOPY',
     'roles': [
@@ -262,35 +286,6 @@ export const programDetailsWithUserDetails = {
         ]
       }
     },
-    'onBoardingForm': {
-      'templateName': 'onBoardingForm',
-      'action': 'onboard',
-      'fields': [
-        {
-          'code': 'school',
-          'dataType': 'text',
-          'name': 'School',
-          'label': 'School',
-          'description': 'School',
-          'inputType': 'select',
-          'required': false,
-          'displayProperty': 'Editable',
-          'visible': true,
-          'range': [
-            {
-              'identifier': 'my_school',
-              'code': 'my_school',
-              'name': 'My School',
-              'description': 'My School',
-              'index': 1,
-              'category': 'school',
-              'status': 'Live'
-            }
-          ],
-          'index': 1
-        }
-      ]
-    },
     'sharedContext': [
       'channel',
       'framework',
@@ -299,59 +294,6 @@ export const programDetailsWithUserDetails = {
       'gradeLevel',
       'subject'
     ]
-  },
-  'defaultRoles': [
-    'CONTRIBUTOR'
-  ],
-  'userDetails': {
-    'programId': '453b79e0-2d2f-11ea-a48e-338d4518b681',
-    'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-    'onBoarded': true,
-    'onBoardingData': {
-      'school': 'My School'
-    },
-    'roles': [
-      'CONTRIBUTOR'
-    ]
-  }
-};
-
-export const programDetailsWithOutUserAndForm = {
-  'config': {
-    'roles': [
-      {
-        'role': 'CONTRIBUTOR'
-      },
-      {
-        'role': 'REVIEWER'
-      }
-    ],
-    'scope': {
-      'board': [
-        'NCERT'
-      ],
-      'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
-      'framework': 'NCFCOPY',
-      'gradeLevel': [
-        'Kindergarten',
-        'Grade 1',
-        'Grade 2',
-        'Grade 3',
-        'Grade 4'
-      ],
-      'medium': [
-        'English'
-      ],
-      'subject': [
-        'Hindi',
-        'Mathematics',
-        'English',
-        'Telugu'
-      ],
-      'topics': [
-        'Addition'
-      ]
-    }
   },
   'defaultRoles': [
     'CONTRIBUTOR'
@@ -365,6 +307,17 @@ export const programDetailsWithOutUserAndForm = {
   'status': null,
   'type': 'private'
 };
+
+export const programDetailsWithUserDetails = {
+  'programId': '453b79e0-2d2f-11ea-a48e-338d4518b681',
+  'config': {...programDetailsWithOutUserAndForm.config},
+  'defaultRoles': [
+    'CONTRIBUTOR'
+  ],
+  'userDetails': {...userDetails}
+};
+
+
 
 export const extFrameWorkPostData = {
   'id': 'api.add.participants',
