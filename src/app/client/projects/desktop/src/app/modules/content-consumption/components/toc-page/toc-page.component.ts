@@ -72,7 +72,6 @@ export class TocPageComponent implements OnInit, OnDestroy {
   contentDeleted;
   isContentPresent = true;
   telemetryImpression: IImpressionEventInput;
-  youTubeContentStatus: Boolean = false;
   constructor(public playerService: PublicPlayerService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     public router: Router, public resourceService: ResourceService, private contentUtilsService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService,
@@ -135,18 +134,9 @@ export class TocPageComponent implements OnInit, OnDestroy {
       this.objectRollUp = this.getContentRollUp(event.rollup);
       this.OnPlayContent(this.activeContent, true);
       this.logTelemetry('content-inside-collection', this.objectRollUp, this.activeContent);
-      this.handleYoutubeContent(event.data);
     }
   }
-  handleYoutubeContent(data) {
-    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
-      if (!isConnected && this.offlineCardService.isYoutubeContent(data)) {
-        this.youTubeContentStatus = true;
-      } else {
-        this.youTubeContentStatus = false;
-      }
-        });
-  }
+
   logTelemetry(id, rollup?, content?) {
       const interactData = {
         context: {
