@@ -84,6 +84,16 @@ const routes: Routes = [
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
             }
+          },
+          {
+            path: 'assessment', component: DataDrivenComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'workspace-create-assessment', subtype: 'paginate', uri: '/workspace/content/create/assessment',
+                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
+              }, breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
           }
         ]
       },

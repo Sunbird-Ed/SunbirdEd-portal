@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { UserProfileRoutingModule } from './user-profile-routing.module';
-import { ProfilePageComponent, AboutUsComponent, UpdateContentPreferenceComponent, UpdateLocationComponent} from './components';
+import { ProfilePageComponent, AboutUsComponent,
+  UpdateContentPreferenceComponent, UpdateLocationComponent, TelemetryComponent} from './components';
 import {
   SuiModalModule, SuiSelectModule
 } from 'ng2-semantic-ui';
@@ -16,7 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProfilePageComponent,
     AboutUsComponent,
     UpdateContentPreferenceComponent,
-    UpdateLocationComponent
+    UpdateLocationComponent,
+    TelemetryComponent
   ],
   imports: [
     CommonModule,

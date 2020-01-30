@@ -5,6 +5,7 @@ const request = require('request-promise');
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
+const logger = require('sb_logger_util_v2')
 
 const keyClockMobileClients = {
 }
@@ -30,6 +31,7 @@ module.exports = (app) => {
 
   app.post('/auth/v1/refresh/token', bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     async (req, res) => {
+      logger.info({msg: '/auth/v1/refresh/token called'});
       try {
         if(!req.body.refresh_token){
           throw { error: 'REFRESH_TOKEN_REQUIRED', message: "refresh_token is required", statusCode: 400 }
@@ -66,7 +68,10 @@ module.exports = (app) => {
           'result': typeof tokenResponse === 'string' ? JSON.parse(tokenResponse) : tokenResponse
         })
       } catch(error) {
-        console.log('refresh token error', error.error);
+        logger.error({
+          msg: 'refresh token error',
+          error: JSON.stringify(error.error)
+        });
         res.status(error.statusCode || 500).json({
           'id': 'api.refresh.token',
           'ver': '1.0',
@@ -84,7 +89,10 @@ module.exports = (app) => {
   })
 }
 const handleError = (error) => {
-  console.log('refresh token api error', error.error);
+  logger.error({
+    msg: 'refresh token api error',
+    error: JSON.stringify(error.error)
+  });
   const errorRes = JSON.parse(error.error)
   throw {
     statusCode: error.statusCode,

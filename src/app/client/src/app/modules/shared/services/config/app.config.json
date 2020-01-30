@@ -26,7 +26,10 @@
         },
         "telemetryObjectType": "home"
       },
-      "metaData": ["batchId", "courseId"],
+      "metaData": [
+        "batchId",
+        "courseId"
+      ],
       "maxCount": "leafNodesCount",
       "progress": "progress"
     }
@@ -66,10 +69,18 @@
           }
         }
       },
-      "metaData": ["batchId", "courseId"]
+      "metaData": [
+        "batchId",
+        "courseId"
+      ]
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "resourceType",
@@ -102,7 +113,12 @@
         }
       },
       "metaData": {
-        "metaData": ["identifier", "mimeType", "framework", "contentType"]
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType"
+        ]
       },
       "dynamicFields": {
         "ribbon.right.name": "resourceType"
@@ -122,12 +138,96 @@
           }
         }
       },
-      "metaData": ["batchId", "courseId"],
+      "metaData": [
+        "batchId",
+        "courseId"
+      ],
       "maxCount": "leafNodesCount",
       "progress": "progress"
     }
   },
   "CourseBatchPageSection": {
+    "slickSize": 10,
+    "slideConfig": {
+      "slidesToShow": 4,
+      "slidesToScroll": 1,
+      "responsive": [
+        {
+          "breakpoint": 2800,
+          "settings": {
+            "slidesToShow": 4,
+            "slidesToScroll": 2
+          }
+        },
+        {
+          "breakpoint": 2200,
+          "settings": {
+            "slidesToShow": 4,
+            "slidesToScroll": 2
+          }
+        },
+        {
+          "breakpoint": 2000,
+          "settings": {
+            "slidesToShow": 3.01,
+            "slidesToScroll": 2
+          }
+        },
+        {
+          "breakpoint": 1600,
+          "settings": {
+            "slidesToShow": 3,
+            "slidesToScroll": 2
+          }
+        },
+        {
+          "breakpoint": 1200,
+          "settings": {
+            "slidesToShow": 2.5,
+            "slidesToScroll": 2
+          }
+        },
+        {
+          "breakpoint": 900,
+          "settings": {
+            "slidesToShow": 2.5,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 768,
+          "settings": {
+            "slidesToShow": 2,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 660,
+          "settings": {
+            "slidesToShow": 2,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 530,
+          "settings": {
+            "slidesToShow": 1.5,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 450,
+          "settings": {
+            "slidesToShow": 1,
+            "slidesToScroll": 1
+          }
+        }
+      ],
+      "infinite": false,
+      "rtl": false
+    }
+  },
+  "AllDownloadsSection": {
     "slickSize": 10,
     "slideConfig": {
       "slidesToShow": 4,
@@ -310,7 +410,12 @@
         }
       },
       "metaData": {
-        "metaData": ["identifier", "mimeType", "framework", "contentType"]
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType"
+        ]
       }
     },
     "enrolledCourses": {
@@ -329,7 +434,10 @@
         }
       },
       "metaData": {
-        "metaData": ["batchId", "courseId"]
+        "metaData": [
+          "batchId",
+          "courseId"
+        ]
       },
       "dynamicFields": {
         "maxCount": "leafNodesCount",
@@ -358,7 +466,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "resourceType",
@@ -398,7 +511,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "resourceType",
@@ -423,7 +541,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
@@ -486,7 +609,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "resourceType",
@@ -522,7 +650,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     }
   },
   "LibrarySearch": {
@@ -545,7 +678,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "resourceType",
@@ -594,7 +732,9 @@
         "endPage": [
           {
             "template": "assessment",
-            "contentType": ["SelfAssess"]
+            "contentType": [
+              "SelfAssess"
+            ]
           }
         ],
         "showStartPage": true,
@@ -609,7 +749,9 @@
           "webLink": ""
         },
         "apislug": "/action",
-        "repos": ["/sunbird-plugins/renderer"],
+        "repos": [
+          "/sunbird-plugins/renderer"
+        ],
         "plugins": [
           {
             "id": "org.sunbird.iframeEvent",
@@ -962,7 +1104,11 @@
     "FILEUPLOAD": {
       "MAXFILESIZETOUPLOAD": 1024000,
       "FILEEXTENSIONTOUPLOAD": "application/pdf, application/jpg, application/png",
-      "ALLOWEDFILEEXTENSION": ["png", "pdf", "jpg"]
+      "ALLOWEDFILEEXTENSION": [
+        "png",
+        "pdf",
+        "jpg"
+      ]
     },
     "GEOCONFIG": {
       "geo": {
@@ -1026,7 +1172,8 @@
     "course": "designcourse",
     "collection": "createcollection",
     "studymaterial": "createlessontext",
-    "lessonplan": "createlessonplan"
+    "lessonplan": "createlessonplan",
+    "assessment": "createassessment"
   },
   "contentName": {
     "textbook": "Untitled Textbook",
@@ -1047,7 +1194,8 @@
     "course": "Course",
     "collection": "Collection",
     "studymaterial": "Resource",
-    "lessonplan": "LessonPlan"
+    "lessonplan": "LessonPlan",
+    "assessment": "SelfAssess"
   },
   "course": {
     "filterType": "course",
@@ -1114,7 +1262,8 @@
     "framework-code": "framework-code",
     "courses": "courses",
     "organization": "organization",
-    "externalIdVerification": "externalIdVerification"
+    "externalIdVerification": "externalIdVerification",
+    "assessment": "assessment"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

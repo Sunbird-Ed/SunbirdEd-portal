@@ -123,4 +123,18 @@ describe('ProfilePageComponent', () => {
     component.getTrainingAttended();
     expect(component.attendedTraining).toBeDefined();
   });
+
+  it('should display root org location if org location is empty', () => {
+    const resourceService = TestBed.get(ResourceService);
+    resourceService.frelmnts = resourceBundle.frmelmnts;
+    resourceService.messages = resourceBundle.messages;
+    const userService = TestBed.get(UserService);
+    userService._userData$.next({ err: null, userProfile: Response.userData });
+    spyOn(component, 'getOrgDetails').and.callThrough();
+    component.ngOnInit();
+    expect(component).toBeTruthy();
+    expect(component.userProfile).toEqual(Response.userData);
+    expect(component.getOrgDetails).toHaveBeenCalled();
+  });
+
 });

@@ -19,6 +19,7 @@
         color: var(--gray-800);
         display: flex;
         align-items: center;
+        font-size:  calculateRem(12px);
         .dot-divider {
           width: ($base-block-space / 2);
           height: ($base-block-space / 2);

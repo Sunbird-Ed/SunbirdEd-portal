@@ -88,7 +88,7 @@ export class PageSectionComponent implements OnInit, OnDestroy {
       this.slideConfig['rtl'] = false;
     }
     try {
-      if (this.section.name !== 'My Courses') {
+      if (this.section.name !== this.resourceService.frmelmnts.lbl.mytrainings) {
         const display = JSON.parse(this.section['display']);
         if (_.has(display.name, data) && !_.isEmpty(display.name[data])) {
           this.section.name = display.name[data];

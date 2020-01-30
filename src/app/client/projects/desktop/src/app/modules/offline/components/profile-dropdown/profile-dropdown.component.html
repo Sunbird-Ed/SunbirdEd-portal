@@ -10,8 +10,8 @@ tabindex="0">
         <a class="item" id="about_us" [routerLink]="'/about-us'" (click)="setTelemetry()">
           {{resourceService?.frmelmnts?.lbl?.desktop?.about_us | interpolate:'{instance}': instance}}
         </a>
-        <!-- <a class="item"  routerLink="">
-            Telemetry Sync
+       <!-- <a class="item"  routerLink="/telemetry">
+           {{resourceService?.frmelmnts?.lbl?.desktop?.telemetry}}
         </a> -->
     </div>
 </div>
