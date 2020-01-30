@@ -35,7 +35,7 @@ describe('MainFooterComponent', () => {
                 params: of({})
             }
         },
-        path:'resource'
+        path: 'resource'
     };
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -60,7 +60,7 @@ describe('MainFooterComponent', () => {
         const spy = spyOn(component, 'redirect');
         component.redirectToDikshaApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
-        TestBed.get(ResourceService).instance+'-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
+        TestBed.get(ResourceService).instance + '-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
 
     });
 
@@ -71,7 +71,7 @@ describe('MainFooterComponent', () => {
         const spy = spyOn(component, 'redirect');
         component.redirectToDikshaApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
-        TestBed.get(ResourceService).instance+'-sunbird&utm_medium=get&utm_campaign=redirection');
+        TestBed.get(ResourceService).instance + '-sunbird&utm_medium=get&utm_campaign=redirection');
     });
 
     it('should redirect to diksha app without UTM params if not avaiable', () => {
@@ -80,6 +80,6 @@ describe('MainFooterComponent', () => {
         const spy = spyOn(component, 'redirect');
         component.redirectToDikshaApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
-        TestBed.get(ResourceService).instance+'-sunbird&utm_medium=');
+        TestBed.get(ResourceService).instance + '-sunbird&utm_medium=');
     });
 });
