@@ -29,6 +29,19 @@
     <div class="twelve wide column">
       <app-loader [data]='loaderMessage' *ngIf="showLoader"></app-loader>
       <app-no-result [data]="noResultMessage" *ngIf="!showLoader && !contentList?.length && isConnected">
+          <ng-container>
+              <div>
+                <p class="mt-24 text-center no-search-text">{{resourceService?.frmelmnts?.lbl?.desktop?.yourSearch | interpolate: '{key}':queryParams?.key}}
+                  {{resourceService?.frmelmnts?.lbl?.desktop?.notMatchContent}}
+                </p>
+                <ul class="m-0">
+                  <label>{{resourceService?.frmelmnts?.lbl?.desktop?.Suggestions}}:</label>
+                  <li class="mb-0 ml-16">{{resourceService?.frmelmnts?.lbl?.desktop?.SuggestionsText1}}</li>
+                  <li class="mb-0 ml-16">{{resourceService?.frmelmnts?.lbl?.desktop?.SuggestionsText2}}</li>
+                  <li class="mb-0 ml-16 ">{{resourceService?.frmelmnts?.lbl?.desktop?.SuggestionsText3}}</li>
+                </ul>
+              </div>
+            </ng-container>
       </app-no-result>
       <div class="no-content-container d-flex flex-dc flex-jc-center mt-48"
         *ngIf="!showLoader && !contentList?.length && !isConnected">

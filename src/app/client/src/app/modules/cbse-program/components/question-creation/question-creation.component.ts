@@ -60,6 +60,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   selectedSolutionType: string;
   selectedSolutionTypeIndex: string;
   showSolutionDropDown = true;
+  showSolution = false;
   videoSolutionName: string;
   videoSolutionData: any;
   editorState: any = {};
@@ -181,9 +182,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.solutionUUID = editor_state.solutions[0].id;
         this.selectedSolutionType = editor_state.solutions[0].type;
         this.showSolutionDropDown = false;
+        this.showSolution = true;
         if (this.selectedSolutionType === 'video') {
           const index = _.findIndex(this.questionMetaData.data.media, (o) => {
-             return o.type === 'video';
+            return o.type === 'video' && o.id === editor_state.solutions[0].value;
           });
           this.videoSolutionName = this.questionMetaData.data.media[index].name;
           this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
@@ -236,6 +238,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       videoMedia.thumbnail = this.videoThumbnail;
       this.mediaArr.push(videoMedia);
       this.showSolutionDropDown = false;
+      this.showSolution = true;
     } else {
       this.deleteSolution();
     }
@@ -249,6 +252,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.videoSolutionName = '';
     this.editorState.solutions = '';
     this.videoThumbnail = '';
+    this.showSolution = false;
   }
 
   initializeDropdown() {
