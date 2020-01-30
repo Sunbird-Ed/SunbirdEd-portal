@@ -246,9 +246,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   deleteSolution() {
+    if (this.selectedSolutionType === 'video') {
+      this.mediaArr = _.filter(this.mediaArr, (item: any) => item.id !== this.editorState.solutions);
+      console.log(this.mediaArr);
+    }
     this.showSolutionDropDown = true;
     this.selectedSolutionType = '';
-    this.editorState.solutions = '';
     this.videoSolutionName = '';
     this.editorState.solutions = '';
     this.videoThumbnail = '';

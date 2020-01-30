@@ -231,6 +231,10 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
   deleteSolution() {
+    if (this.selectedSolutionType === 'video') {
+      this.mediaArr = _.filter(this.mediaArr, (item: any) => item.id !== this.solutionValue);
+      console.log(this.mediaArr);
+    }
     this.showSolutionDropDown = true;
     this.selectedSolutionType = '';
     this.solutionValue = '';
