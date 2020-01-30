@@ -198,6 +198,33 @@
 }
 }
 
+.upload-file-section {
+  display: flex;
+  height: 240px;
+  width: 100%;
+  max-width: 800px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+  background-color: #F5F9FC;
+  border: 1px dashed $primary-200;
+}
+
+.qq-uploader.qq-uploader-selector.custom-qq-uploader {
+  background: inherit;
+  border-color: none;
+  border: none;
+  max-height: inherit;
+  min-height: inherit;
+  overflow-y: inherit;
+  width: 688px;
+  height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .terms-and-condition {
   line-height: 14px;
 }

@@ -103,6 +103,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
           this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         }
       });
+      this.setNoResultMessage();
   }
 
   public getFilters(filters) {
@@ -137,7 +138,6 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
         this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);
       }, error => {
         this.showLoader = false;
-        this.setNoResultMessage();
       });
   }
 
