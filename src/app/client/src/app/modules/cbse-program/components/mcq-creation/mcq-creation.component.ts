@@ -301,33 +301,33 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
       return of(body);
     }
   }
-  getConvertedSVG(body) {
-    const getLatex = (encodedMath) => {
-      return this.http.get('https://www.wiris.net/demo/editor/render?mml=' + encodedMath + '&backgroundColor=%23fff&format=svg', {
-        responseType: 'text'
-      });
-    };
-    let latexBody;
-    const isMathML = body.match(/((<math("[^"]*"|[^\/">])*)(.*?)<\/math>)/gi);
-    if (isMathML && isMathML.length > 0) {
-      latexBody = isMathML.map(math => {
-        const encodedMath = encodeURIComponent(math);
-        return getLatex(encodedMath);
-      });
-    }
-    if (latexBody) {
-      return forkJoin(latexBody).pipe(
-        map((res) => {
-          _.forEach(res, (latex, i) => {
-            body = latex.includes('Error') ? body : body.replace(isMathML[i], latex);
-          });
-          return body;
-        })
-      );
-    } else {
-      return of(body);
-    }
-  }
+  // getConvertedSVG(body) {
+  //   const getLatex = (encodedMath) => {
+  //     return this.http.get('https://www.wiris.net/demo/editor/render?mml=' + encodedMath + '&backgroundColor=%23fff&format=svg', {
+  //       responseType: 'text'
+  //     });
+  //   };
+  //   let latexBody;
+  //   const isMathML = body.match(/((<math("[^"]*"|[^\/">])*)(.*?)<\/math>)/gi);
+  //   if (isMathML && isMathML.length > 0) {
+  //     latexBody = isMathML.map(math => {
+  //       const encodedMath = encodeURIComponent(math);
+  //       return getLatex(encodedMath);
+  //     });
+  //   }
+  //   if (latexBody) {
+  //     return forkJoin(latexBody).pipe(
+  //       map((res) => {
+  //         _.forEach(res, (latex, i) => {
+  //           body = latex.includes('Error') ? body : body.replace(isMathML[i], latex);
+  //         });
+  //         return body;
+  //       })
+  //     );
+  //   } else {
+  //     return of(body);
+  //   }
+  // }
 
   /**
    * @param optionalParams  {Array of Objects }  -Key and Value to add in metadata
