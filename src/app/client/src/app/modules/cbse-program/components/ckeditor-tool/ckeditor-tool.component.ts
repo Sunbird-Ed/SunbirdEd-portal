@@ -514,16 +514,15 @@ getAllVideos(offset, query) {
     if (!this.showErrorMsg) {
       // reader.onload = (uploadEvent: any) => {
       const req = this.generateAssetCreateRequest(fileName, fileType, 'image');
-      this.actionService.post(req).pipe(catchError(err => {
+      this.cbseService.createMediaAsset(req).pipe(catchError(err => {
         const errInfo = { errorMsg: 'Image upload failed' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       })).subscribe((res) => {
         const imgId = res['result'].node_id;
         const request = {
-          url: `${this.configService.urlConFig.URLS.ASSET.UPDATE}/${imgId}`,
           data: formData
         };
-        this.actionService.post(request).pipe(catchError(err => {
+        this.cbseService.uploadMedia(request, imgId).pipe(catchError(err => {
           const errInfo = { errorMsg: 'Image upload failed' };
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((response) => {
@@ -545,7 +544,7 @@ getAllVideos(offset, query) {
     this.showErrorMsg = false;
     if (!this.showErrorMsg) {
       const req = this.generateAssetCreateRequest(this.uploader.getName(0), this.uploader.getFile(0).type, 'video');
-      this.actionService.post(req).pipe(catchError(err => {
+      this.cbseService.createMediaAsset(req).pipe(catchError(err => {
         this.loading = false;
         this.isClosable = true;
         const errInfo = { errorMsg: ' Unable to create an Asset' };
@@ -553,16 +552,11 @@ getAllVideos(offset, query) {
       })).subscribe((res) => {
         const contentId = res['result'].node_id;
         const request = {
-          url: 'content/v3/upload/url/' + contentId,
-          data: {
-            request: {
-              content: {
-                fileName: this.uploader.getName(0)
-              }
-            }
+          content: {
+            fileName: this.uploader.getName(0)
           }
         };
-        this.actionService.post(request).pipe(catchError(err => {
+        this.cbseService.generatePreSignedUrl(request, contentId).pipe(catchError(err => {
           const errInfo = { errorMsg: 'Unable to get pre_signed_url and Content Creation Failed, Please Try Again' };
           this.loading = false;
           this.isClosable = true;
@@ -587,20 +581,12 @@ getAllVideos(offset, query) {
 
   generateAssetCreateRequest(fileName, fileType, mediaType) {
     return {
-      url: this.configService.urlConFig.URLS.ASSET.CREATE,
-      data: {
-        'request': {
-          content: {
-            name: fileName,
-            contentType: 'Asset',
-            mediaType: mediaType,
-            mimeType: fileType,
-            createdBy: this.userProfile.userId,
-            language: ['English'],
-            creator: `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
-            code: 'org.ekstep0.5375271337424472',
-          }
-        }
+      content: {
+        name: fileName,
+        mediaType: mediaType,
+        mimeType: fileType,
+        createdBy: this.userProfile.userId,
+        creator: `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
       }
     };
   }
@@ -625,11 +611,10 @@ getAllVideos(offset, query) {
       cache: false
     };
     const option = {
-      url: 'content/v3/upload/' + contentId,
       data: data,
       param: config
     };
-    this.actionService.post(option).pipe(catchError(err => {
+    this.cbseService.uploadMedia(option, contentId).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Unable to update pre_signed_url with Content Id and Content Creation Failed, Please Try Again' };
       this.isClosable = true;
       this.loading = false;
@@ -641,10 +626,7 @@ getAllVideos(offset, query) {
   }
 
   getUploadVideo(videoId) {
-    const option = {
-      url: 'content/v3/read/' + videoId
-    };
-    this.actionService.get(option).pipe(map((data: any) => data.result.content), catchError(err => {
+    this.cbseService.getVideo(videoId).pipe(map((data: any) => data.result.content), catchError(err => {
       const errInfo = { errorMsg: 'Unable to read the Video, Please Try Again' };
       this.loading = false;
       this.isClosable = true;
