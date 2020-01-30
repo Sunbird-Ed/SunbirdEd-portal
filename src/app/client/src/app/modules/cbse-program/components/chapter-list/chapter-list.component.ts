@@ -420,10 +420,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
     this.templateDetails = _.find(templateList, (templateData) => {
       return templateData.metadata.contentType === event.content.contentType;
     });
-    if (this.templateDetails) {
     this.componentLoadHandler('preview',
       this.programComponentsService.getComponentInstance(this.templateDetails.onClick), this.templateDetails.onClick);
-    }
   }
 
   componentLoadHandler(action, component, componentName) {
