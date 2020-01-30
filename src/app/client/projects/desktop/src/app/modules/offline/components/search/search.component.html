@@ -3,8 +3,10 @@
     <div class="ui container px-0 py-8">
       <div class="d-flex flex-jc-space-between sb-back-btn-bar">
         <button type="button" appTelemetryInteract [telemetryInteractEdata]="backButtonInteractEdata" (click)="goBack()"
-          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fmedium">
-          <i class="arrow left icon"></i>{{resourceService?.frmelmnts?.btn?.back}}
+          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>{{resourceService?.frmelmnts?.btn?.back}}
         </button>
         <button *ngIf="!router?.url?.includes('view-all')" type="button" appTelemetryInteract
           [telemetryInteractEdata]="filterByButtonInteractEdata"
@@ -53,14 +55,14 @@
         <div *ngIf="downloadedContents?.length" class="pt-24 px-0">
           <span
             [innerHTML]="resourceService?.frmelmnts?.lbl?.showingResultsForwithCount |
-        interpolate:'{count}':downloadedContents?.length | interpolate:'{searchString}': queryParams?.key"></span>&nbsp;
+        interpolate:'{count}':downloadedContents?.length | interpolate:'{searchString}': (queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
           <a [routerLink]="'/'" (click)="clearSearchQuery();" appTelemetryInteract
             [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
         </div>
         <div *ngIf="!downloadedContents?.length" class="py-24 px-0">
           <span
-            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':queryParams?.key"></span>&nbsp;
+            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':(queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
           <a [routerLink]="'/'" (click)="clearSearchQuery()" appTelemetryInteract
             [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
@@ -87,14 +89,14 @@
         <div *ngIf="onlineContents?.length" class="px-0">
           <span
             [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsForwithCount |
-          interpolate:'{count}':onlineContents?.length | interpolate:'{searchString}': queryParams?.key"></span>&nbsp;
+          interpolate:'{count}':onlineContents?.length | interpolate:'{searchString}': (queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
           <a [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract
             [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
         </div>
         <div *ngIf="!onlineContents?.length" class="px-0">
           <span
-            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':queryParams?.key"></span>&nbsp;
+            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':(queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
           <a [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract
             [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
