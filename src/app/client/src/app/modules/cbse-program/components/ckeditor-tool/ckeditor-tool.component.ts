@@ -5,7 +5,7 @@ import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService
 import { PublicDataService, UserService, ActionService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { catchError, map} from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { throwError, Observable} from 'rxjs';
 import { CbseProgramService } from '../../services';
 import MathText from '../../../../../assets/libs/mathEquation/plugin/mathTextPlugin.js';
 
@@ -71,6 +71,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   allVideos = [];
   selectedVideo = {};
   loading = false;
+  isClosable = true;
   selectedVideoId: string;
   showAddButton: boolean;
   assetsCount = Number;
@@ -171,6 +172,7 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     this.showVideoPicker = false;
     this.showImageUploadModal = true;
     this.loading = false;
+    this.isClosable = true;
   }
   public isEditorReadOnly(state) {
     this.editorInstance.isReadOnly = state;
@@ -185,9 +187,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     return result.toString();
   }
   getImageInputAccetType(ImageType) {
-    const imageType = ImageType.split(', ');
+    const types = ImageType ? ImageType.split(', ') : ['png', 'jpeg'];
     const result = [];
-    _.forEach(imageType, (content) => {
+    _.forEach(types, (content) => {
       result.push('image/' + content);
     });
     return result.toString();
@@ -509,23 +511,7 @@ getAllVideos(offset, query) {
     }
     if (!this.showErrorMsg) {
       // reader.onload = (uploadEvent: any) => {
-      const req = {
-        url: this.configService.urlConFig.URLS.ASSET.CREATE,
-        data: {
-          'request': {
-            content: {
-              name: fileName,
-              contentType: 'Asset',
-              mediaType: 'image',
-              mimeType: fileType,
-              createdBy: this.userProfile.userId,
-              language: ['English'],
-              creator: `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
-              code: 'org.ekstep0.5375271337424472',
-            }
-          }
-        }
-      };
+      const req = this.generateAssetCreateRequest(fileName, fileType, 'image');
       this.actionService.post(req).pipe(catchError(err => {
         const errInfo = { errorMsg: 'Image upload failed' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
@@ -552,6 +538,7 @@ getAllVideos(offset, query) {
    * function to upload video
    */
   uploadVideo(event) {
+    this.isClosable = false;
     this.loading = true;
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -575,42 +562,101 @@ getAllVideos(offset, query) {
       this.errorMsg = 'Please choose an Video file';
     }
     if (!this.showErrorMsg) {
-      const req = {
-        url: this.configService.urlConFig.URLS.ASSET.CREATE,
-        data: {
-          'request': {
-            content: {
-              name: fileName,
-              contentType: 'Asset',
-              mediaType: 'video',
-              mimeType: fileType,
-              createdBy: this.userProfile.userId,
-              language: ['English'],
-              creator: `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
-              code: 'org.ekstep0.5375271337424472',
-            }
-          }
-        }
-      };
+      const req = this.generateAssetCreateRequest(fileName, fileType, 'video');
       this.actionService.post(req).pipe(catchError(err => {
-        const errInfo = { errorMsg: ' Video upload failed' };
+        this.loading = false;
+        this.isClosable = true;
+        const errInfo = { errorMsg: ' Unable to create an Asset' };
         return throwError(this.cbseService.apiErrorHandling(err, errInfo));
       })).subscribe((res) => {
-        const videoId = res['result'].node_id;
+        const contentId = res['result'].node_id;
         const request = {
-          url: `${this.configService.urlConFig.URLS.ASSET.UPDATE}/${videoId}`,
-          data: formData
+          url: 'content/v3/upload/url/' + contentId,
+          data: {
+            request: {
+              content: {
+                fileName: fileName
+              }
+            }
+          }
         };
         this.actionService.post(request).pipe(catchError(err => {
-          const errInfo = { errorMsg: 'Video upload failed' };
+          const errInfo = { errorMsg: 'Unable to get pre_signed_url and Content Creation Failed, Please Try Again' };
+          this.loading = false;
+          this.isClosable = true;
           return throwError(this.cbseService.apiErrorHandling(err, errInfo));
         })).subscribe((response) => {
-          // Read upload video data
-          this.getUploadVideo(response.result.node_id);
+          const signedURL = response.result.pre_signed_url;
+          const config = {
+            processData: false,
+            contentType: 'Asset',
+            headers: {
+              'x-ms-blob-type': 'BlockBlob'
+            }
+          };
+          this.uploadToBlob(signedURL, file, config).subscribe(() => {
+            const fileURL = signedURL.split('?')[0];
+            this.updateContentWithURL(fileURL, fileType, contentId);
+          });
         });
       });
       reader.onerror = (error: any) => { };
     }
+  }
+
+  generateAssetCreateRequest(fileName, fileType, mediaType) {
+    return {
+      url: this.configService.urlConFig.URLS.ASSET.CREATE,
+      data: {
+        'request': {
+          content: {
+            name: fileName,
+            contentType: 'Asset',
+            mediaType: mediaType,
+            mimeType: fileType,
+            createdBy: this.userProfile.userId,
+            language: ['English'],
+            creator: `${this.userProfile.firstName} ${this.userProfile.lastName ? this.userProfile.lastName : ''}`,
+            code: 'org.ekstep0.5375271337424472',
+          }
+        }
+      }
+    };
+  }
+
+  uploadToBlob(signedURL, file, config): Observable<any> {
+    return this.actionService.http.put(signedURL, file, config).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Unable to upload to Blob and Content Creation Failed, Please Try Again' };
+      this.isClosable = true;
+      this.loading = false;
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }), map(data => data));
+  }
+
+  updateContentWithURL(fileURL, mimeType, contentId) {
+    const data = new FormData();
+    data.append('fileUrl', fileURL);
+    data.append('mimeType', mimeType);
+    const config = {
+      enctype: 'multipart/form-data',
+      processData: false,
+      contentType: false,
+      cache: false
+    };
+    const option = {
+      url: 'content/v3/upload/' + contentId,
+      data: data,
+      param: config
+    };
+    this.actionService.post(option).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Unable to update pre_signed_url with Content Id and Content Creation Failed, Please Try Again' };
+      this.isClosable = true;
+      this.loading = false;
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    })).subscribe(res => {
+      // Read upload video data
+      this.getUploadVideo(res.result.node_id);
+    });
   }
 
   getUploadVideo(videoId) {
@@ -619,11 +665,17 @@ getAllVideos(offset, query) {
     };
     this.actionService.get(option).pipe(map((data: any) => data.result.content), catchError(err => {
       const errInfo = { errorMsg: 'Unable to read the Video, Please Try Again' };
+      this.loading = false;
+      this.isClosable = true;
+      this.loading = false;
+      this.isClosable = true;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
+      this.toasterService.success('Asset Successfully Uploaded...');
       this.selectedVideo = res;
       this.showAddButton = true;
       this.loading = false;
+      this.isClosable = true;
       this.addVideoInEditor();
     });
   }
