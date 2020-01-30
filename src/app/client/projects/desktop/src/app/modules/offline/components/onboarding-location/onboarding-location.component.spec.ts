@@ -52,13 +52,13 @@ describe('OnboardingLocationComponent', () => {
 
   it('should call allDistrict', () => {
     spyOn(component, 'getAllDistricts');
-    component.onOptionChanges(onboarding_location_test.filters.state);
+    component.onOptionChanges('state');
     expect(component.getAllDistricts).toHaveBeenCalled();
   });
 
   it('should not call allDistrict', () => {
     spyOn(component, 'getAllDistricts');
-    component.onOptionChanges(onboarding_location_test.filters.district);
+    component.onOptionChanges('district');
     expect(component.getAllDistricts).not.toHaveBeenCalled();
     expect(component.disableContinueBtn).toBeFalsy();
   });
