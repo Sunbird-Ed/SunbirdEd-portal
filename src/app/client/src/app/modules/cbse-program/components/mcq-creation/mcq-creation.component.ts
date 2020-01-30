@@ -341,11 +341,13 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         });
         const questionData = this.getHtml(this.body, this.optionBody);
         const correct_answer = this.mcqForm.answer;
+        let resindex;
         const options = _.map(this.mcqForm.options, (opt, key) => {
+          resindex = Number(key);
           if (Number(correct_answer) === key) {
-            return { 'answer': true, value: { 'type': 'text', 'body': opt.body } };
+            return { 'answer': true, value: { 'type': 'text', 'body': opt.body, 'resvalue': resindex, 'resindex': resindex } };
           } else {
-            return { 'answer': false, value: { 'type': 'text', 'body': opt.body } };
+            return { 'answer': false, value: { 'type': 'text', 'body': opt.body, 'resvalue': resindex, 'resindex': resindex  } };
           }
         });
 
