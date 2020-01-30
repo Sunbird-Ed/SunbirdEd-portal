@@ -11,6 +11,7 @@
       <div class="sb-field">
         <label>{{resourceService?.frmelmnts?.lbl?.profile?.State}} :</label>
           <select class="ui dropdown selection" (change)="onStateChanges()" [(ngModel)]="selectedState">
+              <option [ngValue]="undefined" hidden selected>{{resourceService?.frmelmnts?.lbl?.profile?.selectState}}</option>
               <option [ngValue]="state"  *ngFor="let state of stateList"> {{state.name}}</option>
             </select>
       </div>
@@ -18,6 +19,7 @@
         <div class="sb-field">
           <label>{{resourceService?.frmelmnts?.lbl?.profile?.District}} :</label>
           <select class="ui dropdown selection" (change)="onStateChanges()" [(ngModel)]="selectedDistrict">
+              <option [ngValue]="undefined" hidden selected>{{resourceService?.frmelmnts?.lbl?.profile?.selectDistrict}}</option>
               <option [ngValue]="district" *ngFor="let district of districtList"> {{district?.name}}</option>
             </select>
 
