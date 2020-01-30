@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, ViewChild, OnDestroy
+  Component, OnInit, Input, ViewChild, OnDestroy, Output, EventEmitter
 } from '@angular/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -29,6 +29,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   public activatedRoute: ActivatedRoute;
   contentRating: number;
   enableSubmitBtn: boolean;
+  @Output() closeModal = new EventEmitter();
   /**
   * Constructor to create injected service(s) object
   *Default method of unpublished Component class
@@ -68,7 +69,14 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
       this.toasterService.success(this.resourceService.messages.smsg.m0050);
     }
     this.showContentRatingModal = false;
+    this.closeModal.emit(true);
   }
+
+  dismissModal() {
+    this.showContentRatingModal = false;
+    this.closeModal.emit(true);
+  }
+
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();

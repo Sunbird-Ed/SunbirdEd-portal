@@ -14,6 +14,7 @@ const _ = require('lodash');
 const {acceptTermsAndCondition} = require('./userHelper');
 const httpSatusCode = require('http-status-codes');
 const logger = require('sb_logger_util_v2');
+const {delay} = require('../helpers/utilityService');
 
 const handleError = (error) => {
   logger.error({
@@ -36,6 +37,8 @@ const acceptTncAndGenerateToken = async (identifier, tncVersionAccepted) => {
   let errorType, accessToken;
   try {
     errorType = 'ERROR_GENERATING_TOKEN';
+    // TODO: remove it once backed api are sync
+    await delay(3000);
     logger.info({msg: 'generate token for email id - ' + identifier});
     grant = await keyCloakClient.grantManager.obtainDirectly(identifier, undefined, undefined, CONSTANTS.KEYCLOAK.SCOPE.OPENID).catch(handleError);
     errorType = 'ERROR_ACCEPTING_TNC';

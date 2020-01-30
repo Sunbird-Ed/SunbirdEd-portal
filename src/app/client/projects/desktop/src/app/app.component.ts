@@ -16,8 +16,9 @@ import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
 import {builtInButtons, defaultStepOptions} from './shepherd-data';
-import { OnboardingService } from '@sunbird/offline';
-
+import { OnboardingService , ConnectionService} from '@sunbird/offline';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 
@@ -71,6 +72,8 @@ export class AppComponent implements OnInit, OnDestroy {
   queryParams: any;
   telemetryContextData: any ;
   showOnboardingPopup = false;
+  isConnected: any;
+  public unsubscribe$ = new Subject<void>();
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -78,6 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private deviceRegisterService: DeviceRegisterService, private courseService: CoursesService, private tenantService: TenantService,
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
+    private connectionService: ConnectionService,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     private shepherdService: ShepherdService, public onboardingService: OnboardingService) {
@@ -141,6 +145,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.changeLanguageAttribute();
     document.body.classList.add('sb-offline');
+
+    this.handleOnlineStatus();
+
+}
+handleOnlineStatus() {
+  this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+    if (this.resourceService.messages.emsg) {
+      this.isConnected = isConnected;
+      this.isConnected === true ? this.toasterService.success(this.resourceService.messages.stmsg.desktop.onlineStatus) :
+      this.toasterService.error(this.resourceService.messages.emsg.desktop.offlineStatus);
+    }
+  });
 }
 
   /**
