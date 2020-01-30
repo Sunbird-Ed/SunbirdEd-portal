@@ -10,14 +10,14 @@
             <div class="swiper-slide__para pt-8">{{resourceService?.messages?.imsg?.m0074}} </div>
             <div class="d-flex flex-dc fields-selection">
                 <div class="sb-field">
-                    <label class="d-flex"> Select State: </label>
+                    <label class="d-flex"> {{resourceService?.frmelmnts?.lbl?.selectState}} :</label>
                     <select class="ui dropdown selection" (change)="onOptionChanges('state')" [(ngModel)]="selectedState" >
                         <option [ngValue]="state"  *ngFor="let state of stateList"> {{state?.name}}</option>
                       </select>
 
                 </div>
                 <div class="sb-field" *ngIf="districtList.length">
-                    <label class="d-flex"> Select District: </label>
+                    <label class="d-flex"> {{resourceService?.frmelmnts?.lbl?.profile?.selectDistrict}} : </label>
                     <select class="ui dropdown selection" (change)="onOptionChanges('district')" [(ngModel)]="selectedDistrict">
                         <option [ngValue]="district" *ngFor="let district of districtList"> {{district?.name}}</option>
                       </select>
