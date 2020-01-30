@@ -167,4 +167,45 @@ export class CbseProgramService {
     reqParam.data.request = req ? _.merge({}, reqParam.data.request, req) : reqParam;
     return this.contentService.post(reqParam);
   }
+
+  createMediaAsset(req?: object) {
+    const reqParam = {
+      url: this.configService.urlConFig.URLS.ASSET.CREATE,
+      data: {
+        'request': {
+          content: {
+            contentType: 'Asset',
+            language: ['English'],
+            code: 'org.ekstep0.5375271337424472',
+          }
+        }
+      }
+    };
+    reqParam.data.request = req ? _.merge({}, reqParam.data.request, req) : reqParam;
+    return this.actionService.post(reqParam);
+  }
+  uploadMedia(req, assetId: any) {
+    let reqParam = {
+      url: `${this.configService.urlConFig.URLS.ASSET.UPDATE}/${assetId}`,
+      data: req.data
+    };
+    reqParam = req ? _.merge({}, reqParam, req) : reqParam;
+    return this.actionService.post(reqParam);
+  }
+  generatePreSignedUrl(req, contentId: any) {
+    const reqParam = {
+      url: `content/v3/upload/url/${contentId}`,
+      data: {
+        request: req
+      }
+    };
+    return this.actionService.post(reqParam);
+  }
+  getVideo(videoId) {
+    const reqParam = {
+      url: `content/v3/read/${videoId}`
+    };
+    return this.actionService.get(reqParam);
+  }
+
 }
