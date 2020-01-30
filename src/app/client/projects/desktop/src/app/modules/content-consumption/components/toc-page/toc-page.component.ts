@@ -144,7 +144,6 @@ this.isConnected = isConnected;
     }
   }
   handleYoutubeContent(data) {
-    console.log(data.mimeType , 'data');
     this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       if (!isConnected && this.offlineCardService.isYoutubeContent(data)) {
         this.youTubeContentStatus = true;
