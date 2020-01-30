@@ -185,7 +185,7 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.showSolution = true;
         if (this.selectedSolutionType === 'video') {
           const index = _.findIndex(this.questionMetaData.data.media, (o) => {
-             return o.type === 'video';
+            return o.type === 'video' && o.id === editor_state.solutions[0].value;
           });
           this.videoSolutionName = this.questionMetaData.data.media[index].name;
           this.videoThumbnail = this.questionMetaData.data.media[index].thumbnail;
