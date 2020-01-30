@@ -11,17 +11,15 @@
             <div class="d-flex flex-dc fields-selection">
                 <div class="sb-field">
                     <label class="d-flex"> Select State: </label>
-                    <select class="ui dropdown selection" (change)="onOptionChanges('state')" [(ngModel)]="selectedState"
-                    placeholder="Select State">
-                        <option [ngValue]="state"  *ngFor="let state of stateList" placeholder="Select State"> {{state?.name}}</option>
+                    <select class="ui dropdown selection" (change)="onOptionChanges('state')" [(ngModel)]="selectedState" >
+                        <option [ngValue]="state"  *ngFor="let state of stateList"> {{state?.name}}</option>
                       </select>
 
                 </div>
                 <div class="sb-field" *ngIf="districtList.length">
                     <label class="d-flex"> Select District: </label>
-                    <select class="ui dropdown selection" (change)="onOptionChanges('district')" [(ngModel)]="selectedDistrict"
-                    placeholder="Select District">
-                        <option [ngValue]="district" *ngFor="let district of districtList" placeholder="Select District"> {{district?.name}}</option>
+                    <select class="ui dropdown selection" (change)="onOptionChanges('district')" [(ngModel)]="selectedDistrict">
+                        <option [ngValue]="district" *ngFor="let district of districtList"> {{district?.name}}</option>
                       </select>
                 </div>
             </div>

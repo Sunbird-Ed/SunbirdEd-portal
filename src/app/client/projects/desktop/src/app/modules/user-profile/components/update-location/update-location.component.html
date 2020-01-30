@@ -10,17 +10,15 @@
       <p class="mb-8">{{resourceService?.frmelmnts?.lbl?.profile?.yourLocationHeader}} </p>
       <div class="sb-field">
         <label>{{resourceService?.frmelmnts?.lbl?.profile?.State}} :</label>
-          <select class="ui dropdown selection" (change)="onStateChanges()" [(ngModel)]="selectedState"
-          placeholder="Select State">
+          <select class="ui dropdown selection" (change)="onStateChanges()" [(ngModel)]="selectedState">
               <option [ngValue]="state"  *ngFor="let state of stateList"> {{state.name}}</option>
             </select>
       </div>
 
         <div class="sb-field">
           <label>{{resourceService?.frmelmnts?.lbl?.profile?.District}} :</label>
-          <select class="ui dropdown selection" (change)="onStateChanges()" [(ngModel)]="selectedDistrict"
-          placeholder="Select District">
-              <option [ngValue]="district" *ngFor="let district of districtList" placeholder="Select District"> {{district?.name}}</option>
+          <select class="ui dropdown selection" (change)="onStateChanges()" [(ngModel)]="selectedDistrict">
+              <option [ngValue]="district" *ngFor="let district of districtList"> {{district?.name}}</option>
             </select>
 
         </div>
