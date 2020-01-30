@@ -29,6 +29,16 @@
       </div>
            <!--If content is not present-->
   
+               <!--If youtube content is playing  offline -->
+       <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center no-content-player" *ngIf="youTubeContentStatus">
+        <div class="no-content-player__text"></div>
+        <div>
+          <img src="../../../../../assets/images/shape.svg" width="90px" height="70px">
+  
+        </div>
+        <div class="fnormal">{{resourceService?.messages?.emsg?.desktop?.offlineStatus}}</div>
+      </div>
+           <!--If youtube content is playing  offline t-->
   
     </div>
   

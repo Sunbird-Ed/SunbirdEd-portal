@@ -1,6 +1,6 @@
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { ContentManagerService } from '@sunbird/offline';
+import { ContentManagerService, ConnectionService } from '@sunbird/offline';
 import { map, mergeMap, takeUntil, filter } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PublicPlayerService } from '@sunbird/public';
@@ -9,7 +9,7 @@ import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angu
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
-  ContentUtilsServiceService, UtilService
+  ContentUtilsServiceService, UtilService, OfflineCardService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -72,7 +72,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   contentDeleted;
   isContentPresent = true;
   telemetryImpression: IImpressionEventInput;
-
+  youTubeContentStatus: Boolean = false;
   constructor(public playerService: PublicPlayerService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     public router: Router, public resourceService: ResourceService, private contentUtilsService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService,
@@ -81,6 +81,8 @@ export class TocPageComponent implements OnInit, OnDestroy {
     public toasterService: ToasterService,
     private navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService,
+    private connectionService: ConnectionService,
+    public offlineCardService: OfflineCardService,
     private telemetryService: TelemetryService) { }
 
   ngOnInit() {
@@ -88,6 +90,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.getContent();
+    this.checkOnlineStatus();
     this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.checkDownloadStatus(data);
     });
@@ -99,7 +102,11 @@ export class TocPageComponent implements OnInit, OnDestroy {
   checkDownloadStatus(downloadListdata) {
     this.collectionData = this.playerService.updateDownloadStatus(downloadListdata, this.collectionData);
   }
-
+checkOnlineStatus() {
+  this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+this.isConnected = isConnected;
+  });
+}
   private getContent(): void {
     this.activatedRoute.params.pipe(
       mergeMap((params) => {
@@ -133,9 +140,19 @@ export class TocPageComponent implements OnInit, OnDestroy {
       this.objectRollUp = this.getContentRollUp(event.rollup);
       this.OnPlayContent(this.activeContent, true);
       this.logTelemetry('content-inside-collection', this.objectRollUp, this.activeContent);
+      this.handleYoutubeContent(event.data);
     }
   }
-
+  handleYoutubeContent(data) {
+    console.log(data.mimeType , 'data');
+    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      if (!isConnected && this.offlineCardService.isYoutubeContent(data)) {
+        this.youTubeContentStatus = true;
+      } else {
+        this.youTubeContentStatus = false;
+      }
+        });
+  }
   logTelemetry(id, rollup?, content?) {
       const interactData = {
         context: {

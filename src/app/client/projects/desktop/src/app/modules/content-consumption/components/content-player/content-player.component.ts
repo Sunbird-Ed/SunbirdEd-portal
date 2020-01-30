@@ -33,6 +33,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   @Input() isContentPresent = true;
   @Input() objectRollUp: {} = {};
   isConnected: any;
+  @Input() youTubeContentStatus = false;
   public unsubscribe$ = new Subject<void>();
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
