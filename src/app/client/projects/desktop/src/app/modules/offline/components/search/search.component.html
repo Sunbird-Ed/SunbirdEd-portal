@@ -3,8 +3,10 @@
     <div class="ui container px-0 py-8">
       <div class="d-flex flex-jc-space-between sb-back-btn-bar">
         <button type="button" appTelemetryInteract [telemetryInteractEdata]="backButtonInteractEdata" (click)="goBack()"
-          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fmedium">
-          <i class="arrow left icon"></i>{{resourceService?.frmelmnts?.btn?.back}}
+          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>{{resourceService?.frmelmnts?.btn?.back}}
         </button>
         <button *ngIf="!router?.url?.includes('view-all')" type="button" appTelemetryInteract
           [telemetryInteractEdata]="filterByButtonInteractEdata"
