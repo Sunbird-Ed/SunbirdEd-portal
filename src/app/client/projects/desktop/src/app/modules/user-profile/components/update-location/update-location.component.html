@@ -10,24 +10,20 @@
       <p class="mb-8">{{resourceService?.frmelmnts?.lbl?.profile?.yourLocationHeader}} </p>
       <div class="sb-field">
         <label>{{resourceService?.frmelmnts?.lbl?.profile?.State}} :</label>
-        <sui-select class="selection" labelField="name" [isSearchable]="true" [(ngModel)]="selectedState"
-          (ngModelChange)="onStateChanges()" placeholder="{{resourceService?.frmelmnts?.lbl?.profile?.selectState}}"
-          [options]="stateList" #states>
-          <sui-select-option *ngFor="let state of states.filteredOptions" [value]="state">
-          </sui-select-option>
-        </sui-select>
+          <select class="ui dropdown selection" (change)="onStateChanges()" [(ngModel)]="selectedState"
+          placeholder="Select State">
+              <option [ngValue]="state"  *ngFor="let state of stateList"> {{state.name}}</option>
+            </select>
       </div>
-      <div class="sb-fielgroup">
-        <label>{{resourceService?.frmelmnts?.lbl?.profile?.District}} :</label>
+
         <div class="sb-field">
-          <sui-select class="selection mt-10" labelField="name" [isSearchable]="true" [(ngModel)]="selectedDistrict"
-            placeholder="{{resourceService?.frmelmnts?.lbl?.profile?.selectDistrict}}" [options]="districtList"
-            #districts>
-            <sui-select-option *ngFor="let district of districts.filteredOptions" [value]="district">
-            </sui-select-option>
-          </sui-select>
+          <label>{{resourceService?.frmelmnts?.lbl?.profile?.District}} :</label>
+          <select class="ui dropdown selection" (change)="onStateChanges()" [(ngModel)]="selectedDistrict"
+          placeholder="Select District">
+              <option [ngValue]="district" *ngFor="let district of districtList" placeholder="Select District"> {{district?.name}}</option>
+            </select>
+
         </div>
-      </div>
     </div>
   </div>
   <div class="sb-modal-actions">

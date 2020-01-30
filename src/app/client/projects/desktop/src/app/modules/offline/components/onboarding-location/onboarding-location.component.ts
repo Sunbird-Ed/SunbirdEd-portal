@@ -46,12 +46,12 @@ export class OnboardingLocationComponent implements OnInit {
     });
   }
 
-  onOptionChanges(option) {
+  onOptionChanges(type: string) {
     this.disableContinueBtn = true;
-    if (option.type === 'state') {
+    if (this.selectedState && type === 'state') {
       this.selectedDistrict = {};
       this.districtList = [];
-      this.getAllDistricts(option.id);
+      this.getAllDistricts(this.selectedState.id);
     } else {
       this.disableContinueBtn = false;
     }
