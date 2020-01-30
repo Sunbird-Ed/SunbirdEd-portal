@@ -11,6 +11,7 @@ Installing Sunbird requires two primary software components:
 - [Project Setup](#project-setup)
 - [Running Application](#running-application)
 - [Project Structure](#project-structure)
+- [Testing](#testing)
 ---
 
 ### Prerequisites
@@ -144,30 +145,36 @@ Installing Sunbird requires two primary software components:
     .
     ├── Sunbirded-portal                                            
     |   ├── /.circleci                           # 
-    │   |   └── config.yml                       # -|-
-    |   ├── /experiments                         # 
-    |   ├── /src/app                             # 
+    │   |   └── config.yml                       # Circleci Configuration file
+    |   ├── /experiments                         # -|-
+    |   ├── /src/app                             # Sunbird portal or web application
     │   |   ├── /client                          # -|-
     │   |   |    └── src                         # -|-
-    │   |   ├── /helpers                         # -|-
-    │   |   ├── /libs                            # -|-
-    │   |   ├── /proxy                           # -|-
-    │   |   ├── /resourcebundles                 # -|-
-    │   |   ├── /routes                          # -|-
-    │   |   ├── /sunbird-plugins                 # -|-
-    │   |   ├── /tests                           # -|-
-    │   |   ├── framework.config.js              # -|-
+    │   |   ├── /helpers                         # Helpers and Service file
+    │   |   ├── /libs                            # Sunbird utilities
+    │   |   ├── /proxy                           # Redirection to respective services
+    │   |   ├── /resourcebundles                 # Language resources
+    │   |   ├── /routes                          # Sunbird Backend Routes
+    │   |   ├── /sunbird-plugins                 # Sunbird plugins for editors
+    │   |   ├── /tests                           # Test case scripts for helpers and routes
+    │   |   ├── framework.config.js              # Default framework configuration
     │   |   ├── gulp-tenant.js                   # -|-
-    │   |   ├── gulpfile.js                      # -|-
+    │   |   ├── gulpfile.js                      # Gulp build configuration
     │   |   ├── package.json                     # Contains Node packages as specified as dependencies in package.json
     │   |   └── server.js                        # Main application program file / entry file for Sunbird services stack or the backend API interface
-    │   ├── .gitignore                                # git configuration to ignore some files and folder
-    └───└── /test                                 # Test case scripts
+    └───└── .gitignore                           # git configuration to ignore some files and folder
 
-### Running end-to-end tests
+### Testing
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+1. Sunbird portal or web application
 
-### Further help
+        1. $ cd {PROJECT-FOLDER}/src/app/client
+        2. $ npm run test
+        3. With Coverage $ npm run test-coverage
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+2. Sunbird services stack or the backend API interface
+
+        1. $ cd {PROJECT-FOLDER}/src/app
+        2. $ npm run backend-test
+        3. With Coverage $ npm run backend-test-with-coverage
+
