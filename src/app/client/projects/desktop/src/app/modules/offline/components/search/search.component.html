@@ -60,7 +60,7 @@
         </div>
         <div *ngIf="!downloadedContents?.length" class="py-24 px-0">
           <span
-            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':queryParams?.key"></span>&nbsp;
+            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':(queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
           <a [routerLink]="'/'" (click)="clearSearchQuery()" appTelemetryInteract
             [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
@@ -94,7 +94,7 @@
         </div>
         <div *ngIf="!onlineContents?.length" class="px-0">
           <span
-            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':queryParams?.key"></span>&nbsp;
+            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':(queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
           <a [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract
             [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
