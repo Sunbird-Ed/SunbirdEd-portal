@@ -1,14 +1,13 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnChanges, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { McqForm } from './../../class/McqForm';
-import { ConfigService, IUserData, IUserProfile, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, IUserProfile, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { UserService, ActionService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, Observable, of, throwError } from 'rxjs';
+import { forkJoin, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { CbseProgramService } from '../../services';
 import { Validators, FormGroup, FormArray, FormBuilder, NgForm } from '@angular/forms';
@@ -24,10 +23,9 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() sessionContext: any;
   @Input() telemetryEventsInput: any;
   @Input() questionMetaData: any;
+  @Input() role: any;
   @Output() questionStatus = new EventEmitter<any>();
   @Output() questionFormChangeStatus = new EventEmitter<any>();
-  @Input() questionSelectionStatus: any;
-  @Input() role: any;
   @ViewChild('author_names') authorName;
   @ViewChild('reuestChangeForm') ReuestChangeForm: NgForm;
   public userProfile: IUserProfile;
@@ -159,7 +157,6 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
         }
       };
      });
-
   }
 
   ngOnChanges() {
