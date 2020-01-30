@@ -170,7 +170,7 @@ const userDetails =  {
   'roles': [
     'CONTRIBUTOR'
   ]
-}
+};
 
 // without user details
 export const programDetailsWithOutUserDetails = {
