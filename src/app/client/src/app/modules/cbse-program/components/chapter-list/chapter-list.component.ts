@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
-import { forkJoin, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   IChapterListComponentInput, ISessionContext,

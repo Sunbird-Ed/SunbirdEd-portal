@@ -5,9 +5,9 @@ import { PublicDataService, UserService, ActionService, PlayerService, Framework
 import { ProgramStageService, ProgramTelemetryService } from '../../../program/services';
 import * as _ from 'lodash-es';
 import { catchError, map, first } from 'rxjs/operators';
-import { throwError, Observable, from } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { IContentUploadComponentInput} from '../../interfaces';
-import { FormGroup, FormArray, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { CbseProgramService } from '../../services/cbse-program/cbse-program.service';
 import { HelperService } from '../../services/helper.service';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
@@ -63,7 +63,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   showUploadModal = true;
   submitButton: boolean;
   uploadButton: boolean;
-  titleCharacterLimit: Number;
+  titleCharacterLimit: number;
   allFormFields: Array<any>;
   telemetryImpression: any;
   public telemetryPageId = 'content-uploader';
@@ -351,10 +351,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     this.allFormFields = _.filter(this.formConfiguration, {'visible': true});
 
     this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.resourceStatus === 'Draft') ? false : true ;
-    const formFields = _.map(this.formConfiguration, (formData) => {
-      if (!formData.defaultValue) {
-        return formData.code;
-      }
+    _.forEach(this.formConfiguration, (formData) => {
       this.selectOutcomeOption[formData.code] = formData.defaultValue;
     });
 

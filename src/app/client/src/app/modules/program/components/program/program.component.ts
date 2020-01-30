@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { tap, map, first } from 'rxjs/operators';
+import { tap, first } from 'rxjs/operators';
 import { CollectionComponent, DashboardComponent } from '../../../cbse-program';
 import { ICollectionComponentInput, IDashboardComponentInput } from '../../../cbse-program/interfaces';
 import { InitialState, ISessionContext, IUserParticipantDetails } from '../../interfaces';
