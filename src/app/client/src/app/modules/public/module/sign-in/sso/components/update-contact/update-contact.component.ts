@@ -10,6 +10,7 @@ import * as _ from 'lodash-es';
 import {SignupService} from '../../../../signup/services';
 import { map } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
+import { TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   templateUrl: './update-contact.component.html',
@@ -47,7 +48,8 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   constructor(public activatedRoute: ActivatedRoute, private tenantService: TenantService, public resourceService: ResourceService,
               public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
               public navigationHelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService,
-              public utilService: UtilService, public signupService: SignupService) {
+              public utilService: UtilService, public signupService: SignupService,
+              public telemetryService: TelemetryService) {
   }
 
   ngOnInit() {
@@ -79,6 +81,31 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
    */
   toggleTncCheckBox(e) {
     this.contactForm.tncAccepted = e.target.checked;
+    this.generateInteractEvent(this.contactForm.tncAccepted);
+  }
+
+  /**
+   * Used to generate interact telemetry
+   * @param tncAcceptedStatus
+   */
+  private generateInteractEvent(tncAcceptedStatus) {
+    const selectedType = tncAcceptedStatus ? 'selected' : 'unselected';
+    const interactData = {
+      context: {
+        env: 'sso-signup',
+        cdata: [
+          {id: 'user:tnc:accept', type: 'Feature'},
+          {id: 'SB-16663', type: 'Task'}
+        ]
+      },
+      edata: {
+        id: 'user:tnc:accept',
+        type: 'click',
+        subtype: selectedType,
+        pageid: 'sso-signup'
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 
   /**
@@ -86,6 +113,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
    */
   fetchTncConfiguration() {
     this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+      this.telemetryLogEvents('fetch-terms-condition', true);
         const response = _.get(data, 'result.response.value');
         if (response) {
           try {
@@ -97,7 +125,8 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
           }
         }
       }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      this.telemetryLogEvents('fetch-terms-condition', false);
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       }
     );
   }
@@ -249,4 +278,25 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  telemetryLogEvents(api: any, status: boolean) {
+    let level = 'ERROR';
+    let msg = api + ' failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = api + ' success';
+    }
+    const event = {
+      context: {
+        env: 'sso-signup'
+      },
+      edata: {
+        type: api,
+        level: level,
+        message: msg
+      }
+    };
+    this.telemetryService.log(event);
+  }
+
 }

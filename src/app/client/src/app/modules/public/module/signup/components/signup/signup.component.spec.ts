@@ -5,7 +5,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {ResourceService, SharedModule, ToasterService} from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { CoreModule, TenantService } from '@sunbird/core';
-import { TelemetryModule } from '@sunbird/telemetry';
+import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { FormBuilder } from '@angular/forms';
@@ -34,7 +34,8 @@ const resourceBundle = {
       'chkuploadsts': 'Check Status',
       'passwd': 'Password must contain a minimum of 8 characters including numerals, '
       + 'lower and upper case alphabets and special characters.',
-      'uniquePhone': 'uniquePhone'
+      'uniquePhone': 'uniquePhone',
+      'passwderr': 'Password cannot be same as your username.'
     },
   },
   'messages': {
@@ -63,7 +64,7 @@ describe('SignUpComponent', () => {
       providers: [FormBuilder, ResourceService, SignupService, ToasterService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: ResourceService, useValue: resourceBundle },
+        { provide: ResourceService, useValue: resourceBundle }, TelemetryService,
         {provide : TenantService, useValue: { tenantData$: of('')}}],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -192,6 +193,20 @@ describe('SignUpComponent', () => {
     expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
     + 'lower and upper case alphabets and special characters.');
   }));
+  it('should show password cannot be equal to username error message for password', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
+    let errors = {};
+    component.showContact = 'email';
+    const email = component.signUpForm.controls['email'];
+    email.setValue('User2010@gmail.com');
+    const password = component.signUpForm.controls['password'];
+    password.setValue('User2010@gmail.com');
+    tick(200);
+    errors = password.errors || {};
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(password.errors.passwordError).toEqual('Password cannot be same as your username.');
+  }));
   it('should call onEmailChange method', () => {
     spyOn(component, 'onEmailChange');
      spyOn(component, 'enableSignUpSubmitButton');
@@ -240,18 +255,24 @@ describe('SignUpComponent', () => {
   it('should fetch tnc configuration', () => {
     const signupService = TestBed.get(SignupService);
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
     component.ngOnInit();
     expect(component.tncLatestVersion).toEqual('v4');
     expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
+    expect(telemetryService.log).toHaveBeenCalledWith(SignUpComponentMockData.telemetryLogSuccess);
   });
 
   it('should not fetch tnc configuration and throw error', () => {
     const signupService = TestBed.get(SignupService);
     const toasterService = TestBed.get(ToasterService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
     spyOn(toasterService, 'error').and.callThrough();
     spyOn(signupService, 'getTncConfig').and.returnValue(observableThrowError(SignUpComponentMockData.tncConfig));
     component.ngOnInit();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+    expect(telemetryService.log).toHaveBeenCalledWith(SignUpComponentMockData.telemetryLogError);
   });
 
   it('should fetch tnc configuration and throw error as cannot parse data', () => {
@@ -323,6 +344,20 @@ describe('SignUpComponent', () => {
     component.vaidateUserContact();
     expect(component.showUniqueError).toBe('');
     expect(component.signUpForm.controls['uniqueContact'].value).toBeTruthy();
+  });
+
+  it('should toggle tnc checkboc', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.generateTelemetry({target: {checked: false}});
+    expect(telemetryService.interact).toHaveBeenCalledWith(SignUpComponentMockData.interactEDataUnSelected);
+  });
+
+  it('should toggle tnc checkboc if already false', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.generateTelemetry({target: {checked: true}});
+    expect(telemetryService.interact).toHaveBeenCalledWith(SignUpComponentMockData.interactEDataSelected);
   });
 
 });

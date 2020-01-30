@@ -56,7 +56,7 @@
                   formControlName="password" name="password" placeholder="{{resourceService.frmelmnts.lbl.EnterPassword}}">
                 <i class="icon large sb-icon-preview link opacity-1" (click)="displayPassword()"></i>
               </div>
-              <label class="ui basic label pt-8 p-0 m-0 infotext line-height-1-3" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{resourceService.frmelmnts.lbl.passwd}}</label>
+              <label class="ui basic label pt-8 p-0 m-0 infotext line-height-1-3" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{passwordError}}</label>
             </div>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors">{{resourceService.frmelmnts.lbl.errorConfirmPassword}}</label>
             <div class="required field mb-20">
@@ -70,7 +70,7 @@
             <!-- Google invisible recaptcha -->
             <re-captcha #captchaRef="reCaptcha" (resolved)="resolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
             <div class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
-              <input type="checkbox" id="tncAccepted" role="checkbox"
+              <input type="checkbox" id="tncAccepted" role="checkbox" (click)="generateTelemetry($event)"
                      formControlName="tncAccepted" name="tncAccepted">
               <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabel}}
               <a href="{{termsAndConditionLink}}" target="_blank">

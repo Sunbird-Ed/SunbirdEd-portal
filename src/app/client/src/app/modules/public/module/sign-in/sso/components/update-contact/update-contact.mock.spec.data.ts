@@ -135,6 +135,56 @@ export const mockUpdateContactData = {
         'value': '{"latestVersion":"v4","v4":{"url":}}'
       }
     }
+  },
+  interactEDataUnSelected: {
+    context: {
+      env: 'sso-signup',
+      cdata: [
+        {id: 'user:tnc:accept', type: 'Feature'},
+        {id: 'SB-16663', type: 'Task'}
+      ]
+    },
+    edata: {
+      id: 'user:tnc:accept',
+      type: 'click',
+      subtype: 'unselected',
+      pageid: 'sso-signup'
+    }
+  },
+  interactEDataSelected: {
+    context: {
+      env: 'sso-signup',
+      cdata: [
+        {id: 'user:tnc:accept', type: 'Feature'},
+        {id: 'SB-16663', type: 'Task'}
+      ]
+    },
+    edata: {
+      id: 'user:tnc:accept',
+      type: 'click',
+      subtype: 'selected',
+      pageid: 'sso-signup'
+    }
+  },
+  telemetryLogError: {
+    context: {
+      env: 'sso-signup'
+    },
+    edata: {
+      type: 'fetch-terms-condition',
+      level: 'ERROR',
+      message: 'fetch-terms-condition failed'
+    }
+  },
+  telemetryLogSuccess: {
+    context: {
+      env: 'sso-signup'
+    },
+    edata: {
+      type: 'fetch-terms-condition',
+      level: 'SUCCESS',
+      message: 'fetch-terms-condition success'
+    }
   }
 };
 
