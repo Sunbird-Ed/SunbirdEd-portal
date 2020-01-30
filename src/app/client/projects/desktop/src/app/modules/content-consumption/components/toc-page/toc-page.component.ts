@@ -90,7 +90,6 @@ export class TocPageComponent implements OnInit, OnDestroy {
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.getContent();
-    this.checkOnlineStatus();
     this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.checkDownloadStatus(data);
     });
@@ -102,11 +101,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   checkDownloadStatus(downloadListdata) {
     this.collectionData = this.playerService.updateDownloadStatus(downloadListdata, this.collectionData);
   }
-checkOnlineStatus() {
-  this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
-this.isConnected = isConnected;
-  });
-}
+
   private getContent(): void {
     this.activatedRoute.params.pipe(
       mergeMap((params) => {
