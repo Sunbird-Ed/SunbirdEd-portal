@@ -82,7 +82,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
     private navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService,
     private connectionService: ConnectionService,
-    public offlineCardService: OfflineCardService,
+    private offlineCardService: OfflineCardService,
     private telemetryService: TelemetryService) { }
 
   ngOnInit() {
