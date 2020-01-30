@@ -1,0 +1,23 @@
+:host {
+    .category-label {
+      color: var(--gray-800);
+      .link:hover {
+        text-decoration: underline;
+      }
+    }
+    .border {
+      border-bottom: calculateRem(1px) solid var(--primary-400);
+    }
+    .no-search-text{
+      font-size: 1.125rem;
+    }
+    ul {
+      list-style-type: disc;
+      font-size: 1.125rem;
+      label{
+        font-size: 1.125rem;
+        font-weight: normal;
+      }
+    }
+  }
+  

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
-import { ConnectionService } from '@sunbird/offline';
+import { ConnectionService, ContentManagerService } from '@sunbird/offline';
 import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-content-player',
@@ -46,6 +46,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   constructor(public configService: ConfigService, public router: Router, public toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private connectionService: ConnectionService,
+    private contentManagerService: ContentManagerService,
     public playerService: PublicPlayerService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
@@ -77,19 +78,11 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     }
   }
   ngOnInit() {
-    this.checkOnlineStatus();
-  }
-  checkOnlineStatus() {
-    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
-      this.isConnected = isConnected;
-    this.displayToasterMessage();
+    this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+      this.deleteContent(data);
     });
   }
-  displayToasterMessage() {
-    if (!this.isConnected && this.contentData) {
-        this.toasterService.error(this.resourceService.messages.stmsg.desktop.noInternetMessage);
-    }
-  }
+
   loadCdnPlayer() {
     if (this.isLoading) {// To restrict player loading multiple times
       return;
