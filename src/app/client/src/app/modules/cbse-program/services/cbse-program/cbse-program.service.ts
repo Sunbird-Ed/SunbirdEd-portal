@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConfigService, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
-import { ActionService } from '@sunbird/core';
+import { ActionService, ContentService } from '@sunbird/core';
 import { map, mergeMap, catchError, tap } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
 import * as _ from 'lodash-es';
@@ -14,8 +14,13 @@ import { Observable } from 'rxjs';
 })
 export class CbseProgramService {
 
-  constructor(private httpClient: HttpClient, private configService: ConfigService, public actionService: ActionService,
-    public toasterService: ToasterService, public telemetryService: TelemetryService) { }
+  constructor(
+    private httpClient: HttpClient,
+    private configService: ConfigService,
+    public actionService: ActionService,
+    public contentService: ContentService,
+    public toasterService: ToasterService,
+    public telemetryService: TelemetryService) { }
 
   public postCertData(file: any, certType: any, userId: any, rootOrgId: any): Observable<any> {
     const formData = new FormData();
@@ -140,5 +145,26 @@ export class CbseProgramService {
       }
     };
     this.telemetryService.error(telemetryErrorData);
+  }
+
+  getAssetMedia(req?: object) {
+    const reqParam = {
+      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
+      data: {
+        'request': {
+          filters: {
+            contentType: 'Asset',
+            compatibilityLevel: {
+              min: 1,
+              max: 2
+            },
+            status: ['Live'],
+          },
+          limit: 50,
+        }
+      }
+    };
+    reqParam.data.request = req ? _.merge({}, reqParam.data.request, req) : reqParam;
+    return this.contentService.post(reqParam);
   }
 }

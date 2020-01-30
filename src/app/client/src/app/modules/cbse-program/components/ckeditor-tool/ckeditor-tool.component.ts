@@ -122,8 +122,8 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     }, this.editorConfig);
 
     this.assetConfig = this.editorConfig.config.assetConfig || this.assetConfig;
-    this.acceptVideoType = this.getVideoInputAccetType(this.assetConfig.video.accepted);
-    this.acceptImageType = this.getImageInputAccetType(this.assetConfig.image.accepted);
+    this.acceptVideoType = this.getAcceptType(this.assetConfig.video.accepted, 'video');
+    this.acceptImageType = this.getAcceptType(this.assetConfig.image.accepted, 'image');
   }
   ngOnChanges() {
     if (this.videoShow) {
@@ -227,19 +227,11 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
     this.editorInstance.isReadOnly = state;
     this.isAssetBrowserReadOnly = state;
   }
-  getVideoInputAccetType(VideoType) {
-    const videoType = VideoType.split(', ');
+  getAcceptType(typeList, type) {
+    const acceptTypeList = typeList.split(', ');
     const result = [];
-    _.forEach(videoType, (content) => {
-      result.push('video/' + content);
-    });
-    return result.toString();
-  }
-  getImageInputAccetType(ImageType) {
-    const types = ImageType ? ImageType.split(', ') : ['png', 'jpeg'];
-    const result = [];
-    _.forEach(types, (content) => {
-      result.push('image/' + content);
+    _.forEach(acceptTypeList, (content) => {
+      result.push(`${type}/${content}`);
     });
     return result.toString();
   }
@@ -323,25 +315,18 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       this.myAssets.length = 0;
     }
     const req = {
-      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
-      data: {
-        'request': {
-          filters: {
-            mediaType: ['image'],
-            contentType: 'Asset',
-            compatibilityLevel: {
-              min: 1,
-              max: 2
-            },
-            status: ['Live'],
-            createdBy: this.userProfile.userId
-          },
-          limit: 50,
-          offset: offset
-        }
-      }
+        filters: {
+          mediaType: ['image'],
+          createdBy: this.userProfile.userId
+        },
+        offset: offset
     };
-    this.contentService.post(req).subscribe((res) => {
+
+    this.cbseService.getAssetMedia(req).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Image search failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }))
+    .subscribe((res) => {
       _.map(res.result.content, (item) => {
         if (item.downloadUrl) {
           this.myAssets.push(item);
@@ -385,25 +370,13 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       this.allImages.length = 0;
     }
     const req = {
-      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
-      data: {
-        'request': {
-          filters: {
-            mediaType: ['image'],
-            contentType: 'Asset',
-            compatibilityLevel: {
-              min: 1,
-              max: 2
-            },
-            status: ['Live']
-          },
-          limit: 50,
-          offset: offset
-        }
-      }
+      filters: {
+        mediaType: ['image']
+      },
+      offset: offset
     };
 
-    this.contentService.post(req).pipe(catchError(err => {
+    this.cbseService.getAssetMedia(req).pipe(catchError(err => {
       const errInfo = { errorMsg: 'Image search failed' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
     }))
@@ -425,36 +398,29 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
       this.myAssets.length = 0;
     }
     const req = {
-      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
-      data: {
-        'request': {
-          filters: {
-            mediaType: ['video'],
-            contentType: 'Asset',
-            compatibilityLevel: {
-              min: 1,
-              max: 2
-            },
-            status: ['Live'],
-            createdBy: this.userProfile.userId
-          },
-          limit: 50,
-          offset: offset
-        }
-      }
+      filters: {
+        mediaType: ['video'],
+        createdBy: this.userProfile.userId
+      },
+      offset: offset
     };
 
     if (query) {
-      req.data.request['query'] = query;
+      req['query'] = query;
     }
-    this.contentService.post(req).subscribe((res) => {
-      this.assetsCount = res.result.count;
-      _.map(res.result.content, (item) => {
-        if (item.downloadUrl) {
-          this.myAssets.push(item);
-        }
+
+    this.cbseService.getAssetMedia(req).pipe(catchError(err => {
+      const errInfo = { errorMsg: 'Video search failed' };
+      return throwError(this.cbseService.apiErrorHandling(err, errInfo));
+    }))
+      .subscribe((res) => {
+        this.assetsCount = res.result.count;
+        _.map(res.result.content, (item) => {
+          if (item.downloadUrl) {
+            this.myAssets.push(item);
+          }
+        });
       });
-    });
   }
   /**
  * functio to get all images
@@ -465,29 +431,16 @@ getAllVideos(offset, query) {
     this.allVideos.length = 0;
   }
   const req = {
-    url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
-    data: {
-      'request': {
-        filters: {
-          mediaType: ['video'],
-          contentType: 'Asset',
-          compatibilityLevel: {
-            min: 1,
-            max: 2
-          },
-          status: ['Live']
-        },
-        limit: 50,
-        offset: offset
-      }
-    }
+    filters: {
+      mediaType: ['video'],
+    },
+    offset: offset
   };
-
   if (query) {
-    req.data.request['query'] = query;
+    req['query'] = query;
   }
 
-  this.contentService.post(req).pipe(catchError(err => {
+  this.cbseService.getAssetMedia(req).pipe(catchError(err => {
     const errInfo = { errorMsg: 'Video search failed' };
     return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   }))
