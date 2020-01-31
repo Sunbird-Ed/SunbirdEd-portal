@@ -7,3 +7,13 @@
         padding: 0px 0px !important;
     }
 }
+
+.ui.selection.active.fields-select-dropdown.dropdown {
+    color:#0076FE;
+    border-color: var(--primary-300);
+     & ~ label {
+      color:#0076FE !important;
+      font-weight: normal;
+      border:none !important;
+    }
+}
