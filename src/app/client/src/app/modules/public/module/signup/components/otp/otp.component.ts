@@ -132,6 +132,7 @@ export class OtpComponent implements OnInit {
     }
     if (this.signUpdata.controls.tncAccepted.value && this.signUpdata.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
+          this.telemetryLogEvents('sign-up', true);
           const tncAcceptRequestBody = {
             request: {
               version: this.tncLatestVersion,
@@ -139,12 +140,15 @@ export class OtpComponent implements OnInit {
             }
           };
           this.signupService.acceptTermsAndConditions(tncAcceptRequestBody).subscribe(res => {
+            this.telemetryLogEvents('accept-tnc', true);
             this.redirectToSignPage();
           }, (err) => {
+            this.telemetryLogEvents('accept-tnc', false);
             this.redirectToSignPage();
           });
         },
         (err) => {
+          this.telemetryLogEvents('sign-up', false);
           this.infoMessage = '';
           this.errorMessage = this.resourceService.messages.fmsg.m0085;
           this.disableSubmitBtn = false;
@@ -271,5 +275,25 @@ export class OtpComponent implements OnInit {
         mode: 'self'
       }
     };
+  }
+
+  telemetryLogEvents(api: any, status: boolean) {
+    let level = 'ERROR';
+    let msg = api + ' failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = api + ' success';
+    }
+    const event = {
+      context: {
+        env: 'self-signup'
+      },
+      edata: {
+        type: api,
+        level: level,
+        message: msg
+      }
+    };
+    this.telemetryService.log(event);
   }
 }
