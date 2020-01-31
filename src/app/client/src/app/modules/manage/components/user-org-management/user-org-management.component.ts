@@ -39,7 +39,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     'districts': 0,
     'blocks': 0,
     'schools': 0,
-    'teachers': 0
+    'subOrgRegistered': 0,
+    'rootOrgRegistered': 0
   };
   public validatedUserSummary;
   public geoButtonText;
@@ -202,7 +203,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
           'districts': result['districts'] ? result['districts'] : 0,
           'blocks': result['blocks'] ? result['blocks'] : 0,
           'schools': result['schools'] ? result['schools'] : 0,
-          'teachers': result['registered'] ? result['registered'] : 0
+          'subOrgRegistered': result['subOrgRegistered'] ? result['subOrgRegistered'] : 0,
+          'rootOrgRegistered': result['rootOrgRegistered'] ? result['rootOrgRegistered'] : 0
         };
       },
       error => {
