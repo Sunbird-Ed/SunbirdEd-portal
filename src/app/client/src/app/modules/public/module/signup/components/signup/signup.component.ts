@@ -50,6 +50,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+      this.telemetryLogEvents('fetch-terms-condition', true);
         const response = _.get(data, 'result.response.value');
         if (response) {
           try {
@@ -61,6 +62,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
       }, (err) => {
+      this.telemetryLogEvents('fetch-terms-condition', false);
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       }
     );
@@ -376,5 +378,25 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
     this.telemetryService.interact(interactData);
+  }
+
+  telemetryLogEvents(api: any, status: boolean) {
+    let level = 'ERROR';
+    let msg = api + ' failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = api + ' success';
+    }
+    const event = {
+      context: {
+        env: 'self-signup'
+      },
+      edata: {
+        type: api,
+        level: level,
+        message: msg
+      }
+    };
+    this.telemetryService.log(event);
   }
 }

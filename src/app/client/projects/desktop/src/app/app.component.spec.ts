@@ -1,5 +1,5 @@
 
-import { Observable, of } from 'rxjs';
+import { Observable, of , throwError} from 'rxjs';
 import { ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
   BrowserCacheTtlService } from '@sunbird/shared';
 import { UserService, LearnerService, CoursesService, PermissionService, TenantService,
@@ -18,7 +18,7 @@ import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { OnboardingService } from './modules/offline';
+import { OnboardingService , ConnectionService} from './modules/offline';
 
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
@@ -57,8 +57,9 @@ describe('AppComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ToasterService, TenantService, CacheService, AnimationBuilder,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
-        PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
-        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService, OnboardingService],
+        PermissionService,  CoursesService, OrgDetailsService, ProfileService,
+        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ConnectionService,
+         ContentService, OnboardingService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -195,4 +196,26 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(document.getElementById).toHaveBeenCalled();
     expect(buildNumber['value']).toEqual('1.0.2');
   });
+
+it('should show toaster message when connected to internet  ', () => {
+  resourceService.messages = mockData.resourceBundle.messages;
+    const connectionService = TestBed.get(ConnectionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(connectionService, 'monitor').and.returnValue(of(true));
+    spyOn(toasterService, 'success').and.returnValue(of(mockData.resourceBundle.messages.stmsg.desktop.onlineStatus));
+    component.handleOnlineStatus();
+    expect(component.isConnected).toBeTruthy();
+    expect(toasterService.success).toHaveBeenCalled();
+  });
+
+  it('should show toaster message when you are not connected to internet  ', () => {
+    resourceService.messages = mockData.resourceBundle.messages;
+      const connectionService = TestBed.get(ConnectionService);
+      const toasterService = TestBed.get(ToasterService);
+      spyOn(connectionService, 'monitor').and.returnValue(of(false));
+      spyOn(toasterService, 'error').and.returnValue(throwError(mockData.resourceBundle.messages.emsg.desktop.offlineStatus));
+      component.handleOnlineStatus();
+      expect(component.isConnected).toBeFalsy();
+      expect(toasterService.error).toHaveBeenCalled();
+    });
 });

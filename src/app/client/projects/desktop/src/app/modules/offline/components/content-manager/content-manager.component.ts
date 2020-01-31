@@ -27,6 +27,8 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   completedCount: number;
   handledFailedList = [];
   unHandledFailedList = [];
+  deletedContents: string [] = [];
+  localContentData: any = [];
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -41,6 +43,12 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data: any) => {
+      if (_.get(data, 'identifier')) {
+        this.deletedContents.push(data.identifier);
+        this.removeDeletedContentInList();
+      }
+    });
     // Call download list initially
     this.apiCallSubject.next();
 
@@ -53,7 +61,25 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       });
   }
 
+  removeDeletedContentInList() {
+    this.contentResponse = _.filter(this.contentResponse, (o) => {
+      return !_.includes(this.deletedContents, o.contentId);
+    });
+  }
+
+  removeDeleteId() {
+    _.filter(this.contentResponse, (o) => {
+      if (_.includes(this.deletedContents, o.contentId) && o.status !== 'completed') {
+        _.remove(this.deletedContents, (n) => {
+          return n === o.contentId;
+        });
+      }
+    });
+    this.removeDeletedContentInList();
+  }
+
   getList() {
+    // tslint:disable-next-line: deprecation
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
       .pipe(takeUntil(this.unsubscribe$), filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
@@ -78,7 +104,16 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.contentResponse = _.filter(apiResponse, (o) => {
             return o.status !== 'canceled';
           });
+
           this.handleInsufficentMemoryError(apiResponse);
+
+        if (apiResponse.length >= this.localContentData.length) {
+          this.localContentData = apiResponse;
+        } else if (this.localContentData.length > apiResponse.length) {
+          this.callContentList = true;
+        }
+        this.removeDeleteId();
+
         });
   }
   handleInsufficentMemoryError(allContentList) {

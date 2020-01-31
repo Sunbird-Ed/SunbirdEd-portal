@@ -17,7 +17,6 @@ import * as _ from 'lodash-es';
 export class ContentActionsComponent implements OnInit, OnChanges {
   @Input() contentData;
   @Input() showUpdate;
-  @Output() deletedContent = new EventEmitter();
   @Output() contentDownloaded = new EventEmitter();
   actionButtons = actionButtons;
   contentRatingModal = false;
@@ -176,6 +175,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   }
 
   deleteContent(content) {
+  const button = _.find(this.actionButtons, {label: 'Delete'});
+  button.disabled = true;
   this.logTelemetry('delete-content', content);
   const request = !_.isEmpty(this.collectionId) ? {request: {contents: [content.identifier], visibility: 'Parent'}} :
     {request: {contents: [content.identifier]}};
@@ -184,7 +185,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       this.contentData.desktopAppMetadata['isAvailable'] = false ;
       delete this.contentData['downloadStatus'];
       this.changeContentStatus(this.contentData);
-      this.deletedContent.emit(this.contentData);
+      this.contentManagerService.emitAfterDeleteContent(this.contentData);
       this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteContentSuccessMessage);
     } else {
       this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteContentErrorMessage);

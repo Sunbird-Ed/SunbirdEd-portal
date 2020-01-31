@@ -19,7 +19,7 @@ import * as _ from 'lodash-es';
   styleUrls: ['./toc-page.component.scss']
 })
 export class TocPageComponent implements OnInit, OnDestroy {
-  mimeTypeFilters = ['all', 'video', 'interaction', 'docs'];
+  mimeTypeFilters = ['all', 'video', 'interactive', 'docs'];
   activeMimeTypeFilter = ['all'];
   activeContent;
   /**

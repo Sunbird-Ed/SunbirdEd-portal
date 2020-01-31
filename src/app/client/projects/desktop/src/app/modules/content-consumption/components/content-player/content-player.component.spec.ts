@@ -20,7 +20,6 @@ describe('ContentPlayerComponent', () => {
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
          ConnectionService, ToasterService,
-        { provide: ResourceService, useValue: playerData.resourceBundle },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -98,21 +97,6 @@ describe('ContentPlayerComponent', () => {
    expect(component.adjustPlayerHeight).toHaveBeenCalled();
    expect(component.generateContentReadEvent).toHaveBeenCalled();
  });
-  });
-  it('should check isConnected', () => {
-    const connectionService = TestBed.get(ConnectionService);
-    spyOn(connectionService, 'monitor').and.returnValue(of(true));
-    component.checkOnlineStatus();
-    expect(component.isConnected).toBeTruthy();
-  });
-  it('should display ToasterMessage', () => {
-    const toasterService = TestBed.get(ToasterService);
-    component.isConnected = false;
-    component.contentData = playerData.content.result.content;
-    // tslint:disable-next-line: max-line-length
-    spyOn(toasterService, 'error').and.returnValue(throwError(playerData.resourceBundle.messages.stmsg.desktop.noInternetMessage));
-    component.displayToasterMessage();
-    expect(toasterService.error).toHaveBeenCalled();
   });
 
 });

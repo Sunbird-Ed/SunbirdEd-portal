@@ -9,12 +9,12 @@
         <div class="sbheader__branding sbheader--offline__branding">
           <div class="logo" (click)="navigateToHome()" appTelemetryInteract
             [telemetryInteractEdata]="getTelemetryEdata('home')">
-            <img src="{{tenantInfo.logo}}" alt={{tenantInfo.titleName}}>
+            <img src="assets/images/{{tenantInfo.logo}}" alt={{tenantInfo.titleName}}>
           </div>
         </div>
 
         <div class="sbheader-mid-container">
-          <button class="sb-btn sb-btn-normal sb-btn-outline-primary d-flex" appTelemetryInteract
+          <!-- <button class="sb-btn sb-btn-normal sb-btn-outline-primary d-flex" appTelemetryInteract
             [telemetryInteractEdata]="getTelemetryEdata('enterDialCode')" (click)="showQrModal = true;"
             title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}">
             <i class="icon-svg icon-svg--xxs icon-qr mr-4">
@@ -22,7 +22,7 @@
                 <use xlink:href="assets/images/sprite.svg#qr-code"></use>
               </svg>
             </i>&nbsp;{{resourceService?.frmelmnts?.lbl?.enterQrCode}}
-          </button>
+          </button> -->
 
           <div class="sbheader--offline__search ml-16">
             <div class="sbsearchbox">

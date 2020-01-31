@@ -105,7 +105,6 @@ let PERMISSIONS_HELPER = {
         }
         reqObj.session.orgs = _.uniq(reqObj.session.orgs)
         reqObj.session.roles = _.uniq(reqObj.session.roles)
-
         if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
           reqObj.session.rootOrgId = body.result.response.rootOrg.id
           reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
@@ -142,6 +141,7 @@ let PERMISSIONS_HELPER = {
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
+      logger.info({msg: 'user/v1/read api response', body, response, error, requestOptions: options});
       telemetryData.statusCode = _.get(response, 'statusCode');
       reqObj.session.roles = []
       reqObj.session.orgs = []
@@ -151,6 +151,7 @@ let PERMISSIONS_HELPER = {
       if(error){
         logger.error({msg: 'error while user/v1/read', error});
       }
+      logger.info({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
       reqObj.session.save()
 
       callback(error, body)

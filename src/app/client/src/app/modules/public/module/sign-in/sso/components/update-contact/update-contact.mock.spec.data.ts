@@ -165,6 +165,26 @@ export const mockUpdateContactData = {
       subtype: 'selected',
       pageid: 'sso-signup'
     }
+  },
+  telemetryLogError: {
+    context: {
+      env: 'sso-signup'
+    },
+    edata: {
+      type: 'fetch-terms-condition',
+      level: 'ERROR',
+      message: 'fetch-terms-condition failed'
+    }
+  },
+  telemetryLogSuccess: {
+    context: {
+      env: 'sso-signup'
+    },
+    edata: {
+      type: 'fetch-terms-condition',
+      level: 'SUCCESS',
+      message: 'fetch-terms-condition success'
+    }
   }
 };
 
