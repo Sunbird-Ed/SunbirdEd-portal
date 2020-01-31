@@ -87,7 +87,7 @@ describe('ChapterListComponent', () => {
   };
   const compState = 'chapterListComponent';
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule,
         SuiTabsModule, FormsModule, DynamicModule],
@@ -102,18 +102,15 @@ describe('ChapterListComponent', () => {
   }));
 
 
-  beforeAll(() => {
+  beforeEach(() => {
     fixture = TestBed.createComponent(ChapterListComponent);
     component = fixture.componentInstance;
     de = fixture.debugElement;
     component.chapterListComponentInput = chapterListComponentInput;
     errorInitiate = false;
     ResourceServiceMock = TestBed.get(ResourceService);
+    unitLevelResponse = false;
     fixture.detectChanges();
-  });
-
-  beforeEach(() => {
-   unitLevelResponse = false;
   });
 
     it('Component created', () => {
@@ -302,23 +299,9 @@ describe('ChapterListComponent', () => {
       expect(component.componentLoadHandler).not.toHaveBeenCalled();
     });
 
-    it('should call updateAccordian on updateHandler', () => {
-      spyOn(component, 'updateAccordianView');
-      component.uploadHandler({contentId: 'do_1234567890'});
-      expect(component.updateAccordianView).toHaveBeenCalledWith(jasmine.any(String));
-    });
-
     it('should lastOpenedUnitParent be defined with parent do_id of given child-unit', () => {
       component.lastOpenedUnit('do_112931801879011328152'); // do_id of child-unit
       expect(component.sessionContext.lastOpenedUnitParent).toEqual('do_1127639059664568321138');
-    });
-
-    it('should updateAccordianView after successful removal of content', () => {
-      ResourceServiceMock.messages = {smsg: {m0064: 'Content is successfully removed'}};
-      spyOn(component, 'updateAccordianView');
-      component.removeResourceFromHierarchy();
-      expect(component.showConfirmationModal).toBeFalsy();
-      expect(component.updateAccordianView).toHaveBeenCalledWith(jasmine.any(String));
     });
 
 });
