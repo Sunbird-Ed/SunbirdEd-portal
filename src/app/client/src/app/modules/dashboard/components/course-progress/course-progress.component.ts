@@ -351,8 +351,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       .pipe(
         tap(response => {
           if (_.get(response, 'responseCode') === 'OK') {
-            const url = _.get(response, 'result.signedUrl');
-            if (url) { window.open(url, '_blank'); }
+            const signedUrl = _.get(response, 'result.signedUrl');
+            if (signedUrl) { window.open(signedUrl, '_blank'); }
           } else {
             this.toasterService.error(this.resourceService.messages.stmsg.m0141);
           }
