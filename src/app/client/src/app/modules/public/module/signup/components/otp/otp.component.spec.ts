@@ -4,13 +4,14 @@ import { ReactiveFormsModule, FormsModule, FormBuilder } from '@angular/forms';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CacheService } from 'ng2-cache-service';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
-import { TelemetryModule } from '@sunbird/telemetry';
+import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OtpComponent } from './otp.component';
 import { OtpComponentMockResponse } from './otp.component.spec.data';
 import { SignupService } from '../../services';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import {mockUpdateContactData} from "../../../sign-in/sso/components/update-contact/update-contact.mock.spec.data";
 
 
 describe('OtpComponent', () => {
@@ -41,7 +42,8 @@ describe('OtpComponent', () => {
         DeviceDetectorService, SignupService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub },
-        { provide: ResourceService, useValue: OtpComponentMockResponse.resourceBundle }
+        {provide: ResourceService, useValue: OtpComponentMockResponse.resourceBundle},
+        TelemetryService
       ]
     })
       .compileComponents();
@@ -112,6 +114,8 @@ describe('OtpComponent', () => {
 
   it('it should not create new user as create user api failed', () => {
     const signupService = TestBed.get(SignupService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
     spyOn(signupService, 'createUserV3').and.returnValue(observableThrowError(OtpComponentMockResponse.createUserErrorResponse));
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableOf(OtpComponentMockResponse.tncAcceptResponse));
     component.mode = 'email';
@@ -121,22 +125,29 @@ describe('OtpComponent', () => {
     expect(component.infoMessage).toEqual('');
     expect(component.disableSubmitBtn).toEqual(false);
     expect(component.logCreateUserError).toHaveBeenCalled();
+    expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryCreateUserError);
   });
 
   it('it should redirect to sign page as tnc api failed but user created', () => {
     spyOn(component, 'redirectToSignPage');
     const signupService = TestBed.get(SignupService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
     spyOn(signupService, 'createUserV3').and.returnValue(observableOf(OtpComponentMockResponse.createUserSuccessResponse));
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableThrowError(OtpComponentMockResponse.tncAcceptResponse));
     component.mode = 'email';
     component.tncLatestVersion = 'v4';
     component.createUser();
     expect(component.redirectToSignPage).toHaveBeenCalled();
+    expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryCreateUserSuccess);
+    expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryTncError);
   });
 
 
   it('it should create new user', () => {
     const signupService = TestBed.get(SignupService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'log');
     spyOn(component, 'redirectToSignPage');
     spyOn(signupService, 'createUserV3').and.returnValue(observableOf(OtpComponentMockResponse.createUserSuccessResponse));
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableOf(OtpComponentMockResponse.tncAcceptResponse));
@@ -144,6 +155,8 @@ describe('OtpComponent', () => {
     component.tncLatestVersion = 'v4';
     component.createUser();
     expect(component.redirectToSignPage).toHaveBeenCalled();
+    expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryCreateUserSuccess);
+    expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryTncSuccess);
   });
 
 
