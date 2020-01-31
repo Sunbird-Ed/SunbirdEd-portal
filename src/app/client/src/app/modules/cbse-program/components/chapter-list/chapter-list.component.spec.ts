@@ -230,4 +230,11 @@ describe('ChapterListComponent', () => {
       expect(component.unitIdentifier).toEqual('');
     });
 
+    it('should call handlePreview on preview event', () => {
+      spyOn(component, 'handlePreview');
+      // tslint:disable-next-line:max-line-length
+      component.showResourceTemplate({action: 'preview', content: {identifier: 'do_12345', contentType: 'ExplanationResource'}, collection: {identifier: 'do_12345', sharedContext: {framework: 'NCFCOPY'}}});
+      expect(component.handlePreview).toHaveBeenCalled();
+    });
+
 });
