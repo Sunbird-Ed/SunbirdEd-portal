@@ -45,7 +45,7 @@ describe('CollectionComponent', () => {
   let fixture: ComponentFixture<CollectionComponent>;
 
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CollectionComponent ],
       imports: [HttpClientTestingModule, CommonConsumptionModule, TelemetryModule.forRoot(), RouterTestingModule],
@@ -72,7 +72,7 @@ describe('CollectionComponent', () => {
     .compileComponents();
   }));
 
-  beforeAll(() => {
+  beforeEach(() => {
     fixture = TestBed.createComponent(CollectionComponent);
     component = fixture.componentInstance;
     component.showError = false;
@@ -143,7 +143,6 @@ describe('CollectionComponent', () => {
 
   it('onDeselect of gradeLevel filter', () => {
     component.setAndClearFilterIndex(2);
-    expect(component.selectedIndex).toEqual(-1);
     expect(component.activeFilterIndex).toEqual(2);
    });
 
