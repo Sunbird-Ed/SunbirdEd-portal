@@ -351,20 +351,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       .pipe(
         tap(response => {
           if (_.get(response, 'responseCode') === 'OK') {
-            const data = _.get(response, 'result');
-            const blob = new Blob(
-              [data],
-              {
-                type: 'text/csv;charset=utf-8'
-              }
-            );
-            const downloadUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            document.body.appendChild(a);
-            a.href = downloadUrl;
-            a.download = `${batchId}.csv`;
-            a.click();
-            document.body.removeChild(a);
+            const url = _.get(response, 'result.signedUrl');
+            if (url) { window.open(url, '_blank'); }
           } else {
             this.toasterService.error(this.resourceService.messages.stmsg.m0141);
           }
