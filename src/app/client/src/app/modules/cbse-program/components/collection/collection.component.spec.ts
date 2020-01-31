@@ -6,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CollectionComponent, ChapterListComponent} from '../index';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { DynamicModule } from 'ng-dynamic-component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ContentService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
@@ -49,8 +48,7 @@ describe('CollectionComponent', () => {
   beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CollectionComponent, ChapterListComponent ],
-      imports: [HttpClientTestingModule, CommonConsumptionModule, TelemetryModule.forRoot(),
-        DynamicModule.withComponents([]), RouterTestingModule],
+      imports: [HttpClientTestingModule, CommonConsumptionModule, TelemetryModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         ConfigService,
