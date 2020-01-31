@@ -505,24 +505,6 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
     });
   }
 
-  public addResourceToHierarchy(contentId) {
-    const req = {
-      url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_ADD,
-      data: {
-        'request': {
-          'rootId': this.sessionContext.collection,
-          'unitId': this.unitIdentifier,
-          'children': [contentId]
-        }
-      }
-    };
-    this.actionService.patch(req).pipe(map((data: any) => data.result), catchError(err => {
-      return throwError('');
-    })).subscribe(res => {
-      console.log('result ', res);
-    });
-  }
-
   removeResourceFromHierarchy() {
     this.collectionHierarchyService.removeResourceToHierarchy(this.sessionContext.collection, this.unitIdentifier, this.contentId)
        .subscribe(() => {

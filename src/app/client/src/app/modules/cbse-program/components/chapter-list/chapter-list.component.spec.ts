@@ -304,4 +304,13 @@ describe('ChapterListComponent', () => {
       expect(component.sessionContext.lastOpenedUnitParent).toEqual('do_1127639059664568321138');
     });
 
+    it('should updateAccordianView after successful removal of content', () => {
+      ResourceServiceMock.messages = {smsg: {m0064: 'Content is successfully removed'}};
+      component.unitIdentifier = 'do_0000000000';
+      spyOn(component, 'updateAccordianView');
+      component.removeResourceFromHierarchy();
+      expect(component.showConfirmationModal).toBeFalsy();
+      expect(component.updateAccordianView).toHaveBeenCalledWith(jasmine.any(String));
+    });
+
 });
