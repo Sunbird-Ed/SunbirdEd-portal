@@ -174,4 +174,8 @@ const activatedRouteStub = {
     expect(_.has(component.collectionList, 'Kannada')).toEqual(true); // As per the spec data
    });
 
+   it('should unsubscribe subject', () => {
+    component.ngOnDestroy();
+  });
+
 });

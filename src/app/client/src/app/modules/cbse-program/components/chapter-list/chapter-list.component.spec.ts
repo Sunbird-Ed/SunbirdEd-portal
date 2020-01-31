@@ -218,4 +218,9 @@ describe('ChapterListComponent', () => {
       component.handleTemplateSelection(templateSelectionEvent);
       expect(component.programStageService.addStage).toHaveBeenCalled();
     });
+
+
+   it('should unsubscribe subject', () => {
+    component.ngOnDestroy();
+  });
 });

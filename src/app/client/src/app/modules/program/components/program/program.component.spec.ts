@@ -259,4 +259,8 @@ describe('ProgramComponent On Bording test', () => {
     component.initiateHeader('failure');
   });
 
+
+  it('should unsubscribe subject', () => {
+    component.ngOnDestroy();
+  });
 });
