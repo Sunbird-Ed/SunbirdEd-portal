@@ -15,6 +15,12 @@ import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 
+
+describe('CollectionComponent', () => {
+  let component: CollectionComponent;
+  let fixture: ComponentFixture<CollectionComponent>;
+
+
 const ContentServiceStub = {
   post() {
     return of( searchCollectionResponse );
@@ -39,11 +45,6 @@ const activatedRouteStub = {
     }
   }
 };
-
-describe('CollectionComponent', () => {
-  let component: CollectionComponent;
-  let fixture: ComponentFixture<CollectionComponent>;
-
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

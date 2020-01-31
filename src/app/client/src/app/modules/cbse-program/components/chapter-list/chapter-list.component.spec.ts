@@ -1,17 +1,16 @@
-import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
-import { Component, Input} from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash-es';
 import { ChapterListComponent } from './chapter-list.component';
 import { RecursiveTreeComponent } from '../recursive-tree/recursive-tree.component';
 import { ResourceTemplateComponent } from '../resource-template/resource-template.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
-  ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
+   ToasterService, SharedModule
 } from '@sunbird/shared';
 import { CoreModule, ActionService, UserService, PublicDataService } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of as observableOf, throwError as observableError, of, Subscription } from 'rxjs';
-import { SuiModule, SuiTabsModule, SuiSelect } from 'ng2-semantic-ui/dist';
+import { of as observableOf, throwError as observableError, of } from 'rxjs';
+import { SuiModule, SuiTabsModule } from 'ng2-semantic-ui/dist';
 import { ProgramStageService } from '../../../program/services';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 
@@ -20,11 +19,9 @@ import {
   fetchedQueCount, templateSelectionEvent
 } from './chapter-list.component.spec.data';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DynamicModule } from 'ng-dynamic-component';
-import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
 
 
 describe('ChapterListComponent', () => {
@@ -205,7 +202,6 @@ describe('ChapterListComponent', () => {
 
     it('templateDetails should be defined on successful template selection', () => {
       // tslint:disable-next-line:prefer-const
-      let stubComponent: ContentUploaderComponent;
       component.selectedSharedContext = {framework: 'NCFCOPY', topic: ['Topic 2 child']};
       spyOn(component, 'componentLoadHandler');
       component.handleTemplateSelection(templateSelectionEvent);
@@ -217,17 +213,9 @@ describe('ChapterListComponent', () => {
         return observableOf({stages: []});
        });
       // tslint:disable-next-line:prefer-const
-      let stubComponent: ContentUploaderComponent;
       component.selectedSharedContext = {framework: 'NCFCOPY', topic: ['Topic 2 child']};
       // spyOn(component.programStageService, 'addStage');
       component.handleTemplateSelection(templateSelectionEvent);
       expect(component.programStageService.addStage).toHaveBeenCalled();
     });
-
-    // it('should go to else condition if child unit is passed', () => {
-    //   console.log(component.collectionHierarchy);
-    //   component.updateAccordianView('do_112931801879011328152');
-    //   expect(component.sessionContext.lastOpenedUnitParent).toEqual('do_1127639059664568321138');
-    // });
-
 });
