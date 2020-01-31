@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { ConfigService, ResourceService, ToasterService, UtilService, BrowserCacheTtlService } from '@sunbird/shared';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CollectionComponent, ChapterListComponent} from '../index';
+import { CollectionComponent} from '../index';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -47,7 +47,7 @@ describe('CollectionComponent', () => {
 
   beforeAll(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionComponent, ChapterListComponent ],
+      declarations: [ CollectionComponent ],
       imports: [HttpClientTestingModule, CommonConsumptionModule, TelemetryModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
