@@ -21,14 +21,14 @@ export class ProfileDropdownComponent implements OnInit {
     this.instance = _.upperCase(this.resourceService.instance);
   }
 
-  setTelemetry() {
+  setTelemetry(id) {
     const interactData = {
       context: {
         env: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.env'),
         cdata: []
       },
       edata: {
-        id: 'about-us',
+        id: id,
         type: 'click',
         pageid: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid') || 'library'
       }
