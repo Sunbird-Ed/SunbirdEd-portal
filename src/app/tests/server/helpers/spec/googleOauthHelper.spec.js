@@ -29,7 +29,8 @@ const mockPromise = function (data) {
         },
         "responseCode": "OK",
         "result": {
-          "success": true
+          "success": true,
+          "exists": true
         }
       })
     }
@@ -78,7 +79,7 @@ describe('Google Oauth Helper Test Cases', function () {
   it('should fetch user by email id', function (done) {
     googleOauthHelper.fetchUserByEmailId('mail@gmail.com', request)
       .then(function (data) {
-        expect(data.responseCode).to.eql('OK');
+        expect(data).to.equal(true);
         done();
       });
   });
