@@ -81,7 +81,6 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   redirect(url) {
     window.location.href = url;
   }
-  
 
   setTelemetryInteractEdata(type): IInteractEventEdata {
     return {
