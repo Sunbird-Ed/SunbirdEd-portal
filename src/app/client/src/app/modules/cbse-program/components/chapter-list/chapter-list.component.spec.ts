@@ -224,4 +224,10 @@ describe('ChapterListComponent', () => {
       expect(component.programStageService.addStage).toHaveBeenCalled();
     });
 
+    it('should clear assigned unitIdentifier and contentIdentifier', () => {
+      // tslint:disable-next-line:max-line-length
+      component.showResourceTemplate({action: 'cancelMove', content: {identifier: 'do_12345'}, collection: {identifier: 'do_12345', sharedContext: {framework: 'NCFCOPY'}}});
+      expect(component.unitIdentifier).toEqual('');
+    });
+
 });
