@@ -26,7 +26,6 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   @Input() dialCode: string;
   contentId: string;
   @Input() isContentPresent = true;
-  @Input() youTubeContentStatus = false;
   @Input() objectRollUp;
   contentType: string;
   @Output() contentDownloaded = new EventEmitter();

@@ -64,6 +64,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   updateCollection(collection) {
+    collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     this.logTelemetry('update-collection');
     const request = {
       contentId: collection.identifier
@@ -104,6 +105,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   downloadCollection(collection) {
+    collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     this.logTelemetry('download-collection');
     this.contentManagerService.downloadContentId = collection.identifier;
     this.contentManagerService.startDownload({}).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
@@ -122,16 +124,20 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     const request = {request: {contents: [collectionData.identifier]}};
     this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
     this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
-    this.goBack();
+    this.contentManagerService.emitAfterDeleteContent(this.collectionData);
+    collectionData['downloadStatus'] = 'DOWNLOAD';
+    if (!this.router.url.includes('browse')) {
+      this.goBack();
+    }
     }, err => {
       this.disableDelete = false;
       this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteTextbookErrorMessage);
     });
   }
 
-    checkStatus(status) {
+  checkStatus(status) {
       return this.utilService.getPlayerDownloadStatus(status, this.collectionData, this.currentRoute);
-    }
+  }
 
   isBrowse() {
     return this.router.url.includes('browse');

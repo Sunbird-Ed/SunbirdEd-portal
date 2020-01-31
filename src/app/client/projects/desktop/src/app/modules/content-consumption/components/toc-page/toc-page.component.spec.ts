@@ -5,8 +5,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConnectionService } from '@sunbird/offline';
-import { OfflineCardService } from '@sunbird/shared';
 import { TocPageComponent } from './toc-page.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -38,7 +36,7 @@ describe('TocPageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TocPageComponent ],
       imports: [TelemetryModule.forRoot(), SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
-      providers: [{provide: ActivatedRoute, useValue: ActivatedRouteStub}, ConnectionService , OfflineCardService],
+      providers: [{provide: ActivatedRoute, useValue: ActivatedRouteStub}],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
@@ -81,29 +79,5 @@ describe('TocPageComponent', () => {
     expect(component.isContentPresent).toBeTruthy();
     component.showNoContent({message: 'No Content Available'});
     expect(component.isContentPresent).toBeFalsy();
-  });
-  it('should handle youtube content when online and isYoutubeContent is true', () => {
-    const connectionService = TestBed.get(ConnectionService);
-    const offlineCardService = TestBed.get(OfflineCardService);
-    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(of(true));
-    spyOn(connectionService, 'monitor').and.returnValue(of(true));
-    component.handleYoutubeContent(collectionData.collection);
-    expect(component.youTubeContentStatus).toBeFalsy();
-  });
-  it('should handle youtube content when offline and isYoutubeContent is true', () => {
-    const connectionService = TestBed.get(ConnectionService);
-    const offlineCardService = TestBed.get(OfflineCardService);
-    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(of(true));
-    spyOn(connectionService, 'monitor').and.returnValue(of(false));
-    component.handleYoutubeContent(collectionData.collection);
-    expect(component.youTubeContentStatus).toBeTruthy();
-  });
-  it('should handle youtube content when online and isYoutubeContent is false', () => {
-    const connectionService = TestBed.get(ConnectionService);
-    const offlineCardService = TestBed.get(OfflineCardService);
-    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(of(false));
-    spyOn(connectionService, 'monitor').and.returnValue(of(true));
-    component.handleYoutubeContent(collectionData.collection);
-    expect(component.youTubeContentStatus).toBeFalsy();
   });
 });
