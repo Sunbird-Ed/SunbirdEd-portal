@@ -34,6 +34,10 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   */
   contentUploadRole: Array<string>;
   /**
+   * assesment access role
+   */
+  assessmentRole: Array<string>;
+  /**
    * To call resource service which helps to use language constant
    */
   public resourceService: ResourceService;
@@ -78,6 +82,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.collectionRole = this.configService.rolesConfig.workSpaceRole.collectionRole;
     this.lessonplanRole = this.configService.rolesConfig.workSpaceRole.lessonplanRole;
     this.contentUploadRole = this.configService.rolesConfig.workSpaceRole.contentUploadRole;
+    this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
   }
 
   ngAfterViewInit () {

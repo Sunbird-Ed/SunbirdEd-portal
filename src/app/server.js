@@ -21,6 +21,7 @@ const request = require('request-promise');
 const portal = this
 const telemetry = new (require('sb_telemetry_util'))()
 const telemetryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
+const userService = require('./helpers/userService');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
@@ -61,12 +62,21 @@ app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
 
+app.all('/sessionExpired', endSession, (req, res) => {
+  const redirectUri = req.get('referer') || `${_.get(envHelper, 'SUNBIRD_PORTAL_BASE_URL')}/profile`;
+  const logoutUrl = keycloak.logoutUrl(redirectUri);
+  delete req.session.userId;
+  res.cookie('connect.sid', '', { expires: new Date() });
+  res.redirect(logoutUrl);
+})
+
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
 app.get('/service/health', healthService.createAndValidateRequestBody, healthService.checkSunbirdPortalHealth)
 
 app.get("/latex/convert", latexService.convert);
 app.post("/latex/convert", bodyParser.json({ limit: '1mb' }), latexService.convert);
+app.post('/user/v2/accept/tnc', bodyParser.json({limit: '1mb'}), userService.acceptTnc);
 
 require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
@@ -137,7 +147,8 @@ function endSession(request, response, next) {
 }
 
 if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
-  logger.error({msg: `please set environment variable sunbird_environment,sunbird_instance
+  logger.error({
+    msg: `please set environment variable sunbird_environment,sunbird_instance
   start service Eg: sunbird_environment = dev, sunbird_instance = sunbird`})
   process.exit(1)
 }
@@ -149,7 +160,7 @@ function runApp() {
   fetchDefaultChannelDetails((channelError, channelRes, channelData) => {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
-      logger.info({msg: `app running on port ${envHelper.PORTAL_PORT}`})
+      logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
     })
     portal.server.keepAliveTimeout = 60000 * 5;
   })
@@ -157,7 +168,7 @@ function runApp() {
 const fetchDefaultChannelDetails = (callback) => {
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + '/org/v1/search',
+    url: envHelper.LEARNER_URL + 'org/v1/search',
     headers: {
       'x-msgid': uuid(),
       'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),

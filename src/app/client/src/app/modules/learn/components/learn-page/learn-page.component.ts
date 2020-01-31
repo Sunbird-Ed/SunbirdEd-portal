@@ -181,7 +181,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
       this.enrolledCourses = enrolledCourses;
       const enrolledSection = {
-        name: 'My Courses',
+        name: this.resourceService.frmelmnts.lbl.mytrainings,
         length: 0,
         count: 0,
         contents: []
@@ -215,7 +215,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public playContent({ section, data }) {
     const { metaData } = data;
-    if (section === 'My Courses') { // play course if course is in My course section
+    if (section === this.resourceService.frmelmnts.lbl.mytrainings) { // play course if course is in My course section
       return this.playerService.playContent(metaData);
     }
 
