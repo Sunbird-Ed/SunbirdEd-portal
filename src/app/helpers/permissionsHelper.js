@@ -7,7 +7,7 @@ const learnerURL = envHelper.LEARNER_URL
 const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK
 const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
 const telemetryHelper = require('./telemetryHelper')
-
+const logger = require('sb_logger_util_v2');
 let PERMISSIONS_HELPER = {
   ROLES_URLS: {
     'course/create': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER'],
@@ -105,7 +105,6 @@ let PERMISSIONS_HELPER = {
         }
         reqObj.session.orgs = _.uniq(reqObj.session.orgs)
         reqObj.session.roles = _.uniq(reqObj.session.roles)
-
         if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
           reqObj.session.rootOrgId = body.result.response.rootOrg.id
           reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
@@ -113,6 +112,7 @@ let PERMISSIONS_HELPER = {
         }
       }
     } catch (e) {
+      logger.error({msg: 'error while saving user session data', err: e})
       console.log(e)
     }
   },
@@ -141,12 +141,17 @@ let PERMISSIONS_HELPER = {
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
+      logger.info({msg: 'user/v1/read api response', body, response, error, requestOptions: options});
       telemetryData.statusCode = _.get(response, 'statusCode');
       reqObj.session.roles = []
       reqObj.session.orgs = []
       if (!error && body) {
         module.exports.setUserSessionData(reqObj, body)
       }
+      if(error){
+        logger.error({msg: 'error while user/v1/read', error});
+      }
+      logger.info({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
       reqObj.session.save()
 
       callback(error, body)

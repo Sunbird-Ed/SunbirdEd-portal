@@ -38,4 +38,14 @@ describe('Utility Service Test Cases', function () {
     done();
   });
 
+  it('should get delay of given duration', function (done) {
+    const date1 = Date.now();
+    const delayTime = 100;
+    utils.delay(delayTime).then(() => {
+      const date2 = Date.now();
+      const durationGap = date2 - date1;
+      expect(durationGap).to.gte(delayTime);
+      done();
+    });
+  });
 });

@@ -52,14 +52,16 @@
       "VALIDATE_CERTIFICATE": "certreg/v1/certs/validate",
       "DOWNLOAD_CERTIFICATE": "user/v1/certs/download",
       "GET_USER_FEED": "user/v1/feed",
-      "USER_MIGRATE": "user/v1/migrate"      
+      "USER_MIGRATE": "user/v1/migrate",
+      "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
     },
     "SYSTEM_SETTING":{
       "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId",
-      "COMMING_SOON_MESSAGE":"data/v1/system/settings/get/contentComingSoonMsg"
+      "COMMING_SOON_MESSAGE":"data/v1/system/settings/get/contentComingSoonMsg",
+      "TNC_CONFIG": "data/v1/system/settings/get/tncConfig"
     },
     "COURSE_FRAMEWORK":{
       "COURSE_FRAMEWORKID":"data/v1/system/settings/get/courseFrameworkId"

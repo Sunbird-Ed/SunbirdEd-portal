@@ -189,6 +189,30 @@ describe('UtilService', () => {
       expect(service.hideHeaderTabs.emit).toHaveBeenCalledWith(true);
     }));
 
+  it('should parse data into json', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const parsedData = service.parseJson('{"data":true}');
+      expect(parsedData).toEqual({'data': true});
+    }));
+
+  it('should not parse data and throw error', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      try {
+        service.parseJson('data');
+      } catch (e) {
+        expect(e).toEqual(new Error('ERROR_PARSING_STRING'));
+      }
+    }));
+
+  it('should not parse data and throw error as data is null', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      try {
+        service.parseJson(null);
+      } catch (e) {
+        expect(e).toEqual(new Error('ERROR_PARSING_STRING'));
+      }
+    }));
+
   it('should call emit event searchKeyword', inject([UtilService, ResourceService],
     (service: UtilService, resourceService: ResourceService) => {
       spyOn(service.searchKeyword, 'emit');
