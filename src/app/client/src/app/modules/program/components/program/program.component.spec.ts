@@ -93,7 +93,7 @@ describe('ProgramComponent On Bording test', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        DynamicModule.withComponents([]),
+        DynamicModule,
         SuiModule,
         SharedModule.forRoot(),
         FormsModule,
