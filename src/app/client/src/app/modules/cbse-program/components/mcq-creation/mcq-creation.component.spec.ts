@@ -73,7 +73,7 @@ describe('McqCreationComponent', () => {
     expect(component).toBeTruthy();
   });
   it('Should set rejectComment if available in question meta data ', async() => {
-    component.questionMetaData.data.rejectComment = "Reject comment"; 
+    component.questionMetaData.data.rejectComment = 'Reject comment';
   });
   it('After component loaded should store config data', async() => {
     component.ngOnChanges();
@@ -86,7 +86,7 @@ describe('McqCreationComponent', () => {
   });
 
   it('Should initiate forms if mcq template id is already set in question meta data', async() => {
-    component.questionMetaData.data.templateId = "mcq-vertical";
+    component.questionMetaData.data.templateId = 'mcq-vertical';
     component.ngOnChanges();
   });
 
