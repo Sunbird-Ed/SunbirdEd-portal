@@ -28,7 +28,8 @@
         <div class="share-tele-btn">
           <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
             my-8" (click)="exportTelemetry()"
-            [disabled]="disableExport">{{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry  | interpolate:'{size}': telemetryInfo?.totalSize}}</button>
+            [disabled]="disableExport">
+            {{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry}} {{telemetryInfo?.totalSize | filesize}} </button>
           <dl class="my-0" *ngIf="telemetryInfo?.lastExportedOn">
             <dt class="multiline-list-key">{{resourceService?.frmelmnts?.lbl?.desktop?.lastShared}}</dt>
             <dd class="multiline-list-value">{{telemetryInfo?.lastExportedOn |
