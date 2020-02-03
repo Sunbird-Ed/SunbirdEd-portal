@@ -92,7 +92,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.memoryService.getMemoryInfo().subscribe(data => {
             let { availableMemory } = data.result;
             availableMemory = Math.floor(availableMemory / (1024 * 1024));
-            this.showMinimumRAMWarning = availableMemory ? Boolean(availableMemory > this.MINIMUM_REQUIRED_RAM) : false;
+            this.showMinimumRAMWarning = availableMemory ? Boolean(availableMemory < this.MINIMUM_REQUIRED_RAM) : false;
         }, error => {
             this.showMinimumRAMWarning = false;
         });
