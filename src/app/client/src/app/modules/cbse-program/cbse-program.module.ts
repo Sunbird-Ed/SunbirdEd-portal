@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SanitizeHtmlPipe } from './pipe/sanitize-html.pipe';
 import { QuestionListComponent,
-  QuestionCreationComponent, ChapterListComponent, McqTemplateSelectionComponent,
+  QuestionCreationComponent, ChapterListComponent, McqCreationComponent, McqTemplateSelectionComponent,
   CkeditorToolComponent, QuestionPreviewComponent } from './components';
 import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -24,7 +24,7 @@ import { SlickModule } from 'ngx-slick';
 
 @NgModule({
   declarations: [QuestionListComponent, QuestionCreationComponent,
-    ChapterListComponent, CkeditorToolComponent ,
+    ChapterListComponent, McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
     QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent,
     DashboardComponent, RecursiveTreeComponent,
@@ -40,7 +40,7 @@ import { SlickModule } from 'ngx-slick';
     TelemetryModule,
     SlickModule.forRoot(),
     DynamicModule.withComponents([QuestionListComponent,
-       QuestionCreationComponent, ChapterListComponent, CkeditorToolComponent ,
+       QuestionCreationComponent, ChapterListComponent, McqCreationComponent, CkeditorToolComponent ,
       McqTemplateSelectionComponent,
       QuestionPreviewComponent, QuestionCreationHeaderComponent,
       DashboardComponent, RecursiveTreeComponent, ContentUploaderComponent, ResourceTemplateComponent]),
