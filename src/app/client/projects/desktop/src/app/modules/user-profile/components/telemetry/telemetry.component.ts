@@ -60,7 +60,7 @@ export class TelemetryComponent implements OnInit {
   setTelemetryImpression () {
     this.telemetryImpression = {
       context: {
-        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content'
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'telemetry'
       },
       edata: {
         type: 'view',
@@ -76,7 +76,7 @@ export class TelemetryComponent implements OnInit {
   logTelemetry(id) {
     const interactData = {
       context: {
-        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'telemetry',
         cdata: []
       },
       edata: {
@@ -84,7 +84,7 @@ export class TelemetryComponent implements OnInit {
         type: 'click',
         pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid'),
         extra: {
-          size: this.telemetryInfo['totalSize'] + 'KB',
+          size: this.telemetryInfo['totalSize'],
         }
       }
     };
