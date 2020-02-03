@@ -23,4 +23,7 @@ export class ElectronDialogService extends DataService {
   showContentExportDialog() {
     return this.get({url : this.configService.urlConFig.URLS.ELECTRON_DIALOG.CONTENT_EXPORT});
   }
+  showTelemetryExportDialog() {
+    return this.get({url : this.configService.urlConFig.URLS.ELECTRON_DIALOG.TELEMETRY_EXPORT});
+  }
 }

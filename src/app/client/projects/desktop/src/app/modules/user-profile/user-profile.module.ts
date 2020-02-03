@@ -1,3 +1,4 @@
+import { FileSizeModule } from 'ngx-filesize';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -28,7 +29,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     UserProfileRoutingModule,
     SuiModalModule,
     SuiSelectModule,
-    TelemetryModule
+    TelemetryModule,
+    FileSizeModule
 
   ]
 })
