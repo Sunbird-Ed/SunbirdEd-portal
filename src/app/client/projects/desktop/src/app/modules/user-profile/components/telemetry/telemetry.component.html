@@ -32,6 +32,7 @@
             {{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry}}
             {{telemetryInfo?.totalSize | filesize}}
           </button>
+         <div>{{resourceService?.messages?.imsg?.desktop?.m001}}</div>
           <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
             my-8" (click)="exportTelemetry()"
             [disabled]="disableExport" *ngIf="!telemetryInfo?.totalSize">
