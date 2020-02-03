@@ -151,6 +151,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       this.changeContentStatus(this.contentData);
     }, (error) => {
       this.contentManagerService.downloadContentId = '';
+      this.contentManagerService.failedContentName = '';
       this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
       this.changeContentStatus(this.contentData);
       if (!(error.error.params.err === 'LOW_DISK_SPACE')) {

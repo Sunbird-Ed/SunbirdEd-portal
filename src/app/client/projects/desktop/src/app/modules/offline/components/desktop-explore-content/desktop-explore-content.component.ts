@@ -218,9 +218,11 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.downloadIdentifier = '';
         this.showDownloadLoader = false;
         this.contentManagerService.downloadContentId = '';
+        this.contentManagerService.failedContentName = '';
       }, error => {
         this.downloadIdentifier = '';
         this.contentManagerService.downloadContentId = '';
+        this.contentManagerService.failedContentName = '';
         this.showDownloadLoader = false;
         _.each(this.contentList, (contents) => {
           contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;

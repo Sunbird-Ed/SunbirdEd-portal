@@ -437,10 +437,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
             .subscribe(data => {
                 this.downloadIdentifier = '';
                 this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.failedContentName = '';
                 this.showDownloadLoader = false;
             }, error => {
                 this.downloadIdentifier = '';
                 this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.failedContentName = '';
                 this.showDownloadLoader = false;
                 _.each(this.pageSections, (pageSection) => {
                     _.each(pageSection.contents, (pageData) => {
