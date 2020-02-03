@@ -108,7 +108,6 @@ describe('ChapterListComponent', () => {
     de = fixture.debugElement;
     component.chapterListComponentInput = chapterListComponentInput;
     errorInitiate = false;
-    ResourceServiceMock = TestBed.get(ResourceService);
     unitLevelResponse = false;
     fixture.detectChanges();
   });
@@ -305,6 +304,7 @@ describe('ChapterListComponent', () => {
     });
 
     it('should updateAccordianView after successful removal of content', () => {
+      ResourceServiceMock = TestBed.get(ResourceService);
       ResourceServiceMock.messages = {smsg: {m0064: 'Content is successfully removed'}};
       component.unitIdentifier = 'do_0000000000';
       spyOn(component, 'updateAccordianView');
@@ -312,5 +312,4 @@ describe('ChapterListComponent', () => {
       expect(component.showConfirmationModal).toBeFalsy();
       expect(component.updateAccordianView).toHaveBeenCalledWith(jasmine.any(String));
     });
-
 });
