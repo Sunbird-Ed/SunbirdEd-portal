@@ -46,12 +46,12 @@ export class TelemetryComponent implements OnInit {
     this.telemetryActionService.exportTelemetry().subscribe(
       (data) => {
         this.getTelemetryInfo();
-        this.toasterService.success('Telemetry Exported Successfully');
+        this.toasterService.success(this.resourceService.messages.smsg.desktop.telemetryExportSMsg);
       },
       (err) => {
         this.disableExport = !this.telemetryInfo['totalSize'];
         if (err.error.responseCode !== 'NO_DEST_FOLDER') {
-          this.toasterService.error('Telemetry Export Failed. Please try again later....');
+          this.toasterService.error(this.resourceService.messages.emsg.desktop.telemetryExportEMsg);
         }
       }
     );
