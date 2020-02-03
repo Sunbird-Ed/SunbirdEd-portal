@@ -25,7 +25,7 @@
           <input formControlName="name" type="text" name="name" placeholder="{{resourceService.frmelmnts.lbl.fullName}}">
         </div>
       </div>
-      <div class="field">
+      <div class="field required">
         <label>{{resourceService?.frmelmnts?.lbl?.state}}:</label>
         <div class="field">
           <sui-select [isSearchable]="false" class="selection" formControlName="state" [options]="allStates" labelField="name" valueField="code"
@@ -34,7 +34,7 @@
           </sui-select>
         </div>
       </div>
-      <div class="field">
+      <div class="field required">
         <label>{{resourceService?.frmelmnts?.lbl?.district}}:</label>
         <div class="field">
           <div class="ui segment" *ngIf="showDistrictDivLoader">
