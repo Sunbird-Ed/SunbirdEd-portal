@@ -61,7 +61,7 @@
                 <div class="three wide column p-0 pl-16">
                     <div class="sb-sticky-top zindex-1">
                         <app-connection-status></app-connection-status>
-                        <app-info-card [text]="infoData" (navigate)="navigateToMyDownloads()"></app-info-card>
+                        <app-info-card [text]="infoData" [showMinRamWarning]="showMinimumRAMWarning" (navigate)="navigateToMyDownloads()"></app-info-card>
                     </div>
                 </div>
             </div>

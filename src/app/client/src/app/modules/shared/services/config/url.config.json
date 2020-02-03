@@ -204,6 +204,7 @@
       "LOCATION_SAVE": "data/v1/location/save",
       "LOCATION_READ": "data/v1/location/read",
       "APP_INFO": "app/v1/info",
+      "MEMORY": "desktop/v1/memory",
       "RESUME_DOWNLOAD":"content/v1/download/resume",
       "CANCEL_DOWNLOAD":"content/v1/download/cancel",
       "PAUSE_DOWNLOAD":"content/v1/download/pause",
