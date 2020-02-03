@@ -15,7 +15,7 @@ module.exports = (app) => {
       return
     }
     const state = JSON.stringify(req.query);
-    logger.info({msg: 'query params state' + state});
+    logger.info({msg: 'query params state ' + state});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
     logger.info({msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
