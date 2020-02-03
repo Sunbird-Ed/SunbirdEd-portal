@@ -59,6 +59,12 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         this.isOpen = true;
         this.apiCallSubject.next();
       });
+
+      this.contentManagerService.downloadFailEvent
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(failedContentName => {
+        this.unHandledFailedList.push({name: failedContentName});
+      });
   }
 
   removeDeletedContentInList() {

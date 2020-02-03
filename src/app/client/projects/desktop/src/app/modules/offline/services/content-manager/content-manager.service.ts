@@ -12,7 +12,9 @@ import * as _ from 'lodash-es';
 export class ContentManagerService {
 
   downloadContentId: string;
+  failedContentName: string;
   downloadEvent = new EventEmitter();
+  downloadFailEvent = new EventEmitter();
   downloadListEvent = new EventEmitter();
   completeEvent = new EventEmitter();
   deletedContent = new EventEmitter();
@@ -52,6 +54,9 @@ export class ContentManagerService {
         return result;
       }),
       catchError((err) => {
+        if (err.error.params.err === 'LOW_DISK_SPACE') {
+          this.downloadFailEvent.emit(this.failedContentName);
+        }
         return observableThrowError(err);
       }));
   }

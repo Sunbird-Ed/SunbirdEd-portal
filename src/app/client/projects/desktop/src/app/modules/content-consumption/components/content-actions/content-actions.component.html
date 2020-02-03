@@ -43,7 +43,7 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
   class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.delete}}
-  </button>
+  <!-- </button> -->
   <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
     (click)="logTelemetry('cancel-delete-content', contentData); showDeleteModal = !showDeleteModal;">
     {{resourceService.frmelmnts?.btn?.cancel}}

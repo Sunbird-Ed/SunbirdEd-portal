@@ -48,7 +48,6 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   showModal = false;
   downloadIdentifier: string;
-
   @Input() contentList: any[] = [];
   @Input() isOnlineContents = false;
   @Output() visits: EventEmitter<any> = new EventEmitter();
@@ -173,7 +172,6 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   }
 
   hoverActionClicked(event) {
-    console.log(event, 'event');
     event['data'] = event.content;
     this.contentName = event.content.name;
     switch (event.hover.type.toUpperCase()) {
@@ -182,7 +180,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.logTelemetry(event.data, 'play-content');
         break;
       case 'DOWNLOAD':
-        this.downloadIdentifier = _.get(event, 'content.metaData');
+        this.downloadIdentifier = _.get(event, 'content.metaData.identifier');
         this.showModal = this.offlineCardService.isYoutubeContent(event.data);
         if (!this.showModal) {
           this.showDownloadLoader = true;
@@ -200,7 +198,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
 
   callDownload() {
     this.showDownloadLoader = true;
-    this.downloadContent(this.downloadIdentifier, '');
+    this.downloadContent(this.downloadIdentifier);
   }
 
   playContent(event) {
@@ -211,9 +209,9 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     }
   }
 
-  downloadContent(contentId, name) {
-    console.log(name, 'name');
-    this.contentManagerService.downloadContentId = contentId.identifier;
+  downloadContent(contentId, contentName?) {
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.failedContentName = contentName;
     this.contentManagerService.startDownload({})
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
@@ -221,17 +219,15 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.showDownloadLoader = false;
         this.contentManagerService.downloadContentId = '';
       }, error => {
-        console.log(error.error.params.err, 'error.error.responseCode');
-        if (error.error.params.err === 'LOW_DISK_SPACE') {
-          this.unHandledFailedList.push({name: name});
-        }
         this.downloadIdentifier = '';
         this.contentManagerService.downloadContentId = '';
         this.showDownloadLoader = false;
         _.each(this.contentList, (contents) => {
           contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
         });
-        this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+            }
       });
   }
 

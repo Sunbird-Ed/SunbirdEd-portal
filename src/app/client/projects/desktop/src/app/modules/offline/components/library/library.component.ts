@@ -404,7 +404,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.showModal = this.offlineCardService.isYoutubeContent(event.data);
                 if (!this.showModal) {
                   this.showDownloadLoader = true;
-                  this.downloadContent(this.downloadIdentifier);
+                  this.downloadContent(this.downloadIdentifier, event.content.name);
                   this.logTelemetry(event.data, 'download-content');
                 }
                 break;
@@ -429,8 +429,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
         }
     }
 
-    downloadContent(contentId) {
+    downloadContent(contentId, contentName?) {
         this.contentManagerService.downloadContentId = contentId;
+        this.contentManagerService.failedContentName = contentName;
         this.contentManagerService.startDownload({})
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(data => {
@@ -446,7 +447,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
                         pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
                     });
                 });
+                if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
                 this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+                  }
             });
     }
 
