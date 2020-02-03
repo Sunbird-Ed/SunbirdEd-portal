@@ -52,7 +52,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   @Input() contentList: any[] = [];
   @Input() isOnlineContents = false;
   @Output() visits: EventEmitter<any> = new EventEmitter();
-
+  unHandledFailedList = [];
   constructor(
     public contentManagerService: ContentManagerService,
     public router: Router,
@@ -173,6 +173,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   }
 
   hoverActionClicked(event) {
+    console.log(event, 'event');
     event['data'] = event.content;
     this.contentName = event.content.name;
     switch (event.hover.type.toUpperCase()) {
@@ -181,11 +182,11 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.logTelemetry(event.data, 'play-content');
         break;
       case 'DOWNLOAD':
-        this.downloadIdentifier = _.get(event, 'content.metaData.identifier');
+        this.downloadIdentifier = _.get(event, 'content.metaData');
         this.showModal = this.offlineCardService.isYoutubeContent(event.data);
         if (!this.showModal) {
           this.showDownloadLoader = true;
-          this.downloadContent(this.downloadIdentifier);
+          this.downloadContent(this.downloadIdentifier, event.content.name);
           this.logTelemetry(event.data, 'download-content');
         }
         break;
@@ -199,7 +200,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
 
   callDownload() {
     this.showDownloadLoader = true;
-    this.downloadContent(this.downloadIdentifier);
+    this.downloadContent(this.downloadIdentifier, '');
   }
 
   playContent(event) {
@@ -210,8 +211,9 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     }
   }
 
-  downloadContent(contentId) {
-    this.contentManagerService.downloadContentId = contentId;
+  downloadContent(contentId, name) {
+    console.log(name, 'name');
+    this.contentManagerService.downloadContentId = contentId.identifier;
     this.contentManagerService.startDownload({})
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
@@ -219,6 +221,10 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.showDownloadLoader = false;
         this.contentManagerService.downloadContentId = '';
       }, error => {
+        console.log(error.error.params.err, 'error.error.responseCode');
+        if (error.error.params.err === 'LOW_DISK_SPACE') {
+          this.unHandledFailedList.push({name: name});
+        }
         this.downloadIdentifier = '';
         this.contentManagerService.downloadContentId = '';
         this.showDownloadLoader = false;
