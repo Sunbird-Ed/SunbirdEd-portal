@@ -431,22 +431,27 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
     downloadContent(contentId) {
         this.contentManagerService.downloadContentId = contentId;
+        this.contentManagerService.failedContentName = this.contentName;
         this.contentManagerService.startDownload({})
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(data => {
                 this.downloadIdentifier = '';
                 this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.failedContentName = '';
                 this.showDownloadLoader = false;
             }, error => {
                 this.downloadIdentifier = '';
                 this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.failedContentName = '';
                 this.showDownloadLoader = false;
                 _.each(this.pageSections, (pageSection) => {
                     _.each(pageSection.contents, (pageData) => {
                         pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
                     });
                 });
+                if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
                 this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+                  }
             });
     }
 

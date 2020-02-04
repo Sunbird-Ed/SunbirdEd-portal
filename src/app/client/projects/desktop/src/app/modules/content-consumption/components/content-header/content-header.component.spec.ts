@@ -93,6 +93,7 @@ describe('ContentHeaderComponent', () => {
     spyOn(contentService, 'startDownload').and.returnValue(of(contentHeaderData.downloadCollection.success));
     component.downloadCollection(contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
+    expect(component.contentManagerService.failedContentName).toEqual('');
   });
 
   it('should call downloadCollection and error while downloading collection', () => {
@@ -101,6 +102,7 @@ describe('ContentHeaderComponent', () => {
     spyOn(contentService, 'startDownload').and.returnValue(throwError(contentHeaderData.downloadCollection.error));
     component.downloadCollection(contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
+    expect(component.contentManagerService.failedContentName).toEqual('');
     expect(component.toasterService.error(contentHeaderData.resourceBundle.messages.fmsg.m0090));
   });
   it('should call delete collection and successfuly delete collection ', () => {
