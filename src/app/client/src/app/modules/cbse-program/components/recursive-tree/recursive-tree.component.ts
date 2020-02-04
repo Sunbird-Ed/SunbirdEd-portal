@@ -21,6 +21,8 @@ export class RecursiveTreeComponent implements OnInit {
   public showAddresource = false;
   visibility: any;
   public unitIdentifier;
+  public telemetryInteractCdata: any;
+  public telemetryInteractPdata: any;
   constructor(public userService: UserService, public configService: ConfigService,
     public programTelemetryService: ProgramTelemetryService) { }
 
@@ -36,6 +38,10 @@ export class RecursiveTreeComponent implements OnInit {
     this.visibility['showDeleteResource'] = _.includes(this.programContext.config.actions.showDeleteResource.roles, this.sessionContext.currentRoleId);
     // tslint:disable-next-line:max-line-length
     this.visibility['showPreviewResource'] = _.includes(this.programContext.config.actions.showPreviewResource.roles, this.sessionContext.currentRoleId);
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.programContext.userDetails.programId, 'Program');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
   }
 
   nodeMetaEmitter(event) {

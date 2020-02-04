@@ -29,10 +29,10 @@ export class ProgramTelemetryService {
       pid
     };
   }
-  getTelemetryInteractObject(id: string, type: string, ver: string): IInteractEventObject {
-    return {
-      id, type, ver
-    };
+  getTelemetryInteractObject(id: string, type: string, ver: string, rollup?: any): IInteractEventObject {
+    return _.omitBy({
+      id, type, ver, rollup
+    }, _.isUndefined);
   }
   getTelemetryInteractCdata(id: string, type: string) {
     return [{
