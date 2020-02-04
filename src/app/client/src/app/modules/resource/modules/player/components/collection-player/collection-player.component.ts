@@ -74,6 +74,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   objectContentInteract: IInteractEventObject;
 
+  copyContentInteractEdata: IInteractEventEdata;
+
   collectionInteractObject: IInteractEventObject;
 
   closeIntractEdata: IInteractEventEdata;
@@ -288,6 +290,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     };
     this.printPdfInteractEdata = {
       id: 'print-pdf-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.copyContentInteractEdata = {
+      id: 'copy-content-button',
       type: 'click',
       pageid: 'collection-player'
     };
