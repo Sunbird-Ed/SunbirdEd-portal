@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -9,6 +9,7 @@ import {
   PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { AppComponent } from '../../../../../../app.component';
 
 /**
  *Component to play content
@@ -17,7 +18,7 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
   selector: 'app-content-player',
   templateUrl: './content-player.component.html'
 })
-export class ContentPlayerComponent implements OnInit, AfterViewInit {
+export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
 	 * telemetryImpression
 	*/
@@ -88,11 +89,12 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
 
   closeUrl: any;
   playerOption: any;
+  public interval: any;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
-    public contentUtilsServiceService: ContentUtilsServiceService,
+    public contentUtilsServiceService: ContentUtilsServiceService, public appComponent: AppComponent,
     private configService: ConfigService, public navigationhelperService: NavigationHelperService) {
       this.playerOption = {
         showContentRating: true
@@ -106,12 +108,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
       this.contentStatus = params.contentStatus;
-      this.userService.userData$.subscribe(
-        (user: IUserData) => {
-          if (user && !user.err) {
-            this.getContent();
-          }
-        });
     });
   }
   setTelemetryData() {
@@ -233,8 +229,25 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
     this.setTelemetryShareData(this.contentData);
   }
   ngAfterViewInit () {
-    this.pageLoadDuration = this.navigationhelperService.getPageLoadTime();
+    this.interval = setInterval(() => {
+      if (!this.appComponent.showFrameWorkPopUp && !this.appComponent.showTermsAndCondPopUp && !this.appComponent.showUserVerificationPopup
+        && this.appComponent.isLocationConfirmed && (document.getElementsByClassName('sb-modal').length === 0)) {
+          this.userService.userData$.subscribe(
+            (user: IUserData) => {
+              if (user && !user.err) {
+                this.getContent();
+              }
+            });
+          this.pageLoadDuration = this.navigationhelperService.getPageLoadTime();
+          clearInterval(this.interval);
+      }
+    }, 500);
   }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+  }
+
   setTelemetryShareData(param) {
     this.telemetryShareData = [{
       id: param.identifier,
