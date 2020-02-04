@@ -133,10 +133,10 @@
       <div *ngIf="questionList && questionList.length && refresh">
         <div *ngIf="sessionContext.questionType === 'mcq'" class="ui segment">
           <div [hidden]="showLoader">
-            <!-- <app-mcq-creation #questionCreationChild [sessionContext]="sessionContext" [telemetryEventsInput]="telemetryEventsInput" [questionMetaData]="questionMetaData"
+            <app-mcq-creation #questionCreationChild [sessionContext]="sessionContext" [telemetryEventsInput]="telemetryEventsInput" [questionMetaData]="questionMetaData"
               [role]="role" (questionStatus)="questionStatusHandler($event)"
               (questionFormChangeStatus)="handleQuestionFormChangeStatus($event)">
-            </app-mcq-creation> -->
+            </app-mcq-creation>
           </div>
         </div>
         <div *ngIf="sessionContext.questionType !== 'mcq'" class="ui segment">
