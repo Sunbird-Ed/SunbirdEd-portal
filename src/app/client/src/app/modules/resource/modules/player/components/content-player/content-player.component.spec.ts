@@ -9,6 +9,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { AppComponent } from '../../../../../../app.component';
 const serverRes = {
   id : 'api.content.read',
   ver: '1.0',
@@ -65,7 +66,7 @@ describe('ContentPlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
-      declarations: [ ContentPlayerComponent ],
+      declarations: [ ContentPlayerComponent, AppComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute},
         { provide: Router, useClass: RouterStub }]
