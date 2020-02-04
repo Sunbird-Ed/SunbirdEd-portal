@@ -10,7 +10,7 @@ import { playerData } from './content-player.component.spec.data';
 import { Subject } from 'rxjs';
 import { ConnectionService } from '@sunbird/offline';
 import { of, throwError } from 'rxjs';
-
+import { OfflineCardService } from '@sunbird/shared';
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;
@@ -20,6 +20,7 @@ describe('ContentPlayerComponent', () => {
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
          ConnectionService, ToasterService,
+           OfflineCardService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -97,6 +98,31 @@ describe('ContentPlayerComponent', () => {
    expect(component.adjustPlayerHeight).toHaveBeenCalled();
    expect(component.generateContentReadEvent).toHaveBeenCalled();
  });
+  });
+
+  it('should handle youtube content when online and isYoutubeContent is true', () => {
+    const connectionService = TestBed.get(ConnectionService);
+    const offlineCardService = TestBed.get(OfflineCardService);
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(of(true));
+    spyOn(connectionService, 'monitor').and.returnValue(of(true));
+    component.handleYoutubeContent(playerData.content.result.content);
+    expect(component.youTubeContentStatus).toBeFalsy();
+  });
+  it('should handle youtube content when offline and isYoutubeContent is true', () => {
+    const connectionService = TestBed.get(ConnectionService);
+    const offlineCardService = TestBed.get(OfflineCardService);
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(of(true));
+    spyOn(connectionService, 'monitor').and.returnValue(of(false));
+    component.handleYoutubeContent(playerData.content.result.content);
+    expect(component.youTubeContentStatus).toBeTruthy();
+  });
+  it('should handle youtube content when online and isYoutubeContent is false', () => {
+    const connectionService = TestBed.get(ConnectionService);
+    const offlineCardService = TestBed.get(OfflineCardService);
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(of(false));
+    spyOn(connectionService, 'monitor').and.returnValue(of(true));
+    component.handleYoutubeContent(playerData.content.result.content);
+    expect(component.youTubeContentStatus).toBeFalsy();
   });
 
 });

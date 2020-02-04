@@ -11,7 +11,7 @@
 </div>
 
 <div *ngIf="tocPage" class="toc-content" [appTelemetryImpression]="telemetryImpression">
-    <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" [isContentPresent]="isContentPresent" [isContentDeleted]="isContentDeleted"></app-content-player>
+    <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" [isContentPresent]="isContentPresent"  [isContentDeleted]="isContentDeleted"></app-content-player>
     <app-content-metadata [contentData]="contentDetails"></app-content-metadata>
 </div>
 <div *ngIf="!tocPage" class="sb-single-resource" [appTelemetryImpression]="telemetryImpression">

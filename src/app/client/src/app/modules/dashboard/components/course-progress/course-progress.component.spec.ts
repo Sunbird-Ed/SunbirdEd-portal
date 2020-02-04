@@ -216,11 +216,12 @@ describe('CourseProgressComponent', () => {
     const usageService = TestBed.get(UsageService);
     spyOn(usageService, 'getData').and.returnValue(observableOf(testData.mockUserData.courseProgressReportMock));
     spyOn<any>(component, 'downloadCourseReport').and.callThrough();
-    spyOn(document, 'createElement').and.callThrough();
+    spyOn(window, 'open');
     component.downloadReport(false);
     tick(10);
+    expect(window.open).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith(testData.mockUserData.courseProgressReportMock.result.signedUrl, '_blank');
     expect(component['downloadCourseReport']).toHaveBeenCalled();
-    expect(document.createElement).toHaveBeenCalledWith('a');
     expect(usageService.getData).toHaveBeenCalledWith('/courseReports/course-progress-reports/report-0124963192947507200.csv');
   }));
 
