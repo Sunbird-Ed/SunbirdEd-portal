@@ -250,11 +250,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                         if (!this.carouselMasterData.length) {
                             return; // no page section
                         }
-                        if (this.carouselMasterData.length >= 2) {
-                            this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-                        } else if (this.carouselMasterData.length >= 1) {
-                            this.pageSections = [this.carouselMasterData[0]];
-                        }
+                        this.pageSections = _.cloneDeep(this.carouselMasterData);
                         this.addHoverData();
                     } else {
                         this.hideLoader();
