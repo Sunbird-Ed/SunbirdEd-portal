@@ -133,6 +133,7 @@ describe('ContentActionsComponent', () => {
     component['contentManagerService'].startDownload({}).subscribe(data => {
       expect(data).toEqual(actionsData.downloadContent.success);
       expect(component.contentManagerService.downloadContentId).toEqual('');
+      expect(component.contentManagerService.failedContentName).toEqual('');
     });
     expect(component.logTelemetry).toHaveBeenCalledWith('download-content');
   });
@@ -145,6 +146,7 @@ describe('ContentActionsComponent', () => {
     component['contentManagerService'].startDownload({}).subscribe(data => {}, err => {
       expect(err).toEqual(actionsData.downloadContent.error);
       expect(component.contentManagerService.downloadContentId).toEqual('');
+      expect(component.contentManagerService.failedContentName).toEqual('');
       expect(component.toasterService.error(actionsData.resourceBundle.messages.fmsg.m0090));
     });
     expect(component.logTelemetry).toHaveBeenCalledWith('download-content');
