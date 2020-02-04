@@ -11,6 +11,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER, IInteractEventEdata } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
 import { response } from './content-manager.component.spec.data';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 
 describe('ContentManagerComponent', () => {
@@ -35,7 +36,8 @@ describe('ContentManagerComponent', () => {
         RouterTestingModule, FileSizeModule, OrderModule, TelemetryModule],
       declarations: [ContentManagerComponent],
       providers: [ContentManagerService, ConnectionService, TelemetryService, ToasterService,
-        { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, { provide: ResourceService, useValue: resourceMockData }]
+        { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, { provide: ResourceService, useValue: resourceMockData }],
+        schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -262,6 +264,31 @@ describe('ContentManagerComponent', () => {
     component.retryImportContent('123');
     expect(component.apiCallSubject.next).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalled();
+  });
+  it('should call getNoSpaceContentList show failed contents in popup', () => {
+    component.handledFailedList = [];
+    component.handleInsufficentMemoryError(response.allContentList);
+     expect(component.unHandledFailedList).toEqual(response.listToShow);
+  });
+  it('should call getNoSpaceContentList show failed contents in popup when difference is not empty', () => {
+    component.handledFailedList = response.previousList;
+    component.handleInsufficentMemoryError(response.allContentList);
+     expect(component.unHandledFailedList).toEqual(response.listToShowWithDifference);
+  });
+  it('should call getNoSpaceContentList and no contents to show in pop up when difference is empty ', () => {
+    component.handledFailedList = response.failedList;
+    component.handleInsufficentMemoryError(response.allContentList);
+     expect(component.unHandledFailedList).toEqual([]);
+  });
+  it('should call getNoSpaceContentList and no contents to show in pop up when all contents list is empty', () => {
+    component.handledFailedList = [];
+    component.handleInsufficentMemoryError([]);
+     expect(component.unHandledFailedList).toEqual([]);
+  });
+  it('should call close modal ', () => {
+    component.handledFailedList = response.failedList;
+    spyOn(component, 'closeModal');
+    expect(component.unHandledFailedList).toEqual([]);
   });
 
 });

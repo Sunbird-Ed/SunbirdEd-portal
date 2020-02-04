@@ -420,10 +420,8 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
     this.templateDetails = _.find(templateList, (templateData) => {
       return templateData.metadata.contentType === event.content.contentType;
     });
-    if (this.templateDetails) {
     this.componentLoadHandler('preview',
       this.programComponentsService.getComponentInstance(this.templateDetails.onClick), this.templateDetails.onClick);
-    }
   }
 
   componentLoadHandler(action, component, componentName) {
@@ -467,7 +465,10 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
     }
     this.resourceTemplateComponentInput = {
       templateList: _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
-        || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue')
+        || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue'),
+        programContext: this.programContext,
+        sessionContext: this.sessionContext,
+        unitIdentifier: this.unitIdentifier
     };
   }
 
@@ -502,6 +503,24 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
             }
           });
         }
+    });
+  }
+
+  public addResourceToHierarchy(contentId) {
+    const req = {
+      url: this.configService.urlConFig.URLS.CONTENT.HIERARCHY_ADD,
+      data: {
+        'request': {
+          'rootId': this.sessionContext.collection,
+          'unitId': this.unitIdentifier,
+          'children': [contentId]
+        }
+      }
+    };
+    this.actionService.patch(req).pipe(map((data: any) => data.result), catchError(err => {
+      return throwError('');
+    })).subscribe(res => {
+      console.log('result ', res);
     });
   }
 

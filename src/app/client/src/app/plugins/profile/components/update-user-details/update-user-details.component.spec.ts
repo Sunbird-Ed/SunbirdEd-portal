@@ -83,10 +83,22 @@ describe('UpdateUserDetailsComponent', () => {
     spyOn(component, 'onStateChange');
     spyOn(component, 'enableSubmitButton');
     component.ngOnInit();
-    expect(component.userDetailsForm.valid).toBeTruthy();
+    expect(component.userDetailsForm.valid).toBeFalsy();
     expect(component.onStateChange).toHaveBeenCalled();
     expect(component.getState).toHaveBeenCalled();
     expect(component.enableSubmitButton).toHaveBeenCalled();
+    expect(component.enableSubmitBtn).toBeFalsy();
+  });
+
+  it('should enable the submit button when all name, state and district values are filled', () => {
+    component.userProfile = testData.userData;
+    spyOn(component, 'getState');
+    spyOn(component, 'onStateChange');
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.ngOnInit();
+    component.userDetailsForm.controls.state.setValue('Bihar');
+    component.userDetailsForm.controls.district.setValue('test');
+    expect(component.userDetailsForm.valid).toBeTruthy();
     expect(component.enableSubmitBtn).toBeTruthy();
   });
 

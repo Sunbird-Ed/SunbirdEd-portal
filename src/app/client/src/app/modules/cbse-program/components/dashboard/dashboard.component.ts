@@ -34,6 +34,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   contentTypes: Array<any> = [];
   textbookList: Array<any>;
   programLevelData: Array<any>;
+  public telemetryInteractCdata: any;
+  public telemetryInteractPdata: any;
   public sessionContext: ISessionContext = {};
   public programContext: any;
   public telemetryImpression: any;
@@ -50,6 +52,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.reports = [{ name: 'Program Level Report Status' }];
     this.selectedReport = 'Program Level Report Status';
     this.generateProgramLevelData(this.selectedReport);
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.programContext.userDetails.programId, 'Program');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
   }
 
   ngAfterViewInit() {
@@ -135,7 +141,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       url: 'content/v3/hierarchy/' + identifier, // `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
       param: { 'mode': 'edit' }
     };
-    return this.actionService.get(req).pipe(map((response) => {
+    return this.actionService.get(req).pipe(map((response: any) => {
       const collectionData = response.result.content;
         let textBookLevelCount;
         const collectionHierarchy = this.getUnitWithChildren(

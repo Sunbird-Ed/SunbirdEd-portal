@@ -56,22 +56,24 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   redirectToDikshaApp() {
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
     const sendUtmParams = _.get(this.activatedRoute, 'firstChild.firstChild.snapshot.data.sendUtmParams');
+    const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
+    const utm_source = slug ? `${this.instance}-${slug}` : this.instance;
     if (sendUtmParams) {
       observableCombineLatest(this.activatedRoute.firstChild.firstChild.params, this.activatedRoute.queryParams,
         (params, queryParams) => {
           return { ...params, ...queryParams };
         }).subscribe((params) => {
-          const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-          const utm_source = slug ? `diksha-${slug}` : 'diksha';
           if (params.dialCode) {
             const source = params.source || 'search';
-            applink = `${applink}&utm_source=${utm_source}&utm_medium=${source}&utm_campaign=dial&utm_term=${params.dialCode}`;
+            applink = `${applink}&referrer=utm_source=${utm_source}&utm_medium=${source}&utm_campaign=dial&utm_term=${params.dialCode}`;
           } else {
-            applink = `${applink}&utm_source=${utm_source}&utm_medium=get&utm_campaign=redirection`;
+            applink = `${applink}&referrer=utm_source=${utm_source}&utm_medium=get&utm_campaign=redirection`;
           }
           this.redirect(applink.replace(/\s+/g, ''));
         });
     } else {
+      const path = this.router.url.split('/')[1];
+      applink = `${applink}&referrer=utm_source=${utm_source}&utm_medium=${path}`;
       this.redirect(applink);
     }
   }

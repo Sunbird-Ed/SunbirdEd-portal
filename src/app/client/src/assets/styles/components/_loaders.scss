@@ -32,7 +32,7 @@
   }
 }
 
-/* diksha offline loader */
+/* offline loader */
 .loader-center {
   display: block;
   position: absolute;
@@ -40,15 +40,6 @@
   left: 50%;
   width: 18vmin;
   transform: translate(-50%, -50%);
-}
-.diksha-opening-txt {
-  text-align: center;
-  position: absolute;
-  bottom: -40px;
-  right: 0;
-  left: 0;
-  font-size: 16px;
-  font-weight:bold;
 }
 @-webkit-keyframes move-dot {
   0% {
@@ -138,16 +129,6 @@
       z-index: -1;
     }
   }
-.DikshaLoaderContainer {
-    position: relative;
-    width: 80vmin;
-    height: 80vmin;
-    padding: 30px;
-    background: #fff;
-    border-radius: 10px;
-    margin: 0 auto;    
-    box-shadow: 0 2px 7px 0 rgba(0,0,0,0.16);
-}
 .animated-helix {
     position: absolute;
     top: 46%;

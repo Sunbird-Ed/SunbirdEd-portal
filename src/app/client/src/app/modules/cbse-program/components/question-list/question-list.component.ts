@@ -147,15 +147,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.sessionContext.contentMetadata = this.resourceDetails;
       this.existingContentVersionKey = res.versionKey;
       this.resourceStatus =  _.get(this.resourceDetails, 'status');
-      if (this.resourceStatus === 'Review') {
-        this.resourceStatusText = 'Review in Progress';
-      } else if (this.resourceStatus === 'Draft' && this.resourceDetails.rejectComment && this.resourceDetails.rejectComment !== '') {
-        this.resourceStatusText = 'Rejected';
-      } else if (this.resourceStatus === 'Live') {
-        this.resourceStatusText = 'Published';
-      } else {
-        this.resourceStatusText = this.resourceStatus;
-      }
+      this.setResourceStatus();
       if (this.resourceDetails.questionCategories) {
         this.sessionContext.questionType = _.lowerCase(_.nth(this.resourceDetails.questionCategories, 0));
       }
@@ -173,6 +165,18 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.handleActionButtons();
     });
+  }
+
+  setResourceStatus() {
+    if (this.resourceStatus === 'Review') {
+      this.resourceStatusText = 'Review in Progress';
+    } else if (this.resourceStatus === 'Draft' && this.resourceDetails.rejectComment && this.resourceDetails.rejectComment !== '') {
+      this.resourceStatusText = 'Rejected';
+    } else if (this.resourceStatus === 'Live') {
+      this.resourceStatusText = 'Published';
+    } else {
+      this.resourceStatusText = this.resourceStatus;
+    }
   }
 
   public getLicences() {

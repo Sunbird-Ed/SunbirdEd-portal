@@ -25,16 +25,17 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public sharedContext: any = {};
   public collectionComponentConfig: any;
   public stageSubscription: any;
-  public filteredList: Array<any>;
+  public collectionList: Array<any>;
   public collection;
   public collectionsWithCardImage;
   public role: any = {};
-  public collectionList: any = {};
   public mediums;
   public showError = false;
   public classes;
   public board;
   public filters;
+  public telemetryInteractCdata: any;
+  public telemetryInteractPdata: any;
   isMediumClickable = false;
   showLoader = true;
   selectedIndex = -1;
@@ -66,7 +67,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.sessionContext = _.assign(this.collectionComponentInput.sessionContext, {
       currentRole: _.get(this.programContext, 'userDetails.roles[0]'),
       bloomsLevel: _.get(this.programContext, 'config.scope.bloomsLevel'),
-      programId:  _.get(this.programContext, 'programId'),
+      programId: _.get(this.programContext, 'programId'),
       program: _.get(this.programContext, 'name'),
       onBoardSchool: _.get(this.programContext, 'userDetails.onBoardingData.school'),
       collectionType: _.get(this.collectionComponentConfig, 'collectionType'),
@@ -81,6 +82,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.mediums = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'medium'}).defaultValue;
     this.board = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'board'}).defaultValue;
     (_.size(this.mediums) > 1) ? this.isMediumClickable = true : this.isMediumClickable = false;
+
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.collectionComponentInput.programContext.programId, 'Program');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
   }
 
   getImplicitFilters(): string[] {
@@ -148,7 +154,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       filterArray.push(filterValue);
       filterValueItem = filterArray;
     }
-    this.filteredList = this.filterByCollection(this.collectionsWithCardImage, filterBy, filterValueItem);
+    this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterBy, filterValueItem);
     this.groupCollectionList();
   }
 
@@ -205,10 +211,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   groupCollectionList(groupValue?: string) {
     if (groupValue) {
-      this.collectionList = _.groupBy(this.collectionsWithCardImage, { 'subject' : groupValue } );
+      this.collectionList = this.groupByCollection(this.collectionsWithCardImage, { 'subject' : groupValue } );
     } else {
-      this.collectionList = _.groupBy(this.filteredList, 'subject');
+      this.collectionList = this.groupByCollection(this.collectionList, 'subject');
     }
+    return this.collectionList;
   }
 
   groupByCollection(collection, arg) {
