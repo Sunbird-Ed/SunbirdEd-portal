@@ -11,7 +11,6 @@ export class ContentManagerInfoPopUpComponent implements OnInit {
   @Input() failedList;
   @ViewChild('modal') modal;
   @Output() dismissed = new EventEmitter<any>();
-
   constructor(public resourceService: ResourceService) { }
 
   ngOnInit() {

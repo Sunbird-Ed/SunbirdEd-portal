@@ -26,6 +26,8 @@ export class ProgramHeaderComponent implements OnInit, OnChanges, OnDestroy {
   public headerActions: IHeaderActions = {};
   public tabsToShow = [];
   public stageSubscription: any;
+  public telemetryInteractCdata: any;
+  public telemetryInteractPdata: any;
   public state: InitialState = {
     stages: []
   };
@@ -39,6 +41,10 @@ export class ProgramHeaderComponent implements OnInit, OnChanges, OnDestroy {
       this.handleTabs();
     });
     this.generateTabs();
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.headerComponentInput.userDetails.programId, 'Program');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
   }
 
   generateTabs() {

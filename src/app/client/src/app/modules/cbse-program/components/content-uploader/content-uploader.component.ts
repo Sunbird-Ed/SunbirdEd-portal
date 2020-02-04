@@ -66,6 +66,9 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   titleCharacterLimit: number;
   allFormFields: Array<any>;
   telemetryImpression: any;
+  public telemetryInteractCdata: any;
+  public telemetryInteractPdata: any;
+  public telemetryInteractObject: any;
   public telemetryPageId = 'content-uploader';
 
   constructor(public toasterService: ToasterService, private userService: UserService,
@@ -91,6 +94,12 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       this.cd.detectChanges();
       this.getUploadedContentMeta(_.get(this.contentUploadComponentInput, 'contentId'));
     }
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.contentUploadComponentInput.programContext.programId, 'Program');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractObject = this.programTelemetryService.getTelemetryInteractObject(this.contentUploadComponentInput.contentId, 'Content', '1.0', { l1: this.sessionContext.collection, l2: this.unitIdentifier});
   }
 
   ngAfterViewInit() {

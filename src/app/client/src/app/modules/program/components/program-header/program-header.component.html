@@ -4,17 +4,17 @@
       <ng-container *ngIf="headerActions.showTabs">
         <ng-container *ngFor="let tab of filterBy('index'); let i = index">
           <a appTelemetryInteract
-            [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-tab', 'click', 'header')"
-            [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
-            [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+            [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-tab-'+tab.label, 'click', 'collection')"
+            [telemetryInteractCdata]="telemetryInteractCdata"
+            [telemetryInteractPdata]="telemetryInteractPdata"
             class="practical-appbar__item" *ngIf="tab?.visibility" (click)="handleTabChange(tab.onClick, tab.index)"
             [class.active]="tab.index == defaultTabIndex">{{tab.label}}</a>
         </ng-container>
       </ng-container>
       <button appTelemetryInteract
-        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-back', 'click', 'header')"
-        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', headerComponentInput.userDetails.programId)"
-        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('header-back-button', 'click', 'collection')"
+        [telemetryInteractCdata]="telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryInteractPdata"
         *ngIf="!headerActions.showTabs" (click)="handleBack()"
         class="d-flex flex-ai-center sb-btn sb-btn-normal sb-btn-link sb-left-icon-btn sb-color-white" type="button">
         <i class="icon-svg icon-svg--xs icon-arrow-long-left mr-8">

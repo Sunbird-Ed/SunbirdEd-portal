@@ -34,6 +34,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public classes;
   public board;
   public filters;
+  public telemetryInteractCdata: any;
+  public telemetryInteractPdata: any;
   isMediumClickable = false;
   showLoader = true;
   selectedIndex = -1;
@@ -80,6 +82,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.mediums = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'medium'}).defaultValue;
     this.board = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'board'}).defaultValue;
     (_.size(this.mediums) > 1) ? this.isMediumClickable = true : this.isMediumClickable = false;
+
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.collectionComponentInput.programContext.programId, 'Program');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
   }
 
   getImplicitFilters(): string[] {
