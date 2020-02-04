@@ -11,7 +11,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import {RouterModule} from '@angular/router';
 import { of } from 'rxjs';
-import { inputData } from './question-creation.component.spec.data';
+import { inputData, questionMetaData, telemetryEventsInput } from './question-creation.component.spec.data';
 import * as _ from 'lodash-es';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -60,10 +60,10 @@ describe('QuestionCreationComponent', () => {
     .compileComponents().then(() => {
         fixture = TestBed.createComponent(QuestionCreationComponent);
         component = fixture.componentInstance;
-        component.questionMetaData =  inputData.questionMetaData;
+        component.questionMetaData =  questionMetaData;
         component.role =  inputData.role;
         component.sessionContext =  inputData.sessionContext;
-        component.telemetryEventsInput =  inputData.telemetryEventsInput;
+        component.telemetryEventsInput =  telemetryEventsInput;
         component.componentConfiguration =  _.get(component.sessionContext, 'practiceSetConfig');
     });
   }));
