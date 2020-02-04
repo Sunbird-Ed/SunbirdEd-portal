@@ -11,6 +11,13 @@ import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { AppComponent } from '../../../../../../app.component';
+
+const appComponent = {
+  showFrameWorkPopUp: false,
+  showTermsAndCondPopUp: false,
+  showUserVerificationPopup: false,
+  isLocationConfirmed: true
+};
 const serverRes = {
   id : 'api.content.read',
   ver: '1.0',
@@ -70,7 +77,8 @@ describe('ContentPlayerComponent', () => {
       declarations: [ ContentPlayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute},
-        { provide: Router, useClass: RouterStub }, AppComponent ]
+        { provide: Router, useClass: RouterStub },
+        { provide: AppComponent, useValue: appComponent} ]
     })
     .compileComponents();
   }));
@@ -92,7 +100,13 @@ describe('ContentPlayerComponent', () => {
     spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes));
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     userService._userData$.next({ err: null, userProfile: mockUserData });
+    fixture.detectChanges();
     component.ngOnInit();
+    appComponent.showFrameWorkPopUp = false;
+    appComponent.showTermsAndCondPopUp = false;
+    appComponent.showUserVerificationPopup = false;
+    appComponent.isLocationConfirmed = true;
+    component.ngAfterViewInit();
     expect(component.playerConfig).toBeUndefined();
   });
   xit('should config player if content status is "Unlisted"', () => {
