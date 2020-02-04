@@ -46,12 +46,12 @@ describe('CollectionPlayerMetadataComponent', () => {
   });
   it('should get the interact object for telemetry', () => {
     component.collectionId = Response.metaData.identifier;
-    component.metaData=Response.metaData;
+    component.metaData = Response.metaData;
     const result = component.getTelemetryInteractObject();
-    expect(result).toEqual({id:'do_112485752378662912157',type:'Resource',ver:'1.0'});
+    expect(result).toEqual({id: 'do_112485752378662912157', type: 'Resource', ver: '1.0'});
   });
   it('should get the interact edata for telemetry', () => {
-    const result = component.getTelemetryInteractEdata({id:"button-click"});
-    expect(result).toEqual({id:'button-click',type:'click',pageid:'collection-player'});
+    const result = component.getTelemetryInteractEdata({id: 'button-click'});
+    expect(result).toEqual({id: 'button-click', type: 'click', pageid: 'collection-player'});
   });
 });
