@@ -184,7 +184,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.showModal = this.offlineCardService.isYoutubeContent(event.data);
         if (!this.showModal) {
           this.showDownloadLoader = true;
-          this.downloadContent(this.downloadIdentifier, event.content.name);
+          this.downloadContent(this.downloadIdentifier);
           this.logTelemetry(event.data, 'download-content');
         }
         break;
@@ -209,9 +209,9 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
     }
   }
 
-  downloadContent(contentId, contentName?) {
+  downloadContent(contentId) {
     this.contentManagerService.downloadContentId = contentId;
-    this.contentManagerService.failedContentName = contentName;
+    this.contentManagerService.failedContentName = this.contentName;
     this.contentManagerService.startDownload({})
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
