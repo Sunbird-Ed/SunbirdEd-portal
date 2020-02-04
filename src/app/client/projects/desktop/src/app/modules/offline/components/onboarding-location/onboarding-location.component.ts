@@ -46,12 +46,11 @@ export class OnboardingLocationComponent implements OnInit {
     });
   }
 
-  onOptionChanges(option) {
+  onOptionChanges(type: string) {
     this.disableContinueBtn = true;
-    if (option.type === 'state') {
-      this.selectedDistrict = {};
+    if (this.selectedState && type === 'state') {
       this.districtList = [];
-      this.getAllDistricts(option.id);
+      this.getAllDistricts(this.selectedState.id);
     } else {
       this.disableContinueBtn = false;
     }
@@ -71,6 +70,9 @@ export class OnboardingLocationComponent implements OnInit {
     this.onboardingService.searchLocation({ type: 'district', parentId: parentId })
     .subscribe(data => {
       this.districtList = _.get(data, 'result.response');
+      if (this.selectedDistrict) {
+        this.selectedDistrict = _.find(this.districtList, {name: this.selectedDistrict['name']});
+      }
     });
   }
 

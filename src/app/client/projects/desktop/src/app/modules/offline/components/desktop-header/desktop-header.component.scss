@@ -18,9 +18,9 @@
           margin-bottom: $base-block-space;
         }
 
-        &>div:last-child {
-          margin-bottom: 0px;
-        }
+        // &>div:last-child {
+        //   margin-bottom: 0px;
+        // }
 
         @include respond-above(sm) {
           &>div {
@@ -46,6 +46,9 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          @include respond-below(sm) {
+          margin-top: $base-block-space;
+          }
 
           .logo {
             img {
@@ -68,6 +71,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            margin:0.5rem 0;
           }
 
           @include respond-above(sm) {
@@ -84,9 +88,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-
+        
         @include respond-below(sm) {
           width: 100%;
+          margin-top: $base-block-space;
         }
 
         @include respond-above(sm) {

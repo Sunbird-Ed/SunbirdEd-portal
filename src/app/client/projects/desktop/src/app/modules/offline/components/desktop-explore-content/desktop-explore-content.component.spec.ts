@@ -138,6 +138,7 @@ describe('DesktopExploreContentComponent', () => {
 
     component.downloadContent('do_31288771643112652813019');
     expect(contentManagerService.downloadContentId).toEqual('');
+    expect(component.contentManagerService.failedContentName).toEqual('');
     expect(contentManagerService.startDownload).toHaveBeenCalledWith({});
     expect(component.showDownloadLoader).toBeFalsy();
   });
@@ -151,6 +152,7 @@ describe('DesktopExploreContentComponent', () => {
 
     component.downloadContent('do_31288771643112652813019');
     expect(contentManagerService.downloadContentId).toEqual('');
+    expect(component.contentManagerService.failedContentName).toEqual('');
     expect(contentManagerService.startDownload).toHaveBeenCalledWith({});
     expect(component.showDownloadLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalledWith('Could not download. Try again later');
