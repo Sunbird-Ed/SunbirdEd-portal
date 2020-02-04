@@ -259,6 +259,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       requestData.createdFor = this.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
+    if (this.contentType === 'studymaterial' && data.contentType) {
+      requestData.contentType = data.contentType;
+    }
     if (requestData.year) {
       requestData.year = requestData.year.toString();
     }
