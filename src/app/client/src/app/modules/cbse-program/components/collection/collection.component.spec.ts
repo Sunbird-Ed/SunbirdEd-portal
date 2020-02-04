@@ -56,7 +56,6 @@ const activatedRouteStub = {
         CacheService,
         BrowserCacheTtlService,
         UtilService,
-        ContentService,
         ProgramStageService,
         {
           provide: ContentService,
