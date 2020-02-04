@@ -19,7 +19,6 @@
         <p *ngIf="contentData && contentData.licenseDetails && contentData.licenseDetails['name']">
           {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
           <span *ngIf="contentData.licenseDetails['url']">
-            {{resourceService?.frmelmnts?.lbl?.forDetails}} -
             <a href="{{contentData.licenseDetails['url']}}" target="_blank">{{contentData.licenseDetails['url']}}</a>
           </span></p>
 
