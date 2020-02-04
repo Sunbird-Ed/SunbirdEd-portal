@@ -15,6 +15,7 @@ import * as _ from 'lodash-es';
 export class InfoCardComponent implements OnInit, OnDestroy {
 
   @Input() text: any;
+  @Input() showMinRamWarning = false;
   isConnected;
   @Output() navigate = new EventEmitter();
   public unsubscribe$ = new Subject<void>();
