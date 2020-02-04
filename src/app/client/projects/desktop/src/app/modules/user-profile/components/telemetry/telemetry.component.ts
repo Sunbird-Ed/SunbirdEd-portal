@@ -41,7 +41,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
       this.disableExport = !this.telemetryInfo['totalSize'];
     }, (err) => {
       this.disableExport = true;
-      this.toasterService.error('Unable to get telemetry info. Please try again later...');
+      this.toasterService.error(this.resourceService.messages.emsg.desktop.telemetryInfoEMsg);
     });
   }
 

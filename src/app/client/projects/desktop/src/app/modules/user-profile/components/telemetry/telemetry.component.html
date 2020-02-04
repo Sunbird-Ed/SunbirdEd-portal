@@ -25,14 +25,14 @@
               <dd class="multiline-list-value">19 February 2019 at 6:40 PM</dd>
             </dl>
           </div> -->
-        <div class="share-tele-btn">
+        <div class="share-tele-btn m-0 mt-16">
           <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
             my-8" (click)="exportTelemetry()"
             [disabled]="disableExport" *ngIf="telemetryInfo?.totalSize">
             {{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry}}
             {{telemetryInfo?.totalSize | filesize}}
           </button>
-         <div>{{resourceService?.messages?.imsg?.desktop?.m001}}</div>
+         <div class="profile-telemetry-subtitle" *ngIf="!telemetryInfo?.totalSize">{{resourceService?.messages?.imsg?.desktop?.m001}}</div>
           <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
             my-8" (click)="exportTelemetry()"
             [disabled]="disableExport" *ngIf="!telemetryInfo?.totalSize">
