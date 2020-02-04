@@ -170,7 +170,7 @@ export class UserUploadComponent {
           },
           err => {
             this.showLoader = false;
-            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('. ') :
             this.resourceService.messages.fmsg.m0051;
             this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
             this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
