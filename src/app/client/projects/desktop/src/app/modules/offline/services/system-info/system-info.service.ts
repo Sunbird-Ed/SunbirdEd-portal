@@ -5,13 +5,13 @@ import { ConfigService } from '@sunbird/shared';
 @Injectable({
   providedIn: 'root'
 })
-export class MemoryService {
+export class SystemInfoService {
 
   constructor(public publicDataService: PublicDataService, public configService: ConfigService) { }
 
-  getMemoryInfo() {
+  getSystemInfo() {
     const option = {
-      url: this.configService.urlConFig.URLS.OFFLINE.MEMORY
+      url: this.configService.urlConFig.URLS.OFFLINE.SYSTEM_INFO
     };
     return this.publicDataService.get(option);
   }

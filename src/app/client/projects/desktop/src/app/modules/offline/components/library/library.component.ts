@@ -10,7 +10,7 @@ import {
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { ConnectionService, ContentManagerService, MemoryService } from '../../services';
+import { ConnectionService, ContentManagerService, SystemInfoService } from '../../services';
 
 @Component({
     selector: 'app-library',
@@ -80,7 +80,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         public telemetryService: TelemetryService,
         public contentManagerService: ContentManagerService,
         private offlineCardService: OfflineCardService,
-        private memoryService: MemoryService
+        private systemInfoService: SystemInfoService
     ) { }
 
     ngOnInit() {
@@ -89,10 +89,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.getSelectedFilters();
         this.setTelemetryData();
 
-        this.memoryService.getMemoryInfo().subscribe(data => {
+        this.systemInfoService.getSystemInfo().subscribe(data => {
             let { availableMemory } = data.result;
             availableMemory = Math.floor(availableMemory / (1024 * 1024));
-            this.showMinimumRAMWarning = availableMemory ? Boolean(availableMemory < this.MINIMUM_REQUIRED_RAM) : false;
+            this.showMinimumRAMWarning = availableMemory ? Boolean(availableMemory > this.MINIMUM_REQUIRED_RAM) : false;
         }, error => {
             this.showMinimumRAMWarning = false;
         });
