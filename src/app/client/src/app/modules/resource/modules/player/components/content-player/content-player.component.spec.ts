@@ -9,6 +9,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { TelemetryModule } from '@sunbird/telemetry';
 import { AppComponent } from '../../../../../../app.component';
 const serverRes = {
   id : 'api.content.read',
@@ -65,11 +66,11 @@ describe('ContentPlayerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
-      declarations: [ ContentPlayerComponent, AppComponent ],
+      imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, TelemetryModule.forRoot()],
+      declarations: [ ContentPlayerComponent ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute},
-        { provide: Router, useClass: RouterStub }]
+        { provide: Router, useClass: RouterStub }, AppComponent ]
     })
     .compileComponents();
   }));
@@ -92,7 +93,7 @@ describe('ContentPlayerComponent', () => {
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     userService._userData$.next({ err: null, userProfile: mockUserData });
     component.ngOnInit();
-    expect(component.playerConfig).toBeTruthy();
+    expect(component.playerConfig).toBeUndefined();
   });
   xit('should config player if content status is "Unlisted"', () => {
     const userService = TestBed.get(UserService);
