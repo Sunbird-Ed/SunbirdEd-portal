@@ -17,6 +17,7 @@ import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { DummyCompComponent } from './components/dummy-comp/dummy-comp.component';
 
 @NgModule({
   imports: [
@@ -38,6 +39,6 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService],
   declarations: [LearnPageComponent, CoursePlayerComponent, CourseConsumptionHeaderComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, EnrollBatchComponent, CreateBatchComponent,
-    UpdateCourseBatchComponent, CurriculumCardComponent, UnEnrollBatchComponent]
+    UpdateCourseBatchComponent, CurriculumCardComponent, UnEnrollBatchComponent, DummyCompComponent]
 })
 export class LearnModule { }

@@ -21,7 +21,6 @@ import { CollectionComponent } from './components/collection/collection.componen
 import { ResourceReorderComponent } from './components/resource-reorder/resource-reorder.component';
 import { CollectionHierarchyService } from './services/collection-hierarchy/collection-hierarchy.service';
 import { SlickModule } from 'ngx-slick';
-import { DummyTestComponentComponent } from './components/dummy-test-component/dummy-test-component.component';
 
 @NgModule({
   declarations: [QuestionListComponent, QuestionCreationComponent,
@@ -29,7 +28,7 @@ import { DummyTestComponentComponent } from './components/dummy-test-component/d
     McqTemplateSelectionComponent,
     QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent,
     DashboardComponent, RecursiveTreeComponent,
-    ContentUploaderComponent,  ResourceTemplateComponent, CollectionComponent, ResourceReorderComponent, DummyTestComponentComponent],
+    ContentUploaderComponent,  ResourceTemplateComponent, CollectionComponent, ResourceReorderComponent],
   imports: [
     CommonModule,
     SuiTabsModule,
