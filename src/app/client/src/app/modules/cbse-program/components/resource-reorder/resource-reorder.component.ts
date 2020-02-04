@@ -18,6 +18,8 @@ export class ResourceReorderComponent implements OnInit {
   @Input() prevUnitSelect;
   @Output() moveEvent = new EventEmitter<any>();
   @ViewChild('modal') modal;
+  public telemetryInteractCdata: any;
+  public telemetryInteractPdata: any;
   showMoveButton = false;
 
   constructor(private collectionHierarchyService: CollectionHierarchyService, public toasterService: ToasterService,
@@ -25,6 +27,10 @@ export class ResourceReorderComponent implements OnInit {
               public configService: ConfigService) { }
 
   ngOnInit() {
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.programContext.userDetails.programId, 'Program');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
   }
 
   moveResource() {
