@@ -87,7 +87,7 @@ describe('ContentPlayerComponent', () => {
     fixture = TestBed.createComponent(ContentPlayerComponent);
     component = fixture.componentInstance;
   });
-  it('should config content player if content status is "Live" in DOM', fakeAsync(() => {
+  it('should config content player if content status is "Live" in DOM', async () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
@@ -106,16 +106,16 @@ describe('ContentPlayerComponent', () => {
     appComponent.showUserVerificationPopup = false;
     appComponent.isLocationConfirmed = true;
     fixture.detectChanges();
-    component.ngAfterViewInit();
-    tick(10000);
-    discardPeriodicTasks();
+    await component.ngAfterViewInit();
+    // tick(10000);
+    // discardPeriodicTasks();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(component.playerConfig).toBeTruthy();
       fixture.destroy();
       flush();
     });
-  }));
+  });
   it('should config content player if content status is "Live"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
