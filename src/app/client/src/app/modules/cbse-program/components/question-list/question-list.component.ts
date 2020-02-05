@@ -620,6 +620,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
           )
           .subscribe((data) => {
             this.toasterService.success(this.resourceService.messages.smsg.m0060);
+            this.sessionContext.contentMetadata.name = this.resourceName;
           }, (err) => {
             this.toasterService.error(this.resourceService.messages.fmsg.m0098);
           });
