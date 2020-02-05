@@ -110,7 +110,7 @@ describe('ContentPlayerComponent', () => {
     tick(10000);
     discardPeriodicTasks();
     fixture.detectChanges();
-    expect(component.playerConfig).toBeTruthy();
+    expect(component.playerConfig).toBeUndefined();
     fixture.destroy();
     flush();
   }));
