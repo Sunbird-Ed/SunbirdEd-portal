@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService } from '@sunbird/shared';
 import { CoreModule, UserService, PlayerService } from '@sunbird/core';
-import { async, ComponentFixture, TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, discardPeriodicTasks, flush } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -107,10 +107,12 @@ describe('ContentPlayerComponent', () => {
     appComponent.isLocationConfirmed = true;
     fixture.detectChanges();
     component.ngAfterViewInit();
-    tick(2000);
+    tick(10000);
     discardPeriodicTasks();
     fixture.detectChanges();
     expect(component.playerConfig).toBeTruthy();
+    fixture.destroy();
+    flush();
   }));
   it('should config content player if content status is "Live"', () => {
     const userService = TestBed.get(UserService);
@@ -126,10 +128,6 @@ describe('ContentPlayerComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockUserData });
     fixture.detectChanges();
     component.ngOnInit();
-    appComponent.showFrameWorkPopUp = false;
-    appComponent.showTermsAndCondPopUp = false;
-    appComponent.showUserVerificationPopup = false;
-    appComponent.isLocationConfirmed = true;
     fixture.detectChanges();
     component.ngAfterViewInit();
     fixture.detectChanges();
