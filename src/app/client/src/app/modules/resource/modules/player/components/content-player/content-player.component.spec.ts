@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, NavigationHelperService, WindowScrollService } from '@sunbird/shared';
 import { CoreModule, UserService, PlayerService } from '@sunbird/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, discardPeriodicTasks } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -87,7 +87,31 @@ describe('ContentPlayerComponent', () => {
     fixture = TestBed.createComponent(ContentPlayerComponent);
     component = fixture.componentInstance;
   });
-
+  it('should config content player if content status is "Live" in DOM', fakeAsync(() => {
+    const userService = TestBed.get(UserService);
+    const playerService = TestBed.get(PlayerService);
+    const resourceService = TestBed.get(ResourceService);
+    const windowScrollService = TestBed.get(WindowScrollService);
+    spyOn(windowScrollService, 'smoothScroll');
+    serverRes.result.content.status = 'Live';
+    resourceService.messages = resourceServiceMockData.messages;
+    resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
+    spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes));
+    userService._userProfile = { 'organisations': ['01229679766115942443'] };
+    userService._userData$.next({ err: null, userProfile: mockUserData });
+    fixture.detectChanges();
+    component.ngOnInit();
+    appComponent.showFrameWorkPopUp = false;
+    appComponent.showTermsAndCondPopUp = false;
+    appComponent.showUserVerificationPopup = false;
+    appComponent.isLocationConfirmed = true;
+    fixture.detectChanges();
+    component.ngAfterViewInit();
+    tick(2000);
+    discardPeriodicTasks();
+    fixture.detectChanges();
+    expect(component.playerConfig).toBeTruthy();
+  }));
   it('should config content player if content status is "Live"', () => {
     const userService = TestBed.get(UserService);
     const playerService = TestBed.get(PlayerService);
