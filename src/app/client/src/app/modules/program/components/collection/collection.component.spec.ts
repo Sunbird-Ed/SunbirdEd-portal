@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { ConfigService, ResourceService, ToasterService, UtilService, BrowserCacheTtlService } from '@sunbird/shared';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CollectionComponent, ChapterListComponent} from '../index';
+import { CollectionComponent, ChapterListComponent} from '../../../cbse-program/index';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { DynamicModule } from 'ng-dynamic-component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

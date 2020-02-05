@@ -18,7 +18,7 @@ import { CbseProgramModule } from '../../modules/cbse-program/cbse-program.modul
 import { CollectionComponent, DashboardComponent } from '../cbse-program';
 import { CommonConsumptionModule} from '@project-sunbird/common-consumption';
 @NgModule({
-  declarations: [ListAllProgramsComponent, ProgramComponent, OnboardPopupComponent, ProgramHeaderComponent],
+  declarations: [ListAllProgramsComponent, ProgramComponent, OnboardPopupComponent, ProgramHeaderComponent, CollectionComponent],
   imports: [
     SuiModule,
     CommonModule,
