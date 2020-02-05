@@ -13,12 +13,6 @@ import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 
-
-describe('CollectionComponent', () => {
-  let component: CollectionComponent;
-  let fixture: ComponentFixture<CollectionComponent>;
-
-
 const ContentServiceStub = {
   post() {
     return of( searchCollectionResponse );
@@ -44,10 +38,15 @@ const activatedRouteStub = {
   }
 };
 
+describe('CollectionComponent', () => {
+  let component: CollectionComponent;
+  let fixture: ComponentFixture<CollectionComponent>;
+
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [ CollectionComponent ],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         ConfigService,
@@ -56,6 +55,7 @@ const activatedRouteStub = {
         CacheService,
         BrowserCacheTtlService,
         UtilService,
+        ContentService,
         ProgramStageService,
         {
           provide: ContentService,
@@ -81,6 +81,11 @@ const activatedRouteStub = {
     component.collectionsWithCardImage = collectionWithCard;
     fixture.detectChanges();
   });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -140,7 +145,9 @@ const activatedRouteStub = {
   });
 
   it('onDeselect of gradeLevel filter', () => {
-    component.setAndClearFilterIndex(2);
+    component.setAndClearFilterIndex(2); // To set filter
+    component.setAndClearFilterIndex(2); // To clear filter
+    expect(component.selectedIndex).toEqual(-1);
     expect(component.activeFilterIndex).toEqual(2);
    });
 
@@ -170,9 +177,5 @@ const activatedRouteStub = {
     component.filterCollectionList('Kannada', 'medium');
     expect(_.has(component.collectionList, 'Kannada')).toEqual(true); // As per the spec data
    });
-
-   it('should unsubscribe subject', () => {
-    component.ngOnDestroy();
-  });
 
 });
