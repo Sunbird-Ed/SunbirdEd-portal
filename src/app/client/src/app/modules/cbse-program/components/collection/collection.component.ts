@@ -25,17 +25,16 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public sharedContext: any = {};
   public collectionComponentConfig: any;
   public stageSubscription: any;
-  public collectionList: Array<any>;
+  public filteredList: Array<any>;
   public collection;
   public collectionsWithCardImage;
   public role: any = {};
+  public collectionList: any = {};
   public mediums;
   public showError = false;
   public classes;
   public board;
   public filters;
-  public telemetryInteractCdata: any;
-  public telemetryInteractPdata: any;
   isMediumClickable = false;
   showLoader = true;
   selectedIndex = -1;
@@ -82,11 +81,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.mediums = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'medium'}).defaultValue;
     this.board = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'board'}).defaultValue;
     (_.size(this.mediums) > 1) ? this.isMediumClickable = true : this.isMediumClickable = false;
-
-    // tslint:disable-next-line:max-line-length
-    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.collectionComponentInput.programContext.programId, 'Program');
-    // tslint:disable-next-line:max-line-length
-    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
   }
 
   getImplicitFilters(): string[] {
@@ -154,7 +148,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       filterArray.push(filterValue);
       filterValueItem = filterArray;
     }
-    this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterBy, filterValueItem);
+    this.filteredList = this.filterByCollection(this.collectionsWithCardImage, filterBy, filterValueItem);
     this.groupCollectionList();
   }
 
@@ -211,15 +205,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   groupCollectionList(groupValue?: string) {
     if (groupValue) {
-      this.collectionList = this.groupByCollection(this.collectionsWithCardImage, { 'subject' : groupValue } );
+      this.collectionList = _.groupBy(this.collectionsWithCardImage, { 'subject' : groupValue } );
     } else {
-      this.collectionList = this.groupByCollection(this.collectionList, 'subject');
+      this.collectionList = _.groupBy(this.filteredList, 'subject');
     }
-    return this.collectionList;
-  }
-
-  groupByCollection(collection, arg) {
-    return _.groupBy(collection, arg);
   }
 
   addCardImage(collection) {
