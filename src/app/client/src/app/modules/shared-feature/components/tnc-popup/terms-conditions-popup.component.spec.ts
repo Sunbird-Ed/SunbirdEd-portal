@@ -72,6 +72,13 @@ describe('TermsAndConditionsPopupComponent', () => {
 
   });
 
+  it('should set the tncLatestVersionUrl if it is coming as input', () => {
+    component.tncUrl = 'https://preprodall.blob.core.windows.net/termsandcond/terms-and-conditions-v4.html';
+    const sanitizedUrl = component.sanitizer.bypassSecurityTrustResourceUrl(component.tncUrl);
+    component.ngOnInit();
+    expect(component.tncLatestVersionUrl).toEqual(sanitizedUrl);
+  });
+
   it('should call acceptTermsAndConditions api', () => {
     component.disableContinueBtn = true;
     const userService = TestBed.get(UserService);
