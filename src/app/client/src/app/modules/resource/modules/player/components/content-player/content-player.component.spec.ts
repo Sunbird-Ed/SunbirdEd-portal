@@ -99,8 +99,8 @@ describe('ContentPlayerComponent', () => {
     spyOn(playerService, 'getContent').and.returnValue(observableOf(serverRes));
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     userService._userData$.next({ err: null, userProfile: mockUserData });
-    fixture.detectChanges();
     component.ngOnInit();
+    fixture.detectChanges();
     appComponent.showFrameWorkPopUp = false;
     appComponent.showTermsAndCondPopUp = false;
     appComponent.showUserVerificationPopup = false;
@@ -109,10 +109,12 @@ describe('ContentPlayerComponent', () => {
     component.ngAfterViewInit();
     tick(10000);
     discardPeriodicTasks();
-    fixture.detectChanges();
-    expect(component.playerConfig).toBeUndefined();
-    fixture.destroy();
-    flush();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(component.playerConfig).toBeTruthy();
+      fixture.destroy();
+      flush();
+    });
   }));
   it('should config content player if content status is "Live"', () => {
     const userService = TestBed.get(UserService);
