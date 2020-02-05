@@ -12,16 +12,6 @@
     @include respond-below(sm) {
       display: block;
     }
-
-    &__title {
-      color: var(--primary-400);
-      font-size: calculateRem(18px);
-    }
-  
-    &__info {
-      color: var(--gray-800);
-      font-size: calculateRem(14px);
-    }
   
     .dot-divider {
       width: ($base-block-space / 2);
@@ -32,6 +22,16 @@
       margin: 0px $base-block-space;
     }
   
+  }
+
+  &__title {
+    color: var(--primary-400);
+    font-size: calculateRem(18px);
+  }
+
+  &__info {
+    color: var(--gray-800);
+    font-size: calculateRem(14px);
   }
 
   @include respond-below(sm) {
