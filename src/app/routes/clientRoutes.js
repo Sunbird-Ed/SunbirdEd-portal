@@ -234,7 +234,11 @@ const redirectTologgedInPage = (req, res) => {
 			if (_.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`)) {
 				const routes = _.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`);
 				res.redirect(routes)
-			} else {
+      } else if(_.includes(_.get(req, 'originalUrl'), 'get') || _.includes(_.get(req, 'originalUrl'), 'dial')){
+        req.includeUserDetail = true;
+        renderDefaultIndexPage(req, res);
+      }
+      else {
 				renderDefaultIndexPage(req, res)
 			}
 		}
