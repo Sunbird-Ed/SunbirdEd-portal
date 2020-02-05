@@ -8,26 +8,22 @@
   <div class="sb-modal-content o-y-visible">
     <div class="sb-form">
       <p class="mb-8">{{resourceService?.frmelmnts?.lbl?.profile?.yourLocationHeader}} </p>
-      <div class="sb-field">
-        <label>{{resourceService?.frmelmnts?.lbl?.profile?.State}} :</label>
-        <sui-select class="selection" labelField="name" [isSearchable]="true" [(ngModel)]="selectedState"
-          (ngModelChange)="onStateChanges()" placeholder="{{resourceService?.frmelmnts?.lbl?.profile?.selectState}}"
-          [options]="stateList" #states>
-          <sui-select-option *ngFor="let state of states.filteredOptions" [value]="state">
-          </sui-select-option>
-        </sui-select>
+      <div class="sb-field field-focus mb-16">
+          <select class="ui dropdown selection fields-dropdown" (change)="onStateChanges()" [(ngModel)]="selectedState">
+              <option [ngValue]="undefined" hidden selected>{{resourceService?.frmelmnts?.lbl?.profile?.selectState}}</option>
+              <option [ngValue]="state"  *ngFor="let state of stateList"> {{state.name}}</option>
+            </select>
+            <label>{{resourceService?.frmelmnts?.lbl?.profile?.State}} :</label>
       </div>
-      <div class="sb-fielgroup">
-        <label>{{resourceService?.frmelmnts?.lbl?.profile?.District}} :</label>
-        <div class="sb-field">
-          <sui-select class="selection mt-10" labelField="name" [isSearchable]="true" [(ngModel)]="selectedDistrict"
-            placeholder="{{resourceService?.frmelmnts?.lbl?.profile?.selectDistrict}}" [options]="districtList"
-            #districts>
-            <sui-select-option *ngFor="let district of districts.filteredOptions" [value]="district">
-            </sui-select-option>
-          </sui-select>
+
+        <div class="sb-field field-focus mb-16">  
+          <select class="ui dropdown selection fields-dropdown" (change)="onStateChanges()" [(ngModel)]="selectedDistrict">
+              <option [ngValue]="undefined" hidden selected>{{resourceService?.frmelmnts?.lbl?.profile?.selectDistrict}}</option>
+              <option [ngValue]="district" *ngFor="let district of districtList"> {{district?.name}}</option>
+            </select>
+            <label>{{resourceService?.frmelmnts?.lbl?.profile?.District}} :</label>
+
         </div>
-      </div>
     </div>
   </div>
   <div class="sb-modal-actions">
