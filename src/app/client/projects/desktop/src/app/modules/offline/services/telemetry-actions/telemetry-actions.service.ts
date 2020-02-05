@@ -1,4 +1,3 @@
-import { TelemetryService } from '@sunbird/telemetry';
 import { mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { PublicDataService } from '@sunbird/core';
@@ -10,8 +9,7 @@ import { ElectronDialogService } from '../electron-dialog/electron-dialog.servic
 })
 export class TelemetryActionsService {
   constructor(public configService: ConfigService, public publicDataService: PublicDataService,
-    private electronDialogService: ElectronDialogService,
-    private telemetryService: TelemetryService) { }
+    private electronDialogService: ElectronDialogService) { }
 
   getTelemetryInfo(): Observable<ServerResponse> {
     return this.publicDataService.get({
