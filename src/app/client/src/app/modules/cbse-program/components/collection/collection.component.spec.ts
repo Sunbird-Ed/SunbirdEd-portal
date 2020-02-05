@@ -1,12 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-// tslint:disable-next-line:max-line-length
 import { ConfigService, ResourceService, ToasterService, UtilService, BrowserCacheTtlService } from '@sunbird/shared';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CollectionComponent, ChapterListComponent} from '../index';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CollectionComponent} from '../index';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { DynamicModule } from 'ng-dynamic-component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ContentService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
@@ -48,9 +45,8 @@ describe('CollectionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionComponent, ChapterListComponent ],
-      imports: [HttpClientTestingModule, CommonConsumptionModule, TelemetryModule.forRoot(),
-        DynamicModule.withComponents([CollectionComponent]), RouterTestingModule],
+      declarations: [ CollectionComponent ],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         ConfigService,

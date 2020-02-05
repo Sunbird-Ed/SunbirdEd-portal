@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ConfigService, UtilService, ToasterService, ResourceService } from '@sunbird/shared';
+import { ConfigService, UtilService, ResourceService } from '@sunbird/shared';
 import { PublicDataService, ContentService, UserService  } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';

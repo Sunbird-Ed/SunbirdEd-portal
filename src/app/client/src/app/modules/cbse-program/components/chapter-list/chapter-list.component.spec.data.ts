@@ -30,7 +30,7 @@ export const chapterListComponentInput = {
   collection: {
     name: 'बाल रामकथा(HINDHI)',
     image:
-      // tslint:disable-next-line:max-line-length
+// tslint:disable-next-line:max-line-length
       'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1127639035982479361130/artifact/photo-1457383457550-47a5cfdbab17_1551955977794.thumb.jpg',
     description: 'Enter description for TextBook',
     rating: '0',

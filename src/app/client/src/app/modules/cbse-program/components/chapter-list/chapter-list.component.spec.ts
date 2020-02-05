@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash-es';
 import { ChapterListComponent } from './chapter-list.component';
 import { RecursiveTreeComponent } from '../recursive-tree/recursive-tree.component';
@@ -20,7 +20,6 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DynamicModule } from 'ng-dynamic-component';
-import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
 
 
 describe('ChapterListComponent', () => {
@@ -233,7 +232,6 @@ describe('ChapterListComponent', () => {
 
     it('templateDetails should be defined on successful template selection', () => {
       // tslint:disable-next-line:prefer-const
-      let stubComponent: ContentUploaderComponent;
       component.selectedSharedContext = {framework: 'NCFCOPY', topic: ['Topic 2 child']};
       spyOn(component, 'componentLoadHandler');
       component.handleTemplateSelection(templateSelectionEvent);
@@ -245,7 +243,6 @@ describe('ChapterListComponent', () => {
         return observableOf({stages: []});
        });
       // tslint:disable-next-line:prefer-const
-      let stubComponent: ContentUploaderComponent;
       component.selectedSharedContext = {framework: 'NCFCOPY', topic: ['Topic 2 child']};
       // spyOn(component.programStageService, 'addStage');
       component.handleTemplateSelection(templateSelectionEvent);
@@ -320,4 +317,7 @@ describe('ChapterListComponent', () => {
       expect(component.updateAccordianView).toHaveBeenCalledWith(jasmine.any(String));
     });
 
+   it('should unsubscribe subject', () => {
+    component.ngOnDestroy();
+  });
 });
