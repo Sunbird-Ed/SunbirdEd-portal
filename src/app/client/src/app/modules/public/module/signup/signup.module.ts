@@ -8,7 +8,7 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { SignupService } from './services';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule } from '@sunbird/shared';
-import {SharedFeatureModule } from '@sunbird/shared-feature'
+import {SharedFeatureModule } from '@sunbird/shared-feature';
 
 
 @NgModule({
