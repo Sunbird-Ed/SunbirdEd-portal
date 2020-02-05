@@ -360,4 +360,14 @@ describe('SignUpComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalledWith(SignUpComponentMockData.interactEDataSelected);
   });
 
+  it('should show tnc popup if given mode is true', () => {
+    component.showAndHidePopup(true);
+    expect(component.showTncPopup).toBe(true);
+  });
+
+  it('should not show tnc popup if given mode is false', () => {
+    component.showAndHidePopup(false);
+    expect(component.showTncPopup).toBe(false);
+  });
+
 });
