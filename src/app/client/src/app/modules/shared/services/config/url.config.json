@@ -204,11 +204,14 @@
       "LOCATION_SAVE": "data/v1/location/save",
       "LOCATION_READ": "data/v1/location/read",
       "APP_INFO": "app/v1/info",
+      "SYSTEM_INFO": "desktop/v1/system-info",
       "RESUME_DOWNLOAD":"content/v1/download/resume",
       "CANCEL_DOWNLOAD":"content/v1/download/cancel",
       "PAUSE_DOWNLOAD":"content/v1/download/pause",
       "RETRY_DOWNLOAD":"content/v1/download/retry",
-      "DELETE_CONTENT":"content/v1/delete"
+      "DELETE_CONTENT":"content/v1/delete",
+      "TELEMTRY_INFO": "telemetry/v1/info",
+      "EXPORT_TELEMETRY": "telemetry/v1/export"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
@@ -216,7 +219,8 @@
     },
     "ELECTRON_DIALOG": {
       "CONTENT_IMPORT": "content/import",
-      "CONTENT_EXPORT": "content/export"
+      "CONTENT_EXPORT": "content/export",
+      "TELEMETRY_EXPORT": "telemetry/export"
     },
     "CONTRIBUTION_PROGRAMS":{
       "SEARCH": "program/v1/search"

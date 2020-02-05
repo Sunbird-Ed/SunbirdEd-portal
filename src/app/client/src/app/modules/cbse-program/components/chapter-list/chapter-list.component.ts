@@ -465,7 +465,10 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
     }
     this.resourceTemplateComponentInput = {
       templateList: _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
-        || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue')
+        || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue'),
+        programContext: this.programContext,
+        sessionContext: this.sessionContext,
+        unitIdentifier: this.unitIdentifier
     };
   }
 

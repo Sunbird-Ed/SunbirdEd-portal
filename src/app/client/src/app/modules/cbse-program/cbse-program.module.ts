@@ -24,8 +24,7 @@ import { SlickModule } from 'ngx-slick';
 
 @NgModule({
   declarations: [QuestionListComponent, QuestionCreationComponent,
-    ChapterListComponent,
-    McqCreationComponent, CkeditorToolComponent ,
+    ChapterListComponent, McqCreationComponent, CkeditorToolComponent ,
     McqTemplateSelectionComponent,
     QuestionPreviewComponent, SanitizeHtmlPipe, QuestionCreationHeaderComponent,
     DashboardComponent, RecursiveTreeComponent,
@@ -41,8 +40,7 @@ import { SlickModule } from 'ngx-slick';
     TelemetryModule,
     SlickModule.forRoot(),
     DynamicModule.withComponents([QuestionListComponent,
-       QuestionCreationComponent, ChapterListComponent,
-      McqCreationComponent, CkeditorToolComponent ,
+       QuestionCreationComponent, ChapterListComponent, McqCreationComponent, CkeditorToolComponent ,
       McqTemplateSelectionComponent,
       QuestionPreviewComponent, QuestionCreationHeaderComponent,
       DashboardComponent, RecursiveTreeComponent, ContentUploaderComponent, ResourceTemplateComponent]),

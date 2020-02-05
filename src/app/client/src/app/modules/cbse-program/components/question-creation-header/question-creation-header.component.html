@@ -5,7 +5,7 @@
         <span class="sb-color-error">Question Rejected</span>
         <span class="cursor-pointer fs-0-785 ml-8" (click)="openReviewerCommentModal()"
         appTelemetryInteract 
-        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('view-reviewercomments', 'click', 'question-creation-header')"
+        [telemetryInteractEdata]="{id:'view-reviewercomments',type:'click',pageid:'question-creation-header',extra: {type:'reference',category:questionMetaData.data.category,identifier:questionMetaData ? questionMetaData.data.identifier : ''}}"
         [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
         [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
         [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"

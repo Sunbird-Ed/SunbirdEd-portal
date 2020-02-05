@@ -30,4 +30,14 @@ export class CollectionPlayerMetadataComponent implements OnInit {
     this.showContentCreditsModal = true;
   }
 
+  getTelemetryInteractEdata = ({id, type = 'click'}) => ({id, type, pageid: 'collection-player'});
+
+  getTelemetryInteractObject() {
+    return {
+      id: this.collectionId,
+      type: _.get(this.metaData, 'contentType'),
+      ver: this.metaData.pkgVersion ? this.metaData.pkgVersion.toString() : '1.0'
+    };
+  }
+
 }

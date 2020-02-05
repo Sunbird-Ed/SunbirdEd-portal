@@ -29,6 +29,8 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
 
   objectInteract: IInteractEventObject;
 
+  copyContentInteractEdata: IInteractEventEdata;
+
   sharelinkModal: boolean;
 
   public badgeData: Array<object>;
@@ -144,6 +146,11 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
     };
     this.printPdfInteractEdata = {
       id: 'print-pdf-button',
+      type: 'click',
+      pageid: 'content-player'
+    };
+    this.copyContentInteractEdata = {
+      id: 'copy-content-button',
       type: 'click',
       pageid: 'content-player'
     };

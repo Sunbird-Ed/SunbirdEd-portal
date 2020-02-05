@@ -10,3 +10,8 @@ export interface IAppInfo {
         version?: string
     };
 }
+
+export interface ITelemetryInfo {
+    totalSize: number;
+    lastExportedOn: Date;
+}
