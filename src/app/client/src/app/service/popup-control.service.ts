@@ -17,33 +17,35 @@ export class PopupControlService {
   constructor() { }
 
   changePopupStatus(modalkey: string, modalvalue: boolean) {
-    if (modalkey === 'showFrameWorkPopUp') {
-      if (modalvalue) {
-        this.showFrameWorkPopUp = true;
-      } else {
-        this.showFrameWorkPopUp = false;
-      }
-    }
-    if (modalkey === 'showTermsAndCondPopUp') {
-      if (modalvalue) {
-        this.showTermsAndCondPopUp = true;
-      } else {
-        this.showTermsAndCondPopUp = false;
-      }
-    }
-    if (modalkey === 'showUserVerificationPopup') {
-      if (modalvalue) {
-        this.showUserVerificationPopup = true;
-      } else {
-        this.showUserVerificationPopup = false;
-      }
-    }
-    if (modalkey === 'isLocationConfirmed') {
-      if (modalvalue) {
-        this.isLocationConfirmed = true;
-      } else {
-        this.isLocationConfirmed = false;
-      }
+    switch (modalkey) {
+      case 'showFrameWorkPopUp':
+        if (modalvalue) {
+          this.showFrameWorkPopUp = true;
+        } else {
+          this.showFrameWorkPopUp = false;
+        }
+        break;
+      case 'showTermsAndCondPopUp':
+        if (modalvalue) {
+          this.showTermsAndCondPopUp = true;
+        } else {
+          this.showTermsAndCondPopUp = false;
+        }
+        break;
+      case 'showUserVerificationPopup':
+        if (modalvalue) {
+          this.showUserVerificationPopup = true;
+        } else {
+          this.showUserVerificationPopup = false;
+        }
+        break;
+      case 'isLocationConfirmed':
+        if (modalvalue) {
+          this.isLocationConfirmed = true;
+        } else {
+          this.isLocationConfirmed = false;
+        }
+        break;
     }
     if (!this.showFrameWorkPopUp
       && !this.showTermsAndCondPopUp
