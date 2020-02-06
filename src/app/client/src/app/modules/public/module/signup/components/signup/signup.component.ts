@@ -39,6 +39,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   tncLatestVersion: string;
   termsAndConditionLink: string;
   passwordError: string;
+  showTncPopup = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
@@ -398,5 +399,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     };
     this.telemetryService.log(event);
+  }
+
+  showAndHidePopup(mode: boolean) {
+    this.showTncPopup = mode;
   }
 }
