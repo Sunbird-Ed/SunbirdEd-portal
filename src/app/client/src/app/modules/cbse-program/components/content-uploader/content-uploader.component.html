@@ -307,8 +307,7 @@
         [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
                       >
                       <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{contentMetaData[field.code]}}</span></div>
-                    <label class="warning-message" *ngIf="((contentDetailsForm.get(field.code).touched) && (contentDetailsForm.get(field.code).errors?.required))">* This field is mandatory</label>
-                    <label class="warning-message" *ngIf="((contentDetailsForm.get(field.code).touched) && (contentDetailsForm.get(field.code).errors?.pattern))">* Please enter valid text</label>
+                      <label class="warning-message" *ngIf="((contentDetailsForm.get(field.code).touched) && (field.required) && (contentDetailsForm.value[field.code].trim().length === 0))">* This field is mandatory</label>
                   </div>
                 </div>
               </div>
@@ -327,3 +326,4 @@
 
   </form>
   </div>
+  

@@ -25,6 +25,10 @@ export class ContentManagerService {
     this.deletedContent.emit(contentData);
   }
 
+  emitDownloadListEvent(downloadList) {
+    this.downloadListEvent.emit(downloadList);
+  }
+
   getContentList() {
     const downloadListOptions = {
       url: this.configService.urlConFig.URLS.OFFLINE.DOWNLOAD_LIST,
@@ -32,7 +36,6 @@ export class ContentManagerService {
     };
     return this.publicDataService.post(downloadListOptions).pipe(
       map((result) => {
-        this.downloadListEvent.emit(result);
         return result;
       }),
       catchError((err) => {
