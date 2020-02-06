@@ -67,6 +67,11 @@ describe('DesktopHeaderComponent', () => {
         expect(component.showLoadContentModal).toBeTruthy();
     });
 
+    it('Call closeLoadContentModal', () => {
+        component.closeLoadContentModal();
+        expect(component.showLoadContentModal).toBeFalsy();
+    });
+
     it('should call onEnter', () => {
         const router = TestBed.get(Router);
         const queryParams = {
