@@ -52,7 +52,7 @@ module.exports = {
     context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.session.userId, 'user')
-    console.log('logging session start event', context.did);
+   console.log('logging session start event', context.did);
     telemetry.start({
       edata: edata,
       context: context,
@@ -306,6 +306,7 @@ module.exports = {
       id: req.userId ? req.userId.toString() : 'anonymous',
       type: 'user'
     }
+    /* istanbul ignore if  */
     if(!channel){
       console.log('logApiErrorEventV2 failed due to no channel')
       return;
@@ -340,6 +341,7 @@ module.exports = {
       id: req.userId ? req.userId.toString() : 'anonymous',
       type: 'user'
     }
+    /* istanbul ignore if  */
     if(!channel){
       console.log('logAuditEvent failed due to no channel')
       return;
@@ -394,6 +396,7 @@ module.exports = {
       req.session['sessionEvents'] = req.session['sessionEvents'] || []
       req.session['sessionEvents'].push(JSON.parse(req.body.event))
       if (req.session['sessionEvents'].length >= parseInt(telemetryPacketSize, 10)) {
+        /* istanbul ignore next  */
         module.exports.sendTelemetry(req, req.session['sessionEvents'], function (err, status) {
           if (err) {
             console.log('telemetry sync error from  portal', err)
@@ -420,6 +423,7 @@ module.exports = {
     return data
   },
   sendTelemetry: function (req, eventsData, callback) {
+    /* istanbul ignore if  */
     if (!eventsData || eventsData.length === 0) {
       if (_.isFunction(callback)) {
         callback(null, true)
@@ -436,13 +440,17 @@ module.exports = {
       body: data,
       json: true
     }
+    /* istanbul ignore next  */
     request(options, function (error, response, body) {
       if (_.isFunction(callback)) {
+        /* istanbul ignore if  */
         if (error) {
           console.log('telemetry sync error while syncing  portal', error)
           callback(error, false)
         } else if (body && body.params && body.params.err) {
+          /* istanbul ignore next  */
           console.log('telemetry sync error while syncing  portal', body.params.err)
+          /* istanbul ignore next  */
           callback(body, false)
         } else {
           callback(null, true)
