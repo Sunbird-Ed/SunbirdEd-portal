@@ -50,8 +50,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   selectOutcomeOption = {};
   contentDetailsForm: FormGroup;
   textInputArr: FormArray;
-  selectionArr: FormArray;
-  multiSelectionArr: FormArray;
   formValues: any;
   contentMetaData;
   visibility: any;
@@ -347,8 +345,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     const compConfiguration = _.find(_.get(this.contentUploadComponentInput, 'programContext.config.components'), {compId: 'uploadContentComponent'});
     this.formConfiguration = compConfiguration.config.formConfiguration;
     this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
-    this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
-    this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
     this.allFormFields = _.filter(this.formConfiguration, {'visible': true});
 
     this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.resourceStatus === 'Draft') ? false : true ;
@@ -386,7 +382,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         } else if (obj.inputType === 'text') {
           preSavedValues[code] = (this.contentMetaData[code]) ? this.contentMetaData[code] : '';
           // tslint:disable-next-line:max-line-length
-          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, [Validators.required, Validators.pattern('(?=.*[a-zA-Z0-9]).{0,}')]] : controller[obj.code] = preSavedValues[code];
+          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, [Validators.required]] : controller[obj.code] = preSavedValues[code];
         }
       }
     });
@@ -416,6 +412,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     if (this.editTitle === this.contentMetaData.name) {
       return;
     } else {
+   this.editTitle = _.trim(this.editTitle);
    const contentObj = {
      'versionKey': this.contentMetaData.versionKey,
      'name': this.editTitle
@@ -446,14 +443,26 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   }
 
   saveContent(action?) {
-    if (this.contentDetailsForm.valid && this.editTitle && this.editTitle !== '') {
+    const requiredTextFields = _.filter(this.textFields, {required: true});
+    const validText = _.map(requiredTextFields, (obj) => {
+       return _.trim(this.contentDetailsForm.value[obj.code]).length !== 0;
+    });
+    // tslint:disable-next-line:max-line-length
+    if (this.contentDetailsForm.valid && this.editTitle && this.editTitle !== '' && !_.includes(validText, false)) {
       this.showTextArea = false;
       this.formValues = {};
       let contentObj = {
           'versionKey': this.contentMetaData.versionKey,
           'name': this.editTitle
       };
-      contentObj = _.pickBy(_.assign(contentObj, this.contentDetailsForm.value), _.identity);
+      const trimmedValue = _.mapValues(this.contentDetailsForm.value, (value) => {
+         if (_.isString(value)) {
+           return _.trim(value);
+         } else {
+           return value;
+         }
+      });
+      contentObj = _.pickBy(_.assign(contentObj, trimmedValue), _.identity);
       const request = {
         'content': contentObj
       };
@@ -559,4 +568,3 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 }
-
