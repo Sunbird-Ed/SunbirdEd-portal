@@ -806,6 +806,7 @@
       "LessonPlan",
       "Resource",
       "FocusSpot",
+      "SelfAssess",
       "PracticeResource",
       "LearningOutcomeDefinition",
       "PracticeQuestionSet",

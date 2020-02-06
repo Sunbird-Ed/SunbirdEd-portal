@@ -34,8 +34,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   public formConfiguration: any;
   public actions: any;
   public textFields: Array<any>;
-  public selectionFields: Array<any>;
-  public multiSelectionFields: Array<any>;
   @Output() uploadedContentMeta = new EventEmitter<any>();
   public playerConfig;
   public showPreview = false;
@@ -355,8 +353,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     const compConfiguration = _.find(_.get(this.contentUploadComponentInput, 'programContext.config.components'), {compId: 'uploadContentComponent'});
     this.formConfiguration = compConfiguration.config.formConfiguration;
     this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
-    this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
-    this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
     this.allFormFields = _.filter(this.formConfiguration, {'visible': true});
 
     this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.resourceStatus === 'Draft') ? false : true ;
@@ -391,7 +387,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         } else if (obj.inputType === 'text') {
           preSavedValues[code] = (this.contentMetaData[code]) ? this.contentMetaData[code] : '';
           // tslint:disable-next-line:max-line-length
-          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, [Validators.required, Validators.pattern('(?=.*[a-zA-Z0-9]).{0,}')]] : controller[obj.code] = preSavedValues[code];
+          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, [Validators.required]] : controller[obj.code] = preSavedValues[code];
         }
       }
     });
@@ -451,7 +447,12 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   }
 
   saveContent(action?) {
-    if (this.contentDetailsForm.valid && this.editTitle && this.editTitle !== '') {
+    const requiredTextFields = _.filter(this.textFields, {required: true});
+    const validText = _.map(requiredTextFields, (obj) => {
+       return _.trim(this.contentDetailsForm.value[obj.code]).length !== 0;
+    });
+    // tslint:disable-next-line:max-line-length
+    if (this.contentDetailsForm.valid && this.editTitle && this.editTitle !== '' && !_.includes(validText, false)) {
       this.showTextArea = false;
       this.formValues = {};
       let contentObj = {
@@ -480,7 +481,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.fmsg.m0098);
       });
     } else {
-      // this.toasterService.error('Please Fill Mandatory Form-Fields...');
       this.markFormGroupTouched(this.contentDetailsForm);
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }

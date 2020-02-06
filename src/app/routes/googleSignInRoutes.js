@@ -46,9 +46,9 @@ module.exports = (app) => {
       googleProfile = await googleOauth.getProfile(req).catch(handleGoogleProfileError);
       logger.info({msg: 'googleProfile fetched' + JSON.stringify(googleProfile)});
       errType = 'USER_FETCH_API';
-      sunbirdProfile = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
-      logger.info({msg: 'sunbird profile fetched' + JSON.stringify(sunbirdProfile)});
-      if (!_.get(sunbirdProfile, 'result.response.userName') || !_.get(sunbirdProfile, 'result.response.firstName')) {
+      isUserExist = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
+      logger.info({msg: 'sunbird profile fetched' + JSON.stringify(isUserExist)});
+      if (!isUserExist) {
         logger.info({msg: 'creating new google user'});
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
@@ -63,7 +63,7 @@ module.exports = (app) => {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
       logger.info({msg: 'redirect url ' + redirectUrl});
-      logger.info({msg:'google sign in success',additionalInfo: {googleProfile, sunbirdProfile, newUserDetails, redirectUrl}});
+      logger.info({msg:'google sign in success',additionalInfo: {googleProfile, isUserExist, newUserDetails, redirectUrl}});
     } catch (error) {
       if (reqQuery.error_callback) {
         const queryObj = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
