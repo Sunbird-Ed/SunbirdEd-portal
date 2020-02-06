@@ -9,11 +9,11 @@ import { ElectronDialogService } from '../../services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { response } from './desktop-header.component.spec.data';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
+import { Location } from '@angular/common';
 describe('DesktopHeaderComponent', () => {
     let component: DesktopHeaderComponent;
     let fixture: ComponentFixture<DesktopHeaderComponent>;
-
+    let location: Location;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [DesktopHeaderComponent],
@@ -59,11 +59,12 @@ describe('DesktopHeaderComponent', () => {
         expect(component.queryParam).toEqual({});
     });
 
-    it('Call handleImport', () => {
+    it('Call handleImport when click on load content from my downloads', () => {
         const electronDialogService = TestBed.get(ElectronDialogService);
         spyOn(electronDialogService, 'showContentImportDialog');
         component.handleImport();
-        expect(electronDialogService.showContentImportDialog).toHaveBeenCalled();
+        expect(component.router.url).toEqual('/');
+        expect(component.showLoadContentModal).toBeTruthy();
     });
 
     it('should call onEnter', () => {
