@@ -177,8 +177,9 @@ export class TocPageComponent implements OnInit, OnDestroy {
   }
 
   private navigateToContent(content): void {
-    const downloadStatus = !_.has(content, 'desktopAppMetadata.isAvailable') ||
-    _.get(content, 'desktopAppMetadata.isAvailable');
+
+    const downloadStatus = _.has(content, 'desktopAppMetadata') ? !_.has(content, 'desktopAppMetadata.isAvailable') ||
+    _.get(content, 'desktopAppMetadata.isAvailable') : false;
     const id = content.identifier;
     let navigationExtras: NavigationExtras;
     navigationExtras = {
