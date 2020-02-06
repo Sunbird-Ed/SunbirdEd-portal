@@ -1,7 +1,7 @@
 <div class="ui container mt-24" [appTelemetryImpression]="telemetryImpression" id="content-player">
   <div class="ui stackable grid" *ngIf="showPlayer && contentData">
 
-      <div class="twelve wide column">
+      <div class="twelve wide column" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
 
         <!--Content Title-->
         <div class="sb-pageSection">
@@ -61,6 +61,9 @@
         <!--/Meta Data of content-->
         
       </div>
+      <ng-template #loading>
+        <app-loader></app-loader>
+      </ng-template>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <div id="content-player" class="content-grid ui stackable grid">
     <div class="twelve wide column">
         <div class='mt-5 videosegment ui segment'>
-            <div class='content-player-body'>
+            <div class='content-player-body' *ngIf="(popupControlService.checkPopupStatus | async) else loading">
                 <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
                     <div [appTelemetryImpression]="telemetryImpression" class="content-grid">
                         <div class="sb-pageSection">
@@ -111,6 +111,9 @@
                     </div>
                 </div>
             </div>
+            <ng-template #loading>
+                <app-loader></app-loader>
+            </ng-template>
         </div>
     </div>
 </div>
