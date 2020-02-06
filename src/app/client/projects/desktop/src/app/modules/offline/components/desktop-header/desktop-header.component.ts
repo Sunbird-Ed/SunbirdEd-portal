@@ -168,11 +168,11 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     if (this.router.url.includes('browse')) {
       this.electronDialogService.showContentImportDialog();
     } else {
-      this.showLoadContentModal = true;
+      this.showLoadContentModal = !this.showLoadContentModal;
     }
   }
   closeLoadContentModal() {
-    this.showLoadContentModal = false;
+    this.showLoadContentModal = !this.showLoadContentModal;
   }
   getTelemetryEdata(key) {
     const interactData = {
