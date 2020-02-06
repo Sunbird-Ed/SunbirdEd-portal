@@ -37,7 +37,7 @@ export class DialCodeService {
   * @param dialSearchResults
   * @returns Returns an array of elements split into two groups , first is collections and second is contents
   */
-  public filterDialSearchResults = (dialSearchResults) => {
+  public filterDialSearchResults = (dialSearchResults, option?) => {
     this.dialSearchResults = dialSearchResults;
     const response = {};
     const textbookUnitsWithoutParentBook = [];
@@ -65,7 +65,7 @@ export class DialCodeService {
       });
     }
 
-    return this.getAllPlayableContent(textbookUnitsWithoutParentBook).pipe(
+    return this.getAllPlayableContent(textbookUnitsWithoutParentBook, option).pipe(
       map(apiResponse => {
         (response['contents'] || (response['contents'] = [])).push(...apiResponse);
         return response;
@@ -73,8 +73,8 @@ export class DialCodeService {
     );
   }
 
-  public getAllPlayableContent(collectionIds) {
-    const apiArray = _.map(collectionIds, (collectionId: string) => this.getCollectionHierarchy(collectionId));
+  public getAllPlayableContent(collectionIds, option?) {
+    const apiArray = _.map(collectionIds, (collectionId: string) => this.getCollectionHierarchy(collectionId, option));
     return iif(() => !apiArray.length, of([]), forkJoin(apiArray)
       .pipe(
         map(results => _.flatMap(_.map(results, this.parseCollection))),
@@ -111,8 +111,8 @@ export class DialCodeService {
    * fetch collection hierarchy
    * @param collectionId
    */
-  public getCollectionHierarchy(collectionId: string): Observable<any[]> {
-    return this.playerService.getCollectionHierarchy(collectionId).pipe(
+  public getCollectionHierarchy(collectionId: string, option?): Observable<any[]> {
+    return this.playerService.getCollectionHierarchy(collectionId, option).pipe(
       map((res) => _.get(res, 'result.content')));
   }
 
