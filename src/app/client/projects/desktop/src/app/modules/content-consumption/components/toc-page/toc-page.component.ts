@@ -188,7 +188,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
     };
     this.queryParams['contentId'] = id;
     navigationExtras.queryParams = this.queryParams;
-    downloadStatus ?  this.router.navigate(['play/collection', this.collectionId], {queryParams: this.queryParams})
+    downloadStatus ? this.router.navigate(['play/collection', this.collectionId], {queryParams: this.queryParams})
     : this.router.navigate([], navigationExtras);
   }
 

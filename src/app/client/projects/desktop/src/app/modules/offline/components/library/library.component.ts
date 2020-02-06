@@ -418,12 +418,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     playContent(event: any) {
-        const downloadStatus = !_.has(event, 'data.desktopAppMetadata.isAvailable') ||
-        _.get(event, 'data.desktopAppMetadata.isAvailable');
-        if (!this.isBrowse && downloadStatus) {
-            this.publicPlayerService.playContent(event);
-        } else {
+        let downloadStatus = true;
+        downloadStatus = _.has(event, 'content.addedUsing') ? _.get(event, 'content.desktopAppMetadata.isAvailable') : false;
+        if (!downloadStatus && this.isBrowse) {
             this.publicPlayerService.playContentForOfflineBrowse(event);
+        } else if (!downloadStatus) {
+            this.publicPlayerService.playContent(event);
         }
     }
 
