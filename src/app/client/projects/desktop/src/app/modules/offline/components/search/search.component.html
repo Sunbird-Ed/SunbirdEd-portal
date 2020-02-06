@@ -8,7 +8,7 @@
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i>{{resourceService?.frmelmnts?.btn?.back}}
         </button>
-        <button *ngIf="!router?.url?.includes('view-all')" type="button" appTelemetryInteract
+        <button *ngIf="!router?.url?.includes('view-all') && !params?.dialCode" type="button" appTelemetryInteract
           [telemetryInteractEdata]="filterByButtonInteractEdata"
           class="sb-btn sb-btn-outline-primary sb-btn-normal font-weight-bold" [class.active]="showFilters"
           (click)="showFilters = !showFilters">
