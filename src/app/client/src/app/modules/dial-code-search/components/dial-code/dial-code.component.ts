@@ -80,7 +80,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         return { ...params, ...queryParams };
       }).pipe(
         tap(this.initialize),
-        mergeMap(params => iif(() => _.get(params, 'textbook'), this.processTextBook(params), this.processDialCode(params))),
+        mergeMap(params => _.get(params, 'textbook') ? this.processTextBook(params) : this.processDialCode(params)),
       ).subscribe(res => {
         const linkedContents = _.flatMap(_.values(res));
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
