@@ -59,11 +59,12 @@ describe('DesktopHeaderComponent', () => {
         expect(component.queryParam).toEqual({});
     });
 
-    it('Call handleImport', () => {
+    it('Call handleImport when click on load content from my downloads', () => {
         const electronDialogService = TestBed.get(ElectronDialogService);
         spyOn(electronDialogService, 'showContentImportDialog');
         component.handleImport();
-        expect(electronDialogService.showContentImportDialog).toHaveBeenCalled();
+        expect(component.router.url).toEqual('/');
+        expect(component.showLoadContentModal).toBeTruthy();
     });
 
     it('should call onEnter', () => {
