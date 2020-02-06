@@ -9,11 +9,9 @@ import { ElectronDialogService } from '../../services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { response } from './desktop-header.component.spec.data';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Location } from '@angular/common';
 describe('DesktopHeaderComponent', () => {
     let component: DesktopHeaderComponent;
     let fixture: ComponentFixture<DesktopHeaderComponent>;
-    let location: Location;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [DesktopHeaderComponent],
