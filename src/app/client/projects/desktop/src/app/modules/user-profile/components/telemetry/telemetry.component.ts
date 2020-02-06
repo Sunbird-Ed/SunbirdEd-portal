@@ -6,6 +6,7 @@ import { TelemetryActionsService } from './../../../offline/services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
+import { ITelemetryInfo } from '../../interfaces';
 
 @Component({
   selector: 'app-telemetry',
@@ -13,7 +14,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./telemetry.component.scss']
 })
 export class TelemetryComponent implements OnInit, OnDestroy {
-  telemetryInfo: object = {};
+  telemetryInfo: ITelemetryInfo;
   public telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
   disableExport = true;
@@ -41,7 +42,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
       this.disableExport = !this.telemetryInfo['totalSize'];
     }, (err) => {
       this.disableExport = true;
-      this.toasterService.error('Unable to get telemetry info. Please try again later...');
+      this.toasterService.error(this.resourceService.messages.emsg.desktop.telemetryInfoEMsg);
     });
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ConfigService, UtilService, ToasterService, ResourceService } from '@sunbird/shared';
+import { ConfigService, UtilService, ResourceService } from '@sunbird/shared';
 import { PublicDataService, ContentService, UserService  } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';
@@ -25,10 +25,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public sharedContext: any = {};
   public collectionComponentConfig: any;
   public stageSubscription: any;
-  public collectionList: Array<any>;
+  public filteredList: Array<any>;
   public collection;
   public collectionsWithCardImage;
   public role: any = {};
+  public collectionList: any = {};
   public mediums;
   public showError = false;
   public classes;
@@ -154,7 +155,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       filterArray.push(filterValue);
       filterValueItem = filterArray;
     }
-    this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterBy, filterValueItem);
+    this.filteredList = this.filterByCollection(this.collectionsWithCardImage, filterBy, filterValueItem);
     this.groupCollectionList();
   }
 
@@ -211,15 +212,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   groupCollectionList(groupValue?: string) {
     if (groupValue) {
-      this.collectionList = this.groupByCollection(this.collectionsWithCardImage, { 'subject' : groupValue } );
+      this.collectionList = _.groupBy(this.collectionsWithCardImage, { 'subject' : groupValue } );
     } else {
-      this.collectionList = this.groupByCollection(this.collectionList, 'subject');
+      this.collectionList = _.groupBy(this.filteredList, 'subject');
     }
-    return this.collectionList;
-  }
-
-  groupByCollection(collection, arg) {
-    return _.groupBy(collection, arg);
   }
 
   addCardImage(collection) {

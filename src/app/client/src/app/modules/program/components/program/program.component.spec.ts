@@ -93,7 +93,7 @@ describe('ProgramComponent On Bording test', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        DynamicModule.withComponents([]),
+        DynamicModule,
         SuiModule,
         SharedModule.forRoot(),
         FormsModule,
@@ -259,4 +259,8 @@ describe('ProgramComponent On Bording test', () => {
     component.initiateHeader('failure');
   });
 
+
+  it('should unsubscribe subject', () => {
+    component.ngOnDestroy();
+  });
 });
