@@ -9,6 +9,7 @@ import {
   PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { PopupControlService } from '../../../../../../service/popup-control.service';
 
 /**
  *Component to play content
@@ -94,7 +95,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
-    public contentUtilsServiceService: ContentUtilsServiceService,
+    public contentUtilsServiceService: ContentUtilsServiceService, public popupControlService: PopupControlService,
     private configService: ConfigService, public navigationhelperService: NavigationHelperService) {
       this.playerOption = {
         showContentRating: true

@@ -17,6 +17,7 @@ import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } fr
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
+import { PopupControlService } from './service/popup-control.service';
 
 /**
  * main app component
@@ -99,7 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
-    public formService: FormService, private programsService: ProgramsService,
+    public formService: FormService, private programsService: ProgramsService, public popupControlService: PopupControlService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     private shepherdService: ShepherdService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
@@ -195,10 +196,12 @@ export class AppComponent implements OnInit, OnDestroy {
           if (!deviceProfile.userDeclaredLocation ||
             !(this.usersProfile && this.usersProfile.userLocations && this.usersProfile.userLocations.length >= 1)) {
             this.isLocationConfirmed = false;
+            this.popupControlService.changePopupStatus('isLocationConfirmed', false);
           }
         } else {
           if (!deviceProfile.userDeclaredLocation) {
             this.isLocationConfirmed = false;
+            this.popupControlService.changePopupStatus('isLocationConfirmed', false);
           }
         }
       } else {
@@ -207,15 +210,18 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this.userService.loggedIn) {
           if (!deviceProfile.userDeclaredLocation) {
             this.isLocationConfirmed = false;
+            this.popupControlService.changePopupStatus('isLocationConfirmed', false);
           }
         } else {
           if (!deviceProfile.userDeclaredLocation) {
             this.isLocationConfirmed = false;
+            this.popupControlService.changePopupStatus('isLocationConfirmed', false);
           }
         }
       }
     }, (err) => {
       this.isLocationConfirmed = true;
+      this.popupControlService.changePopupStatus('isLocationConfirmed', true);
     });
     this.getUserFeedData();
   }
@@ -284,6 +290,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (_.has(this.userProfile, 'promptTnC') && _.has(this.userProfile, 'tncLatestVersion') &&
       _.has(this.userProfile, 'tncLatestVersion') && this.userProfile.promptTnC === true) {
       this.showTermsAndCondPopUp = true;
+      this.popupControlService.changePopupStatus('showTermsAndCondPopUp', true);
     } else {
       this.checkFrameworkSelected();
     }
@@ -296,10 +303,12 @@ export class AppComponent implements OnInit, OnDestroy {
     const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
     if (frameWorkPopUp) {
       this.showFrameWorkPopUp = false;
+      this.popupControlService.changePopupStatus('showFrameWorkPopUp', false);
       this.checkLocationStatus();
     } else {
       if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
         this.showFrameWorkPopUp = true;
+        this.popupControlService.changePopupStatus('showFrameWorkPopUp', true);
       } else {
         this.checkLocationStatus();
       }
@@ -311,6 +320,7 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
+    this.popupControlService.changePopupStatus('showTermsAndCondPopUp', false);
     this.checkFrameworkSelected();
   }
 
@@ -452,6 +462,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.profileService.updateProfile(req).subscribe(res => {
       this.frameWorkPopUp.modal.deny();
       this.showFrameWorkPopUp = false;
+      this.popupControlService.changePopupStatus('showFrameWorkPopUp', false);
       this.checkLocationStatus();
       this.utilService.toggleAppPopup();
       this.showAppPopUp = this.utilService.showAppPopUp;
@@ -467,6 +478,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   closeIcon() {
     this.showFrameWorkPopUp = false;
+    this.popupControlService.changePopupStatus('showFrameWorkPopUp', false);
     this.cacheService.set('showFrameWorkPopUp', 'installApp');
   }
   changeLanguageAttribute() {
@@ -493,6 +505,7 @@ export class AppComponent implements OnInit, OnDestroy {
   onLocationSubmit() {
     if (this.userFeed) {
       this.showUserVerificationPopup = true;
+      this.popupControlService.changePopupStatus('showUserVerificationPopup', true);
     }
   }
 
@@ -518,6 +531,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 // if location popup isn't opened on the very first time.
                 if (this.isLocationConfirmed) {
                   this.showUserVerificationPopup = true;
+                  this.popupControlService.changePopupStatus('showUserVerificationPopup', true);
                 }
               }
             },

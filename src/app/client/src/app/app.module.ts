@@ -17,6 +17,7 @@ import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storag
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
+import { PopupControlService } from './service/popup-control.service';
 @NgModule({
   declarations: [
     AppComponent
@@ -40,6 +41,7 @@ import { PluginModules } from './framework.config';
   bootstrap: [AppComponent],
   providers: [
     CacheService,
+    PopupControlService,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true }
   ]

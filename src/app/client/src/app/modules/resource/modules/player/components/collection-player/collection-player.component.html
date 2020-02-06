@@ -1,5 +1,5 @@
 <div class="ui container mt-30" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div class="content-grid">
+  <div class="content-grid" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
       <div class="ui text centered inline loader mt-40">
         {{resourceService.frmelmnts.lbl.copycontent}}
@@ -107,6 +107,9 @@
     </div>
   </div>
 </div>
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>
