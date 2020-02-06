@@ -177,6 +177,8 @@ export class TocPageComponent implements OnInit, OnDestroy {
   }
 
   private navigateToContent(content): void {
+    const downloadStatus = !_.has(content, 'desktopAppMetadata.isAvailable') ||
+    _.get(content, 'desktopAppMetadata.isAvailable');
     const id = content.identifier;
     let navigationExtras: NavigationExtras;
     navigationExtras = {
@@ -185,7 +187,8 @@ export class TocPageComponent implements OnInit, OnDestroy {
     };
     this.queryParams['contentId'] = id;
     navigationExtras.queryParams = this.queryParams;
-    this.router.navigate([], navigationExtras);
+    downloadStatus ?  this.router.navigate(['play/collection', this.collectionId], {queryParams: this.queryParams})
+    : this.router.navigate([], navigationExtras);
   }
 
   selectedFilter(event) {

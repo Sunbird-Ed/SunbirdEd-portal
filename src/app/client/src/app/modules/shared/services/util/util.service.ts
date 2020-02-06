@@ -52,6 +52,7 @@ export class UtilService {
       badgeAssertions: data.badgeAssertions,
       organisation: data.organisation,
       hoverData: data.hoverData,
+      desktopAppMetadata: _.get(data, 'desktopAppMetadata') || {},
       board: data.board || ''
     };
 
