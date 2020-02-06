@@ -19,32 +19,16 @@ export class PopupControlService {
   changePopupStatus(modalkey: string, modalvalue: boolean) {
     switch (modalkey) {
       case 'showFrameWorkPopUp':
-        if (modalvalue) {
-          this.showFrameWorkPopUp = true;
-        } else {
-          this.showFrameWorkPopUp = false;
-        }
+        this.showFrameWorkPopUp = modalvalue;
         break;
       case 'showTermsAndCondPopUp':
-        if (modalvalue) {
-          this.showTermsAndCondPopUp = true;
-        } else {
-          this.showTermsAndCondPopUp = false;
-        }
+        this.showTermsAndCondPopUp = modalvalue;
         break;
       case 'showUserVerificationPopup':
-        if (modalvalue) {
-          this.showUserVerificationPopup = true;
-        } else {
-          this.showUserVerificationPopup = false;
-        }
+        this.showUserVerificationPopup = modalvalue;
         break;
       case 'isLocationConfirmed':
-        if (modalvalue) {
-          this.isLocationConfirmed = true;
-        } else {
-          this.isLocationConfirmed = false;
-        }
+        this.isLocationConfirmed = modalvalue;
         break;
     }
     if (!this.showFrameWorkPopUp
