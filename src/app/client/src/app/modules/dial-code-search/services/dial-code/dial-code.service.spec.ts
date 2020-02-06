@@ -86,7 +86,7 @@ describe('DialCodeService', () => {
         .subscribe(result => {
           expect(result).toBeDefined();
           expect(playerService.getCollectionHierarchy).toHaveBeenCalled();
-          expect(playerService.getCollectionHierarchy).toHaveBeenCalledWith('do_21289679356020326415198');
+          expect(playerService.getCollectionHierarchy).toHaveBeenCalledWith('do_21289679356020326415198', undefined);
           expect(result).toEqual(mockData.courseHierarchApiResponse.result.content);
         });
     });
