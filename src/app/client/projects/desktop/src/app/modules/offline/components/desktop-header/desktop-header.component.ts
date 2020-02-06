@@ -33,7 +33,7 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
   queryParam: any = {};
   tenantInfo: any = {};
   hideHeader = false;
-
+  showLoadContentModal = false;
   constructor(
     public router: Router,
     public orgDetailsService: OrgDetailsService,
@@ -165,9 +165,15 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
   }
 
   handleImport() {
-    this.electronDialogService.showContentImportDialog();
+    if (this.router.url.includes('browse')) {
+      this.electronDialogService.showContentImportDialog();
+    } else {
+      this.showLoadContentModal = !this.showLoadContentModal;
+    }
   }
-
+  closeLoadContentModal() {
+    this.showLoadContentModal = !this.showLoadContentModal;
+  }
   getTelemetryEdata(key) {
     const interactData = {
       contentImport: {
