@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { ContentManagerService, ConnectionService } from '../../services';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { DialCodeService } from '../../../../../../../../src/app/modules/dial-code-search/services/dial-code/dial-code.service';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -30,6 +31,8 @@ export class SearchComponent implements OnInit {
   hashTagId: string;
   dataDrivenFilters: any = {};
   facets: string[];
+  params: any = {};
+  searchKey = '';
 
   downloadedContents: any[] = [];
   downloadedContentsCount = 0;
@@ -62,7 +65,8 @@ export class SearchComponent implements OnInit {
     public frameworkService: FrameworkService,
     public navigationHelperService: NavigationHelperService,
     public telemetryService: TelemetryService,
-    private connectionService: ConnectionService
+    private connectionService: ConnectionService,
+    private dialCodeService: DialCodeService
   ) {
     this.filterType = this.configService.appConfig.explore.filterType;
 
@@ -105,22 +109,39 @@ export class SearchComponent implements OnInit {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
       .pipe(debounceTime(5),
         delay(10),
-        map(result => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
+        map(result => ({ params: { dialCode: result[0].dialCode }, queryParams: result[1] })),
         takeUntil(this.unsubscribe$)
       ).subscribe(({ params, queryParams }) => {
+        this.params = params;
         this.showLoader = true;
         this.queryParams = { ...queryParams };
         this.fetchContents();
         this.setNoResultMessage();
+
+        if (this.params.dialCode) {
+          this.searchKey = this.params.dialCode;
+        } else {
+          this.searchKey = queryParams.key || queryParams.gradeLevel || (queryParams.medium ?
+            `${queryParams.medium}&nbsp;${this.resourceService.frmelmnts.lbl.profile.Medium}` : '');
+        }
       });
   }
 
   fetchContents() {
-    const onlineRequest = _.cloneDeep(this.constructSearchRequest());
-    onlineRequest.params.online = true;
 
-    const offlineRequest = _.cloneDeep(this.constructSearchRequest());
-    offlineRequest.params.online = false;
+    let onlineRequest: any = {};
+    let offlineRequest: any = {};
+
+    if (this.params.dialCode) {
+      onlineRequest = this.constructDialCodeSearchRequest(true);
+      offlineRequest = this.constructDialCodeSearchRequest(false);
+    } else {
+      onlineRequest = _.cloneDeep(this.constructSearchRequest());
+      onlineRequest.params.online = true;
+
+      offlineRequest = _.cloneDeep(this.constructSearchRequest());
+      offlineRequest.params.online = false;
+    }
 
     const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
     const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
@@ -131,19 +152,43 @@ export class SearchComponent implements OnInit {
         ([onlineRes, offlineRes]: any) => {
           this.showLoader = false;
 
-          this.downloadedContents = offlineRes.result.count ? _.chunk(getDataForCard(offlineRes.result.content),
-            this.MAX_CARDS_TO_SHOW)[0] : [];
-          this.downloadedContentsCount = offlineRes.result.count;
-          this.downloadedContents = this.utilService.addHoverData(this.downloadedContents, false);
 
-          if (onlineRes) {
-            this.onlineContents = onlineRes.result.count ?
-              _.chunk(getDataForCard(onlineRes.result.content), this.MAX_CARDS_TO_SHOW)[0] : [];
-            this.onlineContentsCount = onlineRes.result.count;
-            this.onlineContents = this.utilService.addHoverData(this.onlineContents, true);
+          if (this.params.dialCode) {
+            const onlineOption = { params: { online: true } };
+
+            const offlineOption = { params: { online: false } };
+            combineLatest(this.dialCodeService.filterDialSearchResults(onlineRes.result, onlineOption),
+              this.dialCodeService.filterDialSearchResults(offlineRes.result, offlineOption))
+              .pipe(takeUntil(this.unsubscribe$))
+              .subscribe(([onlineDialCodeRes, offlineDialCodeRes]) => {
+
+                if (onlineDialCodeRes) {
+                  const linkedContents = _.flatMap(_.values(onlineDialCodeRes));
+                  const contents = getDataForCard(linkedContents);
+                  this.onlineContentsCount = contents.length;
+                  this.onlineContents = this.utilService.addHoverData(contents, true);
+                } else if (offlineDialCodeRes) {
+                  const linkedContents = _.flatMap(_.values(offlineDialCodeRes));
+                  const contents = getDataForCard(linkedContents);
+                  this.downloadedContentsCount = contents.length;
+                  this.downloadedContents = this.utilService.addHoverData(contents, true);
+                }
+              });
+          } else {
+            this.downloadedContents = offlineRes.result.count ? _.chunk(getDataForCard(offlineRes.result.content),
+              this.MAX_CARDS_TO_SHOW)[0] : [];
+            this.downloadedContentsCount = offlineRes.result.count;
+            this.downloadedContents = this.utilService.addHoverData(this.downloadedContents, false);
+
+            if (onlineRes) {
+              this.onlineContents = onlineRes.result.count ?
+                _.chunk(getDataForCard(onlineRes.result.content), this.MAX_CARDS_TO_SHOW)[0] : [];
+              this.onlineContentsCount = onlineRes.result.count;
+              this.onlineContents = this.utilService.addHoverData(this.onlineContents, true);
+            }
+
+            this.isContentNotAvailable = Boolean(!this.downloadedContents.length && !this.onlineContents.length);
           }
-
-          this.isContentNotAvailable = Boolean(!this.downloadedContents.length && !this.onlineContents.length);
         }, err => {
           this.showLoader = false;
           this.onlineContents = [];
@@ -193,12 +238,24 @@ export class SearchComponent implements OnInit {
     return option;
   }
 
+  constructDialCodeSearchRequest(isOnline) {
+    const option: any = {
+      filters: {
+        dialcodes: this.params.dialCode
+      },
+      params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
+    };
+    option.params.online = isOnline;
+
+    return option;
+  }
+
   searchContent(request, isOnlineRequest: boolean) {
     if (!this.isConnected && isOnlineRequest) {
       return of(undefined);
     }
 
-    return this.searchService.contentSearch(request).pipe(
+    return this.searchService.contentSearch(request, !Boolean(this.params.dialCode)).pipe(
       tap(data => {
       }), catchError(error => {
         return of(undefined);

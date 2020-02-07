@@ -28,6 +28,14 @@ const routes: Routes = [
         }
     },
     {
+        path: 'get/dial/:dialCode', component: SearchComponent, data: {
+            telemetry: {
+                env: 'search', pageid: 'search', type: 'view', subtype: 'paginate'
+            },
+            softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
+        }
+    },
+    {
         path: 'view-all', component: ViewMoreComponent,
         data: {
             telemetry: {
@@ -53,13 +61,6 @@ const routes: Routes = [
             },
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
         }
-    },
-    {
-        path: 'get', loadChildren: './../../../../../../src/app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
-    },
-    {
-        path: 'browse/get',
-        loadChildren: './../../../../../../src/app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
     },
     {
         path: '', component: LibraryComponent, data: {
