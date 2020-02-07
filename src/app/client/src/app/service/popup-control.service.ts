@@ -6,10 +6,10 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class PopupControlService {
 
-  public showFrameWorkPopUp = false;
-  public showTermsAndCondPopUp = false;
-  public showUserVerificationPopup = false;
-  public isLocationConfirmed = true;
+  public frameworkPopup = false;
+  public termsAndCondPopup = false;
+  public userVerificationPopup = false;
+  public locationPopup = false;
 
   public popupSource = new BehaviorSubject(null);
   checkPopupStatus = this.popupSource.asObservable();
@@ -18,23 +18,23 @@ export class PopupControlService {
 
   changePopupStatus(modalkey: string, modalvalue: boolean) {
     switch (modalkey) {
-      case 'showFrameWorkPopUp':
-        this.showFrameWorkPopUp = modalvalue;
+      case 'frameworkPopup':
+        this.frameworkPopup = modalvalue;
         break;
-      case 'showTermsAndCondPopUp':
-        this.showTermsAndCondPopUp = modalvalue;
+      case 'termsAndCondPopup':
+        this.termsAndCondPopup = modalvalue;
         break;
-      case 'showUserVerificationPopup':
-        this.showUserVerificationPopup = modalvalue;
+      case 'userVerificationPopup':
+        this.userVerificationPopup = modalvalue;
         break;
-      case 'isLocationConfirmed':
-        this.isLocationConfirmed = modalvalue;
+      case 'locationPopup':
+        this.locationPopup = modalvalue;
         break;
     }
-    if (!this.showFrameWorkPopUp
-      && !this.showTermsAndCondPopUp
-      && !this.showUserVerificationPopup
-      && this.isLocationConfirmed) {
+    if (!this.frameworkPopup
+      && !this.termsAndCondPopup
+      && !this.userVerificationPopup
+      && !this.locationPopup) {
         this.popupSource.next(true);
     } else {
       this.popupSource.next(false);
