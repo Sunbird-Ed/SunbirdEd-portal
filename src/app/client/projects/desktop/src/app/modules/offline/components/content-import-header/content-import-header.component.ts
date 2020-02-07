@@ -2,7 +2,6 @@ import { IInteractEventEdata} from '@sunbird/telemetry';
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { ElectronDialogService } from './../../services';
 @Component({
     selector: 'app-content-import-header',
     templateUrl: './content-import-header.component.html',
@@ -13,15 +12,16 @@ export class ContentImportHeaderComponent implements OnInit {
     ContentImportIntractEdata: IInteractEventEdata;
     WatchVideoIntractEdata: IInteractEventEdata;
     instance: string;
-    constructor(public resourceService: ResourceService, public electronDialogService: ElectronDialogService) { }
+    showLoadContentModal: any;
+    constructor(public resourceService: ResourceService) { }
 
     ngOnInit() {
         this.setInteractData();
         this.instance = _.upperCase(this.resourceService.instance);
     }
-    handleImport() {
-        this.electronDialogService.showContentImportDialog();
-    }
+    handleImportContentDialog() {
+        this.showLoadContentModal = !this.showLoadContentModal;
+      }
     setInteractData() {
         this.ContentImportIntractEdata = {
             id: 'content-import-button',

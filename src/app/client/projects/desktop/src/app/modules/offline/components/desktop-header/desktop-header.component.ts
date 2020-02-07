@@ -7,7 +7,6 @@ import { Subject } from 'rxjs';
 
 import { OrgDetailsService, FormService, TenantService } from '@sunbird/core';
 import { ConfigService, ResourceService, UtilService, ILanguage } from '@sunbird/shared';
-import { ElectronDialogService } from '../../services';
 
 @Component({
   selector: 'app-desktop-header',
@@ -41,7 +40,6 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     public configService: ConfigService,
     public formService: FormService,
     public resourceService: ResourceService,
-    public electronDialogService: ElectronDialogService,
     public tenantService: TenantService,
     private utilService: UtilService,
     private activatedRoute: ActivatedRoute
@@ -164,15 +162,8 @@ export class DesktopHeaderComponent implements OnInit, OnDestroy {
     this.queryParam.key = keyword;
   }
 
-  handleImport() {
-    if (this.router.url.includes('browse')) {
-      this.electronDialogService.showContentImportDialog();
-    } else {
+  handleImportContentDialog() {
       this.showLoadContentModal = !this.showLoadContentModal;
-    }
-  }
-  closeLoadContentModal() {
-    this.showLoadContentModal = !this.showLoadContentModal;
   }
   getTelemetryEdata(key) {
     const interactData = {
