@@ -173,8 +173,8 @@ export class NavigationHelperService {
   }
 
   /* Used In Desktop for navigating to back page */
-  goBack(previousDefault?) {
-    const previousUrl = previousDefault ? {url: '/'} : this.getDesktopPreviousUrl();
+  goBack() {
+    const previousUrl = this.getDesktopPreviousUrl();
     this.history.pop();
     if (_.includes(previousUrl.url, '/search') && previousUrl.queryParams) {
       this.utilService.updateSearchKeyword(previousUrl.queryParams.key);

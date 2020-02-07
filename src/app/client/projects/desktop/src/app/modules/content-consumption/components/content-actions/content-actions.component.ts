@@ -69,15 +69,14 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     if (content) {
       const addedUsing = _.isEqual(_.get(content, 'desktopAppMetadata.addedUsing'), 'import') && this.isBrowse();
       const downloadStatus = !_.has(content, 'desktopAppMetadata.isAvailable') || _.get(content, 'desktopAppMetadata.isAvailable');
-      const contentStatus = _.has(content, 'desktopAppMetadata') ? (addedUsing ? false : downloadStatus) :  false;
+      const contentStatus = _.has(content, 'desktopAppMetadata') ? (downloadStatus ? true : addedUsing) :  false;
 
       _.forEach(this.actionButtons, data => {
-        const disableButton = ['DOWNLOADED', 'DOWNLOADING', 'PAUSED', 'PAUSING'];
+        const disableButton = ['DOWNLOADING', 'PAUSED', 'PAUSING'];
         if (data.name === 'download') {
           const downloadLabel = _.includes(disableButton, _.get(content, 'downloadStatus')) ? _.get(content, 'downloadStatus') :
             contentStatus ? 'Downloaded' : 'Download';
-          const status = ((_.isEqual(downloadLabel, 'Download') ? false : true) || !this.isConnected);
-          this.changeLabel(data, status, downloadLabel);
+          this.changeLabel(data, contentStatus, downloadLabel);
         } else if (data.name === 'update') {
           this.changeLabel(data, !(this.isConnected && contentStatus &&
             _.get(content, 'desktopAppMetadata.updateAvailable')), data.name);

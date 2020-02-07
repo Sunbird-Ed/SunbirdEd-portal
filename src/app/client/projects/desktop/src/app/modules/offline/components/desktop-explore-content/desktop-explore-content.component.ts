@@ -203,9 +203,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   }
 
   playContent(event) {
-    let downloadStatus = true;
-    downloadStatus = _.has(event, 'content.addedUsing') ? _.get(event, 'content.desktopAppMetadata.isAvailable') : false;
-    if (!downloadStatus && this.isBrowse) {
+    if (this.isBrowse) {
       this.publicPlayerService.playContentForOfflineBrowse(event);
     } else {
       this.publicPlayerService.playContent(event);
