@@ -289,7 +289,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
           this.sessionContext.isReadOnlyMode = true;
         }
 
-        if (assessment_item && assessment_item.rejectComment === '') {
+        if (assessment_item) {
           const index = _.findIndex(this.questionList, {identifier: questionId});
           this.questionList[index].rejectComment = assessment_item.rejectComment;
           this.questionList[index].status = assessment_item.status;
@@ -299,7 +299,7 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
          this.sessionContext.questionsIds = questionsIds;
         // tslint:disable-next-line:max-line-length
         this.refreshEditor();
-        if (actionStatus) {  this.saveContent(actionStatus); }
+        if (actionStatus && actionStatus !== 'requestChange') {  this.saveContent(actionStatus); }
         this.previewBtnVisibility = true;
       });
   }
@@ -373,6 +373,8 @@ export class QuestionListComponent implements OnInit, AfterViewInit, OnDestroy {
       this.previewBtnVisibility = false;
       this.goToNextQuestionStatus = true;
       return;
+    } else if (event.type === 'Draft' && event.isRejectedQuestion) {
+      event.type = 'requestChange';
     }
 
     this.goToNextQuestionStatus = true;
