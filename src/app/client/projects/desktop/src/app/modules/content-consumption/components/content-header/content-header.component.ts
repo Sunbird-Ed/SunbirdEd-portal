@@ -146,6 +146,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
+    this.logTelemetry('close-collection-player');
     this.navigationHelperService.goBack();
   }
 
