@@ -6,8 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class PopupControlService {
 
-  public popupSource = new BehaviorSubject(null);
-  checkPopupStatus = this.popupSource.asObservable();
+  private popupSource = new BehaviorSubject(true);
+  public checkPopupStatus = this.popupSource.asObservable();
 
   constructor() { }
 
