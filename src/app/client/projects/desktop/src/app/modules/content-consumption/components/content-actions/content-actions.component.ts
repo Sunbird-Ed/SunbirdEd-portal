@@ -182,7 +182,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     {request: {contents: [content.identifier]}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
     if (!_.isEmpty(_.get(data, 'result.deleted'))) {
-      this.contentData.desktopAppMetadata['isAvailable'] = false ;
       delete this.contentData['downloadStatus'];
       this.changeContentStatus(this.contentData);
       this.contentManagerService.emitAfterDeleteContent(this.contentData);
