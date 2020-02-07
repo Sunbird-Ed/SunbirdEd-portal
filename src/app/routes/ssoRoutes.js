@@ -130,7 +130,7 @@ module.exports = (app) => {
         req.session.userDetails = userDetails;
         if (req.query.tncAccepted === 'true') {
           errType = 'ACCEPT_TNC';
-          await acceptTncAndGenerateToken(req.query.value, req.query.tncVersion).catch(handleProfileUpdateError);
+          await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
         }
         redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
         logger.info({
