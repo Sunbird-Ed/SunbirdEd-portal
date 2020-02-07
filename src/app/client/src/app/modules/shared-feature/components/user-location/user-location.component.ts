@@ -49,7 +49,7 @@ export class UserLocationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.popupControlService.changePopupStatus('locationPopup', true);
+    this.popupControlService.changePopupStatus(false);
     this.initializeFormFields();
     this.getState();
   }
@@ -401,7 +401,7 @@ export class UserLocationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.popupControlService.changePopupStatus('locationPopup', false);
+    this.popupControlService.changePopupStatus(true);
   }
 
 }

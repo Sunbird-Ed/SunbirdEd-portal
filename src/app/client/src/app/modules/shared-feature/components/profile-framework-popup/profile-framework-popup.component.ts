@@ -40,7 +40,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     public popupControlService: PopupControlService) { }
 
   ngOnInit() {
-    this.popupControlService.changePopupStatus('frameworkPopup', true);
+    this.popupControlService.changePopupStatus(false);
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
     this.editMode = _.some(this.selectedOption, 'length') || false ;
     this.unsubscribe = this.isCustodianOrgUser().pipe(
@@ -223,7 +223,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
-    this.popupControlService.changePopupStatus('frameworkPopup', false);
+    this.popupControlService.changePopupStatus(true);
     if (this.unsubscribe) {
       this.unsubscribe.unsubscribe();
     }

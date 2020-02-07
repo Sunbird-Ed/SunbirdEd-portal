@@ -42,7 +42,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit, OnDestro
     public router: Router, public popupControlService: PopupControlService) { }
 
   ngOnInit() {
-    this.popupControlService.changePopupStatus('userVerificationPopup', true);
+    this.popupControlService.changePopupStatus(false);
     this.setTelemetryData();
     this.userId = this.userService.userid;
     this.processUserFeedData();
@@ -154,7 +154,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit, OnDestro
   }
 
   ngOnDestroy(): void {
-    this.popupControlService.changePopupStatus('userVerificationPopup', false);
+    this.popupControlService.changePopupStatus(true);
   }
 
 }

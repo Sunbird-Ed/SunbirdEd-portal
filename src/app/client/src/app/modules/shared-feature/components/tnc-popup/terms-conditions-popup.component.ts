@@ -41,7 +41,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.popupControlService.changePopupStatus('termsAndCondPopup', true);
+    this.popupControlService.changePopupStatus(false);
     if (this.tncUrl) {
       this.tncLatestVersionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.tncUrl);
     } else {
@@ -93,7 +93,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.popupControlService.changePopupStatus('termsAndCondPopup', false);
+    this.popupControlService.changePopupStatus(true);
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
