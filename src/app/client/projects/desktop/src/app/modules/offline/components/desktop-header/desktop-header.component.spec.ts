@@ -5,7 +5,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { ConfigService, ResourceService, BrowserCacheTtlService, SharedModule, UtilService } from '@sunbird/shared';
-import { ElectronDialogService } from '../../services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { response } from './desktop-header.component.spec.data';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -18,7 +17,7 @@ describe('DesktopHeaderComponent', () => {
         TestBed.configureTestingModule({
             declarations: [DesktopHeaderComponent],
             imports: [SharedModule.forRoot(), CommonConsumptionModule, FormsModule, RouterModule.forRoot([]), CoreModule],
-            providers: [ConfigService, ResourceService, ElectronDialogService, TenantService, FormService, OrgDetailsService,
+            providers: [ConfigService, ResourceService, TenantService, FormService, OrgDetailsService,
                 BrowserCacheTtlService, TelemetryService, UtilService],
             schemas: [CUSTOM_ELEMENTS_SCHEMA]
         }).compileComponents();
@@ -59,16 +58,14 @@ describe('DesktopHeaderComponent', () => {
         expect(component.queryParam).toEqual({});
     });
 
-    it('Call handleImport when click on load content from my downloads', () => {
-        const electronDialogService = TestBed.get(ElectronDialogService);
-        spyOn(electronDialogService, 'showContentImportDialog');
-        component.handleImport();
-        expect(component.router.url).toEqual('/');
+    it('Call handleImportContentDialog when click on load content', () => {
+        component.handleImportContentDialog();
         expect(component.showLoadContentModal).toBeTruthy();
     });
 
-    it('Call closeLoadContentModal', () => {
-        component.closeLoadContentModal();
+    it('Call closeLoadContentModal when modal closes', () => {
+        component.showLoadContentModal = true;
+        component.handleImportContentDialog();
         expect(component.showLoadContentModal).toBeFalsy();
     });
 
