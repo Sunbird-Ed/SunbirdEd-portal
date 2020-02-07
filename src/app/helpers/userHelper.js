@@ -44,7 +44,7 @@ module.exports = {
       id: data.request.userId,
       userId: data.request.userId}
     // telemetryHelper.logAPICallEvent(telemetryData)
-
+    /* istanbul ignore next  */  
     request(options, function (error, response, body) {
       telemetryData.statusCode = _.get(response, 'statusCode');
       if (callback) {
