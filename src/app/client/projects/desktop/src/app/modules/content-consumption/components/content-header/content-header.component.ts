@@ -146,9 +146,6 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    // const downloadStatus = _.has(this.collectionData, 'desktopAppMetadata') ?
-    // (!_.has(this.collectionData, 'desktopAppMetadata.isAvailable') ||
-    // _.get(this.collectionData, 'desktopAppMetadata.isAvailable')) : false;
     this.navigationHelperService.goBack();
   }
 

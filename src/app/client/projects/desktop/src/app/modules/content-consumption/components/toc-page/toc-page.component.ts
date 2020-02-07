@@ -177,7 +177,6 @@ export class TocPageComponent implements OnInit, OnDestroy {
   }
 
   private navigateToContent(content): void {
-
     const id = content.identifier;
     let navigationExtras: NavigationExtras;
     navigationExtras = {
