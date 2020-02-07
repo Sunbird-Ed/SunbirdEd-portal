@@ -40,7 +40,7 @@ export class UserLocationComponent implements OnInit, OnDestroy {
   public suggestionType: any;
   private suggestedLocation;
 
-  constructor(public resourceService: ResourceService, public toasterService: ToasterService, 
+  constructor(public resourceService: ResourceService, public toasterService: ToasterService,
               formBuilder: FormBuilder, public profileService: ProfileService, private activatedRoute: ActivatedRoute,
               public router: Router, public userService: UserService, public deviceRegisterService: DeviceRegisterService,
               public navigationhelperService: NavigationHelperService, private telemetryService: TelemetryService,
