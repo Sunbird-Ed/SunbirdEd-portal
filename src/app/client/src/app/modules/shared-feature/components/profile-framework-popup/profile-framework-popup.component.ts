@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { PopupControlService } from '../../../../service/popup-control.service';
 @Component({
   selector: 'app-popup',
   templateUrl: './profile-framework-popup.component.html'
@@ -35,10 +36,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private editMode: boolean;
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
-    private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService
-  ) { }
+    private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService,
+    public popupControlService: PopupControlService) { }
 
   ngOnInit() {
+    this.popupControlService.changePopupStatus(false);
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
     this.editMode = _.some(this.selectedOption, 'length') || false ;
     this.unsubscribe = this.isCustodianOrgUser().pipe(
@@ -221,6 +223,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
+    this.popupControlService.changePopupStatus(true);
     if (this.unsubscribe) {
       this.unsubscribe.unsubscribe();
     }

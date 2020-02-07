@@ -9,60 +9,24 @@ describe('PopupControlService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should change the status of showFrameWorkPopUp to false by calling changePopupStatus', () => {
+  it('should change the status of checkPopupStatus to true by calling changePopupStatus', () => {
     const service: PopupControlService = TestBed.get(PopupControlService);
     spyOn(service, 'changePopupStatus').and.callThrough();
-    service.changePopupStatus('showFrameWorkPopUp', false);
-    expect(service.showFrameWorkPopUp).toBeFalsy();
+    service.changePopupStatus(true);
+    const popupStatus = service.checkPopupStatus;
+    popupStatus.subscribe(result => {
+      expect(result).toBeTruthy();
+    });
   });
 
-  it('should change the status of showFrameWorkPopUp to true by calling changePopupStatus', () => {
+  it('should change the status of checkPopupStatus to false by calling changePopupStatus', () => {
     const service: PopupControlService = TestBed.get(PopupControlService);
     spyOn(service, 'changePopupStatus').and.callThrough();
-    service.changePopupStatus('showFrameWorkPopUp', true);
-    expect(service.showFrameWorkPopUp).toBeTruthy();
-  });
-
-  it('should change the status of showTermsAndCondPopUp to false by calling changePopupStatus', () => {
-    const service: PopupControlService = TestBed.get(PopupControlService);
-    spyOn(service, 'changePopupStatus').and.callThrough();
-    service.changePopupStatus('showTermsAndCondPopUp', false);
-    expect(service.showTermsAndCondPopUp).toBeFalsy();
-  });
-
-  it('should change the status of showTermsAndCondPopUp to true by calling changePopupStatus', () => {
-    const service: PopupControlService = TestBed.get(PopupControlService);
-    spyOn(service, 'changePopupStatus').and.callThrough();
-    service.changePopupStatus('showTermsAndCondPopUp', true);
-    expect(service.showTermsAndCondPopUp).toBeTruthy();
-  });
-
-  it('should change the status of showUserVerificationPopup to false by calling changePopupStatus', () => {
-    const service: PopupControlService = TestBed.get(PopupControlService);
-    spyOn(service, 'changePopupStatus').and.callThrough();
-    service.changePopupStatus('showUserVerificationPopup', false);
-    expect(service.showUserVerificationPopup).toBeFalsy();
-  });
-
-  it('should change the status of showUserVerificationPopup to true by calling changePopupStatus', () => {
-    const service: PopupControlService = TestBed.get(PopupControlService);
-    spyOn(service, 'changePopupStatus').and.callThrough();
-    service.changePopupStatus('showUserVerificationPopup', true);
-    expect(service.showUserVerificationPopup).toBeTruthy();
-  });
-
-  it('should change the status of isLocationConfirmed to false by calling changePopupStatus', () => {
-    const service: PopupControlService = TestBed.get(PopupControlService);
-    spyOn(service, 'changePopupStatus').and.callThrough();
-    service.changePopupStatus('isLocationConfirmed', false);
-    expect(service.isLocationConfirmed).toBeFalsy();
-  });
-
-  it('should change the status of isLocationConfirmed to true by calling changePopupStatus', () => {
-    const service: PopupControlService = TestBed.get(PopupControlService);
-    spyOn(service, 'changePopupStatus').and.callThrough();
-    service.changePopupStatus('isLocationConfirmed', true);
-    expect(service.isLocationConfirmed).toBeTruthy();
+    service.changePopupStatus(false);
+    const popupStatus = service.checkPopupStatus;
+    popupStatus.subscribe(result => {
+      expect(result).toBeFalsy();
+    });
   });
 
 });
