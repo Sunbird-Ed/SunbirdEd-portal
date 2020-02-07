@@ -142,7 +142,7 @@ const createUser = async (req, jwtPayload) => {
   }
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v2/create',
+    url: envHelper.LEARNER_URL + 'user/v3/create',
     headers: getHeaders(req),
     body: {
       params: {

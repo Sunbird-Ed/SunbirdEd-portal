@@ -110,7 +110,6 @@ module.exports = (app) => {
             phone: req.query.phone,
             jwtPayload: jwtPayload,
             userDetails: userDetails,
-            redirectUrl: redirectUrl,
             errType: errType
           }
         })
@@ -133,6 +132,7 @@ module.exports = (app) => {
           errType = 'ACCEPT_TNC';
           await acceptTncAndGenerateToken(req.query.value, req.query.tncVersion).catch(handleProfileUpdateError);
         }
+        redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
         logger.info({
           msg: 'sso user creation and role updated successfully and redirected to success page',
           additionalInfo: {
@@ -145,7 +145,6 @@ module.exports = (app) => {
           }
         })
       }
-      redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       logger.error({
@@ -300,7 +299,7 @@ module.exports = (app) => {
       req.session.userDetails = userDetails;
       if (req.query.tncAccepted === 'true') {
         errType = 'ACCEPT_TNC';
-        await acceptTncAndGenerateToken(req.query.value, req.query.tncVersion).catch(handleProfileUpdateError);
+        await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
       }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
       logger.info({
