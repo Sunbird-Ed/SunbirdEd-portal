@@ -1,6 +1,8 @@
 const mock    = require('mock-require');
 const chai    = require('chai');
 const expect  = chai.expect;
+const spies = require('chai-spies');
+chai.use(spies);
 
 const generic = require('../generics/genericHelper');
 
@@ -14,6 +16,17 @@ mock('../../../../helpers/environmentVariablesHelper', mockEnv);
 
 const mockTelemetry = require('../mocks/sb_telemetry_util.mock.js');
 mock('sb_telemetry_util', mockTelemetry);
+
+const spy = {
+  mockTelemetryStart: chai.spy.on(mockTelemetry.prototype, 'start'),
+  mockTelemetryEnd: chai.spy.on(mockTelemetry.prototype, 'end'),
+  mockTelemetryLog: chai.spy.on(mockTelemetry.prototype, 'log'),
+  mockTelemetryRollUpData: chai.spy.on(mockTelemetry.prototype, 'getRollUpData'),
+  mockTelemetryGetActorData: chai.spy.on(mockTelemetry.prototype, 'getActorData'),
+  mockTelemetryError: chai.spy.on(mockTelemetry.prototype, 'error'),
+  mockTelemetryAudit: chai.spy.on(mockTelemetry.prototype, 'audit'),
+  mockTelemetryImpression: chai.spy.on(mockTelemetry.prototype, 'impression')
+};
 
 const request = (options, cb) => { cb(null, true, null); };
 mock('request', request);
@@ -83,6 +96,35 @@ describe('Telemetry Helper Test Cases', () => {
       save: () => { return true; }
     };
     telemetryHelper.logSessionStart(req, function () {
+      expect(spy.mockTelemetryStart).to.have.been.called();
+      let _startData = {
+        edata:
+          {
+            type: 'click',
+            mode: 'mode',
+            duration: 1000,
+            pageid: 'profile',
+            uaspec:
+              {
+                agent: 'Chrome',
+                ver: '79',
+                system: 'Windows',
+                platform: 'WebKit',
+                raw: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79 Safari/537.36'
+              }
+          },
+        context:
+          {
+            channel: 'channel',
+            env: 'user',
+            did: undefined,
+            sid: undefined,
+            rollup: { l1: 'ORG', l2: 'PUBLIC', l3: 'channel' }
+          },
+        actor: { id: '2217bd20-47e7-11ea-8c77-b55095b87aaf', type: 'user' },
+        tags: ['channel']
+      };
+      expect(spy.mockTelemetryStart).to.have.been.called.with(_startData);
       done();
     });
   });
@@ -97,6 +139,28 @@ describe('Telemetry Helper Test Cases', () => {
       deviceId: testData.deviceId
     };
     telemetryHelper.logSessionEnd(req);
+    expect(spy.mockTelemetryEnd).to.have.been.called();
+    let _endData = {
+      edata:
+      {
+        type: 'click',
+        mode: 'mode',
+        duration: 1000,
+        pageid: 'profile',
+        summary: 'logout'
+      },
+      context:
+      {
+        channel: 'channel',
+        env: 'user',
+        did: 'f0bb2c64c266047b72a794afdcee92',
+        sid: 'dK0-14e-apyYA86Yolmc.fQyOhLpLaZmLJvaRaeae0',
+        rollup: { l1: 'ORG', l2: 'PUBLIC' }
+      },
+      actor: { id: '2217bd20-47e7-11ea-8c77-b55095b87aaf', type: 'user' },
+      tags: ['channel']
+    };
+    expect(spy.mockTelemetryEnd).to.have.been.called.with(_endData);
     done();
   });
 
@@ -111,6 +175,7 @@ describe('Telemetry Helper Test Cases', () => {
     };
     req['query']['token'] = testData.deviceId;
     telemetryHelper.logSSOStartEvent(req);
+    expect(spy.mockTelemetryStart).to.have.been.called();
     done();
   });
 
@@ -121,6 +186,20 @@ describe('Telemetry Helper Test Cases', () => {
     };
     req['query']['token'] = testData.deviceId;
     telemetryHelper.logSSOEndEvent(req);
+    expect(spy.mockTelemetryEnd).to.have.been.called();
+    let _endData = {
+      edata:
+      {
+        type: 'click',
+        mode: 'mode',
+        duration: 1000,
+        pageid: 'profile',
+        summary: 'logout'
+      },
+      actor: { id: 'f0bb2c64c266047b72a794afdcee92', type: 'user' },
+      tags: ['channel']
+    };
+    expect(spy.mockTelemetryEnd).to.have.been.called.with(_endData);
     done();
   });
 
@@ -157,6 +236,7 @@ describe('Telemetry Helper Test Cases', () => {
       sessionID: 'dK0-14e-apyYA86Yolmc.fQyOhLpLaZmLJvaRaeae0'
     };
     telemetryHelper.logAPICallEvent(req);
+    expect(spy.mockTelemetryLog).to.have.been.called();
     done();
   });
 
@@ -172,6 +252,7 @@ describe('Telemetry Helper Test Cases', () => {
       sessionID: 'dK0-14e-apyYA86Yolmc.fQyOhLpLaZmLJvaRaeae0'
     };
     telemetryHelper.logGrantLogEvent(req);
+    expect(spy.mockTelemetryLog).to.have.been.called();
     done();
   });
 
@@ -192,6 +273,8 @@ describe('Telemetry Helper Test Cases', () => {
       sessionID: 'dK0-14e-apyYA86Yolmc.fQyOhLpLaZmLJvaRaeae0'
     };
     telemetryHelper.logAPIAccessEvent(req);
+    expect(spy.mockTelemetryLog).to.have.been.called();
+    expect(spy.mockTelemetryRollUpData).to.have.been.called.with([ 'ORG', 'PUBLIC', 'channel' ]);
     done();
   });
 
@@ -212,6 +295,8 @@ describe('Telemetry Helper Test Cases', () => {
       sessionID: 'dK0-14e-apyYA86Yolmc.fQyOhLpLaZmLJvaRaeae0'
     };
     telemetryHelper.logAPIErrorEvent(req);
+    expect(spy.mockTelemetryLog).to.have.been.called();
+    expect(spy.mockTelemetryGetActorData).to.have.been.called.with(req.userId, 'user');
     done();
   });
 
@@ -243,6 +328,7 @@ describe('Telemetry Helper Test Cases', () => {
       }
     };
     telemetryHelper.logApiErrorEventV2(req, options);
+    expect(spy.mockTelemetryError).to.have.been.called();
     done();
   });
 
@@ -271,6 +357,7 @@ describe('Telemetry Helper Test Cases', () => {
       }
     };
     telemetryHelper.logAuditEvent(req, options);
+    expect(spy.mockTelemetryAudit).to.have.been.called();
     done();
   });
 
@@ -300,6 +387,7 @@ describe('Telemetry Helper Test Cases', () => {
       }
     };
     telemetryHelper.logImpressionEvent(req, options);
+    expect(spy.mockTelemetryImpression).to.have.been.called();
     done();
   });
 
@@ -372,6 +460,7 @@ describe('Telemetry Helper Test Cases', () => {
     };
     req.sessionID = 'dK0-14e-apyYA86Yolmc.fQyOhLpLaZmLJvaRaeae0';
     telemetryHelper.generateTelemetryForProxy(req, res, next);
+    expect(spy.mockTelemetryLog).to.have.been.called();
     done();
   });
 
