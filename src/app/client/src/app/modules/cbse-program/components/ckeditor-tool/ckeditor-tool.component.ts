@@ -370,7 +370,9 @@ export class CkeditorToolComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   addVideoInEditor() {
-    const videoData = this.selectedVideo;
+    const videoData: any = _.cloneDeep(this.selectedVideo);
+    videoData.src = this.getMediaOriginURL(videoData.downloadUrl);
+    videoData.thumbnail  = (videoData.thumbnail) && this.getMediaOriginURL(videoData.thumbnail);
     this.showVideoPicker = false;
     this.showVideoUploadModal = false;
     this.videoDataOutput.emit(videoData);
