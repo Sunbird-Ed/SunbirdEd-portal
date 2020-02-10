@@ -95,37 +95,38 @@ describe('Telemetry Helper Test Cases', () => {
       orgs: ['ORG', 'PUBLIC'],
       save: () => { return true; }
     };
-    telemetryHelper.logSessionStart(req);
-    expect(spy.mockTelemetryStart).to.have.been.called();
-    let _startData = {
-      edata:
-      {
-        type: 'click',
-        mode: 'mode',
-        duration: 1000,
-        pageid: 'profile',
-        uaspec:
-        {
-          agent: 'Chrome',
-          ver: '79',
-          system: 'Windows',
-          platform: 'WebKit',
-          raw: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79 Safari/537.36'
-        }
-      },
-      context:
-      {
-        channel: 'channel',
-        env: 'user',
-        did: undefined,
-        sid: undefined,
-        rollup: { l1: 'ORG', l2: 'PUBLIC', l3: 'channel' }
-      },
-      actor: { id: '2217bd20-47e7-11ea-8c77-b55095b87aaf', type: 'user' },
-      tags: ['channel']
-    };
-    expect(spy.mockTelemetryStart).to.have.been.called.with(_startData);
-    done();
+    telemetryHelper.logSessionStart(req, function () {
+      expect(spy.mockTelemetryStart).to.have.been.called();
+      let _startData = {
+        edata:
+          {
+            type: 'click',
+            mode: 'mode',
+            duration: 1000,
+            pageid: 'profile',
+            uaspec:
+              {
+                agent: 'Chrome',
+                ver: '79',
+                system: 'Windows',
+                platform: 'WebKit',
+                raw: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79 Safari/537.36'
+              }
+          },
+        context:
+          {
+            channel: 'channel',
+            env: 'user',
+            did: undefined,
+            sid: undefined,
+            rollup: { l1: 'ORG', l2: 'PUBLIC', l3: 'channel' }
+          },
+        actor: { id: '2217bd20-47e7-11ea-8c77-b55095b87aaf', type: 'user' },
+        tags: ['channel']
+      };
+      expect(spy.mockTelemetryStart).to.have.been.called.with(_startData);
+      done();
+    });
   });
 
   it('should start session end event', (done) => {

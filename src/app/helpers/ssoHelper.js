@@ -174,11 +174,17 @@ const createSession = async (loginId, client_id, req, res) => {
   grant = await keycloakClient.grantManager.obtainDirectly(loginId, undefined, undefined, scope);
   keycloakClient.storeGrant(grant, req, res)
   req.kauth.grant = grant
-  keycloakClient.authenticated(req)
-  return {
-    access_token: grant.access_token.token,
-    refresh_token: grant.refresh_token.token
-  }
+  keycloakClient.authenticated(req, function (error, data) {
+    if (error) {
+      logger.info({msg: 'SsoHelper:createSession error creating session', additionalInfo: error});
+      throw new Error('ERROR_CREATING_SSO_SESSION')
+    } else {
+      return {
+        access_token: grant.access_token.token,
+        refresh_token: grant.refresh_token.token
+      }
+    }
+  });
 }
 const updateContact = (req, userDetails) => { // will be called from player docker to learner docker
   let requestBody = {
