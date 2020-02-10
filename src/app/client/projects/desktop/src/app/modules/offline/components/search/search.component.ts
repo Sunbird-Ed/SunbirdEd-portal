@@ -1,4 +1,4 @@
-import { combineLatest, Subject, of } from 'rxjs';
+import { combineLatest, Subject, of, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -143,9 +143,6 @@ export class SearchComponent implements OnInit {
       offlineRequest.params.online = false;
     }
 
-    const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
-    const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
-
     combineLatest(this.searchContent(onlineRequest, true), this.searchContent(offlineRequest, false))
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
@@ -155,26 +152,33 @@ export class SearchComponent implements OnInit {
 
           if (this.params.dialCode) {
             const onlineOption = { params: { online: true } };
-
             const offlineOption = { params: { online: false } };
+
             combineLatest(this.dialCodeService.filterDialSearchResults(onlineRes.result, onlineOption),
               this.dialCodeService.filterDialSearchResults(offlineRes.result, offlineOption))
               .pipe(takeUntil(this.unsubscribe$))
               .subscribe(([onlineDialCodeRes, offlineDialCodeRes]) => {
+
+                const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
+                const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
 
                 if (onlineDialCodeRes) {
                   const linkedContents = _.flatMap(_.values(onlineDialCodeRes));
                   const contents = getDataForCard(linkedContents);
                   this.onlineContentsCount = contents.length;
                   this.onlineContents = this.utilService.addHoverData(contents, true);
-                } else if (offlineDialCodeRes) {
+                }
+                if (offlineDialCodeRes) {
                   const linkedContents = _.flatMap(_.values(offlineDialCodeRes));
                   const contents = getDataForCard(linkedContents);
                   this.downloadedContentsCount = contents.length;
-                  this.downloadedContents = this.utilService.addHoverData(contents, true);
+                  this.downloadedContents = this.utilService.addHoverData(contents, false);
                 }
               });
           } else {
+            const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
+            const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
+
             this.downloadedContents = offlineRes.result.count ? _.chunk(getDataForCard(offlineRes.result.content),
               this.MAX_CARDS_TO_SHOW)[0] : [];
             this.downloadedContentsCount = offlineRes.result.count;
