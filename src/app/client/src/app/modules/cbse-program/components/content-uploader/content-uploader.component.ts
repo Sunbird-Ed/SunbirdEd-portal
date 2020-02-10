@@ -257,7 +257,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       const errInfo = { errorMsg: 'Unable to update pre_signed_url with Content Id and Content Creation Failed, Please Try Again' };
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
-      this.toasterService.success('Content Successfully Uploaded...');
+      this.toasterService.success(this.resourceService.messages.smsg.m0065);
       this.getUploadedContentMeta(contentId);
       this.uploadedContentMeta.emit({
         contentId: contentId

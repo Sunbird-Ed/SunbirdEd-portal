@@ -699,7 +699,7 @@ getAllVideos(offset, query) {
       this.isClosable = true;
       return throwError(this.cbseService.apiErrorHandling(err, errInfo));
   })).subscribe(res => {
-      this.toasterService.success('Asset Successfully Uploaded...');
+      this.toasterService.success(this.resourceService.messages.smsg.m0065);
       this.selectedVideo = res;
       this.showAddButton = true;
       this.loading = false;
