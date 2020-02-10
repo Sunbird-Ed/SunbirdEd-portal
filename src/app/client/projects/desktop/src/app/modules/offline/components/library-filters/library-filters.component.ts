@@ -175,7 +175,10 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
 
     if (type === 'medium') {
       this.selectedMediumIndex = [event.data.index];
-      this.selectedClassIndex = [];
+      if (!this.selectedClassIndex.length) {
+        this.selectedClassIndex = [];
+      }
+
     } else if (type === 'class') {
       this.selectedClassIndex = [event.data.index];
     }
