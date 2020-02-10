@@ -105,7 +105,7 @@
         "metaData": ["identifier", "mimeType", "framework", "contentType"]
       },
       "dynamicFields": {
-        "ribbon.right.name": "resourceType"
+        "ribbon.right.name": "contentType"
       }
     },
     "enrolledCourses": {

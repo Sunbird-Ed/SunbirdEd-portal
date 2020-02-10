@@ -107,7 +107,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       const searchParams = {
         status: ['Live'],
-        contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
+        contentType: this.configService.appConfig.WORKSPACE.contentType,
         params: { lastUpdatedOn: 'desc' }
       };
       const inputParams = { params: this.configService.appConfig.PROFILE.contentApiQueryParams };
