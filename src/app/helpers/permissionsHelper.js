@@ -103,7 +103,8 @@ let PERMISSIONS_HELPER = {
             }
           })
         }
-        reqObj.session.orgs = _.uniq(reqObj.session.orgs)
+        reqObj.session.orgs = _.uniq(reqObj.session.orgs);
+        reqObj.session.orgs = _.compact(reqObj.session.orgs);
         reqObj.session.roles = _.uniq(reqObj.session.roles)
         if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
           reqObj.session.rootOrgId = body.result.response.rootOrg.id
@@ -141,20 +142,27 @@ let PERMISSIONS_HELPER = {
     // telemetryHelper.logAPICallEvent(telemetryData)
 
     request(options, function (error, response, body) {
-      logger.info({msg: 'user/v1/read api response', body, response, error, requestOptions: options});
+      logger.info({msg: 'user/v1/read api response', error, requestOptions: options});
       telemetryData.statusCode = _.get(response, 'statusCode');
-      reqObj.session.roles = []
-      reqObj.session.orgs = []
-      if (!error && body) {
-        module.exports.setUserSessionData(reqObj, body)
-      }
-      if(error){
+      reqObj.session.roles = [];
+      reqObj.session.orgs = [];
+      if (error) {
         logger.error({msg: 'error while user/v1/read', error});
+        callback(error, null)
+      } else if (!error && body) {
+        module.exports.setUserSessionData(reqObj, body);
+        logger.info({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
+        reqObj.session.save(function (error) {
+          if (error) {
+            callback(error, null)
+          } else {
+            callback(null, body)
+          }
+        });
+      } else {
+        logger.error({msg: 'error while user/v1/read', error});
+        callback(error, null)
       }
-      logger.info({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
-      reqObj.session.save()
-
-      callback(error, body)
     })
   },
   checkPermission: function () {
