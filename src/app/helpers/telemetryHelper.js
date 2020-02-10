@@ -38,13 +38,10 @@ module.exports = {
   /**
    * this function helps to generate session start event
    */
-  logSessionStart: function (req) {
-    req.session.orgs = _.compact(req.session.orgs)
-    req.session.save()
+  logSessionStart: function (req, callback) {
     var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
     var dims = _.clone(req.session.orgs || [])
     dims = dims ? _.concat(dims, channel) : channel
-
     const edata = telemetry.startEventData('session')
     edata.uaspec = this.getUserSpec(req)
     const context = telemetry.getContextData({ channel: channel, env: 'user' })
@@ -59,6 +56,7 @@ module.exports = {
       actor: actor,
       tags: _.concat([], channel)
     })
+    callback(null, {did: context.did})
   },
 
   /**
@@ -323,7 +321,7 @@ module.exports = {
     let object = options.obj || {}
     const edata =  {
       props: options.edata.props,
-      state: options.edata.state, 
+      state: options.edata.state,
       prevstate: options.edata.prevstate
     }
     let channel = req.session.rootOrghashTagId || req.get('x-channel-id') || envHelper.defaultChannelId
@@ -357,7 +355,7 @@ module.exports = {
     let object = options.obj || {}
     const edata =  {
       type: options.edata.type,
-      subtype: options.edata.subtype, 
+      subtype: options.edata.subtype,
       pageid: options.edata.pageid,
       uri: options.edata.uri,
       visits: options.edata.visits
