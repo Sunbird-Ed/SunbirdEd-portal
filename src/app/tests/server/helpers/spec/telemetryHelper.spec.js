@@ -82,8 +82,9 @@ describe('Telemetry Helper Test Cases', () => {
       orgs: ['ORG', 'PUBLIC'],
       save: () => { return true; }
     };
-    telemetryHelper.logSessionStart(req);
-    done();
+    telemetryHelper.logSessionStart(req, function () {
+      done();
+    });
   });
 
   it('should start session end event', (done) => {
