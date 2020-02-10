@@ -202,11 +202,18 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
       this.videoThumbnail = event.thumbnail;
       const videoMedia: any = {};
       videoMedia.id = event.identifier;
-      videoMedia.src = event.downloadUrl;
+      videoMedia.src = event.src;
       videoMedia.type = 'video';
       videoMedia.assetId = event.identifier;
       videoMedia.name = event.name;
       videoMedia.thumbnail = this.videoThumbnail;
+      if (videoMedia.thumbnail) {
+        const thumbnailMedia: any = {};
+        thumbnailMedia.src = this.videoThumbnail;
+        thumbnailMedia.type = 'image';
+        thumbnailMedia.id = `video_${event.identifier}`;
+        this.mediaArr.push(thumbnailMedia);
+      }
       this.mediaArr.push(videoMedia);
       this.showSolutionDropDown = false;
       this.showSolution = true;
