@@ -321,4 +321,14 @@ describe('UpdateContactComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(mockUpdateContactData.resourceBundle.messages.fmsg.m0004);
   });
 
+  it('should show tnc popup if given mode is true', () => {
+    component.showAndHidePopup(true);
+    expect(component.showTncPopup).toBe(true);
+  });
+
+  it('should not show tnc popup if given mode is false', () => {
+    component.showAndHidePopup(false);
+    expect(component.showTncPopup).toBe(false);
+  });
+
 });

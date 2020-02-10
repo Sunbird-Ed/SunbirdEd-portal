@@ -47,9 +47,10 @@
                      [(ngModel)]="contactForm.tncAccepted"  (change)="toggleTncCheckBox($event)" name="tncAccepted"
                      class="mr-10 cursor-pointer" required  #tncAccepted="ngModel" >
               <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabel}}
-              <a href="{{termsAndConditionLink}}" target="_blank">
-                {{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': instance}}
-              </a></label>
+                <a class="text-underline fsmall" href="javascript:void(0)" (click)="showAndHidePopup(true)">
+                  {{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': instance}}
+                </a>
+            </label>
             </div>
             <div class="text-center">
               <button [disabled]="disableSubmitBtn" appTelemetryInteract [telemetryInteractEdata]="submitPhoneInteractEdata" appTelemetryInteract
@@ -72,4 +73,6 @@
       </div>
     </div>
   </div>
+  <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp *ngIf="showTncPopup">
+  </app-tnc-popup>
 </sui-modal>
