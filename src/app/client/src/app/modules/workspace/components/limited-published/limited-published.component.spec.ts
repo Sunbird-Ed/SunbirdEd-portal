@@ -115,10 +115,6 @@ describe('LimitedPublishedComponent', () => {
       'Course',
       'LessonPlan',
       'Resource',
-      'FocusSpot',
-      'LearningOutcomeDefinition',
-      'CuriosityQuestions',
-      'MarkingSchemeRubric',
       'ExplanationResource',
       'ExperientialResource'
     ],
