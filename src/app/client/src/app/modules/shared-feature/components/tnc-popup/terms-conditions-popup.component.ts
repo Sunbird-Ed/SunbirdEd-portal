@@ -90,6 +90,7 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   public onClose() {
     this.modal.deny();
     this.close.emit();
+    this.popupControlService.changePopupStatus(true);
   }
 
   ngOnDestroy() {
