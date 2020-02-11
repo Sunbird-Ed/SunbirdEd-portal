@@ -43,6 +43,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   tncLatestVersion: string;
   termsAndConditionLink: string;
   instance: string;
+  showTncPopup = false;
 
 
   constructor(public activatedRoute: ActivatedRoute, private tenantService: TenantService, public resourceService: ResourceService,
@@ -299,4 +300,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     this.telemetryService.log(event);
   }
 
+  showAndHidePopup(mode: boolean) {
+    this.showTncPopup = mode;
+  }
 }

@@ -50,10 +50,11 @@
             <div class="mt-5">{{contentData.originData.organisation[0]}}</div>
           </div>
         </div>
+      <!-- Reverted -->
       <!-- If content credits / originData  unavailable -->
-      <div class="item mt-10" *ngIf="contentData && !contentData.originData && !contentData.copyright && !contentCreditsData.attributions">
+      <!-- <div class="item mt-10" *ngIf="contentData && !contentData.originData && !contentData.copyright && !contentCreditsData.attributions">
         <div class="mt-5">{{resourceService?.frmelmnts?.lbl?.noCreditsAvailable}}</div>
-      </div>
+      </div> -->
       <!-- If content credits / originData  unavailable -->
     </div>
   </div>

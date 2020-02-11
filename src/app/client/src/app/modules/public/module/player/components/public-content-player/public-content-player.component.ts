@@ -14,6 +14,7 @@ import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from
 import { takeUntil } from 'rxjs/operators';
 import { ContentManagerService } from '@sunbird/offline';
 import { environment } from '@sunbird/environment';
+import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
   selector: 'app-public-content-player',
   templateUrl: './public-content-player.component.html'
@@ -60,7 +61,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   isOffline: boolean = environment.isOffline;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
-    public resourceService: ResourceService, public toasterService: ToasterService,
+    public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
     private configService: ConfigService, public contentManagerService: ContentManagerService,

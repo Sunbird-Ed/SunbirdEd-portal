@@ -30,7 +30,8 @@ const mockPromise = function (data) {
         "responseCode": "OK",
         "result": {
           "success": true,
-          "exists": true
+          "exists": true,
+          "response": "OK"
         }
       })
     }

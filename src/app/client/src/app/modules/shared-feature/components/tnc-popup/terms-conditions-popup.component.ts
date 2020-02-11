@@ -5,6 +5,7 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { IUserProfile, ILoaderMessage } from '@sunbird/shared';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash-es';
+import { PopupControlService } from '../../../../service/popup-control.service';
 
 @Component({
   selector: 'app-tnc-popup',
@@ -36,10 +37,11 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
 
   constructor(public userService: UserService, public resourceService: ResourceService,
     public toasterService: ToasterService, public tenantService: TenantService,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer, public popupControlService: PopupControlService) {
   }
 
   ngOnInit() {
+    this.popupControlService.changePopupStatus(false);
     if (this.tncUrl) {
       this.tncLatestVersionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.tncUrl);
     } else {
@@ -88,9 +90,11 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   public onClose() {
     this.modal.deny();
     this.close.emit();
+    this.popupControlService.changePopupStatus(true);
   }
 
   ngOnDestroy() {
+    this.popupControlService.changePopupStatus(true);
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }

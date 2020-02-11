@@ -125,7 +125,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getTrainingAttended() {
     this.coursesService.enrolledCourseData$.pipe(first()).subscribe(data => {
-      this.attendedTraining = _.filter(data.enrolledCourses, { status: 2 }) || [];
+      this.attendedTraining = _.reverse(_.sortBy(_.filter(data.enrolledCourses, { status: 2 }), val => {
+        return _.isNumber(_.get(val, 'completedOn')) ? _.get(val, 'completedOn') : Date.parse(val.completedOn);
+      })) || [];
     });
   }
 
