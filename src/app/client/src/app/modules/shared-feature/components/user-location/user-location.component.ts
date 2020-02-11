@@ -262,6 +262,7 @@ export class UserLocationComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
+    this.popupControlService.changePopupStatus(true);
     this.userLocationModal.deny();
     this.close.emit();
   }

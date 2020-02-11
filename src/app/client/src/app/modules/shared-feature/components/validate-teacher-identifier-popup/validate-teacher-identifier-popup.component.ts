@@ -110,6 +110,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit, OnDestro
     }
     this.createValidateModal.deny();
     this.close.emit();
+    this.popupControlService.changePopupStatus(true);
   }
 
   navigateToValidateId() {
