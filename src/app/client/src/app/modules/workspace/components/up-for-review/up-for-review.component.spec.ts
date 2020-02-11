@@ -139,7 +139,6 @@ describe('UpForReviewComponent', () => {
     const returnContentType = component.getContentType();
     const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource', 'FocusSpot',
       'LearningOutcomeDefinition',
-      'PracticeQuestionSet',
       'CuriosityQuestions',
       'MarkingSchemeRubric',
       'ExplanationResource',
