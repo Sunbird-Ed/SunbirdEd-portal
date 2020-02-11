@@ -182,6 +182,7 @@ export class DashboardComponent implements OnInit {
             'gradeLevel': this.selectedAttributes.gradeLevel,
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
+            'programId': this.selectedAttributes.programId,
             'status': ['Live'],
             'questionCategories': (qtype === 'curiosityquestion') ? 'CuriosityQuestion' : qtype.toUpperCase()
           },

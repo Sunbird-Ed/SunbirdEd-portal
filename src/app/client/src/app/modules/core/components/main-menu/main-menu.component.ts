@@ -95,6 +95,7 @@ export class MainMenuComponent implements OnInit {
     setTimeout(() => {
       let activeRoute = this.router.url.split('/')[3];
       this.activeRoute(activeRoute);
+      this.programId = this.activatedRoute.snapshot.firstChild.firstChild.params.programId;
     }, 1000);
     
   }
