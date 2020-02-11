@@ -71,7 +71,7 @@ describe('OfflineHelpVideosComponent', () => {
       id: 'add-content-online',
       name: name,
       thumbnail: 'assets/images/play-icon.svg',
-      url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_connected_to_the_Internet.mp4'};
+      url: 'assets/videos/How_do_I_load_content_to_the_desktop_app.mp4'};
     component.changeVideoAttributes(data);
     fixture.detectChanges();
     const value = fixture.debugElement.query(By.css('.content-video__player__title')).nativeElement.innerText;

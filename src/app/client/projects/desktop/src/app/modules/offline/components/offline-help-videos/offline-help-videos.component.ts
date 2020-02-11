@@ -43,13 +43,13 @@ export class OfflineHelpVideosComponent implements OnInit {
         id: 'add-content-offline',
         name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0095),
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_offline_or_using_a_pen_drive.mp4'
+        url: 'assets/videos/How_do_I_download_content_from_DIKSHA_Library.mp4'
       },
       {
         id: 'add-content-online',
         name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0094),
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_connected_to_the_Internet.mp4'
+        url: 'assets/videos/How_do_I_load_content_to_the_desktop_app.mp4'
       },
       {
         id: 'copy-content',
@@ -61,7 +61,7 @@ export class OfflineHelpVideosComponent implements OnInit {
         id: 'find-content-offline',
         name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_play_downloaded_content_when_I_am_online_or_offline.mp4'
+        url: 'assets/videos/How_do_I_play_content?'
       },
     ];
 
