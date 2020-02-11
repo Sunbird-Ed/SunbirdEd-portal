@@ -26,9 +26,9 @@ describe('OfflineHelpVideosComponent', () => {
       instance: 'sunbird',
       frmelmnts: {
         instn: {
-          't0094': 'How do I add content to the {instance} desktop app when I am connected to the Internet?',
+          't0094': 'How do I load content to the {instance} desktop app?',
           't0095': 'How do I add content to the {instance} desktop app when I am offline or using a pen drive?',
-          't0096': 'My Downloads: How do i play downloaded content when i am online or offline?',
+          't0096': 'My Downloads: How do I play content?',
           't0097': 'How do I copy content to my pen drive?'
         }
       }
