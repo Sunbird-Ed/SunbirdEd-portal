@@ -61,7 +61,7 @@ export class OfflineHelpVideosComponent implements OnInit {
         id: 'find-content-offline',
         name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_play_content?'
+        url: 'assets/videos/How_do_I_play_content.mp4'
       },
     ];
 
