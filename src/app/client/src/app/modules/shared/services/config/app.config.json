@@ -548,7 +548,7 @@
       "metaData": ["identifier", "mimeType", "framework", "contentType"]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "contentType",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
