@@ -12,9 +12,9 @@ import 'datatables.net';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'app-user-org-management',
-    templateUrl: 'user-org-management.component.html',
-    styleUrls: ['user-org-management.component.scss']
+  selector: 'app-user-org-management',
+  templateUrl: 'user-org-management.component.html',
+  styleUrls: ['user-org-management.component.scss']
 })
 export class UserOrgManagementComponent implements OnInit, AfterViewInit {
 
@@ -87,15 +87,15 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.geoTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
-      this.resourceService.frmelmnts.lbl.admindshheader.districts,
-      this.resourceService.frmelmnts.lbl.admindshheader.blocks,
-      this.resourceService.frmelmnts.lbl.admindshheader.schools
+    this.resourceService.frmelmnts.lbl.admindshheader.districts,
+    this.resourceService.frmelmnts.lbl.admindshheader.blocks,
+    this.resourceService.frmelmnts.lbl.admindshheader.schools
     ];
     this.userTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
-      this.resourceService.frmelmnts.lbl.admindshheader.districts,
-      this.resourceService.frmelmnts.lbl.admindshheader.blocks,
-      this.resourceService.frmelmnts.lbl.admindshheader.schools,
-      this.resourceService.frmelmnts.lbl.admindshheader.teachers
+    this.resourceService.frmelmnts.lbl.admindshheader.districts,
+    this.resourceService.frmelmnts.lbl.admindshheader.blocks,
+    this.resourceService.frmelmnts.lbl.admindshheader.schools,
+    this.resourceService.frmelmnts.lbl.admindshheader.teachers
     ];
     this.userService.userData$.pipe(first()).subscribe(async (user) => {
       if (user && user.userProfile) {
@@ -112,7 +112,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
@@ -161,10 +161,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public getUserJSON() {
     this.manageService.getData(this.slug, this.userJSON).subscribe(
       data => {
-        const result = JSON.parse(JSON.stringify(data.result));
+        const result = _.get(data, 'result');
         this.uploadedDetails = {
           'total_uploaded': result['accounts_validated'] + result['accounts_rejected'] + result['accounts_failed']
-          + result['duplicate_account'] + result['accounts_unclaimed'],
+            + result['duplicate_account'] + result['accounts_unclaimed'],
           'accounts_validated': result['accounts_validated'] ? result['accounts_validated'] : 0,
           'accounts_rejected': result['accounts_rejected'] ? result['accounts_rejected'] : 0,
           'accounts_failed': result['accounts_failed'] ? result['accounts_failed'] : 0,
@@ -181,7 +181,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public getGeoJSON() {
     this.manageService.getData(this.slug, this.geoJSON).subscribe(
       data => {
-        const result = JSON.parse(JSON.stringify(data.result));
+        const result = _.get(data, 'result');
         this.geoData = {
           'districts': result['districts'] ? result['districts'] : 0,
           'blocks': result['blocks'] ? result['blocks'] : 0,
@@ -197,7 +197,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public getUserSummary() {
     this.manageService.getData(this.slug, this.userSummary).subscribe(
       data => {
-        const result = JSON.parse(JSON.stringify(data.result));
+        const result = _.get(data, 'result');
         this.validatedUser = {
           'districts': result['districts'] ? result['districts'] : 0,
           'blocks': result['blocks'] ? result['blocks'] : 0,
@@ -214,7 +214,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public getGeoDetail() {
     this.manageService.getData(this.slug, this.geoDetail).subscribe(
       data => {
-        const result = JSON.parse(JSON.stringify(data.result));
+        const result = _.get(data, 'result');
         this.geoSummary = result;
       },
       error => {
@@ -226,7 +226,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public getUserDetail() {
     this.manageService.getData(this.slug, this.userDetail).subscribe(
       data => {
-        const result = JSON.parse(JSON.stringify(data.result));
+        const result = _.get(data, 'result');
         this.validatedUserSummary = result;
       },
       error => {
@@ -237,26 +237,26 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
 
   public renderGeoDetails() {
     setTimeout(() => {
-         $(`#${this.GeoTableId}`).removeAttr('width').DataTable({
-            retrieve: true,
-            'columnDefs': [
-                {
-                    'targets': 0,
-                    'render': (data) => {
-                        const date = moment(data, 'DD-MM-YYYY');
-                        if (date.isValid()) {
-                            return `<td><span style="display:none">
+      $(`#${this.GeoTableId}`).removeAttr('width').DataTable({
+        retrieve: true,
+        'columnDefs': [
+          {
+            'targets': 0,
+            'render': (data) => {
+              const date = moment(data, 'DD-MM-YYYY');
+              if (date.isValid()) {
+                return `<td><span style="display:none">
                             ${moment(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
-                        }
-                        return data;
-                    },
-                }],
-            'data': this.geoTabledata,
-            'searching': false,
-            'lengthChange': false
-        });
+              }
+              return data;
+            },
+          }],
+        'data': this.geoTabledata,
+        'searching': false,
+        'lengthChange': false
+      });
     }, 100);
-}
+  }
 
   public geoTableView() {
     this.geoTabledata = [];
@@ -278,26 +278,26 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
 
   public renderUserDetails() {
     setTimeout(() => {
-         $(`#${this.userTableId}`).removeAttr('width').DataTable({
-            retrieve: true,
-            'columnDefs': [
-                {
-                    'targets': 0,
-                    'render': (data) => {
-                        const date = moment(data, 'DD-MM-YYYY');
-                        if (date.isValid()) {
-                            return `<td><span style="display:none">
+      $(`#${this.userTableId}`).removeAttr('width').DataTable({
+        retrieve: true,
+        'columnDefs': [
+          {
+            'targets': 0,
+            'render': (data) => {
+              const date = moment(data, 'DD-MM-YYYY');
+              if (date.isValid()) {
+                return `<td><span style="display:none">
                             ${moment(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
-                        }
-                        return data;
-                    },
-                }],
-            'data': this.userTabledata,
-            'searching': false,
-            'lengthChange': false
-        });
+              }
+              return data;
+            },
+          }],
+        'data': this.userTabledata,
+        'searching': false,
+        'lengthChange': false
+      });
     }, 100);
-}
+  }
 
   public teachersTableView() {
     this.userTabledata = [];
@@ -327,36 +327,29 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
 
   public downloadCSVFile(fileName: any) {
     this.manageService.getData(this.slug, fileName)
-    .subscribe(
-      response => {
-        const data = (_.get(response, 'result'));
-        const blob = new Blob([data], { type: 'text/csv;charset=utf-8' });
-        const downloadUrl = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        document.body.appendChild(a);
-        a.href = downloadUrl;
-        a.download = fileName;
-        a.click();
-        document.body.removeChild(a);
-      },
-      error => {
-        console.log(error);
-      }
-    );
+      .subscribe(
+        response => {
+          const url = (_.get(response, 'result.signedUrl'));
+          if (url) { window.open(url, '_blank'); }
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 
   public downloadZipFile(fileName: any) {
     this.manageService.getData(this.slug, fileName)
-    .subscribe(
-      response => {
-        if (response && response.result && response.result.signedUrl) {
-          window.open(response.result.signedUrl, '_blank');
+      .subscribe(
+        response => {
+          if (response && response.result && response.result.signedUrl) {
+            window.open(response.result.signedUrl, '_blank');
+          }
+        },
+        error => {
+          console.log(error);
         }
-      },
-      error => {
-        console.log(error);
-      }
-    );
+      );
   }
 
 }

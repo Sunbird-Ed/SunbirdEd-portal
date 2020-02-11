@@ -38,17 +38,20 @@ const authenticated = function (request) {
   } catch(err) {
     console.log('userId conversation error', request.kauth.grant.access_token.content.sub, err);
   }
-  async.series({
-    getUserData: function (callback) {
+  const postLoginRequest = [];
+    postLoginRequest.push(function (callback) {
       permissionsHelper.getCurrentUserRoles(request, callback)
-    },
-    updateLoginTime: function (callback) {
+    });
+    console.log('value of updateLoginTimeEnabled-->',envHelper.sunbird_portal_updateLoginTimeEnabled, 'if condition value-->' +JSON.parse(envHelper.sunbird_portal_updateLoginTimeEnabled || 'false'))
+  if(JSON.parse(envHelper.sunbird_portal_updateLoginTimeEnabled || 'false')){
+    postLoginRequest.push(function (callback) {
       userHelper.updateLoginTime(request, callback)
-    },
-    logSession: function (callback) {
-      telemetryHelper.logSessionStart(request, callback)
-    }
-  }, function (err, results) {
+    });
+  }
+  postLoginRequest.push(function (callback) {
+    telemetryHelper.logSessionStart(request, callback)
+  });
+  async.series(postLoginRequest, function (err, results) {
     if (err) {
       console.log('err', err)
     }
