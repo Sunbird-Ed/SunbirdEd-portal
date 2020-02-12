@@ -235,6 +235,7 @@ export class ChapterListComponent implements OnInit, OnChanges {
             'gradeLevel': this.selectedAttributes.gradeLevel,
             'subject': this.selectedAttributes.subject,
             'medium': this.selectedAttributes.medium,
+            'programId': this.selectedAttributes.programId,
             'status': ['Live'],
             'questionCategories': (qtype === 'curiosity') ? 'CuriosityQuestion' : qtype.toUpperCase()
           },
