@@ -71,7 +71,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public selectFileInteractEdata: IInteractEventEdata;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    userService: UserService, manageService: ManageService,private toasterService: ToasterService, resourceService: ResourceService) {
+    userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService) {
     this.userService = userService;
     this.manageService = manageService;
     this.activatedRoute = activatedRoute;
