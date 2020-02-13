@@ -153,11 +153,11 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
         const url = _.get(response, 'result.signedUrl');
         if (url) { window.open(url, '_blank'); }
       } else {
-        this.toasterService.error(this.resourceService.messages.emsg.m0019);
+        this.toasterService.error(this.resourceService.messages.emsg.m0076);
       }
     }, (err) => {
       console.log(err);
-      this.toasterService.error(this.resourceService.messages.emsg.m0019);
+      this.toasterService.error(this.resourceService.messages.emsg.m0076);
     });
   }
 
