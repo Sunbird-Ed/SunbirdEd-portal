@@ -2,7 +2,7 @@ import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { ResourceService } from '../../../shared/services/resource/resource.service';
-import { NavigationHelperService } from '@sunbird/shared';
+import { ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
@@ -71,7 +71,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public selectFileInteractEdata: IInteractEventEdata;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    userService: UserService, manageService: ManageService, resourceService: ResourceService) {
+    userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService) {
     this.userService = userService;
     this.manageService = manageService;
     this.activatedRoute = activatedRoute;
@@ -344,10 +344,13 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         response => {
           if (response && response.result && response.result.signedUrl) {
             window.open(response.result.signedUrl, '_blank');
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0076);
           }
         },
         error => {
           console.log(error);
+          this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
       );
   }
