@@ -224,10 +224,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.sharedContext = this.collectionComponentInput.programContext.config.sharedContext.reduce((obj, context) => {
       return {...obj, [context]: event.data[context] || this.sharedContext[context]};
     }, this.sharedContext);
-    if (this.sharedContext.gradeLevel) {
-      // tslint:disable-next-line:max-line-length
-      this.sharedContext.gradeLevel = _.isArray(this.sharedContext.gradeLevel) ? this.sharedContext.gradeLevel : _.split(this.sharedContext.gradeLevel, ',');
-    }
+
+    _.forEach(['gradeLevel', 'medium', 'subject'], (val) => {
+       this.checkArrayCondition(val);
+    });
     this.sessionContext = _.assign(this.sessionContext, this.sharedContext);
     this.sessionContext.collection =  event.data.metaData.identifier;
     this.sessionContext.collectionName = event.data.name;
@@ -241,6 +241,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     };
     this.isCollectionSelected.emit(event.data.metaData.identifier ? true : false);
     this.programStageService.addStage('chapterListComponent');
+  }
+
+  checkArrayCondition(param) {
+    // tslint:disable-next-line:max-line-length
+    this.sharedContext[param] = _.isArray(this.sharedContext[param]) ? this.sharedContext[param] : _.split(this.sharedContext[param], ',');
   }
 
   viewMoreClickHandler(event) {
