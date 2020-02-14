@@ -114,6 +114,7 @@ describe('LimitedPublishedComponent', () => {
       'TextBook',
       'Course',
       'LessonPlan',
+      'LearningOutcomeDefinition',
       'Resource',
       'ExplanationResource',
       'ExperientialResource'
