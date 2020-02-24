@@ -185,7 +185,7 @@ export class PublicPlayerService {
       canceled: this.resourceService.messages.stmsg.m0143
     };
     const identifier = _.get(content, 'metaData.identifier') || _.get(content, 'identifier');
-    const downloadData = _.find(_.get(downloadListdata, 'result.response.contents'), { contentId: identifier});
+    const downloadData = _.find(downloadListdata, { contentId: identifier});
     content['downloadStatus'] = status[_.get(downloadData, 'status')] || this.resourceService.messages.stmsg.m0143;
     return content;
   }

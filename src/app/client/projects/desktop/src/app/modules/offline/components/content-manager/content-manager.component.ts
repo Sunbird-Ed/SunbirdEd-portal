@@ -107,9 +107,16 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.completedCount = completedCount;
           return _.get(resp, 'result.response.contents');
         })).subscribe((apiResponse: any) => {
-          this.contentResponse = _.filter(apiResponse, (o) => {
+
+          if (apiResponse.length >= this.localContentData.length) {
+            this.localContentData = apiResponse;
+          } else if (this.localContentData.length > apiResponse.length) {
+            this.callContentList = true;
+          }
+          this.contentResponse = _.filter(this.localContentData, (o) => {
             return o.status !== 'canceled';
           });
+
 
           this.handleInsufficentMemoryError(apiResponse);
 
@@ -118,6 +125,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         } else if (this.localContentData.length > apiResponse.length) {
           this.callContentList = true;
         }
+          this.contentManagerService.emitDownloadListEvent(this.localContentData);
         this.removeDeleteId();
 
         });

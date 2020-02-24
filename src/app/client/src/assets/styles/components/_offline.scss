@@ -437,6 +437,9 @@
   .sb-field .ui.selection.active.dropdown {
       border-color: #96c8da;
   }
+  .sb-field .ui.selection.active.dropdown .text{
+    color: #0076FE !important;
+  }
 }
 
 .field-focus {

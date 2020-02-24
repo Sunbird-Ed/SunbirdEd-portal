@@ -239,6 +239,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
       videoMedia.assetId = event.identifier;
       videoMedia.name = event.name;
       videoMedia.thumbnail = this.videoThumbnail;
+      if (videoMedia.thumbnail) {
+        const thumbnailMedia: any = {};
+        thumbnailMedia.src = this.videoThumbnail;
+        thumbnailMedia.type = 'image';
+        thumbnailMedia.id = `video_${event.identifier}`;
+        this.mediaArr.push(thumbnailMedia);
+      }
       this.mediaArr.push(videoMedia);
       if (videoMedia.thumbnail) {
         const thumbnailMedia: any = {};
@@ -390,10 +397,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
             this.toasterService.success('Question Accepted');
           } else if (this.updateStatus === 'Draft' && this.questionRejected) {
             this.toasterService.success('Question Rejected');
+            this.showRequestChangesPopup = false;
+            this.questionMetaData.data.rejectComment = this.rejectComment;
           } else if (this.updateStatus === 'preview') {
             this.showPreview = true;
           }
-          this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': this.questionMetaData.data.identifier });
+          // tslint:disable-next-line:max-line-length
+          this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': apiRes.result.node_id, 'isRejectedQuestion' : this.questionRejected });
         });
       });
   }
@@ -484,9 +494,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   requestChanges() {
     if (this.ReuestChangeForm.value.rejectComment) {
       this.handleReviewrStatus({ 'status' : 'Draft', 'rejectComment':  this.ReuestChangeForm.value.rejectComment});
-      this.showRequestChangesPopup = false;
-      this.ReuestChangeForm.reset();
     }
+  }
+
+  closeRequestChangeModal() {
+    this.showRequestChangesPopup = false;
+    this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
   }
 
   manageFormConfiguration() {

@@ -13,7 +13,7 @@
             {{resourceService?.frmelmnts?.lbl?.uploadEcarFromPd | interpolate:'{instance}': instance}} </p>
         </div>
         <button appTelemetryInteract [telemetryInteractEdata]="ContentImportIntractEdata"
-          class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-bs tour-1" (click)="handleImport()">
+          class="sb-btn sb-btn-normal sb-btn-secondary ml-auto sb-btn-bs tour-1" (click)="handleImportContentDialog()">
           {{resourceService?.frmelmnts?.lbl?.uploadContent}}
         </button>
       </div>
@@ -40,3 +40,5 @@
 
   </div>
 </div>
+
+<app-load-content *ngIf="showLoadContentModal"  (close)="handleImportContentDialog()"></app-load-content>

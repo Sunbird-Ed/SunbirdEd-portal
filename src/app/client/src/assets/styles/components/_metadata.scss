@@ -29,7 +29,7 @@
         }
         a{
             color: var(--primary-color) !important;
-            text-decoration: underline !important;
+            // text-decoration: underline;
         }
     }
 
@@ -192,4 +192,14 @@
         }
     }
 
+}
+
+.content-player-metadata, .collection-player-metadata {
+    &.sb-meta-data-container {
+        .sb-meta-data {
+            a {
+                text-decoration: none;
+            }
+        }
+    }
 }

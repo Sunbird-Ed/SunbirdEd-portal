@@ -1,7 +1,6 @@
 
-import { filter } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute, RouterStateSnapshot, NavigationStart } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 import { UtilService } from '../util/util.service';

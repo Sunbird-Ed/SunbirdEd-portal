@@ -14,7 +14,6 @@ import { NavigationHelperService } from 'src/app/modules/shared';
 describe('ContentHeaderComponent', () => {
   let component: ContentHeaderComponent;
   let fixture: ComponentFixture<ContentHeaderComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentHeaderComponent],
@@ -81,6 +80,7 @@ describe('ContentHeaderComponent', () => {
   });
   it('should check isYoutubeContentPresent', () => {
     const offlineCardService = TestBed.get(OfflineCardService);
+    component.collectionData = contentHeaderData.collectionData;
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
     spyOn(component, 'downloadCollection').and.returnValue(contentHeaderData.collectionData);
     component.isYoutubeContentPresent(contentHeaderData.collectionData);
@@ -89,6 +89,8 @@ describe('ContentHeaderComponent', () => {
   });
   it('should call downloadCollection and successfuly collection downloaded', () => {
     component.contentManagerService.downloadContentId = contentHeaderData.collectionData.result.content.identifier;
+    component.collectionData = contentHeaderData.collectionData;
+    component.disableDelete = false;
     const contentService = TestBed.get(ContentManagerService);
     spyOn(contentService, 'startDownload').and.returnValue(of(contentHeaderData.downloadCollection.success));
     component.downloadCollection(contentHeaderData.collectionData);
@@ -98,6 +100,8 @@ describe('ContentHeaderComponent', () => {
 
   it('should call downloadCollection and error while downloading collection', () => {
     component.contentManagerService.downloadContentId = contentHeaderData.collectionData.result.content.identifier;
+    component.collectionData = contentHeaderData.collectionData;
+    component.disableDelete = false;
     const contentService = TestBed.get(ContentManagerService);
     spyOn(contentService, 'startDownload').and.returnValue(throwError(contentHeaderData.downloadCollection.error));
     component.downloadCollection(contentHeaderData.collectionData);
@@ -114,14 +118,17 @@ describe('ContentHeaderComponent', () => {
   });
   it('should call delete collection and error while deleting collection ', () => {
     component.collectionData = contentHeaderData.collectionData;
+    component.disableDelete = true;
     const contentService = TestBed.get(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(throwError(contentHeaderData.deleteCollection.error));
     component.deleteCollection(contentHeaderData.collectionData);
-    expect(component.toasterService.error(contentHeaderData.resourceBundle.messages.etmsg.deleteTextbookErrorMessage));
+    expect(component.disableDelete).toBeFalsy();
+    expect(component.toasterService.error(contentHeaderData.resourceBundle.messages.etmsg.desktop.deleteTextbookErrorMessage));
   });
 
   it('should navigate to previous page', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
+    component.collectionData = contentHeaderData.collectionData;
     spyOn(navigationHelperService, 'goBack');
     component.goBack();
     expect(navigationHelperService.goBack).toHaveBeenCalled();

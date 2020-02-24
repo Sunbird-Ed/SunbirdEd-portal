@@ -1,5 +1,5 @@
 import { combineLatest, Subject, of, Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, map, debounceTime, delay, tap, catchError } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { DialCodeService } from '../../../../../../../../src/app/modules/dial-co
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
 
   showLoader = true;
   noResultMessage: INoResultMessage;
