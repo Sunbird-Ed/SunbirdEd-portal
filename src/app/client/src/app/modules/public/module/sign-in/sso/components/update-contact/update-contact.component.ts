@@ -80,14 +80,14 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
    */
   toggleTncCheckBox(e) {
     this.contactForm.tncAccepted = e.target.checked;
-    let cData = {
+    const cData = {
       env: 'sso-signup',
       cdata: [
         {id: 'user:tnc:accept', type: 'Feature'},
         {id: 'SB-16663', type: 'Task'}
       ]
     };
-    let eData = {
+    const eData = {
       id: 'user:tnc:accept',
       type: 'click',
       subtype: this.contactForm.tncAccepted ? 'selected' : 'unselected',
@@ -192,11 +192,11 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
 
   public onFormUpdate() {
     this.checkUserExist();
-    let cData = {
+    const cData = {
       env: 'sso-signup',
       cdata: []
     };
-    let eData = {
+    const eData = {
       id: this.contactForm.type == 'email' ? 'submit-email' : 'submit-phone',
       type: 'click',
       pageid: 'sso-sign-in',
