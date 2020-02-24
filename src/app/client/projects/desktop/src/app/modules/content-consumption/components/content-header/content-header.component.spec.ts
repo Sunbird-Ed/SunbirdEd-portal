@@ -14,7 +14,6 @@ import { NavigationHelperService } from 'src/app/modules/shared';
 describe('ContentHeaderComponent', () => {
   let component: ContentHeaderComponent;
   let fixture: ComponentFixture<ContentHeaderComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentHeaderComponent],
