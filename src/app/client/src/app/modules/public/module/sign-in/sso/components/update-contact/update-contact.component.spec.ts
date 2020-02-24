@@ -50,14 +50,6 @@ describe('UpdateContactComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set telemetry data on initialization', () => {
-    expect(component.submitPhoneInteractEdata).toEqual({
-      id: 'submit-phone',
-      type: 'click',
-      pageid: 'sso-sign-in',
-    });
-  });
-
   it('should show Merge confirmation after success otp verification', () => {
     component.contactForm.type = 'email';
     component.contactForm.value = 'test@gmail.com';
@@ -264,11 +256,6 @@ describe('UpdateContactComponent', () => {
     spyOn(component, 'fetchTncConfiguration');
     component.ngOnInit();
     expect(component.instance).toEqual('SUNBIRD');
-    expect(component.submitPhoneInteractEdata).toEqual({
-      id: 'submit-phone',
-      type: 'click',
-      pageid: 'sso-sign-in',
-    });
     expect(component.fetchTncConfiguration).toHaveBeenCalled();
   });
 
