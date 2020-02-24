@@ -156,7 +156,12 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       setTimeout(() => {
         if (this.dialCode) {
           sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
-          this.router.navigate(['/get/dial/', this.dialCode]);
+          const navigateOptions = {
+            queryParams: {
+              textbook: _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
+            }
+          };
+          this.router.navigate(['/get/dial/', this.dialCode], navigateOptions);
         } else if (this.isOffline) {
             this.navigationHelperService.navigateToResource('');
           } else {

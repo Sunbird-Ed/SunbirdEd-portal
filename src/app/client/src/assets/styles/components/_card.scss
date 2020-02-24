@@ -301,11 +301,11 @@ app-card[lang="ur"] {
   .item i.icon {
     font-size: calculateRem(12px);
   }
-  .sb-no-batch-found {
-    background-color: $tertiary-0;
-    border: 1px solid $tertiary-100;
-    padding: ($base-block-space $base-block-space * 2);
-    border-radius: calculateRem(4px);
-    font-size: calculateRem(12px);
-  }
+}
+.sb-no-batch-found {
+  background-color: $tertiary-0;
+  border: 1px solid $tertiary-100;
+  padding: ($base-block-space $base-block-space * 2);
+  border-radius: calculateRem(4px);
+  font-size: calculateRem(12px);
 }

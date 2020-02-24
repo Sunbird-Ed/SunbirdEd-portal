@@ -426,10 +426,13 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
             this.toasterService.success('Question Accepted');
           } else if (this.updateStatus === 'Draft' && this.questionRejected) {
             this.toasterService.success('Question Rejected');
+            this.showRequestChangesPopup = false;
+            this.questionMetaData.data.rejectComment = this.rejectComment;
           } else if (this.updateStatus === 'preview') {
             this.showPreview = true;
           }
-          this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': apiRes.result.node_id });
+          // tslint:disable-next-line:max-line-length
+          this.questionStatus.emit({ 'status': 'success', 'type': this.updateStatus, 'identifier': apiRes.result.node_id, 'isRejectedQuestion' : this.questionRejected });
         });
       });
   }
@@ -531,9 +534,12 @@ export class McqCreationComponent implements OnInit, OnChanges, AfterViewInit {
   requestChanges() {
     if (this.ReuestChangeForm.value.rejectComment) {
       this.handleReviewrStatus({ 'status' : 'Draft', 'rejectComment':  this.ReuestChangeForm.value.rejectComment});
-      this.showRequestChangesPopup = false;
-      this.ReuestChangeForm.reset();
     }
+  }
+
+  closeRequestChangeModal() {
+    this.showRequestChangesPopup = false;
+    this.rejectComment = this.questionMetaData.data.rejectComment ? this.questionMetaData.data.rejectComment : '';
   }
 
   onFormValueChange(isQuestionChanged?: boolean) {

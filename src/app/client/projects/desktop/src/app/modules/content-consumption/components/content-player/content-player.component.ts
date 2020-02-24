@@ -76,9 +76,10 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     this.contentRatingModal = false;
     if (!_.isEmpty(this.playerConfig)) {
       this.objectRollUp = _.get(this.playerConfig, 'context.objectRollup') || {};
-      this.loadPlayer();
+        this.loadPlayer();
+        this.handleYoutubeContent(this.contentData);
     }
-    this.handleYoutubeContent(this.contentData);
+
   }
   handleYoutubeContent(data) {
     this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
@@ -159,10 +160,15 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
    * Emits event when content starts playing and end event when content was played/read completely
    */
   loadPlayer() {
-    if (_.includes(this.router.url, 'browse')) {
+    const downloadStatus = _.has(this.playerConfig, 'metadata.desktopAppMetadata') ?
+    !_.has(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable') ||
+    _.get(this.contentData, 'desktopAppMetadata.isAvailable') : false;
+
+    if (_.includes(this.router.url, 'browse') && !downloadStatus) {
       this.loadDefaultPlayer(`${this.configService.appConfig.PLAYER_CONFIG.localBaseUrl}webview=true`);
       return;
-    } else if (!_.includes(this.router.url, 'browse')) {
+    } else if (!_.includes(this.router.url, 'browse') || downloadStatus) {
+      this.playerConfig.data = '';
       if (_.get(this.playerConfig, 'metadata.artifactUrl')
         && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
         const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');

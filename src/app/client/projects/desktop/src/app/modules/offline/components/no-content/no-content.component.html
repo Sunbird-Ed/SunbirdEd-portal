@@ -25,7 +25,7 @@
     <p class="fs-1 mt-8">{{resourceService?.messages?.imsg?.m0048}}</p>
     <p class="fs-1 mt-16 mb-8">{{resourceService?.messages?.imsg?.m0049}}</p>
     <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal mb-8"
-      (click)="openImportContentDialog('upload-content')">{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
+      (click)="handleImportContentDialog('upload-content')">{{resourceService?.frmelmnts?.btn?.loadContent}}</button>
     <div class="fs-0-785">{{resourceService?.messages?.imsg?.m0050}}</div>
   </div>
 </div>
@@ -58,3 +58,5 @@
     </div>
   </div>
 </div>
+
+<app-load-content *ngIf="showLoadContentModal"  (close)="closeLoadContentModal()"></app-load-content>

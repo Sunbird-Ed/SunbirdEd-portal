@@ -217,7 +217,7 @@ input[type=number]::-webkit-inner-spin-button {
     border: none !important;
     &:focus, &:hover{
         outline: none;
-        border: calculateRem(1px) solid transparent !important;
+        border: none !important;
     }
 }
  .width-300{

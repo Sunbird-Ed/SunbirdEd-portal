@@ -7,7 +7,7 @@
     <div class="mt-8 text-center status-container__para">{{resourceService?.frmelmnts?.lbl?.import}}</div>
   </div>
   <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mt-16 w-100"
-    (click)="openImportContentDialog()" appTelemetryInteract [telemetryInteractEdata]="importTelemetryInteractEdata">
+    (click)="handleImportContentDialog()" appTelemetryInteract [telemetryInteractEdata]="importTelemetryInteractEdata">
     {{resourceService?.frmelmnts?.btn?.loadContent}}
   </button>
 </div>
@@ -26,3 +26,5 @@
     {{resourceService?.frmelmnts?.btn?.browse}}
   </button>
 </div>
+
+<app-load-content *ngIf="showLoadContentModal"  (close)="handleImportContentDialog()"></app-load-content>

@@ -119,20 +119,37 @@ function azureBlobStream() {
                     Expiry: expiryDate
                 }
             };
-            var token = blobService.generateSharedAccessSignature(container, fileToGet, sharedAccessPolicy);
-            var sasUrl = blobService.getUrl(container, fileToGet, token);
-            const response = {
-                responseCode: "OK",
-                params: {
-                    err: null,
-                    status: "success",
-                    errmsg: null
-                },
-                result: {
-                    'signedUrl': sasUrl
+            blobService.doesBlobExist(container,fileToGet, (err, resp) => {
+                if (err || ! (_.get(resp,'exists')) ) {
+                    console.log('Error with status code 404 - ', err);
+                    const response = {
+                        responseCode: "CLIENT_ERROR",
+                        params: {
+                            err: "CLIENT_ERROR",
+                            status: "failed",
+                            errmsg: "Blob not found"
+                        },
+                        result: {}
+                    }
+                    res.status(404).send(apiResponse(response));
+                } else {
+                    var token = blobService.generateSharedAccessSignature(container, fileToGet, sharedAccessPolicy);
+                    var sasUrl = blobService.getUrl(container, fileToGet, token);
+                    const response = {
+                        responseCode: "OK",
+                        params: {
+                            err: null,
+                            status: "success",
+                            errmsg: null
+                        },
+                        result: {
+                            'signedUrl': sasUrl
+                        }
+                    }
+                    res.status(200).send(apiResponse(response));
                 }
-            }
-            res.status(200).send(apiResponse(response));
+            })
+            
         }
     }
 }

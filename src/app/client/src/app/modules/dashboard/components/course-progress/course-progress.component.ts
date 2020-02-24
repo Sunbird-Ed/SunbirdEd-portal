@@ -392,7 +392,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         takeUntil(this.unsubscribe)
       )
       .subscribe(res => { }, err => {
-        this.toasterService.error(this.resourceService.messages.imsg.m0045);
+        this.toasterService.error(this.resourceService.messages.emsg.m0076);
       });
   }
 

@@ -105,6 +105,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   downloadCollection(collection) {
+    this.disableDelete = false;
     collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     this.logTelemetry('download-collection');
     this.contentManagerService.downloadContentId = collection.identifier;
@@ -113,6 +114,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
       this.contentManagerService.downloadContentId = '';
       collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     }, error => {
+      this.disableDelete = true;
       this.contentManagerService.downloadContentId = '';
       this.contentManagerService.failedContentName = '';
       collection['downloadStatus'] = this.resourceService.messages.stmsg.m0138;

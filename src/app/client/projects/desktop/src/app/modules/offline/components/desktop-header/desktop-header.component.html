@@ -85,7 +85,7 @@
           </a>
         </div>
 
-        <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImport()"
+        <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImportContentDialog()"
           appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('contentImport')">
           <span><img class="mr-8" width="12px" height="10px" src="assets/images/plus.svg"></span>
           {{resourceService?.frmelmnts?.btn?.loadContent}}</button>
@@ -94,5 +94,5 @@
     </div>
     <!-- menu bar with language selection component ends -->
   </div>
-
+  <app-load-content *ngIf="showLoadContentModal"  (close)="handleImportContentDialog()"></app-load-content>
   <!-- header component ends -->
