@@ -47,8 +47,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   selectOutcomeOption = {};
   contentDetailsForm: FormGroup;
   textInputArr: FormArray;
-  selectionArr: FormArray;
-  multiSelectionArr: FormArray;
   formValues: any;
   contentMetaData;
   visibility: any;
@@ -417,6 +415,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     if (this.editTitle === this.contentMetaData.name) {
       return;
     } else {
+   this.editTitle = _.trim(this.editTitle);
    const contentObj = {
      'versionKey': this.contentMetaData.versionKey,
      'name': this.editTitle
@@ -459,7 +458,14 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
           'versionKey': this.contentMetaData.versionKey,
           'name': this.editTitle
       };
-      contentObj = _.pickBy(_.assign(contentObj, this.contentDetailsForm.value), _.identity);
+      const trimmedValue = _.mapValues(this.contentDetailsForm.value, (value) => {
+         if (_.isString(value)) {
+           return _.trim(value);
+         } else {
+           return value;
+         }
+      });
+      contentObj = _.pickBy(_.assign(contentObj, trimmedValue), _.identity);
       const request = {
         'content': contentObj
       };
@@ -564,4 +570,3 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 }
-

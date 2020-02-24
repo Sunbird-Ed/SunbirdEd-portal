@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConnectionService } from './../../services/connection-service/connection.service';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss']
 })
-export class BrowseComponent implements OnInit {
+export class BrowseComponent implements OnInit, OnDestroy {
 
   isConnected = navigator.onLine;
   public unsubscribe$ = new Subject<void>();

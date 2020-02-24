@@ -9,7 +9,9 @@ export const contentHeaderData = {
                 }
             },
             etmsg: {
+                desktop: {
                 deleteTextbookErrorMessage: 'Unable to delete textbook. Please try again..',
+                }
             },
 
             smsg: {

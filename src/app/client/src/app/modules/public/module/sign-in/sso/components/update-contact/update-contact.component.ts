@@ -19,7 +19,6 @@ import { TelemetryService } from '@sunbird/telemetry';
 export class UpdateContactComponent implements OnInit, AfterViewInit {
   @ViewChild('contactDetailsForm') private contactDetailsForm;
   public telemetryImpression;
-  public submitPhoneInteractEdata;
   public tenantInfo: any = {};
   public showOtpComp = false;
   public showMergeConfirmation = false;
@@ -57,7 +56,6 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.fetchTncConfiguration();
     this.setTenantInfo();
-    this.setTelemetryData();
   }
   ngAfterViewInit () {
     this.handleFormChangeEvent();
@@ -82,29 +80,30 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
    */
   toggleTncCheckBox(e) {
     this.contactForm.tncAccepted = e.target.checked;
-    this.generateInteractEvent(this.contactForm.tncAccepted);
+    const cData = {
+      env: 'sso-signup',
+      cdata: [
+        {id: 'user:tnc:accept', type: 'Feature'},
+        {id: 'SB-16663', type: 'Task'}
+      ]
+    };
+    const eData = {
+      id: 'user:tnc:accept',
+      type: 'click',
+      subtype: this.contactForm.tncAccepted ? 'selected' : 'unselected',
+      pageid: 'sso-signup'
+    };
+    this.generateInteractEvent(cData, eData);
   }
 
   /**
    * Used to generate interact telemetry
    * @param tncAcceptedStatus
    */
-  private generateInteractEvent(tncAcceptedStatus) {
-    const selectedType = tncAcceptedStatus ? 'selected' : 'unselected';
+  private generateInteractEvent(cData, eData) {
     const interactData = {
-      context: {
-        env: 'sso-signup',
-        cdata: [
-          {id: 'user:tnc:accept', type: 'Feature'},
-          {id: 'SB-16663', type: 'Task'}
-        ]
-      },
-      edata: {
-        id: 'user:tnc:accept',
-        type: 'click',
-        subtype: selectedType,
-        pageid: 'sso-signup'
-      }
+      context: cData,
+      edata: eData
     };
     this.telemetryService.interact(interactData);
   }
@@ -193,6 +192,16 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
 
   public onFormUpdate() {
     this.checkUserExist();
+    const cData = {
+      env: 'sso-signup',
+      cdata: []
+    };
+    const eData = {
+      id: this.contactForm.type === 'email' ? 'submit-email' : 'submit-phone',
+      type: 'click',
+      pageid: 'sso-sign-in',
+    };
+    this.generateInteractEvent(cData, eData);
   }
 
   private generateOtp() {
@@ -261,13 +270,6 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       window.location.href = `/v1/sso/contact/verified` +
         this.getQueryParams({...this.activatedRoute.snapshot.queryParams, ...query});
     }
-  }
-  private setTelemetryData() {
-    this.submitPhoneInteractEdata = {
-      id: 'submit-phone',
-      type: 'click',
-      pageid: 'sso-sign-in',
-    };
   }
   private setTenantInfo() {
     this.tenantService.tenantData$.pipe(first()).subscribe(data => {

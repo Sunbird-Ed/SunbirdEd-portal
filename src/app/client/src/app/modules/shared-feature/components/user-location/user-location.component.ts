@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
 import {ResourceService, ToasterService, NavigationHelperService} from '@sunbird/shared';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DeviceRegisterService, UserService} from '@sunbird/core';
@@ -15,7 +15,7 @@ import { PopupControlService } from '../../../../service/popup-control.service';
   templateUrl: './user-location.component.html',
   styleUrls: ['./user-location.component.scss']
 })
-export class UserLocationComponent implements OnInit, OnDestroy {
+export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Output() close = new EventEmitter<any>();
   @Input() userLocationDetails: any;
@@ -100,7 +100,7 @@ export class UserLocationComponent implements OnInit, OnDestroy {
 
   processDistrictLocation(district, stateData) {
     const requestData = {'filters': {'type': 'district', parentId: stateData && stateData.id || ''}};
-    return this.profileService.getUserLocation(requestData).pipe(map(res => {
+    return this.profileService.getUserLocation(requestData).pipe(map((res: any) => {
       this.allDistricts = res.result.response;
       let locationExist: any = {};
       if (district) {
@@ -254,7 +254,7 @@ export class UserLocationComponent implements OnInit, OnDestroy {
 
   getDistrict(stateId) {
     const requestData = {'filters': {'type': 'district', parentId: stateId}};
-    return this.profileService.getUserLocation(requestData).pipe(map(res => {
+    return this.profileService.getUserLocation(requestData).pipe(map((res: any) => {
       this.showDistrictDivLoader = false;
       this.allDistricts = res.result.response;
       return res.result.response;

@@ -405,7 +405,10 @@ div:focus {
 }
 /*card font size for curriculum*/
 .rightSideSectionCards.ui.card > .content > .header {
-  font-size: 1.18em;
+  font-size: 16px;
+}
+.ui.card>.extra, .ui.cards>.card>.extra{
+  font-size: 14px;
 }
 /*text description height fixed in card*/
 i.large.icon.limitedPublishingLinkIcon {
@@ -952,7 +955,7 @@ ul.subList-padding {
 }
 .courseupdate a{
   color: var(--primary-color) !important;
-  text-decoration: underline !important;
+  // text-decoration: underline !important;
 }
 .courseupdate b {
   font-weight: 400;
@@ -1768,7 +1771,10 @@ i.edit.icon.editIcon-fontSize {
 }
 .headerBatchCard {
   font-weight: 700;
-  font-size: 1.18em;
+  font-size: 1em;
+  .header {
+    font-size: 0.9em;
+  }
 }
 .ui.attached.batchCard.button {
   background: #ffffff !important;
