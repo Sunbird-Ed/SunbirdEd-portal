@@ -53,8 +53,7 @@
             </label>
             </div>
             <div class="text-center">
-              <button [disabled]="disableSubmitBtn" appTelemetryInteract [telemetryInteractEdata]="submitPhoneInteractEdata" appTelemetryInteract
-                      [telemetryInteractEdata]="submitPhoneInteractEdata" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
+              <button [disabled]="disableSubmitBtn" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
                       class="sb-btn sb-btn-normal sb-btn-secondary mt-24" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
             </div>
           </form>
