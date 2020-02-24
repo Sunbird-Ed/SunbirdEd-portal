@@ -197,7 +197,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       cdata: []
     };
     const eData = {
-      id: this.contactForm.type == 'email' ? 'submit-email' : 'submit-phone',
+      id: this.contactForm.type === 'email' ? 'submit-email' : 'submit-phone',
       type: 'click',
       pageid: 'sso-sign-in',
     };
