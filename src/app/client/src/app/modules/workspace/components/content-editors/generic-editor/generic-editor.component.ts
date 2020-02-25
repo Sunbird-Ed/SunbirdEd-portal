@@ -171,7 +171,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
         pid: 'sunbird-portal'
       },
       contextRollUp: this.telemetryService.getRollUpData(this.userProfile.organisationIds),
-      tags: _.uniq(this.userService.dims),
+      tags: this.userService.dims,
       channel: this.userService.channel,
       defaultLicense: this.frameworkService.getDefaultLicense(),
       env: 'generic-editor',
