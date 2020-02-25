@@ -11,12 +11,12 @@ export const serverRes = {
                 body: 'body',
                 identifier: 'domain_66675',
                 versionKey: '1497028761823',
-                downloadStatus: 'FAILED',
+                downloadStatus: 'DOWNLOAD',
             }
         }
     },
     download_list : {
-      domain_66675: 'FAILED'
+      domain_66675: 'DOWNLOAD'
     },
       resourceServiceMockData: {
         messages: {

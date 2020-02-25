@@ -179,14 +179,16 @@ export class UtilService {
     return formInputData;
   }
   getPlayerDownloadStatus(status, content, currentRoute) {
-    if (currentRoute === 'browse') {
-      if (status === 'DOWNLOAD') {
-        const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
-        return (!content['downloadStatus'] || _.includes(contentStatus, content['downloadStatus']));
+    if (content) {
+      if (currentRoute === 'browse') {
+        if (status === 'DOWNLOAD') {
+          const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
+          return (!content['downloadStatus'] || _.includes(contentStatus, content['downloadStatus']));
+        }
+        return (content['downloadStatus'] === status);
       }
-      return (content['downloadStatus'] === status);
+      return false;
     }
-    return false;
   }
   getPlayerUpdateStatus(status, content, currentRoute, isUpdated) {
     if (currentRoute === 'library' && isUpdated) {
