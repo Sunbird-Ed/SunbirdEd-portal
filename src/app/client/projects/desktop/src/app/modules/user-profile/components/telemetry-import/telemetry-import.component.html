@@ -1,0 +1,21 @@
+<ul class="sb-bordered-list my-16">
+  <li class="sb-bordered-list-item m-0">
+    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+      <div class="sb-bordered-list-item-title">{{resourceService?.frmelmnts?.desktop?.lbl?.filesImported}} ({{importFilesList['length']}})&lrm;
+        <span class="sb-bordered-list-item-title-extra ml-16">{{resourceService?.frmelmnts?.desktop?.lbl?.TotalSize}}
+          75KB</span></div>
+
+      <div class="sb-btn sb-btn-normal sb-bulk-upload-btn sb-btn-outline-primary">
+        <img src="assets/images/plus-icon.svg" width="12px" height="12px" class="mr-8">
+        {{resourceService?.frmelmnts?.desktop?.lbl?.importNewFile}}
+        <input class="sb-btn-upload" name="file" type="file"></div>
+
+    </div>
+  </li>
+  <li class="sb-bordered-list-item m-0" *ngFor="let items of importFilesList">
+    <div class="d-flex flex-ai-center">
+      <div class="sb-bordered-list-item-heading">File_1.gsa</div>
+      <div class="sb-bordered-list-item-subheading ml-16">19 February 2019 at 6:40 PM, 25KB</div>
+    </div>
+  </li>
+</ul>

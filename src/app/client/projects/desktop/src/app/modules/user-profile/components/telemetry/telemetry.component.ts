@@ -18,6 +18,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
   public telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
   disableExport = true;
+  syncStatus = true;
   exportedTime;
   constructor(
     private telemetryActionService: TelemetryActionsService,
