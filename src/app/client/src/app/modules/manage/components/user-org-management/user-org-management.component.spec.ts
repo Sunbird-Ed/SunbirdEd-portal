@@ -85,42 +85,42 @@ describe('UserOrgManagementComponent', () => {
 
   it('value of variable geoJSON should be geo-summary.json', () => {
     const geoJSON = component.geoJSON;
-    expect(geoJSON).toEqual('geo-summary.json');
+    expect(geoJSON).toEqual('geo-summary');
   });
 
   it('value of variable geoCSV should be geo-detail.csv', () => {
     const geoCSV = component.geoCSV;
-    expect(geoCSV).toEqual('geo-detail.csv');
+    expect(geoCSV).toEqual('geo-detail');
   });
 
   it('value of variable geoDetail should be geo-summary-district.json', () => {
     const geoDetail = component.geoDetail;
-    expect(geoDetail).toEqual('geo-summary-district.json');
+    expect(geoDetail).toEqual('geo-summary-district');
   });
 
   it('value of variable userJSON should be user-summary.json', () => {
     const userJSON = component.userJSON;
-    expect(userJSON).toEqual('user-summary.json');
+    expect(userJSON).toEqual('user-summary');
   });
 
   it('value of variable userCSV should be user-detail.csv', () => {
     const userCSV = component.userCSV;
-    expect(userCSV).toEqual('user-detail.csv');
+    expect(userCSV).toEqual('user-detail');
   });
 
   it('value of variable userSummary should be validated-user-summary.json', () => {
     const userSummary = component.userSummary;
-    expect(userSummary).toEqual('validated-user-summary.json');
+    expect(userSummary).toEqual('validated-user-summary');
   });
 
   it('value of variable userDetail should be validated-user-summary-district.json', () => {
     const userDetail = component.userDetail;
-    expect(userDetail).toEqual('validated-user-summary-district.json');
+    expect(userDetail).toEqual('validated-user-summary-district');
   });
 
   it('value of variable userZip should be validated-user-detail.zip', () => {
     const userZip = component.userZip;
-    expect(userZip).toEqual('validated-user-detail.zip');
+    expect(userZip).toEqual('validated-user-detail');
   });
 
   it('value of variable GeoTableId should be GeoDetailsTable', () => {
@@ -178,8 +178,8 @@ describe('UserOrgManagementComponent', () => {
     }));
     spyOn(window, 'open');
     component.slug = 'sunbird';
-    component.userJSON = 'user.json';
-    component.downloadZipFile('user.json');
+    component.userJSON = 'user';
+    component.downloadZipFile(component.userJSON, 'user.json');
     expect(window.open).toHaveBeenCalled();
     expect(window.open).toHaveBeenCalledWith('a', '_blank');
   });
