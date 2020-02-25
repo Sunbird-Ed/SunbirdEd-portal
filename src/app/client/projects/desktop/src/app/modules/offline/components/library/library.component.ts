@@ -119,12 +119,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 }
             });
 
-        // this.contentManagerService.downloadListEvent
-        //     .pipe(takeUntil(this.unsubscribe$))
-        //     .subscribe((data) => {
-        //         this.updateCardData(data);
-        //     });
-
         this.router.events
             .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
             .subscribe(x => { this.prepareVisits(); });
@@ -286,7 +280,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         _.each(this.pageSections, (pageSection) => {
             _.forEach(pageSection.contents, contents => {
                if (this.contentDownloadStatus[contents.identifier]) {
-                   console.log('contents', contents);
                    contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
                }
             });
