@@ -38,7 +38,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   userFrameWork: any;
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
-  editProfileInteractEdata: IInteractEventEdata;
   editMobileInteractEdata: IInteractEventEdata;
   editEmailInteractEdata: IInteractEventEdata;
   downloadCertificateEData: IInteractEventEdata;
@@ -210,11 +209,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   setInteractEventData() {
     this.myFrameworkEditEdata = {
       id: 'profile-edit-framework',
-      type: 'click',
-      pageid: 'profile-read'
-    };
-    this.editProfileInteractEdata = {
-      id: 'profile-edit-address',
       type: 'click',
       pageid: 'profile-read'
     };

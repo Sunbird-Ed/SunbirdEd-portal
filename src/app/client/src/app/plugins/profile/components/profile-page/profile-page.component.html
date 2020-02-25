@@ -65,9 +65,7 @@
         <div class="fs-1-16 ml-5 font-w-bold text-center" [ngClass]="{'text-warm-grey': !state}">
           {{state || resourceService.frmelmnts.lbl.addState}}</div>
       </div>
-      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="editProfileInteractEdata"
-        class="sb-btn sb-btn-primary sb-btn-xs right-aligned-button right-0 bottom-5 absolute computer only"
+      <button class="sb-btn sb-btn-primary sb-btn-xs right-aligned-button right-0 bottom-5 absolute computer only"
         (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
     </div>
 
