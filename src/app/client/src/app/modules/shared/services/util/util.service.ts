@@ -214,18 +214,23 @@ export class UtilService {
       DOWNLOADED: this.resourceService.messages.stmsg.m0139,
       PAUSED: this.resourceService.messages.stmsg.m0142,
       CANCELED: this.resourceService.messages.stmsg.m0143,
+      COMPLETED: this.resourceService.messages.stmsg.m0139,
+      INPROGRESS: this.resourceService.messages.stmsg.m0140,
+      RESUME: this.resourceService.messages.stmsg.m0140,
+      INQUEUE: this.resourceService.messages.stmsg.m0140
     };
     _.each(contentList, (value) => {
       value['hoverData'] = {
         note: isOnlineSearch && _.get(value, 'downloadStatus') ===
-          'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
+          'COMPLETED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
         actions: [
           {
             type: isOnlineSearch ? 'download' : 'save',
             label: isOnlineSearch ? _.capitalize(status[_.get(value, 'downloadStatus')]) ||
               this.resourceService.frmelmnts.btn.download :
               this.resourceService.frmelmnts.lbl.saveToPenDrive,
-            disabled: isOnlineSearch && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], _.get(value, 'downloadStatus'))
+            disabled: isOnlineSearch && _.includes(['DOWNLOADING', 'INPROGRESS', 'COMPLETED', 'PAUSED', 'RESUME', 'INQUEUE'],
+            _.get(value, 'downloadStatus'))
           },
           {
             type: 'open',

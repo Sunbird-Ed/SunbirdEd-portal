@@ -189,7 +189,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       this.contentData['desktopAppMetadata.isAvailable'] = false;
       delete this.contentData['downloadStatus'];
       this.changeContentStatus(this.contentData);
-      this.contentManagerService.emitAfterDeleteContent(this.contentData);
       this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteContentSuccessMessage);
     } else {
       this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteContentErrorMessage);

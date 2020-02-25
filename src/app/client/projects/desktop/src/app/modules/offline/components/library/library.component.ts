@@ -52,7 +52,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     downloadIdentifier: string;
     readonly MINIMUM_REQUIRED_RAM = 100;
     showMinimumRAMWarning = false;
-
+    contentDownloadStatus = {};
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
     public telemetryImpression: IImpressionEventInput;
@@ -81,14 +81,18 @@ export class LibraryComponent implements OnInit, OnDestroy {
         public contentManagerService: ContentManagerService,
         private offlineCardService: OfflineCardService,
         private systemInfoService: SystemInfoService
-    ) { }
+    ) {
+     }
 
     ngOnInit() {
         this.isBrowse = Boolean(this.router.url.includes('browse'));
         this.infoData = { msg: this.resourceService.frmelmnts.lbl.allDownloads, linkName: this.resourceService.frmelmnts.btn.myLibrary };
         this.getSelectedFilters();
         this.setTelemetryData();
-
+        this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+            this.contentDownloadStatus = contentDownloadStatus;
+            this.updateCardData();
+        });
         this.systemInfoService.getSystemInfo().subscribe(data => {
             let { availableMemory } = data.result;
             availableMemory = Math.floor(availableMemory / (1024 * 1024));
@@ -115,11 +119,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 }
             });
 
-        this.contentManagerService.downloadListEvent
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((data) => {
-                this.updateCardData(data);
-            });
+        // this.contentManagerService.downloadListEvent
+        //     .pipe(takeUntil(this.unsubscribe$))
+        //     .subscribe((data) => {
+        //         this.updateCardData(data);
+        //     });
 
         this.router.events
             .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
@@ -280,6 +284,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
     addHoverData() {
         _.each(this.pageSections, (pageSection) => {
+            _.forEach(pageSection.contents, contents => {
+               if (this.contentDownloadStatus[contents.identifier]) {
+                   console.log('contents', contents);
+                   contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+               }
+            });
             this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, this.isBrowse);
         });
     }
@@ -476,10 +486,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
             });
     }
 
-    updateCardData(downloadListdata) {
+    updateCardData() {
         _.each(this.pageSections, (pageSection) => {
             _.each(pageSection.contents, (pageData) => {
-                this.publicPlayerService.updateDownloadStatus(downloadListdata, pageData);
+                this.publicPlayerService.updateDownloadStatus(this.contentDownloadStatus, pageData);
             });
         });
         this.addHoverData();

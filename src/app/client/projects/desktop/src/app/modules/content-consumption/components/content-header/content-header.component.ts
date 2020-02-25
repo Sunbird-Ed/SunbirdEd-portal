@@ -130,7 +130,6 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     const request = {request: {contents: [collectionData.identifier]}};
     this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
     this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
-    this.contentManagerService.emitAfterDeleteContent(this.collectionData);
     collectionData['downloadStatus'] = 'DOWNLOAD';
     if (!this.router.url.includes('browse')) {
       this.goBack();
