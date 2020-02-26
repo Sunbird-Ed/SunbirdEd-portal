@@ -30,7 +30,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   @Input() objectRollUp: {} = {};
   contentDownloadStatus = {};
   showDownloadLoader = false;
-
+  deleteContentIds = [];
   constructor(
     public contentManagerService: ContentManagerService,
     private playerService: PublicPlayerService,
@@ -63,12 +63,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.checkOnlineStatus();
     if (!changes.contentData.firstChange) {
       this.contentData = changes.contentData.currentValue;
-      if (!this.router.url.includes('/browse')) {
-        this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
-          this.contentDownloadStatus = contentDownloadStatus;
-          this.changeContentStatus();
-        });
-      }
     }
   }
 
@@ -84,12 +78,12 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       RESUME: this.resourceService.messages.stmsg.m0140,
       INQUEUE: this.resourceService.messages.stmsg.m0140
     };
+
     _.forEach(this.actionButtons, data => {
       const disableButton = ['Download', 'Failed', 'Canceled', 'Cancel'];
       if (data.name === 'download') {
         const contentStatus = status[this.contentDownloadStatus[this.contentData.identifier]];
-        data.label = this.isAvailable() ? 'Downloaded' :
-        _.isEmpty(this.contentDownloadStatus) || _.isEmpty(contentStatus) ? 'Download' : _.capitalize(contentStatus);
+        data.label = _.isEmpty(this.contentDownloadStatus) || _.isEmpty(contentStatus) ? 'Download' : _.capitalize(contentStatus);
         data.disabled = !_.includes(disableButton, data.label);
       } else if (data.name === 'update') {
         data.label = _.capitalize(data.name);
@@ -97,11 +91,9 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         !(_.has(this.contentData, 'desktopAppMetadata') && _.get(this.contentData, 'desktopAppMetadata.updateAvailable'));
       } else if (data.name !== 'rate') {
         data.label = _.capitalize(data.name);
-        data.disabled = this.isAvailable() ? !this.isAvailable() :
-        status[this.contentDownloadStatus[this.contentData.identifier]] !== 'DOWNLOADED';
+        data.disabled = status[this.contentDownloadStatus[this.contentData.identifier]] !== 'DOWNLOADED';
       }
     });
-
   }
 
   isAvailable() {
