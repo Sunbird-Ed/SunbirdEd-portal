@@ -63,6 +63,12 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.checkOnlineStatus();
     if (!changes.contentData.firstChange) {
       this.contentData = changes.contentData.currentValue;
+      if (!this.router.url.includes('/browse')) {
+        this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+          this.contentDownloadStatus = contentDownloadStatus;
+          this.changeContentStatus();
+        });
+      }
     }
   }
 
@@ -82,7 +88,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       const disableButton = ['Download', 'Failed', 'Canceled', 'Cancel'];
       if (data.name === 'download') {
         const contentStatus = status[this.contentDownloadStatus[this.contentData.identifier]];
-        data.label = _.isEmpty(this.contentDownloadStatus) || _.isEmpty(contentStatus) ? 'Download' : _.capitalize(contentStatus) ;
+        data.label = this.isAvailable() ? 'Downloaded' :
+        _.isEmpty(this.contentDownloadStatus) || _.isEmpty(contentStatus) ? 'Download' : _.capitalize(contentStatus);
         data.disabled = !_.includes(disableButton, data.label);
       } else if (data.name === 'update') {
         data.label = _.capitalize(data.name);
@@ -90,12 +97,17 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         !(_.has(this.contentData, 'desktopAppMetadata') && _.get(this.contentData, 'desktopAppMetadata.updateAvailable'));
       } else if (data.name !== 'rate') {
         data.label = _.capitalize(data.name);
-        data.disabled = status[this.contentDownloadStatus[this.contentData.identifier]] !== 'DOWNLOADED';
+        data.disabled = this.isAvailable() ? !this.isAvailable() :
+        status[this.contentDownloadStatus[this.contentData.identifier]] !== 'DOWNLOADED';
       }
     });
 
   }
 
+  isAvailable() {
+    return (_.has(this.contentData, 'desktopAppMetadata') ? (_.has(this.contentData, 'desktopAppMetadata.isAvailable')
+    && _.get(this.contentData, 'desktopAppMetadata.isAvailable')) : false);
+  }
   isBrowse() {
     return this.router.url.includes('browse');
   }
@@ -104,18 +116,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       data.disabled = disabled;
       data.label = _.capitalize(label);
   }
-
-  checkDownloadStatus() {
-    if (this.contentData) {
-      const content = this.playerService.updateDownloadStatus(this.contentDownloadStatus, this.contentData);
-      this.contentData = content;
-      if (_.isEqual(_.get(content, 'downloadStatus'), 'DOWNLOADED')) {
-        this.contentDownloaded.emit(content);
-      }
-      this.changeContentStatus();
-    }
-
-}
 
   onActionButtonClick(event, content) {
     switch (event.data.name.toUpperCase()) {
@@ -153,20 +153,17 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.showDownloadLoader = true;
     this.logTelemetry('download-content', content);
     this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-    this.changeContentStatus();
     this.contentManagerService.downloadContentId = content.identifier;
     this.contentManagerService.failedContentName = content.name;
     this.contentManagerService.startDownload({}).subscribe(data => {
       this.contentManagerService.downloadContentId = '';
       this.showDownloadLoader = false;
       this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
-      this.changeContentStatus();
     }, (error) => {
       this.showDownloadLoader = false;
       this.contentManagerService.downloadContentId = '';
       this.contentManagerService.failedContentName = '';
       this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
-      this.changeContentStatus();
       if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
         this.toasterService.error(this.resourceService.messages.fmsg.m0090);
           }
@@ -176,14 +173,11 @@ export class ContentActionsComponent implements OnInit, OnChanges {
 
   updateContent(content) {
     this.contentData.desktopAppMetadata['updateAvailable'] = false;
-    this.changeContentStatus();
     const request = !_.isEmpty(this.collectionId) ? { contentId: content.identifier, parentId: this.collectionId } :
       { contentId: content.identifier };
     this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.changeContentStatus();
     }, (err) => {
       this.contentData.desktopAppMetadata['updateAvailable'] = true;
-      this.changeContentStatus();
       const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}',
         content.name) :
         this.resourceService.messages.fmsg.m0096;
@@ -200,13 +194,11 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.contentManagerService.deleteContent(request).subscribe(data => {
     if (!_.isEmpty(_.get(data, 'result.deleted'))) {
       this.contentData['desktopAppMetadata.isAvailable'] = false;
-      this.changeContentStatus();
       this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteContentSuccessMessage);
     } else {
       this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteContentErrorMessage);
     }
     }, err => {
-    this.changeContentStatus();
       this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteContentErrorMessage);
     });
   }
