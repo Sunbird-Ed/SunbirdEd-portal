@@ -162,18 +162,24 @@ describe('UpdateUserDetailsComponent', () => {
     component.userProfile = testData.userData;
     spyOn(component, 'getState');
     spyOn(component, 'onStateChange');
-    spyOn(component, 'onSubmitForm');
+    spyOn(component, 'onSubmitForm').and.callThrough();
     spyOn(component, 'enableSubmitButton').and.callThrough();
     component.ngOnInit();
     const name = component.userDetailsForm.controls['name'];
     name.setValue('Username');
     component.prevStateValue = 'Karnataka';
     component.userDetailsForm.controls.state.setValue('Gujarat');
+    component.stateControl = {
+      value: 'Gujarat'
+    };
     component.prevDistrictValue = 'Bangalore';
     component.userDetailsForm.controls.district.setValue('Rajkot');
+    component.districtControl = {
+      value: 'Rajkot'
+    };
     component.onSubmitForm();
-    fixture.detectChanges();
-    expect(component.userDetailsForm.valid).toBeFalsy();
+    // fixture.detectChanges();
+    expect(component.userDetailsForm.valid).toBeTruthy();
     expect(component.enableSubmitBtn).toBeFalsy();
   });
 
