@@ -232,7 +232,7 @@ export const contentList = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': true
+      'isAvailable': false
     }
   },
   {
@@ -272,7 +272,7 @@ export const contentList = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': true
+      'isAvailable': false
     }
   },
   {
@@ -317,7 +317,7 @@ export const contentList = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': true
+      'isAvailable': false
     }
   }
 ];
@@ -351,7 +351,6 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'Downloaded',
           'disabled': false
         },
         {
@@ -375,7 +374,7 @@ export const contentListWithHoverData = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': true
+      'isAvailable': false
     }
   },
   {
@@ -405,7 +404,6 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'Downloaded',
           'disabled': false
         },
         {
@@ -429,7 +427,7 @@ export const contentListWithHoverData = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': true
+      'isAvailable': false
     }
   },
   {
@@ -464,7 +462,6 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'Downloaded',
           'disabled': false
         },
         {
@@ -488,7 +485,7 @@ export const contentListWithHoverData = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': true
+      'isAvailable': false
     }
   }
 ];
