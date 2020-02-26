@@ -258,7 +258,7 @@ describe('DialCodeComponent', () => {
     });
   });
 
-  fdescribe('handleCloseButton function', () => {
+  describe('handleCloseButton function', () => {
 
     let dialCodeService;
     let navigationHelperService;
