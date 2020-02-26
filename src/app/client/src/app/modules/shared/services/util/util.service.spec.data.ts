@@ -206,6 +206,7 @@ export const contentList = [
     'contentType': 'Resource',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_3125010999257169921165',
       'mimeType': 'application/vnd.ekstep.html-archive',
@@ -245,6 +246,7 @@ export const contentList = [
     'contentType': 'Resource',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_3126224885317877761111',
       'mimeType': 'application/vnd.ekstep.ecml-archive',
@@ -285,6 +287,7 @@ export const contentList = [
     'contentType': 'TextBook',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_31288771643112652813019',
       'mimeType': 'application/vnd.ekstep.content-collection',
@@ -332,6 +335,7 @@ export const contentListWithHoverData = [
     'contentType': 'Resource',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_3125010999257169921165',
       'mimeType': 'application/vnd.ekstep.html-archive',
@@ -347,7 +351,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'Save to Pendrive',
+          'label': 'DOWNLOADED',
           'disabled': false
         },
         {
@@ -385,6 +389,7 @@ export const contentListWithHoverData = [
     'contentType': 'Resource',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_3126224885317877761111',
       'mimeType': 'application/vnd.ekstep.ecml-archive',
@@ -400,7 +405,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'Save to Pendrive',
+          'label': 'DOWNLOADED',
           'disabled': false
         },
         {
@@ -439,6 +444,7 @@ export const contentListWithHoverData = [
     'contentType': 'TextBook',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_31288771643112652813019',
       'mimeType': 'application/vnd.ekstep.content-collection',
@@ -458,7 +464,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'Save to Pendrive',
+          'label': 'DOWNLOADED',
           'disabled': false
         },
         {
