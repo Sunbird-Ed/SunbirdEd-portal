@@ -1544,17 +1544,21 @@ ul.subList-padding {
   display: block;
 }
 .textcontent {
-  display: inline-block;
-  margin: 5px 5px 5px -3px;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  margin: 4px;
+  // margin: 5px 5px 5px -3px;
+  // white-space: nowrap;
 }
-@media only screen and (max-width: 1200px) {
-  .textcontent {
-    white-space: pre-line;
-  }
-}
+// @media only screen and (max-width: 1200px) {
+//   .textcontent {
+//     white-space: pre-line;
+//   }
+// }
 .textcontent i.icon {
   font-size: 3.5em;
+  display: flex;
+  align-items: center;
 }
 .my-text {
   font-size: 1.063em;
