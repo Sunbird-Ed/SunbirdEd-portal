@@ -183,7 +183,6 @@ export class UtilService {
   }
   getPlayerDownloadStatus(status, content, currentRoute) {
     if (content) {
-      if (currentRoute === 'browse') {
         const downloadStatus = content['downloadStatus'];
         if (status === 'DOWNLOAD') {
           const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
@@ -191,8 +190,6 @@ export class UtilService {
         } else {
           return (content['downloadStatus'] === status);
         }
-      }
-      return false;
     }
   }
 
