@@ -208,6 +208,8 @@ export class UtilService {
 
   isDownloaded(status, content) {
     const downloadStatus = content['downloadStatus'];
+
+    console.log('downloadStatusdownloadStatusdownloadStatus', downloadStatus, content['desktopAppMetadata']);
     if (status === 'DOWNLOAD') {
       const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
       return (downloadStatus ? _.includes(contentStatus, content['downloadStatus']) : !this.isAvailable(content));
