@@ -5,7 +5,10 @@
       <div class="d-flex flex-jc-space-between sb-back-btn-bar">
         <button type="button" appTelemetryInteract [telemetryInteractEdata]="backButtonInteractEdata" (click)="goBack()"
           class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fmedium">
-          <i class="arrow left icon"></i>{{resourceService?.frmelmnts?.btn?.back}}
+          <i class="icon-svg icon-svg--xxs icon-back mr-4">
+            <svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use></svg></i>
+            {{resourceService?.frmelmnts?.btn?.back}}
         </button>
         <button type="button" appTelemetryInteract [telemetryInteractEdata]="filterByButtonInteractEdata"
           class="sb-btn sb-btn-outline-primary sb-btn-normal font-weight-bold" [class.active]="showFilters"
