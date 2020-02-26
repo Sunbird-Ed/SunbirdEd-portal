@@ -229,6 +229,9 @@ export const contentList = [
         'name': 'Experiment',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   },
   {
@@ -265,6 +268,9 @@ export const contentList = [
         'name': 'Test',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   },
   {
@@ -306,6 +312,9 @@ export const contentList = [
         'name': 'Book',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   }
 ];
@@ -338,7 +347,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': undefined,
+          'label': 'Save to Pendrive',
           'disabled': false
         },
         {
@@ -391,7 +400,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': undefined,
+          'label': 'Save to Pendrive',
           'disabled': false
         },
         {
@@ -413,6 +422,9 @@ export const contentListWithHoverData = [
         'name': 'Test',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   },
   {
@@ -446,7 +458,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': undefined,
+          'label': 'Save to Pendrive',
           'disabled': false
         },
         {
@@ -468,6 +480,9 @@ export const contentListWithHoverData = [
         'name': 'Book',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   }
 ];
