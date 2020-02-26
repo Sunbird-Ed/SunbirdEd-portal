@@ -440,7 +440,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         if (this.userService.loggedIn) {
           previousUrl = '/resources';
         } else {
-          previousUrl = '/explore'
+          previousUrl = '/explore';
         }
       }
       this.router.navigate([previousUrl]);
