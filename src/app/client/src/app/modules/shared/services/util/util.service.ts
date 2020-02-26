@@ -183,16 +183,22 @@ export class UtilService {
   }
   getPlayerDownloadStatus(status, content, currentRoute) {
     if (content) {
-      if (currentRoute === 'browse') {
+      const downloadStatus = content['downloadStatus'];
+      if (this.isAvailable(content) && !_.isEqual(_.get(content, 'desktopAppMetadata.addedUsing'), 'import')) {
         if (status === 'DOWNLOAD') {
           const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
-          return (!content['downloadStatus'] || _.includes(contentStatus, content['downloadStatus']));
+          return (downloadStatus ? _.includes(contentStatus, content['downloadStatus']) : !this.isAvailable(content));
         }
-        return (content['downloadStatus'] === status);
+        return (downloadStatus ? content['downloadStatus'] === status : this.isAvailable(content));
+      } else {
+        if (status === 'DOWNLOADED') {
+          return (this.isAvailable(content));
+        }
+        return (!this.isAvailable(content));
       }
-      return false;
-    }
+      }
   }
+
   getPlayerUpdateStatus(status, content, currentRoute, isUpdated) {
     if (currentRoute === 'library' && isUpdated) {
       if (status === 'UPDATE') {
@@ -222,24 +228,25 @@ export class UtilService {
       COMPLETED: this.resourceService.messages.stmsg.m0139,
       INPROGRESS: this.resourceService.messages.stmsg.m0140,
       RESUME: this.resourceService.messages.stmsg.m0140,
-      INQUEUE: this.resourceService.messages.stmsg.m0140
+      INQUEUE: this.resourceService.messages.stmsg.m0140,
+      goToMyDownloads: this.resourceService.frmelmnts.lbl.goToMyDownloads,
+      saveToPenDrive: this.resourceService.frmelmnts.lbl.saveToPenDrive,
     };
+
     _.each(contentList, (value) => {
+      const contentStatus = status[_.get(value, 'downloadStatus')];
       value['hoverData'] = {
-        note: isOnlineSearch && _.get(value, 'downloadStatus') ?
-        _.get(value, 'downloadStatus') ===
-          'COMPLETED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '' :
-          this.isAvailable(value) ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
+        note: isOnlineSearch ? (contentStatus ? (contentStatus === 'DOWNLOADED' ?  status.goToMyDownloads : '')
+        : this.isAvailable(value) ? status.goToMyDownloads : '') : '',
         actions: [
           {
-            type: isOnlineSearch ? 'download' : 'save',
-            label: isOnlineSearch ? (_.get(value, 'downloadStatus') ?
-            _.capitalize(status[_.get(value, 'downloadStatus')]) : (this.isAvailable(value) ?
-            _.capitalize(status.COMPLETED) : _.capitalize(status.CANCELED))) :
-              this.resourceService.frmelmnts.lbl.saveToPenDrive,
-            disabled: isOnlineSearch && _.get(value, 'downloadStatus') ?
-            (_.includes(['DOWNLOADING', 'INPROGRESS', 'COMPLETED', 'PAUSED', 'RESUME', 'INQUEUE'],
-            _.get(value, 'downloadStatus'))) : this.isAvailable(value),
+            type: isOnlineSearch ? 'download' : (contentStatus  ? (contentStatus !== 'DOWNLOADED' ? 'download' : 'save') : 'save') ,
+            label: isOnlineSearch ? (contentStatus ? _.capitalize(contentStatus) :
+            this.isAvailable(value) ? _.capitalize(status.COMPLETED) : _.capitalize(status.CANCELED)) :
+            (contentStatus ? (contentStatus === 'DOWNLOADED' ? status.saveToPenDrive : _.capitalize(contentStatus)) :
+            this.isAvailable(value) ? status.saveToPenDrive : _.capitalize(status.CANCELED)),
+            disabled: isOnlineSearch ? contentStatus ? _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], contentStatus) :
+            this.isAvailable(value) : contentStatus ? _.includes(['DOWNLOADING', 'PAUSED'], contentStatus) : !this.isAvailable(value)
           },
           {
             type: 'open',

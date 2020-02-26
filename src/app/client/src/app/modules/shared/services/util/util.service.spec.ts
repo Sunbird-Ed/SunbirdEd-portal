@@ -219,4 +219,10 @@ describe('UtilService', () => {
       service.updateSearchKeyword('test');
       expect(service.searchKeyword.emit).toHaveBeenCalledWith('test');
     }));
+
+  it('should call emit event searchKeyword', inject([UtilService, ResourceService],
+      (service: UtilService, resourceService: ResourceService) => {
+        const data = service.isAvailable(contentListWithHoverData[0]).and.returnValue(true);
+        expect(data).toBeTruthy();
+      }));
 });

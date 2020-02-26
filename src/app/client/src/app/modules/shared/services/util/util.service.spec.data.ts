@@ -360,6 +360,9 @@ export const contentListWithHoverData = [
         'name': 'Experiment',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   },
   {
