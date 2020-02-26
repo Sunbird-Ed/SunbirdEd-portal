@@ -156,17 +156,16 @@ const createSession = async (emailId, reqQuery, req, res) => {
     });
     keycloakClient.storeGrant(grant, req, res);
     req.kauth.grant = grant;
-    keycloakClient.authenticated(req, function (error) {
-      if (error) {
-        logger.info({msg: 'googleauthhelper:createSession error creating session', additionalInfo: error});
-        throw new Error('GOOGLE_CREATE_SESSION_FAILED')
-      } else {
-        return {
-          access_token: grant.access_token.token,
-          refresh_token: grant.refresh_token.token
-        };
-      }
-    });
+    return new Promise((resolve, reject) => {
+      keycloakClient.authenticated(req, function (error) {
+        if (error) {
+          logger.info({msg: 'googleauthhelper:createSession error creating session', additionalInfo: error});
+          reject('GOOGLE_CREATE_SESSION_FAILED')
+        } else {
+          resolve({access_token: grant.access_token.token, refresh_token: grant.refresh_token.token})
+        }
+      });
+    })
   }
 }
 
