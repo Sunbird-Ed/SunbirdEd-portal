@@ -142,6 +142,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
     this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
     collectionData['downloadStatus'] = 'DOWNLOAD';
+    collectionData['desktopAppMetadata.isAvailable'] = false;
     if (!this.router.url.includes('browse')) {
       this.goBack();
     }

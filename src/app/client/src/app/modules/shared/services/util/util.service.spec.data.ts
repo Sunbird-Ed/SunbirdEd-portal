@@ -189,6 +189,7 @@ export const servicemockRes = {
         versionKey: '1497028761823',
         downloadStatus: 'DOWNLOADED',
         desktopAppMetadata: {
+          addedUsing: 'import',
           isAvailable: true
         },
       }

@@ -183,11 +183,22 @@ export class UtilService {
   }
   getPlayerDownloadStatus(status, content, currentRoute) {
     if (content) {
+    const downloadStatus = content['downloadStatus'];
+    const addedUsing  = _.get(content, 'desktopAppMetadata.addedUsing');
+    if (addedUsing && addedUsing === 'import' && !downloadStatus) {
+      if (this.isAvailable(content)) {
+       return status === 'DOWNLOADED';
+      } else {
+        return status === 'DOWNLOAD';
+      }
+    } else {
       const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
         if (status === 'DOWNLOAD') {
-          return (!content['downloadStatus'] || _.includes(contentStatus, content['downloadStatus']));
+        return  downloadStatus ? _.includes(contentStatus, downloadStatus) : !this.isAvailable(content);
+        } else {
+         return downloadStatus ? downloadStatus === status : this.isAvailable(content);
         }
-        return ( content['downloadStatus'] === status);
+    }
     }
   }
 
@@ -250,7 +261,6 @@ export class UtilService {
 
     return contentList;
   }
-
   isAvailable(content) {
     return (_.has(content, 'desktopAppMetadata') ? (!_.has(content, 'desktopAppMetadata.isAvailable')
     || _.get(content, 'desktopAppMetadata.isAvailable')) : false);
