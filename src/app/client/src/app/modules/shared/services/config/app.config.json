@@ -1182,14 +1182,16 @@
     "course": "Untitled Course",
     "collection": "Untitled Collection",
     "studymaterial": "Untitled Resource",
-    "lessonplan": "Untitled Lessonplan"
+    "lessonplan": "Untitled Lessonplan",
+    "assessment": "Untitled Assessment"
   },
   "contentDescription": {
     "textbook": "Enter description for TextBook",
     "course": "Enter description for Course",
     "collection": "Enter description for Collection",
     "studymaterial": "Enter description for Resource",
-    "lessonplan": "Enter description for Lessonplan"
+    "lessonplan": "Enter description for Lessonplan",
+    "assessment": "Enter description for Assessment"
   },
   "contentCreateTypeForEditors": {
     "textbook": "TextBook",
