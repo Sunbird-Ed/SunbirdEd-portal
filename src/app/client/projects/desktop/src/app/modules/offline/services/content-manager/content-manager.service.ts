@@ -18,7 +18,7 @@ export class ContentManagerService {
   downloadListEvent = new EventEmitter();
   completeEvent = new EventEmitter();
   deletedContent = new EventEmitter();
-  contentDownloadStatus$ = new BehaviorSubject<any>(undefined);
+  contentDownloadStatus$ = new BehaviorSubject<any>({});
   contentDownloadStatus = {};
   deletedContentIds = [];
 
