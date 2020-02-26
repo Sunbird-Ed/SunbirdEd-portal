@@ -53,9 +53,12 @@ export class UtilService {
       organisation: data.organisation,
       hoverData: data.hoverData,
       board: data.board || '',
-      identifier: data.identifier
-    };
+      identifier: data.identifier,
 
+    };
+    if (data.desktopAppMetadata) {
+      content['desktopAppMetadata'] = data.desktopAppMetadata;
+    }
     // this customization is done for enrolled courses
     if (_.has(data, 'content')) {
       content['topic'] = this.getTopicSubTopic('topic', data.content.topic);
@@ -223,16 +226,20 @@ export class UtilService {
     };
     _.each(contentList, (value) => {
       value['hoverData'] = {
-        note: isOnlineSearch && _.get(value, 'downloadStatus') ===
-          'COMPLETED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
+        note: isOnlineSearch && _.get(value, 'downloadStatus') ?
+        _.get(value, 'downloadStatus') ===
+          'COMPLETED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '' :
+          this.isAvailable(value) ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
         actions: [
           {
             type: isOnlineSearch ? 'download' : 'save',
-            label: isOnlineSearch ? _.capitalize(status[_.get(value, 'downloadStatus')]) ||
-              this.resourceService.frmelmnts.btn.download :
+            label: isOnlineSearch ? (_.get(value, 'downloadStatus') ?
+            _.capitalize(status[_.get(value, 'downloadStatus')]) : (this.isAvailable(value) ?
+            _.capitalize(status.COMPLETED) : _.capitalize(status.CANCELED))) :
               this.resourceService.frmelmnts.lbl.saveToPenDrive,
-            disabled: isOnlineSearch && _.includes(['DOWNLOADING', 'INPROGRESS', 'COMPLETED', 'PAUSED', 'RESUME', 'INQUEUE'],
-            _.get(value, 'downloadStatus'))
+            disabled: isOnlineSearch && _.get(value, 'downloadStatus') ?
+            (_.includes(['DOWNLOADING', 'INPROGRESS', 'COMPLETED', 'PAUSED', 'RESUME', 'INQUEUE'],
+            _.get(value, 'downloadStatus'))) : this.isAvailable(value),
           },
           {
             type: 'open',
@@ -243,6 +250,11 @@ export class UtilService {
     });
 
     return contentList;
+  }
+
+  isAvailable(content) {
+    return (_.has(content, 'desktopAppMetadata') ? (!_.has(content, 'desktopAppMetadata.isAvailable')
+    || _.get(content, 'desktopAppMetadata.isAvailable')) : false);
   }
 
   emitLanguageChangeEvent(language: ILanguage) {

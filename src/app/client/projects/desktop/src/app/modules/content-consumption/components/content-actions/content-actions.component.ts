@@ -47,7 +47,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.collectionId = _.get(this.activatedRoute.snapshot.params, 'collectionId');
     this.checkOnlineStatus();
-    this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+    this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe( contentDownloadStatus => {
       this.contentDownloadStatus = contentDownloadStatus;
       this.changeContentStatus();
     });
@@ -63,6 +63,14 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.checkOnlineStatus();
     if (!changes.contentData.firstChange) {
       this.contentData = changes.contentData.currentValue;
+        this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe( contentDownloadStatus => {
+          this.contentDownloadStatus = contentDownloadStatus;
+          if (this.contentData &&
+            contentDownloadStatus[this.contentData.identifier] === 'COMPLETED' && !this.router.url.includes('browse')) {
+            this.contentDownloaded.emit(this.contentData);
+          }
+          this.changeContentStatus();
+        });
     }
   }
 
@@ -83,22 +91,27 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       const disableButton = ['Download', 'Failed', 'Canceled', 'Cancel'];
       if (data.name === 'download') {
         const contentStatus = status[this.contentDownloadStatus[this.contentData.identifier]];
-        data.label = _.isEmpty(this.contentDownloadStatus) || _.isEmpty(contentStatus) ? 'Download' : _.capitalize(contentStatus);
+        if (this.contentData) {
+        data.label = contentStatus ? _.capitalize(contentStatus) : this.isAvailable() ? 'Downloaded' : 'Download';
+        } else {
+          data.label = 'Download';
+        }
         data.disabled = !_.includes(disableButton, data.label);
       } else if (data.name === 'update') {
         data.label = _.capitalize(data.name);
         data.disabled =
         !(_.has(this.contentData, 'desktopAppMetadata') && _.get(this.contentData, 'desktopAppMetadata.updateAvailable'));
       } else if (data.name !== 'rate') {
+        const downloaded = _.find(this.actionButtons, {name: 'download'});
         data.label = _.capitalize(data.name);
-        data.disabled = status[this.contentDownloadStatus[this.contentData.identifier]] !== 'DOWNLOADED';
+        data.disabled = !_.isEqual(downloaded.label, 'Downloaded');
       }
     });
   }
 
   isAvailable() {
-    return (_.has(this.contentData, 'desktopAppMetadata') ? (_.has(this.contentData, 'desktopAppMetadata.isAvailable')
-    && _.get(this.contentData, 'desktopAppMetadata.isAvailable')) : false);
+    return (_.has(this.contentData, 'desktopAppMetadata') ? (!_.has(this.contentData, 'desktopAppMetadata.isAvailable')
+    || _.get(this.contentData, 'desktopAppMetadata.isAvailable')) : false);
   }
   isBrowse() {
     return this.router.url.includes('browse');

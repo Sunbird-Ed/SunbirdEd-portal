@@ -32,7 +32,8 @@ export class ContentManagerService {
       if (content.addedUsing === 'download') {
         _.forEach(content.contentDownloadList, childContent => {
           if (childContent.step === 'COMPLETE') {
-            this.contentDownloadStatus[childContent.identifier] = 'DOWNLOADED';
+            this.contentDownloadStatus[childContent.identifier] = _.includes(this.deletedContentIds, childContent.identifier) ?
+            'DOWNLOAD' : 'DOWNLOADED';
           } else {
             this.contentDownloadStatus[childContent.identifier] = _.toUpper(content.status);
           }

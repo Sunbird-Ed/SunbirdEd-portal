@@ -46,7 +46,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.currentRoute = _.includes(this.router.url, 'browse') ? 'browse' : 'My Downloads';
-    this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+    this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe( contentDownloadStatus => {
       this.contentDownloadStatus = contentDownloadStatus;
       this.checkDownloadStatus();
     });
