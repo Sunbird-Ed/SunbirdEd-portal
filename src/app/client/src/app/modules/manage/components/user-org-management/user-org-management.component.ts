@@ -2,7 +2,7 @@ import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { ResourceService } from '../../../shared/services/resource/resource.service';
-import { NavigationHelperService } from '@sunbird/shared';
+import { ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
@@ -39,7 +39,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     'districts': 0,
     'blocks': 0,
     'schools': 0,
-    'teachers': 0
+    'subOrgRegistered': 0,
+    'rootOrgRegistered': 0
   };
   public validatedUserSummary;
   public geoButtonText;
@@ -71,7 +72,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public selectFileInteractEdata: IInteractEventEdata;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    userService: UserService, manageService: ManageService, resourceService: ResourceService) {
+    userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService) {
     this.userService = userService;
     this.manageService = manageService;
     this.activatedRoute = activatedRoute;
@@ -202,7 +203,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
           'districts': result['districts'] ? result['districts'] : 0,
           'blocks': result['blocks'] ? result['blocks'] : 0,
           'schools': result['schools'] ? result['schools'] : 0,
-          'teachers': result['registered'] ? result['registered'] : 0
+          'subOrgRegistered': result['subOrgRegistered'] ? result['subOrgRegistered'] : 0,
+          'rootOrgRegistered': result['rootOrgRegistered'] ? result['rootOrgRegistered'] : 0
         };
       },
       error => {
@@ -344,10 +346,13 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         response => {
           if (response && response.result && response.result.signedUrl) {
             window.open(response.result.signedUrl, '_blank');
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0076);
           }
         },
         error => {
           console.log(error);
+          this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
       );
   }

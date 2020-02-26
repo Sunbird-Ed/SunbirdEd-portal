@@ -5,6 +5,7 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import { IUserProfile, ILoaderMessage } from '@sunbird/shared';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash-es';
+import { PopupControlService } from '../../../../service/popup-control.service';
 
 @Component({
   selector: 'app-tnc-popup',
@@ -14,6 +15,7 @@ import * as _ from 'lodash-es';
 
 export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
+  @Input() tncUrl: string;
   @Output() close = new EventEmitter<any>();
 
   /**
@@ -35,27 +37,32 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
 
   constructor(public userService: UserService, public resourceService: ResourceService,
     public toasterService: ToasterService, public tenantService: TenantService,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer, public popupControlService: PopupControlService) {
   }
 
   ngOnInit() {
-    this.userSubscription = this.userService.userData$.subscribe(
-      (user: any) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-          this.tncLatestVersionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.userProfile.tncLatestVersionUrl );
-        } else if (user.err) {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-        }
-      });
-      this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
-        data => {
-          if (data && !data.err) {
-            this.logo = data.tenantData.logo;
-            this.tenantName = data.tenantData.titleName;
+    this.popupControlService.changePopupStatus(false);
+    if (this.tncUrl) {
+      this.tncLatestVersionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.tncUrl);
+    } else {
+      this.userSubscription = this.userService.userData$.subscribe(
+        (user: any) => {
+          if (user && !user.err) {
+            this.userProfile = user.userProfile;
+            this.tncLatestVersionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.userProfile.tncLatestVersionUrl );
+          } else if (user.err) {
+            this.toasterService.error(this.resourceService.messages.emsg.m0005);
           }
+        });
+    }
+    this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
+      data => {
+        if (data && !data.err) {
+          this.logo = data.tenantData.logo;
+          this.tenantName = data.tenantData.titleName;
         }
-      );
+      }
+    );
   }
 
   /**
@@ -65,14 +72,14 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
     const requestBody = {
       request: {
         version: this.userProfile.tncLatestVersion
-       }
+      }
     };
     this.disableContinueBtn = true;
     this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
       this.onClose();
     }, err => {
-        this.disableContinueBtn = false;
-        this.toasterService.error(this.resourceService.messages.fmsg.m0085);
+      this.disableContinueBtn = false;
+      this.toasterService.error(this.resourceService.messages.fmsg.m0085);
     });
   }
 
@@ -83,9 +90,11 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   public onClose() {
     this.modal.deny();
     this.close.emit();
+    this.popupControlService.changePopupStatus(true);
   }
 
   ngOnDestroy() {
+    this.popupControlService.changePopupStatus(true);
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }

@@ -1,6 +1,6 @@
 <div *ngIf="metaData" class="ui divider mt-24"> </div>
 
-<div *ngIf="metaData" class="sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap mt-24">
+<div *ngIf="metaData" class="collection-player-metadata sb-meta-data-container sb-meta-data-column d-flex flex-w-wrap mt-24">
 
   <dl class="sb-meta-data" *ngIf="metaData.author">
     <dt>{{resourceService?.frmelmnts?.lbl?.author}}</dt>
@@ -54,7 +54,7 @@
   </dl>
   <dl class="sb-meta-data">
       <dt>{{resourceService.frmelmnts?.lbl?.contentCredits}}</dt>
-      <dd>
+      <dd appTelemetryInteract [telemetryInteractObject]="getTelemetryInteractObject()" [telemetryInteractEdata]= "getTelemetryInteractEdata({id: 'view-credits'})">
           <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.contentCredits}}" class="cursor-pointer text-underline">{{resourceService.frmelmnts?.lbl?.view}}</a>
       </dd>
   </dl>

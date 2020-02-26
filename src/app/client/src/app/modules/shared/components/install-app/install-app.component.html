@@ -9,7 +9,7 @@
                             <img src="{{'assets/images/logo.png'}}" class="js-appLogo" alt="{{resourceService.frmelmnts?.lbl?.installAppTitle | interpolate:'{instance}': instance}}"/>
                         </div>
                         <div class="appPopup-title">
-                            {{resourceService.frmelmnts?.lbl?.installAppTitle}} <br />
+                            {{resourceService.frmelmnts?.lbl?.installAppTitle | interpolate:'{instance}': instance}} <br />
                             <p class="small text-lightGray m-0">{{resourceService.frmelmnts?.lbl?.installAppFree}}</p>
                             <p class="small text-lightGray m-0">{{resourceService.frmelmnts?.lbl?.installAppPlayStore}}</p> 
                         </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ConfigService, UtilService, ToasterService, ResourceService } from '@sunbird/shared';
+import { ConfigService, UtilService, ResourceService } from '@sunbird/shared';
 import { PublicDataService, ContentService, UserService  } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { catchError } from 'rxjs/operators';
@@ -25,15 +25,18 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public sharedContext: any = {};
   public collectionComponentConfig: any;
   public stageSubscription: any;
-  public collectionList: Array<any>;
+  public filteredList: Array<any>;
   public collection;
   public collectionsWithCardImage;
   public role: any = {};
+  public collectionList: any = {};
   public mediums;
   public showError = false;
   public classes;
   public board;
   public filters;
+  public telemetryInteractCdata: any;
+  public telemetryInteractPdata: any;
   isMediumClickable = false;
   showLoader = true;
   selectedIndex = -1;
@@ -80,6 +83,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.mediums = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'medium'}).defaultValue;
     this.board = _.find(this.collectionComponentConfig.config.filters.implicit, {'code': 'board'}).defaultValue;
     (_.size(this.mediums) > 1) ? this.isMediumClickable = true : this.isMediumClickable = false;
+
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.collectionComponentInput.programContext.programId, 'Program');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
   }
 
   getImplicitFilters(): string[] {
@@ -147,7 +155,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
       filterArray.push(filterValue);
       filterValueItem = filterArray;
     }
-    this.collectionList = this.filterByCollection(this.collectionsWithCardImage, filterBy, filterValueItem);
+    this.filteredList = this.filterByCollection(this.collectionsWithCardImage, filterBy, filterValueItem);
     this.groupCollectionList();
   }
 
@@ -204,15 +212,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   groupCollectionList(groupValue?: string) {
     if (groupValue) {
-      this.collectionList = this.groupByCollection(this.collectionsWithCardImage, { 'subject' : groupValue } );
+      this.collectionList = _.groupBy(this.collectionsWithCardImage, { 'subject' : groupValue } );
     } else {
-      this.collectionList = this.groupByCollection(this.collectionList, 'subject');
+      this.collectionList = _.groupBy(this.filteredList, 'subject');
     }
-    return this.collectionList;
-  }
-
-  groupByCollection(collection, arg) {
-    return _.groupBy(collection, arg);
   }
 
   addCardImage(collection) {
@@ -224,10 +227,10 @@ export class CollectionComponent implements OnInit, OnDestroy {
     this.sharedContext = this.collectionComponentInput.programContext.config.sharedContext.reduce((obj, context) => {
       return {...obj, [context]: event.data[context] || this.sharedContext[context]};
     }, this.sharedContext);
-    if (this.sharedContext.gradeLevel) {
-      // tslint:disable-next-line:max-line-length
-      this.sharedContext.gradeLevel = _.isArray(this.sharedContext.gradeLevel) ? this.sharedContext.gradeLevel : _.split(this.sharedContext.gradeLevel, ',');
-    }
+
+    _.forEach(['gradeLevel', 'medium', 'subject'], (val) => {
+       this.checkArrayCondition(val);
+    });
     this.sessionContext = _.assign(this.sessionContext, this.sharedContext);
     this.sessionContext.collection =  event.data.metaData.identifier;
     this.sessionContext.collectionName = event.data.name;
@@ -241,6 +244,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
     };
     this.isCollectionSelected.emit(event.data.metaData.identifier ? true : false);
     this.programStageService.addStage('chapterListComponent');
+  }
+
+  checkArrayCondition(param) {
+    // tslint:disable-next-line:max-line-length
+    this.sharedContext[param] = _.isArray(this.sharedContext[param]) ? this.sharedContext[param] : _.split(this.sharedContext[param], ',');
   }
 
   viewMoreClickHandler(event) {

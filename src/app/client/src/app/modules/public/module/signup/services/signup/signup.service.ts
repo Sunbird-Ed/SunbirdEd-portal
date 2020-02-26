@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignupService {
 
-  constructor(private learnerService: LearnerService, public configService: ConfigService) { }
+  constructor(private learnerService: LearnerService, public configService: ConfigService,
+              private http: HttpClient) {
+  }
 
   generateOTP(data) {
     const options = {
@@ -45,6 +48,25 @@ export class SignupService {
       data: data
     };
     return this.learnerService.post(options);
+  }
+
+  /**
+   * Fetches terms and condition config data
+   */
+  getTncConfig() {
+    const options = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.TNC_CONFIG
+    };
+    return this.learnerService.get(options);
+  }
+
+  /**
+   * Accepts Terms and conditions and generate token of user
+   * @param data
+   */
+  acceptTermsAndConditions(data) {
+    const url = this.configService.urlConFig.URLS.USER.TNC_ACCEPT_LOGIN;
+    return this.http.post(url, data);
   }
 
   createUserV3(data) {

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
 import {ResourceService, ToasterService, NavigationHelperService} from '@sunbird/shared';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DeviceRegisterService, UserService} from '@sunbird/core';
@@ -8,13 +8,14 @@ import * as _ from 'lodash-es';
 import {IImpressionEventInput, IInteractEventInput, TelemetryService} from '@sunbird/telemetry';
 import {map} from 'rxjs/operators';
 import {forkJoin, of} from 'rxjs';
+import { PopupControlService } from '../../../../service/popup-control.service';
 
 @Component({
   selector: 'app-user-location',
   templateUrl: './user-location.component.html',
   styleUrls: ['./user-location.component.scss']
 })
-export class UserLocationComponent implements OnInit {
+export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Output() close = new EventEmitter<any>();
   @Input() userLocationDetails: any;
@@ -42,11 +43,13 @@ export class UserLocationComponent implements OnInit {
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
               formBuilder: FormBuilder, public profileService: ProfileService, private activatedRoute: ActivatedRoute,
               public router: Router, public userService: UserService, public deviceRegisterService: DeviceRegisterService,
-              public navigationhelperService: NavigationHelperService, private telemetryService: TelemetryService) {
+              public navigationhelperService: NavigationHelperService, private telemetryService: TelemetryService,
+              public popupControlService: PopupControlService) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
+    this.popupControlService.changePopupStatus(false);
     this.initializeFormFields();
     this.getState();
   }
@@ -97,7 +100,7 @@ export class UserLocationComponent implements OnInit {
 
   processDistrictLocation(district, stateData) {
     const requestData = {'filters': {'type': 'district', parentId: stateData && stateData.id || ''}};
-    return this.profileService.getUserLocation(requestData).pipe(map(res => {
+    return this.profileService.getUserLocation(requestData).pipe(map((res: any) => {
       this.allDistricts = res.result.response;
       let locationExist: any = {};
       if (district) {
@@ -251,7 +254,7 @@ export class UserLocationComponent implements OnInit {
 
   getDistrict(stateId) {
     const requestData = {'filters': {'type': 'district', parentId: stateId}};
-    return this.profileService.getUserLocation(requestData).pipe(map(res => {
+    return this.profileService.getUserLocation(requestData).pipe(map((res: any) => {
       this.showDistrictDivLoader = false;
       this.allDistricts = res.result.response;
       return res.result.response;
@@ -259,6 +262,7 @@ export class UserLocationComponent implements OnInit {
   }
 
   closeModal() {
+    this.popupControlService.changePopupStatus(true);
     this.userLocationModal.deny();
     this.close.emit();
   }
@@ -395,6 +399,10 @@ export class UserLocationComponent implements OnInit {
       }
     };
     this.telemetryService.log(event);
+  }
+
+  ngOnDestroy(): void {
+    this.popupControlService.changePopupStatus(true);
   }
 
 }

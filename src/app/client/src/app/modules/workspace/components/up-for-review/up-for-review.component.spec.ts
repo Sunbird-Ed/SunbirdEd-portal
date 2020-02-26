@@ -138,6 +138,8 @@ describe('UpForReviewComponent', () => {
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
     const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource', 'FocusSpot',
+      'SelfAssess',
+      'PracticeResource',
       'LearningOutcomeDefinition',
       'PracticeQuestionSet',
       'CuriosityQuestions',

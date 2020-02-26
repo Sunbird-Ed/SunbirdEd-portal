@@ -12,7 +12,9 @@ import * as _ from 'lodash-es';
 export class ContentManagerService {
 
   downloadContentId: string;
+  failedContentName: string;
   downloadEvent = new EventEmitter();
+  downloadFailEvent = new EventEmitter();
   downloadListEvent = new EventEmitter();
   completeEvent = new EventEmitter();
   deletedContent = new EventEmitter();
@@ -25,6 +27,10 @@ export class ContentManagerService {
     this.deletedContent.emit(contentData);
   }
 
+  emitDownloadListEvent(downloadList) {
+    this.downloadListEvent.emit(downloadList);
+  }
+
   getContentList() {
     const downloadListOptions = {
       url: this.configService.urlConFig.URLS.OFFLINE.DOWNLOAD_LIST,
@@ -32,7 +38,6 @@ export class ContentManagerService {
     };
     return this.publicDataService.post(downloadListOptions).pipe(
       map((result) => {
-        this.downloadListEvent.emit(result);
         return result;
       }),
       catchError((err) => {
@@ -52,6 +57,9 @@ export class ContentManagerService {
         return result;
       }),
       catchError((err) => {
+        if (err.error.params.err === 'LOW_DISK_SPACE') {
+          this.downloadFailEvent.emit(this.failedContentName);
+        }
         return observableThrowError(err);
       }));
   }

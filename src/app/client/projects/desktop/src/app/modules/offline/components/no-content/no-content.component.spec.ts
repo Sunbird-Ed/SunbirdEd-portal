@@ -8,7 +8,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NoContentComponent } from './no-content.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ElectronDialogService } from '../../services';
 
 describe('NoContentComponent', () => {
   let component: NoContentComponent;
@@ -80,13 +79,17 @@ describe('NoContentComponent', () => {
     expect(component.isConnected).toBeTruthy();
   });
 
-  it('should call showContentImportDialog', () => {
-    const electronDialogService = TestBed.get(ElectronDialogService);
-    spyOn(electronDialogService, 'showContentImportDialog');
+  it('should call handleImportContentDialog', () => {
     spyOn(component, 'addInteractEvent');
-    component.openImportContentDialog('no-content');
-    expect(electronDialogService.showContentImportDialog).toHaveBeenCalled();
+    component.handleImportContentDialog('no-content');
+    expect(component.showLoadContentModal).toBeTruthy();
     expect(component.addInteractEvent).toHaveBeenCalledWith('no-content');
+  });
+
+  it('should call closeLoadContentModal', () => {
+    component.showLoadContentModal = true;
+    component.closeLoadContentModal();
+    expect(component.showLoadContentModal).toBeFalsy();
   });
 
   it('should change ShowModal', () => {
@@ -126,7 +129,7 @@ describe('NoContentComponent', () => {
     const button = fixture.debugElement.query(By.css('#browse')).nativeElement;
     button.click();
     expect(button.innerText).toContain(resourceBundle.frmelmnts.lbl.desktop.explore);
-    expect(component.exploreContent).toHaveBeenCalledWith('no-content-browse');
+    expect(component.exploreContent).toHaveBeenCalledWith('explore-more-content');
   });
 
 });

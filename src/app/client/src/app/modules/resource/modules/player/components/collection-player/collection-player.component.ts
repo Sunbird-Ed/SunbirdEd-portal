@@ -12,6 +12,7 @@ import {
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { PopupControlService } from '../../../../../../service/popup-control.service';
 
 @Component({
   selector: 'app-collection-player',
@@ -74,6 +75,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   objectContentInteract: IInteractEventObject;
 
+  copyContentInteractEdata: IInteractEventEdata;
+
   collectionInteractObject: IInteractEventObject;
 
   closeIntractEdata: IInteractEventEdata;
@@ -117,7 +120,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
     public contentUtilsServiceService: ContentUtilsServiceService, config: ConfigService, private configService: ConfigService,
-    public navigationhelperService: NavigationHelperService) {
+    public popupControlService: PopupControlService, public navigationhelperService: NavigationHelperService) {
     this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -288,6 +291,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     };
     this.printPdfInteractEdata = {
       id: 'print-pdf-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
+    this.copyContentInteractEdata = {
+      id: 'copy-content-button',
       type: 'click',
       pageid: 'collection-player'
     };

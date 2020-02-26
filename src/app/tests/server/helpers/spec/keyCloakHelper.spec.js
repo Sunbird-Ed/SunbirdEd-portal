@@ -9,7 +9,8 @@ const mockCassandra = {
 };
 const {expect} = require('chai');
 const keyCloakHelper = require('../../../../helpers/keyCloakHelper');
-
+const mockTelemetry = require('../mocks/sb_telemetry_util.mock.js');
+mock('sb_telemetry_util', mockTelemetry);
 describe('keyCloakHelper Test Cases', function () {
 
   beforeEach(function () {

@@ -7,7 +7,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConnectionStatusComponent } from './connection-status.component';
 import { TelemetryModule } from 'src/app/modules/telemetry';
-import { ConnectionService, ElectronDialogService } from '../../services';
+import { ConnectionService } from '../../services';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ConnectionStatusComponent', () => {
   let component: ConnectionStatusComponent;
@@ -30,7 +31,8 @@ describe('ConnectionStatusComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ConnectionStatusComponent ],
       imports: [TelemetryModule.forRoot(), RouterModule.forRoot([]), HttpClientModule, SharedModule.forRoot()],
-      providers: [{ provide: ResourceService, useValue: resourceBundle }]
+      providers: [{ provide: ResourceService, useValue: resourceBundle }],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -50,12 +52,16 @@ describe('ConnectionStatusComponent', () => {
     expect(component.isConnected).toBeTruthy();
   });
 
-  it('should call showContentImportDialog', () => {
-    const electronDialogService = TestBed.get(ElectronDialogService);
-    spyOn(electronDialogService, 'showContentImportDialog');
-    component.openImportContentDialog();
-    expect(electronDialogService.showContentImportDialog).toHaveBeenCalled();
-  });
+  it('Call handleImportContentDialog when click on load content', () => {
+    component.handleImportContentDialog();
+    expect(component.showLoadContentModal).toBeTruthy();
+});
+
+it('Call closeLoadContentModal when modal closes', () => {
+    component.showLoadContentModal = true;
+    component.handleImportContentDialog();
+    expect(component.showLoadContentModal).toBeFalsy();
+});
 
   it('should test online text', () => {
     const connectionService = TestBed.get(ConnectionService);

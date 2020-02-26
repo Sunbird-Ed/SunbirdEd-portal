@@ -26,9 +26,9 @@ describe('OfflineHelpVideosComponent', () => {
       instance: 'sunbird',
       frmelmnts: {
         instn: {
-          't0094': 'How do I add content to the {instance} desktop app when I am connected to the Internet?',
+          't0094': 'How do I load content to the {instance} desktop app?',
           't0095': 'How do I add content to the {instance} desktop app when I am offline or using a pen drive?',
-          't0096': 'My Library: How and where can I find content in My Library?',
+          't0096': 'My Downloads: How do I play content?',
           't0097': 'How do I copy content to my pen drive?'
         }
       }
@@ -60,7 +60,7 @@ describe('OfflineHelpVideosComponent', () => {
     spyOn(component, 'interpolateInstance');
     component.ngOnInit();
     expect(component.slideData).toBeDefined();
-    expect(component.slideData[0]['id']).toEqual('add-content-online');
+    expect(component.slideData[0]['id']).toEqual('add-content-offline');
     expect(component.setVideoHeight).toHaveBeenCalled();
     expect(component.interpolateInstance).toHaveBeenCalled();
   });
@@ -71,10 +71,10 @@ describe('OfflineHelpVideosComponent', () => {
       id: 'add-content-online',
       name: name,
       thumbnail: 'assets/images/play-icon.svg',
-      url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_connected_to_the_Internet.mp4'};
+      url: 'assets/videos/How_do_I_load_content_to_the_desktop_app.mp4'};
     component.changeVideoAttributes(data);
     fixture.detectChanges();
-    const value = fixture.debugElement.query(By.css('.help-video__player__title')).nativeElement.innerText;
+    const value = fixture.debugElement.query(By.css('.content-video__player__title')).nativeElement.innerText;
     expect(component.activeVideoObject).toBeDefined();
     expect(component.activeVideoObject.id).toEqual('add-content-online');
     expect(value).toContain(data.name);

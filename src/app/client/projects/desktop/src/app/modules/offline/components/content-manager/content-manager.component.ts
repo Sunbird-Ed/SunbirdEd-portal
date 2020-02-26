@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy , EventEmitter, Output} from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { timer, Subject, combineLatest } from 'rxjs';
 import { switchMap, map, filter, takeUntil } from 'rxjs/operators';
@@ -25,6 +25,8 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
   completedCount: number;
+  handledFailedList = [];
+  unHandledFailedList = [];
   deletedContents: string [] = [];
   localContentData: any = [];
   constructor(public contentManagerService: ContentManagerService,
@@ -57,6 +59,12 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         this.isOpen = true;
         this.apiCallSubject.next();
       });
+
+      this.contentManagerService.downloadFailEvent
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(failedContentName => {
+        this.unHandledFailedList.push({name: failedContentName});
+      });
   }
 
   removeDeletedContentInList() {
@@ -77,8 +85,9 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   }
 
   getList() {
+    // tslint:disable-next-line: deprecation
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
-      .pipe(filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
+      .pipe(takeUntil(this.unsubscribe$), filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
           this.callContentList = false;
           let completedCount = 0;
@@ -98,18 +107,41 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.completedCount = completedCount;
           return _.get(resp, 'result.response.contents');
         })).subscribe((apiResponse: any) => {
-          this.contentResponse = _.filter(apiResponse, (o) => {
+
+          if (apiResponse.length >= this.localContentData.length) {
+            this.localContentData = apiResponse;
+          } else if (this.localContentData.length > apiResponse.length) {
+            this.callContentList = true;
+          }
+          this.contentResponse = _.filter(this.localContentData, (o) => {
             return o.status !== 'canceled';
           });
+
+
+          this.handleInsufficentMemoryError(apiResponse);
+
         if (apiResponse.length >= this.localContentData.length) {
           this.localContentData = apiResponse;
         } else if (this.localContentData.length > apiResponse.length) {
           this.callContentList = true;
         }
+          this.contentManagerService.emitDownloadListEvent(this.localContentData);
         this.removeDeleteId();
+
         });
   }
-
+  handleInsufficentMemoryError(allContentList) {
+    const noSpaceContentList = _.filter(allContentList, (content) =>
+    content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
+    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'identifier');
+  }
+  removeFromHandledFailedList(id) {
+    this.handledFailedList = _.filter(this.handledFailedList, (content) => content.id !== id);
+  }
+  closeModal() {
+    this.handledFailedList.push(...this.unHandledFailedList);
+    this.unHandledFailedList = [];
+  }
   contentManagerActions(type: string, action: string, id: string) {
     // Unique download/import Id
     switch (`${action.toUpperCase()}_${type.toUpperCase()}`) {
@@ -155,11 +187,13 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       next(apiResponse: any) {
         _this.deleteLocalContentStatus(id);
         _this.apiCallSubject.next();
+        _this.removeFromHandledFailedList(id);
       },
       error(err) {
         _this.deleteLocalContentStatus(id);
         _this.toasterService.error(_this.resourceService.messages.fmsg.m0097);
         _this.apiCallSubject.next();
+        _this.removeFromHandledFailedList(id);
       }
     });
   }

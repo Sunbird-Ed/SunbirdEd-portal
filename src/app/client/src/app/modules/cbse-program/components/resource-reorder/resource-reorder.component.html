@@ -16,9 +16,9 @@
             <input *ngIf = "!(this.prevUnitSelect === mainUnit.identifier)" (click)="onSelectBehaviour($event)" type="radio" id="{{mainUnit.identifier}}" value="{{mainUnit.identifier}}" name="mainUnit" [(ngModel)]="unitSelected" (click)="showMoveButton = true"
             appTelemetryInteract 
         [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('radiobutton-'+ mainUnit.name, 'click', 'chapter-list')"
-        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
-        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
-        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(mainUnit.identifier, 'Content', '1.0', {l1: sessionContext.collection})"
+        [telemetryInteractCdata]="telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryInteractPdata"
             >
             <label for="{{mainUnit.identifier}}">{{mainUnit.name}}</label>
           </div>
@@ -32,9 +32,9 @@
                 <input *ngIf= "!(this.prevUnitSelect === childUnit.identifier)" type="radio" id="{{childUnit.identifier}}" value="{{childUnit.identifier}}" name="childUnit" [(ngModel)]="unitSelected" (click)="showMoveButton = true"
                 appTelemetryInteract 
         [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('radiobutton-' + childUnit.name, 'click', 'chapter-list')"
-        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
-        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
-        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+        [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(childUnit.identifier, 'Content', '1.0', {l1: sessionContext.collection})"
+        [telemetryInteractCdata]="telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryInteractPdata"
                 >
                 <label for="{{childUnit.identifier}}">{{childUnit.name}}</label>
               </div>
@@ -56,8 +56,8 @@
   appTelemetryInteract 
         [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('move-resource', 'click', 'chapter-list')"
         [telemetryInteractObject]="programTelemetryService.getTelemetryInteractObject(sessionContext.collection, 'Content', '1.0')"
-        [telemetryInteractCdata]="programTelemetryService.getTelemetryInteractCdata('Program', programContext.userDetails.programId)"
-        [telemetryInteractPdata]="programTelemetryService.getTelemetryInteractPdata(userService.appId, configService.appConfig.TELEMETRY.PID + '.programs')"
+        [telemetryInteractCdata]="telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryInteractPdata"
   >
     Move
   </button>

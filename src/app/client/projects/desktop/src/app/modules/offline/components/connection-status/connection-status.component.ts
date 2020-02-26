@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConnectionService } from '../../services';
-import { ElectronDialogService } from './../../services';
 import { Subject } from 'rxjs';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -18,10 +17,9 @@ export class ConnectionStatusComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   importTelemetryInteractEdata: IInteractEventEdata;
   browseTelemetryInteractEdata: IInteractEventEdata;
-
+  showLoadContentModal: any;
    constructor(private connectionService: ConnectionService,
     public resourceService: ResourceService,
-    private electronDialogService: ElectronDialogService,
     public activatedRoute: ActivatedRoute,
     public router: Router) { }
 
@@ -32,8 +30,8 @@ export class ConnectionStatusComponent implements OnInit, OnDestroy {
     this.setTelemetryData();
   }
 
-  openImportContentDialog() {
-    this.electronDialogService.showContentImportDialog();
+  handleImportContentDialog() {
+    this.showLoadContentModal = !this.showLoadContentModal;
   }
 
   setTelemetryData() {

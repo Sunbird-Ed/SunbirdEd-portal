@@ -10,7 +10,7 @@ import {
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { ConnectionService, ContentManagerService } from '../../services';
+import { ConnectionService, ContentManagerService, SystemInfoService } from '../../services';
 
 @Component({
     selector: 'app-library',
@@ -50,6 +50,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
     isFilterChanged = false;
     showModal = false;
     downloadIdentifier: string;
+    readonly MINIMUM_REQUIRED_RAM = 100;
+    showMinimumRAMWarning = false;
 
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -77,7 +79,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         public navigationHelperService: NavigationHelperService,
         public telemetryService: TelemetryService,
         public contentManagerService: ContentManagerService,
-        private offlineCardService: OfflineCardService
+        private offlineCardService: OfflineCardService,
+        private systemInfoService: SystemInfoService
     ) { }
 
     ngOnInit() {
@@ -85,6 +88,14 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.infoData = { msg: this.resourceService.frmelmnts.lbl.allDownloads, linkName: this.resourceService.frmelmnts.btn.myLibrary };
         this.getSelectedFilters();
         this.setTelemetryData();
+
+        this.systemInfoService.getSystemInfo().subscribe(data => {
+            let { availableMemory } = data.result;
+            availableMemory = Math.floor(availableMemory / (1024 * 1024));
+            this.showMinimumRAMWarning = availableMemory ? Boolean(availableMemory < this.MINIMUM_REQUIRED_RAM) : false;
+        }, error => {
+            this.showMinimumRAMWarning = false;
+        });
 
         if (!this.isBrowse) {
             this.navigationHelperService.clearHistory();
@@ -399,9 +410,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.downloadIdentifier = _.get(event, 'content.metaData.identifier');
                 this.showModal = this.offlineCardService.isYoutubeContent(event.data);
                 if (!this.showModal) {
-                  this.showDownloadLoader = true;
-                  this.downloadContent(this.downloadIdentifier);
-                  this.logTelemetry(event.data, 'download-content');
+                    this.showDownloadLoader = true;
+                    this.downloadContent(this.downloadIdentifier);
+                    this.logTelemetry(event.data, 'download-content');
                 }
                 break;
             case 'SAVE':
@@ -427,22 +438,27 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
     downloadContent(contentId) {
         this.contentManagerService.downloadContentId = contentId;
+        this.contentManagerService.failedContentName = this.contentName;
         this.contentManagerService.startDownload({})
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(data => {
                 this.downloadIdentifier = '';
                 this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.failedContentName = '';
                 this.showDownloadLoader = false;
             }, error => {
                 this.downloadIdentifier = '';
                 this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.failedContentName = '';
                 this.showDownloadLoader = false;
                 _.each(this.pageSections, (pageSection) => {
                     _.each(pageSection.contents, (pageData) => {
                         pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
                     });
                 });
+                if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
                 this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+                  }
             });
     }
 

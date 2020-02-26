@@ -39,7 +39,7 @@ describe('CourseProgressComponent', () => {
         'm0022': 'Stats for last 7 days',
         'm0044': 'Download failed!',
         'm0043': 'Your profile does not have a valid email ID.Please update your email ID',
-        'm0045': 'Download has failed. Please try again after sometime'
+        'm0045': 'No data available to download'
       },
       'stmsg': {
         'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',

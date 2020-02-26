@@ -14,7 +14,7 @@
         </div>
 
         <div class="sbheader-mid-container">
-          <!-- <button class="sb-btn sb-btn-normal sb-btn-outline-primary d-flex" appTelemetryInteract
+          <button class="sb-btn sb-btn-normal sb-btn-outline-primary d-flex mr-8" appTelemetryInteract
             [telemetryInteractEdata]="getTelemetryEdata('enterDialCode')" (click)="showQrModal = true;"
             title="{{resourceService?.frmelmnts?.lbl?.enterQrCode}}">
             <i class="icon-svg icon-svg--xxs icon-qr mr-4">
@@ -22,7 +22,7 @@
                 <use xlink:href="assets/images/sprite.svg#qr-code"></use>
               </svg>
             </i>&nbsp;{{resourceService?.frmelmnts?.lbl?.enterQrCode}}
-          </button> -->
+          </button>
 
           <div class="sbheader--offline__search">
             <div class="sbsearchbox">
@@ -85,7 +85,7 @@
           </a>
         </div>
 
-        <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImport()"
+        <button class="d-flex sb-btn sb-btn-outline-tertiary sb-btn-normal sb-btn-load" (click)="handleImportContentDialog()"
           appTelemetryInteract [telemetryInteractEdata]="getTelemetryEdata('contentImport')">
           <span><img class="mr-8" width="12px" height="10px" src="assets/images/plus.svg"></span>
           {{resourceService?.frmelmnts?.btn?.loadContent}}</button>
@@ -94,5 +94,5 @@
     </div>
     <!-- menu bar with language selection component ends -->
   </div>
-
+  <app-load-content *ngIf="showLoadContentModal"  (close)="handleImportContentDialog()"></app-load-content>
   <!-- header component ends -->

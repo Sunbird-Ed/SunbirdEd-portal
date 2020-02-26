@@ -9,15 +9,15 @@ const GOOGLE_SIGN_IN_DELAY = 2000;
 module.exports = (app) => {
 
   app.get('/google/auth', (req, res) => {
-    console.log('google auth called');
+    logger.info({msg: 'google auth called'});
     if (!req.query.client_id || !req.query.redirect_uri || !req.query.error_callback) {
       res.redirect('/library')
       return
     }
     const state = JSON.stringify(req.query);
-    console.log('query params state', state);
+    logger.info({msg: 'query params state' + state});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
-    console.log('redirect google to', JSON.stringify(googleAuthUrl));
+    logger.info({msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
     logImpressionEvent(req);
   });
@@ -34,7 +34,7 @@ module.exports = (app) => {
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
-    console.log('google auth callback called');
+    logger.info({msg: 'google auth callback called'});
     const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
     let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType;
     try {
@@ -44,25 +44,25 @@ module.exports = (app) => {
       }
       errType = 'GOOGLE_PROFILE_API';
       googleProfile = await googleOauth.getProfile(req).catch(handleGoogleProfileError);
-      console.log('googleProfile fetched', JSON.stringify(googleProfile));
+      logger.info({msg: 'googleProfile fetched' + JSON.stringify(googleProfile)});
       errType = 'USER_FETCH_API';
       isUserExist = await fetchUserByEmailId(googleProfile.emailId, req).catch(handleGetUserByIdError);
-      console.log('sunbird profile fetched', isUserExist);
+      logger.info({msg: 'sunbird profile fetched' + JSON.stringify(isUserExist)});
       if (!isUserExist) {
-        console.log('creating new google user');
+        logger.info({msg: 'creating new google user'});
         errType = 'USER_CREATE_API';
         newUserDetails = await createUserWithMailId(googleProfile, reqQuery.client_id, req).catch(handleCreateUserError);
         await utils.delay(GOOGLE_SIGN_IN_DELAY);
       }
       errType = 'KEYCLOAK_SESSION_CREATE';
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
-      console.log('keyCloakToken fetched', JSON.stringify(keyCloakToken));
+      logger.info({msg: 'keyCloakToken fetched' + JSON.stringify(keyCloakToken)});
       errType = 'UNHANDLED_ERROR';
       redirectUrl = reqQuery.redirect_uri.split('?')[0];
       if (reqQuery.client_id === 'android') {
         redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
       }
-      console.log('redirect url ', redirectUrl);
+      logger.info({msg: 'redirect url ' + redirectUrl});
       logger.info({msg:'google sign in success',additionalInfo: {googleProfile, isUserExist, newUserDetails, redirectUrl}});
     } catch (error) {
       if (reqQuery.error_callback) {
@@ -73,7 +73,7 @@ module.exports = (app) => {
       logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {
-      console.log('redirecting to ', redirectUrl);
+      logger.info({msg: 'redirecting to ' + redirectUrl});
       res.redirect(redirectUrl || '/resources');
     }
   });

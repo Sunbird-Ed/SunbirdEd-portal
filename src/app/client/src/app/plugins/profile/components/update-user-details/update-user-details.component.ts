@@ -41,8 +41,8 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   initializeFormFields() {
     this.userDetailsForm = this.sbFormBuilder.group({
       name: new FormControl(this.userProfile.firstName, [Validators.required]),
-      state: new FormControl(null),
-      district: new FormControl(null)
+      state: new FormControl(null, [Validators.required]),
+      district: new FormControl(null, [Validators.required])
     }, {
         validator: (formControl) => {
           const nameCtrl = formControl.controls.name;

@@ -1,5 +1,5 @@
 <div class="ui container mt-30" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div class="content-grid">
+  <div class="content-grid" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
       <div class="ui text centered inline loader mt-40">
         {{resourceService.frmelmnts.lbl.copycontent}}
@@ -60,19 +60,20 @@
           <i class="blue share alternate icon"></i>
           {{resourceService?.frmelmnts?.lbl?.share}}
         </a>
-        <a href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
+        <a appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
           [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
           <i class="blue clone outline icon"></i>
           {{resourceService?.frmelmnts?.lbl?.copy}}
         </a>
-        <a href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
+        <a appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" 
+          href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
           [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
           <i class="blue clone outline icon"></i>
           {{resourceService?.frmelmnts?.lbl?.copy}}
         </a>
         <!-- Print Button for printable contents-->
         <span class="d-inline-block" *ngIf="selectedContent?.model?.itemSetPreviewUrl">
-          <a appTelemetryInteract [telemetryInteractObject]="objectInteract" [telemetryInteractEdata]= "printPdfInteractEdata" class="cursor-pointer btn-bg p-8 d-flex font-weight-bold" (click)="printPdf(selectedContent.model.itemSetPreviewUrl)">
+          <a appTelemetryInteract [telemetryInteractObject]="objectInteract" [telemetryInteractEdata]= "printPdfInteractEdata" class="cursor-pointer btn-bg p-8 d-flex font-weight-bold sb-color-primary" (click)="printPdf(selectedContent.model.itemSetPreviewUrl)">
               <img src="assets/images/print.svg" width="16" /> <span>&nbsp;&nbsp;{{resourceService.frmelmnts.btn.print}}</span>
           </a>
         </span>
@@ -106,6 +107,9 @@
     </div>
   </div>
 </div>
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
 </app-share-link>

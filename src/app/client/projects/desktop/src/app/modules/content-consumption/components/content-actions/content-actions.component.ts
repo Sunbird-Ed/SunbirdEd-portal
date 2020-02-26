@@ -144,15 +144,19 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     this.changeContentStatus(this.contentData);
     this.contentManagerService.downloadContentId = content.identifier;
+    this.contentManagerService.failedContentName = content.name;
     this.contentManagerService.startDownload({}).subscribe(data => {
       this.contentManagerService.downloadContentId = '';
       this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
       this.changeContentStatus(this.contentData);
     }, (error) => {
       this.contentManagerService.downloadContentId = '';
+      this.contentManagerService.failedContentName = '';
       this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
       this.changeContentStatus(this.contentData);
-      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+      if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+          }
     });
 
   }
@@ -182,7 +186,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     {request: {contents: [content.identifier]}};
     this.contentManagerService.deleteContent(request).subscribe(data => {
     if (!_.isEmpty(_.get(data, 'result.deleted'))) {
-      this.contentData.desktopAppMetadata['isAvailable'] = false ;
+      this.contentData['desktopAppMetadata.isAvailable'] = false;
       delete this.contentData['downloadStatus'];
       this.changeContentStatus(this.contentData);
       this.contentManagerService.emitAfterDeleteContent(this.contentData);

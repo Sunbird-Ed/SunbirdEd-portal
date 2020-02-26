@@ -4,7 +4,6 @@ import { ResourceService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ConnectionService } from '../../services';
-import { ElectronDialogService } from './../../services';
 import * as _ from 'lodash-es';
 import { TelemetryService } from '@sunbird/telemetry';
 @Component({
@@ -15,6 +14,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 export class NoContentComponent implements OnInit, OnDestroy {
   isConnected;
   showModal = false;
+  showLoadContentModal: any;
   public unsubscribe$ = new Subject<void>();
   @Input() filters;
   instance: string;
@@ -24,7 +24,6 @@ export class NoContentComponent implements OnInit, OnDestroy {
     public router: Router,
     public connectionService: ConnectionService,
     public resourceService: ResourceService,
-    private electronDialogService: ElectronDialogService,
     public activatedRoute: ActivatedRoute,
     public telemetryService: TelemetryService
   ) {}
@@ -40,11 +39,13 @@ export class NoContentComponent implements OnInit, OnDestroy {
     return  _.includes(this.router.url, 'browse');
   }
 
-  openImportContentDialog(id) {
-    this.electronDialogService.showContentImportDialog();
+  handleImportContentDialog(id) {
+      this.showLoadContentModal = !this.showLoadContentModal;
     this.addInteractEvent(id);
   }
-
+  closeLoadContentModal() {
+    this.showLoadContentModal = !this.showLoadContentModal;
+  }
   handleModal(id) {
     this.showModal = !this.showModal;
     if (! _.isEmpty(id)) {this.addInteractEvent(id); }

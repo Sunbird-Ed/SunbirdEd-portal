@@ -2,10 +2,15 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { TenantService, UserService, OtpService, OrgDetailsService } from '@sunbird/core';
 import { first, delay } from 'rxjs/operators';
-import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import {
+  ResourceService, ToasterService, NavigationHelperService,
+  ServerResponse, UtilService
+} from '@sunbird/shared';
 import * as _ from 'lodash-es';
+import {SignupService} from '../../../../signup/services';
 import { map } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
+import { TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   templateUrl: './update-contact.component.html',
@@ -14,7 +19,6 @@ import { combineLatest, of } from 'rxjs';
 export class UpdateContactComponent implements OnInit, AfterViewInit {
   @ViewChild('contactDetailsForm') private contactDetailsForm;
   public telemetryImpression;
-  public submitPhoneInteractEdata;
   public tenantInfo: any = {};
   public showOtpComp = false;
   public showMergeConfirmation = false;
@@ -32,15 +36,26 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   };
   public contactForm = {
     value: '',
-    type: 'phone'
+    type: 'phone',
+    tncAccepted: false
   };
+  tncLatestVersion: string;
+  termsAndConditionLink: string;
+  instance: string;
+  showTncPopup = false;
+
+
   constructor(public activatedRoute: ActivatedRoute, private tenantService: TenantService, public resourceService: ResourceService,
-    public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
-    public navigationHelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService) { }
+              public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
+              public navigationHelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService,
+              public utilService: UtilService, public signupService: SignupService,
+              public telemetryService: TelemetryService) {
+  }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    this.fetchTncConfiguration();
     this.setTenantInfo();
-    this.setTelemetryData();
   }
   ngAfterViewInit () {
     this.handleFormChangeEvent();
@@ -58,17 +73,76 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       };
     });
   }
+
+  /**
+   * Toogles contact form value based on event data
+   * @param e event data
+   */
+  toggleTncCheckBox(e) {
+    this.contactForm.tncAccepted = e.target.checked;
+    const cData = {
+      env: 'sso-signup',
+      cdata: [
+        {id: 'user:tnc:accept', type: 'Feature'},
+        {id: 'SB-16663', type: 'Task'}
+      ]
+    };
+    const eData = {
+      id: 'user:tnc:accept',
+      type: 'click',
+      subtype: this.contactForm.tncAccepted ? 'selected' : 'unselected',
+      pageid: 'sso-signup'
+    };
+    this.generateInteractEvent(cData, eData);
+  }
+
+  /**
+   * Used to generate interact telemetry
+   * @param tncAcceptedStatus
+   */
+  private generateInteractEvent(cData, eData) {
+    const interactData = {
+      context: cData,
+      edata: eData
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  /**
+   * Fetches tnc related configuration
+   */
+  fetchTncConfiguration() {
+    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+      this.telemetryLogEvents('fetch-terms-condition', true);
+        const response = _.get(data, 'result.response.value');
+        if (response) {
+          try {
+            const tncConfig = this.utilService.parseJson(response);
+            this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
+            this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
+          } catch (e) {
+            this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+          }
+        }
+      }, (err) => {
+      this.telemetryLogEvents('fetch-terms-condition', false);
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      }
+    );
+  }
+
   handleFormChangeEvent() {
     this.contactDetailsForm.valueChanges.pipe(delay(1)).subscribe((data, data2) => {
-      if (_.get(this.contactDetailsForm, 'controls.value.status') === 'VALID'
-        && this.validationPattern[this.contactForm.type].test(this.contactForm.value)) {
+      if (_.get(this.contactDetailsForm, 'status') === 'VALID' &&
+        _.get(this.contactDetailsForm, 'controls.tncAccepted.value')) {
         this.disableSubmitBtn = false;
          this.isValidIdentifier = true;
         this.userExist = false;
         this.userBlocked = false;
       } else {
         this.disableSubmitBtn = true;
-        this.isValidIdentifier = false;
+        this.isValidIdentifier = _.get(this.contactDetailsForm, 'controls.value.status') === 'VALID'
+          && this.validationPattern[this.contactForm.type].test(this.contactForm.value);
         this.userExist = false;
         this.userBlocked = false;
       }
@@ -118,6 +192,16 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
 
   public onFormUpdate() {
     this.checkUserExist();
+    const cData = {
+      env: 'sso-signup',
+      cdata: []
+    };
+    const eData = {
+      id: this.contactForm.type === 'email' ? 'submit-email' : 'submit-phone',
+      type: 'click',
+      pageid: 'sso-sign-in',
+    };
+    this.generateInteractEvent(cData, eData);
   }
 
   private generateOtp() {
@@ -141,7 +225,8 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
     this.disableSubmitBtn = true;
     this.contactForm = {
       value: '',
-      type: type
+      type: type,
+      tncAccepted: false
     };
     this.userDetails = {};
     this.userExist = false;
@@ -172,7 +257,9 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   public handleOtpValidationSuccess() {
     const query: any = {
       type: this.contactForm.type,
-      value: this.contactForm.value
+      value: this.contactForm.value,
+      tncAccepted: this.contactForm.tncAccepted,
+      tncVersion: this.tncLatestVersion
     };
     if (!_.isEmpty(this.userDetails)) {
       if (this.userDetails.id) {
@@ -184,13 +271,6 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
         this.getQueryParams({...this.activatedRoute.snapshot.queryParams, ...query});
     }
   }
-  private setTelemetryData() {
-    this.submitPhoneInteractEdata = {
-      id: 'submit-phone',
-      type: 'click',
-      pageid: 'sso-sign-in',
-    };
-  }
   private setTenantInfo() {
     this.tenantService.tenantData$.pipe(first()).subscribe(data => {
       if (!data.err) {
@@ -200,5 +280,29 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
         };
       }
     });
+  }
+
+  telemetryLogEvents(api: any, status: boolean) {
+    let level = 'ERROR';
+    let msg = api + ' failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = api + ' success';
+    }
+    const event = {
+      context: {
+        env: 'sso-signup'
+      },
+      edata: {
+        type: api,
+        level: level,
+        message: msg
+      }
+    };
+    this.telemetryService.log(event);
+  }
+
+  showAndHidePopup(mode: boolean) {
+    this.showTncPopup = mode;
   }
 }

@@ -74,6 +74,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.roles = [];
     _.forEach(this.userProfile.organisations, (org, index) => {
       if (this.userProfile.rootOrgId !== org.organisationId) {
+        if (org.locations && org.locations.length === 0) {
+          if (this.userProfile.organisations[0].locationIds && this.userProfile.organisations[0].locations) {
+            org.locationIds = this.userProfile.organisations[0].locationIds;
+            org.locations = this.userProfile.organisations[0].locations;
+          }
+        }
         orgList.push(org);
       }
       _.forEach(org.roles, (value, key) => {
@@ -107,7 +113,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       const searchParams = {
         status: ['Live'],
-        contentType: ['Collection', 'TextBook', 'Course', 'LessonPlan', 'Resource'],
+        contentType: this.configService.appConfig.WORKSPACE.contentType,
         params: { lastUpdatedOn: 'desc' }
       };
       const inputParams = { params: this.configService.appConfig.PROFILE.contentApiQueryParams };
@@ -119,7 +125,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getTrainingAttended() {
     this.coursesService.enrolledCourseData$.pipe(first()).subscribe(data => {
-      this.attendedTraining = _.filter(data.enrolledCourses, { status: 2 }) || [];
+      this.attendedTraining = _.reverse(_.sortBy(_.filter(data.enrolledCourses, { status: 2 }), val => {
+        return _.isNumber(_.get(val, 'completedOn')) ? _.get(val, 'completedOn') : Date.parse(val.completedOn);
+      })) || [];
     });
   }
 
@@ -133,9 +141,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         this.profileService.downloadCertificates(request).subscribe((apiResponse) => {
           const signedPdfUrl = _.get(apiResponse, 'result.signedUrl');
-          if (signedPdfUrl) { window.open(signedPdfUrl, '_blank'); }
+          if (signedPdfUrl) {
+            window.open(signedPdfUrl, '_blank');
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0076);
+          }
         }, (err) => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0094);
+          this.toasterService.error(this.resourceService.messages.emsg.m0076);
         });
       }
     });

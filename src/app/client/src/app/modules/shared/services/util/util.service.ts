@@ -52,7 +52,8 @@ export class UtilService {
       badgeAssertions: data.badgeAssertions,
       organisation: data.organisation,
       hoverData: data.hoverData,
-      board: data.board || ''
+      board: data.board || '',
+      identifier: data.identifier
     };
 
     // this customization is done for enrolled courses
@@ -243,5 +244,18 @@ export class UtilService {
 
   emitHideHeaderTabsEvent(hideTab: boolean) {
     this.hideHeaderTabs.emit(hideTab);
+  }
+
+  /**
+   * Parses string to object
+   * Throws error if unable to parse
+   * @param string
+   */
+  parseJson(string) {
+    try {
+      return JSON.parse(string);
+    } catch (e) {
+      throw new Error('ERROR_PARSING_STRING');
+    }
   }
 }

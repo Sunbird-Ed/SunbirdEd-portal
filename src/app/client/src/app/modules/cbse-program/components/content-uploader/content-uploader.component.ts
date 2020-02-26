@@ -2,16 +2,15 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, 
 import { FineUploader } from 'fine-uploader';
 import { ToasterService, ConfigService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService, PlayerService, FrameworkService } from '@sunbird/core';
-import { ProgramStageService } from '../../../program/services';
+import { ProgramStageService, ProgramTelemetryService } from '../../../program/services';
 import * as _ from 'lodash-es';
 import { catchError, map, first } from 'rxjs/operators';
-import { throwError, Observable, from } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { IContentUploadComponentInput} from '../../interfaces';
-import { FormGroup, FormArray, FormBuilder, Validators, NgForm, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { CbseProgramService } from '../../services/cbse-program/cbse-program.service';
 import { HelperService } from '../../services/helper.service';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
-import { ProgramTelemetryService } from '../../../program/services';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -35,8 +34,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   public formConfiguration: any;
   public actions: any;
   public textFields: Array<any>;
-  public selectionFields: Array<any>;
-  public multiSelectionFields: Array<any>;
   @Output() uploadedContentMeta = new EventEmitter<any>();
   public playerConfig;
   public showPreview = false;
@@ -50,8 +47,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   selectOutcomeOption = {};
   contentDetailsForm: FormGroup;
   textInputArr: FormArray;
-  selectionArr: FormArray;
-  multiSelectionArr: FormArray;
   formValues: any;
   contentMetaData;
   visibility: any;
@@ -64,9 +59,12 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   showUploadModal = true;
   submitButton: boolean;
   uploadButton: boolean;
-  titleCharacterLimit: Number;
+  titleCharacterLimit: number;
   allFormFields: Array<any>;
   telemetryImpression: any;
+  public telemetryInteractCdata: any;
+  public telemetryInteractPdata: any;
+  public telemetryInteractObject: any;
   public telemetryPageId = 'content-uploader';
 
   constructor(public toasterService: ToasterService, private userService: UserService,
@@ -92,6 +90,12 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
       this.cd.detectChanges();
       this.getUploadedContentMeta(_.get(this.contentUploadComponentInput, 'contentId'));
     }
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractCdata = this.programTelemetryService.getTelemetryInteractCdata(this.contentUploadComponentInput.programContext.programId, 'Program');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractPdata = this.programTelemetryService.getTelemetryInteractPdata(this.userService.appId, this.configService.appConfig.TELEMETRY.PID + '.programs');
+    // tslint:disable-next-line:max-line-length
+    this.telemetryInteractObject = this.programTelemetryService.getTelemetryInteractObject(this.contentUploadComponentInput.contentId, 'Content', '1.0', { l1: this.sessionContext.collection, l2: this.unitIdentifier});
   }
 
   ngAfterViewInit() {
@@ -347,15 +351,10 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     const compConfiguration = _.find(_.get(this.contentUploadComponentInput, 'programContext.config.components'), {compId: 'uploadContentComponent'});
     this.formConfiguration = compConfiguration.config.formConfiguration;
     this.textFields = _.filter(this.formConfiguration, {'inputType': 'text', 'visible': true});
-    this.selectionFields = _.filter(this.formConfiguration, {'inputType': 'select', 'visible': true});
-    this.multiSelectionFields = _.filter(this.formConfiguration, {'inputType': 'multiselect', 'visible': true});
     this.allFormFields = _.filter(this.formConfiguration, {'visible': true});
 
     this.disableFormField = (this.sessionContext.currentRole === 'CONTRIBUTOR' && this.resourceStatus === 'Draft') ? false : true ;
-    const formFields = _.map(this.formConfiguration, (formData) => {
-      if (!formData.defaultValue) {
-        return formData.code;
-      }
+    _.forEach(this.formConfiguration, (formData) => {
       this.selectOutcomeOption[formData.code] = formData.defaultValue;
     });
 
@@ -386,7 +385,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         } else if (obj.inputType === 'text') {
           preSavedValues[code] = (this.contentMetaData[code]) ? this.contentMetaData[code] : '';
           // tslint:disable-next-line:max-line-length
-          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, [Validators.required, Validators.pattern('(?=.*[a-zA-Z0-9]).{0,}')]] : controller[obj.code] = preSavedValues[code];
+          obj.required ? controller[obj.code] = [{value: preSavedValues[code], disabled: this.disableFormField}, [Validators.required]] : controller[obj.code] = preSavedValues[code];
         }
       }
     });
@@ -416,6 +415,7 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     if (this.editTitle === this.contentMetaData.name) {
       return;
     } else {
+   this.editTitle = _.trim(this.editTitle);
    const contentObj = {
      'versionKey': this.contentMetaData.versionKey,
      'name': this.editTitle
@@ -446,14 +446,26 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
   }
 
   saveContent(action?) {
-    if (this.contentDetailsForm.valid && this.editTitle && this.editTitle !== '') {
+    const requiredTextFields = _.filter(this.textFields, {required: true});
+    const validText = _.map(requiredTextFields, (obj) => {
+       return _.trim(this.contentDetailsForm.value[obj.code]).length !== 0;
+    });
+    // tslint:disable-next-line:max-line-length
+    if (this.contentDetailsForm.valid && this.editTitle && this.editTitle !== '' && !_.includes(validText, false)) {
       this.showTextArea = false;
       this.formValues = {};
       let contentObj = {
           'versionKey': this.contentMetaData.versionKey,
           'name': this.editTitle
       };
-      contentObj = _.pickBy(_.assign(contentObj, this.contentDetailsForm.value), _.identity);
+      const trimmedValue = _.mapValues(this.contentDetailsForm.value, (value) => {
+         if (_.isString(value)) {
+           return _.trim(value);
+         } else {
+           return value;
+         }
+      });
+      contentObj = _.pickBy(_.assign(contentObj, trimmedValue), _.identity);
       const request = {
         'content': contentObj
       };
@@ -475,7 +487,6 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.fmsg.m0098);
       });
     } else {
-      // this.toasterService.error('Please Fill Mandatory Form-Fields...');
       this.markFormGroupTouched(this.contentDetailsForm);
       this.toasterService.error(this.resourceService.messages.fmsg.m0076);
     }
@@ -559,4 +570,3 @@ export class ContentUploaderComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 }
-

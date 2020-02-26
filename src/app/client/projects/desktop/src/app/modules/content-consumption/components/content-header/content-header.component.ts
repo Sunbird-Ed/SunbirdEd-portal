@@ -105,16 +105,22 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   }
 
   downloadCollection(collection) {
+    this.disableDelete = false;
     collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     this.logTelemetry('download-collection');
     this.contentManagerService.downloadContentId = collection.identifier;
+    this.contentManagerService.failedContentName = collection.name;
     this.contentManagerService.startDownload({}).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.contentManagerService.downloadContentId = '';
       collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     }, error => {
+      this.disableDelete = true;
       this.contentManagerService.downloadContentId = '';
+      this.contentManagerService.failedContentName = '';
       collection['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
-      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+      if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+          }
     });
   }
 

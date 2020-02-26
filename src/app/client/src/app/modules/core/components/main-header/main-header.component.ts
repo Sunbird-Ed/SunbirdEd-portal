@@ -94,6 +94,7 @@ export class MainHeaderComponent implements OnInit {
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
+          document.title = _.get(user, 'userProfile.rootOrgName');
         }
       });
     } else {

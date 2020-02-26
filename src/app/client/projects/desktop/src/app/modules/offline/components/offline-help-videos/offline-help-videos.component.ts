@@ -40,16 +40,16 @@ export class OfflineHelpVideosComponent implements OnInit {
     this.slideConfig = this.configService.offlineConfig.watchVideo;
     this.slideData = [
       {
+        id: 'add-content-offline',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0095),
+        thumbnail: 'assets/images/play-icon.svg',
+        url: 'assets/videos/How_do_I_download_content_from_DIKSHA_Library.mp4'
+      },
+      {
         id: 'add-content-online',
         name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0094),
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_connected_to_the_Internet.mp4'
-      },
-      {
-        id: 'find-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
-        thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_and_where_can_I_find_content_in_My_Library.mp4'
+        url: 'assets/videos/How_do_I_load_content_to_the_desktop_app.mp4'
       },
       {
         id: 'copy-content',
@@ -58,11 +58,11 @@ export class OfflineHelpVideosComponent implements OnInit {
         url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive.mp4'
       },
       {
-        id: 'add-content-offline',
-        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0095),
+        id: 'find-content-offline',
+        name: this.interpolateInstance(this.resourceService.frmelmnts.instn.t0096),
         thumbnail: 'assets/images/play-icon.svg',
-        url: 'assets/videos/How_do_I_add_content_to_the_desktop_app_when_I_am_offline_or_using_a_pen_drive.mp4'
-      }
+        url: 'assets/videos/How_do_I_play_content.mp4'
+      },
     ];
 
     this.activeVideoObject = this.slideData[0];

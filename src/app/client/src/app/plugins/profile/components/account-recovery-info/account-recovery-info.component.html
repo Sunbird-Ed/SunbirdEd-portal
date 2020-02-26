@@ -47,9 +47,9 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button [ngClass]="{'sb-btn-disabled': !enableSubmitButton}" class="sb-btn sb-btn-normal sb-btn-primary" (click)="updateRecoveryId()"
-    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata">
+    <button [ngClass]="{'sb-btn-disabled': !enableSubmitButton, 'sb-btn-primary': enableSubmitButton}" class="sb-btn sb-btn-normal" (click)="updateRecoveryId()"
+    appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [disabled]="!enableSubmitButton"
+      [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata" [attr.disabled]="!enableSubmitButton ? 'disabled' : null">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
   </div>
