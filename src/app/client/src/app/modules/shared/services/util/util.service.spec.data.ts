@@ -351,7 +351,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'DOWNLOADED',
+          'label': 'Downloaded',
           'disabled': false
         },
         {
@@ -405,7 +405,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'DOWNLOADED',
+          'label': 'Downloaded',
           'disabled': false
         },
         {
@@ -464,7 +464,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
-          'label': 'DOWNLOADED',
+          'label': 'Downloaded',
           'disabled': false
         },
         {
