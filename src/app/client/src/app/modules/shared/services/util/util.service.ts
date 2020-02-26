@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
   // Dependency injection creates new instance each time if used in router sub-modules
 @Injectable()
@@ -184,11 +184,23 @@ export class UtilService {
   getPlayerDownloadStatus(status, content, currentRoute) {
     if (content) {
         const downloadStatus = content['downloadStatus'];
-        if (status === 'DOWNLOAD') {
-          const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
-          return (!downloadStatus || _.includes(contentStatus, content['downloadStatus']));
+        const addedUsing  = _.get(content, 'desktopAppMetadata.addedUsing');
+
+        console.log('afvhjfgkfhkt', addedUsing, _.get(content, 'desktopAppMetadata'), status);
+        if (addedUsing && addedUsing === 'import') {
+          const importStatus = ['DOWNLOADED', 'DOWNLOADING', 'PAUSED'];
+          if (status === 'DOWNLOAD') {
+            return !this.isAvailable(content);
+          }
         } else {
-          return (content['downloadStatus'] === status);
+          const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
+            if (status === 'DOWNLOAD') {
+            return  downloadStatus ? _.includes(contentStatus, downloadStatus) : !this.isAvailable(content);
+            } else {
+              console.log('downloadStatusdownloadStatusdownloadStatus', downloadStatus, this.isAvailable(content) ,
+              downloadStatus ? downloadStatus === status : this.isAvailable(content));
+             return downloadStatus ? downloadStatus === status : this.isAvailable(content);
+            }
         }
     }
   }
