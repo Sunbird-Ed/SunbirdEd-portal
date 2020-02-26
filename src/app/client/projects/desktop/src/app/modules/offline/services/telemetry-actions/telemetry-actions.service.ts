@@ -31,7 +31,7 @@ export class TelemetryActionsService {
       return this.publicDataService.post(exportOptions);
     }));
   }
-  getTelemetryImportList(): Observable<ServerResponse> {
+  telemetryImportList(): Observable<ServerResponse> {
     return this.publicDataService.get({
       url: this.configService.urlConFig.URLS.OFFLINE.IMPORT_TELEMETRY_LIST,
     });

@@ -17,8 +17,9 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   importedFilesSize = 0;
   constructor(private resourceService: ResourceService,
-    private telemetryActionsService: TelemetryActionsService,
+    public telemetryActionsService: TelemetryActionsService,
     private telemetryService: TelemetryService,
+    private toasterService: ToasterService,
     private activatedRoute: ActivatedRoute,
     private electronDialogService: ElectronDialogService) {
       document.addEventListener('telemetry:import', (event) => {
@@ -34,7 +35,7 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
     this.electronDialogService.showTelemetryImportDialog();
   }
   getImportedFilesList() {
-    this.telemetryActionsService.getTelemetryImportList().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+    this.telemetryActionsService.telemetryImportList().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.importFilesList = _.get(data, 'result.response');
       this.getTotalSizeImportedFiles();
     });
@@ -62,6 +63,8 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
   reyTryTelemetryImport(fileDetails) {
     this.setRetryImportTelemetry(fileDetails);
     this.telemetryActionsService.reyTryTelemetryImport(fileDetails).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.desktop.etmsg.telemetryImportError);
     });
   }
   setRetryImportTelemetry(fileDetails) {
