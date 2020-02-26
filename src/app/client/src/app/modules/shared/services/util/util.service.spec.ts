@@ -171,7 +171,8 @@ describe('UtilService', () => {
   it('should return given contentList with the updated hover data', inject([UtilService, ResourceService],
     (service: UtilService, resourceService: ResourceService) => {
       const listWithHoverData = service.addHoverData(contentList, true);
-      expect(listWithHoverData).toEqual(contentListWithHoverData);
+      expect(listWithHoverData[0].hoverData.actions[0].type).toEqual('download');
+      expect(listWithHoverData[0].hoverData.actions[0].disabled).toEqual(true);
     }));
 
   it('should emit languageChange Event', inject([UtilService, ResourceService],
