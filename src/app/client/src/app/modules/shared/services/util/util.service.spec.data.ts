@@ -353,9 +353,9 @@ export const contentListWithHoverData = [
       'note': '',
       'actions': [
         {
-          'type': 'save',
-          'label': 'Downloaded',
-          'disabled': false
+          'type': 'download',
+          'label': undefined,
+          'disabled': true
         },
         {
           'type': 'open',
@@ -407,9 +407,9 @@ export const contentListWithHoverData = [
       'note': '',
       'actions': [
         {
-          'type': 'save',
-          'label': 'Downloaded',
-          'disabled': false
+          'type': 'download',
+          'label': undefined,
+          'disabled': true
         },
         {
           'type': 'open',
@@ -466,9 +466,9 @@ export const contentListWithHoverData = [
       'note': '',
       'actions': [
         {
-          'type': 'save',
-          'label': 'Downloaded',
-          'disabled': false
+          'type': 'download',
+          'label': undefined,
+          'disabled': true
         },
         {
           'type': 'open',
