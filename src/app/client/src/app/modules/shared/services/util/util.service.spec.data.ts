@@ -187,7 +187,10 @@ export const servicemockRes = {
         body: 'body',
         identifier: 'domain_66675',
         versionKey: '1497028761823',
-        downloadStatus: 'FAILED',
+        downloadStatus: 'DOWNLOADED',
+        desktopAppMetadata: {
+          isAvailable: true
+        },
       }
     }
   }
@@ -232,7 +235,7 @@ export const contentList = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': false
+      'isAvailable': true
     }
   },
   {
@@ -272,7 +275,7 @@ export const contentList = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': false
+      'isAvailable': true
     }
   },
   {
@@ -317,7 +320,7 @@ export const contentList = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': false
+      'isAvailable': true
     }
   }
 ];
@@ -351,6 +354,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
+          'label': 'Downloaded',
           'disabled': false
         },
         {
@@ -374,7 +378,7 @@ export const contentListWithHoverData = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': false
+      'isAvailable': true
     }
   },
   {
@@ -404,6 +408,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
+          'label': 'Downloaded',
           'disabled': false
         },
         {
@@ -427,7 +432,7 @@ export const contentListWithHoverData = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': false
+      'isAvailable': true
     }
   },
   {
@@ -462,6 +467,7 @@ export const contentListWithHoverData = [
       'actions': [
         {
           'type': 'save',
+          'label': 'Downloaded',
           'disabled': false
         },
         {
@@ -485,7 +491,7 @@ export const contentListWithHoverData = [
       }
     },
     'desktopAppMetadata': {
-      'isAvailable': false
+      'isAvailable': true
     }
   }
 ];

@@ -183,22 +183,38 @@ export class UtilService {
   }
   getPlayerDownloadStatus(status, content, currentRoute) {
     if (content) {
-      const downloadStatus = content['downloadStatus'];
-      if (this.isAvailable(content) && !_.isEqual(_.get(content, 'desktopAppMetadata.addedUsing'), 'import')) {
-        if (status === 'DOWNLOAD') {
-          const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
-          return (downloadStatus ? _.includes(contentStatus, content['downloadStatus']) : !this.isAvailable(content));
+      if (currentRoute === 'browse') {
+        if (this.isAvailable(content) && _.isEqual(_.get(content, 'desktopAppMetadata.addedUsing'), 'import')) {
+         return this.isImported(status, content);
+        } else {
+         return this.isDownloaded(status, content);
         }
-        return (downloadStatus ? content['downloadStatus'] === status : this.isAvailable(content));
       } else {
-        if (status === 'DOWNLOADED') {
-          return (this.isAvailable(content));
-        }
-        return (!this.isAvailable(content));
+        if (this.isAvailable(content) && _.isEqual(_.get(content, 'desktopAppMetadata.addedUsing'), 'import')) {
+         return this.isImported(status, content);
+      } else {
+        return this.isDownloaded(status, content);
+      }
       }
       }
   }
 
+  isImported(status, content) {
+    if (status === 'DOWNLOADED') {
+      return (this.isAvailable(content));
+    }
+    return (!this.isAvailable(content));
+  }
+
+  isDownloaded(status, content) {
+    const downloadStatus = content['downloadStatus'];
+    if (status === 'DOWNLOAD') {
+      const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
+      return (downloadStatus ? _.includes(contentStatus, content['downloadStatus']) : !this.isAvailable(content));
+    } else {
+      return (downloadStatus ? content['downloadStatus'] === status : this.isAvailable(content));
+    }
+  }
   getPlayerUpdateStatus(status, content, currentRoute, isUpdated) {
     if (currentRoute === 'library' && isUpdated) {
       if (status === 'UPDATE') {

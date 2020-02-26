@@ -170,7 +170,7 @@ describe('UtilService', () => {
 
   it('should return given contentList with the updated hover data', inject([UtilService, ResourceService],
     (service: UtilService, resourceService: ResourceService) => {
-      const listWithHoverData = service.addHoverData(contentList, false);
+      const listWithHoverData = service.addHoverData(contentList, true);
       expect(listWithHoverData).toEqual(contentListWithHoverData);
     }));
 
@@ -224,5 +224,17 @@ describe('UtilService', () => {
       (service: UtilService, resourceService: ResourceService) => {
         const data = service.isAvailable(contentListWithHoverData[0]);
         expect(data).toBeTruthy();
-      }));
+  }));
+
+  it('should return isAvailable ', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const data = service.isImported('DOWNLOADED', servicemockRes.successResult.result.content);
+      expect(data).toBeTruthy();
+  }));
+
+  it('should return isAvailable ', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const data = service.isDownloaded('DOWNLOADED', servicemockRes.successResult.result.content);
+      expect(data).toBeTruthy();
+  }));
 });
