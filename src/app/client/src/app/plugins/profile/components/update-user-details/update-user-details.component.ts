@@ -27,8 +27,10 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   telemetryInteractObject: IInteractEventObject;
   selectedState;
   selectedDistrict;
+  stateControl: any;
   prevStateValue: any;
   stateModified = false;
+  districtControl: any;
   prevDistrictValue: any;
   districtModified = false;
 
@@ -131,10 +133,10 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
-    const stateControl = this.userDetailsForm.get('state');
-    const districtControl = this.userDetailsForm.get('district');
+    this.stateControl = this.userDetailsForm.get('state');
+    this.districtControl = this.userDetailsForm.get('district');
     this.enableSubmitBtn = false;
-    if ((this.prevDistrictValue !== districtControl.value) || (this.prevStateValue !== stateControl.value)) {
+    if ((this.prevDistrictValue !== this.districtControl.value) || (this.prevStateValue !== this.stateControl.value)) {
       document.getElementById('stateModifiedButton').click();
     }
     if (_.trim(this.userDetailsForm.value.name) !== this.userProfile.firstName) {
