@@ -43,12 +43,11 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data: any) => {
-      if (_.get(data, 'identifier')) {
-        this.deletedContents.push(data.identifier);
-        this.removeDeletedContentInList();
-      }
-    });
+      // Subscribing to delete event to remove it from content manager list
+      this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((deletedIds: string[]) => {
+        this.isOpen = true;
+        this.apiCallSubject.next();
+      });
     // Call download list initially
     this.apiCallSubject.next();
 
@@ -65,23 +64,6 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       .subscribe(failedContentName => {
         this.unHandledFailedList.push({name: failedContentName});
       });
-  }
-
-  removeDeletedContentInList() {
-    this.contentResponse = _.filter(this.contentResponse, (o) => {
-      return !_.includes(this.deletedContents, o.contentId);
-    });
-  }
-
-  removeDeleteId() {
-    _.filter(this.contentResponse, (o) => {
-      if (_.includes(this.deletedContents, o.contentId) && o.status !== 'completed') {
-        _.remove(this.deletedContents, (n) => {
-          return n === o.contentId;
-        });
-      }
-    });
-    this.removeDeletedContentInList();
   }
 
   getList() {
@@ -107,27 +89,10 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.completedCount = completedCount;
           return _.get(resp, 'result.response.contents');
         })).subscribe((apiResponse: any) => {
-
-          if (apiResponse.length >= this.localContentData.length) {
-            this.localContentData = apiResponse;
-          } else if (this.localContentData.length > apiResponse.length) {
-            this.callContentList = true;
-          }
-          this.contentResponse = _.filter(this.localContentData, (o) => {
+          this.handleInsufficentMemoryError(apiResponse);
+          this.contentResponse = _.filter(apiResponse, (o) => {
             return o.status !== 'canceled';
           });
-
-
-          this.handleInsufficentMemoryError(apiResponse);
-
-        if (apiResponse.length >= this.localContentData.length) {
-          this.localContentData = apiResponse;
-        } else if (this.localContentData.length > apiResponse.length) {
-          this.callContentList = true;
-        }
-          this.contentManagerService.emitDownloadListEvent(this.localContentData);
-        this.removeDeleteId();
-
         });
   }
   handleInsufficentMemoryError(allContentList) {

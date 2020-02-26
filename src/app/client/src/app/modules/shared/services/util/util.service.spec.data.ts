@@ -187,7 +187,65 @@ export const servicemockRes = {
         body: 'body',
         identifier: 'domain_66675',
         versionKey: '1497028761823',
-        downloadStatus: 'FAILED',
+        downloadStatus: 'DOWNLOADED',
+        desktopAppMetadata: {
+          addedUsing: 'import',
+          isAvailable: true
+        },
+      }
+    }
+  },
+  successResult2: {
+    id: 'api.content.read',
+    ver: '1.0',
+    ts: '2018-05-03T10:51:12.648Z',
+    params: 'params',
+    responseCode: 'OK',
+    result: {
+      content: {
+        mimeType: 'application/vnd.ekstep.ecml-archive',
+        body: 'body',
+        identifier: 'domain_66675',
+        versionKey: '1497028761823',
+        desktopAppMetadata: {
+          addedUsing: 'import',
+          isAvailable: true
+        },
+      }
+    }
+  },
+  successResult3: {
+    id: 'api.content.read',
+    ver: '1.0',
+    ts: '2018-05-03T10:51:12.648Z',
+    params: 'params',
+    responseCode: 'OK',
+    result: {
+      content: {
+        mimeType: 'application/vnd.ekstep.ecml-archive',
+        body: 'body',
+        identifier: 'domain_66675',
+        versionKey: '1497028761823',
+        desktopAppMetadata: {
+          addedUsing: 'import',
+          isAvailable: false
+        },
+      }
+    }
+  },
+  successResult4: {
+    id: 'api.content.read',
+    ver: '1.0',
+    ts: '2018-05-03T10:51:12.648Z',
+    params: 'params',
+    responseCode: 'OK',
+    result: {
+      content: {
+        mimeType: 'application/vnd.ekstep.ecml-archive',
+        body: 'body',
+        identifier: 'domain_66675',
+        versionKey: '1497028761823',
+        downloadStatus: 'DOWNLOADING'
       }
     }
   }
@@ -206,6 +264,7 @@ export const contentList = [
     'contentType': 'Resource',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_3125010999257169921165',
       'mimeType': 'application/vnd.ekstep.html-archive',
@@ -229,6 +288,9 @@ export const contentList = [
         'name': 'Experiment',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   },
   {
@@ -242,6 +304,7 @@ export const contentList = [
     'contentType': 'Resource',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_3126224885317877761111',
       'mimeType': 'application/vnd.ekstep.ecml-archive',
@@ -265,6 +328,9 @@ export const contentList = [
         'name': 'Test',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   },
   {
@@ -279,6 +345,7 @@ export const contentList = [
     'contentType': 'TextBook',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_31288771643112652813019',
       'mimeType': 'application/vnd.ekstep.content-collection',
@@ -306,6 +373,9 @@ export const contentList = [
         'name': 'Book',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   }
 ];
@@ -323,6 +393,7 @@ export const contentListWithHoverData = [
     'contentType': 'Resource',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_3125010999257169921165',
       'mimeType': 'application/vnd.ekstep.html-archive',
@@ -337,9 +408,9 @@ export const contentListWithHoverData = [
       'note': '',
       'actions': [
         {
-          'type': 'save',
-          'label': undefined,
-          'disabled': false
+          'type': 'download',
+          'label': '' || undefined,
+          'disabled': true
         },
         {
           'type': 'open',
@@ -360,6 +431,9 @@ export const contentListWithHoverData = [
         'name': 'Experiment',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   },
   {
@@ -373,6 +447,7 @@ export const contentListWithHoverData = [
     'contentType': 'Resource',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_3126224885317877761111',
       'mimeType': 'application/vnd.ekstep.ecml-archive',
@@ -387,9 +462,9 @@ export const contentListWithHoverData = [
       'note': '',
       'actions': [
         {
-          'type': 'save',
-          'label': undefined,
-          'disabled': false
+          'type': 'download',
+          'label': '' || undefined,
+          'disabled': true
         },
         {
           'type': 'open',
@@ -410,6 +485,9 @@ export const contentListWithHoverData = [
         'name': 'Test',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   },
   {
@@ -424,6 +502,7 @@ export const contentListWithHoverData = [
     'contentType': 'TextBook',
     'topic': '',
     'subTopic': '',
+    'downloadStatus': 'COMPLETED',
     'metaData': {
       'identifier': 'do_31288771643112652813019',
       'mimeType': 'application/vnd.ekstep.content-collection',
@@ -442,9 +521,9 @@ export const contentListWithHoverData = [
       'note': '',
       'actions': [
         {
-          'type': 'save',
-          'label': undefined,
-          'disabled': false
+          'type': 'download',
+          'label': '' || undefined,
+          'disabled': true
         },
         {
           'type': 'open',
@@ -465,6 +544,9 @@ export const contentListWithHoverData = [
         'name': 'Book',
         'class': 'ui black right ribbon label'
       }
+    },
+    'desktopAppMetadata': {
+      'isAvailable': true
     }
   }
 ];

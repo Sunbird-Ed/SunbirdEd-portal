@@ -50,7 +50,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   myDownloadsLinkInteractEdata: IInteractEventEdata;
   viewMoreButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
-
+  contentDownloadStatus = {};
   constructor(
     public contentManagerService: ContentManagerService,
     public router: Router,
@@ -87,7 +87,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       .subscribe(isConnected => {
         this.isConnected = isConnected;
       });
-
+      this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+        this.contentDownloadStatus = contentDownloadStatus;
+      });
     this.setTelemetryData();
     this.utilService.emitHideHeaderTabsEvent(true);
   }
@@ -166,11 +168,21 @@ export class SearchComponent implements OnInit, OnDestroy {
                   const linkedContents = _.flatMap(_.values(onlineDialCodeRes));
                   const contents = getDataForCard(linkedContents);
                   this.onlineContentsCount = contents.length;
+                  _.forEach(contents, content => {
+                    if (this.contentDownloadStatus[content.identifier]) {
+                        content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+                    }
+                 });
                   this.onlineContents = this.utilService.addHoverData(contents, true);
                 }
                 if (offlineDialCodeRes) {
                   const linkedContents = _.flatMap(_.values(offlineDialCodeRes));
                   const contents = getDataForCard(linkedContents);
+                  _.forEach(contents, content => {
+                    if (this.contentDownloadStatus[content.identifier]) {
+                        content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+                    }
+                 });
                   this.downloadedContentsCount = contents.length;
                   this.downloadedContents = this.utilService.addHoverData(contents, false);
                 }
@@ -182,12 +194,22 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.downloadedContents = offlineRes.result.count ? _.chunk(getDataForCard(offlineRes.result.content),
               this.MAX_CARDS_TO_SHOW)[0] : [];
             this.downloadedContentsCount = offlineRes.result.count;
+            _.forEach(this.downloadedContents, content => {
+              if (this.contentDownloadStatus[content.identifier]) {
+                  content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+              }
+           });
             this.downloadedContents = this.utilService.addHoverData(this.downloadedContents, false);
 
             if (onlineRes) {
               this.onlineContents = onlineRes.result.count ?
                 _.chunk(getDataForCard(onlineRes.result.content), this.MAX_CARDS_TO_SHOW)[0] : [];
               this.onlineContentsCount = onlineRes.result.count;
+              _.forEach(this.onlineContentsCount, content => {
+                if (this.contentDownloadStatus[content.identifier]) {
+                    content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+                }
+             });
               this.onlineContents = this.utilService.addHoverData(this.onlineContents, true);
             }
 
