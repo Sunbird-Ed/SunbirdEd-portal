@@ -9,17 +9,17 @@
       </div>
       <div class="d-flex flex-dc flex-w-wrap">
         <div class="d-flex sb-radio-btn-checkbox sb-radio-btn-primary px-16 pb-8">
-          <input type="radio" id="alwaysOn" name="radio-group" [checked]="syncStatus">
+          <input type="radio" id="alwaysOn" name="radio-group" [checked]="syncStatus" (change)="onChangeTelemetrySyncStatus(syncStatus)">
           <label for="alwaysOn">{{resourceService?.frmelmnts?.desktop?.lbl?.alwaysOn}}</label>
         </div>
         <div class="d-flex sb-radio-btn-checkbox sb-radio-btn-primary px-16 pb-8">
-          <input type="radio" id="off" name="radio-group" [checked]="!syncStatus">
+          <input type="radio" id="off" name="radio-group" [checked]="!syncStatus" (change)="onChangeTelemetrySyncStatus(!syncStatus)" >
           <label for="off">{{resourceService?.frmelmnts?.desktop?.lbl?.Off}}</label>
         </div>
       </div>
       <div class="d-flex flex-w-wrap px-16">
         <div>
-          <button type="button" class="sb-btn sb-btn-primary sb-btn-normal my-8">
+          <button type="button" class="sb-btn sb-btn-primary sb-btn-normal my-8" (click)="syncTelemetry()">
             {{resourceService?.frmelmnts?.desktop?.lbl?.syncTelemetry}} (500KB)&lrm;</button>
           <dl class="my-0">
             <dt class="multiline-list-key">{{resourceService?.frmelmnts?.desktop?.lbl?.lastSynced}}</dt>

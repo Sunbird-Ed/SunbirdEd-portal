@@ -1,21 +1,31 @@
 <ul class="sb-bordered-list my-16">
   <li class="sb-bordered-list-item m-0">
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-      <div class="sb-bordered-list-item-title">{{resourceService?.frmelmnts?.desktop?.lbl?.filesImported}} ({{importFilesList['length']}})&lrm;
+      <div class="sb-bordered-list-item-title">{{resourceService?.frmelmnts?.desktop?.lbl?.filesImported}}
+        ({{importFilesList?.length}})&lrm;
         <span class="sb-bordered-list-item-title-extra ml-16">{{resourceService?.frmelmnts?.desktop?.lbl?.TotalSize}}
-          75KB</span></div>
+          {{importedFilesSize | filesize }}</span></div>
 
-      <div class="sb-btn sb-btn-normal sb-bulk-upload-btn sb-btn-outline-primary">
+      <div class="sb-btn sb-btn-normal sb-bulk-upload-btn sb-btn-outline-primary" (click)="openImportTelemetryDialog()">
         <img src="assets/images/plus-icon.svg" width="12px" height="12px" class="mr-8">
         {{resourceService?.frmelmnts?.desktop?.lbl?.importNewFile}}
-        <input class="sb-btn-upload" name="file" type="file"></div>
+      </div>
 
     </div>
   </li>
   <li class="sb-bordered-list-item m-0" *ngFor="let items of importFilesList">
     <div class="d-flex flex-ai-center">
-      <div class="sb-bordered-list-item-heading">File_1.gsa</div>
-      <div class="sb-bordered-list-item-subheading ml-16">19 February 2019 at 6:40 PM, 25KB</div>
+      <div class="sb-bordered-list-item-heading">{{items.name}}</div>
+      <div class="sb-bordered-list-item-subheading ml-16">{{items.createdOn | dateFormat: 'DD MMMM YYYY'}}
+        at {{items.createdOn | date:'h:mm a'}}, {{items?.totalSize | filesize}}</div>
+      <div class="sb-bordered-list-item-subheading ml-16 ">
+        <span *ngIf="items.status === 'completed'" class="sb-color-success">{{items.status}} </span>
+        <span *ngIf="items.status === 'failed'" class="sb-color-error">{{items.status}}
+          <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8" (click)="reyTryImport(items)">
+            {{resourceService?.frmelmnts?.btn?.retry}}
+          </button>
+        </span>
+      </div>
     </div>
   </li>
 </ul>

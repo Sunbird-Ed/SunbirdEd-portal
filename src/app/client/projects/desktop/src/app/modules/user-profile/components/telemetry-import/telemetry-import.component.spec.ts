@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TelemetryImportComponent } from './telemetry-import.component';
 
-describe('TelemetryImportComponent', () => {
+xdescribe('TelemetryImportComponent', () => {
   let component: TelemetryImportComponent;
   let fixture: ComponentFixture<TelemetryImportComponent>;
 

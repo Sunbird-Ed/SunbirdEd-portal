@@ -27,12 +27,12 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.router.events
-    .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
-    .subscribe(x => {this.setPageExitTelemtry(); });
+      .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
+      .subscribe(x => { this.setPageExitTelemtry(); });
     this.getTelemetryInfo();
     this.setTelemetryImpression();
   }
@@ -63,8 +63,57 @@ export class TelemetryComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  setTelemetryImpression () {
+  onChangeTelemetrySyncStatus(syncStatus) {
+    this.setTelemetrySyncStatus(syncStatus);
+    this.telemetryActionService.telemetrySyncStatus(syncStatus).pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (data) => {
+      },
+      (err) => {
+      }
+    );
+  }
+  setTelemetrySyncStatus(syncStatus) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'telemetry',
+        cdata: []
+      },
+      edata: {
+        id: 'telemetry_sync_status' + syncStatus,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid'),
+        extra: {}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+  syncTelemetry() {
+    this.setSyncTelemetry();
+    this.telemetryActionService.syncTelemtry(this.telemetryInfo).pipe(takeUntil(this.unsubscribe$)).subscribe(
+      (data) => {
+      },
+      (err) => {
+      }
+    );
+  }
+  setSyncTelemetry() {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'telemetry',
+        cdata: []
+      },
+      edata: {
+        id: 'sync_telemetry',
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid'),
+        extra: {
+          size: this.telemetryInfo['totalSize'],
+        }
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+  setTelemetryImpression() {
     this.telemetryImpression = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'telemetry'
