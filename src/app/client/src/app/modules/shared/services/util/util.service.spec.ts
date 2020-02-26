@@ -225,16 +225,4 @@ describe('UtilService', () => {
         const data = service.isAvailable(contentListWithHoverData[0]);
         expect(data).toBeTruthy();
   }));
-
-  it('should return isAvailable ', inject([UtilService, ResourceService],
-    (service: UtilService, resourceService: ResourceService) => {
-      const data = service.isImported('DOWNLOADED', servicemockRes.successResult.result.content);
-      expect(data).toBeTruthy();
-  }));
-
-  it('should return isAvailable ', inject([UtilService, ResourceService],
-    (service: UtilService, resourceService: ResourceService) => {
-      const data = service.isDownloaded('DOWNLOADED', servicemockRes.successResult.result.content);
-      expect(data).toBeTruthy();
-  }));
 });

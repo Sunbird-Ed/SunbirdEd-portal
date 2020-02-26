@@ -184,39 +184,18 @@ export class UtilService {
   getPlayerDownloadStatus(status, content, currentRoute) {
     if (content) {
       if (currentRoute === 'browse') {
-        if (this.isAvailable(content) && _.isEqual(_.get(content, 'desktopAppMetadata.addedUsing'), 'import')) {
-         return this.isImported(status, content);
+        const downloadStatus = content['downloadStatus'];
+        if (status === 'DOWNLOAD') {
+          const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
+          return (!downloadStatus || _.includes(contentStatus, content['downloadStatus']));
         } else {
-         return this.isDownloaded(status, content);
+          return (content['downloadStatus'] === status);
         }
-      } else {
-        if (this.isAvailable(content) && _.isEqual(_.get(content, 'desktopAppMetadata.addedUsing'), 'import')) {
-         return this.isImported(status, content);
-      } else {
-        return this.isDownloaded(status, content);
       }
-      }
-      }
-  }
-
-  isImported(status, content) {
-    if (status === 'DOWNLOADED') {
-      return (this.isAvailable(content));
-    }
-    return (!this.isAvailable(content));
-  }
-
-  isDownloaded(status, content) {
-    const downloadStatus = content['downloadStatus'];
-
-    console.log('downloadStatusdownloadStatusdownloadStatus', downloadStatus, content['desktopAppMetadata']);
-    if (status === 'DOWNLOAD') {
-      const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
-      return (downloadStatus ? _.includes(contentStatus, content['downloadStatus']) : !this.isAvailable(content));
-    } else {
-      return (downloadStatus ? content['downloadStatus'] === status : this.isAvailable(content));
+      return false;
     }
   }
+
   getPlayerUpdateStatus(status, content, currentRoute, isUpdated) {
     if (currentRoute === 'library' && isUpdated) {
       if (status === 'UPDATE') {
