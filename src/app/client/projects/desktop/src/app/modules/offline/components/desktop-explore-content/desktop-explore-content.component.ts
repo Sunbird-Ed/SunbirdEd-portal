@@ -52,6 +52,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   @Input() isOnlineContents = false;
   @Output() visits: EventEmitter<any> = new EventEmitter();
   unHandledFailedList = [];
+  contentDownloadStatus = {};
   constructor(
     public contentManagerService: ContentManagerService,
     public router: Router,
@@ -84,11 +85,10 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
         this.isConnected = isConnected;
       });
 
-    this.contentManagerService.downloadListEvent
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((data) => {
-        this.updateCardData(data);
-      });
+    this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+      this.contentDownloadStatus = contentDownloadStatus;
+      this.updateCardData();
+    });
 
   }
 
@@ -247,10 +247,10 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
       });
   }
 
-  updateCardData(downloadListdata) {
+  updateCardData() {
     if (this.isBrowse || this.isOnlineContents) {
       _.each(this.contentList, (contents) => {
-        this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
+        this.publicPlayerService.updateDownloadStatus(this.contentDownloadStatus, contents);
       });
       this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);
     }

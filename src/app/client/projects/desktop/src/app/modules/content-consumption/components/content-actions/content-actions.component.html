@@ -65,3 +65,8 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
   <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentData?.name}}
   </h6>
 </sui-dimmer>
+<sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}': contentData?.name}}
+  </h6>
+</sui-dimmer>

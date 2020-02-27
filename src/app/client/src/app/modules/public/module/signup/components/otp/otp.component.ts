@@ -82,7 +82,7 @@ export class OtpComponent implements OnInit {
         this.telemetryService.interact(this.generateVerifyOtpErrorInteractEdata);
         this.infoMessage = '';
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
-          wrongOTPMessage : this.resourceService.messages.fmsg.m0085;
+          wrongOTPMessage : wrongOTPMessage;
         if (this.disableResendButton) {
           this.showSignUpLink = true;
           this.telemetryService.end(this.telemetryEnd);
