@@ -38,7 +38,7 @@ export class ListAllProgramsComponent implements OnInit, AfterViewInit {
     return this.programsService.programsList$.pipe(
       mergeMap(programs  => {
         _.forEach(programs, (program) => {
-          if (!_.get(program, 'rootOrgName') && rootOrgIds.indexOf(program.rootOrgId) == -1) {
+          if (!_.get(program, 'rootOrgName') && rootOrgIds.indexOf(program.rootOrgId) === -1) {
             rootOrgIds.push(program.rootOrgId);
           }
         });
