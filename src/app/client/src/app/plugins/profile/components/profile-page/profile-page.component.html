@@ -66,8 +66,8 @@
           {{state || resourceService.frmelmnts.lbl.addState}}</div>
       </div>
       <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-         [telemetryInteractEdata]="editProfileInteractEdata"
-         class="sb-btn sb-btn-primary sb-btn-xs right-aligned-button right-0 bottom-5 absolute computer only"
+        [telemetryInteractEdata]="editProfileInteractEdata"
+        class="sb-btn sb-btn-primary sb-btn-xs right-aligned-button right-0 bottom-5 absolute computer only"
         (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
     </div>
 
@@ -291,4 +291,3 @@
 <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup" *ngIf="showEditUserDetailsPopup"
   [userProfile]="userProfile"></app-update-user-details>
   <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
-<router-outlet></router-outlet>
