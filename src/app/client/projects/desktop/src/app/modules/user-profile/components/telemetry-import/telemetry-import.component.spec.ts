@@ -74,4 +74,18 @@ describe('TelemetryImportComponent', () => {
     });
     expect(component.setRetryImportTelemetry).toHaveBeenCalledWith(telemetryData.filedetails);
   });
+  it('should call reyTryTelemetryImport', () => {
+    const telemetryActionsService = TestBed.get(TelemetryActionsService);
+    spyOn(component, 'setRetryImportTelemetry');
+    spyOn(component['toasterService'], 'error');
+    spyOn(telemetryActionsService, 'reyTryTelemetryImport').and.returnValue(of('false'));
+    component.reyTryTelemetryImport(telemetryData.filedetails);
+    component.telemetryActionsService.reyTryTelemetryImport(telemetryData.filedetails).subscribe(data => {
+    }, error => {
+      expect(component['toasterService'].error).
+      toHaveBeenCalledWith(telemetryData.resourceBundle.messages.desktop.etmsg.telemetryImportError);
+
+    });
+    expect(component.setRetryImportTelemetry).toHaveBeenCalledWith(telemetryData.filedetails);
+  });
 });

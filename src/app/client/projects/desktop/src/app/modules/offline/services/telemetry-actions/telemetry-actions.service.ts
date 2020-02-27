@@ -43,8 +43,6 @@ export class TelemetryActionsService {
     };
     return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
       return response;
-    }), catchError(err => {
-      return observableThrowError(err);
     }));
   }
   syncTelemtry(data): Observable<ServerResponse> {
@@ -53,9 +51,7 @@ export class TelemetryActionsService {
       data: data
     };
     return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
-      return response;
-    }), catchError(err => {
-      return observableThrowError(err);
+
     }));
   }
   reyTryTelemetryImport(data) {
@@ -65,8 +61,6 @@ export class TelemetryActionsService {
     };
     return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
       return response;
-    }), catchError(err => {
-      return observableThrowError(err);
     }));
   }
 }
