@@ -16,7 +16,7 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
   importFilesList = [];
   public unsubscribe$ = new Subject<void>();
   importedFilesSize = 0;
-  constructor(private resourceService: ResourceService,
+  constructor(public resourceService: ResourceService,
     public telemetryActionsService: TelemetryActionsService,
     private telemetryService: TelemetryService,
     private toasterService: ToasterService,

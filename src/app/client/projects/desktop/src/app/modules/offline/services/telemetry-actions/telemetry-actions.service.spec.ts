@@ -26,5 +26,45 @@ describe('TelemetryActionsService', () => {
       expect(data).toEqual(telemetry.info);
     });
   });
-
+  it('should be call telemetryImportList', () => {
+    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+    spyOn(service['publicDataService'], 'get').and.returnValue(of(telemetry.importList));
+    service.getTelemetryInfo();
+    expect(service.publicDataService.get).toHaveBeenCalled();
+    service['publicDataService'].get({
+      url: service.configService.urlConFig.URLS.OFFLINE.IMPORT_TELEMETRY_LIST,
+    }).subscribe(data => {
+      expect(data).toEqual(telemetry.importList);
+    });
+  });
+  it('should be call telemetrySyncStatus', () => {
+    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+    spyOn(service['publicDataService'], 'post').and.returnValue(of('true'));
+    service.telemetrySyncStatus('true');
+    expect(service.publicDataService.post).toHaveBeenCalled();
+    service['publicDataService'].post({
+      url: service.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC_STATUS,
+    }).subscribe(data => {
+    });
+  });
+  it('should be call syncTelemtry', () => {
+    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+    spyOn(service['publicDataService'], 'post').and.returnValue(of('true'));
+    service.syncTelemtry(telemetry.info.result.response);
+    expect(service.publicDataService.post).toHaveBeenCalled();
+    service['publicDataService'].post({
+      url: service.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC,
+    }).subscribe(data => {
+    });
+  });
+  it('should be call reyTryTelemetryImport', () => {
+    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+    spyOn(service['publicDataService'], 'post').and.returnValue(of('true'));
+    service.reyTryTelemetryImport(telemetry.info.result.response);
+    expect(service.publicDataService.post).toHaveBeenCalled();
+    service['publicDataService'].post({
+      url: service.configService.urlConFig.URLS.OFFLINE.TELEMETRY_IMPORT_RETRY,
+    }).subscribe(data => {
+    });
+  });
 });
