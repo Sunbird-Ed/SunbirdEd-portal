@@ -186,19 +186,23 @@ export class UtilService {
     const downloadStatus = content['downloadStatus'];
     const addedUsing  = _.get(content, 'desktopAppMetadata.addedUsing');
     if (addedUsing && addedUsing === 'import' && !downloadStatus) {
-      if (this.isAvailable(content)) {
-       return status === 'DOWNLOADED';
-      } else {
-        return status === 'DOWNLOAD';
-      }
+      return this.isDownloaded(content, status);
     } else {
       const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
         if (status === 'DOWNLOAD') {
-        return  downloadStatus ? _.includes(contentStatus, downloadStatus) : !this.isAvailable(content);
+        return  downloadStatus ? _.includes(contentStatus, downloadStatus) : this.isDownloaded(content, status);
         } else {
-         return downloadStatus ? downloadStatus === status : this.isAvailable(content);
+         return downloadStatus ? downloadStatus === status : this.isDownloaded(content, status);
         }
     }
+    }
+  }
+
+  isDownloaded(content, status) {
+    if (this.isAvailable(content)) {
+      return status === 'DOWNLOADED';
+    } else {
+      return status === 'DOWNLOAD';
     }
   }
 
