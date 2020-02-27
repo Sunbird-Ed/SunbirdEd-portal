@@ -5,6 +5,7 @@
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
   position: relative;
 }
+
 .state-medium-container {
   position: relative;
   z-index: 999;
@@ -12,6 +13,8 @@
   &__dropdown {
     padding: ($base-block-space * 2) 0;
     z-index: 1;
+    width: 100%;
+    max-width: 210px;
   }
 
   &__separator {
@@ -27,8 +30,8 @@
   }
 }
 
-.sb-class-bar {
-}
+// .sb-class-bar {
+// }
 
 // state dropdown css
 .ui.selection.dropdown .menu > .item {
