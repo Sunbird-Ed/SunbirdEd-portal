@@ -67,8 +67,6 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     this.setTelemetrySyncStatus(syncStatus);
     this.telemetryActionService.telemetrySyncStatus(syncStatus).pipe(takeUntil(this.unsubscribe$)).subscribe(
       (data) => {
-      },
-      (err) => {
       }
     );
   }

@@ -8,6 +8,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TelemetryComponent } from './telemetry.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('TelemetryComponent', () => {
   let component: TelemetryComponent;
@@ -40,7 +41,8 @@ describe('TelemetryComponent', () => {
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useValue: RouterStub },
         { provide: ResourceService, useValue: telemetry.resourceBundle}
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -76,6 +78,7 @@ describe('TelemetryComponent', () => {
 
   it('should call logTelemetry', () => {
     expect(component).toBeTruthy();
+    component.telemetryInfo = telemetry.info.result.response;
     spyOn(component['telemetryActionService'], 'exportTelemetry').and.returnValue(throwError(telemetry.exportError));
     spyOn(component['toasterService'], 'error');
     component.exportTelemetry();
@@ -84,5 +87,26 @@ describe('TelemetryComponent', () => {
       expect(err).toEqual(telemetry.exportError);
       expect(component['toasterService'].error).toHaveBeenCalledWith(telemetry.resourceBundle.messages.emsg.desktop.telemetryExportEMsg);
     });
+  });
+  it('should call onChangeTelemetrySyncStatus', () => {
+    spyOn(component, 'setTelemetrySyncStatus');
+    spyOn(component['telemetryActionService'], 'telemetrySyncStatus').and.returnValue(of('true'));
+    component.onChangeTelemetrySyncStatus('true');
+    component['telemetryActionService'].telemetrySyncStatus('true').subscribe(data => {
+    }, (err) => {
+
+    });
+    expect(component.setTelemetrySyncStatus).toHaveBeenCalledWith('true');
+  });
+  it('should call syncTelemetry', () => {
+    component.telemetryInfo = telemetry.info.result.response;
+    spyOn(component, 'setSyncTelemetry');
+    spyOn(component['telemetryActionService'], 'syncTelemtry').and.returnValue(of('true'));
+    component.syncTelemetry();
+    component['telemetryActionService'].syncTelemtry(component.telemetryInfo).subscribe(data => {
+    }, (err) => {
+
+    });
+    expect(component.setSyncTelemetry).toHaveBeenCalled();
   });
 });

@@ -31,19 +31,14 @@
           <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
             my-8" (click)="exportTelemetry()" [disabled]="disableExport" *ngIf="telemetryInfo?.totalSize">
             {{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry}}
-            {{telemetryInfo?.totalSize | filesize}}
+           ({{telemetryInfo?.totalSize | filesize}})
           </button>
 
           <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
             my-8" (click)="exportTelemetry()" [disabled]="disableExport" *ngIf="!telemetryInfo?.totalSize">
             {{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry}}
-            {{telemetryInfo?.totalSize}}
+            ({{telemetryInfo?.totalSize | filesize}})
           </button>
-
-          <dl class="my-0 profile-description">
-            <dd class="multiline-list-value profile-description-title" *ngIf="!telemetryInfo?.totalSize">
-              {{resourceService?.messages?.imsg?.desktop?.m001}}</dd>
-          </dl>
 
           <dl class="my-0 profile-description" *ngIf="telemetryInfo?.lastExportedOn">
             <dt class="multiline-list-key">{{resourceService?.frmelmnts?.lbl?.desktop?.lastShared}}</dt>
@@ -51,6 +46,11 @@
               date: 'd MMMM y'}} at {{telemetryInfo?.lastExportedOn | date:
               'h:mm a'}}
             </dd>
+          </dl>
+          
+          <dl class="my-0 profile-description">
+            <dd class="multiline-list-value profile-description-title" *ngIf="!telemetryInfo?.totalSize">
+              {{resourceService?.messages?.imsg?.desktop?.m001}}</dd>
           </dl>
         </div>
       </div>
