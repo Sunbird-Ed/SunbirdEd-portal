@@ -1,7 +1,7 @@
 import { throwError as observableThrowError, of as observableOf, Observable, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, UtilService, ConfigService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, UtilService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, UserService } from '@sunbird/core';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
@@ -50,7 +50,8 @@ describe('DialCodeComponent', () => {
       },
       params: {
         dialCode: '61U24C'
-      }
+      },
+      queryParams: {}
     }
   };
   class RouterStub {
@@ -66,7 +67,7 @@ describe('DialCodeComponent', () => {
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        DialCodeService, TelemetryService, ToasterService]
+        DialCodeService, TelemetryService, ToasterService, NavigationHelperService]
     })
       .compileComponents();
   }));
@@ -255,6 +256,67 @@ describe('DialCodeComponent', () => {
       expect(dialCodeService.getAllPlayableContent).toHaveBeenCalled();
       expect(dialCodeService.getAllPlayableContent).toHaveBeenCalledWith(['do_2124791820965806081846']);
     });
+  });
+
+  describe('handleCloseButton function', () => {
+
+    let dialCodeService;
+    let navigationHelperService;
+
+    beforeEach(() => {
+      dialCodeService = TestBed.get(DialCodeService);
+      navigationHelperService = TestBed.get(NavigationHelperService);
+    });
+
+    it('should redirect to collection page when close button is clicked from flattened page', () => {
+      const router = TestBed.get(Router);
+      spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/get' });
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      activatedRoute.snapshot.queryParams['textbook'] = '123';
+      dialCodeService['dialSearchResults'] = { count: 2 };
+      component.handleCloseButton();
+      expect(router.navigate).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith(['/get/dial', fakeActivatedRoute.snapshot.params.dialCode]);
+    });
+
+    it('should redirect to previous opened url (not content play page) if close button is clicked from collections page', () => {
+      const router = TestBed.get(Router);
+      spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/get' });
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      dialCodeService['dialSearchResults'] = { count: 2 };
+      component.handleCloseButton();
+      expect(router.navigate).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith(['/get']);
+    });
+
+    it('should redirect to explore page if user is not logged in and previous url was content play page', () => {
+      const router = TestBed.get(Router);
+      const userService = TestBed.get(UserService);
+      spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
+      spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/play/content/do_2129420726199091201242' });
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      dialCodeService['dialSearchResults'] = { count: 2 };
+      component.handleCloseButton();
+      expect(router.navigate).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith(['/explore']);
+    });
+
+    it('should redirect to resource page if user is logged in and previous url was content play page', () => {
+      const router = TestBed.get(Router);
+      const userService = TestBed.get(UserService);
+      spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+      spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/play/content/do_2129420726199091201242' });
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      dialCodeService['dialSearchResults'] = { count: 2 };
+      component.handleCloseButton();
+      expect(router.navigate).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledTimes(1);
+      expect(router.navigate).toHaveBeenCalledWith(['/resources']);
+    });
+
   });
 
 });
