@@ -35,6 +35,12 @@ export class TelemetryComponent implements OnInit, OnDestroy {
       .subscribe(x => { this.setPageExitTelemtry(); });
     this.getTelemetryInfo();
     this.setTelemetryImpression();
+    // this event will emit when import new telemetry file and status is completed
+    this.telemetryActionService.telemetryImportEvent
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      this.getTelemetryInfo();
+    });
   }
 
   getTelemetryInfo() {

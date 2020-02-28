@@ -18,13 +18,13 @@ export const telemetryData = {
                 'count': 1,
                 'items': [
                     {
-                        'id': 'f5dea98c-8a26-4517-880d-7fd6ea1baa25',
-                        'name': 'telemetryimport1.zip',
-                        'progress': 0,
-                        'addedUsing': 'telemetry_import',
-                        'totalSize': 8260,
-                        'createdOn': 1582868060761,
-                        'status': 'inQueue'
+                        addedUsing: 'telemetry_import',
+                        createdOn: 1582897871723,
+                        id: '7da61267-e36b-4c44-ae05-9ab103ee771a',
+                        name: 'telemetryimport1.zip',
+                        progress: 100,
+                        status: 'completed',
+                        totalSize: 8260
                     }
                 ]
             }

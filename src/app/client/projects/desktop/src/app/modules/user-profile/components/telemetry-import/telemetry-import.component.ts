@@ -19,13 +19,12 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
   callImportList = false;
   apiCallSubject = new Subject();
   contentStatusObject = {};
-  retryImportButton = false;
   localStatusArr = ['inProgress', 'inQueue'];
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callImportList)));
   constructor(public resourceService: ResourceService,
     public telemetryActionsService: TelemetryActionsService,
     private telemetryService: TelemetryService,
-    private toasterService: ToasterService,
+    public toasterService: ToasterService,
     private activatedRoute: ActivatedRoute,
     private electronDialogService: ElectronDialogService) {
       this.getList();
@@ -87,8 +86,8 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
     this.telemetryActionsService.reTryTelemetryImport(fileDetails.id).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
     this.apiCallSubject.next();
     }, error => {
-      this.toasterService.error(this.resourceService.messages.desktop.etmsg.telemetryImportError);
     this.apiCallSubject.next();
+      this.toasterService.error(this.resourceService.messages.desktop.etmsg.telemetryImportError);
     });
   }
   setRetryImportTelemetry(fileDetails) {

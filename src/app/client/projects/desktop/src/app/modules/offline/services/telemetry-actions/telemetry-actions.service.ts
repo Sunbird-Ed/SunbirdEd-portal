@@ -5,10 +5,14 @@ import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
 import { ElectronDialogService } from '../electron-dialog/electron-dialog.service';
 import { map, catchError } from 'rxjs/operators';
+import * as _ from 'lodash-es';
+import {EventEmitter} from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
 export class TelemetryActionsService {
+  handledTelemetryList = 0;
+  telemetryImportEvent = new EventEmitter<any>();
   constructor(public configService: ConfigService, public publicDataService: PublicDataService,
     private electronDialogService: ElectronDialogService) { }
 
@@ -37,6 +41,17 @@ export class TelemetryActionsService {
       data: {}
     };
     return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
+      let localhandledTelemetryList = 0;
+      _.forEach(response.result.response.items, data => {
+        if (data.status === 'completed') {
+        localhandledTelemetryList ++;
+        }
+      });
+      if (localhandledTelemetryList > this.handledTelemetryList) {
+       this.telemetryImportEvent.emit(); // emit this event when import new file and status is completed
+      }
+      this.handledTelemetryList = localhandledTelemetryList;
+
       return response;
     }));
   }
