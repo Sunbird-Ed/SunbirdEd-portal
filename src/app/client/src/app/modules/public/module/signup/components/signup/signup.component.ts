@@ -166,6 +166,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onPasswordChange(passCtrl: FormControl): void {
+    const name = this.signUpForm.get('name').value;
     let emailVal;
     if (this.showContact === 'email') {
       emailVal = this.signUpForm.get('email').value;
@@ -179,7 +180,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!charRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)) {
       this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
       passCtrl.setErrors({ passwordError: this.passwordError });
-    } else if (emailVal === val) {
+    } else if (emailVal === val || name === val) {
       this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwderr');
       passCtrl.setErrors({ passwordError: this.passwordError });
     } else {
