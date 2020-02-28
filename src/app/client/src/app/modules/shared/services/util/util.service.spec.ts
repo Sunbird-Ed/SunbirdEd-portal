@@ -242,4 +242,18 @@ describe('UtilService', () => {
         const data = service.isAvailable(contentListWithHoverData[0]);
         expect(data).toBeTruthy();
   }));
+
+  it('should return  isAvailable true ', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const data = service.isDownloaded(contentListWithHoverData[0], 'DOWNLOADED');
+      expect(data).toBeTruthy();
+  }));
+
+  it('should return  isAvailable true ', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const data = service.isDownloaded(contentListWithHoverData[0], 'DOWNLOAD');
+      expect(data).toBeFalsy();
+  }));
+
+
 });

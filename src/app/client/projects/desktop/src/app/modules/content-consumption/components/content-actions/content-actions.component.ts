@@ -66,7 +66,9 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe( contentDownloadStatus => {
           this.contentDownloadStatus = contentDownloadStatus;
           if (this.contentData &&
-            contentDownloadStatus[this.contentData.identifier] === 'COMPLETED' && !this.router.url.includes('browse')) {
+            (contentDownloadStatus[this.contentData.identifier] === 'COMPLETED' ||
+            contentDownloadStatus[this.contentData.identifier] === 'DOWNLOADED'
+            ) && !this.router.url.includes('browse')) {
             this.contentDownloaded.emit(this.contentData);
           }
           this.changeContentStatus();
