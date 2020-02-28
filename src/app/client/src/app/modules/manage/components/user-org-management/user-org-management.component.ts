@@ -47,14 +47,14 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   public teachersButtonText;
   public manageService: ManageService;
   public slug: any = (<HTMLInputElement>document.getElementById('defaultTenant'));
-  public geoJSON = 'geo-summary.json';
-  public geoCSV = 'geo-detail.csv';
-  public geoDetail = 'geo-summary-district.json';
-  public userJSON = 'user-summary.json';
-  public userCSV = 'user-detail.csv';
-  public userSummary = 'validated-user-summary.json';
-  public userDetail = 'validated-user-summary-district.json';
-  public userZip = 'validated-user-detail.zip';
+  public geoJSON = 'geo-summary';
+  public geoCSV = 'geo-detail';
+  public geoDetail = 'geo-summary-district';
+  public userJSON = 'user-summary';
+  public userCSV = 'user-detail';
+  public userSummary = 'validated-user-summary';
+  public userDetail = 'validated-user-summary-district';
+  public userZip = 'validated-user-detail';
   public GeoTableId = 'GeoDetailsTable';
   public geoTableHeader;
   public geoTabledata = [];
@@ -160,7 +160,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   public getUserJSON() {
-    this.manageService.getData(this.slug, this.userJSON).subscribe(
+    this.manageService.getData(this.userJSON, `${this.slug}.json`).subscribe(
       data => {
         const result = _.get(data, 'result');
         this.uploadedDetails = {
@@ -180,7 +180,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   public getGeoJSON() {
-    this.manageService.getData(this.slug, this.geoJSON).subscribe(
+    this.manageService.getData(this.geoJSON, `${this.slug}.json`).subscribe(
       data => {
         const result = _.get(data, 'result');
         this.geoData = {
@@ -196,7 +196,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   public getUserSummary() {
-    this.manageService.getData(this.slug, this.userSummary).subscribe(
+    this.manageService.getData(this.userSummary, `${this.slug}.json`).subscribe(
       data => {
         const result = _.get(data, 'result');
         this.validatedUser = {
@@ -214,7 +214,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   public getGeoDetail() {
-    this.manageService.getData(this.slug, this.geoDetail).subscribe(
+    this.manageService.getData(this.geoDetail, `${this.slug}.json`).subscribe(
       data => {
         const result = _.get(data, 'result');
         this.geoSummary = result;
@@ -226,7 +226,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   public getUserDetail() {
-    this.manageService.getData(this.slug, this.userDetail).subscribe(
+    this.manageService.getData(this.userDetail, `${this.slug}.json`).subscribe(
       data => {
         const result = _.get(data, 'result');
         this.validatedUserSummary = result;
@@ -327,8 +327,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     }, 500);
   }
 
-  public downloadCSVFile(fileName: any) {
-    this.manageService.getData(this.slug, fileName)
+  public downloadCSVFile(slug, fileName: any) {
+    this.manageService.getData(slug, fileName)
       .subscribe(
         response => {
           const url = (_.get(response, 'result.signedUrl'));
@@ -340,8 +340,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
       );
   }
 
-  public downloadZipFile(fileName: any) {
-    this.manageService.getData(this.slug, fileName)
+  public downloadZipFile(slug, fileName: any) {
+    this.manageService.getData(slug, fileName)
       .subscribe(
         response => {
           if (response && response.result && response.result.signedUrl) {
