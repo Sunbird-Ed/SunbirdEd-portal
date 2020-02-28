@@ -50,10 +50,9 @@ describe('TelemetryImportComponent', () => {
   it('should call getImportedFilesList', () => {
     const telemetryActionsService = TestBed.get(TelemetryActionsService);
     spyOn(telemetryActionsService, 'telemetryImportList').and.returnValue(of(telemetryData.importList));
-    component.getImportedFilesList();
+    component.apiCallSubject.next();
     component.telemetryActionsService.telemetryImportList().subscribe(data => {
       expect(data).toEqual(telemetryData.importList);
-      expect(component.importFilesList).toEqual(telemetryData.importList.result.response);
     });
   });
   it('should call openImportTelemetryDialog', () => {
@@ -64,28 +63,30 @@ describe('TelemetryImportComponent', () => {
     expect(component.setImportTelemetry).toHaveBeenCalledWith();
     expect(electronDialogService.showTelemetryImportDialog).toHaveBeenCalled();
   });
-  it('should call reyTryTelemetryImport', () => {
+  it('should call reyTryTelemetryImport and success case', () => {
     const telemetryActionsService = TestBed.get(TelemetryActionsService);
     spyOn(component, 'setRetryImportTelemetry');
-    spyOn(telemetryActionsService, 'reyTryTelemetryImport').and.returnValue(of(telemetryData.importList));
-    component.reyTryTelemetryImport(telemetryData.filedetails);
-    component.telemetryActionsService.reyTryTelemetryImport(telemetryData.filedetails).subscribe(data => {
-      expect(data).toEqual(telemetryData.importList);
+    spyOn(telemetryActionsService, 'reyTryTelemetryImport').and.returnValue(of(telemetryData.retrySuccess));
+    component.reTryImport(telemetryData.filedetails);
+    component.telemetryActionsService.reTryTelemetryImport(telemetryData.filedetails).subscribe(data => {
+      expect(data).toEqual(telemetryData.retrySuccess);
     });
     expect(component.setRetryImportTelemetry).toHaveBeenCalledWith(telemetryData.filedetails);
   });
-  it('should call reyTryTelemetryImport', () => {
+  it('should call reyTryTelemetryImport and error case', () => {
     const telemetryActionsService = TestBed.get(TelemetryActionsService);
     spyOn(component, 'setRetryImportTelemetry');
     spyOn(component['toasterService'], 'error');
-    spyOn(telemetryActionsService, 'reyTryTelemetryImport').and.returnValue(of('false'));
-    component.reyTryTelemetryImport(telemetryData.filedetails);
-    component.telemetryActionsService.reyTryTelemetryImport(telemetryData.filedetails).subscribe(data => {
+    spyOn(telemetryActionsService, 'reyTryTelemetryImport').and.returnValue(of(telemetryData.retryError));
+    component.reTryImport(telemetryData.filedetails);
+    component.telemetryActionsService.reTryTelemetryImport(telemetryData.filedetails).subscribe(data => {
     }, error => {
+      expect(error).toEqual(telemetryData.retryError);
       expect(component['toasterService'].error).
       toHaveBeenCalledWith(telemetryData.resourceBundle.messages.desktop.etmsg.telemetryImportError);
 
     });
     expect(component.setRetryImportTelemetry).toHaveBeenCalledWith(telemetryData.filedetails);
   });
+
 });

@@ -213,10 +213,10 @@
       "TELEMTRY_INFO": "telemetry/v1/info",
       "EXPORT_TELEMETRY": "telemetry/v1/export",
       "IMPORT_TELEMETRY": "telemetry/v1/import",
-      "IMPORT_TELEMETRY_LIST": "telemetry/v1/import/list",
+      "IMPORT_TELEMETRY_LIST": "telemetry/v1/list",
       "TELEMETRY_SYNC_STATUS": "telemetry/v1/import/status",
       "TELEMETRY_IMPORT_RETRY": "telemetry/v1/import/retry",
-      "TELEMETRY_SYNC": "telemetry/v1/import/sync"  
+      "TELEMETRY_SYNC": "telemetry/v1/sync"  
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",

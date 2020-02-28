@@ -37,34 +37,49 @@ describe('TelemetryActionsService', () => {
       expect(data).toEqual(telemetry.importList);
     });
   });
-  it('should be call telemetrySyncStatus', () => {
+
+  // it('should be call telemetrySyncStatus', () => {
+  //   const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+  //   spyOn(service['publicDataService'], 'post').and.returnValue(of('true'));
+  //   service.telemetrySyncStatus('true');
+  //   expect(service.publicDataService.post).toHaveBeenCalled();
+  //   service['publicDataService'].post({
+  //     url: service.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC_STATUS,
+  //   }).subscribe(data => {
+  //   });
+  // });
+  // it('should be call syncTelemtry', () => {
+  //   const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+  //   spyOn(service['publicDataService'], 'post').and.returnValue(of('true'));
+  //   service.syncTelemtry(telemetry.info.result.response);
+  //   expect(service.publicDataService.post).toHaveBeenCalled();
+  //   service['publicDataService'].post({
+  //     url: service.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC,
+  //   }).subscribe(data => {
+  //   });
+  // });
+  it('should be call reyTryTelemetryImport and success', () => {
     const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
-    spyOn(service['publicDataService'], 'post').and.returnValue(of('true'));
-    service.telemetrySyncStatus('true');
-    expect(service.publicDataService.post).toHaveBeenCalled();
-    service['publicDataService'].post({
-      url: service.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC_STATUS,
-    }).subscribe(data => {
-    });
-  });
-  it('should be call syncTelemtry', () => {
-    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
-    spyOn(service['publicDataService'], 'post').and.returnValue(of('true'));
-    service.syncTelemtry(telemetry.info.result.response);
-    expect(service.publicDataService.post).toHaveBeenCalled();
-    service['publicDataService'].post({
-      url: service.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC,
-    }).subscribe(data => {
-    });
-  });
-  it('should be call reyTryTelemetryImport', () => {
-    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
-    spyOn(service['publicDataService'], 'post').and.returnValue(of('true'));
-    service.reyTryTelemetryImport(telemetry.info.result.response);
+    spyOn(service['publicDataService'], 'post').and.returnValue(of(telemetry.retrySuccess));
+    service.reTryTelemetryImport(telemetry.retryData);
     expect(service.publicDataService.post).toHaveBeenCalled();
     service['publicDataService'].post({
       url: service.configService.urlConFig.URLS.OFFLINE.TELEMETRY_IMPORT_RETRY,
     }).subscribe(data => {
+      expect(data).toEqual(telemetry.retrySuccess);
+    });
+  });
+  it('should be call reyTryTelemetryImport and error case', () => {
+    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+    spyOn(service['publicDataService'], 'post').and.returnValue(of(telemetry.retrySuccess));
+    service.reTryTelemetryImport({});
+    expect(service.publicDataService.post).toHaveBeenCalled();
+    service['publicDataService'].post({
+      url: service.configService.urlConFig.URLS.OFFLINE.TELEMETRY_IMPORT_RETRY,
+    }).subscribe(data => {
+    }, error => {
+      expect(error).toEqual(telemetry.retryError);
+
     });
   });
 });

@@ -64,11 +64,11 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     );
   }
   onChangeTelemetrySyncStatus(syncStatus) {
-    this.setTelemetrySyncStatus(syncStatus);
-    this.telemetryActionService.telemetrySyncStatus(syncStatus).pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (data) => {
-      }
-    );
+    // this.setTelemetrySyncStatus(syncStatus);
+    // this.telemetryActionService.telemetrySyncStatus(syncStatus).pipe(takeUntil(this.unsubscribe$)).subscribe(
+    //   (data) => {
+    //   }
+    // );
   }
   setTelemetrySyncStatus(syncStatus) {
     const interactData = {
@@ -86,13 +86,13 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     this.telemetryService.interact(interactData);
   }
   syncTelemetry() {
-    this.setSyncTelemetry();
-    this.telemetryActionService.syncTelemtry(this.telemetryInfo).pipe(takeUntil(this.unsubscribe$)).subscribe(
-      (data) => {
-      },
-      (err) => {
-      }
-    );
+    // this.setSyncTelemetry();
+    // this.telemetryActionService.syncTelemtry(this.telemetryInfo).pipe(takeUntil(this.unsubscribe$)).subscribe(
+    //   (data) => {
+    //   },
+    //   (err) => {
+    //   }
+    // );
   }
   setSyncTelemetry() {
     const interactData = {

@@ -32,32 +32,36 @@ export class TelemetryActionsService {
     }));
   }
   telemetryImportList(): Observable<ServerResponse> {
-    return this.publicDataService.get({
-      url: this.configService.urlConFig.URLS.OFFLINE.IMPORT_TELEMETRY_LIST,
-    });
-  }
-  telemetrySyncStatus(data): Observable<ServerResponse> {
     const requestParams = {
-      url: this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC_STATUS,
-      data: data
+      url: this.configService.urlConFig.URLS.OFFLINE.IMPORT_TELEMETRY_LIST,
+      data: {}
     };
     return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
       return response;
     }));
   }
-  syncTelemtry(data): Observable<ServerResponse> {
+  // telemetrySyncStatus(data): Observable<ServerResponse> {
+  //   const requestParams = {
+  //     url: this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC_STATUS,
+  //     data: data
+  //   };
+  //   return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
+  //     return response;
+  //   }));
+  // }
+  // syncTelemtry(data): Observable<ServerResponse> {
+  //   const requestParams = {
+  //     url: this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC,
+  //     data: data
+  //   };
+  //   return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
+  //     return response;
+  //   }));
+  // }
+  reTryTelemetryImport(importId) {
     const requestParams = {
-      url: this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC,
-      data: data
-    };
-    return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
-
-    }));
-  }
-  reyTryTelemetryImport(data) {
-    const requestParams = {
-      url: this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_IMPORT_RETRY,
-      data: data
+      url: `${this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_IMPORT_RETRY}/${importId}`,
+      data: {}
     };
     return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
       return response;
