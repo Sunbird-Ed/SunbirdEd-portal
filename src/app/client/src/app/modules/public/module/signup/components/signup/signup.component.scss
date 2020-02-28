@@ -224,3 +224,9 @@ input[type=number]::-webkit-inner-spin-button {
     width: 100% !important;
     max-width: 300px;
  }
+
+::ng-deep{
+    .fullpage.signupmodal .ui.dimmer .ui.modal.fullscreen::-webkit-scrollbar  {
+        width: 8px;
+      }
+}
