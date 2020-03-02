@@ -7,7 +7,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { ITelemetryInfo } from '../../interfaces';
-
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'app-telemetry',
   templateUrl: './telemetry.component.html',
@@ -35,9 +35,9 @@ export class TelemetryComponent implements OnInit, OnDestroy {
       .subscribe(x => { this.setPageExitTelemtry(); });
     this.getTelemetryInfo();
     this.setTelemetryImpression();
-    // this event will emit when import new telemetry file and status is completed
+    // this event will start when import new telemetry file and status is completed
     this.telemetryActionService.telemetryImportEvent
-    .pipe(takeUntil(this.unsubscribe$))
+    .pipe(debounceTime(1000), takeUntil(this.unsubscribe$))
     .subscribe(data => {
       this.getTelemetryInfo();
     });

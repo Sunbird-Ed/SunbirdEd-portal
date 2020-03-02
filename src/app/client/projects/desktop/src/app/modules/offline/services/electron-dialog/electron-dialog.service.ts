@@ -28,7 +28,9 @@ export class ElectronDialogService extends DataService {
   }
   showTelemetryImportDialog() {
     this.get({url : this.configService.urlConFig.URLS.ELECTRON_DIALOG.TELEMETRY_IMPORT}).subscribe(response => {
+      console.log('telemetry import dialog box opened', response);
     }, error => {
+      console.log('error while telemetry import dialog box ');
     });
   }
 }

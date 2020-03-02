@@ -80,7 +80,7 @@ describe('TelemetryImportComponent', () => {
     spyOn(telemetryActionsService, 'reTryTelemetryImport').and.returnValue(throwError(telemetryData.retryError));
     component.reTryImport(telemetryData.filedetails);
     expect(component.toasterService.error).
-      toHaveBeenCalledWith(telemetryData.resourceBundle.messages.desktop.etmsg.telemetryImportError);
+      toHaveBeenCalledWith(telemetryData.resourceBundle.messages.etmsg.desktop.telemetryImportError);
     expect(component.apiCallSubject.next).toHaveBeenCalled();
     expect(component.setRetryImportTelemetry).toHaveBeenCalledWith(telemetryData.filedetails);
   });

@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
 import { TelemetryService } from '@sunbird/telemetry';
 import { timer, Subject, combineLatest } from 'rxjs';
-import { switchMap, map, filter, takeUntil } from 'rxjs/operators';
+import { switchMap, map, filter, takeUntil, tap , pluck} from 'rxjs/operators';
 @Component({
   selector: 'app-telemetry-import',
   templateUrl: './telemetry-import.component.html',
@@ -33,7 +33,7 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
       });
      }
 
-  ngOnInit() {
+     ngOnInit() {
     this.apiCallSubject.next();
   }
   openImportTelemetryDialog() {
@@ -44,26 +44,19 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line: deprecation
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
       .pipe(takeUntil(this.unsubscribe$),  switchMap(() => this.telemetryActionsService.telemetryImportList()),
-        map((resp: any) => {
-          this.callImportList = false;
-          _.forEach(_.get(resp, 'result.response.items'), (value) => {
-            if (_.includes(this.localStatusArr, value.status)) {
-              this.callImportList = true;
-            }
-          });
-          return _.get(resp, 'result.response.items');
+        tap((resp: any) => {
+          const itemToComplete = _.find(_.get(resp, 'result.response.items'), (item) => {
+            return _.includes(this.localStatusArr, item.status); });
+          this. callImportList = itemToComplete ? true : false;
         })).subscribe((responseList: any) => {
-          this.importFilesList = responseList;
+          this.importFilesList = _.get(responseList, 'result.response.items');
           this.getTotalSizeImportedFiles();
         });
   }
   getTotalSizeImportedFiles() {
     this.importedFilesSize = 0;
-    _.forEach(this.importFilesList, data => {
-      if (data.status === 'completed') {
-        this.importedFilesSize += data.totalSize;
-      }
-    });
+    this.importedFilesSize =  _.reduce(this.importFilesList, (sum, data) => {
+      return data.status === 'completed' ? sum + data.totalSize : 0; }, 0);
   }
   setImportTelemetry() {
     const interactData = {

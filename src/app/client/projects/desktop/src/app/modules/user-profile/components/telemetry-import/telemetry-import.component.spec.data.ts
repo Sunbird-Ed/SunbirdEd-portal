@@ -41,8 +41,8 @@ export const telemetryData = {
     },
     resourceBundle: {
         messages: {
-            desktop: {
                 etmsg: {
+                    desktop: {
                     telemetryImportError: 'Unable to import file , try again'
                 }
             }

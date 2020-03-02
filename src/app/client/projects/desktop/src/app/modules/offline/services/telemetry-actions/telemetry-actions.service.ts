@@ -41,38 +41,21 @@ export class TelemetryActionsService {
       data: {}
     };
     return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
-      let localhandledTelemetryList = 0;
+      let telemetryImportList = 0;
       _.forEach(response.result.response.items, data => {
         if (data.status === 'completed') {
-        localhandledTelemetryList ++;
+          telemetryImportList ++;
         }
       });
-      if (localhandledTelemetryList > this.handledTelemetryList) {
+      if (telemetryImportList > this.handledTelemetryList) {
        this.telemetryImportEvent.emit(); // emit this event when import new file and status is completed
       }
-      this.handledTelemetryList = localhandledTelemetryList;
+      this.handledTelemetryList = telemetryImportList;
 
       return response;
     }));
   }
-  // telemetrySyncStatus(data): Observable<ServerResponse> {
-  //   const requestParams = {
-  //     url: this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC_STATUS,
-  //     data: data
-  //   };
-  //   return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
-  //     return response;
-  //   }));
-  // }
-  // syncTelemtry(data): Observable<ServerResponse> {
-  //   const requestParams = {
-  //     url: this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC,
-  //     data: data
-  //   };
-  //   return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
-  //     return response;
-  //   }));
-  // }
+
   reTryTelemetryImport(importId) {
     const requestParams = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_IMPORT_RETRY}/${importId}`,

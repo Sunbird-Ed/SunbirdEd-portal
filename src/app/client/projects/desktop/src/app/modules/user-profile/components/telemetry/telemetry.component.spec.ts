@@ -88,25 +88,5 @@ describe('TelemetryComponent', () => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(telemetry.resourceBundle.messages.emsg.desktop.telemetryExportEMsg);
     });
   });
-  // it('should call onChangeTelemetrySyncStatus', () => {
-  //   spyOn(component, 'setTelemetrySyncStatus');
-  //   spyOn(component['telemetryActionService'], 'telemetrySyncStatus').and.returnValue(of('true'));
-  //   component.onChangeTelemetrySyncStatus('true');
-  //   component['telemetryActionService'].telemetrySyncStatus('true').subscribe(data => {
-  //   }, (err) => {
 
-  //   });
-  //   expect(component.setTelemetrySyncStatus).toHaveBeenCalledWith('true');
-  // });
-  // it('should call syncTelemetry', () => {
-  //   component.telemetryInfo = telemetry.info.result.response;
-  //   spyOn(component, 'setSyncTelemetry');
-  //   spyOn(component['telemetryActionService'], 'syncTelemtry').and.returnValue(of('true'));
-  //   component.syncTelemetry();
-  //   component['telemetryActionService'].syncTelemtry(component.telemetryInfo).subscribe(data => {
-  //   }, (err) => {
-
-  //   });
-  //   expect(component.setSyncTelemetry).toHaveBeenCalled();
-  // });
 });
