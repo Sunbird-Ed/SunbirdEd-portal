@@ -136,7 +136,8 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
     this.stateControl = this.userDetailsForm.get('state');
     this.districtControl = this.userDetailsForm.get('district');
     this.enableSubmitBtn = false;
-    if ((this.forChanges.prevDistrictValue !== this.districtControl.value) || (this.forChanges.prevStateValue !== this.stateControl.value)) {
+    if ((this.forChanges.prevDistrictValue !== this.districtControl.value)
+        || (this.forChanges.prevStateValue !== this.stateControl.value)) {
       document.getElementById('stateModifiedButton').click();
     }
     if (_.trim(this.userDetailsForm.value.name) !== this.userProfile.firstName) {
