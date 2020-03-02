@@ -167,12 +167,12 @@ describe('UpdateUserDetailsComponent', () => {
     component.ngOnInit();
     const name = component.userDetailsForm.controls['name'];
     name.setValue('Username');
-    component.prevStateValue = 'Karnataka';
+    component.forChanges.prevStateValue = 'Karnataka';
     component.userDetailsForm.controls.state.setValue('Gujarat');
     component.stateControl = {
       value: 'Gujarat'
     };
-    component.prevDistrictValue = 'Bangalore';
+    component.forChanges.prevDistrictValue = 'Bangalore';
     component.userDetailsForm.controls.district.setValue('Rajkot');
     component.districtControl = {
       value: 'Rajkot'
