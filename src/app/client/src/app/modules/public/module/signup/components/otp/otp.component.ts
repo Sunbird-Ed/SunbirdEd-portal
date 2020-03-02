@@ -81,6 +81,7 @@ export class OtpComponent implements OnInit {
         this.logVerifyOtpError(err.error.params.errmsg);
         this.telemetryService.interact(this.generateVerifyOtpErrorInteractEdata);
         this.infoMessage = '';
+        this.otpForm.controls.otp.setValue('');
         this.errorMessage = err.error.params.status === 'ERROR_INVALID_OTP' ?
           wrongOTPMessage : wrongOTPMessage;
         if (this.disableResendButton) {
