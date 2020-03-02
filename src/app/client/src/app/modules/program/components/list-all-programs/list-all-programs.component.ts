@@ -44,7 +44,9 @@ export class ListAllProgramsComponent implements OnInit, AfterViewInit {
         });
         return this.getRootOrgName(rootOrgIds).pipe(map(data => {
           _.forEach(programs, (program) => {
-            if (!_.get(program, 'rootOrgName')) program['rootOrgName'] = data[program.rootOrgId];
+            if (!_.get(program, 'rootOrgName')) {
+              program['rootOrgName'] = data[program.rootOrgId];
+            }
           });
           return programs;
         }));
@@ -57,7 +59,7 @@ export class ListAllProgramsComponent implements OnInit, AfterViewInit {
    * @param  {Array} rootOrgId : Array of Root Org Id(s)
    * @returns Observable       : Object consisting of orgId and orgName as key value pair respectively
    */
-  private getRootOrgName(rootOrgId): Observable<Object> {
+  private getRootOrgName(rootOrgId): Observable<{}> {
     const orgMapping = new Object();
     return this.getOrgDetails(rootOrgId).pipe(
       map(orgDetailsApiResponse => {
