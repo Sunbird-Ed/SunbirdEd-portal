@@ -28,11 +28,11 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   selectedState;
   selectedDistrict;
   stateControl: any;
-  prevStateValue: any;
-  stateModified = false;
   districtControl: any;
-  prevDistrictValue: any;
-  districtModified = false;
+  forChanges = {
+    prevStateValue: '',
+    prevDistrictValue: ''
+  };
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder,
@@ -73,7 +73,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
       let locationExist: any;
       if (location) {
         locationExist = _.find(this.allStates, (locations) => {
-          this.prevStateValue = location.code;
+          this.forChanges.prevStateValue = location.code;
           return locations.code === location.code;
         });
       }
@@ -119,7 +119,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
       let locationExist: any;
       if (location) {
         locationExist = _.find(this.allDistricts, (locations) => {
-          this.prevDistrictValue = location.code;
+          this.forChanges.prevDistrictValue = location.code;
           return locations.code === location.code;
         });
       }
@@ -136,7 +136,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
     this.stateControl = this.userDetailsForm.get('state');
     this.districtControl = this.userDetailsForm.get('district');
     this.enableSubmitBtn = false;
-    if ((this.prevDistrictValue !== this.districtControl.value) || (this.prevStateValue !== this.stateControl.value)) {
+    if ((this.forChanges.prevDistrictValue !== this.districtControl.value) || (this.forChanges.prevStateValue !== this.stateControl.value)) {
       document.getElementById('stateModifiedButton').click();
     }
     if (_.trim(this.userDetailsForm.value.name) !== this.userProfile.firstName) {
