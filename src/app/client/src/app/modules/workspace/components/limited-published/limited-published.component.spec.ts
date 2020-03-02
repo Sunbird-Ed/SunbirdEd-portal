@@ -116,6 +116,7 @@ describe('LimitedPublishedComponent', () => {
       'LessonPlan',
       'Resource',
       'SelfAssess',
+      'PracticeResource',
       'LearningOutcomeDefinition',
       'ExplanationResource',
       'ExperientialResource'
@@ -129,6 +130,8 @@ describe('LimitedPublishedComponent', () => {
     }
     };
     component.fetchLimitedPublished(1, 1);
+    console.log('asdasdasdasdas');
+    console.log(component.search);
     expect(component.search).toHaveBeenCalledWith(searchParams);
     expect(component.limitedPublishList).toBeDefined();
     expect(component.showLoader).toBeFalsy();
