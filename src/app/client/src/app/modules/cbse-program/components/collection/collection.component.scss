@@ -8,6 +8,8 @@
   background: var(--white);
   &__dropdown {
     z-index: 1;
+    width: 100%;
+    max-width: 210px;
   }
   &__separator {
     border-left: 1px solid var(--gray-200);

@@ -218,7 +218,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       pageid: 'profile-read'
     };
     this.editProfileInteractEdata = {
-      id: 'profile-edit-address',
+      id: 'profile-edit',
       type: 'click',
       pageid: 'profile-read'
     };

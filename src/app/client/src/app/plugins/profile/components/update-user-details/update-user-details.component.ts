@@ -22,10 +22,17 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   sbFormBuilder: FormBuilder;
   enableSubmitBtn = false;
   showDistrictDivLoader = false;
-  submitInteractEdata: IInteractEventEdata;
+  submitNameInteractEdata: IInteractEventEdata;
+  submitStateInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   selectedState;
   selectedDistrict;
+  stateControl: any;
+  districtControl: any;
+  forChanges = {
+    prevStateValue: '',
+    prevDistrictValue: ''
+  };
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public profileService: ProfileService, formBuilder: FormBuilder,
@@ -66,6 +73,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
       let locationExist: any;
       if (location) {
         locationExist = _.find(this.allStates, (locations) => {
+          this.forChanges.prevStateValue = location.code;
           return locations.code === location.code;
         });
       }
@@ -111,6 +119,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
       let locationExist: any;
       if (location) {
         locationExist = _.find(this.allDistricts, (locations) => {
+          this.forChanges.prevDistrictValue = location.code;
           return locations.code === location.code;
         });
       }
@@ -124,7 +133,16 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSubmitForm() {
+    this.stateControl = this.userDetailsForm.get('state');
+    this.districtControl = this.userDetailsForm.get('district');
     this.enableSubmitBtn = false;
+    if ((this.forChanges.prevDistrictValue !== this.districtControl.value)
+        || (this.forChanges.prevStateValue !== this.stateControl.value)) {
+      document.getElementById('stateModifiedButton').click();
+    }
+    if (_.trim(this.userDetailsForm.value.name) !== this.userProfile.firstName) {
+      document.getElementById('nameModifiedButton').click();
+    }
     const locationCodes = [];
     if (this.userDetailsForm.value.state) { locationCodes.push(this.userDetailsForm.value.state); }
     if (this.userDetailsForm.value.district) { locationCodes.push(this.userDetailsForm.value.district); }
@@ -148,12 +166,16 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
   }
 
   setInteractEventData() {
-    this.submitInteractEdata = {
+    this.submitNameInteractEdata = {
       id: 'submit-personal-details',
       type: 'click',
       pageid: 'profile-read'
     };
-
+    this.submitStateInteractEdata = {
+      id: 'profile-edit-address',
+      type: 'click',
+      pageid: 'profile-read'
+    };
     this.telemetryInteractObject = {
       id: this.userService.userid,
       type: 'User',

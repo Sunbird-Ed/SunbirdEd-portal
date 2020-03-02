@@ -250,6 +250,8 @@
     .sb-bordered-list-item-heading {
       font-size: $sb-bordered-list-item-heading-font-size;
       color: $sb-bordered-list-item-heading-color;
+      width:100%;
+      max-width:100px;
     }
 
     .sb-bordered-list-item-subheading {
@@ -395,9 +397,11 @@
 
 .slick-next:before {
   padding-left: 3px;
+  padding-top: 1px;
 }
 .slick-prev:before {
   padding-right: 3px;
+  padding-top: 1px;
 }
 
 .sb-offline-video-player {
