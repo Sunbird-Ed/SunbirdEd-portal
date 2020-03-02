@@ -157,4 +157,30 @@ describe('UpdateUserDetailsComponent', () => {
     expect(component.closeModal).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0016);
   });
+
+  it('should call the submit function when all name, state and district values are filled and submit button clicked', () => {
+    component.userProfile = testData.userData;
+    spyOn(component, 'getState');
+    spyOn(component, 'onStateChange');
+    spyOn(component, 'onSubmitForm').and.callThrough();
+    spyOn(component, 'enableSubmitButton').and.callThrough();
+    component.ngOnInit();
+    const name = component.userDetailsForm.controls['name'];
+    name.setValue('Username');
+    component.forChanges.prevStateValue = 'Karnataka';
+    component.userDetailsForm.controls.state.setValue('Gujarat');
+    component.stateControl = {
+      value: 'Gujarat'
+    };
+    component.forChanges.prevDistrictValue = 'Bangalore';
+    component.userDetailsForm.controls.district.setValue('Rajkot');
+    component.districtControl = {
+      value: 'Rajkot'
+    };
+    component.onSubmitForm();
+    // fixture.detectChanges();
+    expect(component.userDetailsForm.valid).toBeTruthy();
+    expect(component.enableSubmitBtn).toBeFalsy();
+  });
+
 });
