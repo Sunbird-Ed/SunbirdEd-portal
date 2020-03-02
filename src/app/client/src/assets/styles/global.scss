@@ -69,11 +69,6 @@ body {
     padding-bottom: $base-block-space * 3;
   }
 }
-@include respond-below(xs) {
-  .sb-pageSection-title.sb-pageSection-sentenceCase {
-    max-width: 45%;
-  }
-}
 .sb-offline {
   padding-bottom: 0px;
   // .footer-fix {
