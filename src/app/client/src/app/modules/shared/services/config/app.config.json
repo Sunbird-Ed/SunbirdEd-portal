@@ -121,7 +121,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "resourceType"
+        "ribbon.right.name": "contentType"
       }
     },
     "enrolledCourses": {
@@ -686,7 +686,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "contentType",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -805,13 +805,8 @@
       "Course",
       "LessonPlan",
       "Resource",
-      "FocusSpot",
       "SelfAssess",
-      "PracticeResource",
       "LearningOutcomeDefinition",
-      "PracticeQuestionSet",
-      "CuriosityQuestions",
-      "MarkingSchemeRubric",
       "ExplanationResource",
       "ExperientialResource"
     ],
