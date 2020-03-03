@@ -55,9 +55,7 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-    [telemetryInteractEdata]="submitInteractEdata"
-      class="sb-btn sb-btn-normal sb-btn-primary" 
+    <button class="sb-btn sb-btn-normal sb-btn-primary" 
       [disabled]="!enableSubmitBtn" 
       (click)="onSubmitForm()"
     >
@@ -65,5 +63,13 @@
     </button>
   </div>
   <!--/Actions-->
+
+  <button id="nameModifiedButton" [hidden]="true" appTelemetryInteract
+  [telemetryInteractObject]="telemetryInteractObject"
+  [telemetryInteractEdata]="submitNameInteractEdata">NameModified</button>
+  
+  <button id="stateModifiedButton" [hidden]="true" appTelemetryInteract
+  [telemetryInteractObject]="telemetryInteractObject"
+  [telemetryInteractEdata]="submitStateInteractEdata">StateModified</button>
 
 </sui-modal>
