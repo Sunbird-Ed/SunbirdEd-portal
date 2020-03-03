@@ -7,7 +7,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { ITelemetryInfo } from '../../interfaces';
-
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'app-telemetry',
   templateUrl: './telemetry.component.html',
@@ -18,6 +18,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
   public telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
   disableExport = true;
+  syncStatus = true;
   exportedTime;
   constructor(
     private telemetryActionService: TelemetryActionsService,
@@ -26,14 +27,20 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.router.events
-    .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
-    .subscribe(x => {this.setPageExitTelemtry(); });
+      .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
+      .subscribe(x => { this.setPageExitTelemtry(); });
     this.getTelemetryInfo();
     this.setTelemetryImpression();
+    // this event will start when import new telemetry file and status is completed
+    this.telemetryActionService.telemetryImportEvent
+    .pipe(debounceTime(1000), takeUntil(this.unsubscribe$))
+    .subscribe(data => {
+      this.getTelemetryInfo();
+    });
   }
 
   getTelemetryInfo() {
@@ -62,8 +69,43 @@ export class TelemetryComponent implements OnInit, OnDestroy {
       }
     );
   }
-
-  setTelemetryImpression () {
+  onChangeTelemetrySyncStatus(syncStatus) {
+  }
+  setTelemetrySyncStatus(syncStatus) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'telemetry',
+        cdata: []
+      },
+      edata: {
+        id: 'telemetry_sync_status' + syncStatus,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid'),
+        extra: {}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+  syncTelemetry() {
+  }
+  setSyncTelemetry() {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'telemetry',
+        cdata: []
+      },
+      edata: {
+        id: 'sync_telemetry',
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid'),
+        extra: {
+          size: this.telemetryInfo['totalSize'],
+        }
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+  setTelemetryImpression() {
     this.telemetryImpression = {
       context: {
         env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'telemetry'
