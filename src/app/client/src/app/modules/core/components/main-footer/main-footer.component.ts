@@ -39,7 +39,7 @@ export class MainFooterComponent implements OnInit {
 
     function footerAlign() {
       $('.footerfix').css('height', 'auto');
-      var footerHeight = $('footer').outerHeight();
+      const footerHeight = $('footer').outerHeight();
     
       $('.footerfix').css('height', footerHeight);
 
