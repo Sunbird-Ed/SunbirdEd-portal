@@ -46,15 +46,13 @@ export class MainFooterComponent implements OnInit {
     $('.footerfix').css('height', 'auto');
     const footerHeight = $('footer').outerHeight();
     $('.footerfix').css('height', footerHeight);
-    if ($(window).width() <= 767){
+    if ($(window).width() <= 767) {
       $('.download-mobile-app').css('bottom', footerHeight);
       $('body').css('padding-bottom', footerHeight + 178) + 'px';
-    }
-    else {
+    } else {
       $('body').css('padding-bottom', footerHeight + 67) + 'px';
     }
-  }
-  
+  };
   checkRouterPath() {
     this.showDownloadmanager = this.router.url.includes('/profile') || this.router.url.includes('/play/collection') ||
       this.router.url.includes('/play/content');
