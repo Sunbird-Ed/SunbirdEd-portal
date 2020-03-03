@@ -156,13 +156,14 @@
 @media screen and (max-width: 767px) {
 
   .download-mobile-app {
-    bottom: 206px;
     margin: 0 auto;
     right: 0;
     left: 0;
     z-index: inherit;
     box-shadow: 0 -5px 20px 5px rgba(0, 0, 0, 0.2);
-
+    .app-download{
+      padding-top: 12px;
+    }
     a {
       padding-bottom: 0 !important;
     }
@@ -182,11 +183,11 @@
     }
 
   .footer {
-    max-height: 206px;
+    max-height: 230px;
     .footerMenu {
       ul {
         margin-top: 0 !important;
-        margin-bottom: 24px !important;
+        margin-bottom: 0px !important;
       }
 
       li {
