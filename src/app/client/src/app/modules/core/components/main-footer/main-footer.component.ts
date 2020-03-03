@@ -35,9 +35,9 @@ export class MainFooterComponent implements OnInit {
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
-    window.onload = () =>{
+    window.onload = () => {
       this.footerAlign();
-    }
+    };
   }
 
 // footer dynamic height
@@ -45,9 +45,7 @@ export class MainFooterComponent implements OnInit {
   footerAlign() {
     $('.footerfix').css('height', 'auto');
     const footerHeight = $('footer').outerHeight();
-  
     $('.footerfix').css('height', footerHeight);
-
     if ($(window).width() <= 767){
       $('.download-mobile-app').css('bottom', footerHeight);
       $('body').css('padding-bottom', footerHeight + 178) + 'px';
