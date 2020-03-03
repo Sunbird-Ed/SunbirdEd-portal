@@ -1,0 +1,7 @@
+@import "variables"; 
+@import "mixins/mixins";
+
+.side-toc-content{
+    overflow-y: auto;
+    height: calc(100vh - 170px);
+}
