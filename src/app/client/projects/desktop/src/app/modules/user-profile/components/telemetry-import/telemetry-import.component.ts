@@ -80,7 +80,7 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
     this.apiCallSubject.next();
     }, error => {
     this.apiCallSubject.next();
-      this.toasterService.error(this.resourceService.messages.desktop.etmsg.telemetryImportError);
+      this.toasterService.error(this.resourceService.messages.etmsg.desktop.telemetryImportError);
     });
   }
   setRetryImportTelemetry(fileDetails) {
