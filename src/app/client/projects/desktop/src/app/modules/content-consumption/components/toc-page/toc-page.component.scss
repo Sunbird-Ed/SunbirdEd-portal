@@ -3,5 +3,9 @@
 
 .side-toc-content{
     overflow-y: auto;
-    height: calc(100vh - 170px);
+    height: calc(100vh - 280px);
+    @include respond-below(sm) {
+        height:auto;
+        margin: calculateRem(16px) 0;
+    }
 }
