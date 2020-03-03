@@ -24,8 +24,10 @@
         <span *ngIf="items.status === 'completed'" class="sb-color-success">{{items.status}} </span>
         <span *ngIf="items.status === 'inQueue'"
           class="sb-color-error">{{resourceService?.frmelmnts?.lbl?.desktop?.waitingForImport}} </span>
-        <span *ngIf="items.status === 'failed' && items.failedCode === 'MANIFEST_MISSING'" class="sb-color-error">
-          {{resourceService?.frmelmnts?.emsg?.desktop?.importValidZipFile}}
+        <span *ngIf="items.status === 'failed' && items.failedCode === 'MANIFEST_MISSING'" >
+           <span class="sb-color-error"> {{items.status}}  </span>
+           <span class=" sb-label-table sb-label-warning-0 ml-8"> 
+             {{resourceService?.frmelmnts?.emsg?.desktop?.importValidZipFile}} </span>
         </span>
         <span *ngIf="items.status === 'failed' && items.failedCode !== 'MANIFEST_MISSING'" class="sb-color-error">
           {{items.status}}
