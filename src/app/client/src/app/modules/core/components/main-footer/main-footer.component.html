@@ -17,7 +17,8 @@
 </div> -->
 <extension-point [name]="'content-manager'" *ngIf="isOffline && !showDownloadmanager"></extension-point>
 
-<footer class="footer" *ngIf="showFooter && !isOffline" #footerFix>
+<footer class="footer 
+" *ngIf="showFooter && !isOffline" #footerFix>
   <div class="ui container">
     <div class="ui grid stackable">
       <div class="four wide column footerMenu mr-auto">
@@ -33,12 +34,25 @@
               {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
             </a>
           </li>
+
+          <li>
+            <label class="d-block mb-0">
+              {{resourceService.frmelmnts?.lnk?.footerContact}}
+            </label>
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-0"
+            href="mailto:support@diksha-ncte.freshdesk.com">
+            support@diksha-ncte.freshdesk.com
+          </a>
+          </li>
+         
           <!-- <li class="mb-15">
             <a href="/partners/">
               {{resourceService.frmelmnts?.lnk?.footerPartners}}
             </a>
           </li> -->
         </ul>
+        
+     
       </div>
 
       <div class="download-mobile-app">
@@ -61,13 +75,6 @@
         </div>
       </div>
       <div class="four wide column contantDetails">
-        <label class="d-block mb-10">
-          {{resourceService.frmelmnts?.lnk?.footerContact}}
-        </label>
-        <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-30"
-          href="mailto:support@diksha-ncte.freshdesk.com">
-          support@diksha-ncte.freshdesk.com
-        </a>
         <label class="d-block">
           <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
             {{resourceService.frmelmnts?.lnk?.footerTnC}}

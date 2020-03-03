@@ -75,6 +75,7 @@
 .sb-sideview-tab-container {
   padding: $base-block-space * 3 $base-block-space * 3;
   background: $primary-0;
+  min-height: calc(100vh - 288px);
 }
 
 .sb-dotmenu {
