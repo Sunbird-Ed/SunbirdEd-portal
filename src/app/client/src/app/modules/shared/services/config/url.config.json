@@ -211,7 +211,12 @@
       "RETRY_DOWNLOAD":"content/v1/download/retry",
       "DELETE_CONTENT":"content/v1/delete",
       "TELEMTRY_INFO": "telemetry/v1/info",
-      "EXPORT_TELEMETRY": "telemetry/v1/export"
+      "EXPORT_TELEMETRY": "telemetry/v1/export",
+      "IMPORT_TELEMETRY": "telemetry/v1/import",
+      "IMPORT_TELEMETRY_LIST": "telemetry/v1/list",
+      "TELEMETRY_SYNC_STATUS": "telemetry/v1/import/status",
+      "TELEMETRY_IMPORT_RETRY": "telemetry/v1/import/retry",
+      "TELEMETRY_SYNC": "telemetry/v1/sync"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
@@ -220,7 +225,8 @@
     "ELECTRON_DIALOG": {
       "CONTENT_IMPORT": "content/import",
       "CONTENT_EXPORT": "content/export",
-      "TELEMETRY_EXPORT": "telemetry/export"
+      "TELEMETRY_EXPORT": "telemetry/export",
+      "TELEMETRY_IMPORT": "telemetry/import"
     },
     "CONTRIBUTION_PROGRAMS":{
       "SEARCH": "program/v1/search"
