@@ -9,21 +9,33 @@
   }
   .profile-telemetry-subtitle{
     font-size: 14px;
-    color: var(--primary-color);
+    color: var(--primary-color) !important;
   }
 
 .share-tele-btn{
     margin:0px;
   }
   
-  @media only screen and (min-width : 416px) {
-    .share-tele-btn{
-        margin:0px calculateRem(24px);
-      }
-  }
+  // @media only screen and (min-width : 416px) {
+  //   .share-tele-btn{
+  //       margin:0px calculateRem(24px);
+  //     }
+  // }
   
-  .sb-radio-btn input[type="radio"]:checked + label,
-  .sb-radio-btn input[type="radio"]:not(:checked) + label {
-    color: var(--primary-color);
-    font-weight: normal;
+    .sb-checkbox label, .sb-radio-btn-checkbox label {
+      color: var(--primary-color); 
+      font-weight: normal;
+   }
+
+.maxw800 {
+  max-width: 800px !important;
+}
+
+.profile-description{
+ width: 100%;
+ max-width:160px;
+}
+
+.profile-description-title{
+  color: var(--primary-color) !important;
 }

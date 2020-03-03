@@ -3,4 +3,5 @@ export * from './profile-page/profile-page.component';
 export * from './update-content-preference/update-content-preference.component';
 export * from './update-location/update-location.component';
 export * from './telemetry/telemetry.component';
+export * from './telemetry-import/telemetry-import.component';
 
