@@ -119,7 +119,7 @@ describe('ExploreComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselMasterData.length).toEqual(1);
+    expect(component.apiContentList.length).toEqual(1);
   });
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
     sendPageApi = false;
@@ -129,7 +129,7 @@ describe('ExploreComponent', () => {
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.carouselMasterData.length).toEqual(0);
+    expect(component.apiContentList.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   });
   it('should unsubscribe from all observable subscriptions', () => {

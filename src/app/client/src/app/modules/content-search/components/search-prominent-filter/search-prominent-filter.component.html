@@ -1,0 +1,32 @@
+<div class="sb-prominent-filter sb-bg-color-gray-0 pb-0 pt-16" *ngIf="refresh">
+    <div class="ui container">
+
+        <span class="sb-filter-label pb-8 fmedium">
+            {{resourceService.frmelmnts?.lbl?.filterContentBy}}
+        </span>
+
+        <div class="ui active sb-prominent-filter-container" [suiCollapse]="collapse" *ngIf="formFieldProperties">
+
+            <div class="sb-prominent-filter-field" *ngFor="let field of formFieldProperties">
+                <ng-container *ngIf="field.inputType==='select' || field.inputType==='multi-select'">
+                    <app-custom-multi-select [inputData]="formInputData[field.code]" [field]="field"
+                        (selectedValue)="selectedValue($event, field.code);setFilterInteractData()">
+                    </app-custom-multi-select>
+                </ng-container>
+            </div>
+
+            <div class="sb-prominent-filter-field">
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract
+                    [telemetryInteractEdata]="resetFilterInteractEdata" (click)="resetFilters()">
+                    {{resourceService?.frmelmnts?.btn?.reset}}
+                </button>
+                <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" appTelemetryInteract
+                    [telemetryInteractEdata]="applyFilterInteractEdata" (click)="applyFilters()">
+                    {{resourceService?.frmelmnts?.btn?.submit}}
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
