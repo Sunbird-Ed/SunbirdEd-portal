@@ -47,6 +47,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   organisationId: string;
   showDownloadLoader = false;
   frameworkId;
+  selectedFilters = {};
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -77,7 +78,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.initFilters = true;
         this.organisationId = orgDetails.id;
         return this.dataDrivenFilterEvent;
-      }), first()
+      })
     ).subscribe((filters: any) => {
       this.dataDrivenFilters = filters;
       this.fetchContentOnParamChange();
@@ -106,13 +107,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getFilters(filters) {
-    const defaultFilters = _.reduce(filters, (collector: any, element) => {
-      if (element.code === 'board') {
-        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
-      }
-      return collector;
-    }, {});
-    this.dataDrivenFilterEvent.emit(defaultFilters);
+    console.log("======filters=====", filters.filters);
+    const selectedFilters = _.pick(filters.filters, ['board', 'medium', 'gradeLevel']);
+    this.dataDrivenFilterEvent.emit(selectedFilters);
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(

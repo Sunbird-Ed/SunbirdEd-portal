@@ -1,7 +1,10 @@
 <div [appTelemetryImpression]="telemetryImpression">
-  <app-prominent-filter [pageId]="'explore-page'" *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
+  <!-- <app-prominent-filter [pageId]="'explore-page'" *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']"
     [accordionDefaultOpen]=true [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true
-    [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter>
+    [hashTagId]="hashTagId" (prominentFilter)="getFilters($event)"></app-prominent-filter> -->
+    <!-- <app-search-filter></app-search-filter> -->
+    <app-search-filter (filterChange)="getFilters($event)" [selectedFilters]="selectedFilters">
+    </app-search-filter>
   <div class="ui container mt-24">
     <div class="ui grid">
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"

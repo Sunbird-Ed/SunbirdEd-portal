@@ -57,6 +57,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    console.log('this.selectedFilters', this.selectedFilters);
     this.showDefaultFilter = false;
     this.orgDetailsService.getCustodianOrg()
       .pipe(takeUntil(this.unsubscribe$))
@@ -72,24 +73,14 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(orgDetails => {
         this.boards = _.get(orgDetails, 'result.channel.frameworks');
-
-        if (this.boards) {
-          const defaultBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
-
-          if (_.get(this.selectedFilters, 'board[0]')) {
-            const offlineBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
-
-            if (offlineBoard) {
-              this.selectedBoard = offlineBoard;
-            } else {
-              this.selectedBoard = defaultBoard;
-              this.showDefaultFilter = true;
-            }
-          } else {
-            this.selectedBoard = defaultBoard;
-          }
+        if (!this.boards || !this.boards.length) {
+          return;
         }
-
+        if (this.selectedFilters.board && this.selectedFilters.board[0]) {
+          this.selectedBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
+        } else {
+          this.selectedBoard = this.boards[0];
+        }
         if (this.selectedBoard) {
           this.frameworkService.getFrameworkCategories(_.get(this.selectedBoard, 'identifier'))
             .pipe(takeUntil(this.unsubscribe$))
@@ -109,8 +100,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
 
   setFilters(showDefault?) {
     this.resetFilters();
-    const framework = this.userDetails.framework;
-
     this.frameworkCategories.forEach(element => {
       switch (element.code) {
         case 'medium':
@@ -118,7 +107,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
           let mediumIndex;
 
           if (showDefault) {
-            mediumIndex = this.mediums.findIndex(medium => framework.medium.includes(medium));
+            mediumIndex = 0;
           } else if (_.get(this.selectedFilters, 'medium[0]')) {
             mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
           }
@@ -133,7 +122,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
           let classIndex;
 
           if (showDefault) {
-            classIndex = this.classes.findIndex(value => framework.gradeLevel.includes(value));
+            classIndex = 0;
           } else if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
             classIndex = this.classes.findIndex((classElement) =>
               classElement === this.selectedFilters.gradeLevel[0]);
