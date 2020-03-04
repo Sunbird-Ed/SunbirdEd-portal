@@ -23,6 +23,9 @@ describe('ResourceService', () => {
     spyOn(http, 'get').and.callFake(() => observableOf(mockRes.resourceData));
     spyOn(resourceService, 'getResource').and.callThrough();
     resourceService.getResource();
+    // After implementing proper PhraseApp Token
+    // expect(resourceService.frmelmnts).toBeDefined();
+    // expect(resourceService.messages).toBeDefined();
     expect(resourceService.frmelmnts).toBeUndefined();
     expect(resourceService.messages).toBeUndefined();
   }));
