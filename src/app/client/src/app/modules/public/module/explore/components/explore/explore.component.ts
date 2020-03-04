@@ -27,7 +27,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public showLoginModal = false;
   public baseUrl: string;
   public noResultMessage: INoResultMessage;
-  public carouselMasterData: Array<ICaraouselData> = [];
+  public apiContentList: Array<ICaraouselData> = [];
   public filterType: string;
   public queryParams: any;
   public hashTagId: string;
@@ -50,8 +50,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
-      && this.pageSections.length < this.carouselMasterData.length) {
-      this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+      && this.pageSections.length < this.apiContentList.length) {
+      this.pageSections.push(this.apiContentList[this.pageSections.length]);
     }
   }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
@@ -115,7 +115,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe((result) => {
         this.showLoader = true;
         this.queryParams = { ...result[1] };
-        this.carouselMasterData = [];
+        this.apiContentList = [];
         this.pageSections = [];
         this.fetchPageData();
       });
@@ -149,21 +149,32 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     if (_.get(manipulatedData, 'filters')) {
       option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }
-    this.pageApiService.getPageData(option)
+    this.pageApiService.getPageData(option).pipe(map((response) => {
+      return _.filter(_.get(response, 'sections'), (section) => {
+        if (!section.contents) {
+          return false;
+        }
+        _.forEach(section.contents, contents => {
+          contents.cardImg = contents.appIcon || 'assets/images/book.png';
+        });
+        return true;
+      });
+    }))
       .subscribe(data => {
         this.showLoader = false;
-        this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
-        if (!this.carouselMasterData.length) {
+        this.apiContentList = data;
+        if (!this.apiContentList.length) {
           return; // no page section
         }
-        if (this.carouselMasterData.length >= 2) {
-          this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-        } else if (this.carouselMasterData.length >= 1) {
-          this.pageSections = [this.carouselMasterData[0]];
+        if (this.apiContentList.length >= 2) {
+          this.pageSections = [this.apiContentList[0], this.apiContentList[1]];
+        } else if (this.apiContentList.length >= 1) {
+          this.pageSections = [this.apiContentList[0]];
         }
+        console.log('this.pageSections', this.pageSections);
       }, err => {
         this.showLoader = false;
-        this.carouselMasterData = [];
+        this.apiContentList = [];
         this.pageSections = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
