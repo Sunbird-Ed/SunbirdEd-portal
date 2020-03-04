@@ -3,7 +3,7 @@ import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { OrgDetailsService, FrameworkService, ChannelService } from '@sunbird/core';
 import { ResourceService } from '@sunbird/shared';
-// import { OnboardingService } from '../../services';
+import { OnboardingService } from './../../../../../../projects/desktop/src/app/modules/offline/services';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -52,7 +52,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     public frameworkService: FrameworkService,
     private orgDetailsService: OrgDetailsService,
     private channelService: ChannelService,
-    // private onboardingService: OnboardingService,
+    private onboardingService: OnboardingService,
     public router: Router
   ) { }
 
@@ -62,7 +62,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.hashTagId = _.get(data, 'result.response.value');
-        // this.userDetails = this.onboardingService.userData;
+        this.userDetails = this.onboardingService.userData;
         this.setBoard();
       });
   }

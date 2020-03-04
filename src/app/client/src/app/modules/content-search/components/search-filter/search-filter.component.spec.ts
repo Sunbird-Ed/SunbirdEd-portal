@@ -12,7 +12,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { response } from './search-filter.component.spec.data';
 import { of as observableOf } from 'rxjs';
-import { OnboardingService } from '../../services';
+import { OnboardingService } from './../../../../../../projects/desktop/src/app/modules/offline/services';
 
 
 describe('SearchFilterComponent', () => {
