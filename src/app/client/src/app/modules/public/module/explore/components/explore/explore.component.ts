@@ -1,5 +1,5 @@
 import { combineLatest, Subject } from 'rxjs';
-import { PageApiService, OrgDetailsService, UserService } from '@sunbird/core';
+import { OrgDetailsService, UserService, SearchService, FrameworkService } from '@sunbird/core';
 import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
@@ -46,7 +46,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public slug: string;
   organisationId: string;
   showDownloadLoader = false;
-
+  frameworkId;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -54,17 +54,22 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.pageSections.push(this.apiContentList[this.pageSections.length]);
     }
   }
-  constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
+  constructor(private searchService: SearchService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
-    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService,
+    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public frameworkService: FrameworkService,
     public navigationhelperService: NavigationHelperService, public contentManagerService: ContentManagerService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.explore.filterType;
   }
 
   ngOnInit() {
+    this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
+      if (!channelData.err) {
+        this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
+      }
+    });
     this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
       mergeMap((orgDetails: any) => {
         this.slug = orgDetails.slug;
@@ -120,44 +125,55 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fetchPageData();
       });
   }
-  private fetchPageData() {
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
-      if (_.includes(['sort_by', 'sortType', 'appliedFilters'], key)) {
-        return false;
-      }
-      return value.length;
-    });
-    const softConstraintData = {
-      filters: {
-        channel: this.hashTagId,
-        board: [this.dataDrivenFilters.board]
-      },
-      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
-      mode: 'soft'
-    };
-    const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams, 'appliedFilters'),
-      softConstraintData);
+  getSearchRequest() {
+    let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
+    filters['contentType'] = filters.contentType || ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
     const option = {
-      organisationId: this.organisationId,
-      source: 'web',
-      name: 'Explore',
-      filters: _.get(this.queryParams, 'appliedFilters') ? filters : _.get(manipulatedData, 'filters'),
-      mode: _.get(manipulatedData, 'mode'),
-      exists: [],
-      params: this.configService.appConfig.ExplorePage.contentApiQueryParams
+        limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
+        filters: filters || {},
+        // mode: 'soft',
+        // facets: facets,
+        params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
     };
-    if (_.get(manipulatedData, 'filters')) {
-      option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
+    if (this.frameworkId) {
+      option.params.framework = this.frameworkId;
     }
-    this.pageApiService.getPageData(option).pipe(map((response) => {
-      return _.filter(_.get(response, 'sections'), (section) => {
-        if (!section.contents) {
-          return false;
+    return option;
+  }
+  private fetchPageData() {
+    const option = this.getSearchRequest();
+    this.searchService.contentSearch(option).pipe(
+      map((response) => {
+        const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
+      for (const [key, value] of Object.entries(filteredContents)) {
+        const isMultipleSubjects = key.split(',').length > 1;
+        if (isMultipleSubjects) {
+            const subjects = key.split(',');
+            subjects.forEach((subject) => {
+                if (filteredContents[subject]) {
+                    filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
+                } else {
+                    filteredContents[subject] = value;
+                }
+            });
+            delete filteredContents[key];
         }
+      }
+      const sections = [];
+      for (const section in filteredContents) {
+        if (section) {
+            sections.push({
+                name: section,
+                contents: filteredContents[section]
+            });
+        }
+      }
+      return _.map(sections, (section) => {
         _.forEach(section.contents, contents => {
           contents.cardImg = contents.appIcon || 'assets/images/book.png';
         });
-        return true;
+        return section;
       });
     }))
       .subscribe(data => {
@@ -171,7 +187,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (this.apiContentList.length >= 1) {
           this.pageSections = [this.apiContentList[0]];
         }
-        console.log('this.pageSections', this.pageSections);
       }, err => {
         this.showLoader = false;
         this.apiContentList = [];

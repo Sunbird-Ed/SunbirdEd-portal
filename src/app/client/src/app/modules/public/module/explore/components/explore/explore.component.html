@@ -6,7 +6,7 @@
     <div class="ui grid">
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
         [ngClass]="{'last mb-0':last}">
-          <sb-library-cards-grid [title]="section.name" [contentList]="section.contents"[maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event)"></sb-library-cards-grid>
+          <sb-library-cards-grid [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents"[maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event)"></sb-library-cards-grid>
       </div>
       <div class="twelve wide column" *ngIf="showLoader">
         <app-loader [data]='loaderMessage'></app-loader>
