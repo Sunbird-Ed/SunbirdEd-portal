@@ -12,12 +12,13 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
-    templateUrl: './library-search.component.html'
+    templateUrl: './library-search.component.html',
+    styleUrls: ['./library-search.component.scss']
 })
 export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public showLoader = true;
-    public noResultMessage: INoResultMessage;
+    public noResultMessage;
     public filterType: string;
     public queryParams: any;
     public hashTagId: string;
@@ -213,9 +214,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.unsubscribe$.complete();
     }
     private setNoResultMessage() {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
-      };
+        this.noResultMessage = {
+            'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
+            'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+            'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+            'redirectUrl': ''
+          };
     }
 }
