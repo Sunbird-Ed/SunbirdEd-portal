@@ -1,15 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
-import { ICard } from '@sunbird/shared';
+import { ICard, ILanguage } from '@sunbird/shared';
 import { Subject, Observable } from 'rxjs';
+import { ResourceService } from '../resource/resource.service';
   // Dependency injection creates new instance each time if used in router sub-modules
+@Injectable()
 export class UtilService {
   static singletonInstance: UtilService;
   public showAppPopUp = false;
   private searchQuery = new Subject<any>();
   public searchQuery$ = this.searchQuery.asObservable();
+  public languageChange = new EventEmitter<ILanguage>();
+  public hideHeaderTabs = new EventEmitter<boolean>();
+  public searchKeyword = new EventEmitter<string>();
 
-  constructor() {
+  constructor(private resourceService: ResourceService) {
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
     }
@@ -42,10 +47,12 @@ export class UtilService {
       metaData: {},
       completionPercentage: data.completionPercentage || 0,
       mimeTypesCount: data.mimeTypesCount || 0,
-      cardImg: data.appIcon || data.courseLogoUrl || 'assets/images/book.png',
+      cardImg: data.appIcon || data.courseLogoUrl || data.cardImg || 'assets/images/book.png',
       resourceType: data.resourceType,
       badgeAssertions: data.badgeAssertions,
-      organisation: data.organisation
+      organisation: data.organisation,
+      hoverData: data.hoverData,
+      board: data.board || ''
     };
 
     // this customization is done for enrolled courses
@@ -173,7 +180,8 @@ export class UtilService {
   getPlayerDownloadStatus(status, content, currentRoute) {
     if (currentRoute === 'browse') {
       if (status === 'DOWNLOAD') {
-        return (!content['downloadStatus'] || content['downloadStatus'] === 'FAILED');
+        const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
+        return (!content['downloadStatus'] || _.includes(contentStatus, content['downloadStatus']));
       }
       return (content['downloadStatus'] === status);
     }
@@ -191,5 +199,49 @@ export class UtilService {
 
   clearSearchQuery() {
       this.searchQuery.next();
+  }
+
+  updateSearchKeyword(keyword: string) {
+    this.searchKeyword.emit(keyword);
+  }
+
+  /* This will add hover data in card content */
+  addHoverData(contentList, isOnlineSearch) {
+    const status = {
+      DOWNLOADING: this.resourceService.messages.stmsg.m0140,
+      FAILED: this.resourceService.messages.stmsg.m0143,
+      DOWNLOADED: this.resourceService.messages.stmsg.m0139,
+      PAUSED: this.resourceService.messages.stmsg.m0142,
+      CANCELED: this.resourceService.messages.stmsg.m0143,
+    };
+    _.each(contentList, (value) => {
+      value['hoverData'] = {
+        note: isOnlineSearch && _.get(value, 'downloadStatus') ===
+          'DOWNLOADED' ? this.resourceService.frmelmnts.lbl.goToMyDownloads : '',
+        actions: [
+          {
+            type: isOnlineSearch ? 'download' : 'save',
+            label: isOnlineSearch ? _.capitalize(status[_.get(value, 'downloadStatus')]) ||
+              this.resourceService.frmelmnts.btn.download :
+              this.resourceService.frmelmnts.lbl.saveToPenDrive,
+            disabled: isOnlineSearch && _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], _.get(value, 'downloadStatus'))
+          },
+          {
+            type: 'open',
+            label: this.resourceService.frmelmnts.lbl.open
+          }
+        ]
+      };
+    });
+
+    return contentList;
+  }
+
+  emitLanguageChangeEvent(language: ILanguage) {
+    this.languageChange.emit(language);
+  }
+
+  emitHideHeaderTabsEvent(hideTab: boolean) {
+    this.hideHeaderTabs.emit(hideTab);
   }
 }

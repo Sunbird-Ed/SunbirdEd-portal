@@ -12,7 +12,7 @@
     height: 56px;
   }
   .sb-account-recoverpage-header{
-    margin-top: ($base-block-space * 3);
+    margin-top: calculateRem(24px);
     .sb-account-recoverpage-header-text {
       font-size: 18px;
       font-weight: bold;
@@ -24,9 +24,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    padding-right: ($base-block-space * 4) - 2;
+    padding-right: calculateRem(30px);
     &::placeholder {
-      color: #999999;
+      color: $gray-200;
       opacity: 1; 
     }
   }
@@ -39,20 +39,20 @@
   .sb-field-verified{
     color: $green;
     position: absolute;
-    top: ($base-block-space * 4);
-    right: $base-block-space;
+    top: calculateRem(32px);
+    right: calculateRem(8px);
     display: block;
     font-size: $font-size-normal;
   }
   .sb-account-recover-page-radio{
     .sb-account-recover-page-radio-label{
       font-size: $font-size-normal;
-      line-height: ($base-block-space * 3);
+      line-height:calculateRem(24px);
     }
   }
   .sb-account-recover-page-otp-text{
     font-size: $font-size-normal;
-    line-height: ($base-block-space * 3);
+    line-height: calculateRem(24px);
     color: $gray-200;
     span{
       color: $black;
@@ -60,7 +60,7 @@
   }
   .sb-account-recover-page-info-msg{
     font-size: $font-size-normal;
-    line-height: ($base-block-space * 3);
+    line-height: calculateRem(24px);
     color: $black;
   }
   .sb-account-recover-page-otp-success-msg{

@@ -1,0 +1,42 @@
+@import "variables";
+@import "mixins/mixins";
+
+.content-header {
+  background:#FAFAFA;
+  min-height: calculateRem(14px);
+
+  &__content{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    @include respond-below(sm) {
+      display: block;
+    }
+  
+    .dot-divider {
+      width: ($base-block-space / 2);
+      height: ($base-block-space / 2);
+      border-radius: 100%;
+      background-color: var(--gray-800);
+      display: inline-block;
+      margin: 0px $base-block-space;
+    }
+  
+  }
+
+  &__title {
+    color: var(--primary-400);
+    font-size: calculateRem(18px);
+  }
+
+  &__info {
+    color: var(--gray-800);
+    font-size: calculateRem(14px);
+  }
+
+  @include respond-below(sm) {
+    &__buttons {
+      margin-top: calculateRem(8px);
+    }
+  }
+}

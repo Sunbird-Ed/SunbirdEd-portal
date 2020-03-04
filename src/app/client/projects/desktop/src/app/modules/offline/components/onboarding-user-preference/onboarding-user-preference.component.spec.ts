@@ -82,17 +82,17 @@ describe('OnboardingUserPreferenceComponent', () => {
   });
 
   it('should call onBoardChange and get framework api success', () => {
-    spyOn(component, 'getAssociationData');
+    spyOn(component.onboardingService, 'getAssociationData');
     spyOn(component.frameworkService, 'getFrameworkCategories').and.returnValue(observableOf(onboarding_user_preference_test.framework));
     component.onBoardChange(onboarding_user_preference_test.options.board);
-    expect(component.getAssociationData).toHaveBeenCalled();
+    expect(component.onboardingService.getAssociationData).toHaveBeenCalled();
     expect(component.showMedium).toBeTruthy();
     expect(component.showClass).toBeFalsy();
     expect(component.disableContinueBtn).toBeTruthy();
   });
 
   it('should call onBoardChange and get framework api error', () => {
-    spyOn(component, 'getAssociationData');
+    spyOn(component.onboardingService, 'getAssociationData');
     spyOn(component.toasterService, 'error').and.returnValue(throwError(resourceBundle.messages.emsg.m0005));
     spyOn(component.frameworkService, 'getFrameworkCategories')
     .and.returnValue(throwError(onboarding_user_preference_test.framework_error));

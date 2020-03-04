@@ -1,0 +1,24 @@
+@import "variables";
+@import 'mixins/mixins';
+@import 'components/onboarding';
+
+:host ::ng-deep {
+  .ui.multiple.search.dropdown>input .search {
+    padding: 0px 0px !important;
+  }
+
+  .ui.search.selection.fields-select-dropdown.dropdown>input.search {
+    display: none;
+  }
+
+  .ui.selection.fields-select-dropdown.dropdown:focus {
+    border: 1px solid var(--primary-300);
+    color: #0076FE;
+  }
+
+  .ui.selection.fields-select-dropdown.dropdown:focus~label {
+    border: 0px;
+    color: #0076FE;
+    font-weight: normal;
+  }
+}

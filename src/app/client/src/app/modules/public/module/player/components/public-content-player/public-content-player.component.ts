@@ -55,6 +55,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   telemetryCdata: Array<{}>;
   public telemetryInteractObject: IInteractEventObject;
   public closePlayerInteractEdata: IInteractEventEdata;
+  public printPdfInteractEdata: IInteractEventEdata;
   public objectRollup = {};
   isOffline: boolean = environment.isOffline;
 
@@ -97,6 +98,11 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     };
     this.closePlayerInteractEdata = {
       id: 'close-player',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.printPdfInteractEdata = {
+      id: 'print-pdf-button',
       type: 'click',
       pageid: 'public'
     };
@@ -149,10 +155,17 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       setTimeout(() => {
         if (this.dialCode) {
           sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
-          this.router.navigate(['/get/dial/', this.dialCode]);
-        } else {
-          this.navigationHelperService.navigateToResource('/explore');
-        }
+          const navigateOptions = {
+            queryParams: {
+              textbook: _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
+            }
+          };
+          this.router.navigate(['/get/dial/', this.dialCode], navigateOptions);
+        } else if (this.isOffline) {
+            this.navigationHelperService.navigateToResource('');
+          } else {
+            this.navigationHelperService.navigateToResource('/explore');
+          }
       }, 100);
     }
   }
@@ -193,6 +206,10 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  printPdf(pdfUrl: string) {
+    window.open(pdfUrl, '_blank');
   }
 
 }

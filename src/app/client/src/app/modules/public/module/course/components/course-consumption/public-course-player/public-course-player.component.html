@@ -47,7 +47,7 @@
                                 [courseHierarchy]="courseHierarchy"></app-public-batch-details>
                             <br>
                             <div class="rightSideSectionCards ui card sb-course-batch-card" *ngIf="curriculum && curriculum.length > 0">
-                                    <div class="header p-16">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
+                                    <div class="header p-16 fnormal">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
                                 <div class="content">
                                     <div class="description">
                                         <div class="ui list">
@@ -116,7 +116,14 @@
                                     </a>
                                     </p>
                                 <div class="ui divider"></div>
-                                <p class="mb-5" *ngIf="courseHierarchy.license">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
+                                <p class="mb-5" *ngIf="courseHierarchy && !(courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']) && courseHierarchy.license">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
+                                <p class="mb-5" *ngIf="courseHierarchy && courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']">
+                                    <span>{{resourceService.frmelmnts.lbl.licenseTerms}}:</span>
+                                    {{courseHierarchy.licenseDetails['name']}} <br> 
+                                <span class="licenseTag">
+                                    For details - <a href="{{courseHierarchy.licenseDetails['url']}}" target="_blank">{{courseHierarchy.licenseDetails['url']}}</a>
+                                </span>
+                                </p>
                             </div>
                         </div>
                     </div>

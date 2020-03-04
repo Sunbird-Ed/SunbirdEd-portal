@@ -55,5 +55,11 @@ describe('ContentRatingComponent', () => {
     expect(component.enableSubmitBtn).toBeTruthy();
     expect(component.contentRating).toEqual(4);
   });
+
+  it('should emit close event', () => {
+    spyOn(component.closeModal, 'emit');
+    component.dismissModal();
+    expect(component.closeModal.emit).toHaveBeenCalledWith(true);
+  });
 });
 

@@ -1,15 +1,16 @@
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, UtilService, ConfigService } from '@sunbird/shared';
-import { SearchService, OrgDetailsService } from '@sunbird/core';
+import { SharedModule, ResourceService, UtilService, ConfigService, ToasterService } from '@sunbird/shared';
+import { SearchService, OrgDetailsService, UserService } from '@sunbird/core';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { DialCodeComponent } from './dial-code.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Response } from './dial-code.component.spec.data';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+import { DialCodeService, mockData } from '../../services';
 
 describe('DialCodeComponent', () => {
   let component: DialCodeComponent;
@@ -20,10 +21,10 @@ describe('DialCodeComponent', () => {
         't0015': 'Upload Organization',
         't0016': 'Upload User'
       },
-      'lbl' : {
+      'lbl': {
         'medium': 'Medium',
-        'class' : 'Class',
-        'subject' : 'subject'
+        'class': 'Class',
+        'subject': 'subject'
       },
     },
     'messages': {
@@ -40,7 +41,7 @@ describe('DialCodeComponent', () => {
   };
   const fakeActivatedRoute = {
     'params': observableOf({ dialCode: '61U24C' }),
-    'queryParams': observableOf(),
+    'queryParams': observableOf({}),
     snapshot: {
       data: {
         telemetry: {
@@ -54,16 +55,18 @@ describe('DialCodeComponent', () => {
   };
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
+    url = 'browse';
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       declarations: [DialCodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [SearchService, UtilService, ConfigService, OrgDetailsService,
+      providers: [SearchService, UtilService, ConfigService, OrgDetailsService, UserService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute }]
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        DialCodeService, TelemetryService, ToasterService]
     })
       .compileComponents();
   }));
@@ -74,28 +77,65 @@ describe('DialCodeComponent', () => {
   });
 
   it('should return matching contents for valid dialcode query', () => {
-    const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
-    component.searchDialCode();
-    fixture.detectChanges();
-    expect(component.showLoader).toBeTruthy();
+    const dialCodeService = TestBed.get(DialCodeService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    spyOn(telemetryService, 'impression');
+    spyOn(dialCodeService, 'searchDialCode').and.callFake(() => observableOf(mockData.dialCodeSearchApiResponse.result));
+    spyOn(dialCodeService, 'filterDialSearchResults').and.returnValue(observableOf({
+      'collection': mockData.dialCodeSearchApiResponse.result.collections,
+      'contents': []
+    }));
+    component.setTelemetryData();
+    component['processDialCode']({ dialCode: '123' }).subscribe(result => {
+      expect(dialCodeService.searchDialCode).toHaveBeenCalled();
+      expect(dialCodeService.searchDialCode).toHaveBeenCalledWith('123', false);
+      expect(dialCodeService.searchDialCode).toHaveBeenCalledTimes(1);
+      expect(result).toBeDefined();
+      expect(component.showSelectChapter).toBeFalsy();
+      expect(telemetryService.interact).toHaveBeenCalled();
+      expect(telemetryService.interact).toHaveBeenCalledWith({
+        context: { env: 'get', cdata: [] },
+        edata: {
+          id: 'search-dial-success',
+          type: 'view',
+          subtype: 'auto',
+          pageid: 'get-dial'
+        }
+      });
+    });
   });
-  it('should return appropriate message on no contents', () => {
-    const searchService = TestBed.get(SearchService);
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.noData));
-    component.searchDialCode();
-    fixture.detectChanges();
+
+  it('should init the component when dial scan happens', () => {
+    spyOn<any>(component, 'initialize').and.callThrough();
+    spyOn<any>(component, 'processDialCode').and.returnValue(observableOf([]));
+    spyOn(component, 'setTelemetryData').and.callThrough();
+    component.ngOnInit();
+    expect(component['initialize']).toHaveBeenCalled();
+    expect(component['initialize']).toHaveBeenCalledWith({ dialCode: '61U24C' });
+    expect(component.itemsToDisplay).toEqual([]);
     expect(component.showLoader).toBeFalsy();
+    expect(component.itemsToDisplay).toEqual([]);
+    expect(component.setTelemetryData).toHaveBeenCalled();
+    expect(component.searchResults).toEqual([]);
+  });
+
+  it('should return appropriate message on no contents', () => {
+    spyOn<any>(component, 'initialize').and.callThrough();
+    spyOn<any>(component, 'processDialCode').and.returnValue(observableOf([]));
+    component.ngOnInit();
+    expect(component.itemsToDisplay).toEqual([]);
+    expect(component.showLoader).toBeFalsy();
+    expect(component.itemsToDisplay).toEqual([]);
     expect(component.searchResults).toEqual([]);
   });
   it('should return appropriate failure message on error throw', () => {
-    const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableThrowError(new Error('Server error')));
-    component.searchDialCode();
-    fixture.detectChanges();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.searchResults).toEqual([]);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn<any>(component, 'initialize').and.callThrough();
+    spyOn<any>(component, 'processDialCode').and.returnValue(throwError([]));
+    component.ngOnInit();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0049);
   });
   it('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();
@@ -110,16 +150,20 @@ describe('DialCodeComponent', () => {
     const constantData = config.appConfig.GetPage.constantData;
     const metaData = config.appConfig.GetPage.metaData;
     const dynamicFields = config.appConfig.GetPage.dynamicFields;
-    spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
-    spyOn(component, 'searchDialCode').and.callThrough();
+    const dialCodeService = TestBed.get(DialCodeService);
+    spyOn(dialCodeService, 'searchDialCode').and.returnValue(mockData.dialCodeSearchApiResponse);
+    spyOn(dialCodeService, 'filterDialSearchResults').and.returnValue(observableOf({
+      'collection': mockData.dialCodeSearchApiResponse.result.collections,
+      'contents': []
+    }));
     spyOn(utilService, 'getDataForCard').and.callThrough();
-    component.searchDialCode();
+    component.ngOnInit();
     const searchResults = utilService.getDataForCard(Response.successData.result.content, constantData, dynamicFields, metaData);
     fixture.detectChanges();
     expect(utilService.getDataForCard).toHaveBeenCalled();
     expect(utilService.getDataForCard).toHaveBeenCalledWith(Response.successData.result.content, constantData, dynamicFields, metaData);
     expect(component.searchResults).toEqual([]);
-    expect(component.showLoader).toBeTruthy();
+    expect(component.showLoader).toBeFalsy();
   });
 
   it('should fetch more cards on scroll', () => {
@@ -137,11 +181,80 @@ describe('DialCodeComponent', () => {
     expect(component.itemsToDisplay).toEqual(['one']);
   });
 
-  it('showDownloadLoader to be true' , () => {
+  it('showDownloadLoader to be true', () => {
     spyOn(component, 'startDownload');
     component.isOffline = true;
     expect(component.showDownloadLoader).toBeFalsy();
     component.getEvent(Response.download_event);
     expect(component.showDownloadLoader).toBeTruthy();
   });
+
+  it('should redirect to flattened DIAL page with /resource ', () => {
+    const userService = TestBed.get(UserService);
+    component.dialCode = 'D4R4K4';
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.redirectToDetailsPage('do_21288543692132352012128');
+    expect(component.router.navigate).toHaveBeenCalledWith(['/resources/play/collection', 'do_21288543692132352012128'],
+      {
+        queryParams: { contentType: 'TextBook', 'dialCode': 'D4R4K4' },
+        state: { action: 'dialcode' }
+      });
+  });
+
+  it('should redirect to flattened DIAL page without /resource ', () => {
+    component.dialCode = 'D4R4K4';
+    const userService = TestBed.get(UserService);
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
+    component.redirectToDetailsPage('do_21288543692132352012128');
+    expect(component.router.navigate).toHaveBeenCalledWith(['/play/collection', 'do_21288543692132352012128'],
+      { queryParams: { contentType: 'TextBook', 'dialCode': 'D4R4K4' } });
+  });
+
+  describe('processTextBook function', () => {
+
+    it('should be called whenever user clicks on a book', () => {
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      activatedRoute.queryParams = observableOf({ textbook: 'do_21288543692132352012128' });
+      const dialCodeService = TestBed.get(DialCodeService);
+      spyOn(dialCodeService, 'getAllPlayableContent').and.returnValue(observableOf([]));
+      spyOn<any>(component, 'processTextBook');
+      component.ngOnInit();
+      expect(component['processTextBook']).toHaveBeenCalled();
+      expect(component['processTextBook']).toHaveBeenCalledTimes(1);
+      expect(component['processTextBook']).toHaveBeenCalledWith({
+        dialCode: '61U24C',
+        textbook: 'do_21288543692132352012128'
+      });
+    });
+
+    it(`should redirect the user to get page if invalid textbook id is entered in the url which is not
+      associated with the dialcode`, () => {
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      const router = TestBed.get(Router);
+      activatedRoute.queryParams = observableOf({ textbook: 'do_21288543692132352012129' });
+      const dialCodeService = TestBed.get(DialCodeService);
+      spyOn<any>(component, 'processTextBook').and.callThrough();
+      dialCodeService['dialSearchResults'] = mockData.dialCodeSearchApiResponse.result;
+      component.ngOnInit();
+      expect(router.navigate).toHaveBeenCalledWith(['/get/dial', '61U24C']);
+      expect(component.searchResults).toEqual([]);
+      expect(component.showLoader).toBeFalsy();
+    });
+
+    it(`should call collection hierarchy if user valid textbook is clicked`, () => {
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      const telemetryService = TestBed.get(TelemetryService);
+      spyOn(telemetryService, 'impression');
+      activatedRoute.queryParams = observableOf({ textbook: 'do_2124791820965806081846' });
+      const dialCodeService = TestBed.get(DialCodeService);
+      spyOn(dialCodeService, 'getAllPlayableContent').and.returnValue(observableOf([]));
+      spyOn<any>(component, 'processTextBook').and.callThrough();
+      dialCodeService['dialSearchResults'] = mockData.dialCodeSearchApiResponse.result;
+      fixture.detectChanges();
+      component.ngOnInit();
+      expect(dialCodeService.getAllPlayableContent).toHaveBeenCalled();
+      expect(dialCodeService.getAllPlayableContent).toHaveBeenCalledWith(['do_2124791820965806081846']);
+    });
+  });
+
 });

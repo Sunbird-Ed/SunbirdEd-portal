@@ -1,0 +1,41 @@
+<div class="sb-pageSection my-24 ui container" [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-pageSection-header">
+  </div>
+  <div class="sb-pageSection-content">
+
+    <ng-container *ngIf="(programsList$ | async ) as programsList else loading">
+      <ng-container *ngIf="programsList && programsList.length else noResult">
+        <div class="sbgrid sbgrid--grid-carousel">
+          <div appTelemetryInteract [telemetryInteractObject]="getTelemetryInteractObject(program.programId)"
+            [telemetryInteractEdata]="getTelemetryInteractEdata('program-card')" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')"
+            class="sbcard sbcard--resource sbcard--course" [routerLink]="['./program/' + program.programId]" *ngFor="let program of programsList">
+            <div class="sbcard__main_area">
+              <div class="sbcard__img mr-8"><img [src]="program.imagePath || 'assets/images/programs_default.png'"
+                  alt="" title="" /></div>
+              <div class="sbcard__info">
+                <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two sb-color-primary font-weight-bold">
+                  {{program?.name}}
+                </h4>
+                <div class="sbcard__meta1"><span>{{program?.description}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="sbcard__moreinfo">
+              <div class="sbcard__meta2">
+                <div class="sbcard__medium">
+                  {{program?.rootOrgName}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noResult>
+        <app-no-result [data]="{messageText: resourceService.messages.stmsg.m0006}"></app-no-result>
+      </ng-template>
+    </ng-container>
+    <ng-template #loading>
+      <app-loader></app-loader>
+    </ng-template>
+  </div>
+</div>

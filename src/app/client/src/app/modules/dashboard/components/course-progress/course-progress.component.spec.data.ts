@@ -371,7 +371,9 @@ export const mockUserData = {
         'errmsg': null
       },
       'responseCode': 'OK',
-      'result': 'External ID\n,8454cb21-3ce9-4e30-85b5-fade097880d8\n,bacacc74-f828-403c-987a-333550c204db\n'
+      'result': {
+         'signedUrl': 'https://ntpstaging.blob.core.windows.net/reports/course-progress-reports/report-0129399366092881925.csv'
+       }
     }
 
 };

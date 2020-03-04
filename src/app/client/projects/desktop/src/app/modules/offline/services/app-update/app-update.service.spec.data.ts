@@ -31,5 +31,50 @@ export const serverRes = {
               'responseCode': 'INTERNAL_SERVER_ERROR',
               'result': {}
             }
+        },
+    appInfoSuccess: {
+      'id': 'api.app.info',
+      'ver': '1.0',
+      'ts': '2019-12-17T08:43:46.117Z',
+      'params': {
+        'resmsgid': '522beb8d-1c1c-4324-9eb3-6c95a8ed0d6b',
+        'msgid': 'bef374a8-59b3-4b93-b31a-691a913231bf',
+        'status': 'successful',
+        'err': null,
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'termsOfUseUrl': 'http://localhost:4000/abc.html',
+        'version': '1.0.2',
+        'releaseDate': '',
+        'deviceId': 'did1234456',
+        'languages': 'English, Hindi',
+        'updateInfo': {
+          'updateAvailable': true,
+          'url': 'http://localhost:3000/app/v1/pdf',
+          'version': '1.0.3'
         }
+      }
+    },
+    appInfoFailureCase: {
+        'id': 'api.app.info',
+        'ver': '1.0',
+        'ts': '2019-12-17T08:43:46.117Z',
+        'params': {
+          'resmsgid': '522beb8d-1c1c-4324-9eb3-6c95a8ed0d6b',
+          'msgid': 'bef374a8-59b3-4b93-b31a-691a913231bf',
+          'status': 'successful',
+          'err': null,
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'termsOfUseUrl': 'http://localhost:4000/abc.html',
+          'version': '1.0.2',
+          'releaseDate': '',
+          'deviceId': 'did1234456',
+          'languages': 'English, Hindi'
+        }
+    }
 };

@@ -1,11 +1,11 @@
 import { ConnectionService } from './../../services';
 import { mergeMap } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DeviceRegisterService, TenantService } from '@sunbird/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { OnboardingService } from './../../services';
-import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -31,6 +31,7 @@ export class OnboardingLocationComponent implements OnInit {
   constructor(public onboardingService: OnboardingService,
     public resourceService: ResourceService, public toasterService: ToasterService, private router: Router,
     public tenantService: TenantService, public deviceRegisterService: DeviceRegisterService,
+    public telemetryService: TelemetryService, public activatedRoute: ActivatedRoute,
     private connectionService: ConnectionService) {
   }
 
@@ -45,12 +46,11 @@ export class OnboardingLocationComponent implements OnInit {
     });
   }
 
-  onOptionChanges(option) {
+  onOptionChanges(type: string) {
     this.disableContinueBtn = true;
-    if (option.type === 'state') {
-      this.selectedDistrict = {};
+    if (this.selectedState && type === 'state') {
       this.districtList = [];
-      this.getAllDistricts(option.id);
+      this.getAllDistricts(this.selectedState.id);
     } else {
       this.disableContinueBtn = false;
     }
@@ -70,11 +70,15 @@ export class OnboardingLocationComponent implements OnInit {
     this.onboardingService.searchLocation({ type: 'district', parentId: parentId })
     .subscribe(data => {
       this.districtList = _.get(data, 'result.response');
+      if (this.selectedDistrict) {
+        this.selectedDistrict = _.find(this.districtList, {name: this.selectedDistrict['name']});
+      }
     });
   }
 
   handleSubmitButton() {
     this.disableContinueBtn = true;
+    this.setInteractData();
     const requestParams = {
       request: {
         state: this.selectedState,
@@ -93,18 +97,12 @@ export class OnboardingLocationComponent implements OnInit {
 
   setTelemetryData () {
     this.telemetryImpression = {
-      context: { env: 'offline' },
+      context: { env: 'onboarding' },
       edata: {
         type: 'view',
         pageid: 'onboarding_location',
         uri: this.router.url
       }
-    };
-
-    this.telemetryInteractEdata = {
-      id: 'onboarding_location',
-      type: 'click',
-      pageid: 'onboarding_location'
     };
   }
   getUserCurrentLocation() {
@@ -132,6 +130,21 @@ export class OnboardingLocationComponent implements OnInit {
     }, err => {
       this.locationSaved.emit('ERROR');
     });
+  }
+
+  setInteractData() {
+    const interactData = {
+      context: {
+        env: 'onboarding',
+        cdata: []
+      },
+      edata: {
+        id: 'onboarding_location',
+        type: 'click',
+        pageid: 'onboarding_location'
+      }
+    };
+        this.telemetryService.interact(interactData);
   }
 
 }

@@ -330,7 +330,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
       this.router.navigate(['/get/dial/', this.dialCode]);
     } else {
-      this.navigationHelperService.navigateToPreviousUrl('/explore');
+      if (this.isOffline) {
+       const  previousUrl =  this.navigationHelperService.getPreviousUrl();
+       if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
+        return this.router.navigate(['/']);
+       }
+       // tslint:disable-next-line: max-line-length
+       previousUrl.queryParams ? this.router.navigate([previousUrl.url], {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
+      } else {
+        this.navigationHelperService.navigateToPreviousUrl('/explore');
+      }
     }
   }
   closeContentPlayer() {

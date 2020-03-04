@@ -76,7 +76,14 @@
                                     </a>
                                 </p>
                                 <div class="ui divider"></div>
-                                <p class="mb-5" *ngIf="courseHierarchy.license">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
+                                <p class="mb-5" *ngIf="courseHierarchy && !(courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']) && courseHierarchy.license">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
+                                <p class="mb-5" *ngIf="courseHierarchy && courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']">
+                                    <span>{{resourceService.frmelmnts.lbl.licenseTerms}}:</span>
+                                    {{courseHierarchy.licenseDetails['name']}} <br>
+                                    <span class="licenseTag" *ngIf="courseHierarchy && courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['url']">
+                                        For details - <a href="{{courseHierarchy.licenseDetails['url']}}" target="_blank">{{courseHierarchy.licenseDetails['url']}}</a>
+                                    </span>
+                                 </p>
                                 <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->
                             </div>
                         </div>

@@ -351,20 +351,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       .pipe(
         tap(response => {
           if (_.get(response, 'responseCode') === 'OK') {
-            const data = _.get(response, 'result');
-            const blob = new Blob(
-              [data],
-              {
-                type: 'text/csv;charset=utf-8'
-              }
-            );
-            const downloadUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            document.body.appendChild(a);
-            a.href = downloadUrl;
-            a.download = `${batchId}.csv`;
-            a.click();
-            document.body.removeChild(a);
+            const signedUrl = _.get(response, 'result.signedUrl');
+            if (signedUrl) { window.open(signedUrl, '_blank'); }
           } else {
             this.toasterService.error(this.resourceService.messages.stmsg.m0141);
           }
@@ -404,7 +392,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         takeUntil(this.unsubscribe)
       )
       .subscribe(res => { }, err => {
-        this.toasterService.error(this.resourceService.messages.imsg.m0045);
+        this.toasterService.error(this.resourceService.messages.emsg.m0076);
       });
   }
 

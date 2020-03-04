@@ -1,0 +1,37 @@
+@import "variables";
+@import "mixins/mixins";
+
+.content-metadeta {
+   &__content{
+    border-bottom: calculateRem(1px) solid var(--gray-100);
+   }
+
+  &__title {
+    color: var(--gray-200);
+  }
+
+  &__text {
+    color: var(--gray-800);
+
+    &__link:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .ui.styled.accordion .title {
+    color: var(--primary-400) !important;
+  }
+
+  .ui.styled.accordion .active.title,
+  .ui.styled.accordion .accordion .active.title {
+    padding: ($base-block-space * 2) ($base-block-space * 2) $base-block-space  ($base-block-space * 2) !important;
+  }
+
+  .ui.accordion .active.title .chevron.down.icon {
+    position: relative;
+    top: calculateRem(5px);
+  }
+
+}

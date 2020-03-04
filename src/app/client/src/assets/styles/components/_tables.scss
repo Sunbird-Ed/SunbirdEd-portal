@@ -444,6 +444,7 @@
   border-radius: 4px;
   min-height: $base-block-space*5;
   border:1px solid var(--gray-100);
+  justify-content: space-between;
 
   .sb-course-progress-name {
     min-width: 140px;

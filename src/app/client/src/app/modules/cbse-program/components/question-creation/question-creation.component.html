@@ -1,0 +1,308 @@
+<!-- <div class="btn-group">
+    <button type="button" [ngClass]="{'active':enableBtn === 'edit' }" (click)="showPreview= false; btnClick($event, 'edit'); initializeDropdown()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Edit</button>
+    <button type="button" [ngClass]="{'active': enableBtn === 'preview' }" (click)="showPreview= true; btnClick($event, 'preview'); generatePreview()" class="sb-btn sb-btn-normal sb-btn-outline-primary">Preview</button>
+</div> -->
+<app-question-creation-header *ngIf="questionMetaData && !showPreview" [telemetryEventsInput]="telemetryEventsInput" [questionMetaData]="questionMetaData" [role]="role" [resourceStatus]="sessionContext.resourceStatus"></app-question-creation-header>
+
+<app-question-preview *ngIf="showPreview" [sessionContext]="sessionContext">
+</app-question-preview>
+
+<form class="ui form mt-8 licence-form" [formGroup]="questionMetaForm" [appTelemetryImpression]="telemetryImpression">
+    <!-- Question Editor Section HTML -->
+    <div class="ckeditor-tool width-100" *ngIf="!isReadOnlyMode && !showPreview">
+        <label *ngIf="showFormError && [undefined, ''].includes(editorState.question)" class="sb-label sb-label-table sb-label-error-0">Fill Question</label>
+        <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(editorState.question)">
+            <div class="sb-field mcq-title mb-16">
+                <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Question</label>
+                <div class="ckeditor-tool-container">
+                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'question')" [editorDataInput]="editorState.question" [editorId]="'question_editor'" (videoDataOutput)="videoDataOutput($event)" [videoShow]="videoShow"></app-ckeditor-tool>
+                </div>
+            </div>
+        </div>
+
+        <label *ngIf="showFormError && [undefined, ''].includes(editorState.answer)" class="sb-label sb-label-table sb-label-error-0">Fill Answer</label>
+        <div class="ckeditor-tool__question mb-24" [class.error-question-content]="showFormError && [undefined, ''].includes(editorState.answer)">
+            <div class="sb-field mcq-title mb-16">
+                <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Answer</label>
+                <div class="ckeditor-tool-container">
+                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'answer')" [editorDataInput]="editorState.answer" [editorId]="'answer_editor'"></app-ckeditor-tool>
+                </div>
+            </div>
+        </div>
+        <div class="my-16 ckeditor-tool__solution width-100">
+            <div class="d-flex flex-ai-center ckeditor-tool__solution__header px-16 py-8">
+                <label class="mb-0 ckeditor-tool__label">Solution (Optional) <a
+                    href="javascript:void(0)" title="title comes here"><img width="16" alt="" class="ml-4"
+                        src="assets/images/Info.svg"></a></label>
+                <div class="ui dropdown sb-btn sb-btn-outline-primary sb-btn-normal sb-right-icon-btn sb-btn-radius ml-auto"
+              suiDropdown autoClose="itemClick" *ngIf="showSolutionDropDown">
+              <div class="text">Choose type</div>
+              <i class="dropdown icon mx-8"></i>
+              <div class="menu" suiDropdownMenu>
+                <div class="item" (click)="selectSolutionType('Text+Image')">Text+Image</div>
+                <div class="item" (click)="selectSolutionType('video')">Video</div>
+              </div>
+            </div>
+            </div>
+            <div class="solution_html" *ngIf="selectedSolutionType == 'html'">
+                <div class="ckeditor-tool-container">
+                    <app-ckeditor-tool [editorConfig]="editorConfig" (editorDataOutput)="editorDataHandler($event, 'solution')" [editorDataInput]="editorState.solutions" [editorId]="'solution_editor'"></app-ckeditor-tool>
+                    <div class="mcq-checkbox-answer">
+                        <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto" (click)="deleteSolution()"><i
+                        class="trash alternate outline icon"></i>Delete</button>
+                    </div>
+                </div>
+            </div>
+            <div class="solution_video" *ngIf="selectedSolutionType == 'video' && showSolution">
+                <div class="ckeditor-tool__solution__body">
+                    <div class="solution-media p-16 d-flex flex-ai-center">
+                        <div class="solution-media__video relative position">
+                            <div class="overlay-image" [ngStyle]="videoThumbnail ?  {'background' : 'url(' + videoThumbnail + ')' }  : {'background': 'rgba(0,0,0,0.3)'}"><i class="play circle icon"></i></div>
+                        </div>
+                        <div class="solution-media__desc ml-16">
+                            {{videoSolutionName}}
+                        </div>
+                    </div>
+                    <div class="mcq-checkbox-answer">
+                    <button class="sb-btn sb-btn-xs sb-btn-link sb-btn-link-error sb-left-icon-btn ml-auto" (click)="deleteSolution()"><i
+                        class="trash alternate outline icon"></i>Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Preview Section HTML -->
+    <div class="ui container" *ngIf="isReadOnlyMode && !showPreview">
+        <div class="ui stackable grid m-0 sb-bg-color-white">
+            <div class="row">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question">
+                            <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Question</label>
+                            <div class="ckeditor-tool__solution__body">
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.question | sanitizeHtml"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question">
+                            <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Answer</label>
+                            <div class="ckeditor-tool__solution__body">
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.answer | sanitizeHtml"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="this.editorState.solutions.length > 0">
+                <div class="twelve wide column p-0">
+                    <div class="ckeditor-tool width-100">
+                        <div class="ckeditor-tool__question mb-24">
+                            <label class="px-16 py-8 mb-0 ckeditor-tool__label width-100">Solution</label>
+                            <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'html'">
+                                <p class="fs-0-785 p-16" [innerHTML]="editorState.solutions | sanitizeHtml"></p>
+                            </div>
+                            <div class="ckeditor-tool__solution__body" *ngIf="selectedSolutionType == 'video'">
+                                <div class="solution-media p-16 d-flex flex-ai-center">
+                                    <div class="solution-media__video relative position">
+                                    <div class="overlay-image" [ngStyle]="videoThumbnail ?  {'background' : 'url(' + videoThumbnail + ')' }  : {'background': 'rgba(0,0,0,0.3)'}"><i class="play circle icon"></i></div>
+                                    </div>
+                                    <div class="solution-media__desc ml-16">
+                                    {{videoSolutionName}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+
+    </div>
+
+    <!-- Learning Outcome learning level author license Editor HTML -->
+    <div class='licence-form__content'>
+        <div class="ui stackable grid licence-form__content__fields my-0">
+            <div class="row">
+                <div *ngFor = "let field of allFormFields; let i = index " class="sb-field six wide column mb-16">
+                    <div class="six wide column mb-16" *ngIf="field.inputType === 'select'" class="width-100">
+                      <div>
+                        <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
+                        <sui-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}"
+                        appTelemetryInteract 
+                        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('select-' + field.code, 'click', 'content-uploader')"
+                        [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                        [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                        [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                        >
+                          <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option"
+                          appTelemetryInteract 
+                            [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('selectoption-' + option, 'click', 'content-uploader')"
+                            [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                            [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                            [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                          >
+                          </sui-select-option>
+                        </sui-select>
+                        <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{questionMetaData.data[field.code]}}</span></div>
+                        <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
+                      </div>
+                    </div>
+          
+                    <div class="six wide column mb-16" *ngIf="field.inputType === 'multiselect'" class="width-100">
+                        <div>
+                            <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
+                            <sui-multi-select *ngIf="!disableFormField" formControlName="{{field.code}}" class="selection" [isDisabled]="disableFormField" placeholder="{{field.placeholder}}"
+                            appTelemetryInteract 
+                            [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('multiselect-' + field.code, 'click', 'content-uploader')"
+                            [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                            [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                            [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                            >
+                              <sui-select-option *ngFor="let option of selectOutcomeOption[field.code]" [value]="option"
+                              appTelemetryInteract 
+                                [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('selectoption-' + option, 'click', 'content-uploader')"
+                                [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                                [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                                [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                              >
+                              </sui-select-option>
+                            </sui-multi-select>
+                            <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{questionMetaData.data[field.code]}}</span></div>
+                            <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
+                        </div>
+                    </div>
+          
+                    <div class="six wide column mb-16" *ngIf="field.inputType === 'text'" class="width-100">
+                      <div>
+                        <label class="font-weight-bold fsmall">{{field.label}}:</label><span class="sb-color-red pl-4 pr-4" *ngIf="field.required">*</span>
+                          <input *ngIf="!disableFormField" formControlName="{{field.code}}" type="{{field.inputType}}" name="{{field.code}}" class="sb-form-control" placeholder="{{field.placeholder}}"
+                          appTelemetryInteract 
+                            [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('input-' + field.code, 'click', 'content-uploader')"
+                            [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+                            [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+                            [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+                          >
+                          <div *ngIf="disableFormField"><span class="sb-color-gray-200 fs-0-785">{{questionMetaData.data[field.code]}}</span></div>
+                        <label class="sb-color-error mb-0 font-weight-normal" *ngIf="((questionMetaForm.get(field.code).touched) && (questionMetaForm.get(field.code).errors?.required))">* This field is mandatory</label>
+                        
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='practical-sb-buttons'>
+        <button id="requestChanges" *ngIf="role.currentRole === 'REVIEWER' && sessionContext.resourceStatus === 'Review'" class="sb-btn sb-btn-error sb-btn-normal mr-8" (click)="showRequestChangesPopup = true"
+        appTelemetryInteract 
+        [telemetryInteractEdata]="programTelemetryService.getTelemetryInteractEdata('reject-question', 'click', 'question-creation')"
+        [telemetryInteractObject]="telemetryEventsInput.telemetryInteractObject"
+        [telemetryInteractCdata]="telemetryEventsInput.telemetryInteractCdata"
+        [telemetryInteractPdata]="telemetryEventsInput.telemetryInteractPdata"
+        >
+        {{  rejectComment === '' ? 'Request Changes' : 'Edit Comments' }}
+        </button>
+    </div>
+
+    <p class="paragraph fsmall pt-15 mt-0">
+        <strong>Disclaimer:</strong> By creating content on {{componentConfiguration.config.tenantName || 'SunbirdEd'}}, you consent to publish it under the Creative Commons License Framework. For details, refer
+        <a href="https://creativecommons.org/licenses" target="_blank" class="links">https://creativecommons.org/licenses</a>. Please choose the applicable creative commons license you wish to apply to your content.
+    </p>    
+</form>
+
+<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImagePicker()" *ngIf="showImagePicker" [size]="'normal'" class="sb-modal" [isFullScreen]="false" [mustScroll]="true" #modal>
+    <div class="sb-modal-header">Select Image</div>
+    <div class="sb-modal-content">
+        <sui-tabset>
+            <div class="ui tabular menu">
+                <a class="item" (activate)="getMyImages(0)" suiTabHeader="1">My Images</a>
+                <a class="item" (activate)="getAllImages(0)" suiTabHeader="2">All Image</a>
+            </div>
+            <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadMyImages()" suiTabContent="1">
+                <div class="ui small middle aligned bordered images custom-image">
+                    <img *ngFor="let data of myAssets" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+                </div>
+            </div>
+            <div class="ui segment asset_container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="500" [scrollWindow]="false" (scrolled)="lazyloadAllImages()" suiTabContent="2">
+                <div class="ui small middle aligned bordered images custom-image">
+                    <img *ngFor="let data of allImages" (click)="addImageInEditor(data.downloadUrl)" [src]="data.downloadUrl">
+                </div>
+            </div>
+        </sui-tabset>
+    </div>
+    <div class="sb-modal-actions">
+        <div class="ui left floated buttons">
+            <button (click)="initiateImageUploadModal();" class="ui primary button">Upload and use</button>
+        </div>
+        <div class="ui buttons">
+            <button (click)="dismissImagePicker();" class="ui button">Cancel</button>
+            <!-- <div class="or"></div>
+      <button (click)="dismissImagePicker();" class="ui primary button">Save</button> -->
+        </div>
+    </div>
+</sui-modal>
+
+<sui-modal [isClosable]="true" [isInverted]="true" (dismissed)="dismissImageUploadModal()" *ngIf="showImageUploadModal" [size]="'normal'" [isFullScreen]="false" [mustScroll]="true" class="sb-modal" #modal3>
+    <div class="sb-modal-header">Upload and Use</div>
+    <div class="sb-modal-content">
+        <div class="ui grid">
+            <div class="one wide column"></div>
+            <div class="ten wide column">
+                <div>
+                    <input (change)="uploadImage($event)" type="file" accept="image/jpeg, image/jpg, image/png" name="assetfile">
+                </div>
+                <div class="ui info message">
+                    <p>Allowed file types are: jpeg, jpg, png</p>
+                    <p>Maximum allowed file size: 1 MB</p>
+                </div>
+                <div *ngIf="showErrorMsg" class="ui error message">
+                    <p>{{errorMsg}}</p>
+                </div>
+            </div>
+            <div class="one wide column"></div>
+        </div>
+    </div>
+    <div class="sb-modal-actions">
+        <div class="ui left floated buttons">
+            <button (click)="dismissImageUploadModal();" class="ui primary button">Back</button>
+        </div>
+        <div class="ui buttons">
+            <button (click)="dismissImageUploadModal();" class="ui button">Cancel</button>
+            <!-- <div class="or"></div>
+      <button (click)="dismissImageUploadModal();" class="ui primary button">Upload and use</button> -->
+        </div>
+    </div>
+</sui-modal>
+
+<sui-modal *ngIf="showRequestChangesPopup" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal (dismissed)="closeRequestChangeModal()">
+  <div class="sb-modal-header">
+      Add Review Comments
+  </div>
+  <form #reuestChangeForm="ngForm" class="ui form">
+  <div class="sb-modal-content">
+      <div class="sb-field-group">
+          <label>Enter your comments</label>
+          <div class="sb-field relative">
+            <textarea type="text" class="wmd-input width-100 sb-form-control" id="wmd-input" [(ngModel)]="rejectComment" placeholder="Add comment" name="rejectComment" required></textarea>
+            <span class="characters-left">{{ commentCharLimit - rejectComment.length }} Characters left</span>
+          </div>
+          <div>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="rejectComment.length > commentCharLimit">Comments should be maximum {{commentCharLimit}} characters.</label>
+            <label class="ui basic red error label pt-1 mt-5 width-100" *ngIf="reuestChangeForm.form.controls.rejectComment?.touched && !reuestChangeForm.form.valid">Fill comments </label>
+          </div>
+      </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button id="submitReview" type="submit" class="sb-btn sb-btn-normal" [disabled]="rejectComment.length > commentCharLimit" [ngClass]="{'sb-btn-primary': reuestChangeForm.form.valid, 'sb-btn-disabled': !reuestChangeForm.form.valid || rejectComment.length > commentCharLimit}"   (click)="requestChanges()"> Submit Review </button>
+  </div>
+</form>
+</sui-modal>

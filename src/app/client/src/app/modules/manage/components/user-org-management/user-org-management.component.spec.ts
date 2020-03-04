@@ -120,7 +120,7 @@ describe('UserOrgManagementComponent', () => {
 
   it('value of variable userZip should be validated-user-detail.zip', () => {
     const userZip = component.userZip;
-    expect(userZip).toEqual('validated-user-detail.csv');
+    expect(userZip).toEqual('validated-user-detail.zip');
   });
 
   it('value of variable GeoTableId should be GeoDetailsTable', () => {

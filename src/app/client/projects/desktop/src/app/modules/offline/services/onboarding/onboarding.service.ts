@@ -46,6 +46,13 @@ export class OnboardingService {
     };
     return this.publicDataService.post(options);
   }
+  updateUser(request): Observable<ServerResponse> {
+    const options = {
+      url: this.configService.urlConFig.URLS.OFFLINE.UPDATE_USER,
+      data: request
+    };
+    return this.publicDataService.post(options);
+  }
 
   saveUserPreference(request) {
     const options = {
@@ -63,5 +70,38 @@ export class OnboardingService {
       }), catchError(err => {
         return throwError(err);
       }));
+  }
+  getAssociationData(selectedData: Array<any>, category: string, frameworkCategories) {
+    // Getting data for selected parent, eg: If board is selected it will get the medium data from board array
+    let selectedCategoryData = [];
+    _.forEach(selectedData, (data) => {
+      const categoryData = _.filter(data.associations, (o) => {
+        return o.category === category;
+      });
+      if (categoryData) {
+        selectedCategoryData = _.concat(selectedCategoryData, categoryData);
+      }
+    });
+
+    // Getting associated data from next category, eg: If board is selected it will get the association data for medium
+    let associationData;
+    _.forEach(frameworkCategories, (data) => {
+      if (data.code === category) {
+        associationData = data.terms;
+      }
+    });
+
+    // Mapping the final data for next drop down
+    let resultArray = [];
+    _.forEach(selectedCategoryData, (data) => {
+      const codeData = _.find(associationData, (element) => {
+        return element.code === data.code;
+      });
+      if (codeData) {
+        resultArray = _.concat(resultArray, codeData);
+      }
+    });
+
+    return _.sortBy(_.unionBy(resultArray, 'identifier'), 'index');
   }
 }

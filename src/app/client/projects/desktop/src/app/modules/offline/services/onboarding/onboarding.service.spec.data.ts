@@ -63,5 +63,71 @@ export const onboarding = {
                 }
               }
             }
+    },
+
+     frameworkCategories : [
+       {
+      'identifier': 'as_k-12_topic_science_l1con_90',
+      'code': 'science_l1Con_90',
+      'translations': '{\'as\':\'পোহৰ\'}',
+      'name': 'Light',
+      'description': 'Light',
+      'category': 'topic',
+      'status': 'Live',
+      'associations': [
+        {
+            'identifier': 'as_k-12_topic_science_l1con_90',
+            'code': 'science_l1Con_90',
+            'translations': '{\'as\':\'পোহৰ\'}',
+            'name': 'Light',
+            'description': 'Light',
+            'category': 'topic',
+            'status': 'Live'
+        },
+      ]
     }
+    ],
+    category: 'gradeLevel',
+    update_user_request_body: {
+      'request': {
+          'framework': {
+              'board': 'State (Karnataka)',
+              'medium': ['English'],
+              'gradeLevel': ['Class 10'],
+              'subjects': []
+          },
+
+          'identifier': '9783dc11-206c-4a3e-917a-cf4853ce23a2'
+      }
+  },
+  success_update_user: {
+    'id': 'api.desktop.user.update',
+    'ver': '1.0',
+    'ts': '2019-12-19T12:50:57.390Z',
+    'params': {
+        'resmsgid': '010d00e3-2f64-4d6e-8b72-56bdd782d6c8',
+        'msgid': '8e67e664-1d7c-44a4-83ef-daf0415ec6e6',
+        'status': 'successful',
+        'err': null,
+        'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+        'identifier': '9783dc11-206c-4a3e-917a-cf4853ce23a2'
+    }
+},
+error_update_user: {
+        'id': 'api.desktop.user.update',
+        'ver': '1.0',
+        'ts': '2019-12-19T12:52:08.561Z',
+        'params': {
+            'resmsgid': 'c17703c2-1362-477c-9495-346c9da45787',
+            'msgid': '1ff811ec-45a6-455f-a121-05f60c978086',
+            'status': 'failed',
+            'err': 'ERR_BAD_REQUEST',
+            'errmsg': 'Error while processing the request '
+        },
+        'responseCode': 'CLIENT_ERROR',
+        'result': {}
+},
 };
