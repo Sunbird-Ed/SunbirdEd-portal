@@ -14,6 +14,11 @@ const collectionEditor = process.env.sunbird_collection_editor_artifact_url;
 const genericEditor = process.env.sunbird_generic_editor_artifact_url;
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
+// PhraseApp Configuration
+const authToken = 'Basic YXJqdW3raGV1aWE7QXJqdW9AMTk1MA==';
+const project = 'DIKSHA Portal';
+const locale = 'bn-IN,en-IN,hi-IN,kn-IN,mr-IN,ta-IN,te-IN,ur-IN';
+const fileformat = 'nested_json';
 
 gulp.task('clean:editors', () => {
     return gulp.src('./' + editorsDestPath, { read: false })
@@ -115,13 +120,70 @@ gulp.task('clean:app:dist', () => {
         .pipe(clean())
 })
 
+// gulp.task('build-resource-bundles', (cb) => {
+//     exec('node helpers/resourceBundles/build.js', function (err, stdout, stderr) {
+//         console.log(stdout)
+//         console.log(stderr)
+//         cb(err)
+//     })
+// })
+
 gulp.task('build-resource-bundles', (cb) => {
-    exec('node helpers/resourceBundles/build.js', function (err, stdout, stderr) {
-        console.log(stdout)
-        console.log(stderr)
-        cb(err)
+    exec('node ./node_modules/sunbird-resource-bundle/index.js '
+        + ' -authToken="' + authToken
+        + '" -project="' + project
+        + '" -locale="' + locale
+        + '" -fileformat="' + fileformat + '"', function (err, stdout, stderr) {
+        console.log(stdout);
+        gulp.src(['./sunbirdresourcebundle/as-IN.json'])
+            .pipe(rename('as.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/bn-IN.json'])
+            .pipe(rename('bn.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/en-IN.json'])
+            .pipe(rename('en.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/gn-IN.json'])
+            .pipe(rename('gn.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/hi-IN.json'])
+            .pipe(rename('hi.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/kn-IN.json'])
+            .pipe(rename('kn.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/ml-IN.json'])
+            .pipe(rename('ml.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/mr-IN.json'])
+            .pipe(rename('mr.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/or-IN.json'])
+            .pipe(rename('or.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/pa-IN-Guru.json'])
+            .pipe(rename('pa.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/es-IN.json'])
+            .pipe(rename('es.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/ta-IN.json'])
+            .pipe(rename('ta.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/te-IN.json'])
+            .pipe(rename('te.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle/ur-IN.json'])
+            .pipe(rename('ur.json'))
+            .pipe(gulp.dest('./resourcebundles/json/'));
+        gulp.src(['./sunbirdresourcebundle'], { read: false })
+            .pipe(clean());
+        console.log(stderr);
+        cb(err);
     })
 })
+
 const compress = process.env.devBuild === 'true' ? '' : ['client:gzip'] // removed brotli due to gulp issue
 const cleanClient = process.env.devBuild === 'true' ? '' : 'clean:client:install'
 gulp.task('deploy',
