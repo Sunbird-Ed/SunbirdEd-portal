@@ -7,12 +7,18 @@ import {
   SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
 } from 'ng2-semantic-ui';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
   declarations: [NoResultComponent, SearchProminentFilterComponent, SearchFilterComponent],
   imports: [
+    ReactiveFormsModule,
+    FormsModule,
     TelemetryModule,
     CommonModule,
+    CommonConsumptionModule,
     SharedModule,
     SuiModalModule, SuiProgressModule, SuiAccordionModule,
   SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
