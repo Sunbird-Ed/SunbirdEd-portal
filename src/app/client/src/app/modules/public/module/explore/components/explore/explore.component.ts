@@ -107,7 +107,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getFilters(filters) {
-    console.log("======filters=====", filters.filters);
     const selectedFilters = _.pick(filters.filters, ['board', 'medium', 'gradeLevel']);
     this.dataDrivenFilterEvent.emit(selectedFilters);
   }
