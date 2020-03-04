@@ -1,3 +1,15 @@
-<p>
-  no-result works!
-</p>
+<div class="no-content-container d-flex flex-jc-center">
+  <div class="my-48 p-16 w-100">
+    <div class="d-flex flex-dc flex-jc-center flex-ai-center">
+      <div>
+        <img src="./assets/images/group.svg" width="90px" height="90px">
+      </div>
+      <div class="fmedium board-title my-24">{{title}}</div>
+      <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
+      <button *ngIf="redirectUrl" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="exploreMoreContent(redirectUrl)">
+        {{buttonText}}
+      </button>
+      <div *ngIf="redirectUrl && subTitle" class="fs-0-785">{{subTitle | interpolate:'{instance}': instance}}</div>
+    </div>
+  </div>
+</div>
