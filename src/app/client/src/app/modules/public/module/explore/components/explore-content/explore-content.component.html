@@ -22,7 +22,7 @@
       <div class="sb-grid">
         <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
           *ngFor="let content of contentList;let i = index;">
-          <sb-library-card [content]="content" [cardImg]="content?.cardImg || 'assets/images/book.png'">
+          <sb-library-card (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.cardImg || 'assets/images/book.png'">
           </sb-library-card>
         </div>
       </div>
