@@ -18,7 +18,8 @@ import {
 } from './../../../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
 
 @Component({
-  templateUrl: './explore-content.component.html'
+  templateUrl: './explore-content.component.html',
+  styleUrls: ['./explore-content.component.scss']
 })
 export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit {
 
