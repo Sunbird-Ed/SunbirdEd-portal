@@ -4,7 +4,7 @@ export const actionButtons: IActionButton[] = [
     {
         name: ActionButtonType.DOWNLOAD,
         label: 'Download',
-        disabled: false
+        disabled: true
     },
     {
         name: ActionButtonType.UPDATE,
@@ -14,12 +14,12 @@ export const actionButtons: IActionButton[] = [
     {
         name: ActionButtonType.SHARE,
         label: 'Share',
-        disabled: false
+        disabled: true
     },
     {
         name: ActionButtonType.DELETE,
         label: 'Delete',
-        disabled: false
+        disabled: true
     },
     {
         name: ActionButtonType.RATE,

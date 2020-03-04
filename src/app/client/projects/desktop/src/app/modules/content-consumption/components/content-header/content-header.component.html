@@ -22,9 +22,9 @@
         </div>
       </div>
       <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons" *ngIf="collectionData">
-        <button class="sb-btn sb-btn-outline-secondary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED') || !isBrowse()) && showUpdate" (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
-        <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" [disabled]="disableDelete" *ngIf="checkStatus('DOWNLOADED') || !isBrowse()" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
-        <button type="button" class="sb-btn sb-btn-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED') || !isBrowse()" (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+        <button class="sb-btn sb-btn-outline-secondary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" (click)="updateCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
+        <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" [disabled]="disableDelete" *ngIf="checkStatus('DOWNLOADED')" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
+        <button type="button" class="sb-btn sb-btn-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
         
         <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" *ngIf="checkStatus('DOWNLOAD')" (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
         <button type="button" class="sb-btn sb-btn-outline-disabled sb-btn-normal" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
@@ -80,5 +80,11 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
 <sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
   <div class="ui active centered inline loader"></div>
   <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':collectionData?.name}}
+  </h6>
+</sui-dimmer>
+
+<sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':collectionData?.name}}
   </h6>
 </sui-dimmer>
