@@ -43,7 +43,7 @@ export const telemetryData = {
         messages: {
                 etmsg: {
                     desktop: {
-                    telemetryImportError: 'Unable to import file , try again'
+                    telemetryImportError: 'Unable to import file. Try again later'
                 }
             }
         }
