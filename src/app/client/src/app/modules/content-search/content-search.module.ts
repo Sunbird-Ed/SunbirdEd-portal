@@ -6,9 +6,12 @@ import {
   SuiModalModule, SuiProgressModule, SuiAccordionModule,
   SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
 } from 'ng2-semantic-ui';
+import { TelemetryModule } from '@sunbird/telemetry';
+
 @NgModule({
   declarations: [NoResultComponent, SearchProminentFilterComponent, SearchFilterComponent],
   imports: [
+    TelemetryModule,
     CommonModule,
     SharedModule,
     SuiModalModule, SuiProgressModule, SuiAccordionModule,
