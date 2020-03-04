@@ -1157,7 +1157,15 @@ export const mockData = {
                 'm0050': 'Submiting failed'
             },
             'stmsg': {
+             'desktop': {
+                'onlineStatus': 'You are online.'
+             },
                 'm0077': 'we are submiting your request'
+            },
+            'emsg': {
+                'desktop': {
+                    'offlineStatus': 'You are offline.'
+                }
             }
         },
         'frmelmnts': {

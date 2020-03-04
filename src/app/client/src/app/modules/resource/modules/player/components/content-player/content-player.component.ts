@@ -25,6 +25,8 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
 
   closeIntractEdata: IInteractEventEdata;
 
+  printPdfInteractEdata: IInteractEventEdata;
+
   objectInteract: IInteractEventObject;
 
   sharelinkModal: boolean;
@@ -140,6 +142,11 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
       type: this.contentData.contentType,
       ver: this.contentData.pkgVersion ? this.contentData.pkgVersion.toString() : '1.0'
     };
+    this.printPdfInteractEdata = {
+      id: 'print-pdf-button',
+      type: 'click',
+      pageid: 'content-player'
+    };
   }
   /**
    * used to fetch content details and player config. On success launches player.
@@ -234,5 +241,9 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
       type: param.contentType,
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
+  }
+
+  printPdf(pdfUrl: string) {
+    window.open(pdfUrl, '_blank');
   }
 }

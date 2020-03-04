@@ -1,0 +1,56 @@
+<sb-accordion class="sb-toc-credits" [multi]="false">
+  <sb-accordion-item [expanded]="false">
+    <sb-accordion-header>
+      <span class="title">{{resourceService?.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}}</span>
+    </sb-accordion-header>
+    <sb-accordion-body>
+      <div class="credits-section">
+
+        <h4 *ngIf="contentData?.author" class="title">{{resourceService?.frmelmnts?.lbl?.author}}</h4>
+        <p class="description">{{contentData?.author}}</p>
+
+        <h4 *ngIf="attributions" class="title">{{resourceService?.frmelmnts?.lbl?.attributions}}
+        </h4>
+        <p class="description">{{attributions}}</p>
+
+        <h4 *ngIf="contentData?.license" class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
+        <p class="description">{{contentData.license}}</p>
+
+        <p *ngIf="contentData && contentData.licenseDetails && contentData.licenseDetails['name']">
+          {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
+          <span *ngIf="contentData.licenseDetails['url']">
+            <a href="{{contentData.licenseDetails['url']}}" target="_blank">{{contentData.licenseDetails['url']}}</a>
+          </span></p>
+
+        <h4 *ngIf="contentData?.copyright" class="title">{{resourceService?.frmelmnts?.lbl?.copyRight}}</h4>
+        <p class="description">{{contentData?.copyright}}<span
+            *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></p>
+
+        <p *ngIf="contentData" class="sub-section">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}
+        </p>
+
+        <div *ngIf="contentData">
+          <h4 *ngIf="contentData?.name" class="title">{{resourceService?.frmelmnts?.lbl?.desktop.content}}
+          </h4>
+          <p class="description">{{contentData?.name}}</p>
+
+          <h4 *ngIf="contentData?.creator" class="title">
+            {{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
+          <p class="description">{{contentData?.creator}}</p>
+
+
+
+          <h4 *ngIf="contentData?.organisation" class="title"
+            [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
+          </h4>
+          <p *ngIf="contentData?.organisation" class="description">{{contentData?.organisation.join(', ')}}</p>
+
+          <a *ngIf="contentData.orgDetails?.email"
+            href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
+
+        </div>
+        
+      </div>
+    </sb-accordion-body>
+  </sb-accordion-item>
+</sb-accordion>

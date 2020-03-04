@@ -1,16 +1,38 @@
-import { servicemockRes } from './util.service.spec.data';
+import { servicemockRes, contentList, contentListWithHoverData } from './util.service.spec.data';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { UtilService } from './util.service';
+import { ResourceService } from '../resource/resource.service';
+
+const resourceBundle = {
+  messages: {
+    stmsg: {
+      m0140: 'DOWNLOADING',
+      m0143: 'DOWNLOAD',
+      m0139: 'DOWNLOADED',
+      m0142: 'PAUSED'
+    }
+  },
+  frmelmnts: {
+    lbl: {
+      goToMyDownloads: 'Goto My Downloads',
+      saveToPenDrive: 'Save to Pendrive',
+      open: 'Open'
+    },
+    btn: {
+      download: 'Download'
+    }
+  }
+};
 
 describe('UtilService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UtilService]
+      providers: [UtilService, { provide: ResourceService, useValue: resourceBundle }]
     });
   });
 
-  it('should be created', inject([UtilService], (service: UtilService) => {
+  it('should be created', inject([UtilService, ResourceService], (service: UtilService, resourceService: ResourceService) => {
     expect(service).toBeTruthy();
   }));
 
@@ -37,7 +59,7 @@ describe('UtilService', () => {
     inject([UtilService], (service: UtilService) => {
       const softConstraintData = {
         filters: {
-channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
+          channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
           board: ['NCERT']
         },
         softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
@@ -146,4 +168,31 @@ channel: 'b00bc992ef25f1a9a8d63291e20efc8d',
     expect(service.getPlayerUpdateStatus).toBeTruthy();
   }));
 
+  it('should return given contentList with the updated hover data', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const listWithHoverData = service.addHoverData(contentList, false);
+      expect(listWithHoverData).toEqual(contentListWithHoverData);
+    }));
+
+  it('should emit languageChange Event', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const language = { value: 'hi', label: 'Hindi', dir: 'ltr' };
+      spyOn(service.languageChange, 'emit');
+      service.emitLanguageChangeEvent(language);
+      expect(service.languageChange.emit).toHaveBeenCalledWith(language);
+    }));
+
+  it('should call emitHideHeaderTabsEvent', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      spyOn(service.hideHeaderTabs, 'emit');
+      service.emitHideHeaderTabsEvent(true);
+      expect(service.hideHeaderTabs.emit).toHaveBeenCalledWith(true);
+    }));
+
+  it('should call emit event searchKeyword', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      spyOn(service.searchKeyword, 'emit');
+      service.updateSearchKeyword('test');
+      expect(service.searchKeyword.emit).toHaveBeenCalledWith('test');
+    }));
 });

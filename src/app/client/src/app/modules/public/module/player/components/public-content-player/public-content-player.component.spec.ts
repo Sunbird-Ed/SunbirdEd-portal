@@ -1,5 +1,5 @@
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { PublicPlayerService } from './../../../../services';
 import { PublicContentPlayerComponent } from './public-content-player.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -17,10 +17,13 @@ class RouterStub {
 }
 const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
-  'queryParams': observableOf({ language: ['en'] }, {dialCode: '61U24C'}),
+  'queryParams': observableOf({ language: ['en'] }, { dialCode: '61U24C' }, { l1Parent: 'd0_335673256' }),
   snapshot: {
     params: {
       contentId: 'd0_33567325'
+    },
+    queryParams: {
+      l1Parent: 'd0_335673256'
     },
     data: {
       telemetry: {
@@ -65,6 +68,7 @@ describe('PublicContentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
     component = fixture.componentInstance;
+    component.contentId = 'd0_33567325';
   });
 
   it('should config content player if content status is "Live"', () => {
@@ -115,5 +119,22 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showPlayer).toBeTruthy();
     expect(component.badgeData).toEqual(serverRes.result.result.content.badgeAssertions);
   });
+  it('should open the pdfUrl in a new tab', () => {
+    spyOn(window, 'open').and.callThrough();
+    component.printPdf('www.samplepdf.com');
+    expect(window.open).toHaveBeenCalledWith('www.samplepdf.com', '_blank');
+  });
+  it('should redirect to flattened dial code on click of close button', fakeAsync(() => {
+    component.dialCode = '6466X';
+    component.close();
+    const router = TestBed.get(Router);
+    tick(101);
+    expect(router.navigate).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledWith(['/get/dial/', '6466X'], {
+      queryParams:
+        { textbook: fakeActivatedRoute.snapshot.queryParams.l1Parent }
+    });
 
+  }));
 });

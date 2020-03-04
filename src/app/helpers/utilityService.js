@@ -24,6 +24,15 @@ const delay = (duration = 1000) => {
   });
 };
 
+/***
+ * Checks and returns boolean if based on valid string or not
+ * @param value Any value to check if it is valid string or not
+ * @returns {boolean}
+ */
+const isValidAndNotEmptyString = (value) => {
+  return typeof value === "string" && value.length > 0;
+};
+
 /**
  * Checks if value is valid date
  * @param date
@@ -33,4 +42,4 @@ var isDate = function (date) {
   return (new Date(date) !== "Invalid Date" && !isNaN(new Date(date))) ? true : false;
 };
 
-module.exports = {parseJson, delay, isDate};
+module.exports = { parseJson, delay, isDate, isValidAndNotEmptyString };

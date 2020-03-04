@@ -1,0 +1,288 @@
+@import "variables";
+@import 'mixins/mixins';
+
+#url-upload .url-upload-label {
+    float: left;
+    margin-right: 10px;
+}
+#url-upload input {
+    border-bottom: 1px solid #ddd !important;
+    border-radius: 0;
+}
+#url-upload input:focus {
+    border-bottom: 1px solid #289fd9 !important;
+}
+.qq-uploader.qq-uploader-selector.custom-qq-uploader {
+    background: inherit;
+    border-color: none;
+    border: none;
+    max-height: inherit;
+    min-height: inherit;
+    overflow-y: inherit;
+    width: 688px;
+    height: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.qq-upload-list.custom-qq-upload-list li {
+    background: transparent;
+}
+.qq-upload-cancel.custom-qq-upload-cancel{
+    background: #FF9800;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    color: #fff;
+    padding: 5px;
+}
+.qq-upload-cancel.custom-qq-upload-cancel:hover{
+    background: #e68900;
+}
+.qq-upload-file.custom-qq-upload-file{
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.upload-file-section {
+    display: flex;
+    height: 240px;
+    width: 100%;
+    max-width: 800px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    background-color: #F5F9FC;
+    border: 1px dashed $primary-200;
+  }
+  
+  .upload-file-description p {
+    color: $gray-200;
+  }
+  
+  .upload-file-description ul {
+    margin: 0;
+    list-style: disc;
+  }
+  
+  .upload-file-description ul li {
+    margin-bottom: $base-block-space;
+    font-size: $font-size-sm;
+  }
+  
+  .upload-file-description ul li a {
+    cursor: pointer;
+    font-size: $font-size-sm;
+  }
+
+  .licence-form {
+
+    &__content {
+      height: auto;
+      // border: 1px solid #80A7CE;
+      // background: #e9f2f8;
+      border-radius: ($base-block-space -4);
+      
+
+      &__fields {
+        padding: ($base-block-space * 2) 0px;
+
+        .sb-field {
+          width: 50%;
+          margin-top: 0px;
+        }
+
+        .space-btn-field {
+          margin-left: ($base-block-space * 2);
+        }
+      }
+    }
+
+    .paragraph {
+      color: #9F9F9F;
+      padding: ($base-block-space * 3) 0 ($base-block-space * 4) 0;
+
+      .link {
+        color: var(--primary-400);
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .practical-header {
+    height: 98px;
+    background: var(--primary-0) !important;
+    &__title {
+      max-width: 680px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    &__content {
+      // margin: 0 ($base-block-space * 8 - 4);
+      // width: 100%;
+      .practical-sb-buttons {
+        .sb-btn-file {
+          border-top: 1px solid var(--primary-200);
+          /* #7AB4EE;*/
+          border-bottom: 1px solid var(--primary-200);
+          /* #7AB4EE;*/
+          border-left: 1px solid #ddd;
+          border-right: 1px solid #ddd;
+          background: #E0F1FD;
+          color: var(--primary-400);
+        }
+        .sb-btn-submit {
+          background: var(--primary-200);
+          /*#07BC81 */
+          opacity: 50%;
+          color: var(--white);
+        }
+      }
+    }
+  }
+
+  .sb-field-group.textbook-edit {
+    width: 100%;
+    max-width: 756px;
+    textarea {
+      height: 64px;
+      resize: none;
+    }
+    .characters-left {
+      position: absolute;
+      bottom: $base-block-space/2;
+      right: $base-block-space;
+      color: $gray-400;
+      font-size: $font-size-xs;
+    }
+  }
+  .sb-field sui-multi-select.ui.selection.dropdown {
+    background: white;
+}
+
+.warning-message{
+  color: var(--red);
+  font-size: 11px;
+  font-weight: normal;
+}
+
+.middle-section-set {
+  max-width: 854px;
+  width: 100%;
+  margin: 0 auto;
+  .msg-box {
+    margin: ($base-block-space * 4) auto;
+    &__content {
+      border: 1px dotted #024f9d;
+      &__label {
+        color: #00BD7F;
+        padding-bottom: ($base-block-space * 0.75);
+      }
+      &__error-msg {
+        color: var(--red);
+        padding-bottom: ($base-block-space * 0.75);
+      }
+      &__blank-box {
+        height: 100%;
+        width: 100%;
+        border: calculateRem(1px) dotted #80A7CE;
+        background: #F5F9FC;
+        border-radius: ($base-block-space / 2);
+      }
+    }
+  }
+}
+
+
+#url-upload .url-upload-label {
+    float: left;
+    margin-right: 10px;
+}
+#url-upload input {
+    border-bottom: 1px solid #ddd !important;
+    border-radius: 0;
+}
+#url-upload input:focus {
+    border-bottom: 1px solid #289fd9 !important;
+}
+.qq-uploader.qq-uploader-selector.custom-qq-uploader {
+    background: inherit;
+    border-color: none;
+    border: none;
+    max-height: inherit;
+    min-height: inherit;
+    overflow-y: inherit;
+}
+.qq-upload-list.custom-qq-upload-list li {
+    background: transparent;
+}
+.qq-upload-cancel.custom-qq-upload-cancel{
+    background: #FF9800;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    color: #fff;
+    padding: 5px;
+}
+.qq-upload-cancel.custom-qq-upload-cancel:hover{
+    background: #e68900;
+}
+.qq-upload-file.custom-qq-upload-file{
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.upload-file-section {
+    display: flex;
+    height: 240px;
+    width: 100%;
+    max-width: 800px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    background-color: #F5F9FC;
+    border: 1px dashed $primary-200;
+  }
+  .upload-file-description p {
+    color: $gray-200;
+  }
+  .upload-file-description ul {
+    margin: 0;
+    list-style: disc;
+  }
+  .upload-file-description ul li {
+    margin-bottom: $base-block-space;
+    font-size: $font-size-sm;
+  }
+  .upload-file-description ul li a {
+    cursor: pointer;
+    font-size: $font-size-sm;
+  }
+
+  ::ng-deep {
+    .uploading-files {
+      margin: ($base-block-space * 3) auto;
+      .process-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 20px;
+      }
+    .ui.progress {
+        margin: 12px 24px 28px 24px !important;
+        width: 60%;
+      }
+      .ui.progress .bar {
+        background: var(--tertiary-100);
+        height: ($base-block-space) !important;
+      }
+    }
+  }
+
+  .asterik{
+    position: relative;
+    bottom:calculateRem(8px);
+  }

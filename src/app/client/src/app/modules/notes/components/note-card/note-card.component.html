@@ -1,6 +1,6 @@
 <div class="notes-card-section ui card mb-15  width-100"  *ngIf="notesList.length > 0">
     <div class="content">
-        <div class="header">
+        <div class="header fmedium">
             <span>{{resourceService?.frmelmnts?.lbl?.mynotebook}}</span>
             <a class="ui right floated font-dark-blue" (click)="viewAllNotes()">{{resourceService?.frmelmnts?.lnk?.viewall}}</a>
         </div>
@@ -9,7 +9,7 @@
                 <div class="item" *ngIf="i < 2">
                     <div class="content">
                         <span class="ui tiny header">
-                            <span class="notes-card-heading mouse-pointer" (click)="setSelectedNote(note,i); showUpdateEditor = !showUpdateEditor">
+                            <span class="notes-card-heading mouse-pointer fnormal" (click)="setSelectedNote(note,i); showUpdateEditor = !showUpdateEditor">
                                 {{ note.title | slice:0:15 }}
                                 <i *ngIf="note.title.length > 15" class="ellipsis horizontal icon popup-button"></i>
                             </span>

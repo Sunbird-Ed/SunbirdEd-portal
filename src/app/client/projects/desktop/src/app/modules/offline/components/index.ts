@@ -1,6 +1,5 @@
 export * from './content-import-header/content-import-header.component';
 export * from './browse/browse.component';
-export * from './network-status/network-status.component';
 export * from './watch-video/watch-video.component';
 export * from './content-manager/content-manager.component';
 export * from './offline-help-center/offline-help-center.component';
@@ -20,4 +19,7 @@ export * from './load-content/load-content.component';
 export * from './no-content/no-content.component';
 export * from './connection-status/connection-status.component';
 export * from './info-card/info-card.component';
+export * from './profile-dropdown/profile-dropdown.component';
+export * from './search/search.component';
+export * from './view-more/view-more.component';
 

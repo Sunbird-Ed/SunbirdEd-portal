@@ -10,7 +10,8 @@ const {getUserIdFromToken} = require('../helpers/jwtHelper');
 const {getUserDetails} = require('../helpers/userHelper');
 const {isDate} = require('../helpers/utilityService');
 let ssoWhiteListChannels;
-const privateBaseUrl = '/private/user/'
+const privateBaseUrl = '/private/user/';
+const {isValidAndNotEmptyString} = require('../helpers/utilityService');
 
 const keycloakTrampoline = getKeyCloakClient({
   clientId: envHelper.PORTAL_TRAMPOLINE_CLIENT_ID,
@@ -359,6 +360,16 @@ const sendSsoKafkaMessage = async (req) => {
  * @returns {*|boolean}
  */
 const verifyIdentifier = (stateVerifiedIdentifier, nonStateMaskedIdentifier, identifierType) => {
+  if (isValidAndNotEmptyString(stateVerifiedIdentifier)) {
+    stateVerifiedIdentifier = stateVerifiedIdentifier.toLowerCase();
+  } else {
+    throw "ERROR_PARSING_STATE_IDENTIFIER";
+  }
+  if (isValidAndNotEmptyString(nonStateMaskedIdentifier)) {
+    nonStateMaskedIdentifier = nonStateMaskedIdentifier.toLowerCase();
+  } else {
+    throw "ERROR_PARSING_NON_STATE_IDENTIFIER";
+  }
   console.log("stateVerifiedIdentifier", stateVerifiedIdentifier);
   console.log("nonStateMaskedIdentifier", nonStateMaskedIdentifier);
   console.log("identifierType", identifierType);

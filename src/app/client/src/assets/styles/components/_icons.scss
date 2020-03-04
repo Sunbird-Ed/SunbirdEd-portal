@@ -1,10 +1,11 @@
 @font-face {
-  font-family: 'icomoon';
-  src: url('./fonts/sb-icons/icomoon.eot?q5fmh5');
-  src:  url('./fonts/sb-icons/icomoon.eot?q5fmh5#iefix') format('embedded-opentype'),
-    url('./fonts/sb-icons/icomoon.ttf?q5fmh5') format('truetype'),
-    url('./fonts/sb-icons/icomoon.woff?q5fmh5') format('woff'),
-    url('./fonts/sb-icons/icomoon.svg?q5fmh5#icomoon') format('svg');
+  font-family: "icomoon";
+  src: url("./fonts/sb-icons/icomoon.eot?q5fmh5");
+  src: url("./fonts/sb-icons/icomoon.eot?q5fmh5#iefix")
+      format("embedded-opentype"),
+    url("./fonts/sb-icons/icomoon.ttf?q5fmh5") format("truetype"),
+    url("./fonts/sb-icons/icomoon.woff?q5fmh5") format("woff"),
+    url("./fonts/sb-icons/icomoon.svg?q5fmh5#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -12,7 +13,7 @@
 [class^="sb-icon-"],
 [class*=" sb-icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
+  font-family: "icomoon" !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -25,7 +26,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 
 .sb-icon-preview:before {
   content: "\e909";
@@ -117,19 +117,17 @@
 .info-icon {
   background-color: $gray-400;
   -webkit-mask-size: contain;
--webkit-mask-position: 50% 50%;
--webkit-mask-repeat: no-repeat;
-mask-size: contain;
-mask-position: 50% 50%;
-mask-repeat: no-repeat;
-width: 16px;
-height: 16px;
-margin-left: 4px;
-display: inline-block;
-vertical-align: bottom;
+  -webkit-mask-position: 50% 50%;
+  -webkit-mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: 50% 50%;
+  mask-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  display: inline-block;
+  vertical-align: bottom;
 }
-
-
 
 //common consumption library
 
@@ -180,16 +178,20 @@ vertical-align: bottom;
   &--white {
     fill: var(--white);
   }
-  &--primary {
+  &--primary,
+  &--info {
     fill: var(--primary-color);
   }
-  &--secondary {
+  &--secondary,
+  &--success {
     fill: var(--secondary-color);
   }
-  &--tertiary {
+  &--tertiary,
+  &--warning {
     fill: var(--tertiary-color);
   }
-  &--red {
+  &--red,
+  &--error {
     fill: var(--red-400);
   }
   &--gray {

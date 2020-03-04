@@ -1,4 +1,4 @@
-import { filter, first } from 'rxjs/operators';
+import {filter, first, map} from 'rxjs/operators';
 import { UserService, PermissionService, TenantService, OrgDetailsService, FormService } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { ConfigService, ResourceService, IUserProfile, IUserData } from '@sunbird/shared';
@@ -7,8 +7,8 @@ import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { Observable } from 'rxjs';
 declare var jQuery: any;
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -25,6 +25,8 @@ export class MainHeaderComponent implements OnInit {
   queryParam: any = {};
   showExploreHeader = false;
   showQrmodal = false;
+  showAccountMergemodal = false;
+  isValidCustodianOrgUser = true;
   tenantInfo: any = {};
   userProfile: IUserProfile;
   adminDashboard: Array<string>;
@@ -68,6 +70,7 @@ export class MainHeaderComponent implements OnInit {
   isOffline: boolean = environment.isOffline;
   languages: Array<any>;
   showOfflineHelpCentre = false;
+  contributeTabActive: boolean;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -89,7 +92,9 @@ export class MainHeaderComponent implements OnInit {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
-            this.getLanguage(this.userService.channel);
+          this.getLanguage(this.userService.channel);
+          this.isCustodianOrgUser();
+          document.title = _.get(user, 'userProfile.rootOrgName');
         }
       });
     } else {
@@ -120,6 +125,16 @@ export class MainHeaderComponent implements OnInit {
         }
       });
     }
+  }
+
+  private isCustodianOrgUser() {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+        this.isValidCustodianOrgUser = true;
+      } else {
+        this.isValidCustodianOrgUser = false;
+      }
+    });
   }
   getLanguage(channelId) {
     const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);
@@ -194,6 +209,7 @@ export class MainHeaderComponent implements OnInit {
   getUrl() {
     this.routerEvents.subscribe((urlAfterRedirects: NavigationEnd) => {
       let currentRoute = this.activatedRoute.root;
+      this.contributeTabActive = this.router.isActive('/contribute', true);
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
           const child: ActivatedRoute[] = currentRoute.children;

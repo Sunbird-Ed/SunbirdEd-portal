@@ -48,12 +48,15 @@ a {
   }
 }
 
-// .course-participants-label{
-//   display: inline-flex;
-//   align-items: center
-// }
+.course-participants-label {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .course-completed:last-child{
-  flex: 2 0 20%;
+  flex: unset;
 }
 
 ::ng-deep {
@@ -66,17 +69,6 @@ a {
     // white-space: nowrap;
   }
 
-  *[dir="ltr"] {
-    .course-completed:last-child{
-      text-align: right;
-    }
-  }
-
-  *[dir="rtl"] {
-    .course-completed:last-child{
-      text-align: left;
-    }
-  }
 }
 @include respond-below(lg){
   .course-completed:last-child{
@@ -88,7 +80,7 @@ a {
     border: 0px solid #d4d8da!important;
   }
   .course-participants-label {
-    width: 50%;
+    width: 100%;
     margin-bottom: 8px;
   }
   .course-participants-label{
@@ -112,3 +104,5 @@ a {
     }
   }
 }
+
+

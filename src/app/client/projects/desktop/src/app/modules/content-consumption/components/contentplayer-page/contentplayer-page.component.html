@@ -1,0 +1,24 @@
+<div class="sb-bg-color-white" *ngIf="!tocPage">
+    <div class="ui container py-8">
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+            (click)="goBack()">
+            <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                    <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+                </svg></i>
+            {{resourceService?.frmelmnts?.btn?.back}}
+        </button>
+    </div>
+</div>
+
+<div *ngIf="tocPage" class="toc-content" [appTelemetryImpression]="telemetryImpression">
+    <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" [isContentPresent]="isContentPresent"  [isContentDeleted]="isContentDeleted"></app-content-player>
+    <app-content-metadata [contentData]="contentDetails"></app-content-metadata>
+</div>
+<div *ngIf="!tocPage" class="sb-single-resource" [appTelemetryImpression]="telemetryImpression">
+    <div class="ui container sb-single-resource">
+        <div class="sb-g-col-xs-12 sb-g-col-md-7 sb-g-col-lg-8">
+            <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" (deletedContent)="goBack()"></app-content-player>
+            <app-content-metadata [contentData]="contentDetails"></app-content-metadata>
+        </div>
+    </div>
+</div>

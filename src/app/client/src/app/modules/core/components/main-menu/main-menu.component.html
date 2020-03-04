@@ -10,6 +10,11 @@
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
+		<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
+			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
+			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
+			{{resourceService?.frmelmnts?.tab?.contribute}}
+		</a>
 		<a class="item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
 			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='permissionService.permissionAvailable'
 			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
@@ -50,16 +55,19 @@
 	<!--/Not Logged in user-->
 	<!-- offline container-->
 	<ng-container *ngIf="isOffline">
-			<a class="item tour-2" [routerLink]="'/'" [ngClass]="(router.isActive('/') && !(router.isActive('/browse') || router.isActive('/help-center')) ) ? 'active': ''" appTelemetryInteract
-			 [telemetryInteractEdata]="myLibraryMenuInteractEdata">
-				{{resourceService.frmelmnts?.btn?.myLibrary}}
-			</a>
-			<a class="item tour-3" [ngClass]="router.isActive('/browse')? 'active': ''" [routerLink]="'/browse'" appTelemetryInteract [telemetryInteractEdata]="browseEdata">
-				{{resourceService.frmelmnts?.btn?.browse}}
-			</a>
-			<a class="item" [ngClass]="router.isActive('/help-center')? 'active': ''" [routerLink]="'/help-center'" appTelemetryInteract [telemetryInteractEdata]="helpCenterEdata">
-				{{resourceService.frmelmnts?.btn?.downloadPdf}}
-			</a>
+		<a class="item tour-2" [routerLink]="'/'"
+			[ngClass]="(router.isActive('/') && !(router.isActive('/browse') || router.isActive('/help-center')) ) ? 'active': ''"
+			appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
+			{{resourceService.frmelmnts?.btn?.myLibrary}}
+		</a>
+		<a class="item tour-3" [ngClass]="router.isActive('/browse')? 'active': ''" [routerLink]="'/browse'"
+			appTelemetryInteract [telemetryInteractEdata]="browseEdata">
+			{{resourceService.frmelmnts?.btn?.browse}}
+		</a>
+		<a class="item" [ngClass]="router.isActive('/help-center')? 'active': ''" [routerLink]="'/help-center'"
+			appTelemetryInteract [telemetryInteractEdata]="helpCenterEdata">
+			{{resourceService.frmelmnts?.btn?.downloadPdf}}
+		</a>
 	</ng-container>
 
 	<!-- offline container-->
@@ -90,6 +98,11 @@
 				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata"
 				routerLink="/learn">
 				{{resourceService?.frmelmnts?.tab?.courses}}
+			</a>
+			<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
+				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
+				routerLink="/contribute" [telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
+				{{resourceService?.frmelmnts?.tab?.contribute}}
 			</a>
 			<a class="item" [class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
 				(click)="showSideBar()" routerLink="/profile">

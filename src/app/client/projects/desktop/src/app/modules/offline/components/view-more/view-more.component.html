@@ -1,0 +1,97 @@
+<div [appTelemetryImpression]="telemetryImpression">
+
+  <div class="sb-bg-color-white">
+    <div class="ui container px-0 py-8">
+      <div class="d-flex flex-jc-space-between sb-back-btn-bar">
+        <button type="button" appTelemetryInteract [telemetryInteractEdata]="backButtonInteractEdata" (click)="goBack()"
+          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fmedium">
+          <i class="arrow left icon"></i>{{resourceService?.frmelmnts?.btn?.back}}
+        </button>
+        <button type="button" appTelemetryInteract [telemetryInteractEdata]="filterByButtonInteractEdata"
+          class="sb-btn sb-btn-outline-primary sb-btn-normal font-weight-bold" [class.active]="showFilters"
+          (click)="showFilters = !showFilters">
+          <i class="icon-svg icon-svg--xxs icon-play">
+            <svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#filter"></use>
+            </svg>
+          </i> {{resourceService?.frmelmnts?.lbl?.filterby}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-desktop-prominent-filter [pageId]="activatedRoute?.snapshot?.data?.telemetry?.pageid" [hidden]="!showFilters"
+    *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [hashTagId]="hashTagId"
+    (prominentFilter)="getFilters($event)" (filterChange)="onFilterChange($event)">
+  </app-desktop-prominent-filter>
+
+  <div class="ui container">
+    <div class="twelve wide column">
+      <app-loader [data]='loaderMessage' *ngIf="showLoader"></app-loader>
+      <app-no-result [data]="noResultMessage" *ngIf="!showLoader && !contentList?.length && isConnected">
+          <ng-container>
+              <div>
+                <p class="mt-24 text-center no-search-text">{{resourceService?.frmelmnts?.lbl?.desktop?.yourSearch | interpolate: '{key}':queryParams?.key}}
+                  {{resourceService?.frmelmnts?.lbl?.desktop?.notMatchContent}}
+                </p>
+                <ul class="m-0">
+                  <label>{{resourceService?.frmelmnts?.lbl?.desktop?.Suggestions}}:</label>
+                  <li class="mb-0 ml-16">{{resourceService?.frmelmnts?.lbl?.desktop?.SuggestionsText1}}</li>
+                  <li class="mb-0 ml-16">{{resourceService?.frmelmnts?.lbl?.desktop?.SuggestionsText2}}</li>
+                  <li class="mb-0 ml-16 ">{{resourceService?.frmelmnts?.lbl?.desktop?.SuggestionsText3}}</li>
+                </ul>
+              </div>
+            </ng-container>
+      </app-no-result>
+      <div class="no-content-container d-flex flex-dc flex-jc-center mt-48"
+        *ngIf="!showLoader && !contentList?.length && !isConnected">
+        <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
+          <div>
+            <img src="../../../../../assets/images/offline-icon.svg" width="90px" height="90px">
+          </div>
+          <div class="fs-1-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.offline}}</div>
+          <p class="fs-1 mt-8">{{resourceService?.messages?.imsg?.m0048}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container" *ngIf="!showLoader && contentList?.length">
+    <div class="category-label fs-1">
+      <div *ngIf="isViewAll" class="pt-24 px-0">{{resourceService?.frmelmnts?.btn?.myLibrary}}</div>
+
+      <div *ngIf="!isViewAll" class="pt-24 px-0">
+        <span [innerHTML]="resourceService?.frmelmnts?.lbl?.showingResultsForwithCount |
+      interpolate:'{count}':contentList?.length | interpolate:'{searchString}':queryParams.key"></span>&nbsp;
+        <a *ngIf="!isBrowse" [routerLink]="'/'" (click)="clearSearchQuery()" appTelemetryInteract
+          [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
+          class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
+        <a *ngIf="isBrowse" [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract
+          [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
+          class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
+      </div>
+    </div>
+
+    <app-desktop-explore-content [contentList]="contentList" [isOnlineContents]="isBrowse"
+      (visits)="prepareVisits($event)">
+    </app-desktop-explore-content>
+
+    <div class=" twelve wide column right aligned py-0"
+      *ngIf="paginationDetails?.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && isBrowse">
+      <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails?.pages?.length">
+        <div class="sb-pagination my-0">
+          <a [class.disabled]="paginationDetails.currentPage===1" class="sb-item"
+            (click)="navigateToPage(1) ">&laquo;</a>
+          <a [class.disabled]="paginationDetails.currentPage===1" class="sb-item"
+            (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+          <a *ngFor="let page of paginationDetails.pages" [class.active]="paginationDetails.currentPage===page"
+            (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+          <a [class.disabled]="paginationDetails.currentPage=== paginationDetails.totalPages"
+            (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+          <a [class.disabled]="paginationDetails.currentPage=== paginationDetails.totalPages"
+            (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

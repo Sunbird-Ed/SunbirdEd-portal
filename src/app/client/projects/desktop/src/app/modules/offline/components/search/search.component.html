@@ -1,0 +1,118 @@
+<div [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-bg-color-white">
+    <div class="ui container px-0 py-8">
+      <div class="d-flex flex-jc-space-between sb-back-btn-bar">
+        <button type="button" appTelemetryInteract [telemetryInteractEdata]="backButtonInteractEdata" (click)="goBack()"
+          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>{{resourceService?.frmelmnts?.btn?.back}}
+        </button>
+        <button *ngIf="!router?.url?.includes('view-all')" type="button" appTelemetryInteract
+          [telemetryInteractEdata]="filterByButtonInteractEdata"
+          class="sb-btn sb-btn-outline-primary sb-btn-normal font-weight-bold" [class.active]="showFilters"
+          (click)="showFilters = !showFilters">
+          <i class="icon-svg icon-svg--xxs icon-play">
+            <svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#filter"></use>
+            </svg>
+          </i> {{resourceService?.frmelmnts?.lbl?.filterby}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-desktop-prominent-filter [pageId]="activatedRoute?.snapshot?.data?.telemetry?.pageid" [hidden]="!showFilters"
+    *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [hashTagId]="hashTagId"
+    (prominentFilter)="getFilters($event)" (filterChange)="onFilterChange($event)">
+  </app-desktop-prominent-filter>
+
+
+  <div class="ui container">
+    <div class="twelve wide column">
+      <app-loader [data]='loaderMessage' *ngIf="showLoader"></app-loader>
+      <app-no-result [data]="noResultMessage" *ngIf="!showLoader && isContentNotAvailable">
+        <ng-container>
+          <div>
+            <p class="mt-24 text-center no-search-text">{{resourceService?.frmelmnts?.lbl?.desktop?.yourSearch | interpolate: '{key}':queryParams?.key}}
+              {{resourceService?.frmelmnts?.lbl?.desktop?.notMatchContent}}
+            </p>
+            <ul class="m-0">
+              <label>{{resourceService?.frmelmnts?.lbl?.desktop?.Suggestions}}:</label>
+              <li class="mb-0 ml-16">{{resourceService?.frmelmnts?.lbl?.desktop?.SuggestionsText1}}</li>
+              <li class="mb-0 ml-16">{{resourceService?.frmelmnts?.lbl?.desktop?.SuggestionsText2}}</li>
+              <li class="mb-0 ml-16 ">{{resourceService?.frmelmnts?.lbl?.desktop?.SuggestionsText3}}</li>
+            </ul>
+          </div>
+        </ng-container>
+      </app-no-result>
+    </div>
+  </div>
+
+  <div class="ui container" *ngIf="!showLoader && !isContentNotAvailable">
+    <section>
+      <div class="category-label fs-1">
+        <div *ngIf="downloadedContents?.length" class="pt-24 px-0">
+          <span
+            [innerHTML]="resourceService?.frmelmnts?.lbl?.showingResultsForwithCount |
+        interpolate:'{count}':downloadedContents?.length | interpolate:'{searchString}': (queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
+          <a [routerLink]="'/'" (click)="clearSearchQuery();" appTelemetryInteract
+            [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
+            class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
+        </div>
+        <div *ngIf="!downloadedContents?.length" class="py-24 px-0">
+          <span
+            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':(queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
+          <a [routerLink]="'/'" (click)="clearSearchQuery()" appTelemetryInteract
+            [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
+            class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
+        </div>
+        <hr *ngIf="!downloadedContents?.length" class="border">
+      </div>
+
+
+      <app-desktop-explore-content *ngIf="downloadedContents" [contentList]="downloadedContents"
+        [isOnlineContents]="false" (visits)="prepareVisits($event)"></app-desktop-explore-content>
+
+      <div class="text-center">
+        <button type="button" *ngIf="downloadedContentsCount > MAX_CARDS_TO_SHOW"
+          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn" appTelemetryInteract
+          [telemetryInteractEdata]="viewMoreButtonInteractEdata"
+          (click)="gotoViewMore(false)">{{resourceService?.frmelmnts?.btn?.viewmore}}
+          <i class="icon angle right"></i>
+        </button>
+      </div>
+    </section>
+
+    <section>
+      <div class="category-label fs-1">
+        <div *ngIf="onlineContents?.length" class="px-0">
+          <span
+            [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsForwithCount |
+          interpolate:'{count}':onlineContents?.length | interpolate:'{searchString}': (queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
+          <a [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract
+            [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
+            class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
+        </div>
+        <div *ngIf="!onlineContents?.length" class="px-0">
+          <span
+            [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':(queryParams?.key || queryParams?.gradeLevel || queryParams?.medium + '&nbsp;' + resourceService?.frmelmnts?.lbl?.profile?.Medium)"></span>&nbsp;
+          <a [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract
+            [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
+            class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
+        </div>
+      </div>
+
+      <app-desktop-explore-content *ngIf="onlineContents" [contentList]="onlineContents" [isOnlineContents]="true" (visits)="prepareVisits($event)">
+      </app-desktop-explore-content>
+      <div class="text-center">
+        <button type="button" *ngIf="onlineContentsCount > MAX_CARDS_TO_SHOW"
+          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn" appTelemetryInteract
+          [telemetryInteractEdata]="viewMoreButtonInteractEdata"
+          (click)="gotoViewMore(true)">{{resourceService?.frmelmnts?.btn?.viewmore}}
+          <i class="icon angle right"></i>
+        </button>
+      </div>
+    </section>
+  </div>
+</div>

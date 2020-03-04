@@ -6,7 +6,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CollectionPlayerComponent } from './collection-player.component';
 import { PlayerService, CoreModule } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
-import { WindowScrollService, SharedModule, ResourceService } from '@sunbird/shared';
+import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -44,7 +44,7 @@ describe('CollectionPlayerComponent', () => {
       declarations: [CollectionPlayerComponent],
       imports: [SuiModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule , TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [ ResourceService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      providers: [ ResourceService, NavigationHelperService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }]
     })
       .compileComponents();
@@ -109,4 +109,33 @@ describe('CollectionPlayerComponent', () => {
    xit('should navigate to error page on invalid collection id', () => {});
   xit('should navigate to error page on valid collection id but invalid content id', () => {});
   xit('should show service unavailable message on API server error', () => {});
+
+  it('should redirect to previous URL', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
+    spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'dialcode', 'navigationId': 3});
+    component.closeCollectionPlayer();
+    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalled();
+  });
+
+  it('should redirect to /resource page', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'navigateToResource').and.callThrough();
+    spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'fakeaction', 'navigationId': 3});
+    component.closeCollectionPlayer();
+    expect(navigationHelperService.navigateToResource).toHaveBeenCalledWith('/resources');
+  });
+
+  it('should set dialcode to the telemetryCdata if any', () => {
+    component.dialCode = 'D4R4K4';
+    spyOn<any>(component, 'getCollectionHierarchy').and.callThrough();
+    component['getContent']();
+    expect(component['getCollectionHierarchy']).toHaveBeenCalled();
+  });
+
+  it('should open the pdfUrl in a new tab', () => {
+    spyOn(window, 'open').and.callThrough();
+    component.printPdf('www.samplepdf.com');
+    expect(window.open).toHaveBeenCalledWith('www.samplepdf.com', '_blank');
+  });
 });

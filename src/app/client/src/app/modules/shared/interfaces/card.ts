@@ -13,6 +13,7 @@ export interface ICard {
     maxCount?: number;
     progress?: number;
     contentType?: string;
+    hoverData?: object;
     ribbon?: {
         right?: { class: string, name: string }
         left?: { class: string, name: string , image: string }

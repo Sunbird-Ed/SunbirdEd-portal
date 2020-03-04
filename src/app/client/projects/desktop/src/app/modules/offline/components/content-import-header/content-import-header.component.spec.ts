@@ -7,6 +7,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER  } from '@sunbird/telemetry';
 import { WatchVideoComponent } from '../watch-video/watch-video.component';
 import { SlickModule } from 'ngx-slick';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ContentImportHeaderComponent', () => {
   let component: ContentImportHeaderComponent;
@@ -22,7 +23,8 @@ describe('ContentImportHeaderComponent', () => {
       imports: [RouterTestingModule, SuiModalModule, SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule, SlickModule],
       declarations: [ContentImportHeaderComponent, WatchVideoComponent],
       providers: [{provide: ResourceService, useValue: resourceServiceStub},
-        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }]
+        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -44,4 +46,14 @@ describe('ContentImportHeaderComponent', () => {
     (resourceService.instance as string) = resourceServiceStub.instance;
     expect(component.instance).toEqual('SUNBIRD');
   });
+  it('Call handleImportContentDialog when click on load content', () => {
+    component.handleImportContentDialog();
+    expect(component.showLoadContentModal).toBeTruthy();
+});
+
+it('Call closeLoadContentModal when modal closes', () => {
+    component.showLoadContentModal = true;
+    component.handleImportContentDialog();
+    expect(component.showLoadContentModal).toBeFalsy();
+});
   });

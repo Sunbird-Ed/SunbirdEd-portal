@@ -1,0 +1,67 @@
+<div class="d-flex flex-w-wrap content-video__player__details sb-bg-color-white" #playerInfo *ngIf="contentData">
+  <div class="d-flex flex-dc flex-basis-1 ml-8">
+    <div class="content-video__player__title mr-auto sb__ellipsis sb__ellipsis--one">
+     {{contentData?.name}}
+    </div>
+    <div class="content-video__player__title__subtitle fxsmall mt-4">
+      <span class="mr-8" *ngIf="contentData?.board">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
+      <span class="dot-divider" *ngIf="contentData?.me_averageRating"></span>
+      <span class="mr-8" *ngIf="contentData?.me_averageRating">{{contentData?.me_averageRating || '0'}}</span>
+      <span *ngIf="contentData?.me_averageRating"><i class="icon star outline"></i></span>
+    </div>
+  </div>
+
+  <div class="d-flex flex-w-wrap content-video__player__tools" >
+    <sb-player-actions [actionButtons]="actionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
+    </sb-player-actions>
+  </div>
+</div>
+
+<app-content-rating #modal *ngIf="contentRatingModal && contentData" [contentData] = "contentData" (closeModal)="contentRatingModal = false"></app-content-rating>
+
+<sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
+<div class="sb-modal-header">
+  {{resourceService.frmelmnts?.btn?.download}}
+</div>
+<div class="sb-modal-content">
+  {{resourceService?.messages?.stmsg?.m0137 }}
+</div>
+<div class="sb-modal-actions">
+  <button  class="sb-btn sb-btn-normal sb-btn-primary"
+    (click)="downloadContent(contentData); showModal = !showModal;">
+    {{resourceService.frmelmnts?.btn?.yes}}
+  </button>
+  <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+    (click)="logTelemetry('cancel-download-content', contentData); showModal = !showModal;">
+    {{resourceService.frmelmnts?.btn?.cancel}}
+  </button>
+</div>
+</sui-modal>
+
+<sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.lbl?.delete}}
+</div>
+<div class="sb-modal-content">
+  {{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}
+</div>
+<div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-primary"
+    (click)="deleteContent(contentData); showDeleteModal = !showDeleteModal;">
+    {{resourceService?.frmelmnts?.lbl?.delete}}
+  </button>
+  <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+    (click)="logTelemetry('cancel-delete-content', contentData); showDeleteModal = !showDeleteModal;">
+    {{resourceService.frmelmnts?.btn?.cancel}}
+  </button>
+</div>
+</sui-modal>
+
+
+<sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentData?.name}}
+  </h6>
+</sui-dimmer>

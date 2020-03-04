@@ -39,7 +39,7 @@ describe('CourseProgressComponent', () => {
         'm0022': 'Stats for last 7 days',
         'm0044': 'Download failed!',
         'm0043': 'Your profile does not have a valid email ID.Please update your email ID',
-        'm0045': 'Download has failed. Please try again after sometime'
+        'm0045': 'No data available to download'
       },
       'stmsg': {
         'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
@@ -216,11 +216,12 @@ describe('CourseProgressComponent', () => {
     const usageService = TestBed.get(UsageService);
     spyOn(usageService, 'getData').and.returnValue(observableOf(testData.mockUserData.courseProgressReportMock));
     spyOn<any>(component, 'downloadCourseReport').and.callThrough();
-    spyOn(document, 'createElement').and.callThrough();
+    spyOn(window, 'open');
     component.downloadReport(false);
     tick(10);
+    expect(window.open).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith(testData.mockUserData.courseProgressReportMock.result.signedUrl, '_blank');
     expect(component['downloadCourseReport']).toHaveBeenCalled();
-    expect(document.createElement).toHaveBeenCalledWith('a');
     expect(usageService.getData).toHaveBeenCalledWith('/courseReports/course-progress-reports/report-0124963192947507200.csv');
   }));
 

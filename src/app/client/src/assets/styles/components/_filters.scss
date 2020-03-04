@@ -57,6 +57,7 @@
         font-size: $sb-prominent-filter-field-font-size;
         border-radius: $sb-prominent-filter-field-border-radius;
         padding: 0;
+        display: flex;
         .divider{
           margin: 0;
         }

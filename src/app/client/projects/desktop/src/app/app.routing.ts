@@ -1,10 +1,18 @@
 import { NgModule } from '@angular/core';
 import { ErrorPageComponent } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LibraryComponent } from './modules/offline';
+
 const appRoutes: Routes = [
   {
     path: '',
-    loadChildren: './../../../../src/app/modules/public/module/explore/explore.module#ExploreModule'
+    component: LibraryComponent
+  },
+  {
+      path: 'play', loadChildren: './modules/content-consumption/content-consumption.module#ContentConsumptionModule'
+  },
+  {
+      path: 'browse/play', loadChildren: './modules/content-consumption/content-consumption.module#ContentConsumptionModule'
   },
   {
     path: 'error',

@@ -1,0 +1,5 @@
+{
+  "TEMPLATES": {
+    "RESET_PASSWORD_TEMPLATE": "resetPasswordWithOtp"
+  }
+}

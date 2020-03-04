@@ -1,7 +1,7 @@
 .ui.selection.dropdown:focus,
 .ui.multiple.dropdown:focus,
 .ui.selection.dropdown:focus .menu {
-    border-color: $sb-dropdown-border-focus;
+    border-color: #96C8DA;
 }
 
 .ui.selection.active.dropdown:hover {
@@ -52,4 +52,13 @@
 
 .ui.default.dropdown:not(.button)>.text, .ui.dropdown:not(.button)>.default.text {
     color: #333;
+}
+
+.ui.dropdown .menu>.item {
+    font-size:0.86rem;
+}
+
+.ui.selection.dropdown.state-selection .menu > .item.active {
+    color: #024f9d;
+    background-color: #E5EDF5;
 }

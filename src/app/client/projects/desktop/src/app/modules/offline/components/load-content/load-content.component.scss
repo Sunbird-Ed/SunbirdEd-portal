@@ -1,0 +1,19 @@
+@import "variables";
+@import "mixins/mixins"; 
+
+.sb-modal{
+  .disable-color{
+    color: var(--gray-400);
+    opacity: 0.5;
+  }
+  .sb-radio-title {
+    padding:0.5rem 0 0 1.5rem;
+  }
+  .sb-label-table .sb-live-error{
+    height: 0.5rem;
+    width: 0.5rem;
+    display: inline-block;
+    border-radius: 50%;
+    background: var(--tertiary-100);
+  }
+}

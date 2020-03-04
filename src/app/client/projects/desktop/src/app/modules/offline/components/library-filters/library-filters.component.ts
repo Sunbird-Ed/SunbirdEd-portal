@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 
@@ -7,6 +7,8 @@ import { ResourceService } from '@sunbird/shared';
 import { OnboardingService } from '../../services';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface IFilters {
   board: string[];
@@ -24,7 +26,7 @@ interface IFilterChange {
   templateUrl: './library-filters.component.html',
   styleUrls: ['./library-filters.component.scss']
 })
-export class LibraryFiltersComponent implements OnInit {
+export class LibraryFiltersComponent implements OnInit, OnDestroy {
 
   selectedBoard: any;
   selectedMediumIndex: number[] = [];
@@ -40,6 +42,8 @@ export class LibraryFiltersComponent implements OnInit {
   frameworkCategories: any;
   userDetails: any;
   hashTagId: string;
+  showDefaultFilter: boolean;
+  public unsubscribe$ = new Subject<void>();
 
   @Input() selectedFilters;
   @Output() filterChange: EventEmitter<IFilterChange> = new EventEmitter();
@@ -54,38 +58,54 @@ export class LibraryFiltersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.orgDetailsService.getCustodianOrg().subscribe(data => {
-      this.hashTagId = _.get(data, 'result.response.value');
-      this.userDetails = this.onboardingService.userData;
-      this.setBoard();
-    });
+    this.showDefaultFilter = false;
+    this.orgDetailsService.getCustodianOrg()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.hashTagId = _.get(data, 'result.response.value');
+        this.userDetails = this.onboardingService.userData;
+        this.setBoard();
+      });
   }
 
   setBoard() {
-    this.channelService.getFrameWork(this.hashTagId).subscribe(orgDetails => {
-      this.boards = _.get(orgDetails, 'result.channel.frameworks');
+    this.channelService.getFrameWork(this.hashTagId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(orgDetails => {
+        this.boards = _.get(orgDetails, 'result.channel.frameworks');
 
-      if (this.boards) {
-        if (_.get(this.selectedFilters, 'board[0]')) {
-          this.selectedBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
-        } else {
-          this.selectedBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
-        }
-      }
+        if (this.boards) {
+          const defaultBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
 
-      if (this.selectedBoard) {
-        this.frameworkService.getFrameworkCategories(_.get(this.selectedBoard, 'identifier')).subscribe((res) => {
-          if (res && _.get(res, 'result.framework.categories')) {
-            this.frameworkCategories = _.get(res, 'result.framework.categories');
-            if (_.get(this.selectedFilters, 'board[0]')) {
-              this.setFilters(false);
+          if (_.get(this.selectedFilters, 'board[0]')) {
+            const offlineBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
+
+            if (offlineBoard) {
+              this.selectedBoard = offlineBoard;
             } else {
-              this.setFilters(true);
+              this.selectedBoard = defaultBoard;
+              this.showDefaultFilter = true;
             }
+          } else {
+            this.selectedBoard = defaultBoard;
           }
-        });
-      }
-    });
+        }
+
+        if (this.selectedBoard) {
+          this.frameworkService.getFrameworkCategories(_.get(this.selectedBoard, 'identifier'))
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((res) => {
+              if (res && _.get(res, 'result.framework.categories')) {
+                this.frameworkCategories = _.get(res, 'result.framework.categories');
+                if (_.get(this.selectedFilters, 'board[0]') && !this.showDefaultFilter) {
+                  this.setFilters(false);
+                } else {
+                  this.setFilters(true);
+                }
+              }
+            });
+        }
+      });
   }
 
   setFilters(showDefault?) {
@@ -96,27 +116,28 @@ export class LibraryFiltersComponent implements OnInit {
       switch (element.code) {
         case 'medium':
           this.mediums = element.terms.map(medium => medium.name);
-
           let mediumIndex;
-          if (_.get(this.selectedFilters, 'medium[0]')) {
-            mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
-          } else if (showDefault) {
+
+          if (showDefault) {
             mediumIndex = this.mediums.findIndex(medium => framework.medium.includes(medium));
+          } else if (_.get(this.selectedFilters, 'medium[0]')) {
+            mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
           }
 
           if (_.isNumber(mediumIndex)) {
             this.selectedMediumIndex.push(mediumIndex);
           }
           break;
+
         case 'gradeLevel':
           this.classes = element.terms.map(gradeLevel => gradeLevel.name);
           let classIndex;
 
-          if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
+          if (showDefault) {
+            classIndex = this.classes.findIndex(value => framework.gradeLevel.includes(value));
+          } else if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
             classIndex = this.classes.findIndex((classElement) =>
               classElement === this.selectedFilters.gradeLevel[0]);
-          } else if (showDefault) {
-            classIndex = this.classes.findIndex(value => framework.gradeLevel.includes(value));
           }
 
           if (_.isNumber(classIndex)) {
@@ -131,12 +152,14 @@ export class LibraryFiltersComponent implements OnInit {
 
   onBoardChange(option) {
     this.resetFilters();
-    this.frameworkService.getFrameworkCategories(_.get(option, 'identifier')).subscribe((data) => {
-      if (data && _.get(data, 'result.framework.categories')) {
-        this.frameworkCategories = _.get(data, 'result.framework.categories');
-        this.setFilters(false);
-      }
-    });
+    this.frameworkService.getFrameworkCategories(_.get(option, 'identifier'))
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data) => {
+        if (data && _.get(data, 'result.framework.categories')) {
+          this.frameworkCategories = _.get(data, 'result.framework.categories');
+          this.setFilters(false);
+        }
+      });
   }
 
   resetFilters() {
@@ -233,6 +256,11 @@ export class LibraryFiltersComponent implements OnInit {
     }
 
     return selectClassInteractEdata;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
 

@@ -1,0 +1,12 @@
+@import "variables";
+@import "mixins/mixins";
+.sb-single-resource{
+    width: 100%;
+    height: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.toc-content{
+    width: 100%;
+    height: 100%;  
+}

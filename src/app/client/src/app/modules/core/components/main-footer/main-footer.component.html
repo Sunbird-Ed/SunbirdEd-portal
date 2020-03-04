@@ -15,10 +15,10 @@
     <p class="d-block">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
   </div>
 </div> -->
-    <extension-point [name]="'content-manager'" *ngIf="isOffline"></extension-point>
-<footer class="footer" *ngIf="showFooter">
+<extension-point [name]="'content-manager'" *ngIf="isOffline && !showDownloadmanager"></extension-point>
 
-  <div class="ui container" *ngIf="!isOffline">
+<footer class="footer" *ngIf="showFooter && !isOffline" #footerFix>
+  <div class="ui container">
     <div class="ui grid stackable">
       <div class="four wide column footerMenu mr-auto">
         <ul class="p-0 m-0">
@@ -51,7 +51,8 @@
           </div>
           <!-- <label class="d-block pb-10">{{resourceService.frmelmnts?.lbl?.download}}
             {{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label> -->
-            <label class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
+          <label
+            class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
           <a class="d-block app-download" (click)="redirectToDikshaApp()">
             <img class="playStore-img" src="/assets/images/google_playstore.png"
               alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
@@ -80,7 +81,7 @@
       </div>
     </div>
   </div>
-  <div class="ui one column stackable center aligned page grid" *ngIf="isOffline">
+  <!-- <div class="ui one column stackable center aligned page grid" *ngIf="isOffline">
     <div class="column twelve wide">
       <label class="d-block mb-10">
         {{resourceService.frmelmnts?.lnk?.footerContact}}
@@ -89,9 +90,6 @@
         href="mailto:support@diksha-ncte.freshdesk.com">
         support@diksha-ncte.freshdesk.com
       </a>
-      <label class="d-block mb-0">
-        {{resourceService.frmelmnts?.lbl?.deviceId}} : {{deviceId}}
-      </label>
     </div>
-  </div>
+  </div> -->
 </footer>

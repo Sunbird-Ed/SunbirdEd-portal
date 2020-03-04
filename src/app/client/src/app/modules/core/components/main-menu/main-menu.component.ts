@@ -1,12 +1,13 @@
 import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
-import { Component, OnInit } from '@angular/core';
-import { UserService, PermissionService } from '../../services';
+import { Component, OnInit, Input } from '@angular/core';
+import { UserService, PermissionService, ProgramsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { first, filter } from 'rxjs/operators';
+import { first, filter, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
+import { merge } from 'rxjs';
 declare var jQuery: any;
 
 /**
@@ -54,18 +55,24 @@ export class MainMenuComponent implements OnInit {
   helpCenterEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
+  contributeMenuEdata: IInteractEventEdata;
   exploreRoutingUrl: string;
   showExploreHeader = false;
   helpLinkVisibility: string;
   isOffline: boolean = environment.isOffline;
+  /**
+   * shows/hides contribute tab
+   */
 
   signInIntractEdata: IInteractEventEdata;
   slug: string;
+  showContributeTab: boolean;
   /*
   * constructor
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router, public activatedRoute: ActivatedRoute,
-    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService) {
+    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService,
+    private programsService: ProgramsService) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.permissionService = permissionService;
@@ -83,12 +90,18 @@ export class MainMenuComponent implements OnInit {
     }
     this.setInteractData();
     this.getUrl();
-    this.userService.userData$.pipe(first()).subscribe(
-      (user: IUserData) => {
+    merge(this.programsService.allowToContribute$.pipe(
+      tap((showTab: boolean) => {
+        this.showContributeTab = showTab;
+      })
+    ), this.userService.userData$.pipe(
+      tap((user: IUserData) => {
         if (user && !user.err) {
-          this.userProfile = user.userProfile;
+          this.userProfile = _.get(user, 'userProfile');
         }
-      });
+      }),
+      first()
+    )).subscribe();
   }
   setInteractData() {
     this.homeMenuIntractEdata = {
@@ -130,6 +143,11 @@ export class MainMenuComponent implements OnInit {
       id: 'help-menu-tab',
       type: 'click',
       pageid: 'help'
+    };
+    this.contributeMenuEdata = {
+      id: 'contribute-tab',
+      type: 'click',
+      pageid: 'contribute'
     };
     this.signInIntractEdata = {
       id: ' signin-tab',
@@ -188,4 +206,9 @@ export class MainMenuComponent implements OnInit {
       return authroles.url;
     }
   }
+
+  getFeatureId(featureId, taskId) {
+    return [{ id: featureId, type: 'Feature' }, { id: taskId, type: 'Task' }];
+  }
+
 }

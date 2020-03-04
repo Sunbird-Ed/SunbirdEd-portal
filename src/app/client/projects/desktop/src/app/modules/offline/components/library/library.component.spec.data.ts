@@ -16,13 +16,14 @@ export const response = {
         'mode': 'soft',
         'facets': ['board', 'medium', 'gradeLevel', 'subject'],
         'params': {
-            'orgdetails': 'orgName,email'
+            'orgdetails': 'orgName,email',
+            'online': false
         },
         'softConstraints': {
             'badgeAssertions': 98,
             'board': 99,
             'channel': 100
-        }
+        },
     },
     constructSearchRequestWithOutFilter: {
         'filters': {
@@ -31,7 +32,8 @@ export const response = {
         'mode': 'soft',
         'facets': ['board', 'medium', 'gradeLevel', 'subject'],
         'params': {
-            'orgdetails': 'orgName,email'
+            'orgdetails': 'orgName,email',
+            'online': false
         },
         'softConstraints': {
             'badgeAssertions': 98,

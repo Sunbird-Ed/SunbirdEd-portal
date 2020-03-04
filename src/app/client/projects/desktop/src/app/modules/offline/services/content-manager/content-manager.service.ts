@@ -15,10 +15,19 @@ export class ContentManagerService {
   downloadEvent = new EventEmitter();
   downloadListEvent = new EventEmitter();
   completeEvent = new EventEmitter();
+  deletedContent = new EventEmitter();
 
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
     private electronDialogService: ElectronDialogService) { }
+
+  emitAfterDeleteContent(contentData) {
+    this.deletedContent.emit(contentData);
+  }
+
+  emitDownloadListEvent(downloadList) {
+    this.downloadListEvent.emit(downloadList);
+  }
 
   getContentList() {
     const downloadListOptions = {
@@ -27,7 +36,6 @@ export class ContentManagerService {
     };
     return this.publicDataService.post(downloadListOptions).pipe(
       map((result) => {
-        this.downloadListEvent.emit(result);
         return result;
       }),
       catchError((err) => {
@@ -105,6 +113,53 @@ export class ContentManagerService {
     const options = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.PAUSE_IMPORT}/${importId}`,
       data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
+  retryImportContent(importId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.RETRY_IMPORT}/${importId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
+  resumeDownloadContent(downloadId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.RESUME_DOWNLOAD}/${downloadId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
+  cancelDownloadContent(downloadId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.CANCEL_DOWNLOAD}/${downloadId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
+  pauseDownloadContent(downloadId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.PAUSE_DOWNLOAD}/${downloadId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+
+  retryDownloadContent(downloadId) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.RETRY_DOWNLOAD}/${downloadId}`,
+      data: {}
+    };
+    return this.publicDataService.post(options);
+  }
+  deleteContent (request) {
+    const options = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.DELETE_CONTENT}`,
+      data: request
     };
     return this.publicDataService.post(options);
   }

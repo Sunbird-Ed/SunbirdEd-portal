@@ -338,4 +338,3 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     }
   }
 }
-
