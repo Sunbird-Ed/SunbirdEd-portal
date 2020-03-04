@@ -69,14 +69,6 @@ describe('ContentActionsComponent', () => {
     expect(component.changeContentStatus).toHaveBeenCalledWith(actionsData.contentData);
   });
 
-  it('should check checkDownloadStatus', () => {
-    const playerService = TestBed.get(PublicPlayerService);
-    spyOn(playerService, 'updateDownloadStatus').and.returnValue(actionsData.contentData);
-    component.checkDownloadStatus(actionsData.downloadList);
-    expect(component.contentData).toEqual(actionsData.contentData);
-    expect(component.contentData['downloadStatus']).toEqual('DOWNLOADED');
-  });
-
   it('should check isYoutubeContentPresent', () => {
     const offlineCardService = TestBed.get(OfflineCardService);
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);

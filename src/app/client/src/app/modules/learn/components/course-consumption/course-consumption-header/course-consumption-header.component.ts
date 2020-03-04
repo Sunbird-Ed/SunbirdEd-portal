@@ -167,6 +167,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    if (this.enrolledBatchInfo.endDate) {
     this.batchEndDate = moment(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
-   return (this.enrolledBatchInfo.status === 2 && this.progress < 100);
+   return (this.enrolledBatchInfo.status === 2 && this.progress <= 100);
   }
 }

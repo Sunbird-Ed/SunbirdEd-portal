@@ -435,7 +435,14 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook') && _.get(this.dialCodeService, 'dialCodeResult.count') > 1) {
       this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')]);
     } else {
-      const previousUrl = _.get(this.navigationhelperService.getPreviousUrl(), 'url') || '/get';
+      let previousUrl = _.get(this.navigationhelperService.getPreviousUrl(), 'url') || '/get';
+      if (_.includes(previousUrl, 'play')) {
+        if (this.userService.loggedIn) {
+          previousUrl = '/resources';
+        } else {
+          previousUrl = '/explore';
+        }
+      }
       this.router.navigate([previousUrl]);
     }
   }
