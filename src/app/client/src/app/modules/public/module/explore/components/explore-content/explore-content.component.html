@@ -29,7 +29,8 @@
     </div>
     <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column"
       *ngIf="contentList.length === 0 && !showLoader">
-      <app-no-result [data]="noResultMessage"></app-no-result>
+<app-no-result-found [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
+[buttonText]="noResultMessage?.buttonText" [redirectUrl]="noResultMessage?.redirectUrl"></app-no-result-found>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
       <app-loader [data]='loaderMessage'></app-loader>
