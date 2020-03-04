@@ -24,7 +24,7 @@ describe('ResourceService', () => {
     spyOn(resourceService, 'getResource').and.callThrough();
     resourceService.getResource();
     expect(resourceService.frmelmnts).toBeUndefined();
-    expect(resourceService.messages).toBeDefined();
+    expect(resourceService.messages).toBeUndefined();
   }));
   it('should  not call get resource method   when resourcebundle is  cached',
    inject([ResourceService, CacheService, HttpClient ],
