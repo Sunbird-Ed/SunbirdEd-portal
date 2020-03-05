@@ -259,7 +259,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
         'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
         'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-        'redirectUrl': ''
+        'showExploreContentButton': false
       };
     }
   }

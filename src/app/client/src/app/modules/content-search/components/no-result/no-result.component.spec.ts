@@ -40,9 +40,9 @@ describe('NoResultComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to given url', () => {
-    const router = TestBed.get(Router);
-    component.exploreMoreContent('resource');
-    expect(router.navigate).toHaveBeenCalledWith(['resource']);
+  it('should emit event on click of explore', () => {
+    spyOn(component.exploreMoreContent, 'emit');
+    component.handleEvent();
+    expect(component.exploreMoreContent.emit).toHaveBeenCalled();
   });
 });
