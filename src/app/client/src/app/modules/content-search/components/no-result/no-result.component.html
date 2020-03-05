@@ -6,10 +6,10 @@
       </div>
       <div class="fmedium board-title my-24">{{title}}</div>
       <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
-      <button *ngIf="redirectUrl" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="exploreMoreContent(redirectUrl)">
+      <button *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
         {{buttonText}}
       </button>
-      <div *ngIf="redirectUrl && subTitle" class="fs-0-785">{{subTitle | interpolate:'{instance}': instance}}</div>
+      <div *ngIf="showExploreContentButton && subTitle" class="fs-0-785">{{subTitle | interpolate:'{instance}': instance}}</div>
     </div>
   </div>
 </div>

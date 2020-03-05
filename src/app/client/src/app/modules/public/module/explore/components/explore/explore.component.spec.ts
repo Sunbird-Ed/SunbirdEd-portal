@@ -2,7 +2,7 @@ import { BehaviorSubject, throwError, of} from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { PageApiService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
+import { SearchService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -18,7 +18,7 @@ describe('ExploreComponent', () => {
   let component: ExploreComponent;
   let fixture: ComponentFixture<ExploreComponent>;
   let toasterService, userService, pageApiService, orgDetailsService;
-  const mockPageSection: Array<any> = Response.successData.result.response.sections;
+  const mockPageSection: any = Response.searchResult;
   let sendOrgDetails = true;
   let sendPageApi = true;
   class RouterStub {
@@ -72,7 +72,7 @@ describe('ExploreComponent', () => {
     component = fixture.componentInstance;
     toasterService = TestBed.get(ToasterService);
     userService = TestBed.get(UserService);
-    pageApiService = TestBed.get(PageApiService);
+    pageApiService = TestBed.get(SearchService);
     orgDetailsService = TestBed.get(OrgDetailsService);
     sendOrgDetails = true;
     sendPageApi = true;
@@ -82,26 +82,26 @@ describe('ExploreComponent', () => {
       }
       return throwError({});
     });
-    spyOn(pageApiService, 'getPageData').and.callFake((options) => {
+    spyOn(pageApiService, 'contentSearch').and.callFake((options) => {
       if (sendPageApi) {
-        return of({sections: mockPageSection});
+        return of(mockPageSection);
       }
       return throwError({});
     });
   });
   it('should emit filter data when getFilters is called with data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters({ filters: { board: 'NCRT'}});
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
   });
   it('should emit filter data when getFilters is called with no data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
-    component.getFilters([]);
+    component.getFilters({});
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
   });
   it('should fetch hashTagId from API and filter details from data driven filter component', () => {
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters({ filters: { board: 'NCRT'}});
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
   });
@@ -113,26 +113,26 @@ describe('ExploreComponent', () => {
   it('should navigate to landing page if fetching org details fails and data driven filter returns data', () => {
     sendOrgDetails = false;
     component.ngOnInit();
-    component.getFilters([]);
+    component.getFilters({});
     expect(component.router.navigate).toHaveBeenCalledWith(['']);
   });
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters({ filters: { board: 'NCRT'}});
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
-    expect(component.showLoader).toBeFalsy();
     expect(component.apiContentList.length).toEqual(1);
+    expect(component.showLoader).toBeFalsy();
   });
   it('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
     sendPageApi = false;
     spyOn(toasterService, 'error').and.callFake(() => {});
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters({ filters: { board: 'NCRT'}});
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
-    expect(component.showLoader).toBeFalsy();
     expect(component.apiContentList.length).toEqual(0);
+    expect(component.showLoader).toBeFalsy();
     expect(toasterService.error).toHaveBeenCalled();
   });
   it('should unsubscribe from all observable subscriptions', () => {
@@ -178,7 +178,7 @@ describe('ExploreComponent', () => {
   it('should call updateDownloadStatus when updateCardData is called' , () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'updateDownloadStatus').and.callFake(() => {});
-    component.pageSections = mockPageSection;
+    component.pageSections = Response.successData.result.response.sections;
     component.updateCardData(Response.download_list);
     expect(playerService.updateDownloadStatus).toHaveBeenCalled();
   });
@@ -197,7 +197,7 @@ describe('ExploreComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     toasterService = TestBed.get(ToasterService);
     resourceService.messages = resourceBundle.messages;
-    component.pageSections = mockPageSection;
+    component.pageSections = Response.successData.result.response.sections;
     spyOn(contentManagerService, 'startDownload').and.returnValue(throwError(Response.download_error));
     component.startDownload(Response.result.result.content);
     expect(contentManagerService.startDownload).toHaveBeenCalled();

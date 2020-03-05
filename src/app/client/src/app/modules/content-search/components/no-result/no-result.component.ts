@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -13,7 +13,8 @@ export class NoResultComponent implements OnInit {
   @Input() title: string;
   @Input() subTitle: string;
   @Input() buttonText: string;
-  @Input() redirectUrl: string;
+  @Input() showExploreContentButton: boolean;
+  @Output() exploreMoreContent = new EventEmitter();
   instance: string;
 
   constructor( public router: Router, public resourceService: ResourceService  ) { }
@@ -22,8 +23,8 @@ export class NoResultComponent implements OnInit {
     this.instance = _.upperCase(this.resourceService.instance);
   }
 
-  exploreMoreContent(url) {
-    this.router.navigate([url]);
+  handleEvent() {
+    this.exploreMoreContent.emit();
   }
 
 }

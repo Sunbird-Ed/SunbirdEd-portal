@@ -26,7 +26,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public showLoader = true;
   public showLoginModal = false;
   public baseUrl: string;
-  public noResultMessage: INoResultMessage;
+  public noResultMessage;
   public apiContentList: Array<ICaraouselData> = [];
   public filterType: string;
   public queryParams: any;
@@ -292,12 +292,14 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.isOffline && !(this.router.url.includes('/browse'))) {
       this.noResultMessage = {
         'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0133'
+        'title': 'messages.stmsg.m0133'
       };
     } else {
       this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
+        'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
+        'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+        'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+        'showExploreContentButton': true
       };
     }
   }
