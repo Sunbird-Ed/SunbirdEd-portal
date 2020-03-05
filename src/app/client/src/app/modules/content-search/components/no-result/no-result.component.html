@@ -4,7 +4,7 @@
       <div>
         <img src="./assets/images/group.svg" width="90px" height="90px">
       </div>
-      <div class="fmedium board-title my-24">{{title}}</div>
+      <div class="fmedium board-title my-24">{{title}} <span>for {{filters.gradeLevel[0]}}</span></div>
       <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
       <button *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
         {{buttonText}}

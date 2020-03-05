@@ -14,6 +14,7 @@ export class NoResultComponent implements OnInit {
   @Input() subTitle: string;
   @Input() buttonText: string;
   @Input() showExploreContentButton: boolean;
+  @Input() filters;
   @Output() exploreMoreContent = new EventEmitter();
   instance: string;
 
