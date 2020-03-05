@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy , EventEmitter, Output} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { timer, Subject, combineLatest } from 'rxjs';
 import { switchMap, map, filter, takeUntil } from 'rxjs/operators';
@@ -28,7 +28,6 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   handledFailedList = [];
   unHandledFailedList = [];
   deletedContents: string [] = [];
-  localContentData: any = [];
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -240,6 +239,12 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       };
     }
     return interactData;
+  }
+
+  getContentList() {
+    if (this.isOpen) {
+      this.apiCallSubject.next();
+    }
   }
 
   ngOnDestroy() {
