@@ -340,4 +340,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  navigateToExploreContent() {
+    this.router.navigate(['explore', 1], { queryParams: this.dataDrivenFilters });
+  }
+
 }

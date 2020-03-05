@@ -15,7 +15,7 @@
         <app-loader [data]='loaderMessage'></app-loader>
       </div>
       <div class="twelve wide column" *ngIf="apiContentList.length === 0 && !showLoader">
-        <app-no-result-found [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
+        <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="dataDrivenFilters" [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
 [buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton"></app-no-result-found>
       </div>
     </div>
