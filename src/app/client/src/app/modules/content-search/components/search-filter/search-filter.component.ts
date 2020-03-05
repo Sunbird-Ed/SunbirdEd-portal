@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { OrgDetailsService, FrameworkService, ChannelService } from '@sunbird/core';
@@ -8,6 +8,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ContentSearchService } from './../../services';
 
 interface IFilters {
   board: string[];
@@ -25,7 +26,7 @@ interface IFilterChange {
   templateUrl: './search-filter.component.html',
   styleUrls: ['./search-filter.component.scss']
 })
-export class SearchFilterComponent implements OnInit, OnDestroy {
+export class SearchFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   selectedBoard: any;
   selectedMediumIndex: number[] = [];
@@ -45,6 +46,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
 
   @Input() selectedFilters;
+  @Input() filters;
   @Output() filterChange: EventEmitter<IFilterChange> = new EventEmitter();
 
   constructor(
@@ -53,101 +55,66 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     private orgDetailsService: OrgDetailsService,
     private channelService: ChannelService,
     private onboardingService: OnboardingService,
-    public router: Router
+    public router: Router,
+    private contentSearchService: ContentSearchService,
   ) { }
 
   ngOnInit() {
-    console.log('this.selectedFilters', this.selectedFilters);
-    this.showDefaultFilter = false;
-    this.orgDetailsService.getCustodianOrg()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        this.hashTagId = _.get(data, 'result.response.value');
-        this.userDetails = this.onboardingService.userData;
-        this.setBoard();
+    console.log('=====this.filters --====', this.filters, this.selectedFilters);
+    if (this.filters.board) {
+      this.boards = this.filters.board;
+      this.boards.push({
+        identifier: "NCF",
+        code: "NCF",
+        name: "NCF framework",
+        description: " NCF framework...",
+        type: "K-12",
+        objectType: "Framework"
       });
-  }
-
-  setBoard() {
-    this.channelService.getFrameWork(this.hashTagId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(orgDetails => {
-        this.boards = _.get(orgDetails, 'result.channel.frameworks');
-        if (!this.boards || !this.boards.length) {
-          return;
+      this.selectedBoard = this.boards.find((board) => board.name === this.selectedFilters.board);
+    }
+    this.contentSearchService.filterData$.pipe(takeUntil(this.unsubscribe$)).subscribe(({data}) => {
+      console.log('filters comp', data);
+      if (data) {
+        this.filters = data;
+        if (this.filters.medium) {
+          this.mediums = this.filters.medium.map(medium => medium.name);
+          let mediumIndex = 0;
+          if (this.selectedFilters.medium) {
+            mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium);
+            console.log('mediumIndex', mediumIndex);
+            mediumIndex = mediumIndex === -1 ? 0 : mediumIndex;
+          }
+          this.selectedMediumIndex.push(mediumIndex);
         }
-        if (this.selectedFilters.board && this.selectedFilters.board[0]) {
-          this.selectedBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
-        } else {
-          this.selectedBoard = this.boards[0];
+        if (this.filters.gradeLevel) {
+          this.classes = this.filters.gradeLevel.map(gradeLevel => gradeLevel.name);
+          let classIndex = 0;
+          if (this.selectedFilters.medium) {
+            classIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.gradeLevel);
+            console.log('classIndex', classIndex);
+            classIndex = classIndex === -1 ? 0 : classIndex;
+          }
+          this.selectedClassIndex.push(classIndex);
         }
-        if (this.selectedBoard) {
-          this.frameworkService.getFrameworkCategories(_.get(this.selectedBoard, 'identifier'))
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((res) => {
-              if (res && _.get(res, 'result.framework.categories')) {
-                this.frameworkCategories = _.get(res, 'result.framework.categories');
-                if (_.get(this.selectedFilters, 'board[0]') && !this.showDefaultFilter) {
-                  this.setFilters(false);
-                } else {
-                  this.setFilters(true);
-                }
-              }
-            });
-        }
-      });
-  }
-
-  setFilters(showDefault?) {
-    this.resetFilters();
-    this.frameworkCategories.forEach(element => {
-      switch (element.code) {
-        case 'medium':
-          this.mediums = element.terms.map(medium => medium.name);
-          let mediumIndex;
-
-          if (showDefault) {
-            mediumIndex = 0;
-          } else if (_.get(this.selectedFilters, 'medium[0]')) {
-            mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
-          }
-
-          if (_.isNumber(mediumIndex)) {
-            this.selectedMediumIndex.push(mediumIndex);
-          }
-          break;
-
-        case 'gradeLevel':
-          this.classes = element.terms.map(gradeLevel => gradeLevel.name);
-          let classIndex;
-
-          if (showDefault) {
-            classIndex = 0;
-          } else if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
-            classIndex = this.classes.findIndex((classElement) =>
-              classElement === this.selectedFilters.gradeLevel[0]);
-          }
-
-          if (_.isNumber(classIndex)) {
-            this.selectedClassIndex.push(classIndex);
-          }
-          break;
       }
     });
-
-    this.triggerFilterChangeEvent();
   }
-
+  ngOnChanges(...arg) {
+    console.log('---ngOnChanges-----', arg);
+  }
   onBoardChange(option) {
-    this.resetFilters();
-    this.frameworkService.getFrameworkCategories(_.get(option, 'identifier'))
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((data) => {
-        if (data && _.get(data, 'result.framework.categories')) {
-          this.frameworkCategories = _.get(data, 'result.framework.categories');
-          this.setFilters(false);
-        }
-      });
+    console.log('board changed', option);
+    this.contentSearchService.boardChanged(option.identifier);
+    // this.resetFilters();
+    // this.frameworkService.getFrameworkCategories(_.get(option, 'identifier'))
+    //   .pipe(takeUntil(this.unsubscribe$))
+    //   .subscribe((data) => {
+    //     if (data && _.get(data, 'result.framework.categories')) {
+    //       this.frameworkCategories = _.get(data, 'result.framework.categories');
+    //       this.setFilters(false);
+    //     }
+    //   });
   }
 
   resetFilters() {

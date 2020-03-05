@@ -15,7 +15,7 @@ import { environment } from '@sunbird/environment';
 import {
   ContentManagerService
 } from './../../../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
-
+import { ContentSearchService } from '@sunbird/content-search';
 
 @Component({
   selector: 'app-explore-component',
@@ -31,6 +31,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public filterType: string;
   public queryParams: any;
   public hashTagId: string;
+  public filters;
   public unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
   public inViewLogs = [];
@@ -47,7 +48,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   organisationId: string;
   showDownloadLoader = false;
   frameworkId;
-  selectedFilters = {};
+  selectedFilters = {
+    board: 'State (Assam)'
+  };
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -59,51 +62,60 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
+    private contentSearchService: ContentSearchService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public frameworkService: FrameworkService,
     public navigationhelperService: NavigationHelperService, public contentManagerService: ContentManagerService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.explore.filterType;
   }
-
+  getChannelId() {
+    if (this.activatedRoute.snapshot.params.slug) {
+      return this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
+      .pipe(map(((orgDetails: any) => {
+        return { channelId: orgDetails.hashTagId, custodianOrg: false};
+      })));
+    } else {
+      return this.orgDetailsService.getCustodianOrg().pipe(map(((custOrgDetails: any) => {
+        return { channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true };
+      })));
+    }
+  }
+  fetchFilters() {
+    this.contentSearchService.filterData$.pipe(takeUntil(this.unsubscribe$)).subscribe((filters) => {
+      console.log('filters', filters);
+      if (filters.data) {
+        this.filters = filters.data;
+      }
+    });
+  }
   ngOnInit() {
     this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
       if (!channelData.err) {
         this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
       }
     });
-    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
-      mergeMap((orgDetails: any) => {
-        this.slug = orgDetails.slug;
-        this.hashTagId = orgDetails.hashTagId;
-        this.initFilters = true;
-        this.organisationId = orgDetails.id;
-        return this.dataDrivenFilterEvent;
-      })
-    ).subscribe((filters: any) => {
-      this.dataDrivenFilters = filters;
-      this.fetchContentOnParamChange();
-      this.setNoResultMessage();
-    },
-      error => {
-        this.router.navigate(['']);
-      }
-    );
-
-    if (this.isOffline) {
-      this.contentManagerService.downloadListEvent.pipe(
-        takeUntil(this.unsubscribe$)).subscribe((data) => {
-        this.updateCardData(data);
-      });
-      this.contentManagerService.completeEvent.pipe(
-        takeUntil(this.unsubscribe$)).subscribe((data) => {
-          if (this.router.url === '/') {
-            this.fetchPageData();
-          }
-      });
-      this.contentManagerService.downloadEvent.pipe(tap(() => {
-        this.showDownloadLoader = false;
-      }), takeUntil(this.unsubscribe$)).subscribe(() => {});
-    }
+    this.getChannelId().pipe(takeUntil(this.unsubscribe$)).subscribe(({channelId, custodianOrg}) => {
+      console.log('===channelId, custodianOrg===', channelId, custodianOrg, this.activatedRoute.snapshot.params.slug);
+      this.contentSearchService.initialize(channelId, custodianOrg, this.selectedFilters.board);
+      this.fetchFilters();
+    });
+    // this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
+    //   mergeMap((orgDetails: any) => {
+    //     this.slug = orgDetails.slug;
+    //     this.hashTagId = orgDetails.hashTagId;
+    //     this.initFilters = true;
+    //     this.organisationId = orgDetails.id;
+    //     return this.dataDrivenFilterEvent;
+    //   })
+    // ).subscribe((filters: any) => {
+    //   this.dataDrivenFilters = filters;
+    //   this.fetchContentOnParamChange();
+    //   this.setNoResultMessage();
+    // },
+    //   error => {
+    //     this.router.navigate(['']);
+    //   }
+    // );
   }
 
   public getFilters(filters) {
