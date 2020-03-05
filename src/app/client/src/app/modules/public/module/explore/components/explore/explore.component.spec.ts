@@ -39,6 +39,9 @@ describe('ExploreComponent', () => {
         'm0139': 'DOWNLOADED',
       },
       'emsg': {},
+    },
+    frmelmnts: {
+      lbl: {}
     }
   };
   class FakeActivatedRoute {
@@ -86,34 +89,34 @@ describe('ExploreComponent', () => {
       return throwError({});
     });
   });
-  it('should emit filter data when getFilters is called with data', () => {
+  fit('should emit filter data when getFilters is called with data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
   });
-  it('should emit filter data when getFilters is called with no data', () => {
+  fit('should emit filter data when getFilters is called with no data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
     component.getFilters([]);
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
   });
-  it('should fetch hashTagId from API and filter details from data driven filter component', () => {
+  fit('should fetch hashTagId from API and filter details from data driven filter component', () => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.hashTagId).toEqual('123');
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
   });
-  it('should navigate to landing page if fetching org details fails and data driven filter dint returned data', () => {
+  fit('should navigate to landing page if fetching org details fails and data driven filter dint returned data', () => {
     sendOrgDetails = false;
     component.ngOnInit();
     expect(component.router.navigate).toHaveBeenCalledWith(['']);
   });
-  it('should navigate to landing page if fetching org details fails and data driven filter returns data', () => {
+  fit('should navigate to landing page if fetching org details fails and data driven filter returns data', () => {
     sendOrgDetails = false;
     component.ngOnInit();
     component.getFilters([]);
     expect(component.router.navigate).toHaveBeenCalledWith(['']);
   });
-  it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
+  fit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     expect(component.hashTagId).toEqual('123');
@@ -121,7 +124,7 @@ describe('ExploreComponent', () => {
     expect(component.showLoader).toBeFalsy();
     expect(component.apiContentList.length).toEqual(1);
   });
-  it('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
+  fit('should fetch content after getting hashTagId and filter data and throw error if page api fails', () => {
     sendPageApi = false;
     spyOn(toasterService, 'error').and.callFake(() => {});
     component.ngOnInit();
@@ -132,13 +135,13 @@ describe('ExploreComponent', () => {
     expect(component.apiContentList.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   });
-  it('should unsubscribe from all observable subscriptions', () => {
+  fit('should unsubscribe from all observable subscriptions', () => {
     component.ngOnInit();
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
-  it('should call inview method for visits data', fakeAsync(() => {
+  fit('should call inview method for visits data', fakeAsync(() => {
     spyOn(component, 'prepareVisits').and.callThrough();
     component.ngOnInit();
     component.ngAfterViewInit();
@@ -147,14 +150,14 @@ describe('ExploreComponent', () => {
     expect(component.prepareVisits).toHaveBeenCalled();
     expect(component.inViewLogs).toBeDefined();
   }));
-  it('should call playcontent when user is not loggedIn and content type is course', () => {
+  fit('should call playcontent when user is not loggedIn and content type is course', () => {
     const event = { data: { contentType : 'Course', metaData: { identifier: '0122838911932661768' } } };
     userService._authenticated = false;
     component.playContent(event);
     expect(component.showLoginModal).toBeTruthy();
     expect(component.baseUrl).toEqual('/learn/course/0122838911932661768');
   });
-  it('should call playcontent when user is loggedIn', () => {
+  fit('should call playcontent when user is loggedIn', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const event = { data: { metaData: { batchId: '0122838911932661768' } } };
     spyOn(component, 'playContent').and.callThrough();
@@ -164,7 +167,7 @@ describe('ExploreComponent', () => {
     expect(playerService.playContent).toHaveBeenCalled();
     expect(component.showLoginModal).toBeFalsy();
   });
-  it('showDownloadLoader to be true' , () => {
+  fit('showDownloadLoader to be true' , () => {
     spyOn(component, 'startDownload');
     component.isOffline = true;
     expect(component.showDownloadLoader).toBeFalsy();
@@ -172,7 +175,7 @@ describe('ExploreComponent', () => {
     expect(component.showDownloadLoader).toBeTruthy();
   });
 
-  it('should call updateDownloadStatus when updateCardData is called' , () => {
+  fit('should call updateDownloadStatus when updateCardData is called' , () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'updateDownloadStatus').and.callFake(() => {});
     component.pageSections = mockPageSection;
@@ -180,7 +183,7 @@ describe('ExploreComponent', () => {
     expect(playerService.updateDownloadStatus).toHaveBeenCalled();
   });
 
-  it('should call content manager service on when startDownload()', () => {
+  fit('should call content manager service on when startDownload()', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
@@ -189,7 +192,7 @@ describe('ExploreComponent', () => {
     expect(contentManagerService.startDownload).toHaveBeenCalled();
   });
 
-  it('startDownload should fail', () => {
+  fit('startDownload should fail', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
     const resourceService = TestBed.get(ResourceService);
     toasterService = TestBed.get(ToasterService);
