@@ -39,7 +39,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public dataDrivenFilterEvent = new EventEmitter();
   public initFilters = false;
   public loaderMessage;
-  public pageSections: Array<ICaraouselData> = [];
+  public pageSections: Array<any> = [];
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
