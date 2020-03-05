@@ -1,0 +1,38 @@
+<div class="sb-header-filter-bar zindex-2">
+    <!-- State and Medium sections -->
+    <div class="d-flex state-medium-container sb-bg-color-white">
+        <div class="ui container d-flex">
+            <div class="state-medium-container__dropdown">
+                <!-- state section -->
+                <div class="sb-field mb-0">
+                    <sui-select class="selection state-selection"
+                        [placeholder]="resourceService?.messages?.stmsg?.m0126" [(ngModel)]="selectedBoard"
+                        labelField="name" (ngModelChange)="onBoardChange(selectedBoard)">
+                        <sui-select-option *ngFor="let board of boards" [value]="board" appTelemetryInteract
+                            [telemetryInteractEdata]="getBoardInteractEdata(board)"></sui-select-option>
+                    </sui-select>
+                </div>
+                <!-- state section ends -->
+            </div>
+            <!-- medium section -->
+            <div class="state-medium-container__separator mx-8"></div>
+            <div class="state-medium-container__medium">
+                <sb-library-filters [list]="mediums" [layout]="mediumLayout" [selectedItems]="selectedMediumIndex"
+                    (selectedFilter)="applyFilters($event, 'medium')" appTelemetryInteract
+                    [telemetryInteractEdata]="getMediumInteractEdata()"></sb-library-filters>
+            </div>
+            <!-- medium section ends -->
+        </div>
+    </div>
+    <!-- State and Medium sections ends-->
+
+    <!-- class section -->
+    <div class="sb-class-bar sb-bg-color-gray-0">
+        <div class="ui container">
+            <sb-library-filters [list]="classes" [layout]="classLayout" [selectedItems]="selectedClassIndex"
+                (selectedFilter)="applyFilters($event, 'class')" appTelemetryInteract
+                [telemetryInteractEdata]="getClassInteractEdata()"></sb-library-filters>
+        </div>
+    </div>
+    <!-- class section ends -->
+</div>
