@@ -91,8 +91,9 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
           this.enableSubmitBtn = true;
           this.infoMessage = '';
           this.remainingAttempt = _.get(err, 'error.result.remainingAttempt') || 1;
-          this.errorMessage = err.error.params.status === this.configService.constants.HTTP_STATUS_CODES.OTP_VERIFICATION_FAILED ?
-            this.resourceService.messages.imsg.m0086 : wrongOTPMessage;
+          this.errorMessage =
+            _.get(err, 'error.params.status') === this.configService.constants.HTTP_STATUS_CODES.OTP_VERIFICATION_FAILED ?
+              _.get(this.resourceService, 'messages.imsg.m0086 ') : wrongOTPMessage;
         }
       }
     );
