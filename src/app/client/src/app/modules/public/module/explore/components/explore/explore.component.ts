@@ -3,18 +3,11 @@ import { OrgDetailsService, UserService, SearchService, FrameworkService } from 
 import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
-  ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData,
-  BrowserCacheTtlService, NavigationHelperService
-} from '@sunbird/shared';
+  ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, tap } from 'rxjs/operators';
-import { CacheService } from 'ng2-cache-service';
-import { environment } from '@sunbird/environment';
-import {
-  ContentManagerService
-} from './../../../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
 import { ContentSearchService } from '@sunbird/content-search';
 
 @Component({
@@ -24,32 +17,19 @@ import { ContentSearchService } from '@sunbird/content-search';
 export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public showLoader = true;
-  public showLoginModal = false;
-  public baseUrl: string;
   public noResultMessage;
-  public apiContentList: Array<ICaraouselData> = [];
-  public filterType: string;
-  public queryParams: any;
-  public hashTagId: string;
+  public apiContentList: Array<any> = [];
   public filters;
   public unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
   public inViewLogs = [];
   public sortIntractEdata: IInteractEventEdata;
-  public dataDrivenFilters: any = {};
   public dataDrivenFilterEvent = new EventEmitter();
-  public initFilters = false;
-  public loaderMessage;
   public pageSections: Array<any> = [];
-  isOffline: boolean = environment.isOffline;
-  showExportLoader = false;
-  contentName: string;
-  public slug: string;
-  organisationId: string;
-  showDownloadLoader = false;
-  frameworkId;
   selectedFilters = {
-    board: 'State (Assam)'
+    board: 'State (Assam)',
+    class: '',
+    medium: ''
   };
 
   @HostListener('window:scroll', []) onScroll(): void {
@@ -60,13 +40,10 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   constructor(private searchService: SearchService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
-    public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
-    private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
+    public router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
     private contentSearchService: ContentSearchService,
-    private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public frameworkService: FrameworkService,
-    public navigationhelperService: NavigationHelperService, public contentManagerService: ContentManagerService) {
+    public frameworkService: FrameworkService, public navigationhelperService: NavigationHelperService) {
     this.router.onSameUrlNavigation = 'reload';
-    this.filterType = this.configService.appConfig.explore.filterType;
   }
   getChannelId() {
     if (this.activatedRoute.snapshot.params.slug) {
@@ -89,63 +66,39 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   ngOnInit() {
-    this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
-      if (!channelData.err) {
-        this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
-      }
-    });
     this.getChannelId().pipe(takeUntil(this.unsubscribe$)).subscribe(({channelId, custodianOrg}) => {
       console.log('===channelId, custodianOrg===', channelId, custodianOrg, this.activatedRoute.snapshot.params.slug);
       this.contentSearchService.initialize(channelId, custodianOrg, this.selectedFilters.board);
       this.fetchFilters();
     });
-    // this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
-    //   mergeMap((orgDetails: any) => {
-    //     this.slug = orgDetails.slug;
-    //     this.hashTagId = orgDetails.hashTagId;
-    //     this.initFilters = true;
-    //     this.organisationId = orgDetails.id;
-    //     return this.dataDrivenFilterEvent;
-    //   })
-    // ).subscribe((filters: any) => {
-    //   this.dataDrivenFilters = filters;
-    //   this.fetchContentOnParamChange();
-    //   this.setNoResultMessage();
-    // },
-    //   error => {
-    //     this.router.navigate(['']);
-    //   }
-    // );
+    this.dataDrivenFilterEvent.subscribe((filters: any) => {
+      this.selectedFilters = filters;
+      this.showLoader = true;
+      this.apiContentList = [];
+      this.pageSections = [];
+      this.fetchPageData();
+      this.setNoResultMessage();
+    }, error => {
+      this.router.navigate(['']);
+    });
   }
 
   public getFilters(filters) {
-    const selectedFilters = _.pick(filters.filters, ['board', 'medium', 'gradeLevel']);
-    this.dataDrivenFilterEvent.emit(selectedFilters);
-  }
-  private fetchContentOnParamChange() {
-    combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe((result) => {
-        this.showLoader = true;
-        this.queryParams = { ...result[1] };
-        this.apiContentList = [];
-        this.pageSections = [];
-        this.fetchPageData();
-      });
+    this.dataDrivenFilterEvent.emit(_.pick(filters, ['board', 'medium', 'gradeLevel']));
   }
   getSearchRequest() {
-    let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
+    let filters = this.selectedFilters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    filters['contentType'] = filters.contentType || ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
     const option = {
         limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
-        filters: filters || {},
+        filters: filters,
         // mode: 'soft',
         // facets: facets,
         params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
     };
-    if (this.frameworkId) {
-      option.params.framework = this.frameworkId;
+    if (this.contentSearchService.frameworkId) {
+      option.params.framework = this.contentSearchService.frameworkId;
     }
     return option;
   }
@@ -202,18 +155,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
-  private prepareCarouselData(sections = []) {
-    const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.ExplorePage;
-    const carouselData = _.reduce(sections, (collector, element) => {
-      const contents = _.slice(_.get(element, 'contents'), 0, slickSize) || [];
-      element.contents = this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
-      if (element.contents && element.contents.length) {
-        collector.push(element);
-      }
-      return collector;
-    }, []);
-    return carouselData;
-  }
   public prepareVisits(event) {
     _.forEach(event, (inView, index) => {
       if (inView.metaData.identifier) {
@@ -230,47 +171,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-
-    // For offline environment content will only play when event.action is open
-    if (event.action === 'download' && this.isOffline) {
-      this.startDownload(event.data.metaData.identifier);
-      this.showDownloadLoader = true;
-      this.contentName = event.data.name;
-      return false;
-    } else if (event.action === 'export' && this.isOffline) {
-      this.showExportLoader = true;
-      this.contentName = event.data.name;
-      this.exportOfflineContent(event.data.metaData.identifier);
-      return false;
-    }
-
-    if (!this.userService.loggedIn && event.data.contentType === 'Course') {
-      this.showLoginModal = true;
-      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-    } else {
-      if (_.includes(this.router.url, 'browse') && this.isOffline) {
-        this.publicPlayerService.playContentForOfflineBrowse(event);
-      } else {
-        this.publicPlayerService.playContent(event);
-      }
-    }
-  }
-  public viewAll(event) {
-    const searchQuery = JSON.parse(event.searchQuery);
-    const softConstraintsFilter = {
-      board: [this.dataDrivenFilters.board],
-      channel: this.hashTagId,
-    };
-    if (_.includes(this.router.url, 'browse') || !this.isOffline) {
-      searchQuery.request.filters.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
-      searchQuery.request.filters.softConstraintsFilter = JSON.stringify(softConstraintsFilter);
-      searchQuery.request.filters.exists = searchQuery.request.exists;
-    }
-    this.cacheService.set('viewAllQuery', searchQuery.request.filters);
-    this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-    const queryParams = { ...searchQuery.request.filters, ...this.queryParams };
-    const sectionUrl = this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
-    this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
+    this.publicPlayerService.playContent(event);
   }
   ngAfterViewInit() {
     setTimeout(() => {
@@ -301,55 +202,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private setNoResultMessage() {
-    if (this.isOffline && !(this.router.url.includes('/browse'))) {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'title': 'messages.stmsg.m0133'
-      };
-    } else {
-      this.noResultMessage = {
-        'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
-        'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-        'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-        'showExploreContentButton': true
-      };
-    }
+    this.noResultMessage = {
+      'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
+      'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+      'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+      'showExploreContentButton': true
+    };
   }
-
-  startDownload (contentId) {
-    this.contentManagerService.downloadContentId = contentId;
-    this.contentManagerService.startDownload({}).subscribe(data => {
-      this.contentManagerService.downloadContentId = '';
-    }, error => {
-      this.contentManagerService.downloadContentId = '';
-      this.showDownloadLoader = false;
-      _.each(this.pageSections, (pageSection) => {
-        _.each(pageSection.contents, (pageData) => {
-          pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
-        });
-      });
-      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
-    });
-  }
-
-  exportOfflineContent(contentId) {
-    this.contentManagerService.exportContent(contentId).subscribe(data => {
-      this.showExportLoader = false;
-      this.toasterService.success(this.resourceService.messages.smsg.m0059);
-    }, error => {
-      this.showExportLoader = false;
-      if (error.error.responseCode !== 'NO_DEST_FOLDER') {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0091);
-      }
-    });
-  }
-
-  updateCardData(downloadListdata) {
-    _.each(this.pageSections, (pageSection) => {
-      _.each(pageSection.contents, (pageData) => {
-        this.publicPlayerService.updateDownloadStatus(downloadListdata, pageData);
-      });
-    });
-  }
-
 }

@@ -13,6 +13,7 @@ export class ContentSearchService {
     .pipe(skipWhile(data => data === undefined || data === null));
   }
   private channelId: string;
+  public frameworkId = '';
   private defaultBoard: string;
   private custodianOrg: boolean;
   private filters = {
@@ -44,15 +45,14 @@ export class ContentSearchService {
   private fetchFilters() {
     this.channelService.getFrameWork(this.channelId)
       .pipe(mergeMap((channelDetails) => {
-        let frameworkId = '';
         if (this.custodianOrg) {
           this.filters.board = _.get(channelDetails, 'result.channel.frameworks');
           const selectedBoard = this.filters.board.find((board) => board.name === this.defaultBoard);
-          frameworkId = _.get(selectedBoard, 'identifier');
+          this.frameworkId = _.get(selectedBoard, 'identifier');
         } else {
-          frameworkId = _.get(channelDetails, 'result.channel.defaultFramework');
+          this.frameworkId = _.get(channelDetails, 'result.channel.defaultFramework');
         }
-        return this.frameworkService.getFrameworkCategories(frameworkId);
+        return this.frameworkService.getFrameworkCategories(this.frameworkId);
       }), first())
       .subscribe(frameworkDetails => {
         const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
@@ -64,7 +64,7 @@ export class ContentSearchService {
               this.filters[category.code] = category.terms;
             }
           });
-          this._filterData$.next({data: this.filters});
+          this._filterData$.next({data: _.cloneDeep(this.filters)});
         } else {
           this._filterData$.next({error: new Error('FRAMEWORK_CATEGORY_NOT_FOUND')});
         }
@@ -76,7 +76,8 @@ export class ContentSearchService {
     if (!this.custodianOrg) {
       return ;
     }
-    this.frameworkService.getFrameworkCategories(boardId).pipe(first())
+    this.frameworkId = boardId;
+    this.frameworkService.getFrameworkCategories(this.frameworkId).pipe(first())
     .subscribe(frameworkDetails => {
       const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
       if (frameworkCategories) {
@@ -87,7 +88,7 @@ export class ContentSearchService {
             this.filters[category.code] = category.terms;
           }
         });
-        this._filterData$.next({data: this.filters});
+        this._filterData$.next({data: _.cloneDeep(this.filters)});
       } else {
         this._filterData$.next({error: new Error('FRAMEWORK_CATEGORY_NOT_FOUND')});
       }
