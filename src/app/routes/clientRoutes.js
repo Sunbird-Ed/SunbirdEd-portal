@@ -13,6 +13,7 @@ oneDayMS = 86400000,
 pathMap = {},
 cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
 proxyUtils = require('../proxy/proxyUtils.js')
+const CONSTANTS = require('../helpers/constants');
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -103,6 +104,8 @@ module.exports = (app, keycloak) => {
     '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
+
+  app.all('/redirect/login', redirectToLogin)
 }
 
 function getLocals(req) {
@@ -254,3 +257,10 @@ const playContent = (req, res) => {
     renderDefaultIndexPage(req, res);
   }
 }
+
+const redirectToLogin = (req, res) => {
+  const redirectUrl = req.query.redirectUri || '/resources';
+  const url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
+  const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=http://${req.get('host')}/${redirectUrl}&scope=openid&version=${CONSTANTS.KEYCLOAK.VERSION}&response_type=code&error_message=${req.query.error_message}`;
+  res.redirect(url + query);
+};

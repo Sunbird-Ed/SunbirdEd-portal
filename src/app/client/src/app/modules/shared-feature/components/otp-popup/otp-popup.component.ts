@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ResourceService, ServerResponse } from '@sunbird/shared';
+import {ResourceService, ServerResponse, UtilService, ConfigService} from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -29,8 +29,11 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   submitInteractEdata: IInteractEventEdata;
   resendOtpInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  remainingAttempt: 'string';
   constructor(public resourceService: ResourceService, public tenantService: TenantService,
-    public deviceDetectorService: DeviceDetectorService, public otpService: OtpService , public userService: UserService) { }
+              public deviceDetectorService: DeviceDetectorService, public otpService: OtpService, public userService: UserService,
+              public utilService: UtilService, public configService: ConfigService) {
+  }
 
   ngOnInit() {
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
@@ -73,11 +76,16 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.verificationSuccess.emit(emitData);
       },
       (err) => {
-        this.otpForm.controls['otp'].setValue('');
-        this.enableSubmitBtn = true;
-        this.infoMessage = '';
-        this.errorMessage = _.get(err, 'error.params.status') === 'ERROR_INVALID_OTP' ?
-          wrongOTPMessage : wrongOTPMessage;
+        if (_.get(err, 'error.result.remainingAttempt') === 0) {
+          this.utilService.redirectToLogin(this.resourceService.messages.emsg.m0050);
+        } else {
+          this.otpForm.controls['otp'].setValue('');
+          this.enableSubmitBtn = true;
+          this.infoMessage = '';
+          this.remainingAttempt = _.get(err, 'error.result.remainingAttempt') || 1;
+          this.errorMessage = err.error.params.status === this.configService.constants.HTTP_STATUS_CODES.OTP_VERIFICATION_FAILED ?
+            this.resourceService.messages.imsg.m0086 : wrongOTPMessage;
+        }
       }
     );
   }
