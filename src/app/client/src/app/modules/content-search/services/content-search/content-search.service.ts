@@ -35,19 +35,32 @@ export class ContentSearchService {
     this.channelId = channelId;
     this.custodianOrg = custodianOrg;
     this.defaultBoard = defaultBoard;
-    console.log('content search initialize', channelId, custodianOrg, defaultBoard);
     this._filterData$.complete(); // to flush old subscription
     this._searchResults$.complete(); // to flush old subscription
     this._searchResults$ = new BehaviorSubject<any>(undefined);
     this._filterData$ = new BehaviorSubject<any>(undefined);
     this.fetchFilters();
   }
+  pushDummyBoard() {
+    this.filters.board.push({
+      identifier: 'NCF',
+      code: 'NCF',
+      name: 'NCF framework',
+      description: ' NCF framework...',
+      type: 'K-12',
+      objectType: 'Framework'
+    });
+  }
   private fetchFilters() {
     this.channelService.getFrameWork(this.channelId)
       .pipe(mergeMap((channelDetails) => {
         if (this.custodianOrg) {
-          this.filters.board = _.get(channelDetails, 'result.channel.frameworks');
-          const selectedBoard = this.filters.board.find((board) => board.name === this.defaultBoard);
+          this.filters.board = _.get(channelDetails, 'result.channel.frameworks') || [{
+            name: _.get(channelDetails, 'result.channel.defaultFramework'),
+            identifier: _.get(channelDetails, 'result.channel.defaultFramework')
+          }]; // framework array is empty assigning defaultFramework as only board
+          // this.pushDummyBoard();
+          const selectedBoard = this.filters.board.find((board) => board.name === this.defaultBoard) || this.filters.board[0];
           this.frameworkId = _.get(selectedBoard, 'identifier');
         } else {
           this.frameworkId = _.get(channelDetails, 'result.channel.defaultFramework');
@@ -59,21 +72,24 @@ export class ContentSearchService {
         if (frameworkCategories) {
           frameworkCategories.forEach(category => {
             if (['medium', 'gradeLevel', 'subject'].includes(category.code)) {
-              this.filters[category.code] = category.terms;
+              this.filters[category.code] = category.terms || [];
             } else if (category.code === 'board' && !this.custodianOrg) {
-              this.filters[category.code] = category.terms;
+              this.filters[category.code] = category.terms || [];
             }
           });
           this._filterData$.next({data: _.cloneDeep(this.filters)});
         } else {
+          console.error('fetching framework details failed: FRAMEWORK_CATEGORY_NOT_FOUND');
           this._filterData$.next({error: new Error('FRAMEWORK_CATEGORY_NOT_FOUND')});
         }
       }, (error) => {
+        console.error('fetching framework details failed', error);
         this._filterData$.next({error: error});
       });
   }
   public boardChanged(boardId) {
     if (!this.custodianOrg) {
+      this._filterData$.next({data: _.cloneDeep(this.filters)}); // emit same data no need to fetch frameworkDetails
       return ;
     }
     this.frameworkId = boardId;
@@ -83,16 +99,18 @@ export class ContentSearchService {
       if (frameworkCategories) {
         frameworkCategories.forEach(category => {
           if (['medium', 'gradeLevel', 'subject'].includes(category.code)) {
-            this.filters[category.code] = category.terms;
+            this.filters[category.code] = category.terms || [];
           } else if (category.code === 'board' && !this.custodianOrg) {
-            this.filters[category.code] = category.terms;
+            this.filters[category.code] = category.terms || [];
           }
         });
         this._filterData$.next({data: _.cloneDeep(this.filters)});
       } else {
+        console.error('fetching framework details failed: FRAMEWORK_CATEGORY_NOT_FOUND');
         this._filterData$.next({error: new Error('FRAMEWORK_CATEGORY_NOT_FOUND')});
       }
     }, (error) => {
+      console.error('fetching framework details failed', error);
       this._filterData$.next({error: error});
     });
   }

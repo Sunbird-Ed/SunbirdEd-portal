@@ -9,17 +9,16 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, tap } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
-
+const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
   selector: 'app-explore-component',
   templateUrl: './explore.component.html'
 })
 export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
-
+  public initFilter = false;
   public showLoader = true;
   public noResultMessage;
   public apiContentList: Array<any> = [];
-  public filters;
   public unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
   public inViewLogs = [];
@@ -27,9 +26,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public dataDrivenFilterEvent = new EventEmitter();
   public pageSections: Array<any> = [];
   selectedFilters = {
-    board: 'State (Assam)',
-    class: '',
-    medium: ''
+    board: [DEFAULT_FRAMEWORK],
+    gradeLevel: [],
+    medium: []
   };
 
   @HostListener('window:scroll', []) onScroll(): void {
@@ -43,36 +42,37 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     public router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
     private contentSearchService: ContentSearchService,
     public frameworkService: FrameworkService, public navigationhelperService: NavigationHelperService) {
-    this.router.onSameUrlNavigation = 'reload';
   }
+
   getChannelId() {
     if (this.activatedRoute.snapshot.params.slug) {
       return this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
-      .pipe(map(((orgDetails: any) => {
-        return { channelId: orgDetails.hashTagId, custodianOrg: false};
-      })));
+      .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false}))));
     } else {
-      return this.orgDetailsService.getCustodianOrg().pipe(map(((custOrgDetails: any) => {
-        return { channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true };
-      })));
+      return this.orgDetailsService.getCustodianOrg()
+      .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true }))));
     }
   }
-  fetchFilters() {
-    this.contentSearchService.filterData$.pipe(takeUntil(this.unsubscribe$)).subscribe((filters) => {
-      console.log('filters', filters);
-      if (filters.data) {
-        this.filters = filters.data;
-      }
+  getFiltersFromQueryParam() {
+    _.forIn(this.activatedRoute.snapshot.queryParams, (value, key) => {
+      this.selectedFilters[key] = _.isArray(value) ? value : [value];
     });
   }
+  updateUrlWithSelectedFilters() {
+    const url = this.activatedRoute.snapshot.params.slug ? this.activatedRoute.snapshot.params.slug + '/explore' : 'explore';
+    this.router.navigate([], { queryParams: this.selectedFilters });
+  }
   ngOnInit() {
+    this.getFiltersFromQueryParam();
     this.getChannelId().pipe(takeUntil(this.unsubscribe$)).subscribe(({channelId, custodianOrg}) => {
-      console.log('===channelId, custodianOrg===', channelId, custodianOrg, this.activatedRoute.snapshot.params.slug);
-      this.contentSearchService.initialize(channelId, custodianOrg, this.selectedFilters.board);
-      this.fetchFilters();
+      this.contentSearchService.initialize(channelId, custodianOrg, this.selectedFilters.board[0]);
+      this.initFilter =  true;
+    }, error => {
+      this.router.navigate(['']);
     });
     this.dataDrivenFilterEvent.subscribe((filters: any) => {
       this.selectedFilters = filters;
+      this.updateUrlWithSelectedFilters();
       this.showLoader = true;
       this.apiContentList = [];
       this.pageSections = [];

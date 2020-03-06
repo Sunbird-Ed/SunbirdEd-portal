@@ -102,7 +102,7 @@ describe('SearchFilterComponent', () => {
         component.setFilters();
         expect(component.resetFilters).toHaveBeenCalled();
         expect(component.mediums).toBeDefined();
-        expect(component.classes).toBeDefined();
+        expect(component.gradeLevels).toBeDefined();
         expect(component.triggerFilterChangeEvent).toHaveBeenCalledWith();
     });
 
@@ -114,7 +114,7 @@ describe('SearchFilterComponent', () => {
         component.setFilters(true);
         expect(component.resetFilters).toHaveBeenCalled();
         expect(component.mediums).toBeDefined();
-        expect(component.classes).toBeDefined();
+        expect(component.gradeLevels).toBeDefined();
         expect(component.triggerFilterChangeEvent).toHaveBeenCalledWith();
     });
 
@@ -131,8 +131,8 @@ describe('SearchFilterComponent', () => {
     it('should call resetFilters', () => {
         component.resetFilters();
         expect(component.mediums).toEqual([]);
-        expect(component.classes).toEqual([]);
-        expect(component.selectedClassIndex).toEqual([]);
+        expect(component.gradeLevels).toEqual([]);
+        expect(component.selectedGradeLevelIndex).toEqual([]);
         expect(component.selectedMediumIndex).toEqual([]);
     });
 
@@ -149,7 +149,7 @@ describe('SearchFilterComponent', () => {
         const event = { 'event': { 'isTrusted': true }, 'data': { 'text': 'Class 4', 'selected': true, 'index': 0 } };
         component.applyFilters(event, 'class');
         expect(component.getSelectedFilters).toHaveBeenCalled();
-        expect(component.selectedClassIndex).toEqual([0]);
+        expect(component.selectedGradeLevelIndex).toEqual([0]);
     });
 
     it('should call getSelectedFilters when medium changed', () => {
@@ -158,9 +158,9 @@ describe('SearchFilterComponent', () => {
             'objectType': 'Framework', 'relation': 'hasSequenceMember', 'description': 'State Test 1', 'index': 13, 'status': 'Live'
         };
         component.selectedMediumIndex = [1];
-        component.selectedClassIndex = [];
+        component.selectedGradeLevelIndex = [];
         component.mediums = ['English', 'Kannada'];
-        component.classes = ['Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10'];
+        component.gradeLevels = ['Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10'];
         const result = component.getSelectedFilters();
         expect(result).toEqual({ 'board': ['State Test 1'], 'appliedFilters': true, 'medium': ['Kannada'] });
     });
@@ -171,9 +171,9 @@ describe('SearchFilterComponent', () => {
             'objectType': 'Framework', 'relation': 'hasSequenceMember', 'description': 'State Test 1', 'index': 13, 'status': 'Live'
         };
         component.selectedMediumIndex = [1];
-        component.selectedClassIndex = [3];
+        component.selectedGradeLevelIndex = [3];
         component.mediums = ['English', 'Kannada'];
-        component.classes = ['Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10'];
+        component.gradeLevels = ['Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10'];
         const result = component.getSelectedFilters();
         expect(result).toEqual({
             'board': ['State Test 1'], 'appliedFilters': true,
@@ -188,9 +188,9 @@ describe('SearchFilterComponent', () => {
             'objectType': 'Framework', 'relation': 'hasSequenceMember', 'description': 'State Test 1', 'index': 13, 'status': 'Live'
         };
         component.selectedMediumIndex = [1];
-        component.selectedClassIndex = [3];
+        component.selectedGradeLevelIndex = [3];
         component.mediums = ['English', 'Kannada'];
-        component.classes = ['Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10'];
+        component.gradeLevels = ['Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10'];
         spyOn(component, 'getSelectedFilters');
         spyOn(component.filterChange, 'emit');
         component.triggerFilterChangeEvent();
