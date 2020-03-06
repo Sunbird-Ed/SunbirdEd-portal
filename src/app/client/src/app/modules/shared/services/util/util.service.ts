@@ -290,4 +290,12 @@ export class UtilService {
       throw new Error('ERROR_PARSING_STRING');
     }
   }
+
+
+  /**
+   * Redirects to login page wth error message
+   */
+  redirectToLogin(errorMessage) {
+    window.location.href = '/redirect/login?error_message=' + errorMessage;
+  }
 }

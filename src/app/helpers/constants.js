@@ -5,6 +5,7 @@ module.exports = {
   KEYCLOAK: {
     SCOPE: {
       OPENID: 'openid'
-    }
+    },
+    VERSION: 5
   },
 };
