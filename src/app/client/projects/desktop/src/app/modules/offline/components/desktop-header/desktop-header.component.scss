@@ -7,10 +7,13 @@
   .sb-offline-header {
     border-bottom: 1px solid var(--primary-400);
     cursor: pointer;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 4;
 
     .sb-header-offline-bar {
-      position: relative;
-      z-index: 3;
+      width: 100%;
       background: #fafafa;
 
       .sbheader--offline {
@@ -99,22 +102,24 @@
         }
       }
 
-    }
-
-    .sb-menubar {
-      width: 100%;
-      .sb-btn-load{
-        span{
-          position: relative;
-          bottom: calculateRem(1px);
+      .sb-menubar {
+        width: 100%;
+        z-index: 3;
+        
+        .sb-btn-load{
+          span{
+            position: relative;
+            bottom: calculateRem(1px);
+          }
+        }
+  
+        @include respond-below(sm) {
+          .sb-btn-load {
+            margin: $base-block-space 0px;
+          }
         }
       }
 
-      @include respond-below(sm) {
-        .sb-btn-load {
-          margin: $base-block-space 0px;
-        }
-      }
     }
   }
 

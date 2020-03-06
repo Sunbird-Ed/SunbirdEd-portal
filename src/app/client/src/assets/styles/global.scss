@@ -229,3 +229,10 @@ app-workspace {
   height: auto;
   margin-top: -35px;
 }
+
+.offline-sticky-header{
+  position: -webkit-sticky;
+  position: sticky;
+  top: 65px;
+  z-index: 4;
+}
