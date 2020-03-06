@@ -209,4 +209,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       'showExploreContentButton': true
     };
   }
+
+  navigateToExploreContent() {
+    this.router.navigate(['explore', 1], { queryParams: this.selectedFilters });
+  }
+
 }
