@@ -24,3 +24,11 @@
           margin-top: auto;
           margin-bottom: auto;
       }
+
+      .file-import-text{
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline;
+      }
