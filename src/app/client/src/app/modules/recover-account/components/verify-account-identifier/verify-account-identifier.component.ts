@@ -60,7 +60,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     .subscribe(response => {
         this.resetPassword();
       }, error => {
-        this.form.controls.otp.setValue('');
+        this.form.controls.otp.reset();
         this.disableFormSubmit = false;
         this.handleError(error);
       }

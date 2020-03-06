@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import {ResourceService, ServerResponse, UtilService, ConfigService} from '@sunbird/shared';
+import {ResourceService, ServerResponse, UtilService, ConfigService, ToasterService} from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -15,8 +15,10 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 export class OtpPopupComponent implements OnInit, OnDestroy {
 
   @Input() otpData: any;
+  @Input() redirectToLogin: boolean;
   @Output() redirectToParent = new EventEmitter();
   @Output() verificationSuccess = new EventEmitter();
+  @Output() closeContactForm = new EventEmitter();
   public unsubscribe = new Subject<void>();
   otpForm: FormGroup;
   enableSubmitBtn = false;
@@ -32,7 +34,8 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   remainingAttempt: 'string';
   constructor(public resourceService: ResourceService, public tenantService: TenantService,
               public deviceDetectorService: DeviceDetectorService, public otpService: OtpService, public userService: UserService,
-              public utilService: UtilService, public configService: ConfigService) {
+              public utilService: UtilService, public configService: ConfigService,
+              public toasterService: ToasterService) {
   }
 
   ngOnInit() {
@@ -77,7 +80,12 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       },
       (err) => {
         if (_.get(err, 'error.result.remainingAttempt') === 0) {
-          this.utilService.redirectToLogin(this.resourceService.messages.emsg.m0050);
+          if (this.redirectToLogin) {
+            this.utilService.redirectToLogin(this.resourceService.messages.emsg.m0050);
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0050);
+            this.closeContactForm.emit('true');
+          }
         } else {
           this.otpForm.controls['otp'].setValue('');
           this.enableSubmitBtn = true;

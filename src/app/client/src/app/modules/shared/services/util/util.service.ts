@@ -296,6 +296,6 @@ export class UtilService {
    * Redirects to login page wth error message
    */
   redirectToLogin(errorMessage) {
-    window.location.href = '/redirect/login?error_message' + errorMessage;
+    window.location.href = '/redirect/login?error_message=' + errorMessage;
   }
 }

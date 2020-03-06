@@ -59,8 +59,10 @@
 
   <app-otp-popup 
     *ngIf="!showForm" 
-    [otpData]="otpData" 
-    (verificationSuccess)="updateProfile($event)" 
+    [otpData]="otpData"
+    [redirectToLogin]="false"
+    (verificationSuccess)="updateProfile($event)"
+    (closeContactForm)="closeModal()"
     (redirectToParent)="showParentForm($event)">
   </app-otp-popup>
 </sui-modal>
