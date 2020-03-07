@@ -158,7 +158,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   public playContent(event) {
-    this.playerService.playContent(event);
+    this.playerService.playContent(event.data);
   }
   ngAfterViewInit() {
     setTimeout(() => {

@@ -149,7 +149,6 @@ export class PublicPlayerService {
   }
 
   public playContent(event) {
-    console.log('inside public-player service', event);
     const metaData = event.data || event.data.metaData;
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
