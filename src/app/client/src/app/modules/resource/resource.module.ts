@@ -10,6 +10,8 @@ import { CoreModule } from '@sunbird/core';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { ContentSearchModule } from '@sunbird/content-search';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +23,9 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
     CoreModule,
     TelemetryModule,
     NgInviewModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    CommonConsumptionModule,
+    ContentSearchModule
   ],
   declarations: [ResourceComponent]
 })

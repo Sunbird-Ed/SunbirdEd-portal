@@ -42,7 +42,6 @@ describe('SearchFilterComponent', () => {
                 BrowserCacheTtlService,
                 TenantService,
                 ToasterService,
-                OnboardingService,
                 ChannelService
             ],
             schemas: [NO_ERRORS_SCHEMA]
