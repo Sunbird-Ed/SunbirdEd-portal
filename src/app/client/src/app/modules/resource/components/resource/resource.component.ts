@@ -193,7 +193,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public navigateToExploreContent() {
-    this.router.navigate(['explore', 1], { queryParams: this.selectedFilters });
+    this.router.navigate(['resources', 1], { queryParams: this.selectedFilters });
   }
 
 }
