@@ -6,12 +6,6 @@ import * as _ from 'lodash-es';
 
 @Injectable({ providedIn: 'root' })
 export class ContentSearchService {
-
-  private _filterData$ = new BehaviorSubject<any>(undefined);
-  get filterData$(): Observable<any> {
-    return this._filterData$.asObservable()
-      .pipe(skipWhile(data => data === undefined || data === null));
-  }
   private channelId: string;
   public frameworkId = '';
   private defaultBoard: string;
@@ -35,10 +29,8 @@ export class ContentSearchService {
     this.channelId = channelId;
     this.custodianOrg = custodianOrg;
     this.defaultBoard = defaultBoard;
-    this._filterData$.complete(); // to flush old subscription
     this._searchResults$.complete(); // to flush old subscription
     this._searchResults$ = new BehaviorSubject<any>(undefined);
-    this._filterData$ = new BehaviorSubject<any>(undefined);
     return this.fetchChannelData();
   }
   fetchChannelData() {
