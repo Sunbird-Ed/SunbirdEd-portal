@@ -18,7 +18,7 @@
             <div *ngIf="mediums?.length" class="state-medium-container__separator mx-8"></div>
             <div *ngIf="mediums?.length" class="state-medium-container__medium">
                 <sb-library-filters [list]="mediums" [layout]="mediumLayout" [selectedItems]="[selectedMediumIndex]"
-                    (selectedFilter)="applyFilters($event, 'medium')" appTelemetryInteract
+                    (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'medium'})" appTelemetryInteract
                     [telemetryInteractEdata]="getMediumInteractEdata()"></sb-library-filters>
             </div>
             <!-- medium section ends -->
@@ -30,7 +30,7 @@
     <div class="sb-class-bar sb-bg-color-gray-0">
         <div *ngIf="gradeLevels?.length" class="ui container">
             <sb-library-filters [list]="gradeLevels" [layout]="gradeLevelLayout" [selectedItems]="[selectedGradeLevelIndex]"
-                (selectedFilter)="applyFilters($event, 'gradeLevel')" appTelemetryInteract
+                (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'gradeLevel'})" appTelemetryInteract
                 [telemetryInteractEdata]="getGradeLevelInteractEdata()"></sb-library-filters>
         </div>
     </div>

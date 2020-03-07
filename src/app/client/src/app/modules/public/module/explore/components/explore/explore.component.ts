@@ -7,7 +7,7 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, mergeMap, first, filter, tap } from 'rxjs/operators';
+import { takeUntil, map, mergeMap, first, filter, tap, skip } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
@@ -23,13 +23,13 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public telemetryImpression: IImpressionEventInput;
   public inViewLogs = [];
   public sortIntractEdata: IInteractEventEdata;
-  public dataDrivenFilterEvent = new EventEmitter();
   public pageSections: Array<any> = [];
-  selectedFilters = {
+  defaultFilters = {
     board: [DEFAULT_FRAMEWORK],
     gradeLevel: [],
     medium: []
   };
+  selectedFilters = {};
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -42,8 +42,22 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     public router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
     private contentSearchService: ContentSearchService,
     public frameworkService: FrameworkService, public navigationhelperService: NavigationHelperService) {
+      this.router.onSameUrlNavigation = 'reload';
   }
-
+  ngOnInit() {
+    this.getChannelId().pipe(
+      mergeMap(({channelId, custodianOrg}) =>
+        this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0])),
+      takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.setNoResultMessage();
+        this.initFilter = true;
+      }, (error) => {
+        this.toasterService.error('Fetching content failed. Please try again later.');
+        setTimeout(() => this.router.navigate(['']), 5000);
+        console.error('init search filter failed', error);
+    });
+  }
   getChannelId() {
     if (this.activatedRoute.snapshot.params.slug) {
       return this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
@@ -53,38 +67,12 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true }))));
     }
   }
-  getFiltersFromQueryParam() {
-    _.forIn(this.activatedRoute.snapshot.queryParams, (value, key) => {
-      this.selectedFilters[key] = _.isArray(value) ? value : [value];
-    });
-  }
-  updateUrlWithSelectedFilters() {
-    const url = this.activatedRoute.snapshot.params.slug ? this.activatedRoute.snapshot.params.slug + '/explore' : 'explore';
-    this.router.navigate([], { queryParams: this.selectedFilters });
-  }
-  ngOnInit() {
-    this.getFiltersFromQueryParam();
-    this.getChannelId().pipe(takeUntil(this.unsubscribe$)).subscribe(({channelId, custodianOrg}) => {
-      this.contentSearchService.initialize(channelId, custodianOrg, this.selectedFilters.board[0]);
-      this.initFilter =  true;
-    }, error => {
-      this.router.navigate(['']);
-    });
-    this.dataDrivenFilterEvent.subscribe((filters: any) => {
-      this.selectedFilters = filters;
-      this.updateUrlWithSelectedFilters();
-      this.showLoader = true;
-      this.apiContentList = [];
-      this.pageSections = [];
-      this.fetchPageData();
-      this.setNoResultMessage();
-    }, error => {
-      this.router.navigate(['']);
-    });
-  }
-
   public getFilters(filters) {
-    this.dataDrivenFilterEvent.emit(_.pick(filters, ['board', 'medium', 'gradeLevel']));
+    this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);
+    this.showLoader = true;
+    this.apiContentList = [];
+    this.pageSections = [];
+    this.fetchPageData();
   }
   getSearchRequest() {
     let filters = this.selectedFilters;

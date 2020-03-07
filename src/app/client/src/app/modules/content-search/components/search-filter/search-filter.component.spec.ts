@@ -72,7 +72,7 @@ describe('SearchFilterComponent', () => {
     it('should call setBoard and call setfilters with false', () => {
         const channelService = TestBed.get(ChannelService);
         component.userDetails = response.userData;
-        component.selectedFilters = { 'board': ['State Test 1'] };
+        component.defaultFilters = { 'board': ['State Test 1'] };
         spyOn(channelService, 'getFrameWork').and.returnValue(observableOf(response.channelData));
         spyOn(component.frameworkService, 'getFrameworkCategories').and.returnValue(observableOf(response.frameWorkData));
         spyOn(component, 'setFilters');
@@ -85,7 +85,7 @@ describe('SearchFilterComponent', () => {
     it('should call setBoard and call setfilters with true', () => {
         const channelService = TestBed.get(ChannelService);
         component.userDetails = response.userData;
-        component.selectedFilters = { 'board': [] };
+        component.defaultFilters = { 'board': [] };
         spyOn(channelService, 'getFrameWork').and.returnValue(observableOf(response.channelData));
         spyOn(component.frameworkService, 'getFrameworkCategories').and.returnValue(observableOf(response.frameWorkData));
         spyOn(component, 'setFilters');
@@ -95,7 +95,7 @@ describe('SearchFilterComponent', () => {
 
     it('should call setFilters', () => {
         component.userDetails = response.userData;
-        component.selectedFilters = { 'medium': ['English'], 'gradeLevel': ['Class 5']};
+        component.defaultFilters = { 'medium': ['English'], 'gradeLevel': ['Class 5']};
         spyOn(component, 'resetFilters');
         spyOn(component, 'triggerFilterChangeEvent');
         component.frameworkCategories = response.frameWorkData.result.framework.categories;

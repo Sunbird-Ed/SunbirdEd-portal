@@ -1,5 +1,5 @@
 <div [appTelemetryImpression]="telemetryImpression">
-  <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [selectedFilters]="selectedFilters">
+  <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [defaultFilters]="defaultFilters">
   </app-search-filter>
   <div class="ui container mt-24">
     <div class="ui grid">
