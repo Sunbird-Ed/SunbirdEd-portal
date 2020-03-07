@@ -1,7 +1,6 @@
 import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
-import { FrameworkService } from '@sunbird/core';
 import { ResourceService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -21,33 +20,31 @@ interface IFilters {
   styleUrls: ['./search-filter.component.scss']
 })
 export class SearchFilterComponent implements OnInit, OnDestroy {
+  public filterLayout = LibraryFiltersLayout;
+  private unsubscribe$ = new Subject<void>();
 
-  mediumLayout: LibraryFiltersLayout = LibraryFiltersLayout.SQUARE;
-  gradeLevelLayout: LibraryFiltersLayout = LibraryFiltersLayout.ROUND;
-  public unsubscribe$ = new Subject<void>();
+  private filters;
+  private queryFilters: any = {};
+  public selectedBoard: any = {};
+  public selectedMediumIndex = 0;
+  public selectedGradeLevelIndex = 0;
 
-  filters;
-  queryFilters: any = {};
-  selectedBoard: any = {};
-  selectedMediumIndex = 0;
-  selectedGradeLevelIndex = 0;
-
-  boards: any[] = [];
-  mediums: any[] = [];
-  gradeLevels: any[] = [];
-  selectedBoardLocalCopy: any = {};
+  public boards: any[] = [];
+  public mediums: any[] = [];
+  public gradeLevels: any[] = [];
+  private selectedBoardLocalCopy: any = {};
   filterChangeEvent =  new Subject();
   @Input() defaultFilters;
   @Output() filterChange: EventEmitter<any> = new EventEmitter();
 
-  constructor(public resourceService: ResourceService, public frameworkService: FrameworkService,
-    public router: Router, private contentSearchService: ContentSearchService, private activatedRoute: ActivatedRoute,
-  ) { }
+  constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
+    private activatedRoute: ActivatedRoute) {
+  }
   ngOnInit() {
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
   }
-  fetchSelectedFilterAndFilterOption() {
+  private fetchSelectedFilterAndFilterOption() {
     this.activatedRoute.queryParams.pipe(map((queryParams) => {
       const queryFilters: any = {};
       _.forIn(queryParams, (value, key) => {
@@ -79,7 +76,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       console.error('fetchSelectedFilterAndFilterOption error', error);
     });
   }
-  handleFilterChange() {
+  private handleFilterChange() {
     this.filterChangeEvent.pipe(debounceTime(1000)).subscribe(({type, event}) => {
       console.log(type, ' changed:', event.data.index);
       if (type === 'medium' && this.selectedMediumIndex !== event.data.index) {
@@ -91,7 +88,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       }
     });
   }
-  updateFilters(filters) {
+  private updateFilters(filters) {
     this.filters = filters;
     if (!this.boards.length && this.filters.board) {
       this.boards = this.filters.board;
@@ -123,7 +120,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.selectedGradeLevelIndex = gradeLevelIndex;
     }
   }
-  onBoardChange(option) {
+  public onBoardChange(option) {
     console.log('board changed', option);
     if (this.selectedBoardLocalCopy.name === option.name) {
       return;
@@ -137,22 +134,22 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       console.error('onBoardChange error', error);
     });
   }
-  getSelectedFilter() {
+  private getSelectedFilter() {
     return {
       board: _.get(this.selectedBoard, 'name') ? [this.selectedBoard.name] : [],
       medium: this.mediums[this.selectedMediumIndex] ? [this.mediums[this.selectedMediumIndex]] : [],
       gradeLevel: this.gradeLevels[this.selectedGradeLevelIndex] ? [this.gradeLevels[this.selectedGradeLevelIndex]] : []
     };
   }
-  emitFilterChangeEvent() {
+  private emitFilterChangeEvent() {
     const filters = this.getSelectedFilter();
     this.filterChange.emit(filters);
   }
-  updateUrlWithSelectedFilters() {
+  private updateUrlWithSelectedFilters() {
     const url = this.activatedRoute.snapshot.params.slug ? this.activatedRoute.snapshot.params.slug + '/explore' : 'explore';
     this.router.navigate([url], { queryParams: this.getSelectedFilter() });
   }
-  getBoardInteractEdata(selectedBoard) {
+  public getBoardInteractEdata(selectedBoard) {
     const selectBoardInteractEdata: IInteractEventEdata = {
       id: 'board-select-button',
       type: 'click',
@@ -166,7 +163,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     return selectBoardInteractEdata;
   }
 
-  getMediumInteractEdata() {
+  public getMediumInteractEdata() {
     const selectMediumInteractEdata: IInteractEventEdata = {
       id: 'medium-select-button',
       type: 'click',
@@ -180,7 +177,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     return selectMediumInteractEdata;
   }
 
-  getGradeLevelInteractEdata() {
+  public getGradeLevelInteractEdata() {
     const selectGradeLevelInteractEdata: IInteractEventEdata = {
       id: 'grade-level-select-button',
       type: 'click',

@@ -19,17 +19,16 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public showLoader = true;
   public noResultMessage;
   public apiContentList: Array<any> = [];
-  public unsubscribe$ = new Subject<void>();
+  private unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
-  public inViewLogs = [];
-  public sortIntractEdata: IInteractEventEdata;
+  private inViewLogs = [];
   public pageSections: Array<any> = [];
-  defaultFilters = {
+  public defaultFilters = {
     board: [DEFAULT_FRAMEWORK],
     gradeLevel: [],
     medium: []
   };
-  selectedFilters = {};
+  public selectedFilters = {};
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -39,10 +38,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   constructor(private searchService: SearchService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
-    public router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
-    private contentSearchService: ContentSearchService,
-    public frameworkService: FrameworkService, public navigationhelperService: NavigationHelperService) {
-      this.router.onSameUrlNavigation = 'reload';
+    private router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
+    private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService) {
   }
   ngOnInit() {
     this.getChannelId().pipe(
@@ -58,7 +55,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error('init search filter failed', error);
     });
   }
-  getChannelId() {
+  private getChannelId() {
     if (this.activatedRoute.snapshot.params.slug) {
       return this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
       .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false}))));
@@ -72,9 +69,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showLoader = true;
     this.apiContentList = [];
     this.pageSections = [];
-    this.fetchPageData();
+    this.fetchContents();
   }
-  getSearchRequest() {
+  private getSearchRequest() {
     let filters = this.selectedFilters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
@@ -90,7 +87,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     return option;
   }
-  private fetchPageData() {
+  private fetchContents() {
     const option = this.getSearchRequest();
     this.searchService.contentSearch(option).pipe(
       map((response) => {
@@ -143,7 +140,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
-  public prepareVisits(event) {
+  private prepareVisits(event) {
     _.forEach(event, (inView, index) => {
       if (inView.metaData.identifier) {
         this.inViewLogs.push({
@@ -183,11 +180,6 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         duration: this.navigationhelperService.getPageLoadTime()
       }
     };
-    this.sortIntractEdata = {
-      id: 'sort',
-      type: 'click',
-      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-    };
   }
   private setNoResultMessage() {
     this.noResultMessage = {
@@ -198,7 +190,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
 
-  navigateToExploreContent() {
+  public navigateToExploreContent() {
     this.router.navigate(['explore', 1], { queryParams: this.selectedFilters });
   }
 
