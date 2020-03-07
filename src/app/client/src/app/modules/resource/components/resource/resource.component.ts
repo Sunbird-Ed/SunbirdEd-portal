@@ -34,12 +34,16 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       this.pageSections.push(this.apiContentList[this.pageSections.length]);
     }
   }
-  constructor(private searchService: SearchService, private toasterService: ToasterService,
+  constructor(private searchService: SearchService, private toasterService: ToasterService, private userService: UserService,
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private playerService: PlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService) {
   }
   ngOnInit() {
+    if (this.userService.userProfile.framework) {
+      const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
+      this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
+    }
     this.getChannelId().pipe(
       mergeMap(({channelId, custodianOrg}) =>
         this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0])),
@@ -54,13 +58,13 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   private getChannelId() {
-    if (this.activatedRoute.snapshot.params.slug) {
-      return this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
-      .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false}))));
-    } else {
-      return this.orgDetailsService.getCustodianOrg()
-      .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true }))));
-    }
+    return this.orgDetailsService.getCustodianOrgDetails().pipe(map(custodianOrg => {
+      if (this.userService.hashTagId === _.get(custodianOrg, 'result.response.value')) {
+        return { channelId: this.userService.hashTagId, custodianOrg: true};
+      } else {
+        return { channelId: this.userService.hashTagId, custodianOrg: false };
+      }
+    }));
   }
   public getFilters(filters) {
     this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel']);

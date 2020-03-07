@@ -97,7 +97,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }
     this.mediums = _.map(this.filters.medium, medium => medium.name);
     if (this.mediums.length) {
-      let mediumIndex = 0;
+      let mediumIndex = -1;
       if (_.get(this.queryFilters, 'medium[0]')) {
         mediumIndex = this.mediums.findIndex((medium) => medium === this.queryFilters.medium[0]);
       }
@@ -109,7 +109,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }
     this.gradeLevels = _.map(this.filters.gradeLevel, gradeLevel => gradeLevel.name);
     if (this.gradeLevels.length) {
-      let gradeLevelIndex = 0;
+      let gradeLevelIndex = -1;
       if (_.get(this.queryFilters, 'gradeLevel[0]')) {
         gradeLevelIndex = this.gradeLevels.findIndex((gradeLevel) => gradeLevel === this.queryFilters.gradeLevel[0]);
       }
