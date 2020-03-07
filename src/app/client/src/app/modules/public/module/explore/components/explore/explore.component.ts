@@ -37,7 +37,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   constructor(private searchService: SearchService, private toasterService: ToasterService,
-    public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
+    public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService) {
   }
