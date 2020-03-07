@@ -132,8 +132,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
-                this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+                this.contentList = data.result.content;
             }, err => {
                 this.showLoader = false;
                 this.contentList = [];
@@ -174,15 +173,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         };
     }
     public playContent(event) {
-        this.playerService.playContent(event.data.metaData);
+        this.playerService.playContent(event.data);
     }
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {
-            const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier });
+            const obj = _.find(this.inViewLogs, { objid: elem.data.identifier });
             if (!obj) {
                 this.inViewLogs.push({
-                    objid: elem.data.metaData.identifier,
-                    objtype: elem.data.metaData.contentType || 'content',
+                    objid: elem.data.identifier,
+                    objtype: elem.data.contentType || 'content',
                     index: elem.id
                 });
             }
