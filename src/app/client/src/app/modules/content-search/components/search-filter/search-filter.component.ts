@@ -66,6 +66,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.filters = filters;
       this.updateBoardList();
       this.updateMediumAndGradeLevelList();
+      this.selectedBoardLocalCopy = this.selectedBoard;
       this.emitFilterChangeEvent(true);
       this.hardRefreshFilter();
     }, error => {
