@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const logger = require('sb_logger_util_v2');
 const CassandraStore = require('cassandra-session-store')
 const envHelper = require('./environmentVariablesHelper.js')
 const expressCassandra = require('express-cassandra')
@@ -34,7 +35,7 @@ function getReplicationStrategy (replicationStrategy) {
   try{
     return JSON.parse(replicationStrategy)
   }catch(e){
-    console.log("err in getReplicationStrategy",e)
+    logger.error({msg: 'cassandraUtil : Error in getReplicationStrategy', error: e});
     return {"class":"SimpleStrategy","replication_factor":1}
   }
 }
