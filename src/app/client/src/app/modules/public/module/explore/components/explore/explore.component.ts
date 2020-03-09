@@ -3,7 +3,8 @@ import { OrgDetailsService, UserService, SearchService, FrameworkService } from 
 import { PublicPlayerService } from './../../../../services';
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
-  ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
+  ResourceService, ToasterService, ConfigService, NavigationHelperService
+} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
@@ -25,7 +26,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public pageSections: Array<any> = [];
   public defaultFilters = {
     board: [DEFAULT_FRAMEWORK],
-    gradeLevel: [],
+    gradeLevel: ['Class 10'],
     medium: []
   };
   public selectedFilters = {};
@@ -43,7 +44,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit() {
     this.getChannelId().pipe(
-      mergeMap(({channelId, custodianOrg}) =>
+      mergeMap(({ channelId, custodianOrg }) =>
         this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0])),
       takeUntil(this.unsubscribe$))
       .subscribe(() => {
@@ -53,15 +54,15 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error('Fetching content failed. Please try again later.');
         setTimeout(() => this.router.navigate(['']), 5000);
         console.error('init search filter failed', error);
-    });
+      });
   }
   private getChannelId() {
     if (this.activatedRoute.snapshot.params.slug) {
       return this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
-      .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false}))));
+        .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false }))));
     } else {
       return this.orgDetailsService.getCustodianOrg()
-      .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true }))));
+        .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true }))));
     }
   }
   public getFilters(filters) {
@@ -76,11 +77,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
     const option = {
-        limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
-        filters: filters,
-        // mode: 'soft',
-        // facets: facets,
-        params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
+      limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
+      filters: filters,
+      // mode: 'soft',
+      // facets: facets,
+      params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
     };
     if (this.contentSearchService.frameworkId) {
       option.params.framework = this.contentSearchService.frameworkId;
@@ -92,36 +93,36 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchService.contentSearch(option).pipe(
       map((response) => {
         const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
-      for (const [key, value] of Object.entries(filteredContents)) {
-        const isMultipleSubjects = key.split(',').length > 1;
-        if (isMultipleSubjects) {
+        for (const [key, value] of Object.entries(filteredContents)) {
+          const isMultipleSubjects = key.split(',').length > 1;
+          if (isMultipleSubjects) {
             const subjects = key.split(',');
             subjects.forEach((subject) => {
-                if (filteredContents[subject]) {
-                    filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
-                } else {
-                    filteredContents[subject] = value;
-                }
+              if (filteredContents[subject]) {
+                filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
+              } else {
+                filteredContents[subject] = value;
+              }
             });
             delete filteredContents[key];
+          }
         }
-      }
-      const sections = [];
-      for (const section in filteredContents) {
-        if (section) {
+        const sections = [];
+        for (const section in filteredContents) {
+          if (section) {
             sections.push({
-                name: section,
-                contents: filteredContents[section]
+              name: section,
+              contents: filteredContents[section]
             });
+          }
         }
-      }
-      return _.map(sections, (section) => {
-        _.forEach(section.contents, contents => {
-          contents.cardImg = contents.appIcon || 'assets/images/book.png';
+        return _.map(sections, (section) => {
+          _.forEach(section.contents, contents => {
+            contents.cardImg = contents.appIcon || 'assets/images/book.png';
+          });
+          return section;
         });
-        return section;
-      });
-    }))
+      }))
       .subscribe(data => {
         this.showLoader = false;
         this.apiContentList = data;
@@ -191,7 +192,12 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public navigateToExploreContent() {
-    this.router.navigate(['explore', 1], { queryParams: this.selectedFilters });
+    this.router.navigate(['explore', 1], {
+      queryParams: {
+        ...this.selectedFilters, appliedFilters: false,
+        // softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
+      }
+    });
   }
 
 }
