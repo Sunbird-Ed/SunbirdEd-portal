@@ -85,11 +85,6 @@ function storeCrashLogsToAzure() {
   }
 }
 
-const getBlobName = (deviceId, extension) => {
-  const identifier = Math.random().toString().replace(/0\./, ''); // remove "0." from start of string
-  return `${deviceId}_${Date.now()}.${extension}`;
-};
-
 const apiResponse = ({ responseCode, result, params: { err, errmsg, status } }) => {
   return {
     'id': 'api.desktop.upload.crash.log',
