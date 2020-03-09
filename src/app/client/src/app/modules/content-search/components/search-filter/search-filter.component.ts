@@ -147,9 +147,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     const filters = this.getSelectedFilter();
     this.filterChange.emit(filters);
     if (!skipUrlUpdate) {
-      // this.router.navigate([], { queryParams: this.getSelectedFilter(),
-      //   relativeTo: this.activatedRoute.parent
-      // });
+      this.router.navigate([], { queryParams: this.getSelectedFilter(),
+        relativeTo: this.activatedRoute.parent
+      });
     }
   }
   public getBoardInteractEdata(selectedBoard) {
