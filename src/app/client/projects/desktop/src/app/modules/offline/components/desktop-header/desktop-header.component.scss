@@ -7,10 +7,7 @@
   .sb-offline-header {
     border-bottom: 1px solid var(--primary-400);
     cursor: pointer;
-    position: -webkit-sticky;
-    position: sticky;
     top: 0;
-    z-index: 4;
 
     .sb-header-offline-bar {
       width: 100%;

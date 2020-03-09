@@ -230,9 +230,12 @@ app-workspace {
   margin-top: -35px;
 }
 
-.offline-sticky-header{
+.sb-sticky{
   position: -webkit-sticky;
   position: sticky;
-  top: 65px;
   z-index: 4;
+}
+
+.back-bar{
+  top: 4.0625rem;
 }
