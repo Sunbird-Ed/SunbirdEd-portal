@@ -98,6 +98,7 @@ let envVariables = {
   sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
   sunbird_azure_account_name: env.sunbird_azure_account_name,
   sunbird_azure_account_key: env.sunbird_azure_account_key,
+  desktop_azure_crash_container_name: env.desktop_crash_container_name || 'desktopappcrashlogs',
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
 
