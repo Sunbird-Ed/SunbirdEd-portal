@@ -47,6 +47,7 @@ export class ContentSearchService {
           name: _.get(channelDetails, 'result.channel.defaultFramework'),
           identifier: _.get(channelDetails, 'result.channel.defaultFramework')
         }]; // framework array is empty assigning defaultFramework as only board
+        // this.pushDummyBoard();
         const selectedBoard = this._filters.board.find((board) => board.name === this.defaultBoard) || this._filters.board[0];
         this._frameworkId = _.get(selectedBoard, 'identifier');
       } else {
@@ -64,6 +65,16 @@ export class ContentSearchService {
       });
       return true;
     }), first());
+  }
+  private pushDummyBoard() {
+    this._filters.board.push({
+      identifier: 'NCF',
+      code: 'NCF',
+      name: 'NCF framework',
+      description: ' NCF framework...',
+      type: 'K-12',
+      objectType: 'Framework'
+    });
   }
   public fetchFilter(boardName?) {
     if (!this.custodianOrg || !boardName) {

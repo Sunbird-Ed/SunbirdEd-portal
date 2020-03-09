@@ -5,7 +5,7 @@ import { ResourceService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, combineLatest, of } from 'rxjs';
-import { takeUntil, debounceTime, map, mergeMap, filter } from 'rxjs/operators';
+import { takeUntil, debounceTime, map, mergeMap, filter, tap } from 'rxjs/operators';
 import { ContentSearchService } from './../../services';
 
 interface IFilters {
@@ -65,27 +65,27 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }),
     mergeMap((queryParams) => {
       this.queryFilters = _.cloneDeep(queryParams);
-      console.log('filter queryParams', this.queryFilters);
       return this.contentSearchService.fetchFilter(_.get(queryParams, 'board[0]'));
     }))
     .subscribe(filters => {
-      console.log('fetchSelectedFilterAndFilterOption', filters);
       this.updateFilters(filters);
       this.emitFilterChangeEvent();
     }, error => {
-      console.error('fetchSelectedFilterAndFilterOption error', error);
+      console.error('fetching filter data failed', error);
     });
   }
   private handleFilterChange() {
-    this.filterChangeEvent.pipe(debounceTime(1000)).subscribe(({type, event}) => {
-      console.log(type, ' changed:', event.data.index);
+    this.filterChangeEvent.pipe(filter(({type, event}) => {
       if (type === 'medium' && this.selectedMediumIndex !== event.data.index) {
         this.selectedMediumIndex = event.data.index;
-        this.emitFilterChangeEvent();
+        return true;
       } else if (type === 'gradeLevel' && this.selectedGradeLevelIndex !== event.data.index) {
         this.selectedGradeLevelIndex = event.data.index;
-        this.emitFilterChangeEvent();
+        return true;
       }
+      return false;
+    }), debounceTime(1000)).subscribe(({type, event}) => {
+      this.emitFilterChangeEvent();
     });
   }
   private updateFilters(filters) {
@@ -121,17 +121,15 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }
   }
   public onBoardChange(option) {
-    console.log('board changed', option);
     if (this.selectedBoardLocalCopy.name === option.name) {
       return;
     }
     this.selectedBoardLocalCopy = option;
     this.contentSearchService.fetchFilter(option.name).subscribe((filters) => {
-      console.log('onBoardChange', filters);
       this.updateFilters(filters);
       this.emitFilterChangeEvent();
     }, error => {
-      console.error('onBoardChange error', error);
+      console.error('fetching filters on board change error', error);
     });
   }
   private getSelectedFilter() {
