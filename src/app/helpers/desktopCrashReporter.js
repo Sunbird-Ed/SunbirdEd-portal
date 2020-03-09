@@ -73,7 +73,7 @@ function storeCrashLogsToAzure() {
 
 const getBlobName = (originalName, deviceId) => {
     const identifier = Math.random().toString().replace(/0\./, ''); // remove "0." from start of string
-    return `${deviceId}_${identifier}-${originalName}`;
+    return `${deviceId}_${identifier}.${originalName}`;
 };
 
 const apiResponse = ({ responseCode, result, params: { err, errmsg, status } }) => {

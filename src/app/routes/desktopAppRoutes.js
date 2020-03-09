@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 const logger = require('sb_logger_util_v2');
 
 const multer = require('multer'),
-  inMemoryStorage = multer.memoryStorage(),
-  uploadStrategy = multer({ storage: inMemoryStorage }).single('upload_file_minidump');
+  storage = multer.memoryStorage(),
+  uploadStrategy = multer({ storage: storage }).single('upload_file_minidump');
 
 module.exports = function (app) {
     app.post('/v1/desktop/update', bodyParser.urlencoded({ extended: true }),
