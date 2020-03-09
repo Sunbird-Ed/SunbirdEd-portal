@@ -11,12 +11,13 @@ const containerName = envHelper.desktop_azure_crash_container_name;
 function storeCrashLogsToAzure() {
   return function (req, res) {
     try {
+      const blobFolderName = new Date().toLocaleDateString()
       let form = new multiparty.Form();
       form.on('part', function (part) {
         if (part.filename) {
           var size = part.byteCount - part.byteOffset;
           var name = getBlobName(_.get(req, 'query.deviceId'), part.filename);
-          blobService.createBlockBlobFromStream(containerName, name, part, size, (error) => {
+          blobService.createBlockBlobFromStream(containerName, `${blobFolderName}/${name}`, part, size, (error) => {
             if (error && error.statusCode === 403) {
               const response = {
                 responseCode: "FORBIDDEN",
@@ -86,7 +87,7 @@ function storeCrashLogsToAzure() {
 
 const getBlobName = (deviceId, extension) => {
   const identifier = Math.random().toString().replace(/0\./, ''); // remove "0." from start of string
-  return `${deviceId}_${identifier}.${extension}`;
+  return `${deviceId}_${Date.now()}.${extension}`;
 };
 
 const apiResponse = ({ responseCode, result, params: { err, errmsg, status } }) => {
