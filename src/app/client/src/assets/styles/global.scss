@@ -229,3 +229,13 @@ app-workspace {
   height: auto;
   margin-top: -35px;
 }
+
+.sb-sticky{
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 4;
+}
+
+.back-bar{
+  top:5.95rem;
+}
