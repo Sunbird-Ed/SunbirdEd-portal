@@ -16,7 +16,7 @@ function storeCrashLogsToAzure() {
       form.on('part', function (part) {
         if (part.filename) {
           var size = part.byteCount - part.byteOffset;
-          var name = getBlobName(_.get(req, 'query.deviceId'), part.filename);
+          var name = `${_.get(req, 'query.deviceId')}_${Date.now()}.${_.get(part, 'filename')}`;
           blobService.createBlockBlobFromStream(containerName, `${blobFolderName}/${name}`, part, size, (error) => {
             if (error && error.statusCode === 403) {
               const response = {
