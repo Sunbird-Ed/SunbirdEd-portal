@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, OnChanges } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { ResourceService } from '@sunbird/shared';
@@ -8,12 +8,6 @@ import { Subject, combineLatest, of } from 'rxjs';
 import { takeUntil, debounceTime, map, mergeMap, filter, tap } from 'rxjs/operators';
 import { ContentSearchService } from './../../services';
 
-interface IFilters {
-  board: string[];
-  medium?: string[];
-  gradeLevel?: string[];
-}
-
 @Component({
   selector: 'app-search-filter',
   templateUrl: './search-filter.component.html',
@@ -21,6 +15,8 @@ interface IFilters {
 })
 export class SearchFilterComponent implements OnInit, OnDestroy {
   public filterLayout = LibraryFiltersLayout;
+  public initialized = false;
+  public refresh = true;
   private unsubscribe$ = new Subject<void>();
 
   private filters;
@@ -36,9 +32,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   filterChangeEvent =  new Subject();
   @Input() defaultFilters;
   @Output() filterChange: EventEmitter<any> = new EventEmitter();
-
   constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
   }
   ngOnInit() {
     this.fetchSelectedFilterAndFilterOption();
@@ -55,21 +50,25 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       return queryFilters;
     }),
     filter((queryFilters) => {
-      const selectedFilter = this.getSelectedFilter();
-      if (_.isEqual(queryFilters, selectedFilter)) { // same filter change, no need to fetch filter again
-        return false;
-      } else if (_.isEqual(queryFilters.board, selectedFilter.board)) { // same board, no need to fetch filter again
+      const selectedFilters = this.getSelectedFilter();
+      if (_.isEqual(queryFilters, selectedFilters) && this.initialized) { // same filter change, no need to fetch filter again
         return false;
       }
+      this.initialized = true;
       return true;
     }),
     mergeMap((queryParams) => {
       this.queryFilters = _.cloneDeep(queryParams);
-      return this.contentSearchService.fetchFilter(_.get(queryParams, 'board[0]'));
+      const boardName = _.get(queryParams, 'board[0]') || _.get(this.boards, '[0]');
+      return this.contentSearchService.fetchFilter(boardName);
     }))
     .subscribe(filters => {
-      this.updateFilters(filters);
-      this.emitFilterChangeEvent();
+      this.filters = filters;
+      this.updateBoardList();
+      this.updateMediumAndGradeLevelList();
+      this.selectedBoardLocalCopy = this.selectedBoard;
+      this.emitFilterChangeEvent(true);
+      this.hardRefreshFilter();
     }, error => {
       console.error('fetching filter data failed', error);
     });
@@ -88,13 +87,14 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.emitFilterChangeEvent();
     });
   }
-  private updateFilters(filters) {
-    this.filters = filters;
-    if (!this.boards.length && this.filters.board) {
-      this.boards = this.filters.board;
+  private updateBoardList() {
+    this.boards = this.filters.board || [];
+    if (this.boards.length) {
       this.selectedBoard = _.find(this.boards, {name: _.get(this.queryFilters, 'board[0]')}) ||
         _.find(this.boards, {name: _.get(this.defaultFilters, 'board[0]')}) || this.boards[0];
     }
+  }
+  private updateMediumAndGradeLevelList() {
     this.mediums = _.map(this.filters.medium, medium => medium.name);
     if (this.mediums.length) {
       let mediumIndex = -1;
@@ -125,8 +125,12 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       return;
     }
     this.selectedBoardLocalCopy = option;
+    this.mediums = [];
+    this.gradeLevels = [];
     this.contentSearchService.fetchFilter(option.name).subscribe((filters) => {
-      this.updateFilters(filters);
+      this.filters.medium = filters.medium || [];
+      this.filters.gradeLevel = filters.gradeLevel || [];
+      this.updateMediumAndGradeLevelList();
       this.emitFilterChangeEvent();
     }, error => {
       console.error('fetching filters on board change error', error);
@@ -139,13 +143,14 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       gradeLevel: this.gradeLevels[this.selectedGradeLevelIndex] ? [this.gradeLevels[this.selectedGradeLevelIndex]] : []
     };
   }
-  private emitFilterChangeEvent() {
+  private emitFilterChangeEvent(skipUrlUpdate = false) {
     const filters = this.getSelectedFilter();
     this.filterChange.emit(filters);
-  }
-  private updateUrlWithSelectedFilters() {
-    const url = this.activatedRoute.snapshot.params.slug ? this.activatedRoute.snapshot.params.slug + '/explore' : 'explore';
-    this.router.navigate([url], { queryParams: this.getSelectedFilter() });
+    if (!skipUrlUpdate) {
+      this.router.navigate([], { queryParams: this.getSelectedFilter(),
+        relativeTo: this.activatedRoute.parent
+      });
+    }
   }
   public getBoardInteractEdata(selectedBoard) {
     const selectBoardInteractEdata: IInteractEventEdata = {
@@ -193,5 +198,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+  private hardRefreshFilter() {
+    this.refresh = false;
+    this.cdr.detectChanges();
+    this.refresh = true;
+  }
 }
-
