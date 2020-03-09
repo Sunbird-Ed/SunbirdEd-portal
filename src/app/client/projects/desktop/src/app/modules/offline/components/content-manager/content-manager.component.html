@@ -101,10 +101,10 @@
 
           <div *ngIf="data.status === 'canceling'" class="fs-0-785 sb-color-primary">
             {{resourceService?.frmelmnts?.btn?.canceling}} </div>
-
           <div *ngIf="data.status === 'completed'" class="fs-0-785 sb-color-success">
             {{resourceService?.frmelmnts?.btn?.completed}} </div>
-
+          <div *ngIf="data.status === 'extract'" class="fs-0-785 sb-color-success">
+              {{resourceService?.frmelmnts?.desktop?.btn?.extracting}} </div>
           <div *ngIf="data.addedUsing === 'download' && data.status === 'failed'" class="fs-0-785 sb-color-error">
             {{resourceService?.frmelmnts?.lbl?.downloadFailed}} </div>
 
