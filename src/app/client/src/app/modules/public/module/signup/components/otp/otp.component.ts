@@ -87,7 +87,7 @@ export class OtpComponent implements OnInit {
           this.otpForm.controls.otp.setValue('');
           this.remainingAttempt = _.get(err, 'error.result.remainingAttempt');
           this.errorMessage =
-            _.get(err, 'error.params.status ') === this.configService.constants.HTTP_STATUS_CODES.OTP_VERIFICATION_FAILED ?
+            _.get(err, 'error.params.status') === this.configService.constants.HTTP_STATUS_CODES.OTP_VERIFICATION_FAILED ?
               _.get(this.resourceService, 'messages.imsg.m0086') : wrongOTPMessage;
           if (this.disableResendButton) {
             this.showSignUpLink = true;
