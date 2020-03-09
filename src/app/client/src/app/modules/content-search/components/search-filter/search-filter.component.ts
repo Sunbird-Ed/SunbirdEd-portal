@@ -1,23 +1,17 @@
-import { Component, Output, EventEmitter, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
-import { OrgDetailsService, FrameworkService, ChannelService } from '@sunbird/core';
 import { ResourceService } from '@sunbird/shared';
-import { OnboardingService } from './../../../../../../projects/desktop/src/app/modules/offline/services';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subject, combineLatest, of } from 'rxjs';
+import { takeUntil, debounceTime, map, mergeMap, filter, tap } from 'rxjs/operators';
+import { ContentSearchService } from './../../services';
 
 interface IFilters {
   board: string[];
   medium?: string[];
   gradeLevel?: string[];
-}
-
-interface IFilterChange {
-  filters: IFilters;
-  channelId: string;
 }
 
 @Component({
@@ -26,223 +20,173 @@ interface IFilterChange {
   styleUrls: ['./search-filter.component.scss']
 })
 export class SearchFilterComponent implements OnInit, OnDestroy {
+  public filterLayout = LibraryFiltersLayout;
+  private unsubscribe$ = new Subject<void>();
 
-  selectedBoard: any;
-  selectedMediumIndex: number[] = [];
-  selectedClassIndex: number[] = [];
+  private filters;
+  private queryFilters: any = {};
+  public selectedBoard: any = {};
+  public selectedMediumIndex = 0;
+  public selectedGradeLevelIndex = 0;
 
-  boards: any[] = [];
-  mediums: any[] = [];
-  classes: any[] = [];
+  public boards: any[] = [];
+  public mediums: any[] = [];
+  public gradeLevels: any[] = [];
+  private selectedBoardLocalCopy: any = {};
+  filterChangeEvent =  new Subject();
+  @Input() defaultFilters;
+  @Output() filterChange: EventEmitter<any> = new EventEmitter();
 
-  mediumLayout: LibraryFiltersLayout = LibraryFiltersLayout.SQUARE;
-  classLayout: LibraryFiltersLayout = LibraryFiltersLayout.ROUND;
-
-  frameworkCategories: any;
-  userDetails: any;
-  hashTagId: string;
-  showDefaultFilter: boolean;
-  public unsubscribe$ = new Subject<void>();
-
-  @Input() selectedFilters;
-  @Output() filterChange: EventEmitter<IFilterChange> = new EventEmitter();
-
-  constructor(
-    public resourceService: ResourceService,
-    public frameworkService: FrameworkService,
-    private orgDetailsService: OrgDetailsService,
-    private channelService: ChannelService,
-    private onboardingService: OnboardingService,
-    public router: Router
-  ) { }
-
+  constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
+    private activatedRoute: ActivatedRoute) {
+  }
   ngOnInit() {
-    console.log('this.selectedFilters', this.selectedFilters);
-    this.showDefaultFilter = false;
-    this.orgDetailsService.getCustodianOrg()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        this.hashTagId = _.get(data, 'result.response.value');
-        this.userDetails = this.onboardingService.userData;
-        this.setBoard();
-      });
+    this.fetchSelectedFilterAndFilterOption();
+    this.handleFilterChange();
   }
-
-  setBoard() {
-    this.channelService.getFrameWork(this.hashTagId)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(orgDetails => {
-        this.boards = _.get(orgDetails, 'result.channel.frameworks');
-        if (!this.boards || !this.boards.length) {
-          return;
-        }
-        if (this.selectedFilters.board && this.selectedFilters.board[0]) {
-          this.selectedBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
-        } else {
-          this.selectedBoard = this.boards[0];
-        }
-        if (this.selectedBoard) {
-          this.frameworkService.getFrameworkCategories(_.get(this.selectedBoard, 'identifier'))
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((res) => {
-              if (res && _.get(res, 'result.framework.categories')) {
-                this.frameworkCategories = _.get(res, 'result.framework.categories');
-                if (_.get(this.selectedFilters, 'board[0]') && !this.showDefaultFilter) {
-                  this.setFilters(false);
-                } else {
-                  this.setFilters(true);
-                }
-              }
-            });
+  private fetchSelectedFilterAndFilterOption() {
+    this.activatedRoute.queryParams.pipe(map((queryParams) => {
+      const queryFilters: any = {};
+      _.forIn(queryParams, (value, key) => {
+        if (['medium', 'gradeLevel', 'board'].includes(key)) {
+          queryFilters[key] = _.isArray(value) ? value : [value];
         }
       });
-  }
-
-  setFilters(showDefault?) {
-    this.resetFilters();
-    this.frameworkCategories.forEach(element => {
-      switch (element.code) {
-        case 'medium':
-          this.mediums = element.terms.map(medium => medium.name);
-          let mediumIndex;
-
-          if (showDefault) {
-            mediumIndex = 0;
-          } else if (_.get(this.selectedFilters, 'medium[0]')) {
-            mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
-          }
-
-          if (_.isNumber(mediumIndex)) {
-            this.selectedMediumIndex.push(mediumIndex);
-          }
-          break;
-
-        case 'gradeLevel':
-          this.classes = element.terms.map(gradeLevel => gradeLevel.name);
-          let classIndex;
-
-          if (showDefault) {
-            classIndex = 0;
-          } else if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
-            classIndex = this.classes.findIndex((classElement) =>
-              classElement === this.selectedFilters.gradeLevel[0]);
-          }
-
-          if (_.isNumber(classIndex)) {
-            this.selectedClassIndex.push(classIndex);
-          }
-          break;
+      return queryFilters;
+    }),
+    filter((queryFilters) => {
+      const selectedFilter = this.getSelectedFilter();
+      if (_.isEqual(queryFilters, selectedFilter)) { // same filter change, no need to fetch filter again
+        return false;
+      } else if (_.isEqual(queryFilters.board, selectedFilter.board)) { // same board, no need to fetch filter again
+        return false;
       }
+      return true;
+    }),
+    mergeMap((queryParams) => {
+      this.queryFilters = _.cloneDeep(queryParams);
+      return this.contentSearchService.fetchFilter(_.get(queryParams, 'board[0]'));
+    }))
+    .subscribe(filters => {
+      this.updateFilters(filters);
+      this.emitFilterChangeEvent();
+    }, error => {
+      console.error('fetching filter data failed', error);
     });
-
-    this.triggerFilterChangeEvent();
   }
-
-  onBoardChange(option) {
-    this.resetFilters();
-    this.frameworkService.getFrameworkCategories(_.get(option, 'identifier'))
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((data) => {
-        if (data && _.get(data, 'result.framework.categories')) {
-          this.frameworkCategories = _.get(data, 'result.framework.categories');
-          this.setFilters(false);
-        }
-      });
+  private handleFilterChange() {
+    this.filterChangeEvent.pipe(filter(({type, event}) => {
+      if (type === 'medium' && this.selectedMediumIndex !== event.data.index) {
+        this.selectedMediumIndex = event.data.index;
+        return true;
+      } else if (type === 'gradeLevel' && this.selectedGradeLevelIndex !== event.data.index) {
+        this.selectedGradeLevelIndex = event.data.index;
+        return true;
+      }
+      return false;
+    }), debounceTime(1000)).subscribe(({type, event}) => {
+      this.emitFilterChangeEvent();
+    });
   }
-
-  resetFilters() {
-    this.mediums = [];
-    this.classes = [];
-    this.selectedClassIndex = [];
-    this.selectedMediumIndex = [];
-
-  }
-
-  applyFilters(event, type) {
-    this.getSelectedFilters();
-
-    if (type === 'medium') {
-      this.selectedMediumIndex = [event.data.index];
-    } else if (type === 'class') {
-      this.selectedClassIndex = [event.data.index];
+  private updateFilters(filters) {
+    this.filters = filters;
+    if (!this.boards.length && this.filters.board) {
+      this.boards = this.filters.board;
+      this.selectedBoard = _.find(this.boards, {name: _.get(this.queryFilters, 'board[0]')}) ||
+        _.find(this.boards, {name: _.get(this.defaultFilters, 'board[0]')}) || this.boards[0];
     }
-
-    this.triggerFilterChangeEvent();
-  }
-
-  getSelectedFilters() {
-    const filters: any = {};
-    filters.board = [this.selectedBoard.name];
-
-    if (this.selectedMediumIndex.length) {
-      filters.appliedFilters = true;
-      filters.medium = [this.mediums[this.selectedMediumIndex[0]]];
+    this.mediums = _.map(this.filters.medium, medium => medium.name);
+    if (this.mediums.length) {
+      let mediumIndex = -1;
+      if (_.get(this.queryFilters, 'medium[0]')) {
+        mediumIndex = this.mediums.findIndex((medium) => medium === this.queryFilters.medium[0]);
+      }
+      if (_.get(this.defaultFilters, 'medium[0]') && mediumIndex === -1) {
+        mediumIndex = this.mediums.findIndex((medium) => medium === this.defaultFilters.medium[0]);
+      }
+      mediumIndex = mediumIndex === -1 ? 0 : mediumIndex;
+      this.selectedMediumIndex = mediumIndex;
     }
-
-    if (this.selectedClassIndex.length) {
-      filters.appliedFilters = true;
-      filters.gradeLevel = [this.classes[this.selectedClassIndex[0]]];
+    this.gradeLevels = _.map(this.filters.gradeLevel, gradeLevel => gradeLevel.name);
+    if (this.gradeLevels.length) {
+      let gradeLevelIndex = -1;
+      if (_.get(this.queryFilters, 'gradeLevel[0]')) {
+        gradeLevelIndex = this.gradeLevels.findIndex((gradeLevel) => gradeLevel === this.queryFilters.gradeLevel[0]);
+      }
+      if (_.get(this.defaultFilters, 'gradeLevel[0]') && gradeLevelIndex === -1) {
+        gradeLevelIndex = this.gradeLevels.findIndex((gradeLevel) => gradeLevel === this.defaultFilters.gradeLevel[0]);
+      }
+      gradeLevelIndex = gradeLevelIndex === -1 ? 0 : gradeLevelIndex;
+      this.selectedGradeLevelIndex = gradeLevelIndex;
     }
-
-    return filters;
   }
-
-  triggerFilterChangeEvent() {
-    const data: IFilterChange = {
-      filters: this.getSelectedFilters(),
-      channelId: this.hashTagId
+  public onBoardChange(option) {
+    if (this.selectedBoardLocalCopy.name === option.name) {
+      return;
+    }
+    this.selectedBoardLocalCopy = option;
+    this.contentSearchService.fetchFilter(option.name).subscribe((filters) => {
+      this.updateFilters(filters);
+      this.emitFilterChangeEvent();
+    }, error => {
+      console.error('fetching filters on board change error', error);
+    });
+  }
+  private getSelectedFilter() {
+    return {
+      board: _.get(this.selectedBoard, 'name') ? [this.selectedBoard.name] : [],
+      medium: this.mediums[this.selectedMediumIndex] ? [this.mediums[this.selectedMediumIndex]] : [],
+      gradeLevel: this.gradeLevels[this.selectedGradeLevelIndex] ? [this.gradeLevels[this.selectedGradeLevelIndex]] : []
     };
-    this.filterChange.emit(data);
   }
-
-
-  getBoardInteractEdata(selectedBoard) {
+  private emitFilterChangeEvent() {
+    const filters = this.getSelectedFilter();
+    this.filterChange.emit(filters);
+  }
+  private updateUrlWithSelectedFilters() {
+    const url = this.activatedRoute.snapshot.params.slug ? this.activatedRoute.snapshot.params.slug + '/explore' : 'explore';
+    this.router.navigate([url], { queryParams: this.getSelectedFilter() });
+  }
+  public getBoardInteractEdata(selectedBoard) {
     const selectBoardInteractEdata: IInteractEventEdata = {
       id: 'board-select-button',
       type: 'click',
       pageid: this.router.url.split('/')[1] || 'library'
     };
-
     if (selectedBoard) {
       selectBoardInteractEdata['extra'] = {
         board: selectedBoard.name
       };
     }
-
     return selectBoardInteractEdata;
   }
 
-
-  getMediumInteractEdata() {
+  public getMediumInteractEdata() {
     const selectMediumInteractEdata: IInteractEventEdata = {
       id: 'medium-select-button',
       type: 'click',
       pageid: this.router.url.split('/')[1] || 'library'
     };
-
-    if (this.selectedMediumIndex.length) {
+    if (this.selectedMediumIndex || this.selectedMediumIndex === 0) {
       selectMediumInteractEdata['extra'] = {
-        medium: [this.mediums[this.selectedMediumIndex[0]]]
+        medium: [this.mediums[this.selectedMediumIndex]]
       };
     }
-
     return selectMediumInteractEdata;
   }
 
-  getClassInteractEdata() {
-    const selectClassInteractEdata: IInteractEventEdata = {
+  public getGradeLevelInteractEdata() {
+    const selectGradeLevelInteractEdata: IInteractEventEdata = {
       id: 'grade-level-select-button',
       type: 'click',
       pageid: this.router.url.split('/')[1] || 'library'
     };
-
-    if (this.selectedClassIndex.length) {
-      selectClassInteractEdata['extra'] = {
-        gradeLevel: [this.classes[this.selectedClassIndex[0]]]
+    if (this.selectedGradeLevelIndex || this.selectedGradeLevelIndex === 0) {
+      selectGradeLevelInteractEdata['extra'] = {
+        gradeLevel: [this.gradeLevels[this.selectedGradeLevelIndex]]
       };
     }
-
-    return selectClassInteractEdata;
+    return selectGradeLevelInteractEdata;
   }
 
   ngOnDestroy() {
