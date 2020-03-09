@@ -89,15 +89,7 @@ const getBlobName = (deviceId, extension) => {
   return `${deviceId}_${identifier}.${extension}`;
 };
 
-const apiResponse = ({
-  responseCode,
-  result,
-  params: {
-    err,
-    errmsg,
-    status
-  }
-}) => {
+const apiResponse = ({ responseCode, result, params: { err, errmsg, status } }) => {
   return {
     'id': 'api.desktop.upload.crash.log',
     'ver': '1.0',
