@@ -27,6 +27,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     medium: []
   };
   public selectedFilters = {};
+  exploreMoreButtonEdata: IInteractEventEdata;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -170,6 +171,11 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe$.complete();
   }
   private setTelemetryData() {
+    this.exploreMoreButtonEdata = {
+      id: 'explore-more-content-button' ,
+      type: 'click' ,
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+    };
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env

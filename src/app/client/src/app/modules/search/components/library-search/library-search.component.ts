@@ -39,6 +39,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public redirectUrl;
     public frameworkData: object;
     public closeIntractEdata;
+    exploreMoreButtonEdata: IInteractEventEdata;
 
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -194,6 +195,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     ngAfterViewInit () {
         setTimeout(() => {
+            this.exploreMoreButtonEdata = {
+                id: 'explore-more-content-button' ,
+                type: 'click' ,
+                pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+            };
             this.telemetryImpression = {
                 context: {
                     env: this.activatedRoute.snapshot.data.telemetry.env
