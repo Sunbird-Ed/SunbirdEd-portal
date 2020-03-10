@@ -153,7 +153,13 @@ describe('ExploreComponent', () => {
     component.selectedFilters = RESPONSE.selectedFilters;
     const router = TestBed.get(Router);
     component.navigateToExploreContent();
-    expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {queryParams: component.selectedFilters});
+    expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
+      queryParams: {
+        ...component.selectedFilters,
+        appliedFilters: false,
+        softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
+      }
+    });
   });
 
   it('should fetch contents and disable loader', () => {

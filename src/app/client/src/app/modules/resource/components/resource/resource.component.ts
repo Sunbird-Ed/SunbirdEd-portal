@@ -5,7 +5,7 @@ import {
   ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, tap, skip } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
 const DEFAULT_FRAMEWORK = 'CBSE';
@@ -38,7 +38,8 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private searchService: SearchService, private toasterService: ToasterService, private userService: UserService,
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private playerService: PlayerService,
-    private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService) {
+    private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
+    public telemetryService: TelemetryService) {
   }
   ngOnInit() {
     if (this.userService.userProfile.framework) {
@@ -205,6 +206,31 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
       }
     });
+  }
+
+  getInteractEdata(event, sectionName) {
+    const telemetryCdata = [{
+      type: 'section',
+      id: sectionName
+    }];
+
+    const cardClickInteractData = {
+      context: {
+        cdata: telemetryCdata,
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        id: 'content-card',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      },
+      object: {
+        id: event.data.identifier,
+        type: event.data.contentType || 'content',
+        ver: event.data.pkgVersion ? event.data.pkgVersion.toString() : '1.0'
+      }
+    };
+    this.telemetryService.interact(cardClickInteractData);
   }
 
 }
