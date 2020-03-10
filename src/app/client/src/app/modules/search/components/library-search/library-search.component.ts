@@ -38,6 +38,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public sortingOptions;
     public redirectUrl;
     public frameworkData: object;
+    public frameworkId;
     public closeIntractEdata;
 
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
@@ -53,6 +54,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     }
     ngOnInit() {
+        this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
+            if (!channelData.err) {
+              this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
+            }
+          });
         this.userService.userData$.subscribe(userData => {
             if (userData && !userData.err) {
                 this.frameworkData = _.get(userData.userProfile, 'framework');
@@ -95,44 +101,38 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             });
     }
     private fetchContents() {
-        let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-        const softConstraintData = {
-            filters: {channel: this.userService.hashTagId,
-            board: [this.dataDrivenFilters.board]},
-            softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
-            mode: 'soft'
-          };
-          const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
-          softConstraintData, this.frameworkData );
-        const option = {
-            filters: _.get(this.queryParams, 'appliedFilters') ?  filters :
-            (_.get(manipulatedData, 'filters') ? _.get(manipulatedData, 'filters') : {}),
-            limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-            pageNumber: this.paginationDetails.currentPage,
-            query: this.queryParams.key,
-            sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
-            mode: _.get(manipulatedData, 'mode'),
-            facets: this.facets,
-            params: this.configService.appConfig.Library.contentApiQueryParams
+        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+        if (_.isEmpty(filters)) {
+            filters = _.omit(this.frameworkData, ['id']);
+        }
+        filters.channel = this.hashTagId;
+        filters.contentType = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+        const option: any = {
+          filters: filters,
+          limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+          pageNumber: this.paginationDetails.currentPage,
+          query: this.queryParams.key,
+          mode: 'soft',
+          softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {},
+          facets: this.facets,
+          params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
         };
-        option.filters.contentType = filters.contentType ||
-        ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-        if (_.get(manipulatedData, 'filters')) {
-            option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
+        if (this.queryParams.softConstraints) {
+          try {
+            option.softConstraints = JSON.parse(this.queryParams.softConstraints);
+          } catch {
           }
-        this.frameworkService.channelData$.subscribe((channelData) => {
-            if (!channelData.err) {
-               option.params.framework = _.get(channelData, 'channelData.defaultFramework');
-            }
-        });
+        }
+        if (this.frameworkId) {
+          option.params.framework = this.frameworkId;
+        }
         this.searchService.contentSearch(option)
             .subscribe(data => {
                 this.showLoader = false;
                 this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                this.contentList = data.result.content;
+                this.contentList = data.result.content || [];
             }, err => {
                 this.showLoader = false;
                 this.contentList = [];
