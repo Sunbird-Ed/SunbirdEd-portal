@@ -39,7 +39,6 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public redirectUrl;
     public frameworkData: object;
     public closeIntractEdata;
-    exploreMoreButtonEdata: IInteractEventEdata;
 
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,

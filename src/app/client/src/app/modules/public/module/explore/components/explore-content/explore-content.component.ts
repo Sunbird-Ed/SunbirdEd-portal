@@ -47,7 +47,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   showExportLoader = false;
   contentName: string;
   showDownloadLoader = false;
-  exploreMoreButtonEdata: IInteractEventEdata;
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -195,7 +194,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       type: 'click',
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
-
   }
   public playContent(event) {
     // For offline environment content will only play when event.action is open
