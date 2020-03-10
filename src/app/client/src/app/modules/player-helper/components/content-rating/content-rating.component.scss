@@ -8,9 +8,60 @@
                 margin-right: 4px;
             }
             .active.icon, .icon.selected {
-                color: $primary-300 !important;
+                color: #0b4f9d !important;
                 text-shadow: none !important;
             }
     
     } 
 }
+
+.content-bar {
+    padding: 1rem 2rem;
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    min-height: 3.5rem;
+    display: -webkit-box;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .options-box {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .options-content {
+    width: 55%;
+  }
+  
+  .options-content-left {
+      width: 90%;
+      float: left;
+      line-height: 1rem;
+  }
+  
+  .options-content-checked {
+    color: #4079b5;
+  }
+  
+  .options-checkbox {
+    float: right;
+  }
+  
+  input[type=checkbox]:after {
+    content: " ";
+    background-color: #0b4f9d;
+    color: #fff;
+    display: inline-block;
+    visibility: visible;
+  }
+  
+  input[type=checkbox]:checked:after {
+    content: "\2713";
+  }
+  
+  .textarea {
+      resize: none;
+      width: 97%;
+      margin-top: 10px;
+  } 

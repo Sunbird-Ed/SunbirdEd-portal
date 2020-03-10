@@ -4,6 +4,7 @@ import {
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 @Component({
   selector: 'app-content-rating',
@@ -16,6 +17,12 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   */
   @ViewChild('modal') modal;
   @Input() contentData?: any;
+  public startext = '';
+  public feedbackText = '';
+  public comments = [];
+  public feedbackObj;
+  public feedbackContent;
+  public showTextarea = false;
   public showContentRatingModal = true;
   public resourceService: ResourceService;
   /**
@@ -35,8 +42,8 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   *Default method of unpublished Component class
   *@param {ResourceService} SearchService Reference of SearchService
   */
-  constructor(resourceService: ResourceService, toasterService: ToasterService,
-    telemetryService: TelemetryService ,  activatedRoute: ActivatedRoute) {
+ constructor(resourceService: ResourceService, toasterService: ToasterService, public formService: FormService,
+    telemetryService: TelemetryService, activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.telemetryService = telemetryService;
@@ -44,11 +51,46 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.startext = this.resourceService.frmelmnts.lbl.defaultstar;
+    this.resourceService.languageSelected$.subscribe(item => {
+      const formReadInputParams = {
+        formType: 'contentfeedback',
+        contentType: item.value,
+        formAction: 'get'
+      };
+      this.formService.getFormConfig(formReadInputParams).subscribe(
+        (formResponsedata) => {
+          const resObj = formResponsedata[0];
+          this.feedbackObj = [resObj[1], resObj[2], resObj[3], resObj[4], resObj[5]];
+        });
+    });
   }
+
   ratingChange(event) {
     this.contentRating = event;
+    this.startext = this.feedbackObj[event - 1]['ratingText'];
+    this.feedbackContent = this.feedbackObj[event - 1];
     this.enableSubmitBtn = true;
+    this.comments = [];
+    _.forEach(this.feedbackContent['options'], (feedback) => {
+      feedback['checked'] = false;
+    });
   }
+
+  public changeOptions(options) {
+    if (options['key'] === 'OTHER' && !this.showTextarea) {
+      this.showTextarea = true;
+    } else if (options['key'] === 'OTHER' && this.showTextarea) {
+      this.showTextarea = false;
+    }
+    if (this.comments.indexOf(options['key']) === -1) {
+      this.comments.push(options['key']);
+    } else {
+      const index = this.comments.indexOf(options['key']);
+      if (index !== -1) { this.comments.splice(index, 1); }
+    }
+  }
+
   public submit() {
     if (this.contentRating) {
       const feedbackTelemetry = {
@@ -61,18 +103,37 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
           type: _.get(this.contentData , 'contentType'),
           ver: this.contentData ? _.get(this.contentData , 'pkgVersion').toString() : '1.0'
         },
-        edata: {
-          rating: this.contentRating
+        edata: { }
+      };
+      _.forEach(this.feedbackContent['options'], (feedback) => {
+        if (feedback['checked']) {
+          const feedbackTelemetryClone = _.clone(feedbackTelemetry);
+          feedbackTelemetryClone['edata'] = { };
+          feedbackTelemetryClone['edata']['commentid'] = feedback['key'];
+          if (feedback['key'] === 'OTHER') {
+            feedbackTelemetryClone['edata']['commenttxt'] = this.feedbackText;
+          } else {
+            feedbackTelemetryClone['edata']['commenttxt'] = feedback['value'];
+          }
+          feedbackTelemetryClone['edata']['comments'] = this.comments.toString();
+          this.telemetryService.feedback(feedbackTelemetryClone);
         }
+      });
+      feedbackTelemetry['edata'] = {
+        rating: this.contentRating
       };
       this.telemetryService.feedback(feedbackTelemetry);
       this.toasterService.success(this.resourceService.messages.smsg.m0050);
     }
+    this.startext = this.resourceService.frmelmnts.lbl.defaultstar;
+    this.enableSubmitBtn = false;
     this.showContentRatingModal = false;
     this.closeModal.emit(true);
   }
 
   dismissModal() {
+    this.startext = this.resourceService.frmelmnts.lbl.defaultstar;
+    this.enableSubmitBtn = false;
     this.showContentRatingModal = false;
     this.closeModal.emit(true);
   }

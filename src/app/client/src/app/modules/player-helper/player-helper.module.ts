@@ -9,13 +9,16 @@ import {
 } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
+import { FormsModule } from '@angular/forms';
+
 @NgModule({
   imports: [
     CommonModule,
     SuiModule,
     TelemetryModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    FormsModule
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
