@@ -15,6 +15,7 @@
     }
 
     &__title {
+        display:flex;
         color: var(--primary-400);
         font-size: calculateRem(18px);
     }

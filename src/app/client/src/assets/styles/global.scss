@@ -239,3 +239,9 @@ app-workspace {
 .back-bar{
   top:5.95rem;
 }
+
+@include respond-below(sm){
+  .back-bar {
+    top: 13.54rem;
+  }
+}

@@ -67,7 +67,7 @@
             [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
         </div>
-        <hr *ngIf="!downloadedContents?.length" class="border">
+        <hr *ngIf="!downloadedContents?.length" class="border m-0">
       </div>
 
 
@@ -76,7 +76,7 @@
 
       <div class="text-center">
         <button type="button" *ngIf="downloadedContentsCount > MAX_CARDS_TO_SHOW"
-          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn" appTelemetryInteract
+          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn my-24" appTelemetryInteract
           [telemetryInteractEdata]="viewMoreButtonInteractEdata"
           (click)="gotoViewMore(false)">{{resourceService?.frmelmnts?.btn?.viewmore}}
           <i class="icon angle right"></i>
@@ -107,7 +107,7 @@
       </app-desktop-explore-content>
       <div class="text-center">
         <button type="button" *ngIf="onlineContentsCount > MAX_CARDS_TO_SHOW"
-          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn" appTelemetryInteract
+          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn my-24" appTelemetryInteract
           [telemetryInteractEdata]="viewMoreButtonInteractEdata"
           (click)="gotoViewMore(true)">{{resourceService?.frmelmnts?.btn?.viewmore}}
           <i class="icon angle right"></i>
