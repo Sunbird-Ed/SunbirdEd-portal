@@ -114,7 +114,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   handleInsufficentMemoryError(allContentList) {
     const noSpaceContentList = _.filter(allContentList, (content) =>
     content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
-    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'identifier');
+    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'id');
   }
   removeFromHandledFailedList(id) {
     this.handledFailedList = _.filter(this.handledFailedList, (content) => content.id !== id);
