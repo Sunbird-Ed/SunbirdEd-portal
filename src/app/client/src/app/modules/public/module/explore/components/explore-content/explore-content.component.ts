@@ -47,7 +47,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   showExportLoader = false;
   contentName: string;
   showDownloadLoader = false;
-
+  frameworkId;
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -60,6 +60,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.filterType = this.configService.appConfig.explore.filterType;
   }
   ngOnInit() {
+    this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
+      if (!channelData.err) {
+        this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
+      }
+    });
     this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
       mergeMap((orgDetails: any) => {
         this.hashTagId = orgDetails.hashTagId;
@@ -114,46 +119,36 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   private fetchContents() {
-    let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    const softConstraintData: any = {
-      filters: {
-        channel: this.hashTagId,
-      },
-      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
-      mode: 'soft'
-    };
-    if (this.dataDrivenFilters.board) {
-      softConstraintData.board = [this.dataDrivenFilters.board];
-    }
-    const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.queryParams,
-      'appliedFilters'), softConstraintData);
-    const option = {
-      filters: _.get(this.queryParams, 'appliedFilters') ? filters : manipulatedData.filters,
+    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+    filters.channel = this.hashTagId;
+    filters.contentType = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    const option: any = {
+      filters: filters,
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
       query: this.queryParams.key,
-      mode: _.get(manipulatedData, 'mode'),
+      mode: 'soft',
+      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {},
       facets: this.facets,
-      params: this.configService.appConfig.ExplorePage.contentApiQueryParams
+      params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
     };
-    option.filters.contentType = filters.contentType ||
-      ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-    if (manipulatedData.filters) {
-      option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
-    }
-    this.frameworkService.channelData$.subscribe((channelData) => {
-      if (!channelData.err) {
-        option.params.framework = _.get(channelData, 'channelData.defaultFramework');
+    if (this.queryParams.softConstraints) {
+      try {
+        option.softConstraints = JSON.parse(this.queryParams.softConstraints);
+      } catch {
+
       }
-    });
+    }
+    if (this.frameworkId) {
+      option.params.framework = this.frameworkId;
+    }
     this.searchService.contentSearch(option)
       .subscribe(data => {
         this.showLoader = false;
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.contentList = data.result.content;
+        this.contentList = data.result.content || [];
       }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -222,11 +217,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
-      const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier });
+      const obj = _.find(this.inViewLogs, { objid: elem.data.identifier });
       if (!obj) {
         this.inViewLogs.push({
-          objid: elem.data.metaData.identifier,
-          objtype: elem.data.metaData.contentType || 'content',
+          objid: elem.data.identifier,
+          objtype: elem.data.contentType || 'content',
           index: elem.id
         });
       }

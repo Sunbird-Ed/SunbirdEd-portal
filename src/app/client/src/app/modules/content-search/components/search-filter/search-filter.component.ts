@@ -31,6 +31,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   private selectedBoardLocalCopy: any = {};
   filterChangeEvent =  new Subject();
   @Input() defaultFilters;
+  @Input() pageId = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   @Output() filterChange: EventEmitter<any> = new EventEmitter();
   constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
@@ -152,46 +153,44 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       });
     }
   }
-  public getBoardInteractEdata(selectedBoard) {
+  public getBoardInteractEdata(selectedBoard: any = {}) {
     const selectBoardInteractEdata: IInteractEventEdata = {
-      id: 'board-select-button',
+      id: 'apply-filter',
       type: 'click',
-      pageid: this.router.url.split('/')[1] || 'library'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
-    if (selectedBoard) {
-      selectBoardInteractEdata['extra'] = {
-        board: selectedBoard.name
-      };
-    }
+    const appliedFilter: any = this.getSelectedFilter() || {};
+    appliedFilter.board = selectedBoard.name ? selectedBoard.name : appliedFilter.board;
+    selectBoardInteractEdata['extra'] = {
+      filters: appliedFilter
+    };
     return selectBoardInteractEdata;
   }
 
   public getMediumInteractEdata() {
-    const selectMediumInteractEdata: IInteractEventEdata = {
-      id: 'medium-select-button',
+    const selectBoardInteractEdata: IInteractEventEdata = {
+      id: 'apply-filter',
       type: 'click',
-      pageid: this.router.url.split('/')[1] || 'library'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
-    if (this.selectedMediumIndex || this.selectedMediumIndex === 0) {
-      selectMediumInteractEdata['extra'] = {
-        medium: [this.mediums[this.selectedMediumIndex]]
-      };
-    }
-    return selectMediumInteractEdata;
+    const appliedFilter = this.getSelectedFilter();
+    selectBoardInteractEdata['extra'] = {
+      filters: appliedFilter
+    };
+    return selectBoardInteractEdata;
   }
 
   public getGradeLevelInteractEdata() {
-    const selectGradeLevelInteractEdata: IInteractEventEdata = {
-      id: 'grade-level-select-button',
+    const selectBoardInteractEdata: IInteractEventEdata = {
+      id: 'apply-filter',
       type: 'click',
-      pageid: this.router.url.split('/')[1] || 'library'
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
-    if (this.selectedGradeLevelIndex || this.selectedGradeLevelIndex === 0) {
-      selectGradeLevelInteractEdata['extra'] = {
-        gradeLevel: [this.gradeLevels[this.selectedGradeLevelIndex]]
-      };
-    }
-    return selectGradeLevelInteractEdata;
+    const appliedFilter = this.getSelectedFilter();
+    selectBoardInteractEdata['extra'] = {
+      filters: appliedFilter
+    };
+    return selectBoardInteractEdata;
   }
 
   ngOnDestroy() {
