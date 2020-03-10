@@ -10,6 +10,7 @@ import {ResourceService} from '@sunbird/shared';
 export class MergeAccountStatusComponent implements OnInit {
   @ViewChild('modal') modal;
   isMergeSuccess: any = {};
+  error_type: string;
   redirectUri: string;
   mergeType: string;
 
@@ -22,6 +23,7 @@ export class MergeAccountStatusComponent implements OnInit {
       this.isMergeSuccess = queryParam.status === 'success';
       this.mergeType = queryParam.merge_type;
       this.redirectUri = queryParam.redirect_uri || '/resources';
+      this.error_type = queryParam.error_type;
     });
   }
 
