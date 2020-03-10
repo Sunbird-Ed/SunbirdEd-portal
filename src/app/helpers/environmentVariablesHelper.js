@@ -2,7 +2,6 @@
 const env = process.env
 const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
-
 let envVariables = {
 
   // Environment variables
@@ -13,18 +12,18 @@ let envVariables = {
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
-  LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
-  CONTENT_URL: env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
-  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
+  LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.ntp.net.in/api/',
+  CONTENT_URL: env.sunbird_content_player_url || 'https://staging.ntp.net.in/api/',
+  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.ntp.net.in',
   PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
-  PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.open-sunbird.org/auth',
+  PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.ntp.net.in/auth',
   PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
-  PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
-  PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://staging.open-sunbird.org/api/echo/',
-  CONFIG_URL: env.sunbird_config_service_url || 'https://staging.open-sunbird.org/api/config/',
+  PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjNDkyM2Y1Mjg1ZmY0NDdjYmYxMzgwNTQyM2ExZTk4YSJ9.hwQiG6OIFoIJ2O9ec6kau09ltJ-5xA5fWi6aM6NoLEU',
+  PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://staging.ntp.net.in/api/echo/',
+  CONFIG_URL: env.sunbird_config_service_url || 'https://staging.ntp.net.in/api/config/',
   EKSTEP_ENV: env.ekstep_env || 'qa',
   DEVICE_REGISTER_API: process.env.sunbird_device_register_api || 'https://api.open-sunbird.org/v3/device/register/',
-  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || 'https://staging.open-sunbird.org/api/v3/device/profile/',
+  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || 'https://staging.ntp.net.in/api/v3/device/profile/',
   sunbird_theme: env.sunbird_theme || 'default',
   BUILD_NUMBER: packageObj.version + '.' + packageObj.buildHash,
   sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug',
@@ -57,8 +56,8 @@ let envVariables = {
   KEY_CLOAK_PUBLIC: env.sunbird_keycloak_public || 'true',
   KEY_CLOAK_REALM: env.sunbird_keycloak_realm || 'sunbird',
   KEYCLOAK_GOOGLE_CLIENT: {
-    clientId: env.sunbird_google_keycloak_client_id,
-    secret: env.sunbird_google_keycloak_secret
+    clientId: env.sunbird_google_keycloak_client_id || 'google-auth',
+    secret: env.sunbird_google_keycloak_secret || '8486df4b-2ec0-4249-92d8-5f3a7064cd07'
   },
   KEYCLOAK_GOOGLE_ANDROID_CLIENT: {
     clientId: env.sunbird_google_android_keycloak_client_id,
@@ -74,7 +73,7 @@ let envVariables = {
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',
-  PORTAL_MERGE_AUTH_SERVER_URL: env.sunbird_portal_merge_auth_server_url || 'https://merge.staging.open-sunbird.org/auth',
+  PORTAL_MERGE_AUTH_SERVER_URL: env.sunbird_portal_merge_auth_server_url || 'https://merge.staging.ntp.net.in/auth',
 
 
   // Social login Configuration
@@ -92,12 +91,12 @@ let envVariables = {
   // BLOB and Storage Configuration
   CACHE_STORE: env.sunbird_cache_store || 'memory',
   PORTAL_SESSION_STORE_TYPE: env.sunbird_session_store_type || 'in-memory',
-  CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls,
+  CLOUD_STORAGE_URLS: env.sunbird_cloud_storage_urls || '',
   PORTAL_CASSANDRA_CONSISTENCY_LEVEL: env.sunbird_cassandra_consistency_level || 'one',
   PORTAL_CASSANDRA_REPLICATION_STRATEGY: env.sunbird_cassandra_replication_strategy || '{"class":"SimpleStrategy","replication_factor":1}',
   sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
-  sunbird_azure_account_name: env.sunbird_azure_account_name,
-  sunbird_azure_account_key: env.sunbird_azure_account_key,
+  sunbird_azure_account_name: env.sunbird_azure_account_name || 'sunbirddev',
+  sunbird_azure_account_key: 'k8NzvVqH0WSwCARJZo2h6G28AT2775MbrhMi9Akt4HNdYH009WVWmjjs31L08VEMnvRxas1DU7UM3/KtuMxpVg==',
   desktop_azure_crash_container_name: env.desktop_crash_container_name || 'desktopappcrashlogs',
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
@@ -113,7 +112,7 @@ let envVariables = {
   content_Service_Local_BaseUrl: env.sunbird_content_service_local_base_url || 'http://content-service:5000',
   CONTENT_SERVICE_UPSTREAM_URL: env.sunbird_content_service_upstream_url || 'http://localhost:5000/',
   LEARNER_SERVICE_UPSTREAM_URL: env.sunbird_learner_service_upstream_url || 'http://localhost:9000/',
-  DATASERVICE_URL: env.sunbird_dataservice_url || 'https://staging.open-sunbird.org/api/',
+  DATASERVICE_URL: env.sunbird_dataservice_url || 'https://staging.ntp.net.in/api/',
   PORTAL_EXT_PLUGIN_URL: process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/',
 
 
@@ -143,9 +142,7 @@ let envVariables = {
   sunbird_processing_kafka_host: process.env.sunbird_processing_kafka_host,
   sunbird_sso_kafka_topic: process.env.sunbird_sso_kafka_topic
 }
-
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
 module.exports = envVariables
-

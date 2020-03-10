@@ -9,7 +9,7 @@ import {
   OfflineCardComponent, OfflineBannerComponent, OfflineApplicationDownloadComponent, FullPageModalComponent
 } from './components';
 import {
-  ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
+  ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService, TraceService,
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
   OfflineCardService
 } from './services';
@@ -49,7 +49,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: [ResourceService, ConfigService, ToasterService, PaginationService,
+      providers: [ResourceService, ConfigService, ToasterService, PaginationService, TraceService,
         RouterNavigationService, WindowScrollService, NavigationHelperService, CacheService, UtilService, ContentUtilsServiceService,
         DeviceDetectorModule, DeviceDetectorService, BrowserCacheTtlService, ExternalUrlPreviewService, OfflineCardService]
     };

@@ -1,7 +1,7 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
+import { ServerResponse, RequestParam, HttpOptions, TraceService } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
@@ -173,6 +173,8 @@ export class DataService {
    * for preparing headers
    */
   private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
+    console.log("=====", headers)
+    
     const default_headers = {
       'Accept': 'application/json',
       // 'X-Consumer-ID': 'X-Consumer-ID',
@@ -180,6 +182,8 @@ export class DataService {
       'ts': moment().format(),
       'X-msgid': UUID.UUID()
     };
+    let traceObj: TraceService;
+    // traceObj.startSpan( default_headers['X-msgid'].toString());
     try {
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
       this.appId = (<HTMLInputElement>document.getElementById('appId')).value;

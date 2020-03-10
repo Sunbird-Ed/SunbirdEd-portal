@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { combineLatest as observableCombineLatest, iif, of } from 'rxjs';
-import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, ConfigService, UtilService, NavigationHelperService, TraceService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SearchService, SearchParam, PlayerService, CoursesService, UserService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
@@ -53,6 +53,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   public singleContentRedirect = '';
+
   isOffline: boolean = environment.isOffline;
   showExportLoader = false;
   contentName: string;
@@ -71,7 +72,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     public utilService: UtilService, public navigationhelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
     public contentManagerService: ContentManagerService, public publicPlayerService: PublicPlayerService,
-    private dialCodeService: DialCodeService) {
+    private dialCodeService: DialCodeService, public traceService: TraceService) {
   }
 
   ngOnInit() {

@@ -1,8 +1,9 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService, TraceService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
+
 @Component({
   selector: 'app-get',
   templateUrl: './get.component.html',
@@ -29,10 +30,12 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
   * To navigate to other pages
    */
   public router: Router;
+  public span;
+
   instance: string;
 
   constructor(resourceService: ResourceService, router: Router, public activatedRoute: ActivatedRoute,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public traceService: TraceService) {
     this.resourceService = resourceService;
     this.router = router;
   }
@@ -60,6 +63,7 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public navigateToSearch() {
     if (this.searchKeyword) {
+      this.traceService.startTrace('qr-code');
       this.router.navigate(['/get/dial', _.trim(this.searchKeyword)]);
     }
   }

@@ -7,7 +7,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
   SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule, SessionExpiryInterceptor } from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, TraceService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
@@ -17,6 +17,7 @@ import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storag
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -27,7 +28,7 @@ import { PluginModules } from './framework.config';
     CommonModule,
     HttpClientModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-    SuiRatingModule, SuiCollapseModule,
+    SuiRatingModule, SuiCollapseModule, 
     SharedModule.forRoot(),
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
@@ -39,7 +40,7 @@ import { PluginModules } from './framework.config';
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
   providers: [
-    CacheService,
+    CacheService, TraceService,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true }
   ]

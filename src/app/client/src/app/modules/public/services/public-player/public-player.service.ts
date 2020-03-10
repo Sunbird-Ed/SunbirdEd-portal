@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { UserService, CollectionHierarchyAPI, PublicDataService, OrgDetailsService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService
+  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService, TraceService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { environment } from '@sunbird/environment';
@@ -29,7 +29,7 @@ export class PublicPlayerService {
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
-    public resourceService: ResourceService) {
+    public resourceService: ResourceService, public traceService: TraceService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
       this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
@@ -150,6 +150,7 @@ export class PublicPlayerService {
 
   public playContent(event) {
     this.navigationHelperService.storeResourceCloseUrl();
+    this.traceService.endTrace();
     setTimeout(() => {
       if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         if (event.data.contentType === 'Course') {

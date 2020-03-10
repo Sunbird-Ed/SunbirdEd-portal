@@ -1,12 +1,13 @@
 import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
-import { PlayerConfig } from '@sunbird/shared';
+import { PlayerConfig, } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
-import { ToasterService, ResourceService } from '@sunbird/shared';
+import { ToasterService, ResourceService, TraceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html'
@@ -33,7 +34,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
  */
   @ViewChild('modal') modal;
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
-    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService) {
+    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService, public traceService: TraceService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -64,6 +65,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       playerElement.onload = (event) => {
         try {
           this.adjustPlayerHeight();
+          this.traceService.endTrace();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
           window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
@@ -82,6 +84,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
       playerElement.onload = (event) => {
         try {
           this.adjustPlayerHeight();
+          this.traceService.endTrace();
           playerElement.contentWindow.initializePreview(this.playerConfig);
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
           window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
