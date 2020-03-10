@@ -31,7 +31,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   private selectedBoardLocalCopy: any = {};
   filterChangeEvent =  new Subject();
   @Input() defaultFilters;
-  @Input() pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
+  @Input() pageId = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   @Output() filterChange: EventEmitter<any> = new EventEmitter();
   constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {

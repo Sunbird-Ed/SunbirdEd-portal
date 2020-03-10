@@ -217,11 +217,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
-      const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier });
+      const obj = _.find(this.inViewLogs, { objid: elem.data.identifier });
       if (!obj) {
         this.inViewLogs.push({
-          objid: elem.data.metaData.identifier,
-          objtype: elem.data.metaData.contentType || 'content',
+          objid: elem.data.identifier,
+          objtype: elem.data.contentType || 'content',
           index: elem.id
         });
       }
