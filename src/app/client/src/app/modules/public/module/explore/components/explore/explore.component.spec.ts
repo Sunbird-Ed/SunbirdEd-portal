@@ -8,16 +8,17 @@ import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Response } from './explore.component.spec.data';
+import { RESPONSE } from './explore.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ExploreComponent } from './explore.component';
+import { ContentSearchService } from '@sunbird/content-search';
 
 describe('ExploreComponent', () => {
   let component: ExploreComponent;
   let fixture: ComponentFixture<ExploreComponent>;
   let toasterService, userService, pageApiService, orgDetailsService;
-  const mockPageSection: any = Response.searchResult;
+  const mockPageSection: any = RESPONSE.searchResult;
   let sendOrgDetails = true;
   let sendPageApi = true;
   class RouterStub {
@@ -29,7 +30,8 @@ describe('ExploreComponent', () => {
       'fmsg': {
         'm0027': 'Something went wrong',
         'm0090': 'Could not download. Try again later',
-        'm0091': 'Could not copy content. Try again later'
+        'm0091': 'Could not copy content. Try again later',
+        'm0004': 'Could not fetch date, try again later...'
       },
       'stmsg': {
         'm0009': 'error',
@@ -88,7 +90,92 @@ describe('ExploreComponent', () => {
       return throwError({});
     });
   });
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should get channel id if slug is not available', () => {
+    const contentSearchService = TestBed.get(ContentSearchService);
+    component.activatedRoute.snapshot.params.slug = '';
+    spyOn<any>(orgDetailsService, 'getCustodianOrg').and.returnValue(of(RESPONSE.withoutSlugGetChannelResponse));
+    spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
+    spyOn<any>(component, 'setNoResultMessage').and.callThrough();
+    component.ngOnInit();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
+    expect(component.initFilter).toBe(true);
+  });
+
+  it('should get channel id if slug is available', () => {
+    const contentSearchService = TestBed.get(ContentSearchService);
+    component.activatedRoute.snapshot.params.slug = 'tn';
+    sendOrgDetails = true;
+    spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
+    spyOn<any>(component, 'setNoResultMessage').and.callThrough();
+    component.ngOnInit();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
+    expect(component.initFilter).toBe(true);
+  });
+
+  it('should show error if contentSearchService is not initialized and slug is not available', fakeAsync(() => {
+    const contentSearchService = TestBed.get(ContentSearchService);
+    component.activatedRoute.snapshot.params.slug = '';
+    const router = TestBed.get(Router);
+    spyOn<any>(orgDetailsService, 'getCustodianOrg').and.callFake(() => throwError({}));
+    spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
+    spyOn<any>(component, 'setNoResultMessage').and.callThrough();
+    spyOn<any>(toasterService, 'error');
+    component.ngOnInit();
+    tick(5000);
+    expect(toasterService.error).toHaveBeenCalledWith('Fetching content failed. Please try again later.');
+    expect(router.navigate).toHaveBeenCalledWith(['']);
+  }));
+
+  it('should show error if contentSearchService is not initialized and slug is available', fakeAsync(() => {
+    const contentSearchService = TestBed.get(ContentSearchService);
+    component.activatedRoute.snapshot.params.slug = 'ap';
+    sendOrgDetails = false;
+    const router = TestBed.get(Router);
+    spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
+    spyOn<any>(component, 'setNoResultMessage').and.callThrough();
+    spyOn<any>(toasterService, 'error');
+    component.ngOnInit();
+    tick(5000);
+    expect(toasterService.error).toHaveBeenCalledWith('Fetching content failed. Please try again later.');
+    expect(router.navigate).toHaveBeenCalledWith(['']);
+  }));
+
+  it('should fetch the filters and set to default values', () => {
+    spyOn<any>(component, 'fetchContents');
+    component.getFilters(RESPONSE.selectedFilters);
+    expect(component.showLoader).toBe(true);
+    expect(component.apiContentList).toEqual([]);
+    expect(component.pageSections).toEqual([]);
+    expect(component['fetchContents']).toHaveBeenCalled();
+  });
+
+  it('should navigate to search page', () => {
+    component.selectedFilters = RESPONSE.selectedFilters;
+    const router = TestBed.get(Router);
+    component.navigateToExploreContent();
+    expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {queryParams: component.selectedFilters});
+  });
+
+  it('should fetch contents and disable loader', () => {
+    sendPageApi = true;
+    component.getFilters(RESPONSE.selectedFilters);
+    expect(component.showLoader).toBe(false);
+  });
+
+  it('should fetch contents, disable the loader and set values to default', () => {
+    sendPageApi = false;
+    spyOn<any>(toasterService, 'error');
+    component.getFilters(RESPONSE.selectedFilters);
+    expect(component.showLoader).toBe(false);
+    expect(component.pageSections).toEqual([]);
+    expect(component.apiContentList).toEqual([]);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+  });
+
+  it('should play content', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    spyOn<any>(publicPlayerService, 'playContent');
+    component.playContent(RESPONSE.playContentEvent);
+    expect(publicPlayerService.playContent).toHaveBeenCalledWith(RESPONSE.playContentEvent);
   });
 });
