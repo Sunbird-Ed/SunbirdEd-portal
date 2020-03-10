@@ -25,7 +25,7 @@
             <app-no-result-found [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
 [buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton"></app-no-result-found>
         </div>
-        <div class="twelve wide column right aligned">
+        <div class="twelve wide column right aligned pt-16">
             <div class="sb-pagination-container flex-jc-flex-end">
                 <div class="sb-pagination" *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
                     <div class="menu" *ngIf="paginationDetails.pages.length">

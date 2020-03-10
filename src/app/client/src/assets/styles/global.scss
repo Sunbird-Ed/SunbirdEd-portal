@@ -243,3 +243,18 @@ app-workspace {
     }
   }
 }
+
+// common consumption cards for library
+.sb-library-cards{
+  .ui.grid{
+    padding: 1rem 0;
+    sb-library-cards-grid{
+      .header{
+        margin:0 0 1rem;
+      }
+      .cards-container .item{
+        margin: 0 0 1.5rem 0;
+      }
+    }
+  }
+}
