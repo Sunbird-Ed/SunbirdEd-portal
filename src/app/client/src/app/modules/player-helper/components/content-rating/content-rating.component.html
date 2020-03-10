@@ -19,7 +19,24 @@ appBodyScroll
   <div class="sb-modal-content d-flex flex-ai-center">
     <div class="field">
       <sui-rating (valueChange)="ratingChange($event)" [maximum]="5"  class="sb-rating ui huge star rating"></sui-rating>
-      <div class="fs-1 my-10"> {{resourceService?.frmelmnts?.lbl?.helpUsRatingContent}}</div>
+      <div class="fs-1 my-10"> {{startext}}</div>
+    </div>
+  </div>
+
+  <div class="content-bar" *ngIf="enableSubmitBtn">
+    <div>
+      {{feedbackContent['question']}}
+    </div>
+    <div class="options-box">
+      <label class="mt-16 mb-0 options-content" *ngFor="let feedback of feedbackContent['options']">
+        <div class="options-content-left">
+          <span [class.options-content-checked]="feedback.checked">{{feedback['value']}}</span>
+        </div>
+        <input type="checkbox" role="checkbox" [(ngModel)]="feedback.checked" (click)="changeOptions(feedback)" class="mr-10 cursor-pointer options-checkbox">
+      </label>
+      <div *ngIf="showTextarea" class="options-content">
+        <textarea rows="5" maxlength="1000"class="textarea" [(ngModel)]="feedbackText"></textarea>
+      </div>
     </div>
   </div>
   <!--/Content-->
