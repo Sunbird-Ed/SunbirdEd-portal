@@ -15,6 +15,7 @@ export class NoResultComponent implements OnInit {
   @Input() buttonText: string;
   @Input() showExploreContentButton: boolean;
   @Input() filters;
+  @Input() telemetryInteractEdataObject;
   @Output() exploreMoreContent = new EventEmitter();
   instance: string;
 
