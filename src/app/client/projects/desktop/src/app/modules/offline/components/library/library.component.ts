@@ -184,15 +184,17 @@ export class LibraryComponent implements OnInit, OnDestroy {
         if (this.dataDrivenFilters.board) {
             softConstraintData.board = this.dataDrivenFilters.board;
         }
-        const facets = ['board', 'medium', 'gradeLevel', 'subject'];
         const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.dataDrivenFilters, 'appliedFilters'),
             softConstraintData);
         const option = {
             filters: {},
             mode: _.get(manipulatedData, 'mode'),
-            facets: facets,
             params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
         };
+        if (this.isConnected) {
+            const facets = ['board', 'medium', 'gradeLevel', 'subject'];
+            option['facets'] = facets;
+        }
         if (addFilters) {
             option.filters = _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters;
             option.filters['contentType'] = filters.contentType || ['TextBook'];

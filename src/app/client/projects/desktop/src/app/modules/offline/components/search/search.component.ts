@@ -12,7 +12,6 @@ import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { ContentManagerService, ConnectionService } from '../../services';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { DialCodeService } from '../../../../../../../../src/app/modules/dial-code-search/services/dial-code/dial-code.service';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -141,7 +140,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       onlineRequest = _.cloneDeep(this.constructSearchRequest());
       onlineRequest.params.online = true;
 
-      offlineRequest = _.cloneDeep(this.constructSearchRequest());
+      offlineRequest = _.cloneDeep(this.constructSearchRequest(true));
       offlineRequest.params.online = false;
     }
 
@@ -225,7 +224,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
   }
 
-  constructSearchRequest() {
+  constructSearchRequest(isOffline?) {
     let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     const softConstraintData: any = {
@@ -245,8 +244,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       mode: _.get(manipulatedData, 'mode'),
       params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
       query: this.queryParams.key,
-      facets: this.facets,
     };
+    if (!isOffline) {
+      option['facets'] = this.facets;
+     }
+
 
     option.filters['contentType'] = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
     if (manipulatedData.filters) {
