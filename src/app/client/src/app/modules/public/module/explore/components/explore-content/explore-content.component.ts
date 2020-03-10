@@ -196,11 +196,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       pageid: this.activatedRoute.snapshot.data.telemetry.pageid
     };
 
-    this.exploreMoreButtonEdata = {
-        id: 'explore-more-content-button' ,
-        type: 'click' ,
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-      };
   }
   public playContent(event) {
     // For offline environment content will only play when event.action is open
