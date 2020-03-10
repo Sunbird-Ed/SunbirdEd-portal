@@ -1,7 +1,7 @@
    <div class="content-grid m-0 mt-24">
         <div class="twelve wide column" *ngIf="contentList?.length">
             <div class="sb-card-grid">
-                <div class="sb-card-grid--item" *ngFor="let content of contentList;let i = index;">
+                <div class="sb-card-grid__item" *ngFor="let content of contentList;let i = index;">
                     <sb-library-card [content]="content" [type]="'desktop_textbook'"
                         [cardImg]="content?.cardImg || 'assets/images/book.png'" [hover-template]="hoverTemplate">
                         <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
