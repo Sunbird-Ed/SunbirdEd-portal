@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
 import { ContentManagerService, ConnectionService } from '../../services';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { DialCodeService } from '../../../../../../../../src/app/modules/dial-code-search/services/dial-code/dial-code.service';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
