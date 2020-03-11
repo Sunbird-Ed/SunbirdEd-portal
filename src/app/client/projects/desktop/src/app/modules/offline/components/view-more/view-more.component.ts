@@ -42,7 +42,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   showDownloadLoader = false;
   downloadedContents: any[] = [];
   visits: any = [];
-
+  offlineFacets: any;
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
@@ -179,6 +179,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
           this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
             this.configService.appConfig.SEARCH.PAGE_LIMIT);
         }
+        this.offlineFacets =  _.get(data, 'result.facets');
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
         this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
         this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);

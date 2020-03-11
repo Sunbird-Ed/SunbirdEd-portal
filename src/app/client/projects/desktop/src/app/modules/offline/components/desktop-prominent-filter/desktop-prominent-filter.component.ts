@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, of, throwError, Observable, Subject } from 'rxjs';
 import { first, mergeMap, map, catchError, filter, takeUntil } from 'rxjs/operators';
@@ -14,14 +14,14 @@ import { FrameworkService, FormService, PermissionService, OrgDetailsService } f
     templateUrl: './desktop-prominent-filter.component.html',
     styleUrls: ['./desktop-prominent-filter.component.scss']
 })
-export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
+export class DesktopProminentFilterComponent implements OnInit, OnDestroy , OnChanges{
 
     @Input() filterEnv: string;
     @Input() hashTagId = '';
     @Input() ignoreQuery = [];
     @Input() pageId: string;
     @Input() frameworkName: string;
-
+    @Input() offlineFacets;
     @Output() prominentFilter = new EventEmitter();
     @Output() filterChange: EventEmitter<any> = new EventEmitter();
 
@@ -86,6 +86,18 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy {
         this.setFilterInteractData();
     }
 
+    ngOnChanges() {
+        if (this.offlineFacets && this.notBrowse()) {
+            _.forEach(this.formFieldProperties, field => {
+                const facet = _.find(this.offlineFacets, {name: _.get(field, 'code')});
+                const filteredData = _.map(facet.values, (data) => ({name: data.name}));
+                field.range = filteredData;
+        });
+    }
+    }
+    notBrowse() {
+       return (!this.router.url.includes('browse') && this.router.url.includes('view-more'));
+    }
     private setFilterInteractData() {
         setTimeout(() => { // wait for model to change
             const filters = _.pickBy(this.formInputData, (val, key) =>
