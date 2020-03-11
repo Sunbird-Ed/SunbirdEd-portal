@@ -14,7 +14,7 @@ import { FrameworkService, FormService, PermissionService, OrgDetailsService } f
     templateUrl: './desktop-prominent-filter.component.html',
     styleUrls: ['./desktop-prominent-filter.component.scss']
 })
-export class DesktopProminentFilterComponent implements OnInit, OnDestroy , OnChanges{
+export class DesktopProminentFilterComponent implements OnInit, OnDestroy , OnChanges {
 
     @Input() filterEnv: string;
     @Input() hashTagId = '';
