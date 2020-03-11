@@ -100,13 +100,24 @@ describe('AboutUsComponent', () => {
     expect(component.showModal).toBeTruthy();
   });
 
-  it('should change display modal', () => {
+  it('should change display modal and message to be termsOfUse', () => {
     component.termsIframe = {nativeElement: {contentWindow: {document: {title: 'Error'}}}};
     spyOn(component['toasterService'], 'error');
+    component.isConnected = true;
     component.isIFrameLoaded();
     expect(component.showLoader).toBeFalsy();
     expect(component.showModal).toBeFalsy();
-    expect(component['toasterService'].error).toHaveBeenCalledWith(appInfoResponse.resourceBundle.messages.emsg.desktop.termsOfUse);
+    expect(component['toasterService'].error).toHaveBeenCalledWith(appInfoResponse.resourceBundle.messages.desktop.emsg.termsOfUse);
+  });
+
+  it('should change display modal and message to be noConnectionTerms ', () => {
+    component.termsIframe = {nativeElement: {contentWindow: {document: {title: 'Error'}}}};
+    spyOn(component['toasterService'], 'error');
+    component.isConnected = false;
+    component.isIFrameLoaded();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.showModal).toBeFalsy();
+    expect(component['toasterService'].error).toHaveBeenCalledWith(appInfoResponse.resourceBundle.messages.desktop.emsg.noConnectionTerms);
   });
 
 });
