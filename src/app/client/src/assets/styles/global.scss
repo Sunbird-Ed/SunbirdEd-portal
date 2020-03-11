@@ -230,18 +230,19 @@ app-workspace {
   margin-top: -35px;
 }
 
+/* for sticky header desktop-app */
 .sb-sticky{
   position: -webkit-sticky;
   position: sticky;
-  z-index: 4;
 }
 
 .back-bar{
-  top:5.95rem;
+  top:calculateRem(65px);
+  z-index: 2;
 }
 
 @include respond-below(sm){
   .back-bar {
-    top: 13.54rem;
+    top: calculateRem(182px);
   }
 }

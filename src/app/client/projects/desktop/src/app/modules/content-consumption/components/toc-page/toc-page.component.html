@@ -1,5 +1,5 @@
 <app-content-header [collectionData]="collectionData" [showUpdate]="showUpdate"></app-content-header>
-<div class="ui container" [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
+<div class="ui container player-information" [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
   <div class="sb-g">
     <div class="sb-g-col-xs-12 sb-g-col-md-7 sb-g-col-lg-8">
       <app-contentplayer-page [tocPage]="true" [contentDetails]="activeContent" [isContentPresent]="isContentPresent"  [objectRollUp]="objectRollUp"></app-contentplayer-page>
