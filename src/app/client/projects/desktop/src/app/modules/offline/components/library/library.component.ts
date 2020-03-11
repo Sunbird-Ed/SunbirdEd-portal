@@ -171,7 +171,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.pageSections = [];
     }
 
-    constructSearchRequest(addFilters, isOffline?) {
+    constructSearchRequest(addFilters) {
         let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
         filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
         const softConstraintData: any = {
