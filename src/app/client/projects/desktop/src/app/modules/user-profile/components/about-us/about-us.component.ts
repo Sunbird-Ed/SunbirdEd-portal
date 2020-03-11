@@ -44,7 +44,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   }
 
   checkOnlineStatus() {
-    this.connectionService.monitor().subscribe(isConnected => {
+    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
     });
   }
@@ -66,18 +66,17 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   }
 
   toggleTocModal() {
-      this.showLoader = this.showModal = true;
+    this.showLoader = this.showModal = this.isConnected;
+    if (!this.isConnected) {
+      this.toasterService.error(this.resourceService.messages.desktop.emsg.noConnectionTerms);
+    }
   }
 
   isIFrameLoaded() {
     this.showLoader = false;
     if (this.termsIframe.nativeElement.contentWindow.document.title === 'Error') {
       this.showModal = false;
-      if (this.isConnected) {
-        this.toasterService.error(this.resourceService.messages.desktop.emsg.termsOfUse);
-      } else {
-        this.toasterService.error(this.resourceService.messages.desktop.emsg.noConnectionTerms);
-      }
+      this.toasterService.error(this.resourceService.messages.desktop.emsg.termsOfUse);
     }
   }
 
