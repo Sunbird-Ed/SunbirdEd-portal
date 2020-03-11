@@ -27,6 +27,9 @@ describe('LibrarySearchComponent', () => {
       'fmsg': {},
       'emsg': {},
       'stmsg': {}
+    },
+    frmelmnts: {
+      lbl: {}
     }
   };
   class FakeActivatedRoute {
