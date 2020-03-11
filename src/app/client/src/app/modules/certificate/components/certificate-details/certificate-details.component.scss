@@ -1,4 +1,5 @@
 @import 'variables';
+@import "mixins/mixins";
 
 .sb-mobileDevice {
     .sb-mobileDevice-screen {
@@ -62,7 +63,7 @@
     background-position: center;
     height: 100%;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: calculateRem(5px);
   }
 
   ::ng-deep {
