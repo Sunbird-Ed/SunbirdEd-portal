@@ -28,7 +28,7 @@ export class NoResultComponent implements OnInit {
     this.exploreMoreContentEdata = {
       ...this.telemetryInteractEdataObject,
       extra : {
-      ... this.filters
+      ...this.filters
       }
     };
   }
