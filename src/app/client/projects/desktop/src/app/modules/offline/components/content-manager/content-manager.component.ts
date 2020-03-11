@@ -90,14 +90,31 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         })).subscribe((apiResponse: any) => {
           this.handleInsufficentMemoryError(apiResponse);
           this.contentResponse = _.filter(apiResponse, (o) => {
+            if (o.status !== 'canceled' && o.addedUsing === 'download') {
+              const statusMsg = this.getContentStatus(o.contentDownloadList);
+              o.status = statusMsg ? statusMsg : o.status;
+            }
             return o.status !== 'canceled';
           });
         });
   }
+
+  getContentStatus(content) {
+    const notCompleted = _.find(content, c => {
+      return (!_.includes(['COMPLETE', 'EXTRACT'], c.step));
+    });
+    if (!notCompleted) {
+      const extracting = _.find(content, c => {
+        return c.step === 'EXTRACT';
+      });
+      if (extracting) { return 'extract'; }
+    }
+  }
+
   handleInsufficentMemoryError(allContentList) {
     const noSpaceContentList = _.filter(allContentList, (content) =>
     content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
-    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'identifier');
+    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'id');
   }
   removeFromHandledFailedList(id) {
     this.handledFailedList = _.filter(this.handledFailedList, (content) => content.id !== id);
