@@ -4,7 +4,7 @@ const telemetryHelper = require('../helpers/telemetryHelper')
 const googleDid = '2c010e13a76145d864e459f75a176171';
 const logger = require('sb_logger_util_v2')
 const utils = require('../helpers/utilityService');
-const GOOGLE_SIGN_IN_DELAY = 2000;
+const GOOGLE_SIGN_IN_DELAY = 3000;
 
 module.exports = (app) => {
 
