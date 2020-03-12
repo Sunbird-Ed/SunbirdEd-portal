@@ -23,7 +23,8 @@
     </div>
   </div>
 
-  <app-desktop-prominent-filter [pageId]="activatedRoute?.snapshot?.data?.telemetry?.pageid" [hidden]="!showFilters"
+  <app-desktop-prominent-filter [pageId]="activatedRoute?.snapshot?.data?.telemetry?.pageid" 
+  [filterData] = "filterData" [hidden]="!showFilters"
     *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [hashTagId]="hashTagId"
     (prominentFilter)="getFilters($event)" (filterChange)="onFilterChange($event)">
   </app-desktop-prominent-filter>
