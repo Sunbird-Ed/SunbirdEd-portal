@@ -196,7 +196,7 @@ describe('DesktopExploreContentComponent', () => {
     spyOn(publicPlayerService, 'updateDownloadStatus');
     spyOn(utilService, 'addHoverData');
 
-    component.updateCardData(downloadList);
+    component.updateCardData();
 
     expect(publicPlayerService.updateDownloadStatus).toHaveBeenCalledTimes(4);
     expect(utilService.addHoverData).toHaveBeenCalled();
