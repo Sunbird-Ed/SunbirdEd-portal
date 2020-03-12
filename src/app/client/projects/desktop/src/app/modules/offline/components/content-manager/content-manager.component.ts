@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy , EventEmitter, Output} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { timer, Subject, combineLatest } from 'rxjs';
 import { switchMap, map, filter, takeUntil } from 'rxjs/operators';
@@ -28,7 +28,6 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   handledFailedList = [];
   unHandledFailedList = [];
   deletedContents: string [] = [];
-  localContentData: any = [];
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -91,14 +90,31 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         })).subscribe((apiResponse: any) => {
           this.handleInsufficentMemoryError(apiResponse);
           this.contentResponse = _.filter(apiResponse, (o) => {
+            if (o.status !== 'canceled' && o.addedUsing === 'download') {
+              const statusMsg = this.getContentStatus(o.contentDownloadList);
+              o.status = statusMsg ? statusMsg : o.status;
+            }
             return o.status !== 'canceled';
           });
         });
   }
+
+  getContentStatus(content) {
+    const notCompleted = _.find(content, c => {
+      return (!_.includes(['COMPLETE', 'EXTRACT'], c.step));
+    });
+    if (!notCompleted) {
+      const extracting = _.find(content, c => {
+        return c.step === 'EXTRACT';
+      });
+      if (extracting) { return 'extract'; }
+    }
+  }
+
   handleInsufficentMemoryError(allContentList) {
     const noSpaceContentList = _.filter(allContentList, (content) =>
     content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
-    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'identifier');
+    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'id');
   }
   removeFromHandledFailedList(id) {
     this.handledFailedList = _.filter(this.handledFailedList, (content) => content.id !== id);
@@ -240,6 +256,12 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       };
     }
     return interactData;
+  }
+
+  getContentList() {
+    if (this.isOpen) {
+      this.apiCallSubject.next();
+    }
   }
 
   ngOnDestroy() {

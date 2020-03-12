@@ -293,6 +293,113 @@ export const response = {
             'failedReason': 'Disk space is low, couldnt extract Ecar',
             'addedUsing': 'import'
           }
+    ],
+    contentResponse2: [
+      {
+        'identifier': 'do_31263704531999948812766',
+        'id': 'b7639bb8-565c-47b9-95b2-932a99c42940',
+        'name': 'Know-how - Teacher Hand Book',
+        'addedUsing': 'download',
+        'contentDownloadList': [
+          {
+            'downloadId': '031e007c-6ed4-402e-a788-a0b42a1d90e2',
+            'identifier': 'do_31263704531999948812766',
+            'size': 1769988,
+            'step': 'COMPLETE'
+          },
+          {
+            'downloadId': 'be7ab587-77bb-405b-9d0d-7de1d89854a7',
+            'identifier': 'do_31261945287429324822014',
+            'size': 26409,
+            'step': 'COMPLETE'
+          },
+          {
+            'downloadId': '1c18c181-15fc-4111-a85d-2ee7f43d0feb',
+            'identifier': 'do_31261945324662784022036',
+            'size': 26405,
+            'step': 'COMPLETE'
+          }
+        ]
+      },
+      {
+        'identifier': 'do_31263704531999948812890',
+        'id': 'b7639bb8-565c-47b9-95b2-932a99c42940',
+        'name': 'Know-how - Teacher Hand Book',
+        'addedUsing': 'download',
+        'contentDownloadList': [
+          {
+            'downloadId': '031e007c-6ed4-402e-a788-a0b42a1d90e2',
+            'identifier': 'do_31263704531999948812890',
+            'size': 1769988,
+            'step': 'EXTRACT'
+          },
+          {
+            'downloadId': 'be7ab587-77bb-405b-9d0d-7de1d89854a7',
+            'identifier': 'do_31261945287429324822014',
+            'size': 26409,
+            'step': 'DOWNLOAD'
+          },
+          {
+            'downloadId': '1c18c181-15fc-4111-a85d-2ee7f43d0feb',
+            'identifier': 'do_31261945324662784022036',
+            'size': 26405,
+            'step': 'COMPLETE'
+          }
+        ]
+      },
+      {
+        'identifier': 'do_31263704531999948812869',
+        'id': 'b7639bb8-565c-47b9-95b2-932a99c42940',
+        'name': 'Know-how - Teacher Hand Book',
+        'addedUsing': 'download',
+        'contentDownloadList': [
+          {
+            'downloadId': '031e007c-6ed4-402e-a788-a0b42a1d90e2',
+            'identifier': 'do_31263704531999948812869',
+            'size': 1769988,
+            'step': 'DOWNLOAD'
+          },
+          {
+            'downloadId': 'be7ab587-77bb-405b-9d0d-7de1d89854a7',
+            'identifier': 'do_31261945287429324822014',
+            'size': 26409,
+            'step': 'EXTRACT'
+          },
+          {
+            'downloadId': '1c18c181-15fc-4111-a85d-2ee7f43d0feb',
+            'identifier': 'do_31261945324662784022036',
+            'size': 26405,
+            'step': 'EXTRACT'
+          }
+        ]
+      },
+      {
+        'identifier': 'do_31263704531999948812870',
+        'id': 'b7639bb8-565c-47b9-95b2-932a99c42940',
+        'name': 'Know-how - Teacher Hand Book',
+        'addedUsing': 'download',
+        'contentDownloadList': [
+          {
+            'downloadId': '031e007c-6ed4-402e-a788-a0b42a1d90e2',
+            'identifier': 'do_31263704531999948812766',
+            'size': 1769988,
+            'step': 'COMPLETE'
+          },
+          {
+            'downloadId': 'be7ab587-77bb-405b-9d0d-7de1d89854a7',
+            'identifier': 'do_31261945287429324822014',
+            'size': 26409,
+            'step': 'EXTRACT'
+          },
+          {
+            'downloadId': '1c18c181-15fc-4111-a85d-2ee7f43d0feb',
+            'identifier': 'do_31261945324662784022036',
+            'size': 26405,
+            'step': 'EXTRACT'
+          }
+        ]
+      }
+
     ]
 
 };

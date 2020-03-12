@@ -18,7 +18,8 @@ export class SessionExpiryInterceptor implements HttpInterceptor {
   }
   handleSessionExpiry(event) {
     if ([401, '401'].includes(event.status) && this.userService.loggedIn
-      && (event.error.responseCode === 'SESSION_EXPIRED' || event.error.responseCode === 'UNAUTHORIZED_ACCESS')) {
+      && (event.error.responseCode === 'SESSION_EXPIRED' || event.error.responseCode === 'UNAUTHORIZED_ACCESS'
+      || (event.error.params && event.error.params.err === 'UNAUTHORIZED_USER'))) {
       this.sessionExpired = true;
       return of(undefined); // to help stop event propagation
     } else {
