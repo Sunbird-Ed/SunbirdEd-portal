@@ -137,7 +137,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
     option.filters.contentType = filters.contentType ||
-      ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    this.configService.appConfig.CommonSearch.contentType;
     if (manipulatedData.filters) {
       option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }

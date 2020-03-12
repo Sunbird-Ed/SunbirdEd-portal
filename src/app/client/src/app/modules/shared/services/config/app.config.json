@@ -2,6 +2,18 @@
   "UrlLinks": {
     "downloadDikshaApp": "https://play.google.com/store/apps/details?id=in.gov.diksha.app"
   },
+  "CommonSearch": {
+    "contentType": [
+      "Collection",
+      "TextBook",
+      "LessonPlan",
+      "Resource",
+      "SelfAssess",
+      "PracticeResource",
+      "LearningOutcomeDefinition",
+      "ExplanationResource"
+    ]
+  },
   "Home": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
@@ -608,7 +620,7 @@
       "ribbon.right.name": "contentType",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
-  },
+  }, 
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
     "VERSION": "1.8.0",

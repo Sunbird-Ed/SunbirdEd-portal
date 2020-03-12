@@ -116,7 +116,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             params: this.configService.appConfig.Library.contentApiQueryParams
         };
         option.filters.contentType = filters.contentType ||
-        ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+        this.configService.appConfig.CommonSearch.contentType;
         if (_.get(manipulatedData, 'filters')) {
             option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
           }
