@@ -21,7 +21,11 @@ export class TelemetryActionsService {
       url: this.configService.urlConFig.URLS.OFFLINE.TELEMTRY_INFO,
     });
   }
-
+  getSyncTelemetryStatus(): Observable<ServerResponse> {
+    return this.publicDataService.get({
+      url: this.configService.urlConFig.URLS.OFFLINE.TELEMTRY_INFO + '?syncConfig=true',
+    });
+  }
   exportTelemetry(): Observable<ServerResponse> {
     const exportOptions: any = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.EXPORT_TELEMETRY}`
@@ -65,4 +69,23 @@ export class TelemetryActionsService {
       return response;
     }));
   }
+    syncTelemtry(data): Observable<ServerResponse> {
+    const requestParams = {
+      url: this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC,
+      data: data
+    };
+    return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
+      return response;
+    }));
+  }
+    telemetrySyncStatus(data): Observable<ServerResponse> {
+    const requestParams = {
+      url: this.configService.urlConFig.URLS.OFFLINE.TELEMTRY_CONFIG,
+      data: data
+    };
+    return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
+      return response;
+    }));
+  }
+
 }
