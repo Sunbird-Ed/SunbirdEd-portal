@@ -151,13 +151,12 @@ export class SearchComponent implements OnInit, OnDestroy {
         ([onlineRes, offlineRes]: any) => {
           this.showLoader = false;
 
-
           if (this.params.dialCode) {
             const onlineOption = { params: { online: true } };
             const offlineOption = { params: { online: false } };
 
-            combineLatest(this.dialCodeService.filterDialSearchResults(onlineRes.result, onlineOption),
-              this.dialCodeService.filterDialSearchResults(offlineRes.result, offlineOption))
+            combineLatest(this.dialCodeService.filterDialSearchResults(_.get(onlineRes, 'result'), onlineOption),
+              this.dialCodeService.filterDialSearchResults(_.get(offlineRes, 'result'), offlineOption))
               .pipe(takeUntil(this.unsubscribe$))
               .subscribe(([onlineDialCodeRes, offlineDialCodeRes]) => {
 
@@ -248,7 +247,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       facets: this.facets,
     };
 
-    option.filters['contentType'] = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    option.filters['contentType'] = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
     if (manipulatedData.filters) {
       option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }

@@ -106,7 +106,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             filters = _.omit(this.frameworkData, ['id']);
         }
         filters.channel = this.hashTagId;
-        filters.contentType = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+        filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
         const option: any = {
           filters: filters,
           limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
@@ -121,6 +121,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
           try {
             option.softConstraints = JSON.parse(this.queryParams.softConstraints);
           } catch {
+
           }
         }
         if (this.frameworkId) {
