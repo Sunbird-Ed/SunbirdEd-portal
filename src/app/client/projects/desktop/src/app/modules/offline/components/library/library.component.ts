@@ -191,10 +191,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
             mode: _.get(manipulatedData, 'mode'),
             params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
         };
-        if (this.isBrowse) {
-            const facets = ['board', 'medium', 'gradeLevel', 'subject'];
-            option['facets'] = facets;
-        }
         if (addFilters) {
             option.filters = _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters;
             option.filters['contentType'] = filters.contentType || ['TextBook'];
