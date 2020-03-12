@@ -10,7 +10,7 @@ import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RESPONSE } from './explore.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { ExploreComponent } from './explore.component';
 import { ContentSearchService } from '@sunbird/content-search';
 
@@ -52,7 +52,7 @@ describe('ExploreComponent', () => {
     snapshot = {
       params: {slug: 'ap'},
       data: {
-        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+        telemetry: { env: 'explore', pageid: 'explore', type: 'view', subtype: 'paginate'}
       }
     };
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
@@ -164,18 +164,22 @@ describe('ExploreComponent', () => {
 
   it('should fetch contents and disable loader', () => {
     sendPageApi = true;
+    spyOn<any>(component, 'logTelemetryEvent');
     component.getFilters(RESPONSE.selectedFilters);
     expect(component.showLoader).toBe(false);
+    expect(component.logTelemetryEvent).toHaveBeenCalledWith(true);
   });
 
   it('should fetch contents, disable the loader and set values to default', () => {
     sendPageApi = false;
+    spyOn<any>(component, 'logTelemetryEvent');
     spyOn<any>(toasterService, 'error');
     component.getFilters(RESPONSE.selectedFilters);
     expect(component.showLoader).toBe(false);
     expect(component.pageSections).toEqual([]);
     expect(component.apiContentList).toEqual([]);
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+    expect(component.logTelemetryEvent).toHaveBeenCalledWith(false);
   });
 
   it('should play content', () => {
@@ -183,5 +187,43 @@ describe('ExploreComponent', () => {
     spyOn<any>(publicPlayerService, 'playContent');
     component.playContent(RESPONSE.playContentEvent);
     expect(publicPlayerService.playContent).toHaveBeenCalledWith(RESPONSE.playContentEvent);
+  });
+
+  it('log success telemetry event', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn<any>(telemetryService, 'log');
+    const mockLogObject = {
+      context: {
+        env: 'explore',
+        cdata: []
+      },
+      edata: {
+        type: 'content-search',
+        level: 'SUCCESS',
+        message: 'content search successful',
+        pageid: 'explore'
+      }
+    };
+    component.logTelemetryEvent(true);
+    expect(telemetryService.log).toHaveBeenCalledWith(mockLogObject);
+  });
+
+  it('log error telemetry event', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn<any>(telemetryService, 'log');
+    const mockLogObject = {
+      context: {
+        env: 'explore',
+        cdata: []
+      },
+      edata: {
+        type: 'content-search',
+        level: 'ERROR',
+        message: 'content search failed',
+        pageid: 'explore'
+      }
+    };
+    component.logTelemetryEvent(false);
+    expect(telemetryService.log).toHaveBeenCalledWith(mockLogObject);
   });
 });
