@@ -801,125 +801,6 @@ export const RESPONSE = {
       'name': 'English',
       'contents': [
         {
-          'ownershipType': [
-            'createdBy'
-          ],
-          'copyright': 'SAP',
-          'keywords': [
-            'hgh',
-            'testing lessons',
-            'key'
-          ],
-          'subject': 'English',
-          'channel': '012530141516660736208',
-          // tslint:disable-next-line:max-line-length
-          'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212916581536096256131/assam-text-book_1576731343811_do_212916581536096256131_1.0_spine.ecar',
-          'organisation': [
-            'SAP'
-          ],
-          'language': [
-            'English'
-          ],
-          'mimeType': 'application/vnd.ekstep.content-collection',
-          'variants': {
-            'online': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212916581536096256131/assam-text-book_1576731344224_do_212916581536096256131_1.0_online.ecar',
-              'size': 11806
-            },
-            'spine': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212916581536096256131/assam-text-book_1576731343811_do_212916581536096256131_1.0_spine.ecar',
-              'size': 1021747
-            }
-          },
-          'leafNodes': [
-            'do_212848119817945088185',
-            'do_2123178641611407361570',
-            'do_2125388336945070081193',
-            'do_2128458481719705601144',
-            'do_2125392680404008961221',
-            'do_2125392907628953601223'
-          ],
-          'objectType': 'Content',
-          'gradeLevel': [
-            'Class 5',
-            'Class 6',
-            'Class 7'
-          ],
-          // tslint:disable-next-line:max-line-length
-          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212916581536096256131/artifact/api2_1530687542792.thumb.png',
-          'children': [
-            'do_212848119817945088185',
-            'do_2128458481719705601144',
-            'do_2123178641611407361570',
-            'do_2125393116783165441232'
-          ],
-          'appId': 'staging.diksha.portal',
-          'contentEncoding': 'gzip',
-          'lockKey': 'c98ba06f-cd7c-4507-b286-68d5aa960b60',
-          // tslint:disable-next-line:max-line-length
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':4,\'application/vnd.ekstep.ecml-archive\':7,\'video/x-youtube\':1}',
-          'totalCompressedSize': 11089779,
-          'contentType': 'TextBook',
-          'identifier': 'do_212916581536096256131',
-          'audience': [
-            'Learner'
-          ],
-          'visibility': 'Default',
-          // tslint:disable-next-line:max-line-length
-          'toc_url': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212916581536096256131/artifact/do_212916581536096256131_toc.json',
-          'contentTypesCount': '{\'TextBookUnit\':2,\'Resource\':8,\'Collection\':2}',
-          'consumerId': '56ff6913-abcc-4a88-b247-c976e47cbfb4',
-          'childNodes': [
-            'do_212848119817945088185',
-            'do_2125393116783165441232',
-            'do_2123178641611407361570',
-            'do_21291658181889228811065',
-            'do_2125388336945070081193',
-            'do_21291658181888409611064',
-            'do_2128458481719705601144',
-            'do_2125393105532600321231',
-            'do_2125392680404008961221',
-            'do_2125392907628953601223'
-          ],
-          'mediaType': 'content',
-          'osId': 'org.ekstep.quiz.app',
-          'ageGroup': [
-            '<5',
-            '>10'
-          ],
-          'graph_id': 'domain',
-          'nodeType': 'DATA_NODE',
-          'lastPublishedBy': '93ef4d2c-c8ad-487e-833c-1f7ffb4ac346',
-          'version': 2,
-          'license': 'CC BY 4.0',
-          'prevState': 'Review',
-          'qrCodeProcessId': '1f3621d4-983a-4324-a30c-af512135c0d6',
-          'size': 1021747,
-          'lastPublishedOn': '2019-12-19T04:55:43.684+0000',
-          'IL_FUNC_OBJECT_TYPE': 'Content',
-          'domain': [
-            'Biology'
-          ],
-          'name': 'Assam text book',
-          'status': 'Live',
-          'code': 'org.sunbird.6gMOb5',
-          'description': 'Enter description for TextBook',
-          'medium': 'English',
-          'idealScreenSize': 'normal',
-          // tslint:disable-next-line:max-line-length
-          'posterImage': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_2125393923495198721383/artifact/api2_1530687542792.png',
-          'createdOn': '2019-12-19T04:52:24.549+0000',
-          'reservedDialcodes': '{\'F5M5M7\':2,\'V1E7I2\':1,\'K8D3T7\':0}',
-          'contentDisposition': 'inline',
-          'lastUpdatedOn': '2019-12-19T04:55:43.369+0000',
-          'SYS_INTERNAL_LAST_UPDATED_ON': '2019-12-19T04:55:44.316+0000',
-          'dialcodeRequired': 'No',
-          'creator': 'azam m',
-          'createdFor': [
-            '012530141516660736208'
-          ],
           'lastStatusChangedOn': '2019-12-19T04:55:44.308+0000',
           'IL_SYS_NODE_TYPE': 'DATA_NODE',
           'os': [
@@ -953,92 +834,6 @@ export const RESPONSE = {
           'ownershipType': [
             'createdBy'
           ],
-          'copyright': 'Chhattisgarh',
-          'subject': 'English',
-          // tslint:disable-next-line:max-line-length
-          'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21286012130068070412543/test-copy-feature_1569839071542_do_21286012130068070412543_1.0_spine.ecar',
-          'channel': '01258043108936908899',
-          'organisation': [
-            'Chhattisgarh',
-            'Chhattisgarh',
-            'Chhattisgarh'
-          ],
-          'language': [
-            'English'
-          ],
-          'variants': {
-            'online': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21286012130068070412543/test-copy-feature_1569839071590_do_21286012130068070412543_1.0_online.ecar',
-              'size': 4473
-            },
-            'spine': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21286012130068070412543/test-copy-feature_1569839071542_do_21286012130068070412543_1.0_spine.ecar',
-              'size': 63634
-            }
-          },
-          'mimeType': 'application/vnd.ekstep.content-collection',
-          'leafNodes': [
-            'do_212848119817945088185'
-          ],
-          'objectType': 'Content',
-          // tslint:disable-next-line:max-line-length
-          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21286012130068070412543/artifact/1_1565067478206.thumb.png',
-          'gradeLevel': [
-            'Class 5'
-          ],
-          'children': [
-            'do_212848119817945088185'
-          ],
-          'appId': 'staging.diksha.portal',
-          'contentEncoding': 'gzip',
-          'lockKey': '9a50546f-683c-417d-96fc-6a7969f34a58',
-          'totalCompressedSize': 7757867,
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
-          'contentType': 'TextBook',
-          'identifier': 'do_21286012130068070412543',
-          'audience': [
-            'Learner'
-          ],
-          // tslint:disable-next-line:max-line-length
-          'toc_url': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21286012130068070412543/artifact/do_21286012130068070412543_toc.json',
-          'visibility': 'Default',
-          'contentTypesCount': '{\'TextBookUnit\':1,\'Resource\':1}',
-          'author': 'Umesh',
-          'childNodes': [
-            'do_212848119817945088185',
-            'do_21286012139116953612544'
-          ],
-          'consumerId': 'a9cb3a83-a164-4bf0-aa49-b834cebf1c07',
-          'mediaType': 'content',
-          'osId': 'org.ekstep.quiz.app',
-          'lastPublishedBy': '6c2f53fb-ae8d-49c5-b0c0-125c4d390634',
-          'graph_id': 'domain',
-          'nodeType': 'DATA_NODE',
-          'version': 2,
-          'license': 'CC BY 4.0',
-          'prevState': 'Review',
-          'lastPublishedOn': '2019-09-30T10:24:31.502+0000',
-          'size': 63634,
-          'name': 'Test copy feature',
-          'status': 'Live',
-          'code': 'org.sunbird.nD9MmY',
-          'description': 'Enter description for TextBook',
-          'medium': 'English',
-          // tslint:disable-next-line:max-line-length
-          'posterImage': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21282103277991526412038/artifact/1_1565067478206.png',
-          'idealScreenSize': 'normal',
-          'createdOn': '2019-09-30T10:23:45.962+0000',
-          'copyrightYear': 2019,
-          'contentDisposition': 'inline',
-          'lastUpdatedOn': '2019-09-30T10:24:31.202+0000',
-          'SYS_INTERNAL_LAST_UPDATED_ON': '2019-09-30T10:24:31.665+0000',
-          'dialcodeRequired': 'No',
-          'lastStatusChangedOn': '2019-09-30T10:24:31.657+0000',
-          'createdFor': [
-            '01258043108936908899'
-          ],
           'creator': 'Bcreator',
           'os': [
             'All'
@@ -1066,94 +861,6 @@ export const RESPONSE = {
         {
           'ownershipType': [
             'createdBy'
-          ],
-          'copyright': 'Chhattisgarh',
-          'subject': 'English',
-          // tslint:disable-next-line:max-line-length
-          'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21285725285052416011433/test-k12-book_1569489359437_do_21285725285052416011433_1.0_spine.ecar',
-          'channel': '01258043108936908899',
-          'organisation': [
-            'Chhattisgarh'
-          ],
-          'language': [
-            'English'
-          ],
-          'variants': {
-            'online': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21285725285052416011433/test-k12-book_1569489359599_do_21285725285052416011433_1.0_online.ecar',
-              'size': 4629
-            },
-            'spine': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21285725285052416011433/test-k12-book_1569489359437_do_21285725285052416011433_1.0_spine.ecar',
-              'size': 59795
-            }
-          },
-          'mimeType': 'application/vnd.ekstep.content-collection',
-          'leafNodes': [
-            'do_21285718979780608011405'
-          ],
-          'objectType': 'Content',
-          'gradeLevel': [
-            'Class 5',
-            'Class 6',
-            'Class 7',
-            'Class 8'
-          ],
-          // tslint:disable-next-line:max-line-length
-          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21285725285052416011433/artifact/1_1565067478206.thumb.png',
-          'appId': 'staging.diksha.portal',
-          'contentEncoding': 'gzip',
-          'lockKey': '93e020b8-de57-45ad-9863-737ad82e51d2',
-          'totalCompressedSize': 50594,
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
-          'contentType': 'TextBook',
-          'identifier': 'do_21285725285052416011433',
-          'audience': [
-            'Learner'
-          ],
-          // tslint:disable-next-line:max-line-length
-          'toc_url': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21285725285052416011433/artifact/do_21285725285052416011433_toc.json',
-          'visibility': 'Default',
-          'contentTypesCount': '{\'TextBookUnit\':1,\'Resource\':1}',
-          'author': 'Umesh',
-          'childNodes': [
-            'do_21285725355311104011435',
-            'do_21285718979780608011405'
-          ],
-          'consumerId': 'a9cb3a83-a164-4bf0-aa49-b834cebf1c07',
-          'mediaType': 'content',
-          'osId': 'org.ekstep.quiz.app',
-          'lastPublishedBy': '6c2f53fb-ae8d-49c5-b0c0-125c4d390634',
-          'graph_id': 'domain',
-          'nodeType': 'DATA_NODE',
-          'version': 2,
-          'license': 'CC BY 4.0',
-          'prevState': 'Review',
-          'lastPublishedOn': '2019-09-26T09:15:59.387+0000',
-          'size': 59795,
-          'name': 'Test k12 book',
-          'status': 'Live',
-          'code': 'org.sunbird.IYLpFa',
-          'description': 'Enter description for TextBook',
-          'medium': 'English',
-          // tslint:disable-next-line:max-line-length
-          'posterImage': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21282103277991526412038/artifact/1_1565067478206.png',
-          'idealScreenSize': 'normal',
-          'createdOn': '2019-09-26T09:07:53.354+0000',
-          'copyrightYear': 2019,
-          'contentDisposition': 'inline',
-          'lastUpdatedOn': '2019-09-26T09:15:59.202+0000',
-          'SYS_INTERNAL_LAST_UPDATED_ON': '2019-09-26T09:15:59.676+0000',
-          'dialcodeRequired': 'No',
-          'createdFor': [
-            '01258043108936908899'
-          ],
-          'lastStatusChangedOn': '2019-09-26T09:15:59.669+0000',
-          'creator': 'Bcreator',
-          'os': [
-            'All'
           ],
           'pkgVersion': 1,
           'versionKey': '1569489359202',
@@ -1184,57 +891,6 @@ export const RESPONSE = {
           'ownershipType': [
             'createdBy'
           ],
-          'copyright': '345 org',
-          'me_hierarchyLevel': 1,
-          'year': '2010',
-          'subject': 'Assamese',
-          'channel': '01231711180382208027',
-          // tslint:disable-next-line:max-line-length
-          'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212877700863836160117/qr-check-profile_1571986683127_do_212877700863836160117_2.0_spine.ecar',
-          'organisation': [
-            '345 org'
-          ],
-          'language': [
-            'English'
-          ],
-          'mimeType': 'application/vnd.ekstep.content-collection',
-          'variants': {
-            'online': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212877700863836160117/qr-check-profile_1571986683831_do_212877700863836160117_2.0_online.ecar',
-              'size': 5316
-            },
-            'spine': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212877700863836160117/qr-check-profile_1571986683127_do_212877700863836160117_2.0_spine.ecar',
-              'size': 30664
-            }
-          },
-          'leafNodes': [
-            'do_2126724652597657601590'
-          ],
-          'objectType': 'Content',
-          'gradeLevel': [
-            'Class 5'
-          ],
-          // tslint:disable-next-line:max-line-length
-          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212877700863836160117/artifact/english-short-stories-for-beginners-workbook-2_1024x1024_1530456979685.thumb.png',
-          'me_totalDialcodeAttached': 2,
-          'children': [
-            'do_2126724652597657601590'
-          ],
-          'appId': 'staging.diksha.portal',
-          'contentEncoding': 'gzip',
-          'lockKey': '7b8401fc-f37b-4e2d-bab5-bf7ab801563a',
-          'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':2,\'application/vnd.ekstep.ecml-archive\':1}',
-          'totalCompressedSize': 10414,
-          'contentType': 'TextBook',
-          'contentCredits': '[{\'id\':\'01231711180382208027\',\'name\':\'345 org\',\'type\':\'user\'}]',
-          'identifier': 'do_212877700863836160117',
-          'lastUpdatedBy': '4ecf1cf7-0e31-4a53-97ea-aae1683309ce',
-          'audience': [
-            'Learner'
-          ],
           'visibility': 'Default',
           // tslint:disable-next-line:max-line-length
           'toc_url': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212877700863836160117/artifact/do_212877700863836160117_toc.json',
@@ -1245,19 +901,6 @@ export const RESPONSE = {
             'do_212877701005647872118',
             'do_2126724652597657601590'
           ],
-          'author': 'Umesh',
-          'mediaType': 'content',
-          'osId': 'org.ekstep.quiz.app',
-          'graph_id': 'domain',
-          'nodeType': 'DATA_NODE',
-          'lastPublishedBy': '44917d6c-629f-4911-b4c5-1ff0e910bc0e',
-          'version': 2,
-          'license': 'CC BY 4.0',
-          'prevState': 'Processing',
-          'qrCodeProcessId': '2149cd01-e69c-433e-a0d2-7a47c6addbd8',
-          'size': 30664,
-          'lastPublishedOn': '2019-10-25T06:58:01.140+0000',
-          'IL_FUNC_OBJECT_TYPE': 'Content',
           'name': 'QR check profile',
           'publisher': 'ekstep',
           'me_totalDialcodeLinkedToContent': 2,
@@ -1274,28 +917,6 @@ export const RESPONSE = {
               'dialcodeId': 'M7I5T4',
               'contentLinked': 1
             }
-          ],
-          'code': 'org.sunbird.leTUn3',
-          'description': 'Enter description for TextBook',
-          'medium': 'English',
-          'idealScreenSize': 'normal',
-          // tslint:disable-next-line:max-line-length
-          'posterImage': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_21253750356809318411895/artifact/english-short-stories-for-beginners-workbook-2_1024x1024_1530456979685.png',
-          'createdOn': '2019-10-25T06:29:28.729+0000',
-          'reservedDialcodes': '{\'M7I5T4\':1,\'G8F3B8\':0}',
-          'copyrightYear': 2019,
-          'contentDisposition': 'inline',
-          'lastUpdatedOn': '2019-10-25T06:57:57.978+0000',
-          'SYS_INTERNAL_LAST_UPDATED_ON': '2019-10-30T05:57:13.170+0000',
-          'dialcodeRequired': 'Yes',
-          'creator': 'JPBook Creator user',
-          'createdFor': [
-            '01231711180382208027'
-          ],
-          'lastStatusChangedOn': '2019-10-25T06:57:20.660+0000',
-          'IL_SYS_NODE_TYPE': 'DATA_NODE',
-          'os': [
-            'All'
           ],
           'pkgVersion': 2,
           'versionKey': '1571986679124',
@@ -1329,69 +950,6 @@ export const RESPONSE = {
           'ownershipType': [
             'createdBy'
           ],
-          'copyright': 'PINUT, NCERT, United States',
-          'keywords': [
-            'koua',
-            'pyasa',
-            'pratham camal',
-            '20-40 words',
-            'para level',
-            'Camp - 1 (Basic)',
-            'camal story',
-            'pyasa kaua',
-            'pratham',
-            'kaua',
-            'Story-2',
-            'para',
-            'record and play',
-            'hindi stories',
-            'record',
-            'Story - 2',
-            'thirsty crow',
-            'camal',
-            'camal story#3',
-            'Study material',
-            'story level',
-            'hindi story',
-            'story'
-          ],
-          'subject': 'Mathematics',
-          'channel': '0125196778210263043',
-          // tslint:disable-next-line:max-line-length
-          'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21291536190681907211/test-ncert-book_1576665058611_do_21291536190681907211_3.0_spine.ecar',
-          'organisation': [
-            'PINUT',
-            'NCERT',
-            'United States'
-          ],
-          'language': [
-            'English'
-          ],
-          'mimeType': 'application/vnd.ekstep.content-collection',
-          'variants': {
-            'online': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21291536190681907211/test-ncert-book_1576665058688_do_21291536190681907211_3.0_online.ecar',
-              'size': 5293
-            },
-            'spine': {
-              // tslint:disable-next-line:max-line-length
-              'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21291536190681907211/test-ncert-book_1576665058611_do_21291536190681907211_3.0_spine.ecar',
-              'size': 53792
-            }
-          },
-          'leafNodes': [
-            'do_212848119817945088185'
-          ],
-          'objectType': 'Content',
-          'gradeLevel': [
-            'Class 5'
-          ],
-          // tslint:disable-next-line:max-line-length
-          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291536190681907211/artifact/download-1_1572434951636.thumb.png',
-          'children': [
-            'do_212848119817945088185'
-          ],
           'appId': 'staging.diksha.portal',
           'contentEncoding': 'gzip',
           'lockKey': '52064784-2f88-40b3-80a7-4e29dab94f13',
@@ -1412,26 +970,6 @@ export const RESPONSE = {
           'childNodes': [
             'do_212848119817945088185',
             'do_21291536204079104011021'
-          ],
-          'author': 'um',
-          'mediaType': 'content',
-          'osId': 'org.ekstep.quiz.app',
-          'ageGroup': [
-            '6-7',
-            '7-8',
-            '5-6'
-          ],
-          'graph_id': 'domain',
-          'nodeType': 'DATA_NODE',
-          'lastPublishedBy': 'Ekstep',
-          'version': 2,
-          'license': 'CC BY 4.0',
-          'prevState': 'Draft',
-          'size': 53792,
-          'lastPublishedOn': '2019-12-18T10:30:58.557+0000',
-          'IL_FUNC_OBJECT_TYPE': 'Content',
-          'domain': [
-            'literacy'
           ],
           'name': 'Test ncert book',
           'status': 'Live',
@@ -1469,19 +1007,6 @@ export const RESPONSE = {
           'dialcodes': [
             '0759CH17'
           ],
-          's3Key': 'ecar_files/do_21291536190681907211/test-ncert-book_1576665058611_do_21291536190681907211_3.0_spine.ecar',
-          'lastSubmittedOn': '2019-12-17T12:39:02.573+0000',
-          'createdBy': 'db57c107-9f77-4730-9b0c-24b240ae5b87',
-          'compatibilityLevel': 1,
-          'leafNodesCount': 1,
-          'IL_UNIQUE_ID': 'do_21291536190681907211',
-          'board': 'State (Assam)',
-          'resourceType': 'Book',
-          'node_id': 520783,
-          'orgDetails': {
-            'email': null,
-            'orgName': 'NCERT'
-          },
           // tslint:disable-next-line:max-line-length
           'cardImg': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_21291536190681907211/artifact/download-1_1572434951636.thumb.png'
         }
@@ -1495,84 +1020,6 @@ export const RESPONSE = {
     'data': {
       'ownershipType': [
         'createdBy'
-      ],
-      'copyright': 'SAP',
-      'keywords': [
-        'hgh',
-        'testing lessons',
-        'key'
-      ],
-      'subject': 'English',
-      'channel': '012530141516660736208',
-      // tslint:disable-next-line:max-line-length
-      'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212916581536096256131/assam-text-book_1576731343811_do_212916581536096256131_1.0_spine.ecar',
-      'organisation': [
-        'SAP'
-      ],
-      'language': [
-        'English'
-      ],
-      'mimeType': 'application/vnd.ekstep.content-collection',
-      'variants': {
-        'online': {
-          // tslint:disable-next-line:max-line-length
-          'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212916581536096256131/assam-text-book_1576731344224_do_212916581536096256131_1.0_online.ecar',
-          'size': 11806
-        },
-        'spine': {
-          // tslint:disable-next-line:max-line-length
-          'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212916581536096256131/assam-text-book_1576731343811_do_212916581536096256131_1.0_spine.ecar',
-          'size': 1021747
-        }
-      },
-      'leafNodes': [
-        'do_212848119817945088185',
-        'do_2123178641611407361570',
-        'do_2125388336945070081193',
-        'do_2128458481719705601144',
-        'do_2125392680404008961221',
-        'do_2125392907628953601223'
-      ],
-      'objectType': 'Content',
-      'gradeLevel': [
-        'Class 5',
-        'Class 6',
-        'Class 7'
-      ],
-      // tslint:disable-next-line:max-line-length
-      'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212916581536096256131/artifact/api2_1530687542792.thumb.png',
-      'children': [
-        'do_212848119817945088185',
-        'do_2128458481719705601144',
-        'do_2123178641611407361570',
-        'do_2125393116783165441232'
-      ],
-      'appId': 'staging.diksha.portal',
-      'contentEncoding': 'gzip',
-      'lockKey': 'c98ba06f-cd7c-4507-b286-68d5aa960b60',
-      'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':4,\'application/vnd.ekstep.ecml-archive\':7,\'video/x-youtube\':1}',
-      'totalCompressedSize': 11089779,
-      'contentType': 'TextBook',
-      'identifier': 'do_212916581536096256131',
-      'audience': [
-        'Learner'
-      ],
-      'visibility': 'Default',
-      // tslint:disable-next-line:max-line-length
-      'toc_url': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212916581536096256131/artifact/do_212916581536096256131_toc.json',
-      'contentTypesCount': '{\'TextBookUnit\':2,\'Resource\':8,\'Collection\':2}',
-      'consumerId': '56ff6913-abcc-4a88-b247-c976e47cbfb4',
-      'childNodes': [
-        'do_212848119817945088185',
-        'do_2125393116783165441232',
-        'do_2123178641611407361570',
-        'do_21291658181889228811065',
-        'do_2125388336945070081193',
-        'do_21291658181888409611064',
-        'do_2128458481719705601144',
-        'do_2125393105532600321231',
-        'do_2125392680404008961221',
-        'do_2125392907628953601223'
       ],
       'mediaType': 'content',
       'osId': 'org.ekstep.quiz.app',
