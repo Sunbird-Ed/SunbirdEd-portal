@@ -95,14 +95,13 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
         _.forEach(this.formFieldProperties, field => {
             const facet = _.find(this.filterData, {name: _.get(field, 'code')});
             if (facet) {
-                let filteredData = [];
                 if (facet.name === 'gradeLevel' || facet.name === 'class') {
                     const classData = _.map(facet.values, data => data.name);
                     // tslint:disable-next-line:radix
-                    filteredData = _.sortBy(classData , (o) => parseInt(o.split(' ')[1]));
+                   const filteredData = _.sortBy(classData , (o) => parseInt(o.split(' ')[1]));
                     field.range = _.map(filteredData, name => ({name}));
                 } else {
-                    filteredData = _.map(facet.values, (data) => data.name);
+                   const filteredData = _.map(facet.values, (data) => data.name);
                     field.range = _.map(filteredData.sort(), name => ({name}));
                 }
             }
