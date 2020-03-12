@@ -43,7 +43,7 @@
 }
 .ui.header .sub.header.dial-section-subheader-text {
   color: var(--white);
-  font-size: 1rem;
+  font-size: calculateRem(16px);
 }
 .dial-section-input {
   margin-top: 10em;
@@ -88,11 +88,11 @@
        }
        .download-mobile-app-logo {
         p {
-          font-size: 0.75rem;
+          font-size: calculateRem(12px);
           line-height: calculateRem(16px);
          }
          label {
-          font-size: 0.75rem;
+          font-size: calculateRem(12px);
          }
        }
        label {
@@ -167,7 +167,7 @@
     align-items: center;
   }
   .header-label{
-    font-size: 0.75rem;
+    font-size: calculateRem(12px);
   }
 }
 @media screen and  (min-width: 240px) and (max-width: 768px) {

@@ -68,7 +68,7 @@
   box-shadow: none !important;
   height: calculateRem(30px) !important;
   padding: calculateRem(8px) calculateRem(15px) !important;
-  font-size: 0.75rem !important;
+  font-size: calculateRem(12px) !important;
 
   .qrcode {
     color: $primary-color !important;
@@ -79,7 +79,7 @@
 .search-qrcode-divider {
   opacity: 0.4;
   color: $white-color;
-  font-size:1.375rem;
+  font-size: calculateRem(22px);
 }
 
 .ui.sidebar.right {

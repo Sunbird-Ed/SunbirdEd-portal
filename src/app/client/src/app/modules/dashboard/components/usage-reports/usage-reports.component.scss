@@ -11,7 +11,7 @@
 }
 .sb-btn-normal i::after {
     content: "\f019";
-    font-size: 0.8125rem;
+    font-size: calculateRem(13px);
     color: var(--white);
 }
 .no-bg {

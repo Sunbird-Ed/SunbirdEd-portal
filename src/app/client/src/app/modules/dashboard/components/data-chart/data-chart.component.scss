@@ -6,7 +6,7 @@
     min-width: 100%;
     width: 100%;
     height: calculateRem(32px);
-    font-size: 0.75rem;
+    font-size: calculateRem(12px);
     border: calculateRem(1px) solid var(--gray-200);
     border-radius: calculateRem(3px);
     padding: calculateRem(8px);
@@ -171,7 +171,7 @@
 
 .sb-last-update-status {
   color: var(--gray-200);
-  font-size: 0.875rem;
+  font-size: calculateRem(14px);
   font-weight: bold;
 }
 
@@ -184,15 +184,15 @@
     flex: 1;
     border-right: calculateRem(1px) solid #d4d8da !important;
     .graph-stat-label {
-      font-size: 1.125rem;
+      font-size: calculateRem(18px);
     }
     .graph-stat-value {
       font-weight: bold;
-      font-size: 2.5rem;
+      font-size: calculateRem(40px);
     }
     .graph-stat-info {
       color: var(--gray-200);
-      font-size: 1.125rem;
+      font-size: calculateRem(18px);
     }
     &:nth-child(3n + 3) {
       border-right: 0px solid #d4d8da !important;
@@ -206,7 +206,7 @@
 
 .sb-last-update-status {
   color: var(--gray-200);
-  font-size: 0.875rem;
+  font-size: calculateRem(14px);
   font-weight: bold;
 }
 
@@ -215,13 +215,13 @@
     border-bottom: calculateRem(1px) solid #ddd;
     .graph-stat-block {
       .graph-stat-label {
-        font-size: 0.875rem;
+        font-size: calculateRem(14px);
       }
       .graph-stat-value {
-        font-size: 1.75rem;
+        font-size: calculateRem(28px);
       }
       .graph-stat-info {
-        font-size: 0.875rem;
+        font-size: calculateRem(14px);
       }
     }
   }
