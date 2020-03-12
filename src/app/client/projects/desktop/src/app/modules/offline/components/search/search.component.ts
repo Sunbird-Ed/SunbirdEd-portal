@@ -30,7 +30,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   showFilters = false;
   hashTagId: string;
   dataDrivenFilters: any = {};
-  facets: string[];
+  facets = ['board', 'medium', 'gradeLevel', 'subject', 'contentType'];
   params: any = {};
   searchKey = '';
 
@@ -92,20 +92,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       });
     this.setTelemetryData();
     this.utilService.emitHideHeaderTabsEvent(true);
-  }
-
-  public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
-    this.dataDrivenFilters = filters;
     this.fetchContentOnParamChange();
     this.setNoResultMessage();
   }
 
-  onFilterChange(event) {
-    this.showLoader = true;
-    this.dataDrivenFilters = _.cloneDeep(event.filters);
-    this.fetchContents();
-  }
 
   fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
@@ -225,7 +215,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
   }
 
-  constructSearchRequest() {
+  constructSearchRequest(isViewMore?) {
     let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     const softConstraintData: any = {
@@ -245,9 +235,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       mode: _.get(manipulatedData, 'mode'),
       params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
       query: this.queryParams.key,
-      facets: this.facets,
     };
-
+    if (isViewMore) {
+      option['facets'] = this.facets;
+     }
     option.filters['contentType'] = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
     if (manipulatedData.filters) {
       option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
@@ -295,7 +286,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   gotoViewMore(isOnlineContents) {
     const queryParams = {
       key: this.queryParams.key,
-      apiQuery: JSON.stringify(this.constructSearchRequest())
+      apiQuery: JSON.stringify(this.constructSearchRequest(true))
     };
 
     if (isOnlineContents) {

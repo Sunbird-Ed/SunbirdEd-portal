@@ -99,32 +99,7 @@ describe('SearchComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['']);
   });
 
-  it('should call getFilters', () => {
-    spyOn(component, 'fetchContentOnParamChange');
-    spyOn(component, 'setNoResultMessage');
 
-    component.getFilters(filters);
-
-    expect(component.facets).toEqual(['board', 'medium', 'gradeLevel', 'subject', 'contentType']);
-    expect(component.dataDrivenFilters).toEqual(filters);
-    expect(component.fetchContentOnParamChange).toHaveBeenCalled();
-    expect(component.setNoResultMessage).toHaveBeenCalled();
-  });
-
-  it('should call onFilterChange', () => {
-    spyOn(component, 'fetchContents');
-
-    const event = {
-      filters: {
-        appliedFilters: true,
-        board: ['TEST_BOARD']
-      }
-    };
-    component.onFilterChange(event);
-    expect(component.fetchContents).toHaveBeenCalled();
-    expect(component.showLoader).toBe(true);
-    expect(component.dataDrivenFilters).toEqual(event.filters);
-  });
 
   it('should create visits for search page', () => {
     component.telemetryImpression = {
