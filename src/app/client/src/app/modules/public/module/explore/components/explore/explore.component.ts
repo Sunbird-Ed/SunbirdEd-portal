@@ -126,6 +126,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       }))
       .subscribe(data => {
+        this.logTelemetryEvent(true);
         this.showLoader = false;
         this.apiContentList = data;
         if (!this.apiContentList.length) {
@@ -137,6 +138,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
           this.pageSections = [this.apiContentList[0]];
         }
       }, err => {
+        this.logTelemetryEvent(false);
         this.showLoader = false;
         this.apiContentList = [];
         this.pageSections = [];
@@ -232,4 +234,19 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryService.interact(cardClickInteractData);
   }
 
+  logTelemetryEvent(status: Boolean) {
+    const logEvent = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        type: 'content-search',
+        level: status ? 'SUCCESS' : 'ERROR',
+        message: status ? 'content search successful' : 'content search failed',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    this.telemetryService.log(logEvent);
+  }
 }
