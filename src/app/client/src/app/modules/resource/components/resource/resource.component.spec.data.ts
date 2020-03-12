@@ -4,7 +4,6 @@ export const Response = {
        ' params': {
             'err': null,
             'errmsg' : null,
-            'msgid' : '31df557d-ce56-e489-9cf3-27b74c90a920',
             'resmsgid' : null,
             'status' : 'success'},
        'responseCode': 'OK',
