@@ -69,7 +69,7 @@
     .download-mobile-app {
       border-radius: calculateRem(20px) calculateRem(20px) 0 0;
       position: absolute;
-      bottom: calculateRem(-20px);
+      bottom: 0 !important;
       padding: calculateRem(32px) calculateRem(12px) 0 calculateRem(12px);
       background: var(--gray-800);
       box-shadow: 0 calculateRem(20px) calculateRem(20px) calculateRem(10px) rgba(0, 0, 0, 0.2);
@@ -78,6 +78,23 @@
       left: 0;
       margin: 0 auto;
       transition: .75s ease-in-out;
+      .mobile-app-popup-close{
+        position: absolute;
+        top: calculateRem(-15px);
+        right: calculateRem(15px);
+        width: calculateRem(25px);
+        height: calculateRem(25px);
+        background: var(--white);
+        margin: 0;
+        border-radius: calculateRem(25px);
+        z-index: 9999;
+        text-align: center;
+        cursor: pointer;
+        .icon{
+          margin: 0 !important;
+          color: var(--gray-400);
+        }
+      }
       img {
         width: calculateRem(120px);
        }
@@ -213,7 +230,7 @@
         right: 0;
         left: 0;
         box-shadow: 0 0 calculateRem(20px) calculateRem(10px) rgba(0,0,0,.2);
-        height: calculateRem(175px);
+        height: calculateRem(185px);
         p {
           display: block !important;
         }
@@ -221,7 +238,7 @@
           display: flex;
         }
         .download-mobile-app-logo{
-          height: calculateRem(145px);
+          height: calculateRem(160px);
           overflow: hidden;
         }
       }

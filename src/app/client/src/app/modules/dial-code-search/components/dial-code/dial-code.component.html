@@ -54,8 +54,11 @@
 </div>
 <div class="mobile-popup-dimmer" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
   <div class="mobile-app-popup" [ngClass]="{'bottom-0': showMobilePopup}">
-    <div class="download-mobile-app" (click)="redirectToDikshaApp()">
-      <div class="download-mobile-app-logo p-15">
+    <div class="download-mobile-app">
+      <div class="mobile-app-popup-close">
+        <i class="close icon"></i>
+      </div>
+      <div class="download-mobile-app-logo p-15" (click)="redirectToDikshaApp()">
         <div class="mobile-circles">
           <div class="big-box border-round border-r50"></div>
           <div class="oval-box border-round ml-24"></div>
@@ -68,7 +71,7 @@
             alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}"
             title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}">
         </a>
-        <p class="d-block text-center pt-8">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}
+        <p class="d-block text-center py-8">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}
         </p>
       </div>
     </div>
