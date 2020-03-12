@@ -1,16 +1,17 @@
 // component css goes here
 @import 'variables';
+@import "./mixins/mixins";
 
 .sb-manage-section{
     .sb-manage-section-title {
-        font-size: 16.002px;
+        font-size: calculateRem(16.002px);
         line-height: normal;
         font-weight: 600;
     }
     .sb-multi-rows:nth-child(even){
         background: var(--white);
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
+        border-top: calculateRem(1px) solid #ddd;
+        border-bottom: calculateRem(1px) solid #ddd;
     }
     .sb-upload-file{
         position: relative;
@@ -42,7 +43,7 @@
         margin-bottom: ($base-block-space / 2) !important;
     }
     .sb-manage-table-section{
-        border-top: 1px solid #ddd;
+        border-top: calculateRem(1px) solid #ddd;
     }
 }
 

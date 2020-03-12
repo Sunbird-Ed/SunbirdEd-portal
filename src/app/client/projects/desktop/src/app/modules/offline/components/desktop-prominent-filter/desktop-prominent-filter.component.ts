@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnDestroy, OnChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, of, throwError, Observable, Subject } from 'rxjs';
 import { first, mergeMap, map, catchError, filter, takeUntil } from 'rxjs/operators';
@@ -21,7 +21,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
     @Input() ignoreQuery = [];
     @Input() pageId: string;
     @Input() frameworkName: string;
-    @Input() facets = [];
+    @Input() filterData;
     @Output() prominentFilter = new EventEmitter();
     @Output() filterChange: EventEmitter<any> = new EventEmitter();
 
@@ -37,15 +37,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
     public unsubscribe$ = new Subject<void>();
     refresh = true;
     isFiltered = true;
-    selectedFacet = [];
-    selectAllCheckBox = false;
-    checkBox: object;
-    classOrder = ['Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6',
-                  'Class 7', 'Class 8', 'Class 9', 'Class 10', 'Class 11', 'Class 12',
-                  'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6',
-                  'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12',
-                ];
-    // inputData: Array<string>;
+
 
     public resetFilterInteractEdata: IInteractEventEdata;
     public applyFilterInteractEdata: IInteractEventEdata;
@@ -88,7 +80,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe((formFieldProperties) => {
                 this.formFieldProperties = formFieldProperties;
-                this.getFilteredData();
+                this.getFilteredFacets();
                 this.prominentFilter.emit(formFieldProperties);
             }, (err) => {
                 this.prominentFilter.emit([]);
@@ -97,12 +89,11 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
     }
 
     ngOnChanges() {
-        this.getFilteredData();
+        this.getFilteredFacets();
     }
-
-    getFilteredData() {
+    getFilteredFacets() {
         _.forEach(this.formFieldProperties, field => {
-            const facet = _.find(this.facets, {name: _.get(field, 'code')});
+            const facet = _.find(this.filterData, {name: _.get(field, 'code')});
             if (facet) {
                 let filteredData = [];
                 if (facet.name === 'gradeLevel' || facet.name === 'class') {
@@ -117,7 +108,6 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
             }
         });
     }
-
     private setFilterInteractData() {
         setTimeout(() => { // wait for model to change
             const filters = _.pickBy(this.formInputData, (val, key) =>
