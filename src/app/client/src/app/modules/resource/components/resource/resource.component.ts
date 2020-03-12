@@ -200,7 +200,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public navigateToExploreContent() {
-    this.router.navigate(['resources', 1], {
+    this.router.navigate(['search/Library', 1], {
       queryParams: {
         ...this.selectedFilters, appliedFilters: false,
         softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
