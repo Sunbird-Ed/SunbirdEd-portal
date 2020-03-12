@@ -171,7 +171,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.pageSections = [];
     }
 
-    constructSearchRequest(addFilters, isViewAll?) {
+    constructSearchRequest(addFilters, isFacetsRequired?) {
         let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
         filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
         const softConstraintData: any = {
@@ -192,7 +192,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             mode: _.get(manipulatedData, 'mode'),
             params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
         };
-        if (isViewAll) {
+        if (isFacetsRequired) {
             option['facets']  = facets;
         }
         if (addFilters) {

@@ -21,7 +21,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
     @Input() ignoreQuery = [];
     @Input() pageId: string;
     @Input() frameworkName: string;
-    @Input() offlineFacets;
+    @Input() filterData;
     @Output() prominentFilter = new EventEmitter();
     @Output() filterChange: EventEmitter<any> = new EventEmitter();
 
@@ -92,7 +92,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
     }
     getFilteredFacets() {
         _.forEach(this.formFieldProperties, field => {
-            const facet = _.find(this.offlineFacets, {name: _.get(field, 'code')});
+            const facet = _.find(this.filterData, {name: _.get(field, 'code')});
             if (facet) {
                 const filteredData = _.map(facet.values, (data) => ({name: data.name}));
                 field.range = filteredData;

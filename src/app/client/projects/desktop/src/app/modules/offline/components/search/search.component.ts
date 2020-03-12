@@ -215,7 +215,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
   }
 
-  constructSearchRequest(isViewMore?) {
+  constructSearchRequest(isFacetsRequired?) {
     let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     const softConstraintData: any = {
@@ -236,7 +236,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
       query: this.queryParams.key,
     };
-    if (isViewMore) {
+    if (isFacetsRequired) {
       option['facets'] = this.facets;
      }
     option.filters['contentType'] = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];

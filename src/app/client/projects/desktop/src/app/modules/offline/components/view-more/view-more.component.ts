@@ -35,7 +35,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   isViewAll = false;
   contentList = [];
   apiQuery: any = {};
-  offlineFacets: any;
+  filterData: any;
   paginationDetails: IPagination;
   isConnected = false;
   isBrowse = false;
@@ -132,7 +132,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
     this.searchService.contentSearch(option)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
-        this.offlineFacets =  _.get(response, 'result.facets');
+        this.filterData =  _.get(response, 'result.facets');
         this.showLoader = false;
         const orderedContents = _.orderBy(_.get(response, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']);
         this.contentList = this.formatSearchResults(orderedContents);
@@ -180,7 +180,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
           this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
             this.configService.appConfig.SEARCH.PAGE_LIMIT);
         }
-        this.offlineFacets =  _.get(data, 'result.facets');
+        this.filterData =  _.get(data, 'result.facets');
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
         this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
         this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);
