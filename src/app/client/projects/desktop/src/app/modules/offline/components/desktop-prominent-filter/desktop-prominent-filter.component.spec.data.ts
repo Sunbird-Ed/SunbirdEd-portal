@@ -248,3 +248,73 @@ export const frameworkDetails = {
         }
     }
 };
+export const facetData = [
+    {
+      'name': 'board',
+      'values': [
+        {
+          'name': 'board1',
+          'count': 6
+        },
+        {
+          'name': 'board2',
+          'count': 1
+        },
+        {
+          'name': 'board3',
+          'count': 4
+        }
+      ]
+    },
+    {
+      'name': 'medium',
+      'values': [
+        {
+          'name': 'medium1',
+          'count': 11
+        },
+        {
+          'name': 'medium2',
+          'count': 2
+        },
+        {
+          'name': 'medium3',
+          'count': 1
+        }
+      ]
+    },
+    {
+      'name': 'gradeLevel',
+      'values': [
+        {
+          'name': 'Class 8',
+          'count': 2
+        },
+        {
+          'name': 'Class 9',
+          'count': 2
+        },
+        {
+          'name': 'Class 10',
+          'count': 2
+        }
+      ]
+    },
+    {
+      'name': 'subject',
+      'values': [
+        {
+          'name': 'English',
+          'count': 10
+        },
+        {
+          'name': 'domain',
+          'count': 1
+        },
+        {
+          'name': 'Other',
+          'count': 3
+        }
+      ]
+    }
+];

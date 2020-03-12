@@ -38,6 +38,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
     refresh = true;
     isFiltered = true;
 
+
     public resetFilterInteractEdata: IInteractEventEdata;
     public applyFilterInteractEdata: IInteractEventEdata;
     public selectedLanguage: string;
@@ -94,8 +95,15 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
         _.forEach(this.formFieldProperties, field => {
             const facet = _.find(this.filterData, {name: _.get(field, 'code')});
             if (facet) {
-                const filteredData = _.map(facet.values, (data) => ({name: data.name}));
-                field.range = filteredData;
+                if (facet.name === 'gradeLevel' || facet.name === 'class') {
+                    const classData = _.map(facet.values, data => data.name);
+                    // tslint:disable-next-line:radix
+                    const filteredData = _.sortBy(classData , (o) => parseInt(o.split(' ')[1]));
+                    field.range = _.map(filteredData, name => ({name}));
+                } else {
+                   const filteredData = _.map(facet.values, (data) => data.name);
+                    field.range = _.map(filteredData.sort(), name => ({name}));
+                }
             }
         });
     }
