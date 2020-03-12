@@ -98,7 +98,7 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
                 if (facet.name === 'gradeLevel' || facet.name === 'class') {
                     const classData = _.map(facet.values, data => data.name);
                     // tslint:disable-next-line:radix
-                   const filteredData = _.sortBy(classData , (o) => parseInt(o.split(' ')[1]));
+                    const filteredData = _.sortBy(classData , (o) => parseInt(o.split(' ')[1]));
                     field.range = _.map(filteredData, name => ({name}));
                 } else {
                    const filteredData = _.map(facet.values, (data) => data.name);

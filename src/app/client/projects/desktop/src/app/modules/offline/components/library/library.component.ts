@@ -93,7 +93,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.contentDownloadStatus = contentDownloadStatus;
             this.updateCardData();
         });
-        this.systemInfoService.getSystemInfo().subscribe(data => {
+        this.systemInfoService.getSystemInfo().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
             let { availableMemory } = data.result;
             availableMemory = Math.floor(availableMemory / (1024 * 1024));
             this.showMinimumRAMWarning = availableMemory ? Boolean(availableMemory < this.MINIMUM_REQUIRED_RAM) : false;
