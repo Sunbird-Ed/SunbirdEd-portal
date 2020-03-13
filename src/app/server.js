@@ -70,7 +70,8 @@ app.all('/sessionExpired', endSession, (req, res) => {
   res.redirect(logoutUrl);
 })
 
-require('./routes/deviceRoutes.js')(app); // device routes
+// device routes
+require('./routes/deviceRoutes.js')(app);
 
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
