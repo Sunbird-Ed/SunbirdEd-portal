@@ -171,7 +171,6 @@ describe('ContentRatingComponent', () => {
     spyOn(component, 'submit').and.callThrough();
     component.contentRating = 4;
     component.changeOptions(mockData.feedbackResult[1]['options'][1]);
-    component.feedbackContent = mockData.feedbackResult[1];
     component.ratingChange(4);
     component.submit();
     expect(component.enableSubmitBtn).toBeFalsy();
