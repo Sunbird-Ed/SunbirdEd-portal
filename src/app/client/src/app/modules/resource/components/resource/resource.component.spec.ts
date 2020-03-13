@@ -84,7 +84,7 @@ describe('ResourceComponent', () => {
     });
     spyOn(pageApiService, 'contentSearch').and.callFake((options) => {
       if (sendPageApi) {
-        return of(mockPageSection);
+        return of({mockPageSection});
       }
       return throwError({});
     });
@@ -245,5 +245,20 @@ describe('ResourceComponent', () => {
     };
     component.getInteractEdata(Response.eventForSection, 'English');
     expect(telemetryService.interact).toHaveBeenCalledWith(mockEventData);
+  });
+
+  it('should call telemetry data', fakeAsync(() => {
+    spyOn<any>(component, 'setTelemetryData');
+    component.ngAfterViewInit();
+    tick(200);
+    expect(component['setTelemetryData']).toHaveBeenCalled();
+  }));
+
+  it('set messages', () => {
+    component['setTelemetryData']();
+  });
+
+  it('set messages', () => {
+    component['setNoResultMessage']();
   });
 });
