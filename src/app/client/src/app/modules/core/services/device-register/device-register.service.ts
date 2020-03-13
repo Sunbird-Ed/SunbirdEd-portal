@@ -1,5 +1,6 @@
 import { environment } from '@sunbird/environment';
 import { Injectable } from '@angular/core';
+import { PublicDataService } from './../public-data/public-data.service';
 import { ConfigService,  HttpOptions} from '@sunbird/shared';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
@@ -25,7 +26,8 @@ export class DeviceRegisterService  {
   deviceProfile: any;
   isOffline: boolean = environment.isOffline;
 
-  constructor(public deviceDetectorService: DeviceDetectorService, private deviceService: DeviceService,
+  constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
+              private deviceService: DeviceService,
               private configService: ConfigService, private http: HttpClient) {
 
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
