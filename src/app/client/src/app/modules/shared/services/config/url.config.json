@@ -14,6 +14,7 @@
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
+    "DEVICE_PREFIX": "/device/",
     "CONTENT_PREFIX": "/content/",
     "ELECTRON_DIALOG_PREFIX": "/dialog/",
     "PUBLIC_PREFIX": "/api/",
@@ -105,8 +106,8 @@
       "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
     },
     "DEVICE": {	
-      "REGISTER": "v3/device/register/",	
-      "PROFILE": "v3/device/profile/"	
+      "REGISTER": "register/",
+      "PROFILE": "profile/"
     },
     "NOTES": {
       "SEARCH": "notes/v1/search",
