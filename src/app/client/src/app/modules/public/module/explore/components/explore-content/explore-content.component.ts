@@ -121,7 +121,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   private fetchContents() {
     const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
     filters.channel = this.hashTagId;
-    filters.contentType = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
     const option: any = {
       filters: filters,
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
