@@ -61,7 +61,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
         (formResponsedata) => {
           this.feedbackObj = formResponsedata[0];
         }, (error) => {
-          this.feedbackObj = [];
+          this.feedbackObj = { };
         });
     });
   }
