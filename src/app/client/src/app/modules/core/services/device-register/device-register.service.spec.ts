@@ -27,7 +27,7 @@ describe('DeviceRegisterService', () => {
         });
     });
 
-  it('should call validateCertificate API', inject([],
+  it('should be created and should fetch basic details', inject([],
     () => {
       const deviceService = TestBed.get(DeviceService);
       const deviceRegisterService = TestBed.get(DeviceRegisterService);
