@@ -107,7 +107,7 @@ describe('TelemetryComponent', () => {
   });
 
   it('should call handleSyncStatus', () => {
-    spyOn(component['telemetryActionService'], 'telemetrySyncStatus').and.returnValue(of(telemetry.updateSyncStatus));
+    spyOn(component['telemetryActionService'], 'updateSyncStatus').and.returnValue(of(telemetry.updateSyncStatus));
     spyOn(component, 'setTelemetrySyncStatus');
     const data = {
       'request': {
@@ -115,7 +115,7 @@ describe('TelemetryComponent', () => {
       }
     };
     component.handleSyncStatus(data);
-    component['telemetryActionService'].telemetrySyncStatus(data).subscribe(response => {
+    component['telemetryActionService'].updateSyncStatus(data).subscribe(response => {
       expect(response).toEqual(telemetry.updateSyncStatus);
     });
     expect(component.setTelemetrySyncStatus).toHaveBeenCalledWith(data);
@@ -153,11 +153,13 @@ describe('TelemetryComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');
+    spyOn(component, 'getTelemetryInfo');
     component.isConnected = true;
     component.telemetryInfo = telemetry.info.result.response;
     component.syncTelemetry();
     component['telemetryActionService'].syncTelemtry().subscribe(data => {
      expect(component.showSyncStatus).toBeFalsy();
+     expect(component.getTelemetryInfo).toHaveBeenCalled();
     }, (err) => {
     });
     expect(component.setSyncTelemetry).toHaveBeenCalledWith();

@@ -54,6 +54,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     this.telemetryActionService.getTelemetryInfo().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.telemetryInfo = _.get(data, 'result.response');
       this.disableExport = !this.telemetryInfo['totalSize'];
+      this.disableSync = !this.telemetryInfo['totalSize'];
     }, (err) => {
       this.disableExport = true;
       this.toasterService.error(this.resourceService.messages.emsg.desktop.telemetryInfoEMsg);
@@ -102,7 +103,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
         'enable': syncStatus
       }
     };
-    this.telemetryActionService.telemetrySyncStatus(data).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {});
+    this.telemetryActionService.updateSyncStatus(data).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {});
   }
 
   checkOnlineStatus() {
@@ -115,7 +116,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
       this.disableSync = true;
       this.telemetryActionService.syncTelemtry().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.showSyncStatus = false;
-
+        this.getTelemetryInfo();
       }, (err) => {
         this.showSyncStatus = false;
         this.disableSync = false;

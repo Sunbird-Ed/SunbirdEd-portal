@@ -78,7 +78,7 @@ export class TelemetryActionsService {
       return response;
     }));
   }
-    telemetrySyncStatus(data): Observable<ServerResponse> {
+  updateSyncStatus(data): Observable<ServerResponse> {
     const requestParams = {
       url: this.configService.urlConFig.URLS.OFFLINE.TELEMTRY_CONFIG,
       data: data

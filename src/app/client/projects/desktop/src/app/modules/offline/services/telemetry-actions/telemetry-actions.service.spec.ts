@@ -86,7 +86,7 @@ describe('TelemetryActionsService', () => {
       expect(data).toEqual(telemetry.syncStatusInfo);
     });
   });
-  it('should be call telemetrySyncStatus', () => {
+  it('should be call updateSyncStatus', () => {
     const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
     spyOn(service['publicDataService'], 'post').and.returnValue(of(telemetry.updateSyncStatus));
     const requestBody = {
@@ -94,7 +94,7 @@ describe('TelemetryActionsService', () => {
         'enable': true
       }
     };
-    service.telemetrySyncStatus(requestBody);
+    service.updateSyncStatus(requestBody);
     expect(service.publicDataService.post).toHaveBeenCalled();
     service['publicDataService'].post({
       url: service.configService.urlConFig.URLS.OFFLINE.TELEMTRY_CONFIG,
