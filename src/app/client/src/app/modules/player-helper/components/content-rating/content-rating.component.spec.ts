@@ -91,13 +91,6 @@ describe('ContentRatingComponent', () => {
     expect(component.contentRating).toEqual(4);
   });
 
-  it('should call ratingChange and set the contentRating to 5 Star', () => {
-    spyOn(component, 'ratingChange').and.callThrough();
-    component.ratingChange(5);
-    expect(component.enableSubmitBtn).toBeTruthy();
-    expect(component.contentRating).toEqual(5);
-  });
-
   it('should call ratingChange and set the contentRating and enableSubmitBtn', () => {
     spyOn(component, 'ratingChange').and.callThrough();
     component.ratingChange(4);
