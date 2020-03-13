@@ -14,7 +14,7 @@ export const telemetry = {
         'responseCode': 'OK',
         'result': {
             'response': {
-                'totalSize': 0,
+                'totalSize': 22587,
                 'lastExportedOn': null
             }
         }
@@ -61,7 +61,9 @@ export const telemetry = {
             emsg: {
                 desktop: {
                     telemetryExportEMsg: 'Telemetry Export Failed. Please try again later....',
-                    telemetryInfoEMsg: 'Unable to get telemetry info. Please try again later...'
+                    telemetryInfoEMsg: 'Unable to get telemetry info. Please try again later...',
+                    connectionError: 'Connect to the Internet to sync telemetry',
+                    telemetrySyncError: 'Could not sync the telemetry, try again later'
                 }
             }
         }
@@ -103,6 +105,25 @@ export const telemetry = {
             }
         }
     },
-
+    updateSyncStatus : {
+        'id': 'api.telemetry.set.config',
+        'ver': '1.0',
+        'ts': '2020-03-13T06:17:16.499Z',
+        'params': {
+            'resmsgid': 'd82f5333-f508-44f8-b40c-2fb54292b873',
+            'msgid': '6c5dd5a2-67fd-4995-95da-8fa1a87fcc38',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'message': 'Successfully updated'
+        }
+    },
+    telemetrySync: {
+        success: true,
+        error: false
+    }
 };
 

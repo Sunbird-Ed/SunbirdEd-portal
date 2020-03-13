@@ -69,10 +69,10 @@ export class TelemetryActionsService {
       return response;
     }));
   }
-    syncTelemtry(data): Observable<ServerResponse> {
+    syncTelemtry(): Observable<ServerResponse> {
     const requestParams = {
       url: this.configService.urlConFig.URLS.OFFLINE.TELEMETRY_SYNC,
-      data: data
+      data: {}
     };
     return this.publicDataService.post(requestParams).pipe(map((response: ServerResponse) => {
       return response;

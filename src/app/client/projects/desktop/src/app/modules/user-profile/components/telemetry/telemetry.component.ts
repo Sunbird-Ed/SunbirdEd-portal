@@ -96,12 +96,12 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     this.telemetryService.interact(interactData);
   }
   handleSyncStatus(syncStatus) {
+    this.setTelemetrySyncStatus(syncStatus);
     const data = {
       'request': {
         'enable': syncStatus
       }
     };
-    this.setTelemetrySyncStatus(syncStatus);
     this.telemetryActionService.telemetrySyncStatus(data).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {});
   }
 
@@ -113,7 +113,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     if (this.isConnected) {
       this.showSyncStatus = true;
       this.disableSync = true;
-      this.telemetryActionService.syncTelemtry('').pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.telemetryActionService.syncTelemtry().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.showSyncStatus = false;
 
       }, (err) => {
