@@ -40,7 +40,7 @@ describe('ContentHeaderComponent', () => {
   it('should check checkDownloadStatus', () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'updateDownloadStatus').and.returnValue(contentHeaderData.collectionData);
-    component.checkDownloadStatus(contentHeaderData.downloadList);
+    component.checkDownloadStatus();
     expect(component.collectionData).toEqual(contentHeaderData.collectionData);
   });
   it('should call updateCollection and successfuly update collection ', () => {

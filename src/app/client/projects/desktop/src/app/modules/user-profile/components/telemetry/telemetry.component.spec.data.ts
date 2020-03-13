@@ -67,6 +67,42 @@ export const telemetry = {
         }
     },
 
+    getSyncStatus: {
+        enable:  {
+            'id': 'api.telemetry.config.info',
+            'ver': '1.0',
+            'ts': '2020-03-13T05:06:36.931Z',
+            'params': {
+                'resmsgid': '41610c13-8de9-4ca0-b212-704590abca68',
+                'msgid': 'da9d3640-1508-4039-9518-deb892e6b4ac',
+                'status': 'successful',
+                'err': null,
+                'errmsg': null
+            },
+            'responseCode': 'OK',
+            'result': {
+                'enable': true,
+                'updatedOn': 1584075434474
+            }
+        },
+        disable:  {
+            'id': 'api.telemetry.config.info',
+            'ver': '1.0',
+            'ts': '2020-03-13T05:06:36.931Z',
+            'params': {
+                'resmsgid': '41610c13-8de9-4ca0-b212-704590abca68',
+                'msgid': 'da9d3640-1508-4039-9518-deb892e6b4ac',
+                'status': 'successful',
+                'err': null,
+                'errmsg': null
+            },
+            'responseCode': 'OK',
+            'result': {
+                'enable': false,
+                'updatedOn': 1584075434474
+            }
+        }
+    },
 
 };
 

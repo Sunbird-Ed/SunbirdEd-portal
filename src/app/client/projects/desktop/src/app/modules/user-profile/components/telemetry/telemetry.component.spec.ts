@@ -88,5 +88,20 @@ describe('TelemetryComponent', () => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(telemetry.resourceBundle.messages.emsg.desktop.telemetryExportEMsg);
     });
   });
-
+  it('should call get sync status with enable status', () => {
+    spyOn(component['telemetryActionService'], 'getSyncTelemetryStatus').and.returnValue(of(telemetry.getSyncStatus.enable));
+    component.getSyncStatus();
+    component['telemetryActionService'].getSyncTelemetryStatus().subscribe(data => {
+      expect(data).toEqual(telemetry.getSyncStatus.enable);
+      expect(component.syncStatus).toBeTruthy();
+    });
+  });
+  it('should call get sync status with disable status', () => {
+    spyOn(component['telemetryActionService'], 'getSyncTelemetryStatus').and.returnValue(of(telemetry.getSyncStatus.disable));
+    component.getSyncStatus();
+    component['telemetryActionService'].getSyncTelemetryStatus().subscribe(data => {
+      expect(data).toEqual(telemetry.getSyncStatus.disable);
+      expect(component.syncStatus).toBeFalsy();
+    });
+  });
 });
