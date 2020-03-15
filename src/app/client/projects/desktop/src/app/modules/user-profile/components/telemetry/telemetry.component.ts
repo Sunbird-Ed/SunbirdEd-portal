@@ -112,9 +112,14 @@ export class TelemetryComponent implements OnInit, OnDestroy {
   syncTelemetry() {
     this.setSyncTelemetry();
     if (this.isConnected) {
+      const data  = {
+        'request': {
+          'type': ['TELEMETRY']
+        }
+      };
       this.showSyncStatus = true;
       this.disableSync = true;
-      this.telemetryActionService.syncTelemtry().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.telemetryActionService.syncTelemtry(data).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
         this.showSyncStatus = false;
         this.getTelemetryInfo();
       }, (err) => {

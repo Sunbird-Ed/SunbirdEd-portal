@@ -105,22 +105,32 @@ describe('TelemetryActionsService', () => {
   it('should be call syncTelemtry and success', () => {
     const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
     spyOn(service['publicDataService'], 'post').and.returnValue(of(telemetry.syncTelemetry.success));
-    service.syncTelemtry();
+    const data  = {
+      'request': {
+        'type': ['TELEMETRY']
+      }
+    };
+    service.syncTelemtry(data);
     expect(service.publicDataService.post).toHaveBeenCalled();
     service['publicDataService'].post({
       url: service.configService.urlConFig.URLS.OFFLINE.TELEMTRY_CONFIG,
-    }).subscribe(data => {
-      expect(data).toEqual(telemetry.syncTelemetry.success);
+    }).subscribe(response => {
+      expect(response).toEqual(telemetry.syncTelemetry.success);
     });
   });
   it('should be call syncTelemtry and error', () => {
     const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
     spyOn(service['publicDataService'], 'post').and.returnValue(throwError(telemetry.syncTelemetry.error));
-    service.syncTelemtry();
+    const data  = {
+      'request': {
+        'type': ['TELEMETRY']
+      }
+    };
+    service.syncTelemtry(data);
     expect(service.publicDataService.post).toHaveBeenCalled();
     service['publicDataService'].post({
       url: service.configService.urlConFig.URLS.OFFLINE.TELEMTRY_CONFIG,
-    }).subscribe(data => {
+    }).subscribe(response => {
     }, error => {
       expect(error).toEqual(telemetry.syncTelemetry.error);
     });

@@ -137,8 +137,13 @@ describe('TelemetryComponent', () => {
     spyOn(component, 'setSyncTelemetry');
     component.isConnected = true;
     component.telemetryInfo = telemetry.info.result.response;
+    const data  = {
+      'request': {
+        'type': ['TELEMETRY']
+      }
+    };
     component.syncTelemetry();
-    component['telemetryActionService'].syncTelemtry().subscribe(data => {
+    component['telemetryActionService'].syncTelemtry(data).subscribe(response => {
     }, (err) => {
 
      expect(component.disableSync).toBeFalsy();
@@ -156,8 +161,13 @@ describe('TelemetryComponent', () => {
     spyOn(component, 'getTelemetryInfo');
     component.isConnected = true;
     component.telemetryInfo = telemetry.info.result.response;
+    const data  = {
+      'request': {
+        'type': ['TELEMETRY']
+      }
+    };
     component.syncTelemetry();
-    component['telemetryActionService'].syncTelemtry().subscribe(data => {
+    component['telemetryActionService'].syncTelemtry(data).subscribe(response => {
      expect(component.showSyncStatus).toBeFalsy();
      expect(component.getTelemetryInfo).toHaveBeenCalled();
     }, (err) => {
