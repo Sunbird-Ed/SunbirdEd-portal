@@ -70,6 +70,9 @@ app.all('/sessionExpired', endSession, (req, res) => {
   res.redirect(logoutUrl);
 })
 
+// device routes
+require('./routes/deviceRoutes.js')(app);
+
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
 app.get('/service/health', healthService.createAndValidateRequestBody, healthService.checkSunbirdPortalHealth)
