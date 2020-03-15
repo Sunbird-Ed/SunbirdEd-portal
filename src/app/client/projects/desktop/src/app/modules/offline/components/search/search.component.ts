@@ -146,8 +146,8 @@ export class SearchComponent implements OnInit, OnDestroy {
             const onlineOption = { params: { online: true } };
             const offlineOption = { params: { online: false } };
 
-            combineLatest(this.dialCodeService.filterDialSearchResults(onlineRes.result, onlineOption),
-              this.dialCodeService.filterDialSearchResults(offlineRes.result, offlineOption))
+            combineLatest(this.dialCodeService.filterDialSearchResults(_.get(onlineRes, 'result'), onlineOption),
+              this.dialCodeService.filterDialSearchResults(_.get(offlineRes, 'result'), offlineOption))
               .pipe(takeUntil(this.unsubscribe$))
               .subscribe(([onlineDialCodeRes, offlineDialCodeRes]) => {
 
