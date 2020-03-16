@@ -1,19 +1,20 @@
 @import "variables";
+@import "mixins/mixins";
 
 .ui.raised.shadow.container.segment {
-    margin: 20px auto !important;
+    margin: calculateRem(20px) auto !important;
     padding: 0;
-    padding: 10px;
+    padding: calculateRem(10px);
     width: calc(100% - 4%) !important;
     min-height: 90vh;
 }
 
 @media only screen and (min-width: 1024px) {
     .ui.raised.shadow.container.segment {
-        margin: 35px auto !important;
-        width: 944px !important;
-        padding: 20px;
-        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.2);
+        margin: calculateRem(35px) auto !important;
+        width: calculateRem(944px) !important;
+        padding: calculateRem(20px);
+        box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(0,0,0,0.2);
     }
 }
 @media only screen and (max-width: 767px) {
@@ -30,9 +31,9 @@
 .ui.form.borderd input[type=url],
 .ui.form.borderd input:not([type]),
 .ui.form.borderd input:not([type]):focus {
-    border: 1px solid $form-input-border-color;
+    border: calculateRem(1px) solid $form-input-border-color;
     padding: 0.8em 0 0.8em 1em;
-    border-radius: 4px;
+    border-radius: calculateRem(4px);
 }
 .ui.form.borderd input:focus {
     border-color: $form-input-border-active-color !important;
@@ -40,14 +41,14 @@
 .ui.light-sea-green.button {
     background: $signup-btn-bg-active-color;
     color: $white-color;
-    height: 38px !important;
+    height: calculateRem(38px) !important;
 }
 .ui.grey.button {
     background: $signup-btn-bg-not-active-color;
     color: $white-color;
     pointer-events: none !important;
     cursor: not-allowed !important; 
-    height: 38px !important;
+    height: calculateRem(38px) !important;
 }
 .grey.text {
     color: $signup-thankyou-text-color;
@@ -68,7 +69,7 @@
     padding-left: 0;
     font-size: 1rem;
     font-weight: normal;
-    padding:10px 0;
+    padding:calculateRem(10px) 0;
 }
 .ui.basic.error.label {
     background: $white-color !important;
@@ -77,7 +78,7 @@
     padding-left: 0;
     font-size: 1rem;
     font-weight: normal;
-    padding:10px 0;
+    padding:calculateRem(10px) 0;
 }
 .fullpage {
     ::ng-deep {
@@ -90,8 +91,8 @@
 i.close.icon {
     font-size: 1.5rem;
     position: absolute;
-    right: 6px;
-    top: 12px;
+    right: calculateRem(6px);
+    top: calculateRem(12px);
 }
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
@@ -103,7 +104,7 @@ input[type=number]::-webkit-inner-spin-button {
     font-weight: normal;
 }
 .width-300 {
-    width: 300px !important;
+    width: calculateRem(300px) !important;
 }
 
 
@@ -112,8 +113,8 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 .ui.left.icon.input .icon {
-    left: 11px;
-    top: 14px;
+    left: calculateRem(11px);
+    top: calculateRem(14px);
     font-size: 1rem;
     font-family: inherit;
 }
