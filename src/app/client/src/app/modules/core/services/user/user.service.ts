@@ -230,6 +230,7 @@ export class UserService {
     this.getOrganisationDetails(organisationIds);
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
+    console.log('setUser profile done', this._userProfile.framework);
     this._userData$.next({ err: null, userProfile: this._userProfile });
     this.rootOrgName = this._userProfile.rootOrg.orgName;
   }
@@ -295,7 +296,9 @@ export class UserService {
     });
     return mapOrgIdNameData;
   }
-
+  setUserFramework(framework) {
+    this._userProfile.framework = framework;
+  }
   get userProfile() {
     return _.cloneDeep(this._userProfile);
   }
