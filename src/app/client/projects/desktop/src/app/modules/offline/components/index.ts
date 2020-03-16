@@ -23,4 +23,4 @@ export * from './profile-dropdown/profile-dropdown.component';
 export * from './search/search.component';
 export * from './view-more/view-more.component';
 export * from './content-manager-info-pop-up/content-manager-info-pop-up.component';
-
+export * from './custom-checkbox/custom-checkbox.component';

@@ -1,3 +1,4 @@
+import { OfflineModule } from './../offline/offline.module';
 import { FileSizeModule } from 'ngx-filesize';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgModule } from '@angular/core';
@@ -31,7 +32,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     SuiModalModule,
     SuiSelectModule,
     TelemetryModule,
-    FileSizeModule
+    FileSizeModule,
+    OfflineModule
 
   ]
 })
