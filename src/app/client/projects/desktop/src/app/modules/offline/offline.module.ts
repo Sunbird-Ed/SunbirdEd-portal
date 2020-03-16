@@ -19,7 +19,7 @@ import {
     OnboardingLocationComponent, OnboardingUserPreferenceComponent, DesktopProminentFilterComponent,
     LoadContentComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent,
     ProfileDropdownComponent, SearchComponent, ViewMoreComponent,
-    ContentManagerInfoPopUpComponent
+    ContentManagerInfoPopUpComponent, CustomCheckboxComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -80,7 +80,8 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         ProfileDropdownComponent,
         SearchComponent,
         ViewMoreComponent,
-        ContentManagerInfoPopUpComponent
+        ContentManagerInfoPopUpComponent,
+        CustomCheckboxComponent
     ],
     entryComponents: [
         ContentImportHeaderComponent,
@@ -90,7 +91,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         ContentImportHeaderComponent,
     ],
     exports: [DesktopAppUpdateComponent, DesktopHeaderComponent, LibraryFiltersComponent, OnboardingComponent,
-         ContentManagerInfoPopUpComponent,
+         ContentManagerInfoPopUpComponent, CustomCheckboxComponent,
         OnboardingLocationComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent, ProfileDropdownComponent]
 })
 export class OfflineModule { }

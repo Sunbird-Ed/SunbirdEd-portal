@@ -27,7 +27,7 @@ export class QrCodeModalComponent implements OnInit {
     this.closeDialCodeInteractEdata = {
       id: 'close-dial-code',
       type: 'click',
-      pageid: 'explore'
+      pageid: this.isOffline ? 'dial-code' : 'explore'
     };
   }
 
@@ -36,11 +36,7 @@ export class QrCodeModalComponent implements OnInit {
     if (!_.isEmpty(dialCode)) {
       this.setsubmitDialCodeInteractEdata(dialCodeVal);
       this.modal.approve();
-      if (_.includes(this.router.url, 'browse') && this.isOffline) {
-        this.router.navigate(['/browse/get/dial/', dialCode]);
-      } else {
-        this.router.navigate(['/get/dial/', dialCode]);
-      }
+      this.router.navigate(['/get/dial/', dialCode]);
     }
   }
 

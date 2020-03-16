@@ -1,0 +1,29 @@
+<ng-container *ngIf="refresh">
+<ng-template let-option #optionTemplate >
+  <div>
+    {{option.name}}
+  </div>
+  <div class="ml-auto">
+    <i class="square outline medium icon m-0" [ngClass]="{'check': checkBox[option.name]}"></i>
+  </div>
+</ng-template>
+
+
+
+<sui-multi-select [isDisabled] ="isDisabled" [optionTemplate]="optionTemplate" [isSearchable]="false" class="ui selection sb-prominent-filter-filed" [hasLabels]="false"
+[options]="field" [(ngModel)]="inputData" (ngModelChange)="selectedOption($event)" #multiSelect>
+<div class="header item" [ngClass]="{'active': selectAllCheckBox }" (click)="selectAll()">
+  <div>
+    {{resourceService.frmelmnts.lbl.selectAll}}
+  </div>
+  <div class="ml-auto">
+    <i class="square outline medium icon m-0" [ngClass]="{'check': selectAllCheckBox}"></i>
+  </div>
+</div>
+<div class="divider"></div>
+<sui-select-option *ngFor= "let option of multiSelect.filteredOptions"  [ngClass]="{'sb-color-primary': checkBox[option.name] }" [value]="option" (click)="checkbox(option.name)"></sui-select-option>
+</sui-multi-select>
+</ng-container>
+
+
+

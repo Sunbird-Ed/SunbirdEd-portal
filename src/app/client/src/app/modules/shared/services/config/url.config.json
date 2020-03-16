@@ -14,6 +14,7 @@
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
+    "DEVICE_PREFIX": "/device/",
     "CONTENT_PREFIX": "/content/",
     "ELECTRON_DIALOG_PREFIX": "/dialog/",
     "PUBLIC_PREFIX": "/api/",
@@ -105,8 +106,8 @@
       "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
     },
     "DEVICE": {	
-      "REGISTER": "v3/device/register/",	
-      "PROFILE": "v3/device/profile/"	
+      "REGISTER": "register/",
+      "PROFILE": "profile/"
     },
     "NOTES": {
       "SEARCH": "notes/v1/search",
@@ -214,9 +215,9 @@
       "EXPORT_TELEMETRY": "telemetry/v1/export",
       "IMPORT_TELEMETRY": "telemetry/v1/import",
       "IMPORT_TELEMETRY_LIST": "telemetry/v1/list",
-      "TELEMETRY_SYNC_STATUS": "telemetry/v1/import/status",
+      "TELEMTRY_CONFIG": "telemetry/v1/config",
       "TELEMETRY_IMPORT_RETRY": "telemetry/v1/import/retry",
-      "TELEMETRY_SYNC": "telemetry/v1/sync"
+      "TELEMETRY_SYNC": "desktop/v1/sync"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",

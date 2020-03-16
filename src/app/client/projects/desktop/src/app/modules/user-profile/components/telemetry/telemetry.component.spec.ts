@@ -2,11 +2,11 @@ import { telemetry } from './telemetry.component.spec.data';
 import { of, throwError } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService , ToasterService} from '@sunbird/shared';
 import { FileSizeModule } from 'ngx-filesize';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ConnectionService } from '@sunbird/offline';
 import { TelemetryComponent } from './telemetry.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -40,7 +40,8 @@ describe('TelemetryComponent', () => {
       imports: [ TelemetryModule.forRoot(), FileSizeModule, SharedModule.forRoot(), HttpClientTestingModule],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useValue: RouterStub },
-        { provide: ResourceService, useValue: telemetry.resourceBundle}
+        { provide: ResourceService, useValue: telemetry.resourceBundle},
+        ConnectionService, ToasterService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -88,5 +89,89 @@ describe('TelemetryComponent', () => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(telemetry.resourceBundle.messages.emsg.desktop.telemetryExportEMsg);
     });
   });
+  it('should call get sync status with enable status', () => {
+    spyOn(component['telemetryActionService'], 'getSyncTelemetryStatus').and.returnValue(of(telemetry.getSyncStatus.enable));
+    component.getSyncStatus();
+    component['telemetryActionService'].getSyncTelemetryStatus().subscribe(data => {
+      expect(data).toEqual(telemetry.getSyncStatus.enable);
+      expect(component.syncStatus).toBeTruthy();
+    });
+  });
+  it('should call get sync status with disable status', () => {
+    spyOn(component['telemetryActionService'], 'getSyncTelemetryStatus').and.returnValue(of(telemetry.getSyncStatus.disable));
+    component.getSyncStatus();
+    component['telemetryActionService'].getSyncTelemetryStatus().subscribe(data => {
+      expect(data).toEqual(telemetry.getSyncStatus.disable);
+      expect(component.syncStatus).toBeFalsy();
+    });
+  });
 
+  it('should call handleSyncStatus', () => {
+    spyOn(component['telemetryActionService'], 'updateSyncStatus').and.returnValue(of(telemetry.updateSyncStatus));
+    spyOn(component, 'setTelemetrySyncStatus');
+    const data = {
+      'request': {
+        'enable': true
+      }
+    };
+    component.handleSyncStatus(data);
+    component['telemetryActionService'].updateSyncStatus(data).subscribe(response => {
+      expect(response).toEqual(telemetry.updateSyncStatus);
+    });
+    expect(component.setTelemetrySyncStatus).toHaveBeenCalledWith(data);
+  });
+  it('should call syncTelemetry and show no internet toaster message', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(component, 'setSyncTelemetry');
+    component.isConnected = false;
+    component.telemetryInfo = telemetry.info.result.response;
+    component.syncTelemetry();
+    expect(toasterService.error).
+    toHaveBeenCalledWith(telemetry.resourceBundle.messages.emsg.desktop.connectionError);
+    expect(component.setSyncTelemetry).toHaveBeenCalledWith();
+  });
+  it('should call syncTelemetry and throw error while syncing', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(component, 'setSyncTelemetry');
+    component.isConnected = true;
+    component.telemetryInfo = telemetry.info.result.response;
+    const data  = {
+      'request': {
+        'type': ['TELEMETRY']
+      }
+    };
+    component.syncTelemetry();
+    component['telemetryActionService'].syncTelemtry(data).subscribe(response => {
+    }, (err) => {
+
+     expect(component.disableSync).toBeFalsy();
+     expect(component.showSyncStatus).toBeFalsy();
+      expect(err).toEqual(telemetry.telemetrySync.error);
+      expect(toasterService.error).toHaveBeenCalledWith(telemetry.resourceBundle.messages.emsg.desktop.telemetrySyncError);
+    });
+
+    expect(component.setSyncTelemetry).toHaveBeenCalledWith();
+  });
+  it('should call syncTelemetry and sync successfuly', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(component, 'setSyncTelemetry');
+    spyOn(component, 'getTelemetryInfo');
+    component.isConnected = true;
+    component.telemetryInfo = telemetry.info.result.response;
+    const data  = {
+      'request': {
+        'type': ['TELEMETRY']
+      }
+    };
+    component.syncTelemetry();
+    component['telemetryActionService'].syncTelemtry(data).subscribe(response => {
+     expect(component.showSyncStatus).toBeFalsy();
+     expect(component.getTelemetryInfo).toHaveBeenCalled();
+    }, (err) => {
+    });
+    expect(component.setSyncTelemetry).toHaveBeenCalledWith();
+  });
 });

@@ -69,16 +69,16 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.boardOption = _.sortBy(_.get(data, 'result.channel.frameworks'), 'index');
         this.contentPreferenceForm.controls['board'].setValue(_.find(this.boardOption, { name: this.frameworkDetails.board }));
+        this.onBoardChange();
       }, err => {
       });
   }
-  onBoardChange() {
+
+  onBoardChange(event?) {
     this.mediumOption = [];
     this.classOption = [];
     this.subjectsOption = [];
-    this.contentPreferenceForm.controls['medium'].setValue('');
-    this.contentPreferenceForm.controls['class'].setValue('');
-    this.contentPreferenceForm.controls['subjects'].setValue('');
+    this.clearForm(['medium', 'class', 'subjects']);
     if (this.contentPreferenceForm.value.board) {
       this.frameworkService.getFrameworkCategories(_.get(this.contentPreferenceForm.value.board, 'identifier'))
         .pipe(takeUntil(this.unsubscribe$))
@@ -89,10 +89,10 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
               return element.code === 'board';
             });
             this.mediumOption = this.userService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
-            if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
-          this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.frameworkDetails['medium']));
+            if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board'] && !event) {
+            this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.frameworkDetails['medium']));
             }
-
+            this.onMediumChange();
           }
         }, err => {
         });
@@ -101,7 +101,6 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   }
   filterContent(filterArray, content) {
     const array = [];
-    // tslint:disable-next-line: no-shadowed-variable
     _.forEach(content, (data) => {
       const filter = this.getSelecteddata(filterArray, data);
       array.push(filter);
@@ -111,33 +110,46 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
   getSelecteddata(filterArray, content) {
     return _.find(filterArray, { name: content });
   }
-  onMediumChange() {
+
+  clearForm(values) {
+    _.forEach(values, value => {
+      this.contentPreferenceForm.controls[`${value}`].setValue('');
+    });
+  }
+
+  onMediumChange(event?) {
     this.classOption = [];
     this.subjectsOption = [];
-    this.contentPreferenceForm.controls['class'].setValue('');
-    this.contentPreferenceForm.controls['subjects'].setValue('');
+    if (event) {
+      this.contentPreferenceForm.controls['medium'].setValue(event);
+    }
+    this.clearForm(['class', 'subjects']);
     if (!_.isEmpty(this.contentPreferenceForm.value.medium)) {
     this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
-      if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
-        // tslint:disable-next-line: max-line-length
+      if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board'] && !event) {
         this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.frameworkDetails['gradeLevel']));
       }
       this.onClassChange();
     }
   }
 
-  onClassChange() {
+  onClassChange(event?) {
     this.subjectsOption = [];
-    this.contentPreferenceForm.controls['subjects'].setValue('');
+    if (event) {
+      this.contentPreferenceForm.controls['class'].setValue(event);
+    }
+    this.clearForm(['subjects']);
     if (!_.isEmpty(this.contentPreferenceForm.value.class)) {
-      // tslint:disable-next-line: max-line-length
-      this.subjectsOption = this.userService.getAssociationData(this.contentPreferenceForm.value.class, 'subject', this.frameworkCategories);
-      if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board']) {
-        // tslint:disable-next-line: max-line-length
+    this.subjectsOption = this.userService.getAssociationData(this.contentPreferenceForm.value.class, 'subject', this.frameworkCategories);
+      if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board'] && !event) {
         this.contentPreferenceForm.controls['subjects'].setValue(
           _.compact(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects'])));
       }
     }
+  }
+
+  onSubjectChange(event) {
+    this.contentPreferenceForm.controls['subjects'].setValue(event);
   }
 
   updateUser() {
