@@ -70,6 +70,9 @@
       ],
       "@sunbird/offline" : [
         "./../projects/desktop/src/app/modules/offline"
+      ],
+      "@sunbird/content-search": [
+        "app/modules/content-search"
       ]
     },
     "module": "es2015",
