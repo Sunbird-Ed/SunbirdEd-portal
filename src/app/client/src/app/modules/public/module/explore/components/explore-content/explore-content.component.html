@@ -24,7 +24,7 @@
           *ngFor="let content of contentList;let i = index;">
           <sb-library-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
           [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
-           (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.cardImg || 'assets/images/book.png'">
+           (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'">
           </sb-library-card>
         </div>
       </div>
