@@ -368,4 +368,7 @@ export class UserService {
     return this.learnerService.post(option);
   }
 
+  setUserFramework(framework) {
+    this._userProfile.framework = framework;
+  }
 }
