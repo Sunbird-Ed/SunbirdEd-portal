@@ -11,7 +11,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { OnboardingService } from '../../../offline/services';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { user_content_preferences_Data } from './update-content-preference.component.spec.data';
-describe('UpdateContentPreferenceComponent', () => {
+xdescribe('UpdateContentPreferenceComponent', () => {
   let component: UpdateContentPreferenceComponent;
   let fixture: ComponentFixture<UpdateContentPreferenceComponent>;
   class RouterStub {
@@ -43,7 +43,7 @@ describe('UpdateContentPreferenceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UpdateContentPreferenceComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
+    fixture.detectChanges();
   });
 
   it('should create', () => {
