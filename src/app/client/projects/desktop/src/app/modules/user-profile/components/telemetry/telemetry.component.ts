@@ -8,6 +8,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { ITelemetryInfo } from '../../interfaces';
 import { debounceTime } from 'rxjs/operators';
+import { ConnectionService } from '@sunbird/offline';
 @Component({
   selector: 'app-telemetry',
   templateUrl: './telemetry.component.html',
@@ -18,7 +19,10 @@ export class TelemetryComponent implements OnInit, OnDestroy {
   public telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
   disableExport = true;
-  syncStatus = true;
+  syncStatus: any;
+  disableSync = true;
+  showSyncStatus = false;
+  isConnected: any;
   exportedTime;
   constructor(
     private telemetryActionService: TelemetryActionsService,
@@ -27,6 +31,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    public connectionService: ConnectionService
   ) { }
 
   ngOnInit() {
@@ -37,22 +42,29 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     this.setTelemetryImpression();
     // this event will start when import new telemetry file and status is completed
     this.telemetryActionService.telemetryImportEvent
-    .pipe(debounceTime(1000), takeUntil(this.unsubscribe$))
-    .subscribe(data => {
-      this.getTelemetryInfo();
-    });
+      .pipe(debounceTime(1000), takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.getTelemetryInfo();
+      });
+    this.getSyncStatus();
+    this.checkOnlineStatus();
   }
 
   getTelemetryInfo() {
     this.telemetryActionService.getTelemetryInfo().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.telemetryInfo = _.get(data, 'result.response');
       this.disableExport = !this.telemetryInfo['totalSize'];
+      this.disableSync = !this.telemetryInfo['totalSize'];
     }, (err) => {
       this.disableExport = true;
       this.toasterService.error(this.resourceService.messages.emsg.desktop.telemetryInfoEMsg);
     });
   }
-
+  getSyncStatus() {
+    this.telemetryActionService.getSyncTelemetryStatus().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.syncStatus = _.get(data, 'result.enable');
+    });
+  }
   exportTelemetry() {
     this.disableExport = true;
     this.logTelemetry('export-telemetry');
@@ -69,8 +81,6 @@ export class TelemetryComponent implements OnInit, OnDestroy {
       }
     );
   }
-  onChangeTelemetrySyncStatus(syncStatus) {
-  }
   setTelemetrySyncStatus(syncStatus) {
     const interactData = {
       context: {
@@ -86,8 +96,43 @@ export class TelemetryComponent implements OnInit, OnDestroy {
     };
     this.telemetryService.interact(interactData);
   }
-  syncTelemetry() {
+  handleSyncStatus(syncStatus) {
+    this.setTelemetrySyncStatus(syncStatus);
+    const data = {
+      'request': {
+        'enable': syncStatus
+      }
+    };
+    this.telemetryActionService.updateSyncStatus(data).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {});
   }
+
+  checkOnlineStatus() {
+    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {this.isConnected = isConnected; });
+  }
+  syncTelemetry() {
+    this.setSyncTelemetry();
+    if (this.isConnected) {
+      const data  = {
+        'request': {
+          'type': ['TELEMETRY']
+        }
+      };
+      this.showSyncStatus = true;
+      this.disableSync = true;
+      this.telemetryActionService.syncTelemtry(data).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
+        this.showSyncStatus = false;
+        this.getTelemetryInfo();
+      }, (err) => {
+        this.showSyncStatus = false;
+        this.disableSync = false;
+        this.toasterService.error(this.resourceService.messages.emsg.desktop.telemetrySyncError);
+      });
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.desktop.connectionError);
+    }
+
+  }
+
   setSyncTelemetry() {
     const interactData = {
       context: {
