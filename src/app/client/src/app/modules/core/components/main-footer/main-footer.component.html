@@ -74,7 +74,7 @@
           <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
             {{resourceService.frmelmnts?.lnk?.footerTnC}}
           </a>
-          <span>| &copy; {{date | date:'yyyy'}}, DIKSHA</span>
+          <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
         </label>
         <label class="sb-footer-license">
           <img src="/assets/images/CCby.svg">
