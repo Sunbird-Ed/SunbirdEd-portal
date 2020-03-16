@@ -23,6 +23,9 @@ describe('ContentPlayerPageComponent', () => {
       params: {
         'contentId': resourceData.contentId
       },
+      queryParams: {
+        contentType: 'Resource'
+      },
       data: {
         telemetry: {
           env: 'player-page', pageid: 'play-content', type: 'view', subtype: 'paginate'

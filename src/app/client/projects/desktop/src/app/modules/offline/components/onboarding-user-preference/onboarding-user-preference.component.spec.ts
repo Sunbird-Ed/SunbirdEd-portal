@@ -10,6 +10,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService } from '@sunbird/shared';
 import { OrgDetailsService, ChannelService, FrameworkService } from '@sunbird/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 describe('OnboardingUserPreferenceComponent', () => {
@@ -47,6 +48,7 @@ describe('OnboardingUserPreferenceComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
