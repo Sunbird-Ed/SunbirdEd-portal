@@ -113,17 +113,9 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
           pageNumber: this.paginationDetails.currentPage,
           query: this.queryParams.key,
           mode: 'soft',
-          softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {},
           facets: this.facets,
           params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
         };
-        if (this.queryParams.softConstraints) {
-          try {
-            option.softConstraints = JSON.parse(this.queryParams.softConstraints);
-          } catch {
-
-          }
-        }
         if (this.frameworkId) {
           option.params.framework = this.frameworkId;
         }
