@@ -20,7 +20,7 @@ body {
     background: $body-background-color !important;
     & > .pusher {
       background: transparent !important;
-      padding-bottom: 400px !important;
+     // padding-bottom: 400px !important;
       &.dimmed {
         height: 100vh;
       }
@@ -31,7 +31,7 @@ body {
 @include respond-above(sm) {
   body {
     .pusher {
-      padding-bottom: 240px !important;
+    //  padding-bottom: 240px !important;
     }
     .sb-mid-container-min-height {
       min-height: calc(100vh - 288px);
