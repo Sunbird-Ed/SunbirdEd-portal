@@ -152,13 +152,11 @@
   }
 
 }
-
 @media screen and (max-width: 900px) {
   .footer{
-    padding: calculateRem(20px) 0;
+    padding: 20px 0;
   }
 }
-
 @media screen and (max-width: 767px) {
 
   .download-mobile-app {

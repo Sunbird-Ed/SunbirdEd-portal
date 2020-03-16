@@ -90,7 +90,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
-    filters.contentType = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Course'];
+    filters.contentType = filters.contentType || ['Course', ...this.configService.appConfig.CommonSearch.contentType];
     const option = {
         filters: filters,
         limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,

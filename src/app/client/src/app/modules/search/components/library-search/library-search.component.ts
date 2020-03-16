@@ -12,12 +12,13 @@ import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 @Component({
-    templateUrl: './library-search.component.html'
+    templateUrl: './library-search.component.html',
+    styleUrls: ['./library-search.component.scss']
 })
 export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public showLoader = true;
-    public noResultMessage: INoResultMessage;
+    public noResultMessage;
     public filterType: string;
     public queryParams: any;
     public hashTagId: string;
@@ -37,6 +38,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public sortingOptions;
     public redirectUrl;
     public frameworkData: object;
+    public frameworkId;
     public closeIntractEdata;
 
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
@@ -52,6 +54,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     }
     ngOnInit() {
+        this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
+            if (!channelData.err) {
+              this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
+            }
+          });
         this.userService.userData$.subscribe(userData => {
             if (userData && !userData.err) {
                 this.frameworkData = _.get(userData.userProfile, 'framework');
@@ -94,45 +101,31 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             });
     }
     private fetchContents() {
-        let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-        const softConstraintData = {
-            filters: {channel: this.userService.hashTagId,
-            board: [this.dataDrivenFilters.board]},
-            softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
-            mode: 'soft'
-          };
-          const manipulatedData = this.utilService.manipulateSoftConstraint( _.get(this.queryParams, 'appliedFilters'),
-          softConstraintData, this.frameworkData );
-        const option = {
-            filters: _.get(this.queryParams, 'appliedFilters') ?  filters :
-            (_.get(manipulatedData, 'filters') ? _.get(manipulatedData, 'filters') : {}),
-            limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-            pageNumber: this.paginationDetails.currentPage,
-            query: this.queryParams.key,
-            sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
-            mode: _.get(manipulatedData, 'mode'),
-            facets: this.facets,
-            params: this.configService.appConfig.Library.contentApiQueryParams
+        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
+        if (_.isEmpty(filters)) {
+            filters = _.omit(this.frameworkData, ['id']);
+        }
+        filters.channel = this.hashTagId;
+        filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
+        const option: any = {
+          filters: filters,
+          limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+          pageNumber: this.paginationDetails.currentPage,
+          query: this.queryParams.key,
+          mode: 'soft',
+          facets: this.facets,
+          params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
         };
-        option.filters.contentType = filters.contentType ||
-        ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-        if (_.get(manipulatedData, 'filters')) {
-            option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
-          }
-        this.frameworkService.channelData$.subscribe((channelData) => {
-            if (!channelData.err) {
-               option.params.framework = _.get(channelData, 'channelData.defaultFramework');
-            }
-        });
+        if (this.frameworkId) {
+          option.params.framework = this.frameworkId;
+        }
         this.searchService.contentSearch(option)
             .subscribe(data => {
                 this.showLoader = false;
                 this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
-                const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
-                this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
+                this.contentList = data.result.content || [];
             }, err => {
                 this.showLoader = false;
                 this.contentList = [];
@@ -173,15 +166,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         };
     }
     public playContent(event) {
-        this.playerService.playContent(event.data.metaData);
+        this.playerService.playContent(event.data);
     }
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {
-            const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier });
+            const obj = _.find(this.inViewLogs, { objid: elem.data.identifier });
             if (!obj) {
                 this.inViewLogs.push({
-                    objid: elem.data.metaData.identifier,
-                    objtype: elem.data.metaData.contentType || 'content',
+                    objid: elem.data.identifier,
+                    objtype: elem.data.contentType || 'content',
                     index: elem.id
                 });
             }
@@ -213,9 +206,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.unsubscribe$.complete();
     }
     private setNoResultMessage() {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
-      };
+        this.noResultMessage = {
+            'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
+            'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+            'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+            'showExploreContentButton': false
+          };
     }
 }
