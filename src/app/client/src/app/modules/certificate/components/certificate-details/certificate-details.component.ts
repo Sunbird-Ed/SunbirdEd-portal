@@ -54,7 +54,7 @@ export class CertificateDetailsComponent implements OnInit {
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     this.setTelemetryData();
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(data => {
-      if (data && !data.err) {
+      if (data && !data.err && data.tenantData) {
         this.logo = data.tenantData.logo;
         this.tenantName = data.tenantData.titleName;
       }

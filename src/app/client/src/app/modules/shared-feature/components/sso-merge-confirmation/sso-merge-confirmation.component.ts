@@ -34,7 +34,7 @@ export class SsoMergeConfirmationComponent implements OnInit {
 
   ngOnInit() {
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(data => {
-      if (data && !data.err) {
+      if (data && !data.err && data.tenantData) {
         this.logo = data.tenantData.logo;
         this.tenantName = data.tenantData.titleName;
       }

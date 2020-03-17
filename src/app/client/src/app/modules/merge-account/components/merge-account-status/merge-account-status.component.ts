@@ -32,7 +32,7 @@ export class MergeAccountStatusComponent implements OnInit {
       this.error_type = queryParam.error_type;
     });
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(data => {
-      if (data && !data.err) {
+      if (data && !data.err && data.tenantData) {
         this.logo = data.tenantData.logo;
         this.tenantName = data.tenantData.titleName;
       }
