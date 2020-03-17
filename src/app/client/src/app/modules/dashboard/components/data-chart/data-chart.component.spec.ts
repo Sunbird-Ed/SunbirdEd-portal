@@ -174,4 +174,53 @@ describe('DataChartComponent', () => {
         expect(component.filtersFormGroup.get('Grade').value).toEqual(['08-01-2019', '09-01-2019', '10-01-2019']);
     }));
 
+    describe('checkForStacking function', () => {
+
+        let mockchartOptions;
+
+        beforeEach(() => {
+            mockchartOptions = {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            };
+            component.chartOptions = mockchartOptions;
+        });
+
+        it('should return false is stacking is not enabled in bar chart ', () => {
+            component.chartType = 'bar';
+            component.chartOptions.scales.xAxes = [{}];
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeFalsy();
+
+        });
+
+        it('should return true is stacking is enabled in bar chart ', () => {
+            component.chartType = 'bar';
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeTruthy();
+        });
+
+        it('should return true is stacking is enabled for y axis in line chart', () => {
+            component.chartType = 'line';
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeTruthy();
+        });
+
+        it('should return false for all charts except bar or line', () => {
+            component.chartType = 'pie';
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeFalsy();
+        });
+    });
+
 });
