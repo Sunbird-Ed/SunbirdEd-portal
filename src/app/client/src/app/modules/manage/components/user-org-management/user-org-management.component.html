@@ -72,7 +72,7 @@
                 <dt>{{ validatedUser['rootOrgRegistered'] }}</dt>
                 <dd>State accounts</dd>
               </dl>
-             <div class="ml-auto" >
+             <div class="ml-auto" *ngIf="validatedUserSummary && validatedUserSummary.length">
                 <button class="sb-btn sb-btn-normal" [ngClass]="(teachersButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" (click)="teachersTableView()" appTelemetryInteract [telemetryInteractEdata]="userViewInteractEdata">{{teachersButtonText}}</button>
                 <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadZipFile(userZip, slug + '.zip')" appTelemetryInteract [telemetryInteractEdata]="userDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
              </div>

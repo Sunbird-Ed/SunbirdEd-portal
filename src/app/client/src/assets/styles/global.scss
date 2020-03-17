@@ -32,6 +32,7 @@ body {
   body {
     .pusher {
       padding-bottom: 240px !important;
+    
     }
     .sb-mid-container-min-height {
       min-height: calc(100vh - 288px);
@@ -40,7 +41,7 @@ body {
   }
 }
 @include respond-below(sm) {
-  .download-mobile-app .download-mobile-app-logo{
+ .download-mobile-app .download-mobile-app-logo{
     min-height: 116px;
   }
 }
@@ -83,10 +84,9 @@ body {
   @include respond-above(sm) {
     .download-mobile-app .download-mobile-app-logo{
       min-height: 168px;
+      }
     }
-  }
 }
-
 [dir="ltr"] {
   .sb-explore-qr-container {
     .dial-section-column {
@@ -222,7 +222,6 @@ app-workspace {
     }
   }
 }
-
 .sb-workspace-bg{
   position: relative;
   bottom: -35px;
@@ -244,5 +243,19 @@ app-workspace {
 @include respond-below(sm){
   .back-bar {
     top: calculateRem(182px);
+  }
+}
+// common consumption cards for library
+.sb-library-cards{
+  .ui.grid{
+    padding: 1rem 0;
+    sb-library-cards-grid{
+      .header{
+        margin:0 0 1rem;
+      }
+      .cards-container .item{
+        margin: 0 0 1.5rem 0;
+      }
+    }
   }
 }
