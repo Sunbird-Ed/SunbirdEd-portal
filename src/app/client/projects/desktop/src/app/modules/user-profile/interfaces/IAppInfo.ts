@@ -13,5 +13,5 @@ export interface IAppInfo {
 
 export interface ITelemetryInfo {
     totalSize: number;
-    lastExportedOn: Date;
+    lastExportedOn: number;
 }

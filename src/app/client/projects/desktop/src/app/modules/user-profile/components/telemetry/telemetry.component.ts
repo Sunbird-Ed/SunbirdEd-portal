@@ -24,6 +24,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
   showSyncStatus = false;
   isConnected: any;
   exportedTime;
+  forceSyncInfo: any;
   constructor(
     private telemetryActionService: TelemetryActionsService,
     public resourceService: ResourceService,
@@ -55,6 +56,7 @@ export class TelemetryComponent implements OnInit, OnDestroy {
       this.telemetryInfo = _.get(data, 'result.response');
       this.disableExport = !this.telemetryInfo['totalSize'];
       this.disableSync = !this.telemetryInfo['totalSize'];
+      this.forceSyncInfo = _.find(_.get(data, 'result.response.networkInfo.forceSyncInfo'), { type: 'TELEMETRY' });
     }, (err) => {
       this.disableExport = true;
       this.toasterService.error(this.resourceService.messages.emsg.desktop.telemetryInfoEMsg);

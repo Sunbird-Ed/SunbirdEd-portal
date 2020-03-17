@@ -60,7 +60,7 @@ describe('TelemetryComponent', () => {
     component.getTelemetryInfo();
     component['telemetryActionService'].getTelemetryInfo().subscribe(data => {
       expect(data).toEqual(telemetry.info);
-      expect(component.telemetryInfo).toEqual(telemetry.info.result.response);
+      expect(component.telemetryInfo.totalSize).toEqual(telemetry.info.result.response.totalSize);
     });
   });
 
@@ -79,7 +79,10 @@ describe('TelemetryComponent', () => {
 
   it('should call logTelemetry', () => {
     expect(component).toBeTruthy();
-    component.telemetryInfo = telemetry.info.result.response;
+    component.telemetryInfo = {
+      totalSize: 100,
+      lastExportedOn: 1584354597446
+    };
     spyOn(component['telemetryActionService'], 'exportTelemetry').and.returnValue(throwError(telemetry.exportError));
     spyOn(component['toasterService'], 'error');
     component.exportTelemetry();
@@ -136,7 +139,10 @@ describe('TelemetryComponent', () => {
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');
     component.isConnected = true;
-    component.telemetryInfo = telemetry.info.result.response;
+    component.telemetryInfo = {
+      totalSize: 100,
+      lastExportedOn: 1584354597446
+    };
     const data  = {
       'request': {
         'type': ['TELEMETRY']
@@ -156,11 +162,14 @@ describe('TelemetryComponent', () => {
   });
   xit('should call syncTelemetry and sync successfuly', () => {
     const toasterService = TestBed.get(ToasterService);
+    component.isConnected = true;
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');
     spyOn(component, 'getTelemetryInfo');
-    component.isConnected = true;
-    component.telemetryInfo = telemetry.info.result.response;
+    component.telemetryInfo = {
+      totalSize: 100,
+      lastExportedOn: 1584354597446
+    };
     const data  = {
       'request': {
         'type': ['TELEMETRY']

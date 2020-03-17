@@ -3,10 +3,10 @@ export const telemetry = {
     info: {
         'id': 'api.telemetry.info',
         'ver': '1.0',
-        'ts': '2020-02-04T10:14:22.087Z',
+        'ts': '2020-03-16T11:18:52.209Z',
         'params': {
-            'resmsgid': '687fa067-8296-449d-a61b-b910def2e01f',
-            'msgid': '2a714441-e9b4-4e15-bc8e-efa993719ed2',
+            'resmsgid': '39cbc318-aa9c-4b6c-81a4-1f73132248e5',
+            'msgid': '3c630f04-d450-48b1-b5ad-023ff8401cdf',
             'status': 'successful',
             'err': null,
             'errmsg': null
@@ -14,8 +14,16 @@ export const telemetry = {
         'responseCode': 'OK',
         'result': {
             'response': {
-                'totalSize': 22587,
-                'lastExportedOn': null
+                'totalSize': 10,
+                'lastExportedOn': 1584354597446,
+                'networkInfo': {
+                    'forceSyncInfo': [
+                        {
+                            'type': 'TELEMETRY',
+                            'lastSyncedOn': 1584357526576
+                        }
+                    ]
+                }
             }
         }
     },
