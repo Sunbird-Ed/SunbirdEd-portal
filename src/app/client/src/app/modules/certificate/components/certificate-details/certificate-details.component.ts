@@ -63,7 +63,8 @@ export class CertificateDetailsComponent implements OnInit {
     this.certificateService.validateCertificate(request).subscribe(
       (data: ServerResponse) => {
         if (_.get(data, 'result.response.related.certVideoUrl')) {
-          this.processVideoUrl(_.get(data, 'result.response.related.certVideoUrl'));
+          this.watchVideoLink = _.get(data, 'result.response.related.certVideoUrl');
+          this.processVideoUrl(this.watchVideoLink);
         } else {
           this.getCourseVideoUrl(_.get(data, 'result.response.related.courseId'));
         }
