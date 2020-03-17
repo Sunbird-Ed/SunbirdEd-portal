@@ -14,6 +14,8 @@ import { NgInviewModule } from 'angular-inport';
 import { AvatarModule } from 'ngx-avatar';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 // import { Angular2CsvModule } from 'angular2-csv'; Angular2CsvModule removed TODO: use Blob object to generate csv file
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { ContentSearchModule } from '@sunbird/content-search';
 
 @NgModule({
   imports: [
@@ -28,7 +30,9 @@ import {SharedFeatureModule} from '@sunbird/shared-feature';
     NgInviewModule,
     AvatarModule,
     SharedFeatureModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonConsumptionModule,
+    ContentSearchModule
   ],
   declarations: [ UserSearchComponent, CourseSearchComponent, LibrarySearchComponent,
   UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent,

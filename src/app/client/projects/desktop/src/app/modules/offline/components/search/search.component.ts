@@ -141,7 +141,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         ([onlineRes, offlineRes]: any) => {
           this.showLoader = false;
 
-
           if (this.params.dialCode) {
             const onlineOption = { params: { online: true } };
             const offlineOption = { params: { online: false } };
@@ -236,10 +235,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
       query: this.queryParams.key,
     };
-    if (isFacetsRequired) {
-      option['facets'] = this.facets;
-     }
-    option.filters['contentType'] = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+
+    option.filters['contentType'] = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
     if (manipulatedData.filters) {
       option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }

@@ -8,7 +8,7 @@ import { CacheService } from 'ng2-cache-service';
 import { mockFrameworkData } from './framework.mock.spec.data';
 
 describe('FrameworkService', () => {
-  let userService, publicDataService, frameworkService;
+  let userService, publicDataService, frameworkService, cacheService;
   let mockHashTagId: string, mockFrameworkInput: string;
   let mockFrameworkCategories: Array<any> = [];
   let makeChannelReadSuc, makeFrameworkReadSuc  = true;
@@ -17,9 +17,11 @@ describe('FrameworkService', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [CacheService]
     });
+    cacheService = TestBed.get(CacheService);
     userService = TestBed.get(UserService);
     publicDataService = TestBed.get(PublicDataService);
     frameworkService = TestBed.get(FrameworkService);
+    spyOn(cacheService, 'get').and.returnValue(undefined);
     spyOn(publicDataService, 'get').and.callFake((options) => {
       if (options.url === 'channel/v1/read/' + mockHashTagId && makeChannelReadSuc) {
         return of({result: {channel: {defaultFramework: mockFrameworkInput}}});
@@ -83,7 +85,7 @@ describe('FrameworkService', () => {
     mockFrameworkInput = 'NCF';
     mockFrameworkCategories = [];
     makeChannelReadSuc = true;
-    makeFrameworkReadSuc = false;
+    makeFrameworkReadSuc = true;
     frameworkService.initialize('NCF');
     frameworkService.frameworkData$.subscribe((data) => {
       expect(data.frameworkdata).toEqual({'NCF': {'code': 'NCF', 'categories': []}});
