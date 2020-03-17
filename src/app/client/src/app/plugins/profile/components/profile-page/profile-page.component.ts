@@ -74,6 +74,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.roles = [];
     _.forEach(this.userProfile.organisations, (org, index) => {
       if (this.userProfile.rootOrgId !== org.organisationId) {
+        if (org.locations && org.locations.length === 0) {
+          if (this.userProfile.organisations[0].locationIds && this.userProfile.organisations[0].locations) {
+            org.locationIds = this.userProfile.organisations[0].locationIds;
+            org.locations = this.userProfile.organisations[0].locations;
+          }
+        }
         orgList.push(org);
       }
       _.forEach(org.roles, (value, key) => {
@@ -119,7 +125,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getTrainingAttended() {
     this.coursesService.enrolledCourseData$.pipe(first()).subscribe(data => {
-      this.attendedTraining = _.filter(data.enrolledCourses, { status: 2 }) || [];
+      this.attendedTraining = _.reverse(_.sortBy(_.filter(data.enrolledCourses, { status: 2 }), val => {
+        return _.isNumber(_.get(val, 'completedOn')) ? _.get(val, 'completedOn') : Date.parse(val.completedOn);
+      })) || [];
     });
   }
 

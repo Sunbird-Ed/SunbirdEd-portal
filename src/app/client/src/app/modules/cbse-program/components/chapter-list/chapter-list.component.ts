@@ -1,20 +1,19 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges, OnDestroy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
-import { ConfigService, ServerResponse, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { UUID } from 'angular2-uuid';
 import { CbseProgramService } from '../../services';
 import { map, catchError } from 'rxjs/operators';
-import { forkJoin, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   IChapterListComponentInput, ISessionContext,
   IContentUploadComponentInput, IResourceTemplateComponentInput
 } from '../../interfaces';
-import { QuestionListComponent } from '../../../cbse-program/components/question-list/question-list.component';
-import { ContentUploaderComponent } from '../../components/content-uploader/content-uploader.component';
-import { ProgramStageService, ProgramComponentsService } from '../../../program/services';
+import { ProgramStageService } from '../../../program/services';
+import { ProgramComponentsService } from '../../../program/services/program-components/program-components.service';
 import { InitialState } from '../../interfaces';
 import { CollectionHierarchyService } from '../../services/collection-hierarchy/collection-hierarchy.service';
 
@@ -62,12 +61,6 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
   showLargeModal: boolean;
   // private labels: Array<string>;
   private actions: any;
-  private componentMapping = {
-    ExplanationResource: ContentUploaderComponent,
-    ExperientialResource: ContentUploaderComponent,
-    PracticeQuestionSet: QuestionListComponent,
-    CuriosityQuestionSet: QuestionListComponent,
-  };
   public dynamicInputs: IDynamicInput;
   public dynamicOutputs: any;
   public creationComponent;
@@ -310,7 +303,7 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
       if (data.createdBy === this.currentUserID && data.status === 'Draft' && data.prevStatus === 'Review') {
         this.countData['reject'] = this.countData['reject'] + 1;
       }
-      if (data.createdBy === this.currentUserID && data.createdBy === this.currentUserID) {
+      if (data.createdBy === this.currentUserID) {
         this.countData['mycontribution'] = this.countData['mycontribution'] + 1;
       }
       if (data.status === 'Review') {
@@ -427,8 +420,10 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
     this.templateDetails = _.find(templateList, (templateData) => {
       return templateData.metadata.contentType === event.content.contentType;
     });
+    if (this.templateDetails) {
     this.componentLoadHandler('preview',
       this.programComponentsService.getComponentInstance(this.templateDetails.onClick), this.templateDetails.onClick);
+    }
   }
 
   componentLoadHandler(action, component, componentName) {
@@ -472,7 +467,10 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
     }
     this.resourceTemplateComponentInput = {
       templateList: _.get(this.chapterListComponentInput.config, 'config.contentTypes.value')
-        || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue')
+        || _.get(this.chapterListComponentInput.config, 'config.contentTypes.defaultValue'),
+        programContext: this.programContext,
+        sessionContext: this.sessionContext,
+        unitIdentifier: this.unitIdentifier
     };
   }
 
@@ -493,13 +491,13 @@ export class ChapterListComponent implements OnInit, OnChanges, OnDestroy, After
   }
 
   lastOpenedUnit(unitId) {
-    this.collectionHierarchy.map((parentunit) => {
+    this.collectionHierarchy.forEach((parentunit) => {
         if (parentunit.identifier === unitId) {
           this.sessionContext.lastOpenedUnitChild = unitId;
           this.sessionContext.lastOpenedUnitParent = parentunit.identifier;
           return;
         } else if (parentunit.children) {
-          _.map(parentunit.children, (childUnit) => {
+          _.forEach(parentunit.children, (childUnit) => {
             if (childUnit.identifier === unitId) {
              this.sessionContext.lastOpenedUnitChild = childUnit.identifier;
              this.sessionContext.lastOpenedUnitParent = parentunit.identifier;

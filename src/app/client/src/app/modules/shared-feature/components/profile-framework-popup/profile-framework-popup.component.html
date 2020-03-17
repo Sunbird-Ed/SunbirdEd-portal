@@ -5,7 +5,7 @@
   [size]="'normal'"
   class="sb-modal"
   #modal 
-  (dismissed)="modal.deny();close.emit();"
+  (dismissed)="modal.deny();close.emit();popupControlService.changePopupStatus(true);"
   *ngIf="formFieldOptions.length">
 
   <!--Header-->

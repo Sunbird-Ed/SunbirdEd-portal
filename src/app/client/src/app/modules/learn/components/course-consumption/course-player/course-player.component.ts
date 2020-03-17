@@ -14,6 +14,7 @@ import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEvent
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as TreeModel from 'tree-model';
 const ACCESSEVENT = 'renderer:question:submitscore';
+import { PopupControlService } from '../../../../../service/popup-control.service';
 
 @Component({
   selector: 'app-course-player',
@@ -115,7 +116,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
     public router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
-    private toasterService: ToasterService, private resourceService: ResourceService,
+    private toasterService: ToasterService, private resourceService: ResourceService, public popupControlService: PopupControlService,
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
     private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService,

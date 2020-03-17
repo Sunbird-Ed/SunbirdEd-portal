@@ -33,9 +33,10 @@ export const appInfoResponse = {
         stmsg: {
             m0129: 'Loading the Terms and Conditions.',
         },
-        emsg: {
-            desktop: {
-                termsOfUse: 'Unable to get Terms Of Use. Please Try Again Later...'
+        desktop: {
+            emsg: {
+                termsOfUse: 'Unable to get Terms Of Use. Please Try Again Later...',
+                noConnectionTerms: 'Connect to the Internet to view the Terms of Use'
             }
         }
     }

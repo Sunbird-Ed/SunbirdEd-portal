@@ -11,11 +11,20 @@
       </div>
     </div>
 
-    <div *ngIf="field.inputType==='select' && field.code!='year'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
+    <div *ngIf="field.inputType==='select' && field.code!='year' && field.code!='contentType'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}}</label>
       <div class="sb-field">
-        <sui-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code]})">
+        <sui-select id={{field.code}}  name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code]})">
           <sui-select-option *ngFor="let option of categoryList[field.code]" [value]="option.name"></sui-select-option>
+        </sui-select>
+      </div>
+    </div>
+    <div *ngIf="field.inputType==='select' && field.code==='contentType'"  class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
+      <label>{{field.label}}</label>
+      <div class="sb-field">
+        <sui-select id={{field.code}} [options]="categoryList[field.code]"
+        labelField="name" valueField="value" name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code]})">
+          <sui-select-option *ngFor="let option of categoryList[field.code]" [value]="option"></sui-select-option>
         </sui-select>
       </div>
     </div>
@@ -31,8 +40,8 @@
     <div *ngIf="field.code==='year'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}}</label>
       <div class="sb-field">
-        <sui-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]">
-          <sui-select-option *ngFor="let option of years" [value]="option"> </sui-select-option>
+        <sui-select id={{field.code}}  name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]">
+          <sui-select-option *ngFor="let option of years"  [value]="option"> </sui-select-option>
         </sui-select>
       </div>
     </div>

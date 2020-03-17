@@ -24,8 +24,9 @@ export class AuthFailedComponent implements OnInit {
   }
 
   createNewUser() {
-    const queryParams = '&identifier=' + this.queryParam.identifierType + '&identifierValue=' +
-      this.queryParam.identifierValue + '&freeUser=true';
+    let queryParams = '&identifier=' + this.queryParam.identifierType + '&identifierValue=' +
+      this.queryParam.identifierValue + '&freeUser=true' + '&tncAccepted=' + this.queryParam.tncAccepted;
+    queryParams = queryParams + '&tncVersion=' + this.queryParam.tncVersion;
     window.location.href = 'v1/sso/create/user?userId=' + this.queryParam.userId + queryParams;
   }
 

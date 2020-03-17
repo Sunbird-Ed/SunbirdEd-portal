@@ -14,7 +14,6 @@ import { NavigationHelperService } from 'src/app/modules/shared';
 describe('ContentHeaderComponent', () => {
   let component: ContentHeaderComponent;
   let fixture: ComponentFixture<ContentHeaderComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentHeaderComponent],
@@ -41,7 +40,7 @@ describe('ContentHeaderComponent', () => {
   it('should check checkDownloadStatus', () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'updateDownloadStatus').and.returnValue(contentHeaderData.collectionData);
-    component.checkDownloadStatus(contentHeaderData.downloadList);
+    component.checkDownloadStatus();
     expect(component.collectionData).toEqual(contentHeaderData.collectionData);
   });
   it('should call updateCollection and successfuly update collection ', () => {
@@ -96,6 +95,7 @@ describe('ContentHeaderComponent', () => {
     spyOn(contentService, 'startDownload').and.returnValue(of(contentHeaderData.downloadCollection.success));
     component.downloadCollection(contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
+    expect(component.contentManagerService.failedContentName).toEqual('');
   });
 
   it('should call downloadCollection and error while downloading collection', () => {
@@ -106,7 +106,7 @@ describe('ContentHeaderComponent', () => {
     spyOn(contentService, 'startDownload').and.returnValue(throwError(contentHeaderData.downloadCollection.error));
     component.downloadCollection(contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
-    expect(component.disableDelete).toBeTruthy();
+    expect(component.contentManagerService.failedContentName).toEqual('');
     expect(component.toasterService.error(contentHeaderData.resourceBundle.messages.fmsg.m0090));
   });
   it('should call delete collection and successfuly delete collection ', () => {

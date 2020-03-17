@@ -1,6 +1,6 @@
 <sui-accordion class="styled fluid sb-single-pannel-accordion sb-content-manager-panel"
   [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true}" *ngIf="contentResponse?.length">
-  <sui-accordion-panel [(isOpen)]="isOpen">
+  <sui-accordion-panel [(isOpen)]="isOpen" (click)="getContentList()">
     <div title class="p-0">
       <div class="sb-single-pannel-accordion-heading" appTelemetryInteract
         [telemetryInteractEdata]="getTelemetryInteractData()">
@@ -101,10 +101,10 @@
 
           <div *ngIf="data.status === 'canceling'" class="fs-0-785 sb-color-primary">
             {{resourceService?.frmelmnts?.btn?.canceling}} </div>
-
           <div *ngIf="data.status === 'completed'" class="fs-0-785 sb-color-success">
             {{resourceService?.frmelmnts?.btn?.completed}} </div>
-
+          <div *ngIf="data.status === 'extract'" class="fs-0-785 sb-color-success">
+              {{resourceService?.frmelmnts?.desktop?.btn?.completing}} </div>
           <div *ngIf="data.addedUsing === 'download' && data.status === 'failed'" class="fs-0-785 sb-color-error">
             {{resourceService?.frmelmnts?.lbl?.downloadFailed}} </div>
 
@@ -147,3 +147,5 @@
     </div>
   </sui-accordion-panel>
 </sui-accordion>
+
+<app-content-manager-info-pop-up *ngIf="unHandledFailedList.length" [failedList]="unHandledFailedList" (dismissed)="closeModal($event)"> </app-content-manager-info-pop-up>

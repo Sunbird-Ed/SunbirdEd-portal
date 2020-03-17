@@ -217,8 +217,8 @@ export class UserService {
         }
       });
     }
-    this._dims = _.concat(organisationIds, this.channel);
     organisationIds = _.uniq(organisationIds);
+    this._dims = _.concat(organisationIds, this.channel);
     this._userProfile = profileData;
     this._userProfile.userRoles = _.uniq(userRoles);
     this._userProfile.orgRoleMap = orgRoleMap;
@@ -368,4 +368,7 @@ export class UserService {
     return this.learnerService.post(option);
   }
 
+  setUserFramework(framework) {
+    this._userProfile.framework = framework;
+  }
 }

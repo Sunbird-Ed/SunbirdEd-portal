@@ -9,7 +9,7 @@
       <a class="{{data.ribbon.left.class}}" *ngIf="data.ribbon && data.ribbon.left && data.ribbon.left.image">
         <img src="{{data.ribbon.left.image }}" class="ui small avatar image mr-0">
       </a>
-      <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</a>
+      <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{(data?.ribbon?.right?.name).toLowerCase() === 'selfassess' ?  resourceService?.frmelmnts?.lbl?.courseassessment : data?.ribbon?.right?.name }}</a>
       <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}">
       <div class="cardImageText center aligned " suiPopup popupText="{{data.name}}" [popupPlacement]="'top left'" >
         <span class="sliderCardHeading text-cencapitalize"  >{{data.name | slice:0:20}}

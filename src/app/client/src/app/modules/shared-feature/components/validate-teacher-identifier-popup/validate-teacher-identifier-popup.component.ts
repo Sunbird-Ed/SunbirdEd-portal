@@ -1,19 +1,20 @@
 import { IInteractEventObject, IImpressionEventInput } from '@sunbird/telemetry';
 import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { UserService } from '@sunbird/core';
 import { environment } from '@sunbird/environment';
 import { ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { PopupControlService } from '../../../../service/popup-control.service';
 
 @Component({
   selector: 'app-validate-teacher-identifier-popup',
   templateUrl: './validate-teacher-identifier-popup.component.html',
   styleUrls: ['./validate-teacher-identifier-popup.component.scss']
 })
-export class ValidateTeacherIdentifierPopupComponent implements OnInit {
+export class ValidateTeacherIdentifierPopupComponent implements OnInit, OnDestroy {
   @Input() userFeedData: {};
   @Input() labels: {};
   @Output() close = new EventEmitter<any>();
@@ -38,9 +39,10 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
     public userService: UserService,
     public resourceService: ResourceService,
     public toasterService: ToasterService,
-    public router: Router) { }
+    public router: Router, public popupControlService: PopupControlService) { }
 
   ngOnInit() {
+    this.popupControlService.changePopupStatus(false);
     this.setTelemetryData();
     this.userId = this.userService.userid;
     this.processUserFeedData();
@@ -108,6 +110,7 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
     }
     this.createValidateModal.deny();
     this.close.emit();
+    this.popupControlService.changePopupStatus(true);
   }
 
   navigateToValidateId() {
@@ -149,6 +152,10 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit {
         uri: this.router.url
       }
     };
+  }
+
+  ngOnDestroy(): void {
+    this.popupControlService.changePopupStatus(true);
   }
 
 }

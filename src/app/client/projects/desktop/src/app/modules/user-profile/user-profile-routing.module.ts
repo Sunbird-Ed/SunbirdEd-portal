@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProfilePageComponent, AboutUsComponent } from './components';
+import { ProfilePageComponent, AboutUsComponent, TelemetryComponent } from './components';
 
 const routes: Routes = [
   {
@@ -14,6 +14,13 @@ const routes: Routes = [
     path: 'about-us', component: AboutUsComponent, data: {
       telemetry: {
         env: 'about-us', pageid: 'about-us', type: 'view'
+      }
+    }
+  },
+  {
+    path: 'telemetry', component: TelemetryComponent, data: {
+      telemetry: {
+        env: 'telemetry', pageid: 'telemetry', type: 'view'
       }
     }
   }

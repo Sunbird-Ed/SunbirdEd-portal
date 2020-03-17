@@ -114,7 +114,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.telemetryService.syncEvents(false);
   }
   handleLogin() {
-    window.location.reload();
+    window.location.replace('/sessionExpired');
+    this.cacheService.removeAll();
   }
   handleHeaderNFooter() {
     this.router.events
@@ -450,6 +451,7 @@ export class AppComponent implements OnInit, OnDestroy {
     };
     this.profileService.updateProfile(req).subscribe(res => {
       this.frameWorkPopUp.modal.deny();
+      this.userService.setUserFramework(event);
       this.showFrameWorkPopUp = false;
       this.checkLocationStatus();
       this.utilService.toggleAppPopup();

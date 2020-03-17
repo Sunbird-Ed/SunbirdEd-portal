@@ -50,7 +50,8 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   }
 
   verifyOTP() {
-    const wrongOTPMessage = this.otpData.wrongOtpMessage;
+    const wrongOTPMessage = this.otpData.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
+    this.resourceService.frmelmnts.lbl.wrongEmailOTP;
     this.enableSubmitBtn = false;
     const request = {
       'request': {
@@ -76,7 +77,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.enableSubmitBtn = true;
         this.infoMessage = '';
         this.errorMessage = _.get(err, 'error.params.status') === 'ERROR_INVALID_OTP' ?
-          wrongOTPMessage : this.resourceService.messages.fmsg.m0051;
+          wrongOTPMessage : wrongOTPMessage;
       }
     );
   }

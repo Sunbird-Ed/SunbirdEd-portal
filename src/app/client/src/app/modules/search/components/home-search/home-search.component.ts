@@ -90,7 +90,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
-    filters.contentType = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'Course'];
+    filters.contentType = filters.contentType || ['Course', ...this.configService.appConfig.CommonSearch.contentType];
     const option = {
         filters: filters,
         limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
@@ -131,7 +131,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   private fetchEnrolledCoursesSection() {
     return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
       const enrolledSection = {
-        name: 'My Courses',
+        name: this.resourceService.frmelmnts.lbl.mytrainings,
         length: 0,
         contents: []
       };

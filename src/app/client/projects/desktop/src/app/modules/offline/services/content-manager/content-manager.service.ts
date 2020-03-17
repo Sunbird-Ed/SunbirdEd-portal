@@ -2,8 +2,8 @@ import { ElectronDialogService } from './../electron-dialog/electron-dialog.serv
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
-import { throwError as observableThrowError } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { throwError as observableThrowError, BehaviorSubject } from 'rxjs';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 @Injectable({
@@ -12,14 +12,37 @@ import * as _ from 'lodash-es';
 export class ContentManagerService {
 
   downloadContentId: string;
+  failedContentName: string;
   downloadEvent = new EventEmitter();
+  downloadFailEvent = new EventEmitter();
   downloadListEvent = new EventEmitter();
   completeEvent = new EventEmitter();
   deletedContent = new EventEmitter();
+  contentDownloadStatus$ = new BehaviorSubject<any>({});
+  contentDownloadStatus = {};
+  deletedContentIds = [];
 
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
     private electronDialogService: ElectronDialogService) { }
+
+  updateContentDownloadStatus(contentDownloadList) {
+    this.contentDownloadStatus = {};
+    _.forEach(contentDownloadList, content => {
+      if (content.addedUsing === 'download') {
+        _.forEach(content.contentDownloadList, childContent => {
+          if (childContent.step === 'COMPLETE') {
+            this.contentDownloadStatus[childContent.identifier] = _.includes(this.deletedContentIds, childContent.identifier) ?
+            'DOWNLOAD' : 'DOWNLOADED';
+          } else {
+            this.contentDownloadStatus[childContent.identifier] = _.toUpper(content.status);
+          }
+        });
+        this.contentDownloadStatus[content.contentId] = _.toUpper(content.status);
+      }
+    });
+    this.contentDownloadStatus$.next(this.contentDownloadStatus);
+  }
 
   emitAfterDeleteContent(contentData) {
     this.deletedContent.emit(contentData);
@@ -35,26 +58,34 @@ export class ContentManagerService {
       data: {}
     };
     return this.publicDataService.post(downloadListOptions).pipe(
-      map((result) => {
-        return result;
+      map((respData: any) => {
+        respData.result.response.contents = _.filter(_.get(respData, 'result.response.contents'), (o) => {
+          return !_.includes(this.deletedContentIds, o.contentId);
+        });
+        this.updateContentDownloadStatus(respData.result.response.contents);
+        return respData;
       }),
       catchError((err) => {
         return observableThrowError(err);
       }));
   }
-
   startDownload(data) {
     const downloadOptions = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.DOWNLOAD}/${this.downloadContentId}`,
       data: data
     };
     return this.publicDataService.post(downloadOptions).pipe(
-      map((result) => {
+      tap((respData) => {
+        this.deletedContentIds = _.remove(this.deletedContentIds, (n) => {
+          return !_.includes(_.get(respData, 'result.contentsToBeDownloaded'), n);
+        });
         this.toasterService.info(this.resourceService.messages.smsg.m0053);
         this.downloadEvent.emit('Download started');
-        return result;
       }),
       catchError((err) => {
+        if (err.error.params.err === 'LOW_DISK_SPACE') {
+          this.downloadFailEvent.emit(this.failedContentName);
+        }
         return observableThrowError(err);
       }));
   }
@@ -156,12 +187,16 @@ export class ContentManagerService {
     };
     return this.publicDataService.post(options);
   }
-  deleteContent (request) {
+  deleteContent(request) {
     const options = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.DELETE_CONTENT}`,
       data: request
     };
-    return this.publicDataService.post(options);
+    return this.publicDataService.post(options).pipe(
+      tap((data) => {
+        this.deletedContentIds = _.uniq(_.concat(this.deletedContentIds, _.get(data, 'result.deleted')));
+        this.deletedContent.emit(this.deletedContentIds);
+      }));
   }
 
 }

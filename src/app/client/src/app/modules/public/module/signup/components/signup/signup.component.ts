@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import { ResourceService, ServerResponse, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import {ResourceService, ServerResponse, ToasterService, NavigationHelperService, UtilService} from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -36,17 +36,38 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   submitInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}>;
   instance: string;
+  tncLatestVersion: string;
+  termsAndConditionLink: string;
+  passwordError: string;
+  showTncPopup = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public utilService: UtilService) {
     this.sbFormBuilder = formBuilder;
   }
 
   ngOnInit() {
-    this.instance = _.upperCase(this.resourceService.instance);
+    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+      this.telemetryLogEvents('fetch-terms-condition', true);
+        const response = _.get(data, 'result.response.value');
+        if (response) {
+          try {
+            const tncConfig = this.utilService.parseJson(response);
+            this.tncLatestVersion = _.get(tncConfig, 'latestVersion') || {};
+            this.termsAndConditionLink = tncConfig[this.tncLatestVersion].url;
+          } catch (e) {
+            this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+          }
+        }
+      }, (err) => {
+      this.telemetryLogEvents('fetch-terms-condition', false);
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      }
+    );
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
       data => {
         if (data && !data.err) {
@@ -122,7 +143,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       phone: new FormControl(null, [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]),
       email: new FormControl(null, [Validators.email]),
       contactType: new FormControl('phone'),
-      uniqueContact: new FormControl(null, [Validators.required])
+      uniqueContact: new FormControl(null, [Validators.required]),
+      tncAccepted: new FormControl(false, [Validators.requiredTrue])
     }, {
       validator: (formControl) => {
         const passCtrl = formControl.controls.password;
@@ -144,6 +166,10 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onPasswordChange(passCtrl: FormControl): void {
+    let emailVal;
+    if (this.showContact === 'email') {
+      emailVal = this.signUpForm.get('email').value;
+    }
     const val = _.get(passCtrl, 'value');
     const lwcsRegex = new RegExp('^(?=.*[a-z])');
     const upcsRegex = new RegExp('^(?=.*[A-Z])');
@@ -151,9 +177,13 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     const numRegex = new RegExp('^(?=.*[0-9])');
     const specRegex = new RegExp('^[^<>{}\'\"/|;:.\ ,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
     if (!charRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)) {
-      const passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
-      passCtrl.setErrors({ passwordError });
+      this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
+      passCtrl.setErrors({ passwordError: this.passwordError });
+    } else if (emailVal === val || this.signUpForm.controls.name.value === val) {
+      this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwderr');
+      passCtrl.setErrors({ passwordError: this.passwordError });
     } else {
+      this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
       passCtrl.setErrors(null);
     }
   }
@@ -329,5 +359,49 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         'contactType': this.signUpForm.controls.contactType.value.toString()
       }
     };
+  }
+
+  generateTelemetry(e) {
+    const selectedType = e.target.checked ? 'selected' : 'unselected';
+    const interactData = {
+      context: {
+        env: 'self-signup',
+        cdata: [
+          {id: 'user:tnc:accept', type: 'Feature'},
+          {id: 'SB-16663', type: 'Task'}
+        ]
+      },
+      edata: {
+        id: 'user:tnc:accept',
+        type: 'click',
+        subtype: selectedType,
+        pageid: 'self-signup'
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  telemetryLogEvents(api: any, status: boolean) {
+    let level = 'ERROR';
+    let msg = api + ' failed';
+    if (status) {
+      level = 'SUCCESS';
+      msg = api + ' success';
+    }
+    const event = {
+      context: {
+        env: 'self-signup'
+      },
+      edata: {
+        type: api,
+        level: level,
+        message: msg
+      }
+    };
+    this.telemetryService.log(event);
+  }
+
+  showAndHidePopup(mode: boolean) {
+    this.showTncPopup = mode;
   }
 }

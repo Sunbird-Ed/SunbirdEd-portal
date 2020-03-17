@@ -2,17 +2,16 @@
 <div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header">
     <img src="assets/images/Profile.svg" width="40px" height="40px">
     <div class="menu" suiDropdownMenu>
-        <div class="item cursor-pointer" [routerLink]="'/profile'">
+        <div class="item cursor-pointer" [routerLink]="'/profile'" (click)="setTelemetry('profile')">
           {{resourceService?.frmelmnts?.lnk?.profile}}
         </div>
         <div class="ui divider"></div>
-        <a class="item" id="about_us" [routerLink]="'/about-us'" (click)="setTelemetry()">
+        <a class="item" id="about_us" [routerLink]="'/about-us'" (click)="setTelemetry('about-us')">
           {{resourceService?.frmelmnts?.lbl?.desktop?.about_us | interpolate:'{instance}': instance}}
         </a>
-        <!-- <a class="item"  routerLink="">
-            Telemetry Sync
-        </a> -->
+       <a class="item"  routerLink="/telemetry"(click)="setTelemetry('telemetry-menu')">
+           {{resourceService?.frmelmnts?.lbl?.desktop?.telemetry}}
+        </a>
     </div>
 </div>
 </a>
-

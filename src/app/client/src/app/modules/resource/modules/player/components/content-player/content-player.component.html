@@ -2,7 +2,7 @@
 <div id="content-player" class="content-grid ui stackable grid">
     <div class="twelve wide column">
         <div class='mt-5 videosegment ui segment'>
-            <div class='content-player-body'>
+            <div class='content-player-body' *ngIf="(popupControlService.checkPopupStatus | async) else loading">
                 <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
                     <div [appTelemetryImpression]="telemetryImpression" class="content-grid">
                         <div class="sb-pageSection">
@@ -20,7 +20,7 @@
                                 </a>
                                 <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
                                     (click)="copyContent(contentData)" class="d-inline-block">
-                                    <a class="cursor-pointer btn-bg p-8 d-inline-block font-weight-bold sb-color-primary">
+                                    <a appTelemetryInteract [telemetryInteractEdata]="copyContentInteractEdata" [telemetryInteractObject]="objectInteract" class="cursor-pointer btn-bg p-8 d-inline-block font-weight-bold sb-color-primary">
                                         <i class="blue clone outline icon"></i>
                                         {{resourceService?.frmelmnts?.lbl?.copy}}
                                     </a>
@@ -33,7 +33,7 @@
                                 </a> -->
                                 <!-- Print Button for printable contents-->
                                 <span class="d-inline-block" *ngIf="contentData.itemSetPreviewUrl">
-                                    <a appTelemetryInteract [telemetryInteractEdata]="printPdfInteractEdata" [telemetryInteractObject]="objectInteract" class="cursor-pointer btn-bg p-8 d-flex font-weight-bold" (click)="printPdf(contentData.itemSetPreviewUrl)">
+                                    <a appTelemetryInteract [telemetryInteractEdata]="printPdfInteractEdata" [telemetryInteractObject]="objectInteract" class="cursor-pointer btn-bg p-8 d-flex font-weight-bold sb-color-primary" (click)="printPdf(contentData.itemSetPreviewUrl)">
                                         <img src="assets/images/print.svg" width="16" /> <span>&nbsp;&nbsp;{{resourceService.frmelmnts.btn.print}}</span>
                                     </a>
                                 </span>
@@ -111,6 +111,9 @@
                     </div>
                 </div>
             </div>
+            <ng-template #loading>
+                <app-loader></app-loader>
+            </ng-template>
         </div>
     </div>
 </div>

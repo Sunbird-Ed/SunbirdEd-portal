@@ -25,8 +25,9 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   apiCallTimer = timer(1000, 3000).pipe(filter(data => !data || (this.callContentList)));
   apiCallSubject = new Subject();
   completedCount: number;
+  handledFailedList = [];
+  unHandledFailedList = [];
   deletedContents: string [] = [];
-  localContentData: any = [];
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -41,12 +42,11 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data: any) => {
-      if (_.get(data, 'identifier')) {
-        this.deletedContents.push(data.identifier);
-        this.removeDeletedContentInList();
-      }
-    });
+      // Subscribing to delete event to remove it from content manager list
+      this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((deletedIds: string[]) => {
+        this.isOpen = true;
+        this.apiCallSubject.next();
+      });
     // Call download list initially
     this.apiCallSubject.next();
 
@@ -57,28 +57,18 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         this.isOpen = true;
         this.apiCallSubject.next();
       });
-  }
 
-  removeDeletedContentInList() {
-    this.contentResponse = _.filter(this.contentResponse, (o) => {
-      return !_.includes(this.deletedContents, o.contentId);
-    });
-  }
-
-  removeDeleteId() {
-    _.filter(this.contentResponse, (o) => {
-      if (_.includes(this.deletedContents, o.contentId) && o.status !== 'completed') {
-        _.remove(this.deletedContents, (n) => {
-          return n === o.contentId;
-        });
-      }
-    });
-    this.removeDeletedContentInList();
+      this.contentManagerService.downloadFailEvent
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(failedContentName => {
+        this.unHandledFailedList.push({name: failedContentName});
+      });
   }
 
   getList() {
+    // tslint:disable-next-line: deprecation
     combineLatest(this.apiCallTimer, this.apiCallSubject, (data1, data2) => true)
-      .pipe(filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
+      .pipe(takeUntil(this.unsubscribe$), filter(() => this.isOpen), switchMap(() => this.contentManagerService.getContentList()),
         map((resp: any) => {
           this.callContentList = false;
           let completedCount = 0;
@@ -98,20 +88,41 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.completedCount = completedCount;
           return _.get(resp, 'result.response.contents');
         })).subscribe((apiResponse: any) => {
-
-          if (apiResponse.length >= this.localContentData.length) {
-            this.localContentData = apiResponse;
-          } else if (this.localContentData.length > apiResponse.length) {
-            this.callContentList = true;
-          }
-          this.contentResponse = _.filter(this.localContentData, (o) => {
+          this.handleInsufficentMemoryError(apiResponse);
+          this.contentResponse = _.filter(apiResponse, (o) => {
+            if (o.status !== 'canceled' && o.addedUsing === 'download') {
+              const statusMsg = this.getContentStatus(o.contentDownloadList);
+              o.status = statusMsg ? statusMsg : o.status;
+            }
             return o.status !== 'canceled';
           });
-          this.contentManagerService.emitDownloadListEvent(this.localContentData);
-        this.removeDeleteId();
         });
   }
 
+  getContentStatus(content) {
+    const notCompleted = _.find(content, c => {
+      return (!_.includes(['COMPLETE', 'EXTRACT'], c.step));
+    });
+    if (!notCompleted) {
+      const extracting = _.find(content, c => {
+        return c.step === 'EXTRACT';
+      });
+      if (extracting) { return 'extract'; }
+    }
+  }
+
+  handleInsufficentMemoryError(allContentList) {
+    const noSpaceContentList = _.filter(allContentList, (content) =>
+    content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
+    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'id');
+  }
+  removeFromHandledFailedList(id) {
+    this.handledFailedList = _.filter(this.handledFailedList, (content) => content.id !== id);
+  }
+  closeModal() {
+    this.handledFailedList.push(...this.unHandledFailedList);
+    this.unHandledFailedList = [];
+  }
   contentManagerActions(type: string, action: string, id: string) {
     // Unique download/import Id
     switch (`${action.toUpperCase()}_${type.toUpperCase()}`) {
@@ -157,11 +168,13 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       next(apiResponse: any) {
         _this.deleteLocalContentStatus(id);
         _this.apiCallSubject.next();
+        _this.removeFromHandledFailedList(id);
       },
       error(err) {
         _this.deleteLocalContentStatus(id);
         _this.toasterService.error(_this.resourceService.messages.fmsg.m0097);
         _this.apiCallSubject.next();
+        _this.removeFromHandledFailedList(id);
       }
     });
   }
@@ -243,6 +256,12 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       };
     }
     return interactData;
+  }
+
+  getContentList() {
+    if (this.isOpen) {
+      this.apiCallSubject.next();
+    }
   }
 
   ngOnDestroy() {

@@ -4,6 +4,7 @@ const envHelper = require('./environmentVariablesHelper');
 var producer, client;
 
 // initilize kafka client and producers
+/* istanbul ignore next */
 function init() {
   client = new kafka.KafkaClient({
     kafkaHost: envHelper.sunbird_processing_kafka_host,
@@ -49,6 +50,7 @@ const kafkaService = {
       }
     ];
     // Send record to Kafka
+    /* istanbul ignore next */
     producer.send(record, callback)
   }
 };

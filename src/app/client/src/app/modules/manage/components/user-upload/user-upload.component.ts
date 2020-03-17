@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ResourceService, ToasterService, ServerResponse, ConfigService } from '@sunbird/shared';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ManageService } from '../../services/manage/manage.service';
@@ -13,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
     templateUrl: 'user-upload.component.html',
     styleUrls: ['user-upload.component.scss']
 })
-export class UserUploadComponent {
+export class UserUploadComponent implements OnInit {
 
   @ViewChild('inputbtn') inputbtn: ElementRef;
   @ViewChild('modal') modal;
@@ -170,7 +170,7 @@ export class UserUploadComponent {
           },
           err => {
             this.showLoader = false;
-            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('.<br/>') :
+            const errorMsg = _.get(err, 'error.params.errmsg') ? _.get(err, 'error.params.errmsg').split(/\../).join('. ') :
             this.resourceService.messages.fmsg.m0051;
             this.error = errorMsg.replace('[', '').replace(']', '').replace(/\,/g, ',\n');
             this.errors = errorMsg.replace('[', '').replace(']', '').split(',');
