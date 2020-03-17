@@ -3,6 +3,7 @@ import {SuiModule} from 'ng2-semantic-ui';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of as observableOf} from 'rxjs';
 import {ResourceService, InterpolatePipe} from '@sunbird/shared';
+import {TenantService} from '@sunbird/core';
 
 import {AuthFailedComponent} from './auth-failed.component';
 
@@ -22,7 +23,8 @@ describe('AuthFailedComponent', () => {
       imports: [SuiModule],
       declarations: [AuthFailedComponent, InterpolatePipe],
       providers: [{provide: ActivatedRoute, useValue: fakeActivatedRoute},
-        {provide: ResourceService, useValue: resourceBundle}]
+        {provide: ResourceService, useValue: resourceBundle},
+        {provide: TenantService, useValue: {tenantData$: observableOf('')}}]
     })
       .compileComponents();
   }));
