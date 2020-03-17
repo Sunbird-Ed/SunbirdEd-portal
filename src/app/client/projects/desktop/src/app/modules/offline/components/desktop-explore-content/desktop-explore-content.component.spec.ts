@@ -10,7 +10,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   response, hoverActionEvent, downloadList,
-  contentList, appTelemetryInteractData
+  contentList, appTelemetryInteractData, downloadError,
 } from './desktop-explore-content.component.spec.data';
 import { of as observableOf, throwError } from 'rxjs';
 import { PublicPlayerService } from '@sunbird/public';
@@ -147,7 +147,7 @@ describe('DesktopExploreContentComponent', () => {
     component.contentList = contentList;
     const contentManagerService = TestBed.get(ContentManagerService);
     const toasterService = TestBed.get(ToasterService);
-    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError(''));
+    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError(downloadError));
     spyOn(toasterService, 'error');
 
     component.downloadContent('do_31288771643112652813019');

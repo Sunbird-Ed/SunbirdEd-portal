@@ -78,6 +78,9 @@
       ],
       "@sunbird/content-consumption": [
         "projects/desktop/src/app/modules/content-consumption"
+      ],
+      "@sunbird/content-search": [
+        "src/app/modules/content-search"
       ]
     }
   },

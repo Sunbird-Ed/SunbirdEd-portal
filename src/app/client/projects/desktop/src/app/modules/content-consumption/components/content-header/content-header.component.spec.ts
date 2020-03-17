@@ -39,9 +39,11 @@ describe('ContentHeaderComponent', () => {
   });
   it('should check checkDownloadStatus', () => {
     const playerService = TestBed.get(PublicPlayerService);
-    spyOn(playerService, 'updateDownloadStatus').and.returnValue(contentHeaderData.collectionData);
+    component.collectionData = contentHeaderData.collectionData.result.content;
+    component.contentDownloadStatus =  { [contentHeaderData.collectionData.result.content.identifier]: 'COMPLETED'};
     component.checkDownloadStatus();
-    expect(component.collectionData).toEqual(contentHeaderData.collectionData);
+    expect(component.collectionData).toEqual(contentHeaderData.collectionData.result.content);
+    expect(component.collectionData['downloadStatus']).toEqual('DOWNLOADED');
   });
   it('should call updateCollection and successfuly update collection ', () => {
     component.collectionData = contentHeaderData.collectionData;
@@ -95,7 +97,6 @@ describe('ContentHeaderComponent', () => {
     spyOn(contentService, 'startDownload').and.returnValue(of(contentHeaderData.downloadCollection.success));
     component.downloadCollection(contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
-    expect(component.contentManagerService.failedContentName).toEqual('');
   });
 
   it('should call downloadCollection and error while downloading collection', () => {
@@ -103,7 +104,7 @@ describe('ContentHeaderComponent', () => {
     component.collectionData = contentHeaderData.collectionData;
     component.disableDelete = false;
     const contentService = TestBed.get(ContentManagerService);
-    spyOn(contentService, 'startDownload').and.returnValue(throwError(contentHeaderData.downloadCollection.error));
+    spyOn(contentService, 'startDownload').and.returnValue(throwError(contentHeaderData.downloadCollection.downloadError));
     component.downloadCollection(contentHeaderData.collectionData);
     expect(component.contentManagerService.downloadContentId).toEqual('');
     expect(component.contentManagerService.failedContentName).toEqual('');
