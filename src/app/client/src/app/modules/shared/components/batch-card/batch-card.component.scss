@@ -1,11 +1,12 @@
 @import "variables";
+@import "mixins/mixins";
 
 .ui.cards>.card.workspace-card {
-    width: 240px;
+    width: calculateRem(240px);
 }
 
 .ui.image {
-    height: 150px;
+    height: calculateRem(150px);
     overflow:hidden;
 }
 .batch-content {
@@ -13,11 +14,11 @@
     bottom: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.2);
-    color: #ffffff;
+    color: var(--white);
     width: 100%;
     margin: 0;
-    padding: 10px 16px;
-    height: 40px;
+    padding: calculateRem(10px) calculateRem(16px);
+    height: calculateRem(40px);
     
 }
 .batch-content-description {
@@ -30,12 +31,12 @@
     color: #7c7b7b;
     .batch-course-name {
         font-weight: $font-weight-bold;
-        color: #666666;
+        color: var(--gray-400);
     }
 }
 
 .slick-slider .slick-list{
-    padding-bottom:2px;
+    padding-bottom: calculateRem(2px);
 }
 .batch-card-ellipsis {
     text-overflow: ellipsis;
@@ -51,8 +52,8 @@
     height: 100%;
 }
 .w-162 {
-    width: 162px;
+    width: calculateRem(162px);
 }
 .w-200 {
-    width: 200px;
+    width: calculateRem(200px);
 }
