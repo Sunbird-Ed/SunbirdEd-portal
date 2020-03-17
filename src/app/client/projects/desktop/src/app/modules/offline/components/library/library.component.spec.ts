@@ -157,6 +157,12 @@ describe('LibraryComponent', () => {
   it('should call constructSearchRequest with true', () => {
     component.hashTagId = '01285019302823526477';
     const result = component.constructSearchRequest(true);
+    expect(result).toEqual(response.constructSearchRequestWithOutFacets);
+  });
+
+  it('should call constructSearchRequest with true', () => {
+    component.hashTagId = '01285019302823526477';
+    const result = component.constructSearchRequest(true, true);
     expect(result).toEqual(response.constructSearchRequestWithFilter);
   });
 
@@ -188,6 +194,6 @@ describe('LibraryComponent', () => {
     spyOn(component, 'constructSearchRequest').and.returnValue({});
     component.onViewAllClick({});
     expect(router.navigate).toHaveBeenCalledWith(['view-all'], { queryParams });
-    expect(component.constructSearchRequest).toHaveBeenCalledWith(false);
+    expect(component.constructSearchRequest).toHaveBeenCalledWith(false, true);
   });
 });

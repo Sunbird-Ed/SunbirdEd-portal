@@ -1,5 +1,16 @@
 export const user_content_preferences_Data = {
 
+    selectedFramework:
+    {
+        identifier: 'c57026dd-5310-44db-98bb-3cd61eee829f',
+        _id : 'c57026dd-5310-44db-98bb-3cd61eee829f',
+        framework: {
+            board: 'State (Test)',
+            medium: ['Test'],
+            gradeLevel: ['Class 5']
+        },
+        name: 'guest'
+    },
     readChannel: {
         'id': 'api.channel.read',
         'ver': '1.0',
@@ -120,7 +131,8 @@ export const user_content_preferences_Data = {
                 'type': 'K-12',
                 'node_id': 661142,
                 'objectType': 'Framework',
-                'categories': [{
+                'categories': [
+                    {
                     'identifier': 'as_k-12_board',
                     'code': 'board',
                     'terms': [{
@@ -214,7 +226,67 @@ export const user_content_preferences_Data = {
                     'description': 'Grade',
                     'index': 3,
                     'status': 'Live'
-                }]
+                },
+                {
+                    'identifier': 'as_k-12_subject',
+                    'code': 'subject',
+                    'terms': [
+                      {
+                        'identifier': 'as_k-12_subject_english',
+                        'code': 'english',
+                        'translations': null,
+                        'name': 'English',
+                        'description': 'English',
+                        'index': 1,
+                        'category': 'subject',
+                        'status': 'Live'
+                      },
+                      {
+                        'associations': [
+                          {
+                            'identifier': 'as_k-12_topic_mathematics_l1con_107',
+                            'code': 'mathematics_l1Con_107',
+                            'translations': '{\'as\':\'জোখ-মাখৰ প্ৰয়োগ\'}',
+                            'name': 'Application Of Measurement',
+                            'description': 'Application Of Measurement',
+                            'category': 'topic',
+                            'status': 'Live'
+                          },
+                          {
+                            'identifier': 'as_k-12_topic_mathematics_l1con_101',
+                            'code': 'mathematics_l1Con_101',
+                            'translations': '{\'as\':\'জোখ-মাখ (দৈৰ্ঘ্য)\'}',
+                            'name': 'Units Of Measurement Of Length',
+                            'description': 'Units Of Measurement Of Length',
+                            'category': 'topic',
+                            'status': 'Live'
+                          },
+                          {
+                            'identifier': 'as_k-12_topic_mathematics_l1con_95',
+                            'code': 'mathematics_l1Con_95',
+                            'translations': '{\'as\':\'কোণ\'}',
+                            'name': 'Angles',
+                            'description': 'Angles',
+                            'category': 'topic',
+                            'status': 'Live'
+                          }
+                        ],
+                        'identifier': 'as_k-12_subject_mathematics',
+                        'code': 'mathematics',
+                        'translations': null,
+                        'name': 'Mathematics',
+                        'description': 'Mathematics',
+                        'index': 2,
+                        'category': 'subject',
+                        'status': 'Live'
+                      }
+                    ],
+                    'translations': null,
+                    'name': 'Subject',
+                    'description': 'Subject',
+                    'index': 4,
+                    'status': 'Live'
+                  }]
             }
         }
     },
@@ -236,13 +308,12 @@ export const user_content_preferences_Data = {
     },
     options: {
         board: {
-            'identifier': 'Test',
-            'name': 'Test',
-            'objectType': 'Framework',
-            'relation': 'hasSequenceMember',
-            'description': 'Test',
-            'index': 3,
-            'status': 'Live'
+            'identifier': 'as_k-12_board_stateTest',
+            'code': 'stateTest',
+            'translations': null,
+            'name': 'State (Test)',
+            'description': 'State (Test)',
+            'index': 1,
         },
         medium: [{
             'associations': [{
@@ -280,7 +351,18 @@ export const user_content_preferences_Data = {
             'index': 1,
             'category': 'gradeLevel',
             'status': 'Live'
-        }]
+        }],
+        subject: [
+            {
+                'identifier': 'as_k-12_subject',
+                'code': 'subject',
+                'translations': null,
+                'name': 'Subject',
+                'description': 'Subject',
+                'index': 4,
+                'status': 'Live'
+            }
+        ]
     },
     success_update_preferences: {
         'id': 'api.desktop.user.update',

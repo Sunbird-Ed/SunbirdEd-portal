@@ -9,7 +9,7 @@ import * as _ from 'lodash-es';
 })
 
 export class CustomCheckboxComponent implements OnInit, OnChanges {
-  @Input() inputData: Array<string>;
+  @Input() inputData: Array<any>;
   @Input() placeholder;
   @Input() field: object;
   @Input() valueField = 'name';
