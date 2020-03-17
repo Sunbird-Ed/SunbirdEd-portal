@@ -73,8 +73,13 @@ export class CertificateDetailsComponent implements OnInit {
     };
     this.certificateService.validateCertificate(request).subscribe(
       (data: ServerResponse) => {
-        this.getCourseVideoUrl(_.get(data, 'result.response.courseId'));
-        const certData = _.get(data, 'result.response.json');
+        if (_.get(data, 'result.response.related.certVideoUrl')) {
+          this.watchVideoLink = _.get(data, 'result.response.related.certVideoUrl');
+          this.processVideoUrl(this.watchVideoLink);
+        } else {
+          this.getCourseVideoUrl(_.get(data, 'result.response.related.courseId'));
+        }
+        const certData  = _.get(data, 'result.response.json');
         this.loader = false;
         this.viewCertificate = true;
         this.recipient = _.get(certData, 'recipient.name');
@@ -140,16 +145,20 @@ export class CertificateDetailsComponent implements OnInit {
     this.playerService.getCollectionHierarchy(courseId).subscribe(
       (response: ServerResponse) => {
         this.watchVideoLink = _.get(response, 'result.content.certVideoUrl');
-        if (this.watchVideoLink) {
-          const splitedData = this.watchVideoLink.split('/');
-          splitedData.forEach((value) => {
-            if (value.includes('do_')) {
-              this.contentId = value;
-            }
-          });
-        }
+        this.processVideoUrl(this.watchVideoLink);
       }, (error) => {
       });
+  }
+
+  processVideoUrl(url: string) {
+    if (url) {
+      const splitedData = url.split('/');
+      splitedData.forEach((value) => {
+        if (value.includes('do_')) {
+          this.contentId = value;
+        }
+      });
+    }
   }
 
   /** to play content on the certificate details page */

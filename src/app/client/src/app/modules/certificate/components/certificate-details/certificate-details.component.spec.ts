@@ -68,6 +68,16 @@ describe('CertificateDetailsComponent', () => {
     expect(component.courseName).toBe(certData.result.response.json.badge.name);
   });
 
+  it('should process the video url if it is present inside response, no need to call hierarchy api', () => {
+    component.loader = true;
+    const certificateService = TestBed.get(CertificateService);
+    spyOn(certificateService, 'validateCertificate').and.returnValue(observableOf(validateCertMockResponse.successResponse));
+    spyOn(component, 'processVideoUrl');
+    const certData = validateCertMockResponse.successResponse;
+    component.certificateVerify();
+    expect(component.processVideoUrl).toHaveBeenCalledWith(certData.result.response.related.certVideoUrl);
+  });
+
   it('should not verify the certificate', () => {
     component.loader = true;
     const certificateService = TestBed.get(CertificateService);
