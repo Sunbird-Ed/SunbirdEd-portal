@@ -19,7 +19,6 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   @Input() contentData?: any;
   public startext = '';
   public feedbackText = '';
-  public comments = [];
   public feedbackObj;
   public showTextarea = false;
   public showContentRatingModal = true;
@@ -71,7 +70,6 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
     this.startext = this.feedbackObj[event]['ratingText'];
     this.enableSubmitBtn = true;
     this.showTextarea = false;
-    this.comments = [];
     _.forEach(this.feedbackObj[this.contentRating]['options'], (feedback) => {
       feedback['checked'] = false;
     });
@@ -82,12 +80,6 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
       this.showTextarea = true;
     } else if (options['key'] === 'OTHER' && this.showTextarea) {
       this.showTextarea = false;
-    }
-    if (_.indexOf(this.comments, options['key']) === -1) {
-      this.comments.push(options['key']);
-    } else {
-      const index = _.indexOf(this.comments, options['key']);
-      if (index !== -1) { this.comments.splice(index, 1); }
     }
   }
 
@@ -115,7 +107,6 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
           } else {
             feedbackTelemetryClone['edata']['commenttxt'] = feedback['value'];
           }
-          feedbackTelemetryClone['edata']['comments'] = this.comments.toString();
           console.log(feedbackTelemetryClone);
           this.telemetryService.feedback(feedbackTelemetryClone);
         }
