@@ -220,6 +220,18 @@ export class DataChartComponent implements OnInit, OnDestroy {
     });
   }
 
+  checkForStacking(): boolean {
+    if (_.includes(['bar', 'horizontalbar'], _.toLower(this.chartType))) {
+      // in case of bar chart check both the axes
+      return _.get(this.chartOptions, 'scales.yAxes') && _.get(this.chartOptions, 'scales.xAxes') &&
+        _.every(this.chartOptions.scales.yAxes, 'stacked') && _.every(this.chartOptions.scales.xAxes, 'stacked');
+    } else if (_.toLower(this.chartType) === 'line') {
+      // check for y axis only in case of line area chart
+      return _.get(this.chartOptions, 'scales.yAxes') && _.every(this.chartOptions.scales.yAxes, 'stacked');
+    }
+    return false;
+  }
+
   getDataSetValue(chartData = this.chartData) {
     let labels = [];
     let groupedDataBasedOnLabels;
@@ -232,11 +244,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
     this.chartLabels = labels;
     this.datasets = [];
+    const isStackingEnabled = this.checkForStacking();
     _.forEach(this.chartConfig.datasets, dataset => {
       this.datasets.push({
         label: dataset.label,
         data: _.get(dataset, 'data') || this.getData(groupedDataBasedOnLabels, dataset['dataExpr']),
-        hidden: _.get(dataset, 'hidden') || false
+        hidden: _.get(dataset, 'hidden') || false,
+        ...(isStackingEnabled) && { stack: _.get(dataset, 'stack') || 'default' }
       });
     });
 
