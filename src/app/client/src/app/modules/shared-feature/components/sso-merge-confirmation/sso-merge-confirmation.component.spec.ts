@@ -6,6 +6,7 @@ import {SsoMergeConfirmationComponent} from './sso-merge-confirmation.component'
 import {ActivatedRoute, Router} from '@angular/router';
 import {of as observableOf} from 'rxjs';
 import {InterpolatePipe, ResourceService} from '@sunbird/shared';
+import {TenantService} from '@sunbird/core';
 
 
 describe('SsoMergeConfirmationComponent', () => {
@@ -31,6 +32,7 @@ describe('SsoMergeConfirmationComponent', () => {
       providers: [
         {provide: ResourceService, useValue: resourceBundle},
         {provide: Router, useClass: RouterStub},
+        {provide: TenantService, useValue: {tenantData$: observableOf('')}},
         {provide: ActivatedRoute, useValue: fakeActivatedRoute}
       ]
     })

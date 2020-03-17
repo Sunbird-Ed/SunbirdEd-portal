@@ -1,11 +1,12 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { CertificateService, UserService } from '@sunbird/core';
+import {CertificateService, UserService, TenantService} from '@sunbird/core';
 import { ServerResponse, ResourceService, ConfigService, PlayerConfig, IUserData } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-certificate-details',
@@ -26,6 +27,9 @@ export class CertificateDetailsComponent implements OnInit {
   playerConfig: PlayerConfig;
   contentId: string;
   showVideoThumbnail = true;
+  logo: string;
+  tenantName: string;
+  tenantDataSubscription: Subscription;
 
   /** To store the certificate details data */
   recipient: string;
@@ -42,12 +46,19 @@ export class CertificateDetailsComponent implements OnInit {
     public userService: UserService,
     public playerService: PublicPlayerService,
     public router: Router,
+    public tenantService: TenantService
   ) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     this.setTelemetryData();
+    this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(data => {
+      if (data && !data.err && data.tenantData) {
+        this.logo = data.tenantData.logo;
+        this.tenantName = data.tenantData.titleName;
+      }
+    });
   }
 
   /** It will call the validate cert. api and course_details api (after taking courseId) */
@@ -156,4 +167,11 @@ export class CertificateDetailsComponent implements OnInit {
       (err) => {
       });
   }
+
+  ngOnDestroy() {
+    if (this.tenantDataSubscription) {
+      this.tenantDataSubscription.unsubscribe();
+    }
+  }
+
 }
