@@ -85,7 +85,7 @@
                     <td >
                       <button type="button" class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8" appTelemetryInteract
                       [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
-                      [telemetryInteractEdata]="setTelemetryInteractEdata(file.name)"
+                      [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
                       (click)="downloadCSV(file.downloadUrl)"><i
                     class="icon"></i> {{resourceService?.frmelmnts?.lbl?.dashboard?.downloadfile}}</button>
                     </td>
