@@ -457,35 +457,35 @@ export const mockChartData = {
                 }
               }
             ],
-            "files": [
+            'files': [
               {
-                "id": "daily_metrics_data",
-                "name": "Daily Metrics",
-                "description" : "Daily Metrics file",
-                "downloadUrl" : "/reports/sunbirdqa011/daily_metrics.csv",
-                "createdOn" : "",
-                "fileSize" : ""
+                'id': 'daily_metrics_data',
+                'name': 'Daily Metrics',
+                'description' : 'Daily Metrics file',
+                'downloadUrl' : '/reports/sunbirdqa011/daily_metrics.csv',
+                'createdOn' : '',
+                'fileSize' : ''
               },
               {
-                "id": "daily_metrics_data",
-                "name": "Daily Metrics New one",
-                "downloadUrl" : "/reports/sunbirdqa011/daily_metrics.csv",
-                "createdOn" : "",
-                "fileSize" : ""
+                'id': 'daily_metrics_data',
+                'name': 'Daily Metrics New one',
+                'downloadUrl' : '/reports/sunbirdqa011/daily_metrics.csv',
+                'createdOn' : '',
+                'fileSize' : ''
               },
               {
-                "id": "daily_metrics_data",
-                "name": "Daily Metrics New two",
-                "downloadUrl" : "/reports/sunbirdqa011/daily_metrics.csv",
-                "createdOn" : "",
-                "fileSize" : ""
+                'id': 'daily_metrics_data',
+                'name': 'Daily Metrics New two',
+                'downloadUrl' : '/reports/sunbirdqa011/daily_metrics.csv',
+                'createdOn' : '',
+                'fileSize' : ''
               },
               {
-                "id": "daily_metrics_data",
-                "name": "Daily Metrics New Three",
-                "downloadUrl" : "/reports/sunbirdqa011/daily_metrics.csv",
-                "createdOn" : "",
-                "fileSize" : ""
+                'id': 'daily_metrics_data',
+                'name': 'Daily Metrics New Three',
+                'downloadUrl' : '/reports/sunbirdqa011/daily_metrics.csv',
+                'createdOn' : '',
+                'fileSize' : ''
               }
             ],
             'downloadUrl': '/reports/sunbird/daily_metrics.csv'
