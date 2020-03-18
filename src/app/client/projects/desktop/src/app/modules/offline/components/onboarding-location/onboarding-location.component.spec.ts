@@ -52,6 +52,7 @@ describe('OnboardingLocationComponent', () => {
 
   it('should call allDistrict', () => {
     spyOn(component, 'getAllDistricts');
+    component.selectedState = true;
     component.onOptionChanges('state');
     expect(component.getAllDistricts).toHaveBeenCalled();
   });

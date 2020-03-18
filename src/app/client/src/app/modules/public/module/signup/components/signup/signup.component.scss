@@ -12,7 +12,7 @@
 @media only screen and (min-width: 1024px) {
     .ui.raised.shadow.container.segment {
         margin: calculateRem(35px) auto !important;
-        width: 944px !important;
+        width: calculateRem(944px) !important;
         padding: calculateRem(20px);
         box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(0,0,0,0.2);
     }
@@ -105,7 +105,7 @@ input[type=number]::-webkit-inner-spin-button {
     font-weight: normal;
 }
 .width-300 {
-    width: 300px !important;
+    width: calculateRem(300px) !important;
 }
 .ui.form.borderd [type="radio"]:checked + label:before,
 .ui.form.borderd [type="radio"]:not(:checked) + label:before {
@@ -190,7 +190,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
   @media only screen and (max-width: 767px){
     .signup-background {
-        max-width: 320px!important;
+        max-width: calculateRem(320px)!important;
         margin: 0 auto!important;
         box-shadow: none!important;
         height: 100vh;
@@ -222,12 +222,12 @@ input[type=number]::-webkit-inner-spin-button {
 }
  .width-300{
     width: 100% !important;
-    max-width: 300px;
+    max-width: calculateRem(300px);
  }
 
 ::ng-deep{
     .fullpage.signupmodal .ui.dimmer .ui.modal.fullscreen::-webkit-scrollbar  {
-        width: 18px;
+        width: calculateRem(18px);
       }
     .fullpage.signupmodal .ui.dimmer .ui.modal.fullscreen::-webkit-scrollbar-thumb{
         border-radius: 0px;

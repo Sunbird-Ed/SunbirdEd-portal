@@ -41,6 +41,7 @@ describe('ProfileFrameworkPopupComponent', () => {
     formService = TestBed.get(FormService);
     cacheService = TestBed.get(CacheService);
     userService = TestBed.get(UserService);
+    spyOn(cacheService, 'get').and.returnValue(undefined);
     publicDataService = TestBed.get(PublicDataService);
     orgDetailsService = TestBed.get(OrgDetailsService);
     toasterService = TestBed.get(ToasterService);

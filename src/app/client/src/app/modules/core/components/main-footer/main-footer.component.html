@@ -34,8 +34,7 @@
               {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
             </a>
           </li>
-
-          <li>
+  <li>
             <label class="d-block mb-0">
               {{resourceService.frmelmnts?.lnk?.footerContact}}
             </label>
@@ -44,7 +43,6 @@
             support@diksha-ncte.freshdesk.com
           </a>
           </li>
-         
           <!-- <li class="mb-16">
             <a href="/partners/">
               {{resourceService.frmelmnts?.lnk?.footerPartners}}
@@ -79,7 +77,7 @@
           <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
             {{resourceService.frmelmnts?.lnk?.footerTnC}}
           </a>
-          <span>| &copy; {{date | date:'yyyy'}}, DIKSHA</span>
+          <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
         </label>
         <label class="sb-footer-license">
           <img src="/assets/images/CCby.svg">

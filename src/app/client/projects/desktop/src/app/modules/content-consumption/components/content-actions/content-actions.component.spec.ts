@@ -43,6 +43,7 @@ describe('ContentActionsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentActionsComponent);
     component = fixture.componentInstance;
+    component.contentData = actionsData.contentData;
     fixture.detectChanges();
   });
 
@@ -50,12 +51,10 @@ describe('ContentActionsComponent', () => {
     expect(component).toBeTruthy();
     const connectionService = TestBed.get(ConnectionService);
     spyOn(connectionService, 'monitor').and.returnValue(of(true));
-    spyOn(component, 'changeContentStatus').and.callFake(() => {});
     component.contentData = actionsData.contentData;
     component.ngOnInit();
     component['connectionService'].monitor().subscribe(data => {
       expect(data).toBeTruthy();
-      expect(component.changeContentStatus).toHaveBeenCalledWith(actionsData.contentData);
     });
   });
 
@@ -66,7 +65,7 @@ describe('ContentActionsComponent', () => {
       contentData: new SimpleChange(null, component.contentData, false)
     });
     fixture.detectChanges();
-    expect(component.changeContentStatus).toHaveBeenCalledWith(actionsData.contentData);
+    expect(component.changeContentStatus).toHaveBeenCalled();
   });
 
   it('should check isYoutubeContentPresent', () => {
@@ -125,19 +124,18 @@ describe('ContentActionsComponent', () => {
     component['contentManagerService'].startDownload({}).subscribe(data => {
       expect(data).toEqual(actionsData.downloadContent.success);
       expect(component.contentManagerService.downloadContentId).toEqual('');
-      expect(component.contentManagerService.failedContentName).toEqual('');
     });
     expect(component.logTelemetry).toHaveBeenCalledWith('download-content',  actionsData.contentData);
   });
 
   it('should call downloadContent and error while downloading content', () => {
-    spyOn(component['contentManagerService'], 'startDownload').and.returnValue(throwError(actionsData.downloadContent.error));
+    spyOn(component['contentManagerService'], 'startDownload').and.returnValue(throwError(actionsData.downloadContent.downloadError));
     spyOn(component, 'logTelemetry');
     spyOn(component.toasterService, 'error');
     component.contentData = actionsData.contentData;
     component.downloadContent(actionsData.contentData);
     component['contentManagerService'].startDownload({}).subscribe(data => {}, err => {
-      expect(err).toEqual(actionsData.downloadContent.error);
+      expect(err).toEqual(actionsData.downloadContent.downloadError);
       expect(component.contentManagerService.downloadContentId).toEqual('');
       expect(component.contentManagerService.failedContentName).toEqual('');
       expect(component.toasterService.error).toHaveBeenCalledWith(actionsData.resourceBundle.messages.fmsg.m0090);
@@ -153,9 +151,8 @@ describe('ContentActionsComponent', () => {
     const request = { contentId: actionsData.contentData.identifier };
     component['contentManagerService'].updateContent(request).subscribe(data => {
       expect(data).toEqual(actionsData.updateContent.success);
-      expect(component.changeContentStatus).toHaveBeenCalledWith(component.contentData);
+      expect(component.contentData.desktopAppMetadata['updateAvailable']).toBeFalsy();
     });
-    expect(component.contentData.desktopAppMetadata['updateAvailable']).toBeFalsy();
   });
 
   it('should call updateContent and error while updating content ', () => {
@@ -167,7 +164,6 @@ describe('ContentActionsComponent', () => {
     component['contentManagerService'].updateContent(request).subscribe(data => {}, err => {
       expect(err).toEqual(actionsData.updateContent.error);
       expect(component.contentData['desktopAppMetadata']['updateAvailable']).toBeTruthy();
-      expect(component.changeContentStatus).toHaveBeenCalledWith(component.contentData);
     });
   });
 
@@ -179,8 +175,7 @@ describe('ContentActionsComponent', () => {
     const request = {request: {contents: [actionsData.contentData.identifier], visibility: 'Parent'}};
     component['contentManagerService'].deleteContent(request).subscribe(data => {
       expect(data).toEqual(actionsData.deleteContent.success);
-      expect(component.contentData.desktopAppMetadata.isAvailable).toBeFalsy();
-      expect(Object.keys(component.contentData)).not.toContain('downloadStatus');
+      expect(component.contentData['desktopAppMetadata.isAvailable']).toBeFalsy();
     });
     expect(component.logTelemetry).toHaveBeenCalledWith('delete-content',  actionsData.contentData);
   });
@@ -195,7 +190,8 @@ describe('ContentActionsComponent', () => {
     const request = {request: {contents: [actionsData.contentData.identifier], visibility: 'Parent'}};
     component['contentManagerService'].deleteContent(request).subscribe(data => {}, err => {
       expect(err).toEqual(actionsData.deleteContent.error);
-      expect(component.toasterService.error).toHaveBeenCalledWith(actionsData.resourceBundle.messages.etmsg.deleteContentErrorMessage);
+      expect(component.toasterService.error).toHaveBeenCalledWith(
+        actionsData.resourceBundle.messages.etmsg.desktop.deleteContentErrorMessage);
     });
   });
 

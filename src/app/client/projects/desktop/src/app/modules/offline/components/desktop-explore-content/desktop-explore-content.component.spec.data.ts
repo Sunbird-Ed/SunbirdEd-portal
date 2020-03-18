@@ -528,3 +528,21 @@ export const appTelemetryInteractData = {
         'ver': '1.0'
     }
 };
+
+export const downloadError = {
+    error: {
+        'id': 'api.content.download',
+        'ver': '1.0',
+        'ts': '2020-01-09T13:11:09.835Z',
+        'params': {
+            'resmsgid': '17b6ce47-a381-4d10-8dc1-54e8b07cecd7',
+            'msgid': '4b85b3c0-0a14-443f-a92b-6ddeef109f87',
+            'status': 'failed',
+            'err': 'ERR_INTERNAL_SERVER_ERROR',
+            'errmsg': 'Error while processing the request'
+        },
+        'responseCode': 'INTERNAL_SERVER_ERROR',
+        'result': {}
+    }
+};
+

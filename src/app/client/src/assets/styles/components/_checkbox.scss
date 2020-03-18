@@ -83,6 +83,11 @@ $sb-radio-btn-border-color: $primary-300;
       background-color: $sb-checkbox-primary-background;
       border-color: $sb-radio-btn-primary-border;
     }
+    &.sb-checkbox-rightaligned {
+      input:checked~label {
+        color: $primary-color;
+      }
+    }
   }
 
   &.sb-checkbox-secondary {
@@ -103,6 +108,17 @@ $sb-radio-btn-border-color: $primary-300;
     input:checked~label:before {
       background-color: $sb-checkbox-error-background;
       border-color: $sb-radio-btn-error-border;
+    }
+  }
+
+  &.sb-checkbox-rightaligned {
+    label {
+      padding: 0 calculateRem(24px) 0 0;
+      margin-right: 0;
+    }
+    label:before, input:checked~label:before, input:checked~label:after {
+      left: unset;
+      right: 0;
     }
   }
 
