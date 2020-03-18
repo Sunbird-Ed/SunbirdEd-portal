@@ -89,13 +89,13 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
           if (_.get(report, 'charts')) {
             this.createChartData(_.get(report, 'charts'), data, url);
           }
-          if (_.get(report, 'table')) { 
-            this.renderTable(_.get(report, 'table'), data); 
+          if (_.get(report, 'table')) {
+            this.renderTable(_.get(report, 'table'), data);
           } else {
             this.renderTable({}, data);
           }
           if (_.get(report, 'files')) {
-            this.renderFiles(_.get(report, 'files'), data)
+            this.renderFiles(_.get(report, 'files'), data);
           }
         } else {
           console.log(response);
@@ -104,8 +104,8 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       }, err => { console.log(err); });
   }
 
-  renderFiles(files,data) {
-    this.files = []
+  renderFiles(files, data) {
+    this.files = [];
     _.forEach(files, file =>  {
       const fileData: any = {};
       fileData.id = _.get(file, 'id');
