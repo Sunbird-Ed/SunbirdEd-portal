@@ -69,7 +69,7 @@ describe('UsageReportsComponent', () => {
     spyOn(component, 'downloadCSV').and.callThrough();
     spyOn(toasterService, 'error').and.callThrough();
     component.ngOnInit();
-    component.downloadCSV();
+    component.downloadCSV('/reports/sunbird/daily_metrics.csv');
     expect(usageService.getData).toHaveBeenCalled();
     });
 });
