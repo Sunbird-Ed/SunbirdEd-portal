@@ -250,3 +250,19 @@ $sb-modal-corner-radius: $base-block-space;
     }
 }
 
+// Rating Modal
+@include respond-below(sm) {
+  .sb-rating-modal {
+    &.sb-modal {
+      .ui.modal.normal {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        .sb-modal-content {
+          min-height: calc(100% - 96px);
+          max-height: 100%;
+        }
+      }
+    }
+  }
+}
