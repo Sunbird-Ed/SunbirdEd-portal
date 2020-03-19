@@ -18,7 +18,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public initialized = false;
   public refresh = true;
   private unsubscribe$ = new Subject<void>();
-  emptyBoard = true;
+  public emptyBoard = false;
   private filters;
   private queryFilters: any = {};
   public selectedBoard: any = {};
