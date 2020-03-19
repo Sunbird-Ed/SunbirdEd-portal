@@ -24,6 +24,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public telemetryImpression: IImpressionEventInput;
   private inViewLogs = [];
   public pageSections: Array<any> = [];
+  public channelId: string;
   public defaultFilters = {
     board: [DEFAULT_FRAMEWORK],
     gradeLevel: ['Class 10'],
@@ -46,8 +47,10 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit() {
     this.getChannelId().pipe(
-      mergeMap(({ channelId, custodianOrg }) =>
-        this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0])),
+      mergeMap(({ channelId, custodianOrg }) => {
+        this.channelId = channelId;
+        return  this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0]);
+      }),
       takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this.setNoResultMessage();
@@ -78,6 +81,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     let filters = this.selectedFilters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    filters['channel'] = this.channelId;
     const option = {
       limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
       filters: filters,
@@ -131,11 +135,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.apiContentList.length) {
           return; // no page section
         }
-        if (this.apiContentList.length >= 2) {
-          this.pageSections = [this.apiContentList[0], this.apiContentList[1]];
-        } else if (this.apiContentList.length >= 1) {
-          this.pageSections = [this.apiContentList[0]];
-        }
+        this.pageSections = this.apiContentList.slice(0, 3);
       }, err => {
         this.showLoader = false;
         this.apiContentList = [];

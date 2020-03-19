@@ -1,4 +1,4 @@
-<div *ngIf="boards.length && refresh" class="sb-header-filter-bar zindex-2">
+<div *ngIf="(boards.length || emptyBoard) && refresh" class="sb-header-filter-bar zindex-2">
     <!-- State and Medium sections -->
     <div class="d-flex state-medium-container sb-bg-color-white">
         <div class="ui container d-flex">
