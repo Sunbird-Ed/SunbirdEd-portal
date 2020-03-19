@@ -3,14 +3,14 @@
 
 #url-upload .url-upload-label {
     float: left;
-    margin-right: 10px;
+    margin-right: calculateRem(10px);
 }
 #url-upload input {
-    border-bottom: 1px solid #ddd !important;
+    border-bottom: calculateRem(1px) solid #ddd !important;
     border-radius: 0;
 }
 #url-upload input:focus {
-    border-bottom: 1px solid #289fd9 !important;
+    border-bottom: calculateRem(1px) solid #289fd9 !important;
 }
 .qq-uploader.qq-uploader-selector.custom-qq-uploader {
     background: inherit;
@@ -19,8 +19,8 @@
     max-height: inherit;
     min-height: inherit;
     overflow-y: inherit;
-    width: 688px;
-    height: 240px;
+    width: calculateRem(688px);
+    height: calculateRem(240px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,8 +33,8 @@
     -webkit-box-shadow: none;
     box-shadow: none;
     border: none;
-    color: #fff;
-    padding: 5px;
+    color: var(--white);
+    padding: calculateRem(5px);
 }
 .qq-upload-cancel.custom-qq-upload-cancel:hover{
     background: #e68900;
@@ -45,9 +45,9 @@
 }
 .upload-file-section {
     display: flex;
-    height: 240px;
+    height: calculateRem(240px);
     width: 100%;
-    max-width: 800px;
+    max-width: calculateRem(800px);
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -113,10 +113,10 @@
   }
 
   .practical-header {
-    height: 98px;
+    height: calculateRem(98px);
     background: var(--primary-0) !important;
     &__title {
-      max-width: 680px;
+      max-width: calculateRem(680px);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -126,12 +126,12 @@
       // width: 100%;
       .practical-sb-buttons {
         .sb-btn-file {
-          border-top: 1px solid var(--primary-200);
+          border-top: calculateRem(1px) solid var(--primary-200);
           /* #7AB4EE;*/
-          border-bottom: 1px solid var(--primary-200);
+          border-bottom: calculateRem(1px) solid var(--primary-200);
           /* #7AB4EE;*/
-          border-left: 1px solid #ddd;
-          border-right: 1px solid #ddd;
+          border-left: calculateRem(1px) solid #ddd;
+          border-right: calculateRem(1px) solid #ddd;
           background: #E0F1FD;
           color: var(--primary-400);
         }
@@ -147,9 +147,9 @@
 
   .sb-field-group.textbook-edit {
     width: 100%;
-    max-width: 756px;
+    max-width: calculateRem(756px);
     textarea {
-      height: 64px;
+      height: calculateRem(64px);
       resize: none;
     }
     .characters-left {
@@ -161,23 +161,23 @@
     }
   }
   .sb-field sui-multi-select.ui.selection.dropdown {
-    background: white;
+    background: var(--white);
 }
 
 .warning-message{
   color: var(--red);
-  font-size: 11px;
+  font-size: calculateRem(11px);
   font-weight: normal;
 }
 
 .middle-section-set {
-  max-width: 854px;
+  max-width: calculateRem(854px);
   width: 100%;
   margin: 0 auto;
   .msg-box {
     margin: ($base-block-space * 4) auto;
     &__content {
-      border: 1px dotted #024f9d;
+      border: calculateRem(1px) dotted var( --primary-400);
       &__label {
         color: #00BD7F;
         padding-bottom: ($base-block-space * 0.75);
@@ -189,7 +189,7 @@
       &__blank-box {
         height: 100%;
         width: 100%;
-        border: calculateRem(1px) dotted #80A7CE;
+        border: calculateRem(1px) dotted var(--primary-200);
         background: #F5F9FC;
         border-radius: ($base-block-space / 2);
       }
@@ -200,14 +200,14 @@
 
 #url-upload .url-upload-label {
     float: left;
-    margin-right: 10px;
+    margin-right: calculateRem(10px);
 }
 #url-upload input {
-    border-bottom: 1px solid #ddd !important;
+    border-bottom: calculateRem(1px) solid #ddd !important;
     border-radius: 0;
 }
 #url-upload input:focus {
-    border-bottom: 1px solid #289fd9 !important;
+    border-bottom: calculateRem(1px) solid #289fd9 !important;
 }
 .qq-uploader.qq-uploader-selector.custom-qq-uploader {
     background: inherit;
@@ -225,8 +225,8 @@
     -webkit-box-shadow: none;
     box-shadow: none;
     border: none;
-    color: #fff;
-    padding: 5px;
+    color: var(--white);
+    padding: calculateRem(5px);
 }
 .qq-upload-cancel.custom-qq-upload-cancel:hover{
     background: #e68900;
@@ -237,15 +237,15 @@
 }
 .upload-file-section {
     display: flex;
-    height: 240px;
+    height: calculateRem(240px);
     width: 100%;
-    max-width: 800px;
+    max-width: calculateRem(800px);
     align-items: center;
     justify-content: center;
     flex-direction: column;
     margin: 0 auto;
     background-color: #F5F9FC;
-    border: 1px dashed $primary-200;
+    border: calculateRem(1px) dashed $primary-200;
   }
   .upload-file-description p {
     color: $gray-200;
@@ -267,12 +267,12 @@
     .uploading-files {
       margin: ($base-block-space * 3) auto;
       .process-icon {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 20px;
+        width: calculateRem(48px);
+        height: calculateRem(48px);
+        margin-bottom: calculateRem(20px);
       }
     .ui.progress {
-        margin: 12px 24px 28px 24px !important;
+        margin: calculateRem(12px) calculateRem(24px) calculateRem(28px) calculateRem(24px) !important;
         width: 60%;
       }
       .ui.progress .bar {
