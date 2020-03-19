@@ -1,4 +1,4 @@
-import { combineLatest, of, Subject, forkJoin, Observable } from 'rxjs';
+import { combineLatest, of, Subject, forkJoin, Observable, throwError } from 'rxjs';
 import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
 import {
@@ -104,6 +104,8 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.carouselMasterData = [];
         this.pageSections = [];
         this.fetchPageData(result);
+      }, error => {
+        this.fetchPageData(error);
       });
   }
   private buildOption(): Observable<any> {
@@ -121,21 +123,24 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.usersProfile = this.userService.userProfile;
     const custodianOrgDetails = this.orgDetailsService.getCustodianOrgDetails();
-    const getCourseSection = this.coursesService.getCourseSection();
+    const getCourseSection = this.coursesService.getCourseSectionDetails();
     return forkJoin([custodianOrgDetails, getCourseSection]).pipe(
       map(result => {
         if (_.get(this.usersProfile, 'rootOrg.rootOrgId') !== _.get(result[0], 'result.response.value')) {
-          if (result[1]) {
-            option['sections'] = {
-              '0129795520637419527': {
+          if (_.get(result[1], 'result.response.value')) {
+            const sectionId = _.get(result[1], 'result.response.value');
+            option['sections'] = {};
+            option['sections'][sectionId] = {
                 'filters': {
                   'batches.createdFor': [_.get(this.usersProfile, 'rootOrg.rootOrgId')]
                 }
-              }
             };
           }
         }
         return option;
+      }),
+      catchError((err) => {
+        return throwError(option);
       }));
   }
   private fetchPageData(option) {

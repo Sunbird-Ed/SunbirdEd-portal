@@ -93,11 +93,13 @@ export class CoursesService {
     return this.getCourseSection().pipe(map(sectionId => {
       this.sectionId = sectionId;
       return sectionId;
+    }), catchError((err) => {
+      return observableThrowError(err);
     }));
   }
   public getCourseSection() {
     const systemSetting = {
-      url: this.config.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
+      url: this.config.urlConFig.URLS.SYSTEM_SETTING.SSO_COURSE_SECTION,
     };
     return this.learnerService.get(systemSetting);
   }
