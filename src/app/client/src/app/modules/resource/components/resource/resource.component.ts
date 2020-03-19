@@ -17,6 +17,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public showLoader = true;
   public noResultMessage;
   public channelId: string;
+  public custodianOrg = false;
   public apiContentList: Array<any> = [];
   private unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
@@ -50,6 +51,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getChannelId().pipe(
       mergeMap(({ channelId, custodianOrg }) => {
         this.channelId = channelId;
+        this.custodianOrg = custodianOrg;
         return  this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0]);
       }),
       takeUntil(this.unsubscribe$))
@@ -82,7 +84,9 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     let filters = this.selectedFilters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-    filters['channel'] = this.channelId;
+    if (this.custodianOrg) {
+      filters['channel'] = this.channelId;
+    }
     const option = {
         limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
         filters: filters,

@@ -25,6 +25,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   private inViewLogs = [];
   public pageSections: Array<any> = [];
   public channelId: string;
+  public custodianOrg = true;
   public defaultFilters = {
     board: [DEFAULT_FRAMEWORK],
     gradeLevel: ['Class 10'],
@@ -49,6 +50,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getChannelId().pipe(
       mergeMap(({ channelId, custodianOrg }) => {
         this.channelId = channelId;
+        this.custodianOrg = custodianOrg;
         return  this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0]);
       }),
       takeUntil(this.unsubscribe$))
@@ -81,7 +83,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     let filters = this.selectedFilters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-    filters['channel'] = this.channelId;
+    if (!this.custodianOrg) { // if custodianOrg should show result from all channel based on applied filter
+      filters['channel'] = this.channelId; // if not custodian org then fetch contents from same channel
+    }
     const option = {
       limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
       filters: filters,
