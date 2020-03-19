@@ -38,6 +38,7 @@ const acceptTncAndGenerateToken = async (identifier, tncVersionAccepted) => {
   try {
     errorType = 'ERROR_GENERATING_TOKEN';
     logger.info({msg: 'generate token for email id - ' + identifier});
+    await delay(3000);
     grant = await keyCloakClient.grantManager.obtainDirectly(identifier, undefined, undefined, CONSTANTS.KEYCLOAK.SCOPE.OPENID).catch(handleError);
     errorType = 'ERROR_ACCEPTING_TNC';
     const tncRequest = {

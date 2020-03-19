@@ -1,5 +1,8 @@
 {
   "TEMPLATES": {
     "RESET_PASSWORD_TEMPLATE": "resetPasswordWithOtp"
+  },
+  "HTTP_STATUS_CODES": {
+    "OTP_VERIFICATION_FAILED": "OTP_VERIFICATION_FAILED"
   }
 }

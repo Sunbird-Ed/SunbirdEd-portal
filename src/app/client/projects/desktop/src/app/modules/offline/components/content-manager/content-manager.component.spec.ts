@@ -291,5 +291,24 @@ describe('ContentManagerComponent', () => {
     expect(component.unHandledFailedList).toEqual([]);
   });
 
+  it('getContentStatus should return extract', () => {
+   const data = component.getContentStatus(response.contentResponse2[3].contentDownloadList);
+   expect(data).toBe('extract');
+  });
+
+  it('getContentStatus should return undefined', () => {
+    const data = component.getContentStatus(response.contentResponse2[0].contentDownloadList);
+    expect(data).toBeUndefined();
+   });
+
+   it('getContentStatus should return undefined', () => {
+    const data = component.getContentStatus(response.contentResponse2[1].contentDownloadList);
+    expect(data).toBeUndefined();
+   });
+
+   it('getContentStatus should return undefined', () => {
+    const data = component.getContentStatus(response.contentResponse2[2].contentDownloadList);
+    expect(data).toBeUndefined();
+   });
 });
 

@@ -1,7 +1,8 @@
 @import './variables';
+@import "./mixins/mixins";
 
 .sb-explore-qr-page-cover {
-  //background: $white;
+  //background: $var(--white);
   padding: ($base-block-space * 4) 0 0 0;
   min-height: calc(100vh - 230px);
 }
@@ -11,7 +12,7 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: white;
+    background-color: var(--white);
     z-index: 989898;
 }
 .bars.icon.tablet.sunbird-hamburger-menu {
@@ -43,20 +44,20 @@
 .dial-section-seperater{
   position: absolute;
   height: 70vh;
-  border-left: 1px solid #CCCCCC;
+  border-left: calculateRem(1px) solid var(--gray-100);
   left: 50%;
 }
 .dail-section-meta {
-  color: white;
+  color: var(--white);
 }
 .ui.header.dial-section-header-text {
   //color:#fff;
   font-weight: bold !important;
-  font-size: 16px !important;
+  font-size: calculateRem(16px)!important;
 }
 .ui.header .sub.header.dial-section-subheader-text {
   //color: #fff;
-  font-size: 14px;
+  font-size: calculateRem(14px);
 }
 .dial-section-input {
   margin-top: 11em;
@@ -93,7 +94,7 @@
   }
 }
 .menu-public-header{
-  border-top: 2px solid rgba(134, 106, 106, 0.13);
+  border-top: calculateRem(2px) solid rgba(134, 106, 106, 0.13);
 }
 
 
@@ -103,7 +104,7 @@
   align-content: space-between;
 
   .dial-section-column {
-    border-right:1px solid rgba(51, 51, 51,0.1);
+    border-right:calculateRem(1px) solid rgba(51, 51, 51,0.1);
     flex:50%;
     padding-left: 0;
     h1 {
@@ -116,10 +117,10 @@
   .dial-scan-column {
     flex:50%;
 h5 {
-  margin-top:40px;
+  margin-top:calculateRem(40px);
 }
   }
 }
 .pr-60{
-  padding-right: 60px !important;
+  padding-right: calculateRem(60px) !important;
 }

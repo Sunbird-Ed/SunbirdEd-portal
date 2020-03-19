@@ -93,7 +93,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.contentDownloadStatus = contentDownloadStatus;
             this.updateCardData();
         });
-        this.systemInfoService.getSystemInfo().subscribe(data => {
+        this.systemInfoService.getSystemInfo().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
             let { availableMemory } = data.result;
             availableMemory = Math.floor(availableMemory / (1024 * 1024));
             this.showMinimumRAMWarning = availableMemory ? Boolean(availableMemory < this.MINIMUM_REQUIRED_RAM) : false;
@@ -171,7 +171,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.pageSections = [];
     }
 
-    constructSearchRequest(addFilters) {
+    constructSearchRequest(addFilters, isFacetsRequired?) {
         let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
         filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
         const softConstraintData: any = {
@@ -190,9 +190,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
         const option = {
             filters: {},
             mode: _.get(manipulatedData, 'mode'),
-            facets: facets,
             params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
         };
+        if (isFacetsRequired) {
+            option['facets']  = facets;
+        }
         if (addFilters) {
             option.filters = _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters;
             option.filters['contentType'] = filters.contentType || ['TextBook'];
@@ -321,7 +323,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     onViewAllClick(event) {
         const queryParams = {
             channel: this.hashTagId,
-            apiQuery: JSON.stringify(this.constructSearchRequest(false))
+            apiQuery: JSON.stringify(this.constructSearchRequest(false, true))
         };
 
         this.router.navigate(['view-all'], {

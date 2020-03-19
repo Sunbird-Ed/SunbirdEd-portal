@@ -4,13 +4,18 @@
 :host {
   //header bar
 
+  .header-bar{
+    top:0;
+    z-index: 4;
+  }
+
   .sb-offline-header {
     border-bottom: 1px solid var(--primary-400);
     cursor: pointer;
+    top: 0;
 
     .sb-header-offline-bar {
-      position: relative;
-      z-index: 3;
+      width: 100%;
       background: #fafafa;
 
       .sbheader--offline {
@@ -51,8 +56,10 @@
           }
 
           .logo {
+            height:calculateRem(45px);
             img {
-              width: calculateRem(78px);
+              width: 100%;
+              height:100%;
             }
           }
         }
@@ -99,22 +106,24 @@
         }
       }
 
-    }
-
-    .sb-menubar {
-      width: 100%;
-      .sb-btn-load{
-        span{
-          position: relative;
-          bottom: calculateRem(1px);
+      .sb-menubar {
+        width: 100%;
+        z-index: 3;
+        
+        .sb-btn-load{
+          span{
+            position: relative;
+            bottom: calculateRem(1px);
+          }
+        }
+  
+        @include respond-below(sm) {
+          .sb-btn-load {
+            margin: $base-block-space 0px;
+          }
         }
       }
 
-      @include respond-below(sm) {
-        .sb-btn-load {
-          margin: $base-block-space 0px;
-        }
-      }
     }
   }
 

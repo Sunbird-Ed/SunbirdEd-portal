@@ -253,6 +253,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   private enrichFiltersOnInputChange() {
+    if (this.activatedRoute.snapshot.queryParams.appliedFilters === 'false') {
+      this.filtersDetails = this.formFieldProperties; // show all filters as implicit filters are applied
+      return;
+    }
     this.filtersDetails = _.map(this.formFieldProperties, (eachFields) => {
       const enrichField = _.cloneDeep(eachFields);
       if (!_.includes(['channel', 'contentType', 'topic'], enrichField.code)) {

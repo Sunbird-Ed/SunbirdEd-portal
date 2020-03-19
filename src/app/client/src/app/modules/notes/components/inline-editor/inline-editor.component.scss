@@ -1,9 +1,10 @@
+@import "./mixins/mixins";
 .wmd-panel
 {
 	margin-left: 25%;
 	margin-right: 25%;
 	width: 50%;
-	min-width: 500px;
+	min-width: calculateRem(500px);
 }
 
 .wmd-button-bar 
@@ -14,9 +15,9 @@
 
 .wmd-input 
 { 
-	height: 300px;
-	background-color: Gainsboro;
-  border: 1px solid DarkGray;
+  height: calculateRem(300px);
+  background-color: Gainsboro;
+  border: calculateRem(1px) solid DarkGray;
   width: 100% !important;
 }
 
@@ -28,19 +29,19 @@
 .wmd-button-row 
 {
 	position: relative; 
-	margin-left: 5px;
-	margin-right: 5px;
-	margin-bottom: 5px;
-	margin-top: 10px;
+	margin-left: calculateRem(5px);
+	margin-right: calculateRem(5px);
+	margin-bottom: calculateRem(5px);
+	margin-top: calculateRem(10px);
 	padding: 0px;  
-	height: 20px;
+	height: calculateRem(20px);
 }
 
 .wmd-spacer
 {
-	width: 1px; 
-	height: 20px; 
-	margin-left: 14px;
+	width: calculateRem(1px); 
+	height: calculateRem(20px); 
+	margin-left: calculateRem(14px);
 	
 	position: absolute;
 	background-color: Silver;
@@ -49,10 +50,10 @@
 }
 
 .wmd-button {
-    width: 20px;
-    height: 20px;
-    padding-left: 2px;
-    padding-right: 3px;
+    width: calculateRem(20px);
+    height: calculateRem(20px);
+    padding-left: calculateRem(2px);
+    padding-right: calculateRem(3px);
     position: absolute;
     display: inline-block;
     list-style: none;
@@ -63,25 +64,25 @@
     background-image: url(/assets/images/wmd-buttons.png) !important;
     background-repeat: no-repeat;   
     background-position: 0px 0px;
-    width: 20px;
-    height: 20px;
+    width: calculateRem(20px);
+    height: calculateRem(20px);
     display: inline-block;
 }
 
 .wmd-spacer1
 {
-    left: 50px;
+    left: calculateRem(50px);
 }
 .wmd-spacer2
 {
-    left: 175px;
+    left: calculateRem(175px);
 }
 .wmd-spacer3
 {
-    left: 300px;
+    left: calculateRem(300px);
 }
 .wmd-prompt-dialog
 {
-  border: 1px solid #999;
+  border: calculateRem(1px) solid var(--gray-200);
   background-color: #F5F5F5;
 }

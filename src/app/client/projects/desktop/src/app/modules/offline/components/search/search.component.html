@@ -1,5 +1,5 @@
 <div [appTelemetryImpression]="telemetryImpression">
-  <div class="sb-bg-color-white">
+  <div class="sb-bg-color-white sb-sticky back-bar">
     <div class="ui container px-0 py-8">
       <div class="d-flex flex-jc-space-between sb-back-btn-bar">
         <button type="button" appTelemetryInteract [telemetryInteractEdata]="backButtonInteractEdata" (click)="goBack()"
@@ -8,24 +8,12 @@
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i>{{resourceService?.frmelmnts?.btn?.back}}
         </button>
-        <button *ngIf="!router?.url?.includes('view-all') && !params?.dialCode" type="button" appTelemetryInteract
-          [telemetryInteractEdata]="filterByButtonInteractEdata"
-          class="sb-btn sb-btn-outline-primary sb-btn-normal font-weight-bold" [class.active]="showFilters"
-          (click)="showFilters = !showFilters">
-          <i class="icon-svg icon-svg--xxs icon-play">
-            <svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#filter"></use>
-            </svg>
-          </i> {{resourceService?.frmelmnts?.lbl?.filterby}}
-        </button>
+
       </div>
     </div>
   </div>
 
-  <app-desktop-prominent-filter [pageId]="activatedRoute?.snapshot?.data?.telemetry?.pageid" [hidden]="!showFilters"
-    *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [hashTagId]="hashTagId"
-    (prominentFilter)="getFilters($event)" (filterChange)="onFilterChange($event)">
-  </app-desktop-prominent-filter>
+
 
 
   <div class="ui container">
@@ -67,7 +55,7 @@
             [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
         </div>
-        <hr *ngIf="!downloadedContents?.length" class="border">
+        <hr *ngIf="!downloadedContents?.length" class="border m-0">
       </div>
 
 
@@ -76,7 +64,7 @@
 
       <div class="text-center">
         <button type="button" *ngIf="downloadedContentsCount > MAX_CARDS_TO_SHOW"
-          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn" appTelemetryInteract
+          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn my-24" appTelemetryInteract
           [telemetryInteractEdata]="viewMoreButtonInteractEdata"
           (click)="gotoViewMore(false)">{{resourceService?.frmelmnts?.btn?.viewmore}}
           <i class="icon angle right"></i>
@@ -107,7 +95,7 @@
       </app-desktop-explore-content>
       <div class="text-center">
         <button type="button" *ngIf="onlineContentsCount > MAX_CARDS_TO_SHOW"
-          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn" appTelemetryInteract
+          class="sb-btn sb-btn-normal sb-btn-outline-primary sb-right-icon-btn my-24" appTelemetryInteract
           [telemetryInteractEdata]="viewMoreButtonInteractEdata"
           (click)="gotoViewMore(true)">{{resourceService?.frmelmnts?.btn?.viewmore}}
           <i class="icon angle right"></i>

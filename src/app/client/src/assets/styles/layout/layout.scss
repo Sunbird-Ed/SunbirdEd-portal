@@ -3,8 +3,9 @@
 @import "./footer";
 @import "./header";
 @import "./sidebar";
+@import "./mixins/mixins";
 
 .ui.grid>.column:not(.row) {
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: calculateRem(12px);
+    padding-bottom: calculateRem(12px);
 }

@@ -119,5 +119,68 @@ export const telemetry = {
         },
         'responseCode': 'OK',
         'result': {}
+    },
+    syncStatusInfo: {
+        'id': 'api.telemetry.config.info',
+        'ver': '1.0',
+        'ts': '2020-03-13T06:37:56.668Z',
+        'params': {
+            'resmsgid': '0dc7cbb7-930a-42f2-9157-ea75da7fc483',
+            'msgid': '4ae2c70c-2fbe-4efd-b386-131a4ad82277',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'enable': true,
+            'updatedOn': 1584080236493
+        }
+    },
+    updateSyncStatus: {
+        'id': 'api.telemetry.set.config',
+        'ver': '1.0',
+        'ts': '2020-03-13T09:13:29.806Z',
+        'params': {
+            'resmsgid': '6ff86766-fbf2-4462-8609-afa229166f4e',
+            'msgid': '8a8f2049-db96-4099-bd5e-d2b00766062a',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'message': 'Successfully updated'
+        }
+    },
+    syncTelemetry: {
+        success: {
+            'id': 'api.desktop.sync',
+            'ver': '1.0',
+            'ts': '2020-03-15T17:32:46.663Z',
+            'params': {
+                'resmsgid': '647f6a26-4a20-401c-a41c-386c35406090',
+                'msgid': '0fdd9983-a7fb-4797-8c84-768dd7468e04',
+                'status': 'successful',
+                'err': null,
+                'errmsg': null
+            },
+            'responseCode': 'OK',
+            'result': {}
+        },
+        error: {
+            'id': 'api.desktop.sync',
+            'ver': '1.0',
+            'ts': '2020-03-15T17:14:10.860Z',
+            'params': {
+                'resmsgid': 'd4bbd3a4-929a-46c7-a898-2b536a0d639f',
+                'msgid': 'f86b2585-e518-49e2-9a64-873e8dcce745',
+                'status': 'failed',
+                'err': 'Forbidden',
+                'errmsg': 'No credentials found for given iss '
+            },
+            'responseCode': 'INTERNAL_SERVER_ERROR',
+            'result': {}
+        }
     }
 };

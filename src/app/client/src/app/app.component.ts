@@ -451,6 +451,7 @@ export class AppComponent implements OnInit, OnDestroy {
     };
     this.profileService.updateProfile(req).subscribe(res => {
       this.frameWorkPopUp.modal.deny();
+      this.userService.setUserFramework(event);
       this.showFrameWorkPopUp = false;
       this.checkLocationStatus();
       this.utilService.toggleAppPopup();

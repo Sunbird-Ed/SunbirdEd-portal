@@ -63,8 +63,9 @@ export interface IExDataEventData {
 }
 
 export interface IFeedBackEventData {
+  'commentid'?: string;
+  'commenttxt'?: string;
   'rating'?: number;
-  'comments'?: string;
 }
 export interface ITelemetryContextData {
   'channel': string;

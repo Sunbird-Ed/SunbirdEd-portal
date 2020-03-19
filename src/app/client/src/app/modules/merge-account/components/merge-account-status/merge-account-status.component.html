@@ -2,7 +2,7 @@
 
   <div class="sb-certificatePage p-16">
     <div class="sb-certificatePage-header">
-      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo" />
+      <img alt="{{tenantName}}" src="{{logo}}" class="sb-certificatePage-logo" />
     </div>
     <div class="sb-merged-account-content text-center">
       <h3 class="sb-merged-account-body-header my-24 font-weight-bold f-18">
@@ -10,8 +10,10 @@
       <div *ngIf="mergeType === 'manual'">
         <p *ngIf="isMergeSuccess" class="sb-merged-account-body-para sb-color-success font-weight-bold py-8">
           {{resourceService.messages?.imsg?.m0065}}. {{resourceService.messages?.imsg?.m0066}}</p>
-        <p *ngIf="!isMergeSuccess" class="sb-merged-account-body-para sb-color-error font-weight-bold py-8">
+        <p *ngIf="!isMergeSuccess && error_type !== 'account_not_found'" class="sb-merged-account-body-para sb-color-error font-weight-bold py-8">
           {{resourceService.messages?.imsg?.m0067}} </p>
+        <p *ngIf="!isMergeSuccess && error_type === 'account_not_found'" class="sb-merged-account-body-para sb-color-error font-weight-bold py-8">
+          {{resourceService.messages?.imsg?.m0087}}</p>
       </div>
 
       <div *ngIf="mergeType === 'auto'">

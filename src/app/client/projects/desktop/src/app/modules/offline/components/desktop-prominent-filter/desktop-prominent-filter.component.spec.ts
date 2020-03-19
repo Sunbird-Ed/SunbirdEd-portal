@@ -1,4 +1,4 @@
-import { formatedFilterDetails, frameworkDetails } from './desktop-prominent-filter.component.spec.data';
+import { formatedFilterDetails, frameworkDetails, facetData } from './desktop-prominent-filter.component.spec.data';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { DesktopProminentFilterComponent } from './desktop-prominent-filter.component';
@@ -249,5 +249,15 @@ describe('DesktopProminentFilterComponent', () => {
         component.ngOnDestroy();
         expect(component.unsubscribe$.next).toHaveBeenCalled();
         expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    });
+
+    it('should get getFilteredFacets ', () => {
+        component.formFieldProperties = formatedFilterDetails;
+        component.filterData = facetData;
+        const filteredData = (facetData[0].values).map(data => ({name:  data.name}));
+        const classFilter = (facetData[2].values).map(data => ({name:  data.name}));
+        component.getFilteredFacets();
+        expect(component.formFieldProperties[0].range[0].name).toEqual(filteredData[0].name);
+        expect(component.formFieldProperties[2].range[0].name).toEqual(classFilter[0].name);
     });
 });

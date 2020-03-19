@@ -1,5 +1,5 @@
 @import 'variables';
-@import "./mixins/mixins";
+@import "mixins/mixins";
 // .ui {
 //   &.selection.bordered.dropdown {
 //     border: 1px solid rgba(34, 36, 38, 0.15);
@@ -20,7 +20,7 @@
 // }
 
 .w-300 {
-  width: 300px;
+  width: calculateRem(300px);
 }
 
 .w-300 {
@@ -39,7 +39,7 @@
 }
 .download-file-container {
   background-color: $gray-100;
-  height: 48px;
+  height: calculateRem(48px);
 }
 
 a {
@@ -62,7 +62,7 @@ a {
 ::ng-deep {
 
   .ui.search.dropdown.course-dashboard-select>.text {
-    margin: 6px 16px 6px 6px;
+    margin: calculateRem(6px) calculateRem(16px) calculateRem(6px) calculateRem(6px);
     // width: 136px;
     // text-overflow: ellipsis;
     // overflow: hidden;
@@ -72,7 +72,7 @@ a {
 }
 @include respond-below(lg){
   .course-completed:last-child{
-    margin-top:8px;
+    margin-top:calculateRem(8px);
   }
 }
 @include respond-below(sm){
@@ -81,7 +81,7 @@ a {
   }
   .course-participants-label {
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: calculateRem(8px);
   }
   .course-participants-label{
     &:nth-child(3) {

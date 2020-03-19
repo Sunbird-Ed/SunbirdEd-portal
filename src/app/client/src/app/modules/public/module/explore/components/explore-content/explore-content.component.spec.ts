@@ -38,6 +38,9 @@ describe('ExploreContentComponent', () => {
         'm0139': 'DOWNLOADED',
       },
       'emsg': {},
+    },
+    frmelmnts: {
+      lbl: {}
     }
   };
   class FakeActivatedRoute {

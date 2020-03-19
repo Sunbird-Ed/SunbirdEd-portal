@@ -1,5 +1,5 @@
 import { telemetry } from './telemetry-actions.service.spec.data';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule, PublicDataService } from '@sunbird/core';
@@ -71,6 +71,68 @@ describe('TelemetryActionsService', () => {
     }, error => {
       expect(error).toEqual(telemetry.retryError);
 
+    });
+  });
+  it('should call getSyncTelemetryStatus', () => {
+    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+    expect(service).toBeTruthy();
+    spyOn(service['publicDataService'], 'get').and.returnValue(of(telemetry.syncStatusInfo));
+
+    service.getSyncTelemetryStatus();
+    expect(service.publicDataService.get).toHaveBeenCalled();
+    service['publicDataService'].get({
+      url: service.configService.urlConFig.URLS.OFFLINE.TELEMTRY_INFO + '?syncConfig=true',
+    }).subscribe(data => {
+      expect(data).toEqual(telemetry.syncStatusInfo);
+    });
+  });
+  it('should be call updateSyncStatus', () => {
+    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+    spyOn(service['publicDataService'], 'post').and.returnValue(of(telemetry.updateSyncStatus));
+    const requestBody = {
+      'request': {
+        'enable': true
+      }
+    };
+    service.updateSyncStatus(requestBody);
+    expect(service.publicDataService.post).toHaveBeenCalled();
+    service['publicDataService'].post({
+      url: service.configService.urlConFig.URLS.OFFLINE.TELEMTRY_CONFIG,
+    }).subscribe(data => {
+      expect(data).toEqual(telemetry.updateSyncStatus);
+    });
+  });
+  it('should be call syncTelemtry and success', () => {
+    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+    spyOn(service['publicDataService'], 'post').and.returnValue(of(telemetry.syncTelemetry.success));
+    const data  = {
+      'request': {
+        'type': ['TELEMETRY']
+      }
+    };
+    service.syncTelemtry(data);
+    expect(service.publicDataService.post).toHaveBeenCalled();
+    service['publicDataService'].post({
+      url: service.configService.urlConFig.URLS.OFFLINE.TELEMTRY_CONFIG,
+    }).subscribe(response => {
+      expect(response).toEqual(telemetry.syncTelemetry.success);
+    });
+  });
+  it('should be call syncTelemtry and error', () => {
+    const service: TelemetryActionsService = TestBed.get(TelemetryActionsService);
+    spyOn(service['publicDataService'], 'post').and.returnValue(throwError(telemetry.syncTelemetry.error));
+    const data  = {
+      'request': {
+        'type': ['TELEMETRY']
+      }
+    };
+    service.syncTelemtry(data);
+    expect(service.publicDataService.post).toHaveBeenCalled();
+    service['publicDataService'].post({
+      url: service.configService.urlConFig.URLS.OFFLINE.TELEMTRY_CONFIG,
+    }).subscribe(response => {
+    }, error => {
+      expect(error).toEqual(telemetry.syncTelemetry.error);
     });
   });
 });

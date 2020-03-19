@@ -9,6 +9,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import {Observable, timer, Subscription, of} from 'rxjs';
 import * as _ from 'lodash-es';
 import {map} from 'rxjs/operators';
+import {DeviceService} from '../device/device.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,8 @@ export class DeviceRegisterService  {
   isOffline: boolean = environment.isOffline;
 
   constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
-    private configService: ConfigService, private http: HttpClient) {
+              private deviceService: DeviceService,
+              private configService: ConfigService, private http: HttpClient) {
 
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
 
@@ -63,12 +65,10 @@ export class DeviceRegisterService  {
   }
 
   fetchDeviceProfile() {
-    const httpOptions: HttpOptions = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    const options = {
+      url: this.configService.urlConFig.URLS.DEVICE.PROFILE + this.deviceId
     };
-    return this.http.get(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.PROFILE + this.deviceId, httpOptions);
+    return this.deviceService.get(options);
   }
 
   getDeviceProfile() {
@@ -104,12 +104,11 @@ export class DeviceRegisterService  {
         }
       }
     };
-    const httpOptions: HttpOptions = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    const options = {
+      url: this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId,
+      data: data
     };
-    this.http.post(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId, data, httpOptions)
+    this.deviceService.post(options)
     .subscribe(() => {
     });
   }
@@ -141,12 +140,11 @@ export class DeviceRegisterService  {
         }
       }
     };
-    const httpOptions: HttpOptions = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    const options = {
+      url: this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId,
+      data: data
     };
-    return this.http.post(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId, data, httpOptions)
+    return this.deviceService.post(options)
       .pipe(map((res) => {
         return res;
       }));

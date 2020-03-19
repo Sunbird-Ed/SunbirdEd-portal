@@ -15,7 +15,9 @@ export const actionsData = {
                 }
             },
             etmsg: {
-                deleteContentErrorMessage: 'Unable to delete content. Please try again..',
+                desktop: {
+                    deleteContentErrorMessage: 'Unable to delete content. Please try again..'
+                },
             },
             smsg: {
                 m0059: 'Content successfully copied',
@@ -114,22 +116,23 @@ export const actionsData = {
                 'downloadId': '82eba9b0-7650-4ebd-a28b-56c240056231'
             }
         },
-        error: {
+        downloadError: {
+            error: {
 
-            'id': 'api.content.download',
-            'ver': '1.0',
-            'ts': '2020-01-09T13:11:09.835Z',
-            'params': {
-                'resmsgid': '17b6ce47-a381-4d10-8dc1-54e8b07cecd7',
-                'msgid': '4b85b3c0-0a14-443f-a92b-6ddeef109f87',
-                'status': 'failed',
-                'err': 'ERR_INTERNAL_SERVER_ERROR',
-                'errmsg': 'Error while processing the request'
-            },
-            'responseCode': 'INTERNAL_SERVER_ERROR',
-            'result': {}
+                'id': 'api.content.download',
+                'ver': '1.0',
+                'ts': '2020-01-09T13:11:09.835Z',
+                'params': {
+                    'resmsgid': '17b6ce47-a381-4d10-8dc1-54e8b07cecd7',
+                    'msgid': '4b85b3c0-0a14-443f-a92b-6ddeef109f87',
+                    'status': 'failed',
+                    'err': 'ERR_INTERNAL_SERVER_ERROR',
+                    'errmsg': 'Error while processing the request'
+                },
+                'responseCode': 'INTERNAL_SERVER_ERROR',
+                'result': {}
+            }
         }
-
     },
     updateContent: {
         error: {

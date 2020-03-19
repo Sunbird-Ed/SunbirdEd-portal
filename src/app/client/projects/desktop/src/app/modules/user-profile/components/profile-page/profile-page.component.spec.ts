@@ -52,26 +52,24 @@ describe('ProfilePageComponent', () => {
     const service: OnboardingService = TestBed.get(OnboardingService);
     service.getUser().subscribe(data => {
       expect(data).toBe(user_profile_Data.locationData);
-      expect(component.userData).toHaveBeenCalledWith(user_profile_Data.locationData);
+      expect(component.userData).toEqual(user_profile_Data.locationData);
     });
   });
   it('should handle openModal method while calling LOCATION component', () => {
     spyOn(component, 'setLocationTelemetryData');
     component.selectedComponent = user_profile_Data.LOCATION;
-    expect(component.openModal).toHaveBeenCalledWith();
     component.openModal(user_profile_Data.LOCATION);
     expect(component.selectedComponent).toEqual(user_profile_Data.LOCATION);
     expect(component.selectedComponent).toBeDefined();
-    component.setLocationTelemetryData();
+    expect(component.setLocationTelemetryData).toHaveBeenCalled();
   });
   it('should handle openModal method while calling CONTENTPREFERENCE component', () => {
+    spyOn(component, 'setContentTelemetryData');
     component.selectedComponent = user_profile_Data.CONTENTPREFERENCE;
-    expect(component.openModal).toHaveBeenCalled();
     component.openModal(user_profile_Data.CONTENTPREFERENCE);
     expect(component.selectedComponent).toEqual(user_profile_Data.CONTENTPREFERENCE);
     expect(component.selectedComponent).toBeDefined();
-    spyOn(component, 'setContentTelemetryData').and.callThrough();
-    component.setContentTelemetryData();
+    expect(component.setContentTelemetryData).toHaveBeenCalled();
   });
   it('should handle success DismissEvent', () => {
     component.handleDismissEvent(user_profile_Data.SUCCESS);

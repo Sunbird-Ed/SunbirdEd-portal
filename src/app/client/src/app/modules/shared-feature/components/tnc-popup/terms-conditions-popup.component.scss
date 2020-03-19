@@ -3,18 +3,18 @@
 
 .ui.light-sea-green.button {
   background: #2ca58d;
-  color: #fff;
-  height: 38px !important;
+  color: var(--white);
+  height: calculateRem(38px) !important;
 }
 
 .ui.grey.button {
   background: #9B9B9B;
-  color: #fff;
-  height: 38px !important;
+  color: var(--white);
+  height: calculateRem(38px) !important;
 }
 
 .width-310 {
-  width: 310px !important;
+  width: calculateRem(310px) !important;
 }
 
 @include respond-below(sm) {

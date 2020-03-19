@@ -30,7 +30,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   showFilters = false;
   hashTagId: string;
   dataDrivenFilters: any = {};
-  facets: string[];
+  facets = ['board', 'medium', 'gradeLevel', 'subject', 'contentType'];
   params: any = {};
   searchKey = '';
 
@@ -92,20 +92,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       });
     this.setTelemetryData();
     this.utilService.emitHideHeaderTabsEvent(true);
-  }
-
-  public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
-    this.dataDrivenFilters = filters;
     this.fetchContentOnParamChange();
     this.setNoResultMessage();
   }
 
-  onFilterChange(event) {
-    this.showLoader = true;
-    this.dataDrivenFilters = _.cloneDeep(event.filters);
-    this.fetchContents();
-  }
 
   fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
@@ -151,13 +141,12 @@ export class SearchComponent implements OnInit, OnDestroy {
         ([onlineRes, offlineRes]: any) => {
           this.showLoader = false;
 
-
           if (this.params.dialCode) {
             const onlineOption = { params: { online: true } };
             const offlineOption = { params: { online: false } };
 
-            combineLatest(this.dialCodeService.filterDialSearchResults(onlineRes.result, onlineOption),
-              this.dialCodeService.filterDialSearchResults(offlineRes.result, offlineOption))
+            combineLatest(this.dialCodeService.filterDialSearchResults(_.get(onlineRes, 'result'), onlineOption),
+              this.dialCodeService.filterDialSearchResults(_.get(offlineRes, 'result'), offlineOption))
               .pipe(takeUntil(this.unsubscribe$))
               .subscribe(([onlineDialCodeRes, offlineDialCodeRes]) => {
 
@@ -225,7 +214,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         });
   }
 
-  constructSearchRequest() {
+  constructSearchRequest(isFacetsRequired?) {
     let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     const softConstraintData: any = {
@@ -245,10 +234,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       mode: _.get(manipulatedData, 'mode'),
       params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
       query: this.queryParams.key,
-      facets: this.facets,
     };
 
-    option.filters['contentType'] = filters.contentType || ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    option.filters['contentType'] = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
     if (manipulatedData.filters) {
       option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }
@@ -295,7 +283,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   gotoViewMore(isOnlineContents) {
     const queryParams = {
       key: this.queryParams.key,
-      apiQuery: JSON.stringify(this.constructSearchRequest())
+      apiQuery: JSON.stringify(this.constructSearchRequest(true))
     };
 
     if (isOnlineContents) {

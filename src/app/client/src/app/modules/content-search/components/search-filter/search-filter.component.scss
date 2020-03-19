@@ -1,0 +1,92 @@
+@import "variables";
+@import "mixins/mixins";
+
+.sb-header-filter-bar {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+.state-medium-container {
+  position: relative;
+  z-index: 999;
+  height: 64px;
+  &__dropdown {
+    padding: ($base-block-space * 2) 0;
+    z-index: 1;
+  }
+
+  &__separator {
+    border-left: 1px solid var(--gray-200);
+    height: ($base-block-space * 3);
+    margin: auto 0px auto 0px;
+  }
+
+  &__medium {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 64px;
+  }
+}
+
+.sb-class-bar {
+}
+
+// state dropdown css
+.ui.selection.dropdown .menu > .item {
+  font-size: 12px;
+  padding: 1em 1em !important;
+}
+
+.ui.selection.dropdown.state-medium {
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  min-width: 100px;
+  margin: 0;
+
+  .medium-selection {
+    min-width: 120px;
+  }
+
+  &:hover {
+    background: #e5edf5;
+  }
+}
+
+.ui.selection.dropdown.state-selection {
+  color: var(--primary-400);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  border: calculateRem(1px) solid var(--primary-400);
+  &.active {
+    background: #E5EDF5 !important;
+    color: var(--primary-400) !important;
+    border-color: #96c8da;
+  }
+
+  &:hover {
+    color: var(--blue) !important;
+    box-sizing: border-box;
+    border-radius: calculateRem(2px);
+    background-color: #E5EDF5;
+  }
+  
+}
+
+.ui.selection.dropdown .menu {
+  max-height: 20em;
+}
+.ui.default.dropdown:not(.button) > .text,
+.ui.dropdown:not(.button) > .default.text {
+  color: red;
+}
+
+:host ::ng-deep .dropdown:not(.button) > .default.text {
+  color: var(--primary-400) !important;
+}
+
+:host ::ng-deep .sb-slider-pills-container .sb-pills-container{
+    padding: 0.5rem 0 !important;
+}

@@ -2,7 +2,7 @@
 @import 'mixins/mixins';
 
 .batch-row {
-  max-height: 200px;
+  max-height: calculateRem(200px);
 
   .batch-name {
     color: $gray-400;

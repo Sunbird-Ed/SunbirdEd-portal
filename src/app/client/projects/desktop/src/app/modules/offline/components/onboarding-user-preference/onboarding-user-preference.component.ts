@@ -83,7 +83,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     this.classOption = [];
     this.selectedClass = '';
     this.classOption = this.onboardingService.getAssociationData(mediumData, 'gradeLevel', this.frameworkCategories);
-    this.showClass = _.isEmpty(this.selectedMedium) ? false : true;
+    this.showClass = _.isEmpty(mediumData) ? false : true;
     this.selectedMedium = mediumData;
     this.disableContinueBtn = _.isEmpty(this.selectedMedium) || _.isEmpty(this.selectedClass) ? true : false;
   }

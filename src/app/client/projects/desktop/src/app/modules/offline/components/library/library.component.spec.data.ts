@@ -25,6 +25,22 @@ export const response = {
             'channel': 100
         },
     },
+    constructSearchRequestWithOutFacets: {
+        'filters': {
+            'channel': '01285019302823526477',
+            'contentType': ['TextBook']
+        },
+        'mode': 'soft',
+        'params': {
+            'orgdetails': 'orgName,email',
+            'online': false
+        },
+        'softConstraints': {
+            'badgeAssertions': 98,
+            'board': 99,
+            'channel': 100
+        },
+    },
     constructSearchRequestWithOutFilter: {
         'filters': {
             'contentType': ['TextBook']

@@ -56,7 +56,7 @@ describe('TocPageComponent', () => {
     component.collectionData = collection;
     component.tocCardClickHandler({data: collection.children[0], rollup: {}});
     expect(component.OnPlayContent).toHaveBeenCalledWith(collection.children[0], true);
-    expect(component.logTelemetry).toHaveBeenCalledWith('content-inside-collection', {});
+    expect(component.logTelemetry).toHaveBeenCalledWith('content-inside-collection', {}, collection.children[0]);
     expect(component.isContentPresent).toBeTruthy();
   });
 
@@ -65,7 +65,7 @@ describe('TocPageComponent', () => {
     expect(component.activeMimeTypeFilter[0]).toEqual('all');
     component.selectedFilter({data: {text: 'video', value: 'video'}});
     expect(component.activeMimeTypeFilter).toEqual('video');
-    expect(component.logTelemetry).toHaveBeenCalledWith('video');
+    expect(component.logTelemetry).toHaveBeenCalledWith('filter-video');
   });
 
   it('should call navigateToContent', () => {

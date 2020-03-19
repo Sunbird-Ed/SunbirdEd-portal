@@ -3,10 +3,10 @@ export const telemetry = {
     info: {
         'id': 'api.telemetry.info',
         'ver': '1.0',
-        'ts': '2020-02-04T10:14:22.087Z',
+        'ts': '2020-03-16T11:18:52.209Z',
         'params': {
-            'resmsgid': '687fa067-8296-449d-a61b-b910def2e01f',
-            'msgid': '2a714441-e9b4-4e15-bc8e-efa993719ed2',
+            'resmsgid': '39cbc318-aa9c-4b6c-81a4-1f73132248e5',
+            'msgid': '3c630f04-d450-48b1-b5ad-023ff8401cdf',
             'status': 'successful',
             'err': null,
             'errmsg': null
@@ -14,8 +14,16 @@ export const telemetry = {
         'responseCode': 'OK',
         'result': {
             'response': {
-                'totalSize': 0,
-                'lastExportedOn': null
+                'totalSize': 10,
+                'lastExportedOn': 1584354597446,
+                'networkInfo': {
+                    'forceSyncInfo': [
+                        {
+                            'type': 'TELEMETRY',
+                            'lastSyncedOn': 1584357526576
+                        }
+                    ]
+                }
             }
         }
     },
@@ -61,12 +69,95 @@ export const telemetry = {
             emsg: {
                 desktop: {
                     telemetryExportEMsg: 'Telemetry Export Failed. Please try again later....',
-                    telemetryInfoEMsg: 'Unable to get telemetry info. Please try again later...'
+                    telemetryInfoEMsg: 'Unable to get telemetry info. Please try again later...',
+                    connectionError: 'Connect to the Internet to sync telemetry',
+                    telemetrySyncError: 'Could not sync the telemetry, try again later'
                 }
             }
         }
     },
 
-
+    getSyncStatus: {
+        enable:  {
+            'id': 'api.telemetry.config.info',
+            'ver': '1.0',
+            'ts': '2020-03-13T05:06:36.931Z',
+            'params': {
+                'resmsgid': '41610c13-8de9-4ca0-b212-704590abca68',
+                'msgid': 'da9d3640-1508-4039-9518-deb892e6b4ac',
+                'status': 'successful',
+                'err': null,
+                'errmsg': null
+            },
+            'responseCode': 'OK',
+            'result': {
+                'enable': true,
+                'updatedOn': 1584075434474
+            }
+        },
+        disable:  {
+            'id': 'api.telemetry.config.info',
+            'ver': '1.0',
+            'ts': '2020-03-13T05:06:36.931Z',
+            'params': {
+                'resmsgid': '41610c13-8de9-4ca0-b212-704590abca68',
+                'msgid': 'da9d3640-1508-4039-9518-deb892e6b4ac',
+                'status': 'successful',
+                'err': null,
+                'errmsg': null
+            },
+            'responseCode': 'OK',
+            'result': {
+                'enable': false,
+                'updatedOn': 1584075434474
+            }
+        }
+    },
+    updateSyncStatus : {
+        'id': 'api.telemetry.set.config',
+        'ver': '1.0',
+        'ts': '2020-03-13T06:17:16.499Z',
+        'params': {
+            'resmsgid': 'd82f5333-f508-44f8-b40c-2fb54292b873',
+            'msgid': '6c5dd5a2-67fd-4995-95da-8fa1a87fcc38',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'message': 'Successfully updated'
+        }
+    },
+    telemetrySync: {
+        success: {
+            'id': 'api.desktop.sync',
+            'ver': '1.0',
+            'ts': '2020-03-15T17:32:46.663Z',
+            'params': {
+                'resmsgid': '647f6a26-4a20-401c-a41c-386c35406090',
+                'msgid': '0fdd9983-a7fb-4797-8c84-768dd7468e04',
+                'status': 'successful',
+                'err': null,
+                'errmsg': null
+            },
+            'responseCode': 'OK',
+            'result': {}
+        },
+        error: {
+            'id': 'api.desktop.sync',
+            'ver': '1.0',
+            'ts': '2020-03-15T17:14:10.860Z',
+            'params': {
+                'resmsgid': 'd4bbd3a4-929a-46c7-a898-2b536a0d639f',
+                'msgid': 'f86b2585-e518-49e2-9a64-873e8dcce745',
+                'status': 'failed',
+                'err': 'Forbidden',
+                'errmsg': 'No credentials found for given iss '
+            },
+            'responseCode': 'INTERNAL_SERVER_ERROR',
+            'result': {}
+        }
+    }
 };
 
