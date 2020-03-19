@@ -4,30 +4,30 @@
 /* min-height: 300px;
  */
 .custom-image img {
-  border: 1px dotted;
-  padding: 7px;
-  margin: 6px;
+  border: calculateRem(1px) dotted;
+  padding: calculateRem(7px);
+  margin: calculateRem(6px);
   cursor: pointer;
 }
 
 .resource-image {
-  height: 180px !important;
+  height: calculateRem(180px) !important;
 }
 
 .asset_container {
   overflow-y: auto;
   overflow-x: hidden;
-  min-height: 300px !important;
-  max-height: 300px !important;
-  padding: 5px;
+  min-height: calculateRem(300px) !important;
+  max-height: calculateRem(300px) !important;
+  padding: calculateRem(5px);
 }
 
 .insert-image-btn {
   position: absolute;
   z-index: 1;
-  left: 363px;
+  left: calculateRem(363px);
   background-color: transparent;
-  padding: 13px !important;
+  padding: calculateRem(13px) !important;
 }
 
 .insert-image-btn>.icon {
@@ -43,15 +43,15 @@
 .mcq-grid {
   display: flex;
   flex-wrap: wrap;
-  max-width: 1440px;
+  max-width: calculateRem(1440px);
   margin: 0 auto;
   align-items: center;
 }
 
 .mcq-submit-btn {
   margin-left: auto;
-  padding-right: 16px;
-  margin-bottom: 16px;
+  padding-right: calculateRem(16px);
+  margin-bottom: calculateRem(16px);
 }
 
 .mcq-horizontal .mcq-title,
@@ -74,7 +74,7 @@
 .mcq-horizontal .mcq-options .mcq-option,
 .mcq-vertical .mcq-options .mcq-option,
 .mcq-grid .mcq-options .mcq-option {
-  margin-bottom: 16px;
+  margin-bottom: calculateRem(16px);
   height: auto;
 }
 
@@ -103,21 +103,21 @@
 }
 
 .mcq-checkbox-answer {
-  background: #f2f2f2;
-  padding: 8px;
+  background: var(--gray-0);
+  padding: calculateRem(8px);
   display: flex;
   // border: 1px solid #c4c4c4;
   // border-top: none;
   justify-content: center;
   align-items: center;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: calculateRem(4px);
+  border-bottom-right-radius: calculateRem(4px);
 }
 
 .mcq-checkbox-answer label {
   font-weight: 700;
-  padding-right: 8px;
-  font-size: 12px;
+  padding-right: calculateRem(8px);
+  font-size: calculateRem(12px);
   margin-bottom: 0px;
 }
 
@@ -133,17 +133,17 @@
 
 .delete-btn {
   background-color: transparent;
-  color: #FF6979;
+  color: var(--red-100);
 }
 
 .delete-btn:hover {
   background-color: #e0e1e2;
-  color: #FF6979;
+  color: var(--red-100);
 }
 
 // .sb-field.mcq-title,
 // .sb-mcq-options-answer {
-//   border: 1px solid #80A7CE;
+//   border: 1px solid var( --primary-200);
 //   border-radius: 4px
 // }
 
@@ -161,7 +161,7 @@
 // }
 
 .middle-section-set {
-  max-width: 854px;
+  max-width: calculateRem(854px);
   width: 100%;
   margin: 0 auto;
 
@@ -177,14 +177,14 @@
       }
 
       &__error-msg {
-        color: #FF0000;
+        color: var( --red-400);
         padding-bottom: ($base-block-space * 2);
       }
 
       &__blank-box {
-        height: 435px;
+        height: calculateRem(435px);
         width: 100%;
-        border: 1px dotted #80A7CE;
+        border: calculateRem(1px) dotted var( --primary-200);
         background: #F5F9FC;
         border-radius: ($base-block-space - 4);
       }
@@ -195,7 +195,7 @@
 
     &__content {
       height: auto;
-      // border: 1px solid #80A7CE;
+      // border: 1px solid var( --primary-200);
       background: #F5F9FC;
       border-radius: ($base-block-space -4);
       padding: 0 ($base-block-space * 3);
@@ -232,26 +232,26 @@
 
 .mcq-primary-box {
   width: 100%;
-  border: 1px solid $primary-200;
-  border-radius: 4px;
+  border: calculateRem(1px) solid $primary-200;
+  border-radius: calculateRem(4px);
 
   .box-label {
     background-color: #F3F8FF;
     color: $primary-color;
     padding: ($base-block-space) ($base-block-space*2);
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-top-left-radius: calculateRem(4px);
+    border-top-right-radius: calculateRem(4px);
 
     &.with-border {
-      border-bottom: 1px solid $primary-200;
+      border-bottom: calculateRem(1px) solid $primary-200;
     }
   }
 
   .box-body {
-    margin: 0.5px 1px;
+    margin: calculateRem(0.5px) calculateRem(1px);
 
     .mcq-checkbox-answer {
-      border-top: 1px solid #c4c4c4;
+      border-top: calculateRem(1px) solid #c4c4c4;
     }
   }
 }
@@ -261,25 +261,25 @@
   &__question,
   &__option,
   &__solution {
-    border: 1px solid #80A7CE;
-    border-radius: 4px;
+    border: calculateRem(1px) solid var(--primary-200);
+    border-radius: calculateRem(4px);
   }
 
   &__label {
     background-color: #F3F8FF;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
+    border-top-left-radius: calculateRem(4px);
+    border-top-right-radius: calculateRem(4px);
     color: var(--primary-color) !important;
   }
 
   &__solution {
     &__header {
       background-color: #F3F8FF;
-      border-radius: 4px;
+      border-radius: calculateRem(4px);
 
       label {
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: calculateRem(4px);
+        border-bottom-right-radius: calculateRem(4px);
       }
     }
 
@@ -289,8 +289,8 @@
 
 .solution-media {
   &__video {
-    width: 166px;
-    height: 96px;
+    width: calculateRem(166px);
+    height: calculateRem(96px);
 
     .overlay-image {
       width: 100%;
@@ -316,22 +316,22 @@
   }
 
   &__desc {
-    font-size: 12px;
+    font-size: calculateRem(12px);
     font-weight: bold;
-    color: #333;
-    max-width: 180px;
+    color: var(--gray-800);
+    max-width: calculateRem(180px);
   }
 }
 
 .sb-checkbox {
   label {
     font-weight: normal !important;
-    color: #666;
+    color: var(--gray-400);
   }
 
   &.selected {
     label {
-      color: #024f9d;
+      color: var( --primary-color);
     }
   }
 }
@@ -360,14 +360,14 @@
         padding: 0.25rem 0.5rem;
         position: relative;
         width: 100%;
-        min-height: 29px;
+        min-height: calculateRem(29px);
       }
     }
   }
 }
 
 .error-question-content {
-  border: 1px solid var(--red-400) !important;
+  border: calculateRem(1px) solid var(--red-400) !important;
   .sb-field {
       .ckeditor-tool__label {
           background: var(--red-0);

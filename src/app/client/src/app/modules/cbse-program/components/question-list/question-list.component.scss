@@ -1,12 +1,13 @@
 @import "variables";
 @import 'mixins/mixins';
+
 .questionTab.button {
     border-bottom: calculateRem(1px) solid #cecece;
 }
 
 .questionsMenu {
     overflow-y: auto;
-    max-height: 500px;
+    max-height: calculateRem(500px);
 }
 
 .emptyList {
@@ -14,7 +15,7 @@
 }
 
 i.icon.trash {
-    color: #FF6979;
+    color: var(--red-100);
 }
 
 .question-list {
@@ -31,7 +32,7 @@ i.icon.trash {
         &.active {
             label {
                 font-weight: 700;
-                color: #024f9d;
+                color: var(--primary-color);
             }
         }
     }
@@ -45,7 +46,7 @@ i.icon.trash {
     height: calculateRem(98px);
     background: rgba(41, 114, 164, 0.05);
     &__title {
-        max-width: 680px;
+        max-width: calculateRem(680px);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -78,7 +79,7 @@ i.icon.trash {
 
 .sb-field-group.textbook-edit {
     width: 100%;
-    max-width: 756px;
+    max-width: calculateRem(756px);
     textarea {
         height: calculateRem(56px);
         resize: none;
@@ -110,11 +111,11 @@ i.icon.trash {
 
 .sb-btn-radius{
     border-radius:2rem;
-    box-shadow: 0 4px 4px 0 #C8D6EA;
+    box-shadow: 0 calculateRem(4px) calculateRem(4px) 0 #C8D6EA;
 }
 
 .ckeditor-tool{
     &__answer{
-      border-bottom: 0.5px solid #e2e3e5;
+      border-bottom: calculateRem(0.5px) solid #e2e3e5;
  }
 }

@@ -1,5 +1,6 @@
 @import "variables";
 @import 'mixins/mixins';
+
 .btn-group {
     text-align: right;
   }
@@ -14,13 +15,13 @@
 }
 .btn-group button.active {
     background: #024a93;
-    color: #ffffff;
+    color: var(--white);
 }
 .question-status a {
     text-decoration: underline;
 }
 .question-header .message {
-    font-size: 11px;
+    font-size: calculateRem(11px);
 }
 .review-modal-list {
     .list {
