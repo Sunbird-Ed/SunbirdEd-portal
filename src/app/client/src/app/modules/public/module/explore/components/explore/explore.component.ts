@@ -139,7 +139,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.apiContentList.length) {
           return; // no page section
         }
-        this.pageSections = this.apiContentList.slice(0, 3);
+        this.pageSections = this.apiContentList.slice(0, 4);
       }, err => {
         this.showLoader = false;
         this.apiContentList = [];
