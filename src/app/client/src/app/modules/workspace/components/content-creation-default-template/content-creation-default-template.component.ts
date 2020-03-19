@@ -222,15 +222,16 @@ export class DefaultTemplateComponent implements OnInit {
         }
         dependedValues = _.map(associations, i => _.pick(i, ['name', 'category']));
         if (dependedValues.length) {
-          groupdFields = _.groupBy(dependedValues, 'category');
+          groupdFields = _.chain(dependedValues)
+          .groupBy('category')
+          .map((name, category) => ({ name, category }))
+          .value();
           this.updateDropDownList(id, dependedValues);
         }
-        if (groupdFields) {
-          for (const key in groupdFields) {
-            if (groupdFields.hasOwnProperty(key)) {
-              this.updateDropDownList(key, groupdFields[key]);
-            }
-          }
+        if (groupdFields.length) {
+          _.forEach(groupdFields, (value, key) => {
+            this.updateDropDownList(value.category, _.map(value.name, i => _.pick(i, 'name')));
+          });
         } else {
           this.updateDropDownList(id, []);
         }
