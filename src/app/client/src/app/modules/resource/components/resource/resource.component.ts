@@ -17,7 +17,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public showLoader = true;
   public noResultMessage;
   public channelId: string;
-  public custodianOrg = false;
+  public custodianOrg = true;
   public apiContentList: Array<any> = [];
   private unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
@@ -84,7 +84,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     let filters = this.selectedFilters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
-    if (this.custodianOrg) {
+    if (!this.custodianOrg) {
       filters['channel'] = this.channelId;
     }
     const option = {
