@@ -8,7 +8,6 @@ const telemetryHelper = require('./telemetryHelper.js')
 const userHelper = require('./userHelper.js')
 let memoryStore = null;
 const logger = require('sb_logger_util_v2');
-const redisUtils = require('./redisUtil');
 
 const getKeyCloakClient = (config, store) => {
   const keycloak = new Keycloak({ store: store || memoryStore }, config);
@@ -67,6 +66,7 @@ switch (memoryType) {
     memoryStore = cassandraUtils.getCassandraStoreInstance();
     break;
   case 'redis':
+    const redisUtils = require('./redisUtil');
     memoryStore = redisUtils.getRedisStoreInstance(session)
     break;
   default:

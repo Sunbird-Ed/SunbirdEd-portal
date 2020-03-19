@@ -9,6 +9,7 @@
 const redis       = require('redis');
 const logger      = require('sb_logger_util_v2');
 const envHelper   = require('./environmentVariablesHelper.js');
+if (!envHelper.PORTAL_REDIS_URL || !envHelper.PORTAL_REDIS_PORT) throw new Error('Redis Host and PORT configuration required.');
 const redisClient = redis.createClient({
   host: envHelper.PORTAL_REDIS_URL,
   port: envHelper.PORTAL_REDIS_PORT,
@@ -68,7 +69,6 @@ function valueRequired (param) {
  */
 /* istanbul ignore next */
 function getRedisStoreInstance (session = valueRequired('session')) {
-  debugger;
   const RedisStore = require('connect-redis')(session);
   return new RedisStore({ client: redisClient });
 };
