@@ -78,6 +78,9 @@ export class PageApiService {
         }
       }
     };
+    if (_.get(requestParam, 'sections')) {
+        option.data.request['sections'] = _.get(requestParam, 'sections');
+    }
     if (!environment.isOffline) {
       option.data.request.organisationId = requestParam.organisationId;
     }
@@ -99,5 +102,4 @@ export class PageApiService {
     }
   }
 }
-
 
