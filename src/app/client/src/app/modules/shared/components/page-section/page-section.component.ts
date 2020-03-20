@@ -68,7 +68,7 @@ export class PageSectionComponent implements OnInit, OnDestroy {
         pageid: this.pageid
       };
     }
-    if(this.section){
+    if (this.section) {
       this.telemetryInteractCdata = [{
         type: 'section',
         id: _.get(this.section, 'name') || ''
