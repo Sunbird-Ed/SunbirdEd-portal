@@ -87,7 +87,7 @@ module.exports = (app, keycloak) => {
   })
 
   app.all('/play/quiz/*', playContent);
-  // all route should have same route prefixed with slug for all public pages
+  // all public route should also have same route prefixed with slug
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*',  '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
