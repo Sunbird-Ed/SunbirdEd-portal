@@ -12,6 +12,7 @@ import { tNcMockResponse } from './terms-conditions-popup.component.spec.data';
 import { UserService, TenantService } from '@sunbird/core';
 import { mockUserData } from '../../../core/services/user/user.mock.spec.data';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { CoreModule } from '@sunbird/core';
 
 describe('TermsAndConditionsPopupComponent', () => {
   let component: TermsAndConditionsPopupComponent;
@@ -41,7 +42,7 @@ describe('TermsAndConditionsPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), SuiModule],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), SuiModule, CoreModule],
       declarations: [TermsAndConditionsPopupComponent],
       providers: [ConfigService, CacheService,
         BrowserCacheTtlService, DeviceDetectorService, ToasterService,

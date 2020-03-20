@@ -18,6 +18,8 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import * as mockData from './draft.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+import { CoreModule } from '@sunbird/core';
+
 const testData = mockData.mockRes;
 describe('DraftComponent', () => {
   let component: DraftComponent;
@@ -61,7 +63,7 @@ describe('DraftComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [DraftComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
