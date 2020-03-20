@@ -50,7 +50,7 @@ footerAlign() {
   const footerHeight = $('footer').outerHeight();
   const mobileHeight = $('.download-mobile-app').outerHeight();
   const bodyHeight = $('body').outerHeight();
-  const mobile = footerHeight + mobileHeight;
+
   if (window.innerWidth <= 767) {
     // (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - mobile + 'px';
     // (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - mobile + 'px';
