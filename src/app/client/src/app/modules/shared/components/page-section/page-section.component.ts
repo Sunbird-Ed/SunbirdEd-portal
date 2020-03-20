@@ -72,7 +72,7 @@ export class PageSectionComponent implements OnInit, OnDestroy {
       this.telemetryInteractCdata = [{
         type: 'section',
         id: _.get(this.section, 'name') || ''
-      }]
+      }];
     }
   }
   updateSlick() {
