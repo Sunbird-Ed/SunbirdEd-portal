@@ -66,7 +66,6 @@ export class MainHeaderComponent implements OnInit {
     'mediumBox': false,
     'largeBox': false
   };
-  slug: string;
   isOffline: boolean = environment.isOffline;
   languages: Array<any>;
   showOfflineHelpCentre = false;
@@ -161,7 +160,7 @@ export class MainHeaderComponent implements OnInit {
     } else if (this.userService.loggedIn) {
       this.router.navigate(['resources']);
     } else {
-      window.location.href = this.slug ? this.slug + '/explore'  : '/explore';
+      window.location.href = this.userService.slug ? this.userService.slug + '/explore'  : '/explore';
     }
   }
   onEnter(key) {
@@ -225,7 +224,6 @@ export class MainHeaderComponent implements OnInit {
           });
         }
       }
-      this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
       if (_.includes(urlAfterRedirects.url, '/explore-course') || _.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
       } else {

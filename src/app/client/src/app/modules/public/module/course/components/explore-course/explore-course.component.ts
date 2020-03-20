@@ -52,7 +52,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     ngOnInit() {
         combineLatest(
-            this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug),
+            this.orgDetailsService.getOrgDetails(this.userService.slug),
             this.getFrameWork()
         ).pipe(
             mergeMap((data: any) => {

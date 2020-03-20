@@ -10,7 +10,7 @@ import {
 } from '@sunbird/shared';
 import { PublicPlayerService } from '@sunbird/public';
 import { Location } from '@angular/common';
-import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, FrameworkService, UserService } from '@sunbird/core';
 import { IPagination } from '@sunbird/announcement';
 import { ContentManagerService, ConnectionService } from '../../services';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
@@ -50,6 +50,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   myDownloadsLinkInteractEdata: IInteractEventEdata;
 
   constructor(
+    public userService: UserService,
     public contentManagerService: ContentManagerService,
     public router: Router,
     public searchService: SearchService,
@@ -74,7 +75,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
     this.isBrowse = Boolean(_.includes(this.router.url, 'browse'));
     this.setTelemetryData();
     this.utilService.emitHideHeaderTabsEvent(true);
-    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
+    this.orgDetailsService.getOrgDetails(this.userService.slug)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((orgDetails: any) => {
         this.hashTagId = orgDetails.hashTagId;

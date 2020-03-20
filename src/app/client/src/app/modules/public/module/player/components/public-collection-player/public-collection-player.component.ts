@@ -339,7 +339,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
        // tslint:disable-next-line: max-line-length
        previousUrl.queryParams ? this.router.navigate([previousUrl.url], {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
       } else {
-        this.navigationHelperService.navigateToPreviousUrl('/explore');
+        this.navigationHelperService.navigateToResource('/explore');
       }
     }
   }

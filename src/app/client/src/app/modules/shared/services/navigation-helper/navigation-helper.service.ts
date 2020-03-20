@@ -76,7 +76,7 @@ export class NavigationHelperService {
   storeWorkSpaceCloseUrl() {
     this._workspaceCloseUrl = this.history[this._history.length - 1];
   }
-  public navigateToResource(defaultUrl: string = '/home') {
+  public navigateToResource(defaultUrl: string = '/explore') {
     if (this._resourceCloseUrl && this._resourceCloseUrl.url) {
       if (this._resourceCloseUrl.queryParams) {
         this.router.navigate([this._resourceCloseUrl.url], {queryParams: this._resourceCloseUrl.queryParams});
@@ -94,7 +94,7 @@ export class NavigationHelperService {
      return loadTime;
   }
 
-  public navigateToWorkSpace(defaultUrl: string = '/home') {
+  public navigateToWorkSpace(defaultUrl: string = '/resources') {
     if (this._workspaceCloseUrl && this._workspaceCloseUrl.url) {
       if (this._workspaceCloseUrl.queryParams) {
         this.router.navigate([this._workspaceCloseUrl.url], {queryParams: this._workspaceCloseUrl.queryParams});
@@ -130,7 +130,7 @@ export class NavigationHelperService {
    * returns PreviousUrl
    * 1. First fetches from _history property.
    * 2. From session if _history is not present, for reload case.
-   * 3. if both are not present then default home is returned.
+   * 3. if both are not present then default explore is returned.
    */
   public getPreviousUrl(): UrlHistory {
     const previousUrl = this.history[this._history.length - 2];
@@ -140,7 +140,7 @@ export class NavigationHelperService {
     } else if (sessionUrl) {
       return sessionUrl;
     } else {
-      return {url: '/home'};
+      return {url: '/explore'};
     }
   }
   /**
@@ -148,9 +148,9 @@ export class NavigationHelperService {
    * 1. Goes to previous url, If Url and queryParams are present either from local property or session store.
    * 2. If not, then goes to default url provided.
    */
-  public navigateToPreviousUrl(defaultUrl: string = '/home') {
+  public navigateToPreviousUrl(defaultUrl: string = '/explore') {
     const previousUrl = this.getPreviousUrl();
-    if (previousUrl.url === '/home') {
+    if (previousUrl.url === '/explore') {
       this.router.navigate([defaultUrl]);
     } else {
       if (previousUrl.queryParams) {

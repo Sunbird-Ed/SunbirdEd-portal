@@ -11,6 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { response } from './search-filter.component.spec.data';
 import { BehaviorSubject, throwError, of} from 'rxjs';
+import { CoreModule } from '@sunbird/core';
 
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
@@ -42,7 +43,8 @@ describe('SearchFilterComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [SearchFilterComponent],
-            imports: [CommonConsumptionModule, TelemetryModule.forRoot(), SuiModule, HttpClientModule, RouterModule.forRoot([])],
+            imports: [CoreModule, CommonConsumptionModule, TelemetryModule.forRoot(),
+                SuiModule, HttpClientModule, RouterModule.forRoot([])],
             providers: [
                 { provide: ActivatedRoute, useClass: FakeActivatedRoute },
                 { provide: ResourceService, useValue: resourceBundle },

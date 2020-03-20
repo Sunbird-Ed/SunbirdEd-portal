@@ -87,11 +87,11 @@ module.exports = (app, keycloak) => {
   })
 
   app.all('/play/quiz/*', playContent);
-
+  // all public route should also have same route prefixed with slug
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
-    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
+    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*',  '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
-    '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/download/*', '/certs/*', '/recover/*'], redirectTologgedInPage, indexPage(false))
+    '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*'], redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
@@ -106,6 +106,7 @@ module.exports = (app, keycloak) => {
 }
 
 function getLocals(req) {
+  const slug = req.params.slug;
   var locals = {}
   if(req.includeUserDetail){
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
@@ -142,6 +143,7 @@ function getLocals(req) {
   locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
   locals.deviceId = '';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
+  locals.slug = slug ? slug : '';
   return locals
 }
 

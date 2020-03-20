@@ -35,14 +35,14 @@
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
 		<a class="item"
-			[class.active]="router.isActive('/search/explore') || router.isActive(slug ? slug + '/explore' : '/explore')"
-			*ngIf="!router.isActive('', true)" [routerLink]="[slug ? slug + '/explore' : '/explore']"
+			[class.active]="router.isActive('/search/explore') || router.isActive('/explore')"
+			*ngIf="!router.isActive('', true)" [routerLink]="['/explore']"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata">
 			{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
 		<a class="item"
-			[class.active]="router.isActive('/search/explore-course') || router.isActive(slug ? slug + '/explore-course' : '/explore-course')"
-			*ngIf="!router.isActive('', true)" [routerLink]="[slug ? slug + '/explore-course' : '/explore-course']"
+			[class.active]="router.isActive('/search/explore-course', true) || router.isActive('/explore-course', true)"
+			*ngIf="!router.isActive('', true)" [routerLink]="['/explore-course']"
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
@@ -129,14 +129,14 @@
 				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 			</a>
 			<a class="item"
-				[class.active]="router.isActive('/search/explore') || router.isActive(slug ? slug + '/explore' : '/explore')"
-				[routerLink]="[slug ? slug + '/explore' : '/explore']" (click)="showSideBar()"
+				[class.active]="router.isActive('/search/explore') || router.isActive('explore')"				
+				[routerLink]="['/explore']" (click)="showSideBar()"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.resources}}
 			</a>
 			<a class="item"
-				[class.active]="router.isActive('/search/explore-course') || router.isActive(slug ? slug + '/explore-course' : '/explore-course')"
-				[routerLink]="[slug ? slug + '/explore-course' : '/explore-course']" (click)="showSideBar()"
+				[class.active]="router.isActive('/search/explore-course') || router.isActive('/explore-course')"
+				[routerLink]="['/explore-course']" (click)="showSideBar()"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>

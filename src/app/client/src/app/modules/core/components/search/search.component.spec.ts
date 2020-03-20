@@ -11,7 +11,8 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router, Params, UrlSegment, NavigationEnd} from '@angular/router';
 import { UserService, LearnerService, ContentService } from '@sunbird/core';
 import { mockResponse } from './search.component.spec.data';
-
+import { CoreModule } from '@sunbird/core';
+import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -34,8 +35,9 @@ describe('SearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchComponent ],
-      imports: [SharedModule.forRoot(), SuiModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
+      declarations: [ ],
+      imports: [SharedModule.forRoot(), TelemetryModule.forRoot(),
+        CoreModule, SuiModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UserService, LearnerService,
       ContentService, { provide: Router, useClass: MockRouter},
          { provide: ActivatedRoute, useValue: {queryParams: {

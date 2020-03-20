@@ -18,6 +18,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { userLocationMockData } from './user-location.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@sunbird/shared';
+import { CoreModule } from '@sunbird/core';
 
 
 describe('UserLocationComponent', () => {
@@ -28,6 +29,7 @@ describe('UserLocationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        CoreModule,
         SuiModule,
         FormsModule,
         ReactiveFormsModule,

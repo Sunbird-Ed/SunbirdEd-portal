@@ -6,6 +6,7 @@ import { recursiveTreeComponentInput } from './recursive-tree.component.spec.dat
 import { TelemetryModule, TelemetryInteractDirective } from '@sunbird/telemetry';
 import { ConfigService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CoreModule } from '@sunbird/core';
 
 import * as _ from 'lodash-es';
 
@@ -17,7 +18,7 @@ describe('RecursiveTreeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ SuiModalModule, SuiProgressModule,
+      imports: [ SuiModalModule, SuiProgressModule, CoreModule,
         SuiAccordionModule, TelemetryModule.forRoot(),
         HttpClientTestingModule],
       declarations: [ RecursiveTreeComponent ],
