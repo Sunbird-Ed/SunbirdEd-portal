@@ -81,7 +81,6 @@ describe('NavigationHelperService', () => {
           }
         };
         spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
-        spyOn(service.router, 'navigate').and.returnValue(previousUrl);
         spyOn(service.history, 'pop');
         spyOn(service.utilService, 'updateSearchKeyword');
         service.goBack();
@@ -97,7 +96,6 @@ describe('NavigationHelperService', () => {
           'url': '/view-all'
         };
         spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
-        spyOn(service.router, 'navigate').and.returnValue(previousUrl);
         service.goBack();
         expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url]);
       }));
