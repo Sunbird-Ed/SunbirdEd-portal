@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { UsageReportsComponent } from './usage-reports.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { DataChartComponent } from '../data-chart/data-chart.component';
+import { CoreModule } from '@sunbird/core';
 
 describe('UsageReportsComponent', () => {
   let component: UsageReportsComponent;
@@ -22,7 +23,7 @@ describe('UsageReportsComponent', () => {
   const routerStub = { url: '/dashBoard/organization' };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [UsageReportsComponent, DataChartComponent],
       providers: [ ToasterService, UserService, NavigationHelperService,
