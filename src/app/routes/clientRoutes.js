@@ -87,11 +87,11 @@ module.exports = (app, keycloak) => {
   })
 
   app.all('/play/quiz/*', playContent);
-
+  // all route should have same route prefixed with slug for all public pages
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
-    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
+    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*',  '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
-    '/sign-in/*', '/download/*', '/accountMerge/*', '/:slug/download/*', '/certs/*', '/recover/*'], redirectTologgedInPage, indexPage(false))
+    '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*'], redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
