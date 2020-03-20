@@ -40,7 +40,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.pageSections.push(this.apiContentList[this.pageSections.length]);
     }
   }
-  constructor(private searchService: SearchService, private toasterService: ToasterService,
+  constructor(private searchService: SearchService, private toasterService: ToasterService, public userService: UserService,
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
@@ -64,8 +64,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private getChannelId() {
-    if (this.activatedRoute.snapshot.params.slug) {
-      return this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
+    if (this.userService.slug) {
+      return this.orgDetailsService.getOrgDetails(this.userService.slug)
         .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false }))));
     } else {
       return this.orgDetailsService.getCustodianOrg()

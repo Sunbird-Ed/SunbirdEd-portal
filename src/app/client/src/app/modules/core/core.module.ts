@@ -14,6 +14,7 @@ import {
   DataDrivenFilterComponent, ErrorPageComponent, SortByComponent, FlagContentComponent,
   LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent
 } from './components';
+import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ManageModule } from '../manage/manage.module';
 import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
@@ -40,7 +41,11 @@ import { TelemetryModule } from '@sunbird/telemetry';
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
     DataDrivenFilterComponent, SortByComponent, FlagContentComponent,
     TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
-  providers: [CacheService, AuthGuard]
+  providers: [CacheService, AuthGuard, {
+    provide: APP_BASE_HREF,
+    useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),
+    deps: [PlatformLocation]
+  }]
 })
 export class CoreModule {
 }

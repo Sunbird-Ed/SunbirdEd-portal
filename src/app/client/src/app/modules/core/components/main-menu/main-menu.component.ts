@@ -1,5 +1,5 @@
 import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService, PermissionService, ProgramsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -56,8 +56,6 @@ export class MainMenuComponent implements OnInit {
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
-  exploreRoutingUrl: string;
-  showExploreHeader = false;
   helpLinkVisibility: string;
   isOffline: boolean = environment.isOffline;
   /**
@@ -65,7 +63,6 @@ export class MainMenuComponent implements OnInit {
    */
 
   signInIntractEdata: IInteractEventEdata;
-  slug: string;
   showContributeTab: boolean;
   /*
   * constructor
@@ -80,16 +77,13 @@ export class MainMenuComponent implements OnInit {
     this.config = config;
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
   }
-
   ngOnInit() {
-    this.slug = this.activatedRoute.snapshot.params.slug;
     try {
       this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
     } catch (error) {
       this.helpLinkVisibility = 'false';
     }
     this.setInteractData();
-    this.getUrl();
     merge(this.programsService.allowToContribute$.pipe(
       tap((showTab: boolean) => {
         this.showContributeTab = showTab;
@@ -152,6 +146,7 @@ export class MainMenuComponent implements OnInit {
     this.signInIntractEdata = {
       id: ' signin-tab',
       type: 'click',
+      pageid: this.router.url
     };
   }
 
@@ -171,34 +166,6 @@ export class MainMenuComponent implements OnInit {
   showSideBar() {
     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
   }
-  navigateTo(url) {
-    return this.slug ? this.slug + url : url;
-  }
-  getUrl() {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
-      this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-      if (_.includes(urlAfterRedirects.url, '/explore')) {
-        this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
-      } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
-        this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore-course') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
-      } else {
-        this.showExploreHeader = false;
-      }
-      this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
-    });
-  }
 
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
@@ -210,5 +177,4 @@ export class MainMenuComponent implements OnInit {
   getFeatureId(featureId, taskId) {
     return [{ id: featureId, type: 'Feature' }, { id: taskId, type: 'Task' }];
   }
-
 }

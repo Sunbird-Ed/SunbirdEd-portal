@@ -106,6 +106,7 @@ module.exports = (app, keycloak) => {
 }
 
 function getLocals(req) {
+  const slug = req.params.slug;
   var locals = {}
   if(req.includeUserDetail){
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
@@ -142,6 +143,7 @@ function getLocals(req) {
   locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
   locals.deviceId = '';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
+  locals.slug = slug ? slug : '';
   return locals
 }
 

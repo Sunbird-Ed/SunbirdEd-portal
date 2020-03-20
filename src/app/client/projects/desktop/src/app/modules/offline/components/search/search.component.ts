@@ -9,7 +9,7 @@ import {
   ILoaderMessage, UtilService, NavigationHelperService
 } from '@sunbird/shared';
 import { Location } from '@angular/common';
-import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, FrameworkService, UserService } from '@sunbird/core';
 import { ContentManagerService, ConnectionService } from '../../services';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { DialCodeService } from '../../../../../../../../src/app/modules/dial-code-search/services/dial-code/dial-code.service';
@@ -52,6 +52,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   contentDownloadStatus = {};
   constructor(
+    public userService: UserService,
     public contentManagerService: ContentManagerService,
     public router: Router,
     public searchService: SearchService,
@@ -73,7 +74,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
+    this.orgDetailsService.getOrgDetails(this.userService.slug)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((orgDetails: any) => {
         this.hashTagId = orgDetails.hashTagId;

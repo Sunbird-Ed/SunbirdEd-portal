@@ -48,13 +48,6 @@ export class AppComponent implements OnInit, OnDestroy {
    * this variable is used to show the terms and conditions popup
    */
   public showTermsAndCondPopUp = false;
-
-  /**
-   * Used to fetch tenant details and org details for Anonymous user. Possible values
-   * 1. url slug param will be slug for Anonymous user
-   * 2. user profile rootOrg slug for logged in
-   */
-  private slug: string;
   /**
    * Used to config telemetry service and device register api. Possible values
    * 1. org hashtag for Anonymous user
@@ -138,7 +131,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
-    combineLatest(queryParams$, this.setSlug(), this.setDeviceId())
+    combineLatest(queryParams$, this.setDeviceId())
       .pipe(
         mergeMap(data => {
           this.navigationHelperService.initialize();
@@ -154,7 +147,7 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         }))
       .subscribe(data => {
-        this.tenantService.getTenantInfo(this.slug);
+        this.tenantService.getTenantInfo(this.userService.slug);
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
         this.logCdnStatus();
@@ -331,17 +324,6 @@ export class AppComponent implements OnInit, OnDestroy {
         }));
   }
   /**
-   * set slug from url only for Anonymous user.
-   */
-  private setSlug(): Observable<string> {
-    if (this.userService.loggedIn) {
-      return of(undefined);
-    } else {
-      return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
-        map(data => this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug')));
-    }
-  }
-  /**
    * set user details for loggedIn user.
    */
   private setUserDetails(): Observable<any> {
@@ -351,7 +333,6 @@ export class AppComponent implements OnInit, OnDestroy {
           return throwError(user.err);
         }
         this.userProfile = user.userProfile;
-        this.slug = _.get(this.userProfile, 'rootOrg.slug');
         this.channel = this.userService.hashTagId;
         return of(user.userProfile);
       }));
@@ -360,7 +341,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * set org Details for Anonymous user.
    */
   private setOrgDetails(): Observable<any> {
-    return this.orgDetailsService.getOrgDetails(this.slug).pipe(
+    return this.orgDetailsService.getOrgDetails(this.userService.slug).pipe(
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
