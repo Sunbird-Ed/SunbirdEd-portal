@@ -23,7 +23,7 @@
       <label>{{field.label}}</label>
       <div class="sb-field">
         <sui-select id={{field.code}} [options]="categoryList[field.code]"
-                    labelField="name" valueField="value" name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],fullFormData:formInputData})">
+                    labelField="name" valueField="value" name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})">
           <sui-select-option *ngFor="let option of categoryList[field.code]" [value]="option"></sui-select-option>
         </sui-select>
       </div>
