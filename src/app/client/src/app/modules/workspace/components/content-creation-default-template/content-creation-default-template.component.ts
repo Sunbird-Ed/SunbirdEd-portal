@@ -145,9 +145,9 @@ export class DefaultTemplateComponent implements OnInit {
     _.forEach(data, (field, index) => {
       if (field.depends) {
         _.forEach(field.depends, (depend) => {
-          _.forEach(data, (category, index) => {
+          _.forEach(data, (category, counter) => {
             if (depend === category.code) {
-              data[index].parent.push(field.code);
+              data[counter].parent.push(field.code);
             }
           });
 
@@ -190,7 +190,7 @@ export class DefaultTemplateComponent implements OnInit {
   updateForm(object) {
     if (object.field.range) {
       this.getAssociations(object.value, object.field.range, (associations) => {
-        this.getParentAssociations(object.field, associations, object.fullFormData, (commonAssociations) => {
+        this.getParentAssociations(object.field, associations, object.formData, (commonAssociations) => {
           this.applyDependencyRules(object.field, commonAssociations, true);
         });
       });
