@@ -9,11 +9,6 @@ const userHelper = require('./userHelper.js')
 let memoryStore = null;
 const logger = require('sb_logger_util_v2');
 
-if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
-  memoryStore = new session.MemoryStore()
-} else {
-  memoryStore = cassandraUtils.getCassandraStoreInstance()
-}
 const getKeyCloakClient = (config, store) => {
   const keycloak = new Keycloak({ store: store || memoryStore }, config);
   keycloak.authenticated = authenticated;
@@ -61,6 +56,24 @@ const authenticated = function (request, next) {
     }
   })
 }
+
+const memoryType = envHelper.PORTAL_SESSION_STORE_TYPE;
+switch (memoryType) {
+  case 'in-memory':
+    memoryStore = new session.MemoryStore()
+    break;
+  case 'cassandra':
+    memoryStore = cassandraUtils.getCassandraStoreInstance();
+    break;
+  case 'redis':
+    const redisUtils = require('./redisUtil');
+    memoryStore = redisUtils.getRedisStoreInstance(session)
+    break;
+  default:
+    memoryStore = cassandraUtils.getCassandraStoreInstance()
+    break;
+}
+
 module.exports = {
   getKeyCloakClient,
   memoryStore

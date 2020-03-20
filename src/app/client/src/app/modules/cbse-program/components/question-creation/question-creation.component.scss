@@ -1,8 +1,9 @@
 @import 'variables';
 @import 'mixins/mixins';
+
 .btn-group {
     text-align: right;
-    margin-bottom: 8px;
+    margin-bottom: calculateRem(8px);
 }
 
 .btn-group button:first-child {
@@ -18,34 +19,34 @@
 
 .btn-group button.active {
     background: #024a93;
-    color: #ffffff;
+    color: var(--white);
 }
 
 .custom-image img {
-    border: 1px dotted;
-    padding: 7px;
-    margin: 6px;
+    border: calculateRem(1px) dotted;
+    padding: calculateRem(7px);
+    margin: calculateRem(6px);
     cursor: pointer;
 }
 
 .resource-image {
-    height: 180px !important;
+    height: calculateRem(180px) !important;
 }
 
 .asset_container {
     overflow-y: auto;
     overflow-x: hidden;
-    min-height: 300px !important;
-    max-height: 300px !important;
+    min-height: calculateRem(300px) !important;
+    max-height: calculateRem(300px) !important;
     padding: 5px;
 }
 
 .insert-image-btn {
     position: absolute;
     z-index: 1;
-    left: 363px;
+    left: calculateRem(363px);
     background-color: transparent;
-    padding: 13px !important;
+    padding: calculateRem(13px) !important;
 }
 
 .insert-image-btn>.icon {
@@ -58,12 +59,12 @@
 
 .submit-btn {
     margin-left: auto;
-    padding-right: 16px;
-    margin-bottom: 16px;
+    padding-right: calculateRem(16px);
+    margin-bottom: calculateRem(16px);
 }
 
 .middle-section-set {
-    max-width: 854px;
+    max-width: calculateRem(854px);
     width: 100%;
     margin: 0 auto;
     .msg-box {
@@ -79,9 +80,9 @@
                 padding-bottom: ($base-block-space * 2);
             }
             &__blank-box {
-                height: 435px;
+                height: calculateRem(435px);
                 width: 100%;
-                border: 1px dotted #80A7CE;
+                border: calculateRem(1px) dotted #80A7CE;
                 background: #F5F9FC;
                 border-radius: ($base-block-space - 4);
             }
@@ -121,16 +122,16 @@
 
 .mcq-primary-box {
     width: 100%;
-    border: 1px solid $primary-200;
-    border-radius: 4px;
+    border: calculateRem(1px) solid $primary-200;
+    border-radius: calculateRem(4px);
     .box-label {
         background-color: #F3F8FF;
         color: $primary-color;
         padding: ($base-block-space) ($base-block-space*2);
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
+        border-top-left-radius: calculateRem(4px);
+        border-top-right-radius: calculateRem(4px);
         &.with-border {
-            border-bottom: 1px solid $primary-200;
+            border-bottom: calculateRem(1px) solid $primary-200;
         }
     }
     // .box-body {
@@ -145,23 +146,23 @@
     &__question,
     &__option,
     &__solution {
-        border: 1px solid #80A7CE;
-        border-radius: 4px;
+        border: calculateRem(1px) solid #80A7CE;
+        border-radius: calculateRem(4px);
     }
     &__label {
         background-color: #F3F8FF;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
+        border-top-left-radius: calculateRem(4px);
+        border-top-right-radius: calculateRem(4px);
         color: var(--primary-color) !important;
-        font-size: 14px;
+        font-size: calculateRem(14px);
     }
     &__solution {
         &__header {
             background-color: #F3F8FF;
-            border-radius: 4px;
+            border-radius: calculateRem(4px);
             label {
-                border-bottom-left-radius: 4px;
-                border-bottom-right-radius: 4px;
+                border-bottom-left-radius: calculateRem(4px);
+                border-bottom-right-radius: calculateRem(4px);
             }
         }
         &__body {}
@@ -170,8 +171,8 @@
 
 .solution-media {
     &__video {
-        width: 166px;
-        height: 96px;
+        width: calculateRem(166px);
+        height: calculateRem(96px);
         .overlay-image {
             width: 100%;
             height: 100%;
@@ -194,21 +195,21 @@
         }
     }
     &__desc {
-        font-size: 12px;
+        font-size: calculateRem(12px);
         font-weight: bold;
-        color: #333;
-        max-width: 180px;
+        color: var(--gray-800);
+        max-width: calculateRem(180px);
     }
 }
 
 .sb-checkbox {
     label {
         font-weight: normal !important;
-        color: #666;
+        color: var(--gray-400);
     }
     &.selected {
         label {
-            color: #024f9d;
+            color: var(--primary-color);
         }
     }
 }
@@ -237,7 +238,7 @@
                 padding: 0.25rem 0.5rem;
                 position: relative;
                 width: 100%;
-                min-height: 29px;
+                min-height: calculateRem(29px);
             }
             a {
                 cursor: pointer;
@@ -250,7 +251,7 @@
 }
 
 .error-question-content {
-    border: 1px solid var(--red-400) !important;
+    border: calculateRem(1px) solid var(--red-400) !important;
     .sb-field.mcq-title {
         .ckeditor-tool__label {
             background: var(--red-0);
@@ -265,7 +266,7 @@
         height: auto;
         border-radius: calculateRem(4px);
         padding: 0 0;
-        margin: 24px 0 0 0;
+        margin: calculateRem(24px) 0 0 0;
         &__fields {
             //margin: 0px 0px;
             .sb-field {
@@ -291,16 +292,16 @@
 }
 
 .mcq-checkbox-answer {
-    background: #f2f2f2;
-    padding: 8px 16px;
+    background: var(--gray-0);
+    padding: calculateRem(8px) calculateRem(16px);
     display: flex;
     // border: 1px solid #c4c4c4;
     border-top: none;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: calculateRem(4px);
+    border-bottom-right-radius: calculateRem(4px);
     label {
         font-weight: 700;
-        padding-right: 8px;
-        font-size: 14px;
+        padding-right: calculateRem(8px);
+        font-size: calculateRem(14px);
     }
 }

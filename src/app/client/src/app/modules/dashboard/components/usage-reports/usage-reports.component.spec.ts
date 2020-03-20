@@ -69,7 +69,23 @@ describe('UsageReportsComponent', () => {
     spyOn(component, 'downloadCSV').and.callThrough();
     spyOn(toasterService, 'error').and.callThrough();
     component.ngOnInit();
-    component.downloadCSV();
+    component.downloadCSV('/reports/sunbird/daily_metrics.csv');
     expect(usageService.getData).toHaveBeenCalled();
     });
+
+    it('should call renderFiles method ', () => {
+      const usageService = TestBed.get(UsageService);
+      const toasterService = TestBed.get(ToasterService);
+      component.slug = 'sunbird';
+      spyOn(document, 'getElementById').and.returnValue('sunbird');
+      spyOn(usageService, 'getData').and.returnValue(observableOf(mockChartData.configData));
+      spyOn(component, 'renderReport').and.callThrough();
+      component.ngOnInit();
+      expect(component.renderReport).toHaveBeenCalled();
+      expect(component.noResult).toBeFalsy();
+      expect(component.renderReport).toHaveBeenCalledWith(component.reportMetaData[0]);
+      expect(component.reportMetaData).toBeDefined();
+      expect(component.files.length).toBe(4);
+      expect(component.isFileDataLoaded).toBeTruthy();
+      });
 });
