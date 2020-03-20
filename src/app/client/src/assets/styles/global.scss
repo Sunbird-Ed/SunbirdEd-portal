@@ -13,7 +13,7 @@ body {
   letter-spacing: 0.2px;
   height: auto;
   color: $default-text-color;
-  padding-bottom: 336px;
+ // padding-bottom: 336px;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   &.pushable {
@@ -223,9 +223,8 @@ app-workspace {
 }
 .sb-workspace-bg{
   position: relative;
-  bottom: -35px;
+  margin-bottom: calculateRem(-48px);
   height: auto;
-  margin-top: -35px;
 }
 
 /* for sticky header desktop-app */
