@@ -93,8 +93,6 @@ export class CoursesService {
     return this.getCourseSection().pipe(map(sectionId => {
       this.sectionId = sectionId;
       return sectionId;
-    }), catchError((err) => {
-      return observableThrowError(err);
     }));
   }
   public getCourseSection() {

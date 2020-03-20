@@ -95,11 +95,11 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
           this.showLoader = true;
           this.setTelemetryData();
         }),
-        takeUntil(this.unsubscribe$),
         mergeMap(result => {
           this.queryParams = { ...result[0], ...result[1] };
           return this.buildOption();
-        }))
+        }),
+        takeUntil(this.unsubscribe$))
       .subscribe((result) => {
         this.carouselMasterData = [];
         this.pageSections = [];
