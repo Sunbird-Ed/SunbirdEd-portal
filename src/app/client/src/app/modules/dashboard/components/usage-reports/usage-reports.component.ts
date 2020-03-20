@@ -116,9 +116,9 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       fileData.downloadUrl = _.get(file, 'downloadUrl');
       this.files.push(fileData);
     });
-    if(this.files.length) {
+    if (this.files.length) {
       this.isFileDataLoaded = true;
-    } else{
+    } else {
       this.isFileDataLoaded = false;
     }
   }
