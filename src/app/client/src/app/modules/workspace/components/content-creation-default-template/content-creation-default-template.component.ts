@@ -31,9 +31,9 @@ export class DefaultTemplateComponent implements OnInit {
   /**
     * This variable hepls to show and hide page loader.
     * It is kept true by default as at first when we comes
-    * to a page the loader should be displayed before showing
-    * any data
-    */
+   * to a page the loader should be displayed before showing
+   * any data
+   */
   showLoader = true;
 
   /**
