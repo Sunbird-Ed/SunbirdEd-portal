@@ -96,6 +96,8 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
           }
           if (_.get(report, 'files')) {
             this.renderFiles(_.get(report, 'files'), data);
+          } else {
+            this.renderFiles({}, data);
           }
         } else {
           console.log(response);
@@ -114,7 +116,11 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
       fileData.downloadUrl = _.get(file, 'downloadUrl');
       this.files.push(fileData);
     });
-    this.isFileDataLoaded = true;
+    if(this.files.length) {
+      this.isFileDataLoaded = true;
+    } else{
+      this.isFileDataLoaded = false;
+    }
   }
 
   createChartData(charts, data, downloadUrl) {
