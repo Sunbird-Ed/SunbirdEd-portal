@@ -1,7 +1,9 @@
 const {expect} = require('chai');
 const jwtHelper = require('../../../../helpers/jwtHelper');
 const testData = require('../testData/jwtHelperTestData');
-
+const mock    = require('mock-require');
+const jsonwebtoken = require('../mocks/jsonwebtoken.mock')
+mock('jsonwebtoken', jsonwebtoken);
 describe('JWT helper Test Cases', function () {
 
   it('should extract userid from token as token valid', function (done) {

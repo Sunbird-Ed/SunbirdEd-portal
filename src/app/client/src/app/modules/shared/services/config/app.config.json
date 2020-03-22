@@ -2,6 +2,18 @@
   "UrlLinks": {
     "downloadDikshaApp": "https://play.google.com/store/apps/details?id=in.gov.diksha.app"
   },
+  "CommonSearch": {
+    "contentType": [
+      "Collection",
+      "TextBook",
+      "LessonPlan",
+      "Resource",
+      "SelfAssess",
+      "PracticeResource",
+      "LearningOutcomeDefinition",
+      "ExplanationResource"
+    ]
+  },
   "Home": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
@@ -26,7 +38,10 @@
         },
         "telemetryObjectType": "home"
       },
-      "metaData": ["batchId", "courseId"],
+      "metaData": [
+        "batchId",
+        "courseId"
+      ],
       "maxCount": "leafNodesCount",
       "progress": "progress"
     }
@@ -66,10 +81,18 @@
           }
         }
       },
-      "metaData": ["batchId", "courseId"]
+      "metaData": [
+        "batchId",
+        "courseId"
+      ]
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "resourceType",
@@ -102,7 +125,12 @@
         }
       },
       "metaData": {
-        "metaData": ["identifier", "mimeType", "framework", "contentType"]
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType"
+        ]
       },
       "dynamicFields": {
         "ribbon.right.name": "contentType"
@@ -122,7 +150,10 @@
           }
         }
       },
-      "metaData": ["batchId", "courseId"],
+      "metaData": [
+        "batchId",
+        "courseId"
+      ],
       "maxCount": "leafNodesCount",
       "progress": "progress"
     }
@@ -131,48 +162,48 @@
     "slickSize": 10,
     "slideConfig": {
       "slidesToShow": 4,
-      "slidesToScroll": 4,
+      "slidesToScroll": 1,
       "responsive": [
         {
           "breakpoint": 2800,
           "settings": {
             "slidesToShow": 4,
-            "slidesToScroll": 4
+            "slidesToScroll": 2
           }
         },
         {
           "breakpoint": 2200,
           "settings": {
             "slidesToShow": 4,
-            "slidesToScroll": 4
+            "slidesToScroll": 2
           }
         },
         {
           "breakpoint": 2000,
           "settings": {
             "slidesToShow": 3.01,
-            "slidesToScroll": 3.01
+            "slidesToScroll": 2
           }
         },
         {
           "breakpoint": 1600,
           "settings": {
             "slidesToShow": 3,
-            "slidesToScroll": 3
+            "slidesToScroll": 2
           }
         },
         {
           "breakpoint": 1200,
           "settings": {
             "slidesToShow": 2.5,
-            "slidesToScroll": 2.5
+            "slidesToScroll": 2
           }
         },
         {
           "breakpoint": 900,
           "settings": {
             "slidesToShow": 2.5,
-            "slidesToScroll": 2
+            "slidesToScroll": 1
           }
         },
         {
@@ -310,7 +341,12 @@
         }
       },
       "metaData": {
-        "metaData": ["identifier", "mimeType", "framework", "contentType"]
+        "metaData": [
+          "identifier",
+          "mimeType",
+          "framework",
+          "contentType"
+        ]
       }
     },
     "enrolledCourses": {
@@ -329,7 +365,10 @@
         }
       },
       "metaData": {
-        "metaData": ["batchId", "courseId"]
+        "metaData": [
+          "batchId",
+          "courseId"
+        ]
       },
       "dynamicFields": {
         "maxCount": "leafNodesCount",
@@ -358,7 +397,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "resourceType",
@@ -398,7 +442,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "resourceType",
@@ -423,7 +472,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
@@ -486,7 +540,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "resourceType",
@@ -522,7 +581,12 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     }
   },
   "LibrarySearch": {
@@ -545,13 +609,18 @@
       }
     },
     "metaData": {
-      "metaData": ["identifier", "mimeType", "framework", "contentType"]
+      "metaData": [
+        "identifier",
+        "mimeType",
+        "framework",
+        "contentType"
+      ]
     },
     "dynamicFields": {
       "ribbon.right.name": "contentType",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
-  },
+  }, 
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
     "VERSION": "1.8.0",
@@ -594,7 +663,9 @@
         "endPage": [
           {
             "template": "assessment",
-            "contentType": ["SelfAssess"]
+            "contentType": [
+              "SelfAssess"
+            ]
           }
         ],
         "showStartPage": true,
@@ -609,7 +680,9 @@
           "webLink": ""
         },
         "apislug": "/action",
-        "repos": ["/sunbird-plugins/renderer"],
+        "repos": [
+          "/sunbird-plugins/renderer"
+        ],
         "plugins": [
           {
             "id": "org.sunbird.iframeEvent",
@@ -663,6 +736,8 @@
       "Course",
       "LessonPlan",
       "Resource",
+      "SelfAssess",
+      "PracticeResource",
       "LearningOutcomeDefinition",
       "ExplanationResource",
       "ExperientialResource"
@@ -958,7 +1033,11 @@
     "FILEUPLOAD": {
       "MAXFILESIZETOUPLOAD": 1024000,
       "FILEEXTENSIONTOUPLOAD": "application/pdf, application/jpg, application/png",
-      "ALLOWEDFILEEXTENSION": ["png", "pdf", "jpg"]
+      "ALLOWEDFILEEXTENSION": [
+        "png",
+        "pdf",
+        "jpg"
+      ]
     },
     "GEOCONFIG": {
       "geo": {
@@ -1022,28 +1101,32 @@
     "course": "designcourse",
     "collection": "createcollection",
     "studymaterial": "createlessontext",
-    "lessonplan": "createlessonplan"
+    "lessonplan": "createlessonplan",
+    "assessment": "createassessment"
   },
   "contentName": {
     "textbook": "Untitled Textbook",
     "course": "Untitled Course",
     "collection": "Untitled Collection",
     "studymaterial": "Untitled Resource",
-    "lessonplan": "Untitled Lessonplan"
+    "lessonplan": "Untitled Lessonplan",
+    "assessment": "Untitled Assessment"
   },
   "contentDescription": {
     "textbook": "Enter description for TextBook",
     "course": "Enter description for Course",
     "collection": "Enter description for Collection",
     "studymaterial": "Enter description for Resource",
-    "lessonplan": "Enter description for Lessonplan"
+    "lessonplan": "Enter description for Lessonplan",
+    "assessment": "Enter description for Assessment"
   },
   "contentCreateTypeForEditors": {
     "textbook": "TextBook",
     "course": "Course",
     "collection": "Collection",
     "studymaterial": "Resource",
-    "lessonplan": "LessonPlan"
+    "lessonplan": "LessonPlan",
+    "assessment": "SelfAssess"
   },
   "course": {
     "filterType": "course",
@@ -1110,7 +1193,8 @@
     "framework-code": "framework-code",
     "courses": "courses",
     "organization": "organization",
-    "externalIdVerification": "externalIdVerification"
+    "externalIdVerification": "externalIdVerification",
+    "assessment": "assessment"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

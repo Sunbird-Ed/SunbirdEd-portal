@@ -44,7 +44,7 @@ module.exports = {
       id: data.request.userId,
       userId: data.request.userId}
     // telemetryHelper.logAPICallEvent(telemetryData)
-
+    /* istanbul ignore next  */  
     request(options, function (error, response, body) {
       telemetryData.statusCode = _.get(response, 'statusCode');
       if (callback) {
@@ -84,6 +84,41 @@ module.exports = {
       } else {
         throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
       }
+    })
+  },
+  acceptTermsAndCondition: async function (data, userToken) {
+    const options = {
+      method: 'POST',
+      url: learnerURL + 'user/v1/tnc/accept',
+      headers: {
+        'x-msgid': uuidv1(),
+        'content-type': 'application/json',
+        'accept': 'application/json',
+        'Authorization': 'Bearer ' + apiAuthToken,
+        'x-authenticated-user-token': userToken
+      },
+      body: data,
+      json: true
+    };
+    logger.info({
+      msg: 'userHelper:acceptTermsAndCondition initiated',
+      body: options.body,
+      url: options.url
+    });
+    return requestPromise(options).then(data => {
+      if (data.responseCode === 'OK') {
+        logger.info({msg: 'userHelper:acceptTermsAndCondition success', data: data});
+        return _.get(data, 'result.response');
+      } else {
+        logger.info({msg: 'userHelper:acceptTermsAndCondition failed', data: data});
+        throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err' || 'FAILED'));
+      }
+    }, function (error) {
+      logger.error({
+        msg: 'userHelper:acceptTermsAndCondition errored', error: error,
+        params: _.get(error, 'error.params'), message: _.get(error, 'message')
+      });
+      throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err') || 'FAILED');
     })
   }
 };

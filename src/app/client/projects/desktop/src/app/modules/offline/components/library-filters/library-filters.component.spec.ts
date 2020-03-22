@@ -141,7 +141,6 @@ describe('LibraryFiltersComponent', () => {
         const event = { 'event': { 'isTrusted': true }, 'data': { 'text': 'Kannada', 'selected': true, 'index': 1 } };
         component.applyFilters(event, 'medium');
         expect(component.getSelectedFilters).toHaveBeenCalled();
-        expect(component.selectedClassIndex).toEqual([]);
         expect(component.selectedMediumIndex).toEqual([1]);
     });
 

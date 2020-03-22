@@ -1,7 +1,7 @@
 <div class="d-flex flex-w-wrap content-video__player__details sb-bg-color-white" #playerInfo *ngIf="contentData">
   <div class="d-flex flex-dc flex-basis-1 ml-8">
     <div class="content-video__player__title mr-auto sb__ellipsis sb__ellipsis--one">
-     {{contentData?.name}}
+      {{contentData?.name}}
     </div>
     <div class="content-video__player__title__subtitle fxsmall mt-4">
       <span class="mr-8" *ngIf="contentData?.board">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <div class="d-flex flex-w-wrap content-video__player__tools" >
+  <div class="d-flex flex-w-wrap content-video__player__tools">
     <sb-player-actions [actionButtons]="actionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
     </sb-player-actions>
   </div>
@@ -44,10 +44,10 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
 <div class="sb-modal-header">
   {{resourceService?.frmelmnts?.lbl?.delete}}
 </div>
-<div class="sb-modal-content">
-  {{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}
-</div>
-<div class="sb-modal-actions">
+  <div class="sb-modal-content">
+    {{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}
+  </div>
+  <div class="sb-modal-actions">
   <button class="sb-btn sb-btn-normal sb-btn-primary"
     (click)="deleteContent(contentData); showDeleteModal = !showDeleteModal;">
     {{resourceService?.frmelmnts?.lbl?.delete}}
@@ -63,5 +63,10 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
 <sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
   <div class="ui active centered inline loader"></div>
   <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentData?.name}}
+  </h6>
+</sui-dimmer>
+<sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}': contentData?.name}}
   </h6>
 </sui-dimmer>

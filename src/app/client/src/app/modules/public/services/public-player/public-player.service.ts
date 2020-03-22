@@ -149,18 +149,19 @@ export class PublicPlayerService {
   }
 
   public playContent(event) {
+    const metaData = event.data || event.data.metaData;
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
-      if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        if (event.data.contentType === 'Course') {
-          this.router.navigate(['learn/course', event.data.metaData.identifier]);
+      if (metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+        if (metaData.contentType === 'Course') {
+          this.router.navigate(['learn/course', metaData.identifier]);
         } else {
-          this.router.navigate(['play/collection', event.data.metaData.identifier],
-          {queryParams: {contentType: event.data.metaData.contentType}});
+          this.router.navigate(['play/collection', metaData.identifier],
+          {queryParams: {contentType: metaData.contentType}});
         }
       } else {
-        this.router.navigate(['play/content', event.data.metaData.identifier],
-        {queryParams: {contentType: event.data.metaData.contentType}});
+        this.router.navigate(['play/content', metaData.identifier],
+        {queryParams: {contentType: metaData.contentType}});
       }
     }, 0);
   }
@@ -185,8 +186,8 @@ export class PublicPlayerService {
       canceled: this.resourceService.messages.stmsg.m0143
     };
     const identifier = _.get(content, 'metaData.identifier') || _.get(content, 'identifier');
-    const downloadData = _.find(downloadListdata, { contentId: identifier});
-    content['downloadStatus'] = status[_.get(downloadData, 'status')] || this.resourceService.messages.stmsg.m0143;
+    content['downloadStatus'] = downloadListdata[identifier];
+
     return content;
   }
 

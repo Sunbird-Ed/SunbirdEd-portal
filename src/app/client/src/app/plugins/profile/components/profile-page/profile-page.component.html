@@ -157,22 +157,22 @@
     <div class="ui container">
       <div class="d-flex flex-jc-center relative">
         <div class="max-w-400 computer only">
-          <div class="mb-15 d-flex flex-jc-center">
+          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
             <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}} :</span>
             <span class="fs-1-16 font-w-bold pl-5"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
           </div>
-          <div class="mb-15 d-flex flex-jc-center">
+          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
             <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
             <span class="fs-1-16 font-w-bold pl-5"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.medium)}}</span>
           </div>
-          <div class="mb-15 d-flex flex-jc-center">
+          <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.gradeLevel)">
             <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.classes}} :</span>
             <span class="fs-1-16 font-w-bold pl-5"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.gradeLevel)}}</span>
           </div>
-          <div class="d-flex flex-jc-center">
+          <div class="d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.subject)">
             <span class="fs-1-16 white-space-nowrap">{{resourceService.frmelmnts.lbl.subjects}} :</span>
             <span class="fs-1-16 font-w-bold pl-5"
               *ngIf="userProfile.framework">{{convertToString(userProfile.framework.subject)}}</span>

@@ -41,10 +41,20 @@
               {{resourceService.frmelmnts?.lbl?.blockedUserError}}</label>
             <label *ngIf="disableSubmitBtn && userExist" class="ui basic error label" >
               {{ contactForm.type === 'phone' ? resourceService.frmelmnts?.lbl?.uniquePhone : resourceService.frmelmnts?.lbl?.uniqueEmail}}</label>
+            <br>
+            <div class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
+              <input type="checkbox" id="tncAccepted" role="checkbox"
+                     [(ngModel)]="contactForm.tncAccepted"  (change)="toggleTncCheckBox($event)" name="tncAccepted"
+                     class="mr-10 cursor-pointer" required  #tncAccepted="ngModel" >
+              <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabel}}
+                <a class="text-underline fsmall" href="javascript:void(0)" (click)="showAndHidePopup(true)">
+                  {{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': instance}}
+                </a>
+            </label>
+            </div>
             <div class="text-center">
-              <button [disabled]="disableSubmitBtn" appTelemetryInteract [telemetryInteractEdata]="submitPhoneInteractEdata" appTelemetryInteract
-              [telemetryInteractEdata]="submitPhoneInteractEdata" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
-              class="sb-btn sb-btn-normal sb-btn-secondary mt-24" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
+              <button [disabled]="disableSubmitBtn" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}"
+                      class="sb-btn sb-btn-normal sb-btn-secondary mt-24" tabindex="0" (click)="onFormUpdate()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
             </div>
           </form>
         </div>
@@ -55,9 +65,13 @@
       </div>
       <div *ngIf="showMergeConfirmation">
         <app-sso-merge-confirmation [userDetails]="userDetails" [identifierType]="contactForm.type"
-                                    [identifierValue]="contactForm.value">
+                                    [identifierValue]="contactForm.value"
+                                    [isTncAccepted]="contactForm.tncAccepted"
+                                    [tncVersionAccepted]="tncLatestVersion">
         </app-sso-merge-confirmation>
       </div>
     </div>
   </div>
+  <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp *ngIf="showTncPopup">
+  </app-tnc-popup>
 </sui-modal>

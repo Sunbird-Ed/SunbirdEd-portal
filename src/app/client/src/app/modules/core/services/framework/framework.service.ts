@@ -5,11 +5,12 @@ import {
   ConfigService, ToasterService, ResourceService, ServerResponse, Framework, FrameworkData,
   BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { skipWhile, mergeMap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { skipWhile, mergeMap, tap } from 'rxjs/operators';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
+const frameWorkPrefix = 'framework_';
 @Injectable({
   providedIn: 'root'
 })
@@ -81,11 +82,20 @@ export class FrameworkService {
     };
     return this.publicDataService.get(channelOptions);
   }
-  public getFrameworkCategories(framework: string) {
+  public getFrameworkCategories(frameworkId: string) {
     const frameworkOptions = {
-      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + framework
+      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + frameworkId
     };
-    return this.publicDataService.get(frameworkOptions);
+    const cachedFrameworkData = this.cacheService.get(frameWorkPrefix + frameworkId);
+    if (cachedFrameworkData) {
+      return of(cachedFrameworkData);
+    }
+    return this.publicDataService.get(frameworkOptions).pipe(tap((frameworkData) => {
+      if (_.get(frameworkData, 'result.framework')) {
+        this.cacheService.set(frameWorkPrefix + frameworkId, frameworkData,
+          { maxAge: this.browserCacheTtlService.browserCacheTtl });
+      }
+    }));
   }
 
   private setFrameWorkData(framework?: any) {

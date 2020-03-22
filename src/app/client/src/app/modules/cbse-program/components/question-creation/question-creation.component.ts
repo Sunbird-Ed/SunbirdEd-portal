@@ -1,16 +1,15 @@
 import {
   Component, OnInit, AfterViewInit, Output, Input, EventEmitter,
-  OnChanges, AfterViewChecked, ChangeDetectorRef, ElementRef, ViewChild
+  OnChanges, AfterViewChecked, ChangeDetectorRef, ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfigService, ResourceService, IUserData, IUserProfile, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserProfile, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { PublicDataService, UserService, ActionService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Validators, FormGroup, FormControl, NgForm, FormArray, FormBuilder } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, Observable, of, throwError } from 'rxjs';
-import { map, catchError, first } from 'rxjs/operators';
+import { forkJoin, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
 import { CbseProgramService } from '../../services';
@@ -124,6 +123,10 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
 
   ngAfterViewInit() {
     this.initializeDropdown();
+    this.generateImpressionEvent();
+  }
+
+  generateImpressionEvent() {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     const telemetryCdata = this.telemetryEventsInput.telemetryInteractCdata;
@@ -244,6 +247,13 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
         this.mediaArr.push(thumbnailMedia);
       }
       this.mediaArr.push(videoMedia);
+      if (videoMedia.thumbnail) {
+        const thumbnailMedia: any = {};
+        thumbnailMedia.src = this.videoThumbnail;
+        thumbnailMedia.type = 'image';
+        thumbnailMedia.id = `video_${event.identifier}`;
+        this.mediaArr.push(thumbnailMedia);
+      }
       this.showSolutionDropDown = false;
       this.showSolution = true;
     } else {
@@ -253,9 +263,12 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   deleteSolution() {
+    if (this.selectedSolutionType === 'video') {
+      this.mediaArr = _.filter(this.mediaArr, (item: any) => item.id !== this.editorState.solutions);
+      console.log(this.mediaArr);
+    }
     this.showSolutionDropDown = true;
     this.selectedSolutionType = '';
-    this.editorState.solutions = '';
     this.videoSolutionName = '';
     this.editorState.solutions = '';
     this.videoThumbnail = '';

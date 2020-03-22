@@ -259,10 +259,13 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       requestData.createdFor = this.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
+    if (this.contentType === 'studymaterial' && data.contentType) {
+      requestData.contentType = data.contentType;
+    }
     if (requestData.year) {
       requestData.year = requestData.year.toString();
     }
-    if (this.contentType === 'studymaterial') {
+    if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       requestData.mimeType = this.configService.appConfig.CONTENT_CONST.CREATE_LESSON;
     } else {
       requestData.mimeType = this.configService.urlConFig.URLS.CONTENT_COLLECTION;
@@ -284,7 +287,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const requestData = {
       content: this.generateData(_.pickBy(this.formData.formInputData))
     };
-    if (this.contentType === 'studymaterial') {
+    if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.editorService.create(requestData).subscribe(res => {
         this.createLockAndNavigateToEditor({identifier: res.result.content_id});
       }, err => {
@@ -302,7 +305,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   createLockAndNavigateToEditor (content) {
     const state = 'draft';
     const framework = this.framework;
-    if (this.contentType === 'studymaterial') {
+    if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
     } else {
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];

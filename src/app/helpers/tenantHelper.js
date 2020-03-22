@@ -134,6 +134,7 @@ module.exports = {
       'responseCode': 'OK',
       'result': result
     }
+    /* istanbul ignore next  */
     cacheManager.set({ key: tenantId, value: response }, (err, resp) => {
       if (err) console.log('Error while setting the tenant cache', err);
       res.send(response)

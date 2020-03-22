@@ -1,4 +1,4 @@
-.download-diksha {
+.download-mobile-app {
   border-radius: 20px 20px 0 0;
   position: absolute;
   bottom: 0px;
@@ -11,7 +11,7 @@
   margin: 0 auto;
   z-index: 9;
 
-  .diksha-logo {
+  .download-mobile-app-logo {
     background: $white;
     color: $black;
     border-radius: $base-block-space $base-block-space 0 0;
@@ -81,7 +81,7 @@
 
 *[dir="rtl"] {
 
-  // .diksha-logo {
+  // .download-mobile-app-logo {
   //   height: 148px;
   // }
 
@@ -152,17 +152,22 @@
   }
 
 }
-
+@media screen and (max-width: 900px) {
+  .footer{
+    padding: 20px 0;
+  }
+}
 @media screen and (max-width: 767px) {
 
-  .download-diksha {
-    bottom: 206px;
+  .download-mobile-app {
     margin: 0 auto;
     right: 0;
     left: 0;
     z-index: inherit;
     box-shadow: 0 -5px 20px 5px rgba(0, 0, 0, 0.2);
-
+ .app-download{
+      padding-top: 12px;
+    }
     a {
       padding-bottom: 0 !important;
     }
@@ -172,21 +177,21 @@
     }
   }
 
-    .download-diksha {
+    .download-mobile-app {
       height: auto;
 
-      .diksha-logo {
+      .download-mobile-app-logo {
         height: auto;
       }
 
     }
 
   .footer {
-    max-height: 206px;
+    max-height: 230px;
     .footerMenu {
       ul {
         margin-top: 0 !important;
-        margin-bottom: 24px !important;
+        margin-bottom: 0px !important;
       }
 
       li {

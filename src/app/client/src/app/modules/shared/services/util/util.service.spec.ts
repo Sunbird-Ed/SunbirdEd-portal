@@ -144,6 +144,22 @@ describe('UtilService', () => {
     expect(service.getPlayerDownloadStatus).toBeTruthy();
   }));
 
+  it('should call getPlayerDownloadStatus() when status is Downloading ', inject([UtilService], (service: UtilService) => {
+    spyOn(service, 'getPlayerDownloadStatus').and.callThrough();
+    service.getPlayerDownloadStatus('DOWNLOADING', servicemockRes.successResult2.result.content, 'browse');
+    expect(service.getPlayerDownloadStatus).toBeTruthy();
+  }));
+  it('should call getPlayerDownloadStatus() when status is Downloading ', inject([UtilService], (service: UtilService) => {
+    spyOn(service, 'getPlayerDownloadStatus').and.callThrough();
+    service.getPlayerDownloadStatus('DOWNLOADING', servicemockRes.successResult3.result.content, 'browse');
+    expect(service.getPlayerDownloadStatus).toBeTruthy();
+  }));
+  it('should call getPlayerDownloadStatus() when status is Downloading ', inject([UtilService], (service: UtilService) => {
+    spyOn(service, 'getPlayerDownloadStatus').and.callThrough();
+    service.getPlayerDownloadStatus('DOWNLOAD', servicemockRes.successResult4.result.content, 'browse');
+    expect(service.getPlayerDownloadStatus).toBeTruthy();
+  }));
+
   it('should call getPlayerDownloadStatus() and return false', inject([UtilService], (service: UtilService) => {
     spyOn(service, 'getPlayerDownloadStatus').and.callThrough();
     service.getPlayerDownloadStatus('DOWNLOADING', servicemockRes.successResult.result.content, 'library');
@@ -170,8 +186,9 @@ describe('UtilService', () => {
 
   it('should return given contentList with the updated hover data', inject([UtilService, ResourceService],
     (service: UtilService, resourceService: ResourceService) => {
-      const listWithHoverData = service.addHoverData(contentList, false);
-      expect(listWithHoverData).toEqual(contentListWithHoverData);
+      const listWithHoverData = service.addHoverData(contentList, true);
+      expect(listWithHoverData[0].hoverData.actions[0].type).toEqual('download');
+      expect(listWithHoverData[0].hoverData.actions[0].disabled).toEqual(true);
     }));
 
   it('should emit languageChange Event', inject([UtilService, ResourceService],
@@ -189,10 +206,54 @@ describe('UtilService', () => {
       expect(service.hideHeaderTabs.emit).toHaveBeenCalledWith(true);
     }));
 
+  it('should parse data into json', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const parsedData = service.parseJson('{"data":true}');
+      expect(parsedData).toEqual({'data': true});
+    }));
+
+  it('should not parse data and throw error', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      try {
+        service.parseJson('data');
+      } catch (e) {
+        expect(e).toEqual(new Error('ERROR_PARSING_STRING'));
+      }
+    }));
+
+  it('should not parse data and throw error as data is null', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      try {
+        service.parseJson(null);
+      } catch (e) {
+        expect(e).toEqual(new Error('ERROR_PARSING_STRING'));
+      }
+    }));
+
   it('should call emit event searchKeyword', inject([UtilService, ResourceService],
     (service: UtilService, resourceService: ResourceService) => {
       spyOn(service.searchKeyword, 'emit');
       service.updateSearchKeyword('test');
       expect(service.searchKeyword.emit).toHaveBeenCalledWith('test');
     }));
+
+  it('should return  isAvailable true ', inject([UtilService, ResourceService],
+      (service: UtilService, resourceService: ResourceService) => {
+        const data = service.isAvailable(contentListWithHoverData[0]);
+        expect(data).toBeTruthy();
+  }));
+
+  it('should return  isAvailable true ', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const data = service.isDownloaded(contentListWithHoverData[0], 'DOWNLOADED');
+      expect(data).toBeTruthy();
+  }));
+
+  it('should return  isAvailable true ', inject([UtilService, ResourceService],
+    (service: UtilService, resourceService: ResourceService) => {
+      const data = service.isDownloaded(contentListWithHoverData[0], 'DOWNLOAD');
+      expect(data).toBeFalsy();
+  }));
+
+
 });

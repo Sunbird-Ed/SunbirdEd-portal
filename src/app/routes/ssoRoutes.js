@@ -15,12 +15,14 @@ const fs = require('fs');
 const successUrl = '/sso/sign-in/success';
 const updateContactUrl = '/sign-in/sso/update/contact';
 const errorUrl = '/sso/sign-in/error';
-const logger = require('sb_logger_util_v2')
+const logger = require('sb_logger_util_v2');
 const url = require('url');
+const {acceptTncAndGenerateToken} = require('../helpers/userService');
 
 module.exports = (app) => {
 
   app.get('/v2/user/session/create', async (req, res) => { // updating api version to 2
+    logger.info({msg: '/v2/user/session/create called'});
     let jwtPayload, userDetails, redirectUrl, errType;
     try {
       errType = 'VERIFY_SIGNATURE';
@@ -39,7 +41,7 @@ module.exports = (app) => {
       errType = 'USER_FETCH_API';
       userDetails = await fetchUserWithExternalId(jwtPayload, req);
       req.session.userDetails = userDetails;
-      console.log("userDetails fetched", userDetails);
+      logger.info({msg: "userDetails fetched" + userDetails});
       if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
         redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
         logger.info({
@@ -85,17 +87,22 @@ module.exports = (app) => {
   });
 
   app.get('/v1/sso/contact/verified', async (req, res) => {
+    logger.info({msg: '/v1/sso/contact/verified called'});
     let userDetails, jwtPayload, redirectUrl, errType;
     jwtPayload = req.session.jwtPayload; // fetch from session
     userDetails = req.session.userDetails; // fetch from session
     try {
-      if (_.isEmpty(jwtPayload) && ((!['phone', 'email'].includes(req.query.type) && !req.query.value) || req.query.userId)) {
+      if (_.isEmpty(jwtPayload) && ((!['phone', 'email', 'tncVersion', 'tncAccepted'].includes(req.query.type) && !req.query.value) || req.query.userId)) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
       if (!_.isEmpty(userDetails) && !userDetails[req.query.type]) { // existing user without phone
         errType = 'UPDATE_CONTACT_DETAILS';
         await updateContact(req, userDetails).catch(handleProfileUpdateError); // api need to be verified
+        if (req.query.tncAccepted === 'true') {
+          errType = 'ACCEPT_TNC';
+          await acceptTncAndGenerateToken(req.query.value, req.query.tncVersion).catch(handleProfileUpdateError);
+        }
         logger.info({
           msg: 'sso phone updated successfully and redirected to success page',
           additionalInfo: {
@@ -103,7 +110,6 @@ module.exports = (app) => {
             phone: req.query.phone,
             jwtPayload: jwtPayload,
             userDetails: userDetails,
-            redirectUrl: redirectUrl,
             errType: errType
           }
         })
@@ -122,6 +128,11 @@ module.exports = (app) => {
           throw 'USER_DETAILS_IS_EMPTY';
         }
         req.session.userDetails = userDetails;
+        if (req.query.tncAccepted === 'true') {
+          errType = 'ACCEPT_TNC';
+          await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
+        }
+        redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
         logger.info({
           msg: 'sso user creation and role updated successfully and redirected to success page',
           additionalInfo: {
@@ -134,7 +145,6 @@ module.exports = (app) => {
           }
         })
       }
-      redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       logger.error({
@@ -143,7 +153,7 @@ module.exports = (app) => {
         additionalInfo: {
           state_Id: jwtPayload.state_id,
           errType: errType,
-          phone: req.query.phone,
+          queryParams: req.query,
           userDetails: userDetails,
           jwtPayload: jwtPayload,
           redirectUrl: redirectUrl,
@@ -161,6 +171,7 @@ module.exports = (app) => {
   });
 
   app.get('/v1/sso/success/redirect', async (req, res) => {
+    logger.info({msg: '/v1/sso/success/redirect called'});
     let userDetails, jwtPayload, redirectUrl, errType, redirectURIFromCookie;
     jwtPayload = req.session.jwtPayload;
     userDetails = req.session.userDetails;
@@ -210,6 +221,7 @@ module.exports = (app) => {
   })
 
   app.get('/v1/sso/create/session', async (req, res) => { // needs to onboard to kong
+    logger.info({msg: '/v1/sso/create/session called'});
     let userName, response, errType;
     try {
       if (!req.query.id) {
@@ -247,6 +259,7 @@ module.exports = (app) => {
   })
 
   app.get('/v1/sso/error/redirect', async (req, res) => {
+    logger.info({msg: '/v1/sso/error/redirect called'});
     const redirect_uri = encodeURIComponent(`https://${req.get('host')}/resources?auth_callback=1`);
     const redirectUrl = `/auth/realms/sunbird/protocol/openid-connect/auth?client_id=portal&redirect_uri=${redirect_uri}&scope=openid&response_type=code&version=2&error_message=` + req.query.error_message;
     res.redirect(redirectUrl); // should go to error page
@@ -254,10 +267,12 @@ module.exports = (app) => {
 
   // creates state user
   app.get('/v1/sso/create/user', async (req, res) => {
+    logger.info({msg: '/v1/sso/create/user called'});
     let response, errType, jwtPayload, redirectUrl, userDetails;
     jwtPayload = req.session.jwtPayload; // fetch from session
     try {
-      if (!req.query.userId || !req.query.identifier || !req.query.identifierValue) {
+      if (!req.query.userId || !req.query.identifier || !req.query.identifierValue
+        || !req.query.tncVersion || !req.query.tncAccepted) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
@@ -282,6 +297,10 @@ module.exports = (app) => {
         throw 'USER_DETAILS_IS_EMPTY';
       }
       req.session.userDetails = userDetails;
+      if (req.query.tncAccepted === 'true') {
+        errType = 'ACCEPT_TNC';
+        await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
+      }
       redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
       logger.info({
         msg: 'sso user creation and role updated successfully and redirected to success page',
@@ -313,9 +332,11 @@ module.exports = (app) => {
 
 
   app.get('/v1/sso/migrate/account/initiate', async (req, res) => {
+    logger.info({msg: '/v1/sso/migrate/account/initiate called'});
     let response, errType, redirectUrl, url, query;
     try {
-      if (!req.query.userId || !req.query.identifier || !req.query.identifierValue || !req.session.migrateAccountInfo) {
+      if (!req.query.userId || !req.query.identifier || !req.query.identifierValue || !req.session.migrateAccountInfo
+        || !req.query.tncVersion || !req.query.tncAccepted) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
@@ -323,16 +344,18 @@ module.exports = (app) => {
         stateToken : req.session.migrateAccountInfo.stateToken,
         userId: req.query.userId,
         identifier: req.query.identifier,
-        identifierValue: req.query.identifierValue
+        identifierValue: req.query.identifierValue,
+        tncVersion: req.query.tncVersion,
+        tncAccepted: req.query.tncAccepted
       };
       errType = 'ERROR_ENCRYPTING_DATA';
       req.session.migrateAccountInfo.encryptedData = encrypt(JSON.stringify(dataToEncrypt));
       const payload = JSON.stringify(req.session.migrateAccountInfo.encryptedData);
       url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
       query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/migrate/account/login/callback&payload=${payload}&scope=openid&response_type=code&automerge=1&version=3&goBackUrl=https://${req.get('host')}/sign-in/sso/select-org`;
-      const userInfo = `&userId=${req.query.userId}&identifierType=${req.query.identifier}&identifierValue=${req.query.identifierValue}`;
+      const userInfo = `&userId=${req.query.userId}&identifierType=${req.query.identifier}&identifierValue=${req.query.identifierValue}&tncVersion=${req.query.tncVersion}&tncAccepted=${req.query.tncAccepted}`;
       redirectUrl = url + query + userInfo;
-      console.log('url for migration', redirectUrl);
+      logger.info({msg: 'url for migration' + redirectUrl});
     } catch (error) {
       redirectUrl = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
       response = {error: getErrorMessage(error, errType)};
@@ -352,6 +375,7 @@ module.exports = (app) => {
 
 
   app.all('/migrate/account/login/callback', async (req, res) => {
+    logger.info({msg: '/migrate/account/login/callback called'});
     let nonStateUserToken;
     if (!req.session.migrateAccountInfo) {
       res.status(401).send({
@@ -360,7 +384,7 @@ module.exports = (app) => {
       return false;
     }
     if (req.session.migrateAccountInfo.client_id === 'android') {
-      console.log('mobile login success');
+      logger.info({msg: 'mobile login success'});
       const query = '?payload=' + req.session.migrateAccountInfo.encryptedData + '&code=' + req.query.code + '&automerge=1';
       res.redirect('/account/migrate/login' + query);
     } else {
@@ -371,8 +395,18 @@ module.exports = (app) => {
         await ssoValidations(req, res)
       } else {
         nonStateUserToken = await generateAuthToken(req.query.code, `https://${req.get('host')}/migrate/account/login/callback`).catch(err => {
-          console.log('error in verifyAuthToken', err);
-          console.log('error details', err.statusCode, err.message)
+          logger.error({
+            msg: 'error in verifyAuthToken',
+            error: JSON.stringify(err)
+          });
+          logger.error({
+            msg: 'error details',
+            error: JSON.stringify(result),
+            additionalInfo: {
+              statusCode: err.statusCode,
+              message: err.message
+            }
+          });
           const redirect_url = `${errorUrl}?error_message=` + getErrorMessage(error, errType);
           res.redirect(redirect_url)
         });
@@ -389,6 +423,12 @@ module.exports = (app) => {
 };
 
 const handleProfileUpdateError = (error) => {
+  logger.error({
+    msg: 'ssoRoutes: handleProfileUpdateError',
+    error: error,
+    params: _.get(error, 'error.params'),
+    message: _.get(error, 'message')
+  });
   if (_.get(error, 'error.params')) {
     throw error.error.params;
   } else if (error instanceof Error) {
@@ -497,6 +537,10 @@ const ssoValidations = async (req, res) => {
         // await updateRoles(req, req.query.userId, stateJwtPayload).catch(handleProfileUpdateError);
       }
       req.session.userDetails = userDetails;
+      if (stateUserData.tncAccepted === 'true') {
+        errType = 'ACCEPT_TNC';
+        await acceptTncAndGenerateToken(stateUserData.identifierValue, stateUserData.tncVersion).catch(handleProfileUpdateError);
+      }
       redirectUrl = '/accountMerge?status=success&merge_type=auto&redirect_uri=/resources';
       if (req.query.client_id === 'android') {
         response = {

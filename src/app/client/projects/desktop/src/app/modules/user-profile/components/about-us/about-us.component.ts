@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ResourceService, ServerResponse, ILoaderMessage, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import * as _ from 'lodash-es';
-import { AppUpdateService } from './../../../offline/services';
+import { AppUpdateService, ConnectionService } from './../../../offline/services';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 @Component({
@@ -22,13 +22,15 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   public telemetryTermsOfUseEData: IInteractEventEdata;
   showModal = false;
   showLoader = true;
+  isConnected;
   loaderMessage: ILoaderMessage = {};
   currentYear;
   @ViewChild('termsIframe') termsIframe: ElementRef;
 
   constructor(public resourceService: ResourceService, private appUpdateService: AppUpdateService,
     private router: Router, public activatedRoute: ActivatedRoute,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private connectionService: ConnectionService
     ) {}
 
   ngOnInit() {
@@ -38,7 +40,13 @@ export class AboutUsComponent implements OnInit, OnDestroy {
     };
     this.instance = _.upperCase(this.resourceService.instance);
     this.getAppInfo();
+    this.checkOnlineStatus();
+  }
 
+  checkOnlineStatus() {
+    this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
   }
 
   getAppInfo() {
@@ -58,14 +66,17 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   }
 
   toggleTocModal() {
-      this.showLoader = this.showModal = true;
+    this.showLoader = this.showModal = this.isConnected;
+    if (!this.isConnected) {
+      this.toasterService.error(this.resourceService.messages.desktop.emsg.noConnectionTerms);
+    }
   }
 
   isIFrameLoaded() {
     this.showLoader = false;
     if (this.termsIframe.nativeElement.contentWindow.document.title === 'Error') {
       this.showModal = false;
-      this.toasterService.error(this.resourceService.messages.emsg.desktop.termsOfUse);
+      this.toasterService.error(this.resourceService.messages.desktop.emsg.termsOfUse);
     }
   }
 

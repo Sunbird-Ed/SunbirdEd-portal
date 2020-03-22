@@ -142,7 +142,7 @@ const createUser = async (req, jwtPayload) => {
   }
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v2/create',
+    url: envHelper.LEARNER_URL + 'user/v3/create',
     headers: getHeaders(req),
     body: {
       params: {
@@ -172,13 +172,21 @@ const createSession = async (loginId, client_id, req, res) => {
     scope = 'offline_access';
   }
   grant = await keycloakClient.grantManager.obtainDirectly(loginId, undefined, undefined, scope);
-  keycloakClient.storeGrant(grant, req, res)
-  req.kauth.grant = grant
-  keycloakClient.authenticated(req)
-  return {
-    access_token: grant.access_token.token,
-    refresh_token: grant.refresh_token.token
-  }
+  keycloakClient.storeGrant(grant, req, res);
+  req.kauth.grant = grant;
+  return new Promise((resolve, reject) => {
+    keycloakClient.authenticated(req, function (error) {
+      if (error) {
+        logger.info({msg: 'SsoHelper:createSession error creating session', additionalInfo: error});
+        reject('ERROR_CREATING_SSO_SESSION')
+      } else {
+        resolve({
+          access_token: grant.access_token.token,
+          refresh_token: grant.refresh_token.token
+        })
+      }
+    });
+  });
 }
 const updateContact = (req, userDetails) => { // will be called from player docker to learner docker
   let requestBody = {

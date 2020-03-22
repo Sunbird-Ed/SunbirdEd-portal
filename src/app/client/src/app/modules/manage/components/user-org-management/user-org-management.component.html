@@ -23,7 +23,7 @@
             </dl>
            <div class="ml-auto" *ngIf="geoSummary && geoSummary.length">
               <button class="sb-btn sb-btn-normal" [ngClass]="(geoButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" (click)="geoTableView()" appTelemetryInteract [telemetryInteractEdata]="geoViewInteractEdata">{{geoButtonText}}</button>
-              <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadCSVFile(geoCSV)" appTelemetryInteract [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
+              <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadCSVFile(geoCSV, slug + '.csv')" appTelemetryInteract [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
            </div>
           </div>
         </div>
@@ -65,12 +65,16 @@
                 <dd>Schools</dd>
               </dl>
               <dl class="sb-meta-data">
-                  <dt>{{ validatedUser['teachers'] }}</dt>
-                  <dd>Teachers</dd>
-                </dl>
-             <div class="ml-auto" *ngIf="validatedUserSummary && validatedUserSummary.length" >
+                <dt>{{ validatedUser['subOrgRegistered'] }}</dt>
+                <dd>School teacher accounts</dd>
+              </dl>
+              <dl class="sb-meta-data">
+                <dt>{{ validatedUser['rootOrgRegistered'] }}</dt>
+                <dd>State accounts</dd>
+              </dl>
+             <div class="ml-auto" *ngIf="validatedUserSummary && validatedUserSummary.length">
                 <button class="sb-btn sb-btn-normal" [ngClass]="(teachersButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" (click)="teachersTableView()" appTelemetryInteract [telemetryInteractEdata]="userViewInteractEdata">{{teachersButtonText}}</button>
-                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadZipFile(userZip)" appTelemetryInteract [telemetryInteractEdata]="userDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
+                <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadZipFile(userZip, slug + '.zip')" appTelemetryInteract [telemetryInteractEdata]="userDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
              </div>
             </div>
           </div>
@@ -132,7 +136,7 @@
         (uploadedDetails['accounts_failed'] && uploadedDetails['accounts_failed'] != 0) ||
         (uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0) ||
         (uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0) "
-        class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(userCSV)" 
+        class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(userCSV, slug + '.csv')" 
         appTelemetryInteract [telemetryInteractEdata]="teacherDetailsInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
       </div>
   

@@ -6,8 +6,6 @@ import * as _ from 'lodash-es';
 })
 export class OfflineCardService {
 
-  constructor() { }
-
   isYoutubeContent(content) {
     let mimeTypesCountObj;
     const contentData = _.isEmpty(_.get(content, 'metaData')) ? content : content.metaData;

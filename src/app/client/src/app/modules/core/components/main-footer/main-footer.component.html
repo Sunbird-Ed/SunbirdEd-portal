@@ -1,5 +1,5 @@
-<!-- <div class="download-diksha" *ngIf="!isOffline">
-  <div class="diksha-logo p-15">
+<!-- <div class="download-mobile-app" *ngIf="!isOffline">
+  <div class="download-mobile-app-logo p-15">
     <div class="mobile-circles">
       <div class="big-box border-round border-r50"></div>
       <div class="oval-box border-round ml-20 ml-10"></div>
@@ -22,18 +22,27 @@
     <div class="ui grid stackable">
       <div class="four wide column footerMenu mr-auto">
         <ul class="p-0 m-0">
-          <!-- <li class="mb-15">
+          <!-- <li class="mb-16">
             <a href="/verticals/profile-registry/">
               {{resourceService.frmelmnts?.lnk?.footerDikshaVerticals}}
             </a>
           </li> -->
-          <li class="mb-15">
+          <li class="mb-16">
             <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
               href="/help/getting-started/explore-diksha/index.html">
               {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
             </a>
           </li>
-          <!-- <li class="mb-15">
+  <li>
+            <label class="d-block mb-0">
+              {{resourceService.frmelmnts?.lnk?.footerContact}}
+            </label>
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-0"
+            href="mailto:support@diksha-ncte.freshdesk.com">
+            support@diksha-ncte.freshdesk.com
+          </a>
+          </li>
+          <!-- <li class="mb-16">
             <a href="/partners/">
               {{resourceService.frmelmnts?.lnk?.footerPartners}}
             </a>
@@ -41,8 +50,8 @@
         </ul>
       </div>
 
-      <div class="download-diksha">
-        <div class="diksha-logo p-16">
+      <div class="download-mobile-app">
+        <div class="download-mobile-app-logo p-16">
           <div class="mobile-circles">
             <div class="big-box border-round border-r50"></div>
             <div class="oval-box border-round ml-24"></div>
@@ -61,18 +70,11 @@
         </div>
       </div>
       <div class="four wide column contantDetails">
-        <label class="d-block mb-10">
-          {{resourceService.frmelmnts?.lnk?.footerContact}}
-        </label>
-        <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-30"
-          href="mailto:support@diksha-ncte.freshdesk.com">
-          support@diksha-ncte.freshdesk.com
-        </a>
-        <label class="d-block">
+        <label class="d-block mb-16">
           <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
             {{resourceService.frmelmnts?.lnk?.footerTnC}}
           </a>
-          <span>| &copy; {{date | date:'yyyy'}}, DIKSHA</span>
+          <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
         </label>
         <label class="sb-footer-license">
           <img src="/assets/images/CCby.svg">

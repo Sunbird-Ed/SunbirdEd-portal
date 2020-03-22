@@ -1,5 +1,5 @@
 <div class="ui container mt-24" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div class="ui stackable grid">
+  <div class="ui stackable grid" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
 
     <!--Content Section-->
     <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression" id="app-player-collection-renderer" *ngIf="showPlayer && playerContent">
@@ -121,4 +121,7 @@
     <!--/Collection metadata-->
 
   </div>
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
 </div>

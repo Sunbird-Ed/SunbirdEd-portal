@@ -22,6 +22,7 @@ module.exports = function (app) {
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         try {
+          logger.info({msg: '/learner/portal/user/v1/update called'});
             const data = JSON.parse(proxyResData.toString('utf8'));
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
@@ -46,6 +47,7 @@ module.exports = function (app) {
       },
       userResDecorator: function (proxyRes, proxyResData,  req, res) {
         try {
+          logger.info({msg: '/learner/content/v1/media/upload called'});
           let data = JSON.parse(proxyResData.toString('utf8'))
           if (data.responseCode === 'OK') {
             data.success = true
@@ -75,6 +77,7 @@ module.exports = function (app) {
       },
       userResDecorator: function (proxyRes, proxyResData,  req, res) {
         try {
+          logger.info({msg: '/learner/data/v1/role/read called'});
           let data = JSON.parse(proxyResData.toString('utf8'))
           if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
@@ -112,6 +115,7 @@ module.exports = function (app) {
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         try {
+            logger.info({msg: '/learner/* called'});
             const data = JSON.parse(proxyResData.toString('utf8'));
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
@@ -138,6 +142,7 @@ function proxyObj (){
     },
     userResDecorator: function (proxyRes, proxyResData,  req, res) {
       try {
+        logger.info({msg: 'proxyObj'});
         let data = JSON.parse(proxyResData.toString('utf8'));
         let response = data.result.response;
         data.result.response = {id: '', rootOrgId: '',isUserExists:''};
