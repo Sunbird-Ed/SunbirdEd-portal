@@ -5,7 +5,7 @@ import { ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { ContentRatingComponent } from './content-rating.component';
-import { FormService } from '@sunbird/core';
+import { FormService, CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
@@ -36,7 +36,7 @@ describe('ContentRatingComponent', () => {
       imports: [HttpClientTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ContentRatingComponent],
-      providers: [TelemetryService, ToasterService, ConfigService, FormService, CacheService,
+      providers: [TelemetryService, ToasterService, ConfigService, FormService, CacheService, CoreModule,
         BrowserCacheTtlService,
         { provide: ResourceService, useValue: resourceServiceStub },
         { provide: ActivatedRoute, useValue: activatedRouteStub }
