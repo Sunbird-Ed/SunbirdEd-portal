@@ -2,11 +2,14 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
-import { Observable, throwError, of, empty } from 'rxjs';
-import { mergeMap, tap, switchMap, map, retry, catchError } from 'rxjs/operators';
+import { Observable, throwError, of, forkJoin } from 'rxjs';
+import { mergeMap, switchMap, map, retry, catchError } from 'rxjs/operators';
+import { DataChartComponent } from '../data-chart/data-chart.component';
+import html2canvas from 'html2canvas';
+import * as jspdf from 'jspdf';
 
 @Component({
   selector: 'app-report',
@@ -21,6 +24,10 @@ export class ReportComponent implements OnInit {
   public noResult: boolean;
   private downloadUrl: string;
   telemetryImpression: IImpressionEventInput;
+  @ViewChildren(DataChartComponent) chartsComponentList: QueryList<DataChartComponent>;
+  @ViewChild('reportElement') reportElement;
+  public hideElements: boolean;
+  public reportExportInProgress: boolean = false;
 
   constructor(private reportService: ReportService, private userService: UserService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService, private navigationhelperService: NavigationHelperService,
@@ -30,8 +37,10 @@ export class ReportComponent implements OnInit {
     this.report$ = this.activatedRoute.params.pipe(
       switchMap(params => {
         this.noResult = false;
+        this.hideElements = false;
         return this.renderReport(_.get(params, 'reportId')).pipe(
           catchError(err => {
+            console.error('Error while rendering report', err);
             this.noResultMessage = {
               'messageText': 'messages.stmsg.m0131'
             };
@@ -43,6 +52,10 @@ export class ReportComponent implements OnInit {
     )
   }
 
+  /**
+   * @description fetches config file . If no file is found throws an error
+   * @param reportId 
+   */
   private fetchConfig(reportId): Observable<any> {
     const reportsLocationHtmlElement = (<HTMLInputElement>document.getElementById('reportsLocation'));
     const reportsLocation = reportsLocationHtmlElement ? _.get(reportsLocationHtmlElement, 'value') : 'reports';
@@ -55,6 +68,10 @@ export class ReportComponent implements OnInit {
     )
   }
 
+  /**
+   * @description This function fetches config file, datasource and prepares chart and tables data from it.
+   * @param reportId 
+   */
   private renderReport(reportId) {
     return this.fetchConfig(reportId).pipe(
       switchMap(report => {
@@ -75,6 +92,10 @@ export class ReportComponent implements OnInit {
     )
   }
 
+  /**
+   * @description Downloads csv file from azure blob storage
+   * @param downloadUrl 
+   */
   public downloadCSV(downloadUrl?: string) {
     this.reportService.downloadReport(this.downloadUrl).subscribe(
       result => {
@@ -84,7 +105,10 @@ export class ReportComponent implements OnInit {
       }
     )
   }
-
+  /**
+   * @description sets downloadUrl for active tab
+   * @param url 
+   */
   public setDownloadUrl(url) {
     this.downloadUrl = url;
   }
@@ -125,4 +149,104 @@ export class ReportComponent implements OnInit {
       };
     });
   }
+
+  downloadReport(reportType) {
+    this.reportExportInProgress = true;
+    this.toggleHtmlVisibilty(true);
+    setTimeout(() => {
+      switch (_.toLower(reportType)) {
+        case 'img': {
+          this.downloadReportAsImage();
+          break;
+        }
+        case 'pdf': {
+          this.downloadReportAsPdf();
+          break;
+        }
+      }
+    }, 1500);
+  }
+
+  private downloadReportAsImage() {
+    html2canvas(this.reportElement.nativeElement, {
+      scrollX: 0,
+      scrollY: -window.scrollY
+    }).then(canvas => {
+      const imageURL = canvas.toDataURL('image/jpeg');
+      var anchorElement = document.createElement('a');
+      anchorElement.href = imageURL.replace("image/jpeg", "image/octet-stream");
+      anchorElement.download = 'reportImg.jpg';
+      anchorElement.click();
+      this.toggleHtmlVisibilty(false);
+      this.reportExportInProgress = false;
+    }).catch(err => {
+      this.toggleHtmlVisibilty(false);
+      this.reportExportInProgress = false;
+    })
+  }
+
+  private getCanvasElement(element, index): Promise<any> {
+    return html2canvas(this.reportElement.nativeElement, {
+      scrollX: 0,
+      scrollY: -window.scrollY,
+      onclone: documentObject => {
+        if (index === 0) {
+          documentObject.querySelector('#report-body').innerHTML = '';
+          documentObject.querySelector('#report-body').appendChild(element);
+        } else {
+          documentObject.querySelector('#report-header').innerHTML = '';
+          documentObject.querySelector('#report-body').innerHTML = '';
+          documentObject.querySelector('#report-body').appendChild(element);
+        }
+      }
+    }).then(canvas => {
+      const imgWidth = 208;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const contentDataURL = canvas.toDataURL('image/jpeg');
+      const position = 8;
+      return { contentDataURL, position, imgWidth, imgHeight }
+    });
+  }
+
+  private downloadReportAsPdf() {
+    const pdf = new jspdf('p', 'mm', 'a4');
+    const addpage = (imageUrl, imageType, position, width, height, index) => {
+      if (index !== 0) {
+        pdf.addPage();
+      }
+      pdf.addImage(imageUrl, imageType, 8, position, width, height);
+      return pdf;
+    }
+    const chartElements = this.getChartComponents();
+    of([...chartElements]).pipe(
+      switchMap(elements => forkJoin(_.map(elements, (element, index) => {
+        return this.getCanvasElement(element, index).then((canvasDetails: any) => {
+          addpage(canvasDetails.contentDataURL, 'JPEG', canvasDetails.position, canvasDetails.imgWidth - 24, canvasDetails.imgHeight - 24, index);
+        });
+      })))
+    ).subscribe(res => {
+      this.toggleHtmlVisibilty(false);
+      this.reportExportInProgress = false;
+      pdf.save('report.pdf');
+    }, err => {
+      this.toggleHtmlVisibilty(false);
+      this.reportExportInProgress = false;
+      console.log('Errror', err);
+    })
+  }
+
+  // hides elements which are not required for printing reports to pdf or image.
+  private toggleHtmlVisibilty(flag: boolean) {
+    this.hideElements = flag;
+  }
+
+  // gets the list of the all chart elements inside reports
+  private getChartComponents(): Array<HTMLElement> {
+    const chartComponentArray = this.chartsComponentList.length && this.chartsComponentList.toArray();
+    const chartElements = _.map(_.compact(_.map(chartComponentArray, 'chartRootElement')), 'nativeElement');
+    return chartElements;
+  }
+
 }
+
+
