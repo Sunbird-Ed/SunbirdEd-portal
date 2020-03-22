@@ -18,6 +18,7 @@ import { UserService, SearchService, ContentService, LearnerService } from '@sun
 // Test data
 import * as mockData from './organization.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CoreModule } from '@sunbird/core';
 
 const testData = mockData.mockRes;
 describe('OrganisationComponent', () => {
@@ -47,7 +48,7 @@ describe('OrganisationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganisationComponent],
-      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [LearnerService,
         LineChartService,
         OrganisationService,

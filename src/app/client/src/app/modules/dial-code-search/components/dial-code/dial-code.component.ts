@@ -299,8 +299,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.isRedirectToDikshaApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
-    const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-    const utm_source = slug ? `diksha-${slug}` : 'diksha';
+    const utm_source = this.userService.slug ? `diksha-${this.userService.slug}` : 'diksha';
     applink = `${applink}&utm_source=${utm_source}&utm_medium=${this.dialSearchSource}&utm_campaign=dial&utm_term=${this.dialCode}`;
     window.location.href = applink.replace(/\s+/g, '');
   }

@@ -10,6 +10,7 @@ import {
     UtilService, BrowserCacheTtlService, NavigationHelperService
   } from '@sunbird/shared';
   import { Router, ActivatedRoute } from '@angular/router';
+  import { CoreModule } from '@sunbird/core';
 
   const routerStub = {
     navigate: jasmine.createSpy('navigate')
@@ -31,7 +32,7 @@ describe('ResourceTemplateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, TelemetryModule, HttpClientTestingModule],
+      imports: [SuiModule, TelemetryModule, CoreModule,  HttpClientTestingModule],
       declarations: [ ResourceTemplateComponent ],
       providers: [ConfigService, TelemetryService, { provide: Router, useValue: routerStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }]

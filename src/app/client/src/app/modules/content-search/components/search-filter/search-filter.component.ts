@@ -18,7 +18,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public initialized = false;
   public refresh = true;
   private unsubscribe$ = new Subject<void>();
-
+  public emptyBoard = false;
   private filters;
   private queryFilters: any = {};
   public selectedBoard: any = {};
@@ -89,6 +89,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     });
   }
   private updateBoardList() {
+    if (this.filters.board || !this.filters.board.length) {
+      this.emptyBoard = true;
+    }
     this.boards = this.filters.board || [];
     if (this.boards.length) {
       this.selectedBoard = _.find(this.boards, {name: _.get(this.queryFilters, 'board[0]')}) ||

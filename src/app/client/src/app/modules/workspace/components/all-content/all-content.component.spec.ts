@@ -12,6 +12,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './all-content.component.spec.data';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { CoreModule } from '@sunbird/core';
+
 describe('AllContentComponent', () => {
   let component: AllContentComponent;
   let fixture: ComponentFixture<AllContentComponent>;
@@ -56,7 +58,7 @@ describe('AllContentComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AllContentComponent],
-      imports: [HttpClientTestingModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

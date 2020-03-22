@@ -13,6 +13,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentDownloadComponent } from './content-download.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { CoreModule } from '@sunbird/core';
 
 describe('ContentDownloadComponent', () => {
   let component: ContentDownloadComponent;
@@ -29,7 +30,7 @@ describe('ContentDownloadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ContentDownloadComponent ],
-      imports: [TelemetryModule, HttpClientModule, RouterTestingModule, HttpClientTestingModule],
+      imports: [TelemetryModule, CoreModule, HttpClientModule, RouterTestingModule, HttpClientTestingModule],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UtilService,
         ToasterService, NavigationHelperService,
         { provide: Router, useValue: RouterStub },

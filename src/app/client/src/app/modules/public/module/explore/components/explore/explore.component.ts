@@ -24,6 +24,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public telemetryImpression: IImpressionEventInput;
   private inViewLogs = [];
   public pageSections: Array<any> = [];
+  public channelId: string;
+  public custodianOrg = true;
   public defaultFilters = {
     board: [DEFAULT_FRAMEWORK],
     gradeLevel: ['Class 10'],
@@ -38,7 +40,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       this.pageSections.push(this.apiContentList[this.pageSections.length]);
     }
   }
-  constructor(private searchService: SearchService, private toasterService: ToasterService,
+  constructor(private searchService: SearchService, private toasterService: ToasterService, public userService: UserService,
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private publicPlayerService: PublicPlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
@@ -46,8 +48,11 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit() {
     this.getChannelId().pipe(
-      mergeMap(({ channelId, custodianOrg }) =>
-        this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0])),
+      mergeMap(({ channelId, custodianOrg }) => {
+        this.channelId = channelId;
+        this.custodianOrg = custodianOrg;
+        return  this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0]);
+      }),
       takeUntil(this.unsubscribe$))
       .subscribe(() => {
         this.setNoResultMessage();
@@ -59,8 +64,8 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private getChannelId() {
-    if (this.activatedRoute.snapshot.params.slug) {
-      return this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug)
+    if (this.userService.slug) {
+      return this.orgDetailsService.getOrgDetails(this.userService.slug)
         .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false }))));
     } else {
       return this.orgDetailsService.getCustodianOrg()
@@ -78,6 +83,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     let filters = this.selectedFilters;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     filters['contentType'] = ['TextBook']; // ['Collection', 'TextBook', 'LessonPlan', 'Resource'];
+    if (!this.custodianOrg) { // if custodianOrg should show result from all channel based on applied filter
+      filters['channel'] = this.channelId; // if not custodian org then fetch contents from same channel
+    }
     const option = {
       limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
       filters: filters,
@@ -131,7 +139,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.apiContentList.length) {
           return; // no page section
         }
-        this.pageSections = this.apiContentList.slice(0, 3);
+        this.pageSections = this.apiContentList.slice(0, 4);
       }, err => {
         this.showLoader = false;
         this.apiContentList = [];
