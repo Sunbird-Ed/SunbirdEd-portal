@@ -33,10 +33,10 @@ describe('ContentRatingComponent', () => {
       } }, params: {'contentId': 'do_20083743'} }
     };
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, CoreModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ContentRatingComponent],
-      providers: [TelemetryService, ToasterService, ConfigService, FormService, CacheService, CoreModule,
+      providers: [TelemetryService, ToasterService, ConfigService, FormService, CacheService,
         BrowserCacheTtlService,
         { provide: ResourceService, useValue: resourceServiceStub },
         { provide: ActivatedRoute, useValue: activatedRouteStub }
