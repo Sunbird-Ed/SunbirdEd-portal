@@ -17,6 +17,8 @@ import { UserProfileComponent } from './user-profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './user-profile.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
+import { CoreModule } from '@sunbird/core';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('UserProfileComponent', () => {
     let component: UserProfileComponent;
@@ -53,7 +55,8 @@ describe('UserProfileComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, SharedModule.forRoot(), RouterTestingModule, OrderModule],
+            imports: [HttpClientTestingModule, TelemetryModule.forRoot(),
+                SharedModule.forRoot(), CoreModule, RouterTestingModule, OrderModule],
             declarations: [UserProfileComponent],
             providers: [ResourceService, SearchService, PaginationService, UserService,
                 LearnerService, ContentService, ConfigService, ToasterService, UserSearchService, RouterNavigationService,

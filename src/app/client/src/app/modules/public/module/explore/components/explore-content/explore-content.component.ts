@@ -65,7 +65,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
       }
     });
-    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
+    this.orgDetailsService.getOrgDetails(this.userService.slug).pipe(
       mergeMap((orgDetails: any) => {
         this.hashTagId = orgDetails.hashTagId;
         this.initFilters = true;

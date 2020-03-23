@@ -8,10 +8,10 @@ import { CacheService } from 'ng2-cache-service';
 import { OrgDetailsService, TenantService, ChannelService } from '@sunbird/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { response } from './search-filter.component.spec.data';
-import { of as observableOf } from 'rxjs';
-
+import { BehaviorSubject, throwError, of} from 'rxjs';
+import { CoreModule } from '@sunbird/core';
 
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
@@ -28,12 +28,25 @@ describe('SearchFilterComponent', () => {
             }
         }
     };
-
+    class FakeActivatedRoute {
+        queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+        params = of({});
+        get queryParams() { return this.queryParamsMock.asObservable(); }
+        snapshot = {
+          params: {slug: 'ap'},
+          data: {
+            telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+          }
+        };
+        public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
+      }
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [SearchFilterComponent],
-            imports: [CommonConsumptionModule, TelemetryModule.forRoot(), SuiModule, HttpClientModule, RouterModule.forRoot([])],
+            imports: [CoreModule, CommonConsumptionModule, TelemetryModule.forRoot(),
+                SuiModule, HttpClientModule, RouterModule.forRoot([])],
             providers: [
+                { provide: ActivatedRoute, useClass: FakeActivatedRoute },
                 { provide: ResourceService, useValue: resourceBundle },
                 CacheService,
                 ConfigService,

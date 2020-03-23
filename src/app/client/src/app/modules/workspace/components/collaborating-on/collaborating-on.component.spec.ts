@@ -12,6 +12,9 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './collaborating.component.spec.data';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { OrderModule } from 'ngx-order-pipe';
+import { CoreModule } from '@sunbird/core';
+import { TelemetryModule } from '@sunbird/telemetry';
+
 describe('CollaboratingOnComponent', () => {
   let component: CollaboratingOnComponent;
   let fixture: ComponentFixture<CollaboratingOnComponent>;
@@ -54,7 +57,7 @@ describe('CollaboratingOnComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollaboratingOnComponent],
-      imports: [HttpClientTestingModule, OrderModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, OrderModule, CoreModule, TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit} from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { environment } from '@sunbird/environment';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest } from 'rxjs';
 import * as _ from 'lodash-es';
-
+import {UserService} from './../../services';
 @Component({
   selector: 'app-footer',
   templateUrl: './main-footer.component.html'
 })
-export class MainFooterComponent implements OnInit {
+export class MainFooterComponent implements OnInit, AfterViewInit {
   @ViewChild('footerFix') footerFix: ElementRef;
   /**
    * reference of resourceService service.
@@ -29,7 +29,7 @@ export class MainFooterComponent implements OnInit {
   instance: string;
   bodyPaddingBottom: string;
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
-    public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef
+    public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService
     ) {
     this.resourceService = resourceService;
   }
@@ -69,8 +69,7 @@ footerAlign() {
   redirectToDikshaApp() {
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
     const sendUtmParams = _.get(this.activatedRoute, 'firstChild.firstChild.snapshot.data.sendUtmParams');
-    const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-    const utm_source = slug ? `${this.instance}-${slug}` : this.instance;
+    const utm_source = this.userService.slug ? `${this.instance}-${this.userService.slug}` : this.instance;
     if (sendUtmParams) {
       observableCombineLatest(this.activatedRoute.firstChild.firstChild.params, this.activatedRoute.queryParams,
         (params, queryParams) => {
