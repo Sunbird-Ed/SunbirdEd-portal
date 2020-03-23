@@ -16,7 +16,7 @@
             </div>
             <div id="report-body">
               <sui-tabset>
-                <div class="ui pointing secondary menu d-flex flex-ai-center">
+                <div class="ui pointing secondary menu d-flex flex-ai-center" *ngIf="!hideElements">
                   <a appTelemetryInteract
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item"

@@ -80,6 +80,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   @ViewChild('chartRootElement') chartRootElement;
+  @ViewChild('chartCanvas') chartCanvas;
   constructor(public resourceService: ResourceService, private fb: FormBuilder,
     private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
     private usageService: UsageService) {

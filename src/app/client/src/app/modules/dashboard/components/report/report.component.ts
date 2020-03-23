@@ -10,6 +10,7 @@ import { mergeMap, switchMap, map, retry, catchError } from 'rxjs/operators';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
+import { UUID } from 'angular2-uuid';
 
 @Component({
   selector: 'app-report',
@@ -190,48 +191,61 @@ export class ReportComponent implements OnInit {
       scrollX: 0,
       scrollY: -window.scrollY,
       onclone: documentObject => {
+        const reportHeader = documentObject.querySelector('#report-header');
+        const reportBody = documentObject.querySelector('#report-body');
         if (index === 0) {
-          documentObject.querySelector('#report-body').innerHTML = '';
-          documentObject.querySelector('#report-body').appendChild(element);
+          reportBody.innerHTML = '';
+          element.appendTo(reportBody);
         } else {
-          documentObject.querySelector('#report-header').innerHTML = '';
-          documentObject.querySelector('#report-body').innerHTML = '';
-          documentObject.querySelector('#report-body').appendChild(element);
+          reportHeader.innerHTML = '';
+          reportBody.innerHTML = '';
+          element.appendTo(reportBody);
         }
       }
     }).then(canvas => {
-      const imgWidth = 208;
+      const imgWidth = 209;
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       const contentDataURL = canvas.toDataURL('image/jpeg');
       const position = 8;
-      return { contentDataURL, position, imgWidth, imgHeight }
+      return { contentDataURL, position, imgWidth, imgHeight, canvas };
     });
   }
 
   private downloadReportAsPdf() {
     const pdf = new jspdf('p', 'mm', 'a4');
-    const addpage = (imageUrl, imageType, position, width, height, index) => {
+    var pageWidth = pdf.internal.pageSize.getWidth();
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    const addPage = (imageUrl, imageType, position, width, height, index) => {
       if (index !== 0) {
         pdf.addPage();
       }
-      pdf.addImage(imageUrl, imageType, 8, position, width, height);
+      pdf.addImage(imageUrl, imageType, 10, position, width - 24, height - 24);
       return pdf;
     }
     const chartElements = this.getChartComponents();
-    of([...chartElements]).pipe(
+    of(chartElements).pipe(
       switchMap(elements => forkJoin(_.map(elements, (element, index) => {
-        return this.getCanvasElement(element, index).then((canvasDetails: any) => {
-          addpage(canvasDetails.contentDataURL, 'JPEG', canvasDetails.position, canvasDetails.imgWidth - 24, canvasDetails.imgHeight - 24, index);
+        // need this code to clone because canvas element do not clone by itself
+        var clonedElement = $(element.rootElement).first().clone(true);
+        if (_.get(element, 'canvas')) {
+          var origCanvas = $(element.rootElement).first().find('canvas');
+          var clonedCanvas = clonedElement.find('canvas');
+          clonedCanvas.prop('id', UUID.UUID());
+          clonedCanvas[0].getContext('2d').drawImage(origCanvas[0], 0, 0);
+        }
+        // passing cloned div to generate pdf
+        return this.getCanvasElement(clonedElement, index).then((canvasDetails: any) => {
+          addPage(canvasDetails.contentDataURL, 'JPEG', canvasDetails.position, canvasDetails.imgWidth, canvasDetails.imgHeight, index);
         });
       })))
-    ).subscribe(res => {
+    ).subscribe(response => {
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
       pdf.save('report.pdf');
     }, err => {
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
-      console.log('Errror', err);
+      console.log('Error while generation report Pdf', err);
     })
   }
 
@@ -243,8 +257,14 @@ export class ReportComponent implements OnInit {
   // gets the list of the all chart elements inside reports
   private getChartComponents(): Array<HTMLElement> {
     const chartComponentArray = this.chartsComponentList.length && this.chartsComponentList.toArray();
-    const chartElements = _.map(_.compact(_.map(chartComponentArray, 'chartRootElement')), 'nativeElement');
-    return chartElements;
+    const result = _.map(chartComponentArray, chartComponent => {
+      if (!chartComponent) return null;
+      return {
+        rootElement: _.get(chartComponent, 'chartRootElement.nativeElement'),
+        canvas: _.get(chartComponent, 'chartCanvas.nativeElement')
+      }
+    })
+    return _.compact(result);
   }
 
 }
