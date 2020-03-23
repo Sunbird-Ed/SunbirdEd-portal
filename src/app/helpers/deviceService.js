@@ -9,6 +9,7 @@ const uuidv1 = require('uuid/v1');
 
 
 const getDeviceProfile = async (req, res) => {
+  // TODO: SB-18369 Remove console.log after testing and verifying the headers data
   console.log('X-FORWARDED-FOR headers', req.headers['X-FORWARDED-FOR']);
   console.log('request headers', req.headers);
   const options = {
