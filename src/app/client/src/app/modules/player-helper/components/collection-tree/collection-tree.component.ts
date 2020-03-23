@@ -24,7 +24,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() public nodes: ICollectionTreeNodes;
   @Input() public options: ICollectionTreeOptions;
-  @Output() public contentSelect: EventEmitter<{id: string, title: string}> = new EventEmitter();
+  @Output() public contentSelect: EventEmitter<{id: string, title: string, parentId?: string}> = new EventEmitter();
   @Input() contentStatus: any;
   private rootNode: any;
   private selectLanguage: string;
@@ -99,7 +99,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   public onItemSelect(item: any) {
     if (!item.folder) {
-      this.contentSelect.emit({ id: item.data.id, title: item.title });
+      this.contentSelect.emit({ id: item.data.id, title: item.title, parentId: _.get(item, 'data.parent.id') });
     }
   }
 
