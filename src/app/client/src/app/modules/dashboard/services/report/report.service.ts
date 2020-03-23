@@ -16,7 +16,7 @@ export class ReportService {
       map(configData => {
         return _.get(configData, 'result');
       })
-    )
+    );
   }
 
   public prepareChartData(chartsArray: Array<any>, data: any, downloadUrl: string): Array<{}> {
@@ -27,7 +27,7 @@ export class ReportService {
       chartObj.chartData = _.get(data, 'data');
       chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn');
       return chartObj;
-    })
+    });
   }
 
   public prepareTableData(tablesArray: any, data: any, downloadUrl: string): Array<{}> {
@@ -46,7 +46,7 @@ export class ReportService {
   public downloadReport(filePathSource) {
     return this.fetchDataSource(filePathSource).pipe(
       map(response => _.get(response, 'signedUrl'))
-    )
+    );
   }
 
   public isAuthenticated() {

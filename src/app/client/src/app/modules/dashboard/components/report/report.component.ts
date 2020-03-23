@@ -2,7 +2,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
-import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild, AfterViewInit } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
 import { Observable, throwError, of, forkJoin } from 'rxjs';
@@ -17,7 +17,7 @@ import { UUID } from 'angular2-uuid';
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.scss']
 })
-export class ReportComponent implements OnInit {
+export class ReportComponent implements OnInit, AfterViewInit {
 
   public report: any;
   public report$;
@@ -28,10 +28,11 @@ export class ReportComponent implements OnInit {
   @ViewChildren(DataChartComponent) chartsComponentList: QueryList<DataChartComponent>;
   @ViewChild('reportElement') reportElement;
   public hideElements: boolean;
-  public reportExportInProgress: boolean = false;
+  public reportExportInProgress = false;
 
   constructor(private reportService: ReportService, private userService: UserService, private activatedRoute: ActivatedRoute,
-    private resourceService: ResourceService, private toasterService: ToasterService, private navigationhelperService: NavigationHelperService,
+    private resourceService: ResourceService, private toasterService: ToasterService,
+    private navigationhelperService: NavigationHelperService,
     private router: Router) { }
 
   ngOnInit() {
@@ -48,14 +49,14 @@ export class ReportComponent implements OnInit {
             this.noResult = true;
             return of({});
           })
-        )
+        );
       })
-    )
+    );
   }
 
   /**
    * @description fetches config file . If no file is found throws an error
-   * @param reportId 
+   * @param reportId
    */
   private fetchConfig(reportId): Observable<any> {
     const reportsLocationHtmlElement = (<HTMLInputElement>document.getElementById('reportsLocation'));
@@ -66,12 +67,12 @@ export class ReportComponent implements OnInit {
         const report = _.find(config, ['id', reportId]);
         return report ? of(report) : throwError('No config found');
       })
-    )
+    );
   }
 
   /**
    * @description This function fetches config file, datasource and prepares chart and tables data from it.
-   * @param reportId 
+   * @param reportId
    */
   private renderReport(reportId) {
     return this.fetchConfig(reportId).pipe(
@@ -82,20 +83,20 @@ export class ReportComponent implements OnInit {
           retry(1),
           map(data => {
             const charts = _.get(report, 'charts'), tables = _.get(report, 'table');
-            let result: any = {};
+            const result: any = {};
             result['charts'] = (charts && this.reportService.prepareChartData(charts, data, _.get(report, 'dataSource'))) || [];
             result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(report, 'downloadUrl'))) || [];
             result['reportMetaData'] = report;
             return result;
           })
-        )
+        );
       })
-    )
+    );
   }
 
   /**
    * @description Downloads csv file from azure blob storage
-   * @param downloadUrl 
+   * @param downloadUrl
    */
   public downloadCSV(downloadUrl?: string) {
     this.reportService.downloadReport(this.downloadUrl).subscribe(
@@ -104,11 +105,11 @@ export class ReportComponent implements OnInit {
       }, err => {
         this.toasterService.error(this.resourceService.messages.emsg.m0076);
       }
-    )
+    );
   }
   /**
    * @description sets downloadUrl for active tab
-   * @param url 
+   * @param url
    */
   public setDownloadUrl(url) {
     this.downloadUrl = url;
@@ -174,16 +175,16 @@ export class ReportComponent implements OnInit {
       scrollY: -window.scrollY
     }).then(canvas => {
       const imageURL = canvas.toDataURL('image/jpeg');
-      var anchorElement = document.createElement('a');
-      anchorElement.href = imageURL.replace("image/jpeg", "image/octet-stream");
-      anchorElement.download = 'reportImg.jpg';
+      const anchorElement = document.createElement('a');
+      anchorElement.href = imageURL.replace('image/jpeg', 'image/octet-stream');
+      anchorElement.download = 'report.jpg';
       anchorElement.click();
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
     }).catch(err => {
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
-    })
+    });
   }
 
   private getCanvasElement(element, index): Promise<any> {
@@ -211,22 +212,22 @@ export class ReportComponent implements OnInit {
 
   private downloadReportAsPdf() {
     const pdf = new jspdf('p', 'px', 'a4');
-    var pageWidth = pdf.internal.pageSize.getWidth();
-    var pageHeight = pdf.internal.pageSize.getHeight();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
     const addPage = (imageUrl, imageType, position, width, height, index) => {
       if (index !== 0) {
         pdf.addPage();
       }
       pdf.addImage(imageUrl, imageType, 10, position, width - 24, height - 24);
       return pdf;
-    }
+    };
     const chartElements = this.getChartComponents();
     of(chartElements).pipe(
       switchMap(elements => forkJoin(_.map(elements, (element, index) => {
-        var clonedElement = $(element.rootElement).first().clone(true);
+        const clonedElement = $(element.rootElement).first().clone(true);
         if (_.get(element, 'canvas')) {
-          var origCanvas = $(element.rootElement).first().find('canvas');
-          var clonedCanvas = clonedElement.find('canvas');
+          const origCanvas = $(element.rootElement).first().find('canvas');
+          const clonedCanvas = clonedElement.find('canvas');
           clonedCanvas.prop('id', UUID.UUID());
           clonedCanvas[0].getContext('2d').drawImage(origCanvas[0], 0, 0);
         }
@@ -234,8 +235,9 @@ export class ReportComponent implements OnInit {
       })).pipe(
         tap(canvasElements => {
           _.forEach(canvasElements, (canvasDetails, index) => {
-            addPage(canvasDetails.contentDataURL, 'JPEG', canvasDetails.position, pageWidth, (canvasDetails.canvas.height * pageWidth) / canvasDetails.canvas.width, index);
-          })
+            const imageHeight = (canvasDetails.canvas.height * pageWidth) / canvasDetails.canvas.width;
+            addPage(canvasDetails.contentDataURL, 'JPEG', canvasDetails.position, pageWidth, imageHeight, index);
+          });
         })
       ))
     ).subscribe(response => {
@@ -246,7 +248,7 @@ export class ReportComponent implements OnInit {
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
       console.log('Error while generation report Pdf', err);
-    })
+    });
   }
 
   // hides elements which are not required for printing reports to pdf or image.
@@ -258,12 +260,12 @@ export class ReportComponent implements OnInit {
   private getChartComponents(): Array<HTMLElement> {
     const chartComponentArray = this.chartsComponentList.length && this.chartsComponentList.toArray();
     const result = _.map(chartComponentArray, chartComponent => {
-      if (!chartComponent) return null;
+      if (!chartComponent) { return null; }
       return {
         rootElement: _.get(chartComponent, 'chartRootElement.nativeElement'),
         canvas: _.get(chartComponent, 'chartCanvas.nativeElement')
-      }
-    })
+      };
+    });
     return _.compact(result);
   }
 

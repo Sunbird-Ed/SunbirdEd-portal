@@ -25,7 +25,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @Input() chartInfo: any;
   @Input() telemetryInteractObject: IInteractEventObject;
-  @Input() hideElements: boolean = false;
+  @Input() hideElements = false;
   public unsubscribe = new Subject<void>();
   // contains the chart configuration
   chartConfig;
