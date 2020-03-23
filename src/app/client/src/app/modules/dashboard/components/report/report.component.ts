@@ -6,7 +6,7 @@ import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
 import { Observable, throwError, of, forkJoin } from 'rxjs';
-import { mergeMap, switchMap, map, retry, catchError } from 'rxjs/operators';
+import { mergeMap, switchMap, map, retry, catchError, tap } from 'rxjs/operators';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
@@ -203,16 +203,14 @@ export class ReportComponent implements OnInit {
         }
       }
     }).then(canvas => {
-      const imgWidth = 209;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
       const contentDataURL = canvas.toDataURL('image/jpeg');
       const position = 8;
-      return { contentDataURL, position, imgWidth, imgHeight, canvas };
+      return { contentDataURL, position, canvas };
     });
   }
 
   private downloadReportAsPdf() {
-    const pdf = new jspdf('p', 'mm', 'a4');
+    const pdf = new jspdf('p', 'px', 'a4');
     var pageWidth = pdf.internal.pageSize.getWidth();
     var pageHeight = pdf.internal.pageSize.getHeight();
     const addPage = (imageUrl, imageType, position, width, height, index) => {
@@ -225,7 +223,6 @@ export class ReportComponent implements OnInit {
     const chartElements = this.getChartComponents();
     of(chartElements).pipe(
       switchMap(elements => forkJoin(_.map(elements, (element, index) => {
-        // need this code to clone because canvas element do not clone by itself
         var clonedElement = $(element.rootElement).first().clone(true);
         if (_.get(element, 'canvas')) {
           var origCanvas = $(element.rootElement).first().find('canvas');
@@ -233,11 +230,14 @@ export class ReportComponent implements OnInit {
           clonedCanvas.prop('id', UUID.UUID());
           clonedCanvas[0].getContext('2d').drawImage(origCanvas[0], 0, 0);
         }
-        // passing cloned div to generate pdf
-        return this.getCanvasElement(clonedElement, index).then((canvasDetails: any) => {
-          addPage(canvasDetails.contentDataURL, 'JPEG', canvasDetails.position, canvasDetails.imgWidth, canvasDetails.imgHeight, index);
-        });
-      })))
+        return this.getCanvasElement(clonedElement, index);
+      })).pipe(
+        tap(canvasElements => {
+          _.forEach(canvasElements, (canvasDetails, index) => {
+            addPage(canvasDetails.contentDataURL, 'JPEG', canvasDetails.position, pageWidth, (canvasDetails.canvas.height * pageWidth) / canvasDetails.canvas.width, index);
+          })
+        })
+      ))
     ).subscribe(response => {
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
