@@ -147,5 +147,17 @@ let envVariables = {
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
-module.exports = envVariables
-
+// Path to dev config file
+const devConfig = __dirname + '/devConfig.js';
+try {
+  // If environment is `local`; use custom config
+  // Else default config will be used
+  if (process.env.sunbird_environment === 'local' && fs.existsSync(devConfig)) {
+    const devVariables = require('./devConfig');
+    module.exports = devVariables;
+  } else {
+    module.exports = envVariables;
+  }
+} catch (error) {
+  module.exports = envVariables;
+}
