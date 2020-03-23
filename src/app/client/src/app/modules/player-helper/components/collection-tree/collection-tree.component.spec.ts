@@ -10,6 +10,8 @@ import { nodes, commonMessageApiResp } from './collection-tree.component.spec.da
 import { ResourceService, BrowserCacheTtlService, ConfigService, ToasterService } from '@sunbird/shared';
 import { UserService, OrgDetailsService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CoreModule } from '@sunbird/core';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 
 import { CacheService } from 'ng2-cache-service';
@@ -35,7 +37,7 @@ describe('CollectionTreeComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiAccordionModule, HttpClientTestingModule, HttpClientModule],
+      imports: [SuiAccordionModule, HttpClientTestingModule, HttpClientModule, CoreModule, TelemetryModule.forRoot()],
       declarations: [CollectionTreeComponent, FancyTreeComponent],
       providers: [ ResourceService, ToasterService,  { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub }, CacheService, ConfigService, BrowserCacheTtlService,

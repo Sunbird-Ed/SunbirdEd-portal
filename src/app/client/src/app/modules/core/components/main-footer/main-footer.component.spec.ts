@@ -8,9 +8,12 @@ import { MainFooterComponent } from './main-footer.component';
 import { CacheService } from 'ng2-cache-service';
 import { of } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CoreModule, UserService } from '@sunbird/core';
+
 describe('MainFooterComponent', () => {
     let component: MainFooterComponent;
     let fixture: ComponentFixture<MainFooterComponent>;
+    let userService;
     const mockActivatedRoute = {
         queryParams: of({
             dialCode: 'EJ23P',
@@ -39,11 +42,12 @@ describe('MainFooterComponent', () => {
     };
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [MainFooterComponent],
+            declarations: [],
             providers: [CacheService, ConfigService, { provide: ResourceService, useValue: { instance: 'SUNBIRD' } }, {
                 provide: ActivatedRoute, useValue: mockActivatedRoute
             }],
-            imports: [HttpClientModule, WebExtensionModule.forRoot(), TelemetryModule.forRoot(), SharedModule, RouterTestingModule],
+            imports: [CoreModule, HttpClientModule, WebExtensionModule.forRoot(),
+                TelemetryModule.forRoot(), SharedModule, RouterTestingModule],
         })
             .compileComponents();
     }));
@@ -51,6 +55,7 @@ describe('MainFooterComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(MainFooterComponent);
         component = fixture.componentInstance;
+        userService = TestBed.get(UserService);
         fixture.detectChanges();
     });
 
@@ -58,6 +63,7 @@ describe('MainFooterComponent', () => {
         TestBed.get(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = true;
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
+        spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         component.redirectToDikshaApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
         TestBed.get(ResourceService).instance + '-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
@@ -68,6 +74,7 @@ describe('MainFooterComponent', () => {
         TestBed.get(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = true;
         TestBed.get(ActivatedRoute).queryParams = of({ dialCode: '' });
         fixture.detectChanges();
+        spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         const spy = spyOn(component, 'redirect');
         component.redirectToDikshaApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
@@ -78,6 +85,7 @@ describe('MainFooterComponent', () => {
         TestBed.get(ActivatedRoute).firstChild.firstChild.snapshot.data.sendUtmParams = false;
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
+        spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         component.redirectToDikshaApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
         TestBed.get(ResourceService).instance + '-sunbird&utm_medium=');

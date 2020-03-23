@@ -1,7 +1,7 @@
 import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
@@ -9,6 +9,7 @@ import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile } from 'rxjs/operators';
+import { APP_BASE_HREF } from '@angular/common';
 
 /**
  * Service to fetch user details from server
@@ -93,14 +94,15 @@ export class UserService {
    * Reference of public data service.
    */
   public publicDataService: PublicDataService;
-
+  private _slug = '';
   /**
   * constructor
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
   constructor(config: ConfigService, learner: LearnerService,
-    private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService) {
+    private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
+    @Inject(APP_BASE_HREF) baseHref: string) {
     this.config = config;
     this.learnerService = learner;
     this.contentService = contentService;
@@ -118,6 +120,11 @@ export class UserService {
       this._cloudStorageUrls = (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',');
     } catch (error) {
     }
+    this._slug = baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
+    console.log(this._slug);
+  }
+  get slug() {
+    return this._slug;
   }
   get anonymousSid() {
     return this._anonymousSid;

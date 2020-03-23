@@ -12,6 +12,7 @@ import { collectionComponentInput, collectionWithCard, searchCollectionResponse}
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
+import { CoreModule } from '@sunbird/core';
 
 const ContentServiceStub = {
   post() {
@@ -46,7 +47,7 @@ describe('CollectionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CollectionComponent ],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
+      imports: [HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         ConfigService,
