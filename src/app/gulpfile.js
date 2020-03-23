@@ -9,14 +9,14 @@ const exec = require('child_process').exec
 const brotli = require('gulp-brotli');
 
 // To download editors
-const contentEditor = process.env.sunbird_content_editor_artifact_url;
-const collectionEditor = process.env.sunbird_collection_editor_artifact_url;
-const genericEditor = process.env.sunbird_generic_editor_artifact_url;
+const contentEditor = 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/content-editor-iframe-2.6.0.zip';
+const collectionEditor = 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/collection-editor-iframe-2.6.0.zip';
+const genericEditor = 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/generic-editor-iframe-2.6.0.zip';
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
 
 gulp.task('clean:editors', () => {
-    return gulp.src('./' + editorsDestPath, { read: false })
+    return gulp.src('./' + editorsDestPath, { read: false , allowEmpty: true})
         .pipe(clean())
 })
 gulp.task('download:content:editor', () => {
@@ -44,10 +44,10 @@ gulp.task('gzip:editors', () => {
         .pipe(gulp.dest('./client/src/thirdparty/editors'))
 })
 
-gulp.task('download:editors', gulpSequence('clean:editors', ['download:content:editor', 'download:collection:editor', 'download:generic:editor'], 'gzip:editors'))
+gulp.task('download:editors', gulp.series('clean:editors', ['download:content:editor', 'download:collection:editor', 'download:generic:editor'], 'gzip:editors'))
 
 gulp.task('clean:client:install', (done) => {
-    return gulp.src('./client/node_modules', { read: false })
+    return gulp.src('./client/node_modules', { read: false, allowEmpty: true })
         .pipe(clean())
 })
 
@@ -87,7 +87,7 @@ gulp.task('update:index:file', () => {
         .pipe(gulp.dest('./dist'))
 })
 gulp.task('clean:index:file', () => {
-    return gulp.src('./dist/index.html', { read: false })
+    return gulp.src('./dist/index.html', { read: false, allowEmpty: true })
         .pipe(clean())
 })
 
@@ -111,7 +111,7 @@ gulp.task('prepare:app:dist', () => {
 })
 
 gulp.task('clean:app:dist', () => {
-    return gulp.src('./app_dist', { read: false })
+    return gulp.src('./app_dist', { read: false, allowEmpty: true })
         .pipe(clean())
 })
 
@@ -125,7 +125,7 @@ gulp.task('build-resource-bundles', (cb) => {
 const compress = process.env.devBuild === 'true' ? '' : ['client:gzip'] // removed brotli due to gulp issue
 const cleanClient = process.env.devBuild === 'true' ? '' : 'clean:client:install'
 gulp.task('deploy',
-    gulpSequence('clean:app:dist',
+  gulp.series('clean:app:dist',
         'clean:editors',
         ['download:content:editor',
             'download:collection:editor',
@@ -165,11 +165,11 @@ gulp.task('copy-player', () => {
 })
 
 gulp.task('clean:content-player:modules', (done) => {
-    return gulp.src('./node_modules/@project-sunbird/content-player/node_modules', { read: false })
+    return gulp.src('./node_modules/@project-sunbird/content-player/node_modules', { read: false , allowEmpty: true})
         .pipe(clean())
 })
 
-gulp.task('build-offline', gulpSequence(
+gulp.task('build-offline', gulp.series(
     'clean:client:install',
     'client:install',
     'offline-client:dist',
