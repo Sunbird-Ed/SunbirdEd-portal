@@ -115,7 +115,7 @@
       margin: 0px;
       width: $base-block-space*3 !important;
       height: $base-block-space*3 !important;
-      background-position: 0px 4px !important;
+      background-position: 0px calculateRem(4px) !important;
       margin-right: $base-block-space;
       font-size: $base-block-space*3;
       line-height: $base-block-space*3;
@@ -145,7 +145,7 @@
       .sb-toast-message {
         color: $gray;
         font-size: $font-size-base !important;
-        line-height: 22px;
+        line-height: calculateRem(22px);
         margin-bottom: 0px;
       }
     }
@@ -154,9 +154,9 @@
 
   &.sb-toast-normal {
     background: $white;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
+    border-right-width: calculateRem(1px);
+    border-bottom-width: calculateRem(1px);
+    border-top-width: calculateRem(1px);
 
     .sb-toast-icon {
       display: none;
@@ -260,7 +260,7 @@
     right: $base-block-space*3;
     content: ' ';
     height: $block-padding-xy;
-    width: 2px;
+    width: calculateRem(2px);
     top: $block-padding-xy;
   }
 
@@ -294,7 +294,7 @@
   min-height: ($base-block-space * 10);
   padding: $base-block-space*3 $base-block-space*3 $base-block-space*3 $block-padding-xy;
   border-radius: $base-block-space;
-  border: 1px solid $primary-300;
+  border: calculateRem(1px) solid $primary-300;
   border-left-width: $base-block-space;
   color: $gray;
   background: $white;
@@ -374,7 +374,7 @@
       margin: 0px;
       width: $base-block-space*4 !important;
       height: $base-block-space*4 !important;
-      background-position: 0px 4px !important;
+      background-position: 0px calculateRem(4px) !important;
       margin-right: $base-block-space;
     }
     .sb-toast-texts {
@@ -389,16 +389,16 @@
     .sb-toast-message {
       color: $gray;
       font-size: $h6-font-size !important;
-      line-height: 22px;
+      line-height: calculateRem(22px);
       margin-bottom: 0px;
     }
   }
 
   &.sb-toast-normal {
     background: $white;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-top-width: 1px;
+    border-right-width: calculateRem(1px);
+    border-bottom-width: calculateRem(1px);
+    border-top-width: calculateRem(1px);
 
     .sb-toast-icon {
       display: none;
@@ -462,7 +462,7 @@
       right: $base-block-space*3;
       content: ' ';
       height: $block-padding-xy;
-      width: 2px;
+      width: calculateRem(2px);
       top: $block-padding-xy;
     }
 

@@ -2,7 +2,7 @@
     input[type="radio"] {
       &:checked, &:not(:checked) {
         position: absolute;
-        left: -9999px;
+        left: calculateRem(-9999px);
       }
       &[disabled="disabled"] + label{
         opacity: $sb-radio-btn-disabled-opacity;
@@ -16,7 +16,7 @@
         position: relative;
         padding-left: ($base-block-space * 3);
         cursor: pointer;
-        line-height: 20px;
+        line-height: calculateRem(20px);
         display: inline-block;
         color: $sb-radio-btn-label-color;
       }
@@ -24,7 +24,7 @@
         content: '';
         position: absolute;
         left: 0;
-        top: 1px;
+        top: calculateRem(1px);
         width: ($base-block-space * 2);
         height: ($base-block-space * 2);
         border: $sb-radio-btn-border solid $sb-radio-btn-border-color;
@@ -37,8 +37,8 @@
         height: ($base-block-space * 1);
         background: $sb-radio-btn-backgroud-after-checked;
         position: absolute;
-        top: 5px;
-        left: 4px;
+        top: calculateRem(5px);
+        left: calculateRem(4px);
         border-radius: $sb-radio-btn-border-radius;
         -webkit-transition: all 0.2s ease;
         transition: all 0.2s ease;
@@ -49,8 +49,8 @@
         height: ($base-block-space * 1);;
         background: $sb-radio-btn-backgroud-after-checked;
         position: absolute;
-        top: 4px;
-        left: 4px;
+        top: calculateRem(4px);
+        left: calculateRem(4px);
         border-radius: $sb-radio-btn-border-radius;
         -webkit-transition: all 0.2s ease;
         transition: all 0.2s ease;
@@ -67,7 +67,7 @@
  }
  .sb-account-recover-page{
   .sb-radio-btn-checkbox.sb-radio-btn-primary label:before {
-    border: 1px solid $blue !important;
+    border: calculateRem(1px) solid $blue !important;
   }
   .sb-radio-btn-checkbox.sb-radio-btn-primary input:checked ~ label:after {
     background-color: $blue !important;

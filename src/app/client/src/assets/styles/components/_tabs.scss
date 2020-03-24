@@ -4,7 +4,6 @@
     color: $sb-tabs-color;
   }
   
-  
   .ui.tabular.menu .active.item {
     color: $sb-tabs-color;
   }
@@ -30,14 +29,14 @@
   }
 
   .ui.secondary.pointing.menu.pointing-tab {
-    border: 1px solid $sb-pointing-tabs-border;
+    border:  calculateRem(1px) solid $sb-pointing-tabs-border;
     border-radius: $sb-pointing-tabs-border-radius;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.15);
+    box-shadow: 0  calculateRem(1px)  calculateRem(2px) 0 rgba(0,0,0,0.15);
     min-height: $sb-pointing-tabs-min-width;
   }
 
   .ui.secondary.pointing.menu.pointing-tab .item {
-    border-right: 1px solid $sb-pointing-tabs-border;
+    border-right:  calculateRem(1px) solid $sb-pointing-tabs-border;
   }
   .ui.secondary.pointing.menu.pointing-tab .item:last-child {
     border-right: 0;
