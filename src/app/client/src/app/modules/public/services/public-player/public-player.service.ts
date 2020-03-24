@@ -150,7 +150,7 @@ export class PublicPlayerService {
 
   public playContent(event) {
     this.navigationHelperService.storeResourceCloseUrl();
-    this.traceService.endTrace();
+    // this.traceService.endTrace();
     setTimeout(() => {
       if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         if (event.data.contentType === 'Course') {

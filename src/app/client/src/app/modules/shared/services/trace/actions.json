@@ -1,0 +1,9 @@
+{
+    "trace_QrScan": {
+        "id": "qr-scan",
+        "chidren": {
+            "qrSearch": "qrSearch"
+        }
+    }
+    
+}

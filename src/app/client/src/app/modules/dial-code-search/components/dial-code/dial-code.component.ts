@@ -136,6 +136,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
 
   private processDialCode(params) {
+    this.traceService.setSpanAction(this.traceService.ACTIONS.trace_QrScan.qrSearch);
     return of(params).pipe(
       finalize(() => {
         this.logInteractEvent({

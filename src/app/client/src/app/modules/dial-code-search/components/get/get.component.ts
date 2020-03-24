@@ -63,7 +63,7 @@ export class GetComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public navigateToSearch() {
     if (this.searchKeyword) {
-      this.traceService.startTrace('qr-code');
+      this.traceService.startTrace(this.traceService.ACTIONS.trace_QrScan.id);
       this.router.navigate(['/get/dial', _.trim(this.searchKeyword)]);
     }
   }

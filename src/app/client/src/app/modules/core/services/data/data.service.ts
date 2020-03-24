@@ -1,5 +1,5 @@
 
-import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
+import { of as observableOf, throwError as observableThrowError, Observable, from } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { ServerResponse, RequestParam, HttpOptions, TraceService } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
@@ -40,6 +40,12 @@ export class DataService {
    * angular HttpClient
    */
   http: HttpClient;
+
+  /**
+   * TraceService instance
+   */
+  traceService: TraceService;
+
   /**
    * Constructor
    * @param {HttpClient} http HttpClient reference
@@ -121,8 +127,10 @@ export class DataService {
       headers: requestParam.header ? this.getHeader(requestParam.header) : this.getHeader(),
       params: requestParam.param
     };
+    // this.traceService.startSpan(this.baseUrl + requestParam.url);
     return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: ServerResponse) => {
+        // this.traceService.endSpan();
         if (data.responseCode !== 'OK') {
           return observableThrowError(data);
         }
@@ -173,8 +181,6 @@ export class DataService {
    * for preparing headers
    */
   private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
-    console.log("=====", headers)
-    
     const default_headers = {
       'Accept': 'application/json',
       // 'X-Consumer-ID': 'X-Consumer-ID',
@@ -182,9 +188,8 @@ export class DataService {
       'ts': moment().format(),
       'X-msgid': UUID.UUID()
     };
-    let traceObj: TraceService;
-    // traceObj.startSpan( default_headers['X-msgid'].toString());
     try {
+      // this.traceService.startSpan();
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
       this.appId = (<HTMLInputElement>document.getElementById('appId')).value;
     } catch (err) { }
