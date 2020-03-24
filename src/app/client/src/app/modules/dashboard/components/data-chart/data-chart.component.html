@@ -97,11 +97,16 @@
     <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
   </div>
   <ng-container *ngIf="showChart && !iframeDetails">
-    <canvas #chartCanvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions" [chartType]="chartType"
-      [legend]="legend" [colors]="chartColors"></canvas>
+    <canvas #chartCanvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions"
+      [chartType]="chartType" [legend]="legend" [colors]="chartColors"></canvas>
   </ng-container>
   <ng-container *ngIf="iframeDetails">
     <iframe frameborder="0" class="dashboard-iframe" [src]="getIframeURL()">
     </iframe>
   </ng-container>
+
+  <div class="my-16" *ngIf="chartConfig.summary">
+    <app-report-summary [inputData]="chartConfig.summary"></app-report-summary>
+  </div>
+
 </div>

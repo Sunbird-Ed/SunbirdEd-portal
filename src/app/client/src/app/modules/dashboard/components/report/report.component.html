@@ -14,7 +14,7 @@
               <p *ngIf="currentReport?.reportMetaData?.description"
                 [innerHTML]="reportService.transformHTML(currentReport.reportMetaData.description)"></p>
             </div>
-            <div id="report-body">
+            <div id="report-body" class="my-16">
               <sui-tabset>
                 <div class="ui pointing secondary menu d-flex flex-ai-center" *ngIf="!hideElements">
                   <a appTelemetryInteract
@@ -34,7 +34,8 @@
                     class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8" (click)="downloadCSV()"><i
                       class="icon"></i>
                     {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
-                  <sui-select class="selection mr-8" [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}" [placeholder]="'Export As'"
+                  <sui-select class="selection mr-8"
+                    [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}" [placeholder]="'Export As'"
                     (selectedOptionChange)="downloadReport($event)">
                     <sui-select-option *ngFor="let option of ['Pdf', 'Img']" [value]="option">
                     </sui-select-option>
@@ -65,6 +66,9 @@
                 </ng-container>
               </sui-tabset>
             </div>
+            <div id="report-summary" class="my-16" *ngIf="currentReport?.reportMetaData?.summary">
+              <app-report-summary [inputData]="currentReport.reportMetaData.summary"></app-report-summary>
+            </div>
           </div>
         </ng-container>
         <ng-template #loading>
@@ -81,7 +85,7 @@
   #modal (dismissed)="modal.deny();close.emit()" *ngIf="reportExportInProgress">
   <div class="sb-modal-content o-y-visible">
     <div class="ui">
-      <div class="twelve wide column px-0">
+      <div class="twelve wide column px-0 mb-30">
         <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
       </div>
     </div>

@@ -194,10 +194,12 @@ export class ReportComponent implements OnInit, AfterViewInit {
       onclone: documentObject => {
         const reportHeader = documentObject.querySelector('#report-header');
         const reportBody = documentObject.querySelector('#report-body');
+        const reportSummary = documentObject.querySelector('#report-summary');
         if (index === 0) {
           reportBody.innerHTML = '';
           element.appendTo(reportBody);
         } else {
+          reportSummary.innerHTML = '';
           reportHeader.innerHTML = '';
           reportBody.innerHTML = '';
           element.appendTo(reportBody);
