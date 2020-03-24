@@ -3,7 +3,7 @@ import { ReportService } from '../../services';
 
 interface reportSummary {
   label: string;
-  text: Array<string>
+  text: Array<string>;
 }
 
 @Component({
