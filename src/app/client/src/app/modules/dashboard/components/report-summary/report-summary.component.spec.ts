@@ -1,7 +1,9 @@
+import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReportSummaryComponent } from './report-summary.component';
 import { ReportService } from '../../services';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ReportSummaryComponent', () => {
   let component: ReportSummaryComponent;
@@ -10,7 +12,8 @@ describe('ReportSummaryComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReportSummaryComponent],
-      providers: [ReportService]
+      providers: [ReportService],
+      imports: [HttpClientTestingModule, SharedModule.forRoot()]
     })
       .compileComponents();
   }));

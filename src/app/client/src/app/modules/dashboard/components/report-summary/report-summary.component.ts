@@ -15,7 +15,7 @@ export class ReportSummaryComponent implements OnInit {
 
   @Input() inputData: Array<ReportSummary>;
 
-  constructor(private reportService: ReportService) { }
+  constructor(public reportService: ReportService) { }
 
   ngOnInit() {
   }

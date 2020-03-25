@@ -11,6 +11,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { By } from '@angular/platform-browser';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DataChartComponent', () => {
     let component: DataChartComponent;
@@ -29,7 +30,8 @@ describe('DataChartComponent', () => {
                         }
                     }
                 }
-            }]
+            }],
+            schemas: [NO_ERRORS_SCHEMA]
         })
             .compileComponents();
     }));
