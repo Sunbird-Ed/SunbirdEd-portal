@@ -377,7 +377,13 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   handleMobilePopupBanner() {
     setTimeout(() => {
-      this.showMobilePopup = true;
+      if (localStorage && !localStorage.getItem('showMobilePopUp')) {
+        this.showMobilePopup = true;
+        localStorage.setItem('showMobilePopUp', 'true');
+      } else if (localStorage) {
+        localStorage.setItem('showMobilePopUp', 'true');
+      }
+
     }, 500);
   }
   startDownload(contentId) {
