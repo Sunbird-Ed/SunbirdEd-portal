@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ReportService } from '../../services';
 
-interface reportSummary {
+interface ReportSummary {
   label: string;
   text: Array<string>;
 }
@@ -13,7 +13,7 @@ interface reportSummary {
 })
 export class ReportSummaryComponent implements OnInit {
 
-  @Input() inputData: Array<reportSummary>;
+  @Input() inputData: Array<ReportSummary>;
 
   constructor(private reportService: ReportService) { }
 

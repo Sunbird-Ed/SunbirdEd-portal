@@ -162,15 +162,40 @@ export class ReportComponent implements OnInit, AfterViewInit {
           break;
         }
         case 'pdf': {
-          this.downloadReportAsPdf();
+          this.convertToPdf();
           break;
         }
       }
     }, 1500);
   }
 
+
+  private convertHTMLToCanvas(element, options) {
+    return html2canvas(element, options);
+  }
+
+  private convertToPdf() {
+    this.convertHTMLToCanvas(this.reportElement.nativeElement, {
+      scrollX: 0,
+      scrollY: -window.scrollY
+    }).then(canvas => {
+      const imageURL = canvas.toDataURL('image/jpeg');
+      const pdf = new jspdf('p', 'px', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const imageHeight = (canvas.height * pageWidth) / canvas.width;
+      pdf.internal.pageSize.setHeight(imageHeight);
+      pdf.addImage(imageURL, 'JPEG', 10, 8, pageWidth - 24, imageHeight - 24);
+      pdf.save('report.pdf');
+      this.toggleHtmlVisibilty(false);
+      this.reportExportInProgress = false;
+    }).catch(err => {
+      this.toggleHtmlVisibilty(false);
+      this.reportExportInProgress = false;
+    });
+  }
+
   private downloadReportAsImage() {
-    html2canvas(this.reportElement.nativeElement, {
+    this.convertHTMLToCanvas(this.reportElement.nativeElement, {
       scrollX: 0,
       scrollY: -window.scrollY
     }).then(canvas => {
