@@ -52,7 +52,7 @@
     </div>
   </div>
 </div>
-<div class="mobile-popup-dimmer" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
+<div class="mobile-popup-dimmer" *ngIf= "showMobilePopup" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
   <div class="mobile-app-popup" [ngClass]="{'bottom-0': showMobilePopup}">
     <div class="download-mobile-app">
       <div class="mobile-app-popup-close">
