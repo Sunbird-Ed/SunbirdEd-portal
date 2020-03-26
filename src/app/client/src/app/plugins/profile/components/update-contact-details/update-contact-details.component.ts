@@ -114,10 +114,13 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
     let contactValue = '';
     contactTypeControl.valueChanges.subscribe(
       (data: string) => {
+        contactValue = '';
         if (contactTypeControl.status === 'VALID' && contactValue !== contactTypeControl.value) {
           this.contactTypeForm.controls['uniqueContact'].setValue('');
           this.vaidateUserContact();
           contactValue = contactTypeControl.value;
+        } else {
+            this.showUniqueError = '';
         }
       });
   }
