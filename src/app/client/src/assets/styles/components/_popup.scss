@@ -1,7 +1,7 @@
 .ui {
     &.popup {
       background: $tooltip-bg;
-      border: 1px solid $tooltip-bg;
+      border: calculateRem(1px) solid $tooltip-bg;
       padding: $base-block-space;
   
       .content {
@@ -17,8 +17,8 @@
   
       .arrow {
         background: $tooltip-bg;
-        border: 1px solid $tooltip-bg;
-        box-shadow: 1px 1px 0 0 $tooltip-bg !important;
+        border: calculateRem(1px) solid $tooltip-bg;
+        box-shadow: calculateRem(1px) calculateRem(1px) 0 0 $tooltip-bg !important;
         display: none;
       }
     }
@@ -26,6 +26,6 @@
   
 
   tooltip {
-    color: white !important;
-    background-color: black !important;
+    color: var(--white) !important;
+    background-color: var(--black) !important;
   }

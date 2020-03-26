@@ -55,7 +55,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     combineLatest(
-      this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug),
+      this.orgDetailsService.getOrgDetails(this.userService.slug),
       this.getFrameWork()
     ).pipe(
       mergeMap((data: any) => {
@@ -131,7 +131,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     const option = {
       source: 'web',
-      name: 'AnonymousCourse',
+      name: 'Course',
       filters: filters,
       // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       // mode: 'soft',

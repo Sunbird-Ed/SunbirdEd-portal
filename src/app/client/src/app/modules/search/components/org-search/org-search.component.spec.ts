@@ -13,8 +13,9 @@ import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './org-search.component.spec.data';
-
+import { CoreModule } from '@sunbird/core';
 import { OrgSearchComponent } from './org-search.component';
+import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('OrgSearchComponent', () => {
   let component: OrgSearchComponent;
@@ -51,7 +52,7 @@ describe('OrgSearchComponent', () => {
   }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), RouterTestingModule],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), SharedModule.forRoot(), RouterTestingModule, CoreModule],
       declarations: [OrgSearchComponent],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService,

@@ -13,6 +13,8 @@ import { CacheService } from 'ng2-cache-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CoreModule } from '@sunbird/core';
+
 const testData = mockData.mockRes;
 describe('MainHomeComponent', () => {
   let component: MainHomeComponent;
@@ -53,7 +55,8 @@ class ActivatedRouteStub {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SuiModule, SlickModule, SharedModule.forRoot(), NgInviewModule, TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, CoreModule, SuiModule, SlickModule, SharedModule.forRoot(),
+        NgInviewModule, TelemetryModule.forRoot()],
       declarations: [MainHomeComponent],
       providers: [UserService, CoursesService, ResourceService, LearnerService, AnnouncementService,
          ToasterService, FrameworkService, CacheService, ContentService, PlayerService,

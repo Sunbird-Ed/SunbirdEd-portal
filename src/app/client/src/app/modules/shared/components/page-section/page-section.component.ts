@@ -19,6 +19,7 @@ import { environment } from '@sunbird/environment';
 export class PageSectionComponent implements OnInit, OnDestroy {
 
   cardInteractEdata: IInteractEventEdata;
+  public telemetryInteractCdata: any;
 
   refresh = true;
 
@@ -66,6 +67,12 @@ export class PageSectionComponent implements OnInit, OnDestroy {
         type: 'click',
         pageid: this.pageid
       };
+    }
+    if (this.section) {
+      this.telemetryInteractCdata = [{
+        type: 'section',
+        id: _.get(this.section, 'name') || ''
+      }];
     }
   }
   updateSlick() {

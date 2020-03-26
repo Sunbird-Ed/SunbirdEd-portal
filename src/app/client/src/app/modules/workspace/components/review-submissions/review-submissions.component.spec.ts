@@ -20,6 +20,8 @@ const testData = mockData.mockRes;
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+import { CoreModule } from '@sunbird/core';
+
 const fakeActivatedRoute = {
   'params': observableOf({ 'pageNumber': 1 }),
   snapshot: {
@@ -59,7 +61,7 @@ describe('ReviewSubmissionsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReviewSubmissionsComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
