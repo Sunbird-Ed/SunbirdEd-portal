@@ -298,4 +298,33 @@ export class UtilService {
   redirectToLogin(errorMessage) {
     window.location.href = '/redirect/login?error_message=' + errorMessage;
   }
+
+  /**
+   * @param  {string} key   - `key` in object to consider for sorting
+   * @param  {string} order -'asc' - Default sort order
+   * @description sortPageSections
+   * 1. Method to sort array of objects based on key name
+   * 2. Sort params `asc` or `desc`
+   * @returns - Sorted array
+   */
+  sortArrayOfObjects(key: string, order = 'asc') {
+    return function innerSort(a, b) {
+      if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+        return 0;
+      }
+      const firstKey = (typeof a[key] === 'string')
+        ? a[key].toUpperCase() : a[key];
+      const secondKey = (typeof b[key] === 'string')
+        ? b[key].toUpperCase() : b[key];
+      let comparison = 0;
+      if (firstKey > secondKey) {
+        comparison = 1;
+      } else if (firstKey < secondKey) {
+        comparison = -1;
+      }
+      return (
+        (order === 'desc') ? (comparison * -1) : comparison
+      );
+    };
+  }
 }

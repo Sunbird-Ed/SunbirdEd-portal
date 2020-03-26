@@ -8,6 +8,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, tap, skip } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
+import { UtilService } from "./../../../shared/services/util/util.service";
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
   templateUrl: './resource.component.html'
@@ -32,16 +33,13 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   exploreMoreButtonEdata: IInteractEventEdata;
 
   @HostListener('window:scroll', []) onScroll(): void {
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
-      && this.pageSections.length < this.apiContentList.length) {
-      this.pageSections.push(this.apiContentList[this.pageSections.length]);
-    }
+    this.windowScroll();
   }
   constructor(private searchService: SearchService, private toasterService: ToasterService, private userService: UserService,
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private playerService: PlayerService,
     private contentSearchService: ContentSearchService, private navigationhelperService: NavigationHelperService,
-    public telemetryService: TelemetryService) {
+    public telemetryService: TelemetryService, private utilService: UtilService) {
   }
   ngOnInit() {
     if (this.userService.userProfile.framework) {
@@ -64,6 +62,15 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error('init search filter failed', error);
     });
   }
+
+  private windowScroll() {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
+      && this.pageSections.length < this.apiContentList.length) {
+      this.pageSections.push(this.apiContentList[this.pageSections.length]);
+      this.pageSections.sort(this.utilService.sortArrayOfObjects('name'));
+    }
+  }
+
   private getChannelId() {
     return this.orgDetailsService.getCustodianOrgDetails().pipe(map(custodianOrg => {
       if (this.userService.hashTagId === _.get(custodianOrg, 'result.response.value')) {
@@ -121,10 +128,10 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       const sections = [];
       for (const section in filteredContents) {
         if (section) {
-            sections.push({
-                name: section,
-                contents: filteredContents[section]
-            });
+          sections.push({
+            name: section,
+            contents: filteredContents[section].sort(this.utilService.sortArrayOfObjects('name'))
+          });
         }
       }
       return _.map(sections, (section) => {
@@ -140,7 +147,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.apiContentList.length) {
           return; // no page section
         }
-        this.pageSections = this.apiContentList.slice(0, 4);
+        this.pageSections = this.apiContentList.slice(0, 4).sort(this.utilService.sortArrayOfObjects('name'));
       }, err => {
         this.showLoader = false;
         this.apiContentList = [];
