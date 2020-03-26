@@ -18,6 +18,7 @@ import { of as observableOf, throwError as observableError } from 'rxjs';
 import { ActionService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ExportToCsv } from 'export-to-csv';
+import { CoreModule } from '@sunbird/core';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -59,8 +60,9 @@ describe('DashboardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, TelemetryModule.forRoot()],
-      declarations: [ DashboardComponent, AppLoaderComponent ],
+      imports: [SuiModule, CoreModule, SharedModule.forRoot(),
+        SuiTabsModule, FormsModule, HttpClientTestingModule, TelemetryModule.forRoot()],
+      declarations: [ DashboardComponent ],
       // tslint:disable-next-line:max-line-length
       providers: [ConfigService, UtilService, ToasterService,
         CbseProgramService, TelemetryService, ResourceService,

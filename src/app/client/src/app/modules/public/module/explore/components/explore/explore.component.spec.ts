@@ -104,6 +104,7 @@ describe('ExploreComponent', () => {
   it('should get channel id if slug is available', () => {
     const contentSearchService = TestBed.get(ContentSearchService);
     component.activatedRoute.snapshot.params.slug = 'tn';
+    spyOnProperty(userService, 'slug', 'get').and.returnValue('tn');
     sendOrgDetails = true;
     spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
     spyOn<any>(component, 'setNoResultMessage').and.callThrough();
@@ -128,7 +129,7 @@ describe('ExploreComponent', () => {
 
   it('should show error if contentSearchService is not initialized and slug is available', fakeAsync(() => {
     const contentSearchService = TestBed.get(ContentSearchService);
-    component.activatedRoute.snapshot.params.slug = 'ap';
+    spyOnProperty(userService, 'slug', 'get').and.returnValue('ap');
     sendOrgDetails = false;
     const router = TestBed.get(Router);
     spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));

@@ -10,11 +10,12 @@ import { SearchService } from './search.service';
 import { UserService } from './../user/user.service';
 import { ConfigService } from '@sunbird/shared';
 import { PublicDataService } from './../public-data/public-data.service';
+import { CoreModule } from '@sunbird/core';
 
 describe('SearchService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, CoreModule],
       providers: [SearchService, ContentService, UserService, LearnerService, ConfigService, PublicDataService]
     });
   });

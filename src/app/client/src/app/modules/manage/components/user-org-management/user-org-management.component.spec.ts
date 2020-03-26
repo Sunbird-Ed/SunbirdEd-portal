@@ -11,6 +11,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserOrgManagementComponent } from './user-org-management.component';
 import { throwError as observableThrowError, of as observableOf, of } from 'rxjs';
 import { mockManageData } from './user-org-management.mock.spec';
+import { CoreModule } from '@sunbird/core';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -55,11 +56,9 @@ describe('UserOrgManagementComponent', () => {
         TelemetryModule.forRoot(),
         HttpClientTestingModule,
         RouterTestingModule,
-        SuiModule
+        SuiModule, CoreModule
       ],
       declarations: [
-        UserOrgManagementComponent,
-        UserUploadComponent
       ],
       providers: [
         UserService,

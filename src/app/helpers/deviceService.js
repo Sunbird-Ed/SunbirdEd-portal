@@ -9,6 +9,9 @@ const uuidv1 = require('uuid/v1');
 
 
 const getDeviceProfile = async (req, res) => {
+  // TODO: SB-18369 Remove console.log after testing and verifying the headers data
+  console.log('X-FORWARDED-FOR headers', req.headers['X-FORWARDED-FOR']);
+  console.log('request headers', req.headers);
   const options = {
     method: CONSTANTS.HTTP.METHOD.GET,
     url: envHelper.sunbird_device_api + CONSTANTS.API_VERSION.V3 + '/device/profile/' + req.params.deviceId,
@@ -17,6 +20,7 @@ const getDeviceProfile = async (req, res) => {
       'Cache-Control': 'no-cache',
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN,
+      'X-FORWARDED-FOR': req.headers['X-FORWARDED-FOR']
     }
   };
   try {

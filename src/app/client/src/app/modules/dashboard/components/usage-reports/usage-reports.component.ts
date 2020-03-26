@@ -177,7 +177,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
 
   downloadCSV(filepath) {
     if (!filepath) {
-      filepath = this.downloadUrl
+      filepath = this.downloadUrl;
     }
     this.usageService.getData(filepath).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {

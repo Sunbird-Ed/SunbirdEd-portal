@@ -440,7 +440,8 @@
                     "CuriosityQuestions",
                     "MarkingSchemeRubric",
                     "ExplanationResource",
-                    "ExperientialResource"
+                    "ExperientialResource",
+                    "eTextBook"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-folder-o"
@@ -529,6 +530,15 @@
             {
                 "type": "ExperientialResource",
                 "label": "ExperientialResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "eTextBook",
+                "label": "eTextBook",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],

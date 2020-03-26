@@ -289,6 +289,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   closeMobileAppPopup() {
+    if (localStorage) {
+      localStorage.setItem('showMobilePopUp', 'true');
+    }
     if (!this.isRedirectToDikshaApp) {
       this.telemetryService.interact(this.closeMobilePopupInteractData);
       (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
@@ -299,8 +302,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.isRedirectToDikshaApp = true;
     this.telemetryService.interact(this.appMobileDownloadInteractData);
     let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
-    const slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-    const utm_source = slug ? `diksha-${slug}` : 'diksha';
+    const utm_source = this.userService.slug ? `diksha-${this.userService.slug}` : 'diksha';
     applink = `${applink}&utm_source=${utm_source}&utm_medium=${this.dialSearchSource}&utm_campaign=dial&utm_term=${this.dialCode}`;
     window.location.href = applink.replace(/\s+/g, '');
   }
@@ -378,7 +380,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   handleMobilePopupBanner() {
     setTimeout(() => {
-      this.showMobilePopup = true;
+      if (localStorage && !localStorage.getItem('showMobilePopUp')) {
+        this.showMobilePopup = true;
+      }
     }, 500);
   }
   startDownload(contentId) {

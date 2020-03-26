@@ -14,6 +14,7 @@ import { Observable, of as observableOf } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserFilterComponent } from './user-filter.component';
 import { UserSearchService } from './../../services';
+import { CoreModule } from '@sunbird/core';
 
 describe('UserFilterComponent', () => {
   let component: UserFilterComponent;
@@ -28,7 +29,7 @@ describe('UserFilterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       declarations: [ UserFilterComponent ],
       providers: [ResourceService, SearchService, PaginationService, UserService,
         LearnerService, ContentService, ConfigService, ToasterService, UserSearchService,

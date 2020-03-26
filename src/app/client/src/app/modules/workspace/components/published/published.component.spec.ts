@@ -17,6 +17,7 @@ const testData = mockData.mockRes;
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { SuiModule } from 'ng2-semantic-ui';
+import { CoreModule } from '@sunbird/core';
 
 describe('PublishedComponent', () => {
   let component: PublishedComponent;
@@ -55,7 +56,7 @@ describe('PublishedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublishedComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, SuiModule , SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, SuiModule , CoreModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
