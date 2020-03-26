@@ -11,7 +11,9 @@ const uuidv1 = require('uuid/v1');
 const getDeviceProfile = async (req, res) => {
   // TODO: SB-18369 Remove console.log after testing and verifying the headers data
   console.log('X-FORWARDED-FOR headers', req.headers['X-FORWARDED-FOR']);
+  console.log('real IP headers', req.headers['X-Real-IP']);
   console.log('request headers', req.headers);
+  console.log('string headers', JSON.stringify(req.headers));
   const options = {
     method: CONSTANTS.HTTP.METHOD.GET,
     url: envHelper.sunbird_device_api + CONSTANTS.API_VERSION.V3 + '/device/profile/' + req.params.deviceId,
