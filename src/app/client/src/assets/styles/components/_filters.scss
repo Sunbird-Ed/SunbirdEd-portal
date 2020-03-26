@@ -1,6 +1,6 @@
 .sb-prominent-filter {
   background: $sb-prominent-filter-background-color;
-  padding: 8px 0px 0px 0px;
+  padding: calculateRem(8px) 0px 0px 0px;
 
   .sb-prominent-filter-header {
     font-weight: $sb-prominent-filter-header-font-weight;
@@ -86,8 +86,8 @@
           i.icon.square.outline{
             height: ($base-block-space * 2);
             width:  ($base-block-space * 2);
-            border: 1px solid $primary-300;
-            border-radius: 5px;
+            border: calculateRem(1px) solid $primary-300;
+            border-radius: calculateRem(5px);
             &::before{
               content: "\f14a";
               visibility: hidden;
@@ -124,7 +124,7 @@
 }
 .sb-prominent-filter.sb-bg-color-gray-0 .sb-prominent-filter-container .sb-prominent-filter-field .ui.selection.dropdown{
     background: $white;
-    border: 0.5px solid #9999;
+    border: calculateRem(0.5px) solid var(--gray-200);
 }
 
 // responsive
