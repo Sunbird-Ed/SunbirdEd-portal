@@ -10,8 +10,7 @@ const uuidv1 = require('uuid/v1');
 
 const getDeviceProfile = async (req, res) => {
   // TODO: SB-18369 Remove console.log after testing and verifying the headers data
-  console.log('X-FORWARDED-FOR headers', req.headers['X-FORWARDED-FOR']);
-  console.log('real IP headers', req.headers['X-Real-IP']);
+  console.log('real IP headers', req.headers['x-real-ip']);
   console.log('request headers', req.headers);
   console.log('string headers', JSON.stringify(req.headers));
   const options = {
@@ -22,7 +21,7 @@ const getDeviceProfile = async (req, res) => {
       'Cache-Control': 'no-cache',
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + envHelper.PORTAL_API_AUTH_TOKEN,
-      'X-FORWARDED-FOR': req.headers['X-FORWARDED-FOR']
+      'X-FORWARDED-FOR': req.headers['x-real-ip']
     }
   };
   try {
