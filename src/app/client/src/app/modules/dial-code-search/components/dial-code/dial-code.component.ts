@@ -437,7 +437,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       let previousUrl = _.get(this.navigationhelperService.getPreviousUrl(), 'url') || '/get';
       if (_.includes(previousUrl, 'play')) {
         if (this.userService.loggedIn) {
-          previousUrl = '/resources';
+          previousUrl = '/learn';
         } else {
           previousUrl = '/explore';
         }
