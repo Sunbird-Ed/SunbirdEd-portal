@@ -254,7 +254,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
         data: _.get(dataset, 'data') || this.getData(groupedDataBasedOnLabels, dataset['dataExpr']),
         hidden: _.get(dataset, 'hidden') || false,
         ...(isStackingEnabled) && { stack: _.get(dataset, 'stack') || 'default' },
-        ...(_.get(dataset, 'type')) && { type: _.get(dataset, 'type')}
+        ...(_.get(dataset, 'type')) && { type: _.get(dataset, 'type')},
+        ...(_.get(dataset, 'lineThickness')) && { borderWidth: _.get(dataset, 'lineThickness')}
       });
     });
 
