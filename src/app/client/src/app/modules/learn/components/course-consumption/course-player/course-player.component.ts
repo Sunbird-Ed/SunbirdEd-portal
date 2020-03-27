@@ -265,14 +265,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       .subscribe(({ contentId, parentId }) => {
         if (contentId) {
           const {contentNode, contentPosition} = this.findContentByIdAndParentId(contentId, parentId);
-          this.assessmentScoreService.init({
-            batchDetails: this.enrolledBatchInfo,
-            courseDetails: this.courseHierarchy,
-            contentDetails: _.get(contentNode, 'model')
-          });
-          this.objectRollUp = this.contentUtilsService.getContentRollup(contentNode);
-          const isExtContentMsg = this.coursesService.showExtContentMsg ? this.coursesService.showExtContentMsg : false;
           if (contentNode) {
+            this.assessmentScoreService.init({
+              batchDetails: this.enrolledBatchInfo,
+              courseDetails: this.courseHierarchy,
+              contentDetails: _.get(contentNode, 'model')
+            });
+            this.objectRollUp = this.contentUtilsService.getContentRollup(contentNode);
+            const isExtContentMsg = this.coursesService.showExtContentMsg ? this.coursesService.showExtContentMsg : false;
             this.OnPlayContent({ title: _.get(contentNode, 'model.name'), id: contentId, parentId, contentPosition  },
               isExtContentMsg);
           } else {
