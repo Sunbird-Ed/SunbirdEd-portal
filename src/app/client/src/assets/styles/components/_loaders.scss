@@ -8,7 +8,7 @@
     width: $base-block-space * 4;
     height: $base-block-space * 4;
     border-radius: 50%;
-    border: 2px solid;
+    border: calculateRem(2px) solid;
     border-color: $teal $teal transparent;
     animation: loader 0.5s infinite;
     position: absolute;
@@ -1051,10 +1051,10 @@
 /* page placeholder loader */
 @keyframes placeHolderShimmer{
 0%{
-    background-position: -468px 0
+    background-position: calculateRem(-468px) 0
 }
 100%{
-    background-position: 468px 0
+    background-position: calculateRem(468px) 0
 }
 }
 
@@ -1066,12 +1066,12 @@ animation-name: placeHolderShimmer;
 animation-timing-function: linear;
 background: darkgray;
 background: linear-gradient(to right, #eeeeee 10%, #dddddd 18%, #eeeeee 33%);
-background-size: 800px 104px;
+background-size: calculateRem(800px) calculateRem(104px);
 // height: 100px;
 position: relative;
 }
 
 .background-masker {
-background: #fff;
+background: var(--white);
 position: absolute;
 }

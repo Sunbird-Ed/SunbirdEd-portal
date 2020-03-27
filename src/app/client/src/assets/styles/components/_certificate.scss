@@ -158,7 +158,7 @@ $sb-certificatePage-loader-img-width: calculateRem(30px);
   .sb-certificatePage-field {
     .sb-form-control {
       font-weight: bold;
-      letter-spacing: 4px;
+      letter-spacing: calculateRem(4px);
     }
   }
 

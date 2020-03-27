@@ -2,7 +2,7 @@
     .menu {
         right: 0;
         left: auto; 
-        min-width: 148px;
+        min-width: calculateRem(148px);
         &>.item{
             font-size:$font-size-sm;
             &:hover {

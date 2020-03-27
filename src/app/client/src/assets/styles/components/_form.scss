@@ -120,7 +120,7 @@ $sb-selection-line-height: calculateRem(18px);
 .sb-form-control {
   background-color: $sb-input-background-color;
   background-clip: padding-box;
-  border: calculateRem(1px) solid #999;
+  border: calculateRem(1px) solid var(--gray-200);
   border-radius: $sb-input-border-radius;
   color: $sb-input-color;
   display: block;
