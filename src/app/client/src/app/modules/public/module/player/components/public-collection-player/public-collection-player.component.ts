@@ -30,8 +30,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public queryParams: any;
   public collectionData: object;
 
-  public route: ActivatedRoute;
-
   public showPlayer: Boolean = false;
 
   private collectionId: string;
@@ -96,8 +94,13 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerContent;
   isOffline: boolean = environment.isOffline;
   public unsubscribe$ = new Subject<void>();
+  telemetryInteractDataTocClick = {
+    id: 'toc-click',
+    type: 'click',
+    pageid: this.route.snapshot.data.telemetry.pageid
+  };
 
-  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
+  constructor(contentService: ContentService, public route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
@@ -105,7 +108,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     public contentManagerService: ContentManagerService, public popupControlService: PopupControlService,
     public utilService: UtilService) {
     this.contentService = contentService;
-    this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;

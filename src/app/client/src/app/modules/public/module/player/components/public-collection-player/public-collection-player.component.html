@@ -98,6 +98,7 @@
       
       <!--Collection Tree-->
       <app-collection-tree 
+        [telemetryInteractData]="telemetryInteractDataTocClick"
         *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" 
         (contentSelect)="OnPlayContent($event)" 
         [nodes]="collectionTreeNodes" 

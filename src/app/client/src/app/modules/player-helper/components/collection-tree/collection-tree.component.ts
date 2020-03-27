@@ -26,6 +26,7 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public options: ICollectionTreeOptions;
   @Output() public contentSelect: EventEmitter<{id: string, title: string, parentId?: string}> = new EventEmitter();
   @Input() contentStatus: any;
+  @Input() telemetryInteractData;
   private rootNode: any;
   private selectLanguage: string;
   private contentComingSoonDetails: any;
