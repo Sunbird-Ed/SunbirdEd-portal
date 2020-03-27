@@ -8,10 +8,9 @@
     padding: 0px;
 }
 
-
 .shepherd-element .shepherd-content {
     background-color: $gray-800;
-    padding: 16px;
+    padding: calculateRem(16px);
     // max-width:454px;
     //width:454px;
 }

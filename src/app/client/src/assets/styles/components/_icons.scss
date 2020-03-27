@@ -122,9 +122,9 @@
   mask-size: contain;
   mask-position: 50% 50%;
   mask-repeat: no-repeat;
-  width: 16px;
-  height: 16px;
-  margin-left: 4px;
+  width: calculateRem(16px);
+  height: calculateRem(16px);
+  margin-left: calculateRem(4px);
   display: inline-block;
   vertical-align: bottom;
 }
