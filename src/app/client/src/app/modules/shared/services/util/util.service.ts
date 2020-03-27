@@ -308,7 +308,7 @@ export class UtilService {
    * @returns - Sorted array
    */
   sortArrayOfObjects(key: string, order = 'asc') {
-    return function innerSort(a, b) {
+    return (a, b) => {
       if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
         return 0;
       }

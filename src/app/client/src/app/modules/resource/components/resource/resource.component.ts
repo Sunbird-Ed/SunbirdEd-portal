@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, tap, skip } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
-import { UtilService } from "./../../../shared/services/util/util.service";
+import { UtilService } from './../../../shared/services/util/util.service';
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
   templateUrl: './resource.component.html'
