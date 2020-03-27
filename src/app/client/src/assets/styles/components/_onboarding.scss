@@ -3,16 +3,16 @@
     background: var(--white);
     height: 100%;
     width: 100%;
-    padding: 32px;
+    padding: calculateRem(32px);
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0px 10px 40px -14px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px calculateRem(10px) calculateRem(40px) calculateRem(-14px) rgba(0, 0, 0, 0.5);
     // overflow: hidden;
     @include respond-above(sm) {
-      min-width: 360px;
-      max-width: 416px;
+      min-width: calculateRem(360px);
+      max-width: calculateRem(416px);
       height: auto;
     }
     &__content {
@@ -26,28 +26,28 @@
       &__header {
         padding: ($base-block-space * 2);
         img {
-          width: 100px;
+          width: calculateRem(100px);
         }
       }
       .swiper-slide {
-        min-height: 360px;
+        min-height: calculateRem(360px);
         width: 100%;
         transition: all 2s linear;
         .slide-title {
-          font-size: 14px;
+          font-size: calculateRem(14px);
           color: var(--primary-400);
           margin-bottom: 0px;
         }
         &__title {
           text-align: center;
-          font-size: 16px;
+          font-size: calculateRem(16px);
           padding: ($base-block-space * 3) 0px;
         }
         &__para {
           text-align: left;
-          font-size: 12px;
+          font-size: calculateRem(12px);
           padding: ($base-block-space * 3) 0px;
-          color: #333333;
+          color: var(--gray-800);
         }
         .language-selection {
           width: 100%;
@@ -57,10 +57,10 @@
           display: flex;
           flex-direction: column;
           background: $primary-0;
-          box-shadow: 0 2px 4px 0 #d8d8d8;
+          box-shadow: 0 calculateRem(2px) calculateRem(4px) 0 #d8d8d8;
           height: 100%;
           padding: ($base-block-space * 2) 0px;
-          max-height: 280px;
+          max-height: calculateRem(280px);
         }
       }
       .animate-slide-on {
@@ -81,12 +81,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 16px 0px;
+    padding: calculateRem(16px) 0px;
     .circle {
-      margin: 0 3px;
-      border: 1px solid #eee;
-      width: 8px;
-      height: 8px;
+      margin: 0 calculateRem(3px);
+      border: calculateRem(1px) solid #eee;
+      width: calculateRem(8px);
+      height: calculateRem(8px);
       border-radius: 50%;
     }
     .active {
