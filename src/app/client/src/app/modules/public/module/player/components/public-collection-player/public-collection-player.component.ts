@@ -10,7 +10,7 @@ import {
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
   ContentUtilsServiceService, UtilService
 } from '@sunbird/shared';
-import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
@@ -106,7 +106,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
     public contentManagerService: ContentManagerService, public popupControlService: PopupControlService,
-    public utilService: UtilService) {
+    public utilService: UtilService, public userService: UserService) {
     this.contentService = contentService;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -164,7 +164,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         edata: {
           type: this.route.snapshot.data.telemetry.type,
           pageid: this.route.snapshot.data.telemetry.pageid,
-          uri: this.router.url,
+          uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
           subtype: this.route.snapshot.data.telemetry.subtype,
           duration: this.pageLoadDuration
         }
@@ -199,7 +199,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       edata: {
         type: this.route.snapshot.data.telemetry.env,
         pageid: this.route.snapshot.data.telemetry.env,
-        uri: this.router.url
+        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
       },
       object: {
         id: data.metadata.identifier,

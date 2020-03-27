@@ -196,7 +196,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
           edata: {
             type: this.activatedRoute.snapshot.data.telemetry.type,
             pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-            uri: this.router.url,
+            uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
             subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
             duration: this.navigationHelperService.getPageLoadTime()
           }
