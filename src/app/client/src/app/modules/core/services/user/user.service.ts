@@ -121,7 +121,6 @@ export class UserService {
     } catch (error) {
     }
     this._slug = baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
-    console.log(this._slug);
   }
   get slug() {
     return this._slug;
