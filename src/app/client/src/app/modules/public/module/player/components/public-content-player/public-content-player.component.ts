@@ -148,15 +148,18 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   public close() {
-    let previousUrl = _.get(this.navigationHelperService.getPreviousUrl(), 'url');
-      if (_.includes(previousUrl, 'play')) {
-        if (this.userService.loggedIn) {
-          previousUrl = '/resources';
-        } else {
-          previousUrl = '/explore';
-        }
+    let previousUrl;
+    let prevRoute = _.get(this.navigationHelperService.getPreviousUrl(), 'url');
+    if (this.userService.loggedIn) {
+      if(prevRoute){
+        previousUrl = prevRoute;
+      }else{
+        previousUrl = '/resources';
       }
-      this.router.navigate([previousUrl]);
+    } else {
+      previousUrl = '/explore';
+    }
+  this.router.navigate([previousUrl]);
   }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
