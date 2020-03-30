@@ -14,6 +14,7 @@ import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { debounceTime, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-all-content',
@@ -199,13 +200,10 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
     observableCombineLatest(
       this.activatedRoute.params,
-      this.activatedRoute.queryParams,
-      (params: any, queryParams: any) => {
-        return {
-          params: params,
-          queryParams: queryParams
-        };
-      })
+      this.activatedRoute.queryParams).pipe(
+        debounceTime(10),
+        map(([params, queryParams]) => ({ params, queryParams })
+      ))
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
