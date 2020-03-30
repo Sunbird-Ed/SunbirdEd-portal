@@ -126,7 +126,7 @@ describe('EnrollBatchComponent', () => {
     const enrollButton = fixture.debugElement.query(By.css('#enrollToCourse'));
     spyOn(courseBatchService, 'getEnrollToBatchDetails').and.callFake(() => of(fakeBatchDetails));
     const courseBatchServiceSpy = spyOn(courseBatchService, 'enrollToCourse').and.callFake(() => of(''));
-    spyOnProperty(component.userService, 'userid').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
+    spyOnProperty(component.userService, 'userid', 'get').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
     const fetchEnrolledCourseDataSpy = spyOn(component, 'fetchEnrolledCourseData');
     const telemetryLogEvent = spyOn(component, 'telemetryLogEvents');
     component.ngOnInit();
@@ -149,7 +149,7 @@ describe('EnrollBatchComponent', () => {
     const enrollButton = fixture.debugElement.query(By.css('#enrollToCourse'));
     spyOn(courseBatchService, 'getEnrollToBatchDetails').and.callFake(() => of(fakeBatchDetails));
     const courseBatchServiceSpy = spyOn(courseBatchService, 'enrollToCourse').and.callFake(() => throwError(''));
-    spyOnProperty(component.userService, 'userid').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
+    spyOnProperty(component.userService, 'userid', 'get').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
     const toasterSpy = spyOn(toasterService, 'error');
     const telemetryLogEvent = spyOn(component, 'telemetryLogEvents');
     component.ngOnInit();
