@@ -133,7 +133,8 @@ export class NavigationHelperService {
    * 3. if both are not present then default explore is returned.
    */
   public getPreviousUrl(): UrlHistory {
-    const previousUrl = this.history[this._history.length - 2];
+    this.history.pop();
+    const previousUrl = this.history[this.history.length - 1];
     const sessionUrl = this.cacheService.get(this.cacheServiceName);
     if (previousUrl) {
       return previousUrl;

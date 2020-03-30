@@ -147,28 +147,16 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * closes conent player and revert to previous url
    * @memberof ContentPlayerComponent
    */
-  close() {
-    try {
-      window.frames['contentPlayer'].contentDocument.body.onunload({});
-    } catch {
-
-    } finally {
-      setTimeout(() => {
-        if (this.dialCode) {
-          sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
-          const navigateOptions = {
-            queryParams: {
-              textbook: _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
-            }
-          };
-          this.router.navigate(['/get/dial/', this.dialCode], navigateOptions);
-        } else if (this.isOffline) {
-            this.navigationHelperService.navigateToResource('');
-          } else {
-            this.navigationHelperService.navigateToResource('/explore');
-          }
-      }, 100);
-    }
+  public closePlayer() {
+    let previousUrl = _.get(this.navigationHelperService.getPreviousUrl(), 'url');
+      if (_.includes(previousUrl, 'play')) {
+        if (this.userService.loggedIn) {
+          previousUrl = '/resource';
+        } else {
+          previousUrl = '/explore';
+        }
+      }
+      this.router.navigate([previousUrl]);
   }
   deviceDetector() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
