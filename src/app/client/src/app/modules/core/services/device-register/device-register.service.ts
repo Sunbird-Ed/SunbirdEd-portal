@@ -65,10 +65,12 @@ export class DeviceRegisterService  {
   }
 
   fetchDeviceProfile() {
-    const options = {
-      url: this.configService.urlConFig.URLS.DEVICE.PROFILE + this.deviceId
+    const httpOptions: HttpOptions = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     };
-    return this.deviceService.get(options);
+    return this.http.get(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.PROFILE + this.deviceId, httpOptions);
   }
 
   getDeviceProfile() {
@@ -104,11 +106,12 @@ export class DeviceRegisterService  {
         }
       }
     };
-    const options = {
-      url: this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId,
-      data: data
+    const httpOptions: HttpOptions = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     };
-    this.deviceService.post(options)
+    this.http.post(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId, data, httpOptions)
     .subscribe(() => {
     });
   }
@@ -140,11 +143,12 @@ export class DeviceRegisterService  {
         }
       }
     };
-    const options = {
-      url: this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId,
-      data: data
+    const httpOptions: HttpOptions = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     };
-    return this.deviceService.post(options)
+    return this.http.post(this.deviceAPIBaseURL + this.configService.urlConFig.URLS.DEVICE.REGISTER + this.deviceId, data, httpOptions)
       .pipe(map((res) => {
         return res;
       }));
