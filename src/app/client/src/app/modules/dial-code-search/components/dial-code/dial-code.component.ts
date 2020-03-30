@@ -363,7 +363,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: `${this.activatedRoute.snapshot.data.telemetry.pageid}`,
-        uri: this.router.url,
+        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
         subtype: _.get(this.activatedRoute, 'snapshot.data.telemetry.subtype'),
         duration: this.navigationhelperService.getPageLoadTime()
       }
