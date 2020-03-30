@@ -151,7 +151,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     let previousUrl = _.get(this.navigationHelperService.getPreviousUrl(), 'url');
       if (_.includes(previousUrl, 'play')) {
         if (this.userService.loggedIn) {
-          previousUrl = '/resource';
+          previousUrl = '/resources';
         } else {
           previousUrl = '/explore';
         }
