@@ -147,7 +147,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * closes conent player and revert to previous url
    * @memberof ContentPlayerComponent
    */
-  public closePlayer() {
+  public close() {
     let previousUrl = _.get(this.navigationHelperService.getPreviousUrl(), 'url');
       if (_.includes(previousUrl, 'play')) {
         if (this.userService.loggedIn) {
