@@ -79,7 +79,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   public contentStatus: any;
 
-  public contentDetails = [];
+  public contentDetails: { title: string, id: string, parentId: string }[] = [];
 
   public enrolledBatchInfo: any;
 
@@ -197,7 +197,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         } else {
           mimeTypeCount[node.model.mimeType] = 1;
         }
-        this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
+        const parentId: string = _.get(node, 'parent.model.identifier');
+        this.contentDetails.push({
+          id: node.model.identifier, title: node.model.name,
+          parentId // parentId added to prevent short circuit if duplicate content exist in two units
+        });
         this.contentIds.push(node.model.identifier);
       }
     });
@@ -236,21 +240,40 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe)
     );
   }
-
+  private findContentByIdAndParentId(contentId, parentId = this.courseId) {
+    let parentFound = false;
+    let contentPosition = 0;
+    let contentNode;
+    this.treeModel.walk((node) => {
+      if (contentNode) {
+        return;
+      }
+      if (node.model.identifier === parentId) {
+        parentFound = true;
+        return;
+      }
+      if (node.model.identifier === contentId && parentFound) {
+        contentNode = node;
+      } else if (node.model.identifier === contentId) {
+        contentPosition += 1;
+      }
+    });
+    return { contentNode, contentPosition};
+  }
   private subscribeToQueryParam() {
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe))
-      .subscribe(({ contentId }) => {
+      .subscribe(({ contentId, parentId }) => {
         if (contentId) {
-          const content = this.findContentById(contentId);
-          this.assessmentScoreService.init({
-            batchDetails: this.enrolledBatchInfo,
-            courseDetails: this.courseHierarchy,
-            contentDetails: _.get(content, 'model')
-          });
-          this.objectRollUp = this.contentUtilsService.getContentRollup(content);
-          const isExtContentMsg = this.coursesService.showExtContentMsg ? this.coursesService.showExtContentMsg : false;
-          if (content) {
-            this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') },
+          const {contentNode, contentPosition} = this.findContentByIdAndParentId(contentId, parentId);
+          if (contentNode) {
+            this.assessmentScoreService.init({
+              batchDetails: this.enrolledBatchInfo,
+              courseDetails: this.courseHierarchy,
+              contentDetails: _.get(contentNode, 'model')
+            });
+            this.objectRollUp = this.contentUtilsService.getContentRollup(contentNode);
+            const isExtContentMsg = this.coursesService.showExtContentMsg ? this.coursesService.showExtContentMsg : false;
+            this.OnPlayContent({ title: _.get(contentNode, 'model.name'), id: contentId, parentId, contentPosition  },
               isExtContentMsg);
           } else {
             this.toasterService.error(this.resourceService.messages.emsg.m0005); // need to change message
@@ -264,21 +287,28 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public findContentById(id: string) {
     return this.treeModel.first(node => node.model.identifier === id);
   }
-  private OnPlayContent(content: { title: string, id: string }, showExtContentMsg?: boolean) {
+  private OnPlayContent(content: { title: string, id: string, parentId: string, contentPosition: number }, showExtContentMsg?: boolean) {
     if (content && content.id && ((this.enrolledCourse && !this.flaggedCourse &&
       this.enrolledBatchInfo.status > 0) || this.courseStatus === 'Unlisted'
       || this.permissionService.checkRolesPermissions(this.previewContentRoles)
       || this.courseHierarchy.createdBy === this.userService.userid)) {
       this.contentId = content.id;
       this.setTelemetryContentImpression();
-      this.setContentNavigators();
+      this.setContentNavigators(content.contentPosition);
       this.playContent(content, showExtContentMsg);
     } else {
       this.closeContentPlayer();
     }
   }
-  private setContentNavigators() {
-    const index = _.findIndex(this.contentDetails, ['id', this.contentId]);
+
+  private setContentNavigators(contentPosition = 0) {
+    const index =  _.findIndex(this.contentDetails, (ele) => {
+      if (ele.id === this.contentId && contentPosition === 0) {
+        return true;
+      } else if (ele.id === this.contentId) {
+        --contentPosition;
+      }
+    });
     this.prevPlaylistItem = this.contentDetails[index - 1];
     this.nextPlaylistItem = this.contentDetails[index + 1];
   }
@@ -311,9 +341,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.stmsg.m0009);
       });
   }
-  public navigateToContent(content: { title: string, id: string }): void {
+  public navigateToContent(content: { title: string, id: string, parentId?: string }): void {
+    const contentId = content.id;
+    const parentId = content.parentId || this.courseId; // should all defaults to courseID
     const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': content.id },
+      queryParams: { contentId, parentId },
       relativeTo: this.activatedRoute
     };
     const playContentDetail = this.findContentById(content.id);

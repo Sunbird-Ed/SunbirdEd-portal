@@ -1,4 +1,5 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect(); modal.deny();" #modal *ngIf="modalName === 'upload'">
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'" class="sb-modal custom-sui-modal" appBodyScroll (dismissed)="redirect(); modal.deny();" #modal *ngIf="modalName === 'upload'">
+  <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.instn?.t0016}}
   </div>

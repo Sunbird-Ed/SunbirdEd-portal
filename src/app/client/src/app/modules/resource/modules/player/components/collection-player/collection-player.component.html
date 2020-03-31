@@ -94,7 +94,7 @@
   </div>
   <div class="row" *ngIf="!loader">
     <div class="twelve wide column">
-      <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions">        
+      <app-collection-tree [telemetryInteractData]="telemetryInteractDataTocClick"  *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" (contentSelect)="OnPlayContent($event)" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions">        
       </app-collection-tree>
       <ng-template #dataCommingSoon>
         <app-comming-soon [contentOrgId]="collectionTreeNodes.data.channel"></app-comming-soon>

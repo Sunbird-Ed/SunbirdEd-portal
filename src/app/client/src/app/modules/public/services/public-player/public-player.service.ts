@@ -92,6 +92,7 @@ export class PublicPlayerService {
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
       buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     configuration.context.channel = _.get(this.orgDetailsService.orgDetails, 'hashTagId');
+    configuration.context.tags = [configuration.context.channel];
     configuration.context.pdata.id = this.userService.appId;
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
     configuration.context.did = deviceId ? deviceId.value : '';

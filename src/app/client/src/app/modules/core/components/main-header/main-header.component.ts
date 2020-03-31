@@ -208,6 +208,7 @@ export class MainHeaderComponent implements OnInit {
   getUrl() {
     this.routerEvents.subscribe((urlAfterRedirects: NavigationEnd) => {
       let currentRoute = this.activatedRoute.root;
+      this.showAccountMergemodal = false; // to remove popup on browser back button click
       this.contributeTabActive = this.router.isActive('/contribute', true);
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
