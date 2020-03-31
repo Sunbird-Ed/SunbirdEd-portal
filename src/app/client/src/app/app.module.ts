@@ -17,6 +17,7 @@ import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storag
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
+import {ChatLibModule, ChatLibService} from 'chat-lib';
 @NgModule({
   declarations: [
     AppComponent
@@ -33,6 +34,7 @@ import { PluginModules } from './framework.config';
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
     SharedFeatureModule,
+    ChatLibModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
@@ -40,6 +42,7 @@ import { PluginModules } from './framework.config';
   bootstrap: [AppComponent],
   providers: [
     CacheService,
+    ChatLibService,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true }
   ]
