@@ -20,6 +20,7 @@ declare const iziToast: any;
 
 
 interface JQuery {
+  dataTable: any;
   treePicker(options?: any);
   topicTreePicker(options?: any)
   iziModal(options?: any);
