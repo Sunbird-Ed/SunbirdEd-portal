@@ -29,7 +29,7 @@ export class DataTableComponent implements AfterViewInit {
         const gradeIndex = this.headerData.indexOf(GRADE_HEADER);
         if (gradeIndex !== 1) {
             columnDefs.push({
-                'targets': '_all',
+                'targets': '_all', // TODO: shouldn't push to all column, only to required field
                 'type': 'grade-sort'
               });
         }
