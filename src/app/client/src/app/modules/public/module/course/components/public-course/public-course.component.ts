@@ -198,6 +198,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+    searchQueryParams['exists'] = _.get(searchQuery,'request.exists');
     // searchQuery.request.filters.channel = this.hashTagId;
     // searchQuery.request.filters.board = this.dataDrivenFilters.board;
     this.cacheService.set('viewAllQuery', searchQueryParams);
