@@ -243,3 +243,11 @@ input[type=number]::-webkit-inner-spin-button {
         }
     }
 }
+
+.password-showhideimage {
+    position: absolute;
+    right: calculateRem(8px);
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

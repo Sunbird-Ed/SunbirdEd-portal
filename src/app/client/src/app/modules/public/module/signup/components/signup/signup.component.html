@@ -54,7 +54,8 @@
               <div class="ui icon input">
                 <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.password.touched && signUpForm.controls['password'].errors}" [type]="showPassword ? 'text' : 'password'"
                   formControlName="password" name="password" placeholder="{{resourceService.frmelmnts.lbl.EnterPassword}}">
-                <i class="icon large sb-icon-preview link opacity-1" (click)="displayPassword()"></i>
+                <!-- <i class="icon large sb-icon-preview link opacity-1" (click)="displayPassword()"></i> -->
+                <img class="password-showhideimage" src="{{ showPassword ? 'assets/images/password-hidden.svg' : 'assets/images/password-visibile.svg'}}" alt="show-password.svg" (click)="displayPassword()">
               </div>
               <label class="ui basic label pt-8 p-0 m-0 infotext line-height-1-3" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{passwordError}}</label>
             </div>
