@@ -16,6 +16,7 @@ import * as _ from 'lodash-es';
 describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
   let fixture: ComponentFixture<CoursePlayerComponent>;
+  let contentUtilsServiceService;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
@@ -83,6 +84,8 @@ describe('CoursePlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CoursePlayerComponent);
     component = fixture.componentInstance;
+    contentUtilsServiceService = TestBed.get(ContentUtilsServiceService);
+    // spyOn(contentUtilsServiceService, 'getContentRollup').and.returnValue({});
   });
 
   afterEach(() => {
