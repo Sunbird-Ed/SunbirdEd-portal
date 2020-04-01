@@ -68,7 +68,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
-    public utilService: UtilService, public navigationhelperService: NavigationHelperService,
+    public utilService: UtilService, public navigationHelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
     public contentManagerService: ContentManagerService, public publicPlayerService: PublicPlayerService,
     private dialCodeService: DialCodeService) {
@@ -366,7 +366,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         pageid: `${this.activatedRoute.snapshot.data.telemetry.pageid}`,
         uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
         subtype: _.get(this.activatedRoute, 'snapshot.data.telemetry.subtype'),
-        duration: this.navigationhelperService.getPageLoadTime()
+        duration: this.navigationHelperService.getPageLoadTime()
       }
     };
   }
@@ -433,17 +433,12 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   public handleCloseButton() {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook') && _.get(this.dialCodeService, 'dialCodeResult.count') > 1) {
-      this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')]);
+      return this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')]);
+    }
+    if (this.userService.loggedIn) {
+      this.navigationHelperService.navigateToPreviousUrl('/resources');
     } else {
-      let previousUrl = _.get(this.navigationhelperService.getPreviousUrl(), 'url') || '/get';
-      if (_.includes(previousUrl, 'play')) {
-        if (this.userService.loggedIn) {
-          previousUrl = '/resources';
-        } else {
-          previousUrl = '/explore';
-        }
-      }
-      this.router.navigate([previousUrl]);
+      this.navigationHelperService.navigateToPreviousUrl('/explore');
     }
   }
   public redirectToDetailsPage(contentId) {

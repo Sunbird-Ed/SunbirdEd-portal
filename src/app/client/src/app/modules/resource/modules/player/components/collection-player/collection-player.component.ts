@@ -325,11 +325,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       }));
   }
   closeCollectionPlayer() {
-    if (_.get(history.state, 'action') === 'dialcode') {
-      this.navigationHelperService.navigateToPreviousUrl();
-    } else {
-      this.navigationHelperService.navigateToResource('/resources');
-    }
+    this.navigationHelperService.navigateToPreviousUrl('/resources');
   }
   closeContentPlayer() {
     this.selectedContent = {};
