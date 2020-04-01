@@ -4,6 +4,7 @@ import * as datatable from 'datatables.net';
 import * as naturalSortDataTablePlugin from './../../../../../assets/libs/naturalSortDataTablePlugin';
 import * as moment from 'moment';
 const GRADE_HEADER = 'Grade';
+import * as _ from 'lodash-es';
 
 @Component({
     selector: 'app-data-table',
@@ -30,7 +31,7 @@ export class DataTableComponent implements AfterViewInit {
             }
         }];
         // TODO: Should be configurable, should support multi field and multi type
-        const gradeIndex = this.headerData.indexOf(GRADE_HEADER);
+        const gradeIndex = _.indexOf(this.headerData, GRADE_HEADER);
         if (gradeIndex !== 1) {
             columnDefs.push({
                 targets: gradeIndex, // TODO: shouldn't push to all column, only to required field
