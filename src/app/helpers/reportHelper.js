@@ -8,10 +8,7 @@ const logger = require('sb_logger_util_v2');
 
 const validateSlug = (allowedFolders = []) => {
     return (req, res, next) => {
-        let paramsSlug = _.get(req, 'params.slug');
-        if (_.get(req, 'params.slug').indexOf('__') > -1 && _.get(req, 'params.slug').split('__').length > 1) {
-            paramsSlug = _.get(req, 'params.slug').split('__')[0];
-        }
+        let paramsSlug = _.split(_.get(req, 'params.slug'), '__')[0];
         if (_.includes([...allowedFolders, _.get(req, 'session.rootOrg.slug')], paramsSlug)) {
             logger.info({ msg: 'validate slug passed' })
             next();
