@@ -4,6 +4,9 @@ import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 import { UtilService } from '../util/util.service';
+import { Subject, asyncScheduler } from 'rxjs';
+import { throttleTime, mergeMap } from 'rxjs/operators';
+
 interface UrlHistory {
   url: string;
   queryParams?: any;
@@ -20,10 +23,11 @@ export class NavigationHelperService {
    */
   private _workspaceCloseUrl: UrlHistory;
   /**
-   * Stores routing history
+   * Stores routing history, if query param changed in same url only latest copy will be stored rest ignored
    */
   private _history: Array<UrlHistory> = [];
 
+  navigateToPreviousUrl$ = new Subject;
 
   private pageStartTime: any;
 
@@ -38,6 +42,7 @@ export class NavigationHelperService {
     public cacheService: CacheService,
     public utilService: UtilService
   ) {
+    this.handlePrevNavigation();
     if (!NavigationHelperService.singletonInstance) {
       NavigationHelperService.singletonInstance = this;
     }
@@ -145,20 +150,29 @@ export class NavigationHelperService {
   }
   /**
    * Navigates to previous Url
-   * 1. Goes to previous url, If Url and queryParams are present either from local property or session store.
-   * 2. If not, then goes to default url provided.
+   * moved logic to subject subscription to prevent,
+   * multiple navigation if user click close multiple time before navigation trigers
    */
   public navigateToPreviousUrl(defaultUrl: string = '/explore') {
-    const previousUrl = this.getPreviousUrl();
-    if (previousUrl.url === '/explore') {
-      this.router.navigate([defaultUrl]);
-    } else {
-      if (previousUrl.queryParams) {
-        this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
+    this.navigateToPreviousUrl$.next(defaultUrl);
+  }
+  handlePrevNavigation() {
+    this.navigateToPreviousUrl$.pipe(
+      throttleTime(250, asyncScheduler, { leading: true, trailing: false }))
+    .subscribe(defaultUrl => {
+      const previousUrl = this.getPreviousUrl();
+      this._history.pop(); // popping current url
+      this._history.pop(); // popping previous url as am navigating to same url it will be added again
+      if (previousUrl.url === '/explore') {
+        this.router.navigate([defaultUrl]);
       } else {
-        this.router.navigate([previousUrl.url]);
+        if (previousUrl.queryParams) {
+          this.router.navigate([previousUrl.url], { queryParams: previousUrl.queryParams });
+        } else {
+          this.router.navigate([previousUrl.url]);
+        }
       }
-    }
+    });
   }
 
   /* Returns previous URL for the desktop */

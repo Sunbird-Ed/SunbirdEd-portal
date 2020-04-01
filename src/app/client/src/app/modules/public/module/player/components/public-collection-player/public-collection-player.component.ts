@@ -2,7 +2,7 @@
 import { map, catchError, first, mergeMap, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subscription, Subject, of, throwError } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
@@ -10,7 +10,7 @@ import {
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
   ContentUtilsServiceService, UtilService
 } from '@sunbird/shared';
-import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
@@ -29,8 +29,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   telemetryContentImpression: IImpressionEventInput;
   public queryParams: any;
   public collectionData: object;
-
-  public route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
 
@@ -96,16 +94,20 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerContent;
   isOffline: boolean = environment.isOffline;
   public unsubscribe$ = new Subject<void>();
+  telemetryInteractDataTocClick = {
+    id: 'toc-click',
+    type: 'click',
+    pageid: this.route.snapshot.data.telemetry.pageid
+  };
 
-  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
+  constructor(contentService: ContentService, public route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
     public contentManagerService: ContentManagerService, public popupControlService: PopupControlService,
-    public utilService: UtilService) {
+    public utilService: UtilService, public userService: UserService) {
     this.contentService = contentService;
-    this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
@@ -162,7 +164,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         edata: {
           type: this.route.snapshot.data.telemetry.type,
           pageid: this.route.snapshot.data.telemetry.pageid,
-          uri: this.router.url,
+          uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
           subtype: this.route.snapshot.data.telemetry.subtype,
           duration: this.pageLoadDuration
         }
@@ -197,7 +199,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       edata: {
         type: this.route.snapshot.data.telemetry.env,
         pageid: this.route.snapshot.data.telemetry.env,
-        uri: this.router.url
+        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
       },
       object: {
         id: data.metadata.identifier,
@@ -286,7 +288,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.setTelemetryData();
         this.setTelemetryStartEndData();
         return this.getCollectionHierarchy(params.collectionId);
-      }), )
+      }))
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.loader = false;
@@ -316,14 +318,19 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.router.navigate(['/explore']);
       });
   }
-  private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
+  private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content } | any> {
     const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
     return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
-      map((response) => {
+      mergeMap((response) => {
+        if (_.get(response, 'result.content.status') === 'Unlisted') {
+          return throwError({
+            code: 'UNLISTED_CONTENT'
+          });
+        }
         this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
-        return { data: response.result.content };
+        return of({ data: response.result.content });
       }));
   }
   closeCollectionPlayer() {
@@ -331,16 +338,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
       this.router.navigate(['/get/dial/', this.dialCode]);
     } else {
-      if (this.isOffline) {
-       const  previousUrl =  this.navigationHelperService.getPreviousUrl();
-       if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
-        return this.router.navigate(['/']);
-       }
-       // tslint:disable-next-line: max-line-length
-       previousUrl.queryParams ? this.router.navigate([previousUrl.url], {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
-      } else {
-        this.navigationHelperService.navigateToResource('/explore');
-      }
+      this.navigationHelperService.navigateToPreviousUrl('/explore');
     }
   }
   closeContentPlayer() {

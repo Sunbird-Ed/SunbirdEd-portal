@@ -6,7 +6,7 @@ import { SearchService, SearchParam, PlayerService, CoursesService, UserService 
 import { PublicPlayerService } from '@sunbird/public';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService, TelemetryInteractDirective } from '@sunbird/telemetry';
-import { takeUntil, mergeMap, first, tap, retry, catchError, map, finalize } from 'rxjs/operators';
+import { takeUntil, mergeMap, first, tap, retry, catchError, map, finalize, debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
@@ -68,7 +68,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   constructor(public resourceService: ResourceService, public userService: UserService,
     public coursesService: CoursesService, public router: Router, public activatedRoute: ActivatedRoute,
     public searchService: SearchService, public toasterService: ToasterService, public configService: ConfigService,
-    public utilService: UtilService, public navigationhelperService: NavigationHelperService,
+    public utilService: UtilService, public navigationHelperService: NavigationHelperService,
     public playerService: PlayerService, public telemetryService: TelemetryService,
     public contentManagerService: ContentManagerService, public publicPlayerService: PublicPlayerService,
     private dialCodeService: DialCodeService) {
@@ -79,6 +79,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       (params, queryParams) => {
         return { ...params, ...queryParams };
       }).pipe(
+        debounceTime(10),
         tap(this.initialize),
         mergeMap(params => _.get(params, 'textbook') ? this.processTextBook(params) : this.processDialCode(params)),
       ).subscribe(res => {
@@ -363,9 +364,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: `${this.activatedRoute.snapshot.data.telemetry.pageid}`,
-        uri: this.router.url,
+        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
         subtype: _.get(this.activatedRoute, 'snapshot.data.telemetry.subtype'),
-        duration: this.navigationhelperService.getPageLoadTime()
+        duration: this.navigationHelperService.getPageLoadTime()
       }
     };
   }
@@ -432,17 +433,12 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   public handleCloseButton() {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook') && _.get(this.dialCodeService, 'dialCodeResult.count') > 1) {
-      this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')]);
+      return this.router.navigate(['/get/dial', _.get(this.activatedRoute, 'snapshot.params.dialCode')]);
+    }
+    if (this.userService.loggedIn) {
+      this.navigationHelperService.navigateToPreviousUrl('/resources');
     } else {
-      let previousUrl = _.get(this.navigationhelperService.getPreviousUrl(), 'url') || '/get';
-      if (_.includes(previousUrl, 'play')) {
-        if (this.userService.loggedIn) {
-          previousUrl = '/resources';
-        } else {
-          previousUrl = '/explore';
-        }
-      }
-      this.router.navigate([previousUrl]);
+      this.navigationHelperService.navigateToPreviousUrl('/explore');
     }
   }
   public redirectToDetailsPage(contentId) {

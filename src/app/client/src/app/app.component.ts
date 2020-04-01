@@ -445,7 +445,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
   viewInBrowser() {
-    this.router.navigate(['/resources']);
+    // no action required
   }
   closeIcon() {
     this.showFrameWorkPopUp = false;
