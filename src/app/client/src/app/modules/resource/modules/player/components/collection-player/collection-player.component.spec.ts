@@ -120,10 +120,10 @@ describe('CollectionPlayerComponent', () => {
 
   it('should redirect to /resource page', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'navigateToResource').and.callThrough();
+    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
     spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'fakeaction', 'navigationId': 3});
     component.closeCollectionPlayer();
-    expect(navigationHelperService.navigateToResource).toHaveBeenCalledWith('/resources');
+    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/resources');
   });
 
   it('should set dialcode to the telemetryCdata if any', () => {
