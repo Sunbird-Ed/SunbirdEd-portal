@@ -138,6 +138,20 @@ export class CollaborationContentFilterComponent implements OnInit {
     this.query = event;
     this.modelChanged.next(this.query);
   }
+  setCollabartionContentSearchInteractEdata() {
+    // this.query = query;
+    const searchInteractEdata = {
+      id: 'search-collabaration-content',
+      type: 'search',
+      pageid: 'workspace'
+    };
+    if (this.query) {
+      searchInteractEdata['extra'] = {
+        query: this.query
+      };
+    }
+    return searchInteractEdata;
+  }
 
   applySorting(sortByOption) {
     this.sortIcon = !this.sortIcon;
