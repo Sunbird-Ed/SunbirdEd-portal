@@ -16,10 +16,10 @@ describe('DataTableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DataTableComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });

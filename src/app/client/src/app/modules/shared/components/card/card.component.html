@@ -14,6 +14,9 @@
 
       <!--Meta Details - Course-->
       <div class="sb-card-meta course" *ngIf="data.contentType && data.contentType.toLowerCase() === 'course'">
+        <div class="d-flex mb-auto">
+          <div class="sb-card-label" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{data.ribbon.right.name}}</div>
+        </div>
         <div class="sb-card-meta-item mb-15" *ngIf="data.topic" title="{{data.topic}}">
           {{data.topic | slice:0:40}}
           <span *ngIf="data.topic && data.topic.length > 40">...</span>
