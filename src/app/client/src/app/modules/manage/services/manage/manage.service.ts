@@ -59,8 +59,8 @@ export class ManageService {
     return this.learnerService.get(options);
   }
 
-  public getData(slug: any, fileNmae: any): Observable<any> {
-    return this.httpClient.get('/admin-reports/' + slug + '/' + fileNmae)
+  public getData(slug: any, fileName: any): Observable<any> {
+    return this.httpClient.get('/admin-reports/' + slug + '/' + fileName)
       .pipe(
         map(res => {
           const result = {
