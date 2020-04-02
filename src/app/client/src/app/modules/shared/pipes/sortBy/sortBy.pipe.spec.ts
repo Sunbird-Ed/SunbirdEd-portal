@@ -1,5 +1,5 @@
-import { SortByPipe } from "./sortBy.pipe";
-import { sortData } from "./sortBy.pipe.spec.data";
+import { SortByPipe } from './sortBy.pipe';
+import { sortData } from './sortBy.pipe.spec.data';
 
 describe('SortByPipe', () => {
   let sortPipe: SortByPipe;
