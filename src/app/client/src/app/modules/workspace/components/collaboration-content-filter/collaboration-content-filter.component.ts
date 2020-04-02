@@ -139,10 +139,9 @@ export class CollaborationContentFilterComponent implements OnInit {
     this.modelChanged.next(this.query);
   }
   setCollabartionContentSearchInteractEdata() {
-    // this.query = query;
     const searchInteractEdata = {
       id: 'search-collabaration-content',
-      type: 'search',
+      type: 'click',
       pageid: 'workspace'
     };
     if (this.query) {
