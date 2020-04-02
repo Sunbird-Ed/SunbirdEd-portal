@@ -12,7 +12,6 @@ import {
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil, mergeMap } from 'rxjs/operators';
-import { ContentManagerService } from '@sunbird/offline';
 import { environment } from '@sunbird/environment';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
@@ -64,9 +63,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
-    private configService: ConfigService, public contentManagerService: ContentManagerService,
-    public utilService: UtilService
-  ) {
+    private configService: ConfigService, public utilService: UtilService) {
     this.playerOption = {
       showContentRating: true
     };

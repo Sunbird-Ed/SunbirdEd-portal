@@ -14,7 +14,6 @@ import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/co
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
-import { ContentManagerService } from '@sunbird/offline';
 import { environment } from '@sunbird/environment';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
@@ -105,7 +104,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
-    public contentManagerService: ContentManagerService, public popupControlService: PopupControlService,
+    public popupControlService: PopupControlService,
     public utilService: UtilService, public userService: UserService) {
     this.contentService = contentService;
     this.playerService = playerService;

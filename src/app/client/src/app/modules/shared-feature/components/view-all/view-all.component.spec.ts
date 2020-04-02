@@ -10,7 +10,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ContentManagerService } from '@sunbird/offline';
 
 describe('ViewAllComponent', () => {
   let component: ViewAllComponent;
@@ -47,7 +46,6 @@ describe('ViewAllComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       declarations: [ ViewAllComponent ],
       providers: [ConfigService, CoursesService, SearchService, LearnerService, PublicPlayerService,
-        ContentManagerService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
