@@ -175,13 +175,6 @@ describe('ViewAllComponent', () => {
     expect(route.navigate).toHaveBeenCalledWith(['learn/view-all/LatestCourses/1'], { queryParams: component.queryParams,
        relativeTo: fakeActivatedRoute});
   });
-  it('showDownloadLoader to be true' , () => {
-    spyOn(component, 'startDownload');
-    component.isOffline = true;
-    expect(component.showDownloadLoader).toBeFalsy();
-    component.playContent(Response.download_event);
-    expect(component.showDownloadLoader).toBeTruthy();
-  });
 
   it('should call updateDownloadStatus when updateCardData is called' , () => {
     const playerService = TestBed.get(PublicPlayerService);
