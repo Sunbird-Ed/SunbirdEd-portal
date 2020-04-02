@@ -8,7 +8,6 @@ import {
   ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { environment } from '@sunbird/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -85,7 +84,7 @@ export class PublicPlayerService {
   getConfig(contentDetails: ContentDetails, option: any = {}): PlayerConfig {
     const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
     configuration.context.contentId = contentDetails.contentId;
-    configuration.context.sid = (environment.isOffline && !_.isEmpty(this.sessionId)) ? this.sessionId : this.userService.anonymousSid;
+    configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
     configuration.context.timeDiff = this.orgDetailsService.getServerTimeDiff;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
@@ -100,13 +99,6 @@ export class PublicPlayerService {
     configuration.context.contextRollup = this.getRollUpData([_.get(this.orgDetailsService.orgDetails, 'hashTagId')]);
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
-    if (!_.includes(this.router.url, 'browse') && environment.isOffline) {
-      configuration.data = '';
-    }
-
-    if (environment.isOffline) {
-      configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
-    }
     if (option.dialCode) {
       configuration.context.cdata = [{
         id: option.dialCode,

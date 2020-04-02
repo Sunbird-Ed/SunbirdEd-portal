@@ -57,7 +57,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public closePlayerInteractEdata: IInteractEventEdata;
   public printPdfInteractEdata: IInteractEventEdata;
   public objectRollup = {};
-  isOffline: boolean = environment.isOffline;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,

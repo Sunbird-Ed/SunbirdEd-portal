@@ -14,7 +14,6 @@ import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/co
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
-import { environment } from '@sunbird/environment';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
   selector: 'app-public-collection-player',
@@ -91,7 +90,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public dialCode: string;
   playerOption: any;
   public playerContent;
-  isOffline: boolean = environment.isOffline;
   public unsubscribe$ = new Subject<void>();
   telemetryInteractDataTocClick = {
     id: 'toc-click',
@@ -298,9 +296,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
             this.playerContent = _.get(content, 'model');
-            if (this.isOffline && _.isEqual(_.get(this.collectionData, 'downloadStatus'), 'DOWNLOADED')) {
-              this.playerContent['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
-            }
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
