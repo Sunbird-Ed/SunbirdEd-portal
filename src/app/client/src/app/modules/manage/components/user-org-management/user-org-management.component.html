@@ -113,31 +113,22 @@
               <span>Teacher Details Uploaded: {{ uploadedDetails['total_uploaded'] }}</span>
             </div>
             <div class="pt-8" *ngIf="uploadedDetails['accounts_validated'] && uploadedDetails['accounts_validated'] != 0">
-            <span>Accounts Validated: {{ uploadedDetails['accounts_validated'] }}</span>
+            <a (click)="downloadCSVFile(userCSV, 'CLAIMED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">{{ uploadedDetails['accounts_validated'] }} accounts validated</a>
             </div>
             <div class="pt-8" *ngIf="uploadedDetails['accounts_rejected'] && uploadedDetails['accounts_rejected'] != 0">
-              <span>Accounts Rejected: {{ uploadedDetails['accounts_rejected'] }}</span>
+              <a (click)="downloadCSVFile(userCSV, 'REJECTED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">{{ uploadedDetails['accounts_rejected'] }} accounts rejected</a>
             </div>
             <div class="pt-8" *ngIf="uploadedDetails['accounts_failed'] && uploadedDetails['accounts_failed'] != 0">
-              <span>Accounts Failed: {{ uploadedDetails['accounts_failed'] }}</span>
+              <a (click)="downloadCSVFile(userCSV, 'FAILED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">{{ uploadedDetails['accounts_failed'] }} accounts failed</a>
             </div>
             <div class="pt-8" *ngIf="uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0">
-              <span>Duplicate Mobile Numbers/Email Address: {{ uploadedDetails['duplicate_account'] }} entered</span>
+              <a (click)="downloadCSVFile(userCSV, 'MULTIMATCH', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Duplicate phone numbers/email ID : {{ uploadedDetails['duplicate_account'] }} Invalid Entries</a>
             </div>
             <div class="pt-8" *ngIf="uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0">
-              <span>Unclaimed Accounts: {{ uploadedDetails['accounts_unclaimed'] }}</span>
+              <a (click)="downloadCSVFile(userCSV, 'UNCLAIMED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">{{ uploadedDetails['accounts_unclaimed'] }} unclaimed accounts</a>
             </div>
           </div>
         </div>
-        <br />
-        <button *ngIf="(uploadedDetails['total_uploaded'] && uploadedDetails['total_uploaded'] != 0) ||
-        (uploadedDetails['accounts_validated'] && uploadedDetails['accounts_validated'] != 0) ||
-        (uploadedDetails['accounts_rejected'] && uploadedDetails['accounts_rejected'] != 0) ||
-        (uploadedDetails['accounts_failed'] && uploadedDetails['accounts_failed'] != 0) ||
-        (uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0) ||
-        (uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0) "
-        class="sb-btn sb-btn-normal sb-btn-primary ml-auto" (click)="downloadCSVFile(userCSV, slug + '.csv')" 
-        appTelemetryInteract [telemetryInteractEdata]="teacherDetailsInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
       </div>
   
     <app-user-upload *ngIf="showModal"></app-user-upload>

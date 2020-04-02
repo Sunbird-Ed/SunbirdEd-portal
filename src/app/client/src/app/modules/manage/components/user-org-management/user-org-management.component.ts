@@ -327,8 +327,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     }, 500);
   }
 
-  public downloadCSVFile(slug, fileName: any) {
-    this.manageService.getData(slug, fileName)
+  public downloadCSVFile(slug, status, fileName: any) {
+    this.manageService.getData(slug + '__' + status, fileName)
       .subscribe(
         response => {
           const url = (_.get(response, 'result.signedUrl'));
