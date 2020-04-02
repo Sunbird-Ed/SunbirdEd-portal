@@ -30,8 +30,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   public telemetryCourseStart: IStartEventInput;
 
-  private route: ActivatedRoute;
-
   public showPlayer: Boolean = false;
 
   private collectionId: string;
@@ -115,13 +113,17 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   public prevPlaylistItem: any;
   public telemetryCdata: Array<{}>;
   selectedContent: {};
-  constructor(route: ActivatedRoute, playerService: PlayerService,
+  telemetryInteractDataTocClick = {
+    id: 'toc-click',
+    type: 'click',
+    pageid: this.route.snapshot.data.telemetry.pageid
+  };
+  constructor(public route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
     public contentUtilsServiceService: ContentUtilsServiceService, config: ConfigService, private configService: ConfigService,
     public popupControlService: PopupControlService, public navigationhelperService: NavigationHelperService) {
-    this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
@@ -323,11 +325,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       }));
   }
   closeCollectionPlayer() {
-    if (_.get(history.state, 'action') === 'dialcode') {
-      this.navigationHelperService.navigateToPreviousUrl();
-    } else {
-      this.navigationHelperService.navigateToResource('/resources');
-    }
+    this.navigationHelperService.navigateToPreviousUrl('/resources');
   }
   closeContentPlayer() {
     this.selectedContent = {};

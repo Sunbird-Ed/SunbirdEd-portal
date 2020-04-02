@@ -43,6 +43,7 @@
         <app-fancy-tree 
           (itemSelect)="onItemSelect($event)" 
           [nodes]="child.children" 
+          [telemetryInteractData]="telemetryInteractData"
           [rootNode]="rootNode"
           [options]="{ showConnectors: true }"
           class="sb-collectionTree-fancyTree"

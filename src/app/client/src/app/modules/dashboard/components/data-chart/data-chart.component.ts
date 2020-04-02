@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
-import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription, Subject, timer } from 'rxjs';
@@ -78,7 +78,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   };
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
-  constructor(public resourceService: ResourceService, private fb: FormBuilder,
+  constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
     private usageService: UsageService) {
     this.alwaysShowCalendars = true;
@@ -281,6 +281,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (this.datepicker) {
       this.datepicker.nativeElement.value = '';
     }
+    this.showFilters = false;
+    this.cdr.detectChanges(); // to fix change detection issue in sui select
+    this.showFilters = true;
   }
 
   ngOnDestroy() {

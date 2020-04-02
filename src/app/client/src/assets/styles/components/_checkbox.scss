@@ -167,7 +167,7 @@ $sb-radio-btn-border-color: $primary-300;
 
   &.sb-radio-btn-primary {
     label:before {
-      border: 1px solid $sb-radio-btn-primary-border;
+      border: calculateRem(1px) solid $sb-radio-btn-primary-border;
     }
 
     input:checked~label:after {
@@ -177,7 +177,7 @@ $sb-radio-btn-border-color: $primary-300;
 
   &.sb-radio-btn-secondary {
     label:before {
-      border: 1px solid $sb-radio-btn-secondary-border;
+      border: calculateRem(1px) solid $sb-radio-btn-secondary-border;
     }
 
     input:checked~label:after {
@@ -232,7 +232,7 @@ $sb-radio-btn-border-color: $primary-300;
   .sb-checkbox label,
   .sb-radio-btn-checkbox label {
     padding-left: 0;
-    padding-right: 24px;
+    padding-right: calculateRem(24px);
     margin-bottom: 0;
   }
 
@@ -249,7 +249,7 @@ $sb-radio-btn-border-color: $primary-300;
 
     &:after {
       left: unset;
-      right: 4px;
+      right: calculateRem(4px);
     }
   }
 
@@ -263,18 +263,18 @@ $sb-radio-btn-border-color: $primary-300;
       }
 
       &::before {
-        right: 16px;
+        right: calculateRem(16px);
       }
 
       &::after {
-        right: 20px;
+        right: calculateRem(20px);
       }
     }
   }
 }
 
 .ui.checkbox {
-  font-size:14px;
+  font-size:calculateRem(14px);
 }
 
 [dir="rtl"] {
@@ -289,7 +289,7 @@ $sb-radio-btn-border-color: $primary-300;
     
     &::after {
       left: unset;
-      right: 4px;
+      right: calculateRem(4px);
     }
   }
 }

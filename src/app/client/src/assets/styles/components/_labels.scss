@@ -26,7 +26,7 @@ $sb-label-status-indicator-error-background: $tertiary-color;
 // base label styles
 .sb-label {
     display: inline-block;
-    border: 1px solid;
+    border: calculateRem(1px) solid;
     color: $white-color;
     line-height: inherit;
     @include border-radius(3px);

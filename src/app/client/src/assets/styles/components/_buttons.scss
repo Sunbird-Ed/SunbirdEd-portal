@@ -23,7 +23,7 @@ a.sb-btn {
   user-select: none;
   outline: 0;
   display: inline-block;
-  border: 1px solid;
+  border: calculateRem(1px) solid;
   // color: $white-color;
   cursor: pointer;
   min-width: ($base-block-space * 8);
@@ -42,8 +42,8 @@ a.sb-btn {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 3px;
-    height: 3px;
+    width: calculateRem(3px);
+    height: calculateRem(3px);
     background: $primary-600;
     opacity: 0;
     border-radius: 50%;
@@ -105,8 +105,8 @@ $btns: "gray" var(--gray-200) var(--gray-400) var(--gray-100),
         }
       } @else if $btntype == btn-dashed {
         border-style: dashed;
-        border-width: 1px;
-        background-color: #fff;
+        border-width: calculateRem(1px);
+        background-color: var(--white);
         border-color: #{nth($btn, 2)};
         color: #{nth($btn, 2)};
         &:hover,
@@ -156,7 +156,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 }
 .sb-btn-white {
   box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(0, 0, 0, 0.1),
-    0 3px 4px 0 rgba(0, 0, 0, 0.2);
+    0 calculateRem(3px) calculateRem(4px) 0 rgba(0, 0, 0, 0.2);
   border: 0px solid #ddd;
 }
 .sb-btn-square {
@@ -169,13 +169,13 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 }
 .sb-btn-disabled {
   background-color: var(--gray-100);
-  border: 1px solid var(--gray-100);
+  border: calculateRem(1px) solid var(--gray-100);
   color: var(--gray-200);
   cursor: default;
 }
 .sb-btn-outline-disabled {
   background-color: var(--white);
-  border: 1px solid var(--gray-100);
+  border: calculateRem(1px) solid var(--gray-100);
   color: var(--gray-200);
   cursor: default;
   font-weight: normal;
@@ -278,7 +278,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
     &:focus:checked ~ .box:before,
     &:checked ~ .box:before,
     &:checked ~ label:before {
-      background-color: #024f9d !important;
+      background-color: var(--primary-color) !important;
     }
   }
   label {
@@ -382,7 +382,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 .sb-loading-spinner {
   width: 1rem;
   height: 1rem;
-  margin-right: 8px;
+  margin-right: calculateRem(8px);
   border-width: 0.2em;
   display: inline-block;
   vertical-align: text-bottom;
@@ -418,11 +418,11 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
   border-radius: 500rem;
-  border-color: #fff transparent transparent;
+  border-color: var(--white) transparent transparent;
   border-style: solid;
   border-width: 0.2em;
-  -webkit-box-shadow: 0 0 0 1px transparent;
-  box-shadow: 0 0 0 1px transparent;
+  -webkit-box-shadow: 0 0 0 calculateRem(1px) transparent;
+  box-shadow: 0 0 0 calculateRem(1px) transparent;
 }
 /*Create ripple effec*/
 .ripple {
@@ -458,7 +458,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   i::after {
     content: "\f019";
     font-size: 13px;
-    color: #fff;
+    color: var(--white);
   }
   &:hover {
     animation: pulse 0.2s 2 both;
@@ -496,7 +496,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
     color: transparent;
   }
   100% {
-    color: #fff;
+    color: var(--white);
   }
 }
 
