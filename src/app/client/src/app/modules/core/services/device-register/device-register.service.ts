@@ -1,4 +1,3 @@
-import { environment } from '@sunbird/environment';
 import { Injectable } from '@angular/core';
 import { PublicDataService } from './../public-data/public-data.service';
 import { ConfigService,  HttpOptions} from '@sunbird/shared';
@@ -24,7 +23,6 @@ export class DeviceRegisterService  {
   private timer$: Observable<any>;
   private timerSubscription: Subscription;
   deviceProfile: any;
-  isOffline: boolean = environment.isOffline;
 
   constructor(public deviceDetectorService: DeviceDetectorService, public publicDataService: PublicDataService,
               private deviceService: DeviceService,
@@ -45,10 +43,6 @@ export class DeviceRegisterService  {
 
     this.deviceAPIBaseURL = (<HTMLInputElement>document.getElementById('deviceApi'))
       && (<HTMLInputElement>document.getElementById('deviceApi')).value;
-
-      if (this.isOffline) {
-        this.deviceId = (<HTMLInputElement>document.getElementById('deviceId'))
-        && (<HTMLInputElement>document.getElementById('deviceId')).value; }
   }
 
   public initialize() {
