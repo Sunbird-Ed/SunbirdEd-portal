@@ -8,10 +8,8 @@ const logger = require('sb_logger_util_v2');
 
 const validateSlug = (allowedFolders = []) => {
     return (req, res, next) => {
-        console.log('session object in validate slug method', _.get(req, 'session'));
-        logger.info({session: _.get(req, 'session')});
-        console.log('validateSlug method called', { allowedFolders, sessionRootOrgDetails: _.get(req, 'session.rootOrg') || 'null', params: _.get(req, 'params') });
-        if (_.includes([...allowedFolders, _.get(req, 'session.rootOrg.slug')], _.get(req, 'params.slug'))) {
+        let paramsSlug = _.split(_.get(req, 'params.slug'), '__')[0];
+        if (_.includes([...allowedFolders, _.get(req, 'session.rootOrg.slug')], paramsSlug)) {
             logger.info({ msg: 'validate slug passed' })
             next();
         } else {
@@ -33,7 +31,6 @@ const validateSlug = (allowedFolders = []) => {
 const validateRoles = (allowedRoles = []) => {
     return (req, res, next) => {
         const userRoles = _.get(req, 'session.roles');
-        console.log('validateRoles method called', { sessionRoles: _.get(req, 'session.roles') || 'null', allowedRoles })
         if (_.intersection(userRoles, allowedRoles).length > 0) {
             logger.info({ msg: 'validate roles passed' })
             next();
@@ -73,7 +70,7 @@ const apiResponse = ({ responseCode, result, params: { err, errmsg, status } }) 
 function azureBlobStream() {
     return function (req, res, next) {
         let container = envHelper.sunbird_azure_report_container_name;
-        let fileToGet = req.params.slug + '/' + req.params.filename;
+        let fileToGet = req.params.slug.replace('__', '\/') + '/' + req.params.filename;
         if (fileToGet.includes('.json')) {
             const readStream = blobService.createReadStream(container, fileToGet);
             readStream.pipe(res);
@@ -82,7 +79,7 @@ function azureBlobStream() {
             })
             readStream.on('error', error => {
                 if (error && error.statusCode === 404) {
-                    console.log('Error with status code 404 - ', error);
+                    logger.error({ msg: 'Azure Blobstream : readStream error - Error with status code 404', error: error});
                     const response = {
                         responseCode: "CLIENT_ERROR",
                         params: {
@@ -94,7 +91,7 @@ function azureBlobStream() {
                     }
                     res.status(404).send(apiResponse(response));
                 } else {
-                    console.log('Error without status code 404 - ', error);
+                    logger.error({ msg: 'Azure Blobstream : readStream error - Error 500', error: error});
                     const response = {
                         responseCode: "SERVER_ERROR",
                         params: {
@@ -121,7 +118,7 @@ function azureBlobStream() {
             };
             blobService.doesBlobExist(container,fileToGet, (err, resp) => {
                 if (err || ! (_.get(resp,'exists')) ) {
-                    console.log('Error with status code 404 - ', err);
+                    logger.error({ msg: 'Azure Blobstream : doesBlobExist error - Error with status code 404', error: err});
                     const response = {
                         responseCode: "CLIENT_ERROR",
                         params: {
