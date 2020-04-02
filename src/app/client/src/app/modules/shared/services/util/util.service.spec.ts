@@ -1,4 +1,4 @@
-import { servicemockRes, contentList, contentListWithHoverData, pageSections } from './util.service.spec.data';
+import { servicemockRes, contentList, contentListWithHoverData } from './util.service.spec.data';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { UtilService } from './util.service';
@@ -253,12 +253,6 @@ describe('UtilService', () => {
     (service: UtilService, resourceService: ResourceService) => {
       const data = service.isDownloaded(contentListWithHoverData[0], 'DOWNLOAD');
       expect(data).toBeFalsy();
-  }));
-
-  it('should return sorted array ', inject([UtilService],
-    (service: UtilService) => {
-      const data = pageSections.sort(service.sortArrayOfObjects('name'));
-      expect(data[0].name).toEqual('Biology');
   }));
 
 });
