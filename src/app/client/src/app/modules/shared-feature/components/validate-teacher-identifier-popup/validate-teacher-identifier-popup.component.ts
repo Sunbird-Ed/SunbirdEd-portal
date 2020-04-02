@@ -15,7 +15,7 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 })
 export class ValidateTeacherIdentifierPopupComponent implements OnInit, OnDestroy {
   @Input() userFeedData: {};
-  @Input() labels: {};
+  @Input() labels: any;
   @Output() close = new EventEmitter<any>();
   @ViewChild('createValidateModal') createValidateModal;
   userDetailsForm: FormGroup;
