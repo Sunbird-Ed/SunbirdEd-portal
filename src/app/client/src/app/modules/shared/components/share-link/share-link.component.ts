@@ -95,6 +95,15 @@ export class ShareLinkComponent implements OnInit {
     document.execCommand('copy');
   }
 
+  setCopyContentSharingLinkInteractEdata() {
+    const searchInteractEdata = {
+      id: 'content-share-link-btn',
+      type: 'share',
+      pageid: 'resource'
+    };
+    return searchInteractEdata;
+  }
+
   public closeModal(contentShareModal) {
     contentShareModal.deny();
     this.close.emit();
