@@ -11,7 +11,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { ContentManagerService } from '@sunbird/offline';
 
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
@@ -61,7 +60,7 @@ describe('ExploreContentComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
-      providers: [PublicPlayerService, ContentManagerService, { provide: ResourceService, useValue: resourceBundle },
+      providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -187,13 +186,6 @@ describe('ExploreContentComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 
-  it('showDownloadLoader to be true' , () => {
-    spyOn(component, 'startDownload');
-    component.isOffline = true;
-    expect(component.showDownloadLoader).toBeFalsy();
-    component.playContent(Response.download_event);
-    expect(component.showDownloadLoader).toBeTruthy();
-  });
 
   it('should call updateDownloadStatus when updateCardData is called' , () => {
     const playerService = TestBed.get(PublicPlayerService);
@@ -201,27 +193,6 @@ describe('ExploreContentComponent', () => {
     component.contentList = Response.successData.result.content;
     component.updateCardData(Response.download_list);
     expect(playerService.updateDownloadStatus).toHaveBeenCalled();
-  });
-
-  it('should call content manager service on when startDownload()', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = resourceBundle.messages;
-    spyOn(contentManagerService, 'startDownload').and.returnValue(of(Response.download_success));
-    component.startDownload(Response.result.result.content);
-    expect(contentManagerService.startDownload).toHaveBeenCalled();
-  });
-
-  it('startDownload should fail', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
-    const resourceService = TestBed.get(ResourceService);
-    toasterService = TestBed.get(ToasterService);
-    resourceService.messages = resourceBundle.messages;
-    component.contentList = Response.successData.result.content;
-    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError(Response.download_error));
-    component.startDownload(Response.result.result.content);
-    expect(contentManagerService.startDownload).toHaveBeenCalled();
-    expect(component.showDownloadLoader).toBeFalsy();
   });
 
 });

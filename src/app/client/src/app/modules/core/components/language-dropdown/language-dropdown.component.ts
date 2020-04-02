@@ -4,8 +4,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService, UtilService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
-import { environment } from '@sunbird/environment';
-
 
 @Component({
   selector: 'app-language-dropdown',
@@ -15,7 +13,6 @@ export class LanguageDropdownComponent implements OnInit {
   @Input() redirectUrl: string;
   @Input() languageRange: Array<any>;
   selectedLanguage: string;
-  isOffline: boolean = environment.isOffline;
 
   constructor(
     private activatedRoute: ActivatedRoute,

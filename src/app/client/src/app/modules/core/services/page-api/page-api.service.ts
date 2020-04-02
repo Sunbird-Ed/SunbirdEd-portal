@@ -9,7 +9,6 @@ import { ConfigService, ServerResponse, BrowserCacheTtlService } from '@sunbird/
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 import { PublicDataService } from './../public-data/public-data.service';
-import { environment } from '@sunbird/environment';
 
 /**
 *  Service for page API calls.
@@ -81,9 +80,7 @@ export class PageApiService {
     if (_.get(requestParam, 'sections')) {
         option.data.request['sections'] = _.get(requestParam, 'sections');
     }
-    if (!environment.isOffline) {
-      option.data.request.organisationId = requestParam.organisationId;
-    }
+    option.data.request.organisationId = requestParam.organisationId;
     if (!_.isEmpty(requestParam.exists)) {
       option.data['exists'] = requestParam.exists;
     }
