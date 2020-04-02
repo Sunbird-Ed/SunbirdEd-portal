@@ -67,7 +67,6 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
       && this.pageSections.length < this.apiContentList.length) {
       this.pageSections.push(this.apiContentList[this.pageSections.length]);
-      this.pageSections.sort(this.utilService.sortArrayOfObjects('name'));
     }
   }
 
@@ -130,7 +129,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         if (section) {
           sections.push({
             name: section,
-            contents: filteredContents[section].sort(this.utilService.sortArrayOfObjects('name'))
+            contents: filteredContents[section]
           });
         }
       }
@@ -147,7 +146,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.apiContentList.length) {
           return; // no page section
         }
-        this.pageSections = this.apiContentList.slice(0, 4).sort(this.utilService.sortArrayOfObjects('name'));
+        this.pageSections = this.apiContentList.slice(0, 4);
       }, err => {
         this.showLoader = false;
         this.apiContentList = [];
