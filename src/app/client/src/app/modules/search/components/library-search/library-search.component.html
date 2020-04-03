@@ -42,7 +42,12 @@
 
 
         <div class="twelve wide column" *ngIf="showLoader">
-            <app-loader [data]='loaderMessage'></app-loader>
+            <div class="sb-grid">
+                <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
+                    *ngFor="let i of [].constructor(numberOfSections)">
+                    <sb-library-card [isLoading]="true"></sb-library-card>
+                </div>
+            </div>
         </div>
     </div>
 </div>
