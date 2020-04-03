@@ -36,6 +36,8 @@
       <button 
         class="ui basic primary button"
         (click)="copyLink(popup)"
+        appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEdata" 
+        [telemetryInteractObject]="telemetryShareData[0]"
         #copyLinkButton >
           {{resourceService?.frmelmnts?.btn?.copyLink}}
       </button>
