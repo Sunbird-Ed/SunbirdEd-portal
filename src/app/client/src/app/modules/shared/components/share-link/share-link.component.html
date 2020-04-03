@@ -7,11 +7,13 @@
   appBodyScroll
   (dismissed)="closeModal(contentShareModal);popDeny(popup);sharelinkModal=false;"
   #contentShareModal>
+
 <!--Header-->
 <div class="sb-modal-header" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
   {{resourceService?.frmelmnts?.lbl?.share}}
 </div>
 <!--/Header-->
+
 <!--Content-->
 <div class="sb-modal-content">
   <p class="mb-8">

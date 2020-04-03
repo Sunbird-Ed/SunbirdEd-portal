@@ -100,6 +100,7 @@ export class ShareLinkComponent implements OnInit {
     $('#copyLinkData').select();
     document.execCommand('copy');
   }
+
   public closeModal(contentShareModal) {
     contentShareModal.deny();
     this.close.emit();
