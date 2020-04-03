@@ -98,7 +98,7 @@ export class ShareLinkComponent implements OnInit {
   setCopyContentSharingLinkInteractEdata() {
     const searchInteractEdata = {
       id: 'content-share-link-btn',
-      type: 'share',
+      type: 'CLICK',
       pageid: 'resource'
     };
     return searchInteractEdata;
