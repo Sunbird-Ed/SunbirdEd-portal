@@ -6,8 +6,6 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/platform-browser';
-import { environment } from '@sunbird/environment';
 
 /**
  * This display a a section
@@ -42,8 +40,6 @@ export class PageSectionComponent implements OnInit, OnDestroy {
   contentList = [];
 
   maxSlide = 0;
-
-  isOffline: boolean = environment.isOffline;
 
   constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     private cdr: ChangeDetectorRef) {

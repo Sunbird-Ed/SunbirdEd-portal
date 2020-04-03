@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit} from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
-import { environment } from '@sunbird/environment';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest } from 'rxjs';
@@ -25,7 +24,6 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   */
   showFooter = true;
   showDownloadmanager: any;
-  isOffline: boolean = environment.isOffline;
   instance: string;
   bodyPaddingBottom: string;
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
