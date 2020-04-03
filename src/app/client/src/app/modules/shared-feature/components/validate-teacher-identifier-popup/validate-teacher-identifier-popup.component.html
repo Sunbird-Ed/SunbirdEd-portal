@@ -6,7 +6,6 @@
     class="sb-modal " 
     [ngClass]="{'sb-error': extIdFailed, 'sb-success' : extIdVerified }" 
     #createValidateModal
-    *ngIf="!isOffline"
     [appTelemetryImpression]="telemetryImpressionData">
     
   <!--Header-->

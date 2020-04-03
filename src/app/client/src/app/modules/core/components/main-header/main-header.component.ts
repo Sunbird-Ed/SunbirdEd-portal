@@ -6,9 +6,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import { environment } from '@sunbird/environment';
 declare var jQuery: any;
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -66,7 +64,6 @@ export class MainHeaderComponent implements OnInit {
     'mediumBox': false,
     'largeBox': false
   };
-  isOffline: boolean = environment.isOffline;
   languages: Array<any>;
   showOfflineHelpCentre = false;
   contributeTabActive: boolean;
@@ -113,17 +110,6 @@ export class MainHeaderComponent implements OnInit {
     this.cdr.detectChanges();
     this.setWindowConfig();
 
-    // This subscription is only for offline and it checks whether the page is offline
-    // help centre so that it can load its own header/footer
-    if (this.isOffline) {
-      this.router.events.subscribe((val) => {
-        if (_.includes(this.router.url, 'help-center')) {
-          this.showOfflineHelpCentre = true;
-        } else {
-          this.showOfflineHelpCentre = false;
-        }
-      });
-    }
   }
 
   private isCustodianOrgUser() {
@@ -155,9 +141,7 @@ export class MainHeaderComponent implements OnInit {
     }
   }
   navigateToHome() {
-    if (this.isOffline) {
-      this.router.navigate(['']);
-    } else if (this.userService.loggedIn) {
+    if (this.userService.loggedIn) {
       this.router.navigate(['resources']);
     } else {
       window.location.href = this.userService.slug ? this.userService.slug + '/explore'  : '/explore';
@@ -168,18 +152,14 @@ export class MainHeaderComponent implements OnInit {
     if (key && key.length) {
       this.queryParam.key = key;
     }
-    if (this.isOffline) {
-      this.routeToOffline();
+    const url = this.router.url.split('?')[0];
+    let redirectUrl;
+    if (url.indexOf('/explore-course') !== -1) {
+      redirectUrl = url.substring(0, url.indexOf('explore-course')) + 'explore-course';
     } else {
-      const url = this.router.url.split('?')[0];
-      let redirectUrl;
-      if (url.indexOf('/explore-course') !== -1) {
-        redirectUrl = url.substring(0, url.indexOf('explore-course')) + 'explore-course';
-      } else {
-        redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
-      }
-      this.router.navigate([redirectUrl, 1], { queryParams: this.queryParam });
+      redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
     }
+    this.router.navigate([redirectUrl, 1], { queryParams: this.queryParam });
   }
 
   /* This method searches only for offline module*/

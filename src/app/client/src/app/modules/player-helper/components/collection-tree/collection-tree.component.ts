@@ -12,9 +12,7 @@ import { OrgDetailsService, UserService } from '@sunbird/core';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
-import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
-import { ConnectionService } from '@sunbird/offline';
 
 @Component({
   selector: 'app-collection-tree',
@@ -39,24 +37,16 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   };
   public commingSoonMessage: string;
   public unsubscribe$ = new Subject<void>();
-  isOffline: boolean = environment.isOffline;
   isConnected = navigator.onLine;
   status = this.isConnected ? 'ONLINE' : 'OFFLINE';
 
   constructor(public orgDetailsService: OrgDetailsService,
-    private userService: UserService, public router: Router, private connectionService: ConnectionService,
+    private userService: UserService, public router: Router,
     public resourceService?: ResourceService) {
     this.resourceService = resourceService;
     this.orgDetailsService = orgDetailsService;
   }
   ngOnInit() {
-    this.connectionService.monitor().pipe(
-      takeUntil(this.unsubscribe$))
-      .subscribe(isConnected => {
-        this.isConnected = isConnected;
-        this.status = isConnected ? 'ONLINE' : 'OFFLINE';
-        this.initialize();
-      });
     /*
     * rootOrgId is required to select the custom comming soon message from systemsettings
     */
@@ -150,15 +140,8 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
         node.title = node.model.name + '<span> (' + this.commingSoonMessage + ')</span>';
         node.extraClasses = 'disabled';
       } else {
-        if (this.isOffline && node.fileType === 'youtube' && this.status === 'OFFLINE') {
-          node.title = `${node.model.name} <div class='sb-label sb-label-table sb-label-warning-0'>
-          ${this.resourceService.frmelmnts.lbl.onlineOnly}</div>` ||
-            `Untitled File <div class='sb-label sb-label-table sb-label-warning-0'>${this.resourceService.frmelmnts.lbl.onlineOnly}</div>`;
-          node.extraClasses = 'disabled';
-        } else {
           node.title = node.model.name || 'Untitled File';
           node.extraClasses = '';
-        }
       }
     });
   }
