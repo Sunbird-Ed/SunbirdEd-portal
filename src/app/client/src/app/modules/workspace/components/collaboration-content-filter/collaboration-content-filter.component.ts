@@ -101,6 +101,7 @@ export class CollaborationContentFilterComponent implements OnInit {
   constructor(resourceService: ResourceService, config: ConfigService,
     activatedRoute: ActivatedRoute,
     route: Router,telemetryService: TelemetryService) {
+    this.telemetryService = telemetryService;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
