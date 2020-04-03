@@ -7,13 +7,11 @@
   appBodyScroll
   (dismissed)="closeModal(contentShareModal);popDeny(popup);sharelinkModal=false;"
   #contentShareModal>
-
 <!--Header-->
 <div class="sb-modal-header" appTelemetryShare [TelemetryShareEdata]="telemetryShare">
   {{resourceService?.frmelmnts?.lbl?.share}}
 </div>
 <!--/Header-->
-
 <!--Content-->
 <div class="sb-modal-content">
   <p class="mb-8">
@@ -36,7 +34,9 @@
       <button 
         class="ui basic primary button"
         (click)="copyLink(popup)"
-        #copyLinkButton  appTelemetryInteract [telemetryInteractEdata]="setCopyContentSharingLinkInteractEdata()">
+        appTelemetryInteract [telemetryInteractEdata]="telemetryInteractEdata" 
+        [telemetryInteractObject]="telemetryShareData[0]"
+        #copyLinkButton >
           {{resourceService?.frmelmnts?.btn?.copyLink}}
       </button>
   </div>
