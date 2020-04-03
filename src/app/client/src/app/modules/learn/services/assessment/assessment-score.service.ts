@@ -79,7 +79,7 @@ export class AssessmentScoreService {
    */
   private checkContentForAssessment() {
     if (_.get(this._batchDetails, 'batchId') && _.get(this._contentDetails, 'identifier') && _.get(this._batchDetails, 'courseId')) {
-      this.initialized = false;
+      this.initialized = true;
     } else {
       this.initialized = false;
     }
