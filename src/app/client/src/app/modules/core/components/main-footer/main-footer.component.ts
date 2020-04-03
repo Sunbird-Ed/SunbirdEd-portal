@@ -43,20 +43,20 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
     console.log('event', event);
     this.footerAlign();
   }
-// footer dynamic height
-footerAlign() {
-  const footerHeight = $('footer').outerHeight();
-  const bodyHeight = $('body').outerHeight();
+  // footer dynamic height
+  footerAlign() {
+    const footerHeight = $('footer').outerHeight();
+    const bodyHeight = $('body').outerHeight();
 
-  if (window.innerWidth <= 767) {
-    (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = 0 + 'px';
-    (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = footerHeight + 'px';
-  } else {
-     (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
-     (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = footerHeight + 'px';
-     (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = 0 + 'px';
+    if (window.innerWidth <= 767) {
+      (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = 0 + 'px';
+      (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = footerHeight + 'px';
+    } else {
+      (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
+      (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = footerHeight + 'px';
+      (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = 0 + 'px';
+    }
   }
-}
 
   checkRouterPath() {
     this.showDownloadmanager = this.router.url.includes('/profile') || this.router.url.includes('/play/collection') ||
