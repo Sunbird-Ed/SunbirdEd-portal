@@ -101,14 +101,20 @@
 
 }
 
+.footer-fix{
+   padding-bottom: calculateRem(144px);
+   @include respond-above(sm) {
+    padding-bottom: calculateRem(48px);
+  }
+}
 .footer {
   background: $primary-color;
   color: $white-color !important;
   padding: calculateRem(34px) 0;
   font-size: calculateRem(14px);
-  position: absolute;
-  bottom: 0;
-  left: 0;
+  position: relative;
+  // bottom: 0;
+  // left: 0;
   width: 100%;
 
   a {

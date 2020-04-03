@@ -43,21 +43,21 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
     console.log('event', event);
     this.footerAlign();
   }
-// footer dynamic height
-footerAlign() {
-    $('.footerfix').css('height', 'auto');
+  // footer dynamic height
+  footerAlign() {
     const footerHeight = $('footer').outerHeight();
-    $('.footerfix').css('height', footerHeight);
+    const bodyHeight = $('body').outerHeight();
+
     if (window.innerWidth <= 767) {
-      (document.querySelector('.download-mobile-app') as HTMLElement).style.minHeight = 0 + 'px';
+      (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = 0 + 'px';
       (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = footerHeight + 'px';
-      (document.querySelector('body') as HTMLElement).style.paddingBottom = footerHeight + 178 + 'px';
     } else {
-      (document.querySelector('.download-mobile-app') as HTMLElement).style.minHeight = 200 + 'px';
+      (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
+      (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = footerHeight + 'px';
       (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = 0 + 'px';
-      (document.querySelector('body') as HTMLElement).style.paddingBottom = footerHeight + 67 + 'px';
     }
   }
+
   checkRouterPath() {
     this.showDownloadmanager = this.router.url.includes('/profile') || this.router.url.includes('/play/collection') ||
       this.router.url.includes('/play/content');
