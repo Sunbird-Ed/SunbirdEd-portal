@@ -1,6 +1,4 @@
-import { environment } from '@sunbird/environment';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
-
 import { AfterViewInit, Directive, ElementRef, Inject, OnDestroy, NgZone, ChangeDetectorRef, } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, pairwise, share, throttleTime, takeUntil, tap } from 'rxjs/operators';
@@ -18,7 +16,6 @@ enum Direction {
 export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   player: AnimationPlayer;
   public unsubscribe = new Subject<void>();
-  isOffline: boolean = environment.isOffline;
 
   set show(show: boolean) {
     if (this.player) {
@@ -45,9 +42,6 @@ export class StickyHeaderDirective implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (this.isOffline) {
-      return false;
-    }
     this.zone.runOutsideAngular(() => {
     const scroll$ = fromEvent(window, 'scroll').pipe(
       throttleTime(10),

@@ -5,7 +5,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
   CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent,
-  ContentRatingComponent, CommingSoonComponent, ContentDownloadComponent
+  ContentRatingComponent, CommingSoonComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
@@ -22,9 +22,9 @@ import { FormsModule } from '@angular/forms';
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent, ContentDownloadComponent],
+    CommingSoonComponent],
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent, ContentDownloadComponent]
+    CommingSoonComponent]
 })
 export class PlayerHelperModule { }

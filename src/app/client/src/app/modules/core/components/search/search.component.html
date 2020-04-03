@@ -28,8 +28,8 @@
   <i class="search icon"></i>
   <input type="text" id="keyword" name="filter_search" class="sb-search-input" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}"
     placeholder="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}" [(ngModel)]="key"
-    (keyup.enter)="onEnter(key)" [disabled]="!showInput && !isOffline"
-    [ngClass]="{'disabled': !showInput && !isOffline }" />
+    (keyup.enter)="onEnter(key)" [disabled]="!showInput"
+    [ngClass]="{'disabled': !showInput }" />
   <!-- <i class="close icon"></i>
   <div class="sb-loader"></div> -->
 </div>

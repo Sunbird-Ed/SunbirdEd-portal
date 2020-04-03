@@ -20,9 +20,6 @@
             </span>
             <!-- /Print Button for printable contents-->
             <div class="ml-auto d-flex flex-ai-center">
-              <div *ngIf="isOffline" class="mr-16">
-                  <app-content-download [contentData]="contentData"></app-content-download>
-            </div>
               <!--Close Button-->
               <button appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
                 [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closePlayerInteractEdata"

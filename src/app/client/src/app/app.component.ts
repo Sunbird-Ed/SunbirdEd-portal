@@ -66,7 +66,6 @@ export class AppComponent implements OnInit, OnDestroy {
   */
   showAppPopUp = false;
   viewinBrowser = false;
-  isOffline: boolean = environment.isOffline;
   sessionExpired = false;
   instance: string;
   resourceDataSubscription: any;
@@ -159,9 +158,6 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.changeLanguageAttribute();
-    if (this.isOffline) {
-      document.body.classList.add('sb-offline');
-    }
   }
 
   isLocationStatusRequired() {
@@ -313,10 +309,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public setDeviceId(): Observable<string> {
       return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
           this.fingerprintInfo = {deviceId, components, version};
-          if (this.isOffline) {
-            deviceId = <HTMLInputElement>document.getElementById('deviceId') ?
-                        (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
-          }
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);

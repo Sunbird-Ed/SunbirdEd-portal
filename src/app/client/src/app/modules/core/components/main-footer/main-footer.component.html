@@ -1,24 +1,5 @@
-<!-- <div class="download-mobile-app" *ngIf="!isOffline">
-  <div class="download-mobile-app-logo p-15">
-    <div class="mobile-circles">
-      <div class="big-box border-round border-r50"></div>
-      <div class="oval-box border-round ml-20 ml-10"></div>
-      <div class="small-box border-round border-r50 ml-20 mr-10"></div>
-      <div class="small-box border-round border-r50"></div>
-    </div>
-    <label class="d-block pb-10">{{resourceService.frmelmnts?.lbl?.download}}
-      {{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}</label>
-    <a class="d-block pb-10 app-download" href="https://play.google.com/store/apps/details?id=in.gov.diksha.app">
-      <img class="playStore-img" src="/assets/images/google_playstore.png"
-        alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile}}">
-    </a>
-    <p class="d-block">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
-  </div>
-</div> -->
-<extension-point [name]="'content-manager'" *ngIf="isOffline && !showDownloadmanager"></extension-point>
-
 <footer class="footer 
-" *ngIf="showFooter && !isOffline" #footerFix>
+" *ngIf="showFooter" #footerFix>
   <div class="ui container">
     <div class="ui grid stackable">
       <div class="four wide column footerMenu mr-auto">
@@ -86,15 +67,4 @@
       </div>
     </div>
   </div>
-  <!-- <div class="ui one column stackable center aligned page grid" *ngIf="isOffline">
-    <div class="column twelve wide">
-      <label class="d-block mb-10">
-        {{resourceService.frmelmnts?.lnk?.footerContact}}
-      </label>
-      <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-16"
-        href="mailto:support@diksha-ncte.freshdesk.com">
-        support@diksha-ncte.freshdesk.com
-      </a>
-    </div>
-  </div> -->
 </footer>
