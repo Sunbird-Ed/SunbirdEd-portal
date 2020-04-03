@@ -452,7 +452,8 @@
                     "ExplanationResource",
                     "ExperientialResource",
                     "eTextBook",
-                    "PracticeResource"
+                    "PracticeResource",
+                    "OnboardingResource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-folder-o"
@@ -559,6 +560,15 @@
             {
                 "type": "PracticeResource",
                 "label": "PracticeResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "OnboardingResource",
+                "label": "OnboardingResource",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
