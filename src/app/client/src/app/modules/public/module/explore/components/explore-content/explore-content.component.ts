@@ -249,12 +249,15 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         'title': 'messages.stmsg.m0133'
       };
     } else {
+      this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
+    .subscribe(item => {
       this.noResultMessage = {
         'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
         'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
         'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
         'showExploreContentButton': false
       };
+    });
     }
   }
 

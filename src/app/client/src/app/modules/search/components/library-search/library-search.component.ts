@@ -206,11 +206,14 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.unsubscribe$.complete();
     }
     private setNoResultMessage() {
-        this.noResultMessage = {
-            'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
-            'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-            'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-            'showExploreContentButton': false
-          };
+        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
+            .subscribe(item => {
+                this.noResultMessage = {
+                    'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
+                    'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+                    'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+                    'showExploreContentButton': false
+                };
+            });
     }
 }
