@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 describe('ShareLinkComponent', () => {
   let component: ShareLinkComponent;
   let fixture: ComponentFixture<ShareLinkComponent>;
+
   class FakeActivatedRoute {
     snapshot = {
       data: {
@@ -28,10 +29,12 @@ describe('ShareLinkComponent', () => {
     })
       .compileComponents();
   }));
+
   beforeEach(() => {
     fixture = TestBed.createComponent(ShareLinkComponent);
     component = fixture.componentInstance;
   });
+
   it('Should initializeModal', () => {
     spyOn(component, 'initializeModal').and.callThrough();
     component.ngOnInit();
