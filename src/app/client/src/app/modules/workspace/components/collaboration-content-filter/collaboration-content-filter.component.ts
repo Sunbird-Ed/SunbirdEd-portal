@@ -156,7 +156,7 @@ export class CollaborationContentFilterComponent implements OnInit {
     const searchInteractEdata = {
       id: 'search-collabaration-content',
       type: 'click',
-      pageid: 'workspace'
+      pageid: 'collabratingon'
     };
     if (this.query) {
       searchInteractEdata['extra'] = {
