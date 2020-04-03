@@ -48,16 +48,13 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
 // footer dynamic height
 footerAlign() {
   const footerHeight = $('footer').outerHeight();
-  const mobileHeight = $('.download-mobile-app').outerHeight();
   const bodyHeight = $('body').outerHeight();
 
   if (window.innerWidth <= 767) {
-    // (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - mobile + 'px';
-    // (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - mobile + 'px';
-     (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = 0 + 'px';
+    (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = 0 + 'px';
     (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = footerHeight + 'px';
   } else {
-    (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
+     (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
      (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = footerHeight + 'px';
      (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = 0 + 'px';
   }
