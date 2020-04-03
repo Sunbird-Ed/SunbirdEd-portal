@@ -39,7 +39,8 @@ describe('ResourceComponent', () => {
     },
     frmelmnts: {
       lbl: {}
-    }
+    },
+    languageSelected$: of({})
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
