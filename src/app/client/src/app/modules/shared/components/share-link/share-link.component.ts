@@ -77,9 +77,6 @@ export class ShareLinkComponent implements OnInit {
   popDeny(pop) {
     pop.close();
   }
-  setCopyContentSharingLinkInteractEdata() {
-    return {};
-  }
   /**
   * initializeModal
   */
