@@ -59,7 +59,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.setNoResultMessage();
         this.initFilter = true;
       }, (error) => {
-        this.toasterService.error('Fetching content failed. Please try again later.');
+        this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
         setTimeout(() => this.router.navigate(['']), 5000);
         console.error('init search filter failed', error);
     });

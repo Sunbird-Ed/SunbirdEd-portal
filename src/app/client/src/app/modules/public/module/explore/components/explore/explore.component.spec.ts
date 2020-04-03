@@ -42,7 +42,9 @@ describe('ExploreComponent', () => {
       'emsg': {},
     },
     frmelmnts: {
-      lbl: {}
+      lbl: {
+        fetchingContentFailed: 'Fetching content failed. Please try again later.'
+      }
     },
     languageSelected$: of({})
   };
