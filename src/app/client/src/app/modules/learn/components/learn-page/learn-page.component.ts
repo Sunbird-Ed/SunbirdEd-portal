@@ -41,7 +41,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public pageSections: Array<ICaraouselData> = [];
   public toUseFrameWorkData = false;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
-  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value: '';
+  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value: null;
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,

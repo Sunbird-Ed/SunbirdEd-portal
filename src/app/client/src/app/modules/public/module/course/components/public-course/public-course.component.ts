@@ -37,7 +37,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public pageSections: Array<ICaraouselData> = [];
   public toUseFrameWorkData = false;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
-  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value: '';
+  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value: null;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
