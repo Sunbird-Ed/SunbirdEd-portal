@@ -99,7 +99,8 @@
                     "MarkingSchemeRubric",
                     "ExplanationResource",
                     "ExperientialResource",
-                    "PracticeResource"
+                    "PracticeResource",
+                    "OnboardingResource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-folder-o"
@@ -196,6 +197,15 @@
             {
                 "type": "PracticeResource",
                 "label": "PracticeResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "OnboardingResource",
+                "label": "OnboardingResource",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
@@ -452,8 +462,7 @@
                     "ExplanationResource",
                     "ExperientialResource",
                     "eTextBook",
-                    "PracticeResource",
-                    "OnboardingResource"
+                    "PracticeResource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-folder-o"
@@ -560,15 +569,6 @@
             {
                 "type": "PracticeResource",
                 "label": "PracticeResource",
-                "isRoot": false,
-                "editable": false,
-                "childrenTypes": [],
-                "addType": "Browser",
-                "iconClass": "fa fa-file-o"
-            },
-            {
-                "type": "OnboardingResource",
-                "label": "OnboardingResource",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
