@@ -35,6 +35,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilters = false;
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
+  public toUseFrameWorkData = false;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -60,6 +61,10 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     ).pipe(
       mergeMap((data: any) => {
         this.hashTagId = data[0].hashTagId;
+        // TODO change the slug to 'Igot'
+        if (this.userService.slug === 'ft_channel_new_8592630848') {
+          this.toUseFrameWorkData = true;
+        }
         if (data[1]) {
           this.initFilters = true;
           this.frameWorkName = data[1];
@@ -138,6 +143,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       // exists: [],
       params : this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
+
     this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.showLoader = false;
