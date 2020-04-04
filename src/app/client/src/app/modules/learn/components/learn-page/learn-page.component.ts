@@ -1,6 +1,6 @@
 
 import {combineLatest, of, Subject } from 'rxjs';
-import { PageApiService, CoursesService, ISort, PlayerService, FormService, UserService } from '@sunbird/core';
+import { PageApiService, CoursesService, ISort, PlayerService, FormService, UserService} from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
@@ -116,6 +116,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     const option: any = {
       source: 'web',
       name: 'Course',
+      organisationId: this.userService.hashTagId,
       filters: filters,
       params : this.configService.appConfig.CoursePageSection.contentApiQueryParams
     };
