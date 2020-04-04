@@ -28,7 +28,8 @@ describe('VerifyAccountIdentifierComponent', () => {
         close: 'close'
       },
       lbl: {
-        description: 'description'
+        description: 'description',
+        otpValidationFailed: 'OTP validation failed.'
       }
     }
   };

@@ -97,7 +97,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       const redirect_uri = reqQuery.error_callback + '?' + resQuery;
       window.location.href = redirect_uri;
     } else {
-      this.toasterService.error('OTP validation failed.');
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.otpValidationFailed);
     }
   }
   handleResendOtp() {
