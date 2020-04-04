@@ -132,6 +132,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     const option = {
       source: 'web',
       name: 'AnonymousCourse',
+      organisationId: this.hashTagId || '*',
       filters: filters,
       // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       // mode: 'soft',
