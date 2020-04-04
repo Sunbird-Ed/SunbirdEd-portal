@@ -179,10 +179,11 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       }),
       map((formData: any) => {
         let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
+          if (this.notToUseFramework) {
+            formFieldCategory.range = formFieldCategory.range;
+          } else {
           if (formFieldCategory.code === 'channel') {
-            if (this.notToUseFramework) {
-              formFieldCategory.range = formFieldCategory.range;
-            } else {
+
               formFieldCategory.range = _.map(formData.channelData, (value) => {
                 return {
                   category: 'channel',
@@ -190,23 +191,15 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
                   name: value.orgName,
                 };
               });
-            }
           } else {
-            if (this.notToUseFramework) {
-              formFieldCategory.range = formFieldCategory.range;
-            } else {
               const frameworkTerms = _.get(_.find(this.categoryMasterList, { code: formFieldCategory.code }), 'terms');
               formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
-            }
           }
           if (this.selectedLanguage !== 'en') {
-            if (this.notToUseFramework) {
-              formFieldCategory.range = formFieldCategory.range;
-            } else {
               formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage);
               formFieldCategory.range = this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
-            }
           }
+        }
           return true;
         });
         formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');

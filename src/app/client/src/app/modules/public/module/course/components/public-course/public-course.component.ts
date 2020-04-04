@@ -36,6 +36,8 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
   public toUseFrameWorkData = false;
+  public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
+  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value: '';
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -62,7 +64,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       mergeMap((data: any) => {
         this.hashTagId = data[0].hashTagId;
         // TODO change the slug to 'Igot'
-        if (this.userService.slug === 'ft_channel_new_8592630848') {
+        if (this.userService.slug === this.slugForProminentFilter) {
           this.toUseFrameWorkData = true;
         }
         if (data[1]) {

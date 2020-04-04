@@ -40,6 +40,8 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedCourseBatches: any;
   public pageSections: Array<ICaraouselData> = [];
   public toUseFrameWorkData = false;
+  public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
+  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value: '';
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
@@ -64,7 +66,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit() {
     // TODO change the slug to 'Igot'
-    if (this.userService.slug === 'ft_channel_new_8592630848') {
+    if (this.userService.slug === this.slugForProminentFilter) {
       this.toUseFrameWorkData = true;
     }
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
