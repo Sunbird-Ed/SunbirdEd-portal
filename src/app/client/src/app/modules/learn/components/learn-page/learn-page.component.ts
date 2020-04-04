@@ -1,6 +1,6 @@
 
 import {combineLatest, of, Subject } from 'rxjs';
-import { PageApiService, CoursesService, ISort, PlayerService, FormService } from '@sunbird/core';
+import { PageApiService, CoursesService, ISort, PlayerService, FormService, UserService} from '@sunbird/core';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit, HostListener } from '@angular/core';
 import {
   ResourceService, ServerResponse, ToasterService, ICaraouselData, ConfigService, UtilService, INoResultMessage,
@@ -41,11 +41,12 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public pageSections: Array<ICaraouselData> = [];
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
-    public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
-    public router: Router, private utilService: UtilService, public coursesService: CoursesService,
-    private playerService: PlayerService, private cacheService: CacheService,
-    private browserCacheTtlService: BrowserCacheTtlService, public formService: FormService,
-    public navigationhelperService: NavigationHelperService) {
+              public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
+              public router: Router, private utilService: UtilService, public coursesService: CoursesService,
+              private playerService: PlayerService, private cacheService: CacheService,
+              private browserCacheTtlService: BrowserCacheTtlService, public formService: FormService,
+              public navigationhelperService: NavigationHelperService,
+              public userService: UserService) {
     window.scroll({
       top: 0,
       left: 0,
@@ -109,6 +110,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     const option: any = {
       source: 'web',
       name: 'Course',
+      organisationId: this.userService.hashTagId,
       filters: filters,
       params : this.configService.appConfig.CoursePageSection.contentApiQueryParams
     };
