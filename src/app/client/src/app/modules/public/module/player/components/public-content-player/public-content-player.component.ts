@@ -16,7 +16,8 @@ import { environment } from '@sunbird/environment';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
   selector: 'app-public-content-player',
-  templateUrl: './public-content-player.component.html'
+  templateUrl: './public-content-player.component.html',
+  styleUrls: ['./public-content-player.component.scss']
 })
 export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
@@ -57,6 +58,14 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public closePlayerInteractEdata: IInteractEventEdata;
   public printPdfInteractEdata: IInteractEventEdata;
   public objectRollup = {};
+  /** valiables for player orientation change */
+  showVideoThumbnail = true;
+  overlayImagePath: string;
+  loadLandscapePlayer =  false;
+  loadPlayerInteractEdata: IInteractEventEdata;
+  isSingleContent: any;
+  isMobileOrTab: boolean;
+  showCloseButton = false;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
@@ -72,6 +81,10 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    /** if dial-code search result is having only one content then 'isSingleContent' will be true else false */
+    this.isSingleContent = _.get(history.state, 'isSingleContent') ;
+    /** if the browser is opened from mobile or tablet then 'isMobileOrTab' will be true else false*/
+    this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
@@ -83,7 +96,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       }
       this.setTelemetryData();
       this.getContent();
-      this.deviceDetector();
     });
 
   }
@@ -100,6 +112,11 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     };
     this.printPdfInteractEdata = {
       id: 'print-pdf-button',
+      type: 'click',
+      pageid: 'public'
+    };
+    this.loadPlayerInteractEdata = {
+      id: 'play-button',
       type: 'click',
       pageid: 'public'
     };
@@ -133,6 +150,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
           this.showExtContentMsg = true;
         }, 5000);
       }
+      this.overlayImagePath = _.get(response, 'result.content.appIcon');
       this.showPlayer = true;
       this.windowScrollService.smoothScroll('content-player');
       this.badgeData = _.get(response, 'result.content.badgeAssertions');
@@ -174,12 +192,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       }, 100);
     }
   }
-  deviceDetector() {
-    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
-    if (deviceInfo.device === 'android' || deviceInfo.os === 'android') {
-      this.showFooter = true;
-    }
-  }
 
   ngAfterViewInit () {
     setTimeout(() => {
@@ -205,6 +217,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
             duration: this.navigationHelperService.getPageLoadTime()
           }
         };
+        this.deviceDetector();
     });
   }
 
@@ -215,6 +228,78 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
   printPdf(pdfUrl: string) {
     window.open(pdfUrl, '_blank');
+  }
+
+  /** When dial-code search result page has multiple contents and user clicked on a card from them
+   * then 'isSingleContent' will be false and it should load player directly in landscape mode
+   */
+  deviceDetector() {
+    if (this.isMobileOrTab) {
+      if (!this.isSingleContent) {
+        this.loadLandscapePlayer = true;
+      }
+      this.showFooter = true;
+      this.rotatePlayer();
+    }
+  }
+
+  /** When user comes from a single content dial-code search,
+   * then auto play will not happen, until user clicks on the play icon
+   * this method will handle that and turn the player into landscape
+   */
+  enablePlayer(mode: boolean) {
+    this.showVideoThumbnail = mode;
+    if (this.isMobileOrTab) {
+      this.rotatePlayer();
+     }
+  }
+
+  /** this method checks for the browser capability to be fullscreen via if-else ladder
+   * if match found, it will turn the player along will be close button into fullscreen and then
+   * rotate it to landscape mode
+   */
+  rotatePlayer() {
+      setTimeout(() => {
+        const playVideo: any = document.querySelector('#playerFullscreen');
+        console.log('playVideo', playVideo);
+        if (playVideo.requestFullscreen) {
+          playVideo.requestFullscreen();
+        } else if (playVideo.mozRequestFullScreen) { /* Firefox */
+          playVideo.mozRequestFullScreen();
+        } else if (playVideo.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+          playVideo.webkitRequestFullscreen();
+        } else if (playVideo.msRequestFullscreen) { /* IE/Edge */
+          playVideo.msRequestFullscreen();
+        }
+        screen.orientation.lock('landscape');
+        this.showCloseButton = true;
+      });
+
+  }
+
+  /** when user clicks on close button
+   * this method will let the player to exit from fullscreen mode and
+   * 1. video thumbnail will be shown for single content
+   * 2. content-details page will be shown ( for multi-result dial-code search flow)
+   */
+  closeFullscreen() {
+    this.showCloseButton = false;
+    /** to exit the fullscreen mode */
+    if (document['exitFullscreen']) {
+      document['exitFullscreen']();
+    } else if (document['mozCancelFullScreen']) { /* Firefox */
+      document['mozCancelFullScreen']();
+    } else if (document['webkitExitFullscreen']) { /* Chrome, Safari and Opera */
+      document['webkitExitFullscreen']();
+    } else if (document['msExitFullscreen']) { /* IE/Edge */
+      document['msExitFullscreen']();
+    }
+     /** to change the view of the content-details page */
+    if (this.isSingleContent) {
+      this.showVideoThumbnail = true;
+    } else {
+      this.loadLandscapePlayer = false;
+    }
   }
 
 }
