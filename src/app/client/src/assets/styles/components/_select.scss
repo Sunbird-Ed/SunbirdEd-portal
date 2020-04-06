@@ -26,7 +26,7 @@
     min-height: $sb-selection-dropdown-min-height;
     padding: $sb-selection-dropdown-padding;
     //line-height: $sb-selection-line-height;
-    font-size: 12px;
+    font-size: calculateRem(12px);
 }
 
 .ui.multiple.dropdown .label {
@@ -51,7 +51,7 @@
 }
 
 .ui.default.dropdown:not(.button)>.text, .ui.dropdown:not(.button)>.default.text {
-    color: #333;
+    color: var(--gray-800);
 }
 
 .ui.dropdown .menu>.item {
@@ -59,6 +59,6 @@
 }
 
 .ui.selection.dropdown.state-selection .menu > .item.active {
-    color: #024f9d;
+    color: var(--primary-color);
     background-color: #E5EDF5;
 }

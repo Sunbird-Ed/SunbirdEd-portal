@@ -4,7 +4,6 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
 import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
-import { environment } from '@sunbird/environment';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
@@ -57,7 +56,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   searchUrl: object;
   config: ConfigService;
   userProfile: IUserProfile;
-  isOffline: boolean = environment.isOffline;
 
   searchDropdownValues: Array<string> = ['All', 'Courses', 'Library'];
 

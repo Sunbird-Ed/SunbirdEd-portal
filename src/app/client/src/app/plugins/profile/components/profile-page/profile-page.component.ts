@@ -25,7 +25,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
-  isCustodianOrgUser = false;
+  isCustodianOrgUser = true; // set to true to avoid showing icon before api return value
   showMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   showEdit = false;
@@ -211,6 +211,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
       if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
         this.isCustodianOrgUser = true;
+      } else {
+        this.isCustodianOrgUser = false;
       }
     });
   }

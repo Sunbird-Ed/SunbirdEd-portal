@@ -255,5 +255,4 @@ describe('UtilService', () => {
       expect(data).toBeFalsy();
   }));
 
-
 });

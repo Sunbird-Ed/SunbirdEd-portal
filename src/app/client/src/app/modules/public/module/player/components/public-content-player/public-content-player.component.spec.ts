@@ -10,7 +10,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { ContentManagerService } from '@sunbird/offline';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
   events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
@@ -57,7 +56,7 @@ describe('PublicContentPlayerComponent', () => {
       TelemetryModule.forRoot()],
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PublicPlayerService, ContentManagerService,
+      providers: [PublicPlayerService,
         ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]

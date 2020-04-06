@@ -197,7 +197,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         this.signUpForm.controls['uniqueContact'].setValue('');
         if (mode === 'email') {
           this.signUpForm.controls['phone'].setValue('');
-          emailControl.setValidators([Validators.required, Validators.pattern(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,4}$/)]);
+          emailControl.setValidators([Validators.required, Validators.email]);
           phoneControl.clearValidators();
           this.onEmailChange();
         } else if (mode === 'phone') {

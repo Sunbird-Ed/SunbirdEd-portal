@@ -5,7 +5,6 @@
     <app-account-merge-modal (closeAccountMergeModal)="showAccountMergemodal = false"></app-account-merge-modal>
 </div>
 <div class="ui fixed relative main menu bs-0 d-block">
-    <extension-point [name]="'network-status-notify'" *ngIf="isOffline"></extension-point>
     <!--Header White Section-->
     <div class="ui container">
         <div class="ui grid padded width-100">
@@ -24,7 +23,7 @@
                 <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
                 <!--/Main Menu-->
                 <!--Avtar Dropdown-->
-                <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn && !isOffline"
+                <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn"
                     tabindex="0">
                     <div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                         <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
@@ -79,7 +78,7 @@
     <!--Header Blue Section-->
     <!--Computer-->
     <div class="sb-bg-color-primary p-8"
-        *ngIf="(showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre) && !router.url.includes('/contribute/program')">
+        *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !router.url.includes('/contribute/program')">
         <ng-container *ngIf="contributeTabActive else defaultView">
             <div class="ui container d-flex flex-ai-center mx-0">
                 <span class="fs-1 sb-color-white py-8">{{resourceService?.frmelmnts?.lbl?.availableForContribution}}</span>
@@ -100,12 +99,12 @@
                 <!--/Divider-->
                 <!--Search Box-->
                 <!--Logged in Pages-->
-                <app-search class="sb-search-box b-0 mr-auto" *ngIf="!showExploreHeader && !isOffline"
+                <app-search class="sb-search-box b-0 mr-auto" *ngIf="!showExploreHeader"
                     [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                 </app-search>
                 <!--/Logged in Pages-->
                 <!--Explore Pages-->
-                <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreHeader || isOffline"
+                <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreHeader"
                     [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                     <div class="input-div relative">
                         <i class="search icon"></i>
@@ -132,7 +131,7 @@
     </div>
     <!--/Computer-->
     <!--Mobile-->
-    <div class="p-8 mobile only" *ngIf="(showExploreHeader || userService.loggedIn || isOffline && !showOfflineHelpCentre) && !contributeTabActive">
+    <div class="p-8 mobile only" *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !contributeTabActive">
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
@@ -153,4 +152,3 @@
     <!--/Mobile-->
     <!--/Header Blue Section-->
 </div>
-<extension-point [name]="'content-import'" *ngIf="isOffline && !showOfflineHelpCentre"></extension-point>

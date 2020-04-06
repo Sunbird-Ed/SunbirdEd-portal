@@ -2,7 +2,6 @@ import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
-import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
@@ -100,19 +99,6 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
    * Emits event when content starts playing and end event when content was played/read completely
    */
   loadPlayer() {
-    if (_.includes(this.router.url, 'browse') && environment.isOffline) {
-      this.loadDefaultPlayer(`${this.configService.appConfig.PLAYER_CONFIG.localBaseUrl}webview=true`);
-      return;
-    } else if (environment.isOffline) {
-      if (_.get(this.playerConfig, 'metadata.artifactUrl')
-      && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
-        const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
-        this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
-      }
-      this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
-      return;
-    }
-
     if (this.previewCdnUrl !== '' && (this.isCdnWorking).toLowerCase() === 'yes') {
       this.loadCdnPlayer();
       return;

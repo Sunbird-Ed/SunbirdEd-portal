@@ -18,7 +18,6 @@ import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
 import {ChatLibModule, ChatLibService} from 'chat-lib';
-
 @NgModule({
   declarations: [
     AppComponent
@@ -36,6 +35,7 @@ import {ChatLibModule, ChatLibService} from 'chat-lib';
     DeviceDetectorModule.forRoot(),
     ChatLibModule,
     SharedFeatureModule,
+    ChatLibModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],

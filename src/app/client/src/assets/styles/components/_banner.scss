@@ -1,6 +1,6 @@
 .sb-banner {
   padding: $sb-banner-padding;
-  border-radius: 4px;
+  border-radius: calculateRem(4px);
   background-color: $sb-banner-background-color;
   box-shadow: $sb-banner-box-shadow;
   &.sb-fix-bottom,

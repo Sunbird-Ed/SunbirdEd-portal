@@ -7,15 +7,24 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Response } from './share-link.component.spec.data';
 import { By } from '@angular/platform-browser';
 import { CacheService } from 'ng2-cache-service';
+import { ActivatedRoute, Router } from '@angular/router';
 describe('ShareLinkComponent', () => {
   let component: ShareLinkComponent;
   let fixture: ComponentFixture<ShareLinkComponent>;
 
+  class FakeActivatedRoute {
+    snapshot = {
+      data: {
+        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+      }
+    };
+  }
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule , HttpClientTestingModule ],
       declarations: [ShareLinkComponent],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService,
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

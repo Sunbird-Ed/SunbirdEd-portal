@@ -29,7 +29,7 @@
 	<!--/Logged in user-->
 
 	<!--Not Logged in user-->
-	<ng-container *ngIf="!userService.loggedIn && !isOffline">
+	<ng-container *ngIf="!userService.loggedIn">
 		<button class="ui blue button" *ngIf="router.isActive('', true) && exploreButtonVisibility==='true'"
 			tabindex="0" [routerLink]="'/explore'">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
@@ -53,24 +53,6 @@
 		</a>
 	</ng-container>
 	<!--/Not Logged in user-->
-	<!-- offline container-->
-	<ng-container *ngIf="isOffline">
-		<a class="item tour-2" [routerLink]="'/'"
-			[ngClass]="(router.isActive('/') && !(router.isActive('/browse') || router.isActive('/help-center')) ) ? 'active': ''"
-			appTelemetryInteract [telemetryInteractEdata]="myLibraryMenuInteractEdata">
-			{{resourceService.frmelmnts?.btn?.myLibrary}}
-		</a>
-		<a class="item tour-3" [ngClass]="router.isActive('/browse')? 'active': ''" [routerLink]="'/browse'"
-			appTelemetryInteract [telemetryInteractEdata]="browseEdata">
-			{{resourceService.frmelmnts?.btn?.browse}}
-		</a>
-		<a class="item" [ngClass]="router.isActive('/help-center')? 'active': ''" [routerLink]="'/help-center'"
-			appTelemetryInteract [telemetryInteractEdata]="helpCenterEdata">
-			{{resourceService.frmelmnts?.btn?.downloadPdf}}
-		</a>
-	</ng-container>
-
-	<!-- offline container-->
 
 </div>
 <!--Computer-->
@@ -116,7 +98,7 @@
 		<!--/Logged in user-->
 
 		<!--Not Logged in user-->
-		<ng-container *ngIf="!userService.loggedIn && !isOffline">
+		<ng-container *ngIf="!userService.loggedIn">
 			<div class="item active">
 				<i class="close link icon" (click)="showSideBar()" tabindex="0"
 					title="{{resourceService?.frmelmnts?.btn?.close}}"></i>

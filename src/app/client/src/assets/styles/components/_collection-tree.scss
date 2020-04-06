@@ -81,7 +81,7 @@
     position: absolute;
     display: block;
     content: ' ';
-    top: -3px;
+    top: calculateRem(-3px);
     left: 0;
     height: 100%;
     width: $sb-fancyTree-list-border-width;
@@ -101,7 +101,7 @@
       position: absolute;
       display: block;
       content: ' ';
-      top: 10px;
+      top: calculateRem(10px);
       left: 0;
       width: $sb-fancyTree-list-item-border-text-spacing;
       height: $sb-fancyTree-list-border-width;
@@ -115,7 +115,7 @@
         position: absolute;
         display: block;
         content: ' ';
-        top: 11px;
+        top: calculateRem(11px);
         left: 0;
         height: 100%;
         width: $sb-fancyTree-list-border-width;

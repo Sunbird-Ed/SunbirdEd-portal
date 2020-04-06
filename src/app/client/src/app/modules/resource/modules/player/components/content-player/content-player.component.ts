@@ -212,7 +212,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
 
     } finally {
       setTimeout(() => {
-        this.navigationHelperService.navigateToResource('/explore');
+        this.navigationHelperService.navigateToPreviousUrl('/resources');
       }, 100);
     }
   }
