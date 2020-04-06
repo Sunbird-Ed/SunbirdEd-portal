@@ -81,7 +81,7 @@
                                     <span>{{resourceService.frmelmnts.lbl.licenseTerms}}:</span>
                                     {{courseHierarchy.licenseDetails['name']}} <br>
                                     <span class="licenseTag" *ngIf="courseHierarchy && courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['url']">
-                                        For details - <a href="{{courseHierarchy.licenseDetails['url']}}" target="_blank">{{courseHierarchy.licenseDetails['url']}}</a>
+                                        {{resourceService?.frmelmnts?.lbl?.forDetails}} - <a href="{{courseHierarchy.licenseDetails['url']}}" target="_blank">{{courseHierarchy.licenseDetails['url']}}</a>
                                     </span>
                                  </p>
                                 <!-- <a *ngIf="contributionsLength>0" popupTrigger="outsideClick" [popupPlacement]="'bottom left'" suiPopup popupText={{contributions}}>{{resourceService.frmelmnts.lbl.viewCredits}}</a> -->

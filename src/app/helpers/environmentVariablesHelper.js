@@ -38,6 +38,7 @@ let envVariables = {
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
   SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
   sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
+  sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
 
 
   // TTL and Intervals

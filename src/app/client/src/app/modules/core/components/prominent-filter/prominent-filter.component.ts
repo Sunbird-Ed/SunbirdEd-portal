@@ -17,6 +17,7 @@ import { first, mergeMap, map, tap, catchError, filter } from 'rxjs/operators';
 })
 export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() filterEnv: string;
+  @Input() notToUseFramework: boolean;
   @Input() accordionDefaultOpen: boolean;
   @Input() isShowFilterLabel: boolean;
   @Input() hashTagId = '';
@@ -178,6 +179,9 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
       }),
       map((formData: any) => {
         let formFieldProperties = _.filter(formData.formData, (formFieldCategory) => {
+          if (this.notToUseFramework) {
+            formFieldCategory.range = formFieldCategory.range;
+          } else {
           if (formFieldCategory.code === 'channel') {
             formFieldCategory.range = _.map(formData.channelData, (value) => {
               return {
@@ -194,6 +198,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
             formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage);
             formFieldCategory.range = this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
           }
+        }
           return true;
         });
         formFieldProperties = _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');

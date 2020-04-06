@@ -98,7 +98,8 @@
                     "CuriosityQuestions",
                     "MarkingSchemeRubric",
                     "ExplanationResource",
-                    "ExperientialResource"
+                    "ExperientialResource",
+                    "PracticeResource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-folder-o"
@@ -186,6 +187,15 @@
             {
                 "type": "ExperientialResource",
                 "label": "ExperientialResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PracticeResource",
+                "label": "PracticeResource",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
@@ -441,7 +451,8 @@
                     "MarkingSchemeRubric",
                     "ExplanationResource",
                     "ExperientialResource",
-                    "eTextBook"
+                    "eTextBook",
+                    "PracticeResource"
                 ],
                 "addType": "Editor",
                 "iconClass": "fa fa-folder-o"
@@ -539,6 +550,15 @@
             {
                 "type": "eTextBook",
                 "label": "eTextBook",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PracticeResource",
+                "label": "PracticeResource",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
