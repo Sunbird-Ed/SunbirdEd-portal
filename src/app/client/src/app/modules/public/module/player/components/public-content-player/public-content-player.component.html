@@ -1,11 +1,11 @@
 <div class="ui container mt-24" [appTelemetryImpression]="telemetryImpression" id="content-player">
   <div class="ui stackable grid" *ngIf="showPlayer && contentData && !loadLandscapePlayer">
 
-    <div class="twelve wide column" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
+  <div class="twelve wide column" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
 
-      <!--Content Title-->
-      <div class="sb-pageSection">
-        <div class="sb-pageSection-header">
+    <!--Content Title-->
+    <div class="sb-pageSection">
+      <div class="sb-pageSection-header">
 
           <!--Title-->
           <h1 class="sb-pageSection-title m-0 mr-8" *ngIf="contentData.name">
@@ -33,15 +33,15 @@
       </div>
       <!--/Content Title-->
 
-      <!--Badges-->
-      <app-content-badge [data]="badgeData" *ngIf="showPlayer" ></app-content-badge>
-      <!--/Badges-->
+    <!--Badges-->
+    <app-content-badge [data]="badgeData" *ngIf="showPlayer" ></app-content-badge>
+    <!--/Badges-->
 
-      <!--Warning message for external content-->
-      <div class="ui warning message" *ngIf="showExtContentMsg">
-        {{resourceService.messages.imsg.m0036}}
-      </div>
-      <!--/Warning message for external content-->
+    <!--Warning message for external content-->
+    <div class="ui warning message" *ngIf="showExtContentMsg">
+      {{resourceService.messages.imsg.m0036}}
+    </div>
+    <!--/Warning message for external content-->
 
       <!--Player-->
       <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
@@ -65,6 +65,9 @@
         </div>
       </div>
       <!--/Meta Data of content-->
+      <ng-template #loading>
+        <app-loader></app-loader>
+      </ng-template>
 
     </div>
   </div>
