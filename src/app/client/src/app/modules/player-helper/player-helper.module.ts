@@ -5,11 +5,14 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
   CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent,
-  ContentRatingComponent, CommingSoonComponent, ContentDownloadComponent
+  ContentRatingComponent, CommingSoonComponent, ContentDownloadComponent,
+  CreditsAndLicenceComponent, ContentActionsComponent, ContentPlayerComponent, 
+  ContentPlayerPageComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
   imports: [
@@ -18,13 +21,16 @@ import { FormsModule } from '@angular/forms';
     TelemetryModule,
     SharedModule,
     CoreModule,
-    FormsModule
+    FormsModule,
+    CommonConsumptionModule
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent, ContentDownloadComponent],
+    CommingSoonComponent, ContentDownloadComponent, CreditsAndLicenceComponent, ContentActionsComponent, 
+    ContentPlayerComponent, ContentPlayerPageComponent],
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent, ContentDownloadComponent]
+    CommingSoonComponent, ContentDownloadComponent, CreditsAndLicenceComponent, ContentActionsComponent, 
+    ContentPlayerComponent, ContentPlayerPageComponent]
 })
 export class PlayerHelperModule { }

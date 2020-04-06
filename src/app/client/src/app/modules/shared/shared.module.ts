@@ -1,3 +1,4 @@
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
@@ -7,6 +8,8 @@ import {
   CardCreationComponent, ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent,
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
   OfflineCardComponent, OfflineBannerComponent, OfflineApplicationDownloadComponent, FullPageModalComponent
+  
+  //ContentPlayerComponent, , 
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -24,7 +27,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
 import { HighlightTextDirective } from './directives/highlight-text/highlight-text.directive';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
     SuiRatingModule, SuiCollapseModule,
     SlickModule,
     FormsModule,
-    TelemetryModule
+    TelemetryModule,
+    CommonConsumptionModule
   ],
   declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent,
     BatchCardComponent, NoResultComponent, DateFilterXtimeAgoPipe, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,

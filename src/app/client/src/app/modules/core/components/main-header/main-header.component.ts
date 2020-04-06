@@ -206,6 +206,7 @@ export class MainHeaderComponent implements OnInit {
   }
 
   getUrl() {
+    this.showExploreHeader = true;
     this.routerEvents.subscribe((urlAfterRedirects: NavigationEnd) => {
       let currentRoute = this.activatedRoute.root;
       this.contributeTabActive = this.router.isActive('/contribute', true);
@@ -227,7 +228,7 @@ export class MainHeaderComponent implements OnInit {
       if (_.includes(urlAfterRedirects.url, '/explore-course') || _.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
       } else {
-        this.showExploreHeader = false;
+        //this.showExploreHeader = false;
       }
     });
   }
