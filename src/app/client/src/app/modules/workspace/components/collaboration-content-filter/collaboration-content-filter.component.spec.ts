@@ -8,6 +8,7 @@ import { UserService, LearnerService, CoursesService, PermissionService } from '
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProducerData, TelemetryService } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
 describe('CollaborationContentFilterComponent', () => {
   let component: CollaborationContentFilterComponent;
@@ -26,7 +27,7 @@ describe('CollaborationContentFilterComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
-        PermissionService, ResourceService, ToasterService,
+        PermissionService, ResourceService, ToasterService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
       ],
