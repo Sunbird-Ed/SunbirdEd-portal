@@ -42,6 +42,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedCourseBatches: any;
   public pageSections: Array<ICaraouselData> = [];
   public usersProfile: any;
+  public toUseFrameWorkData = false;
+  public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
+  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
@@ -66,6 +69,10 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   ngOnInit() {
+    // TODO change the slug to 'Igot'
+    if (this.userService.slug === this.slugForProminentFilter) {
+      this.toUseFrameWorkData = true;
+    }
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
       mergeMap((data: Array<any>) => {
         this.enrolledSection = data[0];
@@ -131,9 +138,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
             const sectionId = _.get(result[1], 'result.response.value');
             option['sections'] = {};
             option['sections'][sectionId] = {
-                'filters': {
-                  'batches.createdFor': [_.get(this.usersProfile, 'rootOrg.rootOrgId')]
-                }
+              'filters': {
+                'batches.createdFor': [_.get(this.usersProfile, 'rootOrg.rootOrgId')]
+              }
             };
           }
         }

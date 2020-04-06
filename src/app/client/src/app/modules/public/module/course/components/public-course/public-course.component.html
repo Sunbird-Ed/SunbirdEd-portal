@@ -1,7 +1,7 @@
 <div [appTelemetryImpression]="telemetryImpression">
   <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
     *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
-    [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"
+    [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId" [notToUseFramework]="toUseFrameWorkData"
     (prominentFilter)="getFilters($event)"></app-prominent-filter>
   <div class="ui container mt-24">
     <div class="ui grid">
