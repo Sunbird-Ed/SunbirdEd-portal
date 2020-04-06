@@ -58,7 +58,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.setNoResultMessage();
         this.initFilter = true;
       }, (error) => {
-        this.toasterService.error('Fetching content failed. Please try again later.');
+        this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
         setTimeout(() => this.router.navigate(['']), 5000);
         console.error('init search filter failed', error);
       });
@@ -211,12 +211,15 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private setNoResultMessage() {
-    this.noResultMessage = {
-      'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
-      'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-      'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-      'showExploreContentButton': true
-    };
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
+    .subscribe(item => {
+      this.noResultMessage = {
+        'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
+        'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+        'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+        'showExploreContentButton': true
+      };
+    });
   }
 
   public navigateToExploreContent() {

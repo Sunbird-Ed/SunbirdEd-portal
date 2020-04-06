@@ -42,8 +42,11 @@ describe('ExploreComponent', () => {
       'emsg': {},
     },
     frmelmnts: {
-      lbl: {}
-    }
+      lbl: {
+        fetchingContentFailed: 'Fetching content failed. Please try again later.'
+      }
+    },
+    languageSelected$: of({})
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
