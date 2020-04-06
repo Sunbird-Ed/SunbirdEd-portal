@@ -6,8 +6,7 @@ import * as _ from 'lodash-es';
 import { Subject , Observable, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-import { IInteractEventInput, IInteractEventObject, IProducerData } from '../../../../modules/telemetry/interfaces';
-// import { TelemetryService } from '../../../../modules/telemetry/services/telemetry/telemetry.service';
+import { IInteractEventInput, IInteractEventObject, IProducerData } from '@sunbird/telemetry';
 import { TelemetryService } from '../../../../modules/telemetry/services';
 @Component({
   selector: 'app-collaboration-content-filter',
@@ -163,29 +162,15 @@ export class CollaborationContentFilterComponent implements OnInit {
         query: this.query
       };
     }
-    this.telemetryInteractEdata = searchInteractEdata;
-    if (this.telemetryInteractEdata) {
       this.appTelemetryInteractData = {
        context: {
           env: _.get(this.telemetryInteractContext, 'env') || _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
-          _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
-          _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env') ,
+          _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
           cdata: this.telemetryInteractCdata || [],
         },
-        edata: this.telemetryInteractEdata
+        edata: searchInteractEdata
       };
-      if (this.telemetryInteractObject) {
-        if (this.telemetryInteractObject.ver) {
-          this.telemetryInteractObject.ver = _.isNumber(this.telemetryInteractObject.ver) ?
-          _.toString(this.telemetryInteractObject.ver) : this.telemetryInteractObject.ver;
-        }
-        this.appTelemetryInteractData.object = this.telemetryInteractObject;
-      }
-      if (this.telemetryInteractPdata) {
-        this.appTelemetryInteractData.context.pdata = this.telemetryInteractPdata;
-      }
       this.telemetryService.interact(this.appTelemetryInteractData);
-    }
   }
 
   applySorting(sortByOption) {
