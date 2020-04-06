@@ -194,6 +194,7 @@ export class UserService {
     const orgRoleMap = {};
     const hashTagIds = [];
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
+    this._slug = _.get(profileData, 'rootOrg.slug');
     profileData.skills = _.get(profileData, 'skills' ) || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
