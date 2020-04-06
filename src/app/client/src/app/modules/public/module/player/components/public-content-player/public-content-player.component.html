@@ -1,7 +1,7 @@
 <div class="ui container mt-24" [appTelemetryImpression]="telemetryImpression" id="content-player">
   <div class="ui stackable grid" *ngIf="showPlayer && contentData && !loadLandscapePlayer">
 
-  <div class="twelve wide column" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
+      <div class="twelve wide column" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
 
     <!--Content Title-->
     <div class="sb-pageSection">
