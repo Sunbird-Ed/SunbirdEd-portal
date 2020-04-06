@@ -146,7 +146,6 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       // exists: [],
       params : this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
-
     this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.showLoader = false;

@@ -138,9 +138,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
             const sectionId = _.get(result[1], 'result.response.value');
             option['sections'] = {};
             option['sections'][sectionId] = {
-              'filters': {
-                'batches.createdFor': [_.get(this.usersProfile, 'rootOrg.rootOrgId')]
-              }
+             'filters': {
+               'batches.createdFor': [_.get(this.usersProfile, 'rootOrg.rootOrgId')]
+             }
             };
           }
         }
