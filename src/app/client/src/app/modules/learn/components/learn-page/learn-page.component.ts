@@ -125,6 +125,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     const option: any = {
       source: 'web',
       name: 'Course',
+      organisationId: this.userService.hashTagId,
       filters: filters,
       params: this.configService.appConfig.CoursePageSection.contentApiQueryParams
     };
