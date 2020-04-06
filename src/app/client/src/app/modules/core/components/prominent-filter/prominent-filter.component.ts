@@ -183,20 +183,20 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
             formFieldCategory.range = formFieldCategory.range;
           } else {
           if (formFieldCategory.code === 'channel') {
-              formFieldCategory.range = _.map(formData.channelData, (value) => {
-                return {
-                  category: 'channel',
-                  identifier: value.hashTagId,
-                  name: value.orgName,
-                };
-              });
+            formFieldCategory.range = _.map(formData.channelData, (value) => {
+              return {
+                category: 'channel',
+                identifier: value.hashTagId,
+                name: value.orgName,
+              };
+            });
           } else {
-             const frameworkTerms = _.get(_.find(this.categoryMasterList, { code: formFieldCategory.code }), 'terms');
-             formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
+            const frameworkTerms = _.get(_.find(this.categoryMasterList, { code: formFieldCategory.code }), 'terms');
+            formFieldCategory.range = _.union(formFieldCategory.range, frameworkTerms);
           }
           if (this.selectedLanguage !== 'en') {
-             formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage);
-             formFieldCategory.range = this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
+            formFieldCategory = this.utilService.translateLabel(formFieldCategory, this.selectedLanguage);
+            formFieldCategory.range = this.utilService.translateValues(formFieldCategory.range, this.selectedLanguage);
           }
         }
           return true;
