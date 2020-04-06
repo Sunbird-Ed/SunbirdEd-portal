@@ -3,9 +3,9 @@
 
       <div class="twelve wide column" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
 
-      <!--Content Title-->
-      <div class="sb-pageSection">
-        <div class="sb-pageSection-header">
+        <!--Content Title-->
+        <div class="sb-pageSection">
+          <div class="sb-pageSection-header">
 
           <!--Title-->
           <h1 class="sb-pageSection-title m-0 mr-8" *ngIf="contentData.name">
@@ -33,14 +33,14 @@
       </div>
       <!--/Content Title-->
 
-    <!--Badges-->
-    <app-content-badge [data]="badgeData" *ngIf="showPlayer" ></app-content-badge>
-    <!--/Badges-->
+        <!--Badges-->
+        <app-content-badge [data]="badgeData" *ngIf="showPlayer" ></app-content-badge>
+        <!--/Badges-->
 
-    <!--Warning message for external content-->
-    <div class="ui warning message" *ngIf="showExtContentMsg">
-      {{resourceService.messages.imsg.m0036}}
-    </div>
+        <!--Warning message for external content-->
+        <div class="ui warning message" *ngIf="showExtContentMsg">
+          {{resourceService.messages.imsg.m0036}}
+        </div>
     <!--/Warning message for external content-->
 
       <!--Player-->
@@ -88,15 +88,15 @@
   </div> 
 </div>
 
-<sui-modal
-[isClosable]="true"
-[transitionDuration]="0"
-[size]="'small'"
-class="sb-modal sb-error"
-appBodyScroll
-(dismissed)="close()"
-#modal
-*ngIf="showError">
+<sui-modal 
+  [isClosable]="true" 
+  [transitionDuration]="0" 
+  [size]="'small'" 
+  class="sb-modal sb-error" 
+  appBodyScroll 
+  (dismissed)="close()" 
+  #modal 
+  *ngIf="showError">
 
   <!--Header-->
   <div class="sb-modal-header">
