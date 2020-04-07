@@ -16,14 +16,14 @@ commit_hash=$(git rev-parse --short HEAD)
 
 rm -rf src/app/app_dist/
 rm -rf src/app/player-dist.tar.gz
-nvm install 8.11
-nvm use 8.11
+nvm install 12.16.1
+nvm use 12.16.1
 cd src/app
 npm set progress=false
 npm install  --unsafe-perm
 npm run deploy
 cd app_dist
-npm i -g npm@3.10.10
+npm i -g npm@6.13.4
 npm install --production  --unsafe-perm
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo 'Compressing assets directory'
