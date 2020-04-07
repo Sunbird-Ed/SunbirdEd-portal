@@ -153,7 +153,7 @@ describe('PublicContentPlayerComponent', () => {
     component.deviceDetector();
     expect(component.loadLandscapePlayer).toBe(true);
     expect(component.showFooter).toBe(true);
-    expect(component.rotatePlayer).toHaveBeenCalledWith();
+    expect(component.rotatePlayer).toHaveBeenCalled();
   });
 
   it('should call deviceDetector', fakeAsync(() => {
@@ -175,15 +175,6 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.rotatePlayer).toHaveBeenCalled();
   });
 
-  it('should rotate player', fakeAsync(() => {
-    const mockDomElement = document.createElement('div');
-    mockDomElement.setAttribute('id', 'playerFullscreen');
-    spyOn(document, 'querySelector').and.returnValue(mockDomElement);
-    component.rotatePlayer();
-    tick(100);
-    expect(component.showCloseButton).toBe(true);
-  }));
-
   it('should close player fullscreen ', () => {
     component.isSingleContent = true;
     component.closeFullscreen();
@@ -196,5 +187,101 @@ describe('PublicContentPlayerComponent', () => {
     component.closeFullscreen();
     expect(component.showCloseButton).toBe(false);
     expect(component.loadLandscapePlayer).toBe(false);
+  });
+
+  describe('should rotate player', () => {
+    let mockDomElement;
+    beforeEach(() => {
+        mockDomElement = document.createElement('div');
+        mockDomElement.setAttribute('id', 'playerFullscreen');
+    });
+    describe('when default browser', () => {
+      it('should rotate player', fakeAsync(() => {
+        spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+        component.rotatePlayer();
+        tick(100);
+        expect(component.showCloseButton).toBe(true);
+      }));
+    });
+    describe('when mozilla browser', () => {
+      it('should rotate player', fakeAsync(() => {
+        mockDomElement.requestFullscreen = undefined;
+        mockDomElement.mozRequestFullScreen = () => {};
+        spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+        component.rotatePlayer();
+        tick(100);
+        expect(component.showCloseButton).toBe(true);
+      }));
+    });
+    describe('when webkit browser', () => {
+      it('should rotate player', fakeAsync(() => {
+        mockDomElement.requestFullscreen = undefined;
+        mockDomElement.mozRequestFullScreen = undefined;
+        mockDomElement.webkitRequestFullscreen = () => {};
+        spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+        component.rotatePlayer();
+        tick(100);
+        expect(component.showCloseButton).toBe(true);
+      }));
+    });
+    describe('when ms browser', () => {
+      it('should rotate player', fakeAsync(() => {
+        mockDomElement.requestFullscreen = undefined;
+        mockDomElement.mozRequestFullScreen = undefined;
+        mockDomElement.webkitRequestFullscreen = undefined;
+        mockDomElement.msRequestFullscreen = () => {};
+        spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+        component.rotatePlayer();
+        tick(100);
+        expect(component.showCloseButton).toBe(true);
+      }));
+    });
+  });
+
+  describe('should close the browser', () => {
+    describe('default', () => {
+      it('should close player fullscreen ', () => {
+        component.isSingleContent = true;
+        component.closeFullscreen();
+        expect(component.showCloseButton).toBe(false);
+        expect(component.showVideoThumbnail).toBe(true);
+      });
+    });
+
+    describe('when mozila browser', () => {
+      it('should close player fullscreen ', () => {
+        document['exitFullscreen'] = undefined;
+        document['mozCancelFullScreen'] = () => {};
+        component.isSingleContent = true;
+        component.closeFullscreen();
+        expect(component.showCloseButton).toBe(false);
+        expect(component.showVideoThumbnail).toBe(true);
+      });
+    });
+
+    describe('when webkit browser', () => {
+      it('should close player fullscreen ', () => {
+        document['exitFullscreen'] = undefined;
+        document['mozCancelFullScreen'] = undefined;
+        document['webkitExitFullscreen'] = () => {};
+        component.isSingleContent = true;
+        component.closeFullscreen();
+        expect(component.showCloseButton).toBe(false);
+        expect(component.showVideoThumbnail).toBe(true);
+      });
+    });
+
+    describe('when ms browser', () => {
+      it('should close player fullscreen ', () => {
+        document['exitFullscreen'] = undefined;
+        document['mozCancelFullScreen'] = undefined;
+        document['webkitExitFullscreen'] = undefined;
+        document['msExitFullscreen'] = () => {};
+        component.isSingleContent = true;
+        component.closeFullscreen();
+        expect(component.showCloseButton).toBe(false);
+        expect(component.showVideoThumbnail).toBe(true);
+      });
+    });
   });
 });
