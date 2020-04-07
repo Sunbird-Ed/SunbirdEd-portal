@@ -365,9 +365,6 @@ export class AppComponent implements OnInit, OnDestroy {
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
-        this.cacheService.set('orgDetailsFromSlug', data, {
-          maxAge: this.browserCacheTtlService.browserCacheTtl
-      });
       })
     );
   }
