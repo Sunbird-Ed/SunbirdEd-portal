@@ -172,4 +172,13 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showVideoThumbnail).toBe(true);
     expect(component.rotatePlayer).toHaveBeenCalled();
   });
+
+  it('should rotate player', fakeAsync(() => {
+    const mockDomElement = document.createElement('div');
+    mockDomElement.setAttribute('id', 'playerFullscreen');
+    spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+    component.rotatePlayer();
+    tick(100);
+    expect(component.showCloseButton).toBe(true);
+  }));
 });
