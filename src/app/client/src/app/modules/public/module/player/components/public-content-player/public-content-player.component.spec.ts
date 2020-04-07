@@ -155,4 +155,14 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.showFooter).toBe(true);
     expect(component.rotatePlayer).toHaveBeenCalled();
   });
+
+  it('should call deviceDetector', fakeAsync(() => {
+    spyOn(component, 'deviceDetector');
+    setTimeout(()  => {
+      component.ngAfterViewInit();
+    }, 100);
+    tick(101);
+    expect(component.deviceDetector).toHaveBeenCalled();
+
+  }));
 });
