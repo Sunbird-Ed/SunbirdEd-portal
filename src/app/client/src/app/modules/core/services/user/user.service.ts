@@ -95,6 +95,7 @@ export class UserService {
    */
   public publicDataService: PublicDataService;
   private _slug = '';
+  public _isCustodianUser: boolean;
   /**
   * constructor
   * @param {ConfigService} config ConfigService reference
@@ -147,6 +148,12 @@ export class UserService {
   */
   get sessionId(): string {
     return this._sessionId;
+  }
+  setIsCustodianUser(isCustodianUser) {
+    this._isCustodianUser = isCustodianUser
+  }
+  get isCustodianUser(): boolean {
+    return this._isCustodianUser;
   }
   /**
    * method to fetch user profile from server.
