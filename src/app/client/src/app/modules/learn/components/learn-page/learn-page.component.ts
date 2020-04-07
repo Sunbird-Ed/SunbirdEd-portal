@@ -71,9 +71,10 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toUseFrameWorkData = true;
     }
     if (this.userService._isCustodianUser && this.orgDetailsFromSlug ) {
-      if(_.get(this.orgDetailsFromSlug, 'slug') === this.slugForProminentFilter)
+      if (_.get(this.orgDetailsFromSlug, 'slug') === this.slugForProminentFilter) {
         this.toUseFrameWorkData = true;
-      this.hashTagId = _.get(this.orgDetailsFromSlug,'hashTagId')
+      }
+      this.hashTagId = _.get(this.orgDetailsFromSlug, 'hashTagId');
     }
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
       mergeMap((data: Array<any>) => {
@@ -119,9 +120,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       return value.length;
     });
-    let hashTagId = this.userService.hashTagId
+    let hashTagId = this.userService.hashTagId;
     if (this.userService._isCustodianUser  && this.orgDetailsFromSlug) {
-      hashTagId = _.get(this.orgDetailsFromSlug,'hashTagId')
+      hashTagId = _.get(this.orgDetailsFromSlug, 'hashTagId');
     }
     const option: any = {
       source: 'web',

@@ -142,7 +142,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.courseService.initialize();
             this.programsService.initialize();
             this.userService.startSession();
-            this.checkForCustodianUser()
+            this.checkForCustodianUser();
             return this.setUserDetails();
           } else {
             return this.setOrgDetails();
@@ -284,7 +284,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
   public getOrgDetails() {
-    let slug = this.userService.slug;
+    const slug = this.userService.slug;
     return this.orgDetailsService.getOrgDetails(slug).pipe(
       tap(data => {
         this.cacheService.set('orgDetailsFromSlug', data, {
@@ -296,9 +296,9 @@ export class AppComponent implements OnInit, OnDestroy {
   public checkForCustodianUser() {
     this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
       if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
-        this.userService.setIsCustodianUser(true)
+        this.userService.setIsCustodianUser(true);
       } else {
-        this.userService.setIsCustodianUser(false)
+        this.userService.setIsCustodianUser(false);
       }
     });
   }

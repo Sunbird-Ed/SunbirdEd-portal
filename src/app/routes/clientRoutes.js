@@ -100,7 +100,7 @@ module.exports = (app, keycloak) => {
     '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*'], redirectTologgedInPage, indexPage(false))
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => {
-    if((_.get(req,'query.channel')) && ((_.get(req,'query.channel')) === envHelper.sunbird_portal_slugForProminentFilter)){
+    if (_.get(req, 'query.channel')) {
       res.redirect(`/${envHelper.sunbird_portal_slugForProminentFilter}/get/dial/${req.params.dialCode}?source=scan`);
     } else {
       res.redirect('/get/dial/' + req.params.dialCode + '?source=scan')

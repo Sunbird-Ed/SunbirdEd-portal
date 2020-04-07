@@ -150,7 +150,7 @@ export class UserService {
     return this._sessionId;
   }
   setIsCustodianUser(isCustodianUser) {
-    this._isCustodianUser = isCustodianUser
+    this._isCustodianUser = isCustodianUser;
   }
   get isCustodianUser(): boolean {
     return this._isCustodianUser;
