@@ -137,7 +137,7 @@ describe('PublicContentPlayerComponent', () => {
 
   }));
 
-  it(`should detect the device and rotate to landscape`, () => {
+  it('should detect the device and rotate to landscape', () => {
     component.isMobileOrTab = true;
     component.isSingleContent = true;
     spyOn(component, 'rotatePlayer');
@@ -146,7 +146,7 @@ describe('PublicContentPlayerComponent', () => {
     expect(component.rotatePlayer).toHaveBeenCalled();
   });
 
-  it(`should detect the device and rotate to landscape if not a single content`, () => {
+  it('should detect the device and rotate to landscape if not a single content', () => {
     component.isMobileOrTab = true;
     component.isSingleContent = false;
     spyOn(component, 'rotatePlayer');
@@ -163,6 +163,13 @@ describe('PublicContentPlayerComponent', () => {
     }, 100);
     tick(101);
     expect(component.deviceDetector).toHaveBeenCalled();
-
   }));
+
+  it('should load player on tap of play icon', () => {
+    component.isMobileOrTab = true;
+    spyOn(component, 'rotatePlayer');
+    component.enablePlayer(true);
+    expect(component.showVideoThumbnail).toBe(true);
+    expect(component.rotatePlayer).toHaveBeenCalled();
+  });
 });
