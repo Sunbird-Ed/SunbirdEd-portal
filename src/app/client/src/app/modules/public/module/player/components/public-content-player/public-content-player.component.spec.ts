@@ -136,4 +136,23 @@ describe('PublicContentPlayerComponent', () => {
     });
 
   }));
+
+  it(`should detect the device and rotate to landscape`, () => {
+    component.isMobileOrTab = true;
+    component.isSingleContent = true;
+    spyOn(component, 'rotatePlayer');
+    component.deviceDetector();
+    expect(component.showFooter).toBe(true);
+    expect(component.rotatePlayer).toHaveBeenCalled();
+  });
+
+  it(`should detect the device and rotate to landscape if not a single content`, () => {
+    component.isMobileOrTab = true;
+    component.isSingleContent = false;
+    spyOn(component, 'rotatePlayer');
+    component.deviceDetector();
+    expect(component.loadLandscapePlayer).toBe(true);
+    expect(component.showFooter).toBe(true);
+    expect(component.rotatePlayer).toHaveBeenCalled();
+  });
 });
