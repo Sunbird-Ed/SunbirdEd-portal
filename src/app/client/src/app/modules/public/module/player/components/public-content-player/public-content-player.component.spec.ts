@@ -153,15 +153,17 @@ describe('PublicContentPlayerComponent', () => {
     component.deviceDetector();
     expect(component.loadLandscapePlayer).toBe(true);
     expect(component.showFooter).toBe(true);
-    expect(component.rotatePlayer).toHaveBeenCalled();
+    expect(component.rotatePlayer).toHaveBeenCalledWith();
   });
 
   it('should call deviceDetector', fakeAsync(() => {
+    component.dialCode = 'ABC123';
     spyOn(component, 'deviceDetector');
     setTimeout(()  => {
       component.ngAfterViewInit();
     }, 100);
     tick(101);
+    expect(component.telemetryCdata).toEqual([{ 'type': 'DialCode', 'id': 'ABC123'}]);
     expect(component.deviceDetector).toHaveBeenCalled();
   }));
 
@@ -181,4 +183,18 @@ describe('PublicContentPlayerComponent', () => {
     tick(100);
     expect(component.showCloseButton).toBe(true);
   }));
+
+  it('should close player fullscreen ', () => {
+    component.isSingleContent = true;
+    component.closeFullscreen();
+    expect(component.showCloseButton).toBe(false);
+    expect(component.showVideoThumbnail).toBe(true);
+  });
+
+  it('should close player fullscreen and enable top div', () => {
+    component.isSingleContent = false;
+    component.closeFullscreen();
+    expect(component.showCloseButton).toBe(false);
+    expect(component.loadLandscapePlayer).toBe(false);
+  });
 });
