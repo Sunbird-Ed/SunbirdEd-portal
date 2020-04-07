@@ -70,8 +70,9 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.userService.slug === this.slugForProminentFilter) {
       this.toUseFrameWorkData = true;
     }
-    if (this.userService._isCustodianUser && this.orgDetailsFromSlug) {
-      this.toUseFrameWorkData = true;
+    if (this.userService._isCustodianUser && this.orgDetailsFromSlug ) {
+      if(_.get(this.orgDetailsFromSlug, 'slug') === this.slugForProminentFilter)
+        this.toUseFrameWorkData = true;
       this.hashTagId = _.get(this.orgDetailsFromSlug,'hashTagId')
     }
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
