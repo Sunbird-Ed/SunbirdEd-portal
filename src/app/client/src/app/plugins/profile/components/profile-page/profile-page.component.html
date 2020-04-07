@@ -253,7 +253,7 @@
           </div>
           <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
             <div class="d-flex flex-ai-center sb-ct-list list-item" *ngIf="data.courseName">
-              <label class="mr-auto mb-0">{{data.courseName}}</label>
+              <label class="mr-auto mb-0 text-left">{{data.courseName}}</label>
               <span class="list-date mr-24" *ngIf="data.completedOn">{{data.completedOn | date :'MMMM yyy' }}</span>
               <div class="sb-certificate-trained-flex-space" *ngIf="data.certificates && data.certificates.length > 0">
                 <button appTelemetryInteract

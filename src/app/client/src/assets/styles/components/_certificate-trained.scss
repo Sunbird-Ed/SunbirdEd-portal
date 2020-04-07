@@ -84,16 +84,6 @@
   }
 }
 
-html[dir="rtl"] {
-  .sb-certificate-trained {
-    .list-item {
-      label {
-        text-align: right;
-      }
-    }
-  }
-}
-
 //OR text divider
 .sb-or-divider {
   color: var(--gray-200);
