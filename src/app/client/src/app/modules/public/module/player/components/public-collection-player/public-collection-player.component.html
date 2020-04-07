@@ -1,15 +1,61 @@
+<!--CC-Player Back button -->
+<div class="sb-bg-white relative position cc-player__btn-back">
+  <div class="ui container py-8 px-0">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+      (click)="goBack()">
+      <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+          <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+        </svg></i>
+      {{resourceService?.frmelmnts?.btn?.back}}
+    </button>
+  </div>
+</div>
+
+<!--CC-Player Content Header -->
+<div class="cc-player__content-header d-flex flex-ai-center relative position" *ngIf="activeContent">
+  <div class="ui container">
+    <div class="header-info flex-basis-1">
+      <div class="header-info__title">
+        <h5 class="sb-color-primary font-weight-bold">{{activeContent.name}}</h5>
+      </div>
+      <div class="header-info__desc d-flex flex-ai-center" *ngIf="collectionTreeNodes">
+        <span class="fnormal"
+          *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes.data.subject.join()}}</span>
+        <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
+        <span class="fnormal"
+          *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes.data.gradeLevel.join()}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CC-Player Video -->
+<div class="ui container">
+  <div class="cc-player sb-g">
+    <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-9 cc-player__video"
+      [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
+      <div class="toc-content">
+      </div>
+      <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true" [contentDetails]="activeContent"
+        [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
+      </app-contentplayer-page>
+    </section>
+    <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-3 cc-player__list mb-16">
+      <sb-library-filters [list]="mimeTypeFilters" [layout]="'round-with-icon'"
+        (selectedMimeType)="selectedFilter($event)" [tocList]="tocList">
+      </sb-library-filters>
+      <div class="side-toc-content">
+        <sb-toc-item [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
+          (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
+          (noContent)="showNoContent($event)"></sb-toc-item>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- 
 <div class="ui container mt-24">
   <div class="ui stackable grid">
-    <!--Content Title-->
-    <div>
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
-        (click)="goBack()">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i>
-        {{resourceService?.frmelmnts?.btn?.back}}
-      </button>
-    </div>
+
     <div class="ui stackable grid">
       <div class="one wide column">
       </div>
@@ -18,9 +64,11 @@
           {{activeContent.name}}
         </h1>
         <div class="content-video__player__title__subtitle fxsmall mt-4" *ngIf="collectionTreeNodes">
-          <span class="mr-8" *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes.data.subject.join()}}</span>
+          <span class="mr-8"
+            *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes.data.subject.join()}}</span>
           <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
-          <span class="mr-8" *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes.data.gradeLevel.join()}}</span>
+          <span class="mr-8"
+            *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes.data.gradeLevel.join()}}</span>
         </div>
       </div>
       <div class="eleven wide column sb-bg-color-white">
@@ -38,8 +86,9 @@
                 (selectedMimeType)="selectedFilter($event)" [tocList]="tocList">
               </sb-library-filters>
               <div class="side-toc-content">
-                <sb-toc-item [activeMimeTypeFilter]= "activeMimeTypeFilter" [tocData]="collectionData"
-                  (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent" (noContent)="showNoContent($event)"></sb-toc-item>
+                <sb-toc-item [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
+                  (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
+                  (noContent)="showNoContent($event)"></sb-toc-item>
               </div>
 
             </div>
@@ -48,4 +97,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

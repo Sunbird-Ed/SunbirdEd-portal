@@ -17,7 +17,8 @@ import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
   selector: 'app-public-collection-player',
-  templateUrl: './public-collection-player.component.html'
+  templateUrl: './public-collection-player.component.html',
+  styleUrls: ['./public-collection-player.component.scss']
 })
 export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
