@@ -87,6 +87,12 @@ module.exports = (app, keycloak) => {
   })
 
   app.all('/play/quiz/*', playContent);
+  
+  app.all(['/announcement', '/announcement/*', '/search', '/search/*',
+  '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
+  '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
+  '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*'], keycloak.protect(), indexPage(true));
+  
   // all public route should also have same route prefixed with slug
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*',  '/explore-course', '/explore-course/*',
@@ -96,11 +102,6 @@ module.exports = (app, keycloak) => {
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
 
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
-
-  app.all(['/announcement', '/announcement/*', '/search', '/search/*',
-    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
-    '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
-    '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*'], keycloak.protect(), indexPage(true))
 
   app.all('/:tenantName', renderTenantPage)
 }
