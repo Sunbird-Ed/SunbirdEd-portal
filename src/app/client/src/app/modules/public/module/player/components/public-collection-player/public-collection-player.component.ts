@@ -8,7 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
-  ContentUtilsServiceService, UtilService
+  ContentUtilsServiceService, UtilService, ITelemetryShare
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -22,16 +22,19 @@ import { PopupControlService } from '../../../../../../service/popup-control.ser
 export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
 	 * telemetryImpression
-	*/
+  */
+  telemetryShareData: Array<ITelemetryShare>;
   telemetryImpression: IImpressionEventInput;
   telemetryContentImpression: IImpressionEventInput;
+  objectInteract: IInteractEventObject;
+  printPdfInteractEdata: IInteractEventEdata;
   public queryParams: any;
   public collectionData: object;
 
   public showPlayer: Boolean = false;
 
   private collectionId: string;
-
+  public mimeType: string;
   private contentId: string;
   private contentType: string ;
   /**
@@ -58,7 +61,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   private objectRollUp: any;
 
   telemetryCdata: Array<{}>;
-
+  shareLink: string;
   public loader: Boolean = true;
   public treeModel: any;
   public contentDetails = [];
@@ -77,7 +80,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
    * Page Load Time, used this data in impression telemetry
    */
   public pageLoadDuration: Number;
-
+  public sharelinkModal: boolean;
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -96,6 +99,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     type: 'click',
     pageid: this.route.snapshot.data.telemetry.pageid
   };
+  selectedContent: {};
 
   constructor(contentService: ContentService, public route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -136,6 +140,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       type: 'click',
       pageid: this.route.snapshot.data.telemetry.pageid
     };
+    this.printPdfInteractEdata = {
+      id: 'print-pdf-button',
+      type: 'click',
+      pageid: this.route.snapshot.data.telemetry.pageid
+    };
     this.telemetryInteractObject = {
       id: this.activatedRoute.snapshot.params.collectionId,
       type: this.contentType,
@@ -167,6 +176,23 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         }
       };
     });
+  }
+
+  onShareLink() {
+    this.shareLink = this.contentUtilsService.getPublicShareUrl(this.collectionId, this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl);
+    this.setTelemetryShareData(this.collectionData);
+  }
+
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
+  }
+
+  printPdf(pdfUrl: string) {
+    window.open(pdfUrl, '_blank');
   }
 
   ngOnDestroy() {
@@ -295,6 +321,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
+            this.selectedContent = content;
             this.playerContent = _.get(content, 'model');
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);
