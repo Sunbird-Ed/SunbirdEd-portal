@@ -1,6 +1,6 @@
 import { IListReportsFilter } from './../../interfaces';
 import { ConfigService } from '@sunbird/shared';
-import { UserService, BaseReportService } from '@sunbird/core';
+import { UserService, BaseReportService, PermissionService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class ReportService {
 
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService, private configService: ConfigService,
-    private baseReportService: BaseReportService) { }
+    private baseReportService: BaseReportService, private permissionService: PermissionService) { }
 
   public fetchDataSource(filePath: string): Observable<any> {
     return this.usageService.getData(filePath).pipe(
@@ -75,7 +75,31 @@ export class ReportService {
     );
   }
 
-  public isAuthenticated() {
+/**
+ * @description Report Viewer are only allowed to view these pages.
+ * @param {(string | undefined)} roles
+ * @returns {Observable<boolean>}
+ * @memberof ReportService
+ */
+public isAuthenticated(roles: string | undefined): Observable<boolean> {
+    return this.permissionService.permissionAvailable$.pipe(
+      map(permissionAvailable => {
+        if (permissionAvailable && permissionAvailable === 'success') {
+          const userRoles = this.configService.rolesConfig.ROLES[roles];
+          if (roles && userRoles) {
+            if (this.permissionService.checkRolesPermissions(userRoles)) {
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      })
+    )
   }
 
   public transformHTML(data: any) {

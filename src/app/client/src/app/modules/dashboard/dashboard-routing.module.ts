@@ -41,7 +41,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'reports', component: ListAllReportsComponent, canActivate: [AuthGuard], data: { roles: 'reportViewerRole' }
+    path: 'reports', component: ListAllReportsComponent, data: { roles: 'reportViewerRole' }
   },
   {
     path: 'reports/:reportId', component: ReportComponent, canActivate: [AuthGuard],

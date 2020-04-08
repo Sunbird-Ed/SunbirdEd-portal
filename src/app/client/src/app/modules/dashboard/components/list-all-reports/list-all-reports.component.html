@@ -1,28 +1,35 @@
 <div class="sb-pageSection my-24 ui container">
-  <div class="sb-pageSection-header">
-    <h4 class="sb-pageSection-title sb-pageSection-sentenceCase m-0 mr-16"><span class="mr-8"> View All Reports</span>
-    </h4>
-  </div>
-  <div class="sb-pageSection-content">
 
-    <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
+  <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
 
-      <ng-container *ngIf="reportsList.reports && reportsList.reports.length else noResult">
-        <div class="sbgrid sbgrid--grid-carousel">
-          <sb-library-card *ngFor="let report of reportsList.reports" [routerLink]="['./',report?.reportid]"
-            [cardImg]="'./assets/images/book.png'" [content]="getContentForCard(report)">
-          </sb-library-card>
-        </div>
+    <div class="sb-pageSection-header" *ngIf="reportsList.reports && reportsList.reports.length">
+      <h4 class="sb-pageSection-title sb-pageSection-sentenceCase m-0 mr-16"><span class="mr-8"> View All Reports</span>
+      </h4>
+    </div>
+
+    <div class="sb-pageSection-content">
+
+      <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
+        <ng-container *ngIf="reportsList.reports && reportsList.reports.length else noResult">
+          <div class="sbgrid sbgrid--grid-carousel">
+            <sb-library-card *ngFor="let report of reportsList.reports" [routerLink]="['./',report?.reportid]"
+              [cardImg]="'./assets/images/book.png'" [content]="getContentForCard(report)">
+            </sb-library-card>
+          </div>
+        </ng-container>
+
+        <ng-template #noResult>
+          <app-no-result [data]="{messageText: noResultFoundError}"></app-no-result>
+        </ng-template>
+
       </ng-container>
 
-      <ng-template #noResult>
-        <app-no-result [data]="{messageText: resourceService.messages.stmsg.m0006}"></app-no-result>
-      </ng-template>
-      
-    </ng-container>
+    </div>
+  </ng-container>
 
-    <ng-template #loading>
-      <app-loader></app-loader>
-    </ng-template>
-  </div>
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+
+
 </div>
