@@ -107,7 +107,7 @@ module.exports = (app, keycloak) => {
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
     '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*'], redirectTologgedInPage, indexPage(false))
 
-  app.all(['/*/dial/:dialCode', '/dial/:dialCode'], (req, res) => {
+  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => {
     if (_.get(req, 'query.channel')) {
       res.redirect(`/${_.get(req, 'query.channel')}/get/dial/${req.params.dialCode}?source=scan`);
     } else {
