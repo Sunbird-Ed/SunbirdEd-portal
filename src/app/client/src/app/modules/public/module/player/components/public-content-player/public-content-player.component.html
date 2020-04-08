@@ -45,11 +45,11 @@
 
       <!--Player-->
       <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
-        [ngStyle]="{'background': 'url(' + overlayImagePath + ') center/cover no-repeat '}" *ngIf="showVideoThumbnail && isSingleContent" id="contentPlayer" (click)="enablePlayer(false)">
+        [ngStyle]="{'background': 'url(' + overlayImagePath + ') center/cover no-repeat '}" *ngIf="playerThumbnail && isSingleContent" id="contentPlayer" (click)="enablePlayer(false)">
         <img class="play-icon" src="assets/images/play_circle.svg">
       </div>
       <!-- <button appTelemetryInteract class="sb-btn sb-btn-normal sb-btn-error">{{resourceService.frmelmnts.btn.close}} <i class="ui remove icon"></i></button> -->
-      <div id="playerFullscreen" *ngIf="!showVideoThumbnail || !isSingleContent" > 
+      <div id="playerFullscreen" *ngIf="!playerThumbnail || !isSingleContent" > 
           <img *ngIf="showCloseButton" (click)="closeFullscreen()" class="close-button" src="assets//images/close-Black.svg" alt="">
           <app-player class="content-player" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
       </div>

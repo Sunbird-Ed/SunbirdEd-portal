@@ -59,7 +59,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public printPdfInteractEdata: IInteractEventEdata;
   public objectRollup = {};
   /** valiables for player orientation change */
-  showVideoThumbnail = true;
+  playerThumbnail = true;
   overlayImagePath: string;
   loadLandscapePlayer =  false;
   loadPlayerInteractEdata: IInteractEventEdata;
@@ -248,7 +248,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * this method will handle that and turn the player into landscape
    */
   enablePlayer(mode: boolean) {
-    this.showVideoThumbnail = mode;
+    this.playerThumbnail = mode;
     if (this.isMobileOrTab) {
       this.rotatePlayer();
      }
@@ -261,7 +261,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   rotatePlayer() {
       setTimeout(() => {
         const playVideo: any = document.querySelector('#playerFullscreen');
-        console.log('playVideo', playVideo);
         if (playVideo.requestFullscreen) {
           playVideo.requestFullscreen();
         } else if (playVideo.mozRequestFullScreen) { /* Firefox */
@@ -296,7 +295,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     }
      /** to change the view of the content-details page */
     if (this.isSingleContent) {
-      this.showVideoThumbnail = true;
+      this.playerThumbnail = true;
     } else {
       this.loadLandscapePlayer = false;
     }
