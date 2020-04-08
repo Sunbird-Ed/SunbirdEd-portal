@@ -42,6 +42,7 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public toUseFrameWorkData = false;
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
+  orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
 
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
     public resourceService: ResourceService, private configService: ConfigService, private activatedRoute: ActivatedRoute,
@@ -68,6 +69,12 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     // TODO change the slug to 'Igot'
     if (this.userService.slug === this.slugForProminentFilter) {
       this.toUseFrameWorkData = true;
+    }
+    if (this.userService._isCustodianUser && this.orgDetailsFromSlug ) {
+      if (_.get(this.orgDetailsFromSlug, 'slug') === this.slugForProminentFilter) {
+        this.toUseFrameWorkData = true;
+      }
+      this.hashTagId = _.get(this.orgDetailsFromSlug, 'hashTagId');
     }
     combineLatest(this.fetchEnrolledCoursesSection(), this.getFrameWork()).pipe(first(),
       mergeMap((data: Array<any>) => {
@@ -113,10 +120,14 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       return value.length;
     });
+    let hashTagId = this.userService.hashTagId;
+    if (this.userService._isCustodianUser  && this.orgDetailsFromSlug) {
+      hashTagId = _.get(this.orgDetailsFromSlug, 'hashTagId');
+    }
     const option: any = {
       source: 'web',
       name: 'Course',
-      organisationId: this.userService.hashTagId,
+      organisationId: hashTagId,
       filters: filters,
       params : this.configService.appConfig.CoursePageSection.contentApiQueryParams
     };

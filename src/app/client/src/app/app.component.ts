@@ -136,11 +136,13 @@ export class AppComponent implements OnInit, OnDestroy {
         mergeMap(data => {
           this.navigationHelperService.initialize();
           this.userService.initialize(this.userService.loggedIn);
+          this.getOrgDetails();
           if (this.userService.loggedIn) {
             this.permissionService.initialize();
             this.courseService.initialize();
             this.programsService.initialize();
             this.userService.startSession();
+            this.checkForCustodianUser();
             return this.setUserDetails();
           } else {
             return this.setOrgDetails();
@@ -281,7 +283,25 @@ export class AppComponent implements OnInit, OnDestroy {
       this.checkFrameworkSelected();
     }
   }
-
+  public getOrgDetails() {
+    const slug = this.userService.slug;
+    return this.orgDetailsService.getOrgDetails(slug).pipe(
+      tap(data => {
+        this.cacheService.set('orgDetailsFromSlug', data, {
+          maxAge: this.browserCacheTtlService.browserCacheTtl
+        });
+      })
+    );
+  }
+  public checkForCustodianUser() {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+        this.userService.setIsCustodianUser(true);
+      } else {
+        this.userService.setIsCustodianUser(false);
+      }
+    });
+  }
   /**
    * checks if user has selected the framework and shows popup if not selected.
    */
