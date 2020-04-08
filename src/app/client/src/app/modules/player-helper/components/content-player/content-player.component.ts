@@ -75,14 +75,14 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     }
 
   }
-  
+
   ngOnInit() {
     // this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
     //   this.deleteContent(data);
     // });
   }
 
-  
+
   /**
    * Adjust player height after load
    */
@@ -99,7 +99,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
       this.questionScoreSubmitEvents.emit(event);
     }
   }
-  
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

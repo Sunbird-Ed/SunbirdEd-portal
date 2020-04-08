@@ -1,12 +1,3 @@
-//import { PublicPlayerService } from '../../../public/services/public-player/public-player.service';
-// import { UtilService } from '../../services/util/util.service';
-// import { ResourceService } from '../../services/resource/resource.service';
-// import { ToasterService } from '../../services/toaster/toaster.service';
-// import { ContentData } from '../../interfaces/contentDetails';
-// import { PlayerConfig } from '../../interfaces/playerConfig';
-// import { NavigationHelperService } from '../../services/navigation-helper/navigation-helper.service';
-// import { ConfigService } from '../../services/config/config.service';
-
 import { Component, OnInit, OnDestroy, OnChanges, Input, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
 // import { PublicPlayerService } from '@sunbird/public';
@@ -40,7 +31,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   @Output() deletedContent = new EventEmitter();
   public isContentDeleted: Subject<any> = new Subject();
   playerOption: any;
-  
+
   constructor(private activatedRoute: ActivatedRoute,
     //private playerService: PublicPlayerService,
     private configService: ConfigService,

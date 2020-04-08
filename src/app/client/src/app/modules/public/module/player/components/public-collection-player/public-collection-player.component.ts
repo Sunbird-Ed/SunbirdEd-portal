@@ -267,7 +267,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.treeModel.walk((node) => {
         if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
           this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
-          this.tocList.push({id: node.model.identifier, title: node.model.name, mimeType: node.model.mimeType})
+          this.tocList.push({id: node.model.identifier, title: node.model.name, mimeType: node.model.mimeType});
         }
         this.setContentNavigators();
       });
@@ -422,7 +422,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
   }
 
-  tocCardClickHandler(event){
+  tocCardClickHandler(event) {
     console.log(event);
     //this.activeContent = _.get(event,'data');
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
@@ -434,7 +434,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
       //this.logTelemetry('content-inside-collection', this.objectRollUp, this.activeContent);
     }
-    
+
      }
   getContentRollUp(rollup: string[]) {
     const objectRollUp = {};

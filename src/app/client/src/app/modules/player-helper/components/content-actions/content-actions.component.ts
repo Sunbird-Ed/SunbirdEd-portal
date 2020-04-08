@@ -28,7 +28,7 @@ export class ContentActionsComponent implements OnInit {
   contentDownloadStatus = {};
   showDownloadLoader = false;
   deleteContentIds = [];
-  sharelinkModal= false
+  sharelinkModal = false;
   shareLink: string;
   mimeType: string;
   constructor(
@@ -62,7 +62,7 @@ export class ContentActionsComponent implements OnInit {
     }
   }
 
-  
+
   logTelemetry(id, content) {
       const interactData = {
         context: {

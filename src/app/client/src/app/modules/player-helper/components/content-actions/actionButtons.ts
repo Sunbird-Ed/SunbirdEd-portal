@@ -1,7 +1,7 @@
 import { IActionButton, ActionButtonType } from '@project-sunbird/common-consumption';
 
 export const actionButtons: IActionButton[] = [
-    
+
     {
         name: ActionButtonType.SHARE,
         label: 'Share',

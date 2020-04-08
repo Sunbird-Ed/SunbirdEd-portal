@@ -16,7 +16,3 @@ export * from './offline-banner/offline-banner.component';
 export * from './offline-application-download/offline-application-download.component';
 export * from './full-page-modal/full-page-modal.component';
 export * from './account-merge-modal/account-merge-modal.component';
-// export * from './contentplayer-page/contentplayer-page.component';
-// export * from './credits-and-licence/credits-and-licence.component';
-// export * from './content-player/content-player.component';
-// export * from './content-actions/content-actions.component'

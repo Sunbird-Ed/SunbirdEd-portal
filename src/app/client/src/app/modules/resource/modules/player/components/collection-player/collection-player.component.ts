@@ -92,7 +92,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   public sharelinkModal: boolean;
 
   public badgeData: Array<object>;
-  contentData: any
+  contentData: any;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
