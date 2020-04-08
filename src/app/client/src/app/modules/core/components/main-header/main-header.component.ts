@@ -209,7 +209,7 @@ export class MainHeaderComponent implements OnInit {
       if (_.includes(urlAfterRedirects.url, '/explore-course') || _.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
       } else {
-        //this.showExploreHeader = false;
+        // this.showExploreHeader = false;
       }
     });
   }

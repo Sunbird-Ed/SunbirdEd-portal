@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, OnChanges, Input, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
-// import { PublicPlayerService } from '@sunbird/public';
 import {
   ConfigService, NavigationHelperService, PlayerConfig, ContentData, ToasterService, ResourceService,
   UtilService
@@ -33,7 +32,6 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   playerOption: any;
 
   constructor(private activatedRoute: ActivatedRoute,
-    //private playerService: PublicPlayerService,
     private configService: ConfigService,
     public router: Router,
     private navigationHelperService: NavigationHelperService,
@@ -48,32 +46,24 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     this.contentType = this.activatedRoute.snapshot.queryParams.contentType;
     this.getContentIdFromRoute();
     this.router.events
-    .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
-    .subscribe(x => { if (!this.tocPage)  {this.setPageExitTelemtry(); }});
+      .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
+      .subscribe(x => { if (!this.tocPage) { this.setPageExitTelemtry(); } });
     this.playerOption = {
       showContentRating: true
     };
-    this.checkOnlineStatus();
     this.activatedRoute.params.subscribe((params) => {
-    if (_.get(this.activatedRoute, 'snapshot.queryParams.l1Parent') && !this.tocPage) {
-      this.objectRollUp = {
-        l1 : _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
-      };
-    }
-  });
+      if (_.get(this.activatedRoute, 'snapshot.queryParams.l1Parent') && !this.tocPage) {
+        this.objectRollUp = {
+          l1: _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
+        };
+      }
+    });
 
-  }
-
-  checkOnlineStatus() {
-    // this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
-    //   this.isConnected = isConnected;
-    // });
   }
 
   ngOnChanges() {
     if (this.contentDetails && this.tocPage) {
       this.contentId = this.contentDetails.identifier;
-      //this.playerConfig = {};
       this.getContent();
     }
   }
@@ -92,19 +82,6 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   getContent() {
     const options: any = { dialCode: this.dialCode };
     const params = { params: this.configService.appConfig.PublicPlayer.contentApiQueryParams };
-    // this.playerService.getContent(this.contentId, params)
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe(response => {
-    //     this.contentDetails = _.get(response, 'result.content');
-    //     const status = !_.has(this.contentDetails, 'desktopAppMetadata.isAvailable') ? false :
-    //     !_.get(this.contentDetails, 'desktopAppMetadata.isAvailable');
-    //     this.isContentDeleted.next({value: status});
-    //     this.getContentConfigDetails(this.contentId, options);
-    //     this.setTelemetryData();
-    //   }, error => {
-    //     this.isContentDeleted.next({value: true});
-    //     this.setTelemetryData();
-    //   });
   }
 
   getContentConfigDetails(contentId, options) {
@@ -112,19 +89,18 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
       contentId: contentId,
       contentData: this.contentDetails
     };
-    //this.playerConfig = this.playerService.getConfig(contentDetails, options);
     this.playerConfig.context.objectRollup = this.objectRollUp;
   }
 
   checkContentDeleted(event) {
     if (event && this.isConnected && !this.router.url.includes('browse')) {
-        this.isContentDeleted.next({value: true});
-        this.deletedContent.emit(this.contentDetails);
+      this.isContentDeleted.next({ value: true });
+      this.deletedContent.emit(this.contentDetails);
     }
   }
 
   checkContentDownloading(event) {
-    this.isContentDeleted.next({value: false});
+    this.isContentDeleted.next({ value: false });
     this.contentDownloaded.emit(event);
   }
 

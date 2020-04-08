@@ -196,7 +196,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }), );
   }
   selectedFilter(event) {
-    //this.logTelemetry(`filter-${event.data.text}`);
+    // this.logTelemetry(`filter-${event.data.text}`);
     this.activeMimeTypeFilter = event.data.value;
   }
 
@@ -424,15 +424,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   tocCardClickHandler(event) {
     console.log(event);
-    //this.activeContent = _.get(event,'data');
+    // this.activeContent = _.get(event,'data');
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
       this.isContentPresent = true;
       this.activeContent = event.data;
       this.objectRollUp = this.getContentRollUp(event.rollup);
-      //this.OnPlayContent(this.activeContent, true);
+      // this.OnPlayContent(this.activeContent, true);
       this.initPlayer(_.get(this.activeContent, 'identifier'));
 
-      //this.logTelemetry('content-inside-collection', this.objectRollUp, this.activeContent);
+      // this.logTelemetry('content-inside-collection', this.objectRollUp, this.activeContent);
     }
 
      }

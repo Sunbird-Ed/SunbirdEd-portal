@@ -32,9 +32,6 @@ export class ContentActionsComponent implements OnInit {
   shareLink: string;
   mimeType: string;
   constructor(
-    //public contentManagerService: ContentManagerService,
-    //private playerService: PublicPlayerService,
-    //private connectionService: ConnectionService,
     public router: Router,
     public activatedRoute: ActivatedRoute,
     public resourceService: ResourceService,
