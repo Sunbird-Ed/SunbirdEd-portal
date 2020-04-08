@@ -2,7 +2,7 @@ import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
-  ReportComponent
+  ReportComponent, ListAllReportsComponent
 } from './components/';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 
@@ -41,8 +41,12 @@ const routes: Routes = [
     }
   },
   {
-    path: 'reports/:reportId', component: ReportComponent,
+    path: 'reports', component: ListAllReportsComponent, canActivate: [AuthGuard], data: { roles: 'reportViewerRole' }
+  },
+  {
+    path: 'reports/:reportId', component: ReportComponent, canActivate: [AuthGuard],
     data: {
+      roles: 'reportViewerRole',
       telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]

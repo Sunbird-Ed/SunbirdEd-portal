@@ -24,6 +24,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   public noResultMessage: INoResultMessage;
   public noResult: boolean;
   private downloadUrl: string;
+  public reportObj: any;
   telemetryImpression: IImpressionEventInput;
   @ViewChildren(DataChartComponent) chartsComponentList: QueryList<DataChartComponent>;
   @ViewChild('reportElement') reportElement;
@@ -55,19 +56,16 @@ export class ReportComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * @description fetches config file . If no file is found throws an error
+   * @description fetches a report by its report id
    * @param reportId
    */
   private fetchConfig(reportId): Observable<any> {
-    const reportsLocationHtmlElement = (<HTMLInputElement>document.getElementById('reportsLocation'));
-    const reportsLocation = reportsLocationHtmlElement ? _.get(reportsLocationHtmlElement, 'value') : 'reports';
-    const slug = _.get(this.userService, 'userProfile.rootOrg.slug');
-    return this.reportService.fetchDataSource(`/${reportsLocation}/${slug}/config.json`).pipe(
-      mergeMap(config => {
-        const report = _.find(config, ['id', reportId]);
-        return report ? of(report) : throwError('No config found');
+    return this.reportService.fetchReportById(reportId).pipe(
+      mergeMap(apiResponse => {
+        const report = _.get(apiResponse, 'reports');
+        return report ? of(_.head(report)) : throwError('No report found');
       })
-    );
+    )
   }
 
   /**
@@ -78,15 +76,16 @@ export class ReportComponent implements OnInit, AfterViewInit {
     return this.fetchConfig(reportId).pipe(
       switchMap(report => {
         this.report = report;
-        this.setDownloadUrl(_.get(report, 'downloadUrl'));
-        return this.reportService.fetchDataSource(_.get(report, 'dataSource')).pipe(
+        const reportConfig = _.get(report, 'reportconfig');
+        this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
+        return this.reportService.fetchDataSource(_.get(reportConfig, 'dataSource')).pipe(
           retry(1),
           map(data => {
-            const charts = _.get(report, 'charts'), tables = _.get(report, 'table');
+            const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table');
             const result: any = {};
-            result['charts'] = (charts && this.reportService.prepareChartData(charts, data, _.get(report, 'dataSource'))) || [];
-            result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(report, 'downloadUrl'))) || [];
-            result['reportMetaData'] = report;
+            result['charts'] = (charts && this.reportService.prepareChartData(charts, data, _.get(reportConfig, 'dataSource'))) || [];
+            result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'))) || [];
+            result['reportMetaData'] = reportConfig;
             return result;
           })
         );

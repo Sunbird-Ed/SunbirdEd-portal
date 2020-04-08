@@ -1,4 +1,6 @@
-import { UserService } from '@sunbird/core';
+import { IListReportsFilter } from './../../interfaces';
+import { ConfigService } from '@sunbird/shared';
+import { UserService, BaseReportService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
@@ -9,13 +11,37 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class ReportService {
 
-  constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService) { }
+  constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService, private configService: ConfigService,
+    private baseReportService: BaseReportService) { }
 
   public fetchDataSource(filePath: string): Observable<any> {
     return this.usageService.getData(filePath).pipe(
       map(configData => {
         return _.get(configData, 'result');
       })
+    );
+  }
+
+  public fetchReportById(id): Observable<any> {
+    const req = {
+      url: `${this.configService.urlConFig.URLS.REPORT.READ}/${id}`
+    };
+    return this.baseReportService.get(req).pipe(
+      map(apiResponse => _.get(apiResponse, 'result'))
+    );
+  }
+
+  public listAllReports(filters: IListReportsFilter = {}) {
+    const request = {
+      url: this.configService.urlConFig.URLS.REPORT.LIST,
+      data: {
+        "request": {
+          "filters": filters
+        }
+      }
+    }
+    return this.baseReportService.post(request).pipe(
+      map(apiResponse => _.get(apiResponse, 'result'))
     );
   }
 

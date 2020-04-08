@@ -6,3 +6,4 @@ export * from './data-table/data-table.component';
 export * from './data-chart/data-chart.component';
 export * from './report/report.component';
 export * from './report-summary/report-summary.component';
+export * from './list-all-reports/list-all-reports.component';

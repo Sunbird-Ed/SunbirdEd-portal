@@ -1,3 +1,4 @@
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 // Angular modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,7 +16,7 @@ import {
 } from './services';
 import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
-  DataTableComponent, DataChartComponent, ReportComponent, ReportSummaryComponent
+  DataTableComponent, DataChartComponent, ReportComponent, ReportSummaryComponent, ListAllReportsComponent
 } from './components';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
@@ -34,10 +35,11 @@ import { OrderModule } from 'ngx-order-pipe';
     SharedModule,
     OrderModule,
     TelemetryModule,
+    CommonConsumptionModule,
     NgxDaterangepickerMd.forRoot()
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
-    DataTableComponent, DataChartComponent, ReportComponent, ReportSummaryComponent],
+    DataTableComponent, DataChartComponent, ReportComponent, ReportSummaryComponent, ListAllReportsComponent],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,
