@@ -87,14 +87,6 @@ module.exports = (app, keycloak) => {
   })
 
   app.all('/play/quiz/*', playContent);
-
-  app.all('/get/dial/:dialCode', (req, res, next) => {
-    if (_.get(req, 'query.channel')) {
-      res.redirect(`/${_.get(req, 'query.channel')}/get/dial/${req.params.dialCode}?source=scan`);
-    } else {
-      next();
-    }
-  });
   
   app.all(['/announcement', '/announcement/*', '/search', '/search/*',
   '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
@@ -208,7 +200,6 @@ const renderDefaultIndexPage = (req, res) => {
     }
   }
 }
-
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
 const renderTenantPage = (req, res) => {
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
