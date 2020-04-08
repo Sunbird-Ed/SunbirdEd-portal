@@ -64,7 +64,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     return this.getCustodianOrgData().pipe(mergeMap((data) => {
       this.custodianOrgBoard = data;
       const boardObj = _.cloneDeep(this.custodianOrgBoard);
-      boardObj.range = _.sortBy(boardObj.range, [function(range) { return range.index; }]);
+      boardObj.range = _.sortBy(boardObj.range, 'index');
       const board = boardObj;
       if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
         this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
