@@ -21,7 +21,14 @@ export class ListAllReportsComponent implements OnInit {
   ngOnInit() {
     this.reportsList$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
       mergeMap((isAuthenticated: boolean) => {
-        return isAuthenticated ? this.getReportsList() : this.showPageNotFoundError();
+        return isAuthenticated ? this.getReportsList() : throwError({ messageText: 'messages.stmsg.m0144' });
+      }),
+      catchError(err => {
+        this.noResultFoundError = _.get(err, 'messageText') || "messages.stmsg.m0006";
+        return of({
+          reports: [],
+          count: 0
+        })
       })
     );
   }
@@ -32,33 +39,7 @@ export class ListAllReportsComponent implements OnInit {
    * @memberof ListAllReportsComponent
    */
   private getReportsList() {
-    return this.reportService.listAllReports().pipe(
-      catchError(err => {
-        this.noResultFoundError = "messages.stmsg.m0006";
-        return of({
-          reports: [],
-          count: 0
-        })
-      })
-    );
-  }
-
-  /**
-   *@description this checks whether the user is report viewer or else shows page not found error and does not render any report
-   * @private
-   * @returns Observable
-   * @memberof ListAllReportsComponent
-   */
-  private showPageNotFoundError() {
-    return throwError('').pipe(
-      catchError(err => {
-        this.noResultFoundError = "messages.stmsg.m0144";
-        return of({
-          reports: [],
-          count: 0
-        })
-      })
-    )
+    return this.reportService.listAllReports();
   }
 
   public getContentForCard(report) {

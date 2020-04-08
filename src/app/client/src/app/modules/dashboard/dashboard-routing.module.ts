@@ -44,7 +44,7 @@ const routes: Routes = [
     path: 'reports', component: ListAllReportsComponent, data: { roles: 'reportViewerRole' }
   },
   {
-    path: 'reports/:reportId', component: ReportComponent, canActivate: [AuthGuard],
+    path: 'reports/:reportId', component: ReportComponent,
     data: {
       roles: 'reportViewerRole',
       telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },

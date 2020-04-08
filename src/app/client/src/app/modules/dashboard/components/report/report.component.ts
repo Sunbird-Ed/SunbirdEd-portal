@@ -41,11 +41,15 @@ export class ReportComponent implements OnInit, AfterViewInit {
       switchMap(params => {
         this.noResult = false;
         this.hideElements = false;
-        return this.renderReport(_.get(params, 'reportId')).pipe(
+
+        return this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
+          mergeMap((isAuthenticated: boolean) => {
+            return isAuthenticated ? this.renderReport(_.get(params, 'reportId')) : throwError({ messageText: 'messages.stmsg.m0144' });
+          }),
           catchError(err => {
             console.error('Error while rendering report', err);
             this.noResultMessage = {
-              'messageText': 'messages.stmsg.m0131'
+              'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
             };
             this.noResult = true;
             return of({});
