@@ -1,3 +1,11 @@
+<div *ngIf=contentData.description>
+  <div>
+    <span class="title">{{resourceService?.frmelmnts?.lbl?.description}}</span>
+  </div>
+  <div>
+    <span class="title">{{contentData?.description}}</span>
+  </div>
+</div>
 <sb-accordion class="sb-toc-credits" [multi]="false">
   <sb-accordion-item [expanded]="false">
     <sb-accordion-header>
