@@ -101,7 +101,7 @@ module.exports = (app, keycloak) => {
 
   app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => {
     if (_.get(req, 'query.channel')) {
-      res.redirect(`/${envHelper.sunbird_portal_slugForProminentFilter}/get/dial/${req.params.dialCode}?source=scan`);
+      res.redirect(`/${_.get(req, 'query.channel')}/get/dial/${req.params.dialCode}?source=scan`);
     } else {
       res.redirect('/get/dial/' + req.params.dialCode + '?source=scan')
     }
