@@ -6,6 +6,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {Response} from './custom-multi-select.component.spec.data';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from './../../services';
 import { CacheService } from 'ng2-cache-service';
+import { SharedModule } from '@sunbird/shared';
+
 describe('CustomMultiSelectComponent', () => {
   let component: CustomMultiSelectComponent;
   let fixture: ComponentFixture<CustomMultiSelectComponent>;
@@ -19,7 +21,7 @@ describe('CustomMultiSelectComponent', () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule, SuiModule],
+      imports: [ HttpClientTestingModule, SharedModule, SuiModule],
       declarations: [ CustomMultiSelectComponent ],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
          ConfigService, CacheService, BrowserCacheTtlService],
