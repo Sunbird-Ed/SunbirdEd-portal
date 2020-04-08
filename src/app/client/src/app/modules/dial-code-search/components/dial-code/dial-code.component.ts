@@ -257,6 +257,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
   closeMobileAppPopup() {
+    if (localStorage) {
+      localStorage.setItem('showMobilePopUp', 'true');
+    }
     if (!this.isRedirectToDikshaApp) {
       this.telemetryService.interact(this.closeMobilePopupInteractData);
       (document.querySelector('.mobile-app-popup') as HTMLElement).style.bottom = '-999px';
@@ -345,7 +348,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   handleMobilePopupBanner() {
     setTimeout(() => {
-      this.showMobilePopup = true;
+      if (localStorage && !localStorage.getItem('showMobilePopUp')) {
+        this.showMobilePopup = true;
+      }
     }, 500);
   }
   updateCardData(downloadListdata) {

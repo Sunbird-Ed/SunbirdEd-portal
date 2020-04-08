@@ -28,7 +28,8 @@ describe('SelectAccountIdentifierComponent', () => {
         close: 'close'
       },
       lbl: {
-        description: 'description'
+        description: 'description',
+        generateOtpFailed: 'Generate OTP failed. Please try again'
       }
     }
   };

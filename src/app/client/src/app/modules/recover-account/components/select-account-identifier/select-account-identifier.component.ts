@@ -82,7 +82,7 @@ export class SelectAccountIdentifierComponent implements OnInit {
       const redirect_uri = reqQuery.error_callback + '?' + resQuery;
       window.location.href = redirect_uri;
     } else {
-      this.toasterService.error('Generate OTP failed. Please try again');
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.generateOtpFailed);
     }
   }
   initializeForm() {

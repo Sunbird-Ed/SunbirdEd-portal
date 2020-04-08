@@ -35,6 +35,9 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilters = false;
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
+  public toUseFrameWorkData = false;
+  public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
+  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -60,6 +63,10 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     ).pipe(
       mergeMap((data: any) => {
         this.hashTagId = data[0].hashTagId;
+        // TODO change the slug to 'Igot'
+        if (this.userService.slug === this.slugForProminentFilter) {
+          this.toUseFrameWorkData = true;
+        }
         if (data[1]) {
           this.initFilters = true;
           this.frameWorkName = data[1];
@@ -132,6 +139,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     const option = {
       source: 'web',
       name: 'Course',
+      organisationId: this.hashTagId || '*',
       filters: filters,
       // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
       // mode: 'soft',
@@ -198,6 +206,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+    searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
     // searchQuery.request.filters.channel = this.hashTagId;
     // searchQuery.request.filters.board = this.dataDrivenFilters.board;
     this.cacheService.set('viewAllQuery', searchQueryParams);
