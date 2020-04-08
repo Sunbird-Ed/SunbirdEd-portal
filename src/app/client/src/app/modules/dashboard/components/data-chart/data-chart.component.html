@@ -41,7 +41,7 @@
                     [placeholder]="filter.displayName" [formControlName]="filter.reference">
                     <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
                       [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
-                      [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option">
+                      [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option | titlecase">
                     </sui-select-option>
                   </sui-multi-select>
                 </div>
