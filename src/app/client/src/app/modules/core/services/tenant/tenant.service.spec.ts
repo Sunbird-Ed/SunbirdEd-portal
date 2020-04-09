@@ -8,6 +8,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { TenantService } from './tenant.service';
 import { } from 'jasmine';
 import { UserService } from '../user/user.service';
+import { CacheService } from 'ng2-cache-service';
 
 describe('TenantService', () => {
 
@@ -15,7 +16,7 @@ describe('TenantService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [TenantService, UserService, ConfigService,
-        LearnerService, ResourceService, ToasterService]
+        LearnerService, ResourceService, ToasterService, CacheService]
     });
   });
 
