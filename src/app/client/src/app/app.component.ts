@@ -288,7 +288,7 @@ export class AppComponent implements OnInit, OnDestroy {
     return this.orgDetailsService.getOrgDetails(slug).pipe(
       tap(data => {
         this.cacheService.set('orgDetailsFromSlug', data, {
-          maxAge: this.browserCacheTtlService.browserCacheTtl
+          maxAge: 86400
         });
       })
     );
@@ -366,7 +366,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
         this.cacheService.set('orgDetailsFromSlug', data, {
-          maxAge: this.browserCacheTtlService.browserCacheTtl
+          maxAge: 86400
         });
       })
     );
