@@ -44,6 +44,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedCourseBatches: any;
   sortingOptions: Array<ISort>;
   public showFilter = true;
+  // TODO: to rework igot.
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
