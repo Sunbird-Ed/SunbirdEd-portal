@@ -87,6 +87,14 @@ module.exports = (app, keycloak) => {
   })
 
   app.all('/play/quiz/*', playContent);
+
+  app.all('/get/dial/:dialCode',(req,res,next) => {
+      if (_.get(req, 'query.channel')) {	
+          getdial(req,res);	
+      } else {	
+        next();	
+      }
+  });
   
   app.all(['/announcement', '/announcement/*', '/search', '/search/*',
   '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
@@ -260,6 +268,14 @@ const redirectTologgedInPage = (req, res) => {
 const playContent = (req, res) => {
   if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
     res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
+  } else {
+    renderDefaultIndexPage(req, res);
+  }
+}
+
+const getdial = (req,res) => {
+  if (fs.existsSync(path.join(__dirname, '../tenant/course/', 'index.html'))) {
+    res.sendFile(path.join(__dirname, '../tenant/course/', 'index.html'));
   } else {
     renderDefaultIndexPage(req, res);
   }

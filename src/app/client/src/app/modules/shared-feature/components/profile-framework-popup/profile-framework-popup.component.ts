@@ -190,6 +190,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private getCustodianOrgData() {
     return this.channelService.getFrameWork(this.userService.hashTagId).pipe(map((channelData: any) => {
       this.custOrgFrameworks =  _.get(channelData, 'result.channel.frameworks') || [];
+      this.custOrgFrameworks = _.sortBy(this.custOrgFrameworks, 'index');
       return {
           range: this.custOrgFrameworks,
           label: 'Board',
