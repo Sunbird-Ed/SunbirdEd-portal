@@ -64,7 +64,6 @@ export class MainMenuComponent implements OnInit {
 
   signInIntractEdata: IInteractEventEdata;
   showContributeTab: boolean;
-
   /*
   * constructor
   */
@@ -79,7 +78,6 @@ export class MainMenuComponent implements OnInit {
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
   }
   ngOnInit() {
-
     try {
       this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
     } catch (error) {
