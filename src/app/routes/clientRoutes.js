@@ -88,12 +88,12 @@ module.exports = (app, keycloak) => {
 
   app.all('/play/quiz/*', playContent);
 
-  app.all('/get/dial/:dialCode', (req, res, next) => {
-    if (_.get(req, 'query.channel')) {
-      res.redirect(`/${_.get(req, 'query.channel')}/get/dial/${req.params.dialCode}?source=scan`);
-    } else {
-      next();
-    }
+  app.all('/get/dial/:dialCode',(req,res,next) => {
+      if (_.get(req, 'query.channel')) {	
+          getdial(req,res);	
+      } else {	
+        next();	
+      }
   });
   
   app.all(['/announcement', '/announcement/*', '/search', '/search/*',
@@ -208,7 +208,6 @@ const renderDefaultIndexPage = (req, res) => {
     }
   }
 }
-
 // renders tenant page from cdn or from local files based on tenantCdnUrl exists
 const renderTenantPage = (req, res) => {
   const tenantName = _.lowerCase(req.params.tenantName) || envHelper.DEFAULT_CHANNEL
@@ -269,6 +268,14 @@ const redirectTologgedInPage = (req, res) => {
 const playContent = (req, res) => {
   if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
     res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
+  } else {
+    renderDefaultIndexPage(req, res);
+  }
+}
+
+const getdial = (req,res) => {
+  if (fs.existsSync(path.join(__dirname, '../tenant/course/', 'index.html'))) {
+    res.sendFile(path.join(__dirname, '../tenant/course/', 'index.html'));
   } else {
     renderDefaultIndexPage(req, res);
   }
