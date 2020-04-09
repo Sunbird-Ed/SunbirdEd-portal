@@ -5,6 +5,9 @@ import { DataService } from '../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { skipWhile } from 'rxjs/operators';
+import { CacheService } from 'ng2-cache-service';
+import * as _ from 'lodash-es';
+
 
 /**
  * This service returns the organization details.
@@ -45,7 +48,7 @@ export class TenantService extends DataService {
    * @param {HttpClient} http Reference of HttpClient.
    * @param {ConfigService} config Reference of ConfigService.
    */
-  constructor(http: HttpClient, config: ConfigService) {
+  constructor(http: HttpClient, config: ConfigService, private cacheService: CacheService) {
     super(http);
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.TENANT_PREFIX;
@@ -56,7 +59,11 @@ export class TenantService extends DataService {
    * @param slug Organization details passed from main-header component.
    */
   public getTenantInfo(slug?: string) {
-
+    const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
+    // TODO: to rework igot.
+    if (_.get(orgDetailsFromSlug, 'slug')) {
+      slug = _.get(orgDetailsFromSlug, 'slug');
+    }
     const url = `${this.config.urlConFig.URLS.TENANT.INFO + '/'}` + (slug ? slug : '');
     this.get({ url }).subscribe(
       (apiResponse: ServerResponse) => {

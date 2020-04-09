@@ -43,6 +43,10 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public showBatchInfo = false;
   public selectedCourseBatches: any;
   sortingOptions: Array<ISort>;
+  public showFilter = true;
+  public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
+  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
+  orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -69,6 +73,11 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
           return of({});
         }
     })).subscribe((filters: any) => {
+      if (this.userService._isCustodianUser && this.orgDetailsFromSlug ) {
+        if (_.get(this.orgDetailsFromSlug, 'slug') === this.slugForProminentFilter) {
+          this.showFilter = false;
+        }
+      }
         this.dataDrivenFilters = filters;
         this.fetchContentOnParamChange();
         this.setNoResultMessage();
