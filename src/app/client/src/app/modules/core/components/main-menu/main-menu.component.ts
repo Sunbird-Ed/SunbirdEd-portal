@@ -64,7 +64,7 @@ export class MainMenuComponent implements OnInit {
 
   signInIntractEdata: IInteractEventEdata;
   showContributeTab: boolean;
-  hrefPath = '/resources';
+
   /*
   * constructor
   */
