@@ -2,7 +2,7 @@
 import { map, catchError, first, mergeMap, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subscription, Subject, throwError, of } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
@@ -316,14 +316,19 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.router.navigate(['/explore']);
       });
   }
-  private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
+  private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content } | any> {
     const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
     return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
-      map((response) => {
+      mergeMap((response) => {
+        if (_.get(response, 'result.content.status') === 'Unlisted') {
+          return throwError({
+            code: 'UNLISTED_CONTENT'
+          });
+        }
         this.collectionData = response.result.content;
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
-        return { data: response.result.content };
+        return of({ data: response.result.content });
       }));
   }
   closeCollectionPlayer() {
