@@ -41,8 +41,12 @@
       </app-contentplayer-page>
     </section>
     <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-3 cc-player__list mb-16">
+      <div class="sbselectpopover sbselectpopover--bg-white">
+        <h4>Select Chapter</h4>
+        <i class="icon-svg icon-svg--sm icon-arrow-round-right"><svg class="icon icon-svg--primary"><use xlink:href="assets/common-consumption/images/sprite.svg#arrow-round-right"></use></svg></i>
+      </div>
       <sb-library-filters [list]="mimeTypeFilters" [layout]="'round-with-icon'"
-        (selectedMimeType)="selectedFilter($event)" [tocList]="tocList">
+        (selectedMimeType)="selectedFilter($event)">
       </sb-library-filters>
       <div class="side-toc-content">
         <sb-toc-item [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
