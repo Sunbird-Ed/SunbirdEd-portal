@@ -1,9 +1,7 @@
-<div *ngIf=contentData.description>
-  <div>
-    <span class="title">{{resourceService?.frmelmnts?.lbl?.description}}</span>
-  </div>
-  <div>
-    <span class="title">{{contentData?.description}}</span>
+<div *ngIf=contentData.description class="sb-bg-color-white pt-16 pb-0 px-16">
+  <div class="contentdata-description pb-16">
+    <h6 class="sb-color-gray-200">{{resourceService?.frmelmnts?.lbl?.description}}</h6>
+    <p class="mb-0">{{contentData?.description}}</p>
   </div>
 </div>
 <sb-accordion class="sb-toc-credits" [multi]="false">
