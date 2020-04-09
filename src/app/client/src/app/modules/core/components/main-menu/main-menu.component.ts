@@ -64,6 +64,7 @@ export class MainMenuComponent implements OnInit {
 
   signInIntractEdata: IInteractEventEdata;
   showContributeTab: boolean;
+  hrefPath = '/resources';
   /*
   * constructor
   */
@@ -76,6 +77,21 @@ export class MainMenuComponent implements OnInit {
     this.router = router;
     this.config = config;
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
+    this.updateHrefPath(this.router.url);
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.updateHrefPath(event.url);
+    });
+  }
+  updateHrefPath(url) {
+      if (url.indexOf('explore-course') >= 0) {
+        this.hrefPath = url.replace('explore-course', 'learn');
+      } else if (url.indexOf('explore') >= 0) {
+        this.hrefPath = url.replace('explore', 'resources');
+      } else {
+        this.hrefPath = '/resources';
+      }
   }
   ngOnInit() {
     try {
