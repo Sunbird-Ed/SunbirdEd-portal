@@ -1,9 +1,9 @@
 import { TelemetryService } from '@sunbird/telemetry';
 import { actionButtons } from './actionButtons';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ResourceService, ToasterService, ContentUtilsServiceService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Subject} from 'rxjs';
+import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -24,6 +24,7 @@ export class ContentActionsComponent implements OnInit {
   showDeleteModal = false;
   public isConnected;
   public unsubscribe$ = new Subject<void>();
+  telemetryShareData: Array<ITelemetryShare>;
   @Input() objectRollUp: {} = {};
   contentDownloadStatus = {};
   showDownloadLoader = false;
@@ -41,26 +42,36 @@ export class ContentActionsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.collectionId = _.get(this.activatedRoute.snapshot.params, 'collectionId');
-    this.mimeType = _.get(this.activatedRoute.snapshot.params, 'mimeType');
+    this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
+    this.mimeType = _.get(this.contentData, 'mimeType')
   }
-
-  onActionButtonClick(event, content) {
-    switch (event.data.name.toUpperCase()) {
-      case 'RATE':
-        this.contentRatingModal = true;
-        this.logTelemetry('rate-content', content);
-        break;
-      case 'SHARE':
-        this.sharelinkModal = true ;
-        this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, this.mimeType);
-        this.logTelemetry('share-content', content);
-        break;
+    onActionButtonClick(event, content) {
+      switch (event.data.name.toUpperCase()) {
+        case 'RATE':
+          this.contentRatingModal = true;
+          this.logTelemetry('rate-content', content);
+          break;
+        case 'SHARE':
+          this.sharelinkModal = true;
+          const param = {
+            identifier: _.get(content, 'identifier'),
+            type: _.get(content, 'contentType'),
+          }
+          this.setTelemetryShareData(param);
+          this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
+          this.logTelemetry('share-content', content);
+          break;
+      }
     }
-  }
+    setTelemetryShareData(param) {
+      this.telemetryShareData = [{
+        id: param.identifier,
+        type: param.contentType,
+        ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+      }];
+    }
 
-
-  logTelemetry(id, content) {
+    logTelemetry(id, content) {
       const interactData = {
         context: {
           env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
@@ -79,6 +90,6 @@ export class ContentActionsComponent implements OnInit {
         }
       };
       this.telemetryService.interact(interactData);
-  }
+    }
 
-}
+  }

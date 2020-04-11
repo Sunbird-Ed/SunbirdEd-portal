@@ -17,7 +17,9 @@
   </div>
 </div>
 
-<!-- <app-content-rating #modal *ngIf="contentRatingModal && contentData" [contentData] = "contentData" (closeModal)="contentRatingModal = false"></app-content-rating> -->
+<app-content-rating #modal *ngIf="contentRatingModal && contentData" 
+[contentData] = "contentData" (closeModal)="contentRatingModal = false">
+</app-content-rating> 
 
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
   (close)="sharelinkModal = false">

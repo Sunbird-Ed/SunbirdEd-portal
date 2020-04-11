@@ -20,6 +20,6 @@ export const actionButtons: IActionButton[] = [
     {
         name: ActionButtonType.FULL_SCREEN,
         label: 'Full Screen',
-        disabled: false
+        disabled: true
     }
   ];
