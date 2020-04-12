@@ -105,6 +105,9 @@
   <% if (deviceApi) { %>
     <input type="hidden" id="deviceApi" value="<%=deviceApi%>" />
   <% } %>
+  <% if (slugForProminentFilter) { %>
+    <input type="hidden" id="slugForProminentFilter" value="<%=slugForProminentFilter%>" />
+  <% } %>
   <app-root></app-root>
 </body>
 </html>

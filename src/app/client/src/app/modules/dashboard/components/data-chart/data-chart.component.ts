@@ -109,7 +109,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
           this.dateFilterReferenceName = filter.reference;
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-        filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
+        filter.options = _.sortBy(_.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase())));
       });
       if (this.filters.length > 0) {
         this.showFilters = true;
