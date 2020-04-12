@@ -43,7 +43,7 @@ export class ContentActionsComponent implements OnInit {
 
   ngOnInit() {
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
-    this.mimeType = _.get(this.contentData, 'mimeType')
+    this.mimeType = _.get(this.contentData, 'mimeType');
   }
     onActionButtonClick(event, content) {
       switch (event.data.name.toUpperCase()) {
@@ -56,7 +56,7 @@ export class ContentActionsComponent implements OnInit {
           const param = {
             identifier: _.get(content, 'identifier'),
             type: _.get(content, 'contentType'),
-          }
+          };
           this.setTelemetryShareData(param);
           this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
           this.logTelemetry('share-content', content);

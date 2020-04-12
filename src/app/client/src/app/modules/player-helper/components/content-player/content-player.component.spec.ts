@@ -40,6 +40,4 @@ describe('ContentPlayerComponent', () => {
   it('should define player config details', () => {
     expect(component.playerConfig).toBeTruthy();
   });
-  
-
 });

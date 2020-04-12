@@ -1,4 +1,3 @@
-//import { PublicPlayerService } from '@sunbird/public';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
@@ -6,7 +5,6 @@ import { Router } from '@angular/router';
 
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
-//import { ConnectionService, ContentManagerService } from '@sunbird/offline';
 import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-content-player',
