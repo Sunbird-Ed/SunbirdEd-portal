@@ -10,7 +10,7 @@ import { resourceData } from './contentplayer-page.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NavigationHelperService } from 'src/app/modules/shared';
+import { NavigationHelperService } from '@sunbird/shared';
 describe('ContentPlayerPageComponent', () => {
   let component: ContentPlayerPageComponent;
   let fixture: ComponentFixture<ContentPlayerPageComponent>;
