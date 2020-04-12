@@ -26,25 +26,26 @@ export class ListAllReportsComponent implements OnInit {
         return isAuthenticated ? this.getReportsList() : throwError({ messageText: 'messages.stmsg.m0144' });
       }),
       catchError(err => {
-        this.noResultFoundError = _.get(err, 'messageText') || "messages.stmsg.m0006";
+        this.noResultFoundError = _.get(err, 'messageText') || 'messages.stmsg.m0006';
         return of({
           table: {},
           count: 0
-        })
+        });
       })
     );
   }
 
   /**s
    * @private
-   * @returns Observable with list of reports. 
+   * @returns Observable with list of reports.
    * @memberof ListAllReportsComponent
    */
   private getReportsList() {
     return this.reportService.listAllReports().pipe(
       map((apiResponse: { reports: any[], count: number }) => {
-        const reports = _.map(apiResponse.reports, report => _.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate', 'tags', 'updatefrequency']));
-        const headers = ['reportid', 'Report Title', 'Description', 'Report Generated Date', 'Tags', 'Update Frequency']
+        const reports = _.map(apiResponse.reports, report => _.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate',
+          'tags', 'updatefrequency']));
+        const headers = ['reportid', 'Report Title', 'Description', 'Report Generated Date', 'Tags', 'Update Frequency'];
         const result = {
           table: {
             header: headers || _.keys(reports[0]),
@@ -55,7 +56,7 @@ export class ListAllReportsComponent implements OnInit {
             }
           },
           count: _.get(apiResponse, 'count')
-        }
+        };
         return result;
       })
     );
@@ -82,7 +83,7 @@ export class ListAllReportsComponent implements OnInit {
           return data;
         }
       }
-    ]
+    ];
   }
 
   /**

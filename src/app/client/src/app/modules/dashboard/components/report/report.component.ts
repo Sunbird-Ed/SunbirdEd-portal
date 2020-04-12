@@ -69,7 +69,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
         const report = _.get(apiResponse, 'reports');
         return report ? of(_.head(report)) : throwError('No report found');
       })
-    )
+    );
   }
 
   /**

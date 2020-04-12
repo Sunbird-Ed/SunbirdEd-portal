@@ -11,8 +11,8 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class ReportService {
 
-  constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService, private configService: ConfigService,
-    private baseReportService: BaseReportService, private permissionService: PermissionService) { }
+  constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
+    private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService) { }
 
   public fetchDataSource(filePath: string): Observable<any> {
     return this.usageService.getData(filePath).pipe(
@@ -35,11 +35,11 @@ export class ReportService {
     const request = {
       url: this.configService.urlConFig.URLS.REPORT.LIST,
       data: {
-        "request": {
-          "filters": filters
+        'request': {
+          'filters': filters
         }
       }
-    }
+    };
     return this.baseReportService.post(request).pipe(
       map(apiResponse => _.get(apiResponse, 'result'))
     );
@@ -75,13 +75,13 @@ export class ReportService {
     );
   }
 
-/**
- * @description Report Viewer are only allowed to view these pages.
- * @param {(string | undefined)} roles
- * @returns {Observable<boolean>}
- * @memberof ReportService
- */
-public isAuthenticated(roles: string | undefined): Observable<boolean> {
+  /**
+   * @description Report Viewer are only allowed to view these pages.
+   * @param {(string | undefined)} roles
+   * @returns {Observable<boolean>}
+   * @memberof ReportService
+   */
+  public isAuthenticated(roles: string | undefined): Observable<boolean> {
     return this.permissionService.permissionAvailable$.pipe(
       map(permissionAvailable => {
         if (permissionAvailable && permissionAvailable === 'success') {
@@ -99,7 +99,7 @@ public isAuthenticated(roles: string | undefined): Observable<boolean> {
           return false;
         }
       })
-    )
+    );
   }
 
   public transformHTML(data: any) {

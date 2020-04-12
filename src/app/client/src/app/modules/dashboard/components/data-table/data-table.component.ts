@@ -37,7 +37,7 @@ export class DataTableComponent implements AfterViewInit {
             });
 
             $(`#${this.tableId} tbody`).on('click', 'tr', (event) => {
-                var data = table.row(event.currentTarget).data();
+                const data = table.row(event.currentTarget).data();
                 this.rowClickEvent.emit(data);
             });
         }, 100);
