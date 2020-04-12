@@ -1,10 +1,11 @@
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
-import { catchError, mergeMap } from 'rxjs/operators';
+import { catchError, mergeMap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
 import { of, Observable, throwError } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-list-all-reports',
@@ -13,7 +14,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ListAllReportsComponent implements OnInit {
 
-  constructor(public resourceService: ResourceService, private reportService: ReportService, private activatedRoute: ActivatedRoute) { }
+  constructor(public resourceService: ResourceService, private reportService: ReportService, private activatedRoute: ActivatedRoute,
+    private router: Router) { }
 
   public reportsList$: Observable<any>;
   public noResultFoundError: string;
@@ -26,7 +28,7 @@ export class ListAllReportsComponent implements OnInit {
       catchError(err => {
         this.noResultFoundError = _.get(err, 'messageText') || "messages.stmsg.m0006";
         return of({
-          reports: [],
+          table: {},
           count: 0
         })
       })
@@ -39,11 +41,59 @@ export class ListAllReportsComponent implements OnInit {
    * @memberof ListAllReportsComponent
    */
   private getReportsList() {
-    return this.reportService.listAllReports();
+    return this.reportService.listAllReports().pipe(
+      map((apiResponse: { reports: any[], count: number }) => {
+        const reports = _.map(apiResponse.reports, report => _.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate', 'tags', 'updatefrequency']));
+        const headers = ['reportid', 'Report Title', 'Description', 'Report Generated Date', 'Tags', 'Update Frequency']
+        const result = {
+          table: {
+            header: headers || _.keys(reports[0]),
+            data: _.map(reports, report => _.values(report)),
+            defs: this.getColumnsDefs(),
+            options: {
+              searching: true
+            }
+          },
+          count: _.get(apiResponse, 'count')
+        }
+        return result;
+      })
+    );
   }
 
-  public getContentForCard(report) {
-    return { name: _.get(report, 'title') || 'Untitle Report ', resourceType: 'Report' };
+  /**
+   * @description returns columns defs to configure datatable.net
+   * @private
+   * @memberof ListAllReportsComponent
+   */
+  private getColumnsDefs() {
+    return [
+      {
+        targets: 0,
+        visible: false
+      },
+      {
+        targets: 3,
+        render: (data) => {
+          const date = moment(data, 'DD-MM-YYYY');
+          if (date.isValid()) {
+            return `<td> ${moment(data, 'DD-MM-YYYY').format('YYYY/MM/DD')} </td>`;
+          }
+          return data;
+        }
+      }
+    ]
+  }
+
+  /**
+   * @description routes to report detailed view page
+   * @param {*} event
+   * @memberof ListAllReportsComponent
+   */
+  public rowClickEventHandler(event) {
+    this.router.navigate(['/dashBoard/reports', event[0]]).catch(err => {
+      console.log({ err });
+    });
   }
 
 }
