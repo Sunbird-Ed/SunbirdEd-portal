@@ -43,12 +43,18 @@ export class ListAllReportsComponent implements OnInit {
   private getReportsList() {
     return this.reportService.listAllReports().pipe(
       map((apiResponse: { reports: any[], count: number }) => {
-        const reports = _.map(apiResponse.reports, report => _.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate',
-          'tags', 'updatefrequency']));
-        const headers = ['reportid', 'Report Title', 'Description', 'Report Generated Date', 'Tags', 'Update Frequency'];
+        const reports = _.map(apiResponse.reports, report => {
+          return {
+            ..._.pick(report, ['reportid', 'title', 'description', 'status', 'reportgenerateddate',
+              'tags', 'updatefrequency']), ...(_.get(report, 'reportduration') && {
+                startdate: report.reportduration.startdate,
+                enddate: report.reportduration.enddate
+              }),
+          };
+        });
         const result = {
           table: {
-            header: headers || _.keys(reports[0]),
+            header: _.keys(reports[0]),
             data: _.map(reports, report => _.values(report)),
             defs: this.getColumnsDefs(),
             options: {
@@ -74,11 +80,11 @@ export class ListAllReportsComponent implements OnInit {
         visible: false
       },
       {
-        targets: 3,
+        targets: [4, 7, 8],
         render: (data) => {
-          const date = moment(data, 'DD-MM-YYYY');
+          const date = moment(data);
           if (date.isValid()) {
-            return `<td> ${moment(data, 'DD-MM-YYYY').format('YYYY/MM/DD')} </td>`;
+            return `<td> ${moment(data).format('YYYY/MM/DD')} </td>`;
           }
           return data;
         }

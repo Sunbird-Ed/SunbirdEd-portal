@@ -31,7 +31,7 @@ const reportRequestValidator = {
           createdby: Joi.string().required(),
           type: Joi.string().valid("private", "public").required(),
           status: Joi.string()
-            .valid("live", "draft", "retired")
+            .valid("draft")
             .trim()
             .optional(),
           slug: Joi.string().trim().required(),
