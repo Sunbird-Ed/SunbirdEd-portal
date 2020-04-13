@@ -1,7 +1,16 @@
 const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
+const BASE_REPORT_URL = "/report";
+const reports = require("../helpers/report/report");
+const bodyParser = require("body-parser");
 
 module.exports = function (app) {
+
+    app.use(
+        BASE_REPORT_URL,
+        bodyParser.json({ limit: "1mb" }),
+        reports
+    );
 
     app.get('/courseReports/:slug/:filename',
         proxyUtils.verifyToken(),

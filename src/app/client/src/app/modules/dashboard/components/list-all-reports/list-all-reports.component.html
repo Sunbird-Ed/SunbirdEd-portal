@@ -1,0 +1,32 @@
+<div class="sb-pageSection my-24 ui container">
+
+  <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
+
+    <div class="sb-pageSection-header" *ngIf="reportsList.count > 0">
+      <h4 class="sb-pageSection-title sb-pageSection-sentenceCase m-0 mr-16"><span class="mr-8"> View All Reports</span>
+      </h4>
+    </div>
+
+    <div class="sb-pageSection-content">
+
+      <ng-container *ngIf="reportsList.count > 0 else noResult">
+        <div class="ui bottom attached small p-0 b-0 no-bg py-24">
+          <app-data-table [options]="reportsList.table.options" [columnDefinations]="reportsList.table.defs"
+            (rowClickEvent)="rowClickEventHandler($event)" [tableId]="'list-all-reports'"
+            [headerData]="reportsList.table.header" [rowsData]="reportsList.table.data">
+          </app-data-table>
+        </div>
+      </ng-container>
+
+      <ng-template #noResult>
+        <app-no-result [data]="{messageText: noResultFoundError}"></app-no-result>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+
+
+</div>

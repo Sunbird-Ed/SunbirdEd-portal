@@ -75,6 +75,7 @@
     ]
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "@project-sunbird/discussion-service": "0.0.6",
     "@project-sunbird/ext-framework-server": "0.1.10",
     "@project-sunbird/form-service": "0.0.12",
@@ -94,6 +95,7 @@
     "express": "^4.15.3",
     "express-cassandra": "2.1.0",
     "express-http-proxy": "^1.0.6",
+    "express-promise-router": "^3.0.3",
     "express-session": "^1.15.3",
     "googleapis": "^45.0.0",
     "gulp-brotli": "^1.2.1",
@@ -108,6 +110,7 @@
     "mathjax-full": "^3.0.0",
     "mobile-detect": "^1.4.2",
     "node-json-transform": "^1.0.13",
+    "pg": "^8.0.2",
     "properties": "^1.2.1",
     "request": "^2.81.0",
     "sb_api_interceptor": "file:libs/sb_api_interceptor",
