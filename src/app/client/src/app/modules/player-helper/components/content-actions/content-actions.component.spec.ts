@@ -49,4 +49,19 @@ describe('ContentActionsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call onActionButtonClick for RATE ', () => {
+    spyOn(component, 'logTelemetry');
+    component.onActionButtonClick(actionsData.actionButtonEvents.RATE, actionsData.contentData);
+    expect(component.contentRatingModal).toBeTruthy();
+    expect(component.logTelemetry).toHaveBeenCalledWith('rate-content',  actionsData.contentData);
+  });
+
+  it('should call onActionButtonClick for SHARE ', () => {
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'setTelemetryShareData');
+    component.onActionButtonClick(actionsData.actionButtonEvents.SHARE, actionsData.contentData);
+    expect(component.setTelemetryShareData).toHaveBeenCalledWith(actionsData.param);
+    expect(component.logTelemetry).toHaveBeenCalledWith('share-content',  actionsData.contentData);
+  });
 });
