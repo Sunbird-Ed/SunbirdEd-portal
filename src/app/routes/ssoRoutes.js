@@ -43,7 +43,7 @@ module.exports = (app) => {
       req.session.userDetails = userDetails;
       logger.info({msg: "userDetails fetched" + userDetails});
       if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
-        redirectUrl = successUrl + getParams({id: userDetails.userName});
+        redirectUrl = successUrl + encryptUserData({id: userDetails.userName});
         logger.info({
           msg: 'sso session create v2 api, successfully redirected to success page',
           additionalInfo: {
@@ -132,7 +132,7 @@ module.exports = (app) => {
           errType = 'ACCEPT_TNC';
           await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
         }
-        redirectUrl = successUrl + getParams({ id: userDetails.userName });
+        redirectUrl = successUrl + encryptUserData({id: userDetails.userName});
         logger.info({
           msg: 'sso user creation and role updated successfully and redirected to success page',
           additionalInfo: {
@@ -305,7 +305,7 @@ module.exports = (app) => {
         errType = 'ACCEPT_TNC';
         await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
       }
-      redirectUrl = successUrl + getParams({ id: userDetails.userName });
+      redirectUrl = successUrl + encryptUserData({id: userDetails.userName});
       logger.info({
         msg: 'sso user creation and role updated successfully and redirected to success page',
         additionalInfo: {
@@ -487,11 +487,19 @@ const getQueryParams = (queryObj) => {
     .join('&');
 }
 
-const getParams = (data) => {
+/**
+ * To generate session for state user logins
+ * using server's time as iat and exp time as 5 min
+ * Session will not be created if exp is expired
+ * @param data object to encrypt data
+ * @returns {string}
+ */
+const encryptUserData = (data) => {
+  // using object structure of JWT token
   const dataToEncrypt = {
     sub: data.id,
     iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + 300
+    exp: Math.floor(Date.now() / 1000) + (5 * 60)  // adding 5 minutes
   };
   return '?id=' + JSON.stringify(encrypt(JSON.stringify(dataToEncrypt)));
 };
