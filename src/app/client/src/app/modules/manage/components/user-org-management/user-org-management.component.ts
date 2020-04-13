@@ -328,8 +328,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   public downloadCSVFile(slug, status, fileName: any) {
-    let slugName = status ? slug + '__' + status : slug;
-    let downloadFileName = status ? status + '_' + this.generateDateOfDownload() + '.csv' : undefined;
+    const slugName = status ? slug + '__' + status : slug;
+    const downloadFileName = status ? status + '_' + this.generateDateOfDownload() + '.csv' : undefined;
     this.manageService.getData(slugName, fileName, downloadFileName)
       .subscribe(
         response => {
@@ -365,8 +365,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
    */
   public generateDateOfDownload() {
     const currentDate = new Date();
-    let month = currentDate.getMonth() + 1;
-    let parsedMonth = month <= 9 ? '0' + month : month;
+    const month = currentDate.getMonth() + 1;
+    const parsedMonth = month <= 9 ? '0' + month : month;
     return currentDate.getDate().toString() + parsedMonth.toString() + currentDate.getFullYear();
   }
 }
