@@ -42,4 +42,18 @@ var isDate = function (date) {
   return (new Date(date) !== "Invalid Date" && !isNaN(new Date(date))) ? true : false;
 };
 
-module.exports = { parseJson, delay, isDate, isValidAndNotEmptyString };
+/**
+ * Checks 2 dates and returns true if todate > fromdate
+ * fromdate and to
+ * @param toDate
+ * @param fromDate optional:
+ * @returns {boolean}
+ */
+const isDateExpired = function (toDate, fromDate = Date.now()) {
+  let expDate = new Date(0);
+  expDate.setUTCMilliseconds(toDate);
+  let exp = expDate.getTime();
+  return isDate(exp) && !(exp > fromDate);
+};
+
+module.exports = {parseJson, delay, isDate, isValidAndNotEmptyString, isDateExpired};

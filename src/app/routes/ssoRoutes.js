@@ -8,7 +8,7 @@ const {
 } = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
 const {generateAuthToken, getGrantFromCode} = require('../helpers/keyCloakHelperService');
-const {parseJson} = require('../helpers/utilityService');
+const {parseJson, isDateExpired} = require('../helpers/utilityService');
 const {getUserIdFromToken} = require('../helpers/jwtHelper');
 const fs = require('fs');
 
@@ -228,13 +228,10 @@ module.exports = (app) => {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
-      errType = 'DECRYPTING_DATA';
-      const decryptedData = decrypt(parseJson(decodeURIComponent(req.query.id)));
-      const userData = parseJson(decryptedData);
-      errType = 'VERIFY_TOKEN';
-      verifyToken(userData);
+      errType = 'VERIFY_REQUEST';
+      const userData = verifyRequest(req.query.id);
       errType = 'CREATE_SESSION';
-      response = await createSession(userData.sub, 'android', req, res);
+      response = await createSession(userData.userName, 'android', req, res);
       logger.info({
         msg: 'sso sign in create session api success',
         additionalInfo: {
@@ -452,6 +449,21 @@ const getErrorMessage = (error, errorType) => {
   }
 }
 
+/**
+ * Verifies request and check exp time
+ * @param encryptedData encrypted data to be decrypted
+ * @returns {*}
+ */
+const verifyRequest = (encryptedData) => {
+  const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
+  const parsedData = parseJson(decryptedData);
+  if (isDateExpired(parsedData.exp)) {
+    throw new Error('DATE_EXPIRED');
+  } else {
+    return _.omit(parsedData, ['exp']);
+  }
+};
+
 const delay = (duration = 1000) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -497,9 +509,8 @@ const getQueryParams = (queryObj) => {
 const encryptUserData = (data) => {
   // using object structure of JWT token
   const dataToEncrypt = {
-    sub: data.id,
-    iat: Math.floor(Date.now() / 1000),
-    exp: Math.floor(Date.now() / 1000) + (5 * 60)  // adding 5 minutes
+    userName: data.id,
+    exp: Date.now() + (5 * 60 * 1000)  // adding 5 minutes
   };
   return '?id=' + JSON.stringify(encrypt(JSON.stringify(dataToEncrypt)));
 };
