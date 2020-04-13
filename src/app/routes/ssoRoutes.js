@@ -229,7 +229,7 @@ module.exports = (app) => {
         throw 'some of the query params are missing';
       }
       errType = 'VERIFY_REQUEST';
-      const userData = verifyRequest(req.query.id);
+      const userData = isValidRequest(req.query.id);
       errType = 'CREATE_SESSION';
       response = await createSession(userData.userName, 'android', req, res);
       logger.info({
@@ -454,7 +454,7 @@ const getErrorMessage = (error, errorType) => {
  * @param encryptedData encrypted data to be decrypted
  * @returns {*}
  */
-const verifyRequest = (encryptedData) => {
+const isValidRequest = (encryptedData) => {
   const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
   const parsedData = parseJson(decryptedData);
   if (isDateExpired(parsedData.exp)) {
