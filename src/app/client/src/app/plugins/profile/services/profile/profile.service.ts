@@ -1,14 +1,14 @@
 
 import {mergeMap, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { UserService, PermissionService, LearnerService } from '@sunbird/core';
+import { UserService, PermissionService, LearnerService, CertRegService } from '@sunbird/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ServerResponse } from '@sunbird/shared';
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
   constructor(private learnerService: LearnerService,
-    public userService: UserService, public configService: ConfigService) { }
+    public userService: UserService, public configService: ConfigService, public certRegService: CertRegService) { }
   /**
    * This method is used to update profile picture of the user
    */
@@ -124,5 +124,13 @@ export class ProfileService {
       data: request,
     };
     return this.learnerService.post(options);
+  }
+
+  public fetchCertificates(request) {
+    const options = {
+      url: this.configService.urlConFig.URLS.CERTIFICATE.FETCH_CERTIFICATES,
+      data: request,
+    };
+    return this.certRegService.post(options);
   }
 }

@@ -46,6 +46,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   addRecoveryIdInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   showRecoveryId = false;
+  otherCertificates: Array<object>;
+  downloadOthersCertificateEData: IInteractEventEdata;
   constructor(private cacheService: CacheService, public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
@@ -64,6 +66,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getOrgDetails();
       }
     });
+    this.getOtherCertificates(_.get(this.userProfile, 'userId'));
     this.getContribution();
     this.getTrainingAttended();
     this.setInteractEventData();
@@ -131,6 +134,32 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  getOtherCertificates(userId) {
+    const request = {
+      request: {
+        query: {
+          match_phrase: {
+            'recipient.id': userId
+          }
+        }
+      }
+    };
+    this.profileService.fetchCertificates(request).subscribe((data) => {
+      this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
+        return {
+          pdfUrls: [{
+            url: val._source.pdfUrl
+          }],
+          issuingAuthority: val._source.data.badge.issuer.name,
+          issuedOn: val._source.data.issuedOn
+        };
+      });
+    },
+      (error) => {
+        console.log('error', error);
+      });
+  }
+
   downloadCert(certificates) {
     _.forEach(certificates, (value, key) => {
       if (key === 0) {
@@ -163,9 +192,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  toggleCourse(showMoreCourse) {
+  toggleCourse(showMoreCourse, courseLimit) {
     if (showMoreCourse === true) {
-      this.courseLimit = this.attendedTraining.length;
+      this.courseLimit = courseLimit;
       this.showMoreTrainings = false;
     } else {
       this.showMoreTrainings = true;
@@ -249,6 +278,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.addRecoveryIdInteractEdata = {
       id: 'profile-add-recoveryId',
+      type: 'click',
+      pageid: 'profile-read'
+    };
+    this.downloadOthersCertificateEData = {
+      id: 'profile-download-others-certificate',
       type: 'click',
       pageid: 'profile-read'
     };

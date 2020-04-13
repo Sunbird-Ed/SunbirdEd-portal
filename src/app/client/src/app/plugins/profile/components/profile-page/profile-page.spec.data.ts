@@ -427,4 +427,40 @@ export const Response = {
             }]
         }
     },
+    othersCertificateData: {
+        'id': 'certs.v1.registry.search',
+        'ver': 'v1',
+        'ts': '1586785495276',
+        'params': null,
+        'responseCode': 'OK',
+        'result': {
+          'response': {
+            'content': [
+              {
+                '_source': {
+                  'data': {
+                    'badge': {
+                      'name': 'Sunbird installation',
+                      'issuer': {
+                        'context': 'http://localhost:8080/_schemas/context.json',
+                        'name': 'NIIT',
+                      }
+                    },
+                    'issuedOn': '2019-08-31T12:52:25Z'
+                  },
+                  'jsonUrl': null,
+                  'isRevoked': false,
+                  'createdAt': 1586777261613,
+                  'pdfUrl': 'https://staging.ntp.net.in/certs/0125450863553740809/6854486a-29f8-4c53-8c2d-00e2f2506124.pdf',
+                  'id': 'id5dd24',
+                  'updatedAt': null
+                },
+                '_id': 'id5dd24',
+                '_score': 8.958797
+              }
+            ],
+            'count': 1
+          }
+        }
+      }
 };

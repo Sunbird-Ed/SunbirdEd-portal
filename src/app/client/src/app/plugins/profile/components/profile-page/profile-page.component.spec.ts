@@ -42,7 +42,8 @@ describe('ProfilePageComponent', () => {
         't0016': 'Upload User'
       },
       'lbl' : {
-        'chkuploadsts': 'Check Status'
+        'chkuploadsts': 'Check Status',
+        'certificates': 'Certificates'
       },
     },
     'messages': {
@@ -135,6 +136,18 @@ describe('ProfilePageComponent', () => {
     expect(component).toBeTruthy();
     expect(component.userProfile).toEqual(Response.userData);
     expect(component.getOrgDetails).toHaveBeenCalled();
+  });
+
+  it('should fetch other certificates', () => {
+    const profileService = TestBed.get(ProfileService);
+    const mockData = Response.othersCertificateData;
+    spyOn(profileService, 'fetchCertificates').and.returnValue(observableOf(mockData));
+    component.getOtherCertificates('123456');
+    expect(component.otherCertificates).toEqual([{
+      pdfUrls: [{ url: mockData.result.response.content[0]._source.pdfUrl }],
+      issuingAuthority: mockData.result.response.content[0]._source.data.badge.issuer.name,
+      issuedOn: mockData.result.response.content[0]._source.data.issuedOn
+    }]);
   });
 
 });
