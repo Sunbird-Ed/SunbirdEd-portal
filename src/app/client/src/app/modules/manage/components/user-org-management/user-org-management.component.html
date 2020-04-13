@@ -23,7 +23,7 @@
             </dl>
            <div class="ml-auto" *ngIf="geoSummary && geoSummary.length">
               <button class="sb-btn sb-btn-normal" [ngClass]="(geoButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" (click)="geoTableView()" appTelemetryInteract [telemetryInteractEdata]="geoViewInteractEdata">{{geoButtonText}}</button>
-              <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadCSVFile(geoCSV, slug + '.csv')" appTelemetryInteract [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
+              <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadCSVFile(geoCSV, '', slug + '.csv')" appTelemetryInteract [telemetryInteractEdata]="geoDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
            </div>
           </div>
         </div>

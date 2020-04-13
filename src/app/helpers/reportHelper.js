@@ -130,7 +130,9 @@ function azureBlobStream() {
                     }
                     res.status(404).send(apiResponse(response));
                 } else {
-                    var token = blobService.generateSharedAccessSignature(container, fileToGet, sharedAccessPolicy);
+                    let azureHeaders = {};
+                    if (req.headers['content-disposition'] == 'attachment' && req.headers.filename) azureHeaders.contentDisposition =  `attachment;filename=${req.headers.filename}`;
+                    var token = blobService.generateSharedAccessSignature(container, fileToGet, sharedAccessPolicy, azureHeaders);
                     var sasUrl = blobService.getUrl(container, fileToGet, token);
                     const response = {
                         responseCode: "OK",

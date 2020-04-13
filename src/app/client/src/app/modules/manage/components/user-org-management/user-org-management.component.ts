@@ -328,7 +328,9 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   public downloadCSVFile(slug, status, fileName: any) {
-    this.manageService.getData(slug + '__' + status, fileName)
+    let slugName = status ? slug + '__' + status : slug;
+    let downloadFileName = status ? status + '_' + this.generateDateOfDownload() + '.csv' : undefined;
+    this.manageService.getData(slugName, fileName, downloadFileName)
       .subscribe(
         response => {
           const url = (_.get(response, 'result.signedUrl'));
@@ -356,5 +358,15 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         }
       );
   }
-
+  /**
+   * @description - Generate date pattern to append for file download
+   * Generates pattern - ddmmyyyy
+   * @returns {String} - Returns formatted date string
+   */
+  public generateDateOfDownload() {
+    const currentDate = new Date();
+    let month = currentDate.getMonth() + 1;
+    let parsedMonth = month <= 9 ? '0' + month : month;
+    return currentDate.getDate().toString() + parsedMonth.toString() + currentDate.getFullYear();
+  }
 }
