@@ -43,7 +43,7 @@ module.exports = (app) => {
       req.session.userDetails = userDetails;
       logger.info({msg: "userDetails fetched" + userDetails});
       if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
-        redirectUrl = successUrl + encryptUserData({id: userDetails.userName});
+        redirectUrl = successUrl + getEncyptedQueryParams({id: userDetails.userName});
         logger.info({
           msg: 'sso session create v2 api, successfully redirected to success page',
           additionalInfo: {
@@ -132,7 +132,7 @@ module.exports = (app) => {
           errType = 'ACCEPT_TNC';
           await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
         }
-        redirectUrl = successUrl + encryptUserData({id: userDetails.userName});
+        redirectUrl = successUrl + getEncyptedQueryParams({id: userDetails.userName});
         logger.info({
           msg: 'sso user creation and role updated successfully and redirected to success page',
           additionalInfo: {
@@ -302,7 +302,7 @@ module.exports = (app) => {
         errType = 'ACCEPT_TNC';
         await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
       }
-      redirectUrl = successUrl + encryptUserData({id: userDetails.userName});
+      redirectUrl = successUrl + getEncyptedQueryParams({id: userDetails.userName});
       logger.info({
         msg: 'sso user creation and role updated successfully and redirected to success page',
         additionalInfo: {
@@ -506,7 +506,7 @@ const getQueryParams = (queryObj) => {
  * @param data object to encrypt data
  * @returns {string}
  */
-const encryptUserData = (data) => {
+const getEncyptedQueryParams = (data) => {
   // using object structure of JWT token
   const dataToEncrypt = {
     userName: data.id,
