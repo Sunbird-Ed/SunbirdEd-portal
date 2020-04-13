@@ -41,9 +41,9 @@
       </app-contentplayer-page>
     </section>
     <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-3 cc-player__list mb-16">
-      <div class="sbselectpopover sbselectpopover--bg-white">
-        <h4>Select Chapter</h4>
-        <i class="icon-svg icon-svg--sm icon-arrow-round-right"><svg class="icon icon-svg--primary"><use xlink:href="assets/common-consumption/images/sprite.svg#arrow-round-right"></use></svg></i>
+      <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16">
+        <h6 class="sb-color-primary font-weight-normal">Select Chapter</h6>
+        <i class="icon-svg icon-svg--sm icon-arrow-round-right ml-auto"><svg class="icon icon-svg--primary"><use xlink:href="assets/common-consumption/images/sprite.svg#arrow-round-right"></use></svg></i>
       </div>
       <sb-library-filters [list]="mimeTypeFilters" [layout]="'round-with-icon'"
         (selectedMimeType)="selectedFilter($event)">
