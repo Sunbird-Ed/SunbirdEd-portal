@@ -1,4 +1,4 @@
-import { UserService } from '@sunbird/core';
+import { UserService, CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -24,7 +24,7 @@ describe('ReportComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ReportComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule],
       providers: [ToasterService, UserService, NavigationHelperService, ReportService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useValue: routerStub }]

@@ -1,3 +1,4 @@
+import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -13,7 +14,7 @@ describe('ReportSummaryComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ReportSummaryComponent],
       providers: [ReportService],
-      imports: [HttpClientTestingModule, SharedModule.forRoot()]
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule]
     })
       .compileComponents();
   }));
