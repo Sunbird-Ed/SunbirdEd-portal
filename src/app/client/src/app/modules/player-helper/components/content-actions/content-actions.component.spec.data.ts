@@ -235,9 +235,9 @@ export const actionsData = {
             }
         },
     },
-    param :{
+    param: {
         identifier: 'do_31275241153060864018150',
         type: 'Resource'
-      }
+    }
 
 };
