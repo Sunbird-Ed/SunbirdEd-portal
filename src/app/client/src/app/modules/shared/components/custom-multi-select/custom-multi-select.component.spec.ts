@@ -1,11 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SuiModule } from 'ng2-semantic-ui';
+import { SortByPipe } from './../../pipes/sortBy/sortBy.pipe';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CustomMultiSelectComponent } from './custom-multi-select.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {Response} from './custom-multi-select.component.spec.data';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from './../../services';
 import { CacheService } from 'ng2-cache-service';
+
 describe('CustomMultiSelectComponent', () => {
   let component: CustomMultiSelectComponent;
   let fixture: ComponentFixture<CustomMultiSelectComponent>;
@@ -20,7 +22,7 @@ describe('CustomMultiSelectComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule, SuiModule],
-      declarations: [ CustomMultiSelectComponent ],
+      declarations: [ SortByPipe, CustomMultiSelectComponent ],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
          ConfigService, CacheService, BrowserCacheTtlService],
       schemas: [NO_ERRORS_SCHEMA]
