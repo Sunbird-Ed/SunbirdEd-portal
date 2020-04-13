@@ -21,7 +21,7 @@ describe('ContentPlayerComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentPlayerPageComponent],
-      imports: [],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
        ToasterService
       ],
