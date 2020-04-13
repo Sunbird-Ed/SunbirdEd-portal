@@ -432,7 +432,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   }
   getReportUpdatedOnDate() {
     const batchId = _.get(this.queryParams, 'batchIdentifier');
-    const reportParams = { 
+    const reportParams = {
       'course-progress-reports': `course-progress-reports/report-${batchId}.csv`,
       'assessment-reports': `assessment-reports/report-${batchId}.csv`
     };
