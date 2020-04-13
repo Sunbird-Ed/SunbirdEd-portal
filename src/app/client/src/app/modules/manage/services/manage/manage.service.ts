@@ -64,7 +64,7 @@ export class ManageService {
       headers = new HttpHeaders({
         'Content-Disposition': 'attachment',
         'filename': downloadFileName
-      })
+      });
     }
     return this.httpClient.get('/admin-reports/' + slug + '/' + fileName, {
       headers: headers
