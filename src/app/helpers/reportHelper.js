@@ -151,8 +151,52 @@ function azureBlobStream() {
     }
 }
 
+const getBlobProperties = async (req, res) => {
+    let container = envHelper.sunbird_azure_report_container_name;
+    let fileToGet = JSON.parse(req.query.fileNames);
+    const responseData = {};
+    if(Object.keys(fileToGet).length > 0) {
+        for (const [key, file] of Object.entries(fileToGet)) {
+            await getBlobPropertiesDetails(container, file).then((result) => {
+                responseData[(key)] = result;
+            });
+        }
+        const finalResponse = {
+            responseCode: "OK",
+            params: {
+                err: null,
+                status: "success",
+                errmsg: null
+            },
+            result: responseData
+        }
+        res.status(200).send(apiResponse(finalResponse))
+    }
+};
+
+const getBlobPropertiesDetails = async(container, file) => {
+    let responseData = {
+        'lastModified': ''
+    };
+    return new Promise((resolve, reject) => {
+        blobService.getBlobProperties(container, file, function (err, result, response) {
+            if (err) {
+                logger.error({ msg: 'Azure Blobstream : readStream error - Error with status code 404', err: err })
+            }
+            else if (!response.isSuccessful) {
+                console.error("Blob %s wasn't found container %s", file, containerName)
+            }
+            else {
+                responseData.lastModified = result.lastModified
+            }
+            resolve(responseData);
+        });
+    });
+}
+
 module.exports = {
     azureBlobStream,
     validateRoles,
-    validateSlug
+    validateSlug,
+    getBlobProperties
 }
