@@ -4,6 +4,7 @@ import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, d
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
+import * as moment from 'moment';
 import { UserService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
@@ -154,6 +155,15 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     */
   public config: ConfigService;
   /**
+    * To display score report updated date
+    */
+  public scoreReportUpdatedOn: string;
+  /**
+    * To display progress report updated date
+    */
+   public progressReportUpdatedOn: string;
+
+  /**
 	 * telemetryImpression object for course progress page
 	*/
   telemetryImpression: IImpressionEventInput;
@@ -229,6 +239,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         } else {
           this.showWarningDiv = true;
         }
+        this.getReportUpdatedOnDate();
         this.paramSubcription.unsubscribe();
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -418,6 +429,29 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       subscribe(query => {
         this.populateCourseDashboardData();
       });
+  }
+  getReportUpdatedOnDate() {
+    const batchId = _.get(this.queryParams, 'batchIdentifier');
+    const reportParams = { 
+      'course-progress-reports': `course-progress-reports/report-${batchId}.csv`,
+      'assessment-reports': `assessment-reports/report-${batchId}.csv`
+    };
+    const url = `/course-reports/metadata`;
+    const requestParams = {
+      params: {
+        fileNames: JSON.stringify(reportParams)
+      }
+    };
+    this.usageService.getData(url, requestParams).subscribe((response: any) => {
+      if (_.get(response, 'responseCode') === 'OK') {
+        const courseProgressReportData = _.get(response.result, `course-progress-reports`);
+        const assessmentReportData = _.get(response.result, `assessment-reports`);
+        // tslint:disable-next-line: max-line-length
+        this.progressReportUpdatedOn = (courseProgressReportData.lastModified) ? moment(courseProgressReportData.lastModified).format('DD/MM/YYYY') : '';
+        // tslint:disable-next-line: max-line-length
+        this.scoreReportUpdatedOn = (assessmentReportData.lastModified) ? moment(assessmentReportData.lastModified).format('DD/MM/YYYY') : '';
+      }
+    });
   }
   /**
   * To method subscribes the user data to get the user id.

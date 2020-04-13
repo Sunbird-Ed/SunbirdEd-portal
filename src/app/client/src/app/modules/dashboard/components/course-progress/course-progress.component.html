@@ -80,14 +80,6 @@
               <span class="font-weight-bold"> {{dashboarData.certificateCount}}</span>
              
             </span>
-
-            <span class="course-completed course-participants-label"
-              *ngIf="dashboarData.reportUpdatedOn && dashboarData.reportUpdatedOn!==null">
-              <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.reportUpdatedOn}}
-              </span>
-              <span class="font-weight-bold"> {{dashboarData.reportUpdatedOn.slice(0, 10) | dateFormat :'DD/MM/YYYY'}}</span>
-              
-            </span>
           </div>
         </div>
         <div class="sb-toaster sb-toast-info sb-mw-100 sb-toast-sm-padding"
@@ -134,18 +126,26 @@
                 <!-- <button class="sb-btn sb-btn-normal">Search</button> -->
               </div>
               <!-- below needs to be done score card -->
+             
               <!-- <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-8"><i class="download icon"></i>Score Card</button> -->
-              <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
+            <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-16"
               href="javascript:void(0);" (click)="downloadReport(true);" *ngIf="showDownloadLink" appTelemetryInteract
               [telemetryInteractObject]="interactObject"
+              [disabled]="!scoreReportUpdatedOn"
               [telemetryInteractEdata]="{id:'download-score-report',type:'click',pageid:'course-progress-dashboard'}"><i
-                class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0066}}</button>
+                class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0066}}
+                <span class="ml-8" suiPopup popupText="{{!scoreReportUpdatedOn?'Report not generated':resourceService?.frmelmnts?.lbl?.reportUpdatedOn}} {{scoreReportUpdatedOn}}"[popupPlacement]="'top right'" [popupInverted]="true"><img src="assets/images/info-outline.svg" alt="info-outline" class="info-outline-img"></span>
+            </button>
             <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
               href="javascript:void(0);" (click)="downloadReport(false);" *ngIf="showDownloadLink" appTelemetryInteract
               [telemetryInteractObject]="interactObject"
+              [disabled]="!progressReportUpdatedOn"
               [telemetryInteractEdata]="{id:'download-progress-report',type:'click',pageid:'course-progress-dashboard'}"><i
-                class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0065}}</button>
-            </div>
+                class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0065}}
+                <span class="ml-8" suiPopup popupText="{{!progressReportUpdatedOn?'Report not generated':resourceService?.frmelmnts?.lbl?.reportUpdatedOn}} {{progressReportUpdatedOn}}" [popupPlacement]="'top right'" [popupInverted]="true"><img src="assets/images/info-outline.svg" alt="info-outline" class="info-outline-img"></span>
+            </button>
+          </div>
+
             <table id="CourseStatsTable" class="sb-table sb-table-striped sb-table-sortable sb-table-fixed"
               cellspacing="0">
               <thead class="sb-table-header sb-table-thead-gray">
