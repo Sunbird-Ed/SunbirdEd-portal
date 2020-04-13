@@ -154,10 +154,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           issuedOn: val._source.data.issuedOn
         };
       });
-    },
-      (error) => {
-        console.log('error', error);
-      });
+    });
   }
 
   downloadCert(certificates) {

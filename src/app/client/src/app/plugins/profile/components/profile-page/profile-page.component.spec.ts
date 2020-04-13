@@ -150,4 +150,15 @@ describe('ProfilePageComponent', () => {
     }]);
   });
 
+  it (`should show 'show more'`, () => {
+    component.toggleCourse(true, 10);
+    expect(component.courseLimit).toBe(10);
+    expect(component.showMoreTrainings).toBe(false);
+  });
+
+  it (`should show 'show less' after clicking 'show more'`, () => {
+    component.toggleCourse(false, 3);
+    expect(component.courseLimit).toBe(3);
+    expect(component.showMoreTrainings).toBe(true);
+  });
 });
