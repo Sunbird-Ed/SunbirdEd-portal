@@ -44,7 +44,6 @@ var isDate = function (date) {
 
 /**
  * Checks 2 dates and returns true if todate > fromdate
- * fromdate and to
  * @param toDate
  * @param fromDate optional:
  * @returns {boolean}
