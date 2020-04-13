@@ -43,7 +43,7 @@ module.exports = (app) => {
       req.session.userDetails = userDetails;
       logger.info({msg: "userDetails fetched" + userDetails});
       if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
-        redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
+        redirectUrl = successUrl + getParams({id: userDetails.userName});
         logger.info({
           msg: 'sso session create v2 api, successfully redirected to success page',
           additionalInfo: {
@@ -132,7 +132,7 @@ module.exports = (app) => {
           errType = 'ACCEPT_TNC';
           await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
         }
-        redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
+        redirectUrl = successUrl + getParams({ id: userDetails.userName });
         logger.info({
           msg: 'sso user creation and role updated successfully and redirected to success page',
           additionalInfo: {
@@ -228,9 +228,13 @@ module.exports = (app) => {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
-      userName = req.query.id;
+      errType = 'DECRYPTING_DATA';
+      const decryptedData = decrypt(parseJson(decodeURIComponent(req.query.id)));
+      const userData = parseJson(decryptedData);
+      errType = 'VERIFY_TOKEN';
+      verifyToken(userData);
       errType = 'CREATE_SESSION';
-      response = await createSession(userName, 'android',req, res);
+      response = await createSession(userData.sub, 'android', req, res);
       logger.info({
         msg: 'sso sign in create session api success',
         additionalInfo: {
@@ -301,7 +305,7 @@ module.exports = (app) => {
         errType = 'ACCEPT_TNC';
         await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
       }
-      redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
+      redirectUrl = successUrl + getParams({ id: userDetails.userName });
       logger.info({
         msg: 'sso user creation and role updated successfully and redirected to success page',
         additionalInfo: {
@@ -483,6 +487,14 @@ const getQueryParams = (queryObj) => {
     .join('&');
 }
 
+const getParams = (data) => {
+  const dataToEncrypt = {
+    sub: data.id,
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + 300
+  };
+  return '?id=' + JSON.stringify(encrypt(JSON.stringify(dataToEncrypt)));
+};
 
 const ssoValidations = async (req, res) => {
   let stateUserData, stateJwtPayload, errType, response, statusCode;
