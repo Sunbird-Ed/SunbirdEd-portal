@@ -21,12 +21,13 @@
                   <a appTelemetryInteract
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item"
-                    suiTabHeader="graph"
+                    suiTabHeader="graph" (activate)="showExportsOption=true"
                     (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
                   <a appTelemetryInteract
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
-                    *ngFor="let table of currentReport.tables" (click)="setDownloadUrl(table.downloadUrl)" class="item"
+                    (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
+                    (click)="setDownloadUrl(table.downloadUrl)" class="item"
                     [suiTabHeader]="table.id">{{table?.name}}</a>
                   <button appTelemetryInteract
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
@@ -35,7 +36,7 @@
                     class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8" (click)="downloadCSV()"><i
                       class="icon"></i>
                     {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
-                  <sui-select class="selection mr-8"
+                  <sui-select *ngIf="showExportsOption" class="selection mr-8"
                     [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}" [placeholder]="'Export As'"
                     (selectedOptionChange)="downloadReport($event)">
                     <sui-select-option *ngFor="let option of ['Pdf', 'Img']" [value]="option">

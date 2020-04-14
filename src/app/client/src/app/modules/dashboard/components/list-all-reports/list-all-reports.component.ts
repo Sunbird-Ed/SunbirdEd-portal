@@ -43,7 +43,7 @@ export class ListAllReportsComponent implements OnInit {
   private getReportsList() {
     const filters = {
       status: ['live']
-    }
+    };
     return this.reportService.listAllReports(filters).pipe(
       map((apiResponse: { reports: any[], count: number }) => {
         const reports = _.map(apiResponse.reports, report => {
