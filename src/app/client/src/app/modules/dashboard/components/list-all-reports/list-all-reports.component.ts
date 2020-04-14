@@ -52,7 +52,7 @@ export class ListAllReportsComponent implements OnInit {
               'tags', 'updatefrequency'])
           };
         });
-        const headers = ['reportid', 'Title', 'Description', 'Last Updated Date', 'Tags', 'Update Frequency']
+        const headers = ['reportid', 'Title', 'Description', 'Last Updated Date', 'Tags', 'Update Frequency'];
         const result = {
           table: {
             header: headers || _.keys(reports[0]),
@@ -85,7 +85,7 @@ export class ListAllReportsComponent implements OnInit {
         width: '15%',
         render: data => {
           if (Array.isArray(data)) {
-            return _.map(data, tag => `<div class="sb-label sb-label-table sb-label-primary-100">${tag}</div>`)
+            return _.map(data, tag => `<div class="sb-label sb-label-table sb-label-primary-100">${tag}</div>`);
           }
           return data;
         }
