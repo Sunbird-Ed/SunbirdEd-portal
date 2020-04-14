@@ -7,4 +7,8 @@ module.exports = {
       OPENID: 'openid'
     }
   },
+  ENCODINGS: {
+    HEX: 'hex',
+    UTF8: 'utf8'
+  }
 };

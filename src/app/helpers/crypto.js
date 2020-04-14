@@ -4,6 +4,7 @@ const algorithm = 'aes-256-cbc';
 const envHelper = require('./environmentVariablesHelper');
 const key = envHelper.CRYPTO_ENCRYPTION_KEY;
 const iv = crypto.randomBytes(16);
+const CONSTANTS = require('./constants');
 
 /**
  * Encrypts the data and return encrypted data with iv
@@ -34,8 +35,30 @@ const decrypt = (text) => {
   return decrypted.toString();
 };
 
+/**
+ * Used for encryption of data without noise added
+ * @param dataToEncrypt data to encrypt in string
+ * @returns {string} encrypted string
+ */
+const encryptWithoutIv = (dataToEncrypt) => {
+  const cipher = crypto.createCipher(algorithm, key);
+  return cipher.update(dataToEncrypt, CONSTANTS.ENCODINGS.UTF8, CONSTANTS.ENCODINGS.HEX) + cipher.final(CONSTANTS.ENCODINGS.HEX);
+};
+
+/**
+ * Data to decrypt without noise added
+ * @param dataToDecrypt data to decrypt in string
+ * @returns {string} decrypted string
+ */
+const decryptWithoutIv = (dataToDecrypt) => {
+  const decipher = crypto.createDecipher(algorithm, key);
+  return decipher.update(dataToDecrypt, CONSTANTS.ENCODINGS.HEX, CONSTANTS.ENCODINGS.UTF8) + decipher.final(CONSTANTS.ENCODINGS.UTF8);
+};
+
 module.exports = {
   decrypt,
-  encrypt
+  encrypt,
+  encryptWithoutIv,
+  decryptWithoutIv
 };
 

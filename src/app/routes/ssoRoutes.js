@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const envHelper = require('../helpers/environmentVariablesHelper');
-const {encrypt, decrypt} = require('../helpers/crypto');
+const {encrypt, decrypt, encryptWithoutIv, decryptWithoutIv} = require('../helpers/crypto');
 const {
   verifySignature, verifyIdentifier, verifyToken, fetchUserWithExternalId, createUser, fetchUserDetails,
   createSession, updateContact, updateRoles, sendSsoKafkaMessage, migrateUser, freeUpUser, getIdentifier
@@ -455,7 +455,7 @@ const getErrorMessage = (error, errorType) => {
  * @returns {*}
  */
 const isValidRequest = (encryptedData) => {
-  const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
+  const decryptedData = decrypt(parseJson(decryptWithoutIv(encryptedData)));
   const parsedData = parseJson(decryptedData);
   if (isDateExpired(parsedData.exp)) {
     throw new Error('DATE_EXPIRED');
@@ -508,7 +508,7 @@ const getQueryParams = (queryObj) => {
  */
 const getEncyptedQueryParams = (data) => {
   data.exp = Date.now() + (5 * 60 * 1000);  // adding 5 minutes
-  return '?id=' + JSON.stringify(encrypt(JSON.stringify(data)));
+  return '?id=' + encryptWithoutIv(JSON.stringify(encrypt(JSON.stringify(data))));
 };
 
 const ssoValidations = async (req, res) => {
