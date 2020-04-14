@@ -33,5 +33,4 @@ describe('ContentPlayerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
 });
