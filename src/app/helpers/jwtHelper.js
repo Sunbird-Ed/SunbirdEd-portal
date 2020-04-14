@@ -25,4 +25,9 @@ const decodeToken = (token) => {
   return jwt.decode(token);
 };
 
-module.exports = {getUserIdFromToken, decodeToken};
+const generateToken = (data) => {
+  return jwt.sign(data, 'key');
+};
+
+module.exports = {getUserIdFromToken, decodeToken, generateToken};
+

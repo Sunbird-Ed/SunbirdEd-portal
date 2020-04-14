@@ -18,6 +18,7 @@ const errorUrl = '/sso/sign-in/error';
 const logger = require('sb_logger_util_v2');
 const url = require('url');
 const {acceptTncAndGenerateToken} = require('../helpers/userService');
+const {generateToken, decodeToken} = require('../helpers/jwtHelper');
 
 module.exports = (app) => {
 
@@ -451,11 +452,11 @@ const getErrorMessage = (error, errorType) => {
 
 /**
  * Verifies request and check exp time
- * @param encryptedData encrypted data to be decrypted
+ * @param token
  * @returns {*}
  */
-const isValidRequest = (encryptedData) => {
-  const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
+const isValidRequest = (token) => {
+  const decryptedData = decrypt(decodeToken(token));
   const parsedData = parseJson(decryptedData);
   if (isDateExpired(parsedData.exp)) {
     throw new Error('DATE_EXPIRED');
@@ -508,7 +509,7 @@ const getQueryParams = (queryObj) => {
  */
 const getEncyptedQueryParams = (data) => {
   data.exp = Date.now() + (5 * 60 * 1000);  // adding 5 minutes
-  return '?id=' + JSON.stringify(encrypt(JSON.stringify(data)));
+  return '?id=' + generateToken(encrypt(JSON.stringify(data)));
 };
 
 const ssoValidations = async (req, res) => {
