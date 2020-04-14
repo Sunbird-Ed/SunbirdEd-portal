@@ -32,7 +32,7 @@ export const playerData = {
         metadata: {
             SYS_INTERNAL_LAST_UPDATED_ON: '2018-11-21T05:13:28.584+0000',
             appIcon: 'content/do_21260742513514086411607/edforall_1520506786573.thumb.jpg',
-            appId: 'staging.diksha.portal',
+            appId: 'appId',
             artifactUrl: 'do_21260742513514086411607/1542779548981_do_21260742513514086411607.zip',
             audience: ['Learner'],
             baseDir: 'content/do_21260742513514086411607',
@@ -199,7 +199,7 @@ export const playerData = {
                     'Class 1',
                     'Class 1'
                 ],
-                'appId': 'staging.diksha.portal',
+                'appId': 'appId',
                 'contentEncoding': 'gzip',
                 'artifactUrl': 'do_21260742513514086411607/1542779548981_do_21260742513514086411607.zip',
                 'contentType': 'Resource',

@@ -22,7 +22,7 @@
         <h4 *ngIf="contentData?.license" class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
         <p class="description">{{contentData.license}}</p>
 
-        <p *ngIf="contentData && contentData.licenseDetails && contentData.licenseDetails['name']">
+        <p *ngIf="contentData?.licenseDetails?.name">
           {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
           <span *ngIf="contentData.licenseDetails['url']">
             <a href="{{contentData.licenseDetails['url']}}" target="_blank">{{contentData.licenseDetails['url']}}</a>

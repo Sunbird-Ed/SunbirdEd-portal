@@ -80,6 +80,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   contentData: any;
   activeContent: any;
   isContentPresent: Boolean = false;
+  isSelectChapter: Boolean = false;
 
   /**
    * Page Load Time, used this data in impression telemetry
@@ -421,21 +422,27 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }
     };
   }
-
-  tocCardClickHandler(event) {
-    console.log(event);
-    // this.activeContent = _.get(event,'data');
+  callinitPlayer (event) {
+    // console.log('event---ID---->',event.data.identifier);
+    // console.log('activeContent---ID---->',_.get(this.activeContent, 'identifier'))
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
       this.isContentPresent = true;
       this.activeContent = event.data;
       this.objectRollUp = this.getContentRollUp(event.rollup);
-      // this.OnPlayContent(this.activeContent, true);
       this.initPlayer(_.get(this.activeContent, 'identifier'));
-
-      // this.logTelemetry('content-inside-collection', this.objectRollUp, this.activeContent);
     }
+  }
+  tocCardClickHandler(event) {
+    // console.log(event);
+    this.callinitPlayer(event);
+  }
+  tocChapterClickHandler(event) {
+    if (this.isSelectChapter) {
+      this.isSelectChapter =  false;
+    }
+    this.callinitPlayer(event);
+  }
 
-     }
   getContentRollUp(rollup: string[]) {
     const objectRollUp = {};
     if (rollup) {
@@ -444,5 +451,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
     }
     return objectRollUp;
+  }
+
+  showChapter() {
+    this.isSelectChapter = this.isSelectChapter ? false : true;
   }
 }
