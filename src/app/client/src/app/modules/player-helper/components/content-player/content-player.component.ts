@@ -53,11 +53,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
    * loadPlayer method will be called
    */
 
-  ngAfterViewInit() {
-    if (!_.isEmpty(this.playerConfig)) {
-      // this.loadPlayer();
-    }
-  }
+  ngAfterViewInit() {}
 
   ngOnChanges() {
     if (this.isContentDeleted) {
@@ -68,28 +64,11 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     this.contentRatingModal = false;
     if (!_.isEmpty(this.playerConfig)) {
       this.objectRollUp = _.get(this.playerConfig, 'context.objectRollup') || {};
-        // this.loadPlayer();
-        // this.handleYoutubeContent(this.contentData);
     }
 
   }
 
   ngOnInit() {
-    // this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
-    //   this.deleteContent(data);
-    // });
-  }
-
-
-  /**
-   * Adjust player height after load
-   */
-  adjustPlayerHeight() {
-    const playerWidth = $('#contentPlayer').width();
-    if (playerWidth) {
-      const height = playerWidth * (9 / 16);
-      $('#contentPlayer').css('height', height + 'px');
-    }
   }
 
   generateScoreSubmitEvent(event: any) {
