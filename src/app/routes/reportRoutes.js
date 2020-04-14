@@ -1,10 +1,11 @@
 const proxyUtils = require('../proxy/proxyUtils.js')
 const reportHelper = require('../helpers/reportHelper.js')
-const BASE_REPORT_URL = "/report";
+const BASE_REPORT_URL = "/report/report";
 const proxy = require('express-http-proxy');
 const { REPORT_SERVICE_URL } = require('../helpers/environmentVariablesHelper.js');
 
 module.exports = function (app) {
+
 
     app.all([`${BASE_REPORT_URL}/list`, `${BASE_REPORT_URL}/get/:reportId`],
         proxyUtils.verifyToken(),
