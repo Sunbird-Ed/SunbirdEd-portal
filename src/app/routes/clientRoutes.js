@@ -131,7 +131,6 @@ function getLocals(req) {
     locals.sessionId = null
   }
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
-  locals.report_service_url = envHelper.REPORT_SERVICE_URL || 'default'
   locals.theme = envHelper.sunbird_theme
   locals.defaultPortalLanguage = envHelper.sunbird_default_language
   locals.instance = process.env.sunbird_instance
