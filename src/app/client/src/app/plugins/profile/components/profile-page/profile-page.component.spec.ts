@@ -1,5 +1,5 @@
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService} from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SlickModule } from 'ngx-slick';
 import { Response } from './profile-page.spec.data';
-import {of as observableOf,  Observable } from 'rxjs';
+import {of as observableOf,  throwError as observableThrowError } from 'rxjs';
 
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
@@ -47,10 +47,15 @@ describe('ProfilePageComponent', () => {
       },
     },
     'messages': {
-      'smsg': {},
+      'smsg': {
+        'm0046' : 'Profile updated successfully...'
+      },
       'fmsg': {
         'm0001': 'api failed, please try again',
         'm0004': 'api failed, please try again'
+      },
+      'emsg': {
+        'm0012': 'Profile update failed. Try again later'
       }
     },
     languageSelected$: observableOf({})
@@ -63,7 +68,8 @@ describe('ProfilePageComponent', () => {
       providers: [ProfileService, UserService, SearchService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
-        { provide: ResourceService, useValue: resourceBundle }],
+        { provide: ResourceService, useValue: resourceBundle },
+        ToasterService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -160,5 +166,31 @@ describe('ProfilePageComponent', () => {
     component.toggleCourse(false, 3);
     expect(component.courseLimit).toBe(3);
     expect(component.showMoreTrainings).toBe(true);
+  });
+
+  it('should update framework successfully', () => {
+    const mockFrameworkData = Response.frameworkUpdateData;
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    component.userProfile = Response.userProfile;
+    component.profileModal =  { modal : { deny: () => {}  }};
+    spyOn(profileService, 'updateProfile').and.returnValue(observableOf({}));
+    spyOn(toasterService, 'success');
+    component.updateProfile(mockFrameworkData);
+    expect(component.userProfile['framework']).toBe(mockFrameworkData);
+    expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0046);
+    expect(component.showEdit).toBe(false);
+  });
+
+  it('should show error if update framework id failed', () => {
+    const mockFrameworkData = Response.frameworkUpdateData;
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    component.userProfile = Response.userProfile;
+    component.profileModal =  { modal : { deny: () => {}  }};
+    spyOn(toasterService, 'warning');
+    spyOn(profileService, 'updateProfile').and.callFake(() => observableThrowError({}));
+    component.updateProfile(mockFrameworkData);
+    expect(toasterService.warning).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0012);
   });
 });

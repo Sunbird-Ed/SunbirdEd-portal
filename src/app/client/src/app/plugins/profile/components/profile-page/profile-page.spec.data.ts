@@ -462,5 +462,71 @@ export const Response = {
             'count': 1
           }
         }
+      },
+    frameworkUpdateData: {
+        'gradeLevel': [
+          'Class 5'
+        ],
+        'subject': [
+          'English'
+        ],
+        'id': 'as_k-12',
+        'medium': [
+          'English'
+        ],
+        'board': [
+          'State (Assam)'
+        ]
+      },
+    userProfile: {
+        'identifier': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
+        'thumbnail': null,
+        'profileVisibility': {
+          'lastName': 'public',
+        },
+        'updatedBy': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
+        'externalIds': [],
+        'registryId': null,
+        'roleList': [
+          {
+            'name': 'Book Creator',
+            'id': 'BOOK_CREATOR'
+          }
+        ],
+        'rootOrgId': '0126632859575746566',
+        'organisations': [
+          {
+            'updatedBy': null,
+            'approvedBy': null,
+          }
+        ],
+        'maskedEmail': 'am********@tarento.com',
+        'tempPassword': null,
+        'email': 'am********@tarento.com',
+        'rootOrg': {
+          'dateTime': null,
+          'status': 1
+        },
+        'userName': 'amitkumar2045',
+        'userId': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
+        'promptTnC': false,
+        'emailVerified': true,
+        'framework': {
+          'gradeLevel': [
+            'Class 5'
+          ],
+          'subject': [
+            'English'
+          ],
+          'id': [
+            'as_k-12'
+          ],
+          'medium': [
+            'Hindi'
+          ],
+          'board': [
+            'State (Assam)'
+          ]
+        }
       }
 };
