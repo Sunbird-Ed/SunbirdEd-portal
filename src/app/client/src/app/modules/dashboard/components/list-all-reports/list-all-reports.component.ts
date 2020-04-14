@@ -49,15 +49,13 @@ export class ListAllReportsComponent implements OnInit {
         const reports = _.map(apiResponse.reports, report => {
           return {
             ..._.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate',
-              'tags', 'updatefrequency']), ...(_.get(report, 'reportduration') && {
-                startdate: report.reportduration.startdate,
-                enddate: report.reportduration.enddate
-              }),
+              'tags', 'updatefrequency'])
           };
         });
+        const headers = ['reportid', 'Title', 'Description', 'Last Updated Date', 'Tags', 'Update Frequency']
         const result = {
           table: {
-            header: _.keys(reports[0]),
+            header: headers || _.keys(reports[0]),
             data: _.map(reports, report => _.values(report)),
             defs: this.getColumnsDefs(),
             options: {
@@ -83,7 +81,17 @@ export class ListAllReportsComponent implements OnInit {
         visible: false
       },
       {
-        targets: [3, 6, 7],
+        targets: 4,
+        width: '15%',
+        render: data => {
+          if (Array.isArray(data)) {
+            return _.map(data, tag => `<div class="sb-label sb-label-table sb-label-primary-100">${tag}</div>`)
+          }
+          return data;
+        }
+      },
+      {
+        targets: [3],
         render: (data) => {
           const date = moment(data);
           if (date.isValid()) {
