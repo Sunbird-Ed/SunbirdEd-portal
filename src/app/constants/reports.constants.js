@@ -15,5 +15,5 @@ module.exports = {
     NO_COLUMNS_TO_UPDATE: "no columns to update",
     NO_API: "no api exists with these value",
   },
-  REPORT_TABLE_NAME: 'report'
+  REPORT_TABLE_NAME: process.env.sunbird_reports_table_name || 'report'
 };

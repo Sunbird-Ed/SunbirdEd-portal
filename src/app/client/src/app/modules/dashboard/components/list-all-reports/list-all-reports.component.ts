@@ -41,11 +41,14 @@ export class ListAllReportsComponent implements OnInit {
    * @memberof ListAllReportsComponent
    */
   private getReportsList() {
-    return this.reportService.listAllReports().pipe(
+    const filters = {
+      status: ['live']
+    }
+    return this.reportService.listAllReports(filters).pipe(
       map((apiResponse: { reports: any[], count: number }) => {
         const reports = _.map(apiResponse.reports, report => {
           return {
-            ..._.pick(report, ['reportid', 'title', 'description', 'status', 'reportgenerateddate',
+            ..._.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate',
               'tags', 'updatefrequency']), ...(_.get(report, 'reportduration') && {
                 startdate: report.reportduration.startdate,
                 enddate: report.reportduration.enddate
@@ -80,7 +83,7 @@ export class ListAllReportsComponent implements OnInit {
         visible: false
       },
       {
-        targets: [4, 7, 8],
+        targets: [3, 6, 7],
         render: (data) => {
           const date = moment(data);
           if (date.isValid()) {

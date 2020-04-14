@@ -7,6 +7,8 @@ const constants = require("../../constants/reports.constants");
 const v4 = require("uuid/v4");
 const dateFormat = require("dateformat");
 const { sendApiResponse } = require("./services/apiResponse");
+const proxyUtils = require('../../proxy/proxyUtils');
+const reportHelper = require('../../helpers/reportHelper');
 
 const {
   validateCreateReportAPI,
@@ -284,3 +286,6 @@ router.post("/list", validateListReportAPI, async (req, res) => {
     );
   }
 });
+
+router.get("/fetch/:slug/:filename", proxyUtils.verifyToken(), reportHelper.validateRoles(['REPORT_CREATOR', 'REPORT_VIEWER']),
+  reportHelper.azureBlobStream())
