@@ -10,10 +10,7 @@ node('build-slave') {
         ansiColor('xterm') {
             timestamps {
                 tag_name = env.JOB_NAME.split("/")[-1]
-                if (!tag_name.contains(env.public_repo_branch)) {
-                     println("Error.. Tag does not contain " + env.public_repo_branch)
-                     error("Oh ho! Tag is not a release candidate.. Skipping build")
-                } 
+                pre_checks()
                 stage('Checkout') {
                     if (!env.hub_org) {
                         println(ANSI_BOLD + ANSI_RED + "Uh Oh! Please set a Jenkins environment variable named hub_org with value as registery/sunbidrded" + ANSI_NORMAL)
