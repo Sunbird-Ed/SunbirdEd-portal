@@ -17,12 +17,15 @@ import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
   selector: 'app-public-collection-player',
-  templateUrl: './public-collection-player.component.html'
+  templateUrl: './public-collection-player.component.html',
+  styleUrls: ['./public-collection-player.component.scss']
 })
 export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
 	 * telemetryImpression
-	*/
+  */
+ mimeTypeFilters = ['all', 'video', 'interactive', 'docs'];
+ activeMimeTypeFilter = ['all'];
   telemetryImpression: IImpressionEventInput;
   telemetryContentImpression: IImpressionEventInput;
   public queryParams: any;
@@ -62,6 +65,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public loader: Boolean = true;
   public treeModel: any;
   public contentDetails = [];
+  public tocList = [];
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
   public showFooter: Boolean = false;
@@ -73,6 +77,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerTelemetryInteractObject: IInteractEventObject;
   public telemetryCourseEndEvent: IEndEventInput;
   public telemetryCourseStart: IStartEventInput;
+  contentData: any;
+  activeContent: any;
+  isContentPresent: Boolean = false;
+  isSelectChapter: Boolean = false;
+
   /**
    * Page Load Time, used this data in impression telemetry
    */
@@ -117,7 +126,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   ngOnInit() {
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
-    this.getContent();
+    this.contentData = this.getContent();
     this.deviceDetector();
     this.setTelemetryData();
 
@@ -187,7 +196,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       return err;
     }), );
   }
+  selectedFilter(event) {
+    // this.logTelemetry(`filter-${event.data.text}`);
+    this.activeMimeTypeFilter = event.data.value;
+  }
 
+  showNoContent(event) {
+    if (event.message === 'No Content Available') {
+      this.isContentPresent = false;
+    }
+  }
   setTelemetryContentImpression (data) {
     this.telemetryContentImpression = {
       context: {
@@ -250,6 +268,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.treeModel.walk((node) => {
         if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
           this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
+          this.tocList.push({id: node.model.identifier, title: node.model.name, mimeType: node.model.mimeType});
         }
         this.setContentNavigators();
       });
@@ -403,5 +422,38 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }
     };
   }
+  callinitPlayer (event) {
+    // console.log('event---ID---->',event.data.identifier);
+    // console.log('activeContent---ID---->',_.get(this.activeContent, 'identifier'))
+    if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
+      this.isContentPresent = true;
+      this.activeContent = event.data;
+      this.objectRollUp = this.getContentRollUp(event.rollup);
+      this.initPlayer(_.get(this.activeContent, 'identifier'));
+    }
+  }
+  tocCardClickHandler(event) {
+    // console.log(event);
+    this.callinitPlayer(event);
+  }
+  tocChapterClickHandler(event) {
+    if (this.isSelectChapter) {
+      this.isSelectChapter =  false;
+    }
+    this.callinitPlayer(event);
+  }
 
+  getContentRollUp(rollup: string[]) {
+    const objectRollUp = {};
+    if (rollup) {
+      for (let i = 0; i < rollup.length; i++ ) {
+        objectRollUp[`l${i + 1}`] = rollup[i];
+    }
+    }
+    return objectRollUp;
+  }
+
+  showChapter() {
+    this.isSelectChapter = this.isSelectChapter ? false : true;
+  }
 }

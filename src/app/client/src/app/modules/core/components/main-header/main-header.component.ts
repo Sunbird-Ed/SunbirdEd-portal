@@ -186,6 +186,7 @@ export class MainHeaderComponent implements OnInit {
   }
 
   getUrl() {
+    this.showExploreHeader = true;
     this.routerEvents.subscribe((urlAfterRedirects: NavigationEnd) => {
       let currentRoute = this.activatedRoute.root;
       this.showAccountMergemodal = false; // to remove popup on browser back button click
@@ -208,7 +209,7 @@ export class MainHeaderComponent implements OnInit {
       if (_.includes(urlAfterRedirects.url, '/explore-course') || _.includes(urlAfterRedirects.url, '/explore')) {
         this.showExploreHeader = true;
       } else {
-        this.showExploreHeader = false;
+        // this.showExploreHeader = false;
       }
     });
   }

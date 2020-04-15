@@ -1,0 +1,14 @@
+
+@import "variables";
+@import "mixins/mixins";
+@import 'components/video';
+
+.no-content-player{
+    background: var(--black);
+    color: var(--white);
+    width: 100%;
+    height: 100%;
+    &__text{
+        max-width: calculateRem(300px);   
+    }
+}

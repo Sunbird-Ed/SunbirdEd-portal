@@ -33,6 +33,7 @@ import {ChatLibModule, ChatLibService} from 'chat-lib';
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
+    ChatLibModule,
     SharedFeatureModule,
     ChatLibModule,
     ...PluginModules,
