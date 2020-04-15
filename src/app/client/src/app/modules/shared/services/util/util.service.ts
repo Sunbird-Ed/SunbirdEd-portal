@@ -20,6 +20,13 @@ export class UtilService {
     }
     return UtilService.singletonInstance;
   }
+  public sortChildrenWithIndex(tree) {
+    if (!_.get(tree, 'children.length')) {
+        return tree;
+    }
+    tree.children = _.sortBy(tree.children.map(childNode => this.sortChildrenWithIndex(childNode)), ['index']);
+    return tree;
+  }
   getDataForCard(data, staticData, dynamicFields, metaData) {
     const list: Array<ICard> = [];
     _.forEach(data, (item, key) => {
