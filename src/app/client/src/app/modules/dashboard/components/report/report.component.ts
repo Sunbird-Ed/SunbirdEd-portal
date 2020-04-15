@@ -5,7 +5,7 @@ import { UserService } from '@sunbird/core';
 import { Component, OnInit, ViewChildren, QueryList, ViewChild, AfterViewInit } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
-import { Observable, throwError, of, forkJoin } from 'rxjs';
+import { Observable, throwError, of, forkJoin, combineLatest } from 'rxjs';
 import { mergeMap, switchMap, map, retry, catchError, tap } from 'rxjs/operators';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
@@ -77,24 +77,30 @@ export class ReportComponent implements OnInit, AfterViewInit {
    * @param reportId
    */
   private renderReport(reportId) {
-    return this.fetchConfig(reportId).pipe(
-      switchMap(report => {
-        this.report = report;
-        const reportConfig = _.get(report, 'reportconfig');
-        this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
-        return this.reportService.fetchDataSource(_.get(reportConfig, 'dataSource')).pipe(
-          retry(1),
-          map(data => {
-            const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table');
-            const result: any = {};
-            result['charts'] = (charts && this.reportService.prepareChartData(charts, data, _.get(reportConfig, 'dataSource'))) || [];
-            result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'))) || [];
-            result['reportMetaData'] = reportConfig;
-            return result;
-          })
-        );
-      })
-    );
+    return combineLatest(this.reportService.isUserReportAdmin(), this.fetchConfig(reportId))
+      .pipe(
+        switchMap(response => {
+          const [isUserReportAdmin, report] = response;
+          if (!isUserReportAdmin && _.toLower(_.get(report, 'status')) !== 'live') {
+            return throwError({ messageText: 'messages.stmsg.m0144' });
+          } else {
+            this.report = report;
+            const reportConfig = _.get(report, 'reportconfig');
+            this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
+            return this.reportService.fetchDataSource(_.get(reportConfig, 'dataSource')).pipe(
+              retry(1),
+              map(data => {
+                const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table');
+                const result: any = {};
+                result['charts'] = (charts && this.reportService.prepareChartData(charts, data, _.get(reportConfig, 'dataSource'))) || [];
+                result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'))) || [];
+                result['reportMetaData'] = reportConfig;
+                return result;
+              })
+            );
+          }
+        })
+      );
   }
 
   /**

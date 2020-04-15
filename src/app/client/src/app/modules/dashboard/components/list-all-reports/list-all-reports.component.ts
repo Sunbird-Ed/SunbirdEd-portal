@@ -1,6 +1,6 @@
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit } from '@angular/core';
-import { catchError, mergeMap, map } from 'rxjs/operators';
+import { catchError, mergeMap, map, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
 import { of, Observable, throwError } from 'rxjs';
@@ -19,11 +19,15 @@ export class ListAllReportsComponent implements OnInit {
 
   public reportsList$: Observable<any>;
   public noResultFoundError: string;
+  private _isUserReportAdmin: boolean;
 
   ngOnInit() {
     this.reportsList$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
       mergeMap((isAuthenticated: boolean) => {
-        return isAuthenticated ? this.getReportsList() : throwError({ messageText: 'messages.stmsg.m0144' });
+        return isAuthenticated ? this.reportService.isUserReportAdmin().pipe(
+          tap(isReportAdmin => this._isUserReportAdmin = isReportAdmin),
+          mergeMap(isReportAdmin => this.getReportsList(isReportAdmin))
+        ) : throwError({ messageText: 'messages.stmsg.m0144' });
       }),
       catchError(err => {
         this.noResultFoundError = _.get(err, 'messageText') || 'messages.stmsg.m0006';
@@ -40,19 +44,20 @@ export class ListAllReportsComponent implements OnInit {
    * @returns Observable with list of reports.
    * @memberof ListAllReportsComponent
    */
-  private getReportsList() {
+  private getReportsList(isUserReportAdmin: boolean) {
     const filters = {
-      status: ['live']
+      status: ['live', ...isUserReportAdmin ? ['draft', 'retired'] : []]
     };
     return this.reportService.listAllReports(filters).pipe(
       map((apiResponse: { reports: any[], count: number }) => {
         const reports = _.map(apiResponse.reports, report => {
           return {
             ..._.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate',
-              'tags', 'updatefrequency'])
+              'tags', 'updatefrequency'], ...isUserReportAdmin ? ['status'] : [])
           };
         });
-        const headers = ['reportid', 'Title', 'Description', 'Last Updated Date', 'Tags', 'Update Frequency'];
+        const headers = ['reportid', 'Title', 'Description', 'Last Updated Date', 'Tags', 'Update Frequency',
+          ...isUserReportAdmin ? ['Status'] : []];
         const result = {
           table: {
             header: headers || _.keys(reports[0]),
@@ -81,25 +86,50 @@ export class ListAllReportsComponent implements OnInit {
         visible: false
       },
       {
-        targets: 4,
+        targets: [1, 2],
+        width: '25%'
+      },
+      {
+        targets: [4],
         width: '15%',
         render: data => {
           if (Array.isArray(data)) {
-            return _.map(data, tag => `<div class="sb-label sb-label-table sb-label-primary-100">${tag}</div>`);
+            return _.map(data, tag => `<div class="sb-label sb-label-table sb-label-primary-100">${_.startCase(_.toLower(tag))}</div>`);
           }
-          return data;
+          return _.startCase(_.toLower(data));
         }
       },
       {
-        targets: [3],
+        targets: [3, 5, 1, 2],
         render: (data) => {
           const date = moment(data);
           if (date.isValid()) {
             return `<td> ${moment(data).format('YYYY/MM/DD')} </td>`;
           }
-          return data;
+          return _.startCase(_.toLower(data));
         }
-      }
+      },
+      ...(this._isUserReportAdmin ? [{
+        targets: [6],
+        render: (data) => {
+          const icon = {
+            live: {
+              color: 'secondary',
+              icon: 'check'
+            },
+            draft: {
+              color: 'primary',
+              icon: 'edit'
+            },
+            retired: {
+              color: 'gray',
+              icon: 'close'
+            }
+          };
+          return `<button class="sb-btn sb-btn-${icon[_.toLower(data)].color} sb-btn-normal sb-btn-square">
+          <i class="icon ${icon[_.toLower(data)].icon} alternate"></i><span>${_.startCase(_.toLower(data))}</span></button>`;
+        }
+      }] : [])
     ];
   }
 

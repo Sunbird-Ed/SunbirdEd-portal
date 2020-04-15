@@ -9,7 +9,7 @@ module.exports = function (app) {
 
     app.all([`${BASE_REPORT_URL}/list`, `${BASE_REPORT_URL}/get/:reportId`],
         proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['REPORT_VIEWER']),
+        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL)
     )
 
@@ -20,7 +20,7 @@ module.exports = function (app) {
 
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),
-        reportHelper.validateRoles(['REPORT_VIEWER']),
+        reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         reportHelper.azureBlobStream());
 
     app.get('/reports/:slug/:filename',

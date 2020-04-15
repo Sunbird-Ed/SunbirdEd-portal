@@ -1,5 +1,5 @@
 import { IListReportsFilter } from './../../interfaces';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, IUserData } from '@sunbird/shared';
 import { UserService, BaseReportService, PermissionService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -98,6 +98,20 @@ export class ReportService {
         } else {
           return false;
         }
+      })
+    );
+  }
+
+  /**
+ * @description checks whether user is an REPORT ADMIN or not
+ */
+  public isUserReportAdmin(): Observable<boolean> {
+    return this.userService.userData$.pipe(
+      map((user: IUserData) => {
+        if (user && !user.err) {
+          return _.includes(_.get(user, 'userProfile.userRoles'), 'REPORT_ADMIN');
+        }
+        return false;
       })
     );
   }
