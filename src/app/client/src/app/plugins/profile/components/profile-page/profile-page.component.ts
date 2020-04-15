@@ -134,15 +134,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+/**
+ * @param userId
+ *It will fetch certificates of user, other than courses
+ */
   getOtherCertificates(userId) {
     this.certRegService.fetchCertificates(userId).subscribe((data) => {
       this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
         return {
           pdfUrls: [{
-            url: val._source.pdfUrl
+            url: _.get(val, '_source.pdfUrl')
           }],
-          issuingAuthority: val._source.data.badge.issuer.name,
-          issuedOn: val._source.data.issuedOn
+          issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
+          issuedOn: _.get(val, '_source.data.issuedOn')
         };
       });
     });
