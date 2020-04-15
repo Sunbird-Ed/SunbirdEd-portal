@@ -37,6 +37,7 @@ export class CertRegService extends DataService {
   public fetchCertificates(userId) {
     const request = {
       request: {
+        _source: ['data.badge.issuer.name', 'pdfUrl', 'data.issuedOn'],
         query: {
           match_phrase: {
             'recipient.id': userId

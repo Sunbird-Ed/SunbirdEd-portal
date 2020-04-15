@@ -19,7 +19,8 @@ describe('CertRegService', () => {
   it('should fetch all certificates', () => {
     const certRegService: CertRegService = TestBed.get(CertRegService);
     spyOn(certRegService, 'post').and.returnValue(observableOf({}));
-    const params = {'request': { 'query': { 'match_phrase': {'recipient.id': '123456'}} }};
+    const params = {'request': { '_source': ['data.badge.issuer.name', 'pdfUrl', 'data.issuedOn'],
+    'query': { 'match_phrase': {'recipient.id': '123456'}} }};
     certRegService.fetchCertificates('123456');
     const options = { url: 'v1/certs/search', data: params };
     expect(certRegService.post).toHaveBeenCalledWith(options);
