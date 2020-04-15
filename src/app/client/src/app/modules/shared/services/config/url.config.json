@@ -14,6 +14,7 @@
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
+    "CERT_REG_PREFIX": "/certreg/",
     "CONTENT_PREFIX": "/content/",
     "ELECTRON_DIALOG_PREFIX": "/dialog/",
     "PUBLIC_PREFIX": "/api/",
@@ -54,6 +55,9 @@
       "GET_USER_FEED": "user/v1/feed",
       "USER_MIGRATE": "user/v1/migrate",
       "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc"
+    },
+    "CERTIFICATE": {
+      "FETCH_CERTIFICATES": "v1/certs/search"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
