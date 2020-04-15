@@ -1,6 +1,6 @@
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
-import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService} from '@sunbird/core';
+import { CoreModule, UserService, SearchService, PlayerService , LearnerService, CoursesService, CertRegService} from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -69,7 +69,7 @@ describe('ProfilePageComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
         { provide: ResourceService, useValue: resourceBundle },
-        ToasterService],
+        ToasterService, CertRegService],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -145,9 +145,9 @@ describe('ProfilePageComponent', () => {
   });
 
   it('should fetch other certificates', () => {
-    const profileService = TestBed.get(ProfileService);
+    const certRegService = TestBed.get(CertRegService);
     const mockData = Response.othersCertificateData;
-    spyOn(profileService, 'fetchCertificates').and.returnValue(observableOf(mockData));
+    spyOn(certRegService, 'fetchCertificates').and.returnValue(observableOf(mockData));
     component.getOtherCertificates('123456');
     expect(component.otherCertificates).toEqual([{
       pdfUrls: [{ url: mockData.result.response.content[0]._source.pdfUrl }],

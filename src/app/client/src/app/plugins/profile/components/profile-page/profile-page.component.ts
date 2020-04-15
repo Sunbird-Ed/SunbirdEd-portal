@@ -1,6 +1,6 @@
 import { ProfileService } from '../../services';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { UserService, SearchService, PlayerService, CoursesService, OrgDetailsService } from '@sunbird/core';
+import { UserService, SearchService, PlayerService, CoursesService, OrgDetailsService, CertRegService } from '@sunbird/core';
 import {
   ResourceService, ConfigService, ServerResponse, IUserProfile, IUserData, ToasterService, UtilService,
   NavigationHelperService
@@ -52,7 +52,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public certRegService: CertRegService) {
   }
 
   ngOnInit() {
@@ -135,16 +135,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getOtherCertificates(userId) {
-    const request = {
-      request: {
-        query: {
-          match_phrase: {
-            'recipient.id': userId
-          }
-        }
-      }
-    };
-    this.profileService.fetchCertificates(request).subscribe((data) => {
+    this.certRegService.fetchCertificates(userId).subscribe((data) => {
       this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
         return {
           pdfUrls: [{

@@ -6,15 +6,19 @@ const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
 const logger = require('sb_logger_util_v2')
 
+var certRegServiceApi = {
+  searchCertificate : 'certreg/v1/certs/search'
+};
+
 module.exports = function (app) {
 
-    app.all('/certreg/v1/certs/search',
+    app.all(`/+${certRegServiceApi.searchCertificate}`,
     permissionsHelper.checkPermission(),
     proxy(certRegURL, {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: function (req) {
-        return (certRegURL + 'certreg/v1/certs/search')
+        return (certRegURL + certRegServiceApi.searchCertificate)
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         try {

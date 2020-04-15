@@ -33,4 +33,21 @@ export class CertRegService extends DataService {
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.CERT_REG_PREFIX;
   }
+
+  public fetchCertificates(userId) {
+    const request = {
+      request: {
+        query: {
+          match_phrase: {
+            'recipient.id': userId
+          }
+        }
+      }
+    };
+    const options = {
+      url: this.config.urlConFig.URLS.CERTIFICATE.FETCH_CERTIFICATES,
+      data: request,
+    };
+    return this.post(options);
+  }
 }

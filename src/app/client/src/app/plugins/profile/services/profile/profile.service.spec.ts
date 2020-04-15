@@ -4,7 +4,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { ProfileService } from '@sunbird/profile';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule, LearnerService, UserService, CertRegService } from '@sunbird/core';
+import { CoreModule, LearnerService, UserService } from '@sunbird/core';
 import { mockRes } from './profile.service.spec.data';
 describe('ProfileService', () => {
   beforeEach(() => {
@@ -81,13 +81,4 @@ describe('ProfileService', () => {
     });
   });
 
-  it('should fetch certificate data', () => {
-    const profileService = TestBed.get(ProfileService);
-    const certRegService = TestBed.get(CertRegService);
-    const params = {'request': { 'query': { 'match_phrase': {'recipient.id': 123456}} }};
-    spyOn(certRegService, 'post').and.returnValue(observableOf({}));
-    profileService.fetchCertificates(params);
-    const options = { url: 'v1/certs/search', data: params };
-    expect(certRegService.post).toHaveBeenCalledWith(options);
-  });
 });
