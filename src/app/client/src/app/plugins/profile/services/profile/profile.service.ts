@@ -8,7 +8,7 @@ import { ResourceService, ConfigService, IUserProfile, IUserData, ServerResponse
 })
 export class ProfileService {
   constructor(private learnerService: LearnerService,
-    public userService: UserService, public configService: ConfigService ) { }
+    public userService: UserService, public configService: ConfigService) { }
   /**
    * This method is used to update profile picture of the user
    */
@@ -125,5 +125,4 @@ export class ProfileService {
     };
     return this.learnerService.post(options);
   }
-
 }
