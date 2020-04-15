@@ -373,7 +373,7 @@ export class AppComponent implements OnInit, OnDestroy {
           });
         }
       })
-    )
+    );
   }
   /**
    * returns telemetry context based on user loggedIn
