@@ -92,6 +92,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   public sharelinkModal: boolean;
 
   public badgeData: Array<object>;
+  contentData: any;
 
   public loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
@@ -137,7 +138,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   ngOnInit() {
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
     this.contentType = _.get(this.route, 'snapshot.queryParams.contentType');
-    this.getContent();
+    this.contentData = this.getContent();
   }
 
   ngOnDestroy() {
