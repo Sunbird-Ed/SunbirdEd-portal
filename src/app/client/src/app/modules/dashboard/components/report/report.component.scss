@@ -28,3 +28,13 @@
     position: -webkit-sticky !important;
     top: 0;
 }
+
+::ng-deep{
+    .sb-hawkeye-modal.sb-modal {
+        .ui.modal{
+            margin: 0 auto 0 !important;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}
