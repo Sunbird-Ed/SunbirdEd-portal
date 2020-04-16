@@ -287,9 +287,11 @@ export class AppComponent implements OnInit, OnDestroy {
     const slug = this.userService.slug;
     return this.orgDetailsService.getOrgDetails(slug).pipe(
       tap(data => {
-        this.cacheService.set('orgDetailsFromSlug', data, {
-          maxAge: 86400
-        });
+        if (slug !== '') {
+          this.cacheService.set('orgDetailsFromSlug', data, {
+            maxAge: 86400
+          });
+        }
       })
     );
   }
@@ -365,9 +367,11 @@ export class AppComponent implements OnInit, OnDestroy {
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
-        this.cacheService.set('orgDetailsFromSlug', data, {
-          maxAge: 86400
-        });
+        if (this.userService.slug !== '') {
+          this.cacheService.set('orgDetailsFromSlug', data, {
+            maxAge: 86400
+          });
+        }
       })
     );
   }
