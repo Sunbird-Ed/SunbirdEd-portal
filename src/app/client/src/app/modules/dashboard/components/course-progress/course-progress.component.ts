@@ -444,8 +444,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     };
     this.courseProgressService.getReportsMetaData(requestParams).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
-        this.progressReportUpdatedOn =  _.get(response, `result.course-progress-reports.lastModified`);
-        this.scoreReportUpdatedOn = _.get(response, `result.assessment-reports.lastModified`);
+        this.progressReportUpdatedOn =  _.get(response, `result.course-progress-reports.lastModified`) || '';
+        this.scoreReportUpdatedOn = _.get(response, `result.assessment-reports.lastModified`) || '';
       }
     });
   }
