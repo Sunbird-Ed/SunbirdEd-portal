@@ -20,10 +20,10 @@
       </div>
       <div class="header-info__desc d-flex flex-ai-center" *ngIf="collectionTreeNodes">
         <span class="fnormal"
-          *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes.data.subject.join()}}</span>
+          *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes?.data?.subject}}</span>
         <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
         <span class="fnormal"
-          *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes.data.gradeLevel.join()}}</span>
+          *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
       </div>
     </div>
   </div>
