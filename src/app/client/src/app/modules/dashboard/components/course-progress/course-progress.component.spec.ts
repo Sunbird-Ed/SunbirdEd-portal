@@ -21,7 +21,7 @@ import { CourseProgressService, UsageService } from './../../services';
 import { FormsModule } from '@angular/forms';
 import * as testData from './course-progress.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
@@ -72,7 +72,7 @@ describe('CourseProgressComponent', () => {
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
         CoreModule, DashboardModule, TelemetryModule.forRoot()],
       declarations: [],
-      providers: [CourseProgressService, UsageService,
+      providers: [CourseProgressService, UsageService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -233,6 +233,17 @@ describe('CourseProgressComponent', () => {
     spyOn<any>(component, 'downloadCourseReport').and.callThrough();
     component.downloadReport(false);
     expect(toasterService.error).toHaveBeenCalled();
+  }));
+
+  it('should get last updatedOn date for score report and progress report', fakeAsync(() => {
+    component.queryParams = { batchIdentifier: '0124963192947507200' };
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(courseProgressService, 'getReportsMetaData').and.returnValue(observableOf(testData.mockUserData.reportsLastUpdatedDateMock));
+    component.getReportUpdatedOnDate();
+    // tslint:disable-next-line: max-line-length
+    expect(component.scoreReportUpdatedOn).toEqual('');
+    // tslint:disable-next-line: max-line-length
+    expect(component.progressReportUpdatedOn).toEqual(testData.mockUserData.reportsLastUpdatedDateMock.result['course-progress-reports'].lastModified);
   }));
 
   xit('should download assessment report on click of score report', fakeAsync(inject([ToasterService], (toasterService) => {
