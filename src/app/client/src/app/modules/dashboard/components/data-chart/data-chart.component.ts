@@ -28,16 +28,16 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input() hideElements = false;
   public unsubscribe = new Subject<void>();
   // contains the chart configuration
-  chartConfig;
-  chartData;
+  chartConfig: any;
+  chartData: any;
   showStats: Boolean = false;
-  chartType;
-  chartColors;
-  legend;
-  chartOptions;
+  chartType: any;
+  chartColors: any;
+  legend: any;
+  chartOptions: any;
   loadash = _;
-  datasets;
-  chartLabels = [];
+  datasets: any;
+  chartLabels: any = [];
   filters: Array<{}>;
   filtersFormGroup: FormGroup;
   showFilters: Boolean = false;
@@ -46,13 +46,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   availableChartTypeOptions = ['Bar', 'Line'];
 
-  pickerMinDate; // min date that can be selected in the datepicker
-  pickerMaxDate; // max date that can be selected in datepicker
+  pickerMinDate: any; // min date that can be selected in the datepicker
+  pickerMaxDate: any; // max date that can be selected in datepicker
 
-  selectedStartDate;
-  selectedEndDate;
+  selectedStartDate: any;
+  selectedEndDate: any;
 
-  datePickerConfig = { applyLabel: 'Set Date', format: 'DD-MM-YYYY' };
+  datePickerConfig: any = { applyLabel: 'Set Date', format: 'DD-MM-YYYY' };
   alwaysShowCalendars: boolean;
 
   resultStatistics = {};
@@ -242,8 +242,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
         data: _.get(dataset, 'data') || this.getData(groupedDataBasedOnLabels, dataset['dataExpr']),
         hidden: _.get(dataset, 'hidden') || false,
         ...(isStackingEnabled) && { stack: _.get(dataset, 'stack') || 'default' },
-        ...(_.get(dataset, 'type')) && { type: _.get(dataset, 'type')},
-        ...(_.get(dataset, 'lineThickness')) && { borderWidth: _.get(dataset, 'lineThickness')}
+        ...(_.get(dataset, 'type')) && { type: _.get(dataset, 'type') },
+        ...(_.get(dataset, 'lineThickness')) && { borderWidth: _.get(dataset, 'lineThickness') }
       });
     });
 

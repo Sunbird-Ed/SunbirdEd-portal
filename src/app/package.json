@@ -75,7 +75,6 @@
     ]
   },
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
     "@project-sunbird/discussion-service": "0.0.6",
     "@project-sunbird/ext-framework-server": "0.1.10",
     "@project-sunbird/form-service": "0.0.12",

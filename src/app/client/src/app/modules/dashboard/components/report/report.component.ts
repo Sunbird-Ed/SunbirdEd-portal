@@ -1,7 +1,6 @@
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '@sunbird/core';
 import { Component, OnInit, ViewChildren, QueryList, ViewChild, AfterViewInit } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
@@ -31,30 +30,26 @@ export class ReportComponent implements OnInit, AfterViewInit {
   public hideElements: boolean;
   public reportExportInProgress = false;
 
-  constructor(private reportService: ReportService, private userService: UserService, private activatedRoute: ActivatedRoute,
+  constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
     private router: Router) { }
 
   ngOnInit() {
-    this.report$ = this.activatedRoute.params.pipe(
-      switchMap(params => {
+    const reportId: string = this.activatedRoute.snapshot.params.reportId;
+    this.report$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
+      mergeMap((isAuthenticated: boolean) => {
         this.noResult = false;
         this.hideElements = false;
-
-        return this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
-          mergeMap((isAuthenticated: boolean) => {
-            return isAuthenticated ? this.renderReport(_.get(params, 'reportId')) : throwError({ messageText: 'messages.stmsg.m0144' });
-          }),
-          catchError(err => {
-            console.error('Error while rendering report', err);
-            this.noResultMessage = {
-              'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
-            };
-            this.noResult = true;
-            return of({});
-          })
-        );
+        return isAuthenticated ? this.renderReport(reportId) : throwError({ messageText: 'messages.stmsg.m0144' });
+      }),
+      catchError(err => {
+        console.error('Error while rendering report', err);
+        this.noResultMessage = {
+          'messageText': _.get(err, 'messageText') || 'messages.stmsg.m0131'
+        };
+        this.noResult = true;
+        return of({});
       })
     );
   }
@@ -76,7 +71,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
    * @description This function fetches config file, datasource and prepares chart and tables data from it.
    * @param reportId
    */
-  private renderReport(reportId) {
+  private renderReport(reportId: string) {
     return combineLatest(this.reportService.isUserReportAdmin(), this.fetchConfig(reportId))
       .pipe(
         switchMap(response => {
@@ -147,8 +142,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
           env: this.activatedRoute.snapshot.data.telemetry.env
         },
         object: {
-          id: this.userService.userid,
-          type: 'user',
+          id: this.activatedRoute.snapshot.params.reportId,
+          type: 'Report',
           ver: '1.0'
         },
         edata: {

@@ -1,5 +1,7 @@
-import { ResourceService } from '@sunbird/shared';
-import { Component, OnInit } from '@angular/core';
+import { UserService } from '@sunbird/core';
+import { IImpressionEventInput } from '@sunbird/telemetry';
+import { ResourceService, NavigationHelperService } from '@sunbird/shared';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { catchError, mergeMap, map, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ReportService } from '../../services';
@@ -12,14 +14,15 @@ import * as moment from 'moment';
   templateUrl: './list-all-reports.component.html',
   styleUrls: ['./list-all-reports.component.scss']
 })
-export class ListAllReportsComponent implements OnInit {
+export class ListAllReportsComponent implements OnInit, AfterViewInit {
 
   constructor(public resourceService: ResourceService, private reportService: ReportService, private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router, private userService: UserService, private navigationhelperService: NavigationHelperService) { }
 
   public reportsList$: Observable<any>;
   public noResultFoundError: string;
   private _isUserReportAdmin: boolean;
+  public telemetryImpression: IImpressionEventInput;
 
   ngOnInit() {
     this.reportsList$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
@@ -141,6 +144,27 @@ export class ListAllReportsComponent implements OnInit {
   public rowClickEventHandler(event) {
     this.router.navigate(['/dashBoard/reports', event[0]]).catch(err => {
       console.log({ err });
+    });
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        object: {
+          id: this.userService.userid,
+          type: 'user',
+          ver: '1.0'
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
     });
   }
 

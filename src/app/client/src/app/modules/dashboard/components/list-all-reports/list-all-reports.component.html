@@ -1,4 +1,4 @@
-<div class="sb-pageSection my-24 ui container">
+<div class="sb-pageSection my-24 ui container" [appTelemetryImpression]="telemetryImpression">
 
   <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
 

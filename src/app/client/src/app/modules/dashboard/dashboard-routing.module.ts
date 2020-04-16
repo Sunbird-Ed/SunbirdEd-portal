@@ -41,15 +41,18 @@ const routes: Routes = [
     }
   },
   {
-    path: 'reports', component: ListAllReportsComponent, data: { roles: 'reportViewerRole' }
+    path: 'reports', component: ListAllReportsComponent, data: {
+      roles: 'reportViewerRole',
+      telemetry: { env: 'dashboard', pageid: 'list-all-reports', type: 'view' }
+    }
   },
   {
     path: 'reports/:reportId', component: ReportComponent,
     data: {
       roles: 'reportViewerRole',
-      telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' },
+      telemetry: { env: 'dashboard', pageid: 'report-page', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
-      { label: 'Profile', url: '/profile' }, { label: 'Organization Admin Dashboard', url: '' }]
+      { label: 'Profile', url: '/profile' }, { label: 'Report Page', url: '' }]
     }
   }
 ];

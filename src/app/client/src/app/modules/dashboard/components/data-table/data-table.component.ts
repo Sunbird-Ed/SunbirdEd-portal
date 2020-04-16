@@ -1,7 +1,9 @@
+import { IColDefination, IDataTableOptions } from './../../interfaces';
 import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import * as $ from 'jquery';
 import 'datatables.net';
 import * as moment from 'moment';
+
 @Component({
     selector: 'app-data-table',
     templateUrl: './data-table.component.html',
@@ -11,9 +13,9 @@ export class DataTableComponent implements AfterViewInit {
     @Input() tableId: any;
     @Input() rowsData: Array<string[]>;
     @Input() headerData: string[];
-    @Input() columnDefinations: any[] = [];
+    @Input() columnDefinations: IColDefination[] = [];
     @Output() rowClickEvent = new EventEmitter<any>();
-    @Input() options = {};
+    @Input() options: IDataTableOptions = {};
 
     ngAfterViewInit() {
         setTimeout(() => {
