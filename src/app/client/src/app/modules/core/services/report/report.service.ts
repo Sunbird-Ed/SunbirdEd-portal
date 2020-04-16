@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 })
 export class BaseReportService extends DataService {
   /**
-   * base Url for lerner api
+   * base Url for report service api
    */
   baseUrl: string;
   /**
@@ -16,7 +16,7 @@ export class BaseReportService extends DataService {
    */
   public config: ConfigService;
   /**
-   * reference of lerner service.
+   * reference of http client.
    */
   public http: HttpClient;
   /**
