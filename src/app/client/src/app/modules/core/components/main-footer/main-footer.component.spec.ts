@@ -117,7 +117,8 @@ describe('MainFooterComponent', () => {
     it('should call tenant service to get tenant config', () => {
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         spyOn(tenantService, 'getTenantConfig').and.returnValue(of(response));
+        const spy = spyOn(component, 'getTenantConfig');
         component.getTenantConfig();
-        expect(component.getTenantConfig).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalled();
     });
 });
