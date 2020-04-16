@@ -12,7 +12,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
 import { By } from '@angular/platform-browser';
-import * as moment from 'moment';
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
   ToasterService, ServerResponse
@@ -244,7 +243,7 @@ describe('CourseProgressComponent', () => {
     // tslint:disable-next-line: max-line-length
     expect(component.scoreReportUpdatedOn).toEqual(testData.mockUserData.reportsLastUpdatedDateMock.result['assessment-reports'].lastModified);
     // tslint:disable-next-line: max-line-length
-    expect(component.progressReportUpdatedOn).toEqual(moment(testData.mockUserData.reportsLastUpdatedDateMock.result['course-progress-reports'].lastModified).format('DD/MM/YYYY'));
+    expect(component.progressReportUpdatedOn).toEqual(testData.mockUserData.reportsLastUpdatedDateMock.result['course-progress-reports'].lastModified);
   }));
 
   xit('should download assessment report on click of score report', fakeAsync(inject([ToasterService], (toasterService) => {
