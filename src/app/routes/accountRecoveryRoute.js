@@ -44,7 +44,7 @@ module.exports = (app) => {
         return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
-        logger.info({msg: '/learner/otp/v1/verify called'});
+        
         try {
             const data = JSON.parse(proxyResData.toString('utf8'));
             if (data.responseCode === 'OK') {

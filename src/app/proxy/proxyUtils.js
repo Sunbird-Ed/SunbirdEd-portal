@@ -5,6 +5,7 @@ const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const _ = require('lodash')
 const ApiInterceptor = require('sb_api_interceptor')
+const logger = require('sb_logger_util_v2')
 
 const keyCloakConfig = {
   'authServerUrl': envHelper.PORTAL_AUTH_SERVER_URL,
@@ -26,8 +27,9 @@ const decorateRequestHeaders = function () {
     if (channel && !srcReq.get('X-Channel-Id')) {
       proxyReqOpts.headers['X-Channel-Id'] = channel
     }
+    var userId;
     if (srcReq.session) {
-      var userId = srcReq.session.userId
+      userId = srcReq.session.userId
       if (userId) { proxyReqOpts.headers['X-Authenticated-Userid'] = userId }
     }
     if(!srcReq.get('X-App-Id')){
@@ -39,6 +41,15 @@ const decorateRequestHeaders = function () {
     }
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
     proxyReqOpts.rejectUnauthorized = false
+    
+    var reqBody = srcReq.body ? JSON.stringify(srcReq.body) : "";
+    logger.info({
+      URL: srcReq.url,
+      body: reqBody.length > 500 ? "" : reqBody,
+      did: _.get(srcReq, 'headers.x-device-id'),
+      uid: userId ? userId : 'anonymous'
+    });
+
     return proxyReqOpts
   }
 }
