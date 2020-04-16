@@ -11,7 +11,7 @@ module.exports = function (app) {
     app.get('/course-reports/metadata', 
         proxyUtils.verifyToken(), 
         reportHelper.validateRoles(['CONTENT_CREATOR']),
-        reportHelper.getBlobProperties);
+        reportHelper.getLastModifiedDate);
 
     app.get('/reports/:slug/:filename',
         proxyUtils.verifyToken(),

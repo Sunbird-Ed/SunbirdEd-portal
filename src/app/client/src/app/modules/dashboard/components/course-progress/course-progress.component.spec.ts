@@ -239,15 +239,12 @@ describe('CourseProgressComponent', () => {
   it('should get last updatedOn date for score report and progress report', fakeAsync(() => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
     const usageService = TestBed.get(UsageService);
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'log');
     spyOn(usageService, 'getData').and.returnValue(observableOf(testData.mockUserData.reportsLastUpdatedDateMock));
     component.getReportUpdatedOnDate();
     // tslint:disable-next-line: max-line-length
     expect(component.scoreReportUpdatedOn).toEqual(testData.mockUserData.reportsLastUpdatedDateMock.result['assessment-reports'].lastModified);
     // tslint:disable-next-line: max-line-length
     expect(component.progressReportUpdatedOn).toEqual(moment(testData.mockUserData.reportsLastUpdatedDateMock.result['course-progress-reports'].lastModified).format('DD/MM/YYYY'));
-    expect(telemetryService.log).toHaveBeenCalled();
   }));
 
   xit('should download assessment report on click of score report', fakeAsync(inject([ToasterService], (toasterService) => {

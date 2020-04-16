@@ -4,7 +4,6 @@ import { first, takeUntil, map, debounceTime, distinctUntilChanged, switchMap, d
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
 import { UserService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
@@ -12,7 +11,7 @@ import {
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
-import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { IPagination } from '@sunbird/announcement';
 import { copyObj } from '@angular/animations/browser/src/util';
 /**
@@ -189,8 +188,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     toasterService: ToasterService,
     courseProgressService: CourseProgressService, paginationService: PaginationService,
     config: ConfigService,
-    public navigationhelperService: NavigationHelperService, private usageService: UsageService,
-    private telemetryService: TelemetryService) {
+    public navigationhelperService: NavigationHelperService, private usageService: UsageService) {
     this.user = user;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -438,38 +436,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       'course-progress-reports': `course-progress-reports/report-${batchId}.csv`,
       'assessment-reports': `assessment-reports/report-${batchId}.csv`
     };
-    const url = `${this.config.urlConFig['URLS'].COURSE.GET_REPORTS_METADATA}`;
     const requestParams = {
       params: {
         fileNames: JSON.stringify(reportParams)
-      }
+      },
+      telemetryData: this.activatedRoute
     };
-    this.usageService.getData(url, requestParams).subscribe((response: any) => {
+    this.courseProgressService.getReportsMetaData(requestParams).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
-        const courseProgressReportData = _.get(response, `result.course-progress-reports.lastModified`);
-        const assessmentReportData = _.get(response, `result.assessment-reports.lastModified`);
-        this.progressReportUpdatedOn =  courseProgressReportData ? moment(courseProgressReportData).format('DD/MM/YYYY') : '';
-        this.scoreReportUpdatedOn = assessmentReportData ? moment(assessmentReportData).format('DD/MM/YYYY') : '';
-        const telemetryEventObject = [];
-        for (const reportName of Object.keys(reportParams)) {
-          const event = {
-            context: {
-              env: this.activatedRoute.snapshot.data.telemetry.env
-            },
-            edata: {
-              type: this.activatedRoute.snapshot.data.telemetry.type,
-              level: 'SUCCESS',
-              // tslint:disable-next-line: max-line-length
-              message: _.get(response, `result.${reportName}.lastModified`) !== '' ? `${reportName} is available` : `${reportName} is not available`,
-              pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-            }
-          };
-          telemetryEventObject.push(event);
-        }
-        if (telemetryEventObject.length === 2) {
-          this.telemetryService.log(telemetryEventObject[0]);
-          this.telemetryService.log(telemetryEventObject[1]);
-        }
+        this.progressReportUpdatedOn =  _.get(response, `result.course-progress-reports.lastModified`);
+        this.scoreReportUpdatedOn = _.get(response, `result.assessment-reports.lastModified`);
       }
     });
   }
