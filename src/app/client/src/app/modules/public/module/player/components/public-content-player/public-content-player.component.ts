@@ -16,7 +16,8 @@ import { environment } from '@sunbird/environment';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
   selector: 'app-public-content-player',
-  templateUrl: './public-content-player.component.html'
+  templateUrl: './public-content-player.component.html',
+  styleUrls: ['./public-content-player.component.scss']
 })
 export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
@@ -134,7 +135,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
         }, 5000);
       }
       this.showPlayer = true;
-      this.windowScrollService.smoothScroll('content-player');
+      //this.windowScrollService.smoothScroll('content-player');
       this.badgeData = _.get(response, 'result.content.badgeAssertions');
     }, (err) => {
       this.showError = true;
