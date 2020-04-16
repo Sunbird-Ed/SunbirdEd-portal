@@ -106,15 +106,11 @@ export class ReportService {
   /**
  * @description checks whether user is an REPORT ADMIN or not
  */
-  public isUserReportAdmin(): Observable<boolean> {
-    return this.userService.userData$.pipe(
-      map((user: IUserData) => {
-        if (user && !user.err) {
-          return _.includes(_.get(user, 'userProfile.userRoles'), 'REPORT_ADMIN');
-        }
-        return false;
-      })
-    );
+  public isUserReportAdmin(): boolean {
+    if (this.userService.userProfile) {
+      return _.includes(_.get(this.userService, 'userProfile.userRoles'), 'REPORT_ADMIN');
+    }
+    return false;
   }
 
   public transformHTML(data: any) {

@@ -27,10 +27,8 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.reportsList$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
       mergeMap((isAuthenticated: boolean) => {
-        return isAuthenticated ? this.reportService.isUserReportAdmin().pipe(
-          tap(isReportAdmin => this._isUserReportAdmin = isReportAdmin),
-          mergeMap(isReportAdmin => this.getReportsList(isReportAdmin))
-        ) : throwError({ messageText: 'messages.stmsg.m0144' });
+        this._isUserReportAdmin = this.reportService.isUserReportAdmin();
+        return isAuthenticated ? this.getReportsList(this._isUserReportAdmin) : throwError({ messageText: 'messages.stmsg.m0144' });
       }),
       catchError(err => {
         this.noResultFoundError = _.get(err, 'messageText') || 'messages.stmsg.m0006';
