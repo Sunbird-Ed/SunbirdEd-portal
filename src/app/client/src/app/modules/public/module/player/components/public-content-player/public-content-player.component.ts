@@ -135,7 +135,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
         }, 5000);
       }
       this.showPlayer = true;
-      //this.windowScrollService.smoothScroll('content-player');
+      // this.windowScrollService.smoothScroll('content-player');
       this.badgeData = _.get(response, 'result.content.badgeAssertions');
     }, (err) => {
       this.showError = true;
