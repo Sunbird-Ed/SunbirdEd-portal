@@ -1,3 +1,4 @@
+import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -16,7 +17,7 @@ describe('ListAllReportsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ListAllReportsComponent],
-      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [ReportService, { provide: Router, useValue: routerStub }, {
         provide: ActivatedRoute, useValue: {
           snapshot: {

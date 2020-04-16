@@ -15,7 +15,11 @@ describe('ReportComponent', () => {
   let fixture: ComponentFixture<ReportComponent>;
   const fakeActivatedRoute = {
     params: of({ reportId: 'daily_metrics' }),
-    snapshot: { data: { telemetry: { pageid: 'org-admin-dashboard', env: 'dashboard', type: 'view' } } }
+    snapshot: {
+      params: { reportId: 'daily_metrics' },
+      data:
+        { telemetry: { pageid: 'org-admin-dashboard', env: 'dashboard', type: 'view' } }
+    }
   };
   const routerStub = { url: '/dashBoard/reports/daily_metrics' };
 

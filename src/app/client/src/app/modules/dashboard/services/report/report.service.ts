@@ -4,9 +4,9 @@ import { UserService, BaseReportService, PermissionService } from '@sunbird/core
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class ReportService {
@@ -76,7 +76,7 @@ export class ReportService {
   }
 
   /**
-   * @description Report Viewer are only allowed to view these pages.
+   * @description returns true or false based on authentication of roles
    * @param {(string | undefined)} roles
    * @returns {Observable<boolean>}
    * @memberof ReportService
@@ -98,7 +98,8 @@ export class ReportService {
         } else {
           return false;
         }
-      })
+      }),
+      catchError(err => of(false))
     );
   }
 
