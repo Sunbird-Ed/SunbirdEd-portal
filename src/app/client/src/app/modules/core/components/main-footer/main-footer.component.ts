@@ -32,7 +32,8 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   tenantFooter: any;
   public unsubscribe$ = new Subject<void>();
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
-    public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService, private tenantService: TenantService
+    public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
+      private tenantService: TenantService
     ) {
     this.resourceService = resourceService;
   }
