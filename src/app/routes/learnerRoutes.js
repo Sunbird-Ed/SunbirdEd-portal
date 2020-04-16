@@ -117,7 +117,9 @@ module.exports = function (app) {
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         try {
-            proxyUtils.addReqLog(req);
+            if(req.url.indexOf('/otp/') > 0) {
+              proxyUtils.addReqLog(req);
+            }            
             const data = JSON.parse(proxyResData.toString('utf8'));
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
