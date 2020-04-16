@@ -392,7 +392,10 @@ export const mockUserData = {
               'lastModified': 'Mon, 13 Apr 2020 06:37:06 GMT'
           },
           'assessment-reports': {
-              'lastModified': ''
+            'msg': 'NotFound',
+            'statusCode': 404,
+            'filename': 'assessment-reports/report-01299166246978355236.csv',
+            'reportname': 'assessment-reports'
           }
       }
    }
