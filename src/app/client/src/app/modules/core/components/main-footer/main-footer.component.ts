@@ -41,9 +41,9 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
     this.tenantFooter = {
-      helpCenterLink: undefined,
-      helpDeskEmail: undefined,
-      playstoreLink: undefined
+      helpCenterLink: null,
+      helpDeskEmail: null,
+      playstoreLink: null
     };
     this.getTenantConfig();
   }
@@ -78,6 +78,7 @@ footerAlign() {
   redirectToDikshaApp() {
     const playstoreLink = _.get(this.tenantFooter, 'playstoreLink');
     if (playstoreLink) {
+      // For iGot the URL is direclty taken; no UTM needed
       this.redirect(playstoreLink);
     } else {
       let applink = this.configService.appConfig.UrlLinks.downloadDikshaApp;
