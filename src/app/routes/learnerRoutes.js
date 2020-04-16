@@ -28,7 +28,7 @@ module.exports = function (app) {
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch(err) {
-          logger.error({msg:'content api user res decorator json parse error:', proxyResData, error: JSON.stringify(err)});
+          logger.error({msg:'content api user res decorator json parse error:', proxyResData});
             return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         }
       }
@@ -56,7 +56,7 @@ module.exports = function (app) {
           }
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch (err) {
-          logger.error({msg:'content api user res decorator json parse error:', proxyResData, error: JSON.stringify(err)})
+          logger.error({msg:'content api user res decorator json parse error:', proxyResData})
           return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
       }
@@ -83,7 +83,7 @@ module.exports = function (app) {
           if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch (err) {
-          logger.error({msg:'content api user res decorator json parse error:', proxyResData, error: JSON.stringify(err)})
+          logger.error({msg:'content api user res decorator json parse error:', proxyResData})
           return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
       }
@@ -117,6 +117,7 @@ module.exports = function (app) {
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         try {
+            proxyUtils.addReqLog(req);
             const data = JSON.parse(proxyResData.toString('utf8'));
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
@@ -155,7 +156,7 @@ function proxyObj (){
         if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
         else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
       } catch (err) {
-        logger.error({msg:'content api user res decorator json parse error:', proxyResData, Error: JSON.stringify(err)})
+        logger.error({msg:'content api user res decorator json parse error:', proxyResData})
         return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
       }
     }

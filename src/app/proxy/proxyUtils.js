@@ -42,13 +42,13 @@ const decorateRequestHeaders = function () {
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
     proxyReqOpts.rejectUnauthorized = false
     
-    var reqBody = srcReq.body ? JSON.stringify(srcReq.body) : "";
-    logger.info({
-      URL: srcReq.url,
-      body: reqBody.length > 500 ? "" : reqBody,
-      did: _.get(srcReq, 'headers.x-device-id'),
-      uid: userId ? userId : 'anonymous'
-    });
+    // var reqBody = srcReq.body ? JSON.stringify(srcReq.body) : "";
+    // logger.info({
+    //   URL: srcReq.url,
+    //   body: reqBody.length > 500 ? "" : reqBody,
+    //   did: _.get(srcReq, 'headers.x-device-id'),
+    //   uid: userId ? userId : 'anonymous'
+    // });
 
     return proxyReqOpts
   }
@@ -60,6 +60,19 @@ const decoratePublicRequestHeaders = function () {
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken
     return proxyReqOpts
   }
+}
+/**
+ * Add request info into logger for debug perpose
+ */
+const addReqLog = function (req) {
+  let reqBody = req.body ? JSON.stringify(req.body) : "";
+  let userId =  _.get(req, 'headers.x-Authenticated-Userid');
+  logger.info({
+    URL: req.url,
+    body: reqBody.length > 500 ? "" : reqBody,
+    did: _.get(req, 'headers.x-device-id'),
+    uid: userId ? userId : 'anonymous'
+  });
 }
 
 function verifyToken () {
@@ -149,3 +162,4 @@ module.exports.verifyToken = verifyToken
 module.exports.validateUserToken = validateUserToken
 module.exports.handleSessionExpiry = handleSessionExpiry
 module.exports.addCorsHeaders = addCorsHeaders
+module.exports.addReqLog = addReqLog
