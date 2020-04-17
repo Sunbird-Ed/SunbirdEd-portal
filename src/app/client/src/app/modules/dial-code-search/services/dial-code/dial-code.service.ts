@@ -34,6 +34,20 @@ export class DialCodeService {
   }
 
   /**
+   * makes API call to search for dialCode
+   */
+  public searchDialCodeAssemble(dialCode: string, online: boolean): Observable<any[]> {
+    const requestParams = {
+      filters: {
+        dialcodes: dialCode
+      }
+    };
+    return this.searchService.contentDialCodeAssembleSearch(requestParams, false)
+      .pipe(
+        map(apiResponse => _.get(apiResponse, 'result.response.sections[0]')));
+  }
+
+  /**
   * @param dialSearchResults
   * @returns Returns an array of elements split into two groups , first is collections and second is contents
   */
