@@ -2,25 +2,25 @@
 <div class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
 	<!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
-		<a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
+		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
 			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
 			{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
-		<a class="item" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
+		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
-		<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
+		<a *ngIf="showContributeTab" class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/contribute')"
 			routerLink="/contribute" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
 			[telemetryInteractCdata]="getFeatureId('user:program:contribute', 'SB-15591')">
 			{{resourceService?.frmelmnts?.tab?.contribute}}
 		</a>
-		<a class="item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
+		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/workspace')" appTelemetryInteract
 			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='permissionService.permissionAvailable'
 			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
 			{{resourceService?.frmelmnts?.tab?.workspace}}
 		</a>
-		<a class="item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
+		<a class="item py-8 pl-0 pr-24" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
 			*ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission
 			[permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
 			{{resourceService?.frmelmnts?.tab?.help}}

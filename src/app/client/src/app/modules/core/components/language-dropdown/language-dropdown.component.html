@@ -1,5 +1,5 @@
 <div class="d-flex flex-ai-center language-selector">
-  <div class="computer only">{{resourceService.frmelmnts?.btn?.selectLanguage}} :&nbsp;</div>
+  <div class="computer only fsmall">{{resourceService.frmelmnts?.btn?.selectLanguage}} :&nbsp;</div>
   <sui-select class="ui dropdown fsmall" (contextmenu)="false" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
     <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
       [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option">

@@ -6,7 +6,7 @@
 </div>
 <div class="ui fixed relative main menu bs-0 d-block">
     <!--Header White Section-->
-    <div class="ui container">
+    <div class="ui container py-16">
         <div class="ui grid padded width-100">
             <div class="six wide column p-0">
                 <!--Logo-->
@@ -23,7 +23,7 @@
                 <app-main-menu class="d-flex computer only ml-auto"></app-main-menu>
                 <!--/Main Menu-->
                 <!--Avtar Dropdown-->
-                <a class="profile-avtar computer only p-0 ml-15" *ngIf="userService.loggedIn"
+                <a class="profile-avtar computer only p-0" *ngIf="userService.loggedIn"
                     tabindex="0">
                     <div suiDropdown class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                         <ngx-avatar *ngIf='userProfile' [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
@@ -90,12 +90,13 @@
                 <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
                     [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
                     title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}">
-                    <i class="qrcode icon d-flex flex-ai-center"></i>
+                    <!-- <i class="qrcode icon d-flex flex-ai-center"></i> -->
+                    <img src="assets/images/qr-code-icon.svg" alt="QR code" class="mr-8">
                     <span>{{resourceService.frmelmnts?.lbl?.enterQrCode}}</span>
                 </button>
                 <!--/QR Button-->
                 <!--Divider-->
-                <span class="computer only mx-10 search-qrcode-divider">|</span>
+                <span class="computer only search-qrcode-divider"></span>
                 <!--/Divider-->
                 <!--Search Box-->
                 <!--Logged in Pages-->
@@ -107,7 +108,8 @@
                 <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreHeader"
                     [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
                     <div class="input-div relative">
-                        <i class="search icon"></i>
+                        <!-- <i class="search icon"></i> -->
+                        <img src="assets/images/search-icon.svg" alt="Search Icon" class="search icon">
                         <input type="text" id="keyword" name="filter_search" class="sb-search-input"
                             title="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]='queryParam.key'
                             placeholder="{{resourceService?.frmelmnts?.prmpt?.search}}"
@@ -136,7 +138,8 @@
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
                 [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
-                <i class="qrcode icon d-flex flex-ai-center"></i>
+                <!-- <i class="qrcode icon d-flex flex-ai-center"></i> -->
+                <img src="assets/images/qr-code-icon.svg" alt="QR code" class="mr-8">
                 <span class="d-flex flex-ai-center">
                     {{resourceService.frmelmnts?.lbl?.enterQrCode}}
                 </span>
