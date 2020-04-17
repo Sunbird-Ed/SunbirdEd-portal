@@ -129,7 +129,7 @@ describe('MainFooterComponent', () => {
     });
 
     it('should redirect to provided url', () => {
-        let url = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
+        const url = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
         component.redirect(url);
         expect(component.redirect).toBeDefined();
     });
