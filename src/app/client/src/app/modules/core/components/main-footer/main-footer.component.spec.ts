@@ -9,11 +9,13 @@ import { CacheService } from 'ng2-cache-service';
 import { of } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule, UserService } from '@sunbird/core';
+import { TenantService } from '../../services';
 
 describe('MainFooterComponent', () => {
     let component: MainFooterComponent;
     let fixture: ComponentFixture<MainFooterComponent>;
     let userService;
+    let tenantService;
     const mockActivatedRoute = {
         queryParams: of({
             dialCode: 'EJ23P',
@@ -40,6 +42,26 @@ describe('MainFooterComponent', () => {
         },
         path: 'resource'
     };
+    const response = {
+        'id': 'api.system.settings.get.tn',
+        'ver': 'v1',
+        'ts': '2020-04-16 13:27:29:548+0000',
+        'params': {
+            'resmsgid': null,
+            'msgid': null,
+            'err': null,
+            'status': 'success',
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'response': {
+                'id': 'tn',
+                'field': 'tn',
+                'value': 'tenantConfig'
+            }
+        }
+    };
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [],
@@ -56,6 +78,7 @@ describe('MainFooterComponent', () => {
         fixture = TestBed.createComponent(MainFooterComponent);
         component = fixture.componentInstance;
         userService = TestBed.get(UserService);
+        tenantService = TestBed.get(TenantService);
         fixture.detectChanges();
     });
 
@@ -89,5 +112,13 @@ describe('MainFooterComponent', () => {
         component.redirectToDikshaApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
         TestBed.get(ResourceService).instance + '-sunbird&utm_medium=');
+    });
+
+    it('should call tenant service to get tenant config', () => {
+        spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
+        spyOn(component.tenantService, 'getTenantConfig').and.returnValue(of(response));
+        // const spy = spyOn(component, 'getTenantConfig');
+        component.getTenantConfig();
+        expect(component.tenantFooter).toBeDefined();
     });
 });

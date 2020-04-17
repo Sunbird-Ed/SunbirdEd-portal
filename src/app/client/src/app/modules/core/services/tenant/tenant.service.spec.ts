@@ -50,4 +50,14 @@ describe('TenantService', () => {
         expect(data.tenantData).toBeUndefined();
       });
   });
+
+  it('should make api call to get tenant config', inject([LearnerService], (
+    learnerService: LearnerService) => {
+    const service = TestBed.get(TenantService);
+    const params = 'test';
+    spyOn(learnerService, 'get').and.callFake(() => observableOf(response.tenantConfig));
+    const apiRes = service.getTenantConfig(params);
+    expect(service).toBeTruthy();
+    expect(learnerService.get).toHaveBeenCalled();
+  }));
 });

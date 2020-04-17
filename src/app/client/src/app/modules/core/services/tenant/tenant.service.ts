@@ -1,10 +1,11 @@
 import { ITenantData, ITenantInfo } from './interfaces';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { BehaviorSubject ,  Observable } from 'rxjs';
+import { BehaviorSubject ,  Observable, of } from 'rxjs';
 import { DataService } from '../data/data.service';
+import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { skipWhile } from 'rxjs/operators';
+import { skipWhile, map, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 
@@ -48,7 +49,7 @@ export class TenantService extends DataService {
    * @param {HttpClient} http Reference of HttpClient.
    * @param {ConfigService} config Reference of ConfigService.
    */
-  constructor(http: HttpClient, config: ConfigService, private cacheService: CacheService) {
+  constructor(http: HttpClient, config: ConfigService, private cacheService: CacheService, private learnerService: LearnerService) {
     super(http);
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.TENANT_PREFIX;
@@ -74,5 +75,24 @@ export class TenantService extends DataService {
         this._tenantData$.next({ err: err, tenantData: undefined });
       }
     );
+  }
+
+  public getTenantConfig(slug: string) {
+    const url = `${this.config.urlConFig.URLS.SYSTEM_SETTING.TENANT_CONFIG + '/'}` + (slug ? slug : '');
+    return this.learnerService.get({
+      url: url
+    }).pipe(map((data: ServerResponse) => {
+      if (_.has(data, 'result.response')) {
+        let configResponse = {};
+        try {
+          configResponse = JSON.parse(data.result.response.value);
+        } catch (parseJSONResponse) {}
+        return configResponse;
+      } else {
+        return {};
+      }
+    }), catchError((error) => {
+      return of({});
+    }));
   }
 }
