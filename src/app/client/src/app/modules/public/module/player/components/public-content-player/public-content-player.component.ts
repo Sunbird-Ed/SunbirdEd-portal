@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -81,18 +81,20 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       showContentRating: true
     };
   }
+
+  /** It will handle device back-button click to rotate landscape to portrait */
+  @HostListener('window:orientationchange', ['$event'])
+  public handleOrientationChange() {
+    const screenType = _.get(screen, 'orientation.type');
+      if ( screenType === 'portrait-primary' || screenType === 'portrait-secondary' ) {
+        this.closeFullscreen();
+      }
+  }
   /**
    *
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
-    /** It will handle device back-button click to rotate landscape to portrait */
-    window.addEventListener('orientationchange', () => {
-      const screenType = _.get(screen, 'orientation.type');
-      if ( screenType === 'portrait-primary' || screenType === 'portrait-secondary' ) {
-        this.closeFullscreen();
-      }
-    });
     /** if dial-code search result is having only one content then 'isSingleContent' will be true else false */
     this.isSingleContent = _.get(history.state, 'isSingleContent') ;
     /** if the browser is opened from mobile or tablet then 'isMobileOrTab' will be true else false*/
