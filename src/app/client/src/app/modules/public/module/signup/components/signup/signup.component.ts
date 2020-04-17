@@ -177,7 +177,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     const numRegex = new RegExp('^(?=.*[0-9])');
     const spaceRegex = new RegExp('^\\S*$');
     const specRegex = new RegExp('^[^<>{}\'\"/|;:.,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
-    if (!charRegex.test(val) || !spaceRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)) {
+    if (!charRegex.test(val) || !spaceRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val)
+      || !numRegex.test(val) || specRegex.test(val)) {
       this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
       passCtrl.setErrors({ passwordError: this.passwordError });
     } else if (emailVal === val || this.signUpForm.controls.name.value === val) {

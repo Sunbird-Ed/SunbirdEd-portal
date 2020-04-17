@@ -193,6 +193,42 @@ describe('SignUpComponent', () => {
     expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
     + 'lower and upper case alphabets and special characters.');
   }));
+  it('should throw error as space is invalid character', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('Test @123');
+    tick(200);
+    errors = password.errors || {};
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+      + 'lower and upper case alphabets and special characters.');
+  }));
+  it('should throw error as space before password is not allowed', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('   Test@123');
+    tick(200);
+    errors = password.errors || {};
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+      + 'lower and upper case alphabets and special characters.');
+  }));
+  it('should throw error as space at last password is not allowed', fakeAsync(() => {
+    spyOn(component, 'onPasswordChange').and.callThrough();
+    component.initializeFormFields();
+    let errors = {};
+    const password = component.signUpForm.controls['password'];
+    password.setValue('Test@123   ');
+    tick(200);
+    errors = password.errors || {};
+    expect(component.onPasswordChange).toHaveBeenCalled();
+    expect(password.errors.passwordError).toEqual('Password must contain a minimum of 8 characters including numerals, '
+      + 'lower and upper case alphabets and special characters.');
+  }));
   it('should show password cannot be equal to username error message for password', fakeAsync(() => {
     spyOn(component, 'onPasswordChange').and.callThrough();
     component.initializeFormFields();
