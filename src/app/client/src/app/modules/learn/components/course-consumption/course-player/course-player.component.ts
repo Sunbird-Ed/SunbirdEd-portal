@@ -386,6 +386,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     } else if (validSummary(playerSummary)(0) &&
       ['application/vnd.ekstep.h5p-archive', 'application/vnd.ekstep.html-archive'].includes(contentMimeType)) {
       return true;
+    } else if (validSummary(playerSummary)(90) && ['application/pdf'].includes(contentMimeType)) {
+      return true;
     } else if (validSummary(playerSummary)(100)) {
       return true;
     }
