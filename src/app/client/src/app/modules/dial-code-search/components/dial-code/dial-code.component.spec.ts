@@ -173,7 +173,7 @@ describe('DialCodeComponent', () => {
   it('On getting valid response for the dial code, should display contents', () => {
     spyOn(dialCodeService, 'searchDialCodeAssemble').and.callFake(() => observableOf(mockData.dialCodeSearchApiResponse.result));
     spyOn(dialCodeService, 'filterDialSearchResults').and.returnValue(observableOf({
-      'collection': mockData.dialCodeSearchApiResponse.result.collections,
+      'collections': mockData.dialCodeSearchApiResponse.result.collections,
       'contents': []
     }));
     component.setTelemetryData();
@@ -185,7 +185,7 @@ describe('DialCodeComponent', () => {
   it('should call getDataForCard Method to pass the data in Card ', () => {
     spyOn(dialCodeService, 'searchDialCodeAssemble').and.returnValue(mockData.dialCodeSearchApiResponse);
     spyOn(dialCodeService, 'filterDialSearchResults').and.returnValue(observableOf({
-      'collection': mockData.dialCodeSearchApiResponse.result.collections,
+      'collections': mockData.dialCodeSearchApiResponse.result.collections,
       'contents': []
     }));
     spyOn(utilService, 'getDataForCard').and.callThrough();

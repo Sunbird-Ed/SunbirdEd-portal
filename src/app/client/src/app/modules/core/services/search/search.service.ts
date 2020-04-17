@@ -280,10 +280,10 @@ export class SearchService {
    url: this.config.urlConFig.URLS.DAIL_ASSEMBLE_PREFIX,
    data: {
      request: {
-      source: 'app',
+      source: 'web',
       name: 'DIAL Code Consumption',
       filters: requestParam.filters,
-      userProfile: this.user.loggedIn ? {board: ['AP Board']} : {},
+      userProfile: this.user.loggedIn ? {board: this.user.userProfile.framework.board} : {},
       sort_by: requestParam.sort_by
      }
    }
