@@ -56,7 +56,7 @@ export class DialCodeService {
     const response = {};
     const textbookUnitsWithoutParentBook = [];
 
-    const [collections, contents] = _.partition((_.get(dialSearchResults, 'content') || []), result => {
+    const [collections, contents] = _.partition((_.get(dialSearchResults, 'contents') || []), result => {
       return (_.get(result, 'mimeType') === 'application/vnd.ekstep.content-collection' && result.contentType.toLowerCase() !== 'course');
     });
 
