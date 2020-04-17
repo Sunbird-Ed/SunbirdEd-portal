@@ -131,9 +131,9 @@ describe('DialCodeComponent', () => {
 
   it('should call API to get content details for the dial-code', () => {
     component['processDialCode']({ dialCode: '123' }).subscribe(() => {
-      expect(dialCodeService.searchDialCode).toHaveBeenCalled();
-      expect(dialCodeService.searchDialCode).toHaveBeenCalledWith('123', false);
-      expect(dialCodeService.searchDialCode).toHaveBeenCalledTimes(1);
+      expect(dialCodeService.searchDialCodeAssemble).toHaveBeenCalled();
+      expect(dialCodeService.searchDialCodeAssemble).toHaveBeenCalledWith('123', false);
+      expect(dialCodeService.searchDialCodeAssemble).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -171,7 +171,7 @@ describe('DialCodeComponent', () => {
   });
 
   it('On getting valid response for the dial code, should display contents', () => {
-    spyOn(dialCodeService, 'searchDialCode').and.callFake(() => observableOf(mockData.dialCodeSearchApiResponse.result));
+    spyOn(dialCodeService, 'searchDialCodeAssemble').and.callFake(() => observableOf(mockData.dialCodeSearchApiResponse.result));
     spyOn(dialCodeService, 'filterDialSearchResults').and.returnValue(observableOf({
       'collection': mockData.dialCodeSearchApiResponse.result.collections,
       'contents': []
@@ -183,7 +183,7 @@ describe('DialCodeComponent', () => {
   });
 
   it('should call getDataForCard Method to pass the data in Card ', () => {
-    spyOn(dialCodeService, 'searchDialCode').and.returnValue(mockData.dialCodeSearchApiResponse);
+    spyOn(dialCodeService, 'searchDialCodeAssemble').and.returnValue(mockData.dialCodeSearchApiResponse);
     spyOn(dialCodeService, 'filterDialSearchResults').and.returnValue(observableOf({
       'collection': mockData.dialCodeSearchApiResponse.result.collections,
       'contents': []
