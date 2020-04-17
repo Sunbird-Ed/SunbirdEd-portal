@@ -32,7 +32,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   objectInteract: IInteractEventObject;
   printPdfInteractEdata: IInteractEventEdata;
   shareLink: string;
-  selectedContent: {};
+  selectedContent: {
+    model: {
+      itemSetPreviewUrl: ''
+    }
+  };
+  public sharelinkModal: boolean;
   public mimeType: string;
   public queryParams: any;
   public collectionData: object;
