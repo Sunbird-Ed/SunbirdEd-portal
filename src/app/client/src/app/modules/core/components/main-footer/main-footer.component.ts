@@ -114,7 +114,10 @@ footerAlign() {
   }
 
   getTenantConfig() {
-    this.tenantService.getTenantConfig(this.userService.slug).pipe(takeUntil(this.unsubscribe$)).subscribe(
+    const defaultTenant = (<HTMLInputElement>document.getElementById('defaultTenant'))
+      ? (<HTMLInputElement>document.getElementById('defaultTenant')).value : null;
+    const slug = this.userService.slug ? this.userService.slug : defaultTenant;
+    this.tenantService.getTenantConfig(slug).pipe(takeUntil(this.unsubscribe$)).subscribe(
       (configResponse) => {
         this.tenantFooter.helpCenterLink = _.get(configResponse, 'helpCenterLink');
         this.tenantFooter.helpDeskEmail = _.get(configResponse, 'helpDeskEmail');

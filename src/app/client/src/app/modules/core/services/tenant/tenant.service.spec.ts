@@ -51,13 +51,26 @@ describe('TenantService', () => {
       });
   });
 
-  it('should make api call to get tenant config', inject([LearnerService], (
+  it('should make api call to get tenant config invalid case', inject([LearnerService], (
     learnerService: LearnerService) => {
     const service = TestBed.get(TenantService);
+    const learnerServiceBed = TestBed.get(LearnerService);
     const params = 'test';
-    spyOn(learnerService, 'get').and.callFake(() => observableOf(response.tenantConfig));
-    const apiRes = service.getTenantConfig(params);
-    expect(service).toBeTruthy();
-    expect(learnerService.get).toHaveBeenCalled();
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigInvalid));
+    service.getTenantConfig(params).subscribe((result) => {
+      expect(result).toEqual({});
+    });
   }));
+
+  it('should make api call to get tenant config valid', inject([LearnerService], (
+    learnerService: LearnerService) => {
+    const service = TestBed.get(TenantService);
+    const learnerServiceBed = TestBed.get(LearnerService);
+    const params = 'test';
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigValid));
+    service.getTenantConfig(params).subscribe((result) => {
+      expect(result).toBeTruthy();
+    });
+  }));
+
 });

@@ -78,7 +78,7 @@ export class TenantService extends DataService {
   }
 
   public getTenantConfig(slug: string) {
-    const url = `${this.config.urlConFig.URLS.SYSTEM_SETTING.TENANT_CONFIG + '/'}` + (slug ? slug : '');
+    const url = `${this.config.urlConFig.URLS.SYSTEM_SETTING.TENANT_CONFIG + '/'}` + slug;
     return this.learnerService.get({
       url: url
     }).pipe(map((data: ServerResponse) => {

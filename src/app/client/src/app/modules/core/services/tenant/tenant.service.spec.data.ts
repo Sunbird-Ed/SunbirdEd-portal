@@ -38,7 +38,21 @@ export const response = {
     },
     'responseCode': 'CLIENT_ERROR'
   },
-  tenantConfig: {
+  tenantConfigInvalid: {
+    'id': 'api.system.settings.get.tn',
+    'ver': 'v1',
+    'ts': '2020-04-16 13:27:29:548+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': null,
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {}
+  },
+  tenantConfigValid: {
     'id': 'api.system.settings.get.tn',
     'ver': 'v1',
     'ts': '2020-04-16 13:27:29:548+0000',
@@ -54,7 +68,7 @@ export const response = {
       'response': {
         'id': 'tn',
         'field': 'tn',
-        'value': 'tenantConfig'
+        'value': ''
       }
     }
   }
