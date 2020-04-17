@@ -128,9 +128,4 @@ describe('MainFooterComponent', () => {
         expect(component.tenantFooter).toBeDefined();
     });
 
-    it('should redirect to provided url', () => {
-        const url = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
-        component.redirect(url);
-        expect(component.redirect).toBeDefined();
-    });
 });
