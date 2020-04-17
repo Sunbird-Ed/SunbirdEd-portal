@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { identifyAcountMockResponse } from './identify-account.component.spec.data';
+import { RecaptchaModule } from 'ng-recaptcha';
+
 describe('IdentifyAccountComponent', () => {
   let component: IdentifyAccountComponent;
   let fixture: ComponentFixture<IdentifyAccountComponent>;
@@ -57,7 +59,8 @@ describe('IdentifyAccountComponent', () => {
     TestBed.configureTestingModule({
       declarations: [IdentifyAccountComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule, CoreModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule, CoreModule,
+        SharedModule.forRoot(), RecaptchaModule],
       providers: [RecoverAccountService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
