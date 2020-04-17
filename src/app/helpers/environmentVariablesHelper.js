@@ -36,6 +36,7 @@ let envVariables = {
   CONFIG_SERVICE_ENABLED: env.config_service_enabled || false,
   CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
+  REPORT_SERVICE_URL: env.sunbird_report_service_url,
   SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
   sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
   sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
@@ -46,7 +47,7 @@ let envVariables = {
   PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
   CACHE_TTL: env.sunbird_cache_ttl || 1800,
   RESPONSE_CACHE_TTL: env.sunbird_response_cache_ttl || '180', // used in tenant helper to cache the tenant response info
-  sunbird_portal_updateLoginTimeEnabled:env.sunbird_portal_updateLoginTimeEnabled || false,
+  sunbird_portal_updateLoginTimeEnabled: env.sunbird_portal_updateLoginTimeEnabled || false,
 
 
   // Telemetry Configuration
@@ -131,7 +132,7 @@ let envVariables = {
   sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version,
   sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
   DESKTOP_APP_STORAGE_URL: env.desktop_app_storage_url,
- 
+
 
   // CDN Configuration
   PORTAL_CDN_URL: env.sunbird_portal_cdn_url || '',
