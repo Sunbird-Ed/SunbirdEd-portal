@@ -22,7 +22,7 @@ describe('ReportComponent', () => {
     }
   };
   const routerStub = { url: '/dashBoard/reports/daily_metrics' };
-
+  let reportService: ReportService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -39,10 +39,33 @@ describe('ReportComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ReportComponent);
     component = fixture.componentInstance;
+    reportService = TestBed.get(ReportService);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should download csv file', () => {
+    spyOn(reportService, 'downloadReport').and.returnValue(of('signedurl'));
+    spyOn(window, 'open');
+    const pathToCsv = '/reports/sunbird/file.csv';
+    component.setDownloadUrl(pathToCsv);
+    component.downloadCSV();
+    expect(window.open).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledTimes(1);
+    expect(reportService.downloadReport).toHaveBeenCalled();
+    expect(reportService.downloadReport).toHaveBeenCalledTimes(1);
+    expect(window.open).toHaveBeenCalledWith('signedurl', '_blank');
+    expect(reportService.downloadReport).toHaveBeenCalledWith(pathToCsv);
+  });
+
+  it('should set download url', () => {
+    const pathToCsv = '/reports/sunbird/file.csv';
+    component.setDownloadUrl(pathToCsv);
+    expect(component['downloadUrl']).toBeDefined();
+    expect(component['downloadUrl']).toBe(pathToCsv);
+  });
+
 });
