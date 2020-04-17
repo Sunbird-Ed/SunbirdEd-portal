@@ -57,8 +57,7 @@ export class IdentifyAccountComponent implements OnInit {
     });
     this.form.controls.identifier.valueChanges.subscribe(val => this.identiferStatus = '');
   }
-  handleNext(captchaResponse: string) {
-    console.log('handleNext called', captchaResponse);
+  handleNext(captchaResponse?: string) {
     this.disableFormSubmit = true;
     this.recoverAccountService.fuzzyUserSearch(this.form.value)
       .subscribe(response => {
