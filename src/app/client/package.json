@@ -69,7 +69,6 @@
     "html2canvas": "^1.0.0-rc.3",
     "html2pdf.js": "^0.9.1",
     "izimodal": "^1.5.1",
-    "chat-lib": "0.0.8",
     "jquery": "^3.3.1",
     "jquery.fancytree": "^2.28.1",
     "jspdf": "^1.5.3",
