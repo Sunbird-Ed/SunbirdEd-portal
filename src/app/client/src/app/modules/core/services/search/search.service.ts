@@ -268,29 +268,6 @@ export class SearchService {
     }
     return this.publicDataService.post(option);
   }
-
-  /**
-   * Content Search using dail code.
-   *
-   * @param {SearchParam} requestParam api request data
-  */
- contentDialCodeAssembleSearch(requestParam: SearchParam, addDefaultContentTypesInRequest: boolean = true):
- Observable<ServerResponse> {
- const option = {
-   url: this.config.urlConFig.URLS.DAIL_ASSEMBLE_PREFIX,
-   data: {
-     request: {
-      source: 'web',
-      name: 'DIAL Code Consumption',
-      filters: requestParam.filters,
-      userProfile: this.user.loggedIn ? {board: this.user.userProfile.framework.board} : {},
-      sort_by: requestParam.sort_by
-     }
-   }
- };
-  option.data.request.filters.contentType = this.config.appConfig.DialAssembleSearch.contentType;
- return this.publicDataService.post(option);
-}
   /**
   * Batch Search.
   *

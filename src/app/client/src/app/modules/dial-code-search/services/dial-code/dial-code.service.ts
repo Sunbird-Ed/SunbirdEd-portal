@@ -1,10 +1,12 @@
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, ServerResponse} from '@sunbird/shared';
 import { SearchService, PlayerService } from '@sunbird/core';
+import { UserService } from '../../../../modules/core/services/user/user.service';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
 import { map, catchError, retry } from 'rxjs/operators';
 import { of, Observable, iif, forkJoin, empty } from 'rxjs';
 import * as TreeModel from 'tree-model';
+import { PublicDataService } from '../../../../modules/core/services/public-data/public-data.service';
 const treeModel = new TreeModel();
 
 @Injectable({
@@ -12,39 +14,53 @@ const treeModel = new TreeModel();
 })
 export class DialCodeService {
 
+  /**
+   * Reference of config service
+   */
+  public config: ConfigService;
+
+  /**
+   * Reference of user service.
+   */
+  public user: UserService;
+
+  /**
+   * Reference of public data service
+   */
+  public publicDataService: PublicDataService;
 
   private dialSearchResults;
-  constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService) { }
+  constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService,
+    config: ConfigService, user: UserService, publicDataService: PublicDataService) {
+      this.config = config;
+      this.user = user;
+      this.publicDataService = publicDataService;
+    }
 
   /**
    * makes API call to search for dialCode
    */
   public searchDialCode(dialCode: string, online: boolean): Observable<any[]> {
-    const requestParams = {
-      filters: {
-        dialcodes: dialCode
-      },
-      mode: 'collection',
-      params: this.configService.appConfig.dialPage.contentApiQueryParams
-    };
-    requestParams.params.online = Boolean(online);
-    return this.searchService.contentSearch(requestParams, false)
-      .pipe(
-        map(apiResponse => _.get(apiResponse, 'result')));
-  }
-
-  /**
-   * makes API call to search for dialCode
-   */
-  public searchDialCodeAssemble(dialCode: string, online: boolean): Observable<any[]> {
-    const requestParams = {
-      filters: {
-        dialcodes: dialCode
+   const requestParams = {
+    filters: {
+      dialcodes: dialCode
+    }
+  };
+  const option = {
+    url: this.config.urlConFig.URLS.DAIL_ASSEMBLE_PREFIX,
+    data: {
+      request: {
+        source: 'app',
+        name: 'DIAL Code Consumption',
+        filters: requestParams.filters,
+        userProfile: this.user.loggedIn ? {board: this.user.userProfile.framework.board} : {}
       }
-    };
-    return this.searchService.contentDialCodeAssembleSearch(requestParams, false)
-      .pipe(
-        map(apiResponse => _.get(apiResponse, 'result.response.sections[0]')));
+    }
+  };
+    option.data.request.filters['contentType'] = this.config.appConfig.DialAssembleSearch.contentType;
+  return this.publicDataService.post(option)
+  .pipe(
+    map(apiResponse => _.get(apiResponse, 'result.response.sections[0]')));
   }
 
   /**
