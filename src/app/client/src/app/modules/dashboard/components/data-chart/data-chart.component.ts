@@ -230,6 +230,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (_.get(this.chartConfig, 'labels')) {
       labels = _.get(this.chartConfig, 'labels');
     }
+    _.forEach(labels, (label, key) => {
+      labels[key] = _.capitalize(label);
+    });
     this.chartLabels = labels;
     this.datasets = [];
     _.forEach(this.chartConfig.datasets, dataset => {
