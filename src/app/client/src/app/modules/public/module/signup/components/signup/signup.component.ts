@@ -175,7 +175,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!specRegex.test(val)) {
       this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
       passCtrl.setErrors({ passwordError: this.passwordError });
-    } else if (emailVal === val || _.get(this.signUpForm, 'controls.name.value') === val) {
+    } else if (emailVal === val || this.signUpForm.controls.name.value === val) {
       this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwderr');
       passCtrl.setErrors({ passwordError: this.passwordError });
     } else {
