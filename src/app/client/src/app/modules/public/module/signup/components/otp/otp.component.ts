@@ -75,7 +75,7 @@ export class OtpComponent implements OnInit {
       (data: ServerResponse) => {
         this.infoMessage = '';
         this.errorMessage = '';
-        this.createUser(data);
+        this.createUser();
       },
       (err) => {
         this.logVerifyOtpError(err.error.params.errmsg);
@@ -110,7 +110,7 @@ export class OtpComponent implements OnInit {
     };
   }
 
-  createUser(data?: any) {
+  createUser() {
     let identifier = '';
     const createRequest = {
       params: {
@@ -131,7 +131,6 @@ export class OtpComponent implements OnInit {
       createRequest.request['emailVerified'] = true;
       identifier = this.signUpdata.controls.email.value;
     }
-    createRequest.request['validator'] = data.validator;
     if (this.signUpdata.controls.tncAccepted.value && this.signUpdata.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
           this.telemetryLogEvents('sign-up', true);
