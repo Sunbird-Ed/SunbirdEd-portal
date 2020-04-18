@@ -5,6 +5,7 @@ const learnerURL = envHelper.LEARNER_URL
 const telemetryHelper = require('../helpers/telemetryHelper.js')
 const reqDataLimitOfContentUpload = '50mb'
 const proxy = require('express-http-proxy')
+const bodyParser = require('body-parser')
 const healthService = require('../helpers/healthCheckService.js')
 const logger = require('sb_logger_util_v2')
 const {decrypt} = require('../helpers/crypto');
@@ -106,7 +107,8 @@ module.exports = function (app) {
     checkForValidUser()
   )
 
-  app.all('/learner/*',
+  
+  app.all('/learner/*', bodyParser.urlencoded({ extended: false }), bodyParser.json({limit: '10mb'}),
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
@@ -115,6 +117,7 @@ module.exports = function (app) {
       proxyReqPathResolver: function (req) {
         let urlParam = req.params['0']
         let query = require('url').parse(req.url).query
+       
         if (query) {
           return require('url').parse(learnerURL + urlParam + '?' + query).path
         } else {
@@ -123,12 +126,14 @@ module.exports = function (app) {
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         try {
-            logger.info({msg: '/learner/* called'});
+            if(req.url.indexOf('/otp/') > 0) {
+              proxyUtils.addReqLog(req);
+            }            
             const data = JSON.parse(proxyResData.toString('utf8'));
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch(err) {
-          logger.error({msg:'content api user res decorator json parse error:', proxyResData})
+          logger.error({msg:'content api user res decorator json parse error:', proxyResData, error: JSON.stringify(err)})
             return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
         }
       }

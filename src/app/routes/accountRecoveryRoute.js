@@ -45,21 +45,24 @@ module.exports = (app) => {
         return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
-        logger.info({msg: '/learner/otp/v1/verify called'});
         try {
+            proxyUtils.addReqLog(req);
             const data = JSON.parse(proxyResData.toString('utf8'));
             if (data.responseCode === 'OK') {
              req.session.otpVerifiedFor = req.body;
               var validator = getEncyptedQueryParams({'key':req.body.request.key});
               data.validator = validator;
             }
-             return data;
-        } catch(err) {
+            return data;
+        } catch (err) {
           logger.error({
-            msg: 'otp verification failed',
+            URL: req.url,
+            body: json.stringify(req.body),
+            resp: json.stringify(data),
+            msg: 'portal - otp verification failed',
             error: JSON.stringify(err)
           });
-           return proxyResData;
+      return proxyResData;
         }
       }
   }));
