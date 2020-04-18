@@ -8,9 +8,6 @@ const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const healthService = require('../helpers/healthCheckService.js')
 const logger = require('sb_logger_util_v2')
-const {decrypt} = require('../helpers/crypto');
-const {parseJson, isDateExpired} = require('../helpers/utilityService');
-const _ = require('lodash');
 
 module.exports = function (app) {
 
@@ -101,12 +98,6 @@ module.exports = function (app) {
     permissionsHelper.checkPermission(),
     proxyObj()
   )
-  app.all('/learner/user/v1/signup',
-    healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
-    permissionsHelper.checkPermission(),
-    checkForValidUser()
-  )
-
   
   app.all('/learner/*', bodyParser.urlencoded({ extended: false }), bodyParser.json({limit: '10mb'}),
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
@@ -139,60 +130,6 @@ module.exports = function (app) {
       }
     }))
 }
-function checkForValidUser (){
-  return proxy(learnerURL, {
-    limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-    proxyReqBodyDecorator: function (bodyContent, srcReq) {
-      var data = JSON.parse(bodyContent.toString('utf8'));
-      var reqEmail = data.request['email'];
-      var reqPhone = data.request['phone'];
-      var reqValidator = data.request['validator'];
-      var decodedValidator = isValidRequest(reqValidator);
-      if(reqEmail === decodedValidator['key'] || reqPhone === decodedValidator['key']){
-        data = _.omit(data, 'request.validator');
-        return data;
-      } else{
-        throw new Error('USER_CANNOTBE_CREATED');
-      }
-    },
-    proxyReqPathResolver: function (req) {
-      return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
-    },
-    userResDecorator: function (proxyRes, proxyResData,  req, res) {
-      try {
-        logger.info({msg: 'proxyObj'});
-        let data = JSON.parse(proxyResData.toString('utf8'));
-        let response = data.result.response;
-        data.result.response = {id: '', rootOrgId: '',isUserExists:''};
-        if (data.responseCode === 'OK') {
-          data.result.response.id = response.id;
-          data.result.response.rootOrgId = response.rootOrgId;
-          data.result.response.isUserExists = true;
-        }
-        if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-        else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
-      } catch (err) {
-        logger.error({msg:'content api user res decorator json parse error:', proxyResData})
-        return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-      }
-    }
-  });
-}
-/**
- * Verifies request and check exp time
- * @param encryptedData encrypted data to be decrypted
- * @returns {*}
- */
-const isValidRequest = (encryptedData) => {
-  const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
-  const parsedData = parseJson(decryptedData);
-  if (isDateExpired(parsedData.exp)) {
-    throw new Error('DATE_EXPIRED');
-  } else {
-    return _.omit(parsedData, ['exp']);
-  }
-};
 
 function proxyObj (){
   return proxy(learnerURL, {
