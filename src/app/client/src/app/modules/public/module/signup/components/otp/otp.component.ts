@@ -100,7 +100,7 @@ export class OtpComponent implements OnInit {
         cdata: this.telemetryCdata,
       },
       edata: {
-        id: 'submit-otp',
+        id: 'invalid-otp-error',
         type: 'click',
         pageid: 'otp',
         extra: {
@@ -184,7 +184,7 @@ export class OtpComponent implements OnInit {
         cdata: this.telemetryCdata,
       },
       edata: {
-        id: 'create-user',
+        id: 'create-user-error',
         type: 'click',
         pageid: 'otp',
         extra: {
@@ -223,7 +223,7 @@ export class OtpComponent implements OnInit {
         cdata: this.telemetryCdata,
       },
       edata: {
-        id: 'resend-otp',
+        id: 'resend-otp-error',
         type: 'click',
         pageid: 'otp',
         extra: {
