@@ -8,6 +8,7 @@ const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const healthService = require('../helpers/healthCheckService.js')
 const logger = require('sb_logger_util_v2')
+const whitelistUrls = require('../helpers/whitellistUrls.js')
 
 module.exports = function (app) {
 
@@ -99,8 +100,11 @@ module.exports = function (app) {
     proxyObj()
   )
   
-  app.all('/learner/*', bodyParser.urlencoded({ extended: false }), bodyParser.json({limit: '10mb'}),
+  app.all('/learner/*', 
+    bodyParser.urlencoded({ extended: false }), 
+    bodyParser.json({limit: '10mb'}),
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
+    whitelistUrls.isWhitelistUrl(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
