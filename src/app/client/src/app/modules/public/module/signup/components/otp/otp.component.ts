@@ -131,7 +131,7 @@ export class OtpComponent implements OnInit {
       createRequest.request['emailVerified'] = true;
       identifier = this.signUpdata.controls.email.value;
     }
-    createRequest.request['validator'] = data.validator
+    createRequest.request['validator'] = data.validator;
     if (this.signUpdata.controls.tncAccepted.value && this.signUpdata.controls.tncAccepted.status === 'VALID') {
       this.signupService.createUserV3(createRequest).subscribe((resp: ServerResponse) => {
           this.telemetryLogEvents('sign-up', true);
