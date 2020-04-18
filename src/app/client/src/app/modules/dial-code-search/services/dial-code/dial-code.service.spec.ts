@@ -49,16 +49,12 @@ describe('DialCodeService', () => {
     it('should return collections and contents from dial search results ', () => {
       const dialCodeService = TestBed.get(DialCodeService);
       spyOn(dialCodeService, 'getAllPlayableContent').and.callThrough();
-      const results = dialCodeService.filterDialSearchResults(mockData.dialCodeSearchApiResponse.result);
+      const results = dialCodeService.filterDialSearchResults(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
       results.subscribe(res => {
         expect(res).toBeDefined();
         expect(res.collection).toBeDefined();
         expect(res.contents).toBeDefined();
-        expect(res).toEqual({
-          'collection': mockData.dialCodeSearchApiResponse.result.collections,
-          'contents': []
-        });
-        expect(dialCodeService.dialCodeResult).toEqual(mockData.dialCodeSearchApiResponse.result);
+        expect(dialCodeService.dialCodeResult).toEqual(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
       });
     });
   });
@@ -68,10 +64,12 @@ describe('DialCodeService', () => {
     it('should return contents from a collection', () => {
       const dialCodeService = TestBed.get(DialCodeService);
       const result = dialCodeService.parseCollection(mockData.courseHierarchApiResponse.result.content);
-      expect(result).toBeDefined();
-      expect(result.length).toBeTruthy();
-      expect(result.length).toBe(9);
-      expect(result).toEqual(mockData.parsedCollection);
+      result.subscribe(res => {
+        expect(res).toBeDefined();
+        expect(res.length).toBeTruthy();
+        expect(res.length).toBe(9);
+        expect(res).toEqual(mockData.parsedCollection);
+      });
     });
 
   });
@@ -97,7 +95,7 @@ describe('DialCodeService', () => {
 
     it('should group contents based on their content type', () => {
       const dialCodeService = TestBed.get(DialCodeService);
-      const result = dialCodeService.groupCollections(mockData.dialCodeSearchApiResponse.result.content);
+      const result = dialCodeService.groupCollections(mockData.dialCodeSearchApiResponse.result.response.sections[0].contents);
       expect(result).toEqual(mockData.groupedCollection);
       expect(result).toBeDefined();
     });

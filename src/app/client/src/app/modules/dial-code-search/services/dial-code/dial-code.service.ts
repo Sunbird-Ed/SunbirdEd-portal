@@ -1,12 +1,11 @@
 import { ConfigService, ServerResponse} from '@sunbird/shared';
-import { SearchService, PlayerService } from '@sunbird/core';
+import { SearchService, PlayerService, PublicDataService} from '@sunbird/core';
 import { UserService } from '../../../../modules/core/services/user/user.service';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
 import { map, catchError, retry } from 'rxjs/operators';
 import { of, Observable, iif, forkJoin, empty } from 'rxjs';
 import * as TreeModel from 'tree-model';
-import { PublicDataService } from '../../../../modules/core/services/public-data/public-data.service';
 const treeModel = new TreeModel();
 
 @Injectable({
@@ -14,24 +13,9 @@ const treeModel = new TreeModel();
 })
 export class DialCodeService {
 
-  /**
-   * Reference of config service
-   */
-  public config: ConfigService;
-
-  /**
-   * Reference of user service.
-   */
-  public user: UserService;
-
-  /**
-   * Reference of public data service
-   */
-  public publicDataService: PublicDataService;
-
   private dialSearchResults;
   constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService,
-    config: ConfigService, user: UserService, publicDataService: PublicDataService) {
+    private config: ConfigService, private user: UserService, private publicDataService: PublicDataService) {
       this.config = config;
       this.user = user;
       this.publicDataService = publicDataService;
@@ -50,14 +34,16 @@ export class DialCodeService {
     url: this.config.urlConFig.URLS.DAIL_ASSEMBLE_PREFIX,
     data: {
       request: {
-        source: 'app',
+        source: 'web',
         name: 'DIAL Code Consumption',
-        filters: requestParams.filters,
-        userProfile: this.user.loggedIn ? {board: this.user.userProfile.framework.board} : {}
+        filters: {dialcodes: dialCode,
+                  contentType: this.config.appConfig.DialAssembleSearch.contentType
+                },
+        userProfile: this.user.loggedIn && _.get(this.user.userProfile, 'framework.board') ?
+                  {board: this.user.userProfile.framework.board} : {}
       }
     }
   };
-    option.data.request.filters['contentType'] = this.config.appConfig.DialAssembleSearch.contentType;
   return this.publicDataService.post(option)
   .pipe(
     map(apiResponse => _.get(apiResponse, 'result.response.sections[0]')));

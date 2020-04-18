@@ -1,245 +1,213 @@
 // tslint:disable:max-line-length
 export const mockData = {
     dialCodeSearchApiResponse: {
-        'id': 'api.content.search',
-        'ver': '1.0',
-        'ts': '2020-01-05T12:52:39.516Z',
+        'id': 'api.page.assemble',
+        'ver': 'v1',
+        'ts': '2020-04-18 05:07:14:246+0000',
         'params': {
-            'resmsgid': '415b81c0-2fba-11ea-a548-d78f20f90f56',
-            'msgid': '9193aa45-ceee-0587-117c-a1fb4e49eff6',
-            'status': 'successful',
+            'resmsgid': null,
+            'msgid': null,
             'err': null,
+            'status': 'success',
             'errmsg': null
         },
         'responseCode': 'OK',
         'result': {
-            'collections': [
-                {
-                    'identifier': 'do_21250324682831462416458',
-                    'appIcon': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_21250324682831462416458/artifact/get-frame-1_1521782948516.thumb.png',
-                    'gradeLevel': [
-                        'Grade 1'
-                    ],
-                    'size': 44713607,
-                    'subject': [
-                        'Environmental Studies'
-                    ],
-                    'childNodes': [
-                        'do_21250324701456793616459'
-                    ],
-                    'name': 'Dial_Code_JP_Book',
-                    'mimeType': 'application/vnd.ekstep.content-collection',
-                    'medium': [
-                        'English'
-                    ],
-                    'contentType': 'TextBook',
-                    'board': 'MSCERT',
-                    'objectType': 'Content'
-                }, {
-                    'identifier': 'do_2124791816024883201843',
-                    'appIcon': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/content/do_2124791816024883201843/artifact/get-frame-1_1521782948516.thumb.png',
-                    'gradeLevel': [
-                        'Grade 1'
-                    ],
-                    'size': 593666,
-                    'subject': [
-                        'Environmental Studies'
-                    ],
-                    'childNodes': [
-                        'do_2124791820965806081846'
-                    ],
-                    'name': 'Dial Code link',
-                    'mimeType': 'application/vnd.ekstep.content-collection',
-                    'medium': [
-                        'English'
-                    ],
-                    'contentType': 'TextBook',
-                    'board': 'MSCERT',
-                    'objectType': 'Content'
-                }
-            ],
-            'count': 2,
-            'content': [
-                {
-                    'parent': 'do_21250324682831462416458',
-                    'code': 'do_21250324701456793616459',
-                    'downloadUrl': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_21250324701456793616459/jp-1_1526992263235_do_21250324701456793616459_2.0_spine.ecar',
-                    'language': [
-                        'English'
-                    ],
-                    'variants': {
-                        'spine': {
-                            'ecarUrl': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_21250324701456793616459/jp-1_1526992263235_do_21250324701456793616459_2.0_spine.ecar',
-                            'size': 44707040
-                        }
-                    },
-                    'mimeType': 'application/vnd.ekstep.content-collection',
-                    'idealScreenSize': 'normal',
-                    'createdOn': '2018-05-14T05:21:10.333+0000',
-                    'objectType': 'Content',
-                    'children': [
-                        'do_2123647211359764481860',
-                        'do_2124734950758318081287',
-                        'do_2124735585827553281359',
-                        'do_212473700229234688117',
-                        'do_212292521539502080181',
-                        'do_2123929065472491521258',
-                        'do_2123567715297853441253',
-                        'LP_NFT_Collection_8329322',
-                        'do_2123858152579481601111',
-                        'do_2124856294990888961181',
-                        'do_2123744335384412161231',
-                        'do_212351962229317632192',
-                        'do_212217680421134336131',
-                        'do_30022230',
-                        'do_2123751788272353281436',
-                        'do_212455253945450496178',
-                        'do_212305203538493440112',
-                        'do_312352510418632704261',
-                        'do_2123822335531827201400',
-                        'do_21250253577275801616324',
-                        'do_21250277311420006416327',
-                        'do_2125006554329907201678',
-                        'do_21250137899335680016300',
-                        'do_2123822163173294081385',
-                        'do_2123752594305515521463',
-                        'do_2124785866058137601641',
-                        'do_3123526519073341441119',
-                        'do_21229256795729100812',
-                        'do_2124786923763793921755',
-                        'Test_QA_Collection9898859',
-                        'do_212473719680098304135',
-                        'do_2124637984183664641646',
-                        'do_2123171280684236801471',
-                        'do_2124742531050946561178',
-                        'do_212371601296269312178',
-                        'do_2122952875771248641386',
-                        'do_212489090776580096149',
-                        'do_2123560303659827201182',
-                        'do_2124339787579228161797',
-                        'do_2123548166344458241162',
-                        'do_2124792869079121921947',
-                        'do_2123560294467092481181',
-                        'do_2124638159242854401657',
-                        'do_3123526892339036162117',
-                        'do_2123751682323578881432',
-                        'do_2124749465051217921103',
-                        'do_212346867903299584135',
-                        'Collection_01',
-                        'do_2124700243439779841275',
-                        'do_2123772308615331841679',
-                        'do_2124701547791810561391',
-                        'do_212292559668477952188',
-                        'do_21244202271149260811942',
-                        'do_21244271924543488011973',
-                        'do_2124743589332910081283',
-                        'do_2123744683661639681252',
-                        'do_212474506631110656155',
-                        'do_212473719428333568134',
-                        'do_212486266120568832115932',
-                        'do_212486266120560640115930',
-                        'do_2124734873710755841284',
-                        'do_2123695414072033281534',
-                        'do_2123695444067205121539',
-                        'do_2123695673337528321545'
-                    ],
-                    'contentDisposition': 'inline',
-                    'contentEncoding': 'gzip',
-                    'lastUpdatedOn': '2018-05-14T05:22:16.384+0000',
-                    'SYS_INTERNAL_LAST_UPDATED_ON': '2018-05-22T12:31:07.405+0000',
-                    'contentType': 'TextBookUnit',
-                    'identifier': 'do_21250324701456793616459',
-                    'audience': [
-                        'Learner'
-                    ],
-                    'visibility': 'Parent',
-                    'os': [
-                        'All'
-                    ],
-                    'index': 1,
-                    'mediaType': 'content',
-                    'osId': 'org.ekstep.launcher',
-                    'graph_id': 'domain',
-                    'nodeType': 'DATA_NODE',
-                    'pkgVersion': 2,
-                    'versionKey': '1526275270333',
-                    'idealScreenDensity': 'hdpi',
-                    'depth': 1,
-                    's3Key': 'ecar_files/do_21250324701456793616459/jp-1_1526992263235_do_21250324701456793616459_2.0_spine.ecar',
-                    'dialcodes': [
-                        '646X5X'
-                    ],
-                    'lastPublishedOn': '2018-05-22T12:31:02.037+0000',
-                    'size': 44707040,
-                    'compatibilityLevel': 1,
-                    'leafNodesCount': 98,
-                    'name': 'JP 1',
-                    'status': 'Live',
-                    'node_id': 0
-                },
-                {
-                    'code': 'do_2124791820965806081846',
-                    'channel': '012315809814749184151',
-                    'downloadUrl': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_2124791820965806081846/unit-1_1523337900939_do_2124791820965806081846_1.0_spine.ecar',
-                    'language': [
-                        'English'
-                    ],
-                    'variants': {
-                        'spine': {
-                            'ecarUrl': 'https://ekstep-public-qa.s3-ap-south-1.amazonaws.com/ecar_files/do_2124791820965806081846/unit-1_1523337900939_do_2124791820965806081846_1.0_spine.ecar',
-                            'size': 589598
-                        }
-                    },
-                    'mimeType': 'application/vnd.ekstep.content-collection',
-                    'idealScreenSize': 'normal',
-                    'createdOn': '2018-04-10T05:20:58.274+0000',
-                    'objectType': 'Content',
-                    'collections': [
-                        'do_2124791816024883201843'
-                    ],
-                    'children': [
-                        'do_2124735502891909121345',
-                        'do_2124699723840307201216',
-                        'do_2124708442401751041124',
-                        'do_2124723827198525441236',
-                        'do_21244173717154201611773'
-                    ],
-                    'appId': 'staging.sunbird.portal',
-                    'contentDisposition': 'inline',
-                    'contentEncoding': 'gzip',
-                    'lastUpdatedOn': '2018-04-10T05:21:56.725+0000',
-                    'SYS_INTERNAL_LAST_UPDATED_ON': '2018-04-10T05:25:01.325+0000',
-                    'contentType': 'TextBookUnit',
-                    'identifier': 'do_2124791820965806081846',
-                    'audience': [
-                        'Learner'
-                    ],
-                    'os': [
-                        'All'
-                    ],
-                    'visibility': 'Parent',
-                    'consumerId': 'fa271a76-c15a-4aa1-adff-31dd04682a1f',
-                    'mediaType': 'content',
-                    'osId': 'org.ekstep.launcher',
-                    'graph_id': 'domain',
-                    'nodeType': 'DATA_NODE',
-                    'pkgVersion': 1,
-                    'versionKey': '1523337658274',
-                    'idealScreenDensity': 'hdpi',
-                    'dialcodes': [
-                        '646X5X'
-                    ],
-                    's3Key': 'ecar_files/do_2124791820965806081846/unit-1_1523337900939_do_2124791820965806081846_1.0_spine.ecar',
-                    'lastPublishedOn': '2018-04-10T05:25:00.921+0000',
-                    'size': 589598,
-                    'compatibilityLevel': 1,
-                    'name': 'Unit 1',
-                    'status': 'Live',
-                    'node_id': 100778,
-                    'orgDetails': {}
-                }
-            ],
-            'collectionsCount': 2
+            'response': {
+                'ignoredSections': [],
+                'name': 'DIAL Code Consumption',
+                'id': '0126541330541690882',
+                'sections': [
+                    {
+                        'display': '{"name":{"en":"Linked Content"}}',
+                        'alt': null,
+                        'count': 2,
+                        'description': null,
+                        'index': 1,
+                        'sectionDataType': 'content',
+                        'facets': [
+                            {
+                                'values': [],
+                                'name': 'subject'
+                            },
+                            {
+                                'values': [],
+                                'name': 'grade'
+                            },
+                            {
+                                'values': [],
+                                'name': 'domain'
+                            },
+                            {
+                                'values': [],
+                                'name': 'language'
+                            },
+                            {
+                                'values': [],
+                                'name': 'medium'
+                            },
+                            {
+                                'values': [
+                                    {
+                                        'name': 'textbookunit',
+                                        'count': 2
+                                    }
+                                ],
+                                'name': 'contentType'
+                            }
+                        ],
+                        'collectionsCount': 2,
+                        'imgUrl': null,
+                        'resmsgId': '6b78acc0-8132-11ea-833f-1565f5d5bc45',
+                        'collections': [
+                            {
+                                'identifier': 'do_212925265351647232115',
+                                'subject': 'Mathematics',
+                                'childNodes': [
+                                    'do_2129252657369251841113'
+                                ],
+                                'mimeType': 'application/vnd.ekstep.content-collection',
+                                'medium': 'English',
+                                'objectType': 'Content',
+                                'gradeLevel': [
+                                    'Class 10'
+                                ],
+                                'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212925265351647232115/artifact/download_1562667557939.thumb.jpeg',
+                                'size': 541688,
+                                'name': 'RF Book 4',
+                                'contentType': 'TextBook',
+                                'board': 'State (Rajasthan)',
+                                'resourceType': 'Book'
+                            },
+                            {
+                                'identifier': 'do_212925266736119808116',
+                                'subject': 'Mathematics',
+                                'childNodes': [
+                                    'do_2129252670970920961119'
+                                ],
+                                'mimeType': 'application/vnd.ekstep.content-collection',
+                                'medium': 'Hindi',
+                                'objectType': 'Content',
+                                'gradeLevel': [
+                                    'Class 10'
+                                ],
+                                'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_212925266736119808116/artifact/0fef6edb-7cd4-4388-9237-36a5331ed00e_1571034457477.thumb.jpg',
+                                'size': 333065,
+                                'name': 'RF Book 5',
+                                'contentType': 'TextBook',
+                                'board': 'State (Rajasthan)',
+                                'resourceType': 'Book'
+                            }
+                        ],
+                        'contents': [
+                            {
+                                'parent': 'do_212925266736119808116',
+                                'code': 'do_2129252670970920961119',
+                                'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212925266736119808116/rf-book-5_1577791515954_do_212925266736119808116_1.0_spine.ecar',
+                                'mimeType': 'application/vnd.ekstep.content-collection',
+                                'variants': {
+                                    'online': {
+                                        'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212925266736119808116/rf-book-5_1577791516407_do_212925266736119808116_1.0_online.ecar',
+                                        'size': 12877
+                                    },
+                                    'spine': {
+                                        'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212925266736119808116/rf-book-5_1577791515954_do_212925266736119808116_1.0_spine.ecar',
+                                        'size': 333065
+                                    }
+                                },
+                                'createdOn': '2019-12-31T11:23:13.688+0000',
+                                'objectType': 'Content',
+                                'children': [
+                                    'do_212600249767649280147',
+                                    'do_2126045952302284801765',
+                                    'do_21274117800407040012971',
+                                    'do_2127488322108129281546',
+                                    'do_21289130493327769614936',
+                                    'do_21272276247556915211072'
+                                ],
+                                'lastUpdatedOn': '2019-12-31T11:25:15.413+0000',
+                                'contentType': 'TextBookUnit',
+                                'dialcodeRequired': 'Yes',
+                                'identifier': 'do_2129252670970920961119',
+                                'lastStatusChangedOn': '2019-12-31T11:23:13.689+0000',
+                                'visibility': 'Parent',
+                                'index': 1,
+                                'graph_id': 'domain',
+                                'nodeType': 'DATA_NODE',
+                                'pkgVersion': 1,
+                                'versionKey': '1577791393688',
+                                'framework': 'rj_k-12_1',
+                                'depth': 1,
+                                'dialcodes': [
+                                    'K2W1G4'
+                                ],
+                                'lastPublishedOn': '2019-12-31T11:25:15.681+0000',
+                                'compatibilityLevel': 1,
+                                'leafNodesCount': 6,
+                                'name': 'CH1',
+                                'status': 'Live',
+                                'node_id': 0
+                            },
+                            {
+                                'parent': 'do_212925265351647232115',
+                                'code': 'do_2129252657369251841113',
+                                'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212925265351647232115/rf-book-4_1577791527504_do_212925265351647232115_1.0_spine.ecar',
+                                'mimeType': 'application/vnd.ekstep.content-collection',
+                                'variants': {
+                                    'online': {
+                                        'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212925265351647232115/rf-book-4_1577791527967_do_212925265351647232115_1.0_online.ecar',
+                                        'size': 21626
+                                    },
+                                    'spine': {
+                                        'ecarUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212925265351647232115/rf-book-4_1577791527504_do_212925265351647232115_1.0_spine.ecar',
+                                        'size': 541688
+                                    }
+                                },
+                                'createdOn': '2019-12-31T11:20:27.652+0000',
+                                'objectType': 'Content',
+                                'children': [
+                                    'do_21288717218165555213237',
+                                    'do_212693062834962432117702',
+                                    'do_212915213682860032131',
+                                    'do_212910247762591744115',
+                                    'do_212915144844754944118',
+                                    'do_2127192175141601281166',
+                                    'do_2128104050179686401574'
+                                ],
+                                'lastUpdatedOn': '2019-12-31T11:25:26.920+0000',
+                                'contentType': 'TextBookUnit',
+                                'dialcodeRequired': 'Yes',
+                                'identifier': 'do_2129252657369251841113',
+                                'lastStatusChangedOn': '2019-12-31T11:20:27.652+0000',
+                                'visibility': 'Parent',
+                                'index': 1,
+                                'graph_id': 'domain',
+                                'nodeType': 'DATA_NODE',
+                                'pkgVersion': 1,
+                                'versionKey': '1577791227652',
+                                'framework': 'rj_k-12_1',
+                                'depth': 1,
+                                'dialcodes': [
+                                    'K2W1G4'
+                                ],
+                                'lastPublishedOn': '2019-12-31T11:25:27.178+0000',
+                                'compatibilityLevel': 1,
+                                'leafNodesCount': 7,
+                                'name': 'Unit 1',
+                                'status': 'Live',
+                                'node_id': 0
+                            }
+                        ],
+                        'searchQuery': '{"request":{"facets":["language","grade","domain","contentType","subject","medium"],"filters":{"contentType":["TextBook","TextBookUnit"],"objectType":["Content"],"status":["Live"],"compatibilityLevel":{"max":4,"min":1}},"mode":"collection"},"limit":10,"sort_by":{"lastUpdatedOn":"desc"}}',
+                        'name': 'Linked Content',
+                        'id': '0126541330342952961',
+                        'dynamicFilters': null,
+                        'dataSource': null,
+                        'apiId': 'api.content.search',
+                        'group': 1
+                    }
+                ]
+            }
         }
     },
     courseHierarchApiResponse: {
