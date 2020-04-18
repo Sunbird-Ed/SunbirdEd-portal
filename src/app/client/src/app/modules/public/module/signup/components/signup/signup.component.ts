@@ -175,7 +175,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     const upcsRegex = new RegExp('^(?=.*[A-Z])');
     const charRegex = new RegExp('^(?=.{8,})');
     const numRegex = new RegExp('^(?=.*[0-9])');
-    const specRegex = new RegExp('^[!"#$%&\'()*+,-./:;<=>?@[^_`{|}~\]]');
+    const specRegex = new RegExp('^(?=.[!"#$%&\'()*+,-./:;<=>?@[^_`{|}~\]])');
     const spaceRegex = new RegExp('^\\S*$');
     if (!charRegex.test(val) || !spaceRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val)
       || !numRegex.test(val) || specRegex.test(val)) {
