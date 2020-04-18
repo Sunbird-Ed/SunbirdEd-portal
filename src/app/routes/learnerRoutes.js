@@ -150,7 +150,7 @@ function checkForValidUser (){
       var reqPhone = data.request['phone'];
       var reqValidator = data.request['validator'];
       var decodedValidator = isValidRequest(reqValidator);
-      if(reqEmail === decodedValidator['key'] || reqPhone === decodedValidator['key']){
+      if((decodedValidator['key']) && (reqEmail === decodedValidator['key'] || reqPhone === decodedValidator['key'])){
         data = _.omit(data, 'request.validator');
         return data;
       } else{
