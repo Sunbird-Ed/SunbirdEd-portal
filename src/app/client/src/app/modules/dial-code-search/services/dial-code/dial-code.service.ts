@@ -1,6 +1,5 @@
 import { ConfigService, ServerResponse} from '@sunbird/shared';
-import { SearchService, PlayerService, PublicDataService} from '@sunbird/core';
-import { UserService } from '../../../../modules/core/services/user/user.service';
+import { SearchService, PlayerService, PublicDataService, UserService} from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
 import { map, catchError, retry } from 'rxjs/operators';
@@ -16,20 +15,12 @@ export class DialCodeService {
   private dialSearchResults;
   constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService,
     private config: ConfigService, private user: UserService, private publicDataService: PublicDataService) {
-      this.config = config;
-      this.user = user;
-      this.publicDataService = publicDataService;
     }
 
   /**
    * makes API call to search for dialCode
    */
   public searchDialCode(dialCode: string, online: boolean): Observable<any[]> {
-   const requestParams = {
-    filters: {
-      dialcodes: dialCode
-    }
-  };
   const option = {
     url: this.config.urlConFig.URLS.DAIL_ASSEMBLE_PREFIX,
     data: {
