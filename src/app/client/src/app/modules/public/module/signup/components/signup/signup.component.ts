@@ -171,11 +171,11 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       emailVal = this.signUpForm.get('email').value;
     }
     const val = _.get(passCtrl, 'value');
-    const specRegex = new RegExp('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~.,)(}{\\[!"#$%&\'()*+,-./:;<=>?@[^_`{|}~\\]])(?=\\S+$).{8,}');
+    const specRegex = new RegExp('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~.,)(}{\\[!"#$%&\'()*+,-./:;<=>?@[^_`{|}~\\]])(?=\\S+$).{8,}');
     if (!specRegex.test(val)) {
       this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
       passCtrl.setErrors({ passwordError: this.passwordError });
-    } else if (emailVal === val || this.signUpForm.controls.name.value === val) {
+    } else if (emailVal === val || _.get(this.signUpForm, 'controls.name.value') === val) {
       this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwderr');
       passCtrl.setErrors({ passwordError: this.passwordError });
     } else {
