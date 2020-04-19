@@ -108,7 +108,7 @@ module.exports = function (app) {
     checkForValidUser()
   )
 
-  app.all('/learner/*', bodyParser.urlencoded({ extended: false }), bodyParser.json({limit: '10mb'}),
+  app.all('/learner/*',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
@@ -117,18 +117,22 @@ module.exports = function (app) {
       proxyReqPathResolver: function (req) {
         let urlParam = req.params['0']
         let query = require('url').parse(req.url).query
-       
+        
+        // TODO: This should be generic, all the requests should add logs 
+        // Body should be logged only for non-secure data
+        if(req.url.indexOf('/otp/') > 0){
+          proxyUtils.addReqLog(req);
+        }
+
         if (query) {
           return require('url').parse(learnerURL + urlParam + '?' + query).path
         } else {
           return require('url').parse(learnerURL + urlParam).path
         }
+        
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
         try {
-            if(req.url.indexOf('/otp/') > 0) {
-              proxyUtils.addReqLog(req);
-            }            
             const data = JSON.parse(proxyResData.toString('utf8'));
             if(req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
             else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
