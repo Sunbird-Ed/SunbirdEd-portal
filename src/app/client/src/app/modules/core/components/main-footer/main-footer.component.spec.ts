@@ -116,9 +116,9 @@ describe('MainFooterComponent', () => {
 
     it('should redirect to playstore url provided from tenant config', () => {
         const spy = spyOn(component, 'redirect');
-        component.tenantFooter.playstoreLink = 'https://play.google.com/store/apps/details?id=in.gov.diksha.app';
+        component.tenantFooter.playstoreLink = 'https://play.google.com/store/apps/details?id=in.my.mobile.app';
         component.redirectToDikshaApp();
-        expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app');
+        expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.my.mobile.app');
     });
 
     it('should call tenant service to get tenant config', () => {
