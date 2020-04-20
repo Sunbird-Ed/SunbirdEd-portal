@@ -24,18 +24,21 @@ describe('DialCodeService', () => {
       const dialCodeService = TestBed.get(DialCodeService);
       const searchService = TestBed.get(SearchService);
       spyOn(searchService, 'contentSearch').and.returnValue(of(mockData.dialCodeSearchApiResponse));
-      dialCodeService.searchDialCode('646X5X', false).subscribe(res => {
+      dialCodeService.searchDialCode('K2W1G4', false).subscribe(res => {
         expect(searchService.contentSearch).toHaveBeenCalled();
         expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
         expect(searchService.contentSearch).toHaveBeenCalledWith({
+          'source': 'web',
+          'name': 'DIAL Code Consumption',
           'filters': {
-            'dialcodes': '646X5X'
+            'dialcodes': 'K2W1G4',
+            'contentType': [
+              'TextBook',
+              'TextBookUnit',
+              'Course'
+              ]
           },
-          'mode': 'collection',
-          'params': {
-            'orgdetails': 'orgName,email',
-            'online': false
-          }
+          'userProfile': {}
         }, false);
         expect(res).toBeDefined();
         expect(res).toEqual(mockData.dialCodeSearchApiResponse.result);
