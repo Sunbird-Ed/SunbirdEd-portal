@@ -4,13 +4,17 @@ import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
 import { MainMenuComponent } from './main-menu.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
+import { ReplaySubject } from 'rxjs';
 
 describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
   let fixture: ComponentFixture<MainMenuComponent>;
+  const eventSubject = new ReplaySubject<RouterEvent>(1);
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
+    url = '/explore-course';
+    events = eventSubject.asObservable();
   }
   class FakeActivatedRoute {
   }
