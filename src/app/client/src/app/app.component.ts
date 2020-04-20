@@ -469,6 +469,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.frameWorkPopUp.modal.deny();
       this.checkLocationStatus();
       this.cacheService.set('showFrameWorkPopUp', 'installApp');
+      this.showFrameWorkPopUp = false;
     });
   }
   viewInBrowser() {
