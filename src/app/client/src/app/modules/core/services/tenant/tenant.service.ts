@@ -1,13 +1,14 @@
 import { ITenantData, ITenantInfo } from './interfaces';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { BehaviorSubject ,  Observable, of } from 'rxjs';
+import { BehaviorSubject ,  Observable, of, iif, combineLatest } from 'rxjs';
 import { DataService } from '../data/data.service';
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { skipWhile, map, catchError } from 'rxjs/operators';
+import { skipWhile, map, catchError, mergeMap, tap, retry } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
+import { isBuffer } from 'util';
 
 
 /**
@@ -94,5 +95,21 @@ export class TenantService extends DataService {
     }), catchError((error) => {
       return of({});
     }));
+  }
+
+  public getSlugDefaultTenantInfo(slug, defaultTenant) {
+    return combineLatest([this.getTenantConfig(slug)])
+    .pipe(
+      mergeMap(([data]) => {
+        return iif(() => _.isEmpty(data), this.getTenantConfig(defaultTenant), of(data));
+      }),
+      catchError(err => {
+        console.error(err);
+        return of({});
+      }),
+      tap(data => {
+        return data;
+      })
+    );
   }
 }

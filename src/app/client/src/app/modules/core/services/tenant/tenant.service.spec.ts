@@ -73,4 +73,15 @@ describe('TenantService', () => {
     });
   }));
 
+  it('should return api call to get tenant config', inject([LearnerService], (
+    learnerService: LearnerService) => {
+    const service = TestBed.get(TenantService);
+    const learnerServiceBed = TestBed.get(LearnerService);
+    const params = 'test';
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigInvalid));
+    service.getSlugDefaultTenantInfo(params).subscribe((result) => {
+      expect(result).toBeTruthy();
+    });
+  }));
+
 });

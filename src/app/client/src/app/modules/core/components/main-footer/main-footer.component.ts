@@ -30,6 +30,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   instance: string;
   bodyPaddingBottom: string;
   tenantFooter: any;
+  defaultTenant: any;
   public unsubscribe$ = new Subject<void>();
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
@@ -41,6 +42,8 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
     this.tenantFooter = { helpCenterLink: null, helpDeskEmail: null, playstoreLink: null };
+    this.defaultTenant = (<HTMLInputElement>document.getElementById('defaultTenant'))
+    ? (<HTMLInputElement>document.getElementById('defaultTenant')).value : null;
     this.getTenantConfig();
   }
  ngAfterViewInit() {
@@ -114,10 +117,8 @@ footerAlign() {
   }
 
   getTenantConfig() {
-    const defaultTenant = (<HTMLInputElement>document.getElementById('defaultTenant'))
-      ? (<HTMLInputElement>document.getElementById('defaultTenant')).value : null;
-    const slug = this.userService.slug ? this.userService.slug : defaultTenant;
-    this.tenantService.getTenantConfig(slug).pipe(takeUntil(this.unsubscribe$)).subscribe(
+    const slug = this.userService.slug ? this.userService.slug : this.defaultTenant;
+    this.tenantService.getSlugDefaultTenantInfo(slug, this.defaultTenant).pipe(takeUntil(this.unsubscribe$)).subscribe(
       (configResponse) => {
         this.tenantFooter.helpCenterLink = _.get(configResponse, 'helpCenterLink');
         this.tenantFooter.helpDeskEmail = _.get(configResponse, 'helpDeskEmail');
