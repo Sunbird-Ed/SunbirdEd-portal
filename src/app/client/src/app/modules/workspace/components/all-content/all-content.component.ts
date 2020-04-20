@@ -228,13 +228,11 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
     const preStatus = ['Draft', 'FlagDraft', 'Review', 'Processing', 'Live', 'Unlisted', 'FlagReview'];
-    // tslint:disable-next-line: max-line-length
-    const contentTypes = bothParams.queryParams.contentType ? bothParams.queryParams.contentType : this.config.appConfig.WORKSPACE.contentType;
     const searchParams = {
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         createdBy: this.userService.userid,
-        contentType: contentTypes,
+        contentType: bothParams.queryParams.contentType || this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
