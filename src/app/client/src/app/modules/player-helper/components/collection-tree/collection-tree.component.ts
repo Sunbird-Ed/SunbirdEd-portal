@@ -82,8 +82,8 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  ngOnChanges() {
-    if (this.contentComingSoonDetails) {
+  ngOnChanges(changes) {
+    if (this.contentComingSoonDetails || changes.contentStatus) {
       this.initialize();
     }
     if (this.languageSubscription) {
@@ -118,7 +118,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private addNodeMeta() {
-    setTimeout(() => {
     if (!this.rootNode) { return; }
     this.rootNode.walk((node) => {
       node.fileType = MimeTypeTofileType[node.model.mimeType];
@@ -161,7 +160,6 @@ export class CollectionTreeComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     });
-    }, 10);
   }
 
   private setCommingSoonMessage (node) {
