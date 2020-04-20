@@ -61,15 +61,13 @@ describe('DialCodeService', () => {
 
   describe('parseCollection function', () => {
 
-    xit('should return contents from a collection', () => {
+    it('should return contents from a collection', () => {
       const dialCodeService = TestBed.get(DialCodeService);
       const result = dialCodeService.parseCollection(mockData.courseHierarchApiResponse.result.content);
-      result.subscribe(res => {
-        expect(res).toBeDefined();
-        expect(res.length).toBeTruthy();
-        expect(res.length).toBe(9);
-        expect(res).toEqual(mockData.parsedCollection);
-      });
+        expect(result).toBeDefined();
+        expect(result.length).toBeTruthy();
+        expect(result.length).toBe(9);
+        expect(result).toEqual(mockData.parsedCollection);
     });
 
   });
