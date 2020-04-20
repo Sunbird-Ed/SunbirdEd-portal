@@ -1,5 +1,5 @@
-<div class="graph-filters">
-  <form [formGroup]="filtersFormGroup" class="ui form" *ngIf="showChart">
+<div class="graph-filters" #chartRootElement>
+  <form [formGroup]="filtersFormGroup" class="ui form" *ngIf="showChart" [ngClass]="{'hide': hideElements}">
     <div class="d-flex flex-w-wrap reset-filter-section" *ngIf="showFilters">
       <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
         <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
@@ -97,11 +97,14 @@
     <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
   </div>
   <ng-container *ngIf="showChart && !iframeDetails">
-    <canvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions" [chartType]="chartType"
+    <canvas #chartCanvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions" [chartType]="chartType"
       [legend]="legend" [colors]="chartColors"></canvas>
   </ng-container>
   <ng-container *ngIf="iframeDetails">
     <iframe frameborder="0" class="dashboard-iframe" [src]="getIframeURL()">
     </iframe>
   </ng-container>
+  <div class="my-16" *ngIf="chartConfig.summary">
+    <app-report-summary [inputData]="chartConfig.summary"></app-report-summary>
+  </div>
 </div>
