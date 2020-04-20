@@ -235,9 +235,14 @@ describe('DialCodeComponent', () => {
     expect(component.showLoader).toBeFalsy();
   });
 
-  xit('should call collection hierarchy if user clicks on valid textbook', () => {
+  it('should call collection hierarchy if user clicks on valid textbook', () => {
     activatedRoute.queryParams = observableOf({ textbook: 'do_212925261140451328114' });
-    spyOn(dialCodeService, 'getAllPlayableContent');
+    spyOn(dialCodeService, 'getAllPlayableContent').and.returnValue({
+      'collection': [],
+      'contents': []
+    });
+    dialCodeService.getAllPlayableContent(['do_212925261140451328114']);
+    dialCodeService.getCollectionHierarchy('do_212925261140451328114', false);
     dialCodeService['dialSearchResults'] = mockData.dialCodeSearchApiResponse.result;
     fixture.detectChanges();
     component.ngOnInit();
