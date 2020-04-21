@@ -224,6 +224,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       }
       this.showFooter = true;
       this.rotatePlayer();
+    } else {
+      this.playerThumbnail = false;
     }
   }
 
@@ -282,6 +284,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.playerThumbnail = true;
     } else {
       this.loadLandscapePlayer = false;
+      this.playerThumbnail = true;
     }
   }
 
