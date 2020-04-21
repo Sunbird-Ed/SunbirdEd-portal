@@ -6,7 +6,8 @@ const uuidv1 = require('uuid/v1')
 const proxy = require('express-http-proxy')
 const proxyUtils = require('../proxy/proxyUtils.js')
 const logger = require('sb_logger_util_v2');
-const {encrypt} = require('../helpers/crypto');
+const { encrypt, decrypt } = require('../helpers/crypto');
+const {parseJson, isDateExpired} = require('../helpers/utilityService');
 
 module.exports = (app) => {
 
@@ -32,6 +33,18 @@ module.exports = (app) => {
     },
     proxy(envHelper.learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+      proxyReqBodyDecorator: function (bodyContent, srcReq) {
+        var data = JSON.parse(bodyContent.toString('utf8'));
+        var rewUserId = _.get(req.body, 'request.userId')
+        var reqValidator = data.request['validator'];
+        var decodedValidator = isValidRequest(reqValidator);
+        if((decodedValidator['userId']) && (rewUserId === decodedValidator['userId'])){
+          data = _.omit(data, 'request.validator');
+          return data;
+        } else{
+          throw new Error('USER_CANNOTBE_CREATED');
+        }
+      },
       proxyReqPathResolver: (req) => {
         return '/private/user/v1/password/reset'; // /private/user/v1/reset/password
       }
@@ -85,3 +98,17 @@ const getEncyptedQueryParams = (data) => {
   return JSON.stringify(encrypt(JSON.stringify(data)));
 };
 }	
+/**
+ * Verifies request and check exp time
+ * @param encryptedData encrypted data to be decrypted
+ * @returns {*}
+ */
+const isValidRequest = (encryptedData) => {
+  const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
+  const parsedData = parseJson(decryptedData);
+  if (isDateExpired(parsedData.exp)) {
+    throw new Error('DATE_EXPIRED');
+  } else {
+    return _.omit(parsedData, ['exp']);
+  }
+};
