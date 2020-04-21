@@ -11,13 +11,29 @@ import { UserService } from '../user/user.service';
 import { CacheService } from 'ng2-cache-service';
 
 describe('TenantService', () => {
-
+  let userService: UserService;
+  const UserServiceStub = {
+    userid: '874ed8a5-782e-4f6c-8f36-e0288455711e',
+    userProfile: {
+      firstName: 'Creator',
+      lastName: 'ekstep'
+    }
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TenantService, UserService, ConfigService,
-        LearnerService, ResourceService, ToasterService, CacheService]
+      providers: [TenantService, ConfigService,
+        LearnerService, ResourceService, ToasterService, CacheService,
+        { provide: UserService, useValue: UserServiceStub }]
     });
+    userService = TestBed.get(UserService);
+  });
+
+  it('should call get tenant config', () => {
+    const service = TestBed.get(TenantService);
+    spyOn(service, 'get').and.returnValue(response.defaultTenant);
+    const res = service.get();
+    expect(res).toEqual(response.defaultTenant);
   });
 
   it('Should make get API call and set tenant data', () => {
@@ -50,4 +66,49 @@ describe('TenantService', () => {
         expect(data.tenantData).toBeUndefined();
       });
   });
+
+  it('should make api call to get tenant config invalid case', inject([LearnerService], (
+    learnerService: LearnerService) => {
+    const service = TestBed.get(TenantService);
+    const learnerServiceBed = TestBed.get(LearnerService);
+    const params = 'test';
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigInvalid));
+    service.getTenantConfig(params).subscribe((result) => {
+      expect(result).toEqual({});
+    });
+  }));
+
+  it('should make api call to get tenant config valid', inject([LearnerService], (
+    learnerService: LearnerService) => {
+    const service = TestBed.get(TenantService);
+    const learnerServiceBed = TestBed.get(LearnerService);
+    const params = 'test';
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigValid));
+    service.getTenantConfig(params).subscribe((result) => {
+      expect(result).toBeTruthy();
+    });
+  }));
+
+  it('should return api call to get tenant config', inject([LearnerService], (
+    learnerService: LearnerService) => {
+    const service = TestBed.get(TenantService);
+    const learnerServiceBed = TestBed.get(LearnerService);
+    const params = 'test';
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigInvalid));
+    service.getSlugDefaultTenantInfo(params).subscribe((result) => {
+      expect(result).toBeTruthy();
+    });
+  }));
+
+  it('should call get slug default tenant info', () => {
+    const service = TestBed.get(TenantService);
+    const learnerServiceBed = TestBed.get(LearnerService);
+    const params = 'test';
+    service.initialize();
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigInvalid));
+    service.getSlugDefaultTenantInfo(params).subscribe((result) => {
+      expect(result).toBeTruthy();
+    });
+  });
+
 });
