@@ -39,7 +39,6 @@ module.exports = (app) => {
       logger.error({
         URL: req.url,
         body: JSON.stringify(req.body),
-        resp: JSON.stringify(data),
         msg: 'portal - otp verification failed',
         error: JSON.stringify(err)
       });
