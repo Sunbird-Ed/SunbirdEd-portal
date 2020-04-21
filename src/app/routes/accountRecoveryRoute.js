@@ -50,7 +50,13 @@ module.exports = (app) => {
             const data = JSON.parse(proxyResData.toString('utf8'));
             if (data.responseCode === 'OK') {
               req.session.otpVerifiedFor = req.body;
-              var validator = getEncyptedQueryParams({'key':req.body.request.key});
+              const encrypt = {
+                key: req.body.request.key
+              }
+              if (req.body.request.userId) {
+                encrypt['userId'] = req.body.request.userId
+              }
+              var validator = getEncyptedQueryParams(encrypt);
               data['validator'] = validator;
             }
             return data;
