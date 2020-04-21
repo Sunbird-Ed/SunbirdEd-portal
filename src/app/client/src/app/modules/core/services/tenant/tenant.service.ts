@@ -1,8 +1,9 @@
-import { ITenantData, ITenantInfo } from './interfaces';
+import { ITenantData, ITenantInfo, ITenantSettings } from './interfaces';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { BehaviorSubject ,  Observable, of, iif, combineLatest } from 'rxjs';
 import { DataService } from '../data/data.service';
 import { LearnerService } from './../learner/learner.service';
+import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { skipWhile, map, catchError, mergeMap, tap, retry } from 'rxjs/operators';
@@ -24,9 +25,18 @@ export class TenantService extends DataService {
    */
   private _tenantData$ = new BehaviorSubject<ITenantInfo>(undefined);
   /**
+   * BehaviorSubject containing tenant settings data.
+   */
+  private _tenantSettings$ = new BehaviorSubject<ITenantSettings>(undefined);
+  /**
    * Read only observable containing tenant data.
    */
   public readonly tenantData$: Observable<ITenantInfo> = this._tenantData$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
+  /**
+   * Read only observable containing tenant settings data.
+   */
+  public readonly tenantSettings$: Observable<ITenantSettings> = this._tenantSettings$.asObservable()
   .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * reference of http.
@@ -44,16 +54,34 @@ export class TenantService extends DataService {
    * This variable holds favicon details.
    */
   favicon: string;
+  /**
+   * Variable that holds default tenant value
+   */
+  private _defaultTenant = '';
 
   /**
    * The constructor
    * @param {HttpClient} http Reference of HttpClient.
    * @param {ConfigService} config Reference of ConfigService.
    */
-  constructor(http: HttpClient, config: ConfigService, private cacheService: CacheService, private learnerService: LearnerService) {
+  constructor(http: HttpClient, config: ConfigService, private cacheService: CacheService,
+    private learnerService: LearnerService, private userService: UserService) {
     super(http);
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.TENANT_PREFIX;
+    this._defaultTenant = (<HTMLInputElement>document.getElementById('defaultTenant'))
+    ? (<HTMLInputElement>document.getElementById('defaultTenant')).value : null;
+  }
+
+  /**
+   * @returns default tenant value
+   */
+  get defaultTenant() {
+    return this._defaultTenant;
+  }
+
+  public initialize() {
+    this.getSlugDefaultTenantInfo(this.userService.slug).subscribe();
   }
 
   /**
@@ -97,18 +125,18 @@ export class TenantService extends DataService {
     }));
   }
 
-  public getSlugDefaultTenantInfo(slug, defaultTenant) {
+  public getSlugDefaultTenantInfo(slug) {
     return combineLatest([this.getTenantConfig(slug)])
     .pipe(
       mergeMap(([data]) => {
-        return iif(() => _.isEmpty(data), this.getTenantConfig(defaultTenant), of(data));
+        return iif(() => _.isEmpty(data), this.getTenantConfig(this._defaultTenant), of(data));
       }),
       catchError(err => {
         console.error(err);
         return of({});
       }),
       tap(data => {
-        return data;
+        this._tenantSettings$.next(data);
       })
     );
   }

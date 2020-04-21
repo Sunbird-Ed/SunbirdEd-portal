@@ -71,5 +71,6 @@ export const response = {
         'value': ''
       }
     }
-  }
+  },
+  defaultTenant: 'sunbird'
 };

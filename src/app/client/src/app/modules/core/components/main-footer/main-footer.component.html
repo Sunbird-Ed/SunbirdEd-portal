@@ -27,18 +27,18 @@
               {{resourceService.frmelmnts?.lnk?.footerDikshaVerticals}}
             </a>
           </li> -->
-          <li class="mb-16" *ngIf="tenantFooter.helpCenterLink">
+          <li class="mb-16" *ngIf="tenantFooter?.helpCenterLink">
             <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-              href="{{tenantFooter.helpCenterLink}}">
+              href="{{tenantFooter?.helpCenterLink}}">
               {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
             </a>
           </li>
-          <li *ngIf="tenantFooter.helpDeskEmail">
+          <li *ngIf="tenantFooter?.helpDeskEmail">
             <label class="d-block mb-0">
               {{resourceService.frmelmnts?.lnk?.footerContact}}
             </label>
             <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-0"
-              href="mailto:{{tenantFooter.helpDeskEmail}}">{{tenantFooter.helpDeskEmail}}</a>
+              href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
           </li>
           <!-- <li class="mb-16">
             <a href="/partners/">

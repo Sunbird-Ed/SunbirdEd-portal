@@ -114,18 +114,4 @@ describe('MainFooterComponent', () => {
         TestBed.get(ResourceService).instance + '-sunbird&utm_medium=');
     });
 
-    it('should redirect to playstore url provided from tenant config', () => {
-        const spy = spyOn(component, 'redirect');
-        component.tenantFooter.playstoreLink = 'https://play.google.com/store/apps/details?id=in.my.mobile.app';
-        component.redirectToDikshaApp();
-        expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.my.mobile.app');
-    });
-
-    it('should call tenant service to get tenant config', () => {
-        spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
-        spyOn(component.tenantService, 'getTenantConfig').and.returnValue(of(response));
-        component.getTenantConfig();
-        expect(component.tenantFooter).toBeDefined();
-    });
-
 });
