@@ -95,6 +95,7 @@ export class UserService {
    */
   public publicDataService: PublicDataService;
   private _slug = '';
+  public _isCustodianUser: boolean;
   /**
   * constructor
   * @param {ConfigService} config ConfigService reference
@@ -147,6 +148,12 @@ export class UserService {
   get sessionId(): string {
     return this._sessionId;
   }
+  setIsCustodianUser(isCustodianUser) {
+    this._isCustodianUser = isCustodianUser;
+  }
+  get isCustodianUser(): boolean {
+    return this._isCustodianUser;
+  }
   /**
    * method to fetch user profile from server.
    */
@@ -194,6 +201,7 @@ export class UserService {
     const orgRoleMap = {};
     const hashTagIds = [];
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
+    this._slug = _.get(profileData, 'rootOrg.slug');
     profileData.skills = _.get(profileData, 'skills' ) || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];

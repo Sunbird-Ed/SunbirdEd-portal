@@ -120,7 +120,7 @@ describe('OtpComponent', () => {
     component.mode = 'email';
     component.tncLatestVersion = 'v4';
     spyOn(component, 'logCreateUserError');
-    component.createUser();
+    component.createUser(OtpComponentMockResponse.data);
     expect(component.infoMessage).toEqual('');
     expect(component.disableSubmitBtn).toEqual(false);
     expect(component.logCreateUserError).toHaveBeenCalled();
@@ -136,7 +136,7 @@ describe('OtpComponent', () => {
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableThrowError(OtpComponentMockResponse.tncAcceptResponse));
     component.mode = 'email';
     component.tncLatestVersion = 'v4';
-    component.createUser();
+    component.createUser(OtpComponentMockResponse.data);
     expect(component.redirectToSignPage).toHaveBeenCalled();
     expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryCreateUserSuccess);
     expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryTncError);
@@ -152,7 +152,7 @@ describe('OtpComponent', () => {
     spyOn(signupService, 'acceptTermsAndConditions').and.returnValue(observableOf(OtpComponentMockResponse.tncAcceptResponse));
     component.mode = 'email';
     component.tncLatestVersion = 'v4';
-    component.createUser();
+    component.createUser(OtpComponentMockResponse.data);
     expect(component.redirectToSignPage).toHaveBeenCalled();
     expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryCreateUserSuccess);
     expect(telemetryService.log).toHaveBeenCalledWith(OtpComponentMockResponse.telemetryTncSuccess);

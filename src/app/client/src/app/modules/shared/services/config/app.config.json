@@ -740,7 +740,8 @@
       "PracticeResource",
       "LearningOutcomeDefinition",
       "ExplanationResource",
-      "ExperientialResource"
+      "ExperientialResource",
+      "eTextBook"
     ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",

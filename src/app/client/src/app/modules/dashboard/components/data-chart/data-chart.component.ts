@@ -109,7 +109,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
           this.dateFilterReferenceName = filter.reference;
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-        filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
+        filter.options = _.sortBy(_.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase())));
       });
       if (this.filters.length > 0) {
         this.showFilters = true;
@@ -127,7 +127,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
           this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
           const res: Array<{}> = _.filter(this.chartData, data => {
             return _.every(filters, (value, key) => {
-              return _.includes(value, data[key].toLowerCase());
+              return _.includes(_.toLower(value), data[key].toLowerCase());
             });
           });
           this.noResultsFound = (res.length > 0) ? false : true;
@@ -230,6 +230,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (_.get(this.chartConfig, 'labels')) {
       labels = _.get(this.chartConfig, 'labels');
     }
+    _.forEach(labels, (label, key) => {
+      labels[key] = _.capitalize(label);
+    });
     this.chartLabels = labels;
     this.datasets = [];
     _.forEach(this.chartConfig.datasets, dataset => {

@@ -13,6 +13,7 @@ import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { IPagination } from '@sunbird/announcement';
+import { copyObj } from '@angular/animations/browser/src/util';
 /**
  * This component shows the course progress dashboard
  */
@@ -154,6 +155,15 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     */
   public config: ConfigService;
   /**
+    * To display score report updated date
+    */
+  public scoreReportUpdatedOn: string;
+  /**
+    * To display progress report updated date
+    */
+  public progressReportUpdatedOn: string;
+
+  /**
 	 * telemetryImpression object for course progress page
 	*/
   telemetryImpression: IImpressionEventInput;
@@ -229,6 +239,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         } else {
           this.showWarningDiv = true;
         }
+        this.getReportUpdatedOnDate();
         this.paramSubcription.unsubscribe();
       }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -418,6 +429,25 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       subscribe(query => {
         this.populateCourseDashboardData();
       });
+  }
+  getReportUpdatedOnDate() {
+    const batchId = _.get(this.queryParams, 'batchIdentifier');
+    const reportParams = {
+      'course-progress-reports': `course-progress-reports/report-${batchId}.csv`,
+      'assessment-reports': `assessment-reports/report-${batchId}.csv`
+    };
+    const requestParams = {
+      params: {
+        fileNames: JSON.stringify(reportParams)
+      },
+      telemetryData: this.activatedRoute
+    };
+    this.courseProgressService.getReportsMetaData(requestParams).subscribe((response) => {
+      if (_.get(response, 'responseCode') === 'OK') {
+        this.progressReportUpdatedOn =  _.get(response, `result.course-progress-reports.lastModified`) || '';
+        this.scoreReportUpdatedOn = _.get(response, `result.assessment-reports.lastModified`) || '';
+      }
+    });
   }
   /**
   * To method subscribes the user data to get the user id.

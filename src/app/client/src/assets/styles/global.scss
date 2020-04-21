@@ -13,14 +13,14 @@ body {
   letter-spacing: 0.2px;
   height: auto;
   color: $default-text-color;
-  padding-bottom: 336px;
+ // padding-bottom: 336px;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   &.pushable {
     background: $body-background-color !important;
     & > .pusher {
       background: transparent !important;
-      padding-bottom: 400px !important;
+     // padding-bottom: 400px !important;
       &.dimmed {
         height: 100vh;
       }
@@ -31,8 +31,7 @@ body {
 @include respond-above(sm) {
   body {
     .pusher {
-      padding-bottom: 240px !important;
-    
+    //  padding-bottom: 240px !important;
     }
     .sb-mid-container-min-height {
       min-height: calc(100vh - 288px);
@@ -224,9 +223,8 @@ app-workspace {
 }
 .sb-workspace-bg{
   position: relative;
-  bottom: -35px;
+  margin-bottom: calculateRem(-48px);
   height: auto;
-  margin-top: -35px;
 }
 
 /* for sticky header desktop-app */
@@ -257,5 +255,12 @@ app-workspace {
         margin: 0 0 1.5rem 0;
       }
     }
+  }
+}
+.sb-graph-section{
+  .sb-table-fixed .sb-table tbody td, .sb-table-fixed .sb-table-body td {
+    text-overflow: initial;
+    overflow: initial;
+    white-space: unset;
   }
 }

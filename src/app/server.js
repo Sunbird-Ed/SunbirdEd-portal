@@ -1,5 +1,5 @@
 'use strict'
-const express = require('express')
+const express = require('express');
 const proxy = require('express-http-proxy')
 const session = require('express-session')
 const path = require('path')
