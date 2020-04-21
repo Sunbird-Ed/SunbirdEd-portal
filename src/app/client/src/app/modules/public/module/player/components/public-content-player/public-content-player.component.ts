@@ -327,6 +327,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   }
 
   showRatingModal() {
-    this.contentRatingModal = true;
+    if (this.isMobileOrTab) {
+      this.contentRatingModal = true;
+    }
   }
 }
