@@ -27,15 +27,23 @@ module.exports = (app) => {
         var reqUserId = _.get(req.body, 'request.userId')
         var reqValidator = data.request['validator'];
         var decodedValidator = isValidRequest(reqValidator);
-      if((decodedValidator['userId']) && (reqUserId === decodedValidator['userId'])){
-        next();
-      } else {
-        logger.error({
-              msg: 'unauthorized'
-            });
-            res.status(401).send({"id":"api.reset.password","ver":"v1" ,"ts":dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),"params":{"resmsgid":null,"msgid": uuidv1(),"err":null,"status":"unauthorized","errmsg":null},"responseCode":"UNAUTHORIZED","result":{"response":"unauthorized"}})
-      }
-
+        if((decodedValidator['userId']) && (reqUserId === decodedValidator['userId'])){
+          next();
+        } else {
+          logger.error({
+                msg: 'unauthorized'
+              });
+              res.status(401).send({"id":"api.reset.password","ver":"v1" ,"ts":dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),"params":{"resmsgid":null,"msgid": uuidv1(),"err":null,"status":"unauthorized","errmsg":null},"responseCode":"UNAUTHORIZED","result":{"response":"unauthorized"}})
+        }
+     }catch (err) {
+      logger.error({
+        URL: req.url,
+        body: JSON.stringify(req.body),
+        resp: JSON.stringify(data),
+        msg: 'portal - otp verification failed',
+        error: JSON.stringify(err)
+      });
+    }
       // if(_.get(req.body, 'request.userId') !== _.get(req.session, 'otpVerifiedFor.request.userId')){
       //   logger.error({
       //     msg: 'unauthorized'
@@ -47,29 +55,6 @@ module.exports = (app) => {
     },
     proxy(envHelper.learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
-      proxyReqBodyDecorator: function (bodyContent) {
-        try {
-        var data = JSON.parse(bodyContent.toString('utf8'));
-        var rewUserId = _.get(req.body, 'request.userId')
-        var reqValidator = data.request['validator'];
-        var decodedValidator = isValidRequest(reqValidator);
-        if((decodedValidator['userId']) && (rewUserId === decodedValidator['userId'])){
-          data = _.omit(data, 'request.validator');
-          return data;
-        } else{
-          throw new Error('USER_CANNOTBE_CREATED');
-        }
-      }catch (err) {
-        logger.error({
-          URL: req.url,
-          body: JSON.stringify(req.body),
-          resp: JSON.stringify(data),
-          msg: 'portal - otp verification failed',
-          error: JSON.stringify(err)
-        });
-    return bodyContent;
-      }
-      },
       proxyReqPathResolver: (req) => {
         return '/private/user/v1/password/reset'; // /private/user/v1/reset/password
       }
