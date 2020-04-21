@@ -40,7 +40,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public frameworkData: object;
     public frameworkId;
     public closeIntractEdata;
-    public numberOfSections: number = 20;
+    public numberOfSections = 20;
 
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
