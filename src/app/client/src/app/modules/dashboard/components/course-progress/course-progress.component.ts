@@ -157,11 +157,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
     * To display score report updated date
     */
-  public scoreReportUpdatedOn: string;
+  public scoreReportUpdatedOn;
   /**
     * To display progress report updated date
     */
-  public progressReportUpdatedOn: string;
+  public progressReportUpdatedOn;
 
   /**
 	 * telemetryImpression object for course progress page
@@ -444,8 +444,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     };
     this.courseProgressService.getReportsMetaData(requestParams).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
-        this.progressReportUpdatedOn =  _.get(response, `result.course-progress-reports.lastModified`) || '';
-        this.scoreReportUpdatedOn = _.get(response, `result.assessment-reports.lastModified`) || '';
+        this.progressReportUpdatedOn =  _.get(response, 'result.course-progress-reports.lastModified') || null;
+        this.scoreReportUpdatedOn = _.get(response, 'result.assessment-reports.lastModified') || null;
       }
     });
   }
