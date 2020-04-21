@@ -69,6 +69,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   isSingleContent: any;
   isMobileOrTab: boolean;
   showCloseButton = false;
+  contentRatingModal = false;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
@@ -325,4 +326,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     window.open(pdfUrl, '_blank');
   }
 
+  showRatingModal() {
+    this.contentRatingModal = true;
+  }
 }
