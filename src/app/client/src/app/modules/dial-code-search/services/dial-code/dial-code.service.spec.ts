@@ -24,25 +24,30 @@ describe('DialCodeService', () => {
       const dialCodeService = TestBed.get(DialCodeService);
       const searchService = TestBed.get(SearchService);
       const userService = TestBed.get(UserService);
+      const publicDataService = TestBed.get(PublicDataService);
       spyOn(searchService, 'contentSearch').and.returnValue(of(mockData.dialCodeSearchApiResponse));
       dialCodeService.searchDialCode('K2W1G4', false).subscribe(res => {
         expect(searchService.contentSearch).toHaveBeenCalled();
         expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
-        const req = {
-          'source': 'web',
-          'name': 'DIAL Code Consumption',
-          'filters': {
-            'dialcodes': 'K2W1G4',
-            'contentType': [
-              'TextBook',
-              'TextBookUnit',
-              'Course'
-              ]
-          },
-          'userProfile': userService.loggedIn ?
-          {board: userService.userProfile.framework.board} : {}
+        const option = {
+          url: 'data/v1/dial/assemble',
+          data: {
+            request: {
+              source: 'web',
+              name: 'DIAL Code Consumption',
+              filters: {dialcodes: 'K2W1G4',
+                        contentType: ['Collection',
+                        'TextBook',
+                        'TextBookUnit',
+                        'Resource',
+                        'Course']
+                      },
+                      'userProfile': userService.loggedIn ?
+                      {board: userService.userProfile.framework.board} : {}
+            }
+          }
         };
-        expect(searchService.contentSearch).toHaveBeenCalledWith(req, false);
+        expect(publicDataService.post).toHaveBeenCalledWith(option, false);
         expect(res).toBeDefined();
         expect(res).toEqual(mockData.dialCodeSearchApiResponse.result);
       });
