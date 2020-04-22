@@ -25,10 +25,7 @@ describe('DialCodeService', () => {
       const searchService = TestBed.get(SearchService);
       const userService = TestBed.get(UserService);
       const publicDataService = TestBed.get(PublicDataService);
-      spyOn(searchService, 'contentSearch').and.returnValue(of(mockData.dialCodeSearchApiResponse));
       dialCodeService.searchDialCode('K2W1G4', false).subscribe(res => {
-        expect(searchService.contentSearch).toHaveBeenCalled();
-        expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
         const option = {
           url: 'data/v1/dial/assemble',
           data: {
