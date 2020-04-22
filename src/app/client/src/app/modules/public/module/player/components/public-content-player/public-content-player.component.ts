@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -72,6 +72,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   shareLink: string;
   public telemetryShareData: Array<ITelemetryShare>;
   public sharelinkModal: boolean;
+  contentRatingModal = false;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
@@ -83,6 +84,15 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     this.playerOption = {
       showContentRating: true
     };
+  }
+
+  /** It will handle device back-button click to rotate landscape to portrait */
+  @HostListener('window:orientationchange', ['$event'])
+  public handleOrientationChange() {
+    const screenType = _.get(screen, 'orientation.type');
+      if ( screenType === 'portrait-primary' || screenType === 'portrait-secondary' ) {
+        this.closeFullscreen();
+      }
   }
   /**
    *
@@ -214,11 +224,13 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    */
   deviceDetector() {
     if (this.isMobileOrTab) {
-      if (!this.isSingleContent) {
+      if (this.isSingleContent === false) {
         this.loadLandscapePlayer = true;
       }
       this.showFooter = true;
       this.rotatePlayer();
+    } else {
+      this.playerThumbnail = false;
     }
   }
 
@@ -277,6 +289,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.playerThumbnail = true;
     } else {
       this.loadLandscapePlayer = false;
+      this.playerThumbnail = true;
     }
   }
 
@@ -329,6 +342,12 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
   printPdf(pdfUrl: string) {
     window.open(pdfUrl, '_blank');
+  }
+
+  showRatingModal() {
+    if (this.isMobileOrTab) {
+      this.contentRatingModal = true;
+    }
   }
 
 }

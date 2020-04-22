@@ -171,12 +171,8 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       emailVal = this.signUpForm.get('email').value;
     }
     const val = _.get(passCtrl, 'value');
-    const lwcsRegex = new RegExp('^(?=.*[a-z])');
-    const upcsRegex = new RegExp('^(?=.*[A-Z])');
-    const charRegex = new RegExp('^(?=.{8,})');
-    const numRegex = new RegExp('^(?=.*[0-9])');
-    const specRegex = new RegExp('^[^<>{}\'\"/|;:.\ ,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©_+]*$');
-    if (!charRegex.test(val) || !lwcsRegex.test(val) || !upcsRegex.test(val) || !numRegex.test(val) || specRegex.test(val)) {
+    const specRegex = new RegExp('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[~.,)(}{\\[!"#$%&\'()*+,-./:;<=>?@[^_`{|}~\\]])(?=\\S+$).{8,}');
+    if (!specRegex.test(val)) {
       this.passwordError = _.get(this.resourceService, 'frmelmnts.lbl.passwd');
       passCtrl.setErrors({ passwordError: this.passwordError });
     } else if (emailVal === val || this.signUpForm.controls.name.value === val) {
