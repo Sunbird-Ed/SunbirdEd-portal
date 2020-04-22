@@ -1,7 +1,7 @@
-import { CoreModule, SearchService, PlayerService } from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
+import { CoreModule, SearchService, PlayerService, UserService, PublicDataService } from '@sunbird/core';
+import { SharedModule, ConfigService } from '@sunbird/shared';
 import { TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DialCodeService } from './dial-code.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockData } from './dial-code.service.spec.data';
@@ -9,7 +9,7 @@ import { of, throwError } from 'rxjs';
 describe('DialCodeService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule],
+    imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, HttpClientTestingModule],
     providers: [SearchService, PlayerService]
   }));
 
@@ -22,23 +22,27 @@ describe('DialCodeService', () => {
 
     it('should return dial search results', () => {
       const dialCodeService = TestBed.get(DialCodeService);
-      const searchService = TestBed.get(SearchService);
-      spyOn(searchService, 'contentSearch').and.returnValue(of(mockData.dialCodeSearchApiResponse));
-      dialCodeService.searchDialCode('646X5X', false).subscribe(res => {
-        expect(searchService.contentSearch).toHaveBeenCalled();
-        expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
-        expect(searchService.contentSearch).toHaveBeenCalledWith({
-          'filters': {
-            'dialcodes': '646X5X'
-          },
-          'mode': 'collection',
-          'params': {
-            'orgdetails': 'orgName,email',
-            'online': false
+      const publicDataService = TestBed.get(PublicDataService);
+      spyOn(publicDataService, 'post').and.returnValue(of(mockData.dialCodeSearchApiResponse));
+      dialCodeService.searchDialCode('K2W1G4', false).subscribe(res => {
+        expect(publicDataService.post).toHaveBeenCalled();
+        expect(publicDataService.post).toHaveBeenCalledTimes(1);
+        const option = {
+          url: 'data/v1/dial/assemble',
+          data: {
+            request: {
+              'source': 'web',
+              'name': 'DIAL Code Consumption',
+              'filters': {'dialcodes': 'K2W1G4',
+                        'contentType': [ 'Collection', 'TextBook', 'TextBookUnit', 'Resource', 'Course' ]
+                      },
+              'userProfile': { }
+            }
           }
-        }, false);
+        };
+        expect(publicDataService.post).toHaveBeenCalledWith(option);
         expect(res).toBeDefined();
-        expect(res).toEqual(mockData.dialCodeSearchApiResponse.result);
+        expect(res).toEqual(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
       });
     });
 
@@ -49,16 +53,12 @@ describe('DialCodeService', () => {
     it('should return collections and contents from dial search results ', () => {
       const dialCodeService = TestBed.get(DialCodeService);
       spyOn(dialCodeService, 'getAllPlayableContent').and.callThrough();
-      const results = dialCodeService.filterDialSearchResults(mockData.dialCodeSearchApiResponse.result);
+      const results = dialCodeService.filterDialSearchResults(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
       results.subscribe(res => {
         expect(res).toBeDefined();
         expect(res.collection).toBeDefined();
         expect(res.contents).toBeDefined();
-        expect(res).toEqual({
-          'collection': mockData.dialCodeSearchApiResponse.result.collections,
-          'contents': []
-        });
-        expect(dialCodeService.dialCodeResult).toEqual(mockData.dialCodeSearchApiResponse.result);
+        expect(dialCodeService.dialCodeResult).toEqual(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
       });
     });
   });
@@ -68,10 +68,10 @@ describe('DialCodeService', () => {
     it('should return contents from a collection', () => {
       const dialCodeService = TestBed.get(DialCodeService);
       const result = dialCodeService.parseCollection(mockData.courseHierarchApiResponse.result.content);
-      expect(result).toBeDefined();
-      expect(result.length).toBeTruthy();
-      expect(result.length).toBe(9);
-      expect(result).toEqual(mockData.parsedCollection);
+        expect(result).toBeDefined();
+        expect(result.length).toBeTruthy();
+        expect(result.length).toBe(9);
+        expect(result).toEqual(mockData.parsedCollection);
     });
 
   });
@@ -97,7 +97,7 @@ describe('DialCodeService', () => {
 
     it('should group contents based on their content type', () => {
       const dialCodeService = TestBed.get(DialCodeService);
-      const result = dialCodeService.groupCollections(mockData.dialCodeSearchApiResponse.result.content);
+      const result = dialCodeService.groupCollections(mockData.dialCodeSearchApiResponse.result.response.sections[0].collections);
       expect(result).toEqual(mockData.groupedCollection);
       expect(result).toBeDefined();
     });
