@@ -14,30 +14,30 @@ export class DialCodeService {
 
   private dialSearchResults;
   constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService,
-    private config: ConfigService, private user: UserService, private publicDataService: PublicDataService) {
+    private config: ConfigService, private user: UserService, private publicDataService: PublicDataService ) {
     }
-
   /**
    * makes API call to search for dialCode
    */
   public searchDialCode(dialCode: string, online: boolean): Observable<any[]> {
-  const option = {
-    url: this.config.urlConFig.URLS.DAIL_ASSEMBLE_PREFIX,
-    data: {
-      request: {
-        source: 'web',
-        name: 'DIAL Code Consumption',
-        filters: {dialcodes: dialCode,
-                  contentType: this.config.appConfig.DialAssembleSearch.contentType
-                },
-        userProfile: this.user.loggedIn && _.get(this.user.userProfile, 'framework.board') ?
-                  {board: this.user.userProfile.framework.board} : {}
+    const option = {
+      url: this.config.urlConFig.URLS.DAIL_ASSEMBLE_PREFIX,
+      data: {
+        request: {
+          source: 'web',
+          name: 'DIAL Code Consumption',
+          filters: {  dialcodes: dialCode,
+                      contentType: this.config.appConfig.DialAssembleSearch.contentType
+                  },
+          userProfile: this.user.loggedIn && _.get(this.user.userProfile, 'framework.board') ?
+                      { board: this.user.userProfile.framework.board } : {}
+        }
       }
-    }
-  };
-  return this.publicDataService.post(option)
-  .pipe(
-    map(apiResponse => _.get(apiResponse, 'result.response.sections[0]')));
+    };
+    return this.publicDataService.post(option)
+      .pipe(
+        map(apiResponse => _.get(apiResponse, 'result.response.sections[0]'))
+      );
   }
 
   /**
