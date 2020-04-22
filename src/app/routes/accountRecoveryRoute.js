@@ -15,7 +15,7 @@ module.exports = (app) => {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
     proxyReqPathResolver: (req) => {
       logger.info({ msg: `${req.url} called`});
-      return '/learner/private/user/v1/search';
+      return '/private/user/v1/search';
     }
   }))
 
@@ -50,7 +50,7 @@ module.exports = (app) => {
     proxy(envHelper.learner_Service_Local_BaseUrl, {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
       proxyReqPathResolver: (req) => {
-        return '/learner/private/user/v1/password/reset'; // /private/user/v1/reset/password
+        return '/private/user/v1/password/reset'; // /private/user/v1/reset/password
       }
     }))
 
