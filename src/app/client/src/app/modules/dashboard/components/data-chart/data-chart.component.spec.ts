@@ -65,16 +65,16 @@ describe('DataChartComponent', () => {
         expect(component.filters).toBe(mockChartData.chartConfig.filters);
         expect(spy).toHaveBeenCalled();
         expect(component.chartLabels).toEqual([
-            'class 2',
-            'class 3',
-            'class 4',
-            'class 5',
-            'class 6',
-            'class 7',
-            'class 8',
-            'class 9',
-            'class 10',
-            'class 1'
+            'Class 2',
+            'Class 3',
+            'Class 4',
+            'Class 5',
+            'Class 6',
+            'Class 7',
+            'Class 8',
+            'Class 9',
+            'Class 10',
+            'Class 1'
         ]);
         expect(component.datasets).toEqual([{
             label: 'Total number of QR codes',
@@ -117,11 +117,11 @@ describe('DataChartComponent', () => {
     it('should should change selected filters value whenever any filter is changed', fakeAsync(() => {
         const spy = spyOn(component, 'getDataSetValue').and.callThrough();
         component.ngOnInit();
-        component.filtersFormGroup.get('Grade').setValue(['class 2']);
+        component.filtersFormGroup.get('Grade').setValue(['Class 2']);
         component.filtersFormGroup.get('Medium').setValue(['telugu']);
         tick(1000);
         expect(component.selectedFilters).toEqual({
-            'Grade': ['class 2'],
+            'Grade': ['Class 2'],
             'Medium': ['telugu']
         });
         expect(spy).toHaveBeenCalled();
@@ -145,7 +145,7 @@ describe('DataChartComponent', () => {
             'Number of QR codes with no linked content': '60'
         }]);
         expect(component.noResultsFound).toBe(false);
-        expect(component.chartLabels).toEqual(['class 2']);
+        expect(component.chartLabels).toEqual(['Class 2']);
         expect(component.datasets).toEqual([{
             label: 'Total number of QR codes',
             data: [135],

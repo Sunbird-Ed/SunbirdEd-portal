@@ -247,9 +247,9 @@ export class MainHeaderComponent implements OnInit {
   setWindowConfig() {
     if (window.innerWidth <= 1023 && window.innerWidth > 548) {
       this.searchBox.center = true;
-      this.searchBox.largeBox = true;
+      this.searchBox.largeBox = false;
       this.searchBox.smallBox = false;
-      this.searchBox.mediumBox = false;
+      this.searchBox.mediumBox = true;
     } else if (window.innerWidth <= 548) {
       this.searchBox.smallBox = true;
       this.searchBox.largeBox = false;
@@ -257,15 +257,15 @@ export class MainHeaderComponent implements OnInit {
     } else {
       this.searchBox.center = false;
       this.searchBox.smallBox = false;
-      this.searchBox.largeBox = false;
-      this.searchBox.mediumBox = true;
+      this.searchBox.largeBox = true;
+      this.searchBox.mediumBox = false;
     }
     window.onresize = (e) => {
       if (window.innerWidth <= 1023 && window.innerWidth > 548) {
         this.searchBox.center = true;
-        this.searchBox.largeBox = true;
+        this.searchBox.largeBox = false;
         this.searchBox.smallBox = false;
-        this.searchBox.mediumBox = false;
+        this.searchBox.mediumBox = true;
       } else if (window.innerWidth <= 548) {
         this.searchBox.largeBox = false;
         this.searchBox.mediumBox = false;
@@ -273,8 +273,8 @@ export class MainHeaderComponent implements OnInit {
       } else {
         this.searchBox.center = false;
         this.searchBox.smallBox = false;
-        this.searchBox.largeBox = false;
-        this.searchBox.mediumBox = true;
+        this.searchBox.largeBox = true;
+        this.searchBox.mediumBox = false;
       }
     };
   }
