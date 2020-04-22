@@ -68,7 +68,9 @@ export const response = {
       'response': {
         'id': 'tn',
         'field': 'tn',
-        'value': ''
+        'value': '{\"helpCenterLink\":\"help/getting-started/explore-sunbird/index.html\",\"helpdeskEmail\":\"support-ka@abc.com\",' +
+        '\"playstoreLink\":\"https://play.google.com/store/apps/details?id=in.sunbird.app&referrer=utm_content=' +
+        'https://sunbird.in/explore-course?channel=sb&role=other\"}'
       }
     }
   },
