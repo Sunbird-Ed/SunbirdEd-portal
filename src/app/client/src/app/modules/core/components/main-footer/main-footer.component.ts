@@ -47,7 +47,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
  ngAfterViewInit() {
     this.footerAlign();
   }
- @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.footerAlign();
   }

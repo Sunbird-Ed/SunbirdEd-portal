@@ -81,7 +81,17 @@ export class TenantService extends DataService {
   }
 
   public initialize() {
-    this.getSlugDefaultTenantInfo(this.userService.slug).subscribe();
+    if (this.cacheService.exists('orgSettings')) {
+      const orgSettings = this.cacheService.get('orgSettings');
+      const slug = this.userService.slug !== '' ? this.userService.slug : this._defaultTenant;
+      if (orgSettings.id === slug) {
+        this._tenantSettings$.next(JSON.parse(orgSettings.value));
+      } else {
+        this.getSlugDefaultTenantInfo(this.userService.slug).subscribe();
+      }
+    } else {
+      this.getSlugDefaultTenantInfo(this.userService.slug).subscribe();
+    }
   }
 
   /**
@@ -114,8 +124,10 @@ export class TenantService extends DataService {
       if (_.has(data, 'result.response')) {
         let configResponse = {};
         try {
-          configResponse = JSON.parse(data.result.response.value);
-        } catch (parseJSONResponse) {}
+          if (JSON.parse(data.result.response.value)) { configResponse = data; }
+        } catch (parseJSONResponse) {
+          console.error('org settings parse error => ', parseJSONResponse);
+        }
         return configResponse;
       } else {
         return {};
@@ -136,8 +148,16 @@ export class TenantService extends DataService {
         return of({});
       }),
       tap(data => {
-        this._tenantSettings$.next(data);
+        this.setTenantSettings(data);
       })
     );
+  }
+
+  public setTenantSettings(settingsResponse) {
+    const data = _.get(settingsResponse.result, 'response');
+    this.cacheService.set('orgSettings', data , {
+      maxAge: 86400
+    });
+    this._tenantSettings$.next(JSON.parse(settingsResponse.result.response.value));
   }
 }

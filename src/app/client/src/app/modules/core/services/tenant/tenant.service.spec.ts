@@ -94,21 +94,27 @@ describe('TenantService', () => {
     const service = TestBed.get(TenantService);
     const learnerServiceBed = TestBed.get(LearnerService);
     const params = 'test';
-    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigInvalid));
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigValid));
     service.getSlugDefaultTenantInfo(params).subscribe((result) => {
       expect(result).toBeTruthy();
     });
   }));
 
-  it('should call get slug default tenant info', () => {
+  it('should call initialize', inject([LearnerService], (
+    learnerService: LearnerService) => {
     const service = TestBed.get(TenantService);
     const learnerServiceBed = TestBed.get(LearnerService);
+    const cacheServiceBed = TestBed.get(CacheService);
     const params = 'test';
+    spyOn(cacheServiceBed, 'exists').and.returnValue(true);
+    spyOn(cacheServiceBed, 'get').and.returnValue(response.tenantConfigValid);
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigValid));
     service.initialize();
-    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigInvalid));
-    service.getSlugDefaultTenantInfo(params).subscribe((result) => {
-      expect(result).toBeTruthy();
-    });
-  });
+    service._tenantSettings$.subscribe(
+      data => {
+       expect(data).toBeDefined();
+      }
+    );
+  }));
 
 });
