@@ -1,5 +1,5 @@
-import { CoreModule, SearchService, PlayerService } from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
+import { CoreModule, SearchService, PlayerService, UserService, PublicDataService } from '@sunbird/core';
+import { SharedModule, ConfigService } from '@sunbird/shared';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DialCodeService } from './dial-code.service';
@@ -10,7 +10,7 @@ describe('DialCodeService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, HttpClientTestingModule],
-    providers: [SearchService, PlayerService]
+    providers: [SearchService, PlayerService, ConfigService, UserService, PublicDataService]
   }));
 
   it('should be created', () => {
@@ -23,11 +23,12 @@ describe('DialCodeService', () => {
     it('should return dial search results', () => {
       const dialCodeService = TestBed.get(DialCodeService);
       const searchService = TestBed.get(SearchService);
+      const userService = TestBed.get(UserService);
       spyOn(searchService, 'contentSearch').and.returnValue(of(mockData.dialCodeSearchApiResponse));
       dialCodeService.searchDialCode('K2W1G4', false).subscribe(res => {
         expect(searchService.contentSearch).toHaveBeenCalled();
         expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
-        expect(searchService.contentSearch).toHaveBeenCalledWith({
+        const req = {
           'source': 'web',
           'name': 'DIAL Code Consumption',
           'filters': {
@@ -38,8 +39,10 @@ describe('DialCodeService', () => {
               'Course'
               ]
           },
-          'userProfile': {}
-        }, false);
+          'userProfile': userService.loggedIn ?
+          {board: userService.userProfile.framework.board} : {}
+        };
+        expect(searchService.contentSearch).toHaveBeenCalledWith(req, false);
         expect(res).toBeDefined();
         expect(res).toEqual(mockData.dialCodeSearchApiResponse.result);
       });
