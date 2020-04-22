@@ -344,10 +344,4 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     window.open(pdfUrl, '_blank');
   }
 
-  showRatingModal() {
-    if (this.isMobileOrTab) {
-      this.contentRatingModal = true;
-    }
-  }
-
 }

@@ -57,7 +57,7 @@
       </div>
       <div id="playerFullscreen" *ngIf="!playerThumbnail" > 
           <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" *ngIf="showCloseButton" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt="">
-          <app-player (showRatingEvent)="showRatingModal()" class="content-player" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
+          <app-player class="content-player" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
       </div>
       <!-- / Player-->
 
@@ -82,7 +82,7 @@
         <div *ngIf="(popupControlService.checkPopupStatus | async) else loading">
             <div class="player-fullscreen" id="playerFullscreen"> 
               <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" *ngIf="showCloseButton" (click)="closeFullscreen()" class="close-button" src="assets//images/close-Black.svg" alt="">
-              <app-player (showRatingEvent)="showRatingModal()" class="content-player content-player-landscape" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
+              <app-player class="content-player content-player-landscape" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
             </div>
             <ng-template #loading>
               <app-loader></app-loader>
@@ -123,5 +123,3 @@
   </div>
   <!--/Actions-->
 </sui-modal>
-
-<app-content-rating #modal *ngIf="contentRatingModal && playerConfig" [contentData]="playerConfig.metadata" ></app-content-rating>
