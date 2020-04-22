@@ -58,7 +58,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     };
     this.recoverAccountService.verifyOTP(request)
     .subscribe(response => {
-        this.resetPassword();
+        this.resetPassword(response);
       }, error => {
         this.form.controls.otp.setValue('');
         this.disableFormSubmit = false;
@@ -66,7 +66,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       }
     );
   }
-  resetPassword() {
+  resetPassword(data? : any) {
     const request = {
       request: {
         type: this.recoverAccountService.selectedAccountIdentifier.type,
@@ -74,6 +74,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         userId: this.recoverAccountService.selectedAccountIdentifier.id
       }
     };
+    request.request['reqData'] = _.get(data, 'reqData');
     this.recoverAccountService.resetPassword(request)
     .subscribe(response => {
       if (response.result.link) {
