@@ -1,5 +1,7 @@
 import { throwError as observableThrowError, of as observableOf, Observable, of } from 'rxjs';
-import { CourseHierarchyGetMockResponse } from '../../../../module/course/components/course-consumption/public-course-player/public-course-player.component.mock.data';
+import { 
+  CourseHierarchyGetMockResponse 
+} from '../../../../module/course/components/course-consumption/public-course-player/public-course-player.component.mock.data';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { PublicPlayerService } from './../../../../services';
 import { PublicContentPlayerComponent } from './public-content-player.component';
