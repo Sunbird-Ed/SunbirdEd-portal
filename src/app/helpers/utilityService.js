@@ -1,3 +1,5 @@
+const { decrypt } = require('../helpers/crypto');
+const _ = require('lodash');
 /**
  * Parses string to object
  * @param string
@@ -55,4 +57,23 @@ const isDateExpired = function (toDate, fromDate = Date.now()) {
   return isDate(exp) && !(exp > fromDate);
 };
 
-module.exports = {parseJson, delay, isDate, isValidAndNotEmptyString, isDateExpired};
+
+
+/**
+* Verifies request and check exp time
+* @param encryptedData encrypted data to be decrypted
+* @returns {*}
+*/
+const decodeNChkTime = (encryptedData) => {
+  const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
+  const parsedData = parseJson(decryptedData);
+  if (isDateExpired(parsedData.exp)) {
+    throw new Error('DATE_EXPIRED');
+  } else {
+    return _.omit(parsedData, ['exp']);
+  }
+};
+
+module.exports = { parseJson, delay, isDate, 
+  isValidAndNotEmptyString, isDateExpired, 
+  decodeNChkTime};
