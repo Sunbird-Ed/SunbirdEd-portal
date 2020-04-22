@@ -8,7 +8,7 @@ const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const healthService = require('../helpers/healthCheckService.js')
 const logger = require('sb_logger_util_v2')
-const {isValidRequest} = require('../helpers/utilityService');
+const {decodeNChkTime} = require('../helpers/utilityService');
 const _ = require('lodash');
 
 module.exports = function (app) {
@@ -152,7 +152,7 @@ function checkForValidUser (){
       var reqEmail = data.request['email'];
       var reqPhone = data.request['phone'];
       var reqValidator = data.request['reqData'];
-      var decodedValidator = isValidRequest(reqValidator);
+      var decodedValidator = decodeNChkTime(reqValidator);
       if((decodedValidator['key']) && (reqEmail === decodedValidator['key'] || reqPhone === decodedValidator['key'])){
         data = _.omit(data, 'request.reqData');
         return data;

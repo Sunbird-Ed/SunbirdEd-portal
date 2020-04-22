@@ -1,12 +1,13 @@
 const _ = require('lodash');
-const bodyParser = require('body-parser')
-const envHelper = require('./../helpers/environmentVariablesHelper.js')
-const dateFormat = require('dateformat')
-const uuidv1 = require('uuid/v1')
-const proxy = require('express-http-proxy')
-const proxyUtils = require('../proxy/proxyUtils.js')
+const bodyParser = require('body-parser');
+const envHelper = require('./../helpers/environmentVariablesHelper.js');
+const dateFormat = require('dateformat');
+const uuidv1 = require('uuid/v1');
+const proxy = require('express-http-proxy');
+const proxyUtils = require('../proxy/proxyUtils.js');
 const logger = require('sb_logger_util_v2');
-const { getEncyptedQueryParams, isValidRequest } = require('../helpers/utilityService');
+const { encriptWithTime } = require('../helpers/crypto');
+const { decodeNChkTime } = require('../helpers/utilityService');
 
 module.exports = (app) => {
 
@@ -24,7 +25,7 @@ module.exports = (app) => {
       try {
         var reqUserId = _.get(req.body, 'request.userId');
         var reqValidator = _.get(req, 'body.request.reqData');
-        var decodedValidator = isValidRequest(reqValidator);
+        var decodedValidator = decodeNChkTime(reqValidator);
         // checking only for the userID from request and from the decoded object.
         if ((decodedValidator['id']) && (reqUserId === decodedValidator['id'])) {
           next();
@@ -39,7 +40,7 @@ module.exports = (app) => {
         logger.error({
           URL: req.url,
           body: JSON.stringify(req.body),
-          msg: 'portal - otp verification failed',
+          msg: 'portal - reset password sfailed',
           uuid: _get(req,'headers.x-msgid'),
           did:_get(req,'headers.x-device-id'),
           error: JSON.stringify(err)
@@ -72,7 +73,8 @@ module.exports = (app) => {
             if (req.body.request.userId) {
               encrypt['id'] = req.body.request.userId
             }
-            var validator = getEncyptedQueryParams(encrypt);
+            var timeInMin = 5;
+            var validator = encriptWithTime(encrypt, timeInMin);
             data['reqData'] = validator;
           }
           return data;

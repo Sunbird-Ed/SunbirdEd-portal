@@ -1,4 +1,4 @@
-const { encrypt, decrypt } = require('../helpers/crypto');
+const { decrypt } = require('../helpers/crypto');
 const _ = require('lodash');
 /**
  * Parses string to object
@@ -57,24 +57,14 @@ const isDateExpired = function (toDate, fromDate = Date.now()) {
   return isDate(exp) && !(exp > fromDate);
 };
 
-/**
-  * To generate session for state user logins
-  * using server's time as iat and exp time as 5 min
-  * Session will not be created if exp is expired
-  * @param data object to encrypt data
-  * @returns {string}
-  */
-const getEncyptedQueryParams = (data) => {
-  data.exp = Date.now() + (5 * 60 * 1000);  // adding 5 minutes
-  return JSON.stringify(encrypt(JSON.stringify(data)));
-};
+
 
 /**
 * Verifies request and check exp time
 * @param encryptedData encrypted data to be decrypted
 * @returns {*}
 */
-const isValidRequest = (encryptedData) => {
+const decodeNChkTime = (encryptedData) => {
   const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
   const parsedData = parseJson(decryptedData);
   if (isDateExpired(parsedData.exp)) {
@@ -86,4 +76,4 @@ const isValidRequest = (encryptedData) => {
 
 module.exports = { parseJson, delay, isDate, 
   isValidAndNotEmptyString, isDateExpired, 
-  getEncyptedQueryParams, isValidRequest};
+  decodeNChkTime};
