@@ -8,7 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
-  ContentUtilsServiceService, UtilService
+  ContentUtilsServiceService, UtilService, ITelemetryShare
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -27,6 +27,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 	*/
   telemetryImpression: IImpressionEventInput;
   telemetryContentImpression: IImpressionEventInput;
+  telemetryShareData: Array<ITelemetryShare>;
+  objectInteract: IInteractEventObject;
+  printPdfInteractEdata: IInteractEventEdata;
+  shareLink: string;
+  public sharelinkModal: boolean;
+  public mimeType: string;
   public queryParams: any;
   public collectionData: object;
 
@@ -96,6 +102,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerContent;
   isOffline: boolean = environment.isOffline;
   public unsubscribe$ = new Subject<void>();
+  selectedContent: {};
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -137,6 +144,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       type: 'click',
       pageid: this.route.snapshot.data.telemetry.pageid
     };
+    this.printPdfInteractEdata = {
+      id: 'public-print-pdf-button',
+      type: 'click',
+      pageid: this.route.snapshot.data.telemetry.pageid
+    };
     this.telemetryInteractObject = {
       id: this.activatedRoute.snapshot.params.collectionId,
       type: this.contentType,
@@ -144,6 +156,24 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
     this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
 
+  }
+
+  onShareLink() {
+    this.shareLink = this.contentUtilsService.getPublicShareUrl(this.collectionId,
+      this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl);
+    this.setTelemetryShareData(this.collectionData);
+  }
+
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: 'public-' + param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
+  }
+
+  printPdf(pdfUrl: string) {
+    window.open(pdfUrl, '_blank');
   }
 
   ngAfterViewInit () {
@@ -296,6 +326,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
+            this.selectedContent = content;
             this.playerContent = _.get(content, 'model');
             if (this.isOffline && _.isEqual(_.get(this.collectionData, 'downloadStatus'), 'DOWNLOADED')) {
               this.playerContent['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
