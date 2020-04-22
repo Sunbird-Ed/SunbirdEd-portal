@@ -31,7 +31,12 @@
       [buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton"></app-no-result-found>
     </div>
     <div class="twelve wide column" *ngIf="showLoader">
-      <app-loader [data]='loaderMessage'></app-loader>
+      <div class="sb-grid">
+        <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
+          *ngFor="let i of numberOfSections">
+          <sb-library-card [isLoading]="true"></sb-library-card>
+        </div>
+      </div>
     </div>
     <div class="twelve wide column right aligned"
       *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
