@@ -10,7 +10,7 @@ describe('DialCodeService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, HttpClientTestingModule],
-    providers: [SearchService, PlayerService, ConfigService, UserService, PublicDataService]
+    providers: [SearchService, PlayerService]
   }));
 
   it('should be created', () => {
@@ -22,31 +22,27 @@ describe('DialCodeService', () => {
 
     it('should return dial search results', () => {
       const dialCodeService = TestBed.get(DialCodeService);
-      const searchService = TestBed.get(SearchService);
-      const userService = TestBed.get(UserService);
       const publicDataService = TestBed.get(PublicDataService);
+      spyOn(publicDataService, 'post').and.returnValue(of(mockData.dialCodeSearchApiResponse));
       dialCodeService.searchDialCode('K2W1G4', false).subscribe(res => {
+        expect(publicDataService.post).toHaveBeenCalled();
+        expect(publicDataService.post).toHaveBeenCalledTimes(1);
         const option = {
           url: 'data/v1/dial/assemble',
           data: {
             request: {
-              source: 'web',
-              name: 'DIAL Code Consumption',
-              filters: {dialcodes: 'K2W1G4',
-                        contentType: ['Collection',
-                        'TextBook',
-                        'TextBookUnit',
-                        'Resource',
-                        'Course']
+              'source': 'web',
+              'name': 'DIAL Code Consumption',
+              'filters': {'dialcodes': 'K2W1G4',
+                        'contentType': [ 'Collection', 'TextBook', 'TextBookUnit', 'Resource', 'Course' ]
                       },
-                      'userProfile': userService.loggedIn ?
-                      {board: userService.userProfile.framework.board} : {}
+              'userProfile': { }
             }
           }
         };
-        expect(publicDataService.post).toHaveBeenCalledWith(option, false);
+        expect(publicDataService.post).toHaveBeenCalledWith(option);
         expect(res).toBeDefined();
-        expect(res).toEqual(mockData.dialCodeSearchApiResponse.result);
+        expect(res).toEqual(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
       });
     });
 
