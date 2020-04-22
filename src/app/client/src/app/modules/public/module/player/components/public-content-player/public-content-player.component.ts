@@ -6,8 +6,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import * as _ from 'lodash-es';
 import { Subject, of, throwError } from 'rxjs';
 import {
-  ConfigService, ResourceService, ToasterService, UtilService,
-  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
+  ConfigService, ResourceService, ToasterService, UtilService, ContentUtilsServiceService,
+  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, ITelemetryShare
 } from '@sunbird/shared';
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -69,13 +69,16 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   isSingleContent: any;
   isMobileOrTab: boolean;
   showCloseButton = false;
+  shareLink: string;
+  public telemetryShareData: Array<ITelemetryShare>;
+  public sharelinkModal: boolean;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
     private configService: ConfigService, public contentManagerService: ContentManagerService,
-    public utilService: UtilService
+    public utilService: UtilService, private contentUtilsService: ContentUtilsServiceService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -169,6 +172,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.errorMessage = this.resourceService.messages.stmsg.m0009;
     });
   }
+  
   /**
    * retry launching player with same content details
    * @memberof ContentPlayerComponent
@@ -307,6 +311,20 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  onShareLink() {
+    this.shareLink = this.contentUtilsService.getPublicShareUrl(this.contentId,
+      this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl);
+    this.setTelemetryShareData(this.contentData);
+  }
+
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
   }
 
   printPdf(pdfUrl: string) {
