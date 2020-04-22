@@ -91,12 +91,12 @@
         </div>
         <div class="sb-pageSection-content d-flex flex-ai-center">
           <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
-            <i class="blue share alternate icon"></i>
+            <em class="blue share alternate icon"></em>
             {{resourceService?.frmelmnts?.lbl?.share}}
           </a>
           <span class="d-inline-block" *ngIf="selectedContent?.model?.itemSetPreviewUrl">
             <a appTelemetryInteract [telemetryInteractObject]="objectInteract" [telemetryInteractEdata]= "printPdfInteractEdata" class="cursor-pointer btn-bg p-8 d-flex font-weight-bold sb-color-primary" (click)="printPdf(selectedContent.model.itemSetPreviewUrl)">
-                <img src="assets/images/print.svg" width="16" /> <span>&nbsp;&nbsp;{{resourceService.frmelmnts.btn.print}}</span>
+                <img src="assets/images/print.svg" width="16" alt="" /> <span>&nbsp;&nbsp;{{resourceService.frmelmnts.btn.print}}</span>
             </a>
           </span>
         </div>

@@ -1,19 +1,27 @@
-import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import { throwError as observableThrowError, of as observableOf, Observable, of } from 'rxjs';
+import { CourseHierarchyGetMockResponse } from '../../../../module/course/components/course-consumption/public-course-player/public-course-player.component.mock.data';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { PublicPlayerService } from './../../../../services';
 import { PublicContentPlayerComponent } from './public-content-player.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule, ResourceService, ToasterService, WindowScrollService } from '@sunbird/shared';
-import { CoreModule } from '@sunbird/core';
+import { CoreModule, CoursesService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
+import {CourseConsumptionService} from '@sunbird/learn';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ContentManagerService } from '@sunbird/offline';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
   events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
+}
+class ActivatedRouteStub {
+  snapshot = {
+    params: {},
+    firstChild: { params : {}}
+  };
 }
 const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
@@ -51,6 +59,7 @@ const resourceServiceMockData = {
 describe('PublicContentPlayerComponent', () => {
   let component: PublicContentPlayerComponent;
   let fixture: ComponentFixture<PublicContentPlayerComponent>;
+  let activatedRouteStub, courseConsumptionService, courseService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule,
@@ -58,8 +67,9 @@ describe('PublicContentPlayerComponent', () => {
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [PublicPlayerService, ContentManagerService,
-        ToasterService,
+        ToasterService, CourseConsumptionService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub }]
     })
       .compileComponents();
@@ -67,6 +77,8 @@ describe('PublicContentPlayerComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicContentPlayerComponent);
+    courseService = TestBed.get(CoursesService);
+    activatedRouteStub = TestBed.get(ActivatedRoute);
     component = fixture.componentInstance;
     component.contentId = 'd0_33567325';
   });
@@ -280,5 +292,16 @@ describe('PublicContentPlayerComponent', () => {
       expect(component.showCloseButton).toBe(false);
       expect(component.playerThumbnail).toBe(true);
     });
+  });
+
+  it('should open share link popup and share url should be of anonymous explore course page', () => {
+    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178'};
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(component, 'onShareLink').and.callThrough();
+    courseService.initialize();
+    component.ngOnInit();
+    component.onShareLink();
+    expect(component.sharelinkModal).toBe(true);
+    expect(component.shareLink).toContain('explore-course/course/do_212347136096788480178');
   });
 });
