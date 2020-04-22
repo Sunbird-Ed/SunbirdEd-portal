@@ -20,65 +20,56 @@ describe('DialCodeService', () => {
 
   describe('searchDialCode function', () => {
 
-    it('should return dial search results not logged In user', () => {
-      const dialCodeService = TestBed.get(DialCodeService);
-      const publicDataService = TestBed.get(PublicDataService);
+    it('should return dial search results for not logged In', () => {
+      const service: DialCodeService = TestBed.get(DialCodeService);
       const userService = TestBed.get(UserService);
+      const publicDataService = TestBed.get(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
-      spyOn(publicDataService, 'post').and.returnValue(of(mockData.dialCodeSearchApiResponse));
-      dialCodeService.searchDialCode('K2W1G4', false).subscribe(res => {
-        expect(publicDataService.post).toHaveBeenCalled();
-        expect(publicDataService.post).toHaveBeenCalledTimes(1);
-        const option = {
-          url: 'data/v1/dial/assemble',
-          data: {
-            request: {
-              'source': 'web',
-              'name': 'DIAL Code Consumption',
-              'filters': {'dialcodes': 'K2W1G4',
-                        'contentType': [ 'Collection', 'TextBook', 'TextBookUnit', 'Resource', 'Course' ]
-                      },
-              'userProfile': { }
-            }
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ });
+      spyOn(publicDataService, 'post').and.returnValue(of({}));
+      const option = {
+        url: 'data/v1/dial/assemble',
+        data: {
+          request: {
+            source: 'web',
+            name: 'DIAL Code Consumption',
+            filters: {
+              dialcodes: 'K2W1G4',
+              contentType: ['Collection', 'TextBook', 'TextBookUnit', 'Resource', 'Course']
+            },
+            userProfile: { }
           }
-        };
-        expect(publicDataService.post).toHaveBeenCalledWith(option);
-        expect(res).toBeDefined();
-        expect(res).toEqual(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
-      });
+        }
+      };
+      service.searchDialCode('K2W1G4', true);
+      expect(publicDataService.post).toHaveBeenCalledWith(option);
     });
 
-    it('should return dial search results logged In user', () => {
-      const dialCodeService = TestBed.get(DialCodeService);
-      const publicDataService = TestBed.get(PublicDataService);
+    it('should return dial search results for logged In', () => {
+      const service: DialCodeService = TestBed.get(DialCodeService);
       const userService = TestBed.get(UserService);
+      const publicDataService = TestBed.get(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ framework: {
         board: 'CBSE'
-      } });
-      spyOn(publicDataService, 'post').and.returnValue(of(mockData.dialCodeSearchApiResponse));
-      dialCodeService.searchDialCode('K2W1G4', false).subscribe(res => {
-        expect(publicDataService.post).toHaveBeenCalled();
-        expect(publicDataService.post).toHaveBeenCalledTimes(1);
-        const option = {
-          url: 'data/v1/dial/assemble',
-          data: {
-            request: {
-              'source': 'web',
-              'name': 'DIAL Code Consumption',
-              'filters': {'dialcodes': 'K2W1G4',
-                        'contentType': [ 'Collection', 'TextBook', 'TextBookUnit', 'Resource', 'Course' ]
-                      },
-              'userProfile': {
-                board: 'CBSE'
-               }
-            }
+        } });
+      spyOn(publicDataService, 'post').and.returnValue(of({}));
+      const option = {
+        url: 'data/v1/dial/assemble',
+        data: {
+          request: {
+            source: 'web',
+            name: 'DIAL Code Consumption',
+            filters: {
+              dialcodes: 'K2W1G4',
+              contentType: ['Collection', 'TextBook', 'TextBookUnit', 'Resource', 'Course']
+            },
+            userProfile: { board: 'CBSE' }
           }
-        };
-        expect(publicDataService.post).toHaveBeenCalledWith(option);
-        expect(res).toBeDefined();
-        expect(res).toEqual(mockData.dialCodeSearchApiResponse.result.response.sections[0]);
-      });
+        }
+      };
+      service.searchDialCode('K2W1G4', true);
+      expect(publicDataService.post).toHaveBeenCalledWith(option);
     });
 
   });
