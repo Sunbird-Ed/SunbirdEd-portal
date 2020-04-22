@@ -100,4 +100,21 @@ describe('TenantService', () => {
     });
   }));
 
+  it('should call initialize', inject([LearnerService], (
+    learnerService: LearnerService) => {
+    const service = TestBed.get(TenantService);
+    const learnerServiceBed = TestBed.get(LearnerService);
+    const cacheServiceBed = TestBed.get(CacheService);
+    const params = 'test';
+    spyOn(cacheServiceBed, 'exists').and.returnValue(true);
+    spyOn(cacheServiceBed, 'get').and.returnValue(response.tenantConfigValid);
+    spyOn(learnerServiceBed, 'get').and.returnValue(observableOf(response.tenantConfigValid));
+    service.initialize();
+    service._tenantSettings$.subscribe(
+      data => {
+       expect(data).toBeDefined();
+      }
+    );
+  }));
+
 });
