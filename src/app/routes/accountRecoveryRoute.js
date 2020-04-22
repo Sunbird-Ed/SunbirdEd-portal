@@ -30,9 +30,10 @@ module.exports = (app) => {
           next();
         } else {
           logger.error({
-            msg: 'unauthorized'
+            msg: 'unauthorized',
+            userId:_.get(req.body, 'request.userId')
           });
-          res.status(401).send({ "id": "api.reset.password", "ver": "v1", "ts": dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'), "params": { "resmsgid": null, "msgid": uuidv1(), "err": null, "status": "unauthorized", "errmsg": null }, "responseCode": "UNAUTHORIZED", "userId":_.get(req.body, 'request.userId'),"result": { "response": "unauthorized" } })
+          res.status(401).send({ "id": "api.reset.password", "ver": "v1", "ts": dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'), "params": { "resmsgid": null, "msgid": uuidv1(), "err": null, "status": "unauthorized", "errmsg": null }, "responseCode": "UNAUTHORIZED", "result": { "response": "unauthorized" } })
         }
       } catch (err) {
         logger.error({
