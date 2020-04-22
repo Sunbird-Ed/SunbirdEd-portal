@@ -10,6 +10,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { identifyAcountMockResponse } from './identify-account.component.spec.data';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { By } from '@angular/platform-browser';
+import { RecaptchaComponent } from 'ng-recaptcha';
+
 describe('IdentifyAccountComponent', () => {
   let component: IdentifyAccountComponent;
   let fixture: ComponentFixture<IdentifyAccountComponent>;
@@ -57,7 +61,8 @@ describe('IdentifyAccountComponent', () => {
     TestBed.configureTestingModule({
       declarations: [IdentifyAccountComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule, CoreModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule, CoreModule,
+        SharedModule.forRoot(), RecaptchaModule],
       providers: [RecoverAccountService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
@@ -67,6 +72,7 @@ describe('IdentifyAccountComponent', () => {
   }));
 
   beforeEach(() => {
+    spyOn(document, 'getElementById').and.returnValue({ value: '1234' });
     fixture = TestBed.createComponent(IdentifyAccountComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -109,6 +115,11 @@ describe('IdentifyAccountComponent', () => {
     component.handleNext();
     expect(component.identiferStatus).toBe('NOT_MATCHED');
     expect(component.nameNotExist).toBe(true);
+  });
+
+  it('should load re-captcha when googleCaptchaSiteKey is provided', () => {
+    const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
+    expect(recapta).toBeTruthy();
   });
 
 });

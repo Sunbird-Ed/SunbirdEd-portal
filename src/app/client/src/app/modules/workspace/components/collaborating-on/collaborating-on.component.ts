@@ -214,13 +214,12 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         collaborators: [this.userService.userid],
-        contentType: this.config.appConfig.WORKSPACE.contentType,
+        contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel,
-        resourceType: bothParams.queryParams.resourceType
+        gradeLevel: bothParams.queryParams.gradeLevel
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),

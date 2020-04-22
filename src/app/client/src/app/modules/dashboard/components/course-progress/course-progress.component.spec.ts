@@ -241,7 +241,7 @@ describe('CourseProgressComponent', () => {
     spyOn(courseProgressService, 'getReportsMetaData').and.returnValue(observableOf(testData.mockUserData.reportsLastUpdatedDateMock));
     component.getReportUpdatedOnDate();
     // tslint:disable-next-line: max-line-length
-    expect(component.scoreReportUpdatedOn).toEqual('');
+    expect(component.scoreReportUpdatedOn).toEqual(null);
     // tslint:disable-next-line: max-line-length
     expect(component.progressReportUpdatedOn).toEqual(testData.mockUserData.reportsLastUpdatedDateMock.result['course-progress-reports'].lastModified);
   }));

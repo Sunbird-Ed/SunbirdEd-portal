@@ -134,7 +134,7 @@
               [disabled]="!scoreReportUpdatedOn"
               [telemetryInteractEdata]="{id:'download-score-report',type:'click',pageid:'course-progress-dashboard'}"><i
                 class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0066}}
-                <span class="ml-8" suiPopup popupText="{{!scoreReportUpdatedOn ? resourceService?.messages?.emsg?.m0076 : resourceService?.frmelmnts?.lbl?.reportUpdatedOn}} {{scoreReportUpdatedOn | date:'dd/MM/yyyy'}}"[popupPlacement]="'top right'" [popupInverted]="true"><img src="assets/images/info-outline.svg" alt="info-outline" class="info-outline-img"></span>
+                <span class="ml-8" suiPopup popupText="{{scoreReportUpdatedOn ? resourceService?.frmelmnts?.lbl?.reportUpdatedOn : resourceService?.messages?.emsg?.m0076}} {{scoreReportUpdatedOn | date:'dd/MM/yyyy'}}"[popupPlacement]="'top right'" [popupInverted]="true"><img src="assets/images/info-outline.svg" alt="info-outline" class="info-outline-img"></span>
             </button>
             <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"
               href="javascript:void(0);" (click)="downloadReport(false);" *ngIf="showDownloadLink" appTelemetryInteract
@@ -142,7 +142,7 @@
               [disabled]="!progressReportUpdatedOn"
               [telemetryInteractEdata]="{id:'download-progress-report',type:'click',pageid:'course-progress-dashboard'}"><i
                 class="download icon"></i>{{resourceService?.frmelmnts?.instn?.t0065}}
-                <span class="ml-8" suiPopup popupText="{{!progressReportUpdatedOn ? resourceService?.messages?.emsg?.m0076 : resourceService?.frmelmnts?.lbl?.reportUpdatedOn}} {{progressReportUpdatedOn | date:'dd/MM/yyyy'}}" [popupPlacement]="'top right'" [popupInverted]="true"><img src="assets/images/info-outline.svg" alt="info-outline" class="info-outline-img"></span>
+                <span class="ml-8" suiPopup popupText="{{progressReportUpdatedOn ? resourceService?.frmelmnts?.lbl?.reportUpdatedOn : resourceService?.messages?.emsg?.m0076}} {{progressReportUpdatedOn | date:'dd/MM/yyyy'}}" [popupPlacement]="'top right'" [popupInverted]="true"><img src="assets/images/info-outline.svg" alt="info-outline" class="info-outline-img"></span>
             </button>
           </div>
 
