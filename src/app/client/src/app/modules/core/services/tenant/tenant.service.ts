@@ -124,7 +124,7 @@ export class TenantService extends DataService {
       if (_.has(data, 'result.response')) {
         let configResponse = {};
         try {
-          if (JSON.parse(data.result.response.value)) configResponse = data;
+          if (JSON.parse(data.result.response.value)) { configResponse = data; }
         } catch (parseJSONResponse) {}
         return configResponse;
       } else {
