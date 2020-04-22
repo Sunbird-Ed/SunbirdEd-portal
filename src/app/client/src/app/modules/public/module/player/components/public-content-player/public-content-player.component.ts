@@ -172,7 +172,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.errorMessage = this.resourceService.messages.stmsg.m0009;
     });
   }
-  
+
   /**
    * retry launching player with same content details
    * @memberof ContentPlayerComponent
