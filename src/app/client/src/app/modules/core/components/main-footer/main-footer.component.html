@@ -21,7 +21,26 @@
   <div class="ui container">
     <div class="ui grid stackable">
       <div class="four wide column footerMenu mr-auto">
-        <ul class="p-0 m-0">
+        <!-- default links if tenant settings is not available -->
+        <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
+          <li class="mb-16">
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
+              href="/help/getting-started/explore-diksha/index.html">
+              {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
+            </a>
+          </li>
+          <li>
+            <label class="d-block mb-0">
+              {{resourceService.frmelmnts?.lnk?.footerContact}}
+            </label>
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
+              class="d-block mb-0" href="mailto:support@diksha-ncte.freshdesk.com">
+              support@diksha-ncte.freshdesk.com
+            </a>
+          </li>
+        </ul>
+
+        <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
           <!-- <li class="mb-16">
             <a href="/verticals/profile-registry/">
               {{resourceService.frmelmnts?.lnk?.footerDikshaVerticals}}
