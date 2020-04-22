@@ -66,7 +66,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       }
     );
   }
-  resetPassword(data? : any) {
+  resetPassword(data?: any) {
     const request = {
       request: {
         type: this.recoverAccountService.selectedAccountIdentifier.type,
