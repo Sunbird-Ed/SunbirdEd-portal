@@ -1,5 +1,5 @@
 import { throwError as observableThrowError, of as observableOf, Observable, of } from 'rxjs';
-import { 
+import {
   CourseHierarchyGetMockResponse 
 } from '../../../../module/course/components/course-consumption/public-course-player/public-course-player.component.mock.data';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
@@ -61,7 +61,7 @@ const resourceServiceMockData = {
 describe('PublicContentPlayerComponent', () => {
   let component: PublicContentPlayerComponent;
   let fixture: ComponentFixture<PublicContentPlayerComponent>;
-  let activatedRouteStub, courseConsumptionService, courseService;
+  let activatedRouteStub: any, courseConsumptionService: any, courseService: any;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule,
@@ -205,7 +205,7 @@ describe('PublicContentPlayerComponent', () => {
   });
 
   describe('should rotate player', () => {
-    let mockDomElement;
+    let mockDomElement: HTMLDivElement;
     beforeEach(() => {
         mockDomElement = document.createElement('div');
         mockDomElement.setAttribute('id', 'playerFullscreen');
