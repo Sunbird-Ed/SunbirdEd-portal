@@ -8,7 +8,7 @@ const {
 } = require('./../helpers/ssoHelper');
 const telemetryHelper = require('../helpers/telemetryHelper');
 const {generateAuthToken, getGrantFromCode} = require('../helpers/keyCloakHelperService');
-const {parseJson} = require('../helpers/utilityService');
+const {parseJson, isDateExpired} = require('../helpers/utilityService');
 const {getUserIdFromToken} = require('../helpers/jwtHelper');
 const fs = require('fs');
 
@@ -43,7 +43,7 @@ module.exports = (app) => {
       req.session.userDetails = userDetails;
       logger.info({msg: "userDetails fetched" + userDetails});
       if(!_.isEmpty(userDetails) && (userDetails.phone || userDetails.email)) {
-        redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
+        redirectUrl = successUrl + getEncyptedQueryParams({userName: userDetails.userName});
         logger.info({
           msg: 'sso session create v2 api, successfully redirected to success page',
           additionalInfo: {
@@ -132,7 +132,7 @@ module.exports = (app) => {
           errType = 'ACCEPT_TNC';
           await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
         }
-        redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
+        redirectUrl = successUrl + getEncyptedQueryParams({userName: userDetails.userName});
         logger.info({
           msg: 'sso user creation and role updated successfully and redirected to success page',
           additionalInfo: {
@@ -228,9 +228,10 @@ module.exports = (app) => {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
       }
-      userName = req.query.id;
+      errType = 'VERIFY_REQUEST';
+      const userData = isValidRequest(req.query.id);
       errType = 'CREATE_SESSION';
-      response = await createSession(userName, 'android',req, res);
+      response = await createSession(userData.userName, 'android', req, res);
       logger.info({
         msg: 'sso sign in create session api success',
         additionalInfo: {
@@ -301,7 +302,7 @@ module.exports = (app) => {
         errType = 'ACCEPT_TNC';
         await acceptTncAndGenerateToken(userDetails.userName, req.query.tncVersion).catch(handleProfileUpdateError);
       }
-      redirectUrl = successUrl + getQueryParams({ id: userDetails.userName });
+      redirectUrl = successUrl + getEncyptedQueryParams({userName: userDetails.userName});
       logger.info({
         msg: 'sso user creation and role updated successfully and redirected to success page',
         additionalInfo: {
@@ -448,6 +449,21 @@ const getErrorMessage = (error, errorType) => {
   }
 }
 
+/**
+ * Verifies request and check exp time
+ * @param encryptedData encrypted data to be decrypted
+ * @returns {*}
+ */
+const isValidRequest = (encryptedData) => {
+  const decryptedData = decrypt(parseJson(decodeURIComponent(encryptedData)));
+  const parsedData = parseJson(decryptedData);
+  if (isDateExpired(parsedData.exp)) {
+    throw new Error('DATE_EXPIRED');
+  } else {
+    return _.omit(parsedData, ['exp']);
+  }
+};
+
 const delay = (duration = 1000) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -483,6 +499,17 @@ const getQueryParams = (queryObj) => {
     .join('&');
 }
 
+/**
+ * To generate session for state user logins
+ * using server's time as iat and exp time as 5 min
+ * Session will not be created if exp is expired
+ * @param data object to encrypt data
+ * @returns {string}
+ */
+const getEncyptedQueryParams = (data) => {
+  data.exp = Date.now() + (5 * 60 * 1000);  // adding 5 minutes
+  return '?id=' + JSON.stringify(encrypt(JSON.stringify(data)));
+};
 
 const ssoValidations = async (req, res) => {
   let stateUserData, stateJwtPayload, errType, response, statusCode;
