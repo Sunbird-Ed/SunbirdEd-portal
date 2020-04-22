@@ -19,7 +19,6 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
-  @Output() showRatingEvent = new EventEmitter<any>();
 
   buildNumber: string;
   @Input() playerOption: any;
@@ -165,7 +164,6 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     }
     if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
       this.contentRatingModal = true;
-      this.showRatingEvent.emit();
       if (this.modal) {
         this.modal.showContentRatingModal = true;
       }
