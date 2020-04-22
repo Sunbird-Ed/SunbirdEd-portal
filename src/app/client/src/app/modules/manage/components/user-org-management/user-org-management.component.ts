@@ -327,8 +327,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     }, 500);
   }
 
-  public downloadCSVFile(slug, fileName: any) {
-    this.manageService.getData(slug, fileName)
+  public downloadCSVFile(slug, status, fileName: any) {
+    const slugName = status ? slug + '__' + status : slug;
+    const downloadFileName = status ? status + '_' + moment().format('DDMMYYYY') + '.csv' : undefined;
+    this.manageService.getData(slugName, fileName, downloadFileName)
       .subscribe(
         response => {
           const url = (_.get(response, 'result.signedUrl'));
@@ -356,5 +358,4 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         }
       );
   }
-
 }
