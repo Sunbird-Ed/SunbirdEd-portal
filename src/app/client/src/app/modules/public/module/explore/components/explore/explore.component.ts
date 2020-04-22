@@ -34,7 +34,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   public selectedFilters = {};
   exploreMoreButtonEdata: IInteractEventEdata;
-  public numberOfSections = 3;
+  public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
 
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();

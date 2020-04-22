@@ -11,7 +11,7 @@
         </sb-library-cards-grid>
       </div>
       <div class="twelve wide column" *ngIf="showLoader">
-          <sb-library-cards-grid *ngFor="let i of [].constructor(numberOfSections)" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="4"></sb-library-cards-grid>
+          <sb-library-cards-grid *ngFor="let i of numberOfSections" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="4"></sb-library-cards-grid>
       </div>
       <div class="twelve wide column" *ngIf="apiContentList.length === 0 && !showLoader">
         <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters" [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 

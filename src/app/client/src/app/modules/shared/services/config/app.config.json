@@ -1006,6 +1006,7 @@
   },
   "SEARCH": {
     "PAGE_LIMIT": 20,
+    "SECTION_LIMIT": 3,
     "USER": {
       "DOWNLOAD_BUTTON_VISIBILITY": "FALSE"
     },

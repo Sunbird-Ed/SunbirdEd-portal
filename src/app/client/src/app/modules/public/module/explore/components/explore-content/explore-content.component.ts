@@ -39,7 +39,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   public contentList: Array<ICard> = [];
   public cardIntractEdata: IInteractEventEdata;
   public loaderMessage: ILoaderMessage;
-  public numberOfSections = 20;
+  public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
   showExportLoader = false;
   contentName: string;
   showDownloadLoader = false;
