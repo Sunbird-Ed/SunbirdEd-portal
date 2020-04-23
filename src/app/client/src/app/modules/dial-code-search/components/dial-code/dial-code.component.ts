@@ -162,7 +162,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   private processTextBook(params) {
     const textBookUnit = _.get(params, 'textbook');
-    const content = _.find(_.get(this.dialCodeService, 'dialCodeResult.content'), contentObj => {
+    const content = _.find(_.get(this.dialCodeService, 'dialCodeResult.contents'), contentObj => {
       return (_.get(contentObj, 'identifier') === textBookUnit);
     });
     if (content) {
