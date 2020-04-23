@@ -26,7 +26,13 @@ describe('DialCodeService', () => {
       const publicDataService = TestBed.get(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ });
-      spyOn(publicDataService, 'post').and.returnValue(of({}));
+      spyOn(publicDataService, 'post').and.returnValue(of({result: {
+          response: {
+              sections: [
+                  {}
+              ]
+          }
+      }}));
       const option = {
         url: 'data/v1/dial/assemble',
         data: {
@@ -41,8 +47,10 @@ describe('DialCodeService', () => {
           }
         }
       };
-      service.searchDialCode('K2W1G4', true);
-      expect(publicDataService.post).toHaveBeenCalledWith(option);
+      service.searchDialCode('K2W1G4', true).subscribe(res => {
+        expect(publicDataService.post).toHaveBeenCalledWith(option);
+        expect(res).toBeDefined();
+      });
     });
 
     it('should return dial search results for logged In', () => {
@@ -53,7 +61,13 @@ describe('DialCodeService', () => {
       spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ framework: {
         board: 'CBSE'
         } });
-      spyOn(publicDataService, 'post').and.returnValue(of({}));
+      spyOn(publicDataService, 'post').and.returnValue(of({result: {
+          response: {
+              sections: [
+                  {}
+              ]
+          }
+      }}));
       const option = {
         url: 'data/v1/dial/assemble',
         data: {
@@ -68,8 +82,10 @@ describe('DialCodeService', () => {
           }
         }
       };
-      service.searchDialCode('K2W1G4', true);
-      expect(publicDataService.post).toHaveBeenCalledWith(option);
+      service.searchDialCode('K2W1G4', true).subscribe(res => {
+        expect(res).toBeDefined();
+        expect(publicDataService.post).toHaveBeenCalledWith(option);
+      });
     });
 
   });
