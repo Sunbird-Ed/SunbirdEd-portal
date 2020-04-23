@@ -1,9 +1,8 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService
+    ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
-import { IPagination } from '@sunbird/announcement';
 import { PublicPlayerService } from '../../../../services';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
