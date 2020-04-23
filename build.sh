@@ -1,5 +1,5 @@
 #!/bin/bash
-STARTTIME=$(date +%s)
+echo "Starting portal build from build.sh"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -51,16 +51,19 @@ build_server(){
     echo "completed server npm install"
     # node helpers/resourceBundles/build.js # need to be tested
 }
-
+STARTTIME=$(date +%s)
 build_client & # Put client build in background 
 build_server & # Put server build in background 
- 
+
 ## wait for both build to complete
 wait 
-echo "Client and Server Build complete"
 echo "Copying Client dist to app_dist"
 mv dist/index.html dist/index.ejs 
 cp -R dist app_dist
+
+ENDTIME=$(date +%s)
+echo "Client and Server Build complete Took $[$ENDTIME - $STARTTIME] seconds to complete."
+
 cd app_dist
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 echo 'Compressing assets directory'
@@ -71,6 +74,3 @@ cd ../..
 docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 
 echo {\"image_name\" : \"${name}\", \"image_tag\" : \"${build_tag}\",\"commit_hash\" : \"${commit_hash}\", \"node_name\" : \"$node\"} > metadata.json
-
-ENDTIME=$(date +%s)
-echo "It takes $[$ENDTIME - $STARTTIME] seconds to complete this task..."
