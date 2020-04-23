@@ -20,39 +20,6 @@ describe('DialCodeService', () => {
 
   describe('searchDialCode function', () => {
 
-    it('should return dial search results for not logged In', () => {
-      const service: DialCodeService = TestBed.get(DialCodeService);
-      const userService = TestBed.get(UserService);
-      const publicDataService = TestBed.get(PublicDataService);
-      spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
-      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ });
-      spyOn(publicDataService, 'post').and.returnValue(of({result: {
-          response: {
-              sections: [
-                  {}
-              ]
-          }
-      }}));
-      const option = {
-        url: 'data/v1/dial/assemble',
-        data: {
-          request: {
-            source: 'web',
-            name: 'DIAL Code Consumption',
-            filters: {
-              dialcodes: 'K2W1G4',
-              contentType: ['Collection', 'TextBook', 'TextBookUnit', 'Resource', 'Course']
-            },
-            userProfile: { }
-          }
-        }
-      };
-      service.searchDialCode('K2W1G4', true).subscribe(res => {
-        expect(publicDataService.post).toHaveBeenCalledWith(option);
-        expect(res).toBeDefined();
-      });
-    });
-
     it('should return dial search results for logged In', () => {
       const service: DialCodeService = TestBed.get(DialCodeService);
       const userService = TestBed.get(UserService);
@@ -68,7 +35,40 @@ describe('DialCodeService', () => {
               ]
           }
       }}));
-      const option = {
+      service.searchDialCode('K2W1G4', true).subscribe(res => {
+        expect(res).toBeDefined();
+      });
+      const option = service.getRequest('K2W1G4');
+      expect(publicDataService.post).toHaveBeenCalledWith(option);
+    });
+
+    it('should return dial search results for Not logged In', () => {
+      const service: DialCodeService = TestBed.get(DialCodeService);
+      const userService = TestBed.get(UserService);
+      const publicDataService = TestBed.get(PublicDataService);
+      spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ });
+      spyOn(publicDataService, 'post').and.returnValue(of({result: {
+          response: {
+              sections: [
+                  {}
+              ]
+          }
+      }}));
+      service.searchDialCode('K2W1G4', true).subscribe(res => {
+        expect(res).toBeDefined();
+      });
+      const option = service.getRequest('K2W1G4');
+      expect(publicDataService.post).toHaveBeenCalledWith(option);
+    });
+
+    it('Get request should return request body', () => {
+      const userService = TestBed.get(UserService);
+      spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ framework: {
+        board: 'CBSE'
+        } });
+      const optionMock = {
         url: 'data/v1/dial/assemble',
         data: {
           request: {
@@ -82,10 +82,10 @@ describe('DialCodeService', () => {
           }
         }
       };
-      service.searchDialCode('K2W1G4', true).subscribe(res => {
-        expect(res).toBeDefined();
-        expect(publicDataService.post).toHaveBeenCalledWith(option);
-      });
+      const service: DialCodeService = TestBed.get(DialCodeService);
+      const requestBody = service.getRequest('K2W1G4');
+      expect(requestBody).toBeDefined();
+      expect(requestBody).toEqual(optionMock);
     });
 
   });

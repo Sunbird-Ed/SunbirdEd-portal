@@ -22,9 +22,17 @@ export class DialCodeService {
    * makes API call to search for dialCode
    */
   public searchDialCode(dialCode: string, online: boolean): Observable<any[]> {
-    /* istanbul ignore next */
-    const option = {
-      url: this.config.urlConFig.URLS.DAIL_ASSEMBLE_PREFIX,
+    const request = this.getRequest(dialCode);
+    return this.publicDataService
+    .post(request)
+    .pipe(
+      map((apiResponse) => _.get(apiResponse, 'result.response.sections[0]'))
+    );
+  }
+
+  public getRequest(dialCode: string) {
+    return {
+      url: this.config.urlConFig.URLS.DIAL_ASSEMBLE_PREFIX,
       data: {
         request: {
           source: 'web',
@@ -40,13 +48,6 @@ export class DialCodeService {
         },
       },
     };
-
-    return this.publicDataService
-  .post(option)
-  .pipe(
-    map((apiResponse) => _.get(apiResponse, 'result.response.sections[0]'))
-  );
-
   }
 
   /**
