@@ -164,14 +164,16 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
       data => {
         const result = _.get(data, 'result');
         this.uploadedDetails = {
-          'total_uploaded': result['accounts_validated'] + result['accounts_rejected'] + result['accounts_failed']
-            + result['duplicate_account'] + result['accounts_unclaimed'],
+          'total_uploaded' : 0,
           'accounts_validated': result['accounts_validated'] ? result['accounts_validated'] : 0,
           'accounts_rejected': result['accounts_rejected'] ? result['accounts_rejected'] : 0,
           'accounts_failed': result['accounts_failed'] ? result['accounts_failed'] : 0,
           'duplicate_account': result['duplicate_account'] ? result['duplicate_account'] : 0,
           'accounts_unclaimed': result['accounts_unclaimed'] ? result['accounts_unclaimed'] : 0
         };
+        this.uploadedDetails['total_uploaded'] = this.uploadedDetails['accounts_validated'] + 
+        this.uploadedDetails['accounts_rejected'] + this.uploadedDetails['accounts_failed']
+        + this.uploadedDetails['duplicate_account'] + this.uploadedDetails['accounts_unclaimed'];
       },
       error => {
         console.log(error);
