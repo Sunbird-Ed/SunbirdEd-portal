@@ -22,6 +22,7 @@ export class DialCodeService {
    * makes API call to search for dialCode
    */
   public searchDialCode(dialCode: string, online: boolean): Observable<any[]> {
+    /* istanbul ignore next */
     const option = {
       url: this.config.urlConFig.URLS.DAIL_ASSEMBLE_PREFIX,
       data: {
