@@ -328,7 +328,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
   onShareLink() {
     this.shareLink = this.contentUtilsService.getPublicShareUrl(this.contentId,
-      this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl);
+      _.get(this.contentData, 'mimeType'));
     this.setTelemetryShareData(this.contentData);
   }
 
