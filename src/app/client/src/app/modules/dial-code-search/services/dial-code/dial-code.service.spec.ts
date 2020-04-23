@@ -6,11 +6,13 @@ import { DialCodeService } from './dial-code.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockData } from './dial-code.service.spec.data';
 import { of, throwError } from 'rxjs';
+import { APP_BASE_HREF } from '@angular/common';
+
 describe('DialCodeService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, HttpClientTestingModule],
-    providers: [SearchService, PlayerService]
+    providers: [SearchService, PlayerService, { provide: APP_BASE_HREF, useValue: '' }, UserService, PublicDataService, ConfigService]
   }));
 
   it('should be created', () => {
@@ -25,14 +27,16 @@ describe('DialCodeService', () => {
       const userService = TestBed.get(UserService);
       const publicDataService = TestBed.get(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
-      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ });
-      spyOn(publicDataService, 'post').and.returnValue(of({result: {
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({});
+      spyOn(publicDataService, 'post').and.returnValue(of({
+        result: {
           response: {
-              sections: [
-                  {}
-              ]
+            sections: [
+              {}
+            ]
           }
-      }}));
+        }
+      }));
       const option = {
         url: 'data/v1/dial/assemble',
         data: {
@@ -43,7 +47,7 @@ describe('DialCodeService', () => {
               dialcodes: 'K2W1G4',
               contentType: ['Collection', 'TextBook', 'TextBookUnit', 'Resource', 'Course']
             },
-            userProfile: { }
+            userProfile: {}
           }
         }
       };
@@ -58,16 +62,20 @@ describe('DialCodeService', () => {
       const userService = TestBed.get(UserService);
       const publicDataService = TestBed.get(PublicDataService);
       spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
-      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({ framework: {
-        board: 'CBSE'
-        } });
-      spyOn(publicDataService, 'post').and.returnValue(of({result: {
+      spyOnProperty(userService, 'userProfile', 'get').and.returnValue({
+        framework: {
+          board: 'CBSE'
+        }
+      });
+      spyOn(publicDataService, 'post').and.returnValue(of({
+        result: {
           response: {
-              sections: [
-                  {}
-              ]
+            sections: [
+              {}
+            ]
           }
-      }}));
+        }
+      }));
       const option = {
         url: 'data/v1/dial/assemble',
         data: {
@@ -110,10 +118,10 @@ describe('DialCodeService', () => {
     it('should return contents from a collection', () => {
       const dialCodeService = TestBed.get(DialCodeService);
       const result = dialCodeService.parseCollection(mockData.courseHierarchApiResponse.result.content);
-        expect(result).toBeDefined();
-        expect(result.length).toBeTruthy();
-        expect(result.length).toBe(9);
-        expect(result).toEqual(mockData.parsedCollection);
+      expect(result).toBeDefined();
+      expect(result.length).toBeTruthy();
+      expect(result.length).toBe(9);
+      expect(result).toEqual(mockData.parsedCollection);
     });
 
   });
