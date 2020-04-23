@@ -32,7 +32,7 @@ describe('DialCodeService', () => {
         result: {
           response: {
             sections: [
-              {}
+              []
             ]
           }
         }
@@ -54,6 +54,7 @@ describe('DialCodeService', () => {
       service.searchDialCode('K2W1G4', true).subscribe(res => {
         expect(publicDataService.post).toHaveBeenCalledWith(option);
         expect(res).toBeDefined();
+        expect(res).toEqual([]);
       });
     });
 
@@ -71,7 +72,7 @@ describe('DialCodeService', () => {
         result: {
           response: {
             sections: [
-              {}
+              []
             ]
           }
         }
@@ -93,6 +94,7 @@ describe('DialCodeService', () => {
       service.searchDialCode('K2W1G4', true).subscribe(res => {
         expect(res).toBeDefined();
         expect(publicDataService.post).toHaveBeenCalledWith(option);
+        expect(res).toEqual([]);
       });
     });
 
