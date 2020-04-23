@@ -29,18 +29,24 @@ export class DialCodeService {
         request: {
           source: 'web',
           name: 'DIAL Code Consumption',
-          filters: {  dialcodes: dialCode,
-                      contentType: this.config.appConfig.DialAssembleSearch.contentType
-                  },
-          userProfile: this.user.loggedIn && _.get(this.user.userProfile, 'framework.board') ?
-                      { board: this.user.userProfile.framework.board } : {}
-        }
-      }
+          filters: {
+            dialcodes: dialCode,
+            contentType: this.config.appConfig.DialAssembleSearch.contentType,
+          },
+          userProfile:
+            this.user.loggedIn && _.get(this.user.userProfile, 'framework.board')
+              ? { board: this.user.userProfile.framework.board }
+              : {},
+        },
+      },
     };
-    return this.publicDataService.post(option)
-      .pipe(
-        map(apiResponse => _.get(apiResponse, 'result.response.sections[0]'))
-      );
+
+    return this.publicDataService
+  .post(option)
+  .pipe(
+    map((apiResponse) => _.get(apiResponse, 'result.response.sections[0]'))
+  );
+
   }
 
   /**
