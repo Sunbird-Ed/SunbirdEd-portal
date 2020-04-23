@@ -30,6 +30,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   instance: string;
   bodyPaddingBottom: string;
   tenantFooter: any;
+  defaultFooterConfig: any;
   public unsubscribe$ = new Subject<void>();
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
@@ -43,6 +44,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
     this.tenantService.tenantSettings$.subscribe((data) => {
       this.tenantFooter = data;
     });
+    this.defaultFooterConfig = {
+      helpCenterLink: '/help/getting-started/explore-' + _.lowerCase(this.instance) + '/index.html',
+      helpDeskEmail: 'support@' + _.lowerCase(this.instance) + '-ncte.freshdesk.com'
+    };
   }
  ngAfterViewInit() {
     this.footerAlign();
@@ -72,7 +77,7 @@ footerAlign() {
   }
 
 
-  redirectToDikshaApp() {
+  redirectToMobileApp() {
     const playstoreLink = _.get(this.tenantFooter, 'playstoreLink');
     if (playstoreLink) {
       // For iGot the URL is direclty taken; no UTM needed
