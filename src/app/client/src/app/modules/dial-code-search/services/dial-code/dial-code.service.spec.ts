@@ -18,7 +18,7 @@ describe('DialCodeService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('searchDialCode function', () => {
+  describe('searchDialCodeAssemble function', () => {
 
     it('should return the request object for dial code', () => {
       const funresponse = {
@@ -56,7 +56,7 @@ describe('DialCodeService', () => {
               ]
           }
       }}));
-      service.searchDialCode('K2W1G4', true).subscribe(res => {
+      service.searchDialCodeAssemble('K2W1G4', true).subscribe(res => {
         expect(res).toBeDefined();
       });
       const option = service.getRequest('K2W1G4');
@@ -76,7 +76,7 @@ describe('DialCodeService', () => {
               ]
           }
       }}));
-      service.searchDialCode('K2W1G4', true).subscribe(res => {
+      service.searchDialCodeAssemble('K2W1G4', true).subscribe(res => {
         expect(res).toBeDefined();
       });
       const option = service.getRequest('K2W1G4');

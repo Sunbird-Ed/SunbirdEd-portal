@@ -18,37 +18,6 @@ export class DialCodeService {
     private config: ConfigService, private user: UserService, private publicDataService: PublicDataService ) {
     }
 
-  /**
-   * makes API call to search for dialCode
-   */
-  public searchDialCode(dialCode: string, online: boolean): Observable<any[]> {
-    const request = this.getRequest(dialCode);
-    return this.publicDataService
-    .post(request)
-    .pipe(
-      map((apiResponse) => _.get(apiResponse, 'result.response.sections[0]'))
-    );
-  }
-
-  public getRequest(dialCode: string) {
-    return {
-      url: this.config.urlConFig.URLS.DIAL_ASSEMBLE_PREFIX,
-      data: {
-        request: {
-          source: 'web',
-          name: 'DIAL Code Consumption',
-          filters: {
-            dialcodes: dialCode,
-            contentType: this.config.appConfig.DialAssembleSearch.contentType,
-          },
-          userProfile:
-            this.user.loggedIn && _.get(this.user.userProfile, 'framework.board')
-              ? { board: this.user.userProfile.framework.board }
-              : {},
-        },
-      },
-    };
-  }
 
   /**
   * @param dialSearchResults
@@ -135,6 +104,38 @@ export class DialCodeService {
 
   get dialCodeResult() {
     return this.dialSearchResults;
+  }
+
+   /**
+   * makes API call to search for dialCode
+   */
+  public searchDialCodeAssemble(dialCode: string, online: boolean): Observable<any[]> {
+    const request = this.getRequest(dialCode);
+    return this.publicDataService
+    .post(request)
+    .pipe(
+      map((apiResponse) => _.get(apiResponse, 'result.response.sections[0]'))
+    );
+  }
+
+  public getRequest(dialCode: string) {
+    return {
+      url: this.config.urlConFig.URLS.DIAL_ASSEMBLE_PREFIX,
+      data: {
+        request: {
+          source: 'web',
+          name: 'DIAL Code Consumption',
+          filters: {
+            dialcodes: dialCode,
+            contentType: this.config.appConfig.DialAssembleSearch.contentType,
+          },
+          userProfile:
+            this.user.loggedIn && _.get(this.user.userProfile, 'framework.board')
+              ? { board: this.user.userProfile.framework.board }
+              : {},
+        },
+      },
+    };
   }
 
 }
