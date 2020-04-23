@@ -3,15 +3,14 @@ const download = require('gulp-download')
 const decompress = require('gulp-decompress')
 const rename = require('gulp-rename')
 const clean = require('gulp-clean')
-const gulpSequence = require('gulp-sequence')
 const gzip = require('gulp-gzip')
 const exec = require('child_process').exec
 const brotli = require('gulp-brotli');
 
 // To download editors
-const contentEditor = process.env.sunbird_content_editor_artifact_url;
-const collectionEditor = process.env.sunbird_collection_editor_artifact_url;
-const genericEditor = process.env.sunbird_generic_editor_artifact_url;
+const contentEditor = process.env.sunbird_content_editor_artifact_url || 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/content-editor-iframe-2.9.0.zip';
+const collectionEditor = process.env.sunbird_collection_editor_artifact_url || 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/collection-editor-iframe-2.10.0.zip';
+const genericEditor = process.env.sunbird_generic_editor_artifact_url || 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/generic-editor-iframe-2.9.0.zip';
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
 
@@ -110,11 +109,6 @@ gulp.task('prepare:app:dist', () => {
     .pipe(gulp.dest('./app_dist'))
 })
 
-gulp.task('clean:app:dist', () => {
-  return gulp.src('./app_dist', { read: false, allowEmpty: true })
-    .pipe(clean())
-})
-
 gulp.task('build-resource-bundles', (cb) => {
   exec('node helpers/resourceBundles/build.js', function (err, stdout, stderr) {
     console.log(stdout)
@@ -125,7 +119,7 @@ gulp.task('build-resource-bundles', (cb) => {
 const compress = process.env.devBuild === 'true' ? '' : ['client:gzip'] // removed brotli due to gulp issue
 const cleanClient = process.env.devBuild === 'true' ? '' : 'clean:client:install'
 gulp.task('deploy',
-  gulp.series('clean:app:dist',
+  gulp.series(
     'clean:editors',
     ['download:content:editor',
       'download:collection:editor',
@@ -141,7 +135,7 @@ gulp.task('deploy',
     'prepare:app:dist')
 )
 gulp.task('deployNew', 
-    gulp.series('clean:app:dist', 'client:install', 'client:dist'))
+    gulp.series('client:install', 'client:dist'))
 
 
 

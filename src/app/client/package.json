@@ -6,7 +6,9 @@
     "ng": "ng",
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
+    "download-editors": "gulp download:editors",
     "build": "ng build --prod --deployUrl dist/",
+    "post-build": "gulp post:build",
     "build-dev": "ng build --prod --build-optimizer=false --deployUrl dist/",
     "test": "ng test --tags $tags",
     "lint": "ng lint",
@@ -14,7 +16,8 @@
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -s",
     "test-coverage": "ng test src --code-coverage=true --watch=false --sourceMap=false",
     "build-cdn": "ng build --prod",
-    "inject-cdn-fallback": "gulp inject:cdnFallBack:script"
+    "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
+    "with-stats": "node --max_old_space_size=8192 node_modules/.bin/ng build --prod --stats-json"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
@@ -64,6 +67,11 @@
     "gulp": "4.0.2",
     "gulp-inject-string": "1.1.2",
     "gulp-rename": "2.0.0",
+    "gulp-brotli": "1.2.1",
+    "gulp-clean": "0.4.0",
+    "gulp-decompress": "2.0.2",
+    "gulp-download": "0.0.1",
+    "gulp-gzip": "1.4.2",
     "html2canvas": "1.0.0-rc.3",
     "html2pdf.js": "0.9.1",
     "izimodal": "1.5.1",
