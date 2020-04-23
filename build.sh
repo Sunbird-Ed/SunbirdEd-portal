@@ -52,7 +52,7 @@ build_server(){
     npm i -g npm@6.13.4
     npm install --production --unsafe-perm
     echo "completed server npm install"
-    # node helpers/resourceBundles/build.js # need to be tested
+    node helpers/resourceBundles/build.js
 }
 
 build_client & # Put client build in background 
