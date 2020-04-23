@@ -52,7 +52,7 @@ gulp.task('clean:client:install', (done) => {
 })
 
 gulp.task('client:install', (cb) => {
-  exec('npm install  --prefix ./client', { maxBuffer: Infinity }, function (err, stdout, stderr) {
+  exec('npm install  --production --prefix ./client', { maxBuffer: Infinity }, function (err, stdout, stderr) {
     console.log(stdout)
     console.log(stderr)
     cb(err)
@@ -140,39 +140,8 @@ gulp.task('deploy',
     'clean:index:file',
     'prepare:app:dist')
 )
+gulp.task('deployNew', 
+    gulp.series('clean:app:dist', 'client:install', 'client:dist'))
 
-// offline app preparation tasks
 
-gulp.task('offline-client:dist', (cb) => {
-  exec('npm run build-offline-prod --prefix ./client ', { maxBuffer: Infinity }, function (err, stdout, stderr) {
-    console.log(stdout)
-    console.log(stderr)
-    cb(err)
-  })
-})
 
-gulp.task('install-player', (cb) => {
-  exec('npm install  @project-sunbird/content-player --no-save', { maxBuffer: Infinity }, function (err, stdout, stderr) {
-    console.log(stdout)
-    console.log(stderr)
-    cb(err)
-  })
-})
-
-gulp.task('copy-player', () => {
-  return gulp.src(['node_modules/@project-sunbird/content-player/**/*'], { "base": "node_modules/@project-sunbird/content-player" })
-    .pipe(gulp.dest('./dist/contentPlayer/'))
-})
-
-gulp.task('clean:content-player:modules', (done) => {
-  return gulp.src('./node_modules/@project-sunbird/content-player/node_modules', { read: false , allowEmpty: true})
-    .pipe(clean())
-})
-
-gulp.task('build-offline', gulp.series(
-  'clean:client:install',
-  'client:install',
-  'offline-client:dist',
-  'update:index:file',
-  'clean:index:file'
-))
