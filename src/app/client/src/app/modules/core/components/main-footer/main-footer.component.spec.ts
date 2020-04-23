@@ -87,7 +87,7 @@ describe('MainFooterComponent', () => {
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
-        component.redirectToDikshaApp();
+        component.redirectToMobileApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
         TestBed.get(ResourceService).instance + '-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
 
@@ -99,7 +99,7 @@ describe('MainFooterComponent', () => {
         fixture.detectChanges();
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         const spy = spyOn(component, 'redirect');
-        component.redirectToDikshaApp();
+        component.redirectToMobileApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
         TestBed.get(ResourceService).instance + '-sunbird&utm_medium=get&utm_campaign=redirection');
     });
@@ -109,7 +109,7 @@ describe('MainFooterComponent', () => {
         fixture.detectChanges();
         const spy = spyOn(component, 'redirect');
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
-        component.redirectToDikshaApp();
+        component.redirectToMobileApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
         TestBed.get(ResourceService).instance + '-sunbird&utm_medium=');
     });
