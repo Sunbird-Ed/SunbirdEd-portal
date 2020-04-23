@@ -20,6 +20,27 @@ describe('DialCodeService', () => {
 
   describe('searchDialCode function', () => {
 
+    it('should return the request object for dial code', () => {
+      const funresponse = {
+        url: 'data/v1/dial/assemble',
+        data: {
+          request: {
+            source: 'web',
+            name: 'DIAL Code Consumption',
+            filters: {
+              dialcodes: 'K2W1G4',
+              contentType: ['Collection', 'TextBook', 'TextBookUnit', 'Resource', 'Course']
+            },
+            userProfile: { board: 'CBSE' }
+          }
+        }
+      };
+      const service: DialCodeService = TestBed.get(DialCodeService);
+      spyOn(service, 'getRequest').and.returnValue(funresponse);
+      const res = service.getRequest('K2W1G4');
+      expect(res).toBeTruthy();
+    });
+
     it('should return dial search results for logged In', () => {
       const service: DialCodeService = TestBed.get(DialCodeService);
       const userService = TestBed.get(UserService);
