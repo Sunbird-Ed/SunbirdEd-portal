@@ -1,5 +1,5 @@
 import { ConfigService } from '@sunbird/shared';
-import { SearchService, PlayerService } from '@sunbird/core';
+import { SearchService, PlayerService, UserService, PublicDataService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
 import { map, catchError, retry } from 'rxjs/operators';
@@ -14,24 +14,10 @@ export class DialCodeService {
 
 
   private dialSearchResults;
-  constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService) { }
+  constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService,
+    private config: ConfigService, private user: UserService, private publicDataService: PublicDataService ) {
+    }
 
-  /**
-   * makes API call to search for dialCode
-   */
-  public searchDialCode(dialCode: string, online: boolean): Observable<any[]> {
-    const requestParams = {
-      filters: {
-        dialcodes: dialCode
-      },
-      mode: 'collection',
-      params: this.configService.appConfig.dialPage.contentApiQueryParams
-    };
-    requestParams.params.online = Boolean(online);
-    return this.searchService.contentSearch(requestParams, false)
-      .pipe(
-        map(apiResponse => _.get(apiResponse, 'result')));
-  }
 
   /**
   * @param dialSearchResults
@@ -42,7 +28,7 @@ export class DialCodeService {
     const response = {};
     const textbookUnitsWithoutParentBook = [];
 
-    const [collections, contents] = _.partition((_.get(dialSearchResults, 'content') || []), result => {
+    const [collections, contents] = _.partition((_.get(dialSearchResults, 'contents') || []), result => {
       return (_.get(result, 'mimeType') === 'application/vnd.ekstep.content-collection' && result.contentType.toLowerCase() !== 'course');
     });
 
@@ -118,6 +104,38 @@ export class DialCodeService {
 
   get dialCodeResult() {
     return this.dialSearchResults;
+  }
+
+   /**
+   * makes API call to search for dialCode
+   */
+  public searchDialCodeAssemble(dialCode: string, online: boolean): Observable<any[]> {
+    const request = this.getRequest(dialCode);
+    return this.publicDataService
+    .post(request)
+    .pipe(
+      map((apiResponse) => _.get(apiResponse, 'result.response.sections[0]'))
+    );
+  }
+
+  public getRequest(dialCode: string) {
+    return {
+      url: this.config.urlConFig.URLS.DIAL_ASSEMBLE_PREFIX,
+      data: {
+        request: {
+          source: 'web',
+          name: 'DIAL Code Consumption',
+          filters: {
+            dialcodes: dialCode,
+            contentType: this.config.appConfig.DialAssembleSearch.contentType,
+          },
+          userProfile:
+            this.user.loggedIn && _.get(this.user.userProfile, 'framework.board')
+              ? { board: this.user.userProfile.framework.board }
+              : {},
+        },
+      },
+    };
   }
 
 }
