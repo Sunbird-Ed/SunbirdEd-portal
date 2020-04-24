@@ -147,7 +147,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           }],
           issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
           issuedOn: _.get(val, '_source.data.issuedOn'),
-          certName: _.get(val,'_source.data.badge.name')
+          certName: _.get(val, '_source.data.badge.name')
         };
       });
     });
