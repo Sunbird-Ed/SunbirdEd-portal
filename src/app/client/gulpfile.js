@@ -67,7 +67,7 @@ gulp.task('gzip:editors', () => {
         .pipe(gulp.dest('./client/src/thirdparty/editors'))
 })
 
-gulp.task('download:editors', gulp.series('clean:editors', ['download:content:editor', 'download:collection:editor', 'download:generic:editor'], 'gzip:editors'));
+gulp.task('download:editors', gulp.series('clean:editors', ['download:content:editor', 'download:collection:editor', 'download:generic:editor']));
 
 /////////////////////////////////////////////////////////////////////////////
 
