@@ -10,11 +10,7 @@ import {
 import { IFlagReason, IFlagData, IRequestData, CollectionHierarchyAPI } from './../../interfaces';
 
 import { Subject } from 'rxjs';
-/**
- * The delete component deletes the announcement
- * which is requested by the logged in user have announcement
- * creator access
- */
+
 @Component({
   selector: 'app-flag-content',
   templateUrl: './flag-content.component.html',
@@ -87,7 +83,6 @@ export class FlagContentComponent implements OnInit, OnDestroy {
 	 *
 	 * Default method of DeleteComponent class
 	 *
-   * @param {AnnouncementService} announcementService Reference of AnnouncementService
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    * @param {ResourceService} resourceService Reference of ResourceService
    * @param {ToasterService} toasterService Reference of ToasterService

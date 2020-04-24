@@ -28,7 +28,6 @@ export class MainHeaderComponent implements OnInit {
   tenantInfo: any = {};
   userProfile: IUserProfile;
   adminDashboard: Array<string>;
-  announcementRole: Array<string>;
   myActivityRole: Array<string>;
   orgAdminRole: Array<string>;
   orgSetupRole: Array<string>;
@@ -78,7 +77,6 @@ export class MainHeaderComponent implements OnInit {
         this.exploreButtonVisibility = 'false';
       }
       this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
-      this.announcementRole = this.config.rolesConfig.headerDropdownRoles.announcementRole;
       this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
       this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
       this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;

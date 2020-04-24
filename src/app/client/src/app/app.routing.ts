@@ -17,12 +17,6 @@ const appRoutes: Routes = [
   {
     path: 'contribute', loadChildren: 'app/modules/program/program.module#ProgramModule'
   },
-  // {
-  //   path: 'home', loadChildren: 'app/modules/home/home.module#HomeModule'
-  // },
-  // {
-  //   path: 'announcement', loadChildren: 'app/modules/announcement/announcement.module#AnnouncementModule'
-  // },
   {
     path: 'org', loadChildren: 'app/modules/org-management/org-management.module#OrgManagementModule'
   },

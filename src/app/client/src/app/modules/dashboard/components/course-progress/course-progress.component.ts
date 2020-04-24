@@ -169,9 +169,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   subscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
-	 *
-	 * Default method of AnnouncementService class
-	 *
    * @param {UserService} user Reference of UserService
    * @param {Router} route Reference of Router
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
