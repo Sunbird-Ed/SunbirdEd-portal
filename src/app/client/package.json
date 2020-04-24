@@ -89,7 +89,7 @@
     "ngx-md": "^7.0.0",
     "ngx-order-pipe": "^2.0.1",
     "ngx-slick": "^0.2.1",
-    "opentracing": "^0.14.4",
+    "opentracing": "^0.14.4",   
     "rxjs": "^6.4.0",
     "shepherd.js": "^2.10.0",
     "slick-carousel": "1.6.0",

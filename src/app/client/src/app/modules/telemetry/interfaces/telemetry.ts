@@ -33,6 +33,39 @@ export interface IInteractEventEdata {
   'target'?: string;
   'plugin'?: string;
 }
+
+export interface IInteractEventEdataSpanData {
+  'type': string;
+  'key': string;
+  'value': string;
+}
+
+export interface ITraceEventEdata {
+  'id': string;
+  'name': string;
+  'span': ITraceEventEdataSpan;
+}
+
+export interface ITraceEventEdataSpan {
+  'traceID': string;
+  'spanID': string;
+  'operationName': string;
+  'parentSpanId'?: string;
+  'references'?: Array<any>;
+  'startTime'?: Number;
+  'duration'?: Number;
+  'context'?: Array<ITraceEventEdataSpanData>;
+  'tags'?: Array<ITraceEventEdataSpanData>;
+  'logs'?: Array<{}>;
+  'processID'?: string;
+  'warnings'?: string;
+}
+
+export interface ITraceEventEdataSpanData {
+  'type': string;
+  'key': string;
+  'value': string;
+}
 export interface IShareEventData {
   'type': string;
   'dir': string;
@@ -89,7 +122,7 @@ export interface TelemetryEventOptions {
 }
 export interface ITelemetryEvent {
   'edata': IStartEventData | IImpressionEventData | IInteractEventEdata | IShareEventData
-  | IErrorEventData | IEndEventData | ILogEventData | IFeedBackEventData;
+  | IErrorEventData | IEndEventData | ILogEventData | IFeedBackEventData | ITraceEventEdata;
   'contentId'?: string;
   'contentVer'?: string;
   'options': TelemetryEventOptions;
@@ -145,6 +178,16 @@ export interface IInteractEventInput {
   };
   'object'?: IInteractEventObject;
   'edata': IInteractEventEdata;
+}
+
+export interface ITraceEventInput {
+  'context': {
+    'env': string;
+    'cdata'?: Array<object>,
+    'pdata'?: IProducerData
+  };
+  'object'?: IInteractEventObject;
+  'edata': ITraceEventEdata;
 }
 export interface IInteractEventObject {
   'id'?: string;

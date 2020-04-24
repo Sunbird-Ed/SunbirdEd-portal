@@ -110,6 +110,19 @@ telemetryService.prototype.log = function (data) {
 }
 
 /**
+ * for trace event
+ * data object have these properties {'edata', context', 'object', 'tags'}
+ */
+telemetryService.prototype.trace = function (data) {
+  Telemetry.trace(data.edata, {
+    context: data.context,
+    object: data.object,
+    actor: data.actor,
+    tags: data.tags
+  })
+}
+
+/**
  * for log event
  * data object have these properties {'edata', context', 'object', 'tags'}
  */

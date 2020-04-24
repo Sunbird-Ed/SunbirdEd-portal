@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { map, catchError, skipWhile } from 'rxjs/operators';
+import { TraceService } from '@sunbird/shared';
+import * as _ from 'lodash-es';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +14,7 @@ import { map, catchError, skipWhile } from 'rxjs/operators';
 export class SessionExpiryInterceptor implements HttpInterceptor {
   static singletonInstance: SessionExpiryInterceptor;
   sessionExpired = false;
-  constructor(public userService: UserService) {
+  constructor(public userService: UserService, public traceService: TraceService) {
     if (!SessionExpiryInterceptor.singletonInstance) {
       SessionExpiryInterceptor.singletonInstance = this;
     }
@@ -25,8 +29,11 @@ export class SessionExpiryInterceptor implements HttpInterceptor {
       return throwError(event);
     }
   }
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
+    request = this.injectContext(request);
     return next.handle(request).pipe(map((event: HttpEvent<any>) => {
+      this.traceService.endSpan();
       return event; // success case
     }),
       catchError((error: HttpEvent<any>) => {
@@ -34,6 +41,23 @@ export class SessionExpiryInterceptor implements HttpInterceptor {
       }),
       skipWhile(data => data === undefined || data === null)); // stop api call and show login popup
   }
+
+  injectContext(req: HttpRequest<any> ): HttpRequest<any> {
+
+    this.traceService.startSpan(req.url);
+    const currentSpan: any = this.traceService.currentSpan;
+    const currentParentSpan: any = this.traceService.currentParentSpan;
+
+    const cloneReq = req.clone({
+      headers: req.headers
+      .set('X-traceId', currentParentSpan._uuid)
+      .set('X-traceName', currentParentSpan._operationName)
+      .set('X-spanId', currentSpan._uuid)
+      .set('X-spanName', currentSpan._operationName)
+    });
+    return cloneReq;
+  }
+
 }
 
 @Injectable()

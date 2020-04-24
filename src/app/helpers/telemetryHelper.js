@@ -515,5 +515,49 @@ module.exports = {
     }
 
     next()
+  },
+
+  generateTelemetryForTraceEvent: function (req, res) {
+   
+    const edata = {
+      id : req.get['x-traceid'],
+      name : req.get['x-tracename'],
+      span : {
+          traceID: req.get['x-traceid'],
+          spanID: req.get['x-spanid'],
+          // "flags": 1,
+          operationName : req.get('x-spanname'),
+          parentSpanId : req.parentSpanId,
+          references: [],
+          startTime: req.traceStartTime,
+          duration: Date.now() - req.traceStartTime,
+          context:[],
+          tags:[],
+          logs: [],
+          processID: '',
+          warnings: null
+        }
+    };
+    var channel = (req.session && req.session.rootOrghashTagId) || req.get('x-channel-id')
+    if (channel) {
+      var dims = req.session['rootOrgId'] || []
+      dims = req.session.orgs ? _.concat(dims, req.session.orgs) : dims
+      dims = _.concat(dims, channel)
+      const context = telemetry.getContextData({ channel: channel, env: req.telemetryEnv })
+      if (req.sessionID) {
+        context.sid = req.sessionID
+      }
+      if (req.get('x-device-id')) {
+        context.did = req.get('x-device-id')
+      }
+      context.rollup = telemetry.getRollUpData(dims)
+      console.log("===== TelemetryTrace ==== ", JSON.stringify(edata));
+      telemetry.trace({
+        edata: edata,
+        context: context,
+        actor: module.exports.getTelemetryActorData(req),
+        tags: _.concat([], channel)
+      });
+    }
   }
 }

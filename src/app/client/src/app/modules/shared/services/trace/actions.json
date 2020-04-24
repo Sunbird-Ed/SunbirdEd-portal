@@ -2,7 +2,9 @@
     "trace_QrScan": {
         "id": "qr-scan",
         "chidren": {
-            "qrSearch": "qrSearch"
+            "qrSearch": "qrSearch",
+            "qrHierarchy" : "qrHierarchy",
+            "qrContentRead" : "qrContentRead"
         }
     }
     

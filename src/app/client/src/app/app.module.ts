@@ -7,7 +7,7 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
   SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule, SessionExpiryInterceptor } from '@sunbird/core';
-import { SharedModule, TraceService } from '@sunbird/shared';
+import { SharedModule, TraceService  } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { BootstrapFramework, WebExtensionModule } from '@project-sunbird/web-extensions';
@@ -40,7 +40,7 @@ import { PluginModules } from './framework.config';
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
   providers: [
-    CacheService, TraceService,
+    CacheService, TraceService ,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true }
   ]

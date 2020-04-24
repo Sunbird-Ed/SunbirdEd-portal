@@ -8,6 +8,7 @@ const helmet = require('helmet')
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const _ = require('lodash')
+const traceHelper = require('./helpers/traceHelper.js')
 const trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js')
 const telemetryHelper = require('./helpers/telemetryHelper.js')
 const tenantHelper = require('./helpers/tenantHelper.js')
@@ -52,6 +53,8 @@ app.use(session({
   saveUninitialized: false,
   store: memoryStore
 }))
+
+app.use(traceHelper);
 
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 

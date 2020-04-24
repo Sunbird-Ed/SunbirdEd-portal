@@ -1,4 +1,4 @@
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService, TraceService } from '@sunbird/shared';
 import { SearchService, PlayerService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -14,7 +14,8 @@ export class DialCodeService {
 
 
   private dialSearchResults;
-  constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService) { }
+  constructor(private searchService: SearchService, private configService: ConfigService, private playerService: PlayerService, 
+    private traceService: TraceService) { }
 
   /**
    * makes API call to search for dialCode
@@ -65,6 +66,7 @@ export class DialCodeService {
       });
     }
 
+    this.traceService.setSpanAction(this.traceService.ACTIONS.trace_QrScan.chidren.qrHierarchy);
     return this.getAllPlayableContent(textbookUnitsWithoutParentBook, option).pipe(
       map(apiResponse => {
         (response['contents'] || (response['contents'] = [])).push(...apiResponse);

@@ -2,7 +2,7 @@ import { Injectable, Inject, InjectionToken } from '@angular/core';
 import * as _ from 'lodash-es';
 import {
   ITelemetryEvent, ITelemetryContextData, TelemetryObject,
-  IStartEventInput, IImpressionEventInput, IExDataEventInput,
+  IStartEventInput, IImpressionEventInput, IExDataEventInput, ITraceEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
 import { environment } from '@sunbird/environment';
@@ -171,6 +171,19 @@ export class TelemetryService {
     if (this.isInitialized) {
       const eventData: ITelemetryEvent = this.getEventData(logEventInput);
       this.telemetryProvider.log(eventData.edata, eventData.options);
+    }
+  }
+
+  /**
+   * Logs 'trace' telemetry event
+   *
+   * @param {ITraceEventInput} logEventInput
+   * @memberof TelemetryService
+   */
+  public trace(traceEventInput: ITraceEventInput) {
+    if (this.isInitialized) {
+      const eventData: ITelemetryEvent = this.getEventData(traceEventInput);
+      this.telemetryProvider.trace(eventData.edata, eventData.options);
     }
   }
 

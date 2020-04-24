@@ -7,7 +7,7 @@ import * as _ from 'lodash-es';
 import { Subject  } from 'rxjs';
 import {
   ConfigService, ResourceService, ToasterService, UtilService,
-  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData
+  WindowScrollService, NavigationHelperService, PlayerConfig, ContentData, TraceService
 } from '@sunbird/shared';
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -65,7 +65,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     public windowScrollService: WindowScrollService, public playerService: PublicPlayerService,
     public navigationHelperService: NavigationHelperService, public router: Router, private deviceDetectorService: DeviceDetectorService,
     private configService: ConfigService, public contentManagerService: ContentManagerService,
-    public utilService: UtilService
+    public utilService: UtilService, public traceService: TraceService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -85,6 +85,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
           l1 : _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
         };
       }
+      // tslint:disable-next-line:no-debugger
       this.setTelemetryData();
       this.getContent();
       this.deviceDetector();
@@ -114,6 +115,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   getContent() {
     const options: any = { dialCode: this.dialCode };
     const params = {params: this.configService.appConfig.PublicPlayer.contentApiQueryParams};
+    this.traceService.setSpanAction(this.traceService.ACTIONS.trace_QrScan.chidren.qrContentRead);
     this.playerService.getContent(this.contentId, params).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       const contentDetails = {
         contentId: this.contentId,

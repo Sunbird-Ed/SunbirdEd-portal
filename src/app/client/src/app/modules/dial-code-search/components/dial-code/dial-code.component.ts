@@ -81,7 +81,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         return { ...params, ...queryParams };
       }).pipe(
         tap(this.initialize),
-        mergeMap(params => _.get(params, 'textbook') ? this.processTextBook(params) : this.processDialCode(params)),
+        mergeMap(params => _.get(params, 'textbook') ? this.processTextBook(params) : this.processDialCode(params))
       ).subscribe(res => {
         const linkedContents = _.flatMap(_.values(res));
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
@@ -136,7 +136,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
 
   private processDialCode(params) {
-    this.traceService.setSpanAction(this.traceService.ACTIONS.trace_QrScan.qrSearch);
+    this.traceService.setSpanAction(this.traceService.ACTIONS.trace_QrScan.chidren.qrSearch);
+    this.traceService.setTag({type: 'qr', key: 'dialcode', value: _.get(params, 'dialCode')});
     return of(params).pipe(
       finalize(() => {
         this.logInteractEvent({
