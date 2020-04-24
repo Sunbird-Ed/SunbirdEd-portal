@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, CoursesService } from '@sunbird/core';
 import {
-  ServerResponse, ConfigService, PaginationService, IPagination, 
+  ServerResponse, ConfigService, PaginationService, IPagination,
   IContents, ToasterService, ResourceService, ILoaderMessage, INoResultMessage,
   NavigationHelperService
 } from '@sunbird/shared';
