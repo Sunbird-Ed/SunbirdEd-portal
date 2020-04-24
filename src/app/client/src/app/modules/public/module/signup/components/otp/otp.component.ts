@@ -29,7 +29,7 @@ export class OtpComponent implements OnInit {
   unabletoVerifyErrorMessage: string;
   disableResendButton = false;
   showSignUpLink = false;
-  
+
   telemetryEnd: IEndEventInput;
   submitOtpInteractEdata: IInteractEventEdata;
   submitResendOtpInteractEdata: IInteractEventEdata;
