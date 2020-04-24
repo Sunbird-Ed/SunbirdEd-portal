@@ -67,7 +67,7 @@ sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
 cd ..
 echo 'Compressing app_dist directory'
 du -hcs app_dist
-tar -cvf player-dist.tar.gz app_dist
+# tar -cvf player-dist.tar.gz app_dist
 cd ../..
 du -hcs src
 echo "starting docker build"
