@@ -31,5 +31,4 @@ export interface IPagination {
     startIndex: number;
     endIndex: number;
     pages: Array<number>;
-  }
-  
+}
