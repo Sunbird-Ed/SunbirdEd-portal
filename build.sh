@@ -44,7 +44,7 @@ build_client(){
 build_server(){
     echo "Building server in background"
     echo "copying requied files to app_dist"
-    cp -R libs helpers proxy resourcebundles cassandra_migration themes package.json framework.config.js package-lock.json sunbird-plugins routes constants controllers server.js app_dist
+    cp -R libs helpers proxy resourcebundles cassandra_migration themes package.json framework.config.js package-lock.json sunbird-plugins routes constants controllers server.js ./../../Dockerfile app_dist
     cd app_dist
     nvm use 12.16.1
     echo "starting server npm install"
@@ -62,14 +62,13 @@ wait
 
 ENDTIME=$(date +%s)
 echo "Client and Server Build complete Took $[$ENDTIME - $STARTTIME] seconds to complete."
+du -hcs app_dist
 cd app_dist
 sed -i "/version/a\  \"buildHash\": \"${commit_hash}\"," package.json
-cd ..
-echo 'Compressing app_dist directory'
-du -hcs app_dist
-# tar -cvf player-dist.tar.gz app_dist
-cd ../..
-du -hcs src
+# cd ..
+# tar -cvf player-dist.tar.gz app_dist 
+# cd ../..
+# du -hcs src
 echo "starting docker build"
 docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 echo "completed docker build"
