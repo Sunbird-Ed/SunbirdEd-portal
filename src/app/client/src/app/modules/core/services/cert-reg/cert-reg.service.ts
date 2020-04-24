@@ -34,13 +34,24 @@ export class CertRegService extends DataService {
     this.baseUrl = this.config.urlConFig.URLS.CERT_REG_PREFIX;
   }
 
-  public fetchCertificates(userId) {
+  public fetchCertificates(userId, certType) {
     const request = {
       request: {
-        _source: ['data.badge.issuer.name', 'pdfUrl', 'data.issuedOn'],
-        query: {
-          match_phrase: {
-            'recipient.id': userId
+        _source: ['data.badge.issuer.name', 'pdfUrl', 'data.issuedOn', 'data.badge.name'],
+        "query": {
+          "bool": {
+            "must": [
+              {
+                "match_phrase": {
+                  "recipient.id": userId
+                }
+              },
+              {
+                "match_phrase": {
+                  "related.type": certType
+                }
+              }
+            ]
           }
         }
       }
