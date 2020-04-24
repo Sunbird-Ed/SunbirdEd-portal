@@ -148,7 +148,7 @@ describe('ProfilePageComponent', () => {
     const certRegService = TestBed.get(CertRegService);
     const mockData = Response.othersCertificateData;
     spyOn(certRegService, 'fetchCertificates').and.returnValue(observableOf(mockData));
-    component.getOtherCertificates('123456');
+    component.getOtherCertificates('123456', 'test');
     expect(component.otherCertificates).toEqual([{
       pdfUrls: [{ url: mockData.result.response.content[0]._source.pdfUrl }],
       issuingAuthority: mockData.result.response.content[0]._source.data.badge.issuer.name,
