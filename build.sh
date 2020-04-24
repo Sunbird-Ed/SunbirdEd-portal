@@ -24,10 +24,9 @@ mkdir app_dist/ # this folder should be created prior server and client build
 build_client(){
     echo "Building client in background"
     nvm use 12.16.1
-    npm set progress=false
     cd client
     echo "starting client npm install"
-    npm install --production --unsafe-perm # install all prod dep
+    npm install --production --unsafe-perm --prefer-offline --no-audit --progress=false
     echo "completed client npm install"
     npm run download-editors # download editors to assests folder
     echo "starting client prod build"
@@ -48,10 +47,9 @@ build_server(){
     cp -R libs helpers proxy resourcebundles cassandra_migration themes package.json framework.config.js package-lock.json sunbird-plugins routes constants controllers server.js app_dist
     cd app_dist
     nvm use 12.16.1
-    npm set progress=false
     echo "starting server npm install"
     npm i -g npm@6.13.4
-    npm install --production --unsafe-perm
+    npm install --production --unsafe-perm --prefer-offline --no-audit --progress=false
     echo "completed server npm install"
     node helpers/resourceBundles/build.js
 }
