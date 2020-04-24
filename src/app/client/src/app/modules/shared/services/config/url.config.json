@@ -25,6 +25,7 @@
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
     "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
+    "DIAL_ASSEMBLE_PREFIX": "data/v1/dial/assemble",
     "RESOURCEBUNDLES": {
       "ENG": "/read"
     },
