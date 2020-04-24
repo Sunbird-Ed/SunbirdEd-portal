@@ -22,8 +22,10 @@
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item"
                     suiTabHeader="graph" (activate)="showExportsOption=true"
+                    [ngClass]="{'mr-auto': currentReport.tables.length === 0}"
                     (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
                   <a appTelemetryInteract
+                    [ngClass]="{'mr-auto': currentReport.tables.length > 0}"
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
                     (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
@@ -33,7 +35,7 @@
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" type="button"
                     *ngIf="currentReport?.reportMetaData?.downloadUrl"
-                    class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8" (click)="downloadCSV()"><i
+                    class="sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()"><i
                       class="icon"></i>
                     {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
                   <div class="sb-field mb-0 mr-8">
