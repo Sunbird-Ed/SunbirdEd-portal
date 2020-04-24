@@ -38,17 +38,17 @@ export class CertRegService extends DataService {
     const request = {
       request: {
         _source: ['data.badge.issuer.name', 'pdfUrl', 'data.issuedOn', 'data.badge.name'],
-        "query": {
-          "bool": {
-            "must": [
+        query: {
+          bool: {
+            must: [
               {
-                "match_phrase": {
-                  "recipient.id": userId
+                match_phrase: {
+                  'recipient.id': userId
                 }
               },
               {
-                "match_phrase": {
-                  "related.type": certType
+                match_phrase: {
+                  'related.type': certType
                 }
               }
             ]
