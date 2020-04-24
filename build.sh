@@ -71,6 +71,7 @@ echo 'Compressing app_dist directory'
 du -hcs app_dist
 tar -cvf player-dist.tar.gz app_dist
 cd ../..
+du -hcs src
 echo "starting docker build"
 docker build --no-cache --label commitHash=$(git rev-parse --short HEAD) -t ${org}/${name}:${build_tag} .
 echo "completed docker build"
