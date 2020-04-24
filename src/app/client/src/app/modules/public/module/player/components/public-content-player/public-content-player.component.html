@@ -1,3 +1,5 @@
+<div>
+  <div *ngIf="!showLoader">
 <!--CC-Player Content Header -->
 <div class="cc-player__content-header d-flex flex-ai-center relative position" *ngIf="contentData">
   <div class="ui container">
@@ -27,6 +29,10 @@
       </app-contentplayer-page>
     </section>
   </div>
+</div>
+<div class="twelve wide column" *ngIf="showLoader">
+  <app-loader [data]='loaderMessage'></app-loader>
+</div>
 </div>
 
 

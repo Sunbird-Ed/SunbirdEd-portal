@@ -81,6 +81,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   activeContent: any;
   isContentPresent: Boolean = false;
   isSelectChapter: Boolean = false;
+  showLoader = true;
 
   /**
    * Page Load Time, used this data in impression telemetry
@@ -129,7 +130,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.contentData = this.getContent();
     this.deviceDetector();
     this.setTelemetryData();
-
   }
   setTelemetryData() {
     if (this.dialCode) {
@@ -307,7 +307,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }))
       .subscribe((data) => {
         this.collectionTreeNodes = data;
-        this.loader = false;
+        this.showLoader = false;
         this.route.queryParams.subscribe((queryParams) => {
           this.queryParams = { ...queryParams};
           this.contentId = queryParams.contentId;
@@ -423,8 +423,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
   }
   callinitPlayer (event) {
-    // console.log('event---ID---->',event.data.identifier);
-    // console.log('activeContent---ID---->',_.get(this.activeContent, 'identifier'))
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
       this.isContentPresent = true;
       this.activeContent = event.data;

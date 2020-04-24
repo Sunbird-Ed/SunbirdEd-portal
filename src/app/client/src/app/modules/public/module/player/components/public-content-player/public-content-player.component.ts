@@ -58,6 +58,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public closePlayerInteractEdata: IInteractEventEdata;
   public printPdfInteractEdata: IInteractEventEdata;
   public objectRollup = {};
+  showLoader = true;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
@@ -122,6 +123,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       }),
       takeUntil(this.unsubscribe$))
       .subscribe((response) => {
+        this.showLoader = false;
       const contentDetails = {
         contentId: this.contentId,
         contentData: response.result.content
