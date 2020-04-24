@@ -32,9 +32,9 @@ gulp.task('inject:cdnFallBack:script', () => {
 
 //////////////////////// editor download and zip ///////////////////////////////////////////////////
 
-const contentEditor = process.env.sunbird_content_editor_artifact_url || 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/content-editor-iframe-2.9.0.zip';
-const collectionEditor = process.env.sunbird_collection_editor_artifact_url || 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/collection-editor-iframe-2.10.0.zip';
-const genericEditor = process.env.sunbird_generic_editor_artifact_url || 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/generic-editor-iframe-2.9.0.zip';
+const contentEditor = process.env.sunbird_content_editor_artifact_url;
+const collectionEditor = process.env.sunbird_collection_editor_artifact_url;
+const genericEditor = process.env.sunbird_generic_editor_artifact_url;
 const editorsDestPath = 'src/thirdparty/editors/'
 
 gulp.task('clean:editors', () => {
