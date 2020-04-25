@@ -17,7 +17,6 @@ nvm install 12.16.1 # same is used in client and server
 
 cd src/app
 rm -rf app_dist/
-rm -rf player-dist.tar.gz	
 mkdir app_dist/ # this folder should be created prior server and client build
 
 # function to run client build
