@@ -58,7 +58,8 @@ export class TenantService extends DataService {
    * Variable that holds default tenant value
    */
   private _defaultTenant = '';
-
+  // TODO refactor the igot specific changes
+  slugForIgot = '';
   /**
    * The constructor
    * @param {HttpClient} http Reference of HttpClient.
@@ -70,7 +71,9 @@ export class TenantService extends DataService {
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.TENANT_PREFIX;
     this._defaultTenant = (<HTMLInputElement>document.getElementById('defaultTenant'))
-    ? (<HTMLInputElement>document.getElementById('defaultTenant')).value : null;
+      ? (<HTMLInputElement>document.getElementById('defaultTenant')).value : null;
+    this.slugForIgot = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
+      (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
   }
 
   /**
@@ -117,6 +120,11 @@ export class TenantService extends DataService {
   }
 
   public getTenantConfig(slug: string) {
+    if ((slug && slug !== '') && slug === this.slugForIgot) {
+      slug = this.slugForIgot;
+    } else {
+      slug = this._defaultTenant;
+    }
     const url = `${this.config.urlConFig.URLS.SYSTEM_SETTING.TENANT_CONFIG + '/'}` + slug;
     return this.learnerService.get({
       url: url
