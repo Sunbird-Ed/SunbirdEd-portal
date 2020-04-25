@@ -7,28 +7,14 @@ const tags = (argv.tags !== true) && argv.tags
 module.exports = function (config) {
   config.set({
     basePath: '',
-    frameworks: ['parallel', 'jasmine', '@angular-devkit/build-angular'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
-      require('karma-parallel'),
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-mocha-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
-    // parallelOptions: {
-      // aggregatedReporterTest: (reporter)=> /coverage|istanbul|junit/i
-      executors: 4, // Defaults to cpu-count - 1
-      // shardStrategy: 'round-robin'
-      // shardStrategy: 'description-length'
-      // shardStrategy: 'custom'
-      // customShardStrategy: function(config) {
-      //   config.executors // number, the executors set above
-      //   config.shardIndex // number, the specific index for the shard currently running
-      //   config.description // string, the name of the top-level describe string. Useful //     for determining how to shard the current specs
-      //   return config.
-      // }
-    // },
     browserNoActivityTimeout: 100000,
     client: {
       jasmine: {
@@ -40,7 +26,6 @@ module.exports = function (config) {
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
       fixWebpackSourcePaths: true
-      // ,combineBrowserReports: true
     },
     
     reporters: ['mocha'],
