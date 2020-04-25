@@ -289,8 +289,9 @@
           </div>
           <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:courseLimit">
             <div class="d-flex flex-ai-center sb-ct-list list-item" *ngIf="data.issuingAuthority">
+              <label class="mr-auto mb-0 text-left">{{data.certName}}</label>
               <label class="mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
-              <span class="list-date mr-24" *ngIf="data.issuedOn">{{data.issuedOn | date :'MMMM yyy' }}</span>
+              <label class="list-date mr-24" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
               <div class="sb-certificate-trained-flex-space" *ngIf="data.pdfUrls && data.pdfUrls.length > 0">
                 <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="downloadOthersCertificateEData"
                 class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data.pdfUrls)">

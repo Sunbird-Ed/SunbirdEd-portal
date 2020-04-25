@@ -148,11 +148,12 @@ describe('ProfilePageComponent', () => {
     const certRegService = TestBed.get(CertRegService);
     const mockData = Response.othersCertificateData;
     spyOn(certRegService, 'fetchCertificates').and.returnValue(observableOf(mockData));
-    component.getOtherCertificates('123456');
+    component.getOtherCertificates('123456', 'quiz');
     expect(component.otherCertificates).toEqual([{
       pdfUrls: [{ url: mockData.result.response.content[0]._source.pdfUrl }],
       issuingAuthority: mockData.result.response.content[0]._source.data.badge.issuer.name,
-      issuedOn: mockData.result.response.content[0]._source.data.issuedOn
+      issuedOn: mockData.result.response.content[0]._source.data.issuedOn,
+      certName: mockData.result.response.content[0]._source.data.badge.name
     }]);
   });
 

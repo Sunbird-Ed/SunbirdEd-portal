@@ -160,7 +160,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   onShareLink() {
     this.shareLink = this.contentUtilsService.getPublicShareUrl(this.collectionId,
-      this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl);
+      _.get(this.collectionTreeNodes, 'data.mimeType'));
     this.setTelemetryShareData(this.collectionData);
   }
 

@@ -66,7 +66,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getOrgDetails();
       }
     });
-    this.getOtherCertificates(_.get(this.userProfile, 'userId'));
+    this.getOtherCertificates(_.get(this.userProfile, 'userId'), 'quiz');
     this.getContribution();
     this.getTrainingAttended();
     this.setInteractEventData();
@@ -138,15 +138,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
  * @param userId
  *It will fetch certificates of user, other than courses
  */
-  getOtherCertificates(userId) {
-    this.certRegService.fetchCertificates(userId).subscribe((data) => {
+  getOtherCertificates(userId, certType) {
+    this.certRegService.fetchCertificates(userId, certType).subscribe((data) => {
       this.otherCertificates = _.map(_.get(data, 'result.response.content'), val => {
         return {
           pdfUrls: [{
             url: _.get(val, '_source.pdfUrl')
           }],
           issuingAuthority: _.get(val, '_source.data.badge.issuer.name'),
-          issuedOn: _.get(val, '_source.data.issuedOn')
+          issuedOn: _.get(val, '_source.data.issuedOn'),
+          certName: _.get(val, '_source.data.badge.name')
         };
       });
     });
