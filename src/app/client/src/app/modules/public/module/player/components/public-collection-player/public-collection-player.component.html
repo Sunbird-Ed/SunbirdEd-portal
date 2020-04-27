@@ -57,14 +57,14 @@
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
               (noContent)="showNoContent($event)"></sb-toc-item>
           </div>
-          <div>
-            <app-content-licence [content]="collectionData"></app-content-licence>
-          </div>
           <div [hidden]="!isSelectChapter">
             <span>
               <app-content-chapterlist [activeContent]="activeContent" [contentDetails]="collectionData"
                 (tocChapterClick)="tocChapterClickHandler($event)"></app-content-chapterlist>
             </span>
+          </div>
+          <div>
+            <app-content-licence [content]="collectionData"></app-content-licence>
           </div>
         </section>
       </div>
