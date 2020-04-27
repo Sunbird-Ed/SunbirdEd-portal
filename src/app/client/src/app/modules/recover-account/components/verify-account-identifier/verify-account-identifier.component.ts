@@ -88,6 +88,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   }
   handleError(err) {
     if (_.get(err, 'error.result.remainingAttempt') === 0) {
+      this.disableFormSubmit = true;
       this.utilService.redirectToLogin(this.resourceService.messages.emsg.m0050);
     } else {
       const filterPipe = new InterpolatePipe();
