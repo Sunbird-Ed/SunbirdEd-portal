@@ -40,7 +40,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() closePlayerEvent = new EventEmitter<any>();
   isMobileOrTab: boolean;
   playerThumbnail = true;
-  showCloseButton = false;
   closeButtonInteractEdata: IInteractEventEdata;
   loadPlayerInteractEdata: IInteractEventEdata;
   /**
@@ -231,7 +230,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
           playVideo.msRequestFullscreen();
         }
         screen.orientation.lock('landscape');
-        this.showCloseButton = true;
       } catch (error) {}
     });
   }
@@ -242,7 +240,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
    * 2. content-details page will be shown ( for multi-result dial-code search flow)
    */
   closeFullscreen() {
-    this.showCloseButton = false;
     /** to exit the fullscreen mode */
     if (document['exitFullscreen']) {
       document['exitFullscreen']();

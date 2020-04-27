@@ -5,7 +5,7 @@
     <img class="play-icon" src="assets/images/play_circle.svg">
   </div>
   <div id="playerFullscreen" *ngIf="!playerThumbnail" > 
-    <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" *ngIf="showCloseButton" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt="">
+    <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt="">
     <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" name="contentPlayer"></iframe>
   </div>
 </div>

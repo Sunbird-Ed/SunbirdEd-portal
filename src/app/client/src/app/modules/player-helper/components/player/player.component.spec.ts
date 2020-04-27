@@ -104,7 +104,6 @@ describe('PlayerComponent', () => {
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
       tick(100);
-      expect(component.showCloseButton).toBe(true);
       expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
     }));
 
@@ -115,7 +114,6 @@ describe('PlayerComponent', () => {
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
       tick(100);
-      expect(component.showCloseButton).toBe(true);
       expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
     }));
 
@@ -127,7 +125,6 @@ describe('PlayerComponent', () => {
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
       tick(100);
-      expect(component.showCloseButton).toBe(true);
       expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
     }));
 
@@ -140,7 +137,6 @@ describe('PlayerComponent', () => {
       spyOn(screen.orientation, 'lock');
       component.rotatePlayer();
       tick(100);
-      expect(component.showCloseButton).toBe(true);
       expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
     }));
   });
@@ -149,7 +145,6 @@ describe('PlayerComponent', () => {
     it('should close player fullscreen for default chrome browser', () => {
       component.isSingleContent = true;
       component.closeFullscreen();
-      expect(component.showCloseButton).toBe(false);
       expect(component.playerThumbnail).toBe(true);
     });
 
@@ -158,7 +153,6 @@ describe('PlayerComponent', () => {
       document['mozCancelFullScreen'] = () => {};
       component.isSingleContent = true;
       component.closeFullscreen();
-      expect(component.showCloseButton).toBe(false);
       expect(component.playerThumbnail).toBe(true);
     });
 
@@ -168,7 +162,6 @@ describe('PlayerComponent', () => {
       document['webkitExitFullscreen'] = () => {};
       component.isSingleContent = true;
       component.closeFullscreen();
-      expect(component.showCloseButton).toBe(false);
       expect(component.playerThumbnail).toBe(true);
     });
 
@@ -179,7 +172,6 @@ describe('PlayerComponent', () => {
       document['msExitFullscreen'] = () => {};
       component.isSingleContent = true;
       component.closeFullscreen();
-      expect(component.showCloseButton).toBe(false);
       expect(component.playerThumbnail).toBe(true);
     });
   });
@@ -195,7 +187,6 @@ describe('PlayerComponent', () => {
   it('should close player fullscreen ', () => {
     component.isSingleContent = true;
     component.closeFullscreen();
-    expect(component.showCloseButton).toBe(false);
     expect(component.playerThumbnail).toBe(true);
   });
 
