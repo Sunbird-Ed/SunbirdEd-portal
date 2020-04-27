@@ -61,8 +61,8 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         this.resetPassword();
       }, error => {
         this.form.controls.otp.reset();
-        this.disableFormSubmit = false;
         this.handleError(error);
+        this.disableFormSubmit = false;
       }
     );
   }
@@ -82,8 +82,8 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         this.handleError(response);
       }
     }, error => {
-      this.disableFormSubmit = false;
       this.handleError(error);
+      this.disableFormSubmit = false;
     });
   }
   handleError(err) {
