@@ -71,7 +71,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
       }
     }
   printPdf(content: any) {
-    const pdfUrl = _.get(content, 'itemSetPreviewUrl')
+    const pdfUrl = _.get(content, 'itemSetPreviewUrl');
     window.open(pdfUrl, '_blank');
   }
     setTelemetryShareData(param) {
