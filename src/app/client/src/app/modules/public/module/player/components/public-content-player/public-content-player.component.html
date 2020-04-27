@@ -6,10 +6,6 @@
     <div class="header-info flex-basis-1">
       <div class="header-info__title">
         <h5 class="sb-color-primary font-weight-bold">{{contentData.name}}</h5>
-        <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
-          <i class="blue share alternate icon"></i>
-          {{resourceService?.frmelmnts?.lbl?.share}}
-        </a>
       </div>
       <div class="header-info__desc d-flex flex-ai-center" *ngIf="contentData">
         <span class="fnormal"
@@ -39,5 +35,3 @@
 </div>
 </div>
 
-<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
-</app-share-link>
