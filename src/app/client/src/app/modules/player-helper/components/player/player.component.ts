@@ -39,7 +39,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() pageId: string;
   @Output() closePlayerEvent = new EventEmitter<any>();
   isMobileOrTab: boolean;
-  playerThumbnail = true;
+  showPlayIcon = true;
   closeButtonInteractEdata: IInteractEventEdata;
   loadPlayerInteractEdata: IInteractEventEdata;
   /**
@@ -68,7 +68,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit() {
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     if (this.isSingleContent === false) {
-      this.playerThumbnail = false;
+      this.showPlayIcon = false;
     }
     this.setTelemetryData();
   }
@@ -208,7 +208,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
    * this method will handle play button click and turn the player into landscape
    */
   enablePlayer(mode: boolean) {
-    this.playerThumbnail = mode;
+    this.showPlayIcon = mode;
     this.loadPlayer();
   }
 
@@ -251,7 +251,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
       document['msExitFullscreen']();
     }
      /** to change the view of the content-details page */
-    this.playerThumbnail = true;
+    this.showPlayIcon = true;
     this.closePlayerEvent.emit();
   }
 

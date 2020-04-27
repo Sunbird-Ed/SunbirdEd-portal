@@ -145,7 +145,7 @@ describe('PlayerComponent', () => {
     it('should close player fullscreen for default chrome browser', () => {
       component.isSingleContent = true;
       component.closeFullscreen();
-      expect(component.playerThumbnail).toBe(true);
+      expect(component.showPlayIcon).toBe(true);
     });
 
     it('should close player fullscreen for mozilla browser', () => {
@@ -153,7 +153,7 @@ describe('PlayerComponent', () => {
       document['mozCancelFullScreen'] = () => {};
       component.isSingleContent = true;
       component.closeFullscreen();
-      expect(component.playerThumbnail).toBe(true);
+      expect(component.showPlayIcon).toBe(true);
     });
 
     it('should close player fullscreen for webkit browser ', () => {
@@ -162,7 +162,7 @@ describe('PlayerComponent', () => {
       document['webkitExitFullscreen'] = () => {};
       component.isSingleContent = true;
       component.closeFullscreen();
-      expect(component.playerThumbnail).toBe(true);
+      expect(component.showPlayIcon).toBe(true);
     });
 
     it('should close player fullscreen for ms browser ', () => {
@@ -172,7 +172,7 @@ describe('PlayerComponent', () => {
       document['msExitFullscreen'] = () => {};
       component.isSingleContent = true;
       component.closeFullscreen();
-      expect(component.playerThumbnail).toBe(true);
+      expect(component.showPlayIcon).toBe(true);
     });
   });
 
@@ -180,20 +180,15 @@ describe('PlayerComponent', () => {
     spyOn(component, 'loadPlayer');
     spyOn(component, 'rotatePlayer').and.stub();
     component.enablePlayer(true);
-    expect(component.playerThumbnail).toBe(true);
+    expect(component.showPlayIcon).toBe(true);
     expect(component.loadPlayer).toHaveBeenCalled();
   });
 
   it('should close player fullscreen ', () => {
     component.isSingleContent = true;
     component.closeFullscreen();
-    expect(component.playerThumbnail).toBe(true);
+    expect(component.showPlayIcon).toBe(true);
   });
 
-  it('should close player fullscreen and enable top div', () => {
-    component.isSingleContent = false;
-    component.closeFullscreen();
-    expect(component.showCloseButton).toBe(false);
-  });
 });
 
