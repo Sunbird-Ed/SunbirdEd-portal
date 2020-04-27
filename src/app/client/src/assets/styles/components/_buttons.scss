@@ -17,6 +17,10 @@ a.sb-btn {
   flex-wrap: wrap;
 }
 
+button.sb-btn:focus {
+  outline: none;
+}
+
 .sb-btn {
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
