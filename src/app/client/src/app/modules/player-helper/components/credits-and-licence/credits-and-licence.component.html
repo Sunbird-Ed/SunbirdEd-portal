@@ -25,7 +25,7 @@
         <p *ngIf="contentData?.licenseDetails?.name">
           {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
           <span *ngIf="contentData.licenseDetails['url']">
-            <a href="{{contentData.licenseDetails['url']}}" target="_blank">{{contentData.licenseDetails['url']}}</a>
+            <a href="{{contentData.licenseDetails['url']}}" class="break-all" target="_blank">{{contentData.licenseDetails['url']}}</a>
           </span></p>
 
         <h4 *ngIf="contentData?.copyright" class="title">{{resourceService?.frmelmnts?.lbl?.copyRight}}</h4>
