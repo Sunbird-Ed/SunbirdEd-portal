@@ -10,12 +10,12 @@ export const actionButtons: IActionButton[] = [
     {
         name: ActionButtonType.RATE,
         label: 'Rate',
-        disabled: false
+        disabled: true
     },
     {
         name: ActionButtonType.PRINT,
         label: 'Print',
-        disabled: false
+        disabled: true
     },
     {
         name: ActionButtonType.FULL_SCREEN,
