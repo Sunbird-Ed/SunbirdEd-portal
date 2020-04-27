@@ -64,8 +64,16 @@ export class ContentActionsComponent implements OnInit, OnChanges {
           this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
           this.logTelemetry('share-content', content);
           break;
+        case 'PRINT':
+          this.printPdf(content);
+          this.logTelemetry('print-content', content);
+          break;
       }
     }
+  printPdf(content: any) {
+    const pdfUrl = _.get(content, 'itemSetPreviewUrl');
+    window.open(pdfUrl, '_blank');
+  }
     setTelemetryShareData(param) {
       this.telemetryShareData = [{
         id: param.identifier,
