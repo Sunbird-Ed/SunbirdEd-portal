@@ -219,17 +219,20 @@ input[type=number]::-webkit-inner-spin-button {
   .signup-background {
     margin: 0 auto !important;
     box-shadow: none !important;
-    height: 100vh;
     width: 100% !important;
     background: #fff;
     position: fixed;
     left: 0;
     right: 0;
-
+    overflow: hidden;
+    
     .ui.raised.shadow.container.segment {
       box-shadow: none;
       margin: 0 auto !important;
       padding: calculateRem(16px) 0 calculateRem(24px) 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      overflow: auto;
     }
   }
 }
