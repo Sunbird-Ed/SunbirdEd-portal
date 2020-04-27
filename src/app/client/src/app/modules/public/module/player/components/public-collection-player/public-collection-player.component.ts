@@ -103,6 +103,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   isOffline: boolean = environment.isOffline;
   public unsubscribe$ = new Subject<void>();
   selectedContent: {};
+  overlayImagePath: string;
+  pageId: string;
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -123,6 +125,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
   }
   ngOnInit() {
+    this.pageId = this.route.snapshot.data.telemetry.pageid;
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.getContent();
@@ -318,6 +321,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         return this.getCollectionHierarchy(params.collectionId);
       }), )
       .subscribe((data) => {
+        this.overlayImagePath = _.get(data, 'data.appIcon');
         this.collectionTreeNodes = data;
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {

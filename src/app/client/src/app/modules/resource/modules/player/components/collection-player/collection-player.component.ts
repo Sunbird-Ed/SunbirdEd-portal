@@ -115,6 +115,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   public prevPlaylistItem: any;
   public telemetryCdata: Array<{}>;
   selectedContent: {};
+  overlayImagePath: string;
   constructor(route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
@@ -258,6 +259,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         return this.getCollectionHierarchy(params.collectionId);
       }), )
       .subscribe((data) => {
+        this.overlayImagePath = _.get(data, 'data.appIcon');
         this.collectionTreeNodes = data;
         this.setTelemetryData();
         this.setTelemetryStartEndData();

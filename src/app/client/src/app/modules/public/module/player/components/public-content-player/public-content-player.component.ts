@@ -61,18 +61,12 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public objectRollup = {};
   isOffline: boolean = environment.isOffline;
   /** variables for player orientation change */
-  playerThumbnail = true;
   overlayImagePath: string;
   loadLandscapePlayer =  false;
-  loadPlayerInteractEdata: IInteractEventEdata;
-  closeButtonInteractEdata: IInteractEventEdata;
   isSingleContent: any;
-  isMobileOrTab: boolean;
-  showCloseButton = false;
   shareLink: string;
   public telemetryShareData: Array<ITelemetryShare>;
   public sharelinkModal: boolean;
-  contentRatingModal = false;
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
@@ -85,15 +79,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       showContentRating: true
     };
   }
-
-  /** It will handle device back-button click to rotate landscape to portrait */
-  @HostListener('window:orientationchange', ['$event'])
-  public handleOrientationChange() {
-    const screenType = _.get(screen, 'orientation.type');
-      if ( screenType === 'portrait-primary' || screenType === 'portrait-secondary' ) {
-        this.closeFullscreen();
-      }
-  }
   /**
    *
    * @memberof ContentPlayerComponent
@@ -101,8 +86,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   ngOnInit() {
     /** if dial-code search result is having only one content then 'isSingleContent' will be true else false */
     this.isSingleContent = _.get(history.state, 'isSingleContent') ;
-    /** if the browser is opened from mobile or tablet then 'isMobileOrTab' will be true else false*/
-    this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
@@ -130,16 +113,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     };
     this.printPdfInteractEdata = {
       id: 'print-pdf-button',
-      type: 'click',
-      pageid: 'public'
-    };
-    this.loadPlayerInteractEdata = {
-      id: 'play-button',
-      type: 'click',
-      pageid: 'public'
-    };
-    this.closeButtonInteractEdata = {
-      id: 'player-close-button',
       type: 'click',
       pageid: 'public'
     };
@@ -219,77 +192,12 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     }
   }
 
-  /** When dial-code search result page has multiple contents and user clicked on a card from them
+  /**
    * then 'isSingleContent' will be false and it should load player directly in landscape mode
    */
   deviceDetector() {
-    if (this.isMobileOrTab) {
-      if (this.isSingleContent === false) {
-        this.loadLandscapePlayer = true;
-      }
-      this.showFooter = true;
-      this.rotatePlayer();
-    } else {
-      this.playerThumbnail = false;
-    }
-  }
-
-  /** When user comes from a single content dial-code search,
-   * then auto play will not happen, until user clicks on the play icon
-   * this method will handle that and turn the player into landscape
-   */
-  enablePlayer(mode: boolean) {
-    this.playerThumbnail = mode;
-    if (this.isMobileOrTab) {
-      this.rotatePlayer();
-     }
-  }
-
-  /** this method checks for the browser capability to be fullscreen via if-else ladder
-   * if match found, it will turn the player along will be close button into fullscreen and then
-   * rotate it to landscape mode
-   */
-  rotatePlayer() {
-    setTimeout(() => {
-      const playVideo: any = document.querySelector('#playerFullscreen');
-      if (playVideo.requestFullscreen) {
-        playVideo.requestFullscreen();
-      } else if (playVideo.mozRequestFullScreen) { /* Firefox */
-        playVideo.mozRequestFullScreen();
-      } else if (playVideo.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-        playVideo.webkitRequestFullscreen();
-      } else if (playVideo.msRequestFullscreen) { /* IE/Edge */
-        playVideo.msRequestFullscreen();
-      }
-      screen.orientation.lock('landscape');
-      this.showCloseButton = true;
-    });
-
-}
-
-/** when user clicks on close button
-   * this method will let the player to exit from fullscreen mode and
-   * 1. video thumbnail will be shown for single content
-   * 2. content-details page will be shown ( for multi-result dial-code search flow)
-   */
-  closeFullscreen() {
-    this.showCloseButton = false;
-    /** to exit the fullscreen mode */
-    if (document['exitFullscreen']) {
-      document['exitFullscreen']();
-    } else if (document['mozCancelFullScreen']) { /* Firefox */
-      document['mozCancelFullScreen']();
-    } else if (document['webkitExitFullscreen']) { /* Chrome, Safari and Opera */
-      document['webkitExitFullscreen']();
-    } else if (document['msExitFullscreen']) { /* IE/Edge */
-      document['msExitFullscreen']();
-    }
-     /** to change the view of the content-details page */
-    if (this.isSingleContent) {
-      this.playerThumbnail = true;
-    } else {
-      this.loadLandscapePlayer = false;
-      this.playerThumbnail = true;
+    if (this.isSingleContent === false) {
+      this.loadLandscapePlayer = true;
     }
   }
 
@@ -342,6 +250,10 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
 
   printPdf(pdfUrl: string) {
     window.open(pdfUrl, '_blank');
+  }
+
+  closePlayer() {
+    this.loadLandscapePlayer = false;
   }
 
 }
