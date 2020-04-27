@@ -364,13 +364,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
       return;
     }
-    const eid = _.get(event, 'detail.telemetryData.eid');
+    const telObject = _.get(event, 'detail.telemetryData');
+    const eid = _.get(telObject, 'eid');
     if (eid === 'END' && !this.validEndEvent(event)) {
       return;
     }
+
     const request: any = {
       userId: this.userService.userid,
-      contentId: this.contentId,
+      contentId: _.cloneDeep(_.get(telObject, 'object.id')),
       courseId: this.courseId,
       batchId: this.batchId,
       status: eid === 'END' ? 2 : 1

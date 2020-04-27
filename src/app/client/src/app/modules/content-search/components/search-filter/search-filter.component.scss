@@ -15,9 +15,9 @@
   }
 
   &__separator {
-    border-left: 1px solid var(--gray-200);
     height: ($base-block-space * 3);
-    margin: auto 0px auto 0px;
+    width: 0.5px;
+    background-color: $gray-200;
   }
 
   &__medium {
@@ -59,11 +59,14 @@
   font-weight: bold;
   display: flex;
   align-items: center;
-  border: calculateRem(1px) solid var(--primary-400);
+  min-width: calculateRem(208px);
+  border-radius: calculateRem(2px);
+  border: calculateRem(0.5px) solid var(--primary-400);
   &.active {
     background: #E5EDF5 !important;
     color: var(--primary-400) !important;
-    border-color: #96c8da;
+    border-color: var(--primary-400);
+    box-shadow: none;
   }
 
   &:hover {
@@ -71,6 +74,7 @@
     box-sizing: border-box;
     border-radius: calculateRem(2px);
     background-color: #E5EDF5;
+    box-shadow: none;
   }
   
 }

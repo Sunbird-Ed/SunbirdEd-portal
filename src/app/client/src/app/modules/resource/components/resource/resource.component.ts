@@ -31,6 +31,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   };
   public selectedFilters = {};
   exploreMoreButtonEdata: IInteractEventEdata;
+  public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
 
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();

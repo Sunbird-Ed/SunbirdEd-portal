@@ -40,7 +40,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   }
  @HostListener('window:resize', ['$event'])
   onResize(event) {
-    console.log('event', event);
+    // console.log('event', event);
     this.footerAlign();
   }
   // footer dynamic height

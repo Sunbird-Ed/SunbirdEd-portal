@@ -8,7 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import {
   WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
-  ContentUtilsServiceService, UtilService
+  ContentUtilsServiceService, UtilService, ITelemetryShare
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -28,6 +28,17 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
  activeMimeTypeFilter = ['all'];
   telemetryImpression: IImpressionEventInput;
   telemetryContentImpression: IImpressionEventInput;
+  telemetryShareData: Array<ITelemetryShare>;
+  objectInteract: IInteractEventObject;
+  printPdfInteractEdata: IInteractEventEdata;
+  shareLink: string;
+  selectedContent: {
+    model: {
+      itemSetPreviewUrl: ''
+    }
+  };
+  public sharelinkModal: boolean;
+  public mimeType: string;
   public queryParams: any;
   public collectionData: object;
 
@@ -150,8 +161,31 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       type: this.contentType,
       ver: '1.0'
     };
+    this.printPdfInteractEdata = {
+      id: 'public-print-pdf-button',
+      type: 'click',
+      pageid: this.route.snapshot.data.telemetry.pageid
+    };
     this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
 
+  }
+
+  onShareLink() {
+    this.shareLink = this.contentUtilsService.getPublicShareUrl(this.collectionId,
+      this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl);
+    this.setTelemetryShareData(this.collectionData);
+  }
+
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: 'public-' + param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
+  }
+
+  printPdf(pdfUrl: string) {
+    window.open(pdfUrl, '_blank');
   }
 
   ngAfterViewInit () {
@@ -314,6 +348,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
+            this.selectedContent = content;
             this.playerContent = _.get(content, 'model');
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);

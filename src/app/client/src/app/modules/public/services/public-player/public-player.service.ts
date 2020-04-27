@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { UserService, CollectionHierarchyAPI, PublicDataService, OrgDetailsService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService
+  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService, UtilService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 
@@ -28,7 +28,7 @@ export class PublicPlayerService {
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
-    public resourceService: ResourceService) {
+    public resourceService: ResourceService, private utilService: UtilService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
       this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
@@ -114,10 +114,14 @@ export class PublicPlayerService {
       param: option.params
     };
     return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
+      if (response.result.content) {
+        response.result.content = this.utilService.sortChildrenWithIndex(response.result.content);
+      }
       this.collectionData = response.result.content;
       return response;
     }));
   }
+
 
   /**
    * This method accepts content details and help to play the content player in offline desktop app browse page

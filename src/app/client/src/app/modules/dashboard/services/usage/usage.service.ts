@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HttpOptions } from '@sunbird/shared';
 import { map } from 'rxjs/operators';
 import { get } from 'lodash-es';
 
@@ -20,8 +21,14 @@ export class UsageService {
     this.http = http;
   }
 
-  getData(url: string) {
-    return this.http.get(url, { responseType: 'json' })
+  getData(url: string, requestParam?: { params: any; }) {
+    const httpOptions: HttpOptions = {
+      responseType: 'json'
+    };
+    if (requestParam && requestParam.params) {
+      httpOptions.params = requestParam.params;
+    }
+    return this.http.get(url, httpOptions)
       .pipe(
         map(res => {
           const result = {
