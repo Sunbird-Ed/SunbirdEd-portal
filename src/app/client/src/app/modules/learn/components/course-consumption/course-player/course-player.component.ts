@@ -113,7 +113,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   public contentProgressEvents$ = new Subject();
   playerOption: any;
-  overlayImagePath: string;
   pageId: string;
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
@@ -154,7 +153,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .subscribe(({ courseHierarchy, enrolledBatchDetails, contentProgressEvent }: any) => {
        if (!contentProgressEvent) {
         this.courseHierarchy = courseHierarchy;
-        this.overlayImagePath = _.get(courseHierarchy, 'appIcon');
         this.contributions = _.join(_.map(this.courseHierarchy.contentCredits, 'name'));
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,

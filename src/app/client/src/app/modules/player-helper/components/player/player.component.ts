@@ -42,6 +42,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   showPlayIcon = true;
   closeButtonInteractEdata: IInteractEventEdata;
   loadPlayerInteractEdata: IInteractEventEdata;
+  playerOverlayImage: string;
   /**
  * Dom element reference of contentRatingModal
  */
@@ -84,6 +85,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnChanges() {
     this.contentRatingModal = false;
     if (this.playerConfig) {
+      this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
       this.loadPlayer();
     }
   }

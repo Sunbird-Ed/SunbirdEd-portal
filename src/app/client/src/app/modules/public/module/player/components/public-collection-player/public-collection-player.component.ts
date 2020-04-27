@@ -103,7 +103,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   isOffline: boolean = environment.isOffline;
   public unsubscribe$ = new Subject<void>();
   selectedContent: {};
-  overlayImagePath: string;
   pageId: string;
 
   constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
@@ -321,7 +320,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         return this.getCollectionHierarchy(params.collectionId);
       }), )
       .subscribe((data) => {
-        this.overlayImagePath = _.get(data, 'data.appIcon');
         this.collectionTreeNodes = data;
         this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {

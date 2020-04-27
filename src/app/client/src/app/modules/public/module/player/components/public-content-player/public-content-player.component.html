@@ -51,7 +51,7 @@
         <!--/Warning message for external content-->
 
         <!--Player-->
-        <app-player class="content-player" [telemetryObject]="telemetryInteractObject" [pageId]="'public'" [overlayImagePath]="overlayImagePath" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
+        <app-player class="content-player" [telemetryObject]="telemetryInteractObject" [pageId]="'public'" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
         <!-- / Player-->
 
         <!--Meta Data of content-->
@@ -74,7 +74,7 @@
     <div class="twelve wide column" >
         <div *ngIf="(popupControlService.checkPopupStatus | async) else loading">
             <div class="player-fullscreen" id="playerFullscreen"> 
-              <app-player class="content-player content-player-landscape" (closePlayerEvent)="closePlayer()" [pageId]="'public'" [isSingleContent]="isSingleContent" [overlayImagePath]="overlayImagePath" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
+              <app-player class="content-player content-player-landscape" (closePlayerEvent)="closePlayer()" [pageId]="'public'" [isSingleContent]="isSingleContent" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
             </div>
             <ng-template #loading>
               <app-loader></app-loader>

@@ -61,7 +61,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public objectRollup = {};
   isOffline: boolean = environment.isOffline;
   /** variables for player orientation change */
-  overlayImagePath: string;
   loadLandscapePlayer =  false;
   isSingleContent: any;
   shareLink: string;
@@ -146,7 +145,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
           this.showExtContentMsg = true;
         }, 5000);
       }
-      this.overlayImagePath = _.get(response, 'result.content.appIcon');
       this.showPlayer = true;
       this.windowScrollService.smoothScroll('content-player');
       this.badgeData = _.get(response, 'result.content.badgeAssertions');
