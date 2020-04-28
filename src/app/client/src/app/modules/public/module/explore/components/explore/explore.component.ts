@@ -77,7 +77,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.orgDetailsService.getOrgDetails(this.userService.slug)
         .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, custodianOrg: false }))));
     } else {
-      return this.orgDetailsService.getCustodianOrg()
+      return this.orgDetailsService.getCustodianOrgDetails()
         .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), custodianOrg: true }))));
     }
   }

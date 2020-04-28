@@ -208,7 +208,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   private getCustodianOrgUser() {
-    this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
       if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
         this.isCustodianOrgUser = true;
       } else {
