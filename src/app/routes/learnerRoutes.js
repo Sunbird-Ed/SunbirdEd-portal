@@ -8,6 +8,7 @@ const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const healthService = require('../helpers/healthCheckService.js')
 const logger = require('sb_logger_util_v2')
+const whitelistUrls = require('../helpers/whitellistUrls.js')
 const {decrypt} = require('../helpers/crypto');
 const {parseJson, isDateExpired} = require('../helpers/utilityService');
 const _ = require('lodash');
@@ -102,6 +103,7 @@ module.exports = function (app) {
     proxyObj()
   )
 
+
   app.all('/learner/user/v1/signup',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
     permissionsHelper.checkPermission(),
@@ -110,6 +112,7 @@ module.exports = function (app) {
 
   app.all('/learner/*',
     healthService.checkDependantServiceHealth(['LEARNER', 'CASSANDRA']),
+    whitelistUrls.isWhitelistUrl(),
     permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
