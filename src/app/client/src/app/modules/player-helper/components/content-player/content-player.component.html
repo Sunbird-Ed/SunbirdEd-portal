@@ -3,6 +3,6 @@
     <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
       <app-player class="content-player" [playerOption] ="playerOption" [playerConfig]="playerConfig"></app-player> 
     </div>
-      <app-content-actions *ngIf="contentData" [contentData]="contentData" (contentDownloaded)="checkContentDownloading($event)" [objectRollUp]="objectRollUp"></app-content-actions>
+      <app-content-actions *ngIf="contentData" [contentData]="contentData" [objectRollUp]="objectRollUp"></app-content-actions>
     </section>
   </div>
