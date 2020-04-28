@@ -17,7 +17,7 @@
     <div class="cc-player__content-header d-flex flex-ai-center relative position" *ngIf="collectionData">
       <div class="ui container">
         <div class="header-info flex-basis-1">
-          <div class="header-info__title">
+          <div class="header-info__title ellipsis">
             <h5 class="sb-color-primary font-weight-bold">{{collectionData.name}}</h5>
           </div>
           <div class="header-info__desc d-flex flex-ai-center" *ngIf="collectionTreeNodes">
@@ -31,12 +31,11 @@
       </div>
     </div>
     <!-- CC-Player Video -->
-    <div class="ui container">
+    <div class="ui container sb-toc-view-container">
       <div class="cc-player sb-g">
-        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column"
+        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column computer only"
           [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
-          <div class="toc-content">
-          </div>
+          <div class="toc-content"></div>
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
             [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
           </app-contentplayer-page>

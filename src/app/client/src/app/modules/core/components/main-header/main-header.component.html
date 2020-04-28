@@ -6,7 +6,7 @@
 </div>
 <div class="ui fixed relative main menu bs-0 d-block">
     <!--Header White Section-->
-    <div class="ui container py-16">
+    <div class="ui container sb-header-ui-container">
         <div class="ui grid padded width-100">
             <div class="six wide column p-0">
                 <!--Logo-->
@@ -80,12 +80,12 @@
     <div class="sb-bg-color-primary p-8"
         *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !router.url.includes('/contribute/program')">
         <ng-container *ngIf="contributeTabActive else defaultView">
-            <div class="ui container d-flex flex-ai-center mx-0">
+            <div class="ui container d-flex flex-ai-center mx-0 px-8">
                 <span class="fs-1 sb-color-white py-8">{{resourceService?.frmelmnts?.lbl?.availableForContribution}}</span>
             </div>
         </ng-container>
         <ng-template #defaultView>
-            <div class="ui container d-flex flex-ai-center mx-0">
+            <div class="ui container d-flex flex-ai-center mx-0 px-8">
                 <!--QR Button-->
                 <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
                     [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
@@ -133,7 +133,7 @@
     </div>
     <!--/Computer-->
     <!--Mobile-->
-    <div class="p-8 mobile only" *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !contributeTabActive">
+    <div class="py-8 px-16 mobile only" *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !contributeTabActive">
         <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
             <!--QR Button-->
             <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract

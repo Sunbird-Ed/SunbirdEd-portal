@@ -4,7 +4,7 @@
 <div class="cc-player__content-header d-flex flex-ai-center relative position" *ngIf="contentData">
   <div class="ui container">
     <div class="header-info flex-basis-1">
-      <div class="header-info__title">
+      <div class="header-info__title ellipsis">
         <h5 class="sb-color-primary font-weight-bold">{{contentData.name}}</h5>
       </div>
       <div class="header-info__desc d-flex flex-ai-center" *ngIf="contentData">
@@ -18,9 +18,9 @@
   </div>
 </div>
 <!-- CC-Player Video -->
-<div class="ui container">
+<div class="ui container mx-0 sb-toc-view-container">
   <div class="cc-player sb-g">
-    <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-12 cc-player__video"
+    <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-12 cc-player__video computer only"
       [appTelemetryImpression]="telemetryImpression" *ngIf="contentData">
       <div class="toc-content">
       </div>
@@ -30,7 +30,7 @@
     </section>
   </div>
 </div>
-<div class="twelve wide column" *ngIf="showLoader">
+<div class="ui container" *ngIf="showLoader">
   <app-loader [data]='loaderMessage'></app-loader>
 </div>
 </div>
