@@ -96,7 +96,7 @@ describe('ExploreComponent', () => {
   it('should get channel id if slug is not available', () => {
     const contentSearchService = TestBed.get(ContentSearchService);
     component.activatedRoute.snapshot.params.slug = '';
-    spyOn<any>(orgDetailsService, 'getCustodianOrg').and.returnValue(of(RESPONSE.withoutSlugGetChannelResponse));
+    spyOn<any>(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of(RESPONSE.withoutSlugGetChannelResponse));
     spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
     spyOn<any>(component, 'setNoResultMessage').and.callThrough();
     component.ngOnInit();
@@ -120,7 +120,7 @@ describe('ExploreComponent', () => {
     const contentSearchService = TestBed.get(ContentSearchService);
     component.activatedRoute.snapshot.params.slug = '';
     const router = TestBed.get(Router);
-    spyOn<any>(orgDetailsService, 'getCustodianOrg').and.callFake(() => throwError({}));
+    spyOn<any>(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() => throwError({}));
     spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
     spyOn<any>(component, 'setNoResultMessage').and.callThrough();
     spyOn<any>(toasterService, 'error');
