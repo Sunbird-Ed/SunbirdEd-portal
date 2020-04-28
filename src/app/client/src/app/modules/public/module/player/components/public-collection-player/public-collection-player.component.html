@@ -1,5 +1,5 @@
-<div>
-  <div *ngIf="!showLoader">
+<div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+  <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
     <div class="sb-bg-white relative position cc-player__btn-back ">
       <div class="ui container py-8 px-0">
@@ -57,14 +57,14 @@
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
               (noContent)="showNoContent($event)"></sb-toc-item>
           </div>
-          <div>
-            <app-content-licence [content]="collectionData"></app-content-licence>
-          </div>
           <div [hidden]="!isSelectChapter">
             <span>
               <app-content-chapterlist [activeContent]="activeContent" [contentDetails]="collectionData"
                 (tocChapterClick)="tocChapterClickHandler($event)"></app-content-chapterlist>
             </span>
+          </div>
+          <div>
+            <app-content-licence [content]="collectionData"></app-content-licence>
           </div>
         </section>
       </div>
