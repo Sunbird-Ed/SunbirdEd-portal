@@ -61,8 +61,8 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         this.resetPassword();
       }, error => {
         this.form.controls.otp.reset();
-        this.disableFormSubmit = false;
         this.handleError(error);
+        this.disableFormSubmit = false;
       }
     );
   }
@@ -82,12 +82,13 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         this.handleError(response);
       }
     }, error => {
-      this.disableFormSubmit = false;
       this.handleError(error);
+      this.disableFormSubmit = false;
     });
   }
   handleError(err) {
     if (_.get(err, 'error.result.remainingAttempt') === 0) {
+      this.disableFormSubmit = true;
       this.utilService.redirectToLogin(this.resourceService.messages.emsg.m0050);
     } else {
       const filterPipe = new InterpolatePipe();
