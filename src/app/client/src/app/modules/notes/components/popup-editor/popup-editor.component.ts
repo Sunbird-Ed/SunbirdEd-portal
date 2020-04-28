@@ -162,7 +162,7 @@ export class PopupEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.ids.contentId || this.ids.courseId) {
       const requestData = {
         request: {
-          note: this.noteData.note,
+          note: $('#wmd-preview').html(),
           userId: this.userService.userid,
           title: this.noteData.title,
           courseId: this.ids.courseId,
