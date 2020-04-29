@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import {ResourceService, ServerResponse, ToasterService, NavigationHelperService, UtilService} from '@sunbird/shared';
+import {ResourceService, ServerResponse, ToasterService, NavigationHelperService, UtilService, HttpOptions} from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -10,6 +10,7 @@ import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@s
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -45,7 +46,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
-    public navigationhelperService: NavigationHelperService, public utilService: UtilService) {
+    public navigationhelperService: NavigationHelperService, public utilService: UtilService,
+    public http: HttpClient) {
+    this.http = http;
     this.sbFormBuilder = formBuilder;
   }
 
@@ -278,12 +281,19 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resolved(captchaResponse: string) {
-    const newResponse = captchaResponse
-      ? `${captchaResponse.substr(0, 7)}...${captchaResponse.substr(-7)}`
-      : captchaResponse;
-    this.captchaResponse += `${JSON.stringify(newResponse)}\n`;
-    if (this.captchaResponse) {
-      this.onSubmitSignUpForm();
+    if (captchaResponse) {
+      const httpOptions: HttpOptions = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      this.http.post('/validate/recaptcha?captchaResponse=' + captchaResponse, httpOptions)
+        .subscribe((data: any) => {
+          this.onSubmitSignUpForm();
+        }, (error) => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+          this.resetGoogleCaptcha();
+        });
     }
   }
 

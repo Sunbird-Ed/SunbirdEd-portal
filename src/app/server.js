@@ -72,6 +72,7 @@ app.all('/sessionExpired', endSession, (req, res) => {
 
 // device routes
 require('./routes/deviceRoutes.js')(app);
+require('./routes/googleRoutes.js')(app);
 
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
