@@ -12,7 +12,6 @@ import {
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil, mergeMap } from 'rxjs/operators';
-import { environment } from '@sunbird/environment';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
   selector: 'app-public-content-player',
@@ -61,7 +60,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public telemetryShareData: Array<ITelemetryShare>;
   public sharelinkModal: boolean;
   public objectRollup = {};
-  isOffline: boolean = environment.isOffline;
   /** variables for player orientation change */
   playerThumbnail = true;
   overlayImagePath: string;
