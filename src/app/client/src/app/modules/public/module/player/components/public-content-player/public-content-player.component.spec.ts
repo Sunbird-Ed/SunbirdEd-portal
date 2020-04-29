@@ -136,4 +136,148 @@ describe('PublicContentPlayerComponent', () => {
     });
 
   }));
+
+  it('should detect the device and rotate to landscape', () => {
+    component.isMobileOrTab = true;
+    component.isSingleContent = true;
+    spyOn(component, 'rotatePlayer');
+    component.deviceDetector();
+    expect(component.showFooter).toBe(true);
+    expect(component.rotatePlayer).toHaveBeenCalled();
+  });
+
+  it('should detect the device and rotate to landscape if not a single content', () => {
+    component.isMobileOrTab = true;
+    component.isSingleContent = false;
+    spyOn(component, 'rotatePlayer');
+    component.deviceDetector();
+    expect(component.loadLandscapePlayer).toBe(true);
+    expect(component.showFooter).toBe(true);
+    expect(component.rotatePlayer).toHaveBeenCalled();
+  });
+
+  it('should call deviceDetector', fakeAsync(() => {
+    component.dialCode = 'ABC123';
+    spyOn(component, 'deviceDetector');
+    setTimeout(()  => {
+      component.ngAfterViewInit();
+    }, 100);
+    tick(101);
+    expect(component.telemetryCdata).toEqual([{ 'type': 'DialCode', 'id': 'ABC123'}]);
+    expect(component.deviceDetector).toHaveBeenCalled();
+  }));
+
+  it('should load player on tap of play icon', () => {
+    component.isMobileOrTab = true;
+    spyOn(component, 'rotatePlayer');
+    component.enablePlayer(true);
+    expect(component.playerThumbnail).toBe(true);
+    expect(component.rotatePlayer).toHaveBeenCalled();
+  });
+
+  it('should close player fullscreen ', () => {
+    component.isSingleContent = true;
+    component.closeFullscreen();
+    expect(component.showCloseButton).toBe(false);
+    expect(component.playerThumbnail).toBe(true);
+  });
+
+  it('should close player fullscreen and enable top div', () => {
+    component.isSingleContent = false;
+    component.closeFullscreen();
+    expect(component.showCloseButton).toBe(false);
+    expect(component.loadLandscapePlayer).toBe(false);
+  });
+
+  describe('should rotate player', () => {
+    let mockDomElement;
+    beforeEach(() => {
+        mockDomElement = document.createElement('div');
+        mockDomElement.setAttribute('id', 'playerFullscreen');
+    });
+
+    it('should rotate player for a default chrome browser', fakeAsync(() => {
+      spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+      spyOn(screen.orientation, 'lock');
+      component.rotatePlayer();
+      tick(100);
+      expect(component.showCloseButton).toBe(true);
+      expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
+    }));
+
+    it('should rotate player for mozilla browser', fakeAsync(() => {
+      mockDomElement.requestFullscreen = undefined;
+      mockDomElement.mozRequestFullScreen = () => {};
+      spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+      spyOn(screen.orientation, 'lock');
+      component.rotatePlayer();
+      tick(100);
+      expect(component.showCloseButton).toBe(true);
+      expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
+    }));
+
+    it('should rotate player for webkit browser', fakeAsync(() => {
+      mockDomElement.requestFullscreen = undefined;
+      mockDomElement.mozRequestFullScreen = undefined;
+      mockDomElement.webkitRequestFullscreen = () => {};
+      spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+      spyOn(screen.orientation, 'lock');
+      component.rotatePlayer();
+      tick(100);
+      expect(component.showCloseButton).toBe(true);
+      expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
+    }));
+
+    it('should rotate player ms browser', fakeAsync(() => {
+      mockDomElement.requestFullscreen = undefined;
+      mockDomElement.mozRequestFullScreen = undefined;
+      mockDomElement.webkitRequestFullscreen = undefined;
+      mockDomElement.msRequestFullscreen = () => {};
+      spyOn(document, 'querySelector').and.returnValue(mockDomElement);
+      spyOn(screen.orientation, 'lock');
+      component.rotatePlayer();
+      tick(100);
+      expect(component.showCloseButton).toBe(true);
+      expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
+    }));
+  });
+
+  describe('should close the browser fullscreen mode', () => {
+    it('should close player fullscreen for default chrome browser', () => {
+      component.isSingleContent = true;
+      component.closeFullscreen();
+      expect(component.showCloseButton).toBe(false);
+      expect(component.playerThumbnail).toBe(true);
+    });
+
+    it('should close player fullscreen for mozilla browser', () => {
+      document['exitFullscreen'] = undefined;
+      document['mozCancelFullScreen'] = () => {};
+      component.isSingleContent = true;
+      component.closeFullscreen();
+      expect(component.showCloseButton).toBe(false);
+      expect(component.playerThumbnail).toBe(true);
+    });
+
+    it('should close player fullscreen for webkit browser ', () => {
+      document['exitFullscreen'] = undefined;
+      document['mozCancelFullScreen'] = undefined;
+      document['webkitExitFullscreen'] = () => {};
+      component.isSingleContent = true;
+      component.closeFullscreen();
+      expect(component.showCloseButton).toBe(false);
+      expect(component.playerThumbnail).toBe(true);
+    });
+
+    it('should close player fullscreen for ms browser ', () => {
+      document['exitFullscreen'] = undefined;
+      document['mozCancelFullScreen'] = undefined;
+      document['webkitExitFullscreen'] = undefined;
+      document['msExitFullscreen'] = () => {};
+      component.isSingleContent = true;
+      component.closeFullscreen();
+      expect(component.showCloseButton).toBe(false);
+      expect(component.playerThumbnail).toBe(true);
+    });
+  });
 });
