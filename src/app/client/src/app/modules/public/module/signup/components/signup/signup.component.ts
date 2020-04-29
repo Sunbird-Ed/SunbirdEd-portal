@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import {ResourceService, ServerResponse, ToasterService, NavigationHelperService, UtilService, HttpOptions} from '@sunbird/shared';
+import {ResourceService, ServerResponse, ToasterService, NavigationHelperService, UtilService, RecaptchaService} from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -46,8 +46,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public navigationhelperService: NavigationHelperService, public utilService: UtilService,
-    public http: HttpClient) {
-    this.http = http;
+    public recaptchaService: RecaptchaService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -271,20 +270,16 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resolved(captchaResponse: string) {
-    if (captchaResponse) {
-      const httpOptions: HttpOptions = {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      };
-      this.http.post('/validate/recaptcha?captchaResponse=' + captchaResponse, httpOptions)
-        .subscribe((data: any) => {
-          this.onSubmitSignUpForm();
-        }, (error) => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-          this.resetGoogleCaptcha();
-        });
-    }
+    this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
+      if (_.get(data, 'result.success')) {
+        this.telemetryLogEvents('validate-recaptcha', true);
+        this.onSubmitSignUpForm();
+      }
+    }, (error) => {
+      this.telemetryLogEvents('validate-recaptcha', false, _.get(error, 'params.errmsg'));
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      this.resetGoogleCaptcha();
+    });
   }
 
   onSubmitSignUpForm() {
@@ -374,9 +369,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryService.interact(interactData);
   }
 
-  telemetryLogEvents(api: any, status: boolean) {
+  telemetryLogEvents(api: any, status: boolean, error?: string) {
     let level = 'ERROR';
-    let msg = api + ' failed';
+    let msg = api + ' failed ' + error || '';
     if (status) {
       level = 'SUCCESS';
       msg = api + ' success';

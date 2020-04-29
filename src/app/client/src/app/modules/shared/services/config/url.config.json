@@ -261,6 +261,9 @@
       "READ": "itemset/v3/read",
       "RETIRE": "itemset/v3/retire",
       "REVIEW": "itemset/v3/review"
+    },
+    "RECAPTCHA": {
+      "VALIDATE": "/validate/recaptcha"
     }
   }
 }

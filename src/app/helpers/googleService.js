@@ -25,11 +25,14 @@ const validateRecaptcha = async (req, res) => {
     errType = 'ERRORED_PARSING_JSON';
     responseData = parseJson(responseData);
     errType = '';
+    logger.info({msg: 'googleService:validateRecaptcha success', data: responseData, did: req.headers['x-device-id']});
     if (responseData && responseData.success) {
-      logger.info({msg: 'googleService:validateRecaptcha success', data: responseData});
-      res.status(httpSatusCode.OK).send(responseData)
+      res.status(httpSatusCode.OK).send({
+        'id': 'api.validate.recaptcha', 'ts': new Date(),
+        'params': {'resmsgid': uuidv1(), 'status': 'successful'},
+        'responseCode': 'OK', 'result': responseData
+      })
     } else {
-      logger.info({msg: 'googleService:validateRecaptcha errored', data: responseData, errType: errType});
       throw new Error('CAPTCHA_VALIDATING_FAILED');
     }
   } catch (error) {
@@ -37,22 +40,17 @@ const validateRecaptcha = async (req, res) => {
       msg: 'googleService:validateRecaptcha caught exception',
       errorMessage: error.message,
       error: error,
-      errType: errType
+      errType: errType,
+      did: req.headers['x-device-id']
     });
     res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send({
-      "id": "api.validate.recaptcha",
-      "ts": new Date(),
-      "params": {
-        "resmsgid": uuidv1(),
-        "msgid": uuidv1(),
-        "err": "INTERNAL_SERVER_ERROR",
-        "status": "INTERNAL_SERVER_ERROR",
-        "errmsg": error.message
+      'id': 'api.validate.recaptcha', 'ts': new Date(),
+      'params': {
+        'resmsgid': uuidv1(), 'msgid': uuidv1(), 'err': 'INTERNAL_SERVER_ERROR',
+        'status': 'INTERNAL_SERVER_ERROR', 'errmsg': error.message
       },
-      "responseCode": "INTERNAL_SERVER_ERROR",
-      "result": {
-        "error": error
-      }
+      'responseCode': 'INTERNAL_SERVER_ERROR',
+      'result': {}
     });
   }
 };
