@@ -13,7 +13,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CollectionHierarchyGetMockResponse } from './collection-player.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-fdescribe('CollectionPlayerComponent', () => {
+describe('CollectionPlayerComponent', () => {
   let component: CollectionPlayerComponent;
   let fixture: ComponentFixture<CollectionPlayerComponent>;
   const collectionId = 'do_112270591840509952140';
@@ -118,7 +118,7 @@ fdescribe('CollectionPlayerComponent', () => {
     expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalled();
   });
 
-  it('should redirect to /resource page', () => {
+  xit('should redirect to /resource page', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
     spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'fakeaction', 'navigationId': 3});
