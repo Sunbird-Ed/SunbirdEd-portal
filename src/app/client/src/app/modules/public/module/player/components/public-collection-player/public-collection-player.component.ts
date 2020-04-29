@@ -32,11 +32,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   objectInteract: IInteractEventObject;
   printPdfInteractEdata: IInteractEventEdata;
   shareLink: string;
-  selectedContent: {
-    model: {
-      itemSetPreviewUrl: ''
-    }
-  };
   public sharelinkModal: boolean;
   public mimeType: string;
   public queryParams: any;
@@ -156,6 +151,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       type: 'click',
       pageid: this.route.snapshot.data.telemetry.pageid
     };
+    this.printPdfInteractEdata = {
+      id: 'public-print-pdf-button',
+      type: 'click',
+      pageid: this.route.snapshot.data.telemetry.pageid
+    };
     this.telemetryInteractObject = {
       id: this.activatedRoute.snapshot.params.collectionId,
       type: this.contentType,
@@ -172,7 +172,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   onShareLink() {
     this.shareLink = this.contentUtilsService.getPublicShareUrl(this.collectionId,
-      this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl);
+      _.get(this.collectionTreeNodes, 'data.mimeType'));
     this.setTelemetryShareData(this.collectionData);
   }
 
@@ -348,7 +348,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
           this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
-            this.selectedContent = content;
             this.playerContent = _.get(content, 'model');
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);
