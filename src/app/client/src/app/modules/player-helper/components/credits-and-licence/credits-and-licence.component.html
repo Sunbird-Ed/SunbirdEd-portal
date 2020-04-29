@@ -38,26 +38,26 @@
           <p *ngIf="contentData" class="sub-section">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}
           </p>
   
-          <div *ngIf="contentData">
-            <h4 *ngIf="contentData?.name" class="title">{{resourceService?.frmelmnts?.lbl?.desktop.content}}
-            </h4>
-            <p class="description">{{contentData?.name}}</p>
+        <div *ngIf="contentData.originData">
+            <p class="sub-section">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}} </p>
   
-            <h4 *ngIf="contentData?.creator" class="title">
-              {{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
-            <p class="description">{{contentData?.creator}}</p>
+            <div class="sb-meta-data mb-16" *ngIf="contentData.originData.name">
+                <h4 class="title">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</h4>
+                <p class="description">{{contentData?.originData?.name}}</p>
+            </div>
   
+            <div class="sb-meta-data mb-16" *ngIf="contentData.originData.author">
+                <h4 class="title">{{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
+                <p class="description">{{contentData.originData.author}}</p>
+            </div>
   
-  
-            <h4 *ngIf="contentData?.organisation" class="title"
-              [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
-            </h4>
-            <p *ngIf="contentData?.organisation" class="description">{{contentData?.organisation.join(', ')}}</p>
-  
-            <a *ngIf="contentData.orgDetails?.email"
-              href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
-  
-          </div>
+            <div class="sb-meta-data mb-16" *ngIf="contentData.originData.organisation">
+              <h4 class="title"
+                [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
+              </h4>
+              <p class="description">{{contentData.originData.organisation.join(', ')}}</p>
+              <a *ngIf="contentData.orgDetails?.email" href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
+            </div>
           
         </div>
       </sb-accordion-body>
