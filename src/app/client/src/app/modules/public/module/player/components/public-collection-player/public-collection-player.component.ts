@@ -93,7 +93,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   isContentPresent: Boolean = false;
   isSelectChapter: Boolean = false;
   showLoader = true;
-  isMobile = false
+  isMobile = false;
 
   /**
    * Page Load Time, used this data in impression telemetry
@@ -383,7 +383,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }));
   }
   closeCollectionPlayer() {
-    if(this.isMobile) {
+    if (this.isMobile) {
       this.isMobile = false;
     } else {
       if (this.dialCode) {
@@ -471,7 +471,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
   tocCardClickHandler(event) {
-    if(!this.isMobile && this.activeContent){
+    if (!this.isMobile && this.activeContent) {
       this.isMobile = true;
     }
     this.callinitPlayer(event);
