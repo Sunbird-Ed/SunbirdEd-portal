@@ -16,6 +16,7 @@ const WHITELIST_URLS = [
     'data/v1/system/settings/get/custodianOrgId',
     'data/v1/system/settings/get/courseFrameworkId',
     'data/v1/system/settings/get/tncConfig',
+    'data/v1/system/settings/get/ssoCourseSection',
     
     //Course related APIs
     'course/v1/hierarchy',
@@ -27,6 +28,7 @@ const WHITELIST_URLS = [
     'course/v1/unenrol',
     'course/v1/qrcode/download',
     'recommended/courses',
+    'badging/v1/issuer/badge/search',
 
     //Batch related APIs
     'course/v1/batch/create',
@@ -66,9 +68,12 @@ const WHITELIST_URLS = [
     '/v1/tenant',
     '/info',
     'data/v1/skills',
-    'data/v1/location/search',    
+    'data/v1/location/search', 
     'data/v1/role/read',
     'certreg/v1/certs/validate',
+    'otp/v1/verify',
+    'otp/v1/generate',
+    'certreg/v1/certs/download',
 
     //Admin related APIs
     'data/v1/upload/status',
