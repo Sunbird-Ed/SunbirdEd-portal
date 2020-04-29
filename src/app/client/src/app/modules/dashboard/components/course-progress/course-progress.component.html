@@ -272,10 +272,12 @@
           </div>
         </div> -->
         <div class="sb-pagination-container flex-ai-center">
-          <div *ngIf="dashboarData && dashboarData.data.length >0 && !showLoader">showing {{pager.startIndex+1}} -
-            {{pager.endIndex+1}} {{dashboarData.data.count}} users</div>
+          <div *ngIf="dashboarData && dashboarData.data.length > 0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader">showing {{pager.startIndex+1}} -
+            {{pager.endIndex+1}} {{dashboarData.data.length ? 'of ' + dashboarData.data.length : '' }} users</div>
+          <div *ngIf="dashboarData && dashboarData.data.length > 0 && config.appConfig.DASHBOARD.PAGE_LIMIT >= totalCount  && !showLoader">showing {{pager.startIndex+1}} -
+            {{dashboarData.data.length }} users</div>
           <div
-            *ngIf="dashboarData && dashboarData.data.length >0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader">
+            *ngIf="dashboarData && dashboarData.data.length > 0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader">
             <div class="sb-pagination ml-auto" *ngIf="pager.pages.length">
               <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item "
                 (click)="navigateToPage(pager.currentPage - 1)">{{resourceService?.frmelmnts?.lbl?.previous}}</a>
