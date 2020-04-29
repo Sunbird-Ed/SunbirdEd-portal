@@ -34,7 +34,7 @@
     <div class="ui container">
       <div class="cc-player sb-g">
         <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column"
-          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
+          [appTelemetryImpression]="telemetryImpression" [style.display]="collectionData ? 'block' : 'none'">
           <div class="toc-content">
           </div>
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"

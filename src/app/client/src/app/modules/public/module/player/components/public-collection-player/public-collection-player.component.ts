@@ -1,5 +1,5 @@
 
-import { map, catchError, first, mergeMap, takeUntil } from 'rxjs/operators';
+import { map, catchError, first, mergeMap, takeUntil, filter } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
 import { Observable, Subscription, Subject, of, throwError } from 'rxjs';
@@ -332,6 +332,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   private getContent(): void {
     this.subsrciption = this.route.params.pipe(
+      filter(params => params.collectionId !== this.collectionId),
       mergeMap((params) => {
         this.collectionId = params.collectionId;
         this.telemetryCdata = [{id: this.collectionId, type: this.contentType}];
