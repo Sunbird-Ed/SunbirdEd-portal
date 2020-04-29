@@ -9,7 +9,6 @@ import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
-import { CacheService } from 'ng2-cache-service';
 
 @Component({
   selector: 'app-signup',
@@ -42,7 +41,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   showTncPopup = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
-    public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
+    public signupService: SignupService, public toasterService: ToasterService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public navigationhelperService: NavigationHelperService, public utilService: UtilService) {
@@ -82,20 +81,11 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     } catch (error) {
       this.googleCaptchaSiteKey = '';
     }
-    this.getCacheLanguage();
     this.initializeFormFields();
     this.setInteractEventData();
 
     // Telemetry Start
     this.signUpTelemetryStart();
-  }
-
-  getCacheLanguage() {
-    this.resourceDataSubscription = this.resourceService.languageSelected$
-      .subscribe(item => {
-        this.resourceService.getResource(item.value);
-      }
-      );
   }
 
   signUpTelemetryStart() {
