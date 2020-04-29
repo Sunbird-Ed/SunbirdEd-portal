@@ -16,7 +16,7 @@
               </div>
           </div>
           <div class="twelve wide column">
-            <app-player class="content-player" [playerOption] ="playerOption"   [playerConfig]="playerConfig | async"></app-player>
+            <app-player [telemetryObject]="collectionInteractObject" [pageId]="'collection-player'" class="content-player" [playerOption] ="playerOption"   [playerConfig]="playerConfig | async"></app-player>
           </div>
         </div>
       <div class="ui row pt-0 my-20">
