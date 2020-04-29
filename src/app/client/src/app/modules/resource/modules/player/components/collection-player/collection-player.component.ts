@@ -127,6 +127,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   public playerContent;
   activeContent: any;
   isSelectChapter: Boolean = false;
+  showLoader = true;
 
   constructor(public route: ActivatedRoute, playerService: PlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -363,6 +364,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       }), )
       .subscribe((data) => {
         this.collectionTreeNodes = data;
+        this.showLoader = false;
         this.setTelemetryData();
         this.setTelemetryStartEndData();
         this.loader = false;
