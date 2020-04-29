@@ -84,6 +84,7 @@ let envVariables = {
     clientSecret: env.sunbird_google_oauth_clientSecret
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
+  google_captcha_private_key: env.google_captcha_private_key,
 
 
   // Android Configuration
