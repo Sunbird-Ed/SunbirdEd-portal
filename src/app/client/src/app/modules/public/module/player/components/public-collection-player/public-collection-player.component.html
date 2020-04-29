@@ -33,14 +33,14 @@
     <!-- CC-Player Video -->
     <div class="ui container sb-toc-view-container">
       <div class="cc-player sb-g">
-        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column computer only"
-          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
+        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column"
+          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData" [ngClass]="{'toggleInMobile': !isMobile}">
           <div class="toc-content"></div>
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
             [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
           </app-contentplayer-page>
         </section>
-        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg- cc-player__list mb-16">
+        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg- cc-player__list mb-16" [ngClass]="{'toggleInMobile': isMobile}">
           <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16"
             (click)="showChapter()">
             <h6 class="sb-color-primary font-weight-normal">Select Chapter</h6>
