@@ -1,4 +1,4 @@
-<div>
+
   <div *ngIf="!showLoader">
 <!--CC-Player Content Header -->
 <div class="cc-player__content-header d-flex flex-ai-center relative position" *ngIf="contentData">
@@ -16,6 +16,21 @@
       </div>
     </div>
   </div>
+
+  <div class="ui stackable grid" *ngIf="loadLandscapePlayer">
+    <div class="twelve wide column" >
+        <div *ngIf="(popupControlService.checkPopupStatus | async) else loading">
+            <div class="player-fullscreen" id="playerFullscreen"> 
+              <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" *ngIf="showCloseButton" (click)="closeFullscreen()" class="close-button" src="assets//images/close-Black.svg" alt="">
+              <app-player class="content-player content-player-landscape" [playerOption]="playerOption"  [playerConfig]="playerConfig"></app-player>
+            </div>
+            <ng-template #loading>
+              <app-loader></app-loader>
+            </ng-template>
+        </div>
+    </div>
+  </div> 
+
 </div>
 <!-- CC-Player Video -->
 <div class="ui container mx-0 sb-toc-view-container">

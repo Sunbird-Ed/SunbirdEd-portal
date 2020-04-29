@@ -385,7 +385,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     }
 
     this.courseConsumptionService.updateContentsState(request).pipe(first())
-      .subscribe(updatedRes => this.contentStatus = updatedRes.content,
+      .subscribe(updatedRes => this.contentStatus = _.cloneDeep(updatedRes.content),
         err => console.log('updating content status failed', err));
   }
 

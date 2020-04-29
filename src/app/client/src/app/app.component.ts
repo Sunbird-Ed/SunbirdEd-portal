@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor, FormService, ProgramsService
@@ -95,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    private shepherdService: ShepherdService) {
+    private shepherdService: ShepherdService, public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
@@ -151,14 +151,17 @@ export class AppComponent implements OnInit, OnDestroy {
         }))
       .subscribe(data => {
         this.tenantService.getTenantInfo(this.userService.slug);
+        this.tenantService.initialize();
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
+        this.changeDetectorRef.detectChanges();
       }, error => {
         this.initApp = true;
+        this.changeDetectorRef.detectChanges();
       });
 
     this.changeLanguageAttribute();
@@ -290,9 +293,11 @@ export class AppComponent implements OnInit, OnDestroy {
     const slug = this.userService.slug;
     return this.orgDetailsService.getOrgDetails(slug).pipe(
       tap(data => {
-        this.cacheService.set('orgDetailsFromSlug', data, {
-          maxAge: 86400
-        });
+        if (slug !== '') {
+          this.cacheService.set('orgDetailsFromSlug', data, {
+            maxAge: 86400
+          });
+        }
       })
     );
   }
@@ -365,9 +370,11 @@ export class AppComponent implements OnInit, OnDestroy {
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
-        this.cacheService.set('orgDetailsFromSlug', data, {
-          maxAge: 86400
-        });
+        if (this.userService.slug !== '') {
+          this.cacheService.set('orgDetailsFromSlug', data, {
+            maxAge: 86400
+          });
+        }
       })
     );
   }
@@ -465,6 +472,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.frameWorkPopUp.modal.deny();
       this.checkLocationStatus();
       this.cacheService.set('showFrameWorkPopUp', 'installApp');
+      this.showFrameWorkPopUp = false;
     });
   }
   viewInBrowser() {
