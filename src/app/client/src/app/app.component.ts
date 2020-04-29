@@ -170,7 +170,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.userService.loggedIn) {
       this.userId = this.userService.userid;
     } else {
-      this.userId = this.userService.anonymousSid;
+      this.userId = this.deviceId;
     }
     this.appId = this.userService.appId;
   }
