@@ -2,7 +2,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { actionButtons } from './actionButtons';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 
@@ -11,10 +11,8 @@ import * as _ from 'lodash-es';
   templateUrl: './content-actions.component.html',
   styleUrls: ['./content-actions.component.scss']
 })
-export class ContentActionsComponent implements OnInit {
+export class ContentActionsComponent implements OnInit, OnChanges {
   @Input() contentData;
-  @Input() showUpdate;
-  @Output() contentDownloaded = new EventEmitter();
   actionButtons = actionButtons;
   contentRatingModal = false;
   contentId;
@@ -44,6 +42,11 @@ export class ContentActionsComponent implements OnInit {
   ngOnInit() {
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
     this.mimeType = _.get(this.contentData, 'mimeType');
+    this.contentPrintable();
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log(changes.contentData);
+    this.contentPrintable();
   }
     onActionButtonClick(event, content) {
       switch (event.data.name.toUpperCase()) {
@@ -61,8 +64,16 @@ export class ContentActionsComponent implements OnInit {
           this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
           this.logTelemetry('share-content', content);
           break;
+        case 'PRINT':
+          this.printPdf(content);
+          this.logTelemetry('print-content', content);
+          break;
       }
     }
+  printPdf(content: any) {
+    const pdfUrl = _.get(content, 'itemSetPreviewUrl');
+    window.open(pdfUrl, '_blank');
+  }
     setTelemetryShareData(param) {
       this.telemetryShareData = [{
         id: param.identifier,
@@ -91,5 +102,18 @@ export class ContentActionsComponent implements OnInit {
       };
       this.telemetryService.interact(interactData);
     }
+  contentPrintable() {
+    // selectedContent?.model?.itemSetPreviewUrl
+   // console.log('------>', this.contentData);
+    _.forEach(this.actionButtons, data => {
+      if (data.name === 'print') {
+        if (this.contentData.itemSetPreviewUrl) {
+          data.disabled = false;
+        } else {
+          data.disable = true;
+        }
+      }
+    });
+  }
 
   }
