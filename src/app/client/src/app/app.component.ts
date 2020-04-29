@@ -84,6 +84,8 @@ export class AppComponent implements OnInit, OnDestroy {
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
   labels: {};
+  deviceId: string;
+  userId: string;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -160,6 +162,11 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.changeLanguageAttribute();
+    if (this.userService.loggedIn) {
+      this.userId = this.userService.userid;
+    } else {
+      this.userId = this.userService.anonymousSid;
+    }
   }
 
   isLocationStatusRequired() {
@@ -330,6 +337,7 @@ export class AppComponent implements OnInit, OnDestroy {
       return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.deviceId = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);
           observer.complete();
