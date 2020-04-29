@@ -86,6 +86,8 @@ export class AppComponent implements OnInit, OnDestroy {
   labels: {};
   deviceId: string;
   userId: string;
+  appId: string;
+
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -170,6 +172,7 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       this.userId = this.userService.anonymousSid;
     }
+    this.appId = this.userService.appId;
   }
 
   isLocationStatusRequired() {
