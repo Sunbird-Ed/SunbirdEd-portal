@@ -369,7 +369,10 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
   telemetryLogEvents(api: any, status: boolean, error?: string) {
     let level = 'ERROR';
-    let msg = api + ' failed ' + error || '';
+    let msg = api + ' failed';
+    if (error) {
+      msg = msg + ' ' + error;
+    }
     if (status) {
       level = 'SUCCESS';
       msg = api + ' success';
