@@ -88,6 +88,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   isContentPresent: Boolean = false;
   isSelectChapter: Boolean = false;
   showLoader = true;
+  isMobile = false;
 
   /**
    * Page Load Time, used this data in impression telemetry
@@ -381,11 +382,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }));
   }
   closeCollectionPlayer() {
-    if (this.dialCode) {
-      sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
-      this.router.navigate(['/get/dial/', this.dialCode]);
+    if (this.isMobile) {
+      this.isMobile = false;
     } else {
-      this.navigationHelperService.navigateToPreviousUrl('/explore');
+      if (this.dialCode) {
+        sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
+        this.router.navigate(['/get/dial/', this.dialCode]);
+      } else {
+        this.navigationHelperService.navigateToPreviousUrl('/explore');
+      }
     }
   }
   closeContentPlayer() {
@@ -457,7 +462,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
   }
   callinitPlayer (event) {
-    if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
+    if ((event.data.identifier !== _.get(this.activeContent, 'identifier')) || this.isMobile ) {
       this.isContentPresent = true;
       this.activeContent = event.data;
       this.objectRollUp = this.getContentRollUp(event.rollup);
@@ -465,7 +470,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
   tocCardClickHandler(event) {
-    // console.log(event);
+    if (!this.isMobile && this.activeContent) {
+      this.isMobile = true;
+    }
     this.callinitPlayer(event);
   }
   tocChapterClickHandler(event) {

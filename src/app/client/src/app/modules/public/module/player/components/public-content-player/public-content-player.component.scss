@@ -1,17 +1,65 @@
+@import 'mixins/mixins';
 .cc-player {
+	&__btn-back {
+		z-index: 100;
+	}
 
-  &__btn-back {
-    z-index: 100;
-  }
-
-  &__content-header {
-    min-height: 80px;
-    background-color: #FAFAFA;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
-    z-index: 99;
-  }
-
+	&__content-header {
+		min-height: 80px;
+		background-color: #fafafa;
+		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+		z-index: 99;
+	}
 }
+
+.dot-divider {
+	background-color: #333;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	display: inline-block;
+	margin: 0 8px;
+}
+
+@include respond-below(sm) {
+	.ui.container.sb-toc-view-container {
+		margin-left: 0px !important;
+		margin-right: 0px !important;
+	}
+}
+.player-thumbnail {
+    width: 100%;
+    cursor: pointer;
+    border-radius: .3125rem;
+    border-color: 2px black;
+    position: relative;
+    padding-bottom: 56.25%;
+  }
+
+  .play-icon {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    height: 80px;
+    width: 80px
+  }
+  
+  .overlay-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .play-icon {
+      height: auto;
+      width: auto;
+    }  
+  }
+
+  .content-player-landscape {
+    position: absolute;
+  }
 
 .dot-divider {
     background-color: #333;
