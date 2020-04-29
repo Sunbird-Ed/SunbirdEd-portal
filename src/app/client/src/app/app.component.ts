@@ -86,7 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
   feedCategory = 'OrgMigrationAction';
   labels: {};
   deviceId: string;
-  uuid = UUID.UUID();
+  userId: string;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -163,6 +163,11 @@ export class AppComponent implements OnInit, OnDestroy {
       });
 
     this.changeLanguageAttribute();
+    if (this.userService.loggedIn) {
+      this.userId = this.userService.userid;
+    } else {
+      this.userId = this.userService.anonymousSid;
+    }
   }
 
   isLocationStatusRequired() {
