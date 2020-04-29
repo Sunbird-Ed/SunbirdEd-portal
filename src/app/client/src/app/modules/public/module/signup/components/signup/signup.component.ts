@@ -9,7 +9,6 @@ import * as _ from 'lodash-es';
 import { IStartEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ActivatedRoute } from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-signup',
@@ -277,7 +276,6 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }, (error) => {
       this.telemetryLogEvents('validate-recaptcha', false, _.get(error, 'params.errmsg'));
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
       this.resetGoogleCaptcha();
     });
   }
