@@ -81,13 +81,15 @@ export class ReportComponent implements OnInit, AfterViewInit {
           this.report = report;
           const reportConfig = _.get(report, 'reportconfig');
           this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
-          return this.reportService.fetchDataSource(_.get(reportConfig, 'dataSource')).pipe(
+          const dataSource = _.get(reportConfig, 'dataSource'); //to enable backward compatibilty
+          const updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: "default", path: dataSource }];
+          return this.reportService.downloadMultipleDataSources(updatedDataSource).pipe(
             retry(1),
             map(data => {
               const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table');
               const result: any = {};
-              result['charts'] = (charts && this.reportService.prepareChartData(charts, data, _.get(reportConfig, 'dataSource'))) || [];
-              result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'))) || [];
+              result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource, _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+              result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'), _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
               result['reportMetaData'] = reportConfig;
               return result;
             })

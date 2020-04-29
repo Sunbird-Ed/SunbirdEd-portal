@@ -8,9 +8,19 @@
           </div>
           <div *ngIf="!noResult">
             <div id="report-header">
-              <h2 class="ui small header">
-                {{ report?.title || currentReport?.reportMetaData?.title || currentReport?.reportMetaData?.label}}
-              </h2>
+              <div class="d-flex flex-ai center mb-16">
+                <h2 class="mr-auto">
+                  {{ report?.title || currentReport?.reportMetaData?.title || currentReport?.reportMetaData?.label}}
+                  <div class="sb-label sb-label-table sb-label-gray-100 hawkeye-label ml-16">Draft</div>
+                  <div class="sb-label sb-label-table sb-label-success-0 hawkeye-label ml-16">Live</div>
+                  <div class="sb-label sb-label-table sb-label-error-0 hawkeye-label ml-16">Retired</div>
+                </h2>
+                <div class="d-flex flex-ai-center">
+                  <button (click)="addSummaryModal=true" type="button" class="sb-btn sb-btn-normal sb-btn-primary sb-left-icon-btn">
+                    <i class="plus icon"></i>Add report Summary</button>
+                  <button type="button" class="sb-btn sb-btn-normal sb-btn-secondary ml-16">Publish</button>
+                </div>
+              </div>
               <p *ngIf="currentReport?.reportMetaData?.description"
                 [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
               </p>
@@ -24,8 +34,7 @@
                     suiTabHeader="graph" (activate)="showExportsOption=true"
                     [ngClass]="{'mr-auto': currentReport.tables.length === 0}"
                     (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
-                  <a appTelemetryInteract
-                    [ngClass]="{'mr-auto': currentReport.tables.length > 0}"
+                  <a appTelemetryInteract [ngClass]="{'mr-auto': currentReport.tables.length > 0}"
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
                     (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
@@ -34,9 +43,8 @@
                   <button appTelemetryInteract
                     [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                     [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')" type="button"
-                    *ngIf="currentReport?.reportMetaData?.downloadUrl"
-                    class="sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()"><i
-                      class="icon"></i>
+                    *ngIf="currentReport?.reportMetaData?.downloadUrl" class="sb-btn sb-btn-tertiary sb-btn-normal mr-8"
+                    (click)="downloadCSV()"><i class="icon"></i>
                     {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
                   <div class="sb-field mb-0 mr-8">
                     <sui-select *ngIf="showExportsOption" class="selection mr-8"
@@ -87,8 +95,8 @@
   </div>
 </div>
 
-<sui-modal [mustScroll]="false" [isClosable]="isClosable" [transitionDuration]="0" [size]="'normal'" class="sb-modal sb-hawkeye-modal"
-  #modal (dismissed)="modal.deny();close.emit()" *ngIf="reportExportInProgress">
+<sui-modal [mustScroll]="false" [isClosable]="isClosable" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-hawkeye-modal" #modal (dismissed)="modal.deny();close.emit()" *ngIf="reportExportInProgress">
   <div class="sb-modal-content o-y-visible">
     <div class="ui">
       <div class="twelve wide column px-0 mb-30">
@@ -97,3 +105,5 @@
     </div>
   </div>
 </sui-modal>
+
+<app-add-summary-modal *ngIf="addSummaryModal"></app-add-summary-modal>
