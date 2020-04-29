@@ -18,6 +18,7 @@ import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
 import { UUID } from 'angular2-uuid';
+
 /**
  * main app component
  */
