@@ -174,15 +174,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.appId = this.userService.appId;
   }
 
-  handleLocatoionPopupInSignup() {
+  handleLocatoionPopupForSignInAndUp() {
     return _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.data.hideLocatoionPopup') ||
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideLocatoionPopup');
   }
 
   isLocationStatusRequired() {
     const url = this.router.url;
-    this.handleLocatoionPopupInSignup();
-    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in') || this.handleLocatoionPopupInSignup());
+    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in') 
+      || this.handleLocatoionPopupForSignInAndUp());
   }
 
   checkLocationStatus() {

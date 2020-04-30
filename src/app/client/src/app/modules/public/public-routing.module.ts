@@ -7,7 +7,7 @@ import { OfflineApplicationDownloadComponent } from '@sunbird/shared';
 const routes: Routes = [
   {
     path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],
-    data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' }, hideLocatoionPopup: true }
+    data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
   },
   {
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
@@ -19,7 +19,8 @@ const routes: Routes = [
     path: 'signup', loadChildren: './module/signup/signup.module#SignupModule'
   },
   {
-    path: 'sign-in/sso', loadChildren: './module/sign-in/sso/sso.module#SsoModule'
+    path: 'sign-in/sso', loadChildren: './module/sign-in/sso/sso.module#SsoModule',
+    data: { hideLocatoionPopup: true }
   },
   {
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
