@@ -24,8 +24,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   /**
 	 * telemetryImpression
   */
- mimeTypeFilters = ['all', 'video', 'interactive', 'docs'];
- activeMimeTypeFilter = ['all'];
+  mimeTypeFilters;
+  activeMimeTypeFilter;
   telemetryImpression: IImpressionEventInput;
   telemetryContentImpression: IImpressionEventInput;
   telemetryShareData: Array<ITelemetryShare>;
@@ -132,6 +132,13 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.playerOption = {
       showContentRating: true
     };
+    this.mimeTypeFilters = [
+      this.resourceService.frmelmnts.btn.all,
+      this.resourceService.frmelmnts.btn.video,
+      this.resourceService.frmelmnts.btn.interactive,
+      this.resourceService.frmelmnts.btn.docs
+    ];
+    this.activeMimeTypeFilter = [ this.resourceService.frmelmnts.btn.all ];
   }
   ngOnInit() {
     this.pageId = this.route.snapshot.data.telemetry.pageid;
