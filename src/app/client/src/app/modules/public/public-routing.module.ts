@@ -7,7 +7,7 @@ import { OfflineApplicationDownloadComponent } from '@sunbird/shared';
 const routes: Routes = [
   {
     path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],
-    data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
+    data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' }, hideLocatoionPopup: true }
   },
   {
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
