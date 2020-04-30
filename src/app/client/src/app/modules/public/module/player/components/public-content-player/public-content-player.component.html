@@ -35,10 +35,9 @@
 <!-- CC-Player Video -->
 <div class="ui container mx-0 sb-toc-view-container">
   <div class="cc-player sb-g">
-    <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-12 cc-player__video computer only"
+    <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-12 cc-player__video"
       [appTelemetryImpression]="telemetryImpression" *ngIf="contentData">
-      <div class="toc-content">
-      </div>
+      <div class="toc-content"></div>
       <app-contentplayer-page [playerConfig]="playerConfig" [tocPage]="true" [contentDetails]="contentData"
         [isContentPresent]="isContentPresent" [objectRollUp]="objectRollup">
       </app-contentplayer-page>
