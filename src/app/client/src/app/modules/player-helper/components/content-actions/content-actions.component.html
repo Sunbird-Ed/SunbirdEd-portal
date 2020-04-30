@@ -3,7 +3,7 @@
     <div class="content-video__player__title mr-auto sb__ellipsis sb__ellipsis--one">
       {{contentData?.name}}
     </div>
-    <div class="content-video__player__title__subtitle fxsmall mt-4">
+    <div class="content-video__player__title__subtitle fsmall mt-4">
       <span class="mr-8" *ngIf="contentData?.board">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
       <span class="dot-divider" *ngIf="contentData?.me_averageRating"></span>
       <span class="mr-8" *ngIf="contentData?.me_averageRating">{{contentData?.me_averageRating || '0'}}</span>

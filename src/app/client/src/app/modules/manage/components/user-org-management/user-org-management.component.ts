@@ -32,7 +32,8 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
     'accounts_rejected': 0,
     'accounts_failed': 0,
     'duplicate_account': 0,
-    'accounts_unclaimed': 0
+    'accounts_unclaimed': 0,
+    'accounts_eligible': 0
   };
   public geoSummary;
   public validatedUser = {
@@ -164,14 +165,18 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
       data => {
         const result = _.get(data, 'result');
         this.uploadedDetails = {
-          'total_uploaded': result['accounts_validated'] + result['accounts_rejected'] + result['accounts_failed']
-            + result['duplicate_account'] + result['accounts_unclaimed'],
+          'total_uploaded': 0,
           'accounts_validated': result['accounts_validated'] ? result['accounts_validated'] : 0,
           'accounts_rejected': result['accounts_rejected'] ? result['accounts_rejected'] : 0,
           'accounts_failed': result['accounts_failed'] ? result['accounts_failed'] : 0,
           'duplicate_account': result['duplicate_account'] ? result['duplicate_account'] : 0,
-          'accounts_unclaimed': result['accounts_unclaimed'] ? result['accounts_unclaimed'] : 0
+          'accounts_unclaimed': result['accounts_unclaimed'] ? result['accounts_unclaimed'] : 0,
+          'accounts_eligible': result['accounts_eligible'] ? result['accounts_eligible'] : 0
         };
+        this.uploadedDetails['total_uploaded'] = this.uploadedDetails['accounts_validated'] +
+        this.uploadedDetails['accounts_rejected'] + this.uploadedDetails['accounts_failed'] +
+        this.uploadedDetails['duplicate_account'] + this.uploadedDetails['accounts_unclaimed'] +
+        this.uploadedDetails['accounts_eligible'];
       },
       error => {
         console.log(error);
@@ -328,7 +333,9 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
   }
 
   public downloadCSVFile(slug, status, fileName: any) {
-    this.manageService.getData(slug + '__' + status, fileName)
+    const slugName = status ? slug + '__' + status : slug;
+    const downloadFileName = status ? status + '_' + moment().format('DDMMYYYY') + '.csv' : undefined;
+    this.manageService.getData(slugName, fileName, downloadFileName)
       .subscribe(
         response => {
           const url = (_.get(response, 'result.signedUrl'));
@@ -356,5 +363,4 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit {
         }
       );
   }
-
 }
