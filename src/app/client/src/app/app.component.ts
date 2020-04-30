@@ -86,6 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
   labels: {};
   deviceId: string;
   userId: string;
+  hideLocatoionPopupInSignup: true;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -172,9 +173,15 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleLocatoionPopupInSignup() {
+    this.hideLocatoionPopupInSignup = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.data.hideLocatoionPopup') ||
+          _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideLocatoionPopup');
+  }
+
   isLocationStatusRequired() {
     const url = this.router.url;
-    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+    this.handleLocatoionPopupInSignup();
+    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in') || this.hideLocatoionPopupInSignup);
   }
 
   checkLocationStatus() {

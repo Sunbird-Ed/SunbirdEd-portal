@@ -10,6 +10,7 @@ const routes: Routes = [
     path: '', component: SignupComponent,
     data: {
       hideHeaderNFooter : true,
+      hideLocatoionPopup: true,
       telemetry: {
         env: telemetryEnv, pageid: 'signup', uri: '/signup',
         type: 'view', mode: 'self', uuid: uuid
