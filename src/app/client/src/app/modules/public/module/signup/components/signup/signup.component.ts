@@ -276,7 +276,12 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
           this.onSubmitSignUpForm();
         }
       }, (error) => {
-        this.telemetryLogEvents('validate-recaptcha', false, _.get(error, 'params.errmsg'));
+        const telemetryErrorData = {
+          env: 'self-signup', err: _.get(error, 'params.errmsg') || '',
+          errtype: 'SYSTEM', pageid: 'signup',
+          stacktrace: JSON.stringify(error || '')
+        };
+        this.telemetryService.generateErrorEvent(telemetryErrorData);
         this.resetGoogleCaptcha();
       });
     }

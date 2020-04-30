@@ -64,7 +64,6 @@ export class IdentifyAccountComponent implements OnInit {
       this.disableFormSubmit = true;
       this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
         if (_.get(data, 'result.success')) {
-          this.telemetryLogEvents('validate-recaptcha', true);
           this.recoverAccountService.fuzzyUserSearch(this.form.value)
             .subscribe(response => {
               if (_.get(response, 'result.response.count') > 0) { // both match
@@ -85,7 +84,13 @@ export class IdentifyAccountComponent implements OnInit {
             });
         }
       }, (error) => {
-        this.telemetryLogEvents('validate-recaptcha', false, _.get(error, 'params.errmsg'));
+        const telemetryErrorData = {
+          env: this.activatedRoute.snapshot.data.telemetry.env,
+          err: _.get(error, 'params.errmsg') || '',
+          errtype: 'SYSTEM', pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          stacktrace: JSON.stringify(error || '')
+        };
+        this.telemetryService.generateErrorEvent(telemetryErrorData);
         this.resetGoogleCaptcha();
       });
     }
