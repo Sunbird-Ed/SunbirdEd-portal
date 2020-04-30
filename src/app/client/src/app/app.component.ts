@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * 1. org hashtag for Anonymous user
    * 2. user profile rootOrg hashtag for logged in
    */
-  private channel: string;
+  public channel: string;
   private _routeData$ = new BehaviorSubject(undefined);
   public readonly routeData$ = this._routeData$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
@@ -85,6 +85,10 @@ export class AppComponent implements OnInit, OnDestroy {
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
   labels: {};
+  deviceId: string;
+  userId: string;
+  appId: string;
+
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -167,6 +171,12 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.isOffline) {
       document.body.classList.add('sb-offline');
     }
+    if (this.userService.loggedIn) {
+      this.userId = this.userService.userid;
+    } else {
+      this.userId = this.deviceId;
+    }
+    this.appId = this.userService.appId;
   }
 
   isLocationStatusRequired() {
@@ -343,6 +353,7 @@ export class AppComponent implements OnInit, OnDestroy {
                         (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
           }
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.deviceId = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);
           observer.complete();
