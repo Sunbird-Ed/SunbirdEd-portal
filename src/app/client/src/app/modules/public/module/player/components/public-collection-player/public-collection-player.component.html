@@ -62,16 +62,18 @@
           <sb-library-filters [hidden]="isSelectChapter" [list]="mimeTypeFilters" [layout]="'round-with-icon'"
             (selectedMimeType)="selectedFilter($event)">
           </sb-library-filters>
-          <div [hidden]="isSelectChapter" class="side-toc-content">
-            <sb-toc-item [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
-              (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
-              (noContent)="showNoContent($event)"></sb-toc-item>
-          </div>
-          <div [hidden]="!isSelectChapter">
-            <span>
-              <app-content-chapterlist [activeContent]="activeContent" [contentDetails]="collectionData"
-                (tocChapterClick)="tocChapterClickHandler($event)"></app-content-chapterlist>
-            </span>
+          <div class="main-side-toc-content">
+            <div [hidden]="isSelectChapter" class="side-toc-content">
+              <sb-toc-item class="sb-toc-items" [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
+                (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
+                (noContent)="showNoContent($event)"></sb-toc-item>
+            </div>
+            <div [hidden]="!isSelectChapter">
+              <span>
+                <app-content-chapterlist [activeContent]="activeContent" [contentDetails]="collectionData"
+                  (tocChapterClick)="tocChapterClickHandler($event)"></app-content-chapterlist>
+              </span>
+            </div>
           </div>
           <div>
             <app-content-licence [content]="collectionData"></app-content-licence>
