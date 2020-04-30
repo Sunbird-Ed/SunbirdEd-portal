@@ -132,14 +132,14 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges {
    * Emits event when content starts playing and end event when content was played/read completely
    */
   loadPlayer() {
+    if (this.isMobileOrTab) {
+      this.rotatePlayer();
+    }
     if (this.previewCdnUrl !== '' && (this.isCdnWorking).toLowerCase() === 'yes') {
       this.loadCdnPlayer();
       return;
     }
     this.loadDefaultPlayer();
-    if (this.isMobileOrTab) {
-      this.rotatePlayer();
-    }
   }
   /**
    * Adjust player height after load
