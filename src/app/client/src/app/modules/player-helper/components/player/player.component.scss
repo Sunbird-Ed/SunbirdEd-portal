@@ -1,0 +1,35 @@
+.player-thumbnail {
+    width: 100%;
+    cursor: pointer;
+    border-radius: .3125rem;
+    position: relative;
+    padding-bottom: 56.25%;
+    border: 1px solid black;
+  }
+
+  .play-icon {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    height: 80px;
+    width: 80px
+  }
+  
+  .overlay-image {
+    width: 100%;
+    height: 100%;
+  }
+  @media only screen and (max-width: 768px) {
+    .play-icon {
+      height: auto;
+      width: auto;
+    }  
+  }
+
+  .close-button {
+    position: absolute;
+    z-index: 100;
+    right: 16px;
+    top: 16px;
+  }
