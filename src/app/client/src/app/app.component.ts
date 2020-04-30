@@ -86,6 +86,7 @@ export class AppComponent implements OnInit, OnDestroy {
   deviceId: string;
   userId: string;
   appId: string;
+  hideLocatoionPopupInSignup: true;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
