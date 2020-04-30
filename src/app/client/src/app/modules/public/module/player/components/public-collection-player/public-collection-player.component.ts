@@ -113,6 +113,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     type: 'click',
     pageid: this.route.snapshot.data.telemetry.pageid
   };
+  selectedContent: {};
+  pageId: string;
 
   constructor(contentService: ContentService, public route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
@@ -132,6 +134,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     };
   }
   ngOnInit() {
+    this.pageId = this.route.snapshot.data.telemetry.pageid;
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
     this.contentData = this.getContent();
