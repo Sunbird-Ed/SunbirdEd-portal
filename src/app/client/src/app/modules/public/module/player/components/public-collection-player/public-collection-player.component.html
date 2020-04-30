@@ -53,6 +53,7 @@
             (selectedMimeType)="selectedFilter($event)">
           </sb-library-filters>
         </div>
+        <div class="main-side-toc-content">
           <div [hidden]="isSelectChapter" class="side-toc-content">
             <sb-toc-item [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
@@ -64,6 +65,7 @@
                 (tocChapterClick)="tocChapterClickHandler($event)"></app-content-chapterlist>
             </span>
           </div>
+        </div>
           <div>
             <app-content-licence [content]="collectionData"></app-content-licence>
           </div>
