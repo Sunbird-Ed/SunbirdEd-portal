@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * 1. org hashtag for Anonymous user
    * 2. user profile rootOrg hashtag for logged in
    */
-  private channel: string;
+  public channel: string;
   private _routeData$ = new BehaviorSubject(undefined);
   public readonly routeData$ = this._routeData$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
