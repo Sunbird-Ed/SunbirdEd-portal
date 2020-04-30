@@ -85,13 +85,11 @@ describe('IdentifyAccountComponent', () => {
   it('should move forward to the next step', () => {
     const recoverAccountService = TestBed.get(RecoverAccountService);
     const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'log');
     const recaptchaService = TestBed.get(RecaptchaService);
     spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(of(identifyAcountMockResponse.recaptchaResponse));
     spyOn(recoverAccountService, 'fuzzyUserSearch').and.returnValue(of(identifyAcountMockResponse.fuzzySuccessResponseWithCount));
     spyOn(component, 'navigateToNextStep').and.callThrough();
     component.handleNext('mockcaptchaResponse');
-    expect(telemetryService.log).toHaveBeenCalledWith(identifyAcountMockResponse.telemetryLogSuccess);
     expect(component.navigateToNextStep).toHaveBeenCalledWith(identifyAcountMockResponse.fuzzySuccessResponseWithCount);
   });
 
@@ -109,11 +107,11 @@ describe('IdentifyAccountComponent', () => {
     const recoverAccountService = TestBed.get(RecoverAccountService);
     const recaptchaService = TestBed.get(RecaptchaService);
     const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'log');
+    spyOn(telemetryService, 'generateErrorEvent');
     spyOn(recoverAccountService, 'fuzzyUserSearch').and.returnValue(of(identifyAcountMockResponse.fuzzySuccessResponseWithoutCount));
     spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(throwError(identifyAcountMockResponse.recaptchaErrorResponse));
     component.handleNext('mockcaptchaResponse');
-    expect(telemetryService.log).toHaveBeenCalledWith(identifyAcountMockResponse.telemetryLogError);
+    expect(telemetryService.generateErrorEvent).toHaveBeenCalledWith(identifyAcountMockResponse.telemetryLogError);
   });
 
   it('should throw error if form fields are partially matched', () => {

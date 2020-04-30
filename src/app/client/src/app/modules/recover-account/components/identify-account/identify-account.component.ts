@@ -102,29 +102,6 @@ export class IdentifyAccountComponent implements OnInit {
     }
   }
 
-  telemetryLogEvents(api: any, status: boolean, error?: string) {
-    let level = 'ERROR';
-    let msg = api + ' failed';
-    if (error) {
-      msg = msg + ' ' + error;
-    }
-    if (status) {
-      level = 'SUCCESS';
-      msg = api + ' success';
-    }
-    const event = {
-      context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: api,
-        level: level,
-        message: msg
-      }
-    };
-    this.telemetryService.log(event);
-  }
-
   navigateToNextStep(response) {
     this.recoverAccountService.fuzzySearchResults = _.get(response, 'result.response.content');
     this.router.navigate(['/recover/select/account/identifier'], {

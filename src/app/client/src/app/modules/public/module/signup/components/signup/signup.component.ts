@@ -374,12 +374,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryService.interact(interactData);
   }
 
-  telemetryLogEvents(api: any, status: boolean, error?: string) {
+  telemetryLogEvents(api: any, status: boolean) {
     let level = 'ERROR';
     let msg = api + ' failed';
-    if (error) {
-      msg = msg + ' ' + error;
-    }
     if (status) {
       level = 'SUCCESS';
       msg = api + ' success';

@@ -266,13 +266,10 @@ export const identifyAcountMockResponse = {
     }
   },
   telemetryLogError: {
-    context: {
-      env: 'course'
-    },
-    edata: {
-      type: 'validate-recaptcha',
-      level: 'ERROR',
-      message: 'validate-recaptcha failed'
-    }
+    env: 'course',
+    err: '',
+    errtype: 'SYSTEM',
+    stacktrace: '{"result":{"success":false}}',
+    pageid: 'course-read'
   }
 };
