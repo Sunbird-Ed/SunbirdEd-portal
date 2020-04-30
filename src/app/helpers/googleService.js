@@ -64,9 +64,3 @@ const validateRecaptcha = async (req, res) => {
 
 
 module.exports = {validateRecaptcha};
-
-
-
-
-
-
