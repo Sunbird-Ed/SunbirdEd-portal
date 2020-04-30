@@ -64,24 +64,7 @@ export class IdentifyAccountComponent implements OnInit {
       this.disableFormSubmit = true;
       this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
         if (_.get(data, 'result.success')) {
-          this.recoverAccountService.fuzzyUserSearch(this.form.value)
-            .subscribe(response => {
-              if (_.get(response, 'result.response.count') > 0) { // both match
-                this.navigateToNextStep(response);
-              } else { // both dint match
-                this.identiferStatus = 'NOT_MATCHED';
-                this.nameNotExist = true;
-              }
-            }, error => {
-              this.resetGoogleCaptcha();
-              if (error.responseCode === 'PARTIAL_SUCCESS_RESPONSE') {
-                this.identiferStatus = 'MATCHED';
-                this.handleError(error);
-              } else {
-                this.identiferStatus = 'NOT_MATCHED';
-                this.nameNotExist = true;
-              }
-            });
+          this.initiateFuzzyUserSearch();
         }
       }, (error) => {
         const telemetryErrorData = {
@@ -94,6 +77,26 @@ export class IdentifyAccountComponent implements OnInit {
         this.resetGoogleCaptcha();
       });
     }
+  }
+
+  initiateFuzzyUserSearch() {
+    this.recoverAccountService.fuzzyUserSearch(this.form.value).subscribe(response => {
+      if (_.get(response, 'result.response.count') > 0) { // both match
+        this.navigateToNextStep(response);
+      } else { // both dint match
+        this.identiferStatus = 'NOT_MATCHED';
+        this.nameNotExist = true;
+      }
+    }, error => {
+      this.resetGoogleCaptcha();
+      if (error.responseCode === 'PARTIAL_SUCCESS_RESPONSE') {
+        this.identiferStatus = 'MATCHED';
+        this.handleError(error);
+      } else {
+        this.identiferStatus = 'NOT_MATCHED';
+        this.nameNotExist = true;
+      }
+    });
   }
 
   resetGoogleCaptcha() {
