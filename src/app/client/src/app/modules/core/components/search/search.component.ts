@@ -162,7 +162,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const url = this.route.url.split('?')[0];
     let redirectUrl;
     if (this.selectedOption) {
-      redirectUrl = this.search[this.selectedOption]
+      redirectUrl = this.search[this.selectedOption];
     } else {
       if (url.indexOf('/explore-course') !== -1) {
         redirectUrl = url.substring(0, url.indexOf('explore-course')) + 'explore-course';
