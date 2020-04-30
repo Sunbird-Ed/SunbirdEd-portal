@@ -36,6 +36,14 @@ describe('CollectionPlayerComponent', () => {
       'stmsg': {
         'm0118': 'No content to play'
       }
+    },
+    'frmelmnts': {
+      'btn': {
+        'all': 'all',
+        'video': 'video',
+        'interactive': 'interactive',
+        'docs': 'docs'
+      }
     }
   };
 

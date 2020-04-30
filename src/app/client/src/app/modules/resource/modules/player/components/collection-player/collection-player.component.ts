@@ -120,7 +120,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     type: 'click',
     pageid: this.route.snapshot.data.telemetry.pageid
   };
-  activeMimeTypeFilter = ['all'];
+  mimeTypeFilters;
+  activeMimeTypeFilter;
   isContentPresent: Boolean = false;
   public queryParams: any;
   public tocList = [];
@@ -145,6 +146,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.playerOption = {
       showContentRating: true
     };
+    this.mimeTypeFilters = [
+      this.resourceService.frmelmnts.btn.all,
+      this.resourceService.frmelmnts.btn.video,
+      this.resourceService.frmelmnts.btn.interactive,
+      this.resourceService.frmelmnts.btn.docs
+    ];
+    this.activeMimeTypeFilter = [ this.resourceService.frmelmnts.btn.all ];
   }
 
   ngOnInit() {

@@ -44,6 +44,14 @@ describe('PublicCollectionPlayerComponent', () => {
       'fmsg': {
         'm0090': 'Could not download. Try again later'
       }
+    },
+    'frmelmnts': {
+      'btn': {
+        'all': 'all',
+        'video': 'video',
+        'interactive': 'interactive',
+        'docs': 'docs'
+      }
     }
   };
   beforeEach(async(() => {
