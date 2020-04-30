@@ -11,10 +11,12 @@ const {parseJson} = require('./utilityService');
 const validateRecaptcha = async (req, res) => {
   let errType;
   try {
+    // Validating if request is valid or not
     if (!req.query.captchaResponse) {
       errType = 'MISSING_QUERY_PARAMS';
       throw new Error('MISSING_CAPTCHA_RESPONSE');
     }
+    // Validating captcha from google
     errType = 'ERROR_VALIDATING_CAPTCHA';
     const queryParams = '?secret=' + envHelper.google_captcha_private_key + '&response=' + req.query.captchaResponse;
     const options = {
@@ -22,10 +24,10 @@ const validateRecaptcha = async (req, res) => {
       url: CONSTANTS.GOOGLE_VERIFICATION_URL + queryParams
     };
     let responseData = await sendRequest(options);
+    // Parsing data
     errType = 'ERRORED_PARSING_JSON';
     responseData = parseJson(responseData);
     errType = '';
-    logger.info({msg: 'googleService:validateRecaptcha success', data: responseData, did: req.headers['x-device-id']});
     if (responseData && responseData.success) {
       res.status(httpSatusCode.OK).send({
         'id': 'api.validate.recaptcha', 'ts': new Date(),
@@ -33,6 +35,11 @@ const validateRecaptcha = async (req, res) => {
         'responseCode': 'OK', 'result': responseData
       })
     } else {
+      logger.info({
+        msg: 'googleService:validateRecaptcha success',
+        data: responseData,
+        did: req.headers['x-device-id']
+      });
       throw new Error('CAPTCHA_VALIDATING_FAILED');
     }
   } catch (error) {
