@@ -72,7 +72,6 @@ describe('CollectionPlayerComponent', () => {
     expect(component).toBeTruthy();
     expect(component.showPlayer).toBeFalsy();
     // expect(component.serviceUnavailable).toBeFalsy();
-    expect(component.loader).toBeTruthy();
     expect(component.loaderMessage).toEqual({
       headerMessage: 'Please wait...',
       loaderMessage: 'Fetching content details!'
@@ -113,7 +112,6 @@ describe('CollectionPlayerComponent', () => {
       .returnValue(observableOf(CollectionHierarchyGetMockResponse));
     component.ngOnInit();
     expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
-    expect(component.loader).toBeFalsy();
   });
 
   it('should set dialcode to the telemetryCdata if any', () => {
