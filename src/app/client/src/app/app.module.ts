@@ -18,6 +18,9 @@ import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
 import {ChatLibModule, ChatLibService} from 'chat-lib';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/CustomRouteReuseStrategy';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -44,7 +47,12 @@ import {ChatLibModule, ChatLibService} from 'chat-lib';
     CacheService,
     ChatLibService,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
-    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
+    {
+      provide: RouteReuseStrategy,
+      useClass: CustomRouteReuseStrategy
+    }
+
   ]
 })
 export class AppModule {

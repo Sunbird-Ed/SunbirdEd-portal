@@ -345,6 +345,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.subsrciption = this.route.params.pipe(
       filter(params => params.collectionId !== this.collectionId),
       mergeMap((params) => {
+        this.showLoader = true; // show loader every time the param changes, used in route reuse strategy
         this.collectionId = params.collectionId;
         this.telemetryCdata = [{id: this.collectionId, type: this.contentType}];
         this.setTelemetryData();
