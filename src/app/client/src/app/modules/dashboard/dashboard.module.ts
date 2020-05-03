@@ -1,5 +1,6 @@
 // Angular modules
 import { NgModule } from '@angular/core';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Modules
@@ -11,11 +12,11 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import {
   CourseConsumptionService, DashboardUtilsService, OrganisationService,
   RendererService, LineChartService, DownloadService, CourseProgressService,
-  UsageService
+  UsageService, ReportService
 } from './services';
 import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
-  DataTableComponent, DataChartComponent
+  DataTableComponent, DataChartComponent, ReportComponent, ReportSummaryComponent, ListAllReportsComponent
 } from './components';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
@@ -33,11 +34,12 @@ import { OrderModule } from 'ngx-order-pipe';
     SuiModule,
     SharedModule,
     OrderModule,
+    CommonConsumptionModule,
     TelemetryModule,
     NgxDaterangepickerMd.forRoot()
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
-    DataTableComponent, DataChartComponent],
+    DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,
@@ -45,6 +47,6 @@ import { OrderModule } from 'ngx-order-pipe';
     SearchService,
     LineChartService,
     CourseConsumptionService,
-    OrganisationService, DownloadService, CourseProgressService, UsageService]
+    OrganisationService, DownloadService, CourseProgressService, UsageService, ReportService]
 })
 export class DashboardModule { }

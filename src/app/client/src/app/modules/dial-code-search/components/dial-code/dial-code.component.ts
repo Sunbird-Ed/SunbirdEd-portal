@@ -129,7 +129,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
           subtype: 'auto',
         });
       }),
-      mergeMap(param => this.dialCodeService.searchDialCode(_.get(param, 'dialCode'), this.isBrowse)
+      mergeMap(param => this.dialCodeService.searchDialCodeAssemble(_.get(param, 'dialCode'), this.isBrowse)
         .pipe(
           tap(value => {
             this.logInteractEvent({
@@ -162,7 +162,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   }
   private processTextBook(params) {
     const textBookUnit = _.get(params, 'textbook');
-    const content = _.find(_.get(this.dialCodeService, 'dialCodeResult.content'), contentObj => {
+    const content = _.find(_.get(this.dialCodeService, 'dialCodeResult.contents'), contentObj => {
       return (_.get(contentObj, 'identifier') === textBookUnit);
     });
     if (content) {
@@ -234,7 +234,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }
     } else {
       this.router.navigate([this.redirectContentUrl, event.data.metaData.identifier],
-        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
+        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent },
+          state: { 'isSingleContent': this.searchResults.length > 1 ? false : true} });
     }
   }
 

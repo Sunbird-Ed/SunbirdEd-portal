@@ -1,62 +1,67 @@
-<div *ngIf=contentData.description class="sb-bg-color-white pt-16 pb-0 px-16">
-  <div class="contentdata-description pb-16">
-    <h6 class="sb-color-gray-200">{{resourceService?.frmelmnts?.lbl?.description}}</h6>
-    <p class="mb-0">{{contentData?.description}}</p>
+<div class="content-metadeta sb-bg-color-white mt-8 mb-32 text-left">
+  <div class="mx-16 py-16 content-metadeta__content" *ngIf=contentData.description>
+    <div class="content-metadeta__title fnormal font-weight-bold">
+      {{resourceService?.frmelmnts?.lbl?.description}}</div>
+    <p class="content-metadeta__text fnormal pt-8">
+      {{contentData?.description}}
+    </p>
   </div>
-</div>
-<sb-accordion class="sb-toc-credits" [multi]="false">
-  <sb-accordion-item [expanded]="false">
-    <sb-accordion-header>
-      <span class="title">{{resourceService?.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}}</span>
-    </sb-accordion-header>
-    <sb-accordion-body>
-      <div class="credits-section">
-
-        <h4 *ngIf="contentData?.author" class="title">{{resourceService?.frmelmnts?.lbl?.author}}</h4>
-        <p class="description">{{contentData?.author}}</p>
-
-        <h4 *ngIf="attributions" class="title">{{resourceService?.frmelmnts?.lbl?.attributions}}
-        </h4>
-        <p class="description">{{attributions}}</p>
-
-        <h4 *ngIf="contentData?.license" class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
-        <p class="description">{{contentData.license}}</p>
-
-        <p *ngIf="contentData?.licenseDetails?.name">
-          {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
-          <span *ngIf="contentData.licenseDetails['url']">
-            <a href="{{contentData.licenseDetails['url']}}" target="_blank">{{contentData.licenseDetails['url']}}</a>
-          </span></p>
-
-        <h4 *ngIf="contentData?.copyright" class="title">{{resourceService?.frmelmnts?.lbl?.copyRight}}</h4>
-        <p class="description">{{contentData?.copyright}}<span
-            *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></p>
-
-        <p *ngIf="contentData" class="sub-section">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}
-        </p>
-
-        <div *ngIf="contentData">
-          <h4 *ngIf="contentData?.name" class="title">{{resourceService?.frmelmnts?.lbl?.desktop.content}}
+  
+  <sb-accordion class="sb-toc-credits" [multi]="false">
+    <sb-accordion-item [expanded]="false">
+      <sb-accordion-header class="custom-header">
+        <span class="title">{{resourceService?.frmelmnts?.lbl?.aboutTheContent}}</span>
+      </sb-accordion-header>
+      <sb-accordion-body>
+        <div class="credits-section">
+  
+          <h4 *ngIf="contentData?.author" class="title">{{resourceService?.frmelmnts?.lbl?.author}}</h4>
+          <p class="description">{{contentData?.author}}</p>
+  
+          <h4 *ngIf="attributions" class="title">{{resourceService?.frmelmnts?.lbl?.attributions}}
           </h4>
-          <p class="description">{{contentData?.name}}</p>
-
-          <h4 *ngIf="contentData?.creator" class="title">
-            {{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
-          <p class="description">{{contentData?.creator}}</p>
-
-
-
-          <h4 *ngIf="contentData?.organisation" class="title"
-            [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
-          </h4>
-          <p *ngIf="contentData?.organisation" class="description">{{contentData?.organisation.join(', ')}}</p>
-
-          <a *ngIf="contentData.orgDetails?.email"
-            href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
-
+          <p class="description">{{attributions}}</p>
+  
+          <h4 *ngIf="contentData?.license" class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
+          <p class="description">{{contentData.license}}</p>
+  
+          <p *ngIf="contentData?.licenseDetails?.name">
+            {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
+            <span *ngIf="contentData.licenseDetails['url']">
+              <a href="{{contentData.licenseDetails['url']}}" class="break-all" target="_blank">{{contentData.licenseDetails['url']}}</a>
+            </span></p>
+  
+          <h4 *ngIf="contentData?.copyright" class="title">{{resourceService?.frmelmnts?.lbl?.copyRight}}</h4>
+          <p class="description">{{contentData?.copyright}}<span
+              *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></p>
+  
+          <div *ngIf="contentData.originData">
+              <p class="sub-section">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}} </p>
+    
+              <div class="sb-meta-data mb-16" *ngIf="contentData.originData.name">
+                  <h4 class="title">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</h4>
+                  <p class="description">{{contentData?.originData?.name}}</p>
+              </div>
+    
+              <div class="sb-meta-data mb-16" *ngIf="contentData.originData.author">
+                  <h4 class="title">{{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
+                  <p class="description">{{contentData.originData.author}}</p>
+              </div>
+    
+              <div class="sb-meta-data mb-16" *ngIf="contentData.originData.organisation">
+                <h4 class="title"
+                  [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
+                </h4>
+                <p class="description">{{contentData.originData.organisation.join(', ')}}</p>
+                <a *ngIf="contentData.orgDetails?.email" href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
+              </div>
+            </div>
+          
         </div>
-        
-      </div>
-    </sb-accordion-body>
-  </sb-accordion-item>
-</sb-accordion>
+      </sb-accordion-body>
+    </sb-accordion-item>
+  </sb-accordion>
+
+</div>
+
+

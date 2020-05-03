@@ -66,6 +66,7 @@ export class MainHeaderComponent implements OnInit {
   languages: Array<any>;
   showOfflineHelpCentre = false;
   contributeTabActive: boolean;
+  showExploreComponent: boolean;
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -205,9 +206,9 @@ export class MainHeaderComponent implements OnInit {
         }
       }
       if (_.includes(urlAfterRedirects.url, '/explore-course') || _.includes(urlAfterRedirects.url, '/explore')) {
-        this.showExploreHeader = true;
+        this.showExploreComponent = true;
       } else {
-        // this.showExploreHeader = false;
+        this.showExploreComponent = false;
       }
     });
   }

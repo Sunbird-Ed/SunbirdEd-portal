@@ -59,6 +59,21 @@ a {
   flex: unset;
 }
 
+.download-report.sb-btn.sb-btn-link:disabled {
+  background-color: transparent;
+  border: none;
+}
+
+.info-outline-img {
+  background-image: url(/assets/images/info-outline.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  width: calculateRem(14px);
+  height: calculateRem(14px);
+}
+
 ::ng-deep {
 
   .ui.search.dropdown.course-dashboard-select>.text {

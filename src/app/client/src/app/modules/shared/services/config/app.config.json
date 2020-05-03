@@ -14,6 +14,15 @@
       "ExplanationResource"
     ]
   },
+  "DialAssembleSearch": {
+    "contentType": [
+      "Collection",
+      "TextBook",
+      "TextBookUnit",
+      "Resource",
+      "Course"
+    ]
+  },
   "Home": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"

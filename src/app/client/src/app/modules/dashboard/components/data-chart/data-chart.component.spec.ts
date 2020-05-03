@@ -11,6 +11,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { By } from '@angular/platform-browser';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('DataChartComponent', () => {
     let component: DataChartComponent;
@@ -19,6 +20,7 @@ describe('DataChartComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [DataChartComponent],
+            schemas: [NO_ERRORS_SCHEMA],
             imports: [ChartsModule, SuiModule, ReactiveFormsModule, SharedModule.forRoot(), HttpClientTestingModule,
                 NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule],
             providers: [{
@@ -173,5 +175,54 @@ describe('DataChartComponent', () => {
         tick(1000);
         expect(component.filtersFormGroup.get('Grade').value).toEqual(['08-01-2019', '09-01-2019', '10-01-2019']);
     }));
+
+    describe('checkForStacking function', () => {
+
+        let mockchartOptions;
+
+        beforeEach(() => {
+            mockchartOptions = {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            };
+            component.chartOptions = mockchartOptions;
+        });
+
+        it('should return false is stacking is not enabled in bar chart ', () => {
+            component.chartType = 'bar';
+            component.chartOptions.scales.xAxes = [{}];
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeFalsy();
+
+        });
+
+        it('should return true is stacking is enabled in bar chart ', () => {
+            component.chartType = 'bar';
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeTruthy();
+        });
+
+        it('should return true is stacking is enabled for y axis in line chart', () => {
+            component.chartType = 'line';
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeTruthy();
+        });
+
+        it('should return false for all charts except bar or line', () => {
+            component.chartType = 'pie';
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeFalsy();
+        });
+    });
 
 });

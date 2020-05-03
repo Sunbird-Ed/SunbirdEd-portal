@@ -12,3 +12,4 @@ export * from './credits-and-licence/credits-and-licence.component';
 export * from './content-player/content-player.component';
 export * from './content-actions/content-actions.component';
 export * from './content-chapterlist/content-chapterlist.component';
+export * from './content-licence/content-licence.component';

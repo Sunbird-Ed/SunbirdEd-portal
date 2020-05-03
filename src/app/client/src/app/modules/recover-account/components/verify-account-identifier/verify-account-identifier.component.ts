@@ -58,15 +58,15 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     };
     this.recoverAccountService.verifyOTP(request)
     .subscribe(response => {
-        this.resetPassword();
+        this.resetPassword(response);
       }, error => {
         this.form.controls.otp.reset();
-        this.disableFormSubmit = false;
         this.handleError(error);
+        this.disableFormSubmit = false;
       }
     );
   }
-  resetPassword() {
+  resetPassword(data?: any) {
     const request = {
       request: {
         type: this.recoverAccountService.selectedAccountIdentifier.type,
@@ -74,6 +74,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         userId: this.recoverAccountService.selectedAccountIdentifier.id
       }
     };
+    request.request['reqData'] = _.get(data, 'reqData');
     this.recoverAccountService.resetPassword(request)
     .subscribe(response => {
       if (response.result.link) {
@@ -82,12 +83,13 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         this.handleError(response);
       }
     }, error => {
-      this.disableFormSubmit = false;
       this.handleError(error);
+      this.disableFormSubmit = false;
     });
   }
   handleError(err) {
     if (_.get(err, 'error.result.remainingAttempt') === 0) {
+      this.disableFormSubmit = true;
       this.utilService.redirectToLogin(this.resourceService.messages.emsg.m0050);
     } else {
       const filterPipe = new InterpolatePipe();
