@@ -88,7 +88,7 @@ describe('PlayerComponent', () => {
   });
   it('should call ngOnChange ',  () => {
     component.playerConfig = playerConfig;
-    component.ngOnChanges();
+    component.ngOnChanges({});
     expect(component.contentRatingModal).toBeFalsy();
    });
 
