@@ -319,11 +319,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       takeUntil(this.unsubscribe))
       .subscribe(
         (apiResponse: ServerResponse) => {
+          if (!apiResponse.result.count && _.get(apiResponse, 'result.data.length')) {
+            apiResponse.result.count = _.get(apiResponse, 'result.data.length');
+          } else {
+            apiResponse.result.count = 0;
+          }
           this.showLoader = false;
           this.dashboarData = apiResponse.result;
           this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
-          this.dashboarData.count = _.get(batch, 'participantCount');
-          this.totalCount = _.get(batch, 'participantCount');
+          this.dashboarData.count = _.get(batch, 'participantCount') || _.get(apiResponse, 'result.data.length');
+          this.totalCount = _.get(batch, 'participantCount') || _.get(apiResponse, 'result.data.length');
           if (this.totalCount >= 10000) {
             this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
           } else {

@@ -80,4 +80,5 @@ describe('ProfileService', () => {
       expect(apiResponse.result.response).toBe('SUCCESS');
     });
   });
+
 });

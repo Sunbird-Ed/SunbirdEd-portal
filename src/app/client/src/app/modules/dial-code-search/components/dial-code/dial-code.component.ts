@@ -234,7 +234,8 @@ export class DialCodeComponent implements OnInit, OnDestroy {
       }
     } else {
       this.router.navigate([this.redirectContentUrl, event.data.metaData.identifier],
-        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
+        { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent },
+          state: { 'isSingleContent': this.searchResults.length > 1 ? false : true} });
     }
   }
 

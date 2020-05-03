@@ -35,7 +35,6 @@ import {ChatLibModule, ChatLibService} from 'chat-lib';
     DeviceDetectorModule.forRoot(),
     ChatLibModule,
     SharedFeatureModule,
-    ChatLibModule,
     ...PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],

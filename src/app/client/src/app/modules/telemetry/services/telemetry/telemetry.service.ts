@@ -144,6 +144,19 @@ export class TelemetryService {
     }
   }
 
+  public generateErrorEvent(data) {
+    const telemetryErrorData = {
+      context: {env: data.env},
+      edata: {
+        err: data.errorMessage,
+        errtype: data.errorType,
+        stacktrace: data.stackTrace,
+        pageid: data.pageid
+      }
+    };
+    this.error(telemetryErrorData);
+  }
+
   /**
    * Logs 'end' telemetry event
    *
