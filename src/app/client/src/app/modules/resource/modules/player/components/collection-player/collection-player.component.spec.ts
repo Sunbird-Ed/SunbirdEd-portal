@@ -20,7 +20,7 @@ describe('CollectionPlayerComponent', () => {
   const contentId = 'domain_44689';
 
   const fakeActivatedRoute = {
-    params: observableOf({ id: collectionId }),
+    params: observableOf({ collectionId: collectionId }),
     queryParams: observableOf({ contentId: contentId }),
     snapshot: {
       data: {
