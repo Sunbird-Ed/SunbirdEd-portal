@@ -253,7 +253,7 @@ export const identifyAcountMockResponse = {
   recaptchaErrorResponse: {
     result: {
       success: false
-    }
+    }, error: {success: false}
   },
   telemetryLogSuccess: {
     context: {
@@ -267,9 +267,9 @@ export const identifyAcountMockResponse = {
   },
   telemetryLogError: {
     env: 'course',
-    err: '',
-    errtype: 'SYSTEM',
-    stacktrace: '{"result":{"success":false}}',
+    errorMessage: '',
+    errorType: 'SYSTEM',
+    stackTrace: '{"success":false}',
     pageid: 'course-read'
   }
 };
