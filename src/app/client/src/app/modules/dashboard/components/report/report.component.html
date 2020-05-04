@@ -11,14 +11,18 @@
               <div class="d-flex flex-ai center mb-16">
                 <h2 class="mr-auto">
                   {{ report?.title || currentReport?.reportMetaData?.title || currentReport?.reportMetaData?.label}}
-                  <div class="sb-label sb-label-table sb-label-gray-100 hawkeye-label ml-16">Draft</div>
-                  <div class="sb-label sb-label-table sb-label-success-0 hawkeye-label ml-16">Live</div>
-                  <div class="sb-label sb-label-table sb-label-error-0 hawkeye-label ml-16">Retired</div>
+                  <div
+                    [ngClass]="{'sb-label-error-0': report.status === 'retired', 'sb-label-success-0': report.status === 'live', 'sb-label-gray-0': report.status === 'draft'}"
+                    *ngIf="isUserReportAdmin && !hideElements" class="sb-label sb-label-table hawkeye-label ml-16">
+                    {{report?.status}}</div>
                 </h2>
-                <div class="d-flex flex-ai-center">
-                  <button (click)="addSummaryModal=true" type="button" class="sb-btn sb-btn-normal sb-btn-primary sb-left-icon-btn">
+                <div *ngIf="isUserReportAdmin && !hideElements" class="d-flex flex-ai-center">
+                  <button (click)="openAddSummaryModal({
+                    'title': 'Add Report Summary',
+                    'type': 'report'
+                  })" type="button" class="sb-btn sb-btn-normal sb-btn-primary sb-left-icon-btn">
                     <i class="plus icon"></i>Add report Summary</button>
-                  <button type="button" class="sb-btn sb-btn-normal sb-btn-secondary ml-16">Publish</button>
+                  <button *ngIf="report?.status !== 'live'" type="button" class="sb-btn sb-btn-normal sb-btn-secondary ml-16">Publish</button>
                 </div>
               </div>
               <p *ngIf="currentReport?.reportMetaData?.description"
@@ -50,7 +54,7 @@
                     <sui-select *ngIf="showExportsOption" class="selection mr-8"
                       [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}" [placeholder]="'Export As'"
                       (selectedOptionChange)="downloadReport($event)">
-                      <sui-select-option *ngFor="let option of ['Pdf', 'Img']" [value]="option">
+                      <sui-select-option *ngFor="let option of exportOptions" [value]="option">
                       </sui-select-option>
                     </sui-select>
                   </div>
@@ -59,9 +63,11 @@
                 <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph">
                   <div class="sb-graph-section p-24 my-24"
                     *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
-                    <app-data-chart
+                    <app-data-chart [index]="i"
                       [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
-                      [chartInfo]="chart" [hideElements]="hideElements"></app-data-chart>
+                      [chartInfo]="chart" [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
+                      (openAddSummaryModal)="openAddSummaryModal($event)">
+                    </app-data-chart>
                   </div>
                   <div class="ui warning message" *ngIf="!currentReport.charts.length">
                     {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
@@ -106,4 +112,6 @@
   </div>
 </sui-modal>
 
-<app-add-summary-modal *ngIf="addSummaryModal"></app-add-summary-modal>
+<app-add-summary-modal (closeModalEvent)="closeSummaryModal()" [input]="inputForSummaryModal"
+  (submitButtonEvent)="addSummaryEventHandler($event)" *ngIf="showSummaryModal">
+</app-add-summary-modal>

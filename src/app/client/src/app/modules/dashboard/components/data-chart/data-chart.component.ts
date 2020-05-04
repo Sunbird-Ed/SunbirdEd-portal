@@ -1,3 +1,4 @@
+import { EventEmitter, Output } from '@angular/core';
 /**
  * Component to render & apply filter on admin chart
  * @author Ravinder Kumar
@@ -24,8 +25,11 @@ import { IBigNumberChart } from '../../interfaces/chartData';
 export class DataChartComponent implements OnInit, OnDestroy {
 
   @Input() chartInfo: any;
+  @Input() index: number;
   @Input() telemetryInteractObject: IInteractEventObject;
   @Input() hideElements = false;
+  @Input() isUserReportAdmin: boolean = false;
+  @Output() openAddSummaryModal = new EventEmitter(); s
   public unsubscribe = new Subject<void>();
   // contains the chart configuration
   chartConfig: any;
@@ -325,6 +329,16 @@ export class DataChartComponent implements OnInit, OnDestroy {
       return _.get(this.chartOptions, 'scales.yAxes') && _.every(this.chartOptions.scales.yAxes, 'stacked');
     }
     return false;
+  }
+
+  public addChartSummary() {
+    const chartId = _.get(this.chartConfig, 'id');
+    this.openAddSummaryModal.emit({
+      title: 'Add Chart Summary',
+      type: 'chart',
+      index: this.index,
+      ...(chartId && { chartId })
+    })
   }
 
 }

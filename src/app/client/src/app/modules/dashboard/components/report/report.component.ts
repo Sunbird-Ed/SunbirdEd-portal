@@ -10,6 +10,14 @@ import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 import { UUID } from 'angular2-uuid';
+import { AddSummaryModalComponent } from '../add-summary-modal/add-summary-modal.component';
+
+interface ISummaryObject {
+  title: string;
+  type: 'report' | 'chart';
+  index?: number;
+  chartId?: string;
+}
 
 @Component({
   selector: 'app-report',
@@ -19,16 +27,20 @@ import { UUID } from 'angular2-uuid';
 export class ReportComponent implements OnInit, AfterViewInit {
 
   public report: any;
+  public showSummaryModal: boolean = false;
   public report$;
   public noResultMessage: INoResultMessage;
   public noResult: boolean;
   private downloadUrl: string;
   public reportObj: any;
+  public isUserReportAdmin: boolean = false;
   telemetryImpression: IImpressionEventInput;
   @ViewChildren(DataChartComponent) chartsComponentList: QueryList<DataChartComponent>;
   @ViewChild('reportElement') reportElement;
   public hideElements: boolean;
   public reportExportInProgress = false;
+  public exportOptions = ['Pdf', 'Img'];
+  public inputForSummaryModal: any;
 
   constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
@@ -74,7 +86,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private renderReport(reportId: string) {
     return this.fetchConfig(reportId).pipe(
       switchMap(report => {
-        const isUserReportAdmin = this.reportService.isUserReportAdmin();
+        const isUserReportAdmin = this.isUserReportAdmin = this.reportService.isUserReportAdmin();
         if (!isUserReportAdmin && _.toLower(_.get(report, 'status')) !== 'live') {
           return throwError({ messageText: 'messages.stmsg.m0144' });
         } else {
@@ -284,7 +296,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   }
 
   // hides elements which are not required for printing reports to pdf or image.
-  private toggleHtmlVisibilty(flag: boolean) {
+  private toggleHtmlVisibilty(flag: boolean): void {
     this.hideElements = flag;
   }
 
@@ -301,6 +313,28 @@ export class ReportComponent implements OnInit, AfterViewInit {
     return _.compact(result);
   }
 
+  public openAddSummaryModal({ type, title, index = undefined, chartId = undefined }): void {
+    this.showSummaryModal = true;
+    this.inputForSummaryModal = { title, type, index, chartId };
+  }
+
+  public closeSummaryModal(): void {
+    this.showSummaryModal = false;
+  }
+
+  public addSummaryEventHandler(event: ISummaryObject) {
+    const reportId: string = this.activatedRoute.snapshot.params.reportId;
+    this.closeSummaryModal();
+    this.reportService.addReportSummary({
+      reportId,
+      reportConfig: _.get(this.report, 'reportconfig'),
+      summaryDetails: event
+    }).subscribe(res => {
+      this.toasterService.info('Comment added successfully');
+    }, err => {
+      this.toasterService.error('Something went wrong please try again later');
+    });
+  }
 }
 
 
