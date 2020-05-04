@@ -17,6 +17,7 @@ const WHITELIST_URLS = [
     'data/v1/system/settings/get/courseFrameworkId',
     'data/v1/system/settings/get/tncConfig',
     'data/v1/system/settings/get/ssoCourseSection',
+    'data/v1/system/settings/get',
     
     //Course related APIs
     'course/v1/hierarchy',
@@ -29,6 +30,7 @@ const WHITELIST_URLS = [
     'course/v1/qrcode/download',
     'recommended/courses',
     'badging/v1/issuer/badge/search',
+    'badging/v1/issuer/badge/assertion/create',
 
     //Batch related APIs
     'course/v1/batch/create',
