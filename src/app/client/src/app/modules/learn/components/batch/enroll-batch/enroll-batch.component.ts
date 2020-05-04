@@ -28,6 +28,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 	 * telemetryImpression object for update batch page
 	*/
   telemetryImpression: IImpressionEventInput;
+  public modalVisibility = true;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
     public configService: ConfigService, public coursesService: CoursesService,
@@ -45,6 +46,14 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           if (this.batchDetails.enrollmentType !== 'open') {
             this.toasterService.error(this.resourceService.messages.fmsg.m0082);
             this.redirect();
+          }
+          if (this.activatedRoute.queryParams) {
+            this.activatedRoute.queryParams.subscribe((queryParams) => {
+              if (queryParams.autoEnroll) {
+                this.modalVisibility = false;
+                this.enrollToCourse(this.batchId);
+              }
+            });
           }
         }, (err) => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0054);
@@ -99,6 +108,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fetchEnrolledCourseData();
         this.telemetryLogEvents(true);
       }, (err) => {
+        this.modalVisibility = true;
         this.disableSubmitBtn = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0001);
         this.telemetryLogEvents(false);
