@@ -133,7 +133,7 @@ describe('BatchDetailsComponent', () => {
     spyOn(courseBatchService, 'setEnrollToBatchDetails');
     component.enrollBatch({identifier: '123'});
     // tslint:disable-next-line: max-line-length
-    expect(route.navigate).toHaveBeenCalledWith(['enroll/batch', '123'], {relativeTo: component.activatedRoute, queryParams: {autoEnroll: 'true'}});
+    expect(route.navigate).toHaveBeenCalledWith(['enroll/batch', '123'], {relativeTo: component.activatedRoute, queryParams: {autoEnroll: true}});
   });
   it('should navigate to create batch', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
