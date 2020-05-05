@@ -277,9 +277,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }, (error) => {
         const telemetryErrorData = {
-          env: 'self-signup', err: _.get(error, 'params.errmsg') || '',
-          errtype: 'SYSTEM', pageid: 'signup',
-          stacktrace: JSON.stringify(error || '')
+          env: 'self-signup', errorMessage: _.get(error, 'error.params.errmsg') || '',
+          errorType: 'SYSTEM', pageid: 'signup',
+          stackTrace: JSON.stringify((error && error.error) || '')
         };
         this.telemetryService.generateErrorEvent(telemetryErrorData);
         this.resetGoogleCaptcha();
