@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, ConfigService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -21,7 +21,8 @@ describe('CreateTrainingComponent', () => {
       ],
       data: {
         telemetry: {
-          env: 'workspace', pageid: 'workspace-content-draft', subtype: 'scroll', type: 'list',
+          env: 'workspace', pageid: 'workspace-content-create', subtype: 'view', type: 'create',
+          uri: '/workspace/content/create',
           object: { type: '', ver: '1.0' }
         }
       }
@@ -32,7 +33,7 @@ describe('CreateTrainingComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule],
       declarations: [ CreateTrainingComponent ],
-      providers: [ResourceService, CacheService, ConfigService,
+      providers: [ResourceService, CacheService, ConfigService, NavigationHelperService,
         {provide: ActivatedRoute, useValue: fakeActivatedRoute}]
     })
     .compileComponents();
@@ -58,4 +59,23 @@ describe('CreateTrainingComponent', () => {
       expect(component.assessmentRole).toBeDefined();
       expect(component).toBeTruthy();
     });
+
+    it('should set telemetry impression data', fakeAsync(() => {
+      const navigationHelperService = TestBed.get(NavigationHelperService);
+      spyOn<any>(navigationHelperService, 'getPageLoadTime').and.returnValue(10);
+      const impressionData = {
+        context: {
+          env: 'workspace'
+        },
+        edata: {
+          type: 'create',
+          pageid: 'workspace-content-create',
+          uri: '/workspace/content/create',
+          duration: 10
+        }
+      };
+      component.ngAfterViewInit();
+      tick(100);
+      expect(component.telemetryImpression).toEqual(impressionData);
+    }));
 });

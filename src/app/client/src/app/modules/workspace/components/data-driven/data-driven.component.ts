@@ -319,8 +319,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   */
  checkForPreviousRouteForRedirect() {
   const previousUrlObj = this.navigationHelperService.getPreviousUrl();
-  if (previousUrlObj && previousUrlObj.url &&
-    !(_.includes(['/workspace/content/create', '/workspace/content/create/training'], previousUrlObj.url))) {
+  if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create') &&
+  (previousUrlObj.url !== '/workspace/content/create/training')) {
     this.redirect();
   }
 }

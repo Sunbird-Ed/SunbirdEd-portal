@@ -4,7 +4,7 @@
       <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
         [permission]='courseRole' [appTelemetryImpression]="telemetryImpression">
         <div class="ui link card" routerLink="course" appTelemetryInteract
-          [telemetryInteractEdata]="{id:'createCourse',type:'click',pageid:'create-course'}">
+          [telemetryInteractEdata]="{id:'createCourse',type:'click',pageid:'training-create-course'}">
           <div class="content">
             <div class="textcontent">
               <i class='my-icon file text outline icon'></i>
@@ -17,7 +17,7 @@
       <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
         [permission]='lessonRole'>
         <div class="ui link card" routerLink="studymaterial" appTelemetryInteract
-          [telemetryInteractEdata]="{id:'createStudyMaterial',type:'click',pageid:'create-study-material'}">
+          [telemetryInteractEdata]="{id:'createStudyMaterial',type:'click',pageid:'training-create-study-material'}">
           <div class="content">
             <div class="textcontent">
               <i class='my-icon file text icon'></i>
@@ -30,7 +30,7 @@
       <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
         [permission]='collectionRole'>
         <div class="ui link card" routerLink="collection" appTelemetryInteract
-          [telemetryInteractEdata]="{id:'createColllection',type:'click',pageid:'create-collection'}">
+          [telemetryInteractEdata]="{id:'createColllection',type:'click',pageid:'training-create-collection'}">
           <div class="content">
             <div class="textcontent">
               <i class='my-icon folder open outline icon'></i>
@@ -47,7 +47,7 @@
       <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
         [permission]='contentUploadRole'>
         <div class="ui link card" routerLink="../../edit/generic/" appTelemetryInteract
-          [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
+          [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'training-upload-content'}">
           <div class="content">
             <div class="textcontent">
               <i class='my-icon upload icon'></i>
@@ -61,7 +61,7 @@
       <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
         [permission]='assessmentRole'>
         <div class="ui link card" routerLink="assessment" appTelemetryInteract
-          [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'create-assessment'}" [telemetryInteractCdata]="[{ id: 'user:workspace:assessment:create', type: 'Feature' }, { id: 'SB-17206', type: 'Task' }]">
+          [telemetryInteractEdata]="{id:'createAssessment',type:'click',pageid:'training-create-assessment'}" [telemetryInteractCdata]="[{ id: 'user:workspace:assessment:create', type: 'Feature' }, { id: 'SB-17206', type: 'Task' }]">
           <div class="content">
             <div class="textcontent">
               <img src="./assets/images/checklist.png" width="36" class="ml-8" />
