@@ -27,5 +27,6 @@ export * from './all-my-content-filter/all-my-content-filter.component';
 export * from './collaborating-on/collaborating-on.component';
 export * from './collaboration-content-filter/collaboration-content-filter.component';
 export * from './batch-page-section/batch-page-section.component';
+export * from './create-training/create-training.component';
 
 
