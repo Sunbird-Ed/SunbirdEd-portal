@@ -71,7 +71,7 @@ export class IdentifyAccountComponent implements OnInit {
           env: this.activatedRoute.snapshot.data.telemetry.env,
           errorMessage: _.get(error, 'error.params.errmsg') || '',
           errorType: 'SYSTEM', pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          stackTrace: JSON.stringify(error.error || '') || ''
+          stackTrace: JSON.stringify((error && error.error) || '')
         };
         this.telemetryService.generateErrorEvent(telemetryErrorData);
         this.resetGoogleCaptcha();
