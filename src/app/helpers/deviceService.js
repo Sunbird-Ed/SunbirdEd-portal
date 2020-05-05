@@ -7,7 +7,6 @@ const {sendRequest} = require('./httpRequestHandler');
 const {parseJson} = require('./utilityService');
 const uuidv1 = require('uuid/v1');
 
-
 const getDeviceProfile = async (req, res) => {
   const options = {
     method: CONSTANTS.HTTP.METHOD.GET,
