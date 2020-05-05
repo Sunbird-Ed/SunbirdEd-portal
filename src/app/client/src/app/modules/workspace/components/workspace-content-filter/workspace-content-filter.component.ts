@@ -142,7 +142,7 @@ export class WorkspaceContentFilterComponent implements OnInit {
   }
 
   public handleSearch() {
-    if (this.query.length > 0) {
+    if (!_.isEmpty(this.query)) {
       this.queryParams['query'] = this.query;
     } else {
       delete this.queryParams['query'];
