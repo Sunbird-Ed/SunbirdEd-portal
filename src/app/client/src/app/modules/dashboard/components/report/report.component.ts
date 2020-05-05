@@ -4,20 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChildren, QueryList, ViewChild, AfterViewInit } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
-import { Observable, throwError, of, forkJoin, combineLatest } from 'rxjs';
+import { Observable, throwError, of, forkJoin } from 'rxjs';
 import { mergeMap, switchMap, map, retry, catchError, tap } from 'rxjs/operators';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
-import { UUID } from 'angular2-uuid';
-import { AddSummaryModalComponent } from '../add-summary-modal/add-summary-modal.component';
-
-interface ISummaryObject {
-  title: string;
-  type: 'report' | 'chart';
-  index?: number;
-  chartId?: string;
-}
+import { ISummaryObject } from '../../interfaces';
 
 @Component({
   selector: 'app-report',
@@ -41,6 +33,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   public reportExportInProgress = false;
   public exportOptions = ['Pdf', 'Img'];
   public inputForSummaryModal: any;
+  private _reportSummary: string;
 
   constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
@@ -84,31 +77,42 @@ export class ReportComponent implements OnInit, AfterViewInit {
    * @param reportId
    */
   private renderReport(reportId: string) {
-    return this.fetchConfig(reportId).pipe(
-      switchMap(report => {
-        const isUserReportAdmin = this.isUserReportAdmin = this.reportService.isUserReportAdmin();
-        if (!isUserReportAdmin && _.toLower(_.get(report, 'status')) !== 'live') {
-          return throwError({ messageText: 'messages.stmsg.m0144' });
-        } else {
-          this.report = report;
-          const reportConfig = _.get(report, 'reportconfig');
-          this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
-          const dataSource = _.get(reportConfig, 'dataSource'); //to enable backward compatibilty
-          const updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: "default", path: dataSource }];
-          return this.reportService.downloadMultipleDataSources(updatedDataSource).pipe(
-            retry(1),
-            map(data => {
-              const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table');
-              const result: any = {};
-              result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource, _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
-              result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'), _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
-              result['reportMetaData'] = reportConfig;
-              return result;
-            })
-          );
-        }
-      })
-    );
+    return this.fetchConfig(reportId)
+      .pipe(
+        switchMap(report => {
+          const isUserReportAdmin = this.isUserReportAdmin = this.reportService.isUserReportAdmin();
+          if (!isUserReportAdmin && _.toLower(_.get(report, 'status')) !== 'live') {
+            return throwError({ messageText: 'messages.stmsg.m0144' });
+          } else {
+            this.report = report;
+            const reportConfig = _.get(report, 'reportconfig');
+            this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
+            const dataSource = _.get(reportConfig, 'dataSource'); //to enable backward compatibilty
+            const updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: "default", path: dataSource }];
+            const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table');
+
+            return forkJoin(this.reportService.downloadMultipleDataSources(updatedDataSource), this.reportService.getLatestSummary({ reportId })).pipe(
+              retry(1),
+              map((apiResponse) => {
+                const [data, reportSummary] = apiResponse;
+                const result: any = {};
+                result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource, _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+                result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'), _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+                result['reportMetaData'] = reportConfig;
+                result['reportSummary'] = _.map(reportSummary, summaryObj => {
+                  const summary = _.get(summaryObj, 'summary');
+                  this._reportSummary = summary;
+                  return {
+                    label: 'Actions',
+                    text: [summary]
+                  }
+                });
+                return result;
+              })
+            );
+          }
+        })
+      );
   }
 
   /**
@@ -169,7 +173,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     });
   }
 
-  downloadReport(reportType) {
+  downloadReport(reportType: string) {
     this.reportExportInProgress = true;
     this.toggleHtmlVisibilty(true);
     setTimeout(() => {
@@ -179,7 +183,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
           break;
         }
         case 'pdf': {
-          this.convertToPdf();
+          this.downloadReportAsPdf();
           break;
         }
       }
@@ -191,7 +195,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
     return html2canvas(element, options);
   }
 
-  private convertToPdf() {
+  private downloadReportAsPdf() {
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
       scrollX: 0,
       scrollY: -window.scrollY
@@ -229,105 +233,34 @@ export class ReportComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private getCanvasElement(element, index): Promise<any> {
-    return html2canvas(this.reportElement.nativeElement, {
-      scrollX: 0,
-      scrollY: -window.scrollY,
-      onclone: documentObject => {
-        const reportHeader = documentObject.querySelector('#report-header');
-        const reportBody = documentObject.querySelector('#report-body');
-        const reportSummary = documentObject.querySelector('#report-summary');
-        if (index === 0) {
-          reportBody.innerHTML = '';
-          element.appendTo(reportBody);
-        } else {
-          reportSummary.innerHTML = '';
-          reportHeader.innerHTML = '';
-          reportBody.innerHTML = '';
-          element.appendTo(reportBody);
-        }
-      }
-    }).then(canvas => {
-      const contentDataURL = canvas.toDataURL('image/jpeg');
-      const position = 8;
-      return { contentDataURL, position, canvas };
-    });
-  }
-
-  private downloadReportAsPdf() {
-    const pdf = new jspdf('p', 'px', 'a4');
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const addPage = (imageUrl, imageType, position, width, height, index) => {
-      if (index !== 0) {
-        pdf.addPage();
-      }
-      pdf.addImage(imageUrl, imageType, 10, position, width - 24, height - 24);
-      return pdf;
-    };
-    const chartElements = this.getChartComponents();
-    of(chartElements).pipe(
-      switchMap(elements => forkJoin(_.map(elements, (element, index) => {
-        const clonedElement = $(element.rootElement).first().clone(true);
-        if (_.get(element, 'canvas')) {
-          const origCanvas = $(element.rootElement).first().find('canvas');
-          const clonedCanvas = clonedElement.find('canvas');
-          clonedCanvas.prop('id', UUID.UUID());
-          clonedCanvas[0].getContext('2d').drawImage(origCanvas[0], 0, 0);
-        }
-        return this.getCanvasElement(clonedElement, index);
-      })).pipe(
-        tap(canvasElements => {
-          _.forEach(canvasElements, (canvasDetails, index) => {
-            const imageHeight = (canvasDetails.canvas.height * pageWidth) / canvasDetails.canvas.width;
-            addPage(canvasDetails.contentDataURL, 'JPEG', canvasDetails.position, pageWidth, imageHeight, index);
-          });
-        })
-      ))
-    ).subscribe(response => {
-      this.toggleHtmlVisibilty(false);
-      this.reportExportInProgress = false;
-      pdf.save('report.pdf');
-    }, err => {
-      this.toggleHtmlVisibilty(false);
-      this.reportExportInProgress = false;
-      console.log('Error while generation report Pdf', err);
-    });
-  }
-
   // hides elements which are not required for printing reports to pdf or image.
   private toggleHtmlVisibilty(flag: boolean): void {
     this.hideElements = flag;
   }
 
-  // gets the list of the all chart elements inside reports
-  private getChartComponents(): Array<HTMLElement> {
-    const chartComponentArray = this.chartsComponentList.length && this.chartsComponentList.toArray();
-    const result = _.map(chartComponentArray, chartComponent => {
-      if (!chartComponent) { return null; }
-      return {
-        rootElement: _.get(chartComponent, 'chartRootElement.nativeElement'),
-        canvas: _.get(chartComponent, 'chartCanvas.nativeElement')
-      };
-    });
-    return _.compact(result);
+  //opens the summary modal - for both add report summary and add chart summary;
+  public openAddSummaryModal({ type, title, index = undefined, chartId = undefined, summary = undefined }: ISummaryObject): void {
+    this.showSummaryModal = true;
+    this.inputForSummaryModal = { title, type, index, chartId, summary };
   }
 
-  public openAddSummaryModal({ type, title, index = undefined, chartId = undefined }): void {
-    this.showSummaryModal = true;
-    this.inputForSummaryModal = { title, type, index, chartId };
+  public openReportSummaryModal(): void {
+    this.openAddSummaryModal({
+      title: 'Add Report Summary',
+      type: 'report',
+      ...(this._reportSummary && { summary: this._reportSummary })
+    });
   }
 
   public closeSummaryModal(): void {
     this.showSummaryModal = false;
   }
 
-  public addSummaryEventHandler(event: ISummaryObject) {
+  public addSummaryEventHandler(event: ISummaryObject): void {
     const reportId: string = this.activatedRoute.snapshot.params.reportId;
     this.closeSummaryModal();
     this.reportService.addReportSummary({
       reportId,
-      reportConfig: _.get(this.report, 'reportconfig'),
       summaryDetails: event
     }).subscribe(res => {
       this.toasterService.info('Comment added successfully');

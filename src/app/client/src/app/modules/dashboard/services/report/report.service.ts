@@ -77,6 +77,20 @@ export class ReportService {
     );
   }
 
+  public addSummary(body: object): Observable<any> {
+    const request = {
+      url: `${this.configService.urlConFig.URLS.REPORT.SUMMARY.CREATE}`,
+      data: {
+        'request': {
+          'summary': body
+        }
+      }
+    };
+    return this.baseReportService.post(request).pipe(
+      map(apiResponse => _.get(apiResponse, 'result'))
+    );
+  }
+
   public prepareChartData(chartsArray: Array<any>, data: any, downloadUrl: IDataSource[], reportLevelDataSourceId: string): Array<{}> {
     return _.map(chartsArray, chart => {
       const chartObj: any = {};
@@ -153,32 +167,26 @@ export class ReportService {
     return this.sanitizer.bypassSecurityTrustHtml(data);
   }
 
-  addReportSummary({ reportId, reportConfig, summaryDetails }): Observable<any> {
-    const clonedReportConfig = { ...reportConfig };
-
-    const addSummary = (summaryArr, newAction: string) => {
-      if (_.get(summaryArr, 'summary') || (summaryArr.summary = [])) {
-        const summaryObject: undefined | { label: string; text: string[] } = _.find(summaryArr.summary, ['label', 'Actions']);
-        if (summaryObject) {
-          summaryObject.text.push(newAction);
-        } else {
-          _.get(summaryArr, 'summary').push({
-            label: 'Actions',
-            text: [newAction]
-          })
-        }
-      }
+  addReportSummary({ reportId, summaryDetails }): Observable<any> {
+    const type = _.get(summaryDetails, 'type');
+    const reqBody = {
+      reportid: reportId,
+      createdby: this.userService.userid,
+      summary: summaryDetails.summary,
+      ...(type === 'chart' && { chartid: summaryDetails.chartId })
     }
-
-    if (_.get(summaryDetails, 'type') === 'report') {
-      addSummary(clonedReportConfig, summaryDetails.summary);
-    } else if (_.get(summaryDetails, 'type') === 'chart') {
-      let chart = _.get(summaryDetails, 'chartId') ? _.find(clonedReportConfig.charts, ['id', _.get(summaryDetails, 'chartId')]) : clonedReportConfig.charts[summaryDetails.index];
-      addSummary(chart, summaryDetails.summary);
-    }
-
-    return this.updateReport(reportId, {
-      reportconfig: clonedReportConfig
-    })
+    return this.addSummary(reqBody);
   }
+
+  public getLatestSummary({ reportId, chartId = null }): Observable<any> {
+    const url = `${this.configService.urlConFig.URLS.REPORT.SUMMARY.PREFIX}/${reportId}`;
+    const req = {
+      url: chartId ? `${url}/${chartId}` : url
+    };
+    return this.baseReportService.get(req).pipe(
+      map(apiResponse => _.get(apiResponse, 'result.summaries')),
+      catchError(err => of([]))
+    );
+  }
+
 }

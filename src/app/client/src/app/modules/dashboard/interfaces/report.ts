@@ -39,3 +39,11 @@ export interface IReportsApiResponse {
     reports: IReportConfig[]
 }
 
+export interface ISummaryObject {
+    title: string;
+    type: 'report' | 'chart';
+    index?: number;
+    chartId?: string;
+    summary?: string;
+}
+

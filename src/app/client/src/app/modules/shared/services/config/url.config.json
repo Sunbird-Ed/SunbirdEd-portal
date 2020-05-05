@@ -29,7 +29,11 @@
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
-      "UPDATE": "/update"
+      "UPDATE": "/update",
+      "SUMMARY": {
+        "PREFIX": "/summary",
+        "CREATE": "/summary/create"
+      }
     },
     "RESOURCEBUNDLES": {
       "ENG": "/read"

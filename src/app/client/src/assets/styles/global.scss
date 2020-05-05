@@ -242,3 +242,9 @@ app-workspace {
     }
   }
 }
+
+.sb-modal-addsummary {
+  .ck.ck-editor__editable_inline {
+    min-height: 120px;
+  }
+}
