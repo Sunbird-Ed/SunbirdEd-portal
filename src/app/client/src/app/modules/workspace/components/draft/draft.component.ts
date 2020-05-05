@@ -199,6 +199,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         this.showLoader = true;
         this.pageNumber = pageNumber;
         this.pageLimit = limit;
+        this.draftList = [];
         if (bothParams.queryParams.sort_by) {
             const sort_by = bothParams.queryParams.sort_by;
             const sortType = bothParams.queryParams.sortType;
@@ -235,6 +236,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                     this.draftList = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
                     this.showLoader = false;
                 } else {
+
                     this.showError = false;
                     this.noResult = true;
                     this.showLoader = false;

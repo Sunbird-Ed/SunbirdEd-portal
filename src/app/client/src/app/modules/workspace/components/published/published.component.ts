@@ -203,6 +203,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
+    this.publishedContent = [];
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
       const sortType = bothParams.queryParams.sortType;
