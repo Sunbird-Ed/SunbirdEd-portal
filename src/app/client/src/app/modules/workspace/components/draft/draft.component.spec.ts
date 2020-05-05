@@ -19,6 +19,7 @@ import * as mockData from './draft.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { CoreModule } from '@sunbird/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 const testData = mockData.mockRes;
 describe('DraftComponent', () => {
@@ -26,6 +27,7 @@ describe('DraftComponent', () => {
   let fixture: ComponentFixture<DraftComponent>;
   const fakeActivatedRoute = {
     'params': observableOf({ 'pageNumber': 1 }),
+    'queryParams': observableOf({ subject: ['english', 'odia'] }),
     snapshot: {
       params: [
         {
@@ -71,7 +73,8 @@ describe('DraftComponent', () => {
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -86,7 +89,7 @@ describe('DraftComponent', () => {
     (searchService, workSpaceService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
     spyOn(workSpaceService, 'getContentLockList').and.callFake(() => observableOf({result: {count: 0}}));
-    component.fetchDrafts(9, 1);
+    component.fetchDrafts(9, 1, { queryParams: { subject: ['english', 'odia'] }});
     fixture.detectChanges();
     expect(component.draftList).toBeDefined();
     expect(component.draftList.length).toBeGreaterThan(1);
@@ -120,7 +123,7 @@ describe('DraftComponent', () => {
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
-    component.fetchDrafts(9, 1);
+    component.fetchDrafts(9, 1, { queryParams: { subject: ['english', 'odia'] }});
     fixture.detectChanges();
     expect(component.draftList.length).toBeLessThanOrEqual(0);
     expect(component.draftList.length).toEqual(0);
@@ -156,7 +159,7 @@ describe('DraftComponent', () => {
 
   it('should call search api and returns result count 0', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountZero));
-    component.fetchDrafts(9, 1);
+    component.fetchDrafts(9, 1, { queryParams: { subject: ['english', 'odia'] }});
     fixture.detectChanges();
     expect(component.draftList).toBeDefined();
     expect(component.draftList.length).toBe(0);

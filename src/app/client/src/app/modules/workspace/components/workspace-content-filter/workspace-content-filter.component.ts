@@ -6,9 +6,10 @@ import * as _ from 'lodash-es';
 import { Subject , Observable, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+
 @Component({
-  selector: 'app-all-my-content-filter',
-  templateUrl: './all-my-content-filter.component.html',
+  selector: 'app-workspace-content-filter',
+  templateUrl: './workspace-content-filter.component.html',
   styles: [`
      >>> .ui.dropdown:not(.button)>.default.text {
       display: none;
@@ -22,7 +23,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
        }
    `]
 })
-export class AllMyContentFilterComponent implements OnInit {
+export class WorkspaceContentFilterComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();
   /**
    * To navigate to other pages

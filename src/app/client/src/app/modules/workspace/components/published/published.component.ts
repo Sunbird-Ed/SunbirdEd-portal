@@ -163,7 +163,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     observableCombineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams).pipe(
-        debounceTime(10),
+        debounceTime(500),
         map(([params, queryParams]) => ({ params, queryParams })
       ))
       .subscribe(bothParams => {
@@ -204,6 +204,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     this.publishedContent = [];
+    this.totalCount = 0;
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
       const sortType = bothParams.queryParams.sortType;

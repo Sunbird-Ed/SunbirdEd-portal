@@ -18,12 +18,14 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('PublishedComponent', () => {
   let component: PublishedComponent;
   let fixture: ComponentFixture<PublishedComponent>;
   const fakeActivatedRoute = {
     'params': observableOf({ 'pageNumber': 1 }),
+    'queryParams': observableOf({ subject: ['english', 'odia'] }),
     snapshot: {
       params: [
         {
@@ -63,7 +65,8 @@ describe('PublishedComponent', () => {
         PermissionService, ResourceService, ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -77,7 +80,7 @@ describe('PublishedComponent', () => {
   // If search api returns more than one published
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
-    component.fetchPublishedContent(9, 1);
+    component.fetchPublishedContent(9, 1, { queryParams: { subject: ['english', 'odia'] }});
     fixture.detectChanges();
     expect(component.publishedContent).toBeDefined();
     expect(component.publishedContent.length).toBeGreaterThan(1);
@@ -108,7 +111,7 @@ describe('PublishedComponent', () => {
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
-    component.fetchPublishedContent(9, 1);
+    component.fetchPublishedContent(9, 1, { queryParams: { subject: ['english', 'odia'] }});
     fixture.detectChanges();
     expect(component.publishedContent.length).toBeLessThanOrEqual(0);
     expect(component.publishedContent.length).toEqual(0);
