@@ -295,19 +295,19 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       this.applyFilterInteractEdata = {
         id: 'apply-filter',
         type: 'click',
-        pageid: this.pageId,
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
         extra: {filters: filters}
       };
       this.resetFilterInteractEdata = {
         id: 'reset-filter',
         type: 'click',
-        pageid: this.pageId,
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
         extra: {filters: filters}
       };
       this.filterInteractEdata = {
         id: 'filter-accordion',
         type: 'click',
-        pageid: this.pageId
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
       };
     }, 5);
     const pageSection = this.cacheService.get('pageSection');

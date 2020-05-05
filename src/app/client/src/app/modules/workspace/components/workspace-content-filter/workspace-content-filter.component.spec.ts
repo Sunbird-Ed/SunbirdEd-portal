@@ -91,12 +91,12 @@ it('should call keyup method sets the modelChanged value', () => {
 
   it('should set filterEnv as draft', () => {
     (component.route.url as string) = 'workspace/content/draft/1';
-    component.setFilterEnv();
+    component.setFilterTypeAndRedirectURL();
     expect(component.filterType).toEqual('draft');
   });
   it('should set filterEnv as published', () => {
     (component.route.url as string) = 'workspace/content/published/1';
-    component.setFilterEnv();
+    component.setFilterTypeAndRedirectURL();
     expect(component.filterType).toEqual('published');
   });
 });

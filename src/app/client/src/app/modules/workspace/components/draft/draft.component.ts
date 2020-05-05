@@ -1,6 +1,6 @@
 import { debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import {combineLatest as observableCombineLatest } from 'rxjs';
+import {combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
@@ -12,7 +12,7 @@ import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
-import { IInteractEventInput, IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 
 /**
  * The draft component search for all the drafts
@@ -143,7 +143,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
     */
     telemetryImpression: IImpressionEventInput;
 
-    queryParams: any;
+    queryParams: object;
 
     query: string;
     sort: object;
@@ -177,10 +177,10 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         };
     }
     ngOnInit() {
-        observableCombineLatest(
+        combineLatest(
             this.activatedRoute.params,
             this.activatedRoute.queryParams).pipe(
-              debounceTime(500),
+              debounceTime(100),
               map(([params, queryParams]) => ({ params, queryParams })
             ))
             .subscribe(bothParams => {
@@ -238,7 +238,6 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                     this.draftList = this.workSpaceService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
                     this.showLoader = false;
                 } else {
-
                     this.showError = false;
                     this.noResult = true;
                     this.showLoader = false;

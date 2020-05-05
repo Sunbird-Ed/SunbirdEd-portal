@@ -100,7 +100,7 @@ export class WorkspaceContentFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setFilterEnv();
+    this.setFilterTypeAndRedirectURL();
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
@@ -127,7 +127,7 @@ export class WorkspaceContentFilterComponent implements OnInit {
       };
   }
 
-  setFilterEnv() {
+  setFilterTypeAndRedirectURL() {
 
     if (_.includes(this.route.url, 'published')) {
       this.filterType = this.config.appConfig.published.filterType;

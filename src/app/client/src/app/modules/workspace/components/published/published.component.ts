@@ -12,7 +12,7 @@ import { WorkSpaceService } from '../../services';
 import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import {combineLatest as observableCombineLatest } from 'rxjs';
+import {combineLatest } from 'rxjs';
 
 /**
  * Interface for passing the configuartion for modal
@@ -125,8 +125,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
 	 * inviewLogs
 	*/
   inviewLogs = [];
-  queryParams: any;
-
+  queryParams: object;
   query: string;
   sort: object;
 
@@ -160,10 +159,10 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   }
 
   ngOnInit() {
-    observableCombineLatest(
+    combineLatest(
       this.activatedRoute.params,
       this.activatedRoute.queryParams).pipe(
-        debounceTime(500),
+        debounceTime(100),
         map(([params, queryParams]) => ({ params, queryParams })
       ))
       .subscribe(bothParams => {
@@ -199,16 +198,16 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   /**
     * This method sets the make an api call to get all Published content with page No and offset
     */
-  fetchPublishedContent(limit: number, pageNumber: number, bothParams?) {
+  fetchPublishedContent(limit: number, pageNumber: number, bothParams?: object) {
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     this.publishedContent = [];
     this.totalCount = 0;
     this.noResult = false;
-    if (bothParams.queryParams.sort_by) {
-      const sort_by = bothParams.queryParams.sort_by;
-      const sortType = bothParams.queryParams.sortType;
+    if (bothParams['queryParams'].sort_by) {
+      const sort_by = bothParams['queryParams'].sort_by;
+      const sortType = bothParams['queryParams'].sortType;
       this.sort = {
         [sort_by]: _.toString(sortType)
       };
@@ -222,14 +221,14 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         objectType: this.config.appConfig.WORKSPACE.objectType,
         contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
         mimeType: this.config.appConfig.WORKSPACE.mimeType,
-        board: bothParams.queryParams.board,
-        subject: bothParams.queryParams.subject,
-        medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        board: bothParams['queryParams'].board,
+        subject: bothParams['queryParams'].subject,
+        medium: bothParams['queryParams'].medium,
+        gradeLevel: bothParams['queryParams'].gradeLevel
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),
-      query: _.toString(bothParams.queryParams.query),
+      query: _.toString(bothParams['queryParams'].query),
       sort_by: this.sort
     };
     this.loaderMessage = {
