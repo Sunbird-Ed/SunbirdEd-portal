@@ -1,4 +1,6 @@
+import { debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {combineLatest as observableCombineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
@@ -140,6 +142,11 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
      * telemetryImpression
     */
     telemetryImpression: IImpressionEventInput;
+
+    queryParams: any;
+
+    query: string;
+    sort: object;
     /**
       * Constructor to create injected service(s) object
       Default method of Draft Component class
@@ -170,28 +177,52 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         };
     }
     ngOnInit() {
-        this.activatedRoute.params.subscribe(params => {
-            this.pageNumber = Number(params.pageNumber);
-            this.fetchDrafts(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
-        });
+        observableCombineLatest(
+            this.activatedRoute.params,
+            this.activatedRoute.queryParams).pipe(
+              debounceTime(10),
+              map(([params, queryParams]) => ({ params, queryParams })
+            ))
+            .subscribe(bothParams => {
+              if (bothParams.params.pageNumber) {
+                this.pageNumber = Number(bothParams.params.pageNumber);
+              }
+              this.queryParams = bothParams.queryParams;
+              this.query = this.queryParams['query'];
+              this.fetchDrafts(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
+            });
     }
     /**
      * This method sets the make an api call to get all drafts with page No and offset
      */
-    fetchDrafts(limit: number, pageNumber: number) {
+    fetchDrafts(limit: number, pageNumber: number, bothParams?) {
         this.showLoader = true;
         this.pageNumber = pageNumber;
         this.pageLimit = limit;
+        if (bothParams.queryParams.sort_by) {
+            const sort_by = bothParams.queryParams.sort_by;
+            const sortType = bothParams.queryParams.sortType;
+            this.sort = {
+              [sort_by]: _.toString(sortType)
+            };
+          } else {
+            this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
+          }
         const searchParams = {
             filters: {
                 status: ['Draft', 'FlagDraft'],
                 createdBy: this.userService.userid,
-                contentType: this.config.appConfig.WORKSPACE.contentType,
+                contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
+                board: bothParams.queryParams.board,
+                subject: bothParams.queryParams.subject,
+                medium: bothParams.queryParams.medium,
+                gradeLevel: bothParams.queryParams.gradeLevel
             },
             limit: this.pageLimit,
             offset: (this.pageNumber - 1) * (this.pageLimit),
-            sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+            query: _.toString(bothParams.queryParams.query),
+            sort_by: this.sort
         };
         this.searchContentWithLockStatus(searchParams).subscribe(
             (data: ServerResponse) => {
