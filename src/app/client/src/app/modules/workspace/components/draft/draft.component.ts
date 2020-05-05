@@ -201,6 +201,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         this.pageLimit = limit;
         this.draftList = [];
         this.totalCount = 0;
+        this.noResult = false;
         if (bothParams.queryParams.sort_by) {
             const sort_by = bothParams.queryParams.sort_by;
             const sortType = bothParams.queryParams.sortType;
