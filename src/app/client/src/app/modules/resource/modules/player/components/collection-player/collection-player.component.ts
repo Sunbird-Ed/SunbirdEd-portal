@@ -16,7 +16,8 @@ import { PopupControlService } from '../../../../../../service/popup-control.ser
 
 @Component({
   selector: 'app-collection-player',
-  templateUrl: './collection-player.component.html'
+  templateUrl: './collection-player.component.html',
+  styleUrls: ['./collection-player.component.scss']
 })
 export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
