@@ -10,7 +10,8 @@ import {
 } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService, AssessmentScoreService } from './../../../services';
 import { INoteData } from '@sunbird/notes';
-import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IImpressionEventInput, IEndEventInput, IStartEventInput,
+        IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as TreeModel from 'tree-model';
 const ACCESSEVENT = 'renderer:question:submitscore';
@@ -113,6 +114,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public unsubscribe = new Subject<void>();
   public contentProgressEvents$ = new Subject();
   playerOption: any;
+  public showJoinTrainingModal = false;
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, public windowScrollService: WindowScrollService,
     public router: Router, public navigationHelperService: NavigationHelperService, private userService: UserService,
@@ -120,7 +122,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef, public courseBatchService: CourseBatchService, public permissionService: PermissionService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService,
     private courseProgressService: CourseProgressService, private deviceDetectorService: DeviceDetectorService,
-    private contentUtilsService: ContentUtilsServiceService, private assessmentScoreService: AssessmentScoreService) {
+    private contentUtilsService: ContentUtilsServiceService, private assessmentScoreService: AssessmentScoreService,
+    public telemetryService: TelemetryService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = {
@@ -359,6 +362,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       || this.courseHierarchy.createdBy === this.userService.userid) {
       this.router.navigate([], navigationExtras);
     }
+    if (!this.enrolledCourse) {
+      this.showJoinTrainingModal = true;
+    }
   }
   public contentProgressEvent(event) {
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
@@ -555,5 +561,28 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'course-consumption'
     };
+  }
+  public closeJoinTrainingModal() {
+    this.showJoinTrainingModal = false;
+    const telemetryIntractData = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        id: 'join-training-popup-close',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      },
+      object: {
+        id: this.courseId,
+        type: 'Course',
+        ver: this.activatedRoute.snapshot.data.telemetry.object.ver,
+        rollup: {
+          l1: this.courseId
+        }
+      }
+    };
+    this.telemetryService.interact(telemetryIntractData);
   }
 }
