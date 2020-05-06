@@ -12,7 +12,7 @@
             {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</div>
           <div class="year-birth required">
             <label class="mr-16"> {{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
-            <sui-select class="selection" [options]="birthYearOptions" placeholder="Select Year of birth"
+            <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.yearOfBirth}}"
                         (selectedOptionChange)="changeBirthYear($event)"
                         #select>
               <sui-select-option *ngFor="let option of select.filteredOptions"
