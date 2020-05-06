@@ -355,7 +355,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
             const summary = _.get(summaryObj, 'summary');
             this._chartSummary = summary;
             return {
-              label: 'Actions',
+              label: 'Chart Summary',
               text: [summary]
             }
           });

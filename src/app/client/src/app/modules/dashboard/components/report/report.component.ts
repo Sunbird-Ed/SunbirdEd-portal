@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChildren, QueryList, ViewChild, AfterViewInit } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
-import { Observable, throwError, of, forkJoin } from 'rxjs';
+import { Observable, throwError, of, forkJoin, Subject, merge, concat } from 'rxjs';
 import { mergeMap, switchMap, map, retry, catchError, tap } from 'rxjs/operators';
 import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
@@ -34,6 +34,10 @@ export class ReportComponent implements OnInit, AfterViewInit {
   public exportOptions = ['Pdf', 'Img'];
   public inputForSummaryModal: any;
   private _reportSummary: string;
+  private addSummaryBtnClickStream$ = new Subject<ISummaryObject>();
+  private publishBtnStream$ = new Subject();
+  public currentReportSummary: any;
+  public showComponent: boolean = true;
 
   constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
@@ -57,6 +61,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
         return of({});
       })
     );
+    this.mergeClickEventStreams();
   }
 
   /**
@@ -91,22 +96,15 @@ export class ReportComponent implements OnInit, AfterViewInit {
             const updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: "default", path: dataSource }];
             const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table');
 
-            return forkJoin(this.reportService.downloadMultipleDataSources(updatedDataSource), this.reportService.getLatestSummary({ reportId })).pipe(
+            return forkJoin(this.reportService.downloadMultipleDataSources(updatedDataSource), this.getLatestSummary(reportId)).pipe(
               retry(1),
               map((apiResponse) => {
                 const [data, reportSummary] = apiResponse;
-                const result: any = {};
+                const result: any = Object.assign({});
                 result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource, _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'), _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
                 result['reportMetaData'] = reportConfig;
-                result['reportSummary'] = _.map(reportSummary, summaryObj => {
-                  const summary = _.get(summaryObj, 'summary');
-                  this._reportSummary = summary;
-                  return {
-                    label: 'Actions',
-                    text: [summary]
-                  }
-                });
+                result['reportSummary'] = reportSummary;
                 return result;
               })
             );
@@ -252,21 +250,93 @@ export class ReportComponent implements OnInit, AfterViewInit {
     });
   }
 
+  private getLatestSummary(reportId: string) {
+    return this.reportService.getLatestSummary({ reportId }).pipe(
+      map(reportSummary => {
+        const summaries = this.currentReportSummary = _.map(reportSummary, summaryObj => {
+          const summary = _.get(summaryObj, 'summary');
+          this._reportSummary = summary;
+          return {
+            label: 'Report Summary',
+            text: [summary]
+          }
+        });
+        return summaries;
+      })
+    )
+  }
+
   public closeSummaryModal(): void {
     this.showSummaryModal = false;
   }
 
-  public addSummaryEventHandler(event: ISummaryObject): void {
-    const reportId: string = this.activatedRoute.snapshot.params.reportId;
-    this.closeSummaryModal();
-    this.reportService.addReportSummary({
-      reportId,
-      summaryDetails: event
-    }).subscribe(res => {
-      this.toasterService.info('Comment added successfully');
-    }, err => {
-      this.toasterService.error('Something went wrong please try again later');
+  public onAddSummary(event: ISummaryObject) {
+    this.addSummaryBtnClickStream$.next(event);
+  }
+
+  public onPublish(event) {
+    this.publishBtnStream$.next(event);
+  }
+
+  private mergeClickEventStreams() {
+    merge(this.handleAddSummaryStreams(), this.handlePublishBtnStream())
+      .subscribe(res => {
+        //need to refresh component to show updated data.
+        this.refreshComponent();
+      }, err => {
+        this.toasterService.error('Something went wrong. Please try again later');
+      });
+  }
+
+  /**
+  * @description handles click stream from add report and chart summary button
+  * @private
+  * @returns
+  * @memberof ReportComponent
+  */
+  private handleAddSummaryStreams() {
+    return this.addSummaryBtnClickStream$.pipe(
+      mergeMap(event => {
+        const reportId: string = this.activatedRoute.snapshot.params.reportId;
+        this.closeSummaryModal();
+        return this.reportService.addReportSummary({
+          reportId,
+          summaryDetails: event
+        })
+      }),
+      tap(res => {
+        this.toasterService.info('Comment added successfully');
+      })
+    )
+  }
+  /**
+   * @description refreshes the component to show updated data
+   * @private
+   * @memberof ReportComponent
+   */
+  private refreshComponent() {
+    this.showComponent = false;
+    setTimeout(() => {
+      this.showComponent = true;
     });
+  }
+
+  /**
+   * @description handles click stream from publish button
+   * @private
+   * @returns
+   * @memberof ReportComponent
+   */
+  private handlePublishBtnStream() {
+    return this.publishBtnStream$.pipe(
+      switchMap(event => {
+        return this.reportService.publishReport(this.activatedRoute.snapshot.params.reportId);
+      }),
+      tap(res => {
+        this.toasterService.info('Report Published Successfully');
+        this.report.status = 'live';
+      })
+    )
   }
 }
 

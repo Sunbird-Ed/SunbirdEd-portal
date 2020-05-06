@@ -1,7 +1,7 @@
 <div class="ui" [appTelemetryImpression]="telemetryImpression" #reportElement>
   <div class="twelve wide column px-0">
     <div class="ui container stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
-      <div class="twelve wide column sb-sideview-tab-container pt-72 pb-48">
+      <div class="twelve wide column sb-sideview-tab-container pt-72 pb-48" *ngIf="showComponent">
         <ng-container *ngIf="(report$ | async) as currentReport else loading">
           <div *ngIf="noResult">
             <app-no-result [data]="noResultMessage"></app-no-result>
@@ -20,7 +20,7 @@
                   <button (click)="openReportSummaryModal()" type="button"
                     class="sb-btn sb-btn-normal sb-btn-primary sb-left-icon-btn">
                     <i class="plus icon"></i>Add report Summary</button>
-                  <button *ngIf="report?.status !== 'live'" type="button"
+                  <button (click)="onPublish($event)" *ngIf="report?.status !== 'live'" type="button"
                     class="sb-btn sb-btn-normal sb-btn-secondary ml-16">Publish</button>
                 </div>
               </div>
@@ -86,8 +86,8 @@
                 </ng-container>
               </sui-tabset>
             </div>
-            <div id="report-summary" class="my-16" *ngIf="currentReport?.reportSummary?.length">
-              <app-report-summary [inputData]="currentReport.reportSummary"></app-report-summary>
+            <div id="report-summary" class="my-16" *ngIf="currentReportSummary && currentReportSummary.length">
+              <app-report-summary [inputData]="currentReportSummary"></app-report-summary>
             </div>
           </div>
         </ng-container>
@@ -113,5 +113,5 @@
 </sui-modal>
 
 <app-add-summary-modal (closeModalEvent)="closeSummaryModal()" [input]="inputForSummaryModal"
-  (submitButtonEvent)="addSummaryEventHandler($event)" *ngIf="showSummaryModal">
+  (submitButtonEvent)="onAddSummary($event)" *ngIf="showSummaryModal">
 </app-add-summary-modal>

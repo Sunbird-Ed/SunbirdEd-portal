@@ -32,10 +32,6 @@ export class ReportService {
     return forkJoin(...apiCalls);
   }
 
-  public overlayMultipleDataSources() {
-    //todo
-  }
-
   public fetchReportById(id): Observable<IReportsApiResponse> {
     const req = {
       url: `${this.configService.urlConFig.URLS.REPORT.READ}/${id}`
@@ -63,6 +59,11 @@ export class ReportService {
     );
   }
 
+  /**
+   * @description api call to update an existing report
+   * @param reportId 
+   * @param body 
+   */
   public updateReport(reportId: string, body: object): Observable<any> {
     const request = {
       url: `${this.configService.urlConFig.URLS.REPORT.UPDATE}/${reportId}`,
@@ -77,6 +78,10 @@ export class ReportService {
     );
   }
 
+  /**
+   * @description adds a report and chart level summary to add existing report
+   * @param body 
+   */
   public addSummary(body: object): Observable<any> {
     const request = {
       url: `${this.configService.urlConFig.URLS.REPORT.SUMMARY.CREATE}`,
@@ -91,12 +96,12 @@ export class ReportService {
     );
   }
 
-  public prepareChartData(chartsArray: Array<any>, data: any, downloadUrl: IDataSource[], reportLevelDataSourceId: string): Array<{}> {
+  public prepareChartData(chartsArray: Array<any>, data: { result: any, id: string }[], downloadUrl: IDataSource[], reportLevelDataSourceId: string): Array<{}> {
     return _.map(chartsArray, chart => {
       const chartObj: any = {};
       chartObj.chartConfig = chart;
       chartObj.downloadUrl = downloadUrl;
-      chartObj.chartData = _.get(this.getDataSourceById(data, _.head(_.get(chart, 'dataSource.ids')) || reportLevelDataSourceId || 'default'), 'data');
+      chartObj.chartData = _.get(chart, 'dataSource') ? this.getChartData(data, chart) : _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), 'data');
       chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn');
       return chartObj;
     });
@@ -115,11 +120,46 @@ export class ReportService {
     });
   }
 
+  private getChartData = (data: { result: any, id: string }[], chart: any) => {
+    const chartDataSource = _.get(chart, 'dataSource');
+
+    //if only one id is present we don't need to overlay.
+    if (chartDataSource.ids.length === 1) {
+      return _.get(this.getDataSourceById(data, _.head(chartDataSource.ids)), 'data');
+    }
+    // overlay if multiple dataSources present
+    const datasources = _.map(chartDataSource.ids, id => {
+      return _.get(this.getDataSourceById(data, id), 'data');
+    });
+
+    const result = this.overlayMultipleDataSources(datasources as Array<any[]>, _.get(chartDataSource, 'commonDimension'));
+    return result;
+  }
+
   private getDataSourceById(dataSources: { result: any, id: string }[], id: string = 'default') {
     return _.get(_.find(dataSources, ['id', id]), 'result');
   }
 
-  public downloadReport(filePathSource) {
+/**
+ * @description Overlays multiple datasource with common dimension.
+ * @template T
+ * @template U
+ * @param {(T[])[]} dataSources
+ * @param {U} commonDimension
+ * @returns
+ * @memberof ReportService
+ */
+public overlayMultipleDataSources<T, U extends keyof T>(dataSources: (T[])[], commonDimension: U) {
+    return _.values(_.merge(..._.map(dataSources, dataSource => _.keyBy(dataSource, commonDimension))));
+  }
+
+  /**
+   * @description downloads a csv file from blob storage
+   * @param {string} filePathSource
+   * @returns
+   * @memberof ReportService
+   */
+  public downloadReport(filePathSource: string) {
     return this.fetchDataSource(filePathSource).pipe(
       map(response => _.get(response, 'result.signedUrl'))
     );
@@ -167,6 +207,9 @@ export class ReportService {
     return this.sanitizer.bypassSecurityTrustHtml(data);
   }
 
+  /**
+   * @description calls the api to add report and chart level summary
+   */
   addReportSummary({ reportId, summaryDetails }): Observable<any> {
     const type = _.get(summaryDetails, 'type');
     const reqBody = {
@@ -178,6 +221,9 @@ export class ReportService {
     return this.addSummary(reqBody);
   }
 
+  /**
+   * @description calls the API to fetch latest report and chart level summary
+   */
   public getLatestSummary({ reportId, chartId = null }): Observable<any> {
     const url = `${this.configService.urlConFig.URLS.REPORT.SUMMARY.PREFIX}/${reportId}`;
     const req = {

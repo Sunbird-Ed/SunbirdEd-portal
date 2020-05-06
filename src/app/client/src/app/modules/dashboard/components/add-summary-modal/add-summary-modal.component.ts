@@ -17,6 +17,8 @@ export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChild('editor') public editorRef: ElementRef;
   public editorInstance: any;
 
+  private toolbarItems = ["undo", "redo", "bold", "italic", "blockQuote", "heading", "link", "numberedList", "bulletedList", "fontFamily", "fontSize", "fontColor", "fontBackgroundColor", "underline", "subscript", "superscript"];
+
   public summaryFormGroup: FormGroup;
 
   constructor(private fb: FormBuilder) { }
@@ -26,7 +28,9 @@ export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngAfterViewInit() {
-    ClassicEditor.create(this.editorRef.nativeElement)
+    ClassicEditor.create(this.editorRef.nativeElement, {
+      toolbar: this.toolbarItems
+    })
       .then(editor => {
         this.editorInstance = editor;
         if (this.input.summary) {
