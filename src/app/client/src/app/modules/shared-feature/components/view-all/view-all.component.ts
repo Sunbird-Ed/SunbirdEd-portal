@@ -3,11 +3,10 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { combineLatest, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, UtilService, ICard, BrowserCacheTtlService, NavigationHelperService
+  ILoaderMessage, UtilService, ICard, BrowserCacheTtlService, NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { SearchService, CoursesService, ISort, PlayerService, OrgDetailsService, UserService, FormService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';

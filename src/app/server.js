@@ -55,9 +55,6 @@ app.use(session({
 
 app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
 
-app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak)) // announcement api routes
-
 app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
