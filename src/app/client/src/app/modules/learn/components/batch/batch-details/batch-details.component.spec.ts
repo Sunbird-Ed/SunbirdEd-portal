@@ -50,7 +50,6 @@ describe('BatchDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BatchDetailsComponent);
     component = fixture.componentInstance;
-    
   });
   it('should fetch only open batch of course if course is not enrolled and user is not mentor', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
@@ -128,7 +127,6 @@ describe('BatchDetailsComponent', () => {
       spyOn(courseBatchService, 'setUpdateBatchDetails');
       component.batchUpdate({identifier: '123', queryParams:queryParams});
       expect(route.navigate).toHaveBeenCalled();
-
   });
   it('should navigate to enroll route', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
