@@ -21,8 +21,6 @@
     <div class="ui container">
       <section class="sb-g-col-xs-12 sb-g-col-md-7 sb-g-col-lg-8 cc-player__video"
         [appTelemetryImpression]="telemetryImpression" *ngIf="contentData">
-        <div class="toc-content">
-        </div>
         <app-contentplayer-page [playerConfig]="playerConfig" [tocPage]="true" [contentDetails]="contentData"
           [isContentPresent]="isContentPresent" [objectRollUp]="objectRollup">
         </app-contentplayer-page>
