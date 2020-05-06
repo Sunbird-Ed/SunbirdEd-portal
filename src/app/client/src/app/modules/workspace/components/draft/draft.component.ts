@@ -227,6 +227,10 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
             query: _.toString(bothParams.queryParams.query),
             sort_by: this.sort
         };
+        const userRoles = _.get(this.userService, 'userProfile.userRoles');
+        if (!_.includes(userRoles, ['CONTENT_CREATOR', 'COURSE_CREATOR'])) {
+          searchParams.filters.contentType = _.without(searchParams.filters.contentType, 'CurriculumCourse');
+        }
         this.searchContentWithLockStatus(searchParams).subscribe(
             (data: ServerResponse) => {
                 if (data.result.count && data.result.content && data.result.content.length > 0) {
