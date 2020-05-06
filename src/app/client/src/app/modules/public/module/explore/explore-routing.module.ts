@@ -5,6 +5,10 @@ import {ViewAllComponent} from '@sunbird/shared-feature';
 const routes: Routes = [
   {
     path: '', component: ExploreComponent, data: {
+      routeReuse: {
+        reuse: true,
+        path: 'explore'
+      },
       telemetry: {
         env: 'explore', pageid: 'explore', type: 'view', subtype: 'paginate'
       },

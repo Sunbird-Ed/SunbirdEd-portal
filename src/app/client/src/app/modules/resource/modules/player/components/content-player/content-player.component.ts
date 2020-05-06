@@ -107,14 +107,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
    */
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
+      this.showPlayer = false; // show loader when till content data is fetched
       this.contentId = params.contentId;
       this.contentStatus = params.contentStatus;
-      this.userService.userData$.subscribe(
-        (user: IUserData) => {
-          if (user && !user.err) {
-            this.getContent();
-          }
-        });
+      this.getContent();
     });
   }
   setTelemetryData() {
@@ -167,6 +163,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
         if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted') {
+          this.showPlayer = true;
           const contentDetails = {
             contentId: this.contentId,
             contentData: response.result.content
@@ -179,7 +176,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
             }, 5000);
           }
           this.setTelemetryData();
-          this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           // this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
           this.badgeData = _.get(response, 'result.content.badgeAssertions');

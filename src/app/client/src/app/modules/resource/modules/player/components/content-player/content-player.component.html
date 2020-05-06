@@ -3,7 +3,7 @@
     <div class="twelve wide column">
         <div class='mt-5 videosegment ui segment'>
             <div class='content-player-body' *ngIf="(popupControlService.checkPopupStatus | async) else loading">
-                <div *ngIf="showPlayer && contentData" class="videosegment  ui clearing segment">
+                <div *ngIf="contentData" [style.display]="showPlayer ? 'block' : 'none'" class="videosegment  ui clearing segment">
                     <div [appTelemetryImpression]="telemetryImpression" class="content-grid">
                         <div class="sb-pageSection">
                             <div class="sb-pageSection-header sb-pageSection-header-compact" id="player-auto-scroll">
@@ -43,7 +43,7 @@
                         <div class="ui divider"></div>
                     </div>
                 </div>
-                <div *ngIf="showPlayer && contentData" class="ui stackable twelve column grid pt-30">
+                <div *ngIf="contentData" [style.display]="showPlayer ? 'block' : 'none'" class="ui stackable twelve column grid pt-30">
                     <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
                         <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
                     </div>

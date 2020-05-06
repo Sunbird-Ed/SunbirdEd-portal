@@ -82,9 +82,25 @@ export class FrameworkService {
     };
     return this.publicDataService.get(channelOptions);
   }
-  public getFrameworkCategories(frameworkId: string) {
+  public getFrameworkCategories(frameworkId: string) { // used in workspace, course
     const frameworkOptions = {
       url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + frameworkId
+    };
+    const cachedFrameworkData = this.cacheService.get(frameWorkPrefix + frameworkId);
+    if (cachedFrameworkData) {
+      return of(cachedFrameworkData);
+    }
+    return this.publicDataService.get(frameworkOptions).pipe(tap((frameworkData) => {
+      if (_.get(frameworkData, 'result.framework')) {
+        this.cacheService.set(frameWorkPrefix + frameworkId, frameworkData,
+          { maxAge: this.browserCacheTtlService.browserCacheTtl });
+      }
+    }));
+  }
+  public getSelectedFrameworkCategories(frameworkId: string, queryParams?: object) { // used in library/search pages
+    const frameworkOptions = {
+      url: this.configService.urlConFig.URLS.FRAMEWORK.READ + '/' + frameworkId,
+      ...queryParams && { param: queryParams}
     };
     const cachedFrameworkData = this.cacheService.get(frameWorkPrefix + frameworkId);
     if (cachedFrameworkData) {

@@ -87,6 +87,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     this.isSingleContent = _.get(history.state, 'isSingleContent') ;
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
+      this.showLoader = true; // show loader every time the param changes, used in route reuse strategy
       this.contentId = params.contentId;
       this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
       if (_.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')) {

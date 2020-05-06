@@ -91,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="enableContentPlayer && !loader">
+        <div *ngIf="playerConfig" [style.display]="enableContentPlayer && !loader ? 'block' : 'none'">
             <div class="ui stackable grid">
                 <div class="twelve wide column">
                     <div class="ui grid">
