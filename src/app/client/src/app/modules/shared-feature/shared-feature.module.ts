@@ -13,6 +13,9 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
+import { UserOnboardingComponent } from './components/user-onboarding/user-onboarding.component';
+import { OnboardingUserSelectionComponent } from './components/onboarding-user-selection/onboarding-user-selection.component';
+import { OnboardingLocationSelectionComponent } from './components/onboarding-location-selection/onboarding-location-selection.component';
 
 @NgModule({
   imports: [
@@ -29,10 +32,13 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
   ],
   declarations: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
-    UserLocationComponent
+    UserLocationComponent,
+    UserOnboardingComponent,
+    OnboardingUserSelectionComponent,
+    OnboardingLocationSelectionComponent
   ],
   exports: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
-    UserLocationComponent]
+    UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent]
 })
 export class SharedFeatureModule { }
