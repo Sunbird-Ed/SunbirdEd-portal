@@ -204,7 +204,11 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     if (batch.enrollmentType === 'open') {
       this.courseBatchService.setUpdateBatchDetails(batch);
     }
-    this.router.navigate(['update/batch', batch.identifier ], { queryParams: { enrollmentType : batch.enrollmentType }, relativeTo: this.activatedRoute });
+    this.router.navigate(['update/batch', batch.identifier],
+      {
+        queryParams: { enrollmentType: batch.enrollmentType },
+        relativeTo: this.activatedRoute
+      });
   }
   createBatch() {
     this.router.navigate(['create/batch'], { relativeTo: this.activatedRoute });
