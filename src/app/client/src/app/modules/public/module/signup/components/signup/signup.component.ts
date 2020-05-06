@@ -48,7 +48,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   passwordError: string;
   showTncPopup = false;
   birthYearOptions: Array<number> = [];
-  isMinor: boolean = false;
+  isMinor: Boolean = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
