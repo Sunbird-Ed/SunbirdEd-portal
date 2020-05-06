@@ -1,7 +1,14 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import {ResourceService, ServerResponse, ToasterService, NavigationHelperService, UtilService} from '@sunbird/shared';
+import {
+  ResourceService,
+  ConfigService,
+  ServerResponse,
+  ToasterService,
+  NavigationHelperService,
+  UtilService
+} from '@sunbird/shared';
 import { SignupService } from './../../services';
 import { TenantService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -40,12 +47,15 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   termsAndConditionLink: string;
   passwordError: string;
   showTncPopup = false;
+  birthYearOptions: Array<number> = [];
+  isMinor: boolean = false;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService, private cacheService: CacheService,
     public tenantService: TenantService, public deviceDetectorService: DeviceDetectorService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
-    public navigationhelperService: NavigationHelperService, public utilService: UtilService) {
+    public navigationhelperService: NavigationHelperService, public utilService: UtilService,
+    public configService: ConfigService) {
     this.sbFormBuilder = formBuilder;
   }
 
@@ -88,6 +98,26 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Telemetry Start
     this.signUpTelemetryStart();
+
+    this.initiateYearSelecter();
+    // diabling the form as age should be selected
+    this.signUpForm.disable();
+  }
+
+
+  changeBirthYear(data) {
+    this.signUpForm.enable();
+    const currentYear = new Date().getFullYear();
+    const userAge = currentYear - data;
+    this.isMinor = userAge < this.configService.constants.SIGN_UP.MINIMUN_AGE;
+  }
+
+  initiateYearSelecter() {
+    const endYear = new Date().getFullYear();
+    const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
+    for (let year = endYear; year >= startYear; year--) {
+      this.birthYearOptions.push(year);
+    }
   }
 
   getCacheLanguage() {
