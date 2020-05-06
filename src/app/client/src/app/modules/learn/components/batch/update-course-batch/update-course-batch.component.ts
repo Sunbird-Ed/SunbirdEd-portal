@@ -186,13 +186,13 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         this.redirect();
       });
   }
- 
+
   private fetchBatchDetails() {
     if (this.enrolmentType === 'open') {
       const requestBody = {
         filters: { 'status': '1' },
       };
-      const participantList = {}
+      const participantList = {};
       return combineLatest(
         this.courseBatchService.getUserList(requestBody),
         this.courseConsumptionService.getCourseHierarchy(this.courseId),
