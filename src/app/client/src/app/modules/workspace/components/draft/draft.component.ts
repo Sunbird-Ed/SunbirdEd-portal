@@ -195,16 +195,16 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
     /**
      * This method sets the make an api call to get all drafts with page No and offset
      */
-    fetchDrafts(limit: number, pageNumber: number, bothParams?) {
+    fetchDrafts(limit: number, pageNumber: number, bothParams?: object) {
         this.showLoader = true;
         this.pageNumber = pageNumber;
         this.pageLimit = limit;
         this.draftList = [];
         this.totalCount = 0;
         this.noResult = false;
-        if (bothParams.queryParams.sort_by) {
-            const sort_by = bothParams.queryParams.sort_by;
-            const sortType = bothParams.queryParams.sortType;
+        if (bothParams['queryParams'].sort_by) {
+            const sort_by = bothParams['queryParams'].sort_by;
+            const sortType = bothParams['queryParams'].sortType;
             this.sort = {
               [sort_by]: _.toString(sortType)
             };
@@ -217,14 +217,14 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 createdBy: this.userService.userid,
                 contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
-                board: bothParams.queryParams.board,
-                subject: bothParams.queryParams.subject,
-                medium: bothParams.queryParams.medium,
-                gradeLevel: bothParams.queryParams.gradeLevel
+                board: bothParams['queryParams'].board,
+                subject: bothParams['queryParams'].subject,
+                medium: bothParams['queryParams'].medium,
+                gradeLevel: bothParams['queryParams'].gradeLevel
             },
             limit: this.pageLimit,
             offset: (this.pageNumber - 1) * (this.pageLimit),
-            query: _.toString(bothParams.queryParams.query),
+            query: _.toString(bothParams['queryParams'].query),
             sort_by: this.sort
         };
         this.searchContentWithLockStatus(searchParams).subscribe(

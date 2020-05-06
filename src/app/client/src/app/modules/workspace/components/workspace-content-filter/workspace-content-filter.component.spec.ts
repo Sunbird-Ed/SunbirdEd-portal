@@ -93,10 +93,13 @@ it('should call keyup method sets the modelChanged value', () => {
     (component.route.url as string) = 'workspace/content/draft/1';
     component.setFilterTypeAndRedirectURL();
     expect(component.filterType).toEqual('draft');
+    expect(component.redirectUrl).toEqual('workspace/content/draft/1');
   });
+
   it('should set filterType as published', () => {
     (component.route.url as string) = 'workspace/content/published/1';
     component.setFilterTypeAndRedirectURL();
     expect(component.filterType).toEqual('published');
+    expect(component.redirectUrl).toEqual('workspace/content/published/1');
   });
 });
