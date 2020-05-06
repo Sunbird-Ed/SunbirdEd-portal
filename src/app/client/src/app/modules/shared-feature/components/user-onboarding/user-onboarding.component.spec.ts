@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UserOnboardingComponent } from './user-onboarding.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { SuiModule } from 'ng2-semantic-ui';
+import { SharedModule } from '@sunbird/shared';
 
 describe('UserOnboardingComponent', () => {
   let component: UserOnboardingComponent;
@@ -8,9 +10,13 @@ describe('UserOnboardingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserOnboardingComponent ]
+      declarations: [UserOnboardingComponent],
+      imports: [
+        SuiModule,
+        SharedModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { OnboardingUserSelectionComponent } from './onboarding-user-selection.component';
+import { SharedModule } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+
 
 describe('OnboardingUserSelectionComponent', () => {
   let component: OnboardingUserSelectionComponent;
@@ -8,9 +11,13 @@ describe('OnboardingUserSelectionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OnboardingUserSelectionComponent ]
+      declarations: [OnboardingUserSelectionComponent],
+      imports: [
+        TelemetryModule.forRoot(),
+        SharedModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
