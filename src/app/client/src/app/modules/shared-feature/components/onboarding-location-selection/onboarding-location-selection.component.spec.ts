@@ -5,10 +5,21 @@ import { SharedModule } from '@sunbird/shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ResourceService } from '@sunbird/shared';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { userLocationMockData } from './onboarding-location-selection.component.spec.data';
 
 describe('OnboardingLocationSelectionComponent', () => {
   let component: OnboardingLocationSelectionComponent;
   let fixture: ComponentFixture<OnboardingLocationSelectionComponent>;
+
+  const resourceMockData = {
+    messages: {
+      emsg: { m0017: 'Fetching districts failed. Try again later', m0016: 'Fetching states failed. Try again later' }
+
+    }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -18,7 +29,11 @@ describe('OnboardingLocationSelectionComponent', () => {
         ReactiveFormsModule,
         SuiModule,
         TelemetryModule.forRoot(),
-        SharedModule.forRoot()],
+        SharedModule.forRoot(),
+        HttpClientTestingModule,
+        RouterTestingModule
+      ],
+      providers: [{ provide: ResourceService, useValue: resourceMockData }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -32,5 +47,28 @@ describe('OnboardingLocationSelectionComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call set state and district is state and district when empty object', () => {
+    spyOn(component, 'setState');
+    spyOn(component, 'setDistrict');
+    spyOn(component, 'onStateChange');
+    component.setStateDistrict({ state: {}, district: {} });
+    expect(component.setState).toHaveBeenCalled();
+    expect(component.setDistrict).toHaveBeenCalled();
+    expect(component.onStateChange).toHaveBeenCalled();
+  });
+
+  it('should call set state and district is state and district when state empty', () => {
+    spyOn(component, 'setState');
+    spyOn(component, 'setDistrict');
+    spyOn(component, 'onStateChange');
+    component.setStateDistrict({
+      state: userLocationMockData.stateList[0],
+      district: userLocationMockData.districtList[0]
+    });
+    expect(component.setState).toHaveBeenCalled();
+    expect(component.setDistrict).toHaveBeenCalled();
+    expect(component.onStateChange).toHaveBeenCalled();
   });
 });

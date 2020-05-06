@@ -43,6 +43,7 @@ export class UserOnboardingComponent implements OnInit {
     this.tenantService.tenantData$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
+        /* istanbul ignore else*/
         if (_.get(data, 'tenantData')) {
           this.tenantInfo.logo = data.tenantData.logo;
           this.tenantInfo.name = data.tenantData.titleName || this.resourceService.instance;
@@ -50,11 +51,11 @@ export class UserOnboardingComponent implements OnInit {
       });
   }
 
-  userTypeSubmit(event: Event) {
+  userTypeSubmit() {
     this.stage = 2;
   }
 
-  locationSubmit(event: Event) {
+  locationSubmit() {
     this.popupControlService.changePopupStatus(true);
     this.onboardingModal.deny();
     this.close.emit();
