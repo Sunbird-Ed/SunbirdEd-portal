@@ -20,6 +20,7 @@ describe('DataDrivenComponent', () => {
   let componentChild: DefaultTemplateComponent;
   let fixtureChild: ComponentFixture<DefaultTemplateComponent>;
   class RouterStub {
+    url = 'workspace/content/create/training';
     navigate = jasmine.createSpy('navigate');
   }
   const resourceBundle = {
