@@ -36,7 +36,7 @@ export interface IReportduration {
 
 export interface IReportsApiResponse {
     count: number;
-    reports: IReportConfig[]
+    reports: IReportConfig[];
 }
 
 export interface ISummaryObject {

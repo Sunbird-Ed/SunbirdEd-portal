@@ -17,7 +17,8 @@ export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChild('editor') public editorRef: ElementRef;
   public editorInstance: any;
 
-  private toolbarItems = ["undo", "redo", "bold", "italic", "blockQuote", "heading", "link", "numberedList", "bulletedList", "fontFamily", "fontSize", "fontColor", "fontBackgroundColor", "underline", "subscript", "superscript"];
+  private toolbarItems = ['undo', 'redo', 'bold', 'italic', 'blockQuote', 'heading', 'link', 'numberedList', 'bulletedList', 'fontFamily',
+    'fontSize', 'fontColor', 'fontBackgroundColor', 'underline', 'subscript', 'superscript'];
 
   public summaryFormGroup: FormGroup;
 
@@ -43,11 +44,10 @@ export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewIni
           this.summaryFormGroup.controls.summary.setValue(editor.getData());
         });
       })
-      .catch(err => console.error)
+      .catch(err => { console.error(err); });
   }
 
   ngOnDestroy() {
-    this.modal && this.modal.deny();
     this.closeModal();
   }
 
@@ -73,7 +73,9 @@ export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   public closeModal(): void {
-    this.modal && this.modal.deny();
+    if (this.modal) {
+      this.modal.deny();
+    }
     this.closeModalEvent.emit(true);
   }
 }

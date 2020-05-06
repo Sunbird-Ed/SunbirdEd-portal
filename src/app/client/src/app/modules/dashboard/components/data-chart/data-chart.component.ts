@@ -26,7 +26,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input() chartInfo: any;
   @Input() telemetryInteractObject: IInteractEventObject;
   @Input() hideElements = false;
-  @Input() isUserReportAdmin: boolean = false;
+  @Input() isUserReportAdmin = false;
   @Output() openAddSummaryModal = new EventEmitter();
   public unsubscribe = new Subject<void>();
   // contains the chart configuration
@@ -340,7 +340,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
         type: 'chart',
         chartId,
         ...(this._chartSummary && { summary: this._chartSummary })
-      })
+      });
     } else {
       this.toasterService.error('Chart id is not present');
     }
@@ -357,7 +357,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
             return {
               label: 'Chart Summary',
               text: [summary]
-            }
+            };
           });
         })
       );

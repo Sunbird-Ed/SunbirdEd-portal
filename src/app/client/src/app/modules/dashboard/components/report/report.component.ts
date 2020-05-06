@@ -19,13 +19,13 @@ import { ISummaryObject } from '../../interfaces';
 export class ReportComponent implements OnInit, AfterViewInit {
 
   public report: any;
-  public showSummaryModal: boolean = false;
+  public showSummaryModal = false;
   public report$;
   public noResultMessage: INoResultMessage;
   public noResult: boolean;
   private downloadUrl: string;
   public reportObj: any;
-  public isUserReportAdmin: boolean = false;
+  public isUserReportAdmin = false;
   telemetryImpression: IImpressionEventInput;
   @ViewChildren(DataChartComponent) chartsComponentList: QueryList<DataChartComponent>;
   @ViewChild('reportElement') reportElement;
@@ -37,7 +37,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private addSummaryBtnClickStream$ = new Subject<ISummaryObject>();
   private publishBtnStream$ = new Subject();
   public currentReportSummary: any;
-  public showComponent: boolean = true;
+  public showComponent = true;
 
   constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
@@ -92,8 +92,8 @@ export class ReportComponent implements OnInit, AfterViewInit {
             this.report = report;
             const reportConfig = _.get(report, 'reportconfig');
             this.setDownloadUrl(_.get(reportConfig, 'downloadUrl'));
-            const dataSource = _.get(reportConfig, 'dataSource'); //to enable backward compatibilty
-            const updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: "default", path: dataSource }];
+            const dataSource = _.get(reportConfig, 'dataSource');
+            const updatedDataSource = _.isArray(dataSource) ? dataSource : [{ id: 'default', path: dataSource }];
             const charts = _.get(reportConfig, 'charts'), tables = _.get(reportConfig, 'table');
 
             return forkJoin(this.reportService.downloadMultipleDataSources(updatedDataSource), this.getLatestSummary(reportId)).pipe(
@@ -101,8 +101,10 @@ export class ReportComponent implements OnInit, AfterViewInit {
               map((apiResponse) => {
                 const [data, reportSummary] = apiResponse;
                 const result: any = Object.assign({});
-                result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource, _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
-                result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'), _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+                result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
+                  _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+                result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
+                  _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
                 result['reportMetaData'] = reportConfig;
                 result['reportSummary'] = reportSummary;
                 return result;
@@ -231,13 +233,12 @@ export class ReportComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // hides elements which are not required for printing reports to pdf or image.
   private toggleHtmlVisibilty(flag: boolean): void {
     this.hideElements = flag;
   }
 
-  //opens the summary modal - for both add report summary and add chart summary;
-  public openAddSummaryModal({ type, title, index = undefined, chartId = undefined, summary = undefined }: ISummaryObject): void {
+  public openAddSummaryModal({ type, title, index = null, chartId = null,
+    summary = null }: ISummaryObject): void {
     this.showSummaryModal = true;
     this.inputForSummaryModal = { title, type, index, chartId, summary };
   }
@@ -259,11 +260,11 @@ export class ReportComponent implements OnInit, AfterViewInit {
           return {
             label: 'Report Summary',
             text: [summary]
-          }
+          };
         });
         return summaries;
       })
-    )
+    );
   }
 
   public closeSummaryModal(): void {
@@ -281,7 +282,6 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private mergeClickEventStreams() {
     merge(this.handleAddSummaryStreams(), this.handlePublishBtnStream())
       .subscribe(res => {
-        //need to refresh component to show updated data.
         this.refreshComponent();
       }, err => {
         this.toasterService.error('Something went wrong. Please try again later');
@@ -302,12 +302,12 @@ export class ReportComponent implements OnInit, AfterViewInit {
         return this.reportService.addReportSummary({
           reportId,
           summaryDetails: event
-        })
+        });
       }),
       tap(res => {
         this.toasterService.info('Comment added successfully');
       })
-    )
+    );
   }
   /**
    * @description refreshes the component to show updated data
@@ -336,7 +336,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
         this.toasterService.info('Report Published Successfully');
         this.report.status = 'live';
       })
-    )
+    );
   }
 }
 

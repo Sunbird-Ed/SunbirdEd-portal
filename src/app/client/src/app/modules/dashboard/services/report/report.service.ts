@@ -20,7 +20,7 @@ export class ReportService {
         return {
           result: _.get(configData, 'result'),
           ...(id && { id })
-        }
+        };
       })
     );
   }
@@ -61,8 +61,8 @@ export class ReportService {
 
   /**
    * @description api call to update an existing report
-   * @param reportId 
-   * @param body 
+   * @param reportId
+   * @param body
    */
   public updateReport(reportId: string, body: object): Observable<any> {
     const request = {
@@ -80,7 +80,7 @@ export class ReportService {
 
   /**
    * @description adds a report and chart level summary to add existing report
-   * @param body 
+   * @param body
    */
   public addSummary(body: object): Observable<any> {
     const request = {
@@ -96,12 +96,14 @@ export class ReportService {
     );
   }
 
-  public prepareChartData(chartsArray: Array<any>, data: { result: any, id: string }[], downloadUrl: IDataSource[], reportLevelDataSourceId: string): Array<{}> {
+  public prepareChartData(chartsArray: Array<any>, data: { result: any, id: string }[], downloadUrl: IDataSource[],
+    reportLevelDataSourceId: string): Array<{}> {
     return _.map(chartsArray, chart => {
       const chartObj: any = {};
       chartObj.chartConfig = chart;
       chartObj.downloadUrl = downloadUrl;
-      chartObj.chartData = _.get(chart, 'dataSource') ? this.getChartData(data, chart) : _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), 'data');
+      chartObj.chartData = _.get(chart, 'dataSource') ? this.getChartData(data, chart) :
+        _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), 'data');
       chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn');
       return chartObj;
     });
@@ -113,8 +115,10 @@ export class ReportService {
       const tableData: any = {};
       tableData.id = _.get(table, 'id') || `table-${_.random(1000)}`;
       tableData.name = _.get(table, 'name') || 'Table';
-      tableData.header = _.get(table, 'columns') || _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), _.get(table, 'columnsExpr'));
-      tableData.data = _.get(table, 'values') || _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), _.get(table, 'valuesExpr'));
+      tableData.header = _.get(table, 'columns') || _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'),
+        _.get(table, 'columnsExpr'));
+      tableData.data = _.get(table, 'values') || _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'),
+        _.get(table, 'valuesExpr'));
       tableData.downloadUrl = _.get(table, 'downloadUrl') || downloadUrl;
       return tableData;
     });
@@ -123,7 +127,6 @@ export class ReportService {
   private getChartData = (data: { result: any, id: string }[], chart: any) => {
     const chartDataSource = _.get(chart, 'dataSource');
 
-    //if only one id is present we don't need to overlay.
     if (chartDataSource.ids.length === 1) {
       return _.get(this.getDataSourceById(data, _.head(chartDataSource.ids)), 'data');
     }
@@ -140,16 +143,16 @@ export class ReportService {
     return _.get(_.find(dataSources, ['id', id]), 'result');
   }
 
-/**
- * @description Overlays multiple datasource with common dimension.
- * @template T
- * @template U
- * @param {(T[])[]} dataSources
- * @param {U} commonDimension
- * @returns
- * @memberof ReportService
- */
-public overlayMultipleDataSources<T, U extends keyof T>(dataSources: (T[])[], commonDimension: U) {
+  /**
+   * @description Overlays multiple datasource with common dimension.
+   * @template T
+   * @template U
+   * @param {(T[])[]} dataSources
+   * @param {U} commonDimension
+   * @returns
+   * @memberof ReportService
+   */
+  public overlayMultipleDataSources<T, U extends keyof T>(dataSources: (T[])[], commonDimension: U) {
     return _.values(_.merge(..._.map(dataSources, dataSource => _.keyBy(dataSource, commonDimension))));
   }
 
@@ -217,7 +220,7 @@ public overlayMultipleDataSources<T, U extends keyof T>(dataSources: (T[])[], co
       createdby: this.userService.userid,
       summary: summaryDetails.summary,
       ...(type === 'chart' && { chartid: summaryDetails.chartId })
-    }
+    };
     return this.addSummary(reqBody);
   }
 
