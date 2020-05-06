@@ -15,7 +15,7 @@ class RouterStub {
 }
 const fakeActivatedRoute = {
   'params': observableOf({ courseId: 'do_1125083286221291521153' }),
-  'queryParams': observableOf({})
+  'queryParams': observableOf({ enrollmentType: 'open'})
 };
 const resourceServiceMockData = {
   messages : {
@@ -50,6 +50,7 @@ describe('BatchDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BatchDetailsComponent);
     component = fixture.componentInstance;
+    
   });
   it('should fetch only open batch of course if course is not enrolled and user is not mentor', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
@@ -123,9 +124,11 @@ describe('BatchDetailsComponent', () => {
   it('should navigate to update batch route', () => {
       const courseBatchService = TestBed.get(CourseBatchService);
       const route = TestBed.get(Router);
+      const queryParams = observableOf({enrollmentType: 'open'});
       spyOn(courseBatchService, 'setUpdateBatchDetails');
-      component.batchUpdate({identifier: '123'});
-      expect(route.navigate).toHaveBeenCalledWith(['update/batch', '123'], {relativeTo: component.activatedRoute});
+      component.batchUpdate({identifier: '123', queryParams:queryParams});
+      expect(route.navigate).toHaveBeenCalled();
+
   });
   it('should navigate to enroll route', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
