@@ -399,7 +399,7 @@ describe('SignUpComponent', () => {
 
   it('should change birth year and enable form and set user as minor', () => {
     const signupService = TestBed.get(SignupService);
-    const phoneOrEmailMessage = resourceBundle.frmelmnts.lbl.phoneOrEmail + " " + resourceBundle.frmelmnts.lbl.parentOrGuardian;
+    const phoneOrEmailMessage = resourceBundle.frmelmnts.lbl.phoneOrEmail + ' ' + resourceBundle.frmelmnts.lbl.parentOrGuardian;
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 2);
