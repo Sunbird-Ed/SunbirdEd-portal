@@ -18,12 +18,14 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CoreModule } from '@sunbird/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('PublishedComponent', () => {
   let component: PublishedComponent;
   let fixture: ComponentFixture<PublishedComponent>;
   const fakeActivatedRoute = {
     'params': observableOf({ 'pageNumber': 1 }),
+    'queryParams': observableOf({ subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc' }),
     snapshot: {
       params: [
         {
@@ -63,7 +65,8 @@ describe('PublishedComponent', () => {
         PermissionService, ResourceService, ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -77,10 +80,12 @@ describe('PublishedComponent', () => {
   // If search api returns more than one published
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
-    component.fetchPublishedContent(9, 1);
+    component.fetchPublishedContent(9, 1,  { queryParams: { subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}});
     fixture.detectChanges();
     expect(component.publishedContent).toBeDefined();
     expect(component.publishedContent.length).toBeGreaterThan(1);
+    expect(component.sort).toEqual({lastUpdatedOn: 'asc'});
+    expect(component.noResult).toBeFalsy();
   }));
 
   it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],
@@ -108,10 +113,11 @@ describe('PublishedComponent', () => {
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
-    component.fetchPublishedContent(9, 1);
+    component.fetchPublishedContent(9, 1, { queryParams: { subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}});
     fixture.detectChanges();
     expect(component.publishedContent.length).toBeLessThanOrEqual(0);
     expect(component.publishedContent.length).toEqual(0);
+    expect(component.sort).toEqual({lastUpdatedOn: 'asc'});
   }));
   it('should call inview method for visits data', () => {
     component.telemetryImpression = testData.telemetryData;
@@ -119,5 +125,14 @@ describe('PublishedComponent', () => {
     component.inview(testData.event.inview);
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
+  });
+
+  it('should call fetchPublishedContents()', () => {
+    spyOn(component, 'fetchPublishedContent');
+    const bothParams = { params: {pageNumber: 1}, queryParams: {subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}};
+    component.pageNumber = 1;
+    component.queryParams = bothParams.queryParams ;
+    component.ngOnInit();
+    expect(component.fetchPublishedContent).toHaveBeenCalledWith(9, 1, bothParams);
   });
 });

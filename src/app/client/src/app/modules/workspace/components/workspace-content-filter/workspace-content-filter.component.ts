@@ -1,14 +1,15 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResourceService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { ISelectFilter } from '../../interfaces/selectfilter';
 import * as _ from 'lodash-es';
 import { Subject , Observable, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+
 @Component({
-  selector: 'app-all-my-content-filter',
-  templateUrl: './all-my-content-filter.component.html',
+  selector: 'app-workspace-content-filter',
+  templateUrl: './workspace-content-filter.component.html',
   styles: [`
      >>> .ui.dropdown:not(.button)>.default.text {
       display: none;
@@ -22,7 +23,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
        }
    `]
 })
-export class AllMyContentFilterComponent implements OnInit {
+export class WorkspaceContentFilterComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();
   /**
    * To navigate to other pages
@@ -86,6 +87,7 @@ export class AllMyContentFilterComponent implements OnInit {
  */
   constructor(resourceService: ResourceService, config: ConfigService,
     activatedRoute: ActivatedRoute,
+    public navigationHelperService: NavigationHelperService,
     route: Router) {
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -98,8 +100,7 @@ export class AllMyContentFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filterType = this.config.appConfig.allmycontent.filterType;
-    this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
+    this.setFilterTypeAndRedirectURL();
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.queryParams = { ...params };
@@ -125,13 +126,28 @@ export class AllMyContentFilterComponent implements OnInit {
         pageid: 'all-my-content-page'
       };
   }
+
+  setFilterTypeAndRedirectURL() {
+
+    if (_.includes(this.route.url, 'published')) {
+      this.filterType = this.config.appConfig.published.filterType;
+      this.redirectUrl = this.config.appConfig.published.inPageredirectUrl;
+    } else if (_.includes(this.route.url, 'draft')) {
+      this.filterType = this.config.appConfig.draft.filterType;
+      this.redirectUrl = this.config.appConfig.draft.inPageredirectUrl;
+    } else {
+      this.filterType = this.config.appConfig.allmycontent.filterType;
+      this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
+    }
+  }
+
   public handleSearch() {
-    if (this.query.length > 0) {
+    if (!_.isEmpty(this.query)) {
       this.queryParams['query'] = this.query;
     } else {
       delete this.queryParams['query'];
     }
-    this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams});
+    this.route.navigate([this.redirectUrl], { queryParams: this.queryParams});
   }
   keyup(event) {
     this.query = event;
@@ -142,13 +158,13 @@ export class AllMyContentFilterComponent implements OnInit {
     this.sortIcon = !this.sortIcon;
     this.queryParams['sortType'] = this.sortIcon ? 'desc' : 'asc';
      this.queryParams['sort_by'] = sortByOption;
-    this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams });
+    this.route.navigate([this.redirectUrl], { queryParams: this.queryParams});
   }
   removeFilterSelection(filterType, value) {
     const itemIndex = this.queryParams[filterType].indexOf(value);
     if (itemIndex !== -1) {
       this.queryParams[filterType].splice(itemIndex, 1);
     }
-    this.route.navigate(['workspace/content/allcontent', 1], { queryParams: this.queryParams  });
+    this.route.navigate([this.redirectUrl], { queryParams: this.queryParams});
   }
 }
