@@ -23,6 +23,7 @@ const fakeActivatedRoute = {
     }
   }
 };
+const currentYear = new Date().getFullYear();
 
 const resourceBundle = {
   'frmelmnts': {
@@ -93,6 +94,7 @@ describe('SignUpComponent', () => {
     spyOn(component, 'enableSignUpSubmitButton');
     spyOn(component, 'onPhoneChange');
     component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
     let errors = {};
     const name = component.signUpForm.controls['name'];
     name.setValue('');
@@ -108,6 +110,7 @@ describe('SignUpComponent', () => {
     spyOn(component, 'enableSignUpSubmitButton');
     spyOn(component, 'onPhoneChange');
     component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
     let errors = {};
     const phone = component.signUpForm.controls['phone'];
     phone.setValue('');
@@ -123,6 +126,7 @@ describe('SignUpComponent', () => {
     spyOn(component, 'enableSignUpSubmitButton');
     spyOn(component, 'onPhoneChange');
     component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
     let errors = {};
     const phone = component.signUpForm.controls['phone'];
     phone.setValue('8989');
@@ -219,6 +223,7 @@ describe('SignUpComponent', () => {
   });
   it('set all values with enabling the submit button ', () => {
     component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
     const name = component.signUpForm.controls['name'];
     name.setValue('sourav');
     const password = component.signUpForm.controls['password'];
@@ -288,7 +293,6 @@ describe('SignUpComponent', () => {
     const signupService = TestBed.get(SignupService);
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     spyOn(component, 'getCacheLanguage');
-    spyOn(component, 'initializeFormFields');
     spyOn(component, 'setInteractEventData');
     spyOn(component, 'signUpTelemetryStart');
     component.ngOnInit();
@@ -296,7 +300,6 @@ describe('SignUpComponent', () => {
     expect(component.getCacheLanguage).toHaveBeenCalled();
     expect(component.tncLatestVersion).toEqual('v4');
     expect(component.termsAndConditionLink).toEqual('http://test.com/tnc.html');
-    expect(component.initializeFormFields).toHaveBeenCalled();
     expect(component.setInteractEventData).toHaveBeenCalled();
     expect(component.signUpTelemetryStart).toHaveBeenCalled();
     });
@@ -368,6 +371,32 @@ describe('SignUpComponent', () => {
   it('should not show tnc popup if given mode is false', () => {
     component.showAndHidePopup(false);
     expect(component.showTncPopup).toBe(false);
+  });
+
+  it('should disable the form as no age is selected and init the age dropdown', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    component.ngOnInit();
+    expect(component.signUpForm.disable).toBeTruthy();
+    expect(component.birthYearOptions.length).toBe(100);
+  });
+
+  it('should change birth year and enable form and set user as not minor', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
+    expect(component.signUpForm.enable).toBeTruthy();
+    expect(component.isMinor).toBe(false);
+  });
+
+  it('should change birth year and enable form and set user as minor', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 2);
+    expect(component.signUpForm.enable).toBeTruthy();
+    expect(component.isMinor).toBe(true);
   });
 
 });

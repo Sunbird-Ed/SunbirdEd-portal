@@ -105,17 +105,17 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  changeBirthYear(data) {
+  changeBirthYear(selectedBirthYear) {
     this.signUpForm.enable();
     const currentYear = new Date().getFullYear();
-    const userAge = currentYear - data;
+    const userAge = currentYear - selectedBirthYear;
     this.isMinor = userAge < this.configService.constants.SIGN_UP.MINIMUN_AGE;
   }
 
   initiateYearSelecter() {
     const endYear = new Date().getFullYear();
     const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
-    for (let year = endYear; year >= startYear; year--) {
+    for (let year = endYear; year > startYear; year--) {
       this.birthYearOptions.push(year);
     }
   }
