@@ -4,5 +4,9 @@
   },
   "HTTP_STATUS_CODES": {
     "OTP_VERIFICATION_FAILED": "OTP_VERIFICATION_FAILED"
+  },
+  "SIGN_UP": {
+    "MAX_YEARS": 100,
+    "MINIMUN_AGE": 18
   }
 }
