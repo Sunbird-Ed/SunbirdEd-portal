@@ -234,12 +234,6 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0021,
     };
-    const userRoles = _.get(this.userService, 'userProfile.userRoles');
-
-    if (!_.includes(userRoles, ['CONTENT_CREATOR', 'COURSE_CREATOR'])) {
-      searchParams.filters.contentType = _.without(searchParams.filters.contentType, 'CurriculumCourse');
-    }
-
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
