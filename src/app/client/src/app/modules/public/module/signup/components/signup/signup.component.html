@@ -30,7 +30,7 @@
             </div>
             <div class="required field mb-20"
                  *ngIf="!(signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors) && !(signUpForm.controls.email.touched && signUpForm.controls['email'].errors) && !showUniqueError">
-              <label class="pt-0 font-weight-bold">
+              <label id="phoneOrEmail" class="pt-0 font-weight-bold">
                 {{resourceService.frmelmnts.lbl.phoneOrEmail}}
                 <span *ngIf="isMinor">{{resourceService.frmelmnts?.lbl?.parentOrGuardian}}</span>
               </label>

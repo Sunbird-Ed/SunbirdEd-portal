@@ -12,6 +12,7 @@ import { FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import {SignUpComponentMockData} from './signup.component.spec.data';
+import {By} from '@angular/platform-browser';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -36,7 +37,9 @@ const resourceBundle = {
       'passwd': 'Password must contain a minimum of 8 characters including numerals, '
       + 'lower and upper case alphabets and special characters.',
       'uniquePhone': 'uniquePhone',
-      'passwderr': 'Password cannot be same as your username.'
+      'passwderr': 'Password cannot be same as your username.',
+      'phoneOrEmail': 'Enter mobile number or email address',
+      'parentOrGuardian': 'of your Parent/ Guardian'
     },
   },
   'messages': {
@@ -386,17 +389,26 @@ describe('SignUpComponent', () => {
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 30);
+    fixture.detectChanges();
+    component.showContact = 'email';
     expect(component.signUpForm.enable).toBeTruthy();
     expect(component.isMinor).toBe(false);
+    const phoneOrEmailElement = fixture.debugElement.query(By.css('#phoneOrEmail'));
+    expect(phoneOrEmailElement.nativeNode.innerText).toMatch(resourceBundle.frmelmnts.lbl.phoneOrEmail);
   });
 
   it('should change birth year and enable form and set user as minor', () => {
     const signupService = TestBed.get(SignupService);
+    const phoneOrEmailMessage = resourceBundle.frmelmnts.lbl.phoneOrEmail + " " + resourceBundle.frmelmnts.lbl.parentOrGuardian;
     spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
     component.ngOnInit();
     component.changeBirthYear(currentYear - 2);
+    fixture.detectChanges();
+    component.showContact = 'email';
     expect(component.signUpForm.enable).toBeTruthy();
     expect(component.isMinor).toBe(true);
+    const phoneOrEmailElement = fixture.debugElement.query(By.css('#phoneOrEmail'));
+    expect(phoneOrEmailElement.nativeNode.innerText).toMatch(phoneOrEmailMessage);
   });
 
 });
