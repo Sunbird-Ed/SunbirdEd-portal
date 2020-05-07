@@ -485,7 +485,7 @@ describe('CoursePlayerComponent', () => {
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     const userService = TestBed.get(UserService);
-    userService._userid = 'testUser';
+    userService._userid = 'testUser2';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -497,7 +497,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    component.navigateToContent({title: component.contentTitle, id: component.contentId});
+    component.navigateToContent({title: component.contentTitle, id: component.contentIds[1]});
     expect(component.showJoinTrainingModal).toBeTruthy();
   });
   it('should log telemetry on click of close icon on join training popup ', () => {
@@ -507,7 +507,7 @@ describe('CoursePlayerComponent', () => {
     const userService = TestBed.get(UserService);
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'interact');
-    userService._userid = 'testUser';
+    userService._userid = 'testUser2';
     activatedRouteStub.changeParams({ courseId: 'do_212347136096788480178' });
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -519,7 +519,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
-    component.navigateToContent({title: component.contentTitle, id: component.contentId});
+    component.navigateToContent({title: component.contentTitle, id: component.contentIds[1]});
     expect(component.showJoinTrainingModal).toBeTruthy();
     component.closeJoinTrainingModal();
     expect(component.showJoinTrainingModal).toBeFalsy();
