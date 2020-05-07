@@ -12,6 +12,7 @@ export enum Stage {
   USER_SELECTION = 'user',
   LOCATION_SELECTION = 'location'
 }
+
 @Component({
   selector: 'app-user-onboarding',
   templateUrl: './user-onboarding.component.html',
