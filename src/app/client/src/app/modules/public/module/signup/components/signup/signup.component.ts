@@ -323,7 +323,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   generateOTP() {
-    let request = {
+    const request = {
       'request': {
         'key': this.signUpForm.controls.contactType.value === 'phone' ?
           this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value,
