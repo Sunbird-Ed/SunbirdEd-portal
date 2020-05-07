@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ErrorPageComponent, AuthGuard } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
+
 const appRoutes: Routes = [
   {
     path: 'learn', loadChildren: 'app/modules/learn/learn.module#LearnModule'
@@ -37,6 +38,9 @@ const appRoutes: Routes = [
   },
   {
     path: 'get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
+  },
+  {
+    path: '', loadChildren: 'app/modules/manage/manage.module#ManageModule'
   },
   {
     path: '', loadChildren: 'app/modules/public/public.module#PublicModule'

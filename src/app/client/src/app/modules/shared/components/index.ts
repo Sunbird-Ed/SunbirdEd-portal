@@ -1,6 +1,5 @@
 export * from './app-loader/app-loader.component';
 export * from './no-result/no-result.component';
-export * from './page-section/page-section.component';
 export * from './share-link/share-link.component';
 export * from './card/card.component';
 export * from './card-creation/card-creation.component';

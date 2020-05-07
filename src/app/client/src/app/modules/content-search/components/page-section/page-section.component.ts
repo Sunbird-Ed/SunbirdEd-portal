@@ -1,12 +1,12 @@
 import { ActivatedRoute } from '@angular/router';
-import { ResourceService, ConfigService } from '../../services';
+import { ResourceService, ConfigService, ICaraouselData } from '@sunbird/shared';
 import { Component, Input, EventEmitter, Output, OnDestroy, Inject, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { ICaraouselData } from '../../interfaces';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
-
+import * as slick from './../../../../../assets/libs/slick-carousel';
+slick(jQuery);
 /**
  * This display a a section
  */
@@ -43,6 +43,7 @@ export class PageSectionComponent implements OnInit, OnDestroy {
 
   constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     private cdr: ChangeDetectorRef) {
+      // console.log(slick);
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   }
   playContent(event) {

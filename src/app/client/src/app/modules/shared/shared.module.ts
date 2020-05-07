@@ -1,10 +1,9 @@
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
-import { SlickModule } from 'ngx-slick';
 import { FormsModule } from '@angular/forms';
 import {
-  PageSectionComponent, NoResultComponent, AppLoaderComponent, CardComponent,
+  NoResultComponent, AppLoaderComponent, CardComponent,
   CardCreationComponent, ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent,
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
   OfflineBannerComponent, OfflineApplicationDownloadComponent, FullPageModalComponent
@@ -29,18 +28,17 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
     CommonModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule,
-    SlickModule,
     FormsModule,
     TelemetryModule,
     CommonConsumptionModule
   ],
-  declarations: [AppLoaderComponent, DateFormatPipe, PageSectionComponent,
+  declarations: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, DateFilterXtimeAgoPipe, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe],
   exports: [AppLoaderComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
-    PageSectionComponent, BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
+    BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe]
