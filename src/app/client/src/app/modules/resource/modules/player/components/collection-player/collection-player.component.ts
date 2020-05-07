@@ -411,6 +411,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
           type: this.route.snapshot.data.telemetry.type,
           pageid: this.route.snapshot.data.telemetry.pageid,
           mode: 'play',
+          duration: this.navigationhelperService.getPageLoadTime(),
           uaspec: {
             agent: deviceInfo.browser,
             ver: deviceInfo.browser_version,
