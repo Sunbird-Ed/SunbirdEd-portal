@@ -1,0 +1,50 @@
+<div class="sb-onboard">
+  <div class="sb-onboard__container">
+    <div class="sb-onboard__header">
+      <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
+      <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
+    </div>
+    <div class="sb-onboard__content">
+      <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
+      <div class="schooling-location" *ngIf="deviceProfile" [appTelemetryImpression]="telemetryImpression">
+        <form class="sb-form" [formGroup]="userDetailsForm">
+          <div class="fields-selection">
+            <div class="sb-field field-focus">
+              <sui-select class="selection" formControlName="state" [options]="allStates" labelField="name" id="states"
+                valueField="code" name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}" #stateDiv>
+                <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100" [value]="state">
+                </sui-select-option>
+              </sui-select>
+              <label class="d-flex font-weight-normal">{{resourceService?.frmelmnts?.lbl?.state}}:</label>
+            </div>
+            <div class="sb-field field-focus onboard-content mt-16">
+              <sui-select [disabled]="showDistrictDivLoader" class="selection" formControlName="district"
+                [options]="allDistricts" id="districts" labelField="name" valueField="code" name="district"
+                placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
+                <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"
+                  [value]="district">
+                </sui-select-option>
+              </sui-select>
+              <label class="d-flex font-weight-normal">{{resourceService?.frmelmnts?.lbl?.district}}:</label>
+            </div>
+          </div>
+          <div class="py-16">{{resourceService?.messages?.imsg?.m0074}}</div>
+        </form>
+      </div>
+    </div>
+
+    <div class="sb-onboard__footer">
+      <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100" type="submit"
+        [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" [disabled]="!enableSubmitBtn"
+        (click)="updateUserLocation()">{{resourceService?.frmelmnts?.btn?.submit}}
+        <span class='arrow-icon'>
+          <em class="icon-svg icon-svg--xxs icon-back">
+            <svg class="icon icon-svg--white">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-right"></use>
+            </svg>
+          </em>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
