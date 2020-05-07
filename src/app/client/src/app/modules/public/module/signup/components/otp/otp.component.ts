@@ -15,6 +15,7 @@ import {IEndEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/te
 export class OtpComponent implements OnInit {
 
   @Input() signUpdata: any;
+  @Input() isMinor: boolean = false;
   @Input() tncLatestVersion: any;
   @Output() redirectToParent = new EventEmitter();
   otpForm: FormGroup;
@@ -209,6 +210,9 @@ export class OtpComponent implements OnInit {
         'type': this.mode
       }
     };
+    if (this.isMinor) {
+      request.request['templateId'] = this.configService.constants.TEMPLATES.VERIFY_OTP_MINOR;
+    }
     this.signupService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
         this.errorMessage = '';
