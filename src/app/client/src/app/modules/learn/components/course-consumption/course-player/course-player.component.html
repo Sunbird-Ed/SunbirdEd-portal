@@ -221,3 +221,18 @@
   (close)="showContentCreditsModal = false">
 </app-content-credits>
 <router-outlet></router-outlet>
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+    appBodyScroll (dismissed)="closeJoinTrainingModal()" *ngIf="showJoinTrainingModal">
+    <!--Header-->
+    <div class="sb-modal-header">
+        {{resourceService.frmelmnts.btn.enroll}}
+    </div>
+    <!--/Header-->
+    <!--Content-->
+    <div class="sb-modal-content">
+        <div class="ui center aligned segment">
+            <p>{{resourceService.frmelmnts.lbl.joinTrainingToAcessContent}}</p>
+        </div>
+    </div>
+    <!--/Content-->
+</sui-modal>
