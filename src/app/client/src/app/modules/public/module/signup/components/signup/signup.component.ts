@@ -332,6 +332,9 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
         'type': this.signUpForm.controls.contactType.value.toString()
       }
     };
+    if (this.isMinor) {
+      request.request['templateId'] = this.configService.constants.TEMPLATES.VERIFY_OTP_MINOR;
+    }
     this.signupService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
         this.showSignUpForm = false;

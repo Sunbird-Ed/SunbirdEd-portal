@@ -1,6 +1,7 @@
 {
   "TEMPLATES": {
-    "RESET_PASSWORD_TEMPLATE": "resetPasswordWithOtp"
+    "RESET_PASSWORD_TEMPLATE": "resetPasswordWithOtp",
+    "VERIFY_OTP_MINOR": "verifyPhoneOtpTemplateWard"
   },
   "HTTP_STATUS_CODES": {
     "OTP_VERIFICATION_FAILED": "OTP_VERIFICATION_FAILED"
