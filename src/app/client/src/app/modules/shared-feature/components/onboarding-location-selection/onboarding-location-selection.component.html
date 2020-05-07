@@ -2,7 +2,7 @@
   <div class="sb-onboard__container">
     <div class="sb-onboard__header">
       <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
-      <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.name}}</h1>
+      <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
     </div>
     <div class="sb-onboard__content">
       <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
@@ -18,7 +18,7 @@
               <label class="d-flex font-weight-normal">{{resourceService?.frmelmnts?.lbl?.state}}:</label>
             </div>
             <div class="sb-field field-focus onboard-content mt-16">
-              <sui-select *ngIf="!showDistrictDivLoader" class="selection" formControlName="district"
+              <sui-select [disabled]="showDistrictDivLoader" class="selection" formControlName="district"
                 [options]="allDistricts" id="districts" labelField="name" valueField="code" name="district"
                 placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
                 <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"

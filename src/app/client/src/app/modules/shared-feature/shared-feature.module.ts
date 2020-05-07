@@ -1,11 +1,11 @@
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { NgModule , ModuleWithProviders} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
   OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
-  UserLocationComponent
+  UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent
 } from './components';
 import { SlickModule } from 'ngx-slick';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -13,9 +13,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
-import { UserOnboardingComponent } from './components/user-onboarding/user-onboarding.component';
-import { OnboardingUserSelectionComponent } from './components/onboarding-user-selection/onboarding-user-selection.component';
-import { OnboardingLocationSelectionComponent } from './components/onboarding-location-selection/onboarding-location-selection.component';
 
 @NgModule({
   imports: [

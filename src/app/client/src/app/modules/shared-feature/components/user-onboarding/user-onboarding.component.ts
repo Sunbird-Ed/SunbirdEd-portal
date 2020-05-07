@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { IImpressionEventInput, IInteractEventInput, TelemetryService } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { Subject } from 'rxjs';
 import { TenantService } from '@sunbird/core';
 import { takeUntil } from 'rxjs/operators';
+import { IDeviceProfile } from '../../interfaces';
+import { ITenantData } from './../../../core/services/tenant/interfaces/tenant';
 
-interface IGuestList {
-  name: string;
-  icon: string;
-  isActive: boolean;
+export enum Stage {
+  USER_SELECTION = 'user',
+  LOCATION_SELECTION = 'location'
 }
 @Component({
   selector: 'app-user-onboarding',
@@ -19,22 +19,19 @@ interface IGuestList {
 })
 export class UserOnboardingComponent implements OnInit {
 
-  @Input() userLocationDetails: any;
-  @Input() deviceProfile: any;
-  @Input() isCustodianOrgUser: any;
-  @Output() close = new EventEmitter<any>();
-
+  @Input() deviceProfile: IDeviceProfile;
+  @Input() isCustodianOrgUser: boolean;
+  @Output() close = new EventEmitter<void>();
   @ViewChild('onboardingModal') onboardingModal;
 
-  guestList: IGuestList[] = [];
-  stage = 1;
-  tenantInfo: any = {};
+  get Stage() { return Stage; }
+  stage = Stage.USER_SELECTION;
+  tenantInfo: ITenantData;
   private unsubscribe$ = new Subject<void>();
 
   constructor(
     public resourceService: ResourceService,
     public toasterService: ToasterService,
-    private telemetryService: TelemetryService,
     public popupControlService: PopupControlService,
     public tenantService: TenantService) {
   }
@@ -45,14 +42,14 @@ export class UserOnboardingComponent implements OnInit {
       .subscribe(data => {
         /* istanbul ignore else*/
         if (_.get(data, 'tenantData')) {
-          this.tenantInfo.logo = data.tenantData.logo;
-          this.tenantInfo.name = data.tenantData.titleName || this.resourceService.instance;
+          this.tenantInfo = data.tenantData;
+          this.tenantInfo.titleName = data.tenantData.titleName || this.resourceService.instance;
         }
       });
   }
 
   userTypeSubmit() {
-    this.stage = 2;
+    this.stage = Stage.LOCATION_SELECTION;
   }
 
   locationSubmit() {

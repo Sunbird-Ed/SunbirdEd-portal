@@ -5,6 +5,7 @@ import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService, IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NavigationHelperService } from '@sunbird/shared';
+import { ITenantData } from './../../../core/services/tenant/interfaces/tenant';
 
 interface IGuest {
   name: string;
@@ -20,7 +21,7 @@ interface IGuest {
 })
 export class OnboardingUserSelectionComponent implements OnInit {
 
-  @Input() tenantInfo: any;
+  @Input() tenantInfo: ITenantData;
   @Output() userSelect = new EventEmitter<boolean>();
 
   guestList: IGuest[] = [];
@@ -49,7 +50,7 @@ export class OnboardingUserSelectionComponent implements OnInit {
         name: 'student',
         label: this.resourceService.frmelmnts.lbl.student,
         icon: 'assets/images/guest-img2.svg',
-        isActive: true
+        isActive: false
       },
       {
         name: 'other',
@@ -58,7 +59,6 @@ export class OnboardingUserSelectionComponent implements OnInit {
         isActive: false
       }
     ];
-    this.selectedUserType = this.guestList[1];
     this.setPopupInteractEdata();
   }
 

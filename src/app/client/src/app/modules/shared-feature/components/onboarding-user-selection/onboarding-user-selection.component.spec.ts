@@ -18,10 +18,6 @@ describe('OnboardingUserSelectionComponent', () => {
         student: 'Student',
         other: 'Other'
       }
-    },
-    messages: {
-      fmsg: { m0097: 'Something went wrong' },
-      stmsg: { contentLocationChanged: 'Content location changed successfully, try to download content now.' }
     }
   };
 
@@ -53,7 +49,7 @@ describe('OnboardingUserSelectionComponent', () => {
     spyOn(component, 'setPopupInteractEdata');
     component.ngOnInit();
     expect(component.setPopupInteractEdata).toHaveBeenCalled();
-    expect(component.selectedUserType).toEqual(component.guestList[1]);
+    expect(component.selectedUserType).toEqual(undefined);
   });
 
   it('should call selectUserType', () => {

@@ -2,7 +2,7 @@
   <div class="sb-onboard__container">
     <div class="sb-onboard__header">
       <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
-      <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.name}}</h1>
+      <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
     </div>
     <div class="sb-onboard__content">
       <div class="animation">
@@ -22,8 +22,8 @@
       </div>
     </div>
     <div class="sb-onboard__footer">
-      <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100" type="submit"
-        (click)="submit()" appTelemetryInteract [telemetryInteractEdata]="userSelectionInteractEdata">
+      <button type="button" *ngIf="selectedUserType" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100"
+        type="submit" (click)="submit()" appTelemetryInteract [telemetryInteractEdata]="userSelectionInteractEdata">
         {{resourceService?.frmelmnts?.lbl?.continue}}
         <span class='arrow-icon'>
           <em class="icon-svg icon-svg--xxs icon-back">

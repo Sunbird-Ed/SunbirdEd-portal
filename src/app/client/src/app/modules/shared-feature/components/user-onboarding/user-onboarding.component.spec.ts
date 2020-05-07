@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { UserOnboardingComponent } from './user-onboarding.component';
+import { UserOnboardingComponent, Stage } from './user-onboarding.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
@@ -43,13 +43,13 @@ describe('UserOnboardingComponent', () => {
     const tenantData = { 'appLogo': '/appLogo.png', 'favicon': '/favicon.ico', 'logo': '/logo.png', 'titleName': 'SUNBIRD' };
     tenantService._tenantData$.next({ err: null, tenantData: tenantData });
     component.ngOnInit();
-    expect(component.tenantInfo.name).toEqual('SUNBIRD');
+    expect(component.tenantInfo.titleName).toEqual('SUNBIRD');
     expect(component.tenantInfo.logo).toEqual('/logo.png');
   });
 
   it('should call userTypeSubmit', () => {
     component.userTypeSubmit();
-    expect(component.stage).toBe(2);
+    expect(component.stage).toBe(Stage.LOCATION_SELECTION);
   });
 
   it('should call locationSubmit', () => {

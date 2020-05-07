@@ -9,6 +9,8 @@ import { IImpressionEventInput, IInteractEventInput, TelemetryService } from '@s
 import { map } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
 import { PopupControlService } from '../../../../service/popup-control.service';
+import { IDeviceProfile } from '../../interfaces';
+import { ITenantData } from './../../../core/services/tenant/interfaces/tenant';
 
 @Component({
   selector: 'app-onboarding-location-selection',
@@ -17,10 +19,10 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 })
 export class OnboardingLocationSelectionComponent implements OnInit {
 
-  @Input() deviceProfile: any;
-  @Input() isCustodianOrgUser: any;
-  @Input() tenantInfo: any;
-  @Output() close = new EventEmitter<any>();
+  @Input() deviceProfile: IDeviceProfile;
+  @Input() isCustodianOrgUser: boolean;
+  @Input() tenantInfo: ITenantData;
+  @Output() close = new EventEmitter<void>();
   @ViewChild('stateDiv') stateDiv;
   @ViewChild('districtDiv') districtDiv;
 
