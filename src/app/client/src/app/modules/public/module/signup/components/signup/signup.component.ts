@@ -29,6 +29,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   sbFormBuilder: FormBuilder;
   showContact = 'phone';
   disableSubmitBtn = true;
+  disableForm = true;
   showPassword = false;
   captchaResponse = '';
   googleCaptchaSiteKey: string;
@@ -100,13 +101,14 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.signUpTelemetryStart();
 
     this.initiateYearSelecter();
-    // diabling the form as age should be selected
+    // disabling the form as age should be selected
     this.signUpForm.disable();
   }
 
 
   changeBirthYear(selectedBirthYear) {
     this.signUpForm.enable();
+    this.disableForm = false;
     const currentYear = new Date().getFullYear();
     const userAge = currentYear - selectedBirthYear;
     this.isMinor = userAge < this.configService.constants.SIGN_UP.MINIMUN_AGE;

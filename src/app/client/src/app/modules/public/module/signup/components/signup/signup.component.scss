@@ -106,7 +106,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 .ui.form .field>label {
     font-size:  calculateRem(14px) !important;
-    font-weight: normal;
+    line-height:normal;
 }
 .width-300 {
     width: calculateRem(300px) !important;
@@ -172,6 +172,7 @@ input[type=number]::-webkit-inner-spin-button {
   background-size: cover;
   width: 100%;
   position: relative;
+  height:100%;
 
   @media screen and (min-width: 768px) {
     position: fixed;
@@ -219,6 +220,7 @@ input[type=number]::-webkit-inner-spin-button {
     font-size: $font-size-xs !important;
     color: $gray-200;
     border: none !important;
+    font-weight: normal;
     &:focus, &:hover{
         outline: none;
         border: none !important;
@@ -258,14 +260,21 @@ input[type=number]::-webkit-inner-spin-button {
   font-size: 14px;
   align-items: center;
   justify-content: center;
-  margin: 8px 0px;
+  margin: calculateRem(8px) 0px;
 
   label {
     margin-bottom: 0px;
-    margin-right: 4px;
+    margin-right: calculateRem(4px);
   }
 
   .ui.selection.dropdown {
-    min-width: 140px;
+    min-width: calculateRem(80px);
+    line-height: 1.8;
   }
+}
+form.Off {
+  opacity:0.5;
+}
+form.On {
+  opacity:1;
 }
