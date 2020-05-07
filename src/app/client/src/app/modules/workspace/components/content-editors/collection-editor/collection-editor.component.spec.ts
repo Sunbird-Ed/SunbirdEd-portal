@@ -100,4 +100,12 @@ describe('CollectionEditorComponent', () => {
     component.closeModal();
     expect(component.retireLock).toHaveBeenCalled();
   }));
+
+  it('should set window config nodeDisplayCriteria to CourseUnit if the content type is CurriculumCourse', () => {
+    component['routeParams'] = {type: 'curriculumcourse'};
+    const windowConfigData = { contentType: ['CourseUnit'] };
+    spyOn<any>(component, 'updateModeAndStatus').and.stub();
+    component['setWindowConfig']();
+    expect(window.config.nodeDisplayCriteria).toEqual(windowConfigData);
+  });
 });
