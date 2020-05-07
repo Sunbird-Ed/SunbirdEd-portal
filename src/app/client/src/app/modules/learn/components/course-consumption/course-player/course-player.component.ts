@@ -361,8 +361,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       || this.courseStatus === 'Unlisted' || this.permissionService.checkRolesPermissions(this.previewContentRoles)
       || this.courseHierarchy.createdBy === this.userService.userid) {
       this.router.navigate([], navigationExtras);
-    }
-    if (!this.enrolledCourse) {
+    } else if (!this.enrolledCourse) {
       this.showJoinTrainingModal = true;
     }
   }
