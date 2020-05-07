@@ -17,3 +17,4 @@ export * from './offline-banner/offline-banner.component';
 export * from './offline-application-download/offline-application-download.component';
 export * from './full-page-modal/full-page-modal.component';
 export * from './account-merge-modal/account-merge-modal.component';
+export * from './confirm-popup/confirm-popup.component';

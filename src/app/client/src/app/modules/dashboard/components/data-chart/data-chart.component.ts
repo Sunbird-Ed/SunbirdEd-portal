@@ -2,8 +2,8 @@
  * Component to render & apply filter on admin chart
  * @author Ravinder Kumar
  */
-
-import { UsageService } from './../../services';
+import { EventEmitter, Output } from '@angular/core';
+import { UsageService, ReportService } from './../../services';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
@@ -11,7 +11,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription, Subject, timer } from 'rxjs';
+import { Subscription, Subject, timer, of } from 'rxjs';
 import { distinctUntilChanged, map, debounceTime, takeUntil, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
@@ -26,6 +26,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input() chartInfo: any;
   @Input() telemetryInteractObject: IInteractEventObject;
   @Input() hideElements = false;
+  @Input() isUserReportAdmin = false;
+  @Output() openAddSummaryModal = new EventEmitter();
   public unsubscribe = new Subject<void>();
   // contains the chart configuration
   chartConfig: any;
@@ -66,6 +68,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
   lastUpdatedOn: any;
   showLastUpdatedOn: Boolean = false;
   showChart: Boolean = false;
+  chartSummary$: any;
+  private _chartSummary: string;
 
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
   @ViewChild('chartRootElement') chartRootElement;
@@ -83,7 +87,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder,
     private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
-    private usageService: UsageService) {
+    private usageService: UsageService, private reportService: ReportService) {
     this.alwaysShowCalendars = true;
   }
 
@@ -162,7 +166,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private checkForExternalChart() {
+  private checkForExternalChart(): boolean {
     const iframeConfig = _.get(this.chartConfig, 'iframeConfig');
     if (iframeConfig) {
       if (_.get(iframeConfig, 'sourceUrl')) {
@@ -202,12 +206,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
     const refreshInterval = _.get(this.chartConfig, 'options.refreshInterval');
     if (refreshInterval) { this.refreshChartDataAfterInterval(refreshInterval); }
     this.filters = _.get(this.chartConfig, 'filters') || [];
+    this.chartSummary$ = this.getChartSummary();
   }
 
   refreshChartDataAfterInterval(interval) {
     timer(interval, interval).pipe(
       switchMap(val => {
-        return this.usageService.getData(_.get(this.chartInfo, 'downloadUrl'));
+        return this.usageService.getData(_.head(_.get(this.chartInfo, 'downloadUrl')).path);
       }),
       takeUntil(this.unsubscribe)
     ).subscribe(apiResponse => {
@@ -325,6 +330,40 @@ export class DataChartComponent implements OnInit, OnDestroy {
       return _.get(this.chartOptions, 'scales.yAxes') && _.every(this.chartOptions.scales.yAxes, 'stacked');
     }
     return false;
+  }
+
+  public addChartSummary(): void {
+    const chartId = _.get(this.chartConfig, 'id');
+    if (chartId) {
+      this.openAddSummaryModal.emit({
+        title: 'Add Chart Summary',
+        type: 'chart',
+        chartId,
+        ...(this._chartSummary && { summary: this._chartSummary })
+      });
+    } else {
+      this.toasterService.error('Chart id is not present');
+    }
+  }
+
+  public getChartSummary() {
+    const chartId = _.get(this.chartConfig, 'id');
+    if (_.get(this.chartConfig, 'id')) {
+      return this.reportService.getLatestSummary({ reportId: this.activatedRoute.snapshot.params.reportId, chartId }).pipe(
+        map(chartSummary => {
+          return _.map(chartSummary, summaryObj => {
+            const summary = _.get(summaryObj, 'summary');
+            this._chartSummary = summary;
+            return {
+              label: 'Chart Summary',
+              text: [summary]
+            };
+          });
+        })
+      );
+    } else {
+      return of([]);
+    }
   }
 
 }

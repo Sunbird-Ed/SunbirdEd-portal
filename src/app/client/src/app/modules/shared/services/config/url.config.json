@@ -28,7 +28,12 @@
     "PAGE_PREFIX": "data/v1/page/assemble",
     "REPORT": {
       "READ": "/get",
-      "LIST": "/list"
+      "LIST": "/list",
+      "UPDATE": "/update",
+      "SUMMARY": {
+        "PREFIX": "/summary",
+        "CREATE": "/summary/create"
+      }
     },
     "RESOURCEBUNDLES": {
       "ENG": "/read"
