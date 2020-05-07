@@ -17,3 +17,23 @@ export const CourseHierarchyGetMockResponse = {
     }
   }
 };
+
+export const telemetryInteractMockData = {
+  'context': {
+      'env': 'explore-course',
+      'cdata': []
+  },
+  'edata': {
+      'id': 'join-training-popup-close',
+      'type': 'click',
+      'pageid': 'explore-course-toc'
+  },
+  'object': {
+      'id': 'do_212347136096788480178',
+      'type': 'Course',
+      'ver': '1.0',
+      'rollup': {
+          'l1': 'do_212347136096788480178'
+      }
+  }
+};

@@ -12,7 +12,7 @@
     [routerLink]="['create']" [class.active]="router.isActive('/workspace/content/create', true)">
     {{resourceService?.frmelmnts?.snav?.textbook}}<span></span>
   </a>
-  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('training-button')" class="item ml-15 fs-0-785" *ngIf='permissionService.permissionAvailable' appPermission [permission]='createRole'
+  <a appTelemetryInteract [telemetryInteractEdata]="setInteractData('training-button')" class="item ml-15 fs-0-785" *ngIf='permissionService.permissionAvailable' appPermission [permission]='trainingRole'
     [routerLink]="['create', 'training']" [class.active]="router.isActive('/workspace/content/create/training')">
     {{resourceService?.frmelmnts?.snav?.training}}<span></span>
   </a>
