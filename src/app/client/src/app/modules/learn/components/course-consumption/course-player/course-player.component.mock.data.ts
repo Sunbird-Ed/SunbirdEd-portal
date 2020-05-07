@@ -3880,3 +3880,22 @@ export const CourseHierarchyGetMockResponseFlagged = {
         }
     }
   };
+export const telemetryInteractMockData = {
+    'context': {
+        'env': 'course',
+        'cdata': []
+    },
+    'edata': {
+        'id': 'join-training-popup-close',
+        'type': 'click',
+        'pageid': 'course-read'
+    },
+    'object': {
+        'id': 'do_212347136096788480178',
+        'type': 'Course',
+        'ver': '1.0',
+        'rollup': {
+            'l1': 'do_212347136096788480178'
+        }
+    }
+};
