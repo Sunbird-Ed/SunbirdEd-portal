@@ -1,14 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OnboardingLocationSelectionComponent } from './onboarding-location-selection.component';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { userLocationMockData } from './onboarding-location-selection.component.spec.data';
+import { UserService, DeviceRegisterService } from '@sunbird/core';
+import { TelemetryService } from '@sunbird/telemetry';
+import { PopupControlService } from '../../../../service/popup-control.service';
+import { ProfileService } from '@sunbird/profile';
+import { CommonModule } from '@angular/common';
 
 describe('OnboardingLocationSelectionComponent', () => {
   let component: OnboardingLocationSelectionComponent;
@@ -31,9 +35,18 @@ describe('OnboardingLocationSelectionComponent', () => {
         TelemetryModule.forRoot(),
         SharedModule.forRoot(),
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        CommonModule
       ],
-      providers: [{ provide: ResourceService, useValue: resourceMockData }],
+      providers: [
+        UserService,
+        DeviceRegisterService,
+        NavigationHelperService,
+        TelemetryService,
+        PopupControlService,
+        ProfileService,
+        { provide: ResourceService, useValue: resourceMockData },
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
