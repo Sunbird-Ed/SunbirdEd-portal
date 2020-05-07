@@ -323,13 +323,16 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   generateOTP() {
-    const request = {
+    let request = {
       'request': {
         'key': this.signUpForm.controls.contactType.value === 'phone' ?
           this.signUpForm.controls.phone.value.toString() : this.signUpForm.controls.email.value,
         'type': this.signUpForm.controls.contactType.value.toString()
       }
     };
+    if (this.isMinor) {
+      request.request['templateId'] = this.configService.constants.TEMPLATES.VERIFY_OTP_MINOR;
+    }
     this.signupService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
         this.showSignUpForm = false;
