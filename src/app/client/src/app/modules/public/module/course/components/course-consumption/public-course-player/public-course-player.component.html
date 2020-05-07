@@ -41,7 +41,7 @@
               <div class="sb-pageSection-content">
                 <app-collection-tree
                   *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon"
-                  [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"></app-collection-tree>
+                  [nodes]="collectionTreeNodes" (contentSelect)="navigateToContent($event)" [options]="collectionTreeOptions"></app-collection-tree>
                 <ng-template #dataCommingSoon>
                   <div class="placeholder mt-40">
                     <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}" />
@@ -160,3 +160,19 @@
 <app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal"
   (close)="showContentCreditsModal = false"></app-content-credits>
 <router-outlet></router-outlet>
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+    appBodyScroll (dismissed)="closeJoinTrainingModal()" *ngIf="showJoinTrainingModal">
+    <!--Header-->
+    <div class="sb-modal-header">
+        {{resourceService.frmelmnts.btn.enroll}}
+    </div>
+    <!--/Header-->
+    <!--Content-->
+    <div class="sb-modal-content">
+        <div class="ui center aligned segment">
+            <p>{{resourceService.frmelmnts.lbl.joinTrainingToAcessContent}}</p>
+        </div>
+    </div>
+    <!--/Content-->
+</sui-modal>
