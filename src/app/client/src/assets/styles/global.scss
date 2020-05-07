@@ -245,6 +245,6 @@ app-workspace {
 
 .sb-modal-addsummary {
   .ck.ck-editor__editable_inline {
-    min-height: 120px;
+    min-height: calc(100vh - 271px);
   }
 }

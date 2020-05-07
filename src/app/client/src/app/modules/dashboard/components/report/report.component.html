@@ -20,7 +20,7 @@
                   <button (click)="openReportSummaryModal()" type="button"
                     class="sb-btn sb-btn-normal sb-btn-primary sb-left-icon-btn">
                     <i class="plus icon"></i>Add report Summary</button>
-                  <button (click)="onPublish($event)" *ngIf="report?.status !== 'live'" type="button"
+                  <button (click)="toggleConfirmationModal()" *ngIf="report?.status !== 'live'" type="button"
                     class="sb-btn sb-btn-normal sb-btn-secondary ml-16">Publish</button>
                 </div>
               </div>
@@ -111,6 +111,10 @@
     </div>
   </div>
 </sui-modal>
+
+<app-confirm-popup *ngIf="showConfirmationModal" (confirmation)="onPublish($event)"
+  [input]="{title: 'Confirm', body: 'Are you sure you want to publish the report ?'}">
+</app-confirm-popup>
 
 <app-add-summary-modal (closeModalEvent)="closeSummaryModal()" [input]="inputForSummaryModal"
   (submitButtonEvent)="onAddSummary($event)" *ngIf="showSummaryModal">

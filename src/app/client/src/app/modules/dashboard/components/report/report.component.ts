@@ -38,6 +38,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   private publishBtnStream$ = new Subject();
   public currentReportSummary: any;
   public showComponent = true;
+  public showConfirmationModal = false;
 
   constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
@@ -275,8 +276,15 @@ export class ReportComponent implements OnInit, AfterViewInit {
     this.addSummaryBtnClickStream$.next(event);
   }
 
-  public onPublish(event) {
-    this.publishBtnStream$.next(event);
+  public toggleConfirmationModal() {
+    this.showConfirmationModal = !this.showConfirmationModal;
+  }
+
+  public onPublish(event: boolean) {
+    if (event) {
+      this.publishBtnStream$.next(event);
+    }
+    this.toggleConfirmationModal();
   }
 
   private mergeClickEventStreams() {
