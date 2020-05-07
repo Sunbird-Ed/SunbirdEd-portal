@@ -352,6 +352,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         return this.configService.editorConfig.COLLECTION_EDITOR.COLLECTION_ARRAY;
       case 'LessonPlan':
         return this.configService.editorConfig.COLLECTION_EDITOR.LESSON_PLAN;
+      case 'CurriculumCourse':
+        return this.configService.editorConfig.COLLECTION_EDITOR.CURRICULUM_COURSE_ARRAY;
       default:
         return this.configService.editorConfig.COLLECTION_EDITOR.DEFAULT_CONFIG;
     }
