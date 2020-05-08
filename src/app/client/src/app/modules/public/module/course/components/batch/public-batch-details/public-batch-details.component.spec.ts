@@ -95,10 +95,11 @@ describe('PublicBatchDetailsComponent', () => {
   });
   it('should show login modal if user is not loggedin on click of enroll button', () => {
       const courseBatchService = TestBed.get(CourseBatchService);
+      spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
       const userService = TestBed.get(UserService);
       component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
       component.ngOnInit();
-      component.enrollBatch();
+      component.enrollBatch(component.batchList[0].identifier);
       expect(component.showLoginModal).toBeTruthy();
   });
 });
