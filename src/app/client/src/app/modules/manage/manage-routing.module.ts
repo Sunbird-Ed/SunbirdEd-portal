@@ -6,7 +6,7 @@ import { UserUploadComponent } from './components/user-upload/user-upload.compon
 
 const routes: Routes = [
   {path: 'manage', component: UserOrgManagementComponent, canActivate: [AuthGuard], data: {
-    roles: 'dashboardRole',
+    roles: 'bulkUpload',
     telemetry: {
       env: 'admin-dashboard', pageid: 'admin-manage-page', type: 'view'
     }
