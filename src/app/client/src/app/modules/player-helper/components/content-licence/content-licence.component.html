@@ -42,7 +42,12 @@
                 <h4 class="title">{{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</h4>
                 <p class="description">{{content.originData.author}}</p>
             </div>
-  
+
+            <div class="sb-meta-data mb-16" *ngIf="content.originData.license">
+              <h4 class="title">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</h4>
+              <p class="description">{{content.originData.license}}</p>
+            </div>
+
             <div class="sb-meta-data mb-16" *ngIf="content.originData.organisation">
               <h4 class="title"
                 [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
