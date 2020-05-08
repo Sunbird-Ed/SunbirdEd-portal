@@ -10,9 +10,9 @@
           <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
             class="sb-account-header-text  text-center">
             {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</div>
-          <div class="year-birth required">
-            <label class="mr-16"> {{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
-            <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.yearOfBirth}}"
+          <div class="year-birth my-24 required">
+            <label class="mr-16">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
+            <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
                         (selectedOptionChange)="changeBirthYear($event)"
                         #select>
               <sui-select-option *ngFor="let option of select.filteredOptions"
@@ -20,7 +20,7 @@
               </sui-select-option>
             </sui-select>
           </div>
-          <form class="ui form borderd" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
+          <form class="ui form borderd" [ngClass]="{'Off':disableForm, 'On':!disableForm}" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts.lbl.fnameLname}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
             <div class="required field mb-20">
