@@ -20,6 +20,7 @@ import {
   AllContentComponent, FlagReviewerComponent, AllMyContentFilterComponent, CollaboratingOnComponent,
   CollaborationContentFilterComponent
 } from './components';
+import { DateFilterXtimeAgoPipe } from './pipes';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
@@ -42,7 +43,7 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     PlayerHelperModule,
     ContentSearchModule
   ],
-  declarations: [WorkspaceComponent, WorkspacesidebarComponent,
+  declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
     ContentEditorComponent, GenericEditorComponent, UpForReviewComponent, UpforReviewFilterComponent,
@@ -62,6 +63,6 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
   ],
-  providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService]
+  providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })
 export class WorkspaceModule { }

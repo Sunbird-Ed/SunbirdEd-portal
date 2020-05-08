@@ -60,7 +60,7 @@ describe('UserOrgManagementComponent', () => {
         SuiModule, CoreModule
       ],
       declarations: [
-        UserOrgManagementComponent
+        UserOrgManagementComponent, UserUploadComponent
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [

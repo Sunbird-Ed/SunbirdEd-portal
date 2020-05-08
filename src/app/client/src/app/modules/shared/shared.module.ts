@@ -15,7 +15,7 @@ import {
 import { ContentDirectionDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { DateFormatPipe, DateFilterXtimeAgoPipe, FilterPipe, InterpolatePipe, SortByPipe } from './pipes';
+import { DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe } from './pipes';
 import { CacheService } from 'ng2-cache-service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -30,14 +30,13 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
     SuiRatingModule, SuiCollapseModule,
     FormsModule,
     TelemetryModule,
-    CommonConsumptionModule
   ],
   declarations: [AppLoaderComponent, DateFormatPipe,
-    BatchCardComponent, NoResultComponent, DateFilterXtimeAgoPipe, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
+    BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe],
-  exports: [AppLoaderComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
+  exports: [AppLoaderComponent, DateFormatPipe,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,

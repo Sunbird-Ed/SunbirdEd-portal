@@ -16,6 +16,7 @@ import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } 
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
+// TODO: Remove replace moment with dayjs in all components
 /**
  * main app component
  */
