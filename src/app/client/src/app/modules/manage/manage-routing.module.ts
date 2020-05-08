@@ -1,10 +1,12 @@
+import { AuthGuard } from './../core/guard/auth-gard.service';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UserOrgManagementComponent } from './components/user-org-management/user-org-management.component';
 import { UserUploadComponent } from './components/user-upload/user-upload.component';
 
 const routes: Routes = [
-  {path: 'manage', component: UserOrgManagementComponent, data: {
+  {path: 'manage', component: UserOrgManagementComponent, canActivate: [AuthGuard], data: {
+    roles: 'dashboardRole',
     telemetry: {
       env: 'admin-dashboard', pageid: 'admin-manage-page', type: 'view'
     }
