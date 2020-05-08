@@ -33,6 +33,8 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   public videoMaxSize: any;
+  contentEditorCDN: string = (<HTMLInputElement>document.getElementById('contentEditorCDN'))
+  ? (<HTMLInputElement>document.getElementById('contentEditorCDN')).value : '/thirdparty/editors/content-editor/index.html?';
 
   /**
   * Default method of class ContentEditorComponent
@@ -159,7 +161,7 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
     jQuery('#contentEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/content-editor/index.html?' + this.buildNumber,
+      iframeURL: this.contentEditorCDN + this.buildNumber,
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,

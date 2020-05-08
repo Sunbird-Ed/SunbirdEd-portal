@@ -40,6 +40,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   resource_framework: string;
+  collectionEditorCDN: string = (<HTMLInputElement>document.getElementById('collectionEditorCDN'))
+  ? (<HTMLInputElement>document.getElementById('collectionEditorCDN')).value : '/thirdparty/editors/collection-editor/index.html?';
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -167,7 +169,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/collection-editor/index.html?' + this.buildNumber,
+      iframeURL: this.collectionEditorCDN + this.buildNumber,
       navigateArrows: false,
       fullscreen: false,
       openFullscreen: true,
