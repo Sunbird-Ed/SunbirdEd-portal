@@ -1,3 +1,4 @@
+import { CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
@@ -12,6 +13,7 @@ import { By } from '@angular/platform-browser';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReportService } from '../../services';
 
 describe('DataChartComponent', () => {
     let component: DataChartComponent;
@@ -22,10 +24,13 @@ describe('DataChartComponent', () => {
             declarations: [DataChartComponent],
             schemas: [NO_ERRORS_SCHEMA],
             imports: [ChartsModule, SuiModule, ReactiveFormsModule, SharedModule.forRoot(), HttpClientTestingModule,
-                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule],
-            providers: [{
+                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule, CoreModule],
+            providers: [ReportService, {
                 provide: ActivatedRoute, useValue: {
                     snapshot: {
+                        params: {
+                            reportId: '123'
+                        },
                         data: {
                             telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' }
                         }
