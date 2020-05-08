@@ -62,7 +62,6 @@ export class VerifyAccountIdentifierComponent implements OnInit {
       }, error => {
         this.form.controls.otp.reset();
         this.handleError(error);
-        this.disableFormSubmit = false;
       }
     );
   }
