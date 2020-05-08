@@ -103,12 +103,39 @@ describe('OtpComponent', () => {
     expect(component.errorMessage).toBe('');
   });
 
-  it('it should not resend the otp', () => {
+  it('it should resend otp with minor user', () => {
+    const signupService = TestBed.get(SignupService);
+    component.isMinor = true;
+    spyOn(signupService, 'generateOTP').and.returnValue(observableOf(OtpComponentMockResponse.generateOtpSuccessResponse));
+    const contactType = component.signUpdata.controls['contactType'];
+    contactType.setValue('phone');
+    const phone = component.signUpdata.controls['phone'];
+    phone.setValue(OtpComponentMockResponse.generateOtpMinor.request.key);
+    component.resendOTP();
+    expect(component.errorMessage).toBe('');
+    expect(signupService.generateOTP).toHaveBeenCalledWith(OtpComponentMockResponse.generateOtpMinor);
+  });
+
+  it('it should throw error for resend the otp for minor user', () => {
     component.errorMessage = OtpComponentMockResponse.resourceBundle.messages.fmsg.m0085;
     const signupService = TestBed.get(SignupService);
     spyOn(signupService, 'generateOTP').and.callFake(() => observableThrowError(OtpComponentMockResponse.verifyOtpErrorResponse));
     component.resendOTP();
     expect(component.errorMessage).toBe('There was a technical error. Try again.');
+  });
+
+  it('it should not resend the otp', () => {
+    component.errorMessage = OtpComponentMockResponse.resourceBundle.messages.fmsg.m0085;
+    const signupService = TestBed.get(SignupService);
+    component.isMinor = false;
+    const contactType = component.signUpdata.controls['contactType'];
+    contactType.setValue('phone');
+    const phone = component.signUpdata.controls['phone'];
+    phone.setValue(OtpComponentMockResponse.generateOtpMinor.request.key);
+    spyOn(signupService, 'generateOTP').and.callFake(() => observableThrowError(OtpComponentMockResponse.verifyOtpErrorResponse));
+    component.resendOTP();
+    expect(component.errorMessage).toBe('There was a technical error. Try again.');
+    expect(signupService.generateOTP).toHaveBeenCalledWith(OtpComponentMockResponse.generateOtp);
   });
 
   it('it should not create new user as create user api failed', () => {
