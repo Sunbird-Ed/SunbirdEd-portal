@@ -15,7 +15,7 @@ import {IEndEventInput, IInteractEventEdata, TelemetryService} from '@sunbird/te
 export class OtpComponent implements OnInit {
 
   @Input() signUpdata: any;
-  @Input() isMinor: boolean = false;
+  @Input() isMinor: boolean;
   @Input() tncLatestVersion: any;
   @Output() redirectToParent = new EventEmitter();
   otpForm: FormGroup;
