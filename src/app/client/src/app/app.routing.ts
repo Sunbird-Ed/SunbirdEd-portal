@@ -40,7 +40,7 @@ const appRoutes: Routes = [
     path: 'get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
   },
   {
-    path: '', loadChildren: 'app/modules/manage/manage.module#ManageModule'
+    path: 'manage', loadChildren: 'app/modules/manage/manage.module#ManageModule'
   },
   {
     path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
