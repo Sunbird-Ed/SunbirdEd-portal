@@ -76,5 +76,18 @@ export const SignUpComponentMockData = {
       level: 'SUCCESS',
       message: 'fetch-terms-condition success'
     }
+  },
+  generateOtpMinor: {
+    'request': {
+      'key': '9999999999',
+      'type': 'phone',
+      'templateId': 'verifyPhoneOtpTemplateWard'
+    }
+  },
+  generateOtp: {
+    'request': {
+      'key': '9999999999',
+      'type': 'phone'
+    }
   }
 };
