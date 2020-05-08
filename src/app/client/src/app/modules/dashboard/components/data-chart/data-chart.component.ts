@@ -336,7 +336,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     const chartId = _.get(this.chartConfig, 'id');
     if (chartId) {
       this.openAddSummaryModal.emit({
-        title: 'Add Chart Summary',
+        title: `Add ${_.get(this.resourceService, 'frmelmnts.lbl.chartSummary')}`,
         type: 'chart',
         chartId,
         ...(this._chartSummary && { summary: this._chartSummary })
@@ -355,7 +355,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
             const summary = _.get(summaryObj, 'summary');
             this._chartSummary = summary;
             return {
-              label: 'Chart Summary',
+              label: _.get(this.resourceService, 'frmelmnts.lbl.chartSummary'),
               text: [summary]
             };
           });

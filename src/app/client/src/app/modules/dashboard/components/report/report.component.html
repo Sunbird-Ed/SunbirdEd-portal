@@ -19,7 +19,7 @@
                 <div *ngIf="isUserReportAdmin && !hideElements" class="d-flex flex-ai-center">
                   <button (click)="openReportSummaryModal()" type="button"
                     class="sb-btn sb-btn-normal sb-btn-primary sb-left-icon-btn">
-                    <i class="plus icon"></i>Add report Summary</button>
+                    <i class="plus icon"></i>Add {{ resourceService?.frmelmnts?.lbl?.reportSummary}}</button>
                   <button (click)="toggleConfirmationModal()" *ngIf="report?.status !== 'live'" type="button"
                     class="sb-btn sb-btn-normal sb-btn-secondary ml-16">Publish</button>
                 </div>
@@ -113,7 +113,7 @@
 </sui-modal>
 
 <app-confirm-popup *ngIf="showConfirmationModal" (confirmation)="onPublish($event)"
-  [input]="{title: 'Confirm', body: 'Are you sure you want to publish the report ?'}">
+  [input]="{title: 'Confirm', body: resourceService?.messages?.imsg?.confirmReportPublish}">
 </app-confirm-popup>
 
 <app-add-summary-modal (closeModalEvent)="closeSummaryModal()" [input]="inputForSummaryModal"

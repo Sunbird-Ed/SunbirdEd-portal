@@ -1,3 +1,4 @@
+import { SharedModule } from '@sunbird/shared';
 import { ISummaryObject } from './../../interfaces';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -13,7 +14,7 @@ describe('AddSummaryModalComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AddSummaryModalComponent],
-      imports: [SuiModule, ReactiveFormsModule]
+      imports: [SuiModule, ReactiveFormsModule, SharedModule.forRoot()]
     })
       .compileComponents();
   }));

@@ -1,4 +1,5 @@
 import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { ResourceService } from '../../services';
 
 interface InputType {
   title: string;
@@ -15,6 +16,10 @@ export class ConfirmPopupComponent {
   @Input() input: InputType;
   @Output() confirmation = new EventEmitter<boolean>();
   @ViewChild('modal') modal;
+
+  constructor(private resourceService: ResourceService) {
+
+  }
 
   public confirm(confirm: boolean): void {
     this.confirmation.emit(confirm);

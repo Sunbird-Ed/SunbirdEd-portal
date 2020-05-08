@@ -246,7 +246,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
 
   public openReportSummaryModal(): void {
     this.openAddSummaryModal({
-      title: 'Add Report Summary',
+      title: `Add ${_.get(this.resourceService, 'frmelmnts.lbl.reportSummary')}`,
       type: 'report',
       ...(this._reportSummary && { summary: this._reportSummary })
     });
@@ -259,7 +259,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
           const summary = _.get(summaryObj, 'summary');
           this._reportSummary = summary;
           return {
-            label: 'Report Summary',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
             text: [summary]
           };
         });
@@ -292,7 +292,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
       .subscribe(res => {
         this.refreshComponent();
       }, err => {
-        this.toasterService.error('Something went wrong. Please try again later');
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
   }
 
@@ -313,7 +313,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
         });
       }),
       tap(res => {
-        this.toasterService.info('Comment added successfully');
+        this.toasterService.info(this.resourceService.messages.imsg.reportSummaryAdded);
       })
     );
   }
@@ -341,7 +341,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
         return this.reportService.publishReport(this.activatedRoute.snapshot.params.reportId);
       }),
       tap(res => {
-        this.toasterService.info('Report Published Successfully');
+        this.toasterService.info(this.resourceService.messages.imsg.reportPublished);
         this.report.status = 'live';
       })
     );
