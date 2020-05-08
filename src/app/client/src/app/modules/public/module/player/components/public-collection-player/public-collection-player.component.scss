@@ -36,10 +36,8 @@
 
 .main-side-toc-content{
   overflow-y: auto;
-  height: calc(100vh - 265px);
-  @include respond-below(sm) {
-      height:auto;
-  }
+  max-height: calc(100vh - 265px);
+  height: auto;
 }
 ::ng-deep{
 .sb-toc-items{
