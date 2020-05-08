@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit} from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
-import { environment } from '@sunbird/environment';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
@@ -26,7 +25,6 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   */
   showFooter = true;
   showDownloadmanager: any;
-  isOffline: boolean = environment.isOffline;
   instance: string;
   bodyPaddingBottom: string;
   tenantFooter: any;
@@ -56,21 +54,21 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   onResize(event) {
     this.footerAlign();
   }
-// footer dynamic height
-footerAlign() {
-    $('.footerfix').css('height', 'auto');
+  // footer dynamic height
+  footerAlign() {
     const footerHeight = $('footer').outerHeight();
-    $('.footerfix').css('height', footerHeight);
+    const bodyHeight = $('body').outerHeight();
+
     if (window.innerWidth <= 767) {
-      (document.querySelector('.download-mobile-app') as HTMLElement).style.minHeight = 0 + 'px';
+      (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = 0 + 'px';
       (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = footerHeight + 'px';
-      (document.querySelector('body') as HTMLElement).style.paddingBottom = footerHeight + 178 + 'px';
     } else {
-      (document.querySelector('.download-mobile-app') as HTMLElement).style.minHeight = 200 + 'px';
+      (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
+      (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = footerHeight + 'px';
       (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = 0 + 'px';
-      (document.querySelector('body') as HTMLElement).style.paddingBottom = footerHeight + 67 + 'px';
     }
   }
+
   checkRouterPath() {
     this.showDownloadmanager = this.router.url.includes('/profile') || this.router.url.includes('/play/collection') ||
       this.router.url.includes('/play/content');

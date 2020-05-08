@@ -52,6 +52,11 @@ module.exports = function (app) {
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['CONTENT_CREATOR']),
         reportHelper.azureBlobStream());
+    
+    app.get('/course-reports/metadata', 
+        proxyUtils.verifyToken(), 
+        reportHelper.validateRoles(['CONTENT_CREATOR']),
+        reportHelper.getLastModifiedDate);
 
     app.get(`/reports/fetch/:slug/:filename`,
         proxyUtils.verifyToken(),

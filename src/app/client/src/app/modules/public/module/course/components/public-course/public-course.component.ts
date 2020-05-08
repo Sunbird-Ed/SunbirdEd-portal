@@ -138,7 +138,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
     const option = {
       source: 'web',
-      name: 'AnonymousCourse',
+      name: 'Course',
       organisationId: this.hashTagId || '*',
       filters: filters,
       // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
@@ -146,7 +146,6 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       // exists: [],
       params : this.configService.appConfig.ExplorePage.contentApiQueryParams
     };
-
     this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
         this.showLoader = false;
@@ -207,6 +206,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+    searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
     // searchQuery.request.filters.channel = this.hashTagId;
     // searchQuery.request.filters.board = this.dataDrivenFilters.board;
     this.cacheService.set('viewAllQuery', searchQueryParams);
@@ -232,7 +232,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
+        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         duration: this.navigationhelperService.getPageLoadTime()
       }

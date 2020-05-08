@@ -85,6 +85,7 @@ let envVariables = {
     clientSecret: env.sunbird_google_oauth_clientSecret
   },
   sunbird_google_captcha_site_key: env.sunbird_google_captcha_site_key,
+  google_captcha_private_key: env.google_captcha_private_key,
 
 
   // Android Configuration
@@ -100,6 +101,7 @@ let envVariables = {
   sunbird_azure_report_container_name: env.sunbird_azure_report_container_name || 'reports',
   sunbird_azure_account_name: env.sunbird_azure_account_name,
   sunbird_azure_account_key: env.sunbird_azure_account_key,
+  desktop_azure_crash_container_name: env.desktop_crash_container_name || 'desktopappcrashlogs',
   sunbird_portal_cdn_blob_url: env.sunbird_portal_cdn_blob_url || '',
   sunbird_portal_video_max_size: env.sunbird_portal_video_max_size || '50',
 
@@ -148,5 +150,17 @@ let envVariables = {
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')
   ? env.sunbird_cassandra_urls.split(',') : ['localhost']
 
-module.exports = envVariables
-
+// Path to dev config file
+const devConfig = __dirname + '/devConfig.js';
+try {
+  // If environment is `local`; use custom config
+  // Else default config will be used
+  if (process.env.sunbird_environment === 'local' && fs.existsSync(devConfig)) {
+    const devVariables = require('./devConfig');
+    module.exports = devVariables;
+  } else {
+    module.exports = envVariables;
+  }
+} catch (error) {
+  module.exports = envVariables;
+}

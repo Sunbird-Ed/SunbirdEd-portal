@@ -5,7 +5,6 @@ import {
   IStartEventInput, IImpressionEventInput, IExDataEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
-import { environment } from '@sunbird/environment';
 
 export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
@@ -64,9 +63,6 @@ export class TelemetryService {
    * @memberof TelemetryService
    */
   public initialize(context: ITelemetryContext) {
-    if (environment.isOffline && !(_.isEmpty(this.sessionId))) {
-      context.config.sid = this.sessionId;
-    }
     this.context = _.cloneDeep(context);
     this.telemetryProvider.initialize(this.context.config);
     this.isInitialized = true;
@@ -146,6 +142,19 @@ export class TelemetryService {
       const eventData: ITelemetryEvent = this.getEventData(errorEventInput);
       this.telemetryProvider.error(eventData.edata, eventData.options);
     }
+  }
+
+  public generateErrorEvent(data) {
+    const telemetryErrorData = {
+      context: {env: data.env},
+      edata: {
+        err: data.errorMessage,
+        errtype: data.errorType,
+        stacktrace: data.stackTrace,
+        pageid: data.pageid
+      }
+    };
+    this.error(telemetryErrorData);
   }
 
   /**

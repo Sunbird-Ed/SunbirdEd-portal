@@ -14,6 +14,7 @@
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
+    "DEVICE_PREFIX": "/device/",
     "CERT_REG_PREFIX": "/certreg/",
     "CONTENT_PREFIX": "/content/",
     "REPORT_PREFIX": "/report",
@@ -26,6 +27,7 @@
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
     "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
+    "DIAL_ASSEMBLE_PREFIX": "data/v1/dial/assemble",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
@@ -76,6 +78,7 @@
       "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId",
       "COMMING_SOON_MESSAGE":"data/v1/system/settings/get/contentComingSoonMsg",
       "TNC_CONFIG": "data/v1/system/settings/get/tncConfig",
+      "SSO_COURSE_SECTION": "data/v1/system/settings/get/ssoCourseSection",
       "TENANT_CONFIG": "data/v1/system/settings/get"
     },
     "COURSE_FRAMEWORK":{
@@ -90,7 +93,8 @@
       "ENROLL_USER_COURSE": "course/v1/enrol",
       "RECOMMENDED_COURSE": "recommended/courses",
       "UNENROLL_USER_COURSE":"course/v1/unenrol",
-      "GET_QR_CODE_FILE":"course/v1/qrcode/download"
+      "GET_QR_CODE_FILE":"course/v1/qrcode/download",
+      "GET_REPORTS_METADATA": "course-reports/metadata"
     },
     "CONTENT": {
       "SEARCH": "content/v1/search",
@@ -119,9 +123,9 @@
       "COURSE_CONSUMPTION": "dashboard/v1/consumption/course",
       "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
     },
-    "DEVICE": { 
-      "REGISTER": "v3/device/register/", 
-      "PROFILE": "v3/device/profile/" 
+    "DEVICE": {
+      "REGISTER": "register/",
+      "PROFILE": "profile/"
     },
     "NOTES": {
       "SEARCH": "notes/v1/search",
@@ -226,7 +230,12 @@
       "RETRY_DOWNLOAD":"content/v1/download/retry",
       "DELETE_CONTENT":"content/v1/delete",
       "TELEMTRY_INFO": "telemetry/v1/info",
-      "EXPORT_TELEMETRY": "telemetry/v1/export"
+      "EXPORT_TELEMETRY": "telemetry/v1/export",
+      "IMPORT_TELEMETRY": "telemetry/v1/import",
+      "IMPORT_TELEMETRY_LIST": "telemetry/v1/list",
+      "TELEMTRY_CONFIG": "telemetry/v1/config",
+      "TELEMETRY_IMPORT_RETRY": "telemetry/v1/import/retry",
+      "TELEMETRY_SYNC": "desktop/v1/sync"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
@@ -235,7 +244,8 @@
     "ELECTRON_DIALOG": {
       "CONTENT_IMPORT": "content/import",
       "CONTENT_EXPORT": "content/export",
-      "TELEMETRY_EXPORT": "telemetry/export"
+      "TELEMETRY_EXPORT": "telemetry/export",
+      "TELEMETRY_IMPORT": "telemetry/import"
     },
     "CONTRIBUTION_PROGRAMS":{
       "SEARCH": "program/v1/search"
@@ -256,6 +266,9 @@
       "READ": "itemset/v3/read",
       "RETIRE": "itemset/v3/retire",
       "REVIEW": "itemset/v3/review"
+    },
+    "RECAPTCHA": {
+      "VALIDATE": "/validate/recaptcha"
     }
   }
 }

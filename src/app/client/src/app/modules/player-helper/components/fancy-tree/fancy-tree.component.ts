@@ -13,6 +13,7 @@ export class FancyTreeComponent implements AfterViewInit {
   @Input() public nodes: any;
   @Input() public options: any;
   @Input() public rootNode;
+  @Input() public telemetryInteractData;
   @Output() public itemSelect: EventEmitter<Fancytree.FancytreeNode> = new EventEmitter();
   @ViewChild(TelemetryInteractDirective) telemetryInteractDirective: TelemetryInteractDirective;
   constructor(public activatedRoute: ActivatedRoute) { }
@@ -30,7 +31,7 @@ export class FancyTreeComponent implements AfterViewInit {
       },
       click: (event, data): boolean => {
         this.telemetryInteractDirective.telemetryInteractObject = this.getTelemetryInteractObject(_.get(data, 'node.data'));
-        this.telemetryInteractDirective.telemetryInteractEdata = this.getTelemetryInteractEdata();
+        this.telemetryInteractDirective.telemetryInteractEdata = this.telemetryInteractData || this.getTelemetryInteractEdata();
         this.telemetryInteractDirective.telemetryInteractCdata = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode') ?
         [{id: _.get(this.activatedRoute, 'snapshot.queryParams.dialCode'), type: 'dialCode'}] : [];
         this.tree.nativeElement.click();

@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
-import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription, Subject, timer, of } from 'rxjs';
@@ -85,7 +85,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   };
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
-  constructor(public resourceService: ResourceService, private fb: FormBuilder,
+  constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
     private usageService: UsageService, private reportService: ReportService) {
     this.alwaysShowCalendars = true;
@@ -116,7 +116,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
           this.dateFilterReferenceName = filter.reference;
         }
         this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-        filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
+        filter.options = _.sortBy(_.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase())));
       });
       if (this.filters.length > 0) {
         this.showFilters = true;
@@ -134,7 +134,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
           this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
           const res: Array<{}> = _.filter(this.chartData, data => {
             return _.every(filters, (value, key) => {
-              return _.includes(value, data[key].toLowerCase());
+              return _.includes(_.toLower(value), data[key].toLowerCase());
             });
           });
           this.noResultsFound = (res.length > 0) ? false : true;
@@ -238,6 +238,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (_.get(this.chartConfig, 'labels')) {
       labels = _.get(this.chartConfig, 'labels');
     }
+    _.forEach(labels, (label, key) => {
+      labels[key] = _.capitalize(label);
+    });
     this.chartLabels = labels;
     this.datasets = [];
     const isStackingEnabled = this.checkForStacking();
@@ -293,6 +296,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (this.datepicker) {
       this.datepicker.nativeElement.value = '';
     }
+    this.showFilters = false;
+    this.cdr.detectChanges(); // to fix change detection issue in sui select
+    this.showFilters = true;
   }
 
   ngOnDestroy() {

@@ -25,7 +25,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   roles: Array<string>;
   showMoreRoles = true;
   showMoreTrainings = true;
-  isCustodianOrgUser = false;
+  isCustodianOrgUser = true; // set to true to avoid showing icon before api return value
   showMoreRolesLimit = this.configService.appConfig.PROFILE.defaultShowMoreLimit;
   courseLimit = this.configService.appConfig.PROFILE.defaultViewMoreLimit;
   showEdit = false;
@@ -84,6 +84,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         }
         orgList.push(org);
+      } else {
+        if (org.locations && org.locations.length !== 0) {
+          orgList.push(org);
+        }
       }
       _.forEach(org.roles, (value, key) => {
         if (value !== 'PUBLIC') {
@@ -229,6 +233,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
       if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
         this.isCustodianOrgUser = true;
+      } else {
+        this.isCustodianOrgUser = false;
       }
     });
   }
@@ -240,7 +246,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       pageid: 'profile-read'
     };
     this.editProfileInteractEdata = {
-      id: 'profile-edit-address',
+      id: 'profile-edit',
       type: 'click',
       pageid: 'profile-read'
     };

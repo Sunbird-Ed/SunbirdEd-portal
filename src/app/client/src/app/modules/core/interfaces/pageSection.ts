@@ -29,4 +29,5 @@ export interface IPageSection {
     exists?: Array<string>;
     params?: object;
     organisationId?: string;
+    sections?: object;
 }

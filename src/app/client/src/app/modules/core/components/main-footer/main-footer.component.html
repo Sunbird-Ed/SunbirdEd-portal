@@ -1,6 +1,5 @@
-<extension-point [name]="'content-manager'" *ngIf="isOffline && !showDownloadmanager"></extension-point>
-
-<footer class="footer" *ngIf="showFooter && !isOffline" #footerFix>
+<footer class="footer 
+" *ngIf="showFooter" #footerFix>
   <div class="ui container">
     <div class="ui grid stackable">
       <div class="four wide column footerMenu mr-auto">
@@ -38,6 +37,8 @@
               href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
           </li>
         </ul>
+        
+     
       </div>
 
       <div class="download-mobile-app">

@@ -123,7 +123,10 @@ module.exports = (app) => {
           msg: 'error detals',
           error: err.statusCode + err.message
         });
-      const query = '?status=error&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
+      let query = '?status=error&merge_type=manual&redirect_uri=' + req.session.mergeAccountInfo.initiatorAccountDetails.redirectUri;
+      if (_.get(err, 'error.params.status') === 'ACCOUNT_NOT_FOUND') {
+        query = query + '&error_type=account_not_found';
+      }
       delete req.session.mergeAccountInfo;
       const redirectUri = `https://${req.get('host')}/accountMerge` + encodeURIComponent(query);
       res.redirect(url + redirectUri);

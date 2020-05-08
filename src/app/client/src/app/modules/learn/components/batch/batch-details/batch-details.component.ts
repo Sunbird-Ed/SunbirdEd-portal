@@ -54,7 +54,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     } else {
       return;
     }
-    if ((!this.enrolledBatchInfo.endDate || this.enrolledBatchInfo.endDate > this.todayDate ) &&
+    if ((!this.enrolledBatchInfo.endDate || (this.enrolledBatchInfo.endDate >= this.todayDate)) &&
     this.enrolledBatchInfo.enrollmentType === 'open' && this.progress !== 100) {
       this.isUnenrollbtnDisabled = false;
     }

@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor, FormService, ProgramsService
@@ -17,7 +17,6 @@ import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } fr
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
-
 /**
  * main app component
  */
@@ -53,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * 1. org hashtag for Anonymous user
    * 2. user profile rootOrg hashtag for logged in
    */
-  private channel: string;
+  public channel: string;
   private _routeData$ = new BehaviorSubject(undefined);
   public readonly routeData$ = this._routeData$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
@@ -66,7 +65,6 @@ export class AppComponent implements OnInit, OnDestroy {
   */
   showAppPopUp = false;
   viewinBrowser = false;
-  isOffline: boolean = environment.isOffline;
   sessionExpired = false;
   instance: string;
   resourceDataSubscription: any;
@@ -85,6 +83,10 @@ export class AppComponent implements OnInit, OnDestroy {
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
   labels: {};
+  deviceId: string;
+  userId: string;
+  appId: string;
+
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -94,7 +96,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    private shepherdService: ShepherdService) {
+    private shepherdService: ShepherdService, public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
@@ -157,14 +159,19 @@ export class AppComponent implements OnInit, OnDestroy {
         this.setFingerPrintTelemetry();
         this.checkTncAndFrameWorkSelected();
         this.initApp = true;
+        this.changeDetectorRef.detectChanges();
       }, error => {
         this.initApp = true;
+        this.changeDetectorRef.detectChanges();
       });
 
     this.changeLanguageAttribute();
-    if (this.isOffline) {
-      document.body.classList.add('sb-offline');
+    if (this.userService.loggedIn) {
+      this.userId = this.userService.userid;
+    } else {
+      this.userId = this.deviceId;
     }
+    this.appId = this.userService.appId;
   }
 
   isLocationStatusRequired() {
@@ -336,11 +343,8 @@ export class AppComponent implements OnInit, OnDestroy {
   public setDeviceId(): Observable<string> {
       return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
           this.fingerprintInfo = {deviceId, components, version};
-          if (this.isOffline) {
-            deviceId = <HTMLInputElement>document.getElementById('deviceId') ?
-                        (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
-          }
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+          this.deviceId = deviceId;
         this.deviceRegisterService.setDeviceId();
           observer.next(deviceId);
           observer.complete();
@@ -474,7 +478,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
   viewInBrowser() {
-    this.router.navigate(['/resources']);
+    // no action required
   }
   closeIcon() {
     this.showFrameWorkPopUp = false;

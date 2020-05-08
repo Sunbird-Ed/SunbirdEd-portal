@@ -16,7 +16,9 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   reportMetaData: any;
   chartData: Array<object> = [];
   tables: any;
+  files: any;
   isTableDataLoaded = false;
+  isFileDataLoaded = false;
   currentReport: any;
   slug: string;
   noResult: boolean;
@@ -73,6 +75,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   renderReport(report: any) {
     this.chartData = [];
     this.tables = [];
+    this.files = [];
     this.currentReport = report;
     this.isTableDataLoaded = false;
     const url = report.dataSource;
@@ -86,13 +89,38 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
           if (_.get(report, 'charts')) {
             this.createChartData(_.get(report, 'charts'), data, url);
           }
-          if (_.get(report, 'table')) { this.renderTable(_.get(report, 'table'), data); } else {
+          if (_.get(report, 'table')) {
+            this.renderTable(_.get(report, 'table'), data);
+          } else {
             this.renderTable({}, data);
+          }
+          if (_.get(report, 'files')) {
+            this.renderFiles(_.get(report, 'files'), data);
+          } else {
+            this.renderFiles({}, data);
           }
         } else {
           console.log(response);
         }
+
       }, err => { console.log(err); });
+  }
+
+  renderFiles(files, data) {
+    this.files = [];
+    _.forEach(files, file =>  {
+      const fileData: any = {};
+      fileData.id = _.get(file, 'id');
+      fileData.name = _.get(file, 'name');
+      fileData.desc = _.get(file, 'description');
+      fileData.downloadUrl = _.get(file, 'downloadUrl');
+      this.files.push(fileData);
+    });
+    if (this.files.length) {
+      this.isFileDataLoaded = true;
+    } else {
+      this.isFileDataLoaded = false;
+    }
   }
 
   createChartData(charts, data, downloadUrl) {
@@ -147,8 +175,11 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
     this.downloadUrl = url;
   }
 
-  downloadCSV() {
-    this.usageService.getData(this.downloadUrl).subscribe((response) => {
+  downloadCSV(filepath) {
+    if (!filepath) {
+      filepath = this.downloadUrl;
+    }
+    this.usageService.getData(filepath).subscribe((response) => {
       if (_.get(response, 'responseCode') === 'OK') {
         const url = _.get(response, 'result.signedUrl');
         if (url) { window.open(url, '_blank'); }

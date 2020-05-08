@@ -6,7 +6,6 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { first, filter, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { environment } from '@sunbird/environment';
 import { merge } from 'rxjs';
 declare var jQuery: any;
 
@@ -57,7 +56,6 @@ export class MainMenuComponent implements OnInit {
   helpMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
   helpLinkVisibility: string;
-  isOffline: boolean = environment.isOffline;
   /**
    * shows/hides contribute tab
    */

@@ -127,6 +127,9 @@
           <div class="pt-8" *ngIf="uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0">
             <a (click)="downloadCSVFile(userCSV, 'UNCLAIMED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Unclaimed</a><span> : {{ uploadedDetails['accounts_unclaimed'] }}</span>
           </div>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_eligible'] && uploadedDetails['accounts_eligible'] != 0">
+            <a (click)="downloadCSVFile(userCSV, 'ELIGIBLE', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Eligible</a><span> : {{ uploadedDetails['accounts_eligible'] }}</span>
+          </div>
         </div>
       </div>
     </div>

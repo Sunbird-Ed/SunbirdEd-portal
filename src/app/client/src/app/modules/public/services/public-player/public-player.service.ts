@@ -5,10 +5,9 @@ import { Router } from '@angular/router';
 import { UserService, CollectionHierarchyAPI, PublicDataService, OrgDetailsService } from '@sunbird/core';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService
+  ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService, UtilService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
-import { environment } from '@sunbird/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +28,7 @@ export class PublicPlayerService {
   constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
-    public resourceService: ResourceService) {
+    public resourceService: ResourceService, private utilService: UtilService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
       this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
@@ -85,13 +84,14 @@ export class PublicPlayerService {
   getConfig(contentDetails: ContentDetails, option: any = {}): PlayerConfig {
     const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
     configuration.context.contentId = contentDetails.contentId;
-    configuration.context.sid = (environment.isOffline && !_.isEmpty(this.sessionId)) ? this.sessionId : this.userService.anonymousSid;
+    configuration.context.sid = this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
     configuration.context.timeDiff = this.orgDetailsService.getServerTimeDiff;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     configuration.context.pdata.ver = buildNumber && buildNumber.value ?
       buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     configuration.context.channel = _.get(this.orgDetailsService.orgDetails, 'hashTagId');
+    configuration.context.tags = [configuration.context.channel];
     configuration.context.pdata.id = this.userService.appId;
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
     configuration.context.did = deviceId ? deviceId.value : '';
@@ -99,13 +99,6 @@ export class PublicPlayerService {
     configuration.context.contextRollup = this.getRollUpData([_.get(this.orgDetailsService.orgDetails, 'hashTagId')]);
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
-    if (!_.includes(this.router.url, 'browse') && environment.isOffline) {
-      configuration.data = '';
-    }
-
-    if (environment.isOffline) {
-      configuration.metadata = _.omit(configuration.metadata, ['streamingUrl']);
-    }
     if (option.dialCode) {
       configuration.context.cdata = [{
         id: option.dialCode,
@@ -121,10 +114,14 @@ export class PublicPlayerService {
       param: option.params
     };
     return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
+      if (response.result.content) {
+        response.result.content = this.utilService.sortChildrenWithIndex(response.result.content);
+      }
       this.collectionData = response.result.content;
       return response;
     }));
   }
+
 
   /**
    * This method accepts content details and help to play the content player in offline desktop app browse page

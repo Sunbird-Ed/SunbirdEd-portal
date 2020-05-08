@@ -14,6 +14,15 @@
       "ExplanationResource"
     ]
   },
+  "DialAssembleSearch": {
+    "contentType": [
+      "Collection",
+      "TextBook",
+      "TextBookUnit",
+      "Resource",
+      "Course"
+    ]
+  },
   "Home": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
@@ -740,7 +749,8 @@
       "PracticeResource",
       "LearningOutcomeDefinition",
       "ExplanationResource",
-      "ExperientialResource"
+      "ExperientialResource",
+      "eTextBook"
     ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",
@@ -1005,6 +1015,7 @@
   },
   "SEARCH": {
     "PAGE_LIMIT": 20,
+    "SECTION_LIMIT": 3,
     "USER": {
       "DOWNLOAD_BUTTON_VISIBILITY": "FALSE"
     },

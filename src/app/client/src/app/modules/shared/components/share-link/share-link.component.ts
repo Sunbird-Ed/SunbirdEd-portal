@@ -6,6 +6,7 @@ import {
 import { ResourceService } from '../../services/index';
 import { IPopup } from 'ng2-semantic-ui';
 import { ISharelink, ITelemetryShare } from './../../interfaces';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 @Component({
   selector: 'app-share-link',
   templateUrl: './share-link.component.html'
@@ -31,7 +32,12 @@ export class ShareLinkComponent implements OnInit {
   /**
   *input for telemetryShare;
   */
-  @Input() telemetryShareData: Array<ITelemetryShare>;
+  @Input() telemetryShareData: Array<ITelemetryShare> = [];
+  @Input() telemetryInteractEdata = {
+    id: 'content-share-link-btn',
+    type: 'click',
+    pageid: this.activatedRoute.snapshot.data.telemetry.env
+  };
   /**
   *Output for Sharelink;
   */
@@ -57,7 +63,7 @@ export class ShareLinkComponent implements OnInit {
   *@param {ResourceService} SearchService Reference of SearchService
   *@param {WorkSpaceService} WorkSpaceService Reference of SearchService
   */
-  constructor(resourceService: ResourceService, private _renderer: Renderer) {
+  constructor(resourceService: ResourceService, private _renderer: Renderer, public activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     this.position = 'top center';
     this.baseUrl = document.location.origin + '/';

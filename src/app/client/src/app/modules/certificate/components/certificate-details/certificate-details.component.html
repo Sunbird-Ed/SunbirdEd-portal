@@ -2,7 +2,7 @@
   <div *ngIf="!viewCertificate" class="sb-certificatePage" [class.loading]="loader" [class.error]="error">
     <div class="sb-certificatePage-overlay"></div>
     <div class="sb-certificatePage-header">
-      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
+      <img alt="{{tenantName}}" src="{{logo}}" class="sb-certificatePage-logo" />
     </div>
     <div class="sb-certificatePage-desc mb-auto m-0">
       <div class="sb-certificatePage-loader">
@@ -33,7 +33,7 @@
 <div *ngIf="viewCertificate">
 <div  class="sb-certificatePage sb-certificate-view sb-certificatePage-flexHeight">
     <div class="sb-certificatePage-header">
-      <img src="assets/images/DIKSHA.svg" class="sb-certificatePage-logo" alt="DIKSHA Logo"/>
+      <img alt="{{tenantName}}" src="{{logo}}" class="sb-certificatePage-logo"/>
     </div>
     <div class="sb-certificatePage-holder-details mb-auto">
       <img src="assets/images/badge.svg" class="sb-icon-badge mt-24 mb-8" alt="Badge"/>
@@ -62,7 +62,7 @@
       </div>
       <div class="player-thumbnail" appTelemetryInteract [telemetryInteractEdata]="{id:'watch-video-button' , type:'click' , pageid:pageId }" (click)="playContent(contentId)" *ngIf="showVideoThumbnail"></div>
       <div class="h-100 certificate-area-player" *ngIf="!showVideoThumbnail">
-      <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+        <app-player class="content-player" [overlayImagePath]="'assets/images/featured-content.jpg'" [pageId]="pageId" [isSingleContent]="false" [playerConfig]="playerConfig"></app-player>
     </div>
     </div>
   </div>

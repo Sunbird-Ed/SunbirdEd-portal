@@ -1,0 +1,16 @@
+<div class="sbtoc-container sbtoc-container--detailed" *ngIf="contentDetails?.children?.length">
+    <div class="sbchapter-open" *ngFor="let item of contentDetails?.children; let index = index;">
+        <div class="sbchapter-open__title" *ngIf="item?.children?.length">{{item.name}}</div>
+        <div *ngIf="item?.children?.length">
+            <div class="sbchapter-open__topics" *ngFor="let child of item?.children; let j = index;">
+                <div class="sbchapter-open__topics__title" *ngIf="child?.children?.length">{{child.name}}</div>
+                <div class="sbchapter-open__topics" *ngIf="child?.children?.length">
+                    <div *ngFor="let itemName of child?.children; let j = index;">
+                        <div class="sbchapter-open__topic" [ngClass]="{'sbchapter__item--active': activeContent?.sbUniqueIdentifier === itemName?.sbUniqueIdentifier}" (click)="onTocChapterClick($event, itemName)">{{itemName.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

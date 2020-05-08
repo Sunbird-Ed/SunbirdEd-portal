@@ -3,17 +3,17 @@
 
 // question list styles
 .questionTab.button {
-  border-bottom: 1px solid #cecece;
+  border-bottom: calculateRem(1px) solid #cecece;
 }
 
 .questionTab.segment {
   label {
-    font-size: 12px;
+    font-size: calculateRem(12px);
     font-weight: normal;
   }
   &:hover, &.active {
-    background-color: #EDF4F9;
-    color: #024f9d;
+    background-color: var(--primary-100);
+    color: var(--primary-100);
     label {
       font-weight: 700;
     }
@@ -22,7 +22,7 @@
 
 .questionsMenu {
   overflow-y: auto;
-  max-height: 500px;
+  max-height: calculateRem(500px);
 }
 
 .emptyList {
@@ -42,18 +42,18 @@ i.icon {
 // mcq preview layout styles
 .sb-question-outerframe {
   height: 100%;
-  height: 392px;
-  max-width: 800px;
-  border: 10px solid var(--black);
+  height: calculateRem(392px);
+  max-width: calculateRem(800px);
+  border: calculateRem(10px) solid var(--black);
   margin: 0 auto;
   position: relative;
 }
 .sb-question-dsp-container {
   .sb-editor-image {
-    height: 392px;
-    max-width: 800px;
-    border: 10px solid var(--black);
-    border-radius: 15px;
+    height: calculateRem(392px);
+    max-width: calculateRem(800px);
+    border: calculateRem(10px) solid var(--black);
+    border-radius: calculateRem(15px);
     margin: 0 auto;
     position: relative;
     .phone-sensors {
@@ -71,20 +71,20 @@ i.icon {
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: #252525;
+        background: $sb-mobileDevice-sensor-background;
         border-radius: 50%;
       }
       .speaker {
         width: ($base-block-space - 3);
-        height: 74px;
-        background: #252525;
+        height: calculateRem(74px);
+        background: $sb-mobileDevice-sensor-background;
         border-radius: ($base-block-space + 2);
         margin: ($base-block-space + 2) 0 ($base-block-space + 2) 1px;
       }
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: #252525;
+        background: $sb-mobileDevice-sensor-background;
         border-radius: 50%;
       }
     }
@@ -121,7 +121,7 @@ i.icon {
         background-color: var(--gray);
       }
       .sb-btn-arrows {
-        min-width: 50px;
+        min-width: calculateRem(50px);
         .icon {
           margin: 0;
         }
@@ -164,11 +164,11 @@ i.icon {
     .sb-question-content-card {
       background: var(--white);
       border-radius: $base-block-space;
-      min-height: 72px;
+      min-height: calculateRem(72px);
       font-weight: inherit;
       line-height: normal;
-      box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
-      border: 0.5px solid var(--gray-0);
+      box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(0, 0, 0, 0.2);
+      border: calculateRem(0.5px) solid var(--gray-0);
       padding: ($base-block-space * 2);
       // overflow: auto;
     }
@@ -227,7 +227,7 @@ i.icon {
           overflow-y: auto;
 
           .sb-question-content-card {
-            min-height: 60px;
+            min-height: calculateRem(60px);
             line-height: ($base-block-space * 3) - 3;
             margin: ($base-block-space * 2) ($base-block-space * 3);
 
@@ -262,7 +262,7 @@ i.icon {
             }
           }
           .sb-question-content-card {
-            min-height: 60px;
+            min-height: calculateRem(60px);
             margin: ($base-block-space * 2) ($base-block-space * 3);
             margin-top: 0;
             .sb-question-content-focus-spot-group {
@@ -296,7 +296,7 @@ i.icon {
     .mcq-grid {
       display: flex;
       flex-wrap: wrap;
-      max-width: 1440px;
+      max-width: calculateRem(1440px);
       /* margin: 0 auto; */
       /* align-items: stretch; */
       position: relative;
@@ -315,10 +315,10 @@ i.icon {
         background: var(--white);
         font-weight: 700;
         //   max-height: 76px;
-        height: 76px;
+        height: calculateRem(76px);
         overflow: hidden;
         z-index: 999;
-        box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(0, 0, 0, 0.2);
         border-radius: 0;
 
         p svg {
@@ -343,10 +343,10 @@ i.icon {
         .mcq-option {
           margin-bottom: ($base-block-space * 2);
           height: auto;
-          box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(0, 0, 0, 0.2);
           background: var(--white);
           border-radius: $base-block-space;
-          line-height: 20px;
+          line-height: calculateRem(20px);
           padding: $base-block-space;
 
           p {
@@ -488,7 +488,7 @@ i.icon {
     color: var(--gray-800);
 
     .sb-card-circular-list {
-      padding: 0 15px;
+      padding: 0 calculateRem(15px);
       .sb-circular-list-item {
         list-style-type: decimal;
         font-size: 0.9286rem;
@@ -524,7 +524,7 @@ i.icon {
   &.ui.styled.accordion {	
     background: inherit;	
     .active.title {	
-      border: 1px solid $primary-200;	
+      border: calculateRem(1px) solid $primary-200;	
       border-bottom: none;	
       background-color: #F3F8FF;	
       font-weight: $font-weight-bold;	
@@ -542,12 +542,12 @@ i.icon {
     .title {	
       margin-top: $base-block-space;	
       background: $gray-0;	
-      border: 1px solid $gray-100;	
-      border-radius: 4px;	
+      border: calculateRem(1px) solid $gray-100;	
+      border-radius: calculateRem(4px);	
       font-size: $font-size-sm;	
       .chevron-icon {	
         background: $gray-0;	
-        border-left: 1px solid $gray-100;	
+        border-left: calculateRem(1px) solid $gray-100;	
       }	
       .chapter-status {	
         height: $base-block-space;	
@@ -558,7 +558,7 @@ i.icon {
     }	
     .sb-chapterlist-child {	
       .active.title {	
-        border-top: 1px solid $primary-200;	
+        border-top: calculateRem(1px) solid $primary-200;	
         border-radius: 0;	
         .chapter-status {	
           background: #88B7E6;	
@@ -566,9 +566,9 @@ i.icon {
       }	
       .title {	
         margin-top: 0;	
-        border-radius: 0px 0px 4px 4px;	
+        border-radius: 0px 0px calculateRem(4px) calculateRem(4px);	
         border: none;	
-        border-top: 1px solid $gray-100;	
+        border-top: calculateRem(1px) solid $gray-100;	
       }	
       .content {	
         border: none;	
@@ -578,34 +578,34 @@ i.icon {
       }	
     }	
     .content {	
-      border: 1px solid $primary-200;	
+      border: calculateRem(1px) solid $primary-200;	
       border-top: none;	
-      border-bottom-left-radius: 4px;	
-      border-bottom-right-radius: 4px;	
+      border-bottom-left-radius: calculateRem(4px);	
+      border-bottom-right-radius: calculateRem(4px);	
       background: $white-color;	
     }	
     .chevron-icon {	
-      height: 56px;	
-      width: 56px;	
-      margin: -16px -16px -16px 16px;	
+      height: calculateRem(56px);	
+      width: calculateRem(56px);	
+      margin: calculateRem(-16px) calculateRem(-16px) calculateRem(-16px) calculateRem(16px);	
       display: flex;	
       align-items: center;	
       justify-content: center;	
-      border-top-right-radius: 4px;	
-      border-bottom-right-radius: 4px;	
+      border-top-right-radius: calculateRem(4px);	
+      border-bottom-right-radius: calculateRem(4px);	
     }	
     .chevron.down.icon {	
       height: auto;	
     }	
     .accordion {	
       .active.title {	
-        border: 1px solid $primary-200;	
+        border: calculateRem(1px) solid $primary-200;	
         border-bottom: none;	
         background-color: #F3F8FF;	
         font-weight: $font-weight-bold;	
       }	
       .content {	
-        border: 1px solid $primary-200;	
+        border: calculateRem(1px) solid $primary-200;	
         border-top: none;	
       }	
     }	

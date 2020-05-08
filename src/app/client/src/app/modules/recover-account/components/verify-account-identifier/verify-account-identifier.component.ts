@@ -1,7 +1,7 @@
 import { RecoverAccountService } from './../../services';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {ResourceService, ToasterService, ConfigService} from '@sunbird/shared';
+import {ResourceService, ToasterService, ConfigService, InterpolatePipe, UtilService} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
@@ -25,7 +25,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
   }];
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
-              public configService: ConfigService) {
+              public utilService: UtilService, public configService: ConfigService) {
   }
 
   ngOnInit() {
@@ -60,8 +60,7 @@ export class VerifyAccountIdentifierComponent implements OnInit {
     .subscribe(response => {
         this.resetPassword(response);
       }, error => {
-        this.form.controls.otp.setValue('');
-        this.disableFormSubmit = false;
+        this.form.controls.otp.reset();
         this.handleError(error);
       }
     );
@@ -83,22 +82,19 @@ export class VerifyAccountIdentifierComponent implements OnInit {
         this.handleError(response);
       }
     }, error => {
-      this.disableFormSubmit = false;
       this.handleError(error);
+      this.disableFormSubmit = false;
     });
   }
-  handleError(error) {
-    this.errorCount += 1;
-    if (this.errorCount >= 2) {
-      const reqQuery = this.activatedRoute.snapshot.queryParams;
-      let resQuery: any = _.pick(reqQuery, ['client_id', 'redirect_uri', 'scope', 'state', 'response_type', 'version']);
-      resQuery.error_message = 'OTP validation failed.';
-      resQuery = Object.keys(resQuery).map(key =>
-        encodeURIComponent(key) + '=' + encodeURIComponent(resQuery[key])).join('&');
-      const redirect_uri = reqQuery.error_callback + '?' + resQuery;
-      window.location.href = redirect_uri;
+  handleError(err) {
+    if (_.get(err, 'error.result.remainingAttempt') === 0) {
+      this.disableFormSubmit = true;
+      this.utilService.redirectToLogin(this.resourceService.messages.emsg.m0050);
     } else {
-      this.toasterService.error(this.resourceService.frmelmnts.lbl.otpValidationFailed);
+      const filterPipe = new InterpolatePipe();
+      const errorMessage =
+        filterPipe.transform(this.resourceService.messages.imsg.m0086, '{remainingAttempt}', _.get(err, 'error.result.remainingAttempt'));
+      this.toasterService.error(errorMessage);
     }
   }
   handleResendOtp() {

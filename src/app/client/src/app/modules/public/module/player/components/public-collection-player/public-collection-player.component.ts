@@ -2,7 +2,7 @@
 import { map, catchError, first, mergeMap, takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PublicPlayerService } from './../../../../services';
-import { Observable, Subscription, Subject, throwError, of } from 'rxjs';
+import { Observable, Subscription, Subject, of, throwError } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
@@ -10,21 +10,22 @@ import {
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
   ContentUtilsServiceService, UtilService, ITelemetryShare
 } from '@sunbird/shared';
-import { CollectionHierarchyAPI, ContentService } from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
-import { ContentManagerService } from '@sunbird/offline';
-import { environment } from '@sunbird/environment';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
   selector: 'app-public-collection-player',
-  templateUrl: './public-collection-player.component.html'
+  templateUrl: './public-collection-player.component.html',
+  styleUrls: ['./public-collection-player.component.scss']
 })
 export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
 	 * telemetryImpression
-	*/
+  */
+  mimeTypeFilters;
+  activeMimeTypeFilter;
   telemetryImpression: IImpressionEventInput;
   telemetryContentImpression: IImpressionEventInput;
   telemetryShareData: Array<ITelemetryShare>;
@@ -35,8 +36,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public mimeType: string;
   public queryParams: any;
   public collectionData: object;
-
-  public route: ActivatedRoute;
 
   public showPlayer: Boolean = false;
 
@@ -72,6 +71,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public loader: Boolean = true;
   public treeModel: any;
   public contentDetails = [];
+  public tocList = [];
   public nextPlaylistItem: any;
   public prevPlaylistItem: any;
   public showFooter: Boolean = false;
@@ -83,6 +83,13 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public playerTelemetryInteractObject: IInteractEventObject;
   public telemetryCourseEndEvent: IEndEventInput;
   public telemetryCourseStart: IStartEventInput;
+  contentData: any;
+  activeContent: any;
+  isContentPresent: Boolean = false;
+  isSelectChapter: Boolean = false;
+  showLoader = true;
+  isMobile = false;
+
   /**
    * Page Load Time, used this data in impression telemetry
    */
@@ -100,19 +107,23 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   public dialCode: string;
   playerOption: any;
   public playerContent;
-  isOffline: boolean = environment.isOffline;
   public unsubscribe$ = new Subject<void>();
+  telemetryInteractDataTocClick = {
+    id: 'toc-click',
+    type: 'click',
+    pageid: this.route.snapshot.data.telemetry.pageid
+  };
   selectedContent: {};
+  pageId: string;
 
-  constructor(contentService: ContentService, route: ActivatedRoute, playerService: PublicPlayerService,
+  constructor(contentService: ContentService, public route: ActivatedRoute, playerService: PublicPlayerService,
     windowScrollService: WindowScrollService, router: Router, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private activatedRoute: ActivatedRoute, private deviceDetectorService: DeviceDetectorService,
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
-    public contentManagerService: ContentManagerService, public popupControlService: PopupControlService,
-    public utilService: UtilService) {
+    public popupControlService: PopupControlService,
+    public utilService: UtilService, public userService: UserService) {
     this.contentService = contentService;
-    this.route = route;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
     this.router = router;
@@ -121,14 +132,21 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.playerOption = {
       showContentRating: true
     };
+    this.mimeTypeFilters = [
+      this.resourceService.frmelmnts.btn.all,
+      this.resourceService.frmelmnts.btn.video,
+      this.resourceService.frmelmnts.btn.interactive,
+      this.resourceService.frmelmnts.btn.docs
+    ];
+    this.activeMimeTypeFilter = [ this.resourceService.frmelmnts.btn.all ];
   }
   ngOnInit() {
+    this.pageId = this.route.snapshot.data.telemetry.pageid;
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
-    this.getContent();
+    this.contentData = this.getContent();
     this.deviceDetector();
     this.setTelemetryData();
-
   }
   setTelemetryData() {
     if (this.dialCode) {
@@ -153,6 +171,11 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       id: this.activatedRoute.snapshot.params.collectionId,
       type: this.contentType,
       ver: '1.0'
+    };
+    this.printPdfInteractEdata = {
+      id: 'public-print-pdf-button',
+      type: 'click',
+      pageid: this.route.snapshot.data.telemetry.pageid
     };
     this.playerTelemetryInteractObject = { ...this.telemetryInteractObject };
 
@@ -192,7 +215,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         edata: {
           type: this.route.snapshot.data.telemetry.type,
           pageid: this.route.snapshot.data.telemetry.pageid,
-          uri: this.router.url,
+          uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
           subtype: this.route.snapshot.data.telemetry.subtype,
           duration: this.pageLoadDuration
         }
@@ -218,7 +241,16 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       return err;
     }), );
   }
+  selectedFilter(event) {
+    // this.logTelemetry(`filter-${event.data.text}`);
+    this.activeMimeTypeFilter = event.data.value;
+  }
 
+  showNoContent(event) {
+    if (event.message === 'No Content Available') {
+      this.isContentPresent = false;
+    }
+  }
   setTelemetryContentImpression (data) {
     this.telemetryContentImpression = {
       context: {
@@ -227,7 +259,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       edata: {
         type: this.route.snapshot.data.telemetry.env,
         pageid: this.route.snapshot.data.telemetry.env,
-        uri: this.router.url
+        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
       },
       object: {
         id: data.metadata.identifier,
@@ -281,6 +313,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.treeModel.walk((node) => {
         if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
           this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
+          this.tocList.push({id: node.model.identifier, title: node.model.name, mimeType: node.model.mimeType});
         }
         this.setContentNavigators();
       });
@@ -316,21 +349,17 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         this.setTelemetryData();
         this.setTelemetryStartEndData();
         return this.getCollectionHierarchy(params.collectionId);
-      }), )
+      }))
       .subscribe((data) => {
         this.collectionTreeNodes = data;
-        this.loader = false;
+        this.showLoader = false;
         this.route.queryParams.subscribe((queryParams) => {
           this.queryParams = { ...queryParams};
           this.contentId = queryParams.contentId;
           this.dialCode = queryParams.dialCode;
           if (this.contentId) {
             const content = this.findContentById(data, this.contentId);
-            this.selectedContent = content;
             this.playerContent = _.get(content, 'model');
-            if (this.isOffline && _.isEqual(_.get(this.collectionData, 'downloadStatus'), 'DOWNLOADED')) {
-              this.playerContent['downloadStatus'] = this.resourceService.messages.stmsg.m0139;
-            }
             if (content) {
               this.objectRollUp = this.contentUtilsService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') }, true);
@@ -363,19 +392,14 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }));
   }
   closeCollectionPlayer() {
-    if (this.dialCode) {
-      sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
-      this.router.navigate(['/get/dial/', this.dialCode]);
+    if (this.isMobile) {
+      this.isMobile = false;
     } else {
-      if (this.isOffline) {
-       const  previousUrl =  this.navigationHelperService.getPreviousUrl();
-       if (Boolean(_.includes(previousUrl.url, '/play/collection/'))) {
-        return this.router.navigate(['/']);
-       }
-       // tslint:disable-next-line: max-line-length
-       previousUrl.queryParams ? this.router.navigate([previousUrl.url], {queryParams: previousUrl.queryParams}) : this.router.navigate([previousUrl.url]);
+      if (this.dialCode) {
+        sessionStorage.setItem('singleContentRedirect', 'singleContentRedirect');
+        this.router.navigate(['/get/dial/', this.dialCode]);
       } else {
-        this.navigationHelperService.navigateToResource('/explore');
+        this.navigationHelperService.navigateToPreviousUrl('/explore');
       }
     }
   }
@@ -447,5 +471,38 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }
     };
   }
+  callinitPlayer (event) {
+    if ((event.data.identifier !== _.get(this.activeContent, 'identifier')) || this.isMobile ) {
+      this.isContentPresent = true;
+      this.activeContent = event.data;
+      this.objectRollUp = this.getContentRollUp(event.rollup);
+      this.initPlayer(_.get(this.activeContent, 'identifier'));
+    }
+  }
+  tocCardClickHandler(event) {
+    if (!this.isMobile && this.activeContent) {
+      this.isMobile = true;
+    }
+    this.callinitPlayer(event);
+  }
+  tocChapterClickHandler(event) {
+    if (this.isSelectChapter) {
+      this.isSelectChapter =  false;
+    }
+    this.callinitPlayer(event);
+  }
 
+  getContentRollUp(rollup: string[]) {
+    const objectRollUp = {};
+    if (rollup) {
+      for (let i = 0; i < rollup.length; i++ ) {
+        objectRollUp[`l${i + 1}`] = rollup[i];
+    }
+    }
+    return objectRollUp;
+  }
+
+  showChapter() {
+    this.isSelectChapter = this.isSelectChapter ? false : true;
+  }
 }

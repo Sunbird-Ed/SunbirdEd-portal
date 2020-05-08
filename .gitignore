@@ -12,5 +12,5 @@ mochawesome-report
 /src/app/.nyc_output
 /src/app/coverage
 .idea
-
-
+/src/app/helpers/devConfig.js
+/.vscode/launch.json

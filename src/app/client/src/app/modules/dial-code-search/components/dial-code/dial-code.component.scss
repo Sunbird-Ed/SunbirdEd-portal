@@ -1,9 +1,12 @@
+@import 'variables';
+@import "./mixins/mixins";
+
 /*get dial code page responsive css*/
 .ui.footer.segment {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: white;
+    background-color: var(--white);
     z-index: 989898;
 }
 .bars.icon.tablet.sunbird-hamburger-menu {
@@ -33,14 +36,14 @@
   margin-top: 3em;
 }
 .dail-section-meta {
-  color: white;
+  color: var(--white);
 }
 .ui.header.dial-section-header-text {
-  color:#fff;
+  color:var(--white);
 }
 .ui.header .sub.header.dial-section-subheader-text {
-  color: #fff;
-  font-size: 1rem;
+  color: var(--white);
+  font-size: calculateRem(16px);
 }
 .dial-section-input {
   margin-top: 10em;
@@ -64,32 +67,49 @@
     right: 0;
     transition: 0.75s ease;
     .download-mobile-app {
-      border-radius: 20px 20px 0 0;
+      border-radius: calculateRem(20px) calculateRem(20px) 0 0;
       position: absolute;
-      bottom: -20px;
-      padding: 32px 12px 0 12px;
-      background: #333333;
-      box-shadow: 0 20px 20px 10px rgba(0, 0, 0, 0.2);
-      max-width: 250px;
+      bottom: 0 !important;
+      padding: calculateRem(32px) calculateRem(12px) 0 calculateRem(12px);
+      background: var(--gray-800);
+      box-shadow: 0 calculateRem(20px) calculateRem(20px) calculateRem(10px) rgba(0, 0, 0, 0.2);
+      max-width: calculateRem(250px);
       right: 0;
       left: 0;
       margin: 0 auto;
       transition: .75s ease-in-out;
+      .mobile-app-popup-close{
+        position: absolute;
+        top: calculateRem(-15px);
+        right: calculateRem(15px);
+        width: calculateRem(25px);
+        height: calculateRem(25px);
+        background: var(--white);
+        margin: 0;
+        border-radius: calculateRem(25px);
+        z-index: 9999;
+        text-align: center;
+        cursor: pointer;
+        .icon{
+          margin: 0 !important;
+          color: var(--gray-400);
+        }
+      }
       img {
-        width: 120px;
+        width: calculateRem(120px);
        }
        .download-mobile-app-logo {
-        background: white;
-        color: black;
-        border-radius: 8px 8px 0 0;
+        background: var(--white);
+        color: var(--black);
+        border-radius: calculateRem(8px) calculateRem(8px) 0 0;
        }
        .download-mobile-app-logo {
         p {
-          font-size: 12px;
-          line-height: 16px;
+          font-size: calculateRem(12px);
+          line-height: calculateRem(16px);
          }
          label {
-          font-size: 12px;
+          font-size: calculateRem(12px);
          }
        }
        label {
@@ -97,36 +117,36 @@
        }
        .close-mobile-div {
         position: absolute;
-        top: -10px;
-        right: -10px;
-        height: 30px;
-        width: 30px;
+        top: calculateRem(-10px);
+        right: calculateRem(-10px);
+        height: calculateRem(30px);
+        width: calculateRem(30px);
         justify-content: center;
         align-items: center;
-        background: white;
+        background: var(--white);
         border-radius: 50%;
-        color: black;
-        border: 2px solid black;
+        color: var(--black);
+        border: calculateRem(2px) solid var(--black);
         padding: 0;
         margin: 0;
         outline: 0;
        }
        .close-mobile-div:hover, .download-mobile-app .close-mobile-div:focus {
-        background: white;
+        background: var(--white);
        }
        .close {
         line-height: normal;
-        margin: 0 0 2px 0 !important;
+        margin: 0 0 calculateRem(2px) 0 !important;
        }
        .mobile-circles {
         position: absolute;
-        top: 10px;
+        top: calculateRem(10px);
         display: flex;
         align-items: center;
-        margin: 0 20px;
+        margin: 0 calculateRem(20px);
        }
        .mobile-circles .border-round {
-        background: #666666;
+        background: var(--gray-400);
         border: none;
        }
        
@@ -135,20 +155,20 @@
        }
        
        .mobile-circles  .big-box {
-        height: 14px;
-        width: 14px;
+        height: calculateRem(14px);
+        width: calculateRem(14px);
        }
        
        .mobile-circles  .oval-box {
-        height: 6px;
-        width: 76px;
-        border-radius: 3px;
-        margin-left: 10px;
+        height: calculateRem(6px);
+        width: calculateRem(76px);
+        border-radius:calculateRem(3px);
+        margin-left: calculateRem(10px);
        }
        
        .mobile-circles .small-box {
-        height: 8px;
-        width: 8px;
+        height: calculateRem(8px);
+        width: calculateRem(8px);
        }
      }
    }
@@ -164,7 +184,7 @@
     align-items: center;
   }
   .header-label{
-    font-size: 12px;
+    font-size: calculateRem(12px);
   }
 }
 @media screen and  (min-width: 240px) and (max-width: 768px) {
@@ -178,7 +198,7 @@
   }
 }
 .dial-code-section-bg {
-  //background: #fff;
+  //background: var(--white);
 }
 @media only screen and (max-width: 767px) {
   .ui.container.public-responvive-container {    
@@ -196,7 +216,7 @@
   }
 }
 .menu-public-header{
-  border-top: 2px solid rgba(0,0,0,.13);
+  border-top: calculateRem(2px) solid rgba(0,0,0,.13);
 }
 @media screen and  (min-width: 240px) and (max-width: 767px) {
   .mobile-popup-dimmer {
@@ -209,8 +229,8 @@
         margin: 0 auto;
         right: 0;
         left: 0;
-        box-shadow: 0 0 20px 10px rgba(0,0,0,.2);
-        height: 175px;
+        box-shadow: 0 0 calculateRem(20px) calculateRem(10px) rgba(0,0,0,.2);
+        height: calculateRem(185px);
         p {
           display: block !important;
         }
@@ -218,7 +238,7 @@
           display: flex;
         }
         .download-mobile-app-logo{
-          height: 145px;
+          height: calculateRem(160px);
           overflow: hidden;
         }
       }

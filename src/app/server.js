@@ -1,5 +1,5 @@
 'use strict'
-const express = require('express')
+const express = require('express');
 const proxy = require('express-http-proxy')
 const session = require('express-session')
 const path = require('path')
@@ -69,6 +69,10 @@ app.all('/sessionExpired', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() });
   res.redirect(logoutUrl);
 })
+
+// device routes
+require('./routes/deviceRoutes.js')(app);
+require('./routes/googleRoutes.js')(app);
 
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 

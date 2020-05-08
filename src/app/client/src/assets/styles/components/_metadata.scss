@@ -43,8 +43,8 @@
 
                 &::after {
                     content: ":";
-                    width: 10px;
-                    margin: 0 4px;
+                    width: calculateRem(10px);
+                    margin: 0 calculateRem(4px);
                 }
             }
 
@@ -59,7 +59,7 @@
     &.sb-meta-data-column {
         .sb-meta-data {
             flex-direction: column;
-            margin: 8px 0px;
+            margin: calculateRem(8px) 0px;
             flex-basis: 20%;
             padding-right: ($base-block-space * 2);
         }

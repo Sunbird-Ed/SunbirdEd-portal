@@ -550,3 +550,119 @@ export const contentListWithHoverData = [
     }
   }
 ];
+
+export const contentHierarchyDateSet1 = {
+  before: {
+    mimeType: 'application/vnd.ekstep.content-collection',
+    children: [
+        {
+            mimeType: 'application/vnd.ekstep.content-collection',
+            children: [
+                {
+                    mimeType: 'application/vnd.ekstep.content-collection',
+                    children: [{
+                        mimeType: 'video/mp4',
+                        index: 2,
+                        identifier: 'do_712774554650435584110464'
+                    }],
+                    index: 4,
+                    identifier: 'do_812774554650435584110464'
+                },
+                {
+                    mimeType: 'video/mp4',
+                    index: 2,
+                    identifier: 'do_212774554650435584110464'
+                }
+            ],
+            index: 2,
+            identifier: 'do_312774554350435584110464',
+        },
+        {
+            mimeType: 'application/vnd.ekstep.content-collection',
+            children: [
+                {
+                    mimeType: 'application/vnd.ekstep.content-collection',
+                    children: [{
+                        mimeType: 'video/mp4',
+                        index: 2,
+                        identifier: 'do_212774556650435584110464',
+                    }],
+                    index: 2,
+                    identifier: 'do_312774554650435584110464',
+                },
+                {
+                    mimeType: 'video/mp4',
+                    index: 1,
+                    identifier: 'do_312774554640435584110464',
+                }
+            ],
+            index: 1,
+            identifier: 'do_312774554650535584110464',
+        },
+        {
+            mimeType: 'application/vnd.ekstep.ecml-archive',
+            index: 3,
+            identifier: 'do_312774554350435584110464',
+        }],
+    identifier: 'do_312774554650435584110464',
+  },
+  after: {
+    'mimeType': 'application/vnd.ekstep.content-collection',
+    'children': [
+      {
+        'mimeType': 'application/vnd.ekstep.content-collection',
+        'children': [
+          {
+            'mimeType': 'video/mp4',
+            'index': 1,
+            'identifier': 'do_312774554640435584110464'
+          },
+          {
+            'mimeType': 'application/vnd.ekstep.content-collection',
+            'children': [
+              {
+                'mimeType': 'video/mp4',
+                'index': 2,
+                'identifier': 'do_212774556650435584110464'
+              }
+            ],
+            'index': 2,
+            'identifier': 'do_312774554650435584110464'
+          }
+        ],
+        'index': 1,
+        'identifier': 'do_312774554650535584110464'
+      },
+      {
+        'mimeType': 'application/vnd.ekstep.content-collection',
+        'children': [
+          {
+            'mimeType': 'video/mp4',
+            'index': 2,
+            'identifier': 'do_212774554650435584110464'
+          },
+          {
+            'mimeType': 'application/vnd.ekstep.content-collection',
+            'children': [
+              {
+                'mimeType': 'video/mp4',
+                'index': 2,
+                'identifier': 'do_712774554650435584110464'
+              }
+            ],
+            'index': 4,
+            'identifier': 'do_812774554650435584110464'
+          }
+        ],
+        'index': 2,
+        'identifier': 'do_312774554350435584110464'
+      },
+      {
+        'mimeType': 'application/vnd.ekstep.ecml-archive',
+        'index': 3,
+        'identifier': 'do_312774554350435584110464'
+      }
+    ],
+    'identifier': 'do_312774554650435584110464'
+  }
+};

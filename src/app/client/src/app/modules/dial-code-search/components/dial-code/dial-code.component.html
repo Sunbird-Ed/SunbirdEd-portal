@@ -14,14 +14,14 @@
           <span class="sb-pageSection-count sb-label sb-label-xs sb-label-error mr-5">{{dialCode}}</span>
           <span class="header-label">{{resourceService.frmelmnts?.lbl?.linkedContents}}
             ({{searchResults.length}})</span>
-          <button *ngIf="!isOffline" appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
+          <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
             [telemetryInteractCdata]="telemetryCdata"
             class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn computer only" type="button" (click)="handleCloseButton()">
             {{resourceService?.frmelmnts?.btn?.close}}
             <i class="close icon"></i></button>
         </div>
       </div>
-      <div *ngIf="!isOffline && showSelectChapter && !showLoader && searchResults.length > 0" class="mb-24">
+      <div *ngIf="showSelectChapter && !showLoader && searchResults.length > 0" class="mb-24">
         <button appTelemetryInteract [telemetryInteractEdata]="selectChapterInteractEdata" [telemetryInteractCdata]="selectChapterTelemetryCdata"
         (click)="redirectToDetailsPage(dialContentId)" class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" type="button">{{resourceService.frmelmnts?.lbl?.selectChapter}}<i class="icon chevron circle right"></i></button>
           <span class="ml-8 fmedium">{{resourceService.frmelmnts?.lbl?.fromTheTextBook}}&nbsp;<b>"{{chapterName}}"</b></span>
@@ -35,11 +35,9 @@
           <div in-view-item [id]="i" [data]="content" class="masonry-item"
             *ngFor="let content of itemsToDisplay;let i = index;">
 
-            <app-card *ngIf="!isOffline && content.contentType.toLowerCase() === 'course'" appContentDirection (clickEvent)="playCourse($event)" [dialCode]="dialCode" [data]="content"></app-card>
+            <app-card *ngIf="content.contentType.toLowerCase() === 'course'" appContentDirection (clickEvent)="playCourse($event)" [dialCode]="dialCode" [data]="content"></app-card>
 
-            <app-dial-code-card *ngIf="!isOffline && content.contentType.toLowerCase() !== 'course'" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"  [singleContentRedirect]="singleContentRedirect"></app-dial-code-card>
-
-            <app-offline-dial-code-card *ngIf="isOffline" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"></app-offline-dial-code-card>
+            <app-dial-code-card *ngIf="content.contentType.toLowerCase() !== 'course'" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"  [singleContentRedirect]="singleContentRedirect"></app-dial-code-card>
 
           </div>
         </div>
@@ -52,10 +50,13 @@
     </div>
   </div>
 </div>
-<div class="mobile-popup-dimmer" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
+<div class="mobile-popup-dimmer" *ngIf= "showMobilePopup" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
   <div class="mobile-app-popup" [ngClass]="{'bottom-0': showMobilePopup}">
-    <div class="download-mobile-app" (click)="redirectToDikshaApp()">
-      <div class="download-mobile-app-logo p-15">
+    <div class="download-mobile-app">
+      <div class="mobile-app-popup-close">
+        <i class="close icon"></i>
+      </div>
+      <div class="download-mobile-app-logo p-15" (click)="redirectToDikshaApp()">
         <div class="mobile-circles">
           <div class="big-box border-round border-r50"></div>
           <div class="oval-box border-round ml-24"></div>
@@ -68,7 +69,7 @@
             alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}"
             title="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}">
         </a>
-        <p class="d-block text-center pt-8">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}
+        <p class="d-block text-center py-8">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}
         </p>
       </div>
     </div>
@@ -77,13 +78,3 @@
 
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>
 
-<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
-  <div class="ui active centered inline loader"></div>
-  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
-  </h2>
-</sui-dimmer>
-<sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
-  <div class="ui active centered inline loader"></div>
-  <h2 class="mt-8"> {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
-  </h2>
-</sui-dimmer>

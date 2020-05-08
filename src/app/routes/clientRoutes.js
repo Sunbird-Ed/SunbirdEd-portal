@@ -13,6 +13,7 @@ oneDayMS = 86400000,
 pathMap = {},
 cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
 proxyUtils = require('../proxy/proxyUtils.js')
+const CONSTANTS = require('../helpers/constants');
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -89,18 +90,18 @@ module.exports = (app, keycloak) => {
   app.all('/play/quiz/*', playContent);
 
   app.all('/get/dial/:dialCode',(req,res,next) => {
-      if (_.get(req, 'query.channel')) {	
-          getdial(req,res);	
-      } else {	
-        next();	
+      if (_.get(req, 'query.channel')) {
+          getdial(req,res);
+      } else {
+        next();
       }
   });
-  
+
   app.all(['/announcement', '/announcement/*', '/search', '/search/*',
   '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
   '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
   '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*'], keycloak.protect(), indexPage(true));
-  
+
   // all public route should also have same route prefixed with slug
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*',  '/explore-course', '/explore-course/*',
@@ -118,6 +119,8 @@ module.exports = (app, keycloak) => {
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
   app.all('/:tenantName', renderTenantPage)
+
+  app.all('/redirect/login', redirectToLogin)
 }
 
 function getLocals(req) {
@@ -249,6 +252,11 @@ const redirectTologgedInPage = (req, res) => {
 			const routes = _.get(redirectRoutes, req.originalUrl);
 			res.redirect(routes)
 		} else {
+      const urlWithOutSlug = req.params.slug ? req.originalUrl.replace('/' + req.params.slug, '') : req.originalUrl;
+      const courseUrl = urlWithOutSlug.includes('/explore-course/course/');
+      if (courseUrl) {
+        return res.redirect(urlWithOutSlug.replace('/explore-course/course/', '/learn/course/'));
+      }
 			if (_.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`)) {
 				const routes = _.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`);
 				res.redirect(routes)
@@ -272,6 +280,14 @@ const playContent = (req, res) => {
     renderDefaultIndexPage(req, res);
   }
 }
+
+const redirectToLogin = (req, res) => {
+  const redirectUrl = req.query.redirectUri || '/resources';
+  const url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
+  const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/${redirectUrl}&scope=openid&version=${CONSTANTS.KEYCLOAK.VERSION}&response_type=code&error_message=${req.query.error_message}`;
+  res.redirect(url + query);
+};
+
 
 const getdial = (req,res) => {
   if (fs.existsSync(path.join(__dirname, '../tenant/course/', 'index.html'))) {

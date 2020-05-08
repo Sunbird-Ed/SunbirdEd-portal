@@ -12,7 +12,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { WindowScrollService, SharedModule, ResourceService, ToasterService , NavigationHelperService} from '@sunbird/shared';
 import { CollectionHierarchyGetMockResponse, collectionTree } from './public-collection-player.component.spec.data';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ContentManagerService } from '@sunbird/offline';
 
 describe('PublicCollectionPlayerComponent', () => {
   let component: PublicCollectionPlayerComponent;
@@ -45,6 +44,14 @@ describe('PublicCollectionPlayerComponent', () => {
       'fmsg': {
         'm0090': 'Could not download. Try again later'
       }
+    },
+    'frmelmnts': {
+      'btn': {
+        'all': 'all',
+        'video': 'video',
+        'interactive': 'interactive',
+        'docs': 'docs'
+      }
     }
   };
   beforeEach(async(() => {
@@ -53,7 +60,7 @@ describe('PublicCollectionPlayerComponent', () => {
       imports: [CoreModule, HttpClientTestingModule, RouterTestingModule,
         TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [ContentService, PublicPlayerService, ResourceService,
-        ContentManagerService, ToasterService, NavigationHelperService,
+        ToasterService, NavigationHelperService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -85,7 +92,7 @@ describe('PublicCollectionPlayerComponent', () => {
     spyOn(playerService, 'getCollectionHierarchy').and.returnValue(observableOf(CollectionHierarchyGetMockResponse));
     component.ngOnInit();
     expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
-    expect(component.loader).toBeFalsy();
+    expect(component.loader).toBeTruthy();
   });
   it('should call setInteractEventData method', () => {
     const windowScrollService = TestBed.get(WindowScrollService);

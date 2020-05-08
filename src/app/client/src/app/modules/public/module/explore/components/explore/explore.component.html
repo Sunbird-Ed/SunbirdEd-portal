@@ -1,17 +1,17 @@
 <div [appTelemetryImpression]="telemetryImpression">
   <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'explore-page'" [defaultFilters]="defaultFilters">
   </app-search-filter>
-  <div class="ui container mt-24 sb-library-cards">
-    <div class="ui grid py-16">    
-      <div class="twelve wide column pb-0 pt-0" *ngFor="let section of pageSections;let last = last"
+  <div class="ui container sb-library-cards">
+    <div>    
+      <div class="twelve wide column pb-0 pt-0" *ngFor="let section of pageSections | sortBy:'name':'asc';let last = last"
         [ngClass]="{'last mb-0':last}">
         <sb-library-cards-grid 
-        [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents"
+          [type]="'infinite_card_grid'" [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'"
           [maxCardCount]="4" (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event); getInteractEdata($event, section.name)">
         </sb-library-cards-grid>
       </div>
       <div class="twelve wide column" *ngIf="showLoader">
-        <app-loader></app-loader>
+          <sb-library-cards-grid *ngFor="let i of numberOfSections" [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="4"></sb-library-cards-grid>
       </div>
       <div class="twelve wide column" *ngIf="apiContentList.length === 0 && !showLoader">
         <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters" [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 

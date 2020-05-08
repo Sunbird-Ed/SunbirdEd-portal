@@ -120,7 +120,8 @@ describe('LimitedPublishedComponent', () => {
       'PracticeResource',
       'LearningOutcomeDefinition',
       'ExplanationResource',
-      'ExperientialResource'
+      'ExperientialResource',
+      'eTextBook'
     ],
     'objectType': 'Content'
     },

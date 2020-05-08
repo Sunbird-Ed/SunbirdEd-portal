@@ -78,6 +78,7 @@ describe('MainFooterComponent', () => {
         fixture = TestBed.createComponent(MainFooterComponent);
         component = fixture.componentInstance;
         userService = TestBed.get(UserService);
+        spyOn(component, 'footerAlign'); // new line to be added
         tenantService = TestBed.get(TenantService);
         fixture.detectChanges();
     });

@@ -3,7 +3,7 @@ import { InterpolatePipe } from './../../../../../shared/pipes/interpolate/inter
 import { ReactiveFormsModule, FormsModule, FormBuilder } from '@angular/forms';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CacheService } from 'ng2-cache-service';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import {ResourceService, ConfigService, BrowserCacheTtlService, UtilService} from '@sunbird/shared';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -37,7 +37,7 @@ describe('OtpComponent', () => {
     TestBed.configureTestingModule({
       declarations: [OtpComponent, InterpolatePipe],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule],
-      providers: [ConfigService, CacheService, BrowserCacheTtlService,
+      providers: [ConfigService, CacheService, BrowserCacheTtlService, UtilService,
         DeviceDetectorService, SignupService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub },

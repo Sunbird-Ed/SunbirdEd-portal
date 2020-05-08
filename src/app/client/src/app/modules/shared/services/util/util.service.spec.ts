@@ -1,4 +1,4 @@
-import { servicemockRes, contentList, contentListWithHoverData } from './util.service.spec.data';
+import { servicemockRes, contentList, contentListWithHoverData, contentHierarchyDateSet1 } from './util.service.spec.data';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { UtilService } from './util.service';
@@ -255,5 +255,8 @@ describe('UtilService', () => {
       expect(data).toBeFalsy();
   }));
 
-
+  it('should return  sorted tree', inject([UtilService], (service: UtilService) => {
+      const data = service.sortChildrenWithIndex(contentHierarchyDateSet1.before);
+      expect(data).toEqual(contentHierarchyDateSet1.after);
+  }));
 });

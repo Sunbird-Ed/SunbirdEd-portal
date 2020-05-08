@@ -6,8 +6,6 @@ import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';
-import { DOCUMENT } from '@angular/platform-browser';
-import { environment } from '@sunbird/environment';
 
 /**
  * This display a a section
@@ -19,6 +17,7 @@ import { environment } from '@sunbird/environment';
 export class PageSectionComponent implements OnInit, OnDestroy {
 
   cardInteractEdata: IInteractEventEdata;
+  public telemetryInteractCdata: any;
 
   refresh = true;
 
@@ -42,8 +41,6 @@ export class PageSectionComponent implements OnInit, OnDestroy {
 
   maxSlide = 0;
 
-  isOffline: boolean = environment.isOffline;
-
   constructor(public config: ConfigService, public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     private cdr: ChangeDetectorRef) {
     this.pageid = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
@@ -66,6 +63,12 @@ export class PageSectionComponent implements OnInit, OnDestroy {
         type: 'click',
         pageid: this.pageid
       };
+    }
+    if (this.section) {
+      this.telemetryInteractCdata = [{
+        type: 'section',
+        id: _.get(this.section, 'name') || ''
+      }];
     }
   }
   updateSlick() {

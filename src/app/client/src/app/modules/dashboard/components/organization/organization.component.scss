@@ -1,5 +1,8 @@
+
+@import "mixins/mixins";
+
 .ui.card.adminDashboardCard {
-    width: 400px;
+    width: calculateRem(400px);
 }
 .ui.dropdown .menu {
    width: 100%;

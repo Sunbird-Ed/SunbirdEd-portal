@@ -5,6 +5,7 @@ const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const blobService = azure.createBlobService(envHelper.sunbird_azure_account_name, envHelper.sunbird_azure_account_key);
 const logger = require('sb_logger_util_v2');
+const async = require('async');
 
 const validateSlug = (allowedFolders = []) => {
     return (req, res, next) => {
@@ -153,8 +154,72 @@ function azureBlobStream() {
     }
 }
 
+const getLastModifiedDate = async (req, res) => {
+    const container = envHelper.sunbird_azure_report_container_name;
+    const fileToGet = JSON.parse(req.query.fileNames);
+    const responseData = {};
+    if(Object.keys(fileToGet).length > 0) {
+        const getBlogRequest = [];
+        for (const [key, file] of Object.entries(fileToGet)) {
+            const req = {
+                container: container,
+                file: file,
+                reportname: key
+            }
+            getBlogRequest.push(
+                async.reflect(function(callback) {
+                    getBlobProperties(req, callback)
+                })
+            );
+        }
+        async.parallel(getBlogRequest, function(err, results) {
+            if(results) {
+                results.forEach(blob => {
+                    if(blob.error) {
+                        responseData[(_.get(blob, 'error.reportname'))] = blob.error
+                    } else {
+                        responseData[(_.get(blob, 'value.reportname'))] = {
+                            lastModified: _.get(blob, 'value.lastModified'),
+                            reportname: _.get(blob, 'value.reportname'),
+                            statusCode: _.get(blob, 'value.statusCode'),
+                        }
+                    }
+                });
+                const finalResponse = {
+                    responseCode: "OK",
+                    params: {
+                        err: null,
+                        status: "success",
+                        errmsg: null
+                    },
+                    result: responseData
+                }
+                res.status(200).send(apiResponse(finalResponse))
+            }
+        });
+    }
+};
+const getBlobProperties = async (request, callback) => {
+    blobService.getBlobProperties(request.container, request.file, function (err, result, response) {
+        if (err) {
+            logger.error({ msg: 'Azure Blobstream : readStream error - Error with status code 404' })
+            callback({ msg: err.message, statusCode: err.statusCode, filename: request.file, reportname: request.reportname});
+        }
+        else if (!response.isSuccessful) {
+            console.error("Blob %s wasn't found container %s", file, containerName)
+            callback({ msg: err.message, statusCode: err.statusCode, filename: request.file, reportname: request.reportname});
+        }
+        else {
+            result.reportname = request.reportname;
+            result.statusCode = 200;
+            callback(null, result);
+        }
+    });
+}
+
 module.exports = {
     azureBlobStream,
     validateRoles,
-    validateSlug
+    validateSlug,
+    getLastModifiedDate
 }
