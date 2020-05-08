@@ -59,6 +59,7 @@ describe('UserOrgManagementComponent', () => {
         SuiModule, CoreModule
       ],
       declarations: [
+        UserOrgManagementComponent
       ],
       providers: [
         UserService,
