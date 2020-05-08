@@ -5,7 +5,7 @@ import {
 } from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService } from './../../services';
+import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';

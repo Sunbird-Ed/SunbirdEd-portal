@@ -10,9 +10,8 @@ import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { AvatarModule } from 'ngx-avatar';
 import {
-  MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent,
-  DataDrivenFilterComponent, ErrorPageComponent, SortByComponent, FlagContentComponent,
-  LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent
+  MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent,  ErrorPageComponent,
+  LanguageDropdownComponent
 } from './components';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { AuthGuard } from './guard/auth-gard.service';
@@ -33,12 +32,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
     AvatarModule
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
-    BodyScrollDirective, DataDrivenFilterComponent, SortByComponent,
-    ErrorPageComponent, FlagContentComponent, LanguageDropdownComponent,
-    ProminentFilterComponent, TopicPickerComponent, StickyHeaderDirective],
+    BodyScrollDirective,
+    ErrorPageComponent, LanguageDropdownComponent, StickyHeaderDirective],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective,
-    DataDrivenFilterComponent, SortByComponent, FlagContentComponent,
-    TelemetryModule, LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent],
+    TelemetryModule, LanguageDropdownComponent],
   providers: [CacheService, AuthGuard, {
     provide: APP_BASE_HREF,
     useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),

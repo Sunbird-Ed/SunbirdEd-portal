@@ -1,7 +1,7 @@
 import { ResourceComponent } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {ViewAllComponent} from '@sunbird/shared-feature';
+import {ViewAllComponent} from '@sunbird/content-search';
 const telemetryEnv = 'library';
 const routes: Routes = [
   {

@@ -7,7 +7,6 @@ import { SlickModule } from 'ngx-slick';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { WorkSpaceService, EditorService , BatchService, ReviewCommentsService} from './services';
-import { ContentSearchModule } from '@sunbird/content-search';
 import {
   WorkspaceComponent, CreateContentComponent, DraftComponent,
   ReviewSubmissionsComponent, PublishedComponent, UploadedComponent,
@@ -26,6 +25,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
 import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { ContentSearchModule } from '@sunbird/content-search';
 
 @NgModule({
   imports: [

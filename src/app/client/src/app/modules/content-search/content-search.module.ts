@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NoResultComponent, SearchFilterComponent, PageSectionComponent } from './components';
+import { NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
+  TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
 import {
   SuiModalModule, SuiProgressModule, SuiAccordionModule,
@@ -11,10 +12,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { SlickModule } from 'ngx-slick';
+import { RouterModule } from '@angular/router';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 
 @NgModule({
-  declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent],
+  declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
+    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent],
   imports: [
+    SharedFeatureModule,
+    RouterModule,
     ReactiveFormsModule,
     FormsModule,
     TelemetryModule,
@@ -25,6 +31,7 @@ import { SlickModule } from 'ngx-slick';
     SuiModalModule, SuiProgressModule, SuiAccordionModule,
   SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
   ],
-  exports: [NoResultComponent, SearchFilterComponent, PageSectionComponent]
+  exports: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
+    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent]
 })
 export class ContentSearchModule { }
