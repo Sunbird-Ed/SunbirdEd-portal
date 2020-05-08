@@ -22,7 +22,7 @@
                     <i class="calendar outline icon"></i>
                     <div class="content width-100">
                         <button [disabled]="isEnrollmentAllowed(batch.enrollmentEndDate)"
-                            [ngClass]="{'sb-btn-disabled': isEnrollmentAllowed(batch.enrollmentEndDate), 'sb-btn-outline-primary': !isEnrollmentAllowed(batch.enrollmentEndDate)}"
+                            [ngClass]="{'sb-btn-disabled': isEnrollmentAllowed(batch.enrollmentEndDate), 'sb-btn-primary': !isEnrollmentAllowed(batch.enrollmentEndDate)}"
                             class="ui right floated sb-btn sb-btn-normal" appTelemetryInteract
                             [telemetryInteractEdata]="enrollBatchIntractEdata"
                             [telemetryInteractObject]="{id:batch.identifier,type:'CourseBatch',ver:'1',rollup:{l1:courseId}}"

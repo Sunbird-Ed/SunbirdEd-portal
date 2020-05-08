@@ -243,6 +243,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       window.config.nodeDisplayCriteria = {
         contentType: ['LessonPlanUnit']
       };
+    } else if (this.routeParams.type.toLowerCase() === 'curriculumcourse') {
+      window.config.nodeDisplayCriteria = {
+        contentType: ['CourseUnit']
+      };
     }
     if (this.routeParams.state === state.UP_FOR_REVIEW &&
       _.intersection(this.userProfile.userRoles, ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_REVIEWER']).length > 0) {
