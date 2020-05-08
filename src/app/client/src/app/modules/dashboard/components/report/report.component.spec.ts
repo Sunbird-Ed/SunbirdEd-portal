@@ -1,6 +1,6 @@
 import { UserService, CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedModule, NavigationHelperService, ToasterService } from '@sunbird/shared';
+import { SharedModule, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 
 import { ReportComponent } from './report.component';
@@ -25,6 +25,32 @@ describe('ReportComponent', () => {
   };
   const routerStub = { url: '/dashBoard/reports/daily_metrics' };
   let reportService: ReportService;
+  const resourceServiceMockData = {
+    messages: {
+      imsg: {
+        reportSummaryAdded: 'Summary Added Successfully',
+        reportPublished: 'Report Published Successfully'
+      },
+      emsg: {
+        m0076: 'No data available to download ',
+        m0005: 'Something went wrong, try later'
+      },
+      stmsg: {
+        m0131: 'Could not find any reports',
+        m0144: 'You do not have appropriate rights to access this page.'
+      }
+    },
+    frmelmnts: {
+      btn: {
+        tryagain: 'tryagain',
+        close: 'close'
+      },
+      lbl: {
+        reportSummary: 'Report Summary'
+      }
+    },
+    languageSelected$: of({})
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -33,7 +59,8 @@ describe('ReportComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule],
       providers: [ToasterService, UserService, NavigationHelperService, ReportService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: Router, useValue: routerStub }]
+        { provide: Router, useValue: routerStub },
+        { provide: ResourceService, useValue: resourceServiceMockData }]
     })
       .compileComponents();
   }));

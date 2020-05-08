@@ -76,26 +76,6 @@ describe('ReportService', () => {
     });
   });
 
-  it('should return chart data', () => {
-    const chartsArray = mockData.chartsArray;
-    const data: any = mockData.chartMetaData;
-    const downloadUrl = [{
-      id: 'test', result: '/reports/sunbird/sunbird.csv'
-    }];
-    // const result = reportService.prepareChartData(chartsArray, data, downloadUrl, '');
-    // expect(Array.isArray(result)).toBeTruthy();
-    // expect(result.length).toBe(1);
-    // expect(result[0]).toEqual({
-    //   chartConfig: mockData.chartsArray[0],
-    //   downloadUrl: downloadUrl,
-    //   chartData: data.data,
-    //   lastUpdatedOn: data.metadata.lastUpdatedOn
-    // });
-
-
-  });
-
-
   it('it should download report', (done) => {
     const signedUrl = 'test.com';
     spyOn(reportService, 'fetchDataSource').and.returnValue(of({ result: { signedUrl } }));

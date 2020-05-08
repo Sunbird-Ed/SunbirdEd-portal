@@ -1,5 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { CacheService } from 'ng2-cache-service';
+
 
 import { ConfirmPopupComponent } from './confirm-popup.component';
 
@@ -10,7 +14,8 @@ describe('ConfirmPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPopupComponent],
-      imports: [SuiModule]
+      imports: [SuiModule, HttpClientTestingModule],
+      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService]
     })
       .compileComponents();
   }));
