@@ -41,9 +41,12 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
             this.router.navigate([`learn/course/${this.courseId}/batch/${this.batchId}`]); // but course was found in enroll list
           }
         } else {
-          // if query params has batch then open enroll popup for that batch
-          if (queryParams.batch) {
-            this.router.navigate([`learn/course/${this.courseId}/enroll/batch/${queryParams.batch}`]);
+          // if query params has batch and autoEnroll=true then auto enroll to that batch
+          if (queryParams.batch && queryParams.autoEnroll) {
+            const reqParams = {
+              queryParams: { autoEnroll: queryParams.autoEnroll }
+            };
+            this.router.navigate([`learn/course/${this.courseId}/enroll/batch/${queryParams.batch}`], reqParams);
           }
         }
         return this.getDetails(paramsObj);

@@ -243,6 +243,10 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       window.config.nodeDisplayCriteria = {
         contentType: ['LessonPlanUnit']
       };
+    } else if (this.routeParams.type.toLowerCase() === 'curriculumcourse') {
+      window.config.nodeDisplayCriteria = {
+        contentType: ['CourseUnit']
+      };
     }
     if (this.routeParams.state === state.UP_FOR_REVIEW &&
       _.intersection(this.userProfile.userRoles, ['CONTENT_REVIEWER', 'CONTENT_REVIEW', 'BOOK_REVIEWER']).length > 0) {
@@ -352,6 +356,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         return this.configService.editorConfig.COLLECTION_EDITOR.COLLECTION_ARRAY;
       case 'LessonPlan':
         return this.configService.editorConfig.COLLECTION_EDITOR.LESSON_PLAN;
+      case 'CurriculumCourse':
+        return this.configService.editorConfig.COLLECTION_EDITOR.CURRICULUM_COURSE_ARRAY;
       default:
         return this.configService.editorConfig.COLLECTION_EDITOR.DEFAULT_CONFIG;
     }

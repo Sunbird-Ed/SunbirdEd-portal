@@ -8,8 +8,9 @@ import {
   NavigationHelperService
 } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
+import { UserService } from '@sunbird/core';
 
 @Component({
   selector: 'app-public-course-player',
@@ -45,12 +46,12 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
   public collectionTreeOptions: ICollectionTreeOptions;
 
   public unsubscribe = new Subject<void>();
-
+  public showJoinTrainingModal = false;
   constructor(public activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService,
     public router: Router,
     private toasterService: ToasterService, private resourceService: ResourceService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, private userService: UserService, public telemetryService: TelemetryService) {
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
   }
 
@@ -118,5 +119,35 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
 
   showContentCreditsPopup () {
     this.showContentCreditsModal = true;
+  }
+
+  public navigateToContent() {
+    if (!_.get(this.userService, 'userid')) {
+      this.showJoinTrainingModal = true;
+    }
+  }
+
+  public closeJoinTrainingModal() {
+    this.showJoinTrainingModal = false;
+    const telemetryIntractData = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        id: 'join-training-popup-close',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      },
+      object: {
+        id: this.activatedRoute.snapshot.params.courseId,
+        type: 'Course',
+        ver: '1.0',
+        rollup: {
+          l1: this.activatedRoute.snapshot.params.courseId
+        }
+      }
+    };
+    this.telemetryService.interact(telemetryIntractData);
   }
 }
