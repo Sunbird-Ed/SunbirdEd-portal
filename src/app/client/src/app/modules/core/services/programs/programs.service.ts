@@ -33,7 +33,6 @@ export class ProgramsService implements CanActivate {
    * initializes the service is the user is logged in;
    */
   public initialize() {
-    console.log("---programs");
     this.enableContributeMenu().subscribe();
   }
 
