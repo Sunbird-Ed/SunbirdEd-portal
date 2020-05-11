@@ -18,7 +18,7 @@ export class DateFormatPipe implements PipeTransform {
    */
   transform(value: Date | string | number, format: string): string {
     if (value) {
-      return dayjs(value).format(format || 'Do MMMM YYYY'); // TODO: NEED to be tested
+      return dayjs(value).format(format || 'DD MMMM YYYY'); // TODO: NEED to be tested
     } else {
       return '-';
     }

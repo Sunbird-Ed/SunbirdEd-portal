@@ -43,6 +43,7 @@ describe('ProminentFilterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      declarations: [ProminentFilterComponent],
       providers: [ConfigService, CacheService, ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
