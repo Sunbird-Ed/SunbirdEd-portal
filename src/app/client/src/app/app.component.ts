@@ -84,6 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
   labels: {};
+  showUserTypePopup = false;
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -205,8 +206,10 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         }
       }
+      this.showUserTypePopup = !localStorage.getItem('userType');
     }, (err) => {
       this.isLocationConfirmed = true;
+      this.showUserTypePopup = false;
     });
     this.getUserFeedData();
   }

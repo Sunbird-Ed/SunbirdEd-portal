@@ -1,7 +1,9 @@
 export interface IDeviceProfile {
-  ipLocation: {
-    state: string;
-    district: string;
-  };
-  userDeclaredLocation: string;
+  ipLocation: ILocation;
+  userDeclaredLocation?: ILocation;
+}
+
+interface ILocation {
+  state: string;
+  district: string;
 }
