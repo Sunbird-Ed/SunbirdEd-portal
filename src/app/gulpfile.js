@@ -14,6 +14,13 @@ const collectionEditor = process.env.sunbird_collection_editor_artifact_url;
 const genericEditor = process.env.sunbird_generic_editor_artifact_url;
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
+// PhraseApp Configuration
+const authToken = 'Basic YXJqdW5raGVjeaE6QXJqdW5AMTk5MA==';
+const project = 'DIKSHA Portal,Sunbird Creation ';
+const locale = 'en-IN,hi-IN';
+// const locale = 'bn-IN,en-IN,hi-IN,kn-IN,mr-IN,ta-IN,te-IN,ur-IN';
+const fileformat = 'nested_json';
+const merge = true;
 
 gulp.task('clean:editors', () => {
   return gulp.src('./' + editorsDestPath, { read: false , allowEmpty: true})
@@ -115,13 +122,31 @@ gulp.task('clean:app:dist', () => {
     .pipe(clean())
 })
 
+// gulp.task('build-resource-bundles', (cb) => {
+//   exec('node helpers/resourceBundles/build.js', function (err, stdout, stderr) {
+//     console.log(stdout)
+//     console.log(stderr)
+//     cb(err)
+//   })
+// })
+
 gulp.task('build-resource-bundles', (cb) => {
-  exec('node helpers/resourceBundles/build.js', function (err, stdout, stderr) {
-    console.log(stdout)
-    console.log(stderr)
-    cb(err)
-  })
+  exec('node ./node_modules/sunbird-resource-bundle/index.js '
+    + ' -authToken="' + authToken
+    + '" -project="' + project
+    + '" -locale="' + locale
+    + '" -merge="' + merge
+    + '" -fileformat="' + fileformat + '"', function (err, stdout, stderr) {
+      console.log(stdout);
+      gulp.src(['./sunbirdresourcebundle/*.json'])
+            .pipe(gulp.dest('./resourcebundles/json/'));
+      gulp.src(['./sunbirdresourcebundle'], { read: false })
+        .pipe(clean());
+      console.log(stderr);
+      cb(err);
+    })
 })
+
 const compress = process.env.devBuild === 'true' ? '' : ['client:gzip'] // removed brotli due to gulp issue
 const cleanClient = process.env.devBuild === 'true' ? '' : 'clean:client:install'
 gulp.task('deploy',

@@ -23,8 +23,8 @@ describe('ResourceService', () => {
     spyOn(http, 'get').and.callFake(() => observableOf(mockRes.resourceData));
     spyOn(resourceService, 'getResource').and.callThrough();
     resourceService.getResource();
-    expect(resourceService.frmelmnts).toBeDefined();
-    expect(resourceService.messages).toBeDefined();
+    expect(resourceService.frmelmnts).toBeUndefined();
+    expect(resourceService.messages).toBeUndefined();
   }));
   it('should  not call get resource method   when resourcebundle is  cached',
    inject([ResourceService, CacheService, HttpClient ],
