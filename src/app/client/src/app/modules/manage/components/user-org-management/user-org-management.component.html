@@ -121,11 +121,14 @@
           <div class="pt-8" *ngIf="uploadedDetails['accounts_failed'] && uploadedDetails['accounts_failed'] != 0">
             <a (click)="downloadCSVFile(userCSV, 'FAILED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Failed</a><span> : {{ uploadedDetails['accounts_failed'] }}</span>
           </div>
-          <div class="pt-8" *ngIf="uploadedDetails['duplicate_account'] && uploadedDetails['duplicate_account'] != 0">
-            <a (click)="downloadCSVFile(userCSV, 'MULTIMATCH', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Duplicate phone numbers/email ID</a><span> : {{ uploadedDetails['duplicate_account'] }}</span>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_duplicate'] && uploadedDetails['accounts_duplicate'] != 0">
+            <a (click)="downloadCSVFile(userCSV, 'MULTIMATCH', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Duplicate phone numbers/email ID</a><span> : {{ uploadedDetails['accounts_duplicate'] }}</span>
           </div>
           <div class="pt-8" *ngIf="uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0">
             <a (click)="downloadCSVFile(userCSV, 'UNCLAIMED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Unclaimed</a><span> : {{ uploadedDetails['accounts_unclaimed'] }}</span>
+          </div>
+          <div class="pt-8" *ngIf="uploadedDetails['accounts_eligible'] && uploadedDetails['accounts_eligible'] != 0">
+            <a (click)="downloadCSVFile(userCSV, 'ELIGIBLE', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Eligible</a><span> : {{ uploadedDetails['accounts_eligible'] }}</span>
           </div>
         </div>
       </div>
