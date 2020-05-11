@@ -5,7 +5,6 @@ import {
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@sunbird/core';
-import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
 import { ViewAllComponent } from '@sunbird/content-search';
 
@@ -82,7 +81,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: ':courseId/dashboard', component: CourseProgressComponent, canActivate: [AuthGuard],
+        path: ':courseId/dashboard', loadChildren: './../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard],
         data: {
           roles: 'courseBatchRoles',
           telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
