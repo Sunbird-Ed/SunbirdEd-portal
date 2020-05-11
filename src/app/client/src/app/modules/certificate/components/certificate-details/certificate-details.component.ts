@@ -4,7 +4,7 @@ import { ServerResponse, ResourceService, ConfigService, PlayerConfig, IUserData
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import {Subscription} from 'rxjs';
 
@@ -84,7 +84,7 @@ export class CertificateDetailsComponent implements OnInit , OnDestroy {
         this.viewCertificate = true;
         this.recipient = _.get(certData, 'recipient.name');
         this.courseName = _.get(certData, 'badge.name');
-        this.issuedOn = moment(new Date(_.get(certData, 'issuedOn'))).format('DD MMM YYYY');
+        this.issuedOn = dayjs(new Date(_.get(certData, 'issuedOn'))).format('DD MMM YYYY');
       },
       (err) => {
         this.wrongCertificateCode = true;
