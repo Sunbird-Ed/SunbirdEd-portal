@@ -176,9 +176,16 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       this.isPublishedCourse();
   }
   isPublishedCourse() {
-    const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
-    const inputParams = { params: '' };
-      this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
+    const searchParams = {
+      filters: {
+        status: ['Live'],
+        createdBy: this.userService.userid,
+        contentType: ['Course'],
+        objectType: this.config.appConfig.WORKSPACE.objectType,
+      },
+      sort_by: { lastUpdatedOn: 'desc' }
+    };
+      this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
        if (data.result.content.length > 0) {
          this.showCourseQRCodeBtn = true;
        }
