@@ -166,6 +166,8 @@ export class TenantService extends DataService {
     this.cacheService.set('orgSettings', data , {
       maxAge: 86400
     });
-    this._tenantSettings$.next(JSON.parse(settingsResponse.result.response.value));
+    try {
+      this._tenantSettings$.next(JSON.parse(settingsResponse.result.response.value));
+    } catch (error) {}
   }
 }
