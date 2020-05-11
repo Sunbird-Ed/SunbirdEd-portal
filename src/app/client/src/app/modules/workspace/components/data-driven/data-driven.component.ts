@@ -347,17 +347,26 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     });
   }
   /**
-  * fetchCourseFrameworkId (i.e TPD)
+  * To fetch the framework id.
+  * @since #SH-3, removing System Setting call to get frameworkId.
+  * @description - It will try to fetch frameworkId from cache, if not found will make the api call.
+  *                In Trainings tab, same call happens to get the frameworkId and stored in cache.
   */
   getCourseFrameworkId() {
-    const framework = this._cacheService.get('course' + 'framework');
+    const framework = this._cacheService.get('framework' + 'search');
     if (framework) {
       return of(framework);
     } else {
-     return this.frameworkService.getCourseFramework()
-        .pipe(map((data) => {
-          const frameWork = _.get(data.result.response , 'value');
-          this._cacheService.set('course' + 'framework', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+      const hashTagId = this.userService.hashTagId;
+      const formServiceInputParams = {
+        formType: 'framework',
+        formAction: 'search',
+        contentType: 'framework-code',
+      };
+      return this.formService.getFormConfig(formServiceInputParams, hashTagId)
+        .pipe(map((data: ServerResponse) => {
+          const frameWork = _.find(data, 'framework').framework;
+          this._cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
           return frameWork;
         }), catchError((error) => {
           return of(false);

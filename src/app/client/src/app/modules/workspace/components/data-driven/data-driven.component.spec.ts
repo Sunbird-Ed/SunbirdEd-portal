@@ -299,12 +299,22 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.name).toBe('Untitled Textbook');
     expect(componentParent.description).toBe('Enter description for TextBook');
   });
-  it('should call system get api and return the course framework Id ', () => {
-    const frameworkService = TestBed.get(FrameworkService);
-    componentParent.contentType = 'course';
+  it('should call getFormConfig and return the course framework Id ', () => {
+    const cacheService = TestBed.get(CacheService);
+    cacheService.set('frameworksearch', null);
     const formService = TestBed.get(FormService);
-    spyOn(frameworkService, 'getCourseFramework').and.returnValue(observableOf(mockFrameworkData.courseFramework));
+    spyOn(cacheService, 'set').and.stub();
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockFrameworkData.courseFramework));
     componentParent.ngOnInit();
-    expect(componentParent.framework).toEqual('TPD');
+    expect(componentParent.framework).toEqual('cbse-tpd');
+    expect(cacheService.set).toHaveBeenCalledWith('frameworksearch', 'cbse-tpd', {'maxAge' : 600});
+  });
+
+  it('should fecth the framework id if it is present in cache', () => {
+    const cacheService = TestBed.get(CacheService);
+    cacheService.set('frameworksearch', 'cbse-tpd', {'maxAge' : 600});
+    const framework = cacheService.get('frameworksearch');
+    componentParent.ngOnInit();
+    expect(componentParent.framework).toEqual(framework);
   });
 });

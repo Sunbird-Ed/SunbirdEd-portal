@@ -1618,24 +1618,9 @@ export const mockFrameworkData = {
         'status': 'Live'
       }
   },
-  courseFramework: {
-    'id': 'api.system.settings.get.courseFrameworkId',
-    'ver': 'v1',
-    'ts': '2019-01-10 10:33:41:184+0000',
-    'params': {
-     'resmsgid': null,
-     'msgid': 'c05fc5b1-bd0e-5282-cf8f-ce9d5b61b042',
-     'err': null,
-     'status': 'success',
-     'errmsg': null
-    },
-    'responseCode': 'OK',
-    'result': {
-     'response': {
-      'id': 'courseFrameworkId',
-      'field': 'courseFrameworkId',
-      'value': 'TPD'
-     }
-    }
-   }
+    courseFramework: [
+        {
+            'framework': 'cbse-tpd'
+        }
+    ]
 };
