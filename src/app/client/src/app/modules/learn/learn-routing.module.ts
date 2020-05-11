@@ -5,10 +5,11 @@ import {
 } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FlagContentComponent, AuthGuard } from '@sunbird/core';
+import { AuthGuard } from '@sunbird/core';
 import { CourseProgressComponent } from '@sunbird/dashboard';
 import { RedirectComponent } from './../shared/components/redirect/redirect.component';
-import { ViewAllComponent } from '@sunbird/shared-feature';
+import { ViewAllComponent } from '@sunbird/content-search';
+
 const telemetryEnv = 'Course';
 const objectType = 'Course';
 const routes: Routes = [
@@ -56,7 +57,6 @@ const routes: Routes = [
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },
         children: [
-          { path: 'flag', component: FlagContentComponent },
           {
             path: 'enroll/batch/:batchId', component: EnrollBatchComponent,
             data: {
@@ -100,7 +100,6 @@ const routes: Routes = [
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },
         children: [
-          { path: 'flag', component: FlagContentComponent },
           {
             path: 'unenroll/batch/:batchId', component: UnEnrollBatchComponent,
             data: {
@@ -115,8 +114,7 @@ const routes: Routes = [
           telemetry: {
             env: telemetryEnv, pageid: 'content-note-read', type: 'list', object: { type: objectType, ver: '1.0' }
           }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
-        },
-        children: [{ path: 'flag', component: FlagContentComponent }]
+        }
       },
       {
         path: ':courseId/batch/:batchId/notes/:contentId', component: NoteListComponent,
@@ -124,8 +122,7 @@ const routes: Routes = [
           telemetry: {
             env: telemetryEnv, pageid: 'content-note-read', type: 'list', object: { type: objectType, ver: '1.0' }
           }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
-        },
-        children: [{ path: 'flag', component: FlagContentComponent }]
+        }
       },
       {
         path: ':courseId/:courseStatus', component: CoursePlayerComponent,

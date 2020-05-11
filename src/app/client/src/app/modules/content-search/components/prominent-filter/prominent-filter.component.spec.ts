@@ -1,21 +1,23 @@
-
-
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash-es';
-import { DataDrivenFilterComponent } from './data-driven-filter.component';
+import { ProminentFilterComponent } from './prominent-filter.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
-import { CoreModule, FrameworkService, FormService, UserService, PublicDataService } from '@sunbird/core';
+import {
+  CoreModule, FrameworkService, FormService, UserService, PublicDataService
+} from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+// import * as mockData from ./prominent-filter.component.spec.data';
+import { Response } from './prominent-filter.component.spec.data';
 
-describe('DataDrivenFilterComponent', () => {
-  let component: DataDrivenFilterComponent;
-  let fixture: ComponentFixture<DataDrivenFilterComponent>;
+describe('ProminentFilterComponent', () => {
+  let component: ProminentFilterComponent;
+  let fixture: ComponentFixture<ProminentFilterComponent>;
   let frameworkService, formService, cacheService, userService, publicDataService, resourceService;
   let mockHashTagId: string, mockFrameworkInput: string;
   let mockFrameworkCategories: Array<any> = [];
@@ -23,14 +25,11 @@ describe('DataDrivenFilterComponent', () => {
   let makeChannelReadSuc, makeFrameworkReadSuc, makeFormReadSuc  = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
-    url = '/explore/1?';
+    url = jasmine.createSpy('url');
   }
 
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
-    snapshot = {
-      params: {pageNumber: '1'},
-    };
     get queryParams() {
       return this.queryParamsMock.asObservable();
     }
@@ -44,6 +43,7 @@ describe('DataDrivenFilterComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
+      declarations: [ProminentFilterComponent],
       providers: [ConfigService, CacheService, ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
@@ -53,7 +53,7 @@ describe('DataDrivenFilterComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DataDrivenFilterComponent);
+    fixture = TestBed.createComponent(ProminentFilterComponent);
     component = fixture.componentInstance;
     frameworkService = TestBed.get(FrameworkService);
     formService = TestBed.get(FormService);
@@ -85,15 +85,13 @@ describe('DataDrivenFilterComponent', () => {
     makeChannelReadSuc = true;
     makeFrameworkReadSuc = true;
     makeFormReadSuc = true;
-    resourceService._languageSelected.next({value: 'en', label: 'English', dir: 'ltr'});
+     resourceService._languageSelected.next({value: 'en', label: 'English', dir: 'ltr'});
     spyOn(cacheService, 'get').and.returnValue(undefined);
     spyOn(cacheService, 'set').and.returnValue(undefined);
-    spyOn(component.dataDrivenFilter, 'emit').and.returnValue([]);
+    spyOn(component.prominentFilter, 'emit').and.returnValue([]);
     component.ngOnInit();
     expect(component.formFieldProperties).toBeDefined();
-    expect(component.filtersDetails).toBeDefined();
-    expect(component.dataDrivenFilter.emit).toHaveBeenCalledWith([]);
-    expect(component.showFilters).toBeTruthy();
+    expect(component.prominentFilter.emit).toHaveBeenCalledWith([]);
     expect(cacheService.set).toHaveBeenCalled();
   });
   it('should reset filters', () => {
@@ -106,9 +104,5 @@ describe('DataDrivenFilterComponent', () => {
     component.applyFilters();
     expect(component.router.navigate).toHaveBeenCalled();
   });
-  it('should remove filter selection', () => {
-    component.formInputData = { 'subject': ['English'] };
-    component.removeFilterSelection('subject', 'English');
-    expect(component.formInputData.subject).toEqual([]);
-  });
+
 });

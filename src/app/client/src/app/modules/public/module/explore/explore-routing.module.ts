@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ExploreContentComponent, ExploreComponent } from './components';
-import {ViewAllComponent} from '@sunbird/shared-feature';
+import {ViewAllComponent} from '@sunbird/content-search';
 const routes: Routes = [
   {
     path: '', component: ExploreComponent, data: {

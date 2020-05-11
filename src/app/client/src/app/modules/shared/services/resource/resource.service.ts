@@ -8,7 +8,7 @@ import { ConfigService } from './../config/config.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 /**
@@ -117,7 +117,7 @@ export class ResourceService {
       'X-Device-ID': 'X-Device-ID',
       'X-Org-code': '',
       'X-Source': 'web',
-      'ts': moment().format(),
+      'ts': dayjs().format(),
       'X-msgid': UUID.UUID()
     };
   }
