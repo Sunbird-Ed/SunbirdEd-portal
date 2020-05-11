@@ -411,4 +411,40 @@ describe('SignUpComponent', () => {
     expect(phoneOrEmailElement.nativeNode.innerText).toMatch(phoneOrEmailMessage);
   });
 
+  it('should generate otp as user is minor', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 2);
+    const contactType = component.signUpForm.controls['contactType'];
+    contactType.setValue('phone');
+    const phone = component.signUpForm.controls['phone'];
+    phone.setValue(SignUpComponentMockData.generateOtpMinor.request.key);
+    component.generateOTP();
+    expect(component.signUpForm.enable).toBeTruthy();
+    expect(component.isMinor).toBe(true);
+    expect(component.showSignUpForm).toBe(false);
+    expect(component.disableSubmitBtn).toBe(false);
+    expect(signupService.generateOTP).toHaveBeenCalledWith(SignUpComponentMockData.generateOtpMinor);
+  });
+
+  it('should generate otp as user is minor', () => {
+    const signupService = TestBed.get(SignupService);
+    spyOn(signupService, 'getTncConfig').and.returnValue(observableOf(SignUpComponentMockData.tncConfig));
+    spyOn(signupService, 'generateOTP').and.returnValue(observableOf({}));
+    component.ngOnInit();
+    component.changeBirthYear(currentYear - 30);
+    const contactType = component.signUpForm.controls['contactType'];
+    contactType.setValue('phone');
+    const phone = component.signUpForm.controls['phone'];
+    phone.setValue(SignUpComponentMockData.generateOtp.request.key);
+    component.generateOTP();
+    expect(component.signUpForm.enable).toBeTruthy();
+    expect(component.isMinor).toBe(false);
+    expect(component.showSignUpForm).toBe(false);
+    expect(component.disableSubmitBtn).toBe(false);
+    expect(signupService.generateOTP).toHaveBeenCalledWith(SignUpComponentMockData.generateOtp);
+  });
+
 });
