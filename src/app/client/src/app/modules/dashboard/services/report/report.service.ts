@@ -6,7 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
 import { map, catchError } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable, of, forkJoin, throwError } from 'rxjs';
 
 @Injectable()
 export class ReportService {
@@ -29,7 +29,14 @@ export class ReportService {
     const apiCalls = _.map(dataSources, (source: IDataSource) => {
       return this.fetchDataSource(_.get(source, 'path'), _.get(source, 'id'));
     });
-    return forkJoin(...apiCalls);
+    return forkJoin(...apiCalls).pipe(
+      catchError(err => {
+        if (err.status === 404) {
+          return throwError({ messageText: 'messages.stmsg.reportNotReady' });
+        }
+        return throwError(err);
+      })
+    );
   }
 
   public fetchReportById(id): Observable<IReportsApiResponse> {
@@ -175,19 +182,13 @@ export class ReportService {
    * @memberof ReportService
    */
   public isAuthenticated(roles: string | undefined): Observable<boolean> {
-    return this.permissionService.permissionAvailable$.pipe(
-      map(permissionAvailable => {
-        if (permissionAvailable && permissionAvailable === 'success') {
-          const userRoles = this.configService.rolesConfig.ROLES[roles];
-          if (roles && userRoles) {
-            if (this.permissionService.checkRolesPermissions(userRoles)) {
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-            return false;
-          }
+
+    return this.userService.userData$.pipe(
+      map((user: IUserData) => {
+        if (user && !user.err) {
+          const allowedRoles = this.configService.rolesConfig.ROLES[roles];
+          const userRoles = user.userProfile.userRoles;
+          return _.intersection(allowedRoles, userRoles).length;
         } else {
           return false;
         }
