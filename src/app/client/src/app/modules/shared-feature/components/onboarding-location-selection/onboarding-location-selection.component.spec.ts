@@ -177,7 +177,7 @@ describe('OnboardingLocationSelectionComponent', () => {
       id: '3789e5e3-a31f-43fa-9cb3-c1b26460ffd5',
       type: 'state'
     });
-    expect(component.userDetailsForm.value.state).toBe('');
+    expect(component.userDetailsForm.value.state).toBe(null);
   });
 
   it('should call setDistrict on match found', () => {
@@ -195,7 +195,7 @@ describe('OnboardingLocationSelectionComponent', () => {
       'type': 'district',
       'parentId': '37809706-8f0e-4009-bf67-87bf04f220fa'
     });
-    expect(component.userDetailsForm.value.district).toBe('');
+    expect(component.userDetailsForm.value.district).toBe(null);
   });
 
   it('should call setData', () => {
