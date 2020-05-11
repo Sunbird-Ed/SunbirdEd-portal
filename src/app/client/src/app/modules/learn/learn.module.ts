@@ -13,7 +13,6 @@ import {
   UpdateCourseBatchComponent, CurriculumCardComponent, UnEnrollBatchComponent} from './components';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService , AssessmentScoreService } from './services';
 import { CoreModule } from '@sunbird/core';
-import { NotesModule } from '@sunbird/notes';
 import { DashboardModule } from '@sunbird/dashboard';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { PlayerHelperModule } from '@sunbird/player-helper';
@@ -30,7 +29,6 @@ import { ContentSearchModule } from '@sunbird/content-search';
     LearnRoutingModule,
     CoreModule,
     ReactiveFormsModule,
-    NotesModule,
     TelemetryModule,
     NgInviewModule,
     SharedFeatureModule,

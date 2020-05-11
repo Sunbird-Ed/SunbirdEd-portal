@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CollectionPlayerComponent, ContentPlayerComponent } from './components';
-import { NoteListComponent } from '@sunbird/notes';
 const telemetryEnv = 'library';
 
 const routes: Routes = [
@@ -31,12 +30,6 @@ const routes: Routes = [
             telemetry: {
                 env: telemetryEnv, pageid: 'content-player', type: 'play'
             }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '/resources' }]
-        }
-    }, {
-        path: 'content/:contentId/note', component: NoteListComponent, data: {
-            telemetry: {
-                env: telemetryEnv, pageid: 'content-note-read', type: 'list', object: { type: 'library', ver: '1.0' }
-            }
         }
     }, {
         path: 'content/:contentId/:contentStatus', component: ContentPlayerComponent,

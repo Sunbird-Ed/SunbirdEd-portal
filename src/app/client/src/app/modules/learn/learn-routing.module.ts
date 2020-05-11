@@ -1,4 +1,3 @@
-import { NoteListComponent } from '@sunbird/notes';
 import {
   LearnPageComponent, CourseConsumptionPageComponent, CoursePlayerComponent,
   EnrollBatchComponent, UnEnrollBatchComponent, CreateBatchComponent, UpdateCourseBatchComponent
@@ -107,22 +106,6 @@ const routes: Routes = [
             }
           }
         ]
-      },
-      {
-        path: ':courseId/batch/:batchId/notes', component: NoteListComponent,
-        data: {
-          telemetry: {
-            env: telemetryEnv, pageid: 'content-note-read', type: 'list', object: { type: objectType, ver: '1.0' }
-          }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
-        }
-      },
-      {
-        path: ':courseId/batch/:batchId/notes/:contentId', component: NoteListComponent,
-        data: {
-          telemetry: {
-            env: telemetryEnv, pageid: 'content-note-read', type: 'list', object: { type: objectType, ver: '1.0' }
-          }, breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
-        }
       },
       {
         path: ':courseId/:courseStatus', component: CoursePlayerComponent,
