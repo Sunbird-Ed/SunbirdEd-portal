@@ -109,7 +109,7 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * @description sorts the reports in descending order ordered by creation date
+   * @description sorts the reports in desc order ordered by creation date
    * @private
    * @template T
    * @param {T[]} reports
