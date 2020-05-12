@@ -10,7 +10,7 @@
 			appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata" routerLink="/learn">
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
-		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/search/Groups') || router.isActive('/groups')"
+		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/groups')"
 			appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata" routerLink="/groups">
 			{{resourceService?.frmelmnts?.tab?.mygroups}}
 		</a>
@@ -51,7 +51,7 @@
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		<a class="item"
-			[class.active]="router.isActive('/search/groups', true) || router.isActive('/groups', true)"
+			[class.active]="router.isActive('/groups', true)"
 			*ngIf="!router.isActive('', true)" [routerLink]="['/groups']"
 			appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata">
 			{{resourceService?.frmelmnts?.tab?.mygroups}}
@@ -81,6 +81,11 @@
 				</div>
 			</div>
 			<div class="ui divider mt-0"></div>
+			<a class="item" [class.active]="router.isActive('/groups')"
+				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
+				routerLink="/groups">
+				{{resourceService?.frmelmnts?.tab?.mygroups}}
+			</a>
 			<a class="item" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
 				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata"
 				routerLink="/resources">
@@ -90,11 +95,6 @@
 				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="learnMenuIntractEdata"
 				routerLink="/learn">
 				{{resourceService?.frmelmnts?.tab?.courses}}
-			</a>
-			<a class="item" [class.active]="router.isActive('/search/Groups') || router.isActive('/groups')"
-				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
-				routerLink="/groups">
-				{{resourceService?.frmelmnts?.tab?.mygroups}}
 			</a>
 			<a *ngIf="showContributeTab" class="item" [class.active]="router.isActive('/contribute')"
 				(click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="contributeMenuEdata"
@@ -126,7 +126,7 @@
 				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 			</a>
 			<a class="item"
-				[class.active]="router.isActive('/search/groups') || router.isActive('/groups')"
+				[class.active]="router.isActive('/groups')"
 				[routerLink]="['/groups']" (click)="showSideBar()"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.mygroups}}
