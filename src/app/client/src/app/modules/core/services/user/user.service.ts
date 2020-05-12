@@ -121,7 +121,6 @@ export class UserService {
       this._cloudStorageUrls = (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',');
     } catch (error) {
     }
-
     this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
   }
   get slug() {

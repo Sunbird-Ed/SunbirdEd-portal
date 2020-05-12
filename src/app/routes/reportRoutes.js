@@ -6,7 +6,28 @@ const { REPORT_SERVICE_URL } = require('../helpers/environmentVariablesHelper.js
 const reqDataLimitOfContentUpload = '50mb'
 module.exports = function (app) {
 
-    app.all([`${BASE_REPORT_URL}/list`, `${BASE_REPORT_URL}/get/:reportId`],
+    app.patch([`${BASE_REPORT_URL}/update/:reportId`],
+        proxyUtils.verifyToken(),
+        reportHelper.validateRoles(['REPORT_ADMIN']),
+        proxy(REPORT_SERVICE_URL, {
+            limit: reqDataLimitOfContentUpload,
+            proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+            proxyReqPathResolver: function (req) {
+                return `${REPORT_SERVICE_URL}${req.originalUrl}`
+            },
+            userResDecorator: (proxyRes, proxyResData, req, res) => {
+                try {
+                    const data = JSON.parse(proxyResData.toString('utf8'));
+                    if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                    else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+                } catch (err) {
+                    return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+                }
+            }
+        })
+    )
+
+    app.all([`${BASE_REPORT_URL}/list`, `${BASE_REPORT_URL}/get/:reportId`, `${BASE_REPORT_URL}/summary/*`],
         proxyUtils.verifyToken(),
         reportHelper.validateRoles(['REPORT_VIEWER', 'REPORT_ADMIN']),
         proxy(REPORT_SERVICE_URL, {

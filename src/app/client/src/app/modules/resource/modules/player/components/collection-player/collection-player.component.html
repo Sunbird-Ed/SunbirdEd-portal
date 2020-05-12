@@ -73,7 +73,7 @@
           </sb-library-filters>
           </div>
           
-          <div [hidden]="isSelectChapter" class="side-toc-content">
+          <div [hidden]="isSelectChapter" class="main-side-toc-content">
             <sb-toc-item [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
               (noContent)="showNoContent($event)"></sb-toc-item>

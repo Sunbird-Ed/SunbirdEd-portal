@@ -29,6 +29,18 @@
     top: 0;
 }
 
+.hawkeye-label {
+    line-height: normal;
+    border-radius: 32px;
+    vertical-align: middle;
+}
+
+.sb-btn-normal i::after {
+    content: "" !important;
+    font-size: 0.8125rem;
+    color: var(--white);
+}
+
 ::ng-deep{
     .sb-hawkeye-modal.sb-modal {
         .ui.modal{
