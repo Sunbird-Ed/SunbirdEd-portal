@@ -16,7 +16,7 @@ import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { mockResponse } from './create-batch.component.data';
-import { LearnModule, UpdateCourseBatchComponent, CourseBatchService,
+import { LearnModule, CourseBatchService,
   CourseProgressService, CourseConsumptionService} from '@sunbird/learn';
 
 
