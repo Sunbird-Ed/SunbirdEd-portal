@@ -17,8 +17,7 @@ const editorsDestPath = 'client/src/thirdparty/editors/'
 // PhraseApp Configuration
 const authToken = 'Basic YXJqdW5raGVjeaE6QXJqdW5AMTk5MA==';
 const project = 'DIKSHA Portal,Sunbird Creation ';
-const locale = 'en-IN,hi-IN';
-// const locale = 'bn-IN,en-IN,hi-IN,kn-IN,mr-IN,ta-IN,te-IN,ur-IN';
+const locale = 'bn-IN,en-IN,hi-IN,kn-IN,mr-IN,ta-IN,te-IN,ur-IN';
 const fileformat = 'nested_json';
 const merge = true;
 
