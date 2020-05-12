@@ -68,7 +68,7 @@ describe('UpdateCourseBatchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
+      declarations: [UpdateCourseBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
         HttpClientTestingModule, LearnModule],
