@@ -15,11 +15,11 @@ const genericEditor = process.env.sunbird_generic_editor_artifact_url;
 const editorsDestPath = 'client/src/thirdparty/editors/'
 
 // PhraseApp Configuration
-const authToken = 'Basic YXJqdW5raGVjeaE6QXJqdW5AMTk5MA==';
-const project = 'DIKSHA Portal,Sunbird Creation ';
-const locale = 'bn-IN,en-IN,hi-IN,kn-IN,mr-IN,ta-IN,te-IN,ur-IN';
-const fileformat = 'nested_json';
-const merge = true;
+const authToken = process.env.phrase_authToken;
+const project = process.env.phrase_project;
+const locale = process.env.phrase_locale;
+const fileformat = process.env.phrase_fileformat;
+const merge = process.env.phrase_merge;
 
 gulp.task('clean:editors', () => {
   return gulp.src('./' + editorsDestPath, { read: false , allowEmpty: true})
