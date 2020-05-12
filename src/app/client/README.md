@@ -61,13 +61,13 @@ Installing Sunbird requires two primary software components:
 
       export sunbird_generic_editor_artifact_url="https://sunbirddev.blob.core.windows.net/sunbird-content-dev/artefacts/editor/generic-editor-iframe-2.6.0.zip"
 
-      export phrase_authToken="Basic YXJqdW5raGVjeaE6QXJqdW5AMTk5MA=="
+      export phrase_authToken="Basic <TOKEN>"
 
-      export phrase_project="DIKSHA Portal,Sunbird Creation "
+      export phrase_project="<PROJECT_NAME>"
 
-      export phrase_locale="bn-IN,en-IN,hi-IN,kn-IN,mr-IN,ta-IN,te-IN,ur-IN"
+      export phrase_locale="<SUPPORTED_LOCALE>"
 
-      export phrase_fileformat="nested_json"
+      export phrase_fileformat="<DOWNLOAD_FILE_FORMAT>"
 
       export phrase_merge="true"
       ```
