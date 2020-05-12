@@ -4,7 +4,9 @@ import * as _ from 'lodash-es';
 import * as Md5 from 'md5';
 import * as dayjs from 'dayjs';
 import { finalize } from 'rxjs/operators';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AssessmentScoreService {
   /***
    * course details

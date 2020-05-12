@@ -6,7 +6,9 @@ import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CourseProgressService {
   /**
  * Reference of content service.

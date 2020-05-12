@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
+import { SuiModalModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule, SessionExpiryInterceptor } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -30,8 +29,7 @@ import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/Cus
     CoreModule,
     CommonModule,
     HttpClientModule,
-    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-    SuiRatingModule, SuiCollapseModule,
+    SuiModalModule,
     SharedModule.forRoot(),
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
