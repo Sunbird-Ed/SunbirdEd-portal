@@ -70,7 +70,7 @@ export class MainHeaderComponent implements OnInit {
 
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
-    public orgDetailsService: OrgDetailsService, private _cacheService: CacheService, public formService: FormService,
+    public orgDetailsService: OrgDetailsService, public formService: FormService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
       try {
         this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
@@ -121,23 +121,16 @@ export class MainHeaderComponent implements OnInit {
     });
   }
   getLanguage(channelId) {
-    const isCachedDataExists = this._cacheService.get(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction);
-    if (isCachedDataExists) {
-      this.languages = isCachedDataExists[0].range;
-    } else {
-      const formServiceInputParams = {
-        formType: this.languageFormQuery.formType,
-        formAction: this.languageFormQuery.formAction,
-        contentType: this.languageFormQuery.filterEnv
-      };
-      this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
-        this.languages = data[0].range;
-        this._cacheService.set(this.languageFormQuery.filterEnv + this.languageFormQuery.formAction, data,
-          { maxAge: this.config.appConfig.cacheServiceConfig.setTimeInMinutes * this.config.appConfig.cacheServiceConfig.setTimeInSeconds});
-      }, (err: any) => {
-        this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
-      });
-    }
+    const formServiceInputParams = {
+      formType: this.languageFormQuery.formType,
+      formAction: this.languageFormQuery.formAction,
+      contentType: this.languageFormQuery.filterEnv
+    };
+    this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
+      this.languages = data[0].range;
+    }, (err: any) => {
+      this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
+    });
   }
   navigateToHome() {
     if (this.userService.loggedIn) {

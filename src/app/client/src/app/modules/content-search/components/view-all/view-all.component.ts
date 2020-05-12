@@ -10,7 +10,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { CacheService } from 'ng2-cache-service';
 
 
 @Component({
@@ -140,7 +139,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
-    activatedRoute: ActivatedRoute, paginationService: PaginationService, private _cacheService: CacheService,
+    activatedRoute: ActivatedRoute, paginationService: PaginationService,
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
@@ -356,28 +355,18 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       );
   }
   private getframeWorkData() {
-    if (_.get(this.activatedRoute.snapshot, 'data.frameworkName')) {
-      const framework = this._cacheService.get('framework' + 'search');
-      if (framework) {
-        this.frameWorkName = framework;
-      } else {
-        const formServiceInputParams = {
-          formType: 'framework',
-          formAction: 'search',
-          contentType: 'framework-code',
-        };
-        this.formService.getFormConfig(formServiceInputParams).subscribe(
-          (data: ServerResponse) => {
-            this.frameWorkName = _.find(data, 'framework').framework;
-            this._cacheService.set('framework' + 'search', this.frameWorkName,
-              { maxAge: this.browserCacheTtlService.browserCacheTtl });
-          },
-          (err: ServerResponse) => {
-            this.toasterService.error(this.resourceService.messages.emsg.m0005);
-          }
-        );
-      }
-    }
+    const formServiceInputParams = {
+      formType: 'framework',
+      formAction: 'search',
+      contentType: 'framework-code',
+    };
+    this.formService.getFormConfig(formServiceInputParams).subscribe(
+      (data: ServerResponse) => {
+        this.frameWorkName = _.find(data, 'framework').framework;
+      },
+      (err: ServerResponse) => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
   }
   ngAfterViewInit () {
     setTimeout(() => {
