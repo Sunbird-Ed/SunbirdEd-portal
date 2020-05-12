@@ -38,6 +38,7 @@ export class UserOnboardingComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.deviceProfile = { ipLocation: _.get(this.deviceProfile, 'ipLocation') };
     this.tenantService.tenantData$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
