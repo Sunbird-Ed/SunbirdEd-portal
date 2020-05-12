@@ -354,7 +354,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   public getChartSummary() {
     const chartId = _.get(this.chartConfig, 'id');
-    if (_.get(this.chartConfig, 'id')) {
+    if (chartId) {
       return this.reportService.getLatestSummary({ reportId: this.activatedRoute.snapshot.params.reportId, chartId }).pipe(
         map(chartSummary => {
           return _.map(chartSummary, summaryObj => {

@@ -49,30 +49,75 @@ export class ListAllReportsComponent implements OnInit, AfterViewInit {
     const filters = {
       status: ['live', ...isUserReportAdmin ? ['draft', 'retired'] : []]
     };
+
+    const labelMapping = {
+      'title': 'Title',
+      'description': 'Description',
+      'reportgenerateddate': 'Last Updated Date',
+      'tags': 'Tags',
+      'updatefrequency': 'Update Frequency',
+      'status': 'Status'
+    };
+
     return this.reportService.listAllReports(filters).pipe(
       map((apiResponse: { reports: any[], count: number }) => {
-        const reports = _.map(apiResponse.reports, report => {
+
+        const sortedReportsCollection = this.getReportsOrderedByCreation(apiResponse.reports);
+
+        const reports = _.map(sortedReportsCollection, report => {
           return {
             ..._.pick(report, ['reportid', 'title', 'description', 'reportgenerateddate',
               'tags', 'updatefrequency'], ...isUserReportAdmin ? ['status'] : [])
           };
         });
-        const headers = ['reportid', 'Title', 'Description', 'Last Updated Date', 'Tags', 'Update Frequency',
-          ...isUserReportAdmin ? ['Status'] : []];
+
+        const tableData = {
+          headers: _.keys(_.reduce(reports[0], (acc, value, key, collection) => {
+            const updatedKey = this.renameProp(key, labelMapping[key] || key, collection);
+            acc = { ...acc, ...updatedKey };
+            return acc;
+          }, {})),
+          data: _.map(reports, report => _.values(report))
+        };
+
         const result = {
           table: {
-            header: headers || _.keys(reports[0]),
-            data: _.map(reports, report => _.values(report)),
+            header: tableData.headers,
+            data: tableData.data,
             defs: this.getColumnsDefs(),
             options: {
-              searching: true
+              searching: true,
+              ordering: false
             }
           },
           count: _.get(apiResponse, 'count')
         };
+
         return result;
       })
     );
+  }
+
+  /**
+   * @description renames a key inside an object
+   * @memberof ListAllReportsComponent
+   */
+  private renameProp = (oldProp, newProp, { [oldProp]: old, ...others }) => {
+    return {
+      [newProp]: old
+    };
+  }
+
+  /**
+   * @description sorts the reports in descending order ordered by creation date
+   * @private
+   * @template T
+   * @param {T[]} reports
+   * @returns
+   * @memberof ListAllReportsComponent
+   */
+  private getReportsOrderedByCreation<T extends { createdon: string }>(reports: T[]) {
+    return _.sortBy(reports, 'createdon').reverse();
   }
 
   /**

@@ -1,5 +1,5 @@
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
+import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService, ConfigService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChildren, QueryList, ViewChild, AfterViewInit } from '@angular/core';
 import { ReportService } from '../../services';
@@ -31,7 +31,7 @@ export class ReportComponent implements OnInit, AfterViewInit {
   @ViewChild('reportElement') reportElement;
   public hideElements: boolean;
   public reportExportInProgress = false;
-  public exportOptions = ['Pdf', 'Img'];
+  public exportOptions;
   public inputForSummaryModal: any;
   private _reportSummary: string;
   private addSummaryBtnClickStream$ = new Subject<ISummaryObject>();
@@ -43,10 +43,11 @@ export class ReportComponent implements OnInit, AfterViewInit {
   constructor(private reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
-    private router: Router) { }
+    private router: Router, private configService: ConfigService) { }
 
   ngOnInit() {
     const reportId: string = this.activatedRoute.snapshot.params.reportId;
+    this.exportOptions = this.configService.appConfig.report.exportOptions;
     this.report$ = this.reportService.isAuthenticated(_.get(this.activatedRoute, 'snapshot.data.roles')).pipe(
       mergeMap((isAuthenticated: boolean) => {
         this.noResult = false;

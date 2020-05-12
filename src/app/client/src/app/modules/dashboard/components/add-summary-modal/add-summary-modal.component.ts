@@ -1,3 +1,4 @@
+import { ConfigService } from '@sunbird/shared';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, EventEmitter, Output, Input, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import * as ClassicEditor from '@project-sunbird/ckeditor-build-font';
@@ -17,12 +18,11 @@ export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChild('editor') public editorRef: ElementRef;
   public editorInstance: any;
 
-  private toolbarItems = ['undo', 'redo', 'bold', 'italic', 'blockQuote', 'heading', 'link', 'numberedList', 'bulletedList', 'fontFamily',
-    'fontSize', 'fontColor', 'fontBackgroundColor', 'underline', 'subscript', 'superscript'];
+  private toolbarItems;
 
   public summaryFormGroup: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private configService: ConfigService) { }
 
   ngOnInit() {
     this.initForm();
@@ -62,6 +62,7 @@ export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   private initForm(): void {
+    this.toolbarItems = this.configService.appConfig.report.addSummaryToolbarItems;
     this.summaryFormGroup = this.fb.group({
       summary: ['', Validators.required]
     });

@@ -629,7 +629,7 @@
       "ribbon.right.name": "contentType",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
-  }, 
+  },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
     "VERSION": "1.8.0",
@@ -1294,5 +1294,29 @@
     "gujarati": "gu",
     "punjabi": "pa",
     "oriya": "or"
+  },
+  "report": {
+    "exportOptions": [
+      "Pdf",
+      "Img"
+    ],
+    "addSummaryToolbarItems": [
+      "undo",
+      "redo",
+      "bold",
+      "italic",
+      "blockQuote",
+      "heading",
+      "link",
+      "numberedList",
+      "bulletedList",
+      "fontFamily",
+      "fontSize",
+      "fontColor",
+      "fontBackgroundColor",
+      "underline",
+      "subscript",
+      "superscript"
+    ]
   }
 }
