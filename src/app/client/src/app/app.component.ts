@@ -209,7 +209,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.showUserTypePopup = !localStorage.getItem('userType');
     }, (err) => {
       this.isLocationConfirmed = true;
-      this.showUserTypePopup = false;
     });
     this.getUserFeedData();
   }
