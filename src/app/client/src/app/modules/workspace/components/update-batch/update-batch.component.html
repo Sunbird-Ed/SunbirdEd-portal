@@ -42,7 +42,8 @@
         <div class="mr-8">
           <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
         </div>
-        <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+         <!-- Hiding invite only for content type CurriculumCourse -->
+        <div class="sb-radio-btn-checkbox sb-radio-btn-primary" *ngIf="contentType !== 'CurriculumCourse'">
           <input id="update-invite-only" [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode) ? true : null" type="radio"
             name="enrollmentType" value='invite-only' formControlName="enrollmentType">
           <label for="update-invite-only">Invite-only</label>

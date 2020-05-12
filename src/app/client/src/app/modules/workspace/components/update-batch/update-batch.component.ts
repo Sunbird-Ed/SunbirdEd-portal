@@ -92,6 +92,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   public unsubscribe = new Subject<void>();
 
   public courseCreator = false;
+  public contentType: string;
 
   updateBatchInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
@@ -137,10 +138,13 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.batchService.getCourseHierarchy(this.courseId).subscribe((courseDetails) => {
           if (courseDetails.createdBy === this.userService.userid) {
             this.courseCreator = true;
+            this.contentType = courseDetails.contentType;
           }
         });
         this.showUpdateModal = true;
         this.batchDetails = data.batchDetails;
+
+
         if (this.batchDetails.enrollmentType !== 'open' && data.participants && data.participants.length > 0) {
           this.batchDetails.participants = data.participants;
         }
