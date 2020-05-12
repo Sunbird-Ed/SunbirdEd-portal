@@ -10,25 +10,25 @@
         <form class="sb-form" [formGroup]="userDetailsForm">
           <div class="fields-selection">
             <div class="sb-field field-focus">
-              <sui-select class="selection" formControlName="state" [options]="allStates" labelField="name" id="states"
-                valueField="code" name="state" placeholder="{{resourceService?.frmelmnts?.lbl?.selectState}}" #stateDiv>
-                <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100" [value]="state">
-                </sui-select-option>
-              </sui-select>
+              <select class="ui dropdown selection fields-dropdown" formControlName="state">
+                <option [ngValue]="null" hidden selected>{{resourceService?.frmelmnts?.lbl?.selectState}}</option>
+                <option [ngValue]="option.code" *ngFor="let option of allStates">{{option?.name}}
+                </option>
+              </select>
               <label class="d-flex font-weight-normal">{{resourceService?.frmelmnts?.lbl?.state}}:</label>
             </div>
             <div class="sb-field field-focus onboard-content mt-16">
-              <sui-select [disabled]="showDistrictDivLoader" class="selection" formControlName="district"
-                [options]="allDistricts" id="districts" labelField="name" valueField="code" name="district"
-                placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
-                <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"
-                  [value]="district">
-                </sui-select-option>
-              </sui-select>
+              <select class="ui dropdown selection fields-dropdown" formControlName="district"
+                [disabled]="showDistrictDivLoader">
+                <option [ngValue]="null" selected hidden>{{resourceService?.frmelmnts?.lbl?.profile?.selectDistrict}}
+                </option>
+                <option [ngValue]="option.code" *ngFor="let option of allDistricts">{{option?.name}}
+                </option>
+              </select>
               <label class="d-flex font-weight-normal">{{resourceService?.frmelmnts?.lbl?.district}}:</label>
             </div>
           </div>
-          <div class="py-16">{{resourceService?.messages?.imsg?.m0074}}</div>
+          <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>
         </form>
       </div>
     </div>
