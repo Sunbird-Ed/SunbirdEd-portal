@@ -55,6 +55,7 @@ export class MainMenuComponent implements OnInit {
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
+  groupsMenuIntractEdata: IInteractEventEdata;
   helpLinkVisibility: string;
   /**
    * shows/hides contribute tab
@@ -141,6 +142,11 @@ export class MainMenuComponent implements OnInit {
       id: 'learn-tab',
       type: 'click',
       pageid: 'learn'
+    };
+    this.groupsMenuIntractEdata = {
+      id: 'groups-tab',
+      type: 'click',
+      pageid: 'groups'
     };
     this.workspaceMenuIntractEdata = {
       id: 'workspace-menu-button',
