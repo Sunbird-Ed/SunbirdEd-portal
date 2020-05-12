@@ -57,7 +57,8 @@ export const mockTableStructureForReportViewer = {
         ],
         'defs': [],
         'options': {
-            'searching': true
+            'searching': true,
+            'ordering': false
         }
     },
     'count': 1
@@ -90,7 +91,8 @@ export const mockTableStructureForReportAdmin = {
         ],
         'defs': [],
         'options': {
-            'searching': true
+            'searching': true,
+            'ordering': false
         }
     },
     'count': 1
