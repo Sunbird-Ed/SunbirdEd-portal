@@ -52,16 +52,6 @@
                         {{resourceService?.frmelmnts?.lbl?.dashboard?.description}}
                       </div>
                     </th>
-                    <th>
-                      <div class="cursor-pointer">
-                        {{resourceService?.frmelmnts?.lbl?.dashboard?.fileSize}}
-                      </div>
-                    </th>
-                    <th>
-                      <div class="cursor-pointer">
-                        {{resourceService?.frmelmnts?.lbl?.createdon}}
-                      </div>
-                    </th>
                     <th class="table-headerDashboard">
                       <div class="cursor-pointer" >
                         {{resourceService?.frmelmnts?.lbl?.dashboard?.action}}
@@ -81,18 +71,6 @@
                       {{file.desc}}
                     </td>
                     <td *ngIf="!file.desc">
-                      --
-                    </td>
-                    <td *ngIf="file.size">
-                      {{file.size}}
-                    </td>
-                    <td *ngIf="!file.size">
-                      --
-                    </td>
-                    <td *ngIf="file.createdOn">
-                      {{file.createdOn}}
-                    </td>
-                    <td *ngIf="!file.createdOn">
                       --
                     </td>
                     <td >
