@@ -108,7 +108,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
 
   renderFiles(files, data) {
     this.files = [];
-    _.forEach(files, file => {
+    _.forEach(files, file =>  {
       const fileData: any = {};
       fileData.id = _.get(file, 'id');
       fileData.name = _.get(file, 'name');
