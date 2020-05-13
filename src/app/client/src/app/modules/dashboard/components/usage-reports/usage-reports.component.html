@@ -38,14 +38,14 @@
             </div>
             <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="files">
               <div class="sb-graph-section p-24 my-24">
-                <!-- <div *ngFor="let file of files; let i = index; let l = last;">	
-                  <span>{{file.name}}</span>	
-                  <span>	
-                    <a type="button" class="ml-auto mr-8" appTelemetryInteract	
-                      [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"	
-                      [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"	
-                      (click)="downloadCSV(file.downloadUrl)"><i class="icon"></i> download file</a>	
-                  </span>	
+                <!-- <div *ngFor="let file of files; let i = index; let l = last;">
+                  <span>{{file.name}}</span>
+                  <span>
+                    <a type="button" class="ml-auto mr-8" appTelemetryInteract
+                      [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                      [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
+                      (click)="downloadCSV(file.downloadUrl)"><i class="icon"></i> download file</a>
+                  </span>
                 </div> -->
                 <table *ngIf="isFileDataLoaded" id="downloadTable" class="sb-table sb-table-striped sb-table-sortable sb-table-fixed"
                 cellspacing="0">
