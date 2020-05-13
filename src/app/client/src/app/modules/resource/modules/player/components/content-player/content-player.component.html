@@ -54,30 +54,6 @@
                     </div>
                     <app-player  [telemetryObject]="objectInteract" [pageId]="'content-player'"  class="content-player" [playerOption] ="playerOption" [playerConfig]="playerConfig"></app-player>
                     <div class="twelve wide column contentMetaSection">
-                        <div class="ui stackable grid mt-30">
-                            <div class="row">
-                                <div class="three wide column "></div>
-                                <div class="six wide column center aligned">
-                                    <div class="ui grid">
-                                        <div class="row">
-                                            <div class="four wide column "></div>
-                                            <div class="four wide column ">
-                                                <h2 class="ui centered aligned icon tiny header toc-note">
-                                                    <a appTelemetryInteract [telemetryInteractObject]="objectInteract" [telemetryInteractEdata]="{id:'take-note', type:'click',pageid:'content-player'}" class="ui take-note-card cursor-pointer" (click)="showNoteEditor=!showNoteEditor">
-                                                        <app-popup-editor *ngIf="showNoteEditor" [mode]="'create'" [ids]="{contentId:contentId}" (exitModal)="showNoteEditor=false"
-                                                            (createEventEmitter)="createEventEmitter($event)"></app-popup-editor>
-                                                        <img src="{{'assets/images/takenote.png' | cdnprefixurl }}">
-                                                        <span>{{resourceService?.frmelmnts?.lbl?.takenote}}</span>
-                                                    </a>
-                                                </h2>
-                                            </div>
-                                        </div>
-                                        <div class="four wide column "></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="three wide column"></div>
                         <div class="ui stackable grid">
                             <div class="eight wide column">
                                 <div class="twelve wide column">
@@ -86,9 +62,6 @@
                                 <div class="twelve wide column mt-20">
                                     <!-- <app-discussions></app-discussions> -->
                                 </div>
-                            </div>
-                            <div *ngIf="contentStatus !== 'Unlisted'" class="four wide column">
-                                <app-note-card [ids]="{contentId:contentId}" [createNoteData]="createNoteData"></app-note-card>
                             </div>
                         </div>
                     </div>

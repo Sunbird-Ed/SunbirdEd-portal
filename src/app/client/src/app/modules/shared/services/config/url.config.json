@@ -122,13 +122,6 @@
       "REGISTER": "register/",
       "PROFILE": "profile/"
     },
-    "NOTES": {
-      "SEARCH": "notes/v1/search",
-      "CREATE": "notes/v1/create",
-      "UPDATE": "notes/v1/update",
-      "GET": "notes/v1/read",
-      "DELETE": "notes/v1/delete"
-    },
     "ROLES": {
       "READ": "data/v1/role/read"
     },

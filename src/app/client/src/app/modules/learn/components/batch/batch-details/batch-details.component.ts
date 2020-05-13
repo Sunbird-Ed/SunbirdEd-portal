@@ -9,7 +9,7 @@ import { PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 @Component({
   selector: 'app-batch-details',
   templateUrl: './batch-details.component.html'
@@ -39,7 +39,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     { name: 'Ongoing', value: 1 },
     { name: 'Upcoming', value: 0 }
   ];
-  todayDate = moment(new Date()).format('YYYY-MM-DD');
+  todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   progress = 0;
   isUnenrollbtnDisabled = true;
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
@@ -65,7 +65,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   isEnrollmentAllowed(enrollmentEndDate) {
-    return moment(enrollmentEndDate).isBefore(this.todayDate);
+    return dayjs(enrollmentEndDate).isBefore(this.todayDate);
   }
 
   ngOnInit() {

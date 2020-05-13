@@ -4,6 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 const appRoutes: Routes = [
   {
+    path: 'learn/course', loadChildren: 'app/modules/learn/course-consumption.module#CourseConsumptionModule'
+  },
+  {
     path: 'learn', loadChildren: 'app/modules/learn/learn.module#LearnModule'
   },
   {

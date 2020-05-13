@@ -3,7 +3,6 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { INoteData } from '@sunbird/notes';
 import {
   ConfigService, IUserData, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
   PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
@@ -77,10 +76,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
    * To show/hide the note popup editor
    */
   showNoteEditor = false;
-  /**
-   * This variable holds the details of the note created
-   */
-  createNoteData: INoteData;
 
   /**
    * Page Load Time, used this data in impression telemetry
@@ -228,9 +223,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
         this.showCopyLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
-  }
-  createEventEmitter(data) {
-    this.createNoteData = data;
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);

@@ -71,7 +71,6 @@ gulp.task('download:editors', gulp.series('clean:editors', ['download:content:ed
 
 /////////////////////////////////////////////////////////////////////////////
 
-
 gulp.task('client:gzip', () => {
     return gulp.src(['./../dist/*.js', './../dist/*.css'])
         .pipe(gzip())
@@ -79,7 +78,7 @@ gulp.task('client:gzip', () => {
 })
 
 gulp.task('client:brotli', () => {
-    return gulp.src(['./dist/*.js', './dist/*.css'])
+    return gulp.src(['./../dist/*.js', './../dist/*.css'])
         .pipe(brotli.compress())
         .pipe(gulp.dest('./../dist'))
 })

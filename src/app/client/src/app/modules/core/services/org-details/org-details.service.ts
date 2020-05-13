@@ -134,18 +134,10 @@ export class OrgDetailsService {
   }
 
   private getCustodianOrg() {
-    const custodianOrgDetails: any = this.cacheService.get('custodianOrgDetails');
-    if (custodianOrgDetails) {
-      return of(custodianOrgDetails);
-    }
     const systemSetting = {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
     };
-    return this.learnerService.get(systemSetting).pipe(tap(custOrg =>
-      this.cacheService.set('custodianOrgDetails', custOrg, {
-        maxAge: this.browserCacheTtlService.browserCacheTtl
-      })
-    ));
+    return this.learnerService.get(systemSetting);
   }
 
   /**
