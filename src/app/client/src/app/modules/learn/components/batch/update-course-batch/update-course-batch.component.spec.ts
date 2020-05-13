@@ -48,6 +48,7 @@ const resourceServiceMockData = {
 const fakeActivatedRoute = {
   'params': observableOf({ 'courseId': 'do_1125083286221291521153' }),
   'parent': { 'params': observableOf({ 'courseId': 'do_1125083286221291521153' }) },
+  'queryParams': observableOf({ enrollmentType: 'invite-only' }),
   'snapshot': {
       params: [
         {

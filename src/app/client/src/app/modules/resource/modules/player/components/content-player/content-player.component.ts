@@ -15,7 +15,8 @@ import { PopupControlService } from '../../../../../../service/popup-control.ser
  */
 @Component({
   selector: 'app-content-player',
-  templateUrl: './content-player.component.html'
+  templateUrl: './content-player.component.html',
+  styleUrls: ['./content-player.component.scss']
 })
 export class ContentPlayerComponent implements OnInit, AfterViewInit {
   /**
@@ -86,6 +87,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
 
   closeUrl: any;
   playerOption: any;
+  showLoader = true;
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
@@ -157,6 +159,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
     }
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
+        this.showLoader = false;
         if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted') {
           this.showPlayer = true;
           const contentDetails = {

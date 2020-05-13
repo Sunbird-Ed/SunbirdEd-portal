@@ -1,5 +1,5 @@
 
-<div *ngIf="tocPage" class="toc-content" [appTelemetryImpression]="telemetryImpression">
+<div *ngIf="tocPage" class="toc-content text-left" [appTelemetryImpression]="telemetryImpression">
     <!-- <app-player class="content-player" [playerOption] ="playerOption" [playerConfig]="playerConfig"></app-player> -->
     <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" [isContentPresent]="true"  [isContentDeleted]="false"></app-content-player>
     <div class="mt-8">
