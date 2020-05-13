@@ -12,6 +12,19 @@
                     <span class="fnormal" *ngIf="contentData?.gradeLevel">{{contentData?.gradeLevel}}</span>
                 </div>
             </div>
+            <div>
+                <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+                    <i class="blue share alternate icon"></i>
+                    {{resourceService?.frmelmnts?.lbl?.share}}
+                </a>
+                <span *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
+                    (click)="copyContent(contentData)" class="d-inline-block">
+                    <a appTelemetryInteract [telemetryInteractEdata]="copyContentInteractEdata" [telemetryInteractObject]="objectInteract" class="cursor-pointer btn-bg p-8 d-inline-block font-weight-bold sb-color-primary">
+                        <i class="blue clone outline icon"></i>
+                        {{resourceService?.frmelmnts?.lbl?.copy}}
+                    </a>
+                </span> 
+            </div>
         </div>
     </div>
     <!-- CC-Player Video -->
@@ -28,4 +41,6 @@
     <div class="twelve wide column" *ngIf="showLoader">
         <app-loader [data]='loaderMessage'></app-loader>
     </div>
+    <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+    </app-share-link>
 </div>

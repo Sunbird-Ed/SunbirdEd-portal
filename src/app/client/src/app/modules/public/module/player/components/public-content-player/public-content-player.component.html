@@ -12,6 +12,12 @@
           <span class="dot-divider" *ngIf="contentData.gradeLevel"></span>
           <span class="fnormal" *ngIf="contentData?.gradeLevel">{{contentData?.gradeLevel}}</span>
         </div>
+        <div>
+          <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+            <i class="blue share alternate icon"></i>
+            {{resourceService?.frmelmnts?.lbl?.share}}
+          </a>
+        </div>
       </div>
     </div>
 
@@ -44,3 +50,5 @@
 <div class="ui container" *ngIf="showLoader">
   <app-loader [data]='loaderMessage'></app-loader>
 </div>
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+</app-share-link>

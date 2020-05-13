@@ -10,26 +10,6 @@
             </svg></i>
           {{resourceService?.frmelmnts?.btn?.back}}
         </button>
-        <!-- <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
-          <i class="blue share alternate icon"></i>
-          {{resourceService?.frmelmnts?.lbl?.share}}
-        </a>
-        <a appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
-          [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
-          <i class="blue clone outline icon"></i>
-          {{resourceService?.frmelmnts?.lbl?.copy}}
-        </a>
-        <a appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" 
-          href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
-          [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
-          <i class="blue clone outline icon"></i>
-          {{resourceService?.frmelmnts?.lbl?.copy}}
-        </a>
-        <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
-          <div class="ui text centered inline loader mt-40">
-            {{resourceService.frmelmnts.lbl.copycontent}}
-          </div>
-        </div> -->
       </div>
     </div>
 
@@ -46,6 +26,28 @@
             <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
             <span class="fnormal"
               *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
+          </div>
+          <div>
+            <a href="javascript:void(0)" (click)="onShareLink();sharelinkModal=true;" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+              <i class="blue share alternate icon"></i>
+              {{resourceService?.frmelmnts?.lbl?.share}}
+            </a>
+            <a appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook'" appPermission
+              [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+              <i class="blue clone outline icon"></i>
+              {{resourceService?.frmelmnts?.lbl?.copy}}
+            </a>
+            <a appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyContentInteractEdata" 
+              href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
+              [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+              <i class="blue clone outline icon"></i>
+              {{resourceService?.frmelmnts?.lbl?.copy}}
+            </a>
+            <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
+              <div class="ui text centered inline loader mt-40">
+                {{resourceService.frmelmnts.lbl.copycontent}}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -94,4 +96,6 @@
   <div class="twelve wide column" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
   </div>
+  <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+  </app-share-link>
 </div>
