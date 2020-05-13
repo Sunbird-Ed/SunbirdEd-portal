@@ -28,13 +28,20 @@
           margin: 0px !important;
           left: 0px !important;
           max-width: 100%;
+          height: 100%;
           .sb-modal-content {
-            min-height: calc(100vh - 96px);
+            height: calc(100% - 96px);
+            max-height: 100%;
+            overflow: hidden;
           }
         }
 
-        .toc-page {
-          height: calc(100vh - 215px);
+        .ui.form.terms-and-cond-form {
+          height: calc(100% - 88px);
+        }
+
+        .toc-page { 
+          height: 100%;
         }
       }
     }

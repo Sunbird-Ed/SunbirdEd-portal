@@ -1,5 +1,5 @@
-<div>
-  <div *ngIf="!showLoader">
+<div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+  <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
     <div class="sb-bg-white relative position cc-player__btn-back ">
       <div class="ui container py-8 px-0">
@@ -17,7 +17,7 @@
     <div class="cc-player__content-header d-flex flex-ai-center relative position" *ngIf="collectionData">
       <div class="ui container">
         <div class="header-info flex-basis-1">
-          <div class="header-info__title">
+          <div class="header-info__title ellipsis">
             <h5 class="sb-color-primary font-weight-bold">{{collectionData.name}}</h5>
           </div>
           <div class="header-info__desc d-flex flex-ai-center" *ngIf="collectionTreeNodes">
@@ -31,34 +31,32 @@
       </div>
     </div>
     <!-- CC-Player Video -->
-    <div class="ui container">
+    <div class="ui container sb-toc-view-container">
       <div class="cc-player sb-g">
         <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column"
-          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
-          <div class="toc-content">
-          </div>
+          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData" [ngClass]="{'toggleInMobile': !isMobile}">
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
             [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
           </app-contentplayer-page>
         </section>
-        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg- cc-player__list mb-16">
+        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg- cc-player__list mb-16" [ngClass]="{'toggleInMobile': isMobile}">
+        <div class="toc-box-shadow mb-2">
           <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16"
             (click)="showChapter()">
             <h6 class="sb-color-primary font-weight-normal">Select Chapter</h6>
-            <i class="icon-svg icon-svg--sm icon-arrow-round-right ml-auto"><svg class="icon icon-svg--primary">
+            <i class="icon-svg icon-svg--sm icon-arrow-round-right ml-auto opacity50"><svg class="icon icon-svg--primary">
                 <use xlink:href="assets/common-consumption/images/sprite.svg#arrow-round-right"></use>
               </svg></i>
           </div>
           <sb-library-filters [hidden]="isSelectChapter" [list]="mimeTypeFilters" [layout]="'round-with-icon'"
             (selectedMimeType)="selectedFilter($event)">
           </sb-library-filters>
+        </div>
+        <div class="main-side-toc-content">
           <div [hidden]="isSelectChapter" class="side-toc-content">
             <sb-toc-item [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
               (noContent)="showNoContent($event)"></sb-toc-item>
-          </div>
-          <div>
-            <app-content-licence [content]="collectionData"></app-content-licence>
           </div>
           <div [hidden]="!isSelectChapter">
             <span>
@@ -66,11 +64,12 @@
                 (tocChapterClick)="tocChapterClickHandler($event)"></app-content-chapterlist>
             </span>
           </div>
+        </div>
+          <div>
+            <app-content-licence [content]="collectionData"></app-content-licence>
+          </div>
         </section>
       </div>
     </div>
-  </div>
-  <div class="twelve wide column" *ngIf="showLoader">
-    <app-loader [data]='loaderMessage'></app-loader>
   </div>
 </div>

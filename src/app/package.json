@@ -58,7 +58,8 @@
     "bundle-report": "webpack-bundle-analyzer dist/stats.json --port 8887",
     "backend-test": "mocha 'tests/server/**/*.spec.js'",
     "latex-test": "mocha 'tests/server/helpers/spec/latexService.spec.js'",
-    "backend-test-with-coverage": "nyc --reporter=html --reporter=lcov npm run backend-test"
+    "backend-test-with-coverage": "nyc --reporter=html --reporter=lcov npm run backend-test",
+    "whitelist-urls": "node -e 'require (\"helpers/whitelistUrls.js\").flatternObject()'"
   },
   "nyc": {
     "all": true,

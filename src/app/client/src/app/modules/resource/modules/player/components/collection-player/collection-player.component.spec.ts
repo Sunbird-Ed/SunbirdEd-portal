@@ -36,6 +36,14 @@ describe('CollectionPlayerComponent', () => {
       'stmsg': {
         'm0118': 'No content to play'
       }
+    },
+    'frmelmnts': {
+      'btn': {
+        'all': 'all',
+        'video': 'video',
+        'interactive': 'interactive',
+        'docs': 'docs'
+      }
     }
   };
 
@@ -53,6 +61,7 @@ describe('CollectionPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CollectionPlayerComponent);
     component = fixture.componentInstance;
+    component.queryParams = { contentId: 'domain_44689'};
   });
 
   afterEach(() => {
@@ -105,25 +114,6 @@ describe('CollectionPlayerComponent', () => {
     component.ngOnInit();
     expect(component.collectionTreeNodes).toEqual({ data: CollectionHierarchyGetMockResponse.result.content });
     expect(component.loader).toBeFalsy();
-  });
-   xit('should navigate to error page on invalid collection id', () => {});
-  xit('should navigate to error page on valid collection id but invalid content id', () => {});
-  xit('should show service unavailable message on API server error', () => {});
-
-  it('should redirect to previous URL', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
-    spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'dialcode', 'navigationId': 3});
-    component.closeCollectionPlayer();
-    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalled();
-  });
-
-  it('should redirect to /resource page', () => {
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
-    spyOnProperty(history, 'state', 'get').and.returnValues({'action': 'fakeaction', 'navigationId': 3});
-    component.closeCollectionPlayer();
-    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/resources');
   });
 
   it('should set dialcode to the telemetryCdata if any', () => {

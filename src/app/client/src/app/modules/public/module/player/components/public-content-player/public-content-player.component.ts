@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -12,7 +12,6 @@ import {
 import { PublicPlayerService } from '../../../../services';
 import { IImpressionEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 import { takeUntil, mergeMap } from 'rxjs/operators';
-import { environment } from '@sunbird/environment';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
   selector: 'app-public-content-player',
@@ -61,7 +60,14 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
   public telemetryShareData: Array<ITelemetryShare>;
   public sharelinkModal: boolean;
   public objectRollup = {};
+  /** variables for player orientation change */
+  loadLandscapePlayer =  false;
+  isSingleContent: any;
+  isMobileOrTab: boolean;
+  showCloseButton = false;
+  contentRatingModal = false;
   showLoader = true;
+
 
   constructor(public activatedRoute: ActivatedRoute, public userService: UserService,
     public resourceService: ResourceService, public toasterService: ToasterService, public popupControlService: PopupControlService,
@@ -77,6 +83,8 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    /** if dial-code search result is having only one content then 'isSingleContent' will be true else false */
+    this.isSingleContent = _.get(history.state, 'isSingleContent') ;
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
     this.activatedRoute.params.subscribe((params) => {
       this.contentId = params.contentId;
@@ -88,7 +96,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       }
       this.setTelemetryData();
       this.getContent();
-      this.deviceDetector();
     });
 
   }
@@ -110,19 +117,6 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     };
   }
 
-  onShareLink() {
-    this.shareLink = this.contentUtilsService.getPublicShareUrl(this.contentId,
-      this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl);
-    this.setTelemetryShareData(this.contentData);
-  }
-
-  setTelemetryShareData(param) {
-    this.telemetryShareData = [{
-      id: 'public-' + param.identifier,
-      type: param.contentType,
-      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
-    }];
-  }
 
   /**
    * used to fetch content details and player config. On success launches player.
@@ -162,6 +156,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       this.errorMessage = this.resourceService.messages.stmsg.m0009;
     });
   }
+
   /**
    * retry launching player with same content details
    * @memberof ContentPlayerComponent
@@ -195,10 +190,13 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
       }, 100);
     }
   }
+
+  /**
+   * then 'isSingleContent' will be false and it should load player directly in landscape mode
+   */
   deviceDetector() {
-    const deviceInfo = this.deviceDetectorService.getDeviceInfo();
-    if (deviceInfo.device === 'android' || deviceInfo.os === 'android') {
-      this.showFooter = true;
+    if (this.isSingleContent === false) {
+      this.loadLandscapePlayer = true;
     }
   }
 
@@ -226,6 +224,7 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
             duration: this.navigationHelperService.getPageLoadTime()
           }
         };
+        this.deviceDetector();
     });
   }
 
@@ -234,8 +233,26 @@ export class PublicContentPlayerComponent implements OnInit, OnDestroy, AfterVie
     this.unsubscribe$.complete();
   }
 
+  onShareLink() {
+    this.shareLink = this.contentUtilsService.getPublicShareUrl(this.contentId,
+      _.get(this.contentData, 'mimeType'));
+    this.setTelemetryShareData(this.contentData);
+  }
+
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
+  }
+
   printPdf(pdfUrl: string) {
     window.open(pdfUrl, '_blank');
+  }
+
+  closePlayer() {
+    this.loadLandscapePlayer = false;
   }
 
 }
