@@ -177,7 +177,7 @@ describe('OnboardingLocationSelectionComponent', () => {
       id: '3789e5e3-a31f-43fa-9cb3-c1b26460ffd5',
       type: 'state'
     });
-    expect(component.userDetailsForm.value.state).toBe('');
+    expect(component.userDetailsForm.value.state).toBe(null);
   });
 
   it('should call setDistrict on match found', () => {
@@ -195,7 +195,7 @@ describe('OnboardingLocationSelectionComponent', () => {
       'type': 'district',
       'parentId': '37809706-8f0e-4009-bf67-87bf04f220fa'
     });
-    expect(component.userDetailsForm.value.district).toBe('');
+    expect(component.userDetailsForm.value.district).toBe(null);
   });
 
   it('should call setData', () => {
@@ -247,7 +247,7 @@ describe('OnboardingLocationSelectionComponent', () => {
 
   it('should call getState on error', () => {
     const profileService = TestBed.get(ProfileService);
-    const toasterService  = TestBed.get(ToasterService);
+    const toasterService = TestBed.get(ToasterService);
     spyOn(component, 'closeModal');
     spyOn(toasterService, 'error');
     spyOn(profileService, 'getUserLocation').and.returnValue(throwError({}));
@@ -330,5 +330,25 @@ describe('OnboardingLocationSelectionComponent', () => {
     spyOn(telemetryService, 'log');
     component.telemetryLogEvents('state', true);
     expect(telemetryService.log).toHaveBeenCalledWith(event);
+  });
+
+  it('should call getSelectionStrategy', () => {
+    component.deviceProfile = {
+      ipLocation: { state: 'Maharashtra', district: 'Pune' }
+    };
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
+    component.getSelectionStrategy();
+  });
+
+  it('should call getDistrict', () => {
+    const profileService = TestBed.get(ProfileService);
+    spyOn(profileService, 'getUserLocation').and.returnValue(of(onboardingLocationMockData.districtLocation.getUserLocationResponse));
+    const resp = component.getDistrict('1');
+    resp.subscribe((data) => {
+      expect(component.showDistrictDivLoader).toBe(false);
+      expect(component.allDistricts).toEqual(onboardingLocationMockData.districtLocation.getUserLocationResponse.result.response);
+      expect(data).toEqual(onboardingLocationMockData.districtLocation.getUserLocationResponse.result.response);
+    });
   });
 });
