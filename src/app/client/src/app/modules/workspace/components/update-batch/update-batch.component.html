@@ -42,8 +42,7 @@
         <div class="mr-8">
           <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
         </div>
-         <!-- Hiding invite only for content type CurriculumCourse -->
-        <div class="sb-radio-btn-checkbox sb-radio-btn-primary" *ngIf="contentType !== 'CurriculumCourse'">
+        <div class="sb-radio-btn-checkbox sb-radio-btn-primary" *ngIf="courseDetails.contentType !== 'CurriculumCourse'">
           <input id="update-invite-only" [attr.disabled]="(batchDetails.status !== 0 || showFormInViewMode) ? true : null" type="radio"
             name="enrollmentType" value='invite-only' formControlName="enrollmentType">
           <label for="update-invite-only">Invite-only</label>
@@ -83,7 +82,7 @@
             </div>
           </div>
         </div>
-        <div class="sb-field-group pl-8" *ngIf="batchUpdateForm.value.enrollmentType === 'open'" [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
+        <div class="sb-field-group pl-8" *ngIf="batchUpdateForm.value.enrollmentType === 'open' && courseDetails.contentType !== 'CurriculumCourse'" [ngClass]="batchUpdateForm.controls['enrollmentEndDate'].invalid && !batchUpdateForm.controls['enrollmentEndDate'].pristine ? 'error': ''">
           <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
           <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
             <div class="sb-field ui input left icon" [ngClass]="{'disabled': !batchUpdateForm.value.startDate}">

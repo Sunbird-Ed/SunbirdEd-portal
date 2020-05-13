@@ -196,6 +196,29 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
   */
   public prepareCarouselData(sections = []) {
     this.batchList = _.flatten(_.map(sections, 'contents'));
+    const courseIds = _.map(this.batchList, 'courseId');
+    const searchOption = {
+      'filters': {
+        'identifier': _.uniq(courseIds),
+        'status': ['Live'],
+      }
+    };
+
+    // Get course details for the batches to show content name on batch card
+    this.searchService.contentSearch(searchOption, false)
+      .subscribe(data => {
+        if (_.get(data, 'result.content')) {
+          _.map(this.batchList, (batchData) => {
+            console.log('batchData', batchData.courseId)
+            const courseDetails = _.find(_.get(data, 'result.content'), (courseData) => {
+              return courseData.identifier === batchData.courseId;
+            });
+            batchData.courseAdditionalInfo = {
+              courseName: _.get(courseDetails, 'name')
+            };
+          });
+        }
+      });
     if (!this.batchList || !this.batchList.length) {
       this.carouselData = [];
       this.showLoader = false;
