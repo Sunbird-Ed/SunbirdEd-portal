@@ -143,8 +143,6 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.showUpdateModal = true;
         this.batchDetails = data.batchDetails;
-
-
         if (this.batchDetails.enrollmentType !== 'open' && data.participants && data.participants.length > 0) {
           this.batchDetails.participants = data.participants;
         }
