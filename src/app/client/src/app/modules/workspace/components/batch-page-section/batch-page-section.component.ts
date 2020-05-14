@@ -200,7 +200,9 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
     const searchOption = {
       'filters': {
         'identifier': _.uniq(courseIds),
-        'status': ['Live']
+        'status': ['Live'],
+        'contentType': ['Course'],
+        'courseType': ['CurriculumCourse', 'TrainingCourse']
       }
     };
 

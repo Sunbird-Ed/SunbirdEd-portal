@@ -1,4 +1,302 @@
 export const mockRes = {
+    courseDetails: {
+        'id': 'api.content.search',
+        'ver': '1.0',
+        'ts': '2020-05-14T10:48:00.104Z',
+        'params': {
+            'resmsgid': '60fb4e80-95d0-11ea-b062-a3f599b7b162',
+            'msgid': '60f72fd0-95d0-11ea-b062-a3f599b7b162',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'count': 2,
+            'content': [
+                {
+                    'ownershipType': [
+                        'createdBy'
+                    ],
+                    'courseType': 'CurriculumCourse',
+                    'copyright': 'CustROOTOrg10, Sunbird',
+                    'subject': 'Mathematics',
+                    'channel': '01285019302823526477',
+                    'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206856421867521137/14th-may-live-curriculaum_1589439988339_do_1130206856421867521137_1.0_spine.ecar',
+                    'organisation': [
+                        'Sunbird'
+                    ],
+                    'language': [
+                        'English'
+                    ],
+                    'mimeType': 'application/vnd.ekstep.content-collection',
+                    'variants': {
+                        'online': {
+                            'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206856421867521137/14th-may-live-curriculaum_1589439989267_do_1130206856421867521137_1.0_online.ecar',
+                            'size': 3392
+                        },
+                        'spine': {
+                            'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206856421867521137/14th-may-live-curriculaum_1589439988339_do_1130206856421867521137_1.0_spine.ecar',
+                            'size': 180338
+                        }
+                    },
+                    'c_sunbird_dev_private_batch_count': 0,
+                    'objectType': 'Content',
+                    'gradeLevel': [
+                        'Class1'
+                    ],
+                    'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1130157842937446401226/artifact/screenshot-staging.ntp.net.in-2020.05.07-12_09_25.png',
+                    'appId': 'dev.sunbird.portal',
+                    'contentEncoding': 'gzip',
+                    'lockKey': '18deb68c-dc9a-4fa2-b69f-348d3d512ae3',
+                    'totalCompressedSize': 0,
+                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1}',
+                    'contentType': 'Course',
+                    'identifier': 'do_1130206856421867521137',
+                    'lastUpdatedBy': 'fd4227f7-9de8-40b4-af82-edb8cbd14fb1',
+                    'audience': [
+                        'Learner'
+                    ],
+                    'visibility': 'Default',
+                    'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1130206856421867521137/artifact/do_1130206856421867521137_toc.json',
+                    'contentTypesCount': '{\'CourseUnit\':1}',
+                    'consumerId': '7411b6bd-89f3-40ec-98d1-229dc64ce77d',
+                    'childNodes': [
+                        'do_11302069007733555211'
+                    ],
+                    'author': 'ss',
+                    'mediaType': 'content',
+                    'osId': 'org.ekstep.quiz.app',
+                    'graph_id': 'domain',
+                    'nodeType': 'DATA_NODE',
+                    'lastPublishedBy': 'f09d7872-828b-43f2-b845-49241693a254',
+                    'version': 2,
+                    'license': 'CC BY 4.0',
+                    'prevState': 'Review',
+                    'size': 180338,
+                    'lastPublishedOn': '2020-05-14T07:06:22.051+0000',
+                    'IL_FUNC_OBJECT_TYPE': 'Content',
+                    'name': '14th may live curriculaum',
+                    'topic': [
+                        'Social Science'
+                    ],
+                    'status': 'Live',
+                    'code': '14th may',
+                    'prevStatus': 'Processing',
+                    'description': 'Enter description for 14th may',
+                    'medium': 'English',
+                    'idealScreenSize': 'normal',
+                    'createdOn': '2020-05-14T06:52:45.311+0000',
+                    'reservedDialcodes': '{\'L2E4D3\':0}',
+                    'batches': [
+                        {
+                            'createdFor': [
+                                '01285019302823526477',
+                                'ORG_001'
+                            ],
+                            'endDate': '2020-05-15',
+                            'name': '14th may batch 5',
+                            'batchId': '0130206984449556485',
+                            'enrollmentType': 'open',
+                            'enrollmentEndDate': '2020-05-15',
+                            'startDate': '2020-05-14',
+                            'status': 1
+                        },
+                        {
+                            'createdFor': [
+                                'ORG_001'
+                            ],
+                            'endDate': '2020-05-21',
+                            'name': '14th may batch 3',
+                            'batchId': '0130206987854970883',
+                            'enrollmentType': 'open',
+                            'enrollmentEndDate': '2020-05-21',
+                            'startDate': '2020-05-20',
+                            'status': 0
+                        },
+                        {
+                            'createdFor': [
+                                'ORG_001'
+                            ],
+                            'endDate': '2020-05-21',
+                            'name': '14th may batch 4',
+                            'batchId': '0130207040554762244',
+                            'enrollmentType': 'open',
+                            'enrollmentEndDate': '2020-05-21',
+                            'startDate': '2020-05-20',
+                            'status': 0
+                        }
+                    ],
+                    'copyrightYear': 2020,
+                    'contentDisposition': 'inline',
+                    'lastUpdatedOn': '2020-05-14T07:06:19.775+0000',
+                    'licenseterms': 'By creating any type of content (resources, books, courses etc.) on DIKSHA, you consent to publish it under the Creative Commons License Framework. Please choose the applicable creative commons license you wish to apply to your content.',
+                    'SYS_INTERNAL_LAST_UPDATED_ON': '2020-05-14T07:34:30.974+0000',
+                    'dialcodeRequired': 'No',
+                    'createdFor': [
+                        'ORG_001'
+                    ],
+                    'lastStatusChangedOn': '2020-05-14T07:06:29.749+0000',
+                    'creator': 'Mentor First User',
+                    'IL_SYS_NODE_TYPE': 'DATA_NODE',
+                    'os': [
+                        'All'
+                    ],
+                    'pkgVersion': 1,
+                    'versionKey': '1589439979775',
+                    'idealScreenDensity': 'hdpi',
+                    'framework': 'tpd',
+                    'depth': 0,
+                    's3Key': 'ecar_files/do_1130206856421867521137/14th-may-live-curriculaum_1589439988339_do_1130206856421867521137_1.0_spine.ecar',
+                    'dialcodes': [
+                        'L2E4D3'
+                    ],
+                    'lastSubmittedOn': '2020-05-14T07:03:59.671+0000',
+                    'createdBy': 'fd4227f7-9de8-40b4-af82-edb8cbd14fb1',
+                    'compatibilityLevel': 4,
+                    'leafNodesCount': 0,
+                    'IL_UNIQUE_ID': 'do_1130206856421867521137',
+                    'board': 'CBSE',
+                    'resourceType': 'Course',
+                    'node_id': 406656,
+                    'c_sunbird_dev_open_batch_count': 3
+                },
+                {
+                    'ownershipType': [
+                        'createdBy'
+                    ],
+                    'courseType': 'CurriculumCourse',
+                    'copyright': 'CustROOTOrg10, Sunbird',
+                    'subject': 'Mathematics',
+                    'channel': '01285019302823526477',
+                    'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206848094044161136/14th-may-live-curriculumcourse-2_1589440000878_do_1130206848094044161136_1.0_spine.ecar',
+                    'organisation': [
+                        'Sunbird'
+                    ],
+                    'language': [
+                        'English'
+                    ],
+                    'mimeType': 'application/vnd.ekstep.content-collection',
+                    'variants': {
+                        'online': {
+                            'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206848094044161136/14th-may-live-curriculumcourse-2_1589440001299_do_1130206848094044161136_1.0_online.ecar',
+                            'size': 3416
+                        },
+                        'spine': {
+                            'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206848094044161136/14th-may-live-curriculumcourse-2_1589440000878_do_1130206848094044161136_1.0_spine.ecar',
+                            'size': 180364
+                        }
+                    },
+                    'c_sunbird_dev_private_batch_count': 0,
+                    'objectType': 'Content',
+                    'gradeLevel': [
+                        'Class1'
+                    ],
+                    'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1130157842937446401226/artifact/screenshot-staging.ntp.net.in-2020.05.07-12_09_25.png',
+                    'appId': 'dev.sunbird.portal',
+                    'contentEncoding': 'gzip',
+                    'lockKey': '9d577084-045c-4283-a437-8869ce714db5',
+                    'totalCompressedSize': 0,
+                    'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1}',
+                    'contentType': 'Course',
+                    'identifier': 'do_1130206848094044161136',
+                    'audience': [
+                        'Learner'
+                    ],
+                    'visibility': 'Default',
+                    'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1130206848094044161136/artifact/do_1130206848094044161136_toc.json',
+                    'contentTypesCount': '{\'CourseUnit\':1}',
+                    'consumerId': '7411b6bd-89f3-40ec-98d1-229dc64ce77d',
+                    'childNodes': [
+                        'do_11302069157158912013'
+                    ],
+                    'author': 'sourav',
+                    'mediaType': 'content',
+                    'osId': 'org.ekstep.quiz.app',
+                    'graph_id': 'domain',
+                    'nodeType': 'DATA_NODE',
+                    'lastPublishedBy': 'f09d7872-828b-43f2-b845-49241693a254',
+                    'version': 2,
+                    'license': 'CC BY 4.0',
+                    'prevState': 'Review',
+                    'size': 180364,
+                    'lastPublishedOn': '2020-05-14T07:06:40.645+0000',
+                    'IL_FUNC_OBJECT_TYPE': 'Content',
+                    'name': '14th may live CurriculumCourse 2',
+                    'topic': [
+                        'Science'
+                    ],
+                    'status': 'Live',
+                    'code': '14th may CurriculumCourse',
+                    'prevStatus': 'Processing',
+                    'description': 'Enter description for 14th may CurriculumCourse',
+                    'medium': 'English',
+                    'idealScreenSize': 'normal',
+                    'createdOn': '2020-05-14T06:51:03.652+0000',
+                    'reservedDialcodes': '{\'C5Q4Z4\':0}',
+                    'batches': [
+                        {
+                            'createdFor': [
+                                'ORG_001'
+                            ],
+                            'endDate': '2020-05-21',
+                            'name': '14th may batch 2',
+                            'batchId': '0130207013051760642',
+                            'enrollmentType': 'open',
+                            'enrollmentEndDate': '2020-05-21',
+                            'startDate': '2020-05-20',
+                            'status': 0
+                        },
+                        {
+                            'createdFor': [
+                                'ORG_001'
+                            ],
+                            'endDate': '2020-05-21',
+                            'name': '14th may batch 1',
+                            'batchId': '0130207040805191681',
+                            'enrollmentType': 'open',
+                            'enrollmentEndDate': '2020-05-21',
+                            'startDate': '2020-05-20',
+                            'status': 0
+                        }
+                    ],
+                    'copyrightYear': 2020,
+                    'contentDisposition': 'inline',
+                    'lastUpdatedOn': '2020-05-14T07:06:40.194+0000',
+                    'licenseterms': 'By creating any type of content (resources, books, courses etc.) on DIKSHA, you consent to publish it under the Creative Commons License Framework. Please choose the applicable creative commons license you wish to apply to your content.',
+                    'SYS_INTERNAL_LAST_UPDATED_ON': '2020-05-14T07:15:02.363+0000',
+                    'dialcodeRequired': 'No',
+                    'createdFor': [
+                        'ORG_001'
+                    ],
+                    'lastStatusChangedOn': '2020-05-14T07:06:41.780+0000',
+                    'creator': 'Mentor First User',
+                    'IL_SYS_NODE_TYPE': 'DATA_NODE',
+                    'os': [
+                        'All'
+                    ],
+                    'pkgVersion': 1,
+                    'versionKey': '1589440000194',
+                    'idealScreenDensity': 'hdpi',
+                    'framework': 'tpd',
+                    'depth': 0,
+                    's3Key': 'ecar_files/do_1130206848094044161136/14th-may-live-curriculumcourse-2_1589440000878_do_1130206848094044161136_1.0_spine.ecar',
+                    'dialcodes': [
+                        'C5Q4Z4'
+                    ],
+                    'lastSubmittedOn': '2020-05-14T07:05:25.100+0000',
+                    'createdBy': 'fd4227f7-9de8-40b4-af82-edb8cbd14fb1',
+                    'compatibilityLevel': 4,
+                    'leafNodesCount': 0,
+                    'IL_UNIQUE_ID': 'do_1130206848094044161136',
+                    'board': 'CBSE',
+                    'resourceType': 'Course',
+                    'node_id': 403119,
+                    'c_sunbird_dev_open_batch_count': 2
+                }
+            ]
+        }
+    },
     successData: {
         'id': '0122838911932661768',
         'name': 'Course',
