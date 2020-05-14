@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MyGroupsComponent } from './my-groups.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('MyGroupsComponent', () => {
   let component: MyGroupsComponent;
@@ -8,7 +9,8 @@ describe('MyGroupsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MyGroupsComponent ]
+      declarations: [ MyGroupsComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));

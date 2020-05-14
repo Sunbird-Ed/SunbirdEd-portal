@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupWorkspaceComponent } from './group-workspace.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('GroupWorkspaceComponent', () => {
   let component: GroupWorkspaceComponent;
@@ -8,7 +9,8 @@ describe('GroupWorkspaceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupWorkspaceComponent ]
+      declarations: [ GroupWorkspaceComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
