@@ -1,22 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MyGroupsComponent } from './my-groups.component';
+import { GroupWorkspaceComponent } from './group-workspace.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-describe('MyGroupsComponent', () => {
-  let component: MyGroupsComponent;
-  let fixture: ComponentFixture<MyGroupsComponent>;
+describe('GroupWorkspaceComponent', () => {
+  let component: GroupWorkspaceComponent;
+  let fixture: ComponentFixture<GroupWorkspaceComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MyGroupsComponent ],
+      declarations: [ GroupWorkspaceComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MyGroupsComponent);
+    fixture = TestBed.createComponent(GroupWorkspaceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
