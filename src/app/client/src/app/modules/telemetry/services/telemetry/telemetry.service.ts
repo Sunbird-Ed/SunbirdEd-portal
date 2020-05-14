@@ -302,7 +302,7 @@ export class TelemetryService {
       const utmArray = JSON.parse(sessionStorage.getItem('UTM'));
       object['context']['cdata'] ?
       _.forEach(utmArray, item => {
-        object['context']['cdata'].push(item)
+        object['context']['cdata'].push(item);
       }) :
       object['context']['cdata'] = utmArray;
       return object;
