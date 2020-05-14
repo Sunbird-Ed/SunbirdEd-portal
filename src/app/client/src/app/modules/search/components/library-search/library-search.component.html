@@ -14,7 +14,7 @@
 
         <div class="twelve wide column">
             <div  [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)"  *ngIf="!showLoader && contentList.length" class="sb-grid">
-                <div in-view-item [id]="i" [data]="content" class="sb-grid--item" *ngFor="let content of contentList;let i = index;">
+                <div in-view-item [id]="i" [data]="content" class="sb-grid--item" *ngFor="let content of contentList | sortBy:'name':'asc';let i = index;">
                     <sb-library-card appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
                     [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'Content',ver:'1.0'}" (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.appIcon || './assets/images/book.png'">
                     </sb-library-card>
