@@ -1,5 +1,5 @@
 <div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div *ngIf="collectionData" [style.display]="!showLoader ? 'block' : 'none'" [appTelemetryImpression]="telemetryContentImpression">
+  <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
     <div class="sb-bg-white relative position cc-player__btn-back ">
       <div class="ui container py-8 px-0">
@@ -34,8 +34,7 @@
     <div class="ui container sb-toc-view-container">
       <div class="cc-player sb-g">
         <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 cc-player__video sb-toc-player-column"
-          [appTelemetryImpression]="telemetryImpression" [style.display]="collectionData ? 'block' : 'none'" [ngClass]="{'toggleInMobile': !isMobile}">
-          <div class="toc-content"></div>
+          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData" [ngClass]="{'toggleInMobile': !isMobile}">
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
             [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
           </app-contentplayer-page>
