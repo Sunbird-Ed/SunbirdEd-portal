@@ -21,10 +21,10 @@ describe('TelemetryService', () => {
     }));
 
     describe('start event', () => {
-        it('should send "start" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
+        it('should send "start" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'start');
-            service.start(mockData.startInputData);
+            await service.start(mockData.startInputData);
             expect(EkTelemetry.start).toHaveBeenCalledTimes(1);
         }));
 
@@ -36,10 +36,10 @@ describe('TelemetryService', () => {
     });
 
     describe('impression event', () => {
-        it('should send "impression" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
+        it('should send "impression" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'impression');
-            service.impression(mockData.impressionInputData);
+            await service.impression(mockData.impressionInputData);
             expect(EkTelemetry.impression).toHaveBeenCalledTimes(1);
         }));
 
@@ -51,10 +51,10 @@ describe('TelemetryService', () => {
     });
 
     describe('interact event', () => {
-        it('should send "interact" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
+        it('should send "interact" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'interact');
-            service.interact(mockData.interactEventData);
+            await service.interact(mockData.interactEventData);
             expect(EkTelemetry.interact).toHaveBeenCalledTimes(1);
         }));
 
@@ -66,10 +66,10 @@ describe('TelemetryService', () => {
     });
 
     describe('share event', () => {
-        it('should send "share" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
+        it('should send "share" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'share');
-            service.share(mockData.shareEventData);
+            await service.share(mockData.shareEventData);
             expect(EkTelemetry.share).toHaveBeenCalledTimes(1);
         }));
 
@@ -81,10 +81,10 @@ describe('TelemetryService', () => {
     });
 
     describe('error event', () => {
-        it('should send "error" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
+        it('should send "error" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'error');
-            service.error(mockData.errorEventData);
+            await service.error(mockData.errorEventData);
             expect(EkTelemetry.error).toHaveBeenCalledTimes(1);
         }));
 
@@ -96,10 +96,10 @@ describe('TelemetryService', () => {
     });
 
     describe('end event', () => {
-        it('should send "end" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
+        it('should send "end" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'end');
-            service.end(mockData.endEventData);
+            await service.end(mockData.endEventData);
             expect(EkTelemetry.end).toHaveBeenCalledTimes(1);
         }));
 
@@ -111,10 +111,10 @@ describe('TelemetryService', () => {
     });
 
     describe('log event', () => {
-        it('should send "log" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
+        it('should send "log" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'log');
-            service.log(mockData.logEventData);
+            await service.log(mockData.logEventData);
             expect(EkTelemetry.log).toHaveBeenCalledTimes(1);
         }));
 
@@ -126,10 +126,10 @@ describe('TelemetryService', () => {
     });
 
     describe('exdata event', () => {
-        it('should send "exdata" event if service is initialised', inject([TelemetryService], (service: TelemetryService) => {
+        it('should send "exdata" event if service is initialised', inject([TelemetryService], async (service: TelemetryService) => {
             service.initialize(mockData.telemetry);
             spyOn(EkTelemetry, 'exdata');
-            service.exData(mockData.exdataEventData);
+            await service.exData(mockData.exdataEventData);
             expect(EkTelemetry.exdata).toHaveBeenCalledTimes(1);
         }));
 
