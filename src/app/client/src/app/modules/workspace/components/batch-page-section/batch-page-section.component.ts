@@ -196,6 +196,11 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
   */
   public prepareCarouselData(sections = []) {
     this.batchList = _.flatten(_.map(sections, 'contents'));
+    if (!this.batchList || !this.batchList.length) {
+      this.carouselData = [];
+      this.showLoader = false;
+      return;
+    }
     const courseIds = _.map(this.batchList, 'courseId');
     const searchOption = {
       'filters': {
@@ -219,11 +224,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
           });
         }
       });
-    if (!this.batchList || !this.batchList.length) {
-      this.carouselData = [];
-      this.showLoader = false;
-      return;
-    }
+
     const userList = _.compact(_.uniq(_.map(this.batchList, 'createdBy')));
     const { slickSize } = this.config.appConfig.CourseBatchPageSection;
     const req = {

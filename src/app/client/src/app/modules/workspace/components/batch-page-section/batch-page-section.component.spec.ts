@@ -126,6 +126,13 @@ describe('BatchPageSectionComponent', () => {
         {queryParams: { status: '1', defaultSortBy: '{"createdDate":"desc"}', exists: undefined }});
   }));
 
+  it('should call prepareCarouselData', inject([], () => {
+    const searchService = TestBed.get(SearchService);
+    spyOn(searchService, 'contentSearch').and.returnValue(observableOf(testData.courseDetails));
+    component.prepareCarouselData(testData.sectionData);
+    expect(component.batchList).toEqual(testData.updatedBatchList);
+  }));
+
 });
 
 
