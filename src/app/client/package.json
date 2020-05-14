@@ -119,8 +119,8 @@
     "md5": "2.2.1",
     "minimist": "^1.2.5",
     "protractor": "^5.4.4",
-    "ts-node": "^8.10.1",
-    "tslint": "^6.1.2",
+    "ts-node": "^4.1.0",
+    "tslint": "^5.9.1",
     "typescript": "3.2.4"
   }
 }
