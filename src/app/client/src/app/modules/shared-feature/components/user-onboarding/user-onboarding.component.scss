@@ -2,23 +2,12 @@
 @import "mixins/mixins";
 
 .sb-onboard {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  @include respond-above(sm) {
-    padding: calculateRem(32px);
-  }
-
+  
   &__container {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background: #edf4f9;
-    padding: calculateRem(32px);
+    padding: calculateRem(24px);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -35,8 +24,9 @@
   }
 
   &__header {
-    width: calculateRem(328px);
+    width: 100%;
     text-align: center;
+    max-width: calculateRem(328px);
 
     h1 {
       color: var(--primary-400);
@@ -59,7 +49,9 @@
 
   &__footer {
     margin-top: calculateRem(16px);
-    width: calculateRem(328px);
+    width: 100%;
+    text-align: center;
+    max-width: calculateRem(328px);
   }
 
   .brand-logo {
@@ -115,11 +107,13 @@
     grid-auto-rows: minmax(auto, 88px);
     grid-column-gap: calculateRem(24px);
     grid-row-gap: calculateRem(16px);
+
     .check-icon {
       position: absolute;
       top: calculateRem(8px);
       right: calculateRem(8px);
     }
+
     &__item {
       border-radius: calculateRem(4px);
       background-color: var(--white);
@@ -128,33 +122,39 @@
       align-items: center;
       justify-content: center;
       position: relative;
+
       span {
         color: var(--gray-800);
         font-size: calculateRem(20px);
       }
+
       &:hover,
       &.active {
         background-color: var(--primary-color);
         box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) rgba(2, 79, 157, 0.3);
         cursor: pointer;
+
         span {
           color: var(--white);
         }
       }
     }
   }
+
   &__guest {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, auto));
     grid-auto-rows: minmax(auto, 190px);
     grid-column-gap: 1.5rem;
     grid-row-gap: 1rem;
+
     .check-icon {
       position: absolute;
       top: calculateRem(8px);
       right: calculateRem(8px);
       display: none;
     }
+
     &__item {
       border-radius: calculateRem(4px);
       background-color: var(--white);
@@ -162,11 +162,13 @@
       text-align: center;
       position: relative;
       border: 2px solid var(--white);
+
       .title {
         color: var(--gray-800);
         font-size: calculateRem(22px);
         font-weight: bold;
       }
+
       &:hover,
       &.active {
         border: 2px solid var(--primary-color);
@@ -174,6 +176,7 @@
         background-color: var(--white);
         box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(2, 79, 157, 0.3);
         cursor: pointer;
+
         .check-icon {
           display: block;
         }
@@ -210,6 +213,7 @@
   .onboard-content {
     @include respond-above(sm) {
       margin-left: 2rem;
+
       html[dir="rtl"] & {
         margin-right: 2rem;
       }
@@ -229,6 +233,7 @@
 
 .ui.selection.dropdown.fields-dropdown {
   height: 2rem !important;
+
   &:focus {
     border: calculateRem(1px) solid #0076fe;
     color: #0076fe !important;
@@ -244,4 +249,31 @@
 .ui.selection.dropdown.fields-dropdown option {
   background: var(--white);
   color: var(--black);
+}
+
+::ng-deep {
+  .sb-onbrd-modal {
+    @include respond-below(sm) {
+      .ui.modal {
+        width: 95%;
+        margin: 0 0 0 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .ui.modal.scroll {
+        position: fixed !important;
+        margin-top: o !important;
+        margin-bottom: 0px !important;
+        top: 0;
+        width: 100%;
+        left: 0px;
+        right: 0px;
+        margin: 0 !important;
+      }
+    }
+  }
 }

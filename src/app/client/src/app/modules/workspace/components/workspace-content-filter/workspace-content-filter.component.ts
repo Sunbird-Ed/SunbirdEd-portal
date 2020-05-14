@@ -105,7 +105,7 @@ export class WorkspaceContentFilterComponent implements OnInit {
       .subscribe(params => {
         this.queryParams = { ...params };
         this.query = this.queryParams['query'];
-        this.sortByOption = this.queryParams['sort_by'];
+        this.sortByOption = _.isArray(this.queryParams['sort_by']) ? this.queryParams['sort_by'][0] : this.queryParams['sort_by'];
         _.forIn(params, (value, key) => {
           if (typeof value === 'string' && key !== 'query') {
             this.queryParams[key] = [value];
