@@ -1,1 +1,49 @@
 <!-- add create group form -->
+<sui-modal *ngIf="showBoardSelectnModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showBoardSelectnModal = !showBoardSelectnModal" #modal>
+  <div class="sb-modal-header">Create Group</div>
+  <div class="sb-modal-content o-y-visible">
+    <div class="create-group-title pb-16">Enter the following information</div>
+    <form class="sb-form">
+      <label>Group Name</label>
+      <div class="sb-field">
+        <input class="sb-form-control" type="text" placeholder="Enter Group Name">
+      </div>
+      <div class="sb-field">
+        <label>Board:</label>
+        <sui-select class="selection" name="state" labelField="name" placeholder="Select State">
+          <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
+        </sui-select>
+      </div>
+      <div class="sb-fielgroup">
+        <label>Medium:</label>
+        <div class="sb-field">
+          <sui-select class="selection" name="medium" labelField="name" placeholder="Select Medium">
+            <sui-select-option *ngFor="let language of medium" [value]="language"></sui-select-option>
+          </sui-select>
+        </div>
+      </div>
+      <div class="sb-fielgroup">
+        <label>Class:</label>
+        <div class="sb-field">
+          <sui-multi-select class="selection" name="class" labelField="name" placeholder="Select Class">
+            <sui-select-option *ngFor="let class of classes" [value]="class"></sui-select-option>
+          </sui-multi-select>
+        </div>
+      </div>
+      <div class="sb-fielgroup">
+        <label>Subject:</label>
+        <div class="sb-field">
+          <sui-select class="selection" name="subject" labelField="name" placeholder="Select Subject">
+            <sui-select-option *ngFor="let subject of subjects" [value]="subject"></sui-select-option>
+          </sui-select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="sb-modal-actions">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary">
+      Submit
+    </button>
+  </div>
+</sui-modal>
