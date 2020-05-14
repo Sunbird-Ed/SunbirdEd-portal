@@ -123,7 +123,6 @@ export const userSearch = {
             ],
             'roles': [
               'PUBLIC',
-              'ANNOUNCEMENT_SENDER',
               'BOOK_CREATOR',
               'COURSE_MENTOR',
               'FLAG_REVIEWER',
@@ -506,7 +505,6 @@ export const userSearch = {
                 'addedBy': '16517913-ae66-4b78-be8a-325da74e561c',
                 'roles': [
                   'PUBLIC',
-                  'ANNOUNCEMENT_SENDER',
                   'CONTENT_CREATOR',
                   'TEACHER_BADGE_ISSUER',
                   'COURSE_MENTOR',
@@ -531,7 +529,6 @@ export const userSearch = {
                 'addedBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
                 'roles': [
                   'PUBLIC',
-                  'ANNOUNCEMENT_SENDER'
                 ],
                 'approvedBy': '159e93d1-da0c-4231-be94-e75b0c226d7c',
                 'updatedDate': null,

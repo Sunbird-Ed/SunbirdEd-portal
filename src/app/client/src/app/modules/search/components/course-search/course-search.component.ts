@@ -1,9 +1,8 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService
+  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
-import { IPagination } from '@sunbird/announcement';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -149,10 +148,6 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private getFrameWork() {
-    const framework = this.cacheService.get('framework' + 'search');
-    if (framework) {
-      return of(framework);
-    } else {
       const formServiceInputParams = {
         formType: 'framework',
         formAction: 'search',
@@ -161,12 +156,10 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.formService.getFormConfig(formServiceInputParams)
         .pipe(map((data) => {
             const frameWork = _.find(data, 'framework').framework;
-            this.cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl});
             return frameWork;
         }), catchError((error) => {
           return of(false);
         }));
-    }
   }
   private fetchEnrolledCoursesSection() {
     return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {

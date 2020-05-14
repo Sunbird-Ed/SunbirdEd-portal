@@ -1,5 +1,5 @@
 <div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryContentImpression">
+  <div *ngIf="collectionData" [style.display]="!showLoader ? 'block' : 'none'" [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
     <div class="sb-bg-white relative position cc-player__btn-back ">
       <div class="ui container py-8 px-0">

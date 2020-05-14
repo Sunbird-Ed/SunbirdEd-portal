@@ -8,6 +8,8 @@ import { CbseProgramService } from '../../services';
 import { ProgramStageService, ProgramTelemetryService } from '../../../program/services';
 import { ISessionContext, IChapterListComponentInput } from '../../interfaces';
 import { InitialState } from '../../interfaces';
+import * as slick from './../../../../../assets/libs/slick-carousel';
+slick(jQuery);
 
 @Component({
   selector: 'app-collection',

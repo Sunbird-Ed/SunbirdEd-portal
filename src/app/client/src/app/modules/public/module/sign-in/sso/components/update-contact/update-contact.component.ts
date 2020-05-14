@@ -150,7 +150,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   }
   private checkUserExist() {
     const uri = this.contactForm.type + '/' + this.contactForm.value;
-    combineLatest(this.userService.getUserByKey(uri), this.getCustodianOrgDetails())
+    combineLatest(this.userService.getUserByKey(uri), this.orgDetailsService.getCustodianOrgDetails())
     .pipe(map(data => ({
       userDetails: data[0], custOrgDetails: data[1]
     })))
@@ -179,15 +179,6 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
         this.userExist = false;
         this.userBlocked = false;
     });
-  }
-  private getCustodianOrgDetails() {
-    if (this.custodianOrgDetails) {
-      return of(this.custodianOrgDetails);
-    }
-    return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrgDetails) => {
-      this.custodianOrgDetails = custodianOrgDetails;
-      return custodianOrgDetails;
-    }));
   }
 
   public onFormUpdate() {
