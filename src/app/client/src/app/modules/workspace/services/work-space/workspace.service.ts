@@ -155,6 +155,9 @@ export class WorkSpaceService {
       _.forIn(metaData, (value, key1) => {
         card[key1] = _.pick(item, value);
       });
+      if (_.toLower(_.get(item, 'courseType')) === 'curriculumcourse') {
+        dynamicFields = { 'ribbon.right.name': 'courseType' };
+      }
       _.forIn(dynamicFields, (fieldData, fieldName) => {
         const value = _.pick(item, fieldData);
         _.forIn(value, (val1, key1) => {
