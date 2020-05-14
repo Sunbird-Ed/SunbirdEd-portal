@@ -16,6 +16,9 @@ const routes: Routes = [
     path: 'explore-course', loadChildren: './module/course/course.module#CourseModule'
   },
   {
+    path: 'explore-groups', loadChildren: './module/group/group.module#GroupModule'
+  },
+  {
     path: 'signup', loadChildren: './module/signup/signup.module#SignupModule'
   },
   {

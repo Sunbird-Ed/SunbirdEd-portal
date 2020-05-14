@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RemoveMemberComponent } from './remove-member.component';
+import { ExploreGroupComponent } from './explore-group.component';
 
-describe('RemoveMemberComponent', () => {
-  let component: RemoveMemberComponent;
-  let fixture: ComponentFixture<RemoveMemberComponent>;
+describe('ExploreGroupComponent', () => {
+  let component: ExploreGroupComponent;
+  let fixture: ComponentFixture<ExploreGroupComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RemoveMemberComponent ]
+      declarations: [ ExploreGroupComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RemoveMemberComponent);
+    fixture = TestBed.createComponent(ExploreGroupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
