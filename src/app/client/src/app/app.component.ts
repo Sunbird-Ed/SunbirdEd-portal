@@ -121,6 +121,34 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params && (params['utm_campaign'] || params['utm_medium'] || params['utm_source']
+      || params['utm_term'] || params['utm_content'])) {
+        const resultJson = [];
+        for (const item in params) {
+          switch (item) {
+            case 'utm_campaign':
+              resultJson.push({ 'id': params[item], 'type': 'UtmCampaign' });
+              break;
+            case 'utm_medium':
+              resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
+              break;
+            case 'utm_source':
+              resultJson.push({ 'id': params[item], 'type': 'UtmSource' });
+              break;
+            case 'utm_term':
+              resultJson.push({ 'id': params[item], 'type': 'UtmTerm' });
+              break;
+            case 'utm_content':
+              resultJson.push({ 'id': params[item], 'type': 'UtmContent' });
+              break;
+            default:
+              break;
+          }
+        }
+        sessionStorage.setItem('UTM', JSON.stringify(resultJson));
+      }
+    });
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter(queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
@@ -329,13 +357,13 @@ export class AppComponent implements OnInit, OnDestroy {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-      return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
-          this.fingerprintInfo = {deviceId, components, version};
-          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-        this.deviceRegisterService.setDeviceId();
-          observer.next(deviceId);
-          observer.complete();
-        }));
+    return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+      this.fingerprintInfo = { deviceId, components, version };
+      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+      this.deviceRegisterService.setDeviceId();
+      observer.next(deviceId);
+      observer.complete();
+    }));
   }
   /**
    * set user details for loggedIn user.
@@ -500,28 +528,28 @@ export class AppComponent implements OnInit, OnDestroy {
     this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
       if (this.userService.loggedIn &&
         (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value'))) {
-          this.userService.getFeedData().subscribe(
-            (data) => {
-              this.userFeed = _.get(data, 'result.response.userFeed[0]');
-              if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
-                const formReadInputParams = {
-                  formType: 'user',
-                  formAction: 'onboarding',
-                  contentType: 'externalIdVerification'
-                };
-                this.formService.getFormConfig(formReadInputParams).subscribe(
-                  (formResponsedata) => {
-                    this.labels = _.get(formResponsedata[0], ('range[0]'));
-                  }
-                );
-                // if location popup isn't opened on the very first time.
-                if (this.isLocationConfirmed) {
-                  this.showUserVerificationPopup = true;
+        this.userService.getFeedData().subscribe(
+          (data) => {
+            this.userFeed = _.get(data, 'result.response.userFeed[0]');
+            if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
+              const formReadInputParams = {
+                formType: 'user',
+                formAction: 'onboarding',
+                contentType: 'externalIdVerification'
+              };
+              this.formService.getFormConfig(formReadInputParams).subscribe(
+                (formResponsedata) => {
+                  this.labels = _.get(formResponsedata[0], ('range[0]'));
                 }
+              );
+              // if location popup isn't opened on the very first time.
+              if (this.isLocationConfirmed) {
+                this.showUserVerificationPopup = true;
               }
-            },
-            (error) => {
-            });
+            }
+          },
+          (error) => {
+          });
       }
     });
   }
