@@ -72,7 +72,6 @@ describe('PublicCollectionPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PublicCollectionPlayerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
   it('should create', () => {
     const windowScrollService = TestBed.get(WindowScrollService);

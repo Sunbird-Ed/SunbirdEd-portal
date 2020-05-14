@@ -16,7 +16,7 @@ import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } 
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
-import { ShepherdService } from 'angular-shepherd';
+// TODO: Remove replace moment with dayjs in all components
 /**
  * main app component
  */
@@ -68,7 +68,6 @@ export class AppComponent implements OnInit, OnDestroy {
   sessionExpired = false;
   instance: string;
   resourceDataSubscription: any;
-  shepherdData: Array<any>;
   private fingerprintInfo: any;
   hideHeaderNFooter = true;
   queryParams: any;
@@ -96,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    private shepherdService: ShepherdService, public changeDetectorRef: ChangeDetectorRef) {
+    public changeDetectorRef: ChangeDetectorRef) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
@@ -513,7 +512,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /** It will fetch user feed data if user is custodian as well as logged in. */
   getUserFeedData() {
-    this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
       if (this.userService.loggedIn &&
         (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value'))) {
           this.userService.getFeedData().subscribe(

@@ -1,4 +1,4 @@
-<div *ngIf="!showLoader && !loadLandscapePlayer">
+<div *ngIf="contentData && !loadLandscapePlayer" [style.display]="!showLoader ? 'block' : 'none'">
   <!--CC-Player Content Header -->
   <div class="cc-player__content-header d-flex flex-ai-center relative position"
     *ngIf="contentData">
