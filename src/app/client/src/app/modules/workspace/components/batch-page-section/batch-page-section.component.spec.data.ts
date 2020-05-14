@@ -22,7 +22,6 @@ export const mockRes = {
                     'copyright': 'CustROOTOrg10, Sunbird',
                     'subject': 'Mathematics',
                     'channel': '01285019302823526477',
-                    'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206856421867521137/14th-may-live-curriculaum_1589439988339_do_1130206856421867521137_1.0_spine.ecar',
                     'organisation': [
                         'Sunbird'
                     ],
@@ -32,11 +31,9 @@ export const mockRes = {
                     'mimeType': 'application/vnd.ekstep.content-collection',
                     'variants': {
                         'online': {
-                            'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206856421867521137/14th-may-live-curriculaum_1589439989267_do_1130206856421867521137_1.0_online.ecar',
                             'size': 3392
                         },
                         'spine': {
-                            'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206856421867521137/14th-may-live-curriculaum_1589439988339_do_1130206856421867521137_1.0_spine.ecar',
                             'size': 180338
                         }
                     },
@@ -45,7 +42,6 @@ export const mockRes = {
                     'gradeLevel': [
                         'Class1'
                     ],
-                    'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1130157842937446401226/artifact/screenshot-staging.ntp.net.in-2020.05.07-12_09_25.png',
                     'appId': 'dev.sunbird.portal',
                     'contentEncoding': 'gzip',
                     'lockKey': '18deb68c-dc9a-4fa2-b69f-348d3d512ae3',
@@ -58,7 +54,6 @@ export const mockRes = {
                         'Learner'
                     ],
                     'visibility': 'Default',
-                    'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1130206856421867521137/artifact/do_1130206856421867521137_toc.json',
                     'contentTypesCount': '{\'CourseUnit\':1}',
                     'consumerId': '7411b6bd-89f3-40ec-98d1-229dc64ce77d',
                     'childNodes': [
@@ -130,7 +125,6 @@ export const mockRes = {
                     'copyrightYear': 2020,
                     'contentDisposition': 'inline',
                     'lastUpdatedOn': '2020-05-14T07:06:19.775+0000',
-                    'licenseterms': 'By creating any type of content (resources, books, courses etc.) on DIKSHA, you consent to publish it under the Creative Commons License Framework. Please choose the applicable creative commons license you wish to apply to your content.',
                     'SYS_INTERNAL_LAST_UPDATED_ON': '2020-05-14T07:34:30.974+0000',
                     'dialcodeRequired': 'No',
                     'createdFor': [
@@ -147,7 +141,6 @@ export const mockRes = {
                     'idealScreenDensity': 'hdpi',
                     'framework': 'tpd',
                     'depth': 0,
-                    's3Key': 'ecar_files/do_1130206856421867521137/14th-may-live-curriculaum_1589439988339_do_1130206856421867521137_1.0_spine.ecar',
                     'dialcodes': [
                         'L2E4D3'
                     ],
@@ -169,7 +162,6 @@ export const mockRes = {
                     'copyright': 'CustROOTOrg10, Sunbird',
                     'subject': 'Mathematics',
                     'channel': '01285019302823526477',
-                    'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206848094044161136/14th-may-live-curriculumcourse-2_1589440000878_do_1130206848094044161136_1.0_spine.ecar',
                     'organisation': [
                         'Sunbird'
                     ],
@@ -179,11 +171,9 @@ export const mockRes = {
                     'mimeType': 'application/vnd.ekstep.content-collection',
                     'variants': {
                         'online': {
-                            'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206848094044161136/14th-may-live-curriculumcourse-2_1589440001299_do_1130206848094044161136_1.0_online.ecar',
                             'size': 3416
                         },
                         'spine': {
-                            'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130206848094044161136/14th-may-live-curriculumcourse-2_1589440000878_do_1130206848094044161136_1.0_spine.ecar',
                             'size': 180364
                         }
                     },
@@ -192,7 +182,6 @@ export const mockRes = {
                     'gradeLevel': [
                         'Class1'
                     ],
-                    'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1130157842937446401226/artifact/screenshot-staging.ntp.net.in-2020.05.07-12_09_25.png',
                     'appId': 'dev.sunbird.portal',
                     'contentEncoding': 'gzip',
                     'lockKey': '9d577084-045c-4283-a437-8869ce714db5',
@@ -204,7 +193,6 @@ export const mockRes = {
                         'Learner'
                     ],
                     'visibility': 'Default',
-                    'toc_url': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1130206848094044161136/artifact/do_1130206848094044161136_toc.json',
                     'contentTypesCount': '{\'CourseUnit\':1}',
                     'consumerId': '7411b6bd-89f3-40ec-98d1-229dc64ce77d',
                     'childNodes': [
@@ -263,7 +251,6 @@ export const mockRes = {
                     'copyrightYear': 2020,
                     'contentDisposition': 'inline',
                     'lastUpdatedOn': '2020-05-14T07:06:40.194+0000',
-                    'licenseterms': 'By creating any type of content (resources, books, courses etc.) on DIKSHA, you consent to publish it under the Creative Commons License Framework. Please choose the applicable creative commons license you wish to apply to your content.',
                     'SYS_INTERNAL_LAST_UPDATED_ON': '2020-05-14T07:15:02.363+0000',
                     'dialcodeRequired': 'No',
                     'createdFor': [
@@ -280,7 +267,6 @@ export const mockRes = {
                     'idealScreenDensity': 'hdpi',
                     'framework': 'tpd',
                     'depth': 0,
-                    's3Key': 'ecar_files/do_1130206848094044161136/14th-may-live-curriculumcourse-2_1589440000878_do_1130206848094044161136_1.0_spine.ecar',
                     'dialcodes': [
                         'C5Q4Z4'
                     ],
