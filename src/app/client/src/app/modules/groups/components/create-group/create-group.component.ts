@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-group.component.scss']
 })
 export class CreateGroupComponent implements OnInit {
+  showBoardSelectnModal;
   sbcards = [
     {
       title: 'Group Name 123',
@@ -24,8 +25,6 @@ export class CreateGroupComponent implements OnInit {
       type: 'Book'
     }
   ];
- 
-  showBoardSelectnModal;
   constructor() { }
 
   ngOnInit() {
