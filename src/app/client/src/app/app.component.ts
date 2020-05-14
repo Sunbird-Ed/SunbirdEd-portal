@@ -126,24 +126,26 @@ export class AppComponent implements OnInit, OnDestroy {
       || params['utm_term'] || params['utm_content'])) {
         const resultJson = [];
         for (const item in params) {
-          switch (item) {
-            case 'utm_campaign':
-              resultJson.push({ 'id': params[item], 'type': 'UtmCampaign' });
-              break;
-            case 'utm_medium':
-              resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
-              break;
-            case 'utm_source':
-              resultJson.push({ 'id': params[item], 'type': 'UtmSource' });
-              break;
-            case 'utm_term':
-              resultJson.push({ 'id': params[item], 'type': 'UtmTerm' });
-              break;
-            case 'utm_content':
-              resultJson.push({ 'id': params[item], 'type': 'UtmContent' });
-              break;
-            default:
-              break;
+          if (params.hasOwnProperty(item)) {
+            switch (item) {
+              case 'utm_campaign':
+                resultJson.push({ 'id': params[item], 'type': 'UtmCampaign' });
+                break;
+              case 'utm_medium':
+                resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
+                break;
+              case 'utm_source':
+                resultJson.push({ 'id': params[item], 'type': 'UtmSource' });
+                break;
+              case 'utm_term':
+                resultJson.push({ 'id': params[item], 'type': 'UtmTerm' });
+                break;
+              case 'utm_content':
+                resultJson.push({ 'id': params[item], 'type': 'UtmContent' });
+                break;
+              default:
+                break;
+            }
           }
         }
         sessionStorage.setItem('UTM', JSON.stringify(resultJson));
