@@ -51,8 +51,8 @@
 			{{resourceService?.frmelmnts?.tab?.courses}}
 		</a>
 		<a class="item"
-			[class.active]="router.isActive('/groups', true)"
-			*ngIf="!router.isActive('', true)" [routerLink]="['/groups']"
+			[class.active]="router.isActive('/explore-groups', true)"
+			*ngIf="!router.isActive('', true)" [routerLink]="['/explore-groups']"
 			appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata">
 			{{resourceService?.frmelmnts?.tab?.mygroups}}
 		</a>
@@ -126,8 +126,8 @@
 				{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 			</a>
 			<a class="item"
-				[class.active]="router.isActive('/groups')"
-				[routerLink]="['/groups']" (click)="showSideBar()"
+				[class.active]="router.isActive('/explore-groups')"
+				[routerLink]="['/explore-groups']" (click)="showSideBar()"
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.mygroups}}
 			</a>
