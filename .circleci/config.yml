@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     machine:
-      image: circleci/classic:latest
+      - image: circleci/node:12.6
     steps:
       - checkout
       - run:
