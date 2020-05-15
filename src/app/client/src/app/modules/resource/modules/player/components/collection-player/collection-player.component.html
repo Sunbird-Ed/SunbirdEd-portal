@@ -71,6 +71,13 @@
           <i class="blue clone outline icon"></i>
           {{resourceService?.frmelmnts?.lbl?.copy}}
         </a>
+        <!-- Copy as course-->
+        <a appTelemetryInteract [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="copyAsCourseInteractEdata" 
+          href="javascript:void(0)" *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook'" appPermission
+          [permission]="['COURSE_CREATOR']" (click)="copyAsCourse(collectionTreeNodes.data)" class="cursor-pointer btn-bg d-inline-block font-weight-bold p-8 mr-16">
+          <i class="blue clone outline icon"></i>
+          {{resourceService?.frmelmnts?.lbl?.copyAsCourse}}
+        </a>
         <!-- Print Button for printable contents-->
         <span class="d-inline-block" *ngIf="selectedContent?.model?.itemSetPreviewUrl">
           <a appTelemetryInteract [telemetryInteractObject]="objectInteract" [telemetryInteractEdata]= "printPdfInteractEdata" class="cursor-pointer btn-bg p-8 d-flex font-weight-bold sb-color-primary" (click)="printPdf(selectedContent.model.itemSetPreviewUrl)">
