@@ -215,12 +215,7 @@ export class BatchPageSectionComponent extends WorkSpace implements OnInit, OnDe
       .subscribe(data => {
         if (_.get(data, 'result.content')) {
           _.map(this.batchList, (batchData) => {
-            const courseDetails = _.find(_.get(data, 'result.content'), (courseData) => {
-              return courseData.identifier === batchData.courseId;
-            });
-            batchData.courseAdditionalInfo = {
-              courseName: _.get(courseDetails, 'name')
-            };
+            batchData.courseDetails = _.find(_.get(data, 'result.content'), courseData => courseData.identifier === batchData.courseId);
           });
         }
       });
