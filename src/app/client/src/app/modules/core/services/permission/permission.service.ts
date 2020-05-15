@@ -71,7 +71,7 @@ export class PermissionService {
     this.resourceService = resourceService;
   }
   public initialize() {
-    this.getPermissionsData();
+    this.setCurrentRoleActions();
   }
   /**
    * method to fetch organization permission and roles.

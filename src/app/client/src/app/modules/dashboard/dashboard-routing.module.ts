@@ -8,6 +8,13 @@ import { AuthGuard } from '../core/guard/auth-gard.service';
 
 const routes: Routes = [
   {
+    path: '', component: CourseProgressComponent, canActivate: [AuthGuard],
+    data: {
+      roles: 'courseBatchRoles',
+      telemetry: { env: 'Course', pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
+    }
+  },
+  {
     path: 'myActivity', component: CourseConsumptionComponent,
     data: {
       telemetry: { env: 'course', pageid: 'course-creator-dashboard', type: 'view' },

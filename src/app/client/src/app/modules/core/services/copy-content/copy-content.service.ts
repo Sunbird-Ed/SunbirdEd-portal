@@ -51,7 +51,6 @@ export class CopyContentService {
     this.userService = userService;
     this.contentService = contentService;
     this.frameworkService = frameworkService;
-    this.frameworkService.initialize();
   }
 
   /**
@@ -59,6 +58,7 @@ export class CopyContentService {
    * @param {contentData} ContentData Content data which will be copied
    */
   copyContent(contentData: ContentData) {
+    this.frameworkService.initialize();
     const param = this.formatData(contentData);
     const option = {
       url: this.config.urlConFig.URLS.CONTENT.COPY + '/' + contentData.identifier,

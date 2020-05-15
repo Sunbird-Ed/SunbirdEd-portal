@@ -3,7 +3,7 @@ import { SharedModule } from '@sunbird/shared';
 import { NgModule , ModuleWithProviders} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
+  ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
   OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
   UserLocationComponent
 } from './components';
@@ -27,11 +27,11 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
+  declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent
   ],
-  exports: [ViewAllComponent, ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
+  exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent]
 })

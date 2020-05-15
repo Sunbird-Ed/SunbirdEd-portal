@@ -4,7 +4,7 @@ import { UserOrgManagementComponent } from './components/user-org-management/use
 import { UserUploadComponent } from './components/user-upload/user-upload.component';
 
 const routes: Routes = [
-  {path: 'manage', component: UserOrgManagementComponent, data: {
+  {path: '', component: UserOrgManagementComponent, data: {
     telemetry: {
       env: 'admin-dashboard', pageid: 'admin-manage-page', type: 'view'
     }

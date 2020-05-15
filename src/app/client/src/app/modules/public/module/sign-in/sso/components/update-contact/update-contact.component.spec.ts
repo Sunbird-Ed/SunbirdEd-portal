@@ -106,7 +106,7 @@ describe('UpdateContactComponent', () => {
     const userService = TestBed.get(UserService);
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(userService, 'getUserByKey').and.callFake(() => observableOf(mockUpdateContactData.userData));
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() => observableOf(mockUpdateContactData.nonCustOrgDetails));
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() => observableOf(mockUpdateContactData.nonCustOrgDetails));
     component.onFormUpdate();
     expect(component.userExist).toEqual(true);
     expect(component.userBlocked).toEqual(false);
@@ -119,7 +119,7 @@ describe('UpdateContactComponent', () => {
     const userService = TestBed.get(UserService);
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(userService, 'getUserByKey').and.callFake(() => observableThrowError(mockUpdateContactData.blockedUserError));
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() => observableOf(mockUpdateContactData.nonCustOrgDetails));
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() => observableOf(mockUpdateContactData.nonCustOrgDetails));
     component.onFormUpdate();
     expect(component.userExist).toEqual(false);
     expect(component.userBlocked).toEqual(true);
@@ -133,7 +133,7 @@ describe('UpdateContactComponent', () => {
     const otpService = TestBed.get(OtpService);
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(userService, 'getUserByKey').and.callFake(() => observableThrowError(mockUpdateContactData.serverError));
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() =>
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() =>
       observableOf(mockUpdateContactData.nonCustOrgDetails));
     spyOn(otpService, 'generateOTP').and.callFake(() => observableOf(mockUpdateContactData.successResponse));
     component.onFormUpdate();
@@ -150,7 +150,7 @@ describe('UpdateContactComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(userService, 'getUserByKey').and.callFake(() => observableThrowError(mockUpdateContactData.serverError));
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() =>
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() =>
       observableOf(mockUpdateContactData.nonCustOrgDetails));
     spyOn(otpService, 'generateOTP').and.callFake(() => observableThrowError(mockUpdateContactData.phoneAlreadyUsedError));
     spyOn(toasterService, 'error').and.callFake((value) => {
@@ -168,7 +168,7 @@ describe('UpdateContactComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(userService, 'getUserByKey').and.callFake(() => observableThrowError(mockUpdateContactData.serverError));
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() =>
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() =>
       observableOf(mockUpdateContactData.nonCustOrgDetails));
     spyOn(otpService, 'generateOTP').and.callFake(() => observableThrowError(mockUpdateContactData.emailAlreadyUsedError));
     spyOn(toasterService, 'error').and.callFake((value) => {
@@ -186,7 +186,7 @@ describe('UpdateContactComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(userService, 'getUserByKey').and.callFake(() => observableThrowError(mockUpdateContactData.serverError));
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() =>
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() =>
       observableOf(mockUpdateContactData.nonCustOrgDetails));
     spyOn(otpService, 'generateOTP').and.callFake(() => observableThrowError(mockUpdateContactData.rateLimitExceed));
     spyOn(toasterService, 'error').and.callFake((value) => {
@@ -204,7 +204,7 @@ describe('UpdateContactComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     const orgDetailsService = TestBed.get(OrgDetailsService);
     spyOn(userService, 'getUserByKey').and.callFake(() => observableThrowError(mockUpdateContactData.serverError));
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() =>
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() =>
       observableOf(mockUpdateContactData.nonCustOrgDetails));
     spyOn(otpService, 'generateOTP').and.callFake(() => observableThrowError(mockUpdateContactData.serverError));
     spyOn(toasterService, 'error').and.callFake((value) => {
@@ -221,7 +221,7 @@ describe('UpdateContactComponent', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const otpService = TestBed.get(OtpService);
     spyOn(userService, 'getUserByKey').and.callFake(() => observableOf(mockUpdateContactData.userData));
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() =>
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() =>
       observableOf(mockUpdateContactData.custOrgDetails));
     spyOn(otpService, 'generateOTP').and.callFake(() => observableOf(mockUpdateContactData.successResponse));
     component.onFormUpdate();
@@ -240,7 +240,7 @@ describe('UpdateContactComponent', () => {
     const otpService = TestBed.get(OtpService);
     spyOn(userService, 'getUserByKey').and.callFake(() =>
       observableOf(mockUpdateContactData.userData));
-    spyOn(orgDetailsService, 'getCustodianOrg').and.callFake(() =>
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() =>
       observableOf(mockUpdateContactData.custOrgDetails));
     spyOn(otpService, 'generateOTP').and.callFake(() =>
       observableOf(mockUpdateContactData.successResponse));

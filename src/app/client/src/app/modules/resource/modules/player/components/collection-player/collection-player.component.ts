@@ -1,5 +1,5 @@
 
-import { mergeMap, first, map, catchError } from 'rxjs/operators';
+import { mergeMap, filter, map, catchError } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { PlayerService, CollectionHierarchyAPI, PermissionService, CopyContentService } from '@sunbird/core';
 import { Observable, Subscription, Subject, of, throwError } from 'rxjs';
@@ -59,8 +59,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
    * Reference of config service
    */
   public config: ConfigService;
-
-  public loader: Boolean = true;
 
   public triggerContentImpression = false;
 
@@ -361,8 +359,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   private getContent(): void {
     this.subscription = this.route.params.pipe(
-      first(),
+      filter(params => params.collectionId !== this.collectionId),
       mergeMap((params) => {
+        this.showLoader = true;
         this.collectionId = params.collectionId;
         this.telemetryCdata = [{ id: this.collectionId, type: this.contentType }];
         if (this.dialCode) {
@@ -376,7 +375,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.showLoader = false;
         this.setTelemetryData();
         this.setTelemetryStartEndData();
-        this.loader = false;
         this.route.queryParams.subscribe((queryParams) => {
           this.contentId = queryParams.contentId;
           if (this.contentId) {

@@ -3,14 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
-  ServerResponse, PaginationService, ConfigService, ToasterService,
+  ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
   ResourceService, ILoaderMessage, INoResultMessage, NavigationHelperService
 } from '@sunbird/shared';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, map, filter } from 'rxjs/operators';
 import { Ibatch } from './../../interfaces/';
 import { WorkSpaceService, BatchService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { IInteractEventInput, IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';

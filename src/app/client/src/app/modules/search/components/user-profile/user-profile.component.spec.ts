@@ -11,7 +11,6 @@ import {
 import { SearchService, UserService, LearnerService, ContentService, BadgesService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { UserProfileComponent } from './user-profile.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

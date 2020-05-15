@@ -11,7 +11,7 @@ import {
   ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -165,7 +165,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
   getBatchStatus() {
    if (this.enrolledBatchInfo.endDate) {
-    this.batchEndDate = moment(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
+    this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
    return (this.enrolledBatchInfo.status === 2 && this.progress <= 100);
   }
