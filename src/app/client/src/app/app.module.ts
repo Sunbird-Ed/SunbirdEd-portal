@@ -1,4 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -19,13 +18,14 @@ import { PluginModules } from './framework.config';
 import {ChatLibModule, ChatLibService} from 'chat-lib';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/CustomRouteReuseStrategy';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule, // used this instaed of browser module since it includes in it.
+    BrowserAnimationsModule, // used this instaed of browser module since it includes in it.
     CoreModule,
     CommonModule,
     HttpClientModule,
@@ -45,12 +45,7 @@ import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/Cus
     CacheService,
     ChatLibService,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
-    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
-    {
-      provide: RouteReuseStrategy,
-      useClass: CustomRouteReuseStrategy
-    }
-
+    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true }
   ]
 })
 export class AppModule {
