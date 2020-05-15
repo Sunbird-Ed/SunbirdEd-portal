@@ -42,9 +42,9 @@
         <div class="content-metadeta__title  fxsmall mb-4" *ngIf="contentData?.copyright">{{resourceService?.frmelmnts?.lbl?.copyRight}}</div>
         <div class="content-metadeta__text  fnormal">{{contentData?.copyright}}<span
           *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></div>
-          <div class="content-metadeta__text fnormal sb-color-primary-400" *ngIf="contentData">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}</div>
       </div>
       <div *ngIf="contentData.originData">
+        <div class="content-metadeta__text fnormal sb-color-primary-400" *ngIf="contentData">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}</div>
         <div class="py-8">
           <div class="content-metadeta__title  fxsmall mb-4" *ngIf="contentData?.originData?.name">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</div>
           <div class="content-metadeta__text  fnormal">{{contentData?.originData?.name}}</div>
