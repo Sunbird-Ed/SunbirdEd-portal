@@ -49,7 +49,6 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
 
   public icon: string;
   public courseList: Array<{}> = [];
-  public cardData: Array<{}> = [];
   public title: string;
 
   constructor(private searchService: SearchService, private toasterService: ToasterService, private userService: UserService,
@@ -74,8 +73,8 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
           this.fetchCourses();
         }, (error) => {
           this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-          setTimeout(() => this.router.navigate(['']), 5000);
           console.error('init search filter failed', error);
+          this.router.navigate(['']);
       });
     }
 
@@ -118,7 +117,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
               return content;
             }
           });
-          this.icon = _.get(this.subjectThemeAndIconsMap, this.title).icon;
+          this.icon = _.get(_.get(this.subjectThemeAndIconsMap, this.title), 'icon');
           this.courseList = _.compact(this.courseList);
         }
         }, err => {

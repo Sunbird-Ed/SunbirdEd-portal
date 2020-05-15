@@ -60,24 +60,33 @@ describe('CurriculumCoursesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should return empty from search', () => {
+  it('should return empty data from search', () => {
     spyOn(component['searchService'], 'contentSearch').and.returnValue(of ([]));
     component['fetchCourses']();
     expect(component.courseList.length).toEqual(0);
   });
 
-  it('should return empty from search', () => {
+  it ('should return data', () => {
+    component.title = 'English';
+    const option = {filters: { board: ['test'], medium: ['English'], gradeLevel: ['Class 4'], channel: '123'}, limit: 100};
+    spyOn<any>(component, 'getSearchRequest').and.returnValue(option);
+    spyOn(component['searchService'], 'contentSearch').and.returnValue(of ({result:
+      {content: [{subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]}}));
+    component['fetchCourses']();
+    expect(component.courseList.length).toEqual(2);
+  });
+
+  it('should return channelId', () => {
     component['userService']['_hashTagId'] = '123';
-    spyOn(component['orgDetailsService'], 'getCustodianOrgDetails').and.returnValue(of (
-      {result: {response: {value: {channelId: '123'}}}}
-    ));
+    spyOn(component['orgDetailsService'], 'getCustodianOrgDetails').and.returnValue(of ({}));
     component['getChannelId']();
+    expect(component.isCustodianOrg).toBeTruthy();
   });
 
   it ('should return the searchfilter', () => {
-    component.channelId  = '123';
-    component.custodianOrg  = false;
     component.defaultFilters = {board : ['test'], medium: ['English'], gradeLevel : ['Class 4']};
+    component.channelId  = '123';
+    component.isCustodianOrg  = true;
     component['contentSearchService']._frameworkId = 'test';
     const data = component['getSearchRequest']();
     expect(data.filters.board).toEqual(['test']);

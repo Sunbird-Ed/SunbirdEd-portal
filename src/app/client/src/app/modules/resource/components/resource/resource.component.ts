@@ -65,7 +65,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     public telemetryService: TelemetryService, private utilService: UtilService) {
   }
   ngOnInit() {
-    if (this.userService.userProfile.framework) {
+    if (_.get(this.userService, 'userProfile.framework')) {
       const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
       this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
     }
@@ -81,7 +81,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.initFilter = true;
       }, (error) => {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-        setTimeout(() => this.router.navigate(['']), 5000);
+        this.router.navigate(['']);
         console.error('init search filter failed', error);
     });
   }
