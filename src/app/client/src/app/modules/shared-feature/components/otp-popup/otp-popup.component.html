@@ -25,7 +25,7 @@
           </div>
         </form>
         <div  appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
-        [telemetryInteractEdata]="resendOtpInteractEdata" [ngClass]="{'sb-btn-disabled': !disableResendButton}" (click)="resendOTP();" class="fs-1 text-center blue text mb-30 cursor-pointer"
+        [telemetryInteractEdata]="resendOtpInteractEdata" [ngClass]="{'grey cursor-pointerText': !disableResendButton}" (click)="resendOTP();" class="fs-1 text-center blue text mb-30 cursor-pointer"
           role="button" tabindex="0">{{resourceService?.frmelmnts?.lbl?.resendOTP}}</div>
       </div>
     </div>
