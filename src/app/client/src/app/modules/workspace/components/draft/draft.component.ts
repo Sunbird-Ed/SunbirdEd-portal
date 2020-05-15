@@ -216,6 +216,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 status: ['Draft', 'FlagDraft'],
                 createdBy: this.userService.userid,
                 contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
+                courseType: _.get(bothParams, 'queryParams.courseType'),
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
                 board: bothParams['queryParams'].board,
                 subject: bothParams['queryParams'].subject,
