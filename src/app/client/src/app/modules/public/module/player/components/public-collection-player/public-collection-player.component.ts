@@ -228,7 +228,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       };
     });
     if (!this.contentType) {
-      this.sendErrorTelemetry(404, 'contentType field unavailable');
+      this.triggerTelemetryErrorEvent(404, 'contentType field unavailable');
     }
   }
 
@@ -279,7 +279,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         }
       };
     } else {
-      this.sendErrorTelemetry(404, 'contentType field unavailable');
+      this.triggerTelemetryErrorEvent(404, 'contentType field unavailable');
     }
   }
 
@@ -490,7 +490,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }
     };
     if (!this.contentType) {
-      this.sendErrorTelemetry(404, 'contentType field unavailable');
+      this.triggerTelemetryErrorEvent(404, 'contentType field unavailable');
     }
   }
   callinitPlayer (event) {
@@ -515,14 +515,14 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   }
 
   /**
-   * @description - Function to trigger telemetry error event
-   * 1. In case `contentType` is unavailable on `start` / `end` event;
-   *    this function is to be called to send error event
    * @since - release-2.10.0
    * @param  {Number} status  - Error status code
    * @param  {String} message - Error message
+   * @description - Function to trigger telemetry error event
+   * 1. In case `contentType` is unavailable on `start` / `end` event;
+   *    this function is to be called to send error event
    */
-  sendErrorTelemetry (status, message) {
+  triggerTelemetryErrorEvent (status, message) {
     const stacktrace = {
       message: message,
       type: this.route.snapshot.data.telemetry.type,
@@ -536,8 +536,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
   }
 
   /**
-   * @description - Generate stacktrace object for `sendErrorTelemetry` function
    * @param  {Object} stacktrace - Error stacktrace object
+   * @description - Generate stacktrace object for `triggerTelemetryErrorEvent` function
    */
   getTelemetryErrorData(stacktrace) {
     return {
