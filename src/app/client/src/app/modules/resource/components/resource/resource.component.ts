@@ -190,8 +190,11 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
             card.theme = theme.background;
             card.cardImg = theme.icon;
           });
-      }
+        } else {
+          this.cardData = [];
+        }
       }, err => {
+        this.cardData = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }

@@ -4,8 +4,8 @@
   <div class="ui container mt-24 sb-library-cards">
     <div class="ui grid">
 
-      <div class="twelve wide column">
-        <sb-course-cards-hlist [multiRow]="cardData.length > 4" [contentList]="cardData" [type]="'curiculum_course_card_grid'" [title]="'Courses'" [isLoading]="isLoading" (cardClick)="showCourses($event)"></sb-course-cards-hlist>
+      <div class="twelve wide column" *ngIf="cardData.length > 0">
+        <sb-course-cards-hlist [multiRow]="cardData.length > 4" [contentList]="cardData" [type]="'curiculum_course_card_grid'" [title]="'Courses'"  (cardClick)="showCourses($event)"></sb-course-cards-hlist>
       </div>
 
       <div class="twelve wide column pb-0 pt-0" *ngFor="let section of pageSections | sortBy:'name':'asc';let last = last"
