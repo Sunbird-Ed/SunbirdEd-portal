@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./explore-group.component.scss']
 })
 export class ExploreGroupComponent implements OnInit {
-
+  hideLoginContainer;
   constructor() { }
 
   ngOnInit() {
