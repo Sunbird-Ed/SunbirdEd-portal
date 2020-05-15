@@ -554,7 +554,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         errtype: 'SYSTEM',
         stacktrace: JSON.stringify(stacktrace)
       }
-    }
+    };
   }
 
   getContentRollUp(rollup: string[]) {
