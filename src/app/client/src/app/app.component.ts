@@ -120,35 +120,38 @@ export class AppComponent implements OnInit, OnDestroy {
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
       });
   }
+  public makeUTMSession(params) {
+    const resultJson = [];
+    for (const item in params) {
+      if (params.hasOwnProperty(item)) {
+        switch (item) {
+          case 'utm_campaign':
+            resultJson.push({ 'id': params[item], 'type': 'UtmCampaign' });
+            break;
+          case 'utm_medium':
+            resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
+            break;
+          case 'utm_source':
+            resultJson.push({ 'id': params[item], 'type': 'UtmSource' });
+            break;
+          case 'utm_term':
+            resultJson.push({ 'id': params[item], 'type': 'UtmTerm' });
+            break;
+          case 'utm_content':
+            resultJson.push({ 'id': params[item], 'type': 'UtmContent' });
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    sessionStorage.setItem('UTM', JSON.stringify(resultJson));
+  }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
-      if (params && (params['utm_campaign'] || params['utm_medium'] || params['utm_source']
-      || params['utm_term'] || params['utm_content'])) {
-        const resultJson = [];
-        for (const item in params) {
-          if (params.hasOwnProperty(item)) {
-            switch (item) {
-              case 'utm_campaign':
-                resultJson.push({ 'id': params[item], 'type': 'UtmCampaign' });
-                break;
-              case 'utm_medium':
-                resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
-                break;
-              case 'utm_source':
-                resultJson.push({ 'id': params[item], 'type': 'UtmSource' });
-                break;
-              case 'utm_term':
-                resultJson.push({ 'id': params[item], 'type': 'UtmTerm' });
-                break;
-              case 'utm_content':
-                resultJson.push({ 'id': params[item], 'type': 'UtmContent' });
-                break;
-              default:
-                break;
-            }
-          }
-        }
-        sessionStorage.setItem('UTM', JSON.stringify(resultJson));
+      const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content'];
+      if (_.some(_.intersection(utmParams, _.keys(params)))) {
+        this.makeUTMSession(params);
       }
     });
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
