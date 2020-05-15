@@ -524,7 +524,11 @@ export class AppComponent implements OnInit, OnDestroy {
                   formAction: 'onboarding',
                   contentType: 'externalIdVerification'
                 };
-                this.formService.getFormConfig(formReadInputParams).subscribe(
+                let orgId = undefined;
+                if (_.get(this.userFeed, 'data.prospectChannelsIds').length === 1) {
+                  orgId = _.get(this.userFeed, 'data.prospectChannelsIds[0].id');
+                }
+                this.formService.getFormConfig(formReadInputParams, orgId).subscribe(
                   (formResponsedata) => {
                     this.labels = _.get(formResponsedata[0], ('range[0]'));
                   }
