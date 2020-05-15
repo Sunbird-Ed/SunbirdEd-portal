@@ -51,6 +51,9 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     this.otpForm = new FormGroup({
       otp: new FormControl('', [Validators.required])
     });
+    setTimeout(() => {
+      this.disableResendButton = true;
+    }, 10000);
     this.enableSubmitButton();
     this.setInteractEventData();
   }
