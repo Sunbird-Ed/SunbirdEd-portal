@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./group-header.component.scss']
 })
 export class GroupHeaderComponent implements OnInit {
-
+  showDeleteModal;
+  showPastMemberModal;
   constructor() { }
 
   ngOnInit() {
