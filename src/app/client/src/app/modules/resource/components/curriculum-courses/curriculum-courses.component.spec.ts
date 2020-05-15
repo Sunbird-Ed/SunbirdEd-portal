@@ -1,14 +1,41 @@
+import { throwError, of } from 'rxjs';
+import { ToasterService } from '@sunbird/shared';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { CoreModule, UserService, SearchService, OrgDetailsService } from '@sunbird/core';
+import { SharedModule } from './../../../shared/shared.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CurriculumCoursesComponent } from './curriculum-courses.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('CurriculumCoursesComponent', () => {
   let component: CurriculumCoursesComponent;
   let fixture: ComponentFixture<CurriculumCoursesComponent>;
+  let toasterService, userService, pageApiService, orgDetailsService;
+  const mockPageSection: any = {};
+  let sendOrgDetails = true;
+  let sendPageApi = true;
+
+  class FakeActivatedRoute {
+    snapshot = {
+      queryParams: {
+        title: 'English',
+      }
+    };
+  }
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url = jasmine.createSpy('url');
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CurriculumCoursesComponent ]
+      declarations: [ CurriculumCoursesComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
+      providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
+        { provide: Router, useClass: RouterStub }]
     })
     .compileComponents();
   }));
@@ -16,10 +43,28 @@ describe('CurriculumCoursesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CurriculumCoursesComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    toasterService = TestBed.get(ToasterService);
+    userService = TestBed.get(UserService);
+    pageApiService = TestBed.get(SearchService);
+    orgDetailsService = TestBed.get(OrgDetailsService);
+    sendOrgDetails = true;
+    sendPageApi = true;
+    spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
+      if (sendOrgDetails) {
+        return of({hashTagId: '123'});
+      }
+      return throwError({});
+    });
+    spyOn(pageApiService, 'contentSearch').and.callFake((options) => {
+      if (sendPageApi) {
+        return of(mockPageSection);
+      }
+      return throwError({});
+    });
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

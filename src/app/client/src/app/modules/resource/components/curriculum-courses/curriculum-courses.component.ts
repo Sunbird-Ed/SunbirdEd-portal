@@ -1,14 +1,12 @@
 import { Subject } from 'rxjs';
-import { OrgDetailsService, UserService, SearchService, PlayerService } from '@sunbird/core';
+import { OrgDetailsService, UserService, SearchService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
-import { UtilService } from './../../../shared/services/util/util.service';
 const DEFAULT_FRAMEWORK = 'CBSE';
 
 @Component({
@@ -58,7 +56,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   constructor(private searchService: SearchService, private toasterService: ToasterService, private userService: UserService,
     public resourceService: ResourceService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     private router: Router, private orgDetailsService: OrgDetailsService, private navigationhelperService: NavigationHelperService,
-    private contentSearchService: ContentSearchService, public telemetryService: TelemetryService) { }
+    private contentSearchService: ContentSearchService) { }
 
     ngOnInit() {
       this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
