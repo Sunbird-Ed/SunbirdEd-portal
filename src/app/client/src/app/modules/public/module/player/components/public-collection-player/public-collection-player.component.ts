@@ -523,21 +523,37 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
    * @param  {String} message - Error message
    */
   sendErrorTelemetry (status, message) {
-    const stacktrace = { message: message, type: this.route.snapshot.data.telemetry.type,
-      pageid: this.route.snapshot.data.telemetry.pageid, collectionId: this.collectionId,
+    const stacktrace = {
+      message: message,
+      type: this.route.snapshot.data.telemetry.type,
+      pageid: this.route.snapshot.data.telemetry.pageid,
+      collectionId: this.collectionId,
       subtype: this.route.snapshot.data.telemetry.subtype,
       url: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url
     };
-    const telemetryErrorData = {
-      context: { env: this.route.snapshot.data.telemetry.env },
-      object: { id: this.collectionId, type: this.contentType || '', ver: '1.0' },
+    const telemetryErrorData = this.getTelemetryErrorData(stacktrace);
+    this.telemetryService.error(telemetryErrorData);
+  }
+  /**
+   * @description - Generate stacktrace object for `sendErrorTelemetry` function
+   * @param  {Object} stacktrace - Error stacktrace object
+   */
+  getTelemetryErrorData(stacktrace) {
+    return {
+      context: {
+        env: this.route.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.collectionId,
+        type: this.contentType || '',
+        ver: '1.0',
+      },
       edata: {
         err: status.toString(),
         errtype: 'SYSTEM',
         stacktrace: JSON.stringify(stacktrace)
       }
-    };
-    this.telemetryService.error(telemetryErrorData);
+    }
   }
 
   getContentRollUp(rollup: string[]) {

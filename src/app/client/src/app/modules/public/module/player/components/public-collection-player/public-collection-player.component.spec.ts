@@ -194,4 +194,12 @@ describe('PublicCollectionPlayerComponent', () => {
     component.sendErrorTelemetry(404, 'contentType field not available');
     expect(component.sendErrorTelemetry).toHaveBeenCalledWith(404, 'contentType field not available');
   });
+  it('should call getTelemetryErrorData', () => {
+    const stacktrace = {
+      message: 'contentType field not available',
+      type: 'view'
+    };
+    const result = component.getTelemetryErrorData(stacktrace);
+    expect(result).toBeTruthy();
+  });
 });
