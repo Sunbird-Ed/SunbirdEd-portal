@@ -541,9 +541,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
    */
   getTelemetryErrorData(stacktrace) {
     return {
-      context: {
-        env: this.route.snapshot.data.telemetry.env
-      },
+      context: { env: this.route.snapshot.data.telemetry.env },
       object: {
         id: this.collectionId,
         type: this.contentType || '',
