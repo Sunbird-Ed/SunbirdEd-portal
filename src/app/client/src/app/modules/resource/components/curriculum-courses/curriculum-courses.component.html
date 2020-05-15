@@ -1,0 +1,38 @@
+
+<div class="sb-bg-color-white">
+  <div class="ui container py-8">
+    <button type="button" class="sb-btn sb-btn-normal sb-btn-link
+      sb-btn-link-primary sb-left-icon-btn px-0" (click)="goBack()">
+      <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon
+          icon-svg--primary">
+          <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
+        </svg></i> Back</button>
+  </div>
+</div>
+
+<div class="content-header">
+  <div class="ui container py-16">
+    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+      <div class="content-header__img mr-8">
+        <img [src]="icon" style="width: 48px;">
+      </div>
+      <div class="flex-basis-1 mr-32">
+        <div class="content-header__title font-weight-bold sb__ellipsis
+          sb__ellipsis--one">
+          <div>{{title}}</div>
+        </div>
+        <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} COURSES</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui container mt-24 sb-library-cards">
+    <div class="sbgrid">
+      <div *ngFor="let course of courseList">
+        <sb-course-card [course]="course" (cardClick)="playCourse($event)"></sb-course-card>
+      </div>
+      
+    </div>
+
+</div>

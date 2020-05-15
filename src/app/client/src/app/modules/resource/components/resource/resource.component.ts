@@ -32,7 +32,29 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedFilters = {};
   exploreMoreButtonEdata: IInteractEventEdata;
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
-
+  public cardData: Array<{}> = [];
+  subjectThemeAndIconsMap = {
+    Science: {
+      background: '#FFD6EB',
+      fontColor: '#CBA3F7',
+      icon: './../../../../../assets/images/science.svg'
+    },
+    Mathematics: {
+      background: '#FFDFD9',
+      fontColor: '#CBA3F7',
+      icon: './../../../../../assets/images/mathematics.svg'
+    },
+    English: {
+      background: '#DAFFD8',
+      fontColor: '#CBA3F7',
+      icon: 'https://www.valimenta.com/wp-content/uploads/icon-microscope.png'
+    },
+    Social: {
+      background: '#DAD4FF',
+      fontColor: '#CBA3F7',
+      icon: './../../../../../assets/images/social.svg'
+    }
+  };
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -86,6 +108,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();
+    this.fetchCourses();
   }
   private getSearchRequest() {
     let filters = this.selectedFilters;
@@ -155,6 +178,44 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
+
+  private fetchCourses() {
+    const option = this.getSearchRequest();
+    this.searchService.contentSearch(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      const contents = _.get(data, 'result.content');
+      if (!_.isEmpty(contents)) {
+        this.cardData = this.getFilterValues(contents);
+          _.forEach(this.cardData, card => {
+            const theme = _.get(this.subjectThemeAndIconsMap, card.title);
+            card.theme = theme.background;
+            card.cardImg = theme.icon;
+          });
+      }
+      }, err => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      });
+  }
+
+  showCourses(event) {
+    this.router.navigate(['resources/curriculum-course'], {
+      queryParams: {
+        title: _.get(event, 'data.title')
+      },
+    });
+  }
+
+  getFilterValues(contents): Array<{title: string, count: number }> {
+
+    let subjects = _.map(contents, content => {
+      return (_.get(content, 'subject'));
+    });
+    subjects = _.values(_.groupBy(subjects)).map((subject) => {
+      return ({ title: subject[0], count: subject.length });
+    });
+    return subjects;
+
+  }
+
   private prepareVisits(event) {
     _.forEach(event, (inView, index) => {
       if (inView.metaData.identifier) {
