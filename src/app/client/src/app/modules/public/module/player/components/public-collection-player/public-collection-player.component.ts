@@ -514,20 +514,6 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     this.callinitPlayer(event);
   }
 
-  getContentRollUp(rollup: string[]) {
-    const objectRollUp = {};
-    if (rollup) {
-      for (let i = 0; i < rollup.length; i++ ) {
-        objectRollUp[`l${i + 1}`] = rollup[i];
-    }
-    }
-    return objectRollUp;
-  }
-
-  showChapter() {
-    this.isSelectChapter = this.isSelectChapter ? false : true;
-  }
-
   /**
    * @description - Function to trigger telemetry error event
    * 1. In case `contentType` is unavailable on `start` / `end` event;
@@ -561,5 +547,19 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }
     };
     this.telemetryService.error(telemetryErrorData);
+  }
+
+  getContentRollUp(rollup: string[]) {
+    const objectRollUp = {};
+    if (rollup) {
+      for (let i = 0; i < rollup.length; i++ ) {
+        objectRollUp[`l${i + 1}`] = rollup[i];
+    }
+    }
+    return objectRollUp;
+  }
+
+  showChapter() {
+    this.isSelectChapter = this.isSelectChapter ? false : true;
   }
 }
