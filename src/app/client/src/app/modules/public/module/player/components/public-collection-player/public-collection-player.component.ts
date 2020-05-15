@@ -12,7 +12,8 @@ import {
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput,
+  TelemetryService } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
 @Component({
@@ -122,7 +123,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     public externalUrlPreviewService: ExternalUrlPreviewService, private configService: ConfigService,
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
     public popupControlService: PopupControlService,
-    public utilService: UtilService, public userService: UserService) {
+    public utilService: UtilService, public userService: UserService,
+    public telemetryService: TelemetryService) {
     this.contentService = contentService;
     this.playerService = playerService;
     this.windowScrollService = windowScrollService;
@@ -201,11 +203,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   ngAfterViewInit () {
     this.pageLoadDuration = this.navigationHelperService.getPageLoadTime();
+    let cData = [];
+    if (this.contentType) {
+      cData = [{id: this.activatedRoute.snapshot.params.collectionId, type: this.contentType}];
+    }
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env,
-          cdata: [{id: this.activatedRoute.snapshot.params.collectionId, type: this.contentType}]
+          cdata: cData
         },
         object: {
           id: this.activatedRoute.snapshot.params.collectionId,
@@ -221,6 +227,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         }
       };
     });
+    if (!this.contentType) {
+      this.sendErrorTelemetry(404, 'contentType field unavailable');
+    }
   }
 
   ngOnDestroy() {
@@ -252,22 +261,26 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
   setTelemetryContentImpression (data) {
-    this.telemetryContentImpression = {
-      context: {
-        env: this.route.snapshot.data.telemetry.env
-      },
-      edata: {
-        type: this.route.snapshot.data.telemetry.env,
-        pageid: this.route.snapshot.data.telemetry.env,
-        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
-      },
-      object: {
-        id: data.metadata.identifier,
-        type: this.contentType || data.metadata.dataType || data.metadata.resourceType,
-        ver: data.metadata.pkgVersion ? data.metadata.pkgVersion.toString() : '1.0',
-        rollup: this.objectRollUp
-      }
-    };
+    if (this.contentType || data.metadata.dataType || data.metadata.resourceType) {
+      this.telemetryContentImpression = {
+        context: {
+          env: this.route.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.route.snapshot.data.telemetry.env,
+          pageid: this.route.snapshot.data.telemetry.env,
+          uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
+        },
+        object: {
+          id: data.metadata.identifier,
+          type: this.contentType || data.metadata.dataType || data.metadata.resourceType,
+          ver: data.metadata.pkgVersion ? data.metadata.pkgVersion.toString() : '1.0',
+          rollup: this.objectRollUp
+        }
+      };
+    } else {
+      this.sendErrorTelemetry(404, 'contentType field unavailable');
+    }
   }
 
   public playContent(data: any): void {
@@ -431,11 +444,15 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   private setTelemetryStartEndData() {
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
+    let cData = [];
+    if (this.contentType) {
+      cData = this.telemetryCdata;
+    }
     setTimeout(() => {
       this.telemetryCourseStart = {
         context: {
           env: this.route.snapshot.data.telemetry.env,
-          cdata: this.telemetryCdata
+          cdata: cData
         },
         object: {
           id: this.collectionId,
@@ -464,7 +481,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       },
       context: {
         env: this.route.snapshot.data.telemetry.env,
-        cdata: this.telemetryCdata
+        cdata: cData
       },
       edata: {
         type: this.route.snapshot.data.telemetry.type,
@@ -472,6 +489,9 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
         mode: 'play'
       }
     };
+    if (!this.contentType) {
+      this.sendErrorTelemetry(404, 'contentType field unavailable');
+    }
   }
   callinitPlayer (event) {
     if ((event.data.identifier !== _.get(this.activeContent, 'identifier')) || this.isMobile ) {
@@ -506,5 +526,40 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
 
   showChapter() {
     this.isSelectChapter = this.isSelectChapter ? false : true;
+  }
+
+  /**
+   * @description - Function to trigger telemetry error event
+   * 1. In case `contentType` is unavailable on `start` / `end` event;
+   *    this function is to be called to send error event
+   * @since - release-2.10.0
+   * @param  {Number} status  - Error status code
+   * @param  {String} message - Error message
+   */
+  sendErrorTelemetry (status, message) {
+    const stacktrace = {
+      message: message,
+      type: this.route.snapshot.data.telemetry.type,
+      pageid: this.route.snapshot.data.telemetry.pageid,
+      collectionId: this.collectionId,
+      subtype: this.route.snapshot.data.telemetry.subtype,
+      url: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url
+    };
+    const telemetryErrorData = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env
+      },
+      object: {
+        id: this.collectionId,
+        type: this.contentType || '',
+        ver: '1.0',
+      },
+      edata: {
+        err: status.toString(),
+        errtype: 'SYSTEM',
+        stacktrace: JSON.stringify(stacktrace)
+      }
+    };
+    this.telemetryService.error(telemetryErrorData);
   }
 }
