@@ -69,8 +69,9 @@ export const mockRes = {
         'enrollmentEndDate': '2020-05-15',
         'startDate': '2020-05-14',
         'status': 1,
-        'courseAdditionalInfo': {
-            'courseName': '14th may live curriculaum'
+        'courseDetails': {
+            'identifier': 'do_1130206856421867521137',
+            'name': '14th may live curriculaum'
         }
     }],
     successData: {
