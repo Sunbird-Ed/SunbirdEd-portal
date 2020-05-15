@@ -534,6 +534,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     const telemetryErrorData = this.getTelemetryErrorData(stacktrace);
     this.telemetryService.error(telemetryErrorData);
   }
+
   /**
    * @description - Generate stacktrace object for `sendErrorTelemetry` function
    * @param  {Object} stacktrace - Error stacktrace object
