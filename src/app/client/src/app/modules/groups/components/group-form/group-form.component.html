@@ -5,44 +5,50 @@
   <div class="sb-modal-content o-y-visible">
     <div class="create-group-title pb-16">Enter the following information</div>
     <form class="sb-form">
-      <label>Group Name</label>
-      <div class="sb-field">
-        <input class="sb-form-control" type="text" placeholder="Enter Group Name">
+     
+      <div class="sb-field mb-16">
+        <label>Group Name</label>
+        <input class="sb-form-control is-invalid" type="text" placeholder="Enter Group Name">
+        <small class="message sb-color-error font-weight-bold">Group Name is required.</small>
       </div>
-      <div class="sb-field">
+      <div class="sb-field mb-16">
         <label>Board:</label>
-        <sui-select class="selection" name="state" labelField="name" placeholder="Select State">
+        <sui-select class="selection sb-form-control is-invalid" name="state" labelField="name" placeholder="Select State">
           <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
         </sui-select>
+        <small class="message sb-color-error font-weight-bold">Board is required.</small>
       </div>
-      <div class="sb-fielgroup">
+      <div class="sb-field mb-16">
         <label>Medium:</label>
         <div class="sb-field">
-          <sui-select class="selection" name="medium" labelField="name" placeholder="Select Medium">
+          <sui-select class="selection sb-form-control is-invalid" name="medium" labelField="name" placeholder="Select Medium">
             <sui-select-option *ngFor="let language of medium" [value]="language"></sui-select-option>
           </sui-select>
+          <small class="message sb-color-error font-weight-bold">At least one medium is required.</small>
         </div>
       </div>
-      <div class="sb-fielgroup">
+      <div class="sb-field mb-16">
         <label>Class:</label>
         <div class="sb-field">
-          <sui-multi-select class="selection" name="class" labelField="name" placeholder="Select Class">
+          <sui-multi-select class="selection sb-form-control is-invalid" name="class" labelField="name" placeholder="Select Class">
             <sui-select-option *ngFor="let class of classes" [value]="class"></sui-select-option>
           </sui-multi-select>
+          <small class="message sb-color-error font-weight-bold">At least one class is required.</small>
         </div>
       </div>
-      <div class="sb-fielgroup">
+      <div class="sb-field">
         <label>Subject:</label>
         <div class="sb-field">
-          <sui-select class="selection" name="subject" labelField="name" placeholder="Select Subject">
+          <sui-select class="selection sb-form-control is-invalid" name="subject" labelField="name" placeholder="Select Subject">
             <sui-select-option *ngFor="let subject of subjects" [value]="subject"></sui-select-option>
           </sui-select>
+          <small class="message sb-color-error font-weight-bold">At least one subject is required.</small>
         </div>
       </div>
     </form>
   </div>
   <div class="sb-modal-actions">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="showBoardSelectnModal = !showBoardSelectnModal">
       Submit
     </button>
   </div>
