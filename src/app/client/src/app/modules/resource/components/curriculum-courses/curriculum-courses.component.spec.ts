@@ -13,7 +13,6 @@ describe('CurriculumCoursesComponent', () => {
   let component: CurriculumCoursesComponent;
   let fixture: ComponentFixture<CurriculumCoursesComponent>;
   let toasterService, userService, pageApiService, orgDetailsService;
-  const mockPageSection: any = {};
   let sendOrgDetails = true;
   let sendPageApi = true;
 
@@ -55,16 +54,33 @@ describe('CurriculumCoursesComponent', () => {
       }
       return throwError({});
     });
-    spyOn(pageApiService, 'contentSearch').and.callFake((options) => {
-      if (sendPageApi) {
-        return of(mockPageSection);
-      }
-      return throwError({});
-    });
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should return empty from search', () => {
+    spyOn(component['searchService'], 'contentSearch').and.returnValue(of ([]));
+    component['fetchCourses']();
+    expect(component.courseList.length).toEqual(0);
+  });
+
+  it('should return empty from search', () => {
+    component['userService']['_hashTagId'] = '123';
+    spyOn(component['orgDetailsService'], 'getCustodianOrgDetails').and.returnValue(of (
+      {result: {response: {value: {channelId: '123'}}}}
+    ));
+    component['getChannelId']();
+  });
+
+  it ('should return the searchfilter', () => {
+    component.channelId  = '123';
+    component.custodianOrg  = false;
+    component.defaultFilters = {board : ['test'], medium: ['English'], gradeLevel : ['Class 4']};
+    component['contentSearchService']._frameworkId = 'test';
+    const data = component['getSearchRequest']();
+    expect(data.filters.board).toEqual(['test']);
+    expect(data.limit).toEqual(100);
+  });
 });

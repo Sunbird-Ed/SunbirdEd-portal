@@ -1,3 +1,4 @@
+<div *ngIf="courseList.length > 0">
 
 <div class="sb-bg-color-white">
   <div class="ui container py-8">
@@ -6,7 +7,7 @@
       <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon
           icon-svg--primary">
           <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
-        </svg></i> Back</button>
+        </svg></i> {{resourceService?.frmelmnts?.btn?.back}}</button>
   </div>
 </div>
 
@@ -21,7 +22,7 @@
           sb__ellipsis--one">
           <div>{{title}}</div>
         </div>
-        <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} COURSES</div>
+        <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.sectionTitle).toUpperCase()}}</div>
       </div>
     </div>
   </div>
@@ -30,9 +31,10 @@
 <div class="ui container mt-24 sb-library-cards">
     <div class="sbgrid">
       <div *ngFor="let course of courseList">
-        <sb-course-card [course]="course" (cardClick)="playCourse($event)"></sb-course-card>
+        <sb-course-card [course]="course"></sb-course-card>
       </div>
       
     </div>
 
+</div>
 </div>

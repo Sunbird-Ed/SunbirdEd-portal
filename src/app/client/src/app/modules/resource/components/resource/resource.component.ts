@@ -33,25 +33,25 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   exploreMoreButtonEdata: IInteractEventEdata;
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
   public cardData: Array<{}> = [];
+  public isLoading = true;
   subjectThemeAndIconsMap = {
     Science: {
       background: '#FFD6EB',
-      fontColor: '#CBA3F7',
+      titleColor: '#FD59B3',
       icon: './../../../../../assets/images/science.svg'
     },
     Mathematics: {
       background: '#FFDFD9',
-      fontColor: '#CBA3F7',
+      titleColor: '#EA2E52',
       icon: './../../../../../assets/images/mathematics.svg'
     },
     English: {
       background: '#DAFFD8',
-      fontColor: '#CBA3F7',
-      icon: 'https://www.valimenta.com/wp-content/uploads/icon-microscope.png'
+      titleColor: '#218432'
     },
     Social: {
       background: '#DAD4FF',
-      fontColor: '#CBA3F7',
+      titleColor: '#635CDC',
       icon: './../../../../../assets/images/social.svg'
     }
   };
@@ -180,8 +180,10 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private fetchCourses() {
+    this.isLoading = true;
     const option = this.getSearchRequest();
     this.searchService.contentSearch(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.isLoading = false;
       const contents = _.get(data, 'result.content');
       if (!_.isEmpty(contents)) {
         this.cardData = this.getFilterValues(contents);
@@ -194,12 +196,13 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
           this.cardData = [];
         }
       }, err => {
+        this.isLoading = false;
         this.cardData = [];
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
 
-  showCourses(event) {
+  navigateToCourses(event) {
     this.router.navigate(['resources/curriculum-course'], {
       queryParams: {
         title: _.get(event, 'data.title')

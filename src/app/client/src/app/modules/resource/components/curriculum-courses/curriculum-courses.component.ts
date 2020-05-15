@@ -17,7 +17,7 @@ const DEFAULT_FRAMEWORK = 'CBSE';
 export class CurriculumCoursesComponent implements OnInit, OnDestroy {
 
   public channelId: string;
-  public custodianOrg = true;
+  public isCustodianOrg = true;
   private unsubscribe$ = new Subject<void>();
   public defaultFilters = {
     board: [DEFAULT_FRAMEWORK],
@@ -28,22 +28,21 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   private subjectThemeAndIconsMap = {
     Science: {
       background: '#FFD6EB',
-      fontColor: '#CBA3F7',
+      titleColor: '#FD59B3',
       icon: './../../../../../assets/images/science.svg'
     },
     Mathematics: {
       background: '#FFDFD9',
-      fontColor: '#CBA3F7',
+      titleColor: '#EA2E52',
       icon: './../../../../../assets/images/mathematics.svg'
     },
     English: {
       background: '#DAFFD8',
-      fontColor: '#CBA3F7',
-      icon: 'https://www.valimenta.com/wp-content/uploads/icon-microscope.png'
+      titleColor: '#218432'
     },
     Social: {
       background: '#DAD4FF',
-      fontColor: '#CBA3F7',
+      titleColor: '#635CDC',
       icon: './../../../../../assets/images/social.svg'
     }
   };
@@ -65,10 +64,10 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
         this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
       }
       this.getChannelId().pipe(
-        mergeMap(({ channelId, custodianOrg }) => {
+        mergeMap(({ channelId, isCustodianOrg }) => {
           this.channelId = channelId;
-          this.custodianOrg = custodianOrg;
-          return  this.contentSearchService.initialize(channelId, custodianOrg, this.defaultFilters.board[0]);
+          this.isCustodianOrg = isCustodianOrg;
+          return  this.contentSearchService.initialize(channelId, isCustodianOrg, this.defaultFilters.board[0]);
         }),
         takeUntil(this.unsubscribe$))
         .subscribe(() => {
@@ -81,11 +80,11 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
     }
 
     private getChannelId() {
-      return this.orgDetailsService.getCustodianOrgDetails().pipe(map(custodianOrg => {
-        if (this.userService.hashTagId === _.get(custodianOrg, 'result.response.value')) {
-          return { channelId: this.userService.hashTagId, custodianOrg: true};
+      return this.orgDetailsService.getCustodianOrgDetails().pipe(map(isCustodianOrg => {
+        if (this.userService.hashTagId === _.get(isCustodianOrg, 'result.response.value')) {
+          return { channelId: this.userService.hashTagId, isCustodianOrg: true};
         } else {
-          return { channelId: this.userService.hashTagId, custodianOrg: false };
+          return { channelId: this.userService.hashTagId, isCustodianOrg: false };
         }
       }));
     }
@@ -94,7 +93,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
       let filters = this.defaultFilters;
       filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
       filters['contentType'] = ['TextBook'];
-      if (!this.custodianOrg) {
+      if (!this.isCustodianOrg) {
         filters['channel'] = this.channelId;
       }
       const option = {
@@ -126,11 +125,6 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
           this.courseList = [];
           this.toasterService.error(this.resourceService.messages.fmsg.m0004);
         });
-    }
-
-    public playCourse(event) {
-      console.log('event', event.data);
-      // this.playerService.playCourses(event.data);
     }
 
     ngOnDestroy() {
