@@ -25,6 +25,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
   errorMessage: string;
   infoMessage: string;
   disableResendButton = false;
+  enableResendButton = false;
   tenantDataSubscription: Subscription;
   logo: string;
   tenantName: string;
@@ -52,7 +53,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
       otp: new FormControl('', [Validators.required])
     });
     setTimeout(() => {
-      this.disableResendButton = true;
+      this.enableResendButton = true;
     }, 10000);
     this.enableSubmitButton();
     this.setInteractEventData();
