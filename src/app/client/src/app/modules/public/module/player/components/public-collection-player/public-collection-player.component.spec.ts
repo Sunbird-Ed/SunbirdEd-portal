@@ -189,4 +189,20 @@ describe('PublicCollectionPlayerComponent', () => {
     component.printPdf('www.samplepdf.com');
     expect(window.open).toHaveBeenCalledWith('www.samplepdf.com', '_blank');
   });
+  it('should call triggerTelemetryErrorEvent', () => {
+    spyOn(component, 'triggerTelemetryErrorEvent').and.callThrough();
+    component.triggerTelemetryErrorEvent(404, 'contentType field not available');
+    expect(component.triggerTelemetryErrorEvent).toHaveBeenCalledWith(404, 'contentType field not available');
+  });
+  it('should call getTelemetryErrorData', () => {
+    const stacktrace = {
+      message: 'contentType field not available',
+      type: 'view'
+    };
+    const result = component.getTelemetryErrorData(stacktrace);
+    expect(result.context.env).toEqual('get');
+    expect(result.object.ver).toEqual('1.0');
+    expect(result.edata.errtype).toEqual('SYSTEM');
+    expect(result).toBeTruthy();
+  });
 });
