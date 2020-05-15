@@ -200,6 +200,9 @@ describe('PublicCollectionPlayerComponent', () => {
       type: 'view'
     };
     const result = component.getTelemetryErrorData(stacktrace);
+    expect(result.context.env).toEqual('get');
+    expect(result.object.ver).toEqual('1.0');
+    expect(result.edata.errtype).toEqual('SYSTEM');
     expect(result).toBeTruthy();
   });
 });

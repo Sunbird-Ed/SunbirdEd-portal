@@ -260,27 +260,23 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       this.isContentPresent = false;
     }
   }
-  setTelemetryContentImpression (data) {
-    if (this.contentType || data.metadata.dataType || data.metadata.resourceType) {
-      this.telemetryContentImpression = {
-        context: {
-          env: this.route.snapshot.data.telemetry.env
-        },
-        edata: {
-          type: this.route.snapshot.data.telemetry.env,
-          pageid: this.route.snapshot.data.telemetry.env,
-          uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
-        },
-        object: {
-          id: data.metadata.identifier,
-          type: this.contentType || data.metadata.dataType || data.metadata.resourceType,
-          ver: data.metadata.pkgVersion ? data.metadata.pkgVersion.toString() : '1.0',
-          rollup: this.objectRollUp
-        }
-      };
-    } else {
-      this.triggerTelemetryErrorEvent(404, 'contentType field unavailable');
-    }
+  setTelemetryContentImpression(data) {
+    this.telemetryContentImpression = {
+      context: {
+        env: this.route.snapshot.data.telemetry.env
+      },
+      edata: {
+        type: this.route.snapshot.data.telemetry.env,
+        pageid: this.route.snapshot.data.telemetry.env,
+        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
+      },
+      object: {
+        id: data.metadata.identifier,
+        type: this.contentType || data.metadata.dataType || data.metadata.resourceType,
+        ver: data.metadata.pkgVersion ? data.metadata.pkgVersion.toString() : '1.0',
+        rollup: this.objectRollUp
+      }
+    };
   }
 
   public playContent(data: any): void {
