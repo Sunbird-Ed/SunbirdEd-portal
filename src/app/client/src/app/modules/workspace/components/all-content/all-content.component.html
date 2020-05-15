@@ -32,8 +32,8 @@
               <div class="UpReviewHeader">{{content.name | slice:0:30}}
                 <i *ngIf="content.name.length > 30">...</i>
               </div>
-              <div class="UpReviewSubHeader" *ngIf="content?.courseType === 'CurriculumCourse'">{{content?.courseType}}</div>
-              <div class="UpReviewSubHeader" *ngIf="content?.courseType !== 'CurriculumCourse'">{{(content?.contentType).toLowerCase() === 'selfassess' ?  resourceService?.frmelmnts?.lbl?.courseassessment : content?.contentType}}
+              <div class="UpReviewSubHeader" *ngIf="content?.courseType">{{content?.courseType}}</div>
+              <div class="UpReviewSubHeader" *ngIf="!content?.courseType">{{(content?.contentType).toLowerCase() === 'selfassess' ?  resourceService?.frmelmnts?.lbl?.courseassessment : content?.contentType}}
               </div>
             </div>
           </h5>
