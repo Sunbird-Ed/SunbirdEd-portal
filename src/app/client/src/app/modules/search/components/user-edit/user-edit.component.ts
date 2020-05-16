@@ -81,7 +81,7 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.userId = params.userId;
     });
     this.populateUserDetails();
-    this.permissionService.permissionAvailable$.subscribe(params => {
+    this.permissionService.availableRoles$.subscribe(params => {
       if (params === 'success') {
         this.allRoles = this.permissionService.allRoles;
       }

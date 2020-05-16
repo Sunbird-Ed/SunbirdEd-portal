@@ -2,10 +2,10 @@ import { ConfigService, ServerResponse, ToasterService, ResourceService, IUserDa
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { RolesAndPermissions, Roles } from './../../interfaces';
-
+import { Observable, BehaviorSubject } from 'rxjs';
+import { shareReplay, tap } from 'rxjs/operators';
 /**
  * Service to fetch permission and validate user permission
  *
@@ -57,6 +57,8 @@ export class PermissionService {
    * reference of UserService service.
    */
   public userService: UserService;
+
+  private availableRoles$: Observable<any> = this.getPermissionsData().pipe(shareReplay(1));
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
@@ -76,11 +78,11 @@ export class PermissionService {
   /**
    * method to fetch organization permission and roles.
    */
-  private getPermissionsData(): void {
+  private getPermissionsData() {
     const option = {
       url: this.config.urlConFig.URLS.ROLES.READ
     };
-    this.learner.get(option).subscribe(
+    return this.learner.get(option).pipe(tap(
       (data: ServerResponse) => {
         if (data.result.roles) {
           this.setRolesAndPermissions(data.result.roles);
@@ -89,7 +91,7 @@ export class PermissionService {
       (err: ServerResponse) => {
         this.toasterService.error('Something went wrong, please try again later...');
       }
-    );
+    ));
   }
   /**
    * method to process roles and actions
@@ -107,7 +109,6 @@ export class PermissionService {
       this.rolesAndPermissions.push(mainRole);
     });
     this.rolesAndPermissions = _.uniqBy(this.rolesAndPermissions, 'role');
-    this.setCurrentRoleActions();
   }
   /**
    * method to process logged in user roles and actions

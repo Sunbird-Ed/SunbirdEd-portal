@@ -163,7 +163,7 @@ export class UserFilterComponent implements OnInit {
   }
 
   getRoles() {
-    return this.permissionService.permissionAvailable$.pipe(map((res) => {
+    return this.permissionService.availableRoles$.pipe(map((res) => {
       if (res === 'success') {
         this.allRoles = this.permissionService.allRoles;
       }
