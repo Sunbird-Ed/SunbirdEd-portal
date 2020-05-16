@@ -195,14 +195,16 @@ describe('PublicCollectionPlayerComponent', () => {
     expect(component.triggerTelemetryErrorEvent).toHaveBeenCalledWith(404, 'contentType field not available');
   });
   it('should call getTelemetryErrorData', () => {
+    spyOn(component, 'getTelemetryErrorData').and.callThrough();
+    component.triggerTelemetryErrorEvent(404, 'contentType field not available');
     const stacktrace = {
       message: 'contentType field not available',
-      type: 'view'
-    };
-    const result = component.getTelemetryErrorData(stacktrace);
-    expect(result.context.env).toEqual('get');
-    expect(result.object.ver).toEqual('1.0');
-    expect(result.edata.errtype).toEqual('SYSTEM');
-    expect(result).toBeTruthy();
+      type: 'edit',
+      pageid: 'get',
+      subtype: 'paginate',
+      collectionId: undefined, 
+      url: undefined 
+    }
+    expect(component.getTelemetryErrorData).toHaveBeenCalledWith(stacktrace);
   });
 });
