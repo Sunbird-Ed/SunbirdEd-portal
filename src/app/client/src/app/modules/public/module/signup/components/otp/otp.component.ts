@@ -56,7 +56,9 @@ export class OtpComponent implements OnInit {
       this.resourceService.frmelmnts.lbl.unableToVerifyEmail;
     this.setInteractEvent();
     this.instance = _.upperCase(this.resourceService.instance);
-
+    setTimeout(() => {
+      this.disableResendButton = true;
+    }, 10000);
   }
 
   verifyOTP() {
