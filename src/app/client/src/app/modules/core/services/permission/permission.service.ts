@@ -41,22 +41,6 @@ export class PermissionService {
    * 3.error if server error while fetching roles.
    */
   public permissionAvailable$ = new BehaviorSubject<string>(undefined);
-  /**
-   * reference of ResourceService service.
-   */
-  public resourceService: ResourceService;
-  /**
-   * reference of config service.
-   */
-  public config: ConfigService;
-  /**
-   * reference of LearnerService service.
-   */
-  public learner: LearnerService;
-  /**
-   * reference of UserService service.
-   */
-  public userService: UserService;
 
   public availableRoles$: Observable<any> = this.getPermissionsData().pipe(shareReplay(1));
   /**
@@ -65,12 +49,8 @@ export class PermissionService {
    * @param {LearnerService} learner LearnerService reference
    * @param {UserService} userService UserService reference
    */
-  constructor(resourceService: ResourceService, config: ConfigService,
-    learner: LearnerService, userService: UserService, public toasterService: ToasterService) {
-    this.config = config;
-    this.learner = learner;
-    this.userService = userService;
-    this.resourceService = resourceService;
+  constructor(private resourceService: ResourceService, private  config: ConfigService,
+    private learner: LearnerService, private  userService: UserService, public toasterService: ToasterService) {
   }
   public initialize() {
     this.setCurrentRoleActions();
