@@ -58,7 +58,7 @@ export class PermissionService {
    */
   public userService: UserService;
 
-  private availableRoles$: Observable<any> = this.getPermissionsData().pipe(shareReplay(1));
+  public availableRoles$: Observable<any> = this.getPermissionsData().pipe(shareReplay(1));
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
