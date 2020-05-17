@@ -300,12 +300,10 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
             this.selectedRoles = [];
             if (this.queryParams.Roles) {
               this.permissionService.availableRoles$.subscribe(params => {
-                if (params === 'success') {
-                  _.forEach(this.permissionService.allRoles, (role) => {
-                    if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
-                  });
-                  this.populateUserSearch();
-                }
+                _.forEach(this.permissionService.allRoles, (role) => {
+                  if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
+                });
+                this.populateUserSearch();
               });
             } else {
               this.populateUserSearch();
