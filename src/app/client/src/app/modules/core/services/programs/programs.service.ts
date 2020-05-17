@@ -1,7 +1,6 @@
 import { IProgram } from './../../interfaces';
 import { mergeMap, catchError, tap, retry, map, skipWhile } from 'rxjs/operators';
 import { OrgDetailsService } from './../org-details/org-details.service';
-import { FrameworkService } from './../framework/framework.service';
 import { ExtPluginService } from './../ext-plugin/ext-plugin.service';
 import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { Injectable } from '@angular/core';
@@ -15,49 +14,15 @@ import { CanActivate, Router } from '@angular/router';
 })
 export class ProgramsService implements CanActivate {
 
-  private _programsList$ = new BehaviorSubject(undefined);
-  private _allowToContribute$ = new BehaviorSubject(undefined);
-
-  public readonly programsList$ = this._programsList$.asObservable()
-    .pipe(skipWhile(data => data === undefined || data === null));
-
-  public readonly allowToContribute$ = this._allowToContribute$.asObservable()
-    .pipe(skipWhile(data => data === undefined || data === null));
+  public readonly programsList$ = this.getProgramsList();
+  public readonly allowToContribute$ = combineLatest([this.userService.userData$, this.orgDetailsService.getCustodianOrgDetails()])
+  .pipe(map(([userData, custodianOrgDetails]) =>
+    _.get(userData, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrgDetails, 'result.response.value') ||
+    _.get(userData, 'userProfile.stateValidated')));
 
   constructor(private extFrameworkService: ExtPluginService, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private userService: UserService,
     private router: Router, private toasterService: ToasterService, private resourceService: ResourceService) { }
-
-
-  /**
-   * initializes the service is the user is logged in;
-   */
-  public initialize() {
-    this.enableContributeMenu().subscribe();
-  }
-
-  /**
-   * logic which decides whether or not to show contribute tab menu
-   */
-  enableContributeMenu(): Observable<boolean> {
-    return combineLatest([this.userService.userData$, this.orgDetailsService.getCustodianOrgDetails()])
-      .pipe(
-        mergeMap(([userData, custodianOrgDetails]) => {
-          return iif(() => _.get(userData, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrgDetails, 'result.response.value') ||
-            !_.get(userData, 'userProfile.stateValidated'),
-            of(false),
-            this.moreThanOneProgram());
-        }),
-        retry(1),
-        catchError(err => {
-          console.error(err);
-          return of(false);
-        }),
-        tap(allowedToContribute => {
-          this._allowToContribute$.next(allowedToContribute);
-        })
-      );
-  }
 
   /**
    * makes api call to get list of programs from ext framework Service
@@ -88,22 +53,15 @@ export class ProgramsService implements CanActivate {
   /**
    * filters out programs which are open to enrollment
    */
-  private filterPublicPrograms(): Observable<IProgram> {
-    return this.getPrograms().pipe(
-      map(programs => _.filter(programs, { type: 'public' })),
-      tap(programs => {
-        this._programsList$.next(programs);
-      })
-    );
+  private filterPublicPrograms(): Observable<IProgram[]> {
+    return this.getPrograms().pipe(map(programs => _.filter(programs, { type: 'public' })));
   }
 
   /**
    * returns true if more than one programs exists else false
    */
-  private moreThanOneProgram(): Observable<boolean> {
-    return this.filterPublicPrograms().pipe(
-      map(programs => !_.isEmpty(programs))
-    );
+  private getProgramsList(): Observable<IProgram[]>  {
+    return this.filterPublicPrograms();
   }
 
   /**
