@@ -1,5 +1,5 @@
 import { IProgram } from './../../interfaces';
-import { mergeMap, catchError, tap, retry, map, skipWhile } from 'rxjs/operators';
+import { mergeMap, catchError, tap, retry, map, shareReplay } from 'rxjs/operators';
 import { OrgDetailsService } from './../org-details/org-details.service';
 import { ExtPluginService } from './../ext-plugin/ext-plugin.service';
 import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
@@ -18,7 +18,7 @@ export class ProgramsService implements CanActivate {
   public readonly allowToContribute$ = combineLatest([this.userService.userData$, this.orgDetailsService.getCustodianOrgDetails()])
   .pipe(map(([userData, custodianOrgDetails]) =>
     _.get(userData, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrgDetails, 'result.response.value') ||
-    _.get(userData, 'userProfile.stateValidated')));
+    _.get(userData, 'userProfile.stateValidated')), shareReplay(1));
 
   constructor(private extFrameworkService: ExtPluginService, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private userService: UserService,
