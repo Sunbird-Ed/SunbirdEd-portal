@@ -100,6 +100,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     const option = {
         limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
         filters: filters,
+        fields: this.configService.urlConFig.params.LibrarySearchField,
         // mode: 'soft',
         // facets: facets,
         params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),

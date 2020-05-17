@@ -109,6 +109,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
         const option: any = {
           filters: filters,
+          fields: this.configService.urlConFig.params.LibrarySearchField,
           limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
           pageNumber: this.paginationDetails.currentPage,
           query: this.queryParams.key,
