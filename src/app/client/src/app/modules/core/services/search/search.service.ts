@@ -254,6 +254,10 @@ export class SearchService {
         }
       }
     };
+    if (_.get(requestParam, 'fields')) {
+      option.data.request['fields'] = _.get(requestParam, 'fields');
+    }
+
     if (requestParam['pageNumber'] && requestParam['limit']) {
       option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
     }

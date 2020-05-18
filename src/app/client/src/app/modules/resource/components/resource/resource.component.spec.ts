@@ -1,8 +1,8 @@
-import { BehaviorSubject, throwError, of} from 'rxjs';
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule, ConfigService, UtilService, BrowserCacheTtlService
+import { BehaviorSubject, of} from 'rxjs';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ResourceService, SharedModule
 } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, CoreModule, UserService, PlayerService} from '@sunbird/core';
+import { CoreModule} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -14,10 +14,6 @@ import { ResourceComponent } from './resource.component';
 describe('ResourceComponent', () => {
   let component: ResourceComponent;
   let fixture: ComponentFixture<ResourceComponent>;
-  let toasterService, userService, pageApiService, orgDetailsService;
-  const mockPageSection: any = {};
-  let sendOrgDetails = true;
-  let sendPageApi = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -70,26 +66,24 @@ describe('ResourceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ResourceComponent);
     component = fixture.componentInstance;
-    toasterService = TestBed.get(ToasterService);
-    userService = TestBed.get(UserService);
-    pageApiService = TestBed.get(SearchService);
-    orgDetailsService = TestBed.get(OrgDetailsService);
-    sendOrgDetails = true;
-    sendPageApi = true;
-    spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
-      if (sendOrgDetails) {
-        return of({hashTagId: '123'});
-      }
-      return throwError({});
-    });
-    spyOn(pageApiService, 'contentSearch').and.callFake((options) => {
-      if (sendPageApi) {
-        return of(mockPageSection);
-      }
-      return throwError({});
-    });
+    fixture.detectChanges();
   });
-  it('should create', () => {
-    expect(component).toBeTruthy();
+
+  it('should return empty data from search', () => {
+    const option = {filters: { board: ['test'], medium: ['English'], gradeLevel: ['Class 4'], channel: '123'}, limit: 100};
+    spyOn<any>(component, 'getSearchRequest').and.returnValue(option);
+    spyOn(component['searchService'], 'contentSearch').and.returnValue(of ({result:
+      {content: [{subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]}}));
+    spyOn(component, 'getFilterValues').and.returnValue( [{title: 'English', count: 2}, {title: 'Social', count: 1}]);
+    component['fetchCourses']();
+    expect(component.cardData.length).toEqual(2);
+  });
+
+  it('should return subjects', () => {
+   const data = component.getFilterValues([{ subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]);
+   expect(data[0].title).toEqual('English');
+   expect(data[0].count).toEqual(2);
+   expect(data[1].title).toEqual('Social');
+   expect(data[1].count).toEqual(1);
   });
 });
