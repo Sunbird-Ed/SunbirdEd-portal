@@ -125,8 +125,11 @@ export class AppComponent implements OnInit, OnDestroy {
     for (const item in params) {
       if (params.hasOwnProperty(item)) {
         switch (item) {
+          case 'channel':
+            resultJson.push({ 'id': params[item], 'type': 'Source' });
+            break;
           case 'utm_campaign':
-            resultJson.push({ 'id': params[item], 'type': 'UtmCampaign' });
+            resultJson.push({ 'id': params[item], 'type': 'Source' });
             break;
           case 'utm_medium':
             resultJson.push({ 'id': params[item], 'type': 'UtmMedium' });
@@ -149,7 +152,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
-      const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content'];
+      const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];
       if (_.some(_.intersection(utmParams, _.keys(params)))) {
         this.makeUTMSession(params);
       }
