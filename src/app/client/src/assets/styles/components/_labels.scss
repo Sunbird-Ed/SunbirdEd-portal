@@ -178,6 +178,18 @@ $sb-label-status-indicator-error-background: $tertiary-color;
     border: none;
     height: auto;
 }
+.badge {
+    display: inline-block;
+    background: #d4d3d3;
+    color: var(--gray-800);
+    text-align: center;
+    padding: 0 .75rem;
+    border-radius: .25rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+}
 .sb-section-title {
     font-size: $font-size-md;
     font-weight: 600;

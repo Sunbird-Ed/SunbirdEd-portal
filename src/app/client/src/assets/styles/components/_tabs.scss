@@ -1,3 +1,13 @@
+.ui.secondary.pointing.menu.sb-tabs__header {
+  height:56px;
+}
+.ui.secondary.pointing.menu.sb-tabs__header .item {
+  margin: 0 0 0px;
+}
+.ui.secondary.pointing.menu.sb-tabs__header .active.item, .ui.secondary.pointing.menu.sb-tabs__header .item:hover {
+  color: var(--primary-400);
+}
+
 .ui.secondary.pointing.menu .active.item,
 .ui.secondary.pointing.menu .active.item:hover {
     border-color: $sb-tabs-border-active-color;
