@@ -155,7 +155,8 @@ export class WorkSpaceService {
       _.forIn(metaData, (value, key1) => {
         card[key1] = _.pick(item, value);
       });
-      _.forIn(dynamicFields, (fieldData, fieldName) => {
+      const fields = _.get(item, 'courseType') ? { 'ribbon.right.name': 'courseType' } : dynamicFields;
+      _.forIn(fields, (fieldData, fieldName) => {
         const value = _.pick(item, fieldData);
         _.forIn(value, (val1, key1) => {
           const name = _.zipObjectDeep([fieldName], [val1]);
