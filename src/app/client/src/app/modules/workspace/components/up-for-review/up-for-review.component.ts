@@ -205,6 +205,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
         gradeLevel: bothParams.queryParams.gradeLevel,
+        courseType: _.get(bothParams, 'queryParams.courseType'),
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
