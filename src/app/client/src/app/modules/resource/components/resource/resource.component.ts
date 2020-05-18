@@ -32,7 +32,29 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedFilters = {};
   exploreMoreButtonEdata: IInteractEventEdata;
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.SECTION_LIMIT);
-
+  public cardData: Array<{}> = [];
+  public isLoading = true;
+  subjectThemeAndIconsMap = {
+    Science: {
+      background: '#FFD6EB',
+      titleColor: '#FD59B3',
+      icon: './../../../../../assets/images/science.svg'
+    },
+    Mathematics: {
+      background: '#FFDFD9',
+      titleColor: '#EA2E52',
+      icon: './../../../../../assets/images/mathematics.svg'
+    },
+    English: {
+      background: '#DAFFD8',
+      titleColor: '#218432'
+    },
+    Social: {
+      background: '#DAD4FF',
+      titleColor: '#635CDC',
+      icon: './../../../../../assets/images/social.svg'
+    }
+  };
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -43,7 +65,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     public telemetryService: TelemetryService, private utilService: UtilService) {
   }
   ngOnInit() {
-    if (this.userService.userProfile.framework) {
+    if (_.get(this.userService, 'userProfile.framework')) {
       const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
       this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
     }
@@ -59,7 +81,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.initFilter = true;
       }, (error) => {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-        setTimeout(() => this.router.navigate(['']), 5000);
+        this.router.navigate(['']);
         console.error('init search filter failed', error);
     });
   }
@@ -86,6 +108,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();
+    this.fetchCourses();
   }
   private getSearchRequest() {
     let filters = this.selectedFilters;
@@ -155,6 +178,50 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
       });
   }
+
+  private fetchCourses() {
+    this.isLoading = true;
+    const option = this.getSearchRequest();
+    this.searchService.contentSearch(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.isLoading = false;
+      const contents = _.get(data, 'result.content');
+      if (!_.isEmpty(contents)) {
+        this.cardData = this.getFilterValues(contents);
+          _.forEach(this.cardData, card => {
+            const theme = _.get(this.subjectThemeAndIconsMap, card.title);
+            card.theme = theme.background;
+            card.cardImg = theme.icon;
+          });
+        } else {
+          this.cardData = [];
+        }
+      }, err => {
+        this.isLoading = false;
+        this.cardData = [];
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      });
+  }
+
+  navigateToCourses(event) {
+    this.router.navigate(['resources/curriculum-course'], {
+      queryParams: {
+        title: _.get(event, 'data.title')
+      },
+    });
+  }
+
+  getFilterValues(contents): Array<{title: string, count: number }> {
+
+    let subjects = _.map(contents, content => {
+      return (_.get(content, 'subject'));
+    });
+    subjects = _.values(_.groupBy(subjects)).map((subject) => {
+      return ({ title: subject[0], count: subject.length });
+    });
+    return subjects;
+
+  }
+
   private prepareVisits(event) {
     _.forEach(event, (inView, index) => {
       if (inView.metaData.identifier) {
