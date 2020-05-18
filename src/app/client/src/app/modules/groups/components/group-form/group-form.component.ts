@@ -1,25 +1,24 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { FrameworkService, UserService, ChannelService, OrgDetailsService } from '@sunbird/core';
-import { first, mergeMap, map , filter, takeUntil } from 'rxjs/operators';
-import { of, throwError, Subscription, Subject } from 'rxjs';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { UserService } from '@sunbird/core';
+import { first, mergeMap, map  } from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
 import { ResourceService, ToasterService, IUserProfile } from '@sunbird/shared';
+import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { GroupsService } from '../../services';
 
 @Component({
   selector: 'app-group-form',
   templateUrl: './group-form.component.html',
   styleUrls: ['./group-form.component.scss']
 })
-export class GroupFormComponent implements OnInit, OnDestroy {
+export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('modal') modal;
   groupForm: FormGroup;
-  public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
   private _formFieldProperties: any;
   public formFieldOptions = [];
-  private custOrgFrameworks: any;
-  private categoryMasterList: any = {};
   public selectedOption: any = {};
   private unsubscribe: Subscription;
   private frameWorkId: string;
@@ -27,6 +26,7 @@ export class GroupFormComponent implements OnInit, OnDestroy {
   private custodianOrgBoard: any = {};
   submitInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  telemetryImpression: IImpressionEventInput;
   public userProfile: IUserProfile;
   private editMode: boolean;
   public boardList: [];
@@ -34,12 +34,12 @@ export class GroupFormComponent implements OnInit, OnDestroy {
   public gradesList: [];
   public subjectList: [];
 
-  constructor(private userService: UserService, private frameworkService: FrameworkService,
-    public resourceService: ResourceService, private toasterService: ToasterService, private channelService: ChannelService,
-    private orgDetailsService: OrgDetailsService, private fb: FormBuilder) { }
+  constructor(private userService: UserService, public resourceService: ResourceService, private toasterService: ToasterService,
+    private fb: FormBuilder, public groupService: GroupsService, private route: Router) { }
 
   ngOnInit() {
     this.initializeForm();
+    this.setTelemetryData();
   }
   private initializeForm() {
     this.userService.userData$.subscribe(userdata => {
@@ -56,7 +56,7 @@ export class GroupFormComponent implements OnInit, OnDestroy {
       subject: [_.get(this.selectedOption, 'subject') || [], [ Validators.required ]],
     });
     this.editMode = _.some(this.selectedOption, 'length') || false ;
-    this.unsubscribe = this.isCustodianOrgUser().pipe(
+    this.unsubscribe = this.groupService.isCustodianOrgUser().pipe(
       mergeMap((custodianOrgUser: boolean) => {
         this.custodianOrg = custodianOrgUser;
         if (custodianOrgUser) {
@@ -74,23 +74,16 @@ export class GroupFormComponent implements OnInit, OnDestroy {
         this.toasterService.warning(this.resourceService.messages.emsg.m0012);
       });
   }
-  private isCustodianOrgUser() {
-    return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrg) => {
-      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
-        return true;
-      }
-      return false;
-    }));
-  }
-  private getFormOptionsForCustodianOrg() {
-    return this.getCustodianOrgData().pipe(mergeMap((data) => {
+
+  public getFormOptionsForCustodianOrg() {
+    return this.groupService.getCustodianOrgData().pipe(mergeMap((data) => {
       this.custodianOrgBoard = data;
       const boardObj = _.cloneDeep(this.custodianOrgBoard);
       boardObj.range = _.sortBy(boardObj.range, 'index');
       const board = boardObj;
       if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
-        this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
-        this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': this.selectedOption.board }), 'identifier');
+        this.groupForm.controls.board.setValue(_.get(this.selectedOption, 'board[0]'));
+        this.frameWorkId = _.get(_.find(this.custodianOrgBoard.range, { 'name': this.selectedOption.board }), 'identifier');
         return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
           this._formFieldProperties = formFieldProperties;
           this.mergeBoard(); // will merge board from custodian org and board from selected framework data
@@ -101,47 +94,24 @@ export class GroupFormComponent implements OnInit, OnDestroy {
       }
     }));
   }
-  private getFormOptionsForOnboardedUser() {
+  public getFormOptionsForOnboardedUser() {
     return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
       this._formFieldProperties = formFieldProperties;
       if (_.get(this.selectedOption, 'board[0]')) {
-        this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
+        this.groupForm.controls.board.setValue(_.get(this.selectedOption, 'board[0]'));
       }
       return this.getUpdatedFilters({index: 0}, this.editMode); // get filters for first field i.e index 0 incase of init
     }));
   }
-  private getFormatedFilterDetails() {
-    this.frameworkService.initialize(this.frameWorkId);
-    return this.frameworkService.frameworkData$.pipe(
-      filter((frameworkDetails: any) => { // wait to get the framework name if passed as input
-      if (!frameworkDetails.err) {
-        const framework = this.frameWorkId ? this.frameWorkId : 'defaultFramework';
-        if (!_.get(frameworkDetails.frameworkdata, framework)) {
-          return false;
-        }
-      }
-      return true;
-    }),
-    mergeMap((frameworkDetails: any) => {
-      if (!frameworkDetails.err) {
-        const framework = this.frameWorkId ? this.frameWorkId : 'defaultFramework';
-        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
-        this.frameWorkId = frameworkData.identifier;
-        this.categoryMasterList = _.filter(frameworkData.categories, (category) => {
-          return this.allowedFields.includes(_.get(category, 'code'));
-        });
-        return of(this.categoryMasterList);
-      } else {
-        return throwError(frameworkDetails.err);
-      }
-    }), map((formData: any) => {
-      const formFieldProperties = _.filter(formData, (formFieldCategory) => {
-        formFieldCategory.range = _.get(_.find(this.categoryMasterList, { code : formFieldCategory.code }), 'terms') || [];
-        return true;
-      });
-      return _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index');
-    }), first());
+  public getFormatedFilterDetails() {
+    return this.groupService.getFilteredFieldData(this.frameWorkId).pipe(
+      map((data: any) => {
+        this.frameWorkId = data.frameWorkId;
+        return data.formFieldProperties;
+      })
+    );
   }
+
   public handleFieldChange(event, code) {
     const field  = _.find(this.formFieldOptions, {'code': code});
     if (field) {
@@ -210,20 +180,7 @@ export class GroupFormComponent implements OnInit, OnDestroy {
     this.subjectList = _.get(_.find(formFields, { 'code': 'subject' }), 'range') || [];
     return formFields;
   }
-  private getCustodianOrgData() {
-    return this.channelService.getFrameWork(this.userService.hashTagId).pipe(map((channelData: any) => {
-      this.custOrgFrameworks =  _.get(channelData, 'result.channel.frameworks') || [];
-      this.custOrgFrameworks = _.sortBy(this.custOrgFrameworks, 'index');
-      return {
-          range: this.custOrgFrameworks,
-          label: 'Board',
-          code: 'board',
-          index: 1
-        };
-    }));
-  }
   onSubmitForm() {
-    console.log(this.groupForm.value);
     if (this.groupForm.valid) {
       this.groupForm.markAsTouched();
     } else {
@@ -246,6 +203,34 @@ export class GroupFormComponent implements OnInit, OnDestroy {
   }
   isFieldValid(field: string) {
     return !this.groupForm.get(field).valid && this.groupForm.get(field).touched;
+  }
+  setTelemetryData() {
+    this.submitInteractEdata = {
+      id: 'submit-group-creation',
+      type: 'click',
+      pageid: 'group-creation'
+    };
+
+    this.telemetryInteractObject = {
+      id: this.userService.userid,
+      type: 'Groups',
+      ver: '1.0'
+    };
+  }
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: 'groups'
+        },
+        edata: {
+          type: 'create',
+          pageid: 'create-group',
+          uri: this.route.url,
+        }
+      };
+      console.log(this.telemetryImpression);
+    });
   }
 
 }
