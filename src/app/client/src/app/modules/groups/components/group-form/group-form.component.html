@@ -1,55 +1,58 @@
 <!-- add create group form -->
-<!-- <sui-modal *ngIf="showBoardSelectnModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showBoardSelectnModal = !showBoardSelectnModal" #modal>
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal>
   <div class="sb-modal-header">Create Group</div>
   <div class="sb-modal-content o-y-visible">
     <div class="create-group-title pb-16">Enter the following information</div>
-    <form class="sb-form">
-     
+    <form class="sb-form" [formGroup]="groupForm">
       <div class="sb-field mb-16">
         <label>Group Name</label>
-        <input class="sb-form-control is-invalid" type="text" placeholder="Enter Group Name">
-        <small class="message sb-color-error font-weight-bold">Group Name is required.</small>
+        <input class="sb-form-control" type="text" placeholder="Enter Group Name" formControlName="groupName" [ngClass]="{'is-invalid' : isFieldValid('groupName')}">
+        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('groupName')">Group Name is required.</small>
       </div>
       <div class="sb-field mb-16">
         <label>Board:</label>
-        <sui-select class="selection sb-form-control is-invalid" name="state" labelField="name" placeholder="Select State">
-          <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
+        <sui-select id="board" formControlName="board" class="selection sb-form-control"
+          [options]="options" (ngModelChange)="handleFieldChange($event, 'board')" name="board" [ngClass]="{'is-invalid' : isFieldValid('board')}">
+          <sui-select-option *ngFor="let option of boardList" [value]="option.name" required></sui-select-option>
         </sui-select>
-        <small class="message sb-color-error font-weight-bold">Board is required.</small>
+        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('board')">Board is required.</small>
       </div>
       <div class="sb-field mb-16">
         <label>Medium:</label>
         <div class="sb-field">
-          <sui-select class="selection sb-form-control is-invalid" name="medium" labelField="name" placeholder="Select Medium">
-            <sui-select-option *ngFor="let language of medium" [value]="language"></sui-select-option>
-          </sui-select>
-          <small class="message sb-color-error font-weight-bold">At least one medium is required.</small>
+          <sui-multi-select id="medium" formControlName="medium" class="selection sb-form-control"
+            [options]="options" (ngModelChange)="handleFieldChange($event, 'medium')" name="medium" [ngClass]="{'is-invalid' : isFieldValid('medium')}">
+            <sui-select-option *ngFor="let option of mediumList" [value]="option.name"></sui-select-option>
+          </sui-multi-select>
+          <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('medium')">At least one medium is required.</small>
         </div>
       </div>
       <div class="sb-field mb-16">
         <label>Class:</label>
         <div class="sb-field">
-          <sui-multi-select class="selection sb-form-control is-invalid" name="class" labelField="name" placeholder="Select Class">
-            <sui-select-option *ngFor="let class of classes" [value]="class"></sui-select-option>
+          <sui-multi-select id="gradeLevel" formControlName="gradeLevel" class="selection sb-form-control"
+            [options]="options" (ngModelChange)="handleFieldChange($event, 'gradeLevel')" name="gradeLevel" [ngClass]="{'is-invalid' : isFieldValid('gradeLevel')}">
+            <sui-select-option *ngFor="let option of gradesList" [value]="option.name"></sui-select-option>
           </sui-multi-select>
-          <small class="message sb-color-error font-weight-bold">At least one class is required.</small>
+          <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('gradeLevel')">At least one class is required.</small>
         </div>
       </div>
       <div class="sb-field">
         <label>Subject:</label>
         <div class="sb-field">
-          <sui-select class="selection sb-form-control is-invalid" name="subject" labelField="name" placeholder="Select Subject">
-            <sui-select-option *ngFor="let subject of subjects" [value]="subject"></sui-select-option>
-          </sui-select>
-          <small class="message sb-color-error font-weight-bold">At least one subject is required.</small>
+          <sui-multi-select id="subject" formControlName="subject" class="selection sb-form-control"
+            [options]="options" (ngModelChange)="handleFieldChange($event, 'subject')" name="subject" [ngClass]="{'is-invalid' : isFieldValid('subject')}">
+            <sui-select-option *ngFor="let option of subjectList" [value]="option.name"></sui-select-option>
+          </sui-multi-select>
+          <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('subject')">At least one subject is required.</small>
         </div>
       </div>
     </form>
   </div>
   <div class="sb-modal-actions">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="showBoardSelectnModal = !showBoardSelectnModal">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="onSubmitForm()">
       Submit
     </button>
   </div>
-</sui-modal> -->
+</sui-modal>
