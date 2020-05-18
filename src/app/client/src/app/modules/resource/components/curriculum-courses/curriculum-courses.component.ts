@@ -59,10 +59,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
-      if (this.userService.userProfile.framework) {
-        const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
-        this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
-      }
+      this.defaultFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), 'title');
       this.getChannelId().pipe(
         mergeMap(({ channelId, isCustodianOrg }) => {
           this.channelId = channelId;

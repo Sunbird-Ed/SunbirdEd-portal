@@ -43,8 +43,11 @@ describe('ExploreComponent', () => {
     },
     frmelmnts: {
       lbl: {
-        fetchingContentFailed: 'Fetching content failed. Please try again later.'
-      }
+        fetchingContentFailed: 'Fetching content failed. Please try again later.',
+        sectionTitle: 'Courses',
+        sectionTitle1: 'Course'
+      },
+
     },
     languageSelected$: of({})
   };
@@ -200,8 +203,8 @@ describe('ExploreComponent', () => {
   it('should return subjects', () => {
    const data = component.getFilterValues([{ subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]);
    expect(data[0].title).toEqual('English');
-   expect(data[0].count).toEqual('2 COURSES');
+   expect(data[0].count).toEqual('2 Courses');
    expect(data[1].title).toEqual('Social');
-   expect(data[1].count).toEqual('1 COURSE');
+   expect(data[1].count).toEqual('1 Course');
   });
 });

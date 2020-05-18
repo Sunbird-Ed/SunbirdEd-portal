@@ -210,7 +210,10 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   navigateToCourses(event) {
     this.router.navigate(['resources/curriculum-courses'], {
       queryParams: {
-        title: _.get(event, 'data.title')
+        title: _.get(event, 'data.title'),
+        board: _.get(this.selectedFilters, 'board'),
+        medium: _.get(this.selectedFilters, 'medium'),
+        gradeLevel: _.get(this.selectedFilters, 'gradeLevel')
       },
     });
   }
@@ -221,8 +224,10 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
       return (_.get(content, 'subject'));
     });
     subjects = _.values(_.groupBy(subjects)).map((subject) => {
-      return ({ title: subject[0], count: subject.length === 1  ? `${subject.length} COURSE` : `${subject.length} COURSES`});
-    });
+      return ({ title: subject[0], count: subject.length === 1 ?
+        `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.sectionTitle1)}`
+        : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.sectionTitle)}` });
+      });
     return subjects;
 
   }

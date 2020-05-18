@@ -217,7 +217,9 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       return (_.get(content, 'subject'));
     });
     subjects = _.values(_.groupBy(subjects)).map((subject) => {
-      return ({ title: subject[0], count: subject.length === 1 ? `${subject.length} COURSE` : `${subject.length} COURSES` });
+      return ({ title: subject[0], count: subject.length === 1 ?
+        `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.sectionTitle1)}`
+        : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.sectionTitle)}` });
     });
     return subjects;
 
