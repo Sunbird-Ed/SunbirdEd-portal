@@ -301,10 +301,10 @@ export class TelemetryService {
     if (sessionStorage.getItem('UTM')) {
       const utmArray = JSON.parse(sessionStorage.getItem('UTM'));
       object['context']['cdata'] ?
-      _.forEach(utmArray, item => {
-        object['context']['cdata'].push(item);
-      }) :
-      object['context']['cdata'] = utmArray;
+        _.forEach(utmArray, item => {
+          object['context']['cdata'].push(item);
+        }) :
+        object['context']['cdata'] = utmArray;
       return object;
     } else {
       return object;
