@@ -203,8 +203,8 @@ describe('ExploreComponent', () => {
   it('should return subjects', () => {
    const data = component.getFilterValues([{ subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]);
    expect(data[0].title).toEqual('English');
-   expect(data[0].count).toEqual('2 Courses');
+   expect(data[0].count).toEqual('2 COURSES');
    expect(data[1].title).toEqual('Social');
-   expect(data[1].count).toEqual('1 Course');
+   expect(data[1].count).toEqual('1 COURSE');
   });
 });
