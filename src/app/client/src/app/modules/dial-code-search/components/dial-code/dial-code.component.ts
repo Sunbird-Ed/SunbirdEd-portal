@@ -387,9 +387,9 @@ export class DialCodeComponent implements OnInit, OnDestroy {
     const previousUrl = _.get(this.navigationHelperService.getPreviousUrl(), 'url') || '/get';
     if (_.includes(previousUrl, 'play')) {
       if (this.userService.loggedIn) {
-        this.navigationHelperService.navigateToPreviousUrl('/resources');
+        this.router.navigate(['/resources']);
       } else {
-        this.navigationHelperService.navigateToPreviousUrl('/explore');
+        this.router.navigate(['/explore']);
       }
     }
   }
