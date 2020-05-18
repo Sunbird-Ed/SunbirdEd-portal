@@ -10,32 +10,30 @@ import { ContentSearchService } from '@sunbird/content-search';
 const DEFAULT_FRAMEWORK = 'CBSE';
 
 @Component({
-  selector: 'app-curriculum-courses',
-  templateUrl: './curriculum-courses.component.html',
-  styleUrls: ['./curriculum-courses.component.scss']
+  selector: 'app-explore-curriculum-courses',
+  templateUrl: './explore-curriculum-courses.component.html',
+  styleUrls: ['./explore-curriculum-courses.component.scss']
 })
-export class CurriculumCoursesComponent implements OnInit, OnDestroy {
-
+export class ExploreCurriculumCoursesComponent implements OnInit, OnDestroy {
   public channelId: string;
   public isCustodianOrg = true;
   private unsubscribe$ = new Subject<void>();
-  defaultBg = false;
+  public defaultBg = false;
   public defaultFilters = {
     board: [DEFAULT_FRAMEWORK],
-    gradeLevel: [],
+    gradeLevel: ['Class 10'],
     medium: []
   };
-
   private subjectThemeAndIconsMap = {
     Science: {
       background: '#FFD6EB',
       titleColor: '#FD59B3',
-      icon: './../../../../../assets/images/science.svg'
+      icon: './../../../../../../../assets/images/science.svg'
     },
     Mathematics: {
       background: '#FFDFD9',
       titleColor: '#EA2E52',
-      icon: './../../../../../assets/images/mathematics.svg'
+      icon: './../../../../../../../assets/images/mathematics.svg'
     },
     English: {
       background: '#DAFFD8',
@@ -44,11 +42,11 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
     Social: {
       background: '#DAD4FF',
       titleColor: '#635CDC',
-      icon: './../../../../../assets/images/social.svg'
+      icon: './../../../../../../../assets/images/social.svg'
     }
   };
 
-  public selectedCourse: {};
+  public selectedCourse;
   public courseList: Array<{}> = [];
   public title: string;
 
@@ -59,34 +57,31 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
-      if (this.userService.userProfile.framework) {
-        const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
-        this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
-      }
-      this.getChannelId().pipe(
-        mergeMap(({ channelId, isCustodianOrg }) => {
-          this.channelId = channelId;
-          this.isCustodianOrg = isCustodianOrg;
-          return  this.contentSearchService.initialize(channelId, isCustodianOrg, this.defaultFilters.board[0]);
-        }),
-        takeUntil(this.unsubscribe$))
-        .subscribe(() => {
-          this.fetchCourses();
-        }, (error) => {
-          this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-          console.error('init search filter failed', error);
-          this.router.navigate(['']);
-      });
+      this.defaultFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), 'title');
+        this.getChannelId().pipe(
+          mergeMap(({ channelId, isCustodianOrg }) => {
+            this.channelId = channelId;
+            this.isCustodianOrg = isCustodianOrg;
+            return this.contentSearchService.initialize(channelId, isCustodianOrg, this.defaultFilters.board[0]);
+          }),
+          takeUntil(this.unsubscribe$))
+          .subscribe(() => {
+            this.fetchCourses();
+          }, (error) => {
+            this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+            setTimeout(() => this.router.navigate(['']), 5000);
+            console.error('init search filter failed', error);
+          });
     }
 
     private getChannelId() {
-      return this.orgDetailsService.getCustodianOrgDetails().pipe(map(isCustodianOrg => {
-        if (this.userService.hashTagId === _.get(isCustodianOrg, 'result.response.value')) {
-          return { channelId: this.userService.hashTagId, isCustodianOrg: true};
-        } else {
-          return { channelId: this.userService.hashTagId, isCustodianOrg: false };
-        }
-      }));
+      if (this.userService.slug) {
+        return this.orgDetailsService.getOrgDetails(this.userService.slug)
+          .pipe(map(((orgDetails: any) => ({ channelId: orgDetails.hashTagId, isCustodianOrg: false }))));
+      } else {
+        return this.orgDetailsService.getCustodianOrg()
+          .pipe(map(((custOrgDetails: any) => ({ channelId: _.get(custOrgDetails, 'result.response.value'), isCustodianOrg: true }))));
+      }
     }
 
     private getSearchRequest() {

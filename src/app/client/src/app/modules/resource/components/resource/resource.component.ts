@@ -182,15 +182,20 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   private fetchCourses() {
     this.isLoading = true;
     const option = this.getSearchRequest();
+    option.filters ['courseType'] = 'CurriculumCourse';
+    option.filters['contentType'] = 'Course';
     this.searchService.contentSearch(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.isLoading = false;
       const contents = _.get(data, 'result.content');
       if (!_.isEmpty(contents)) {
         this.cardData = this.getFilterValues(contents);
           _.forEach(this.cardData, card => {
-            const theme = _.get(this.subjectThemeAndIconsMap, card.title);
-            card.theme = theme.background;
-            card.cardImg = theme.icon;
+              const theme = _.get(this.subjectThemeAndIconsMap, card.title);
+              if (card && theme) {
+              card.theme = theme.background;
+              card.cardImg = theme.icon;
+              card.titleColor = theme.titleColor;
+              }
           });
         } else {
           this.cardData = [];
@@ -203,20 +208,20 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   navigateToCourses(event) {
-    this.router.navigate(['resources/curriculum-course'], {
+    this.router.navigate(['resources/curriculum-courses'], {
       queryParams: {
         title: _.get(event, 'data.title')
       },
     });
   }
 
-  getFilterValues(contents): Array<{title: string, count: number }> {
+  getFilterValues(contents): Array<{title: string, count: string }> {
 
     let subjects = _.map(contents, content => {
       return (_.get(content, 'subject'));
     });
     subjects = _.values(_.groupBy(subjects)).map((subject) => {
-      return ({ title: subject[0], count: subject.length });
+      return ({ title: subject[0], count: subject.length === 1  ? `${subject.length} COURSE` : `${subject.length} COURSES`});
     });
     return subjects;
 

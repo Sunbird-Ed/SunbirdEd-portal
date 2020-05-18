@@ -35,7 +35,29 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedFilters = {};
   exploreMoreButtonEdata: IInteractEventEdata;
   public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
-
+  subjectThemeAndIconsMap = {
+    Science: {
+      background: '#FFD6EB',
+      titleColor: '#FD59B3',
+      icon: './../../../../../../../assets/images/science.svg'
+    },
+    Mathematics: {
+      background: '#FFDFD9',
+      titleColor: '#EA2E52',
+      icon: './../../../../../../../assets/images/mathematics.svg'
+    },
+    English: {
+      background: '#DAFFD8',
+      titleColor: '#218432'
+    },
+    Social: {
+      background: '#DAD4FF',
+      titleColor: '#635CDC',
+      icon: './../../../../../../../assets/images/social.svg'
+    }
+  };
+  public isLoading = true;
+  public cardData: Array<{}> = [];
   @HostListener('window:scroll', []) onScroll(): void {
     this.windowScroll();
   }
@@ -88,6 +110,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     this.apiContentList = [];
     this.pageSections = [];
     this.fetchContents();
+    this.fetchCourses();
   }
 
   private getSearchRequest() {
@@ -160,6 +183,46 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  private fetchCourses() {
+    this.isLoading = true;
+    const option = this.getSearchRequest();
+    option.filters ['courseType'] = 'CurriculumCourse';
+    option.filters['contentType'] = 'Course';
+    this.searchService.contentSearch(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.isLoading = false;
+      const contents = _.get(data, 'result.content');
+      if (!_.isEmpty(contents)) {
+        this.cardData = this.getFilterValues(contents);
+          _.forEach(this.cardData, card => {
+              const theme = _.get(this.subjectThemeAndIconsMap, card.title);
+              if (theme && card) {
+                card.theme = theme.background;
+                card.cardImg = theme.icon;
+                card.titleColor = theme.titleColor;
+              }
+          });
+        } else {
+          this.cardData = [];
+        }
+      }, err => {
+        this.isLoading = false;
+        this.cardData = [];
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      });
+  }
+
+  getFilterValues(contents): Array<{title: string, count: string }> {
+
+    let subjects = _.map(contents, content => {
+      return (_.get(content, 'subject'));
+    });
+    subjects = _.values(_.groupBy(subjects)).map((subject) => {
+      return ({ title: subject[0], count: subject.length === 1 ? `${subject.length} COURSE` : `${subject.length} COURSES` });
+    });
+    return subjects;
+
+  }
+
   private prepareVisits(event) {
     _.forEach(event, (inView, index) => {
       if (inView.metaData.identifier) {
@@ -229,6 +292,17 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         ...this.selectedFilters, appliedFilters: false,
         softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
       }
+    });
+  }
+
+  navigateToCourses(event) {
+    this.router.navigate(['explore/list/curriculum-courses'], {
+      queryParams: {
+        title: _.get(event, 'data.title'),
+        board: _.get(this.selectedFilters, 'board'),
+        medium: _.get(this.selectedFilters, 'medium'),
+        gradeLevel: _.get(this.selectedFilters, 'gradeLevel')
+      },
     });
   }
 
