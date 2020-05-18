@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExploreGroupComponent implements OnInit {
   hideLoginContainer;
+  showWelcomePopup = true;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  redirectTologin() {
+    window.location.href = '/groups';
   }
 
 }
