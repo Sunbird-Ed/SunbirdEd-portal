@@ -2,7 +2,10 @@
   <app-search-filter *ngIf="initFilter" (filterChange)="getFilters($event)" [pageId]="'explore-page'" [defaultFilters]="defaultFilters">
   </app-search-filter>
   <div class="ui container mt-24 sb-library-cards">
-    <div class="ui grid py-16">    
+    <div class="ui grid py-16">   
+      <div class="twelve wide column" *ngIf="cardData.length > 0">
+        <sb-course-cards-hlist [multiRow]="cardData.length > 4" [contentList]="cardData" [type]="'curiculum_course_card_grid'" [isLoading]="isLoading" [title]="resourceService?.frmelmnts?.lbl?.courses"  (cardClick)="navigateToCourses($event)"></sb-course-cards-hlist>
+      </div> 
       <div class="twelve wide column pb-0 pt-0" *ngFor="let section of pageSections | sortBy:'name':'asc';let last = last"
         [ngClass]="{'last mb-0':last}">
         <sb-library-cards-grid 

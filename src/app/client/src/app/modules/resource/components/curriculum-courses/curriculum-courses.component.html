@@ -11,7 +11,7 @@
   </div>
 </div>
 
-<div class="content-header">
+<div class="content-header" [ngStyle]="!defaultBg  && {'background': selectedCourse?.background}">
   <div class="ui container py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
       <div class="content-header__img mr-8">
@@ -19,11 +19,12 @@
       </div>
       <div class="flex-basis-1 mr-32">
         <div class="content-header__title font-weight-bold sb__ellipsis
-          sb__ellipsis--one">
+          sb__ellipsis--one"  [ngStyle]="!defaultBg  && {'color': selectedCourse?.titleColor}">
           <div>{{title}}</div>
         </div>
-        <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.sectionTitle).toUpperCase()}}</div>
-      </div>
+        <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="courseList.length > 1"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
+        <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="courseList.length === 1"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.oneCourse).toUpperCase()}}</div>
+    </div>
     </div>
   </div>
 </div>
