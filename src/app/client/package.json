@@ -115,6 +115,7 @@
     "karma-jasmine": "1.1.0",
     "karma-jasmine-html-reporter": "0.2.2",
     "karma-mocha-reporter": "2.2.5",
+    "karma-parallel": "^0.3.1",
     "md5": "2.2.1",
     "minimist": "1.2.0",
     "protractor": "5.4.2",
