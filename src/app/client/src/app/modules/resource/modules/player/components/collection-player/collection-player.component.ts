@@ -83,6 +83,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   closeContentIntractEdata: IInteractEventEdata;
 
+  copyAsCourseInteractEdata: IInteractEventEdata;
+
   private subscription: Subscription;
 
   public contentType: string;
@@ -302,6 +304,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       type: 'click',
       pageid: 'collection-player'
     };
+    this.copyAsCourseInteractEdata = {
+      id: 'copy-as-course-button',
+      type: 'click',
+      pageid: 'collection-player'
+    };
     this.collectionInteractObject = {
       id: this.collectionId,
       type: this.contentType,
@@ -357,6 +364,21 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.showCopyLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
+  }
+  /**
+   * @since - #SH-66
+   * @param  {ContentData} contentData
+   * @description - It will copy the textbook as a curriculum course by hitting a content service API.
+   */
+  copyAsCourse(contentData: ContentData) {
+    this.showCopyLoader = true;
+    this.copyContentService.copyAsCourse(contentData).subscribe( (response) => {
+      this.toasterService.success(this.resourceService.messages.smsg.m0042);
+      this.showCopyLoader = false;
+    }, (err) => {
+      this.showCopyLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0008);
+    });
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.collectionId, this.mimeType);
