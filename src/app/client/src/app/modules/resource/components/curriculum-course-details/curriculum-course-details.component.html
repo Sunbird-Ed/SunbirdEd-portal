@@ -33,7 +33,7 @@
             <svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#play"></use>
             </svg>
-          </em>continue Learning
+          </em>{{resourceService?.frmelmnts?.btn?.continueLearning}}
         </button>
       </div>
     </div>
@@ -45,9 +45,11 @@
   <div *ngFor="let item of course?.children; let index = index;">
     <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap py-8">
       <h5 *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="py-8">
-        <span class="title"><strong>CHAPTER {{index+1}}&nbsp;{{item?.name}}</strong></span>
+        <span class="title"><strong>{{resourceService?.frmelmnts?.lbl?.chapter}}
+            {{index+1}}&nbsp;{{item?.name}}</strong></span>
       </h5>
-      <button class="sb-btn sb-btn-outline-secondary sb-btn-normal">continue</button>
+      <button
+        class="sb-btn sb-btn-outline-secondary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
     </div>
     <div class="chapter-box sb-g">
       <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8">
@@ -73,11 +75,11 @@
       </section>
 
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4">
-        <div class="sb-bg-color-white p-8">
-          YOUR PROGRESS
-          <h5 class="sb-color-primary font-weight-bold">20% completed</h5>
-          <sui-progress value="10" maximum="100" class="green"></sui-progress>
-          complete 5 more contents to unlock a new achievement
+        <div class="sb-bg-color-white p-8 fs-0-92">
+          <p>{{resourceService?.messages?.stmsg?.m0108 | uppercase}}</p>
+          <p class="sb-color-primary font-weight-bold">20% {{resourceService?.frmelmnts?.lbl?.completed}}</p>
+          <sui-progress value="10" maximum="100" class="green mb-0 mr-0"></sui-progress>
+          <p class="fs-0-785">{{resourceService?.frmelmnts?.lbl?.completeContentToUnlock | interpolate:'{count}': '5'}}</p>
         </div>
       </section>
     </div>
