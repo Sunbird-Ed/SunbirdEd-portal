@@ -61,8 +61,7 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
         this.initFilter = true;
       }, (error) => {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-        setTimeout(() => this.navigationhelperService.goBack(), 5000);
-        console.error('init search filter failed', error);
+        this.navigationhelperService.goBack();
       });
   }
 
