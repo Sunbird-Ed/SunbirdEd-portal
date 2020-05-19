@@ -338,12 +338,12 @@ export class SearchService {
             return content;
           }
         });
-        selectedCourse = _.get(this.getCardData(), title);
+        selectedCourse = _.get(this.getSubjectsStyles(), title);
         return ({contents : _.compact(cardData), selectedCourse});
       } else {
         cardData = this.getFilterValues(contents);
         _.forEach(cardData, card => {
-          const theme = _.get(this.getCardData(), card.title);
+          const theme = _.get(this.getSubjectsStyles(), card.title);
           if (card && theme) {
             card.theme = theme.background;
             card.cardImg = theme.icon;
@@ -391,7 +391,7 @@ export class SearchService {
     return subjects;
   }
 
-  getCardData() {
+  getSubjectsStyles() {
     return {
         Science: {
           background: '#FFD6EB',
