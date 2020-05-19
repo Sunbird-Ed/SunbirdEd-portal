@@ -134,4 +134,10 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
     goBack() {
       this.navigationhelperService.goBack();
     }
+
+  navigateToCourseDetails(course) {
+    console.log('Course', course);
+    this.router.navigate(['resources/details', course.identifier],
+      { queryParams: { contentType: course.contentType } });
+  }
 }
