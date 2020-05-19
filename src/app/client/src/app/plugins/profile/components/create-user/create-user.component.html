@@ -1,3 +1,70 @@
-<p>
-  create-user works!
-</p>
+<div class="user-profile-box">
+  <div class="d-flex flex-jc-space-between my-16">
+    <div class="user-profile-box__title">Create User</div>
+    <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary">Delete</button>
+  </div>
+  ​
+  <form class="sb-form my-16">
+    <div class="sb-field">
+      <label class="font-weight-normal">Name<span>*</span></label>
+      <input class="sb-form-control" type="text" placeholder="Enter user name">
+    </div>
+    <div class="d-flex flex-jc-space-between">
+      <div class="sb-field my-8 w-50">
+        <label class="font-weight-normal">Board:</label>
+        <sui-select class="selection" name="state" labelField="name" placeholder="Select State">
+          <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
+        </sui-select>
+      </div>
+
+      <div class="sb-field my-8 ml-16 w-50">
+        <label class="font-weight-normal">Medium:</label>
+        <div class="sb-field">
+          <sui-multi-select class="selection" name="district" labelField="name" placeholder="Select district">
+            <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+          </sui-multi-select>
+        </div>
+      </div>
+    </div>
+    <div class="sb-field mb-16">
+      <label class="font-weight-normal">Class:</label>
+      <div class="sb-field">
+        <sui-multi-select class="selection" name="district" labelField="name" placeholder="Select district">
+          <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+        </sui-multi-select>
+      </div>
+    </div>
+
+    <div class="fields-selection d-flex flex-jc-space-between w-100">
+      <div class="sb-field field-focus w-50">
+<!--        <select class="ui dropdown selection fields-dropdown" [(ngModel)]="selectState">
+          <option [ngValue]="option" *ngFor="let option of selectStateOption" [value]="option">{{option?.name}}
+          </option>
+        </select>-->
+        <label class="d-flex font-weight-normal">State</label>
+      </div>
+      <div class="sb-field field-focus onboard-content w-50 ml-16">
+        <select class="ui dropdown selection fields-dropdown" name="district" labelField="name"
+                placeholder="Select district">
+          <option [ngValue]="district" *ngFor="let district of districts" [value]="district">{{district?.name}}
+          </option>
+        </select>
+        <label class="d-flex font-weight-normal">District</label>
+      </div>
+    </div>
+
+  </form>
+
+  ​
+  <div class="required sb-checkbox sb-checkbox-primary sb-field">
+    <input type="checkbox" role="checkbox" name="checkbox">
+    <label class="fsmall mx-8 font-weight-normal">I understand and accept the
+      <a class="text-underline fsmall" href="javascript:void(0)">DIKSHA Terms of Use.
+      </a>
+    </label></div>
+  ​
+  <div class="user-profile-box__actions">
+    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary"> Add User
+    </button>
+  </div>
+</div>
