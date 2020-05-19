@@ -279,9 +279,6 @@ export class UserService {
     .pipe(tap((data: ServerResponse) => {
         this.organizationsDetails = _.get(data, 'result.response.content');
         this.orgNames = _.map(this.organizationsDetails, org => org.orgName);
-        _.forEach(this.organizationsDetails, (orgData) => {
-          console.log('orgNames', orgData);
-        });
       }));
   }
 
