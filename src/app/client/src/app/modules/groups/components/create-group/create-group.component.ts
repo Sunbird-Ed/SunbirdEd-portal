@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-group.component.scss']
 })
 export class CreateGroupComponent implements OnInit {
-  showBoardSelectnModal;
+  showGroupCreateForm;
   sbcards = [
     {
       title: 'Group Name 123',

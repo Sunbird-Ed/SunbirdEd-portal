@@ -5,57 +5,78 @@
   </div>
   ​
   <form class="sb-form my-16">
-    <div class="sb-field">
-      <label class="font-weight-normal">Name<span>*</span></label>
-      <input class="sb-form-control" type="text" placeholder="Enter user name">
+    <div class="ui stackable grid m-0">
+
+      <div class="twelve wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus mb-8">
+        <input class="sb-form-control selection fields-dropdown ui dropdown" type="text" placeholder="Enter user name">
+        <label class="font-weight-normal">Name<span>*</span></label>
+      </div>
+      </div>
     </div>
-    <div class="d-flex flex-jc-space-between">
-      <div class="sb-field my-8 w-50">
-        <label class="font-weight-normal">Board:</label>
-<!--        <sui-select class="selection" name="state" labelField="name" placeholder="Select State">
-          <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
-        </sui-select>-->
+
+      <div class="six wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus my-8">
+            <!-- <sui-select class="selection fields-dropdown" name="state" labelField="name" placeholder="Select State">
+              <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
+            </sui-select> -->
+            <label class="font-weight-normal">Board</label>
+          </div>
+        </div>
       </div>
 
-      <div class="sb-field my-8 ml-16 w-50">
-        <label class="font-weight-normal">Medium:</label>
-        <div class="sb-field">
-<!--          <sui-multi-select class="selection" name="district" labelField="name" placeholder="Select district">
-            <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
-          </sui-multi-select>-->
+      <div class="six wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus my-8 onboard-content">
+            <!-- <sui-multi-select class="selection fields-dropdown" name="district" labelField="name"
+              placeholder="Select district">
+              <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+            </sui-multi-select> -->
+            <label class="font-weight-normal">Medium</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="twelve wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus mt-8 mb-16">
+            <!-- <sui-multi-select class="selection fields-dropdown" name="district" labelField="name"
+              placeholder="Select district">
+              <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+            </sui-multi-select> -->
+            <label class="font-weight-normal">Class</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="six wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus">
+            <!-- <select class="ui dropdown selection fields-dropdown" [(ngModel)]="selectState">
+              <option [ngValue]="option" *ngFor="let option of selectStateOption" [value]="option">{{option?.name}}
+              </option>
+            </select> -->
+            <label class="d-flex font-weight-normal">State</label>
+          </div>
+        </div>
+      </div>
+      <div class="six wide column p-0">
+        <div class="fields-selection p-0">
+          <div class="sb-field field-focus onboard-content">
+            <!-- <select class="ui dropdown selection fields-dropdown" name="district" labelField="name"
+              placeholder="Select district">
+              <option [ngValue]="district" *ngFor="let district of districts" [value]="district">{{district?.name}}
+              </option>
+            </select> -->
+            <label class="d-flex font-weight-normal">District</label>
+          </div>
         </div>
       </div>
     </div>
-    <div class="sb-field mb-16">
-      <label class="font-weight-normal">Class:</label>
-      <div class="sb-field">
-<!--        <sui-multi-select class="selection" name="district" labelField="name" placeholder="Select district">
-          <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
-        </sui-multi-select>-->
-      </div>
-    </div>
-
-    <div class="fields-selection d-flex flex-jc-space-between w-100">
-      <div class="sb-field field-focus w-50">
-<!--        <select class="ui dropdown selection fields-dropdown" [(ngModel)]="selectState">
-          <option [ngValue]="option" *ngFor="let option of selectStateOption" [value]="option">{{option?.name}}
-          </option>
-        </select>-->
-        <label class="d-flex font-weight-normal">State</label>
-      </div>
-      <div class="sb-field field-focus onboard-content w-50 ml-16">
-<!--        <select class="ui dropdown selection fields-dropdown" name="district" labelField="name"
-                placeholder="Select district">
-          <option [ngValue]="district" *ngFor="let district of districts" [value]="district">{{district?.name}}
-          </option>
-        </select>-->
-        <label class="d-flex font-weight-normal">District</label>
-      </div>
-    </div>
-
   </form>
 
-  ​
   <div class="required sb-checkbox sb-checkbox-primary sb-field">
     <input type="checkbox" role="checkbox" name="checkbox">
     <label class="fsmall mx-8 font-weight-normal">I understand and accept the
