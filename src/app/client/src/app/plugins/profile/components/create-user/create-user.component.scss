@@ -27,11 +27,6 @@
 :host {
   .fields-selection {
     display: flex;
-    flex-direction: column;
-
-    @include respond-above(sm) {
-      flex-direction: row;
-    }
 
     .sb-field .ui.selection.active.dropdown {
       border-color: #96c8da;
@@ -45,23 +40,13 @@
       margin-bottom: calculateRem(16px) 0px;
       width: 100%;
 
+      @include respond-below(sm) {}
+
       label {
         font-size: 14px;
       }
     }
 
-    .onboard-content {
-      @include respond-above(sm) {
-        margin-left: 2rem;
-        html[dir="rtl"] & {
-          margin-right: 2rem;
-        }
-      }
-    }
-
-    .textColorChange {
-      color: #0076FE;
-    }
   }
 }
 
@@ -69,26 +54,6 @@
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-start;
-}
-
-.ui.selection.dropdown.fields-dropdown {
-  height: 2rem !important;
-
-  &:focus {
-    border: calculateRem(1px) solid #0076FE;
-    color: #0076FE !important;
-  }
-}
-
-.ui.selection.dropdown.fields-dropdown:focus ~ label {
-  border: 0px;
-  color: #0076FE;
-  font-weight: normal;
-}
-
-.ui.selection.dropdown.fields-dropdown option {
-  background: var(--white);
-  color: var(--black);
 }
 
 .sb-profile-btn {
