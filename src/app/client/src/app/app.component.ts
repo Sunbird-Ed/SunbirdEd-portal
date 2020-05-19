@@ -17,7 +17,7 @@ import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } fr
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { ShepherdService } from 'angular-shepherd';
-import { CsModule} from "@project-sunbird/client-services";
+import { CsModule} from '@project-sunbird/client-services';
 /**
  * main app component
  */
@@ -548,7 +548,7 @@ export class AppComponent implements OnInit, OnDestroy {
           },
           services: {
               groupServiceConfig: {
-                apiPath: 'api/v1/group',
+                apiPath: 'learner/v1/group',
               }
           }
       });

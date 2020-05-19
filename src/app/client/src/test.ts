@@ -6,7 +6,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
-import { CsModule} from "@project-sunbird/client-services";
+import { CsModule} from '@project-sunbird/client-services';
 
 declare const __karma__: any;
 declare const require: any;
@@ -45,7 +45,7 @@ if (!CsModule.instance.isInitialised) {
      },
      services: {
          groupServiceConfig: {
-           apiPath: 'api/v1/group',
+           apiPath: 'learner/v1/group',
          }
      }
  });
