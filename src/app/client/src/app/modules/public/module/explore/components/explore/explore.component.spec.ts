@@ -195,16 +195,8 @@ describe('ExploreComponent', () => {
   it('should return empty data from search', () => {
     const option = {filters: { board: ['test'], medium: ['English'], gradeLevel: ['Class 4'], channel: '123'}, limit: 100};
     spyOn<any>(component, 'getSearchRequest').and.returnValue(option);
-    spyOn(component, 'getFilterValues').and.returnValue( [{title: 'English', count: 2}, {title: 'Social', count: 1}]);
     component['fetchCourses']();
     expect(component.cardData.length).toEqual(2);
   });
 
-  it('should return subjects', () => {
-   const data = component.getFilterValues([{ subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]);
-   expect(data[0].title).toEqual('English');
-   expect(data[0].count).toEqual('2 COURSES');
-   expect(data[1].title).toEqual('Social');
-   expect(data[1].count).toEqual('1 COURSE');
-  });
 });

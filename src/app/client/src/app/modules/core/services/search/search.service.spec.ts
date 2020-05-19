@@ -59,4 +59,13 @@ describe('SearchService', () => {
         expect(service).toBeTruthy();
         expect(modifiedFacetData).toEqual(result);
       }));
+
+      it('should return subjects', inject([SearchService],
+        (service: SearchService) => {
+        const data = service.getFilterValues([{ subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]);
+        expect(data[0].title).toEqual('English');
+        expect(data[0].count).toEqual('2 COURSES');
+        expect(data[1].title).toEqual('Social');
+        expect(data[1].count).toEqual('1 COURSE');
+       }));
   });

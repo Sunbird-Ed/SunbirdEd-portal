@@ -7,7 +7,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, map, mergeMap } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
-const DEFAULT_FRAMEWORK = 'CBSE';
 
 @Component({
   selector: 'app-explore-curriculum-courses',
@@ -20,30 +19,9 @@ export class ExploreCurriculumCoursesComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   public defaultBg = false;
   public defaultFilters = {
-    board: [DEFAULT_FRAMEWORK],
-    gradeLevel: ['Class 10'],
+    board: [],
+    gradeLevel: [],
     medium: []
-  };
-  private subjectThemeAndIconsMap = {
-    Science: {
-      background: '#FFD6EB',
-      titleColor: '#FD59B3',
-      icon: './../../../../../../../assets/images/science.svg'
-    },
-    Mathematics: {
-      background: '#FFDFD9',
-      titleColor: '#EA2E52',
-      icon: './../../../../../../../assets/images/mathematics.svg'
-    },
-    English: {
-      background: '#DAFFD8',
-      titleColor: '#218432'
-    },
-    Social: {
-      background: '#DAD4FF',
-      titleColor: '#635CDC',
-      icon: './../../../../../../../assets/images/social.svg'
-    }
   };
 
   public selectedCourse;
@@ -69,8 +47,7 @@ export class ExploreCurriculumCoursesComponent implements OnInit, OnDestroy {
             this.fetchCourses();
           }, (error) => {
             this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-            setTimeout(() => this.router.navigate(['']), 5000);
-            console.error('init search filter failed', error);
+            this.navigationhelperService.goBack();
           });
     }
 
@@ -84,44 +61,23 @@ export class ExploreCurriculumCoursesComponent implements OnInit, OnDestroy {
       }
     }
 
-    private getSearchRequest() {
-      let filters = this.defaultFilters;
-      filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-      filters['courseType'] = 'CurriculumCourse';
-      filters['contentType'] = 'Course';
-      if (!this.isCustodianOrg) {
-        filters['channel'] = this.channelId;
-      }
-      const option = {
-          limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
-          filters: filters,
-          params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
-      };
-      if (this.contentSearchService.frameworkId) {
-        option.params.framework = this.contentSearchService.frameworkId;
-      }
-      return option;
-    }
 
 
     private fetchCourses() {
-      const option = this.getSearchRequest();
-      this.searchService.contentSearch(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-        const contents = _.get(data, 'result.content');
-        if (!_.isEmpty(contents)) {
-          this.courseList = _.map(contents, content => {
-            if (_.isEqual(_.get(content, 'subject'), this.title)) {
-              return content;
-            }
-          });
-          this.selectedCourse = _.get(this.subjectThemeAndIconsMap, this.title);
-          this.defaultBg = _.isEmpty(this.selectedCourse);
-          this.courseList = _.compact(this.courseList);
-        }
-        }, err => {
-          this.courseList = [];
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-        });
+      const request = {
+        filters: this.defaultFilters,
+        isCustodianOrg: this.isCustodianOrg,
+        channelId: this.channelId,
+        frameworkId: this.contentSearchService.frameworkId
+      };
+      this.searchService.fetchCourses(request, true, this.title).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+        this.courseList = !_.isEmpty(_.get(data, 'contents')) ? data.contents : [];
+        this.selectedCourse = _.get(data, 'selectedCourse');
+        this.defaultBg = _.isEmpty(this.selectedCourse);
+      }, err => {
+        this.courseList = [];
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      });
     }
 
     ngOnDestroy() {
