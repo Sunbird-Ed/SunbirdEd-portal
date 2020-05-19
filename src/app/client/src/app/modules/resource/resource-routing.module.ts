@@ -28,7 +28,7 @@ const routes: Routes = [
     path: 'play', loadChildren: './modules/player/player.module#PlayerModule'
   },
   {
-    path: 'details/:courseId', component: CurriculumCourseDetailsComponent
+    path: 'course/:courseId', component: CurriculumCourseDetailsComponent
   },
   {
     path: 'curriculum-courses', component: CurriculumCoursesComponent

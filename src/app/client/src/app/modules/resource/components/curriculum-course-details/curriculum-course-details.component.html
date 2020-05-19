@@ -51,7 +51,7 @@
     </div>
     <div class="chapter-box sb-g">
       <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8">
-        <div *ngIf="item">
+        <div *ngIf="item;else noContent">
           <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
             <div class="child-content-padding">
               <sb-toc-card [content]="item" (tocCardClick)="onTocCardClick($event)" [type]="cardType">
@@ -67,6 +67,9 @@
             </div>
           </div>
         </div>
+        <ng-template #noContent>
+          <div class="heading">{{noContentMessage}}</div>
+        </ng-template>
       </section>
 
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4">
