@@ -1,25 +1,26 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CreateGroupComponent } from './create-group.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('CreateGroupComponent', () => {
   let component: CreateGroupComponent;
   let fixture: ComponentFixture<CreateGroupComponent>;
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateGroupComponent ]
+      imports: [],
+      declarations: [CreateGroupComponent],
+      providers: [],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateGroupComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+  });
+  it('Should init ngOnit', () => {
+    component.ngOnInit();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 });

@@ -1,55 +1,62 @@
 <!-- add create group form -->
-<!-- <sui-modal *ngIf="showBoardSelectnModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showBoardSelectnModal = !showBoardSelectnModal" #modal>
-  <div class="sb-modal-header">Create Group</div>
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll #modal [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-modal-header">{{ resourceService.frmelmnts.lbl.createGroup }}</div>
   <div class="sb-modal-content o-y-visible">
-    <div class="create-group-title pb-16">Enter the following information</div>
-    <form class="sb-form">
-     
+    <div class="create-group-title pb-16">{{ resourceService.frmelmnts.lbl.enterFollowingInfo }}</div>
+    <form class="sb-form" [formGroup]="groupForm">
       <div class="sb-field mb-16">
-        <label>Group Name</label>
-        <input class="sb-form-control is-invalid" type="text" placeholder="Enter Group Name">
-        <small class="message sb-color-error font-weight-bold">Group Name is required.</small>
+        <label>{{ resourceService.frmelmnts.lbl.groupName }}</label>
+        <input class="sb-form-control" type="text" placeholder="{{ resourceService.frmelmnts.lbl.enterGroupName }}" formControlName="groupName" [ngClass]="{'is-invalid' : isFieldValid('groupName')}">
+        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('groupName')">{{ resourceService.frmelmnts.lbl.groupNameRequired }}</small>
       </div>
       <div class="sb-field mb-16">
-        <label>Board:</label>
-        <sui-select class="selection sb-form-control is-invalid" name="state" labelField="name" placeholder="Select State">
-          <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
+        <label>{{ resourceService.frmelmnts.lbl.boards }}:</label>
+        <sui-select id="board" formControlName="board" class="selection sb-form-control" (ngModelChange)="handleFieldChange($event, 'board')" name="board" 
+        [ngClass]="{'is-invalid' : isFieldValid('board')}" placeholder="{{ resourceService.frmelmnts.lbl.selectBoard }}">
+          <sui-select-option *ngFor="let option of boardList" [value]="option.name"></sui-select-option>
         </sui-select>
-        <small class="message sb-color-error font-weight-bold">Board is required.</small>
+        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('board')">{{ resourceService.frmelmnts.lbl.boardRequired }}</small>
       </div>
       <div class="sb-field mb-16">
-        <label>Medium:</label>
+        <label>{{ resourceService.frmelmnts.lbl.medium }}:</label>
         <div class="sb-field">
-          <sui-select class="selection sb-form-control is-invalid" name="medium" labelField="name" placeholder="Select Medium">
-            <sui-select-option *ngFor="let language of medium" [value]="language"></sui-select-option>
-          </sui-select>
-          <small class="message sb-color-error font-weight-bold">At least one medium is required.</small>
+          <sui-multi-select id="medium" formControlName="medium" class="selection sb-form-control" (ngModelChange)="handleFieldChange($event, 'medium')" name="medium" 
+          [ngClass]="{'is-invalid' : isFieldValid('medium')}" placeholder="{{ resourceService.frmelmnts.lbl.selectMedium }}">
+            <sui-select-option *ngFor="let option of mediumList" [value]="option.name"></sui-select-option>
+          </sui-multi-select>
+          <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('medium')">{{ resourceService.frmelmnts.lbl.mediumRequired }}</small>
         </div>
       </div>
       <div class="sb-field mb-16">
-        <label>Class:</label>
+        <label>{{ resourceService.frmelmnts.lbl.classes }}:</label>
         <div class="sb-field">
-          <sui-multi-select class="selection sb-form-control is-invalid" name="class" labelField="name" placeholder="Select Class">
-            <sui-select-option *ngFor="let class of classes" [value]="class"></sui-select-option>
+          <sui-multi-select id="gradeLevel" formControlName="gradeLevel" class="selection sb-form-control" (ngModelChange)="handleFieldChange($event, 'gradeLevel')" 
+          name="gradeLevel" [ngClass]="{'is-invalid' : isFieldValid('gradeLevel')}" placeholder="{{ resourceService.frmelmnts.lbl.selectClasses }}">
+            <sui-select-option *ngFor="let option of gradesList" [value]="option.name"></sui-select-option>
           </sui-multi-select>
-          <small class="message sb-color-error font-weight-bold">At least one class is required.</small>
+          <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('gradeLevel')">{{ resourceService.frmelmnts.lbl.classRequired }}</small>
         </div>
       </div>
       <div class="sb-field">
-        <label>Subject:</label>
+        <label>{{ resourceService.frmelmnts.lbl.subjects }}:</label>
         <div class="sb-field">
-          <sui-select class="selection sb-form-control is-invalid" name="subject" labelField="name" placeholder="Select Subject">
-            <sui-select-option *ngFor="let subject of subjects" [value]="subject"></sui-select-option>
-          </sui-select>
-          <small class="message sb-color-error font-weight-bold">At least one subject is required.</small>
+          <sui-multi-select id="subject" formControlName="subject" class="selection sb-form-control" (ngModelChange)="handleFieldChange($event, 'subject')" 
+          name="subject" [ngClass]="{'is-invalid' : isFieldValid('subject')}" placeholder="{{ resourceService.frmelmnts.lbl.selectSubjects }}">
+            <sui-select-option *ngFor="let option of subjectList" [value]="option.name"></sui-select-option>
+          </sui-multi-select>
+          <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('subject')">{{ resourceService.frmelmnts.lbl.subjectRequired }}</small>
         </div>
       </div>
     </form>
   </div>
   <div class="sb-modal-actions">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="showBoardSelectnModal = !showBoardSelectnModal">
-      Submit
+    <button type="submit" 
+      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractEdata]="submitInteractEdata"
+      class="sb-btn sb-btn-normal sb-btn-primary" 
+      (click)="onSubmitForm()">
+      {{ resourceService.frmelmnts.btn.submitbtn }}
     </button>
   </div>
-</sui-modal> -->
+</sui-modal>

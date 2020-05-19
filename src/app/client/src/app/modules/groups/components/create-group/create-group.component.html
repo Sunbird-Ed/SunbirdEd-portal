@@ -15,7 +15,7 @@
             Currently, you do not have any Groups Click on create group to create groups, choose admin and much more
             (Group discription here)</div>
           <button class="sb-btn sb-btn-primary sb-btn-md flex-ai-jc-center mb-8" type="button"
-            (click)="showBoardSelectnModal = !showBoardSelectnModal">
+            (click)="showGroupCreateForm = !showGroupCreateForm">
             <i class="icon-svg icon-svg--md icon-addMembers mr-4">
               <svg class="icon icon-svg--white">
                 <use xlink:href="./assets/images/libdemo/sprite.svg#AddMembers"></use>
@@ -58,7 +58,7 @@
               group to create groups, choose admin and much more ( Group discription here )</div>
           </div>
           <button class="sb-btn sb-btn-primary sb-btn-md mt-16 mb-8 w-100 flex-ai-jc-center" type="button"
-            (click)="showBoardSelectnModal = !showBoardSelectnModal"><i
+            (click)="showGroupCreateForm = !showGroupCreateForm"><i
               class="icon-svg icon-svg--md icon-addMembers mr-4">
               <svg class="icon icon-svg--white">
                 <use xlink:href="./assets/images/libdemo/sprite.svg#AddMembers"></use>
@@ -70,3 +70,5 @@
   </div>
 
 </div>
+
+<app-group-form *ngIf="showGroupCreateForm" ></app-group-form>
