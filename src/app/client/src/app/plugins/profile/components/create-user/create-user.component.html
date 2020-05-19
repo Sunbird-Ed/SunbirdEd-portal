@@ -1,9 +1,8 @@
-<div class="user-profile-box">
-  <div class="d-flex flex-jc-space-between my-16">
+<div class="user-profile-box mt-32">
+  <div class="d-flex flex-jc-space-between mb-16">
     <div class="user-profile-box__title">Create User</div>
-    <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary">Delete</button>
   </div>
-  ​
+
   <form class="sb-form my-16">
     <div class="ui stackable grid m-0">
 
@@ -19,8 +18,8 @@
       <div class="six wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus my-8">
-            <!-- <sui-select class="selection fields-dropdown" name="state" labelField="name" placeholder="Select State">
-              <sui-select-option *ngFor="let state of states" [value]="state"></sui-select-option>
+            <!-- <sui-select class="selection fields-dropdown" name="board" labelField="board" placeholder="Select Board">
+              <sui-select-option *ngFor="let board of boards" [value]="board"></sui-select-option>
             </sui-select> -->
             <label class="font-weight-normal">Board</label>
           </div>
@@ -30,9 +29,9 @@
       <div class="six wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus my-8 onboard-content">
-            <!-- <sui-multi-select class="selection fields-dropdown" name="district" labelField="name"
-              placeholder="Select district">
-              <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+            <!-- <sui-multi-select class="selection fields-dropdown" name="medium" labelField="medium"
+              placeholder="Select Medium">
+              <sui-select-option *ngFor="let medium of mediums" [value]="medium"></sui-select-option>
             </sui-multi-select> -->
             <label class="font-weight-normal">Medium</label>
           </div>
@@ -42,9 +41,9 @@
       <div class="twelve wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus mt-8 mb-16">
-            <!-- <sui-multi-select class="selection fields-dropdown" name="district" labelField="name"
-              placeholder="Select district">
-              <sui-select-option *ngFor="let district of districts" [value]="district"></sui-select-option>
+            <!-- <sui-multi-select class="selection fields-dropdown" [(ngModel)]="classes" name="class" labelField="class"
+              placeholder="Select Class">
+              <sui-select-option *ngFor="let class of classes" [value]="class"></sui-select-option>
             </sui-multi-select> -->
             <label class="font-weight-normal">Class</label>
           </div>
@@ -54,8 +53,8 @@
       <div class="six wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus">
-            <!-- <select class="ui dropdown selection fields-dropdown" [(ngModel)]="selectState">
-              <option [ngValue]="option" *ngFor="let option of selectStateOption" [value]="option">{{option?.name}}
+            <!-- <select class="ui dropdown selection fields-dropdown" placeholder="Select State" [(ngModel)]="states" name="states">
+              <option [ngValue]="option" *ngFor="let state of states" [value]="option">{{option?.name}}
               </option>
             </select> -->
             <label class="d-flex font-weight-normal">State</label>
@@ -65,27 +64,26 @@
       <div class="six wide column p-0">
         <div class="fields-selection p-0">
           <div class="sb-field field-focus onboard-content">
-            <!-- <select class="ui dropdown selection fields-dropdown" name="district" labelField="name"
+            <!-- <select class="ui dropdown selection fields-dropdown" [(ngModel)]="districts" name="districts" labelField="district"
               placeholder="Select district">
               <option [ngValue]="district" *ngFor="let district of districts" [value]="district">{{district?.name}}
-              </option>
-            </select> -->
+              </option> 
+            </select>-->
             <label class="d-flex font-weight-normal">District</label>
           </div>
         </div>
       </div>
+      <div class="twelve wide column p-0 pt-8">
+        <div class="sb-checkbox sb-checkbox-primary">
+          <input type="checkbox" id="check1" name="example">
+          <label for="check1">I understand and accept the <a class="text-underline fsmall" href="javascript:void(0)">DIKSHA Terms of Use.</a></label>
+          </div>
+      </div>
     </div>
   </form>
-
-  <div class="required sb-checkbox sb-checkbox-primary sb-field">
-    <input type="checkbox" role="checkbox" name="checkbox">
-    <label class="fsmall mx-8 font-weight-normal">I understand and accept the
-      <a class="text-underline fsmall" href="javascript:void(0)">DIKSHA Terms of Use.
-      </a>
-    </label></div>
-  ​
-  <div class="user-profile-box__actions">
-    <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary"> Add User
-    </button>
-  </div>
+  
+<div class="user-profile-box__actions">
+  <button type="submit" class="sb-btn sb-btn-normal sb-btn-primary"> Add User</button>
+</div>
+ 
 </div>
