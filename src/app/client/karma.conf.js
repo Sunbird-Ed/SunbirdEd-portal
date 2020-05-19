@@ -67,7 +67,8 @@ module.exports = function (config) {
           '--proxy-server=direct://',
           '--proxy-bypass-list=*',
           '--max_old_space_size=4096',
-          "--js-flags=--max-old-space-size=4096"
+          "--js-flags=--max-old-space-size=4096",
+          "--disable-dev-shm-usage"
         ]
       }
     },
