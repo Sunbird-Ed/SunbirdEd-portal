@@ -36,7 +36,7 @@ describe('ResourceComponent', () => {
     frmelmnts: {
       lbl: {
         fetchingContentFailed: 'Fetching content failed. Please try again later.'
-      }
+      },
     },
     languageSelected$: of({})
   };
@@ -69,21 +69,36 @@ describe('ResourceComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should return empty data from search', () => {
-    const option = {filters: { board: ['test'], medium: ['English'], gradeLevel: ['Class 4'], channel: '123'}, limit: 100};
-    spyOn<any>(component, 'getSearchRequest').and.returnValue(option);
-    spyOn(component['searchService'], 'contentSearch').and.returnValue(of ({result:
-      {content: [{subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]}}));
-    spyOn(component, 'getFilterValues').and.returnValue( [{title: 'English', count: 2}, {title: 'Social', count: 1}]);
+  it('should return  data from search', () => {
+    component.channelId = '123',
+    component['contentSearchService']._frameworkId = '123456';
+    const option = {filters: {},
+    isCustodianOrg: true,
+    channelId: '123',
+    frameworkId: '123456'
+    };
+    spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([{title: 'English', count: 2}, { title: 'Social', count: 1}]
+    ));
     component['fetchCourses']();
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
     expect(component.cardData.length).toEqual(2);
+
   });
 
-  it('should return subjects', () => {
-   const data = component.getFilterValues([{ subject: 'English'}, {subject: 'English'}, {subject: 'Social'}]);
-   expect(data[0].title).toEqual('English');
-   expect(data[0].count).toEqual(2);
-   expect(data[1].title).toEqual('Social');
-   expect(data[1].count).toEqual(1);
+
+  it('should return empty data from search', () => {
+    component.channelId = '123',
+    component['contentSearchService']._frameworkId = '123456';
+    const option = {filters: {},
+    isCustodianOrg: true,
+    channelId: '123',
+    frameworkId: '123456'
+    };
+    spyOn(component['searchService'], 'fetchCourses').and.returnValue(of ([]
+    ));
+    component['fetchCourses']();
+    expect(component['searchService'].fetchCourses).toHaveBeenCalledWith(option,  true);
+    expect(component.cardData.length).toEqual(0);
+
   });
 });
