@@ -28,6 +28,33 @@ export const mockRes = {
   },
   userData: {
     'firstName': 'Sourav',
-    'lastName': 'Dey'
-  }
+    'lastName': 'Dey',
+    'organisationNames' : ['Sunbird'],
+    'organisationIds' : ['ORG_001'],
+    'userId' : '8454cb21-3ce9-4e30-85b5-fade097880d8'
+  },
+  copyContentSuccess: {
+      'id': 'api.course.create',
+      'ver': 'v1',
+      'ts': '2020-05-15 13:09:33:042+0000',
+      'params': {
+        'resmsgid': null,
+        'msgid': null,
+        'err': null,
+        'status': 'success',
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'versionKey': '1589548170308',
+        'identifier': 'do_11302157861002444811',
+        'course_id': 'do_11302157861002444811'
+      }
+    },
+    copyCourseContentData : {
+      identifier: 'do_112598807704158208111',
+      name: 'Demo curriculum course',
+      description: '',
+      framework: 'NCFCOPY'
+    }
 };

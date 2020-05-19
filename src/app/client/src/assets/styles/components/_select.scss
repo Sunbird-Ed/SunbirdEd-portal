@@ -90,3 +90,9 @@
         max-height: calculateRem(368px);
     }
 }
+
+.sb-field{
+    .ui.sb-form-control.dropdown>.dropdown.icon {
+     float:right;
+    }
+  }
