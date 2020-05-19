@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateUserComponent implements OnInit {
   states: [];
+  boards: [];
+  mediums: [];
+  classes: [];
   districts: [];
   constructor() { }
 
