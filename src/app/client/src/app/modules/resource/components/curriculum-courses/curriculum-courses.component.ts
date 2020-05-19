@@ -7,7 +7,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, map, mergeMap } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
-const DEFAULT_FRAMEWORK = 'CBSE';
 
 @Component({
   selector: 'app-curriculum-courses',
@@ -19,35 +18,14 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
   public channelId: string;
   public isCustodianOrg = true;
   private unsubscribe$ = new Subject<void>();
+  defaultBg = false;
   public defaultFilters = {
-    board: [DEFAULT_FRAMEWORK],
+    board: [],
     gradeLevel: [],
     medium: []
   };
 
-  private subjectThemeAndIconsMap = {
-    Science: {
-      background: '#FFD6EB',
-      titleColor: '#FD59B3',
-      icon: './../../../../../assets/images/science.svg'
-    },
-    Mathematics: {
-      background: '#FFDFD9',
-      titleColor: '#EA2E52',
-      icon: './../../../../../assets/images/mathematics.svg'
-    },
-    English: {
-      background: '#DAFFD8',
-      titleColor: '#218432'
-    },
-    Social: {
-      background: '#DAD4FF',
-      titleColor: '#635CDC',
-      icon: './../../../../../assets/images/social.svg'
-    }
-  };
-
-  public icon: string;
+  public selectedCourse: {};
   public courseList: Array<{}> = [];
   public title: string;
 
@@ -58,10 +36,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       this.title = _.get(this.activatedRoute, 'snapshot.queryParams.title');
-      if (this.userService.userProfile.framework) {
-        const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
-        this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
-      }
+      this.defaultFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), 'title');
       this.getChannelId().pipe(
         mergeMap(({ channelId, isCustodianOrg }) => {
           this.channelId = channelId;
@@ -73,8 +48,7 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
           this.fetchCourses();
         }, (error) => {
           this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-          console.error('init search filter failed', error);
-          this.router.navigate(['']);
+          this.navigationhelperService.goBack();
       });
     }
 
@@ -88,50 +62,29 @@ export class CurriculumCoursesComponent implements OnInit, OnDestroy {
       }));
     }
 
-    private getSearchRequest() {
-      let filters = this.defaultFilters;
-      filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-      filters['contentType'] = ['TextBook'];
-      if (!this.isCustodianOrg) {
-        filters['channel'] = this.channelId;
-      }
-      const option = {
-          limit: 100 || this.configService.appConfig.SEARCH.PAGE_LIMIT,
-          filters: filters,
-          params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
-      };
-      if (this.contentSearchService.frameworkId) {
-        option.params.framework = this.contentSearchService.frameworkId;
-      }
-      return option;
-    }
+  private fetchCourses() {
+    const request = {
+      filters: this.defaultFilters,
+      isCustodianOrg: this.isCustodianOrg,
+      channelId: this.channelId,
+      frameworkId: this.contentSearchService.frameworkId
+    };
+    this.searchService.fetchCourses(request, true, this.title).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.courseList = !_.isEmpty(_.get(data, 'contents')) ? data.contents : [];
+      this.selectedCourse = _.get(data, 'selectedCourse');
+      this.defaultBg = _.isEmpty(this.selectedCourse);
+    }, err => {
+      this.courseList = [];
+      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+    });
+  }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
-    private fetchCourses() {
-      const option = this.getSearchRequest();
-      this.searchService.contentSearch(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-        const contents = _.get(data, 'result.content');
-        if (!_.isEmpty(contents)) {
-          this.courseList = _.map(contents, content => {
-            if (_.isEqual(_.get(content, 'subject'), this.title)) {
-              return content;
-            }
-          });
-          this.icon = _.get(_.get(this.subjectThemeAndIconsMap, this.title), 'icon');
-          this.courseList = _.compact(this.courseList);
-        }
-        }, err => {
-          this.courseList = [];
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-        });
-    }
-
-    ngOnDestroy() {
-      this.unsubscribe$.next();
-      this.unsubscribe$.complete();
-    }
-
-    goBack() {
-      this.navigationhelperService.goBack();
-    }
+  goBack() {
+    this.navigationhelperService.goBack();
+  }
 }

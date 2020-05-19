@@ -41,7 +41,7 @@
     "@ckeditor/ckeditor5-image": "^12.0.0",
     "@ckeditor/ckeditor5-ui": "^11.2.0",
     "@project-sunbird/ckeditor-build-font": "^1.0.8",
-    "@project-sunbird/common-consumption": "2.10.1",
+    "@project-sunbird/common-consumption": "^3.0.6",
     "@project-sunbird/telemetry-sdk": "^0.0.24",
     "@project-sunbird/web-extensions": "^0.0.2",
     "@types/lodash": "^4.14.104",
