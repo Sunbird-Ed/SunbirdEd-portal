@@ -120,6 +120,7 @@ export class AppComponent implements OnInit, OnDestroy {
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
       });
   }
+
   public makeUTMSession(params) {
     const resultJson = [];
     for (const item in params) {
@@ -150,6 +151,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     sessionStorage.setItem('UTM', JSON.stringify(resultJson));
   }
+
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
       const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];
