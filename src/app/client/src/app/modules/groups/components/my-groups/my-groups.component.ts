@@ -5,6 +5,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./my-groups.component.scss']
 })
 export class MyGroupsComponent implements OnInit {
+  sbcards = [
+    {
+      title: 'Group Name 123',
+      subject: 'Social Science',
+      class: 'Class 8',
+      medium: 'Hindi',
+      board: 'CBSE',
+      type: 'Book'
+    },
+    {
+      title: 'Group Name 123',
+      subject: 'Social Science',
+      class: 'Class 8',
+      medium: 'Hindi',
+      board: 'CBSE',
+      type: 'Book'
+    }
+  ];
+  showGroupCreateForm;
   constructor() {}
 
   ngOnInit() {}

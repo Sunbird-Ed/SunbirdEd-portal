@@ -7,24 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateGroupComponent implements OnInit {
   showGroupCreateForm;
-  sbcards = [
-    {
-      title: 'Group Name 123',
-      subject: 'Social Science',
-      class: 'Class 8',
-      medium: 'Hindi',
-      board: 'CBSE',
-      type: 'Book'
-    },
-    {
-      title: 'Group Name 123',
-      subject: 'Social Science',
-      class: 'Class 8',
-      medium: 'Hindi',
-      board: 'CBSE',
-      type: 'Book'
-    }
-  ];
+
   constructor() { }
 
   ngOnInit() {
