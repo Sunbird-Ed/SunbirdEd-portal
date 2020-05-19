@@ -28,7 +28,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryInteractObject: IInteractEventObject;
   telemetryImpression: IImpressionEventInput;
   public userProfile: IUserProfile;
-  private editMode: boolean;
+  public editMode: boolean;
   public boardList: [];
   public mediumList: [];
   public gradesList: [];
@@ -83,7 +83,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
       const board = boardObj;
       if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
         this.groupForm.controls.board.setValue(_.get(this.selectedOption, 'board[0]'));
-        this.frameWorkId = _.get(_.find(this.custodianOrgBoard.range, { 'name': this.selectedOption.board }), 'identifier');
+        this.frameWorkId = _.get(_.find(this.custodianOrgBoard.range, { 'name': this.selectedOption.board[0] }), 'identifier');
         return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
           this._formFieldProperties = formFieldProperties;
           this.mergeBoard(); // will merge board from custodian org and board from selected framework data
@@ -135,14 +135,14 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
   }
-  private mergeBoard() {
+  public mergeBoard() {
     _.forEach(this._formFieldProperties, (field) => {
       if (field.code === 'board') {
         field.range = _.unionBy(_.concat(field.range, this.custodianOrgBoard.range), 'name');
       }
     });
   }
-  private getUpdatedFilters(field, editMode = false) {
+  public getUpdatedFilters(field, editMode = false) {
     const targetIndex = field.index + 1; // only update next field if not editMode
     const formFields = _.reduce(this.formFieldProperties, (accumulator, current) => {
       if (current.index === targetIndex || editMode) {
@@ -180,9 +180,9 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subjectList = _.get(_.find(formFields, { 'code': 'subject' }), 'range') || [];
     return formFields;
   }
-  onSubmitForm() {
+  async onSubmitForm() {
     if (this.groupForm.valid) {
-      this.groupForm.markAsTouched();
+
     } else {
       Object.keys(this.groupForm.controls).forEach(field => {
         const control = this.groupForm.get(field);
@@ -213,7 +213,7 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.telemetryInteractObject = {
       id: this.userService.userid,
-      type: 'Groups',
+      type: 'groups',
       ver: '1.0'
     };
   }
@@ -229,7 +229,6 @@ export class GroupFormComponent implements OnInit, OnDestroy, AfterViewInit {
           uri: this.route.url,
         }
       };
-      console.log(this.telemetryImpression);
     });
   }
 

@@ -48,23 +48,32 @@ export class GroupsService {
     }),
     mergeMap((frameworkDetails: any) => {
       if (!frameworkDetails.err) {
-        const framework = frameWorkId ? frameWorkId : 'defaultFramework';
-        const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
-        frameWorkId = frameworkData.identifier;
-        const categoryMasterList = _.filter(frameworkData.categories, (category) => {
-          return ['board', 'medium', 'gradeLevel', 'subject'].includes(_.get(category, 'code'));
-        });
-        return of({categoryMasterList, 'frameWorkId': frameWorkId});
+        return this.filterFrameworkCategories(frameworkDetails, frameWorkId);
       } else {
         return throwError(frameworkDetails.err);
       }
     }), map((formData: any) => {
-      const formFieldProperties = _.filter(formData.categoryMasterList, (formFieldCategory) => {
-        formFieldCategory.range = _.get(_.find(formData.categoryMasterList, { code : formFieldCategory.code }), 'terms') || [];
-        return true;
-      });
-      return {'formFieldProperties': _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index'), 'frameWorkId': formData.frameWorkId};
+        return this.filterFrameworkCategoryTerms(formData);
     }), first());
   }
+
+  public filterFrameworkCategories(frameworkDetails, frameWorkId) {
+    const framework = frameWorkId ? frameWorkId : 'defaultFramework';
+    const frameworkData = _.get(frameworkDetails.frameworkdata, framework);
+    frameWorkId = frameworkData.identifier;
+    const categoryMasterList = _.filter(frameworkData.categories, (category) => {
+      return ['board', 'medium', 'gradeLevel', 'subject'].includes(_.get(category, 'code'));
+    });
+    return of({categoryMasterList, 'frameWorkId': frameWorkId});
+  }
+
+  public filterFrameworkCategoryTerms(formData) {
+    const formFieldProperties = _.filter(formData.categoryMasterList, (formFieldCategory) => {
+      formFieldCategory.range = _.get(_.find(formData.categoryMasterList, { code : formFieldCategory.code }), 'terms') || [];
+      return true;
+    });
+    return {'formFieldProperties': _.sortBy(_.uniqBy(formFieldProperties, 'code'), 'index'), 'frameWorkId': formData.frameWorkId};
+  }
+
 
 }
