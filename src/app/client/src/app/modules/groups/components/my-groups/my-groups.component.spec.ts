@@ -7,6 +7,7 @@ import * as _ from 'lodash-es';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { GroupsService } from '../../services';
+import { of as observableOf, of } from 'rxjs';
 
 describe('MyGroupsComponent', () => {
   let component: MyGroupsComponent;
@@ -28,6 +29,14 @@ describe('MyGroupsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should get all the groups list', () => {
+    const groupService = TestBed.get(GroupsService);
+    spyOn(groupService, 'getAllGroups').and.callFake(() => observableOf(false));
+    component.ngOnInit();
+    component.getMyGroupList();
+    expect(component.groupList).toBeUndefined();
   });
 
 });
