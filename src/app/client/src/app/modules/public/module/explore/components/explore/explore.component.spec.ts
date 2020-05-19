@@ -43,9 +43,7 @@ describe('ExploreComponent', () => {
     },
     frmelmnts: {
       lbl: {
-        fetchingContentFailed: 'Fetching content failed. Please try again later.',
-        sectionTitle: 'Courses',
-        sectionTitle1: 'Course'
+        fetchingContentFailed: 'Fetching content failed. Please try again later.'
       },
 
     },
